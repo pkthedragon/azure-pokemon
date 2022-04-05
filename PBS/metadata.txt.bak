@@ -1,0 +1,318 @@
+[000]
+Home=3,5,7,0
+WildBattleBGM=Battle! Wild.mp3
+TrainerBattleBGM=Battle! Trainer.mp3
+WildVictoryME=Victory! Trainer.ogg
+TrainerVictoryME=Victory! Trainer.ogg
+SurfBGM=Surf.ogg
+BicycleBGM=Bicycle.mid
+PlayerA=POKEMONTRAINER_TroyLight,trchar250,boy_bike,boy_surf,boy_run,boy_surf,boy_fish_offset,xxx
+PlayerB=POKEMONTRAINER_TroyMed,trchar251,boy_bike,boy_surf,boy_run,boy_surf,boy_fish_offset,xxx
+PlayerC=POKEMONTRAINER_TroyDark,trchar252,boy_bike,boy_surf,boy_run,boy_surf,boy_fish_offset,xxx
+PlayerD=POKEMONTRAINER_EllisLight,trchar253,girl_bike,girl_surf,girl_run,girl_surf,girl_fish_offset,xxx
+PlayerE=POKEMONTRAINER_EllisMed,trchar254,girl_bike,girl_surf,girl_run,girl_surf,girl_fish_offset,xxx
+PlayerF=POKEMONTRAINER_EllisDark,trchar255,girl_bike,girl_surf,girl_run,girl_surf,girl_fish_offset,xxx
+PlayerG=POKEMONTRAINER_KeyLight,trchar256,nb_bike,nb_surf,nb_run,nb_surf,nb_fish_offset,xxx
+PlayerH=POKEMONTRAINER_KeyMed,trchar257,nb_bike,nb_surf,nb_run,nb_surf,nb_fish_offset,xxx
+PlayerI=POKEMONTRAINER_KeyDark,trchar258,nb_bike,nb_surf,nb_run,nb_surf,nb_fish_offset,xxx
+PlayerJ=CONDUIT,HGSS_114,,,,,,xxx
+PlayerK=CONDUIT,HGSS_114 - Copy,,,,,,xxx
+[001]
+# Logium Town A
+Outdoor=true
+ShowArea=true
+MapPosition=0,13,16
+BattleBack=Desert
+[002]
+# Koneli Ruins
+MapPosition=0,13,12
+BattleBack=Haunted3
+[003]
+# Koneli Ruins
+MapPosition=0,13,12
+BattleBack=Forest
+[004]
+# Meadow Temple
+Outdoor=false
+MapPosition=0,16,10
+BattleBack=Grassy
+[005]
+# Hidden Outpost
+Outdoor=true
+ShowArea=true
+MapPosition=0,13,11
+[006]
+# Elmin's House
+Outdoor=false
+[008]
+# \PN's House
+Outdoor=false
+[009]
+# Connecting Caves
+Outdoor=false
+ShowArea=true
+MapPosition=0,13,14
+BattleBack=Cave
+[010]
+# Koneli Manor
+Outdoor=false
+ShowArea=true
+MapPosition=0,6,16
+BattleBack=Haunted3
+[011]
+# NPC House 1
+Outdoor=false
+[012]
+# NPC House 2
+Outdoor=false
+[013]
+# Kara's House
+Outdoor=false
+[014]
+# Percy's House
+Outdoor=false
+MapPosition=0,13,16
+[015]
+# NPC House 1
+Outdoor=false
+MapPosition=0,13,16
+[016]
+# NPC House 2
+Outdoor=false
+MapPosition=0,13,16
+[017]
+# Pokemon Lab
+Outdoor=false
+MapPosition=0,13,16
+[018]
+# Connecting Caves
+Outdoor=false
+ShowArea=false
+MapPosition=0,14,7
+BattleBack=Cave
+[019]
+# Logium Path
+Outdoor=true
+ShowArea=true
+MapPosition=0,16,5
+BattleBack=Grassy
+[020]
+# Logium Town B
+Outdoor=true
+ShowArea=true
+MapPosition=0,16,2
+BattleBack=Grassy
+[021]
+# Logium Arena
+Outdoor=false
+ShowArea=false
+MapPosition=0,16,2
+BattleBack=Psychic
+[022]
+# Logium Town B
+Outdoor=false
+MapPosition=0,16,2
+[023]
+# Logium Town B
+Outdoor=false
+MapPosition=0,16,2
+[024]
+# Logium Town B
+Outdoor=false
+MapPosition=0,16,2
+[025]
+# Logium Town B
+Outdoor=false
+MapPosition=0,16,2
+[026]
+# Apolvita Grove
+Outdoor=true
+ShowArea=true
+MapPosition=0,18,3
+BattleBack=Grassy
+[027]
+# Berry Emporium
+Outdoor=false
+MapPosition=0,16,2
+[028]
+# Logium Library
+Outdoor=false
+ShowArea=false
+MapPosition=0,16,2
+BattleBack=Psychic
+[029]
+# Logium Library
+Outdoor=false
+ShowArea=false
+MapPosition=0,16,2
+BattleBack=Psychic
+[030]
+# Apolvita Cavern
+Outdoor=false
+ShowArea=true
+MapPosition=0,18,3
+DarkMap=true
+BattleBack=Cave
+[031]
+# Underground Ruins
+Outdoor=false
+ShowArea=true
+MapPosition=0,16,10
+BattleBack=Cave
+[032]
+# Underground Ruins
+Outdoor=false
+MapPosition=0,16,10
+BattleBack=Cave
+[033]
+# Underground Forest
+Outdoor=false
+ShowArea=true
+MapPosition=0,16,10
+BattleBack=Forest
+[034]
+# Underground Forest
+Outdoor=false
+MapPosition=0,16,10
+BattleBack=Forest
+[035]
+# Meadow Temple
+Outdoor=false
+ShowArea=true
+MapPosition=0,16,10
+BattleBack=Grassy
+[036]
+# Aplovita Cavern
+Outdoor=false
+ShowArea=true
+MapPosition=0,18,3
+DarkMap=true
+BattleBack=Cave
+[038]
+# Tent of Mystery
+Outdoor=false
+MapPosition=0,16,2
+[041]
+# Underground Ruins
+Outdoor=false
+MapPosition=0,16,10
+[042]
+# Intro
+Outdoor=false
+[043]
+# Koneli Demesne
+Outdoor=true
+ShowArea=true
+MapPosition=0,6,16
+BattleBack=Forest
+[044]
+# Connecting Caves
+Outdoor=false
+ShowArea=false
+MapPosition=0,22,15
+BattleBack=Cave
+[045]
+# Koneli Demesne
+Outdoor=false
+MapPosition=0,6,16
+BattleBack=Forest
+[046]
+# Koneli Manor
+Outdoor=false
+MapPosition=0,6,16
+BattleBack=Haunted3
+[047]
+# Koneli Laboratory
+Outdoor=false
+MapPosition=0,6,16
+DarkMap=true
+BattleBack=Shortcircuit
+[048]
+# Logium Library
+Outdoor=false
+MapPosition=0,16,2
+[049]
+# Logium Library Attic
+Outdoor=false
+MapPosition=0,16,2
+[051]
+# Koneli Manor
+Outdoor=false
+MapPosition=0,6,16
+BattleBack=Haunted3
+[052]
+# Koneli Laboratory
+Outdoor=false
+MapPosition=0,6,16
+DarkMap=true
+BattleBack=Shortcircuit
+[053]
+# Spooky Temple
+Outdoor=false
+ShowArea=true
+MapPosition=0,6,16
+BattleBack=DarkCrystalCavern
+[054]
+# Logium Town C
+Outdoor=true
+ShowArea=true
+MapPosition=0,24,15
+BattleBack=Desert
+[055]
+# Apolvita Pools
+Outdoor=false
+ShowArea=false
+MapPosition=0,18,3
+BattleBack=AshenBeach
+[056]
+# Koneli Laboratory
+Outdoor=false
+MapPosition=0,6,16
+DarkMap=true
+BattleBack=Shortcircuit
+[057]
+# Logium Town B
+Outdoor=true
+MapPosition=0,16,2
+[058]
+# Pokemon Center
+Outdoor=false
+MapPosition=0,16,2
+[059]
+# Pokemon Center
+Outdoor=false
+MapPosition=0,24,15
+[060]
+# Abandoned Church
+Outdoor=false
+ShowArea=true
+MapPosition=0,24,15
+BattleBack=Ruin
+[061]
+# Abandoned? Church
+Outdoor=false
+MapPosition=0,24,15
+BattleBack=Ruin
+[062]
+# Abandoned? Church
+Outdoor=false
+MapPosition=0,24,15
+BattleBack=Ruin
+[063]
+# Abandoned? Church
+Outdoor=false
+MapPosition=0,24,15
+[064]
+# Logium Town C
+Outdoor=false
+MapPosition=0,24,15
+[088]
+# Test Village
+Outdoor=true
+BattleBack=Mountain
+[108]
+# Apolvita Pools
+Outdoor=false
+ShowArea=false
+MapPosition=0,18,3
+BattleBack=AshenBeach

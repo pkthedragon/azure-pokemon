@@ -1,0 +1,2 @@
+# Logium Path A (19) - Logium Town B (20)
+19,North,33,20,South,28

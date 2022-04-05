@@ -1,0 +1,3147 @@
+==============================
+Battle Start!
+82 - Agrus
+==============================
+***Round 1***
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (0)
+Initial switchscore building: Healing
+Initial switchscore building: fsteak (0)
+Initial switchscore building: Specific Switches (0)
+Illumise: initial switchscore: 0
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+Illumise: initial noswitchscore: 66
+ 
+{
+ 
+Rain Dance: initial score: 15
+Rain Dance: final score: 0
+ 
+Rain Dance: initial score: 15
+Rain Dance: final score: 0
+ 
+Shock Wave: initial score: 110
+Shock Wave: final score: 121
+ 
+Shock Wave: initial score: 16
+Shock Wave: final score: 16
+ 
+Struggle Bug: initial score: 110
+Struggle Bug: final score: 110
+ 
+Struggle Bug: initial score: 85
+Struggle Bug: final score: 85
+ 
+Water Pulse: initial score: 110
+Water Pulse: final score: 0
+ 
+Water Pulse: initial score: 16
+Water Pulse: final score: 0
+ 
+}
+ 
+Illumise: highest move score: 121
+Illumise: final switching score: -66
+121 > -66, will not switch
+ 
+Rain Dance: initial score: 15
+Rain Dance: final score: 0
+ 
+Rain Dance: initial score: 15
+Rain Dance: final score: 0
+ 
+Shock Wave: initial score: 110
+Shock Wave: final score: 121
+ 
+Shock Wave: initial score: 16
+Shock Wave: final score: 16
+ 
+Struggle Bug: initial score: 110
+Struggle Bug: final score: 110
+ 
+Struggle Bug: initial score: 85
+Struggle Bug: final score: 85
+ 
+Water Pulse: initial score: 110
+Water Pulse: final score: 0
+ 
+Water Pulse: initial score: 16
+Water Pulse: final score: 0
+ 
+Beginning AI Item use check.
+ 
+This is a HP-healing item.
+Forest Field Disrupt
+Score for Potion: -100
+This is a HP-healing item.
+Forest Field Disrupt
+Score for Potion: -100
+This is a HP-healing item.
+Forest Field Disrupt
+Score for Potion: -100
+Highest item score: -100
+Highest move score: 121
+Not using an item.
+ 
+Rain Dance: initial score: 15
+Rain Dance: final score: 0
+ 
+Rain Dance: initial score: 15
+Rain Dance: final score: 0
+ 
+Shock Wave: initial score: 110
+Shock Wave: final score: 121
+ 
+Shock Wave: initial score: 16
+Shock Wave: final score: 16
+ 
+Struggle Bug: initial score: 110
+Struggle Bug: final score: 110
+ 
+Struggle Bug: initial score: 85
+Struggle Bug: final score: 85
+ 
+Struggle Bug: Final Score after Multi-Target Adjustment: 195
+
+Water Pulse: initial score: 110
+Water Pulse: final score: 0
+ 
+Water Pulse: initial score: 16
+Water Pulse: final score: 0
+ 
+[The foe Illumise: Rain Dance=0, Shock Wave=5, Struggle Bug=195, Water Pulse=0]
+[Prefer Struggle Bug]
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (0)
+Initial switchscore building: Healing
+Initial switchscore building: fsteak (0)
+Initial switchscore building: Specific Switches (0)
+Lileep: initial switchscore: 0
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+Lileep: initial noswitchscore: 100
+ 
+{
+ 
+Toxic: initial score: 35
+Toxic: final score: 40
+ 
+Toxic: initial score: 35
+Toxic: final score: 40
+ 
+Mega Drain: initial score: 25
+Mega Drain: final score: 25
+ 
+Mega Drain: initial score: 110
+Mega Drain: final score: 110
+ 
+Rock Tomb: initial score: 35
+Rock Tomb: final score: 33
+ 
+Rock Tomb: initial score: 110
+Rock Tomb: final score: 104
+ 
+Brine: initial score: 16
+Brine: final score: 16
+ 
+Brine: initial score: 110
+Brine: final score: 110
+ 
+}
+ 
+Lileep: highest move score: 110
+Lileep: final switching score: -100
+110 > -100, will not switch
+ 
+Toxic: initial score: 35
+Toxic: final score: 40
+ 
+Toxic: initial score: 35
+Toxic: final score: 40
+ 
+Mega Drain: initial score: 25
+Mega Drain: final score: 25
+ 
+Mega Drain: initial score: 110
+Mega Drain: final score: 110
+ 
+Rock Tomb: initial score: 35
+Rock Tomb: final score: 33
+ 
+Rock Tomb: initial score: 110
+Rock Tomb: final score: 104
+ 
+Brine: initial score: 16
+Brine: final score: 16
+ 
+Brine: initial score: 110
+Brine: final score: 110
+ 
+Beginning AI Item use check.
+ 
+This is a HP-healing item.
+Forest Field Disrupt
+Score for Potion: -100
+This is a HP-healing item.
+Forest Field Disrupt
+Score for Potion: -100
+This is a HP-healing item.
+Forest Field Disrupt
+Score for Potion: -100
+Highest item score: -100
+Highest move score: 110
+Not using an item.
+ 
+Toxic: initial score: 35
+Toxic: final score: 40
+ 
+Toxic: initial score: 35
+Toxic: final score: 4
+ 
+Mega Drain: initial score: 25
+Mega Drain: final score: 25
+ 
+Mega Drain: initial score: 110
+Mega Drain: final score: 110
+ 
+Rock Tomb: initial score: 35
+Rock Tomb: final score: 33
+ 
+Rock Tomb: initial score: 110
+Rock Tomb: final score: 104
+ 
+Brine: initial score: 16
+Brine: final score: 16
+ 
+Brine: initial score: 110
+Brine: final score: 110
+ 
+[The foe Lileep: Toxic=5, Mega Drain=110, Rock Tomb=104, Brine=110]
+[Prefer Brine]
+[Rocky lost 19 HP, now has 0 HP]
+[Rocky fainted]
+[Deino lost 56 HP, now has 0 HP]
+[Deino fainted]
+***Round 2***
+==============================
+Battle Start!
+82 - Agrus
+==============================
+***Round 1***
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (0)
+Initial switchscore building: Healing
+Initial switchscore building: fsteak (0)
+Initial switchscore building: Specific Switches (0)
+Illumise: initial switchscore: 0
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+Illumise: initial noswitchscore: 66
+ 
+{
+ 
+Rain Dance: initial score: 15
+Rain Dance: final score: 0
+ 
+Rain Dance: initial score: 15
+Rain Dance: final score: 0
+ 
+Shock Wave: initial score: 74
+Shock Wave: final score: 74
+ 
+Shock Wave: initial score: 45
+Shock Wave: final score: 45
+ 
+Struggle Bug: initial score: 27
+Struggle Bug: final score: 27
+ 
+Struggle Bug: initial score: 31
+Struggle Bug: final score: 34
+ 
+Water Pulse: initial score: 37
+Water Pulse: final score: 0
+ 
+Water Pulse: initial score: 12
+Water Pulse: final score: 0
+ 
+}
+ 
+Illumise: highest move score: 74
+Illumise: final switching score: -66
+74 > -66, will not switch
+ 
+Rain Dance: initial score: 15
+Rain Dance: final score: 0
+ 
+Rain Dance: initial score: 15
+Rain Dance: final score: 0
+ 
+Shock Wave: initial score: 74
+Shock Wave: final score: 74
+ 
+Shock Wave: initial score: 45
+Shock Wave: final score: 45
+ 
+Struggle Bug: initial score: 27
+Struggle Bug: final score: 27
+ 
+Struggle Bug: initial score: 31
+Struggle Bug: final score: 34
+ 
+Water Pulse: initial score: 37
+Water Pulse: final score: 0
+ 
+Water Pulse: initial score: 12
+Water Pulse: final score: 0
+ 
+Beginning AI Item use check.
+ 
+This is a HP-healing item.
+Forest Field Disrupt
+Score for Potion: -100
+This is a HP-healing item.
+Forest Field Disrupt
+Score for Potion: -100
+This is a HP-healing item.
+Forest Field Disrupt
+Score for Potion: -100
+Highest item score: -100
+Highest move score: 74
+Not using an item.
+ 
+Rain Dance: initial score: 15
+Rain Dance: final score: 0
+ 
+Rain Dance: initial score: 15
+Rain Dance: final score: 0
+ 
+Shock Wave: initial score: 74
+Shock Wave: final score: 74
+ 
+Shock Wave: initial score: 45
+Shock Wave: final score: 45
+ 
+Struggle Bug: initial score: 27
+Struggle Bug: final score: 27
+ 
+Struggle Bug: initial score: 31
+Struggle Bug: final score: 34
+ 
+Struggle Bug: Final Score after Multi-Target Adjustment: 61
+
+Water Pulse: initial score: 37
+Water Pulse: final score: 0
+ 
+Water Pulse: initial score: 12
+Water Pulse: final score: 0
+ 
+[The foe Illumise: Rain Dance=0, Shock Wave=74, Struggle Bug=61, Water Pulse=0]
+[Prefer Shock Wave]
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (0)
+Initial switchscore building: Healing
+Initial switchscore building: fsteak (15)
+Initial switchscore building: Specific Switches (15)
+Lileep: initial switchscore: 15
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+Lileep: initial noswitchscore: 100
+ 
+{
+ 
+Toxic: initial score: 35
+Toxic: final score: 40
+ 
+Toxic: initial score: 35
+Toxic: final score: 40
+ 
+Mega Drain: initial score: 70
+Mega Drain: final score: 70
+ 
+Mega Drain: initial score: 27
+Mega Drain: final score: 27
+ 
+Rock Tomb: initial score: 19
+Rock Tomb: final score: 18
+ 
+Rock Tomb: initial score: 51
+Rock Tomb: final score: 48
+ 
+Brine: initial score: 12
+Brine: final score: 12
+ 
+Brine: initial score: 37
+Brine: final score: 37
+ 
+}
+ 
+Lileep: highest move score: 70
+Lileep: final switching score: -85
+70 > -85, will not switch
+ 
+Toxic: initial score: 35
+Toxic: final score: 40
+ 
+Toxic: initial score: 35
+Toxic: final score: 40
+ 
+Mega Drain: initial score: 70
+Mega Drain: final score: 70
+ 
+Mega Drain: initial score: 27
+Mega Drain: final score: 27
+ 
+Rock Tomb: initial score: 19
+Rock Tomb: final score: 18
+ 
+Rock Tomb: initial score: 51
+Rock Tomb: final score: 48
+ 
+Brine: initial score: 12
+Brine: final score: 12
+ 
+Brine: initial score: 37
+Brine: final score: 37
+ 
+Beginning AI Item use check.
+ 
+This is a HP-healing item.
+Forest Field Disrupt
+Score for Potion: -100
+This is a HP-healing item.
+Forest Field Disrupt
+Score for Potion: -100
+This is a HP-healing item.
+Forest Field Disrupt
+Score for Potion: -100
+Highest item score: -100
+Highest move score: 70
+Not using an item.
+ 
+Toxic: initial score: 35
+Toxic: final score: 40
+ 
+Toxic: initial score: 35
+Toxic: final score: 40
+ 
+Mega Drain: initial score: 70
+Mega Drain: final score: 70
+ 
+Mega Drain: initial score: 27
+Mega Drain: final score: 27
+ 
+Rock Tomb: initial score: 19
+Rock Tomb: final score: 18
+ 
+Rock Tomb: initial score: 51
+Rock Tomb: final score: 48
+ 
+Brine: initial score: 12
+Brine: final score: 12
+ 
+Brine: initial score: 37
+Brine: final score: 37
+ 
+[The foe Lileep: Toxic=5, Mega Drain=70, Rock Tomb=48, Brine=5]
+[Prefer Mega Drain]
+[Staravia lost 38 HP, now has 16 HP]
+==============================
+Battle Start!
+82 - Agrus
+==============================
+***Round 1***
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (0)
+Initial switchscore building: Healing
+Initial switchscore building: fsteak (0)
+Initial switchscore building: Specific Switches (0)
+Illumise: initial switchscore: 0
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+Illumise: initial noswitchscore: 66
+ 
+{
+ 
+Rain Dance: initial score: 15
+Rain Dance: final score: 0
+ 
+Rain Dance: initial score: 15
+Rain Dance: final score: 0
+ 
+Shock Wave: initial score: 74
+Shock Wave: final score: 74
+ 
+Shock Wave: initial score: 45
+Shock Wave: final score: 45
+ 
+Struggle Bug: initial score: 27
+Struggle Bug: final score: 27
+ 
+Struggle Bug: initial score: 31
+Struggle Bug: final score: 34
+ 
+Water Pulse: initial score: 37
+Water Pulse: final score: 0
+ 
+Water Pulse: initial score: 12
+Water Pulse: final score: 0
+ 
+}
+ 
+Illumise: highest move score: 74
+Illumise: final switching score: -66
+74 > -66, will not switch
+ 
+Rain Dance: initial score: 15
+Rain Dance: final score: 0
+ 
+Rain Dance: initial score: 15
+Rain Dance: final score: 0
+ 
+Shock Wave: initial score: 74
+Shock Wave: final score: 74
+ 
+Shock Wave: initial score: 45
+Shock Wave: final score: 45
+ 
+Struggle Bug: initial score: 27
+Struggle Bug: final score: 27
+ 
+Struggle Bug: initial score: 31
+Struggle Bug: final score: 34
+ 
+Water Pulse: initial score: 37
+Water Pulse: final score: 0
+ 
+Water Pulse: initial score: 12
+Water Pulse: final score: 0
+ 
+Beginning AI Item use check.
+ 
+This is a HP-healing item.
+Forest Field Disrupt
+Score for Potion: -100
+This is a HP-healing item.
+Forest Field Disrupt
+Score for Potion: -100
+This is a HP-healing item.
+Forest Field Disrupt
+Score for Potion: -100
+Highest item score: -100
+Highest move score: 74
+Not using an item.
+ 
+Rain Dance: initial score: 15
+Rain Dance: final score: 0
+ 
+Rain Dance: initial score: 15
+Rain Dance: final score: 0
+ 
+Shock Wave: initial score: 74
+Shock Wave: final score: 74
+ 
+Shock Wave: initial score: 45
+Shock Wave: final score: 45
+ 
+Struggle Bug: initial score: 27
+Struggle Bug: final score: 27
+ 
+Struggle Bug: initial score: 31
+Struggle Bug: final score: 34
+ 
+Struggle Bug: Final Score after Multi-Target Adjustment: 61
+
+Water Pulse: initial score: 37
+Water Pulse: final score: 0
+ 
+Water Pulse: initial score: 12
+Water Pulse: final score: 0
+ 
+[The foe Illumise: Rain Dance=0, Shock Wave=74, Struggle Bug=61, Water Pulse=0]
+[Prefer Shock Wave]
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (0)
+Initial switchscore building: Healing
+Initial switchscore building: fsteak (15)
+Initial switchscore building: Specific Switches (15)
+Lileep: initial switchscore: 15
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+Lileep: initial noswitchscore: 100
+ 
+{
+ 
+Toxic: initial score: 35
+Toxic: final score: 40
+ 
+Toxic: initial score: 35
+Toxic: final score: 40
+ 
+Mega Drain: initial score: 70
+Mega Drain: final score: 70
+ 
+Mega Drain: initial score: 27
+Mega Drain: final score: 27
+ 
+Rock Tomb: initial score: 19
+Rock Tomb: final score: 18
+ 
+Rock Tomb: initial score: 51
+Rock Tomb: final score: 48
+ 
+Brine: initial score: 12
+Brine: final score: 12
+ 
+Brine: initial score: 37
+Brine: final score: 37
+ 
+}
+ 
+Lileep: highest move score: 70
+Lileep: final switching score: -85
+70 > -85, will not switch
+ 
+Toxic: initial score: 35
+Toxic: final score: 40
+ 
+Toxic: initial score: 35
+Toxic: final score: 40
+ 
+Mega Drain: initial score: 70
+Mega Drain: final score: 70
+ 
+Mega Drain: initial score: 27
+Mega Drain: final score: 27
+ 
+Rock Tomb: initial score: 19
+Rock Tomb: final score: 18
+ 
+Rock Tomb: initial score: 51
+Rock Tomb: final score: 48
+ 
+Brine: initial score: 12
+Brine: final score: 12
+ 
+Brine: initial score: 37
+Brine: final score: 37
+ 
+Beginning AI Item use check.
+ 
+This is a HP-healing item.
+Forest Field Disrupt
+Score for Potion: -100
+This is a HP-healing item.
+Forest Field Disrupt
+Score for Potion: -100
+This is a HP-healing item.
+Forest Field Disrupt
+Score for Potion: -100
+Highest item score: -100
+Highest move score: 70
+Not using an item.
+ 
+Toxic: initial score: 35
+Toxic: final score: 40
+ 
+Toxic: initial score: 35
+Toxic: final score: 40
+ 
+Mega Drain: initial score: 70
+Mega Drain: final score: 70
+ 
+Mega Drain: initial score: 27
+Mega Drain: final score: 27
+ 
+Rock Tomb: initial score: 19
+Rock Tomb: final score: 18
+ 
+Rock Tomb: initial score: 51
+Rock Tomb: final score: 48
+ 
+Brine: initial score: 12
+Brine: final score: 12
+ 
+Brine: initial score: 37
+Brine: final score: 37
+ 
+[The foe Lileep: Toxic=5, Mega Drain=70, Rock Tomb=48, Brine=5]
+[Prefer Mega Drain]
+[Staravia lost 38 HP, now has 16 HP]
+[The foe Illumise lost 36 HP, now has 25 HP]
+[The foe Illumise lost 8 HP, now has 17 HP]
+[The foe Lileep lost 12 HP, now has 50 HP]
+[Brionne lost 36 HP, now has 21 HP]
+[The foe Lileep gained 12 HP, now has 62 HP]
+***Round 2***
+==============================
+Battle Start!
+82 - Agrus
+==============================
+***Round 1***
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (0)
+Initial switchscore building: Healing
+Initial switchscore building: fsteak (0)
+Initial switchscore building: Specific Switches (0)
+Illumise: initial switchscore: 0
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+Illumise: initial noswitchscore: 66
+ 
+{
+ 
+Rain Dance: initial score: 15
+Rain Dance: final score: 0
+ 
+Rain Dance: initial score: 15
+Rain Dance: final score: 0
+ 
+Shock Wave: initial score: 46
+Shock Wave: final score: 46
+ 
+Shock Wave: initial score: 1
+Shock Wave: final score: 0
+ 
+Struggle Bug: initial score: 65
+Struggle Bug: final score: 65
+ 
+Struggle Bug: initial score: 29
+Struggle Bug: final score: 31
+ 
+Water Pulse: initial score: 93
+Water Pulse: final score: 0
+ 
+Water Pulse: initial score: 81
+Water Pulse: final score: 0
+ 
+}
+ 
+Illumise: highest move score: 65
+Illumise: final switching score: -66
+65 > -66, will not switch
+ 
+Rain Dance: initial score: 15
+Rain Dance: final score: 0
+ 
+Rain Dance: initial score: 15
+Rain Dance: final score: 0
+ 
+Shock Wave: initial score: 46
+Shock Wave: final score: 46
+ 
+Shock Wave: initial score: 1
+Shock Wave: final score: 0
+ 
+Struggle Bug: initial score: 65
+Struggle Bug: final score: 65
+ 
+Struggle Bug: initial score: 29
+Struggle Bug: final score: 31
+ 
+Water Pulse: initial score: 93
+Water Pulse: final score: 0
+ 
+Water Pulse: initial score: 81
+Water Pulse: final score: 0
+ 
+Beginning AI Item use check.
+ 
+This is a HP-healing item.
+Forest Field Disrupt
+Score for Potion: -100
+This is a HP-healing item.
+Forest Field Disrupt
+Score for Potion: -100
+This is a HP-healing item.
+Forest Field Disrupt
+Score for Potion: -100
+Highest item score: -100
+Highest move score: 65
+Not using an item.
+ 
+Rain Dance: initial score: 15
+Rain Dance: final score: 0
+ 
+Rain Dance: initial score: 15
+Rain Dance: final score: 0
+ 
+Shock Wave: initial score: 46
+Shock Wave: final score: 46
+ 
+Shock Wave: initial score: 1
+Shock Wave: final score: 0
+ 
+Struggle Bug: initial score: 65
+Struggle Bug: final score: 65
+ 
+Struggle Bug: initial score: 29
+Struggle Bug: final score: 31
+ 
+Struggle Bug: Final Score after Multi-Target Adjustment: 96
+
+Water Pulse: initial score: 93
+Water Pulse: final score: 0
+ 
+Water Pulse: initial score: 81
+Water Pulse: final score: 0
+ 
+[The foe Illumise: Rain Dance=0, Shock Wave=5, Struggle Bug=96, Water Pulse=0]
+[Prefer Struggle Bug]
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (0)
+Initial switchscore building: Healing
+Initial switchscore building: fsteak (0)
+Initial switchscore building: Specific Switches (0)
+Lileep: initial switchscore: 0
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+Lileep: initial noswitchscore: 100
+ 
+{
+ 
+Toxic: initial score: 35
+Toxic: final score: 40
+ 
+Toxic: initial score: 35
+Toxic: final score: 40
+ 
+Mega Drain: initial score: 110
+Mega Drain: final score: 110
+ 
+Mega Drain: initial score: 110
+Mega Drain: final score: 110
+ 
+Rock Tomb: initial score: 14
+Rock Tomb: final score: 13
+ 
+Rock Tomb: initial score: 42
+Rock Tomb: final score: 39
+ 
+Brine: initial score: 81
+Brine: final score: 81
+ 
+Brine: initial score: 93
+Brine: final score: 93
+ 
+}
+ 
+Lileep: highest move score: 110
+Lileep: final switching score: -100
+110 > -100, will not switch
+ 
+Toxic: initial score: 35
+Toxic: final score: 40
+ 
+Toxic: initial score: 35
+Toxic: final score: 40
+ 
+Mega Drain: initial score: 110
+Mega Drain: final score: 110
+ 
+Mega Drain: initial score: 110
+Mega Drain: final score: 110
+ 
+Rock Tomb: initial score: 14
+Rock Tomb: final score: 13
+ 
+Rock Tomb: initial score: 42
+Rock Tomb: final score: 39
+ 
+Brine: initial score: 81
+Brine: final score: 81
+ 
+Brine: initial score: 93
+Brine: final score: 93
+ 
+Beginning AI Item use check.
+ 
+This is a HP-healing item.
+Forest Field Disrupt
+Score for Potion: -100
+This is a HP-healing item.
+Forest Field Disrupt
+Score for Potion: -100
+This is a HP-healing item.
+Forest Field Disrupt
+Score for Potion: -100
+Highest item score: -100
+Highest move score: 110
+Not using an item.
+ 
+Toxic: initial score: 35
+Toxic: final score: 4
+ 
+Toxic: initial score: 35
+Toxic: final score: 4
+ 
+Mega Drain: initial score: 110
+Mega Drain: final score: 110
+ 
+Mega Drain: initial score: 110
+Mega Drain: final score: 110
+ 
+Rock Tomb: initial score: 14
+Rock Tomb: final score: 13
+ 
+Rock Tomb: initial score: 42
+Rock Tomb: final score: 39
+ 
+Brine: initial score: 81
+Brine: final score: 81
+ 
+Brine: initial score: 93
+Brine: final score: 93
+ 
+[The foe Lileep: Toxic=4, Mega Drain=110, Rock Tomb=5, Brine=93]
+[Prefer Mega Drain]
+[Rocky lost 29 HP, now has 20 HP]
+==============================
+Battle Start!
+82 - Agrus
+==============================
+***Round 1***
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (0)
+Initial switchscore building: Healing
+Initial switchscore building: fsteak (0)
+Initial switchscore building: Specific Switches (0)
+Illumise: initial switchscore: 0
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+Illumise: initial noswitchscore: 66
+ 
+{
+ 
+Rain Dance: initial score: 15
+Rain Dance: final score: 0
+ 
+Rain Dance: initial score: 15
+Rain Dance: final score: 0
+ 
+Shock Wave: initial score: 46
+Shock Wave: final score: 46
+ 
+Shock Wave: initial score: 1
+Shock Wave: final score: 0
+ 
+Struggle Bug: initial score: 65
+Struggle Bug: final score: 65
+ 
+Struggle Bug: initial score: 29
+Struggle Bug: final score: 31
+ 
+Water Pulse: initial score: 93
+Water Pulse: final score: 0
+ 
+Water Pulse: initial score: 81
+Water Pulse: final score: 0
+ 
+}
+ 
+Illumise: highest move score: 65
+Illumise: final switching score: -66
+65 > -66, will not switch
+ 
+Rain Dance: initial score: 15
+Rain Dance: final score: 0
+ 
+Rain Dance: initial score: 15
+Rain Dance: final score: 0
+ 
+Shock Wave: initial score: 46
+Shock Wave: final score: 46
+ 
+Shock Wave: initial score: 1
+Shock Wave: final score: 0
+ 
+Struggle Bug: initial score: 65
+Struggle Bug: final score: 65
+ 
+Struggle Bug: initial score: 29
+Struggle Bug: final score: 31
+ 
+Water Pulse: initial score: 93
+Water Pulse: final score: 0
+ 
+Water Pulse: initial score: 81
+Water Pulse: final score: 0
+ 
+Beginning AI Item use check.
+ 
+This is a HP-healing item.
+Forest Field Disrupt
+Score for Potion: -100
+This is a HP-healing item.
+Forest Field Disrupt
+Score for Potion: -100
+This is a HP-healing item.
+Forest Field Disrupt
+Score for Potion: -100
+Highest item score: -100
+Highest move score: 65
+Not using an item.
+ 
+Rain Dance: initial score: 15
+Rain Dance: final score: 0
+ 
+Rain Dance: initial score: 15
+Rain Dance: final score: 0
+ 
+Shock Wave: initial score: 46
+Shock Wave: final score: 46
+ 
+Shock Wave: initial score: 1
+Shock Wave: final score: 0
+ 
+Struggle Bug: initial score: 65
+Struggle Bug: final score: 65
+ 
+Struggle Bug: initial score: 29
+Struggle Bug: final score: 31
+ 
+Struggle Bug: Final Score after Multi-Target Adjustment: 96
+
+Water Pulse: initial score: 93
+Water Pulse: final score: 0
+ 
+Water Pulse: initial score: 81
+Water Pulse: final score: 0
+ 
+[The foe Illumise: Rain Dance=0, Shock Wave=5, Struggle Bug=96, Water Pulse=0]
+[Prefer Struggle Bug]
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (0)
+Initial switchscore building: Healing
+Initial switchscore building: fsteak (0)
+Initial switchscore building: Specific Switches (0)
+Lileep: initial switchscore: 0
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+Lileep: initial noswitchscore: 100
+ 
+{
+ 
+Toxic: initial score: 35
+Toxic: final score: 40
+ 
+Toxic: initial score: 35
+Toxic: final score: 40
+ 
+Mega Drain: initial score: 110
+Mega Drain: final score: 110
+ 
+Mega Drain: initial score: 110
+Mega Drain: final score: 110
+ 
+Rock Tomb: initial score: 14
+Rock Tomb: final score: 13
+ 
+Rock Tomb: initial score: 42
+Rock Tomb: final score: 39
+ 
+Brine: initial score: 81
+Brine: final score: 81
+ 
+Brine: initial score: 93
+Brine: final score: 93
+ 
+}
+ 
+Lileep: highest move score: 110
+Lileep: final switching score: -100
+110 > -100, will not switch
+ 
+Toxic: initial score: 35
+Toxic: final score: 40
+ 
+Toxic: initial score: 35
+Toxic: final score: 40
+ 
+Mega Drain: initial score: 110
+Mega Drain: final score: 110
+ 
+Mega Drain: initial score: 110
+Mega Drain: final score: 110
+ 
+Rock Tomb: initial score: 14
+Rock Tomb: final score: 13
+ 
+Rock Tomb: initial score: 42
+Rock Tomb: final score: 39
+ 
+Brine: initial score: 81
+Brine: final score: 81
+ 
+Brine: initial score: 93
+Brine: final score: 93
+ 
+Beginning AI Item use check.
+ 
+This is a HP-healing item.
+Forest Field Disrupt
+Score for Potion: -100
+This is a HP-healing item.
+Forest Field Disrupt
+Score for Potion: -100
+This is a HP-healing item.
+Forest Field Disrupt
+Score for Potion: -100
+Highest item score: -100
+Highest move score: 110
+Not using an item.
+ 
+Toxic: initial score: 35
+Toxic: final score: 4
+ 
+Toxic: initial score: 35
+Toxic: final score: 4
+ 
+Mega Drain: initial score: 110
+Mega Drain: final score: 110
+ 
+Mega Drain: initial score: 110
+Mega Drain: final score: 110
+ 
+Rock Tomb: initial score: 14
+Rock Tomb: final score: 13
+ 
+Rock Tomb: initial score: 42
+Rock Tomb: final score: 39
+ 
+Brine: initial score: 81
+Brine: final score: 81
+ 
+Brine: initial score: 93
+Brine: final score: 93
+ 
+[The foe Lileep: Toxic=4, Mega Drain=110, Rock Tomb=5, Brine=93]
+[Prefer Mega Drain]
+==============================
+Battle Start!
+82 - Agrus
+==============================
+***Round 1***
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (0)
+Initial switchscore building: Healing
+Initial switchscore building: fsteak (0)
+Initial switchscore building: Specific Switches (0)
+Illumise: initial switchscore: 0
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+Illumise: initial noswitchscore: 66
+ 
+{
+ 
+Rain Dance: initial score: 15
+Rain Dance: final score: 0
+ 
+Rain Dance: initial score: 15
+Rain Dance: final score: 0
+ 
+Shock Wave: initial score: 46
+Shock Wave: final score: 46
+ 
+Shock Wave: initial score: 1
+Shock Wave: final score: 0
+ 
+Struggle Bug: initial score: 65
+Struggle Bug: final score: 65
+ 
+Struggle Bug: initial score: 29
+Struggle Bug: final score: 31
+ 
+Water Pulse: initial score: 93
+Water Pulse: final score: 0
+ 
+Water Pulse: initial score: 81
+Water Pulse: final score: 0
+ 
+}
+ 
+Illumise: highest move score: 65
+Illumise: final switching score: -66
+65 > -66, will not switch
+ 
+Rain Dance: initial score: 15
+Rain Dance: final score: 0
+ 
+Rain Dance: initial score: 15
+Rain Dance: final score: 0
+ 
+Shock Wave: initial score: 46
+Shock Wave: final score: 46
+ 
+Shock Wave: initial score: 1
+Shock Wave: final score: 0
+ 
+Struggle Bug: initial score: 65
+Struggle Bug: final score: 65
+ 
+Struggle Bug: initial score: 29
+Struggle Bug: final score: 31
+ 
+Water Pulse: initial score: 93
+Water Pulse: final score: 0
+ 
+Water Pulse: initial score: 81
+Water Pulse: final score: 0
+ 
+Beginning AI Item use check.
+ 
+This is a HP-healing item.
+Forest Field Disrupt
+Score for Potion: -100
+This is a HP-healing item.
+Forest Field Disrupt
+Score for Potion: -100
+This is a HP-healing item.
+Forest Field Disrupt
+Score for Potion: -100
+Highest item score: -100
+Highest move score: 65
+Not using an item.
+ 
+Rain Dance: initial score: 15
+Rain Dance: final score: 0
+ 
+Rain Dance: initial score: 15
+Rain Dance: final score: 0
+ 
+Shock Wave: initial score: 46
+Shock Wave: final score: 46
+ 
+Shock Wave: initial score: 1
+Shock Wave: final score: 0
+ 
+Struggle Bug: initial score: 65
+Struggle Bug: final score: 65
+ 
+Struggle Bug: initial score: 29
+Struggle Bug: final score: 31
+ 
+Struggle Bug: Final Score after Multi-Target Adjustment: 96
+
+Water Pulse: initial score: 93
+Water Pulse: final score: 0
+ 
+Water Pulse: initial score: 81
+Water Pulse: final score: 0
+ 
+[The foe Illumise: Rain Dance=0, Shock Wave=5, Struggle Bug=96, Water Pulse=0]
+[Prefer Struggle Bug]
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (0)
+Initial switchscore building: Healing
+Initial switchscore building: fsteak (0)
+Initial switchscore building: Specific Switches (0)
+Lileep: initial switchscore: 0
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+Lileep: initial noswitchscore: 100
+ 
+{
+ 
+Toxic: initial score: 35
+Toxic: final score: 40
+ 
+Toxic: initial score: 35
+Toxic: final score: 40
+ 
+Mega Drain: initial score: 110
+Mega Drain: final score: 110
+ 
+Mega Drain: initial score: 110
+Mega Drain: final score: 110
+ 
+Rock Tomb: initial score: 14
+Rock Tomb: final score: 13
+ 
+Rock Tomb: initial score: 42
+Rock Tomb: final score: 39
+ 
+Brine: initial score: 81
+Brine: final score: 81
+ 
+Brine: initial score: 93
+Brine: final score: 93
+ 
+}
+ 
+Lileep: highest move score: 110
+Lileep: final switching score: -100
+110 > -100, will not switch
+ 
+Toxic: initial score: 35
+Toxic: final score: 40
+ 
+Toxic: initial score: 35
+Toxic: final score: 40
+ 
+Mega Drain: initial score: 110
+Mega Drain: final score: 110
+ 
+Mega Drain: initial score: 110
+Mega Drain: final score: 110
+ 
+Rock Tomb: initial score: 14
+Rock Tomb: final score: 13
+ 
+Rock Tomb: initial score: 42
+Rock Tomb: final score: 39
+ 
+Brine: initial score: 81
+Brine: final score: 81
+ 
+Brine: initial score: 93
+Brine: final score: 93
+ 
+Beginning AI Item use check.
+ 
+This is a HP-healing item.
+Forest Field Disrupt
+Score for Potion: -100
+This is a HP-healing item.
+Forest Field Disrupt
+Score for Potion: -100
+This is a HP-healing item.
+Forest Field Disrupt
+Score for Potion: -100
+Highest item score: -100
+Highest move score: 110
+Not using an item.
+ 
+Toxic: initial score: 35
+Toxic: final score: 4
+ 
+Toxic: initial score: 35
+Toxic: final score: 4
+ 
+Mega Drain: initial score: 110
+Mega Drain: final score: 110
+ 
+Mega Drain: initial score: 110
+Mega Drain: final score: 110
+ 
+Rock Tomb: initial score: 14
+Rock Tomb: final score: 13
+ 
+Rock Tomb: initial score: 42
+Rock Tomb: final score: 39
+ 
+Brine: initial score: 81
+Brine: final score: 81
+ 
+Brine: initial score: 93
+Brine: final score: 93
+ 
+[The foe Lileep: Toxic=4, Mega Drain=110, Rock Tomb=5, Brine=93]
+[Prefer Mega Drain]
+==============================
+Battle Start!
+82 - Agrus
+==============================
+***Round 1***
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (0)
+Initial switchscore building: Healing
+Initial switchscore building: fsteak (0)
+Initial switchscore building: Specific Switches (0)
+Illumise: initial switchscore: 0
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+Illumise: initial noswitchscore: 66
+ 
+{
+ 
+Water Pulse: initial score: 93
+Water Pulse: final score: 0
+ 
+Water Pulse: initial score: 81
+Water Pulse: final score: 0
+ 
+Shock Wave: initial score: 46
+Shock Wave: final score: 46
+ 
+Shock Wave: initial score: 1
+Shock Wave: final score: 0
+ 
+Struggle Bug: initial score: 65
+Struggle Bug: final score: 65
+ 
+Struggle Bug: initial score: 29
+Struggle Bug: final score: 31
+ 
+Rain Dance: initial score: 15
+Rain Dance: final score: 0
+ 
+Rain Dance: initial score: 15
+Rain Dance: final score: 0
+ 
+}
+ 
+Illumise: highest move score: 65
+Illumise: final switching score: -66
+65 > -66, will not switch
+ 
+Water Pulse: initial score: 93
+Water Pulse: final score: 0
+ 
+Water Pulse: initial score: 81
+Water Pulse: final score: 0
+ 
+Shock Wave: initial score: 46
+Shock Wave: final score: 46
+ 
+Shock Wave: initial score: 1
+Shock Wave: final score: 0
+ 
+Struggle Bug: initial score: 65
+Struggle Bug: final score: 65
+ 
+Struggle Bug: initial score: 29
+Struggle Bug: final score: 31
+ 
+Rain Dance: initial score: 15
+Rain Dance: final score: 0
+ 
+Rain Dance: initial score: 15
+Rain Dance: final score: 0
+ 
+Beginning AI Item use check.
+ 
+This is a HP-healing item.
+Forest Field Disrupt
+Score for Potion: -100
+This is a HP-healing item.
+Forest Field Disrupt
+Score for Potion: -100
+This is a HP-healing item.
+Forest Field Disrupt
+Score for Potion: -100
+Highest item score: -100
+Highest move score: 65
+Not using an item.
+ 
+Water Pulse: initial score: 93
+Water Pulse: final score: 0
+ 
+Water Pulse: initial score: 81
+Water Pulse: final score: 0
+ 
+Shock Wave: initial score: 46
+Shock Wave: final score: 46
+ 
+Shock Wave: initial score: 1
+Shock Wave: final score: 0
+ 
+Struggle Bug: initial score: 65
+Struggle Bug: final score: 65
+ 
+Struggle Bug: initial score: 29
+Struggle Bug: final score: 31
+ 
+Struggle Bug: Final Score after Multi-Target Adjustment: 96
+
+Rain Dance: initial score: 15
+Rain Dance: final score: 0
+ 
+Rain Dance: initial score: 15
+Rain Dance: final score: 0
+ 
+[The foe Illumise: Water Pulse=0, Shock Wave=5, Struggle Bug=96, Rain Dance=0]
+[Prefer Struggle Bug]
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (0)
+Initial switchscore building: Healing
+Initial switchscore building: fsteak (0)
+Initial switchscore building: Specific Switches (0)
+Lileep: initial switchscore: 0
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+Lileep: initial noswitchscore: 100
+ 
+{
+ 
+Toxic: initial score: 35
+Toxic: final score: 40
+ 
+Toxic: initial score: 35
+Toxic: final score: 40
+ 
+Mega Drain: initial score: 110
+Mega Drain: final score: 110
+ 
+Mega Drain: initial score: 110
+Mega Drain: final score: 110
+ 
+Rock Tomb: initial score: 14
+Rock Tomb: final score: 13
+ 
+Rock Tomb: initial score: 42
+Rock Tomb: final score: 39
+ 
+Brine: initial score: 81
+Brine: final score: 81
+ 
+Brine: initial score: 93
+Brine: final score: 93
+ 
+}
+ 
+Lileep: highest move score: 110
+Lileep: final switching score: -100
+110 > -100, will not switch
+ 
+Toxic: initial score: 35
+Toxic: final score: 40
+ 
+Toxic: initial score: 35
+Toxic: final score: 40
+ 
+Mega Drain: initial score: 110
+Mega Drain: final score: 110
+ 
+Mega Drain: initial score: 110
+Mega Drain: final score: 110
+ 
+Rock Tomb: initial score: 14
+Rock Tomb: final score: 13
+ 
+Rock Tomb: initial score: 42
+Rock Tomb: final score: 39
+ 
+Brine: initial score: 81
+Brine: final score: 81
+ 
+Brine: initial score: 93
+Brine: final score: 93
+ 
+Beginning AI Item use check.
+ 
+This is a HP-healing item.
+Forest Field Disrupt
+Score for Potion: -100
+This is a HP-healing item.
+Forest Field Disrupt
+Score for Potion: -100
+This is a HP-healing item.
+Forest Field Disrupt
+Score for Potion: -100
+Highest item score: -100
+Highest move score: 110
+Not using an item.
+ 
+Toxic: initial score: 35
+Toxic: final score: 4
+ 
+Toxic: initial score: 35
+Toxic: final score: 4
+ 
+Mega Drain: initial score: 110
+Mega Drain: final score: 110
+ 
+Mega Drain: initial score: 110
+Mega Drain: final score: 110
+ 
+Rock Tomb: initial score: 14
+Rock Tomb: final score: 13
+ 
+Rock Tomb: initial score: 42
+Rock Tomb: final score: 39
+ 
+Brine: initial score: 81
+Brine: final score: 81
+ 
+Brine: initial score: 93
+Brine: final score: 93
+ 
+[The foe Lileep: Toxic=4, Mega Drain=110, Rock Tomb=5, Brine=93]
+[Prefer Mega Drain]
+==============================
+Battle Start!
+82 - Agrus
+==============================
+***Round 1***
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (0)
+Initial switchscore building: Healing
+Initial switchscore building: fsteak (0)
+Initial switchscore building: Specific Switches (0)
+Illumise: initial switchscore: 0
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+Illumise: initial noswitchscore: 66
+ 
+{
+ 
+Rain Dance: initial score: 15
+Rain Dance: final score: 0
+ 
+Rain Dance: initial score: 15
+Rain Dance: final score: 0
+ 
+Shock Wave: initial score: 46
+Shock Wave: final score: 46
+ 
+Shock Wave: initial score: 1
+Shock Wave: final score: 0
+ 
+}
+ 
+Illumise: highest move score: 46
+Illumise: final switching score: -66
+46 > -66, will not switch
+ 
+Rain Dance: initial score: 15
+Rain Dance: final score: 0
+ 
+Rain Dance: initial score: 15
+Rain Dance: final score: 0
+ 
+Shock Wave: initial score: 46
+Shock Wave: final score: 46
+ 
+Shock Wave: initial score: 1
+Shock Wave: final score: 0
+ 
+Beginning AI Item use check.
+ 
+This is a HP-healing item.
+Forest Field Disrupt
+Score for Potion: -100
+This is a HP-healing item.
+Forest Field Disrupt
+Score for Potion: -100
+This is a HP-healing item.
+Forest Field Disrupt
+Score for Potion: -100
+Highest item score: -100
+Highest move score: 46
+Not using an item.
+ 
+Rain Dance: initial score: 15
+Rain Dance: final score: 0
+ 
+Rain Dance: initial score: 15
+Rain Dance: final score: 0
+ 
+Shock Wave: initial score: 46
+Shock Wave: final score: 46
+ 
+Shock Wave: initial score: 1
+Shock Wave: final score: 0
+ 
+[The foe Illumise: Rain Dance=0, Shock Wave=46]
+[Prefer Shock Wave]
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (0)
+Initial switchscore building: Healing
+Initial switchscore building: fsteak (0)
+Initial switchscore building: Specific Switches (0)
+Lileep: initial switchscore: 0
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+Lileep: initial noswitchscore: 100
+ 
+{
+ 
+Toxic: initial score: 35
+Toxic: final score: 40
+ 
+Toxic: initial score: 35
+Toxic: final score: 40
+ 
+Mega Drain: initial score: 110
+Mega Drain: final score: 110
+ 
+Mega Drain: initial score: 110
+Mega Drain: final score: 110
+ 
+Rock Tomb: initial score: 14
+Rock Tomb: final score: 13
+ 
+Rock Tomb: initial score: 42
+Rock Tomb: final score: 39
+ 
+Brine: initial score: 81
+Brine: final score: 81
+ 
+Brine: initial score: 93
+Brine: final score: 93
+ 
+}
+ 
+Lileep: highest move score: 110
+Lileep: final switching score: -100
+110 > -100, will not switch
+ 
+Toxic: initial score: 35
+Toxic: final score: 40
+ 
+Toxic: initial score: 35
+Toxic: final score: 40
+ 
+Mega Drain: initial score: 110
+Mega Drain: final score: 110
+ 
+Mega Drain: initial score: 110
+Mega Drain: final score: 110
+ 
+Rock Tomb: initial score: 14
+Rock Tomb: final score: 13
+ 
+Rock Tomb: initial score: 42
+Rock Tomb: final score: 39
+ 
+Brine: initial score: 81
+Brine: final score: 81
+ 
+Brine: initial score: 93
+Brine: final score: 93
+ 
+Beginning AI Item use check.
+ 
+This is a HP-healing item.
+Forest Field Disrupt
+Score for Potion: -100
+This is a HP-healing item.
+Forest Field Disrupt
+Score for Potion: -100
+This is a HP-healing item.
+Forest Field Disrupt
+Score for Potion: -100
+Highest item score: -100
+Highest move score: 110
+Not using an item.
+ 
+Toxic: initial score: 35
+Toxic: final score: 4
+ 
+Toxic: initial score: 35
+Toxic: final score: 4
+ 
+Mega Drain: initial score: 110
+Mega Drain: final score: 110
+ 
+Mega Drain: initial score: 110
+Mega Drain: final score: 110
+ 
+Rock Tomb: initial score: 14
+Rock Tomb: final score: 13
+ 
+Rock Tomb: initial score: 42
+Rock Tomb: final score: 39
+ 
+Brine: initial score: 81
+Brine: final score: 81
+ 
+Brine: initial score: 93
+Brine: final score: 93
+ 
+[The foe Lileep: Toxic=4, Mega Drain=110, Rock Tomb=5, Brine=93]
+[Prefer Mega Drain]
+==============================
+Battle Start!
+82 - Agrus
+==============================
+***Round 1***
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (0)
+Initial switchscore building: Healing
+Initial switchscore building: fsteak (0)
+Initial switchscore building: Specific Switches (0)
+Volbeat: initial switchscore: 0
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+Volbeat: initial noswitchscore: 66
+ 
+{
+ 
+Rain Dance: initial score: 15
+Rain Dance: final score: 1000
+ 
+Rain Dance: initial score: 15
+Rain Dance: final score: 1000
+ 
+Shock Wave: initial score: 34
+Shock Wave: final score: 34
+ 
+Shock Wave: initial score: 1
+Shock Wave: final score: 0
+ 
+Struggle Bug: initial score: 48
+Struggle Bug: final score: 48
+ 
+Struggle Bug: initial score: 22
+Struggle Bug: final score: 24
+ 
+Water Pulse: initial score: 69
+Water Pulse: final score: 0
+ 
+Water Pulse: initial score: 59
+Water Pulse: final score: 0
+ 
+}
+ 
+Volbeat: highest move score: 1000
+Volbeat: final switching score: -66
+1000 > -66, will not switch
+ 
+Rain Dance: initial score: 15
+Rain Dance: final score: 1000
+ 
+Rain Dance: initial score: 15
+Rain Dance: final score: 1000
+ 
+Shock Wave: initial score: 34
+Shock Wave: final score: 34
+ 
+Shock Wave: initial score: 1
+Shock Wave: final score: 0
+ 
+Struggle Bug: initial score: 48
+Struggle Bug: final score: 48
+ 
+Struggle Bug: initial score: 22
+Struggle Bug: final score: 24
+ 
+Water Pulse: initial score: 69
+Water Pulse: final score: 0
+ 
+Water Pulse: initial score: 59
+Water Pulse: final score: 0
+ 
+Beginning AI Item use check.
+ 
+This is a HP-healing item.
+Forest Field Disrupt
+Score for Potion: -100
+This is a HP-healing item.
+Forest Field Disrupt
+Score for Potion: -100
+This is a HP-healing item.
+Forest Field Disrupt
+Score for Potion: -100
+Highest item score: -100
+Highest move score: 1000
+Not using an item.
+ 
+Rain Dance: initial score: 15
+Rain Dance: final score: 1000
+ 
+Rain Dance: initial score: 15
+Rain Dance: final score: 1000
+ 
+Shock Wave: initial score: 34
+Shock Wave: final score: 34
+ 
+Shock Wave: initial score: 1
+Shock Wave: final score: 0
+ 
+Struggle Bug: initial score: 48
+Struggle Bug: final score: 48
+ 
+Struggle Bug: initial score: 22
+Struggle Bug: final score: 24
+ 
+Struggle Bug: Final Score after Multi-Target Adjustment: 72
+
+Water Pulse: initial score: 69
+Water Pulse: final score: 0
+ 
+Water Pulse: initial score: 59
+Water Pulse: final score: 0
+ 
+[The foe Volbeat: Rain Dance=1000, Shock Wave=5, Struggle Bug=5, Water Pulse=0]
+[Prefer Rain Dance]
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (0)
+Initial switchscore building: Healing
+Initial switchscore building: fsteak (0)
+Initial switchscore building: Specific Switches (0)
+Lileep: initial switchscore: 0
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+Lileep: initial noswitchscore: 100
+ 
+{
+ 
+Toxic: initial score: 35
+Toxic: final score: 40
+ 
+Toxic: initial score: 35
+Toxic: final score: 40
+ 
+Mega Drain: initial score: 110
+Mega Drain: final score: 110
+ 
+Mega Drain: initial score: 110
+Mega Drain: final score: 110
+ 
+Rock Tomb: initial score: 14
+Rock Tomb: final score: 13
+ 
+Rock Tomb: initial score: 42
+Rock Tomb: final score: 39
+ 
+Brine: initial score: 81
+Brine: final score: 81
+ 
+Brine: initial score: 93
+Brine: final score: 93
+ 
+}
+ 
+Lileep: highest move score: 110
+Lileep: final switching score: -100
+110 > -100, will not switch
+ 
+Toxic: initial score: 35
+Toxic: final score: 40
+ 
+Toxic: initial score: 35
+Toxic: final score: 40
+ 
+Mega Drain: initial score: 110
+Mega Drain: final score: 110
+ 
+Mega Drain: initial score: 110
+Mega Drain: final score: 110
+ 
+Rock Tomb: initial score: 14
+Rock Tomb: final score: 13
+ 
+Rock Tomb: initial score: 42
+Rock Tomb: final score: 39
+ 
+Brine: initial score: 81
+Brine: final score: 81
+ 
+Brine: initial score: 93
+Brine: final score: 93
+ 
+Beginning AI Item use check.
+ 
+This is a HP-healing item.
+Forest Field Disrupt
+Score for Potion: -100
+This is a HP-healing item.
+Forest Field Disrupt
+Score for Potion: -100
+This is a HP-healing item.
+Forest Field Disrupt
+Score for Potion: -100
+Highest item score: -100
+Highest move score: 110
+Not using an item.
+ 
+Toxic: initial score: 35
+Toxic: final score: 4
+ 
+Toxic: initial score: 35
+Toxic: final score: 4
+ 
+Mega Drain: initial score: 110
+Mega Drain: final score: 110
+ 
+Mega Drain: initial score: 110
+Mega Drain: final score: 110
+ 
+Rock Tomb: initial score: 14
+Rock Tomb: final score: 13
+ 
+Rock Tomb: initial score: 42
+Rock Tomb: final score: 39
+ 
+Brine: initial score: 81
+Brine: final score: 81
+ 
+Brine: initial score: 93
+Brine: final score: 93
+ 
+[The foe Lileep: Toxic=4, Mega Drain=110, Rock Tomb=5, Brine=93]
+[Prefer Mega Drain]
+[The foe Volbeat lost 14 HP, now has 47 HP]
+[Rocky lost 49 HP, now has 0 HP]
+[Rocky fainted]
+[The foe Volbeat lost 5 HP, now has 42 HP]
+[The foe Volbeat lost 7 HP, now has 35 HP]
+***Round 2***
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (0)
+Initial switchscore building: Healing
+Initial switchscore building: fsteak (0)
+Initial switchscore building: Specific Switches (0)
+Volbeat: initial switchscore: 0
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+Volbeat: initial noswitchscore: 50
+ 
+{
+ 
+Rain Dance: initial score: 15
+Rain Dance: final score: 0
+ 
+Rain Dance: initial score: 15
+Rain Dance: final score: 0
+ 
+Shock Wave: initial score: 12
+Shock Wave: final score: 0
+ 
+Shock Wave: initial score: 1
+Shock Wave: final score: 0
+ 
+Struggle Bug: initial score: 64
+Struggle Bug: final score: 0
+ 
+Struggle Bug: initial score: 22
+Struggle Bug: final score: 0
+ 
+Water Pulse: initial score: 17
+Water Pulse: final score: 0
+ 
+Water Pulse: initial score: 88
+Water Pulse: final score: 0
+ 
+}
+ 
+Volbeat: highest move score: 0
+Volbeat: final switching score: -50
+0 > -50, will not switch
+ 
+Rain Dance: initial score: 15
+Rain Dance: final score: 0
+ 
+Rain Dance: initial score: 15
+Rain Dance: final score: 0
+ 
+Shock Wave: initial score: 12
+Shock Wave: final score: 0
+ 
+Shock Wave: initial score: 1
+Shock Wave: final score: 0
+ 
+Struggle Bug: initial score: 64
+Struggle Bug: final score: 0
+ 
+Struggle Bug: initial score: 22
+Struggle Bug: final score: 0
+ 
+Water Pulse: initial score: 17
+Water Pulse: final score: 0
+ 
+Water Pulse: initial score: 88
+Water Pulse: final score: 0
+ 
+Beginning AI Item use check.
+ 
+This is a HP-healing item.
+Forest Field Disrupt
+Score for Potion: -96
+This is a HP-healing item.
+Forest Field Disrupt
+Score for Potion: -96
+This is a HP-healing item.
+Forest Field Disrupt
+Score for Potion: -96
+Highest item score: -96
+Highest move score: 0
+Not using an item.
+ 
+Rain Dance: initial score: 15
+Rain Dance: final score: 0
+ 
+Rain Dance: initial score: 15
+Rain Dance: final score: 0
+ 
+Shock Wave: initial score: 12
+Shock Wave: final score: 0
+ 
+Shock Wave: initial score: 1
+Shock Wave: final score: 0
+ 
+Struggle Bug: initial score: 64
+Struggle Bug: final score: 0
+ 
+Struggle Bug: initial score: 22
+Struggle Bug: final score: 0
+ 
+Struggle Bug: Final Score after Multi-Target Adjustment: 0
+
+Water Pulse: initial score: 17
+Water Pulse: final score: 0
+ 
+Water Pulse: initial score: 88
+Water Pulse: final score: 0
+ 
+[The foe Volbeat: Rain Dance=0, Shock Wave=0, Struggle Bug=0, Water Pulse=0]
+[Prefer Shock Wave]
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (0)
+Initial switchscore building: Healing
+Initial switchscore building: fsteak (0)
+Initial switchscore building: Specific Switches (0)
+Lileep: initial switchscore: 0
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+Lileep: initial noswitchscore: 75
+ 
+{
+ 
+Toxic: initial score: 35
+Toxic: final score: 0
+ 
+Toxic: initial score: 35
+Toxic: final score: 0
+ 
+Mega Drain: initial score: 110
+Mega Drain: final score: 0
+ 
+Mega Drain: initial score: 25
+Mega Drain: final score: 0
+ 
+Rock Tomb: initial score: 14
+Rock Tomb: final score: 0
+ 
+Rock Tomb: initial score: 35
+Rock Tomb: final score: 0
+ 
+Brine: initial score: 110
+Brine: final score: 0
+ 
+Brine: initial score: 25
+Brine: final score: 0
+ 
+}
+ 
+Lileep: highest move score: 0
+Lileep: final switching score: -75
+0 > -75, will not switch
+ 
+Toxic: initial score: 35
+Toxic: final score: 0
+ 
+Toxic: initial score: 35
+Toxic: final score: 0
+ 
+Mega Drain: initial score: 110
+Mega Drain: final score: 0
+ 
+Mega Drain: initial score: 25
+Mega Drain: final score: 0
+ 
+Rock Tomb: initial score: 14
+Rock Tomb: final score: 0
+ 
+Rock Tomb: initial score: 35
+Rock Tomb: final score: 0
+ 
+Brine: initial score: 110
+Brine: final score: 0
+ 
+Brine: initial score: 25
+Brine: final score: 0
+ 
+Beginning AI Item use check.
+ 
+This is a HP-healing item.
+Forest Field Disrupt
+Score for Potion: -100
+This is a HP-healing item.
+Forest Field Disrupt
+Score for Potion: -100
+This is a HP-healing item.
+Forest Field Disrupt
+Score for Potion: -100
+Highest item score: -100
+Highest move score: 0
+Not using an item.
+ 
+Toxic: initial score: 35
+Toxic: final score: 0
+ 
+Toxic: initial score: 35
+Toxic: final score: 0
+ 
+Mega Drain: initial score: 110
+Mega Drain: final score: 0
+ 
+Mega Drain: initial score: 25
+Mega Drain: final score: 0
+ 
+Rock Tomb: initial score: 14
+Rock Tomb: final score: 0
+ 
+Rock Tomb: initial score: 35
+Rock Tomb: final score: 0
+ 
+Brine: initial score: 110
+Brine: final score: 0
+ 
+Brine: initial score: 25
+Brine: final score: 0
+ 
+[The foe Lileep: Toxic=0, Mega Drain=0, Rock Tomb=0, Brine=0]
+[Prefer Toxic]
+[Deino lost 6 HP, now has 50 HP]
+[The foe Volbeat lost 9 HP, now has 26 HP]
+[The foe Volbeat lost 5 HP, now has 21 HP]
+[Deino lost 3 HP, now has 47 HP]
+[The foe Volbeat lost 7 HP, now has 14 HP]
+***Round 3***
+==============================
+Battle Start!
+82 - Agrus
+==============================
+***Round 1***
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (0)
+Initial switchscore building: Healing
+Initial switchscore building: fsteak (0)
+Initial switchscore building: Specific Switches (0)
+Volbeat: initial switchscore: 0
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+Volbeat: initial noswitchscore: 66
+ 
+{
+ 
+Rain Dance: initial score: 15
+Rain Dance: final score: 1000
+ 
+Rain Dance: initial score: 15
+Rain Dance: final score: 1000
+ 
+Shock Wave: initial score: 34
+Shock Wave: final score: 34
+ 
+Shock Wave: initial score: 1
+Shock Wave: final score: 0
+ 
+Struggle Bug: initial score: 48
+Struggle Bug: final score: 48
+ 
+Struggle Bug: initial score: 22
+Struggle Bug: final score: 24
+ 
+Water Pulse: initial score: 69
+Water Pulse: final score: 0
+ 
+Water Pulse: initial score: 59
+Water Pulse: final score: 0
+ 
+}
+ 
+Volbeat: highest move score: 1000
+Volbeat: final switching score: -66
+1000 > -66, will not switch
+ 
+Rain Dance: initial score: 15
+Rain Dance: final score: 1000
+ 
+Rain Dance: initial score: 15
+Rain Dance: final score: 1000
+ 
+Shock Wave: initial score: 34
+Shock Wave: final score: 34
+ 
+Shock Wave: initial score: 1
+Shock Wave: final score: 0
+ 
+Struggle Bug: initial score: 48
+Struggle Bug: final score: 48
+ 
+Struggle Bug: initial score: 22
+Struggle Bug: final score: 24
+ 
+Water Pulse: initial score: 69
+Water Pulse: final score: 0
+ 
+Water Pulse: initial score: 59
+Water Pulse: final score: 0
+ 
+Beginning AI Item use check.
+ 
+This is a HP-healing item.
+Forest Field Disrupt
+Score for Potion: -100
+This is a HP-healing item.
+Forest Field Disrupt
+Score for Potion: -100
+This is a HP-healing item.
+Forest Field Disrupt
+Score for Potion: -100
+Highest item score: -100
+Highest move score: 1000
+Not using an item.
+ 
+Rain Dance: initial score: 15
+Rain Dance: final score: 1000
+ 
+Rain Dance: initial score: 15
+Rain Dance: final score: 1000
+ 
+Shock Wave: initial score: 34
+Shock Wave: final score: 34
+ 
+Shock Wave: initial score: 1
+Shock Wave: final score: 0
+ 
+Struggle Bug: initial score: 48
+Struggle Bug: final score: 48
+ 
+Struggle Bug: initial score: 22
+Struggle Bug: final score: 24
+ 
+Struggle Bug: Final Score after Multi-Target Adjustment: 72
+
+Water Pulse: initial score: 69
+Water Pulse: final score: 0
+ 
+Water Pulse: initial score: 59
+Water Pulse: final score: 0
+ 
+[The foe Volbeat: Rain Dance=1000, Shock Wave=5, Struggle Bug=5, Water Pulse=0]
+[Prefer Rain Dance]
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (0)
+Initial switchscore building: Healing
+Initial switchscore building: fsteak (0)
+Initial switchscore building: Specific Switches (0)
+Lileep: initial switchscore: 0
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+Lileep: initial noswitchscore: 100
+ 
+{
+ 
+Toxic: initial score: 35
+Toxic: final score: 40
+ 
+Toxic: initial score: 35
+Toxic: final score: 40
+ 
+Mega Drain: initial score: 110
+Mega Drain: final score: 110
+ 
+Mega Drain: initial score: 110
+Mega Drain: final score: 110
+ 
+Rock Tomb: initial score: 14
+Rock Tomb: final score: 13
+ 
+Rock Tomb: initial score: 42
+Rock Tomb: final score: 39
+ 
+Brine: initial score: 81
+Brine: final score: 81
+ 
+Brine: initial score: 93
+Brine: final score: 93
+ 
+}
+ 
+Lileep: highest move score: 110
+Lileep: final switching score: -100
+110 > -100, will not switch
+ 
+Toxic: initial score: 35
+Toxic: final score: 40
+ 
+Toxic: initial score: 35
+Toxic: final score: 40
+ 
+Mega Drain: initial score: 110
+Mega Drain: final score: 110
+ 
+Mega Drain: initial score: 110
+Mega Drain: final score: 110
+ 
+Rock Tomb: initial score: 14
+Rock Tomb: final score: 13
+ 
+Rock Tomb: initial score: 42
+Rock Tomb: final score: 39
+ 
+Brine: initial score: 81
+Brine: final score: 81
+ 
+Brine: initial score: 93
+Brine: final score: 93
+ 
+Beginning AI Item use check.
+ 
+This is a HP-healing item.
+Forest Field Disrupt
+Score for Potion: -100
+This is a HP-healing item.
+Forest Field Disrupt
+Score for Potion: -100
+This is a HP-healing item.
+Forest Field Disrupt
+Score for Potion: -100
+Highest item score: -100
+Highest move score: 110
+Not using an item.
+ 
+Toxic: initial score: 35
+Toxic: final score: 4
+ 
+Toxic: initial score: 35
+Toxic: final score: 4
+ 
+Mega Drain: initial score: 110
+Mega Drain: final score: 110
+ 
+Mega Drain: initial score: 110
+Mega Drain: final score: 110
+ 
+Rock Tomb: initial score: 14
+Rock Tomb: final score: 13
+ 
+Rock Tomb: initial score: 42
+Rock Tomb: final score: 39
+ 
+Brine: initial score: 81
+Brine: final score: 81
+ 
+Brine: initial score: 93
+Brine: final score: 93
+ 
+[The foe Lileep: Toxic=4, Mega Drain=110, Rock Tomb=5, Brine=93]
+[Prefer Mega Drain]
+[The foe Volbeat lost 10 HP, now has 51 HP]
+[Rocky lost 49 HP, now has 0 HP]
+[Rocky fainted]
+***Round 2***
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (0)
+Initial switchscore building: Healing
+Initial switchscore building: fsteak (0)
+Initial switchscore building: Specific Switches (0)
+Volbeat: initial switchscore: 0
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+Volbeat: initial noswitchscore: 50
+ 
+{
+ 
+Rain Dance: initial score: 15
+Rain Dance: final score: 0
+ 
+Rain Dance: initial score: 15
+Rain Dance: final score: 0
+ 
+Shock Wave: initial score: 12
+Shock Wave: final score: 12
+ 
+Shock Wave: initial score: 1
+Shock Wave: final score: 0
+ 
+Struggle Bug: initial score: 64
+Struggle Bug: final score: 64
+ 
+Struggle Bug: initial score: 22
+Struggle Bug: final score: 24
+ 
+Water Pulse: initial score: 17
+Water Pulse: final score: 0
+ 
+Water Pulse: initial score: 88
+Water Pulse: final score: 0
+ 
+}
+ 
+Volbeat: highest move score: 64
+Volbeat: final switching score: -50
+64 > -50, will not switch
+ 
+Rain Dance: initial score: 15
+Rain Dance: final score: 0
+ 
+Rain Dance: initial score: 15
+Rain Dance: final score: 0
+ 
+Shock Wave: initial score: 12
+Shock Wave: final score: 12
+ 
+Shock Wave: initial score: 1
+Shock Wave: final score: 0
+ 
+Struggle Bug: initial score: 64
+Struggle Bug: final score: 64
+ 
+Struggle Bug: initial score: 22
+Struggle Bug: final score: 24
+ 
+Water Pulse: initial score: 17
+Water Pulse: final score: 0
+ 
+Water Pulse: initial score: 88
+Water Pulse: final score: 0
+ 
+Beginning AI Item use check.
+ 
+This is a HP-healing item.
+Forest Field Disrupt
+Score for Potion: -98
+This is a HP-healing item.
+Forest Field Disrupt
+Score for Potion: -98
+This is a HP-healing item.
+Forest Field Disrupt
+Score for Potion: -98
+Highest item score: -98
+Highest move score: 64
+Not using an item.
+ 
+Rain Dance: initial score: 15
+Rain Dance: final score: 0
+ 
+Rain Dance: initial score: 15
+Rain Dance: final score: 0
+ 
+Shock Wave: initial score: 12
+Shock Wave: final score: 12
+ 
+Shock Wave: initial score: 1
+Shock Wave: final score: 0
+ 
+Struggle Bug: initial score: 64
+Struggle Bug: final score: 64
+ 
+Struggle Bug: initial score: 22
+Struggle Bug: final score: 24
+ 
+Struggle Bug: Final Score after Multi-Target Adjustment: 88
+
+Water Pulse: initial score: 17
+Water Pulse: final score: 0
+ 
+Water Pulse: initial score: 88
+Water Pulse: final score: 0
+ 
+[The foe Volbeat: Rain Dance=0, Shock Wave=5, Struggle Bug=88, Water Pulse=0]
+[Prefer Struggle Bug]
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (0)
+Initial switchscore building: Healing
+Initial switchscore building: fsteak (0)
+Initial switchscore building: Specific Switches (0)
+Lileep: initial switchscore: 0
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+Lileep: initial noswitchscore: 75
+ 
+{
+ 
+Toxic: initial score: 35
+Toxic: final score: 40
+ 
+Toxic: initial score: 35
+Toxic: final score: 40
+ 
+Mega Drain: initial score: 110
+Mega Drain: final score: 110
+ 
+Mega Drain: initial score: 25
+Mega Drain: final score: 25
+ 
+Rock Tomb: initial score: 14
+Rock Tomb: final score: 13
+ 
+Rock Tomb: initial score: 35
+Rock Tomb: final score: 33
+ 
+Brine: initial score: 110
+Brine: final score: 110
+ 
+Brine: initial score: 25
+Brine: final score: 25
+ 
+}
+ 
+Lileep: highest move score: 110
+Lileep: final switching score: -75
+110 > -75, will not switch
+ 
+Toxic: initial score: 35
+Toxic: final score: 40
+ 
+Toxic: initial score: 35
+Toxic: final score: 40
+ 
+Mega Drain: initial score: 110
+Mega Drain: final score: 110
+ 
+Mega Drain: initial score: 25
+Mega Drain: final score: 25
+ 
+Rock Tomb: initial score: 14
+Rock Tomb: final score: 13
+ 
+Rock Tomb: initial score: 35
+Rock Tomb: final score: 33
+ 
+Brine: initial score: 110
+Brine: final score: 110
+ 
+Brine: initial score: 25
+Brine: final score: 25
+ 
+Beginning AI Item use check.
+ 
+This is a HP-healing item.
+Forest Field Disrupt
+Score for Potion: -100
+This is a HP-healing item.
+Forest Field Disrupt
+Score for Potion: -100
+This is a HP-healing item.
+Forest Field Disrupt
+Score for Potion: -100
+Highest item score: -100
+Highest move score: 110
+Not using an item.
+ 
+Toxic: initial score: 35
+Toxic: final score: 24
+ 
+Toxic: initial score: 35
+Toxic: final score: 40
+ 
+Mega Drain: initial score: 110
+Mega Drain: final score: 110
+ 
+Mega Drain: initial score: 25
+Mega Drain: final score: 25
+ 
+Rock Tomb: initial score: 14
+Rock Tomb: final score: 13
+ 
+Rock Tomb: initial score: 35
+Rock Tomb: final score: 33
+ 
+Brine: initial score: 110
+Brine: final score: 110
+ 
+Brine: initial score: 25
+Brine: final score: 25
+ 
+[The foe Lileep: Toxic=5, Mega Drain=110, Rock Tomb=5, Brine=110]
+[Prefer Brine]
+[Deino lost 34 HP, now has 22 HP]
+[Sandygast lost 10 HP, now has 44 HP]
+==============================
+Battle Start!
+186 - Jay
+==============================
+***Round 1***
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (0)
+Initial switchscore building: Healing
+Initial switchscore building: fsteak (0)
+Initial switchscore building: Specific Switches (0)
+Talonflame: initial switchscore: 0
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+Talonflame: initial noswitchscore: 66
+ 
+{
+ 
+Tailwind: initial score: 35
+Tailwind: final score: 38
+ 
+Tailwind: initial score: 35
+Tailwind: final score: 38
+ 
+Flare Blitz: initial score: 42
+Flare Blitz: final score: 38
+ 
+Flare Blitz: initial score: 27
+Flare Blitz: final score: 26
+ 
+Fly: initial score: 81
+Fly: final score: 135
+ 
+Fly: initial score: 52
+Fly: final score: 86
+ 
+Swords Dance: initial score: 35
+Swords Dance: final score: 49
+ 
+Swords Dance: initial score: 35
+Swords Dance: final score: 49
+ 
+}
+ 
+Talonflame: highest move score: 135
+Talonflame: final switching score: -66
+135 > -66, will not switch
+ 
+Tailwind: initial score: 35
+Tailwind: final score: 38
+ 
+Tailwind: initial score: 35
+Tailwind: final score: 38
+ 
+Flare Blitz: initial score: 42
+Flare Blitz: final score: 38
+ 
+Flare Blitz: initial score: 27
+Flare Blitz: final score: 26
+ 
+Fly: initial score: 81
+Fly: final score: 135
+ 
+Fly: initial score: 52
+Fly: final score: 86
+ 
+Swords Dance: initial score: 35
+Swords Dance: final score: 49
+ 
+Swords Dance: initial score: 35
+Swords Dance: final score: 49
+ 
+Beginning AI Item use check.
+ 
+This is a HP-healing item.
+Sky Field Disrupt
+Score for Hyper Potion: -100
+This is a HP-healing item.
+Sky Field Disrupt
+Score for Hyper Potion: -100
+Highest item score: -100
+Highest move score: 135
+Not using an item.
+ 
+Tailwind: initial score: 35
+Tailwind: final score: 38
+ 
+Tailwind: initial score: 35
+Tailwind: final score: 38
+ 
+Flare Blitz: initial score: 42
+Flare Blitz: final score: 38
+ 
+Flare Blitz: initial score: 27
+Flare Blitz: final score: 26
+ 
+Fly: initial score: 81
+Fly: final score: 135
+ 
+Fly: initial score: 52
+Fly: final score: 86
+ 
+Swords Dance: initial score: 35
+Swords Dance: final score: 49
+ 
+Swords Dance: initial score: 35
+Swords Dance: final score: 49
+ 
+[The foe Talonflame: Tailwind=5, Flare Blitz=5, Fly=135, Swords Dance=5]
+[Prefer Fly]
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (0)
+Initial switchscore building: Healing
+Initial switchscore building: fsteak (0)
+Initial switchscore building: Specific Switches (0)
+Emolga: initial switchscore: 0
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+Emolga: initial noswitchscore: 100
+ 
+{
+ 
+Thunder: initial score: 110
+Thunder: final score: 151
+ 
+Thunder: initial score: 110
+Thunder: final score: 173
+ 
+Air Slash: initial score: 40
+Air Slash: final score: 41
+ 
+Air Slash: initial score: 39
+Air Slash: final score: 40
+ 
+Energy Ball: initial score: 23
+Energy Ball: final score: 23
+ 
+Energy Ball: initial score: 48
+Energy Ball: final score: 48
+ 
+Roost: initial score: 30
+Roost: final score: 0
+ 
+Roost: initial score: 30
+Roost: final score: 0
+ 
+}
+ 
+Emolga: highest move score: 173
+Emolga: final switching score: -100
+173 > -100, will not switch
+ 
+Thunder: initial score: 110
+Thunder: final score: 151
+ 
+Thunder: initial score: 110
+Thunder: final score: 173
+ 
+Air Slash: initial score: 40
+Air Slash: final score: 41
+ 
+Air Slash: initial score: 39
+Air Slash: final score: 40
+ 
+Energy Ball: initial score: 23
+Energy Ball: final score: 23
+ 
+Energy Ball: initial score: 48
+Energy Ball: final score: 48
+ 
+Roost: initial score: 30
+Roost: final score: 0
+ 
+Roost: initial score: 30
+Roost: final score: 0
+ 
+Beginning AI Item use check.
+ 
+This is a HP-healing item.
+Sky Field Disrupt
+Score for Hyper Potion: -100
+This is a HP-healing item.
+Sky Field Disrupt
+Score for Hyper Potion: -100
+Highest item score: -100
+Highest move score: 173
+Not using an item.
+ 
+Thunder: initial score: 110
+Thunder: final score: 151
+ 
+Thunder: initial score: 110
+Thunder: final score: 173
+ 
+Air Slash: initial score: 40
+Air Slash: final score: 41
+ 
+Air Slash: initial score: 39
+Air Slash: final score: 40
+ 
+Energy Ball: initial score: 23
+Energy Ball: final score: 23
+ 
+Energy Ball: initial score: 48
+Energy Ball: final score: 48
+ 
+Roost: initial score: 30
+Roost: final score: 0
+ 
+Roost: initial score: 30
+Roost: final score: 0
+ 
+[The foe Emolga: Thunder=173, Air Slash=5, Energy Ball=5, Roost=0]
+[Prefer Thunder]
+[Poppyseed lost 146 HP, now has 15 HP]
+==============================
+Battle Start!
+186 - Jay
+==============================
+***Round 1***
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (0)
+Initial switchscore building: Healing
+Initial switchscore building: fsteak (0)
+Initial switchscore building: Specific Switches (0)
+Talonflame: initial switchscore: 0
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+Talonflame: initial noswitchscore: 66
+ 
+{
+ 
+Tailwind: initial score: 35
+Tailwind: final score: 38
+ 
+Tailwind: initial score: 35
+Tailwind: final score: 38
+ 
+Flare Blitz: initial score: 42
+Flare Blitz: final score: 38
+ 
+Flare Blitz: initial score: 27
+Flare Blitz: final score: 26
+ 
+Fly: initial score: 81
+Fly: final score: 135
+ 
+Fly: initial score: 52
+Fly: final score: 86
+ 
+Swords Dance: initial score: 35
+Swords Dance: final score: 49
+ 
+Swords Dance: initial score: 35
+Swords Dance: final score: 49
+ 
+}
+ 
+Talonflame: highest move score: 135
+Talonflame: final switching score: -66
+135 > -66, will not switch
+ 
+Tailwind: initial score: 35
+Tailwind: final score: 38
+ 
+Tailwind: initial score: 35
+Tailwind: final score: 38
+ 
+Flare Blitz: initial score: 42
+Flare Blitz: final score: 38
+ 
+Flare Blitz: initial score: 27
+Flare Blitz: final score: 26
+ 
+Fly: initial score: 81
+Fly: final score: 135
+ 
+Fly: initial score: 52
+Fly: final score: 86
+ 
+Swords Dance: initial score: 35
+Swords Dance: final score: 49
+ 
+Swords Dance: initial score: 35
+Swords Dance: final score: 49
+ 
+Beginning AI Item use check.
+ 
+This is a HP-healing item.
+Sky Field Disrupt
+Score for Hyper Potion: -100
+This is a HP-healing item.
+Sky Field Disrupt
+Score for Hyper Potion: -100
+Highest item score: -100
+Highest move score: 135
+Not using an item.
+ 
+Tailwind: initial score: 35
+Tailwind: final score: 38
+ 
+Tailwind: initial score: 35
+Tailwind: final score: 38
+ 
+Flare Blitz: initial score: 42
+Flare Blitz: final score: 38
+ 
+Flare Blitz: initial score: 27
+Flare Blitz: final score: 26
+ 
+Fly: initial score: 81
+Fly: final score: 135
+ 
+Fly: initial score: 52
+Fly: final score: 86
+ 
+Swords Dance: initial score: 35
+Swords Dance: final score: 49
+ 
+Swords Dance: initial score: 35
+Swords Dance: final score: 49
+ 
+[The foe Talonflame: Tailwind=5, Flare Blitz=5, Fly=135, Swords Dance=5]
+[Prefer Fly]
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (0)
+Initial switchscore building: Healing
+Initial switchscore building: fsteak (0)
+Initial switchscore building: Specific Switches (0)
+Emolga: initial switchscore: 0
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+Emolga: initial noswitchscore: 100
+ 
+{
+ 
+Thunder: initial score: 110
+Thunder: final score: 151
+ 
+Thunder: initial score: 110
+Thunder: final score: 173
+ 
+Air Slash: initial score: 40
+Air Slash: final score: 41
+ 
+Air Slash: initial score: 39
+Air Slash: final score: 40
+ 
+Energy Ball: initial score: 23
+Energy Ball: final score: 23
+ 
+Energy Ball: initial score: 48
+Energy Ball: final score: 48
+ 
+Roost: initial score: 30
+Roost: final score: 0
+ 
+Roost: initial score: 30
+Roost: final score: 0
+ 
+}
+ 
+Emolga: highest move score: 173
+Emolga: final switching score: -100
+173 > -100, will not switch
+ 
+Thunder: initial score: 110
+Thunder: final score: 151
+ 
+Thunder: initial score: 110
+Thunder: final score: 173
+ 
+Air Slash: initial score: 40
+Air Slash: final score: 41
+ 
+Air Slash: initial score: 39
+Air Slash: final score: 40
+ 
+Energy Ball: initial score: 23
+Energy Ball: final score: 23
+ 
+Energy Ball: initial score: 48
+Energy Ball: final score: 48
+ 
+Roost: initial score: 30
+Roost: final score: 0
+ 
+Roost: initial score: 30
+Roost: final score: 0
+ 
+Beginning AI Item use check.
+ 
+This is a HP-healing item.
+Sky Field Disrupt
+Score for Hyper Potion: -100
+This is a HP-healing item.
+Sky Field Disrupt
+Score for Hyper Potion: -100
+Highest item score: -100
+Highest move score: 173
+Not using an item.
+ 
+Thunder: initial score: 110
+Thunder: final score: 151
+ 
+Thunder: initial score: 110
+Thunder: final score: 173
+ 
+Air Slash: initial score: 40
+Air Slash: final score: 41
+ 
+Air Slash: initial score: 39
+Air Slash: final score: 40
+ 
+Energy Ball: initial score: 23
+Energy Ball: final score: 23
+ 
+Energy Ball: initial score: 48
+Energy Ball: final score: 48
+ 
+Roost: initial score: 30
+Roost: final score: 0
+ 
+Roost: initial score: 30
+Roost: final score: 0
+ 
+[The foe Emolga: Thunder=173, Air Slash=5, Energy Ball=5, Roost=0]
+[Prefer Thunder]

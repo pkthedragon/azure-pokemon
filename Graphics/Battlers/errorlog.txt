@@ -1,0 +1,35 @@
+Exception: RuntimeError
+Message: Script error within event 9, map 33 (Route 01):
+Exception: SDLError
+Message: 053:*BitmapCache:322:in `initialize': Error loading image 'Graphics/Tilesets/NPU-Route01-02-Moki-Kevlar': Out of memory
+***Full script:
+pbTrainerBattle(PBTrainers::FISHERMAN,"Marko",_I("Okay, so maybe not JUST Water Pokémon."),false,0,false,0)
+044:Interpreter:243:in `pbExecuteScript'
+053:*BitmapCache:322:in `initialize'
+053:*BitmapCache:389:in `new'
+053:*BitmapCache:389:in `load_bitmap'
+055:* SpriteWindow:866:in `initialize'
+055:* SpriteWindow:314:in `new'
+055:* SpriteWindow:314:in `initialize'
+055:* SpriteWindow:354:in `new'
+055:* SpriteWindow:354:in `pbGetTileset'
+035:* Spriteset_Map:156:in `_animationSprite_initialize'
+
+044:Interpreter:276:in `pbExecuteScript'
+044:Interpreter:788:in `command_111'
+044:Interpreter:320:in `execute_command'
+044:Interpreter:193:in `update'
+044:Interpreter:106:in `loop'
+044:Interpreter:106:in `update'
+168:MKXP-Z OVERRIDES:270:in `update'
+168:MKXP-Z OVERRIDES:268:in `loop'
+168:MKXP-Z OVERRIDES:268:in `update'
+192:Debug Passability:259:in `main'
+192:Debug Passability:247:in `loop'
+192:Debug Passability:247:in `main'
+252:Main:66:in `mainFunction'
+173:** Compiler:64:in `pbCriticalCode'
+252:Main:38:in `mainFunction'
+252:Main:73
+252:Main:72:in `loop'
+252:Main:72
