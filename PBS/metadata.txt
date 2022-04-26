@@ -250,7 +250,7 @@ Outdoor=true
 # Koneli Catacombs
 BattleBack=Icy2
 MapPosition=0,6,16
-DarkMap=true
+DarkMap=false
 Outdoor=false
 ShowArea=true
 [054]
