@@ -266,10 +266,9 @@ MapPosition=0,18,3
 Outdoor=false
 ShowArea=false
 [056]
-# Koneli Catacombs
+# Koneli City Jailhouse
 BattleBack=Icy2
 MapPosition=0,6,16
-DarkMap=true
 Outdoor=false
 [057]
 # Logium Town B
