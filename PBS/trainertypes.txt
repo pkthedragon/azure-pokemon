@@ -18,7 +18,7 @@
 246,ZOSSIE,Space Jockey,100,Battle! Ultra Recon,,,Female,255,
 247,DATA,Jumper,100,Battle! Ultra Recon,,,Male,255,
 249,LUX,Mysterious Figure,60,Battle! Lux,,,Female,255,
-260,HANDMAIDEN,Handmaiden,60,Battle! Eon,,,Female,255,
+260,HANDMAIDEN,Handmaiden,60,Battle! Church Good,,,Female,255,
 261,SOULMATE,Soulmate,60,Battle! Eon,,,Female,255,
 262,PARAGON,Paragon,60,Battle! Eon,,,Male,255,
 #####REGULAR#############################################################################
@@ -204,7 +204,7 @@
 238,GHOSTCHILDM,Lingering Entity,32,Battle! Spooky,,,Male,,
 239,GHOSTCHILDF,Lingering Entity,32,Battle! Spooky,,,Female,,
 ####PANTHEON#################################################################################
-181,MINERVA,Head Librarian,100,Battle! Gym Leader,,,Female,255,
+181,MINERVA,Head Librarian,100,Battle! Pantheon Minerva,,,Female,255,
 182,AGRUS,Wandering Ranger,100,Battle! Gym Leader,,,Male,255,
 275,HYACINTH,Paragon,100,Battle! Gym Leader,,,Male,255,
 183,VULCAN,Stone Justice,100,Battle! Gym Leader,,,Male,255,
