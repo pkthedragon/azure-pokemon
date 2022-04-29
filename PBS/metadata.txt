@@ -1,21 +1,12 @@
 ﻿[000]
 PlayerA=POKEMONTRAINER_TroyLight,trchar250,boy_bike,boy_surf,boy_run,boy_surf,boy_fish_offset,xxx
-PlayerB=POKEMONTRAINER_TroyMed,trchar251,boy_bike,boy_surf,boy_run,boy_surf,boy_fish_offset,xxx
-PlayerC=POKEMONTRAINER_TroyDark,trchar252,boy_bike,boy_surf,boy_run,boy_surf,boy_fish_offset,xxx
 PlayerD=POKEMONTRAINER_EllisLight,trchar253,girl_bike,girl_surf,girl_run,girl_surf,girl_fish_offset,xxx
 TrainerVictoryME=Victory! Trainer
-PlayerE=POKEMONTRAINER_EllisMed,trchar254,girl_bike,girl_surf,girl_run,girl_surf,girl_fish_offset,xxx
-WildVictoryME=Victory! Wild
-PlayerF=POKEMONTRAINER_EllisDark,trchar255,girl_bike,girl_surf,girl_run,girl_surf,girl_fish_offset,xxx
-TrainerBattleBGM=Battle! Trainer
 PlayerG=POKEMONTRAINER_KeyLight,trchar256,nb_bike,nb_surf,nb_run,nb_surf,nb_fish_offset,xxx
-PlayerH=POKEMONTRAINER_KeyMed,trchar257,nb_bike,nb_surf,nb_run,nb_surf,nb_fish_offset,xxx
-SurfBGM=Surf.ogg
-PlayerI=POKEMONTRAINER_KeyDark,trchar258,nb_bike,nb_surf,nb_run,nb_surf,nb_fish_offset,xxx
-PlayerJ=CONDUIT,HGSS_114,,,,,,xxx
+PlayerL=KAINE,Kaine,,,Kaine,,,xxx
+PlayerK=KODA,Koda,,,Koda,,,xxx
 BicycleBGM=Bicycle.mid
 Home=3,5,7,0
-PlayerK=CONDUIT,HGSS_114 - Copy,,,,,,xxx
 WildBattleBGM=Battle! Wild
 [001]
 # Logium Town A
