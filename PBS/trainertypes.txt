@@ -22,8 +22,6 @@
 261,SOULMATE,Soulmate,60,Battle! Eon,,,Female,255,
 262,PARAGON,Paragon,60,Battle! Eon,,,Male,255,
 280,KODA,Fatedancer,60,,,,Male,255,
-281,KAINE,School Kid,60,,,,Male,255,
-282,KAINE2,Pokémon Trainer,60,,,,Male,255,
 #####REGULAR#############################################################################
 2,POKEMONTRAINER_RIVAL,Pokémon Trainer,60,,,,Male,,
 3,POKEMONTRAINER_RIVALM,Pokémon Trainer,60,,,,Female,,
@@ -261,7 +259,6 @@
 233,BISHOP_7,Bishop,100,,,,Female,,
 234,ARCHBISHOP_Olga,Archbishop,100,Battle! Olga,,,Female,255,
 235,TOTEM,Totem,100,Battle! Totem,,,,200,
-283,RITTE,Ace Trainer,100,Battle! Mini Boss,,,Male,255,
 240,MYRON,Doctrine Elder,100,Battle! Elder Cultist,,,Male,255,
 241,MYRON2,Lingering Insanity,100,Battle! Myron,,,Male,255,
 291,ELMIN,Sin of Wrath,100,Battle! Elder Cultist,,,Male,255,
