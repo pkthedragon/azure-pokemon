@@ -2,11 +2,13 @@
 PlayerA=POKEMONTRAINER_TroyLight,trchar250,boy_bike,boy_surf,boy_run,boy_surf,boy_fish_offset,xxx
 PlayerD=POKEMONTRAINER_EllisLight,trchar253,girl_bike,girl_surf,girl_run,girl_surf,girl_fish_offset,xxx
 TrainerVictoryME=Victory! Trainer
+WildVictoryME=Victory! Wild
 PlayerG=POKEMONTRAINER_KeyLight,trchar256,nb_bike,nb_surf,nb_run,nb_surf,nb_fish_offset,xxx
 PlayerH=KODA,Koda,,,Koda,,,xxx
 PlayerI=MYRON,Myron,,,Myron,,,xxx
 BicycleBGM=Bicycle.mid
 Home=3,5,7,0
+TrainerBattleBGM=Battle! Trainer
 WildBattleBGM=Battle! Wild
 [001]
 # Logium Town A

@@ -1930,6 +1930,11 @@ TOGEDEMARU,27,,SHOCKWAVE,DISARMINGVOICE,MAGNETRISE,,0
 #-------------------
 #----Koneli Catacombs----
 #-------------------
+MYRON
+Myron
+1
+GENESECT,35,,FELLSTINGER,MAGNETBOMB,FLAMECHARGE,QUICKATTACK,0,,,shiny,ADAMANT,31,,Venator
+#-------------------
 VIOLET
 Violet
 5
