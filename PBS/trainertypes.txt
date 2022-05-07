@@ -263,6 +263,7 @@
 241,MYRON2,Lingering Insanity,100,Battle! Myron,,,Male,255,
 291,ELMIN,Sin of Wrath,100,Battle! Elder Cultist,,,Male,255,
 242,POKEMONGANG,A horde of,100,,,,,200,
+300,POKEMONTWO,The,100,,,,,200,
 243,CLOUDQUEEN,Cloud Queen,100,Battle! Governor,,,Female,255,
 #####SIDEQUEST#############################################################################
 248,TEMPLAR1,Templar,100,Battle! Templar,,,,255,
