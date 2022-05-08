@@ -1958,7 +1958,7 @@ class PokemonScreen
       cmdRename=-1
       # Build the commands
       commands[cmdSummary=commands.length]=_INTL("Summary")
-      if $DEBUG
+      if $DEBUG || $game_switches[1495] == true
         # Commands for debug mode only
         commands[cmdDebug=commands.length]=_INTL("Debug")
       end

@@ -392,7 +392,7 @@ class FightMenuButtons < BitmapSprite
     return if !moves
     self.bitmap.clear
     textpos=[]
-    if !$MKXP || $MKXP
+    if !$MKXP
       for i in 0...4
         next if i==index
         next if moves[i].id==0
@@ -989,7 +989,7 @@ class PokemonDataBox < SpriteWrapper
          [_INTL("Lv???"),@spritebaseX+202,8,true,base,shadow]
       ]
     else
-      if !$MKXP || $MKXP
+      if !$MKXP
         textpos=[[_INTL("Lv{1}",@battler.level),@spritebaseX+202,8,true,base,shadow]]
       else
         textpos=[[_INTL("Lv{1}",@battler.level),@spritebaseX+202,12,true,base,shadow]]
@@ -997,7 +997,7 @@ class PokemonDataBox < SpriteWrapper
     end
     if @showhp
       hpstring=_ISPRINTF("{1: 2d}/{2: 2d}",self.hp,@battler.totalhp)
-      if !$MKXP || $MKXP
+      if !$MKXP
         textpos.push([hpstring,@spritebaseX+188,48,true,base,shadow])
       else
         textpos.push([hpstring,@spritebaseX+188,52,true,base,shadow])

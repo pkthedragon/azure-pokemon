@@ -140,7 +140,7 @@ class PokemonMenu
       commands[cmdSave=commands.length]=_INTL("Save") if !$game_system || !$game_system.save_disabled
     end
     commands[cmdOption=commands.length]=_INTL("Options")
-    commands[cmdDebug=commands.length]=_INTL("Debug") if $DEBUG
+    commands[cmdDebug=commands.length]=_INTL("Debug") if ($DEBUG || $game_switches[1495] == true)
     commands[cmdEndGame=commands.length]=_INTL("Quit Game")
     loop do
       command=@scene.pbShowCommands(commands)
