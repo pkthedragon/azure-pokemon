@@ -40,8 +40,8 @@ module PBDayNight
 
 # Returns true if it's day.
   def self.isDay?(time=nil)
-    if $game_switches[1289] || $game_switches[1290] || $game_switches[1291]
-      if $game_switches[1289]
+    if $game_switches[1496] || $game_switches[1497] || $game_switches[1498]
+      if $game_switches[1496]
         return true
       else
         return false
@@ -53,8 +53,8 @@ module PBDayNight
 
 # Returns true if it's night.
   def self.isNight?(time=nil)
-    if $game_switches[1289] || $game_switches[1290] || $game_switches[1291]
-      if $game_switches[1291]
+    if $game_switches[1496] || $game_switches[1497] || $game_switches[1498]
+      if $game_switches[1498]
         return true
       else
         return false
@@ -66,8 +66,8 @@ module PBDayNight
 
 # Returns true if it's morning.
   def self.isMorning?(time=nil)
-    if $game_switches[1289] || $game_switches[1290] || $game_switches[1291]
-      if $game_switches[1289]
+    if $game_switches[1496] || $game_switches[1497] || $game_switches[1498]
+      if $game_switches[1496]
         return true
       else
         return false
@@ -79,8 +79,8 @@ module PBDayNight
 
 # Returns true if it's the afternoon.
   def self.isAfternoon?(time=nil)
-    if $game_switches[1289] || $game_switches[1290] || $game_switches[1291]
-      if $game_switches[1289]
+    if $game_switches[1496] || $game_switches[1497] || $game_switches[1498]
+      if $game_switches[1496]
         return true
       else
         return false
@@ -92,8 +92,8 @@ module PBDayNight
 
 # Returns true if it's the evening.
   def self.isEvening?(time=nil)
-    if $game_switches[1289] || $game_switches[1290] || $game_switches[1291]
-      if $game_switches[1290]
+    if $game_switches[1496] || $game_switches[1497] || $game_switches[1498]
+      if $game_switches[1497]
         return true
       else
         return false
@@ -105,8 +105,8 @@ module PBDayNight
   
 # Returns true if it's dusk
   def self.isDusk?(time=nil)
-    if $game_switches[1289] || $game_switches[1290] || $game_switches[1291]
-      if $game_switches[1290]
+    if $game_switches[1496] || $game_switches[1497] || $game_switches[1498]
+      if $game_switches[1497]
         return true
       else
         return false
@@ -171,13 +171,13 @@ def pbDayNightTint(object)
   if !pbGetMetadata($game_map.map_id,MetadataOutdoor)
     object.tone.set(0,0,0,0)
   else
-    if $game_switches[1289]
+    if $game_switches[1496]
       tone = PBDayNight::HourlyTones[12]
       object.tone.set(tone.red,tone.green,tone.blue,tone.gray)
-    elsif $game_switches[1290]
+    elsif $game_switches[1497]
       tone = PBDayNight::HourlyTones[19]
       object.tone.set(tone.red,tone.green,tone.blue,tone.gray)
-    elsif $game_switches[1291]
+    elsif $game_switches[1498]
       tone = PBDayNight::HourlyTones[0]
       object.tone.set(tone.red,tone.green,tone.blue,tone.gray)
     elsif ENABLESHADING && !noTime.include?($game_map.map_id)

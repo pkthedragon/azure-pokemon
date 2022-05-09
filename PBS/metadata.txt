@@ -13,6 +13,8 @@ PlayerH=POKEMONTRAINER_KeyMed,trchar257,nb_bike,nb_surf,nb_run,nb_surf,nb_fish_o
 SurfBGM=Surf.ogg
 PlayerI=POKEMONTRAINER_KeyDark,trchar258,nb_bike,nb_surf,nb_run,nb_surf,nb_fish_offset,xxx
 BicycleBGM=Bicycle.mid
+PlayerJ=MYRON,Myron,,,Myron,,,xxx
+PlayerK=KODA,Koda,,,Koda,,,xxx
 Home=3,5,7,0
 WildBattleBGM=Battle! Wild
 [001]

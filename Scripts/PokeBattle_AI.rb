@@ -24894,7 +24894,7 @@ class PokeBattle_Battle
       if (i.id == (PBMoves::GRASSYTERRAIN) || i.id == (PBMoves::ELECTRICTERRAIN) ||
           i.id == (PBMoves::MISTYTERRAIN) || i.id == (PBMoves::PSYCHICTERRAIN) ||
           i.id == (PBMoves::MIST) || i.id == (PBMoves::IONDELUGE) ||
-          i.id == (PBMoves::TOPSYTURVY))
+          (i.id == (PBMoves::TOPSYTURVY) && mon.item!=(PBItems::EVIOLITE)))
         fieldmove=true
       end
     end
