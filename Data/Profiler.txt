@@ -1,2 +1,35 @@
 call time  cumulative   self        calls
      ms   seconds   seconds           name
+   0.240     0.25      0.25       1050 Sprite_Character#update#160#return#Sprite_Character
+   0.123     0.36      0.11        900 Game_Map#deepBush?#323#return#Game_Map_
+   0.075     0.44      0.08       1050 RPG::Sprite#x=#513#return#RPG__Sprite
+   0.074     0.52      0.08       1050 Game_Character#update#117#return#Walk_Run
+   0.072     0.60      0.08       1050 Game_Character#update#271#return#Game_Character
+   0.070     0.66      0.06        900 Game_Character#bush_depth#231#return#Game_Character
+   2.100     0.72      0.06         30 Spriteset_Map#update#336#return#Spriteset_Map
+   0.059     0.78      0.06       1050 RPG::Sprite#update#490#return#RPG__Sprite
+   0.059     0.85      0.06       1050 RPG::Sprite#y=#524#return#RPG__Sprite
+   0.046     0.89      0.05       1050 Game_Character#update_stop#331#return#Game_Character
+   1.533     0.94      0.05         30 Graphics#update#47#return#Transitions
+   0.043     0.99      0.05       1080 Object#pbDayNightTint#192#return#PokemonTime
+   1.067     1.02      0.03         30 Event#trigger#57#return#PBEvent
+   0.029     1.05      0.03       1110 Object#pbGetMetadata#462#return#PokemonMap
+   0.008     1.08      0.03       3780 Game_Character#map#26#return#Game_Character
+   0.030     1.11      0.03       1050 Game_Character#update_pattern#284#return#Game_Character
+   0.028     1.14      0.03       1080 Sprite#x=#401#return#SpriteResizer
+   0.107     1.16      0.02        150 Game_Character#bush_depth#220#return#Game_Character
+   0.015     1.17      0.02       1050 Game_Character#screen_x#185#return#Game_Character
+   0.017     1.19      0.02        930 GifBitmap#bitmap#664#return#SpriteWindow
+   0.016     1.21      0.02       1020 Game_Event#update#298#return#Game_Event_
+   0.015     1.22      0.02       1050 Sprite#x#386#return#SpriteResizer
+   0.533     1.24      0.02         30 Game_Map#update#460#return#Game_Map_
+   0.533     1.25      0.02         30 ReflectedSprite#update#58#return#Spriteset_Map
+   0.015     1.27      0.02       1050 Sprite#bush_depth#415#return#SpriteResizer
+   0.533     1.29      0.02         30 Game_Screen#update#161#return#Game_Screen
+   0.014     1.30      0.02       1050 Sprite_Character#update#444#return#PerspectiveTilemap
+   0.016     1.32      0.01        930 AnimatedBitmap#update#209#return#SpriteWindow
+   0.167     1.33      0.01         90 Viewport#ox=#549#return#SpriteResizer
+   0.250     1.35      0.01         60 Object#pbGetTerrainTag#2804#return#PokemonField
+   0.007     1.36      0.01       2160 PokemonSystem#tilemap#351#return#PokemonOptions
+   0.014     1.38      0.01       1050 SpriteAnimation#clear#23#return#RPG__Sprite
+   0.007     1.39      0.01       2100 Game_Character#jumping?#76#return#Game_Character

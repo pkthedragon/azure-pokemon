@@ -782,7 +782,6 @@ end
 def pbCompileItems
   records=[]
   records[0] = []
-  records2=[]
   constants=""
   itemnames=[]
   itemdescs=[]
@@ -822,6 +821,7 @@ def pbCompileItems
   code+="\ndef PBItems.maxValue\nreturn #{maxValue}\nend\nend"
   eval(code)
   pbAddScript(code,"PBItems")
+  $ItemData = records
   Graphics.update
 end
 
@@ -940,51 +940,6 @@ def pbFindScript(a,name)
   }
   return nil
 end
-
-=begin
-def pbAddScript(script,sectionname)
-  filename = "Scripts/" + sectionname + ".rb"
-  File.open(filename,"w"){|f| f.write script}
-  begin
-    scripts=load_data("Data/Constants.rxdata")
-    scripts=[] if !scripts
-  rescue
-    scripts=[]
-  end
-  s=pbFindScript(scripts,sectionname)
-  if s
-    s[2]=Zlib::Deflate.deflate("#{script}\n")
-  else
-    scripts.push([rand(10000),sectionname,Zlib::Deflate.deflate("#{script}\n")])
-  end
-  save_data(scripts,"Data/Constants.rxdata")
-end
-
-def pbCombineScripts
-  #this is silly but maybe shoving everything into scripts at once will be what makes this work.
-  begin
-    constants=load_data("Data/Constants.rxdata")
-    return if !constants
-  rescue
-    return
-  end
-  begin
-    scripts=load_data("Data/Scripts.rxdata")
-    return if !scripts
-  rescue
-    return
-  end
-  for i in constants
-    sectionname = i[1]
-    s = pbFindScript(scripts,sectionname)
-    if s
-      s[2] = i[2]
-    end
-  end
-  save_data(scripts,"Data/Scripts.rxdata")
-end
-=end
-
 
 def pbAddScript(script,sectionname)
   filename = "Scripts/" + sectionname + ".rb"
@@ -1270,9 +1225,6 @@ def pbExtractTrainers
   }
   return if !trainertypes
   File.open("trainertypes.txt","wb"){|f|
-     f.write(0xEF.chr)
-     f.write(0xBB.chr)
-     f.write(0xBF.chr)
      for i in 0...trainertypes.length
        next if !trainertypes[i]
        record=trainertypes[i]
@@ -1877,9 +1829,6 @@ def pbCompileTrainerLists
   }
   if !safeExists?("PBS/trainerlists.txt")
     File.open("PBS/trainerlists.txt","wb"){|f|
-       f.write(0xEF.chr)
-       f.write(0xBB.chr)
-       f.write(0xBF.chr)
        f.write("[DefaultTrainerList]\nTrainers=bttrainers.txt\nPokemon=btpokemon.txt\n")
     }
   end
@@ -1984,9 +1933,6 @@ end
 def pbWriteDefaultTypes
   if !safeExists?("PBS/types.txt")
     File.open("PBS/types.txt","w"){|f|
-       f.write(0xEF.chr)
-       f.write(0xBB.chr)
-       f.write(0xBF.chr)
 fx=<<END
 [0]
 Name=Normal
@@ -2516,6 +2462,49 @@ def pbCompilePokemonData
   File.open("Data/eggEmerald.rxdata","wb"){|f|
     Marshal.dump(eggmoves,f)
   }
+  File.open("Data/regionals.dat","wb"){|f|
+  f.fputw(regionals.length)
+  f.fputw(dexdatas.length)
+  for i in 0...regionals.length
+    for j in 0...dexdatas.length
+      num=regionals[i][j]
+      num=0 if !num
+      f.fputw(num)
+    end
+  end
+}
+File.open("Data/evolutions.dat","wb"){|f|
+  mx=[maxValue,evolutions.length-1].max
+  offset=mx*8
+  for i in 1..mx
+    f.fputdw(offset)
+    f.fputdw(evolutions[i] ? evolutions[i].length*5 : 0)
+    offset+=evolutions[i] ? evolutions[i].length*5 : 0
+  end
+  for i in 1..mx
+    next if !evolutions[i]
+    for j in evolutions[i]
+      f.fputb(j[3]|j[1])
+      f.fputw(j[2])
+      f.fputw(j[0])
+    end
+  end
+}
+File.open("Data/eggEmerald.dat","wb"){|f|
+  mx=[maxValue,eggmoves.length-1].max
+  offset=mx*8
+  for i in 1..mx
+    f.fputdw(offset)
+    f.fputdw(eggmoves[i] ? eggmoves[i].length : 0)
+    offset+=eggmoves[i] ? eggmoves[i].length*2 : 0
+  end
+  for i in 1..mx
+    next if !eggmoves[i]
+    for j in eggmoves[i]
+      f.fputw(j)
+    end
+  end
+}
   MessageTypes.setMessages(MessageTypes::Species,speciesnames)
   MessageTypes.setMessages(MessageTypes::Kinds,kinds)
   MessageTypes.setMessages(MessageTypes::Entries,entries)
@@ -2914,7 +2903,7 @@ end
 
 
 def pbCompileTrainerEvents(mustcompile)
-  pbSetWindowText(_INTL("Pokemon Azure")) if !mustcompile
+  pbSetWindowText(_INTL("Pokemon Rejuvenation")) if !mustcompile
   return if !mustcompile
   mapdata=MapData.new
   t = Time.now.to_i
@@ -2973,7 +2962,7 @@ def pbCompileTrainerEvents(mustcompile)
   if changed
     save_data(commonEvents,"Data/CommonEvents.rxdata")
   end
-  pbSetWindowText(_INTL("Pokemon Azure"))
+  pbSetWindowText(_INTL("Pokemon Rejuvenation"))
 end
 
 def isPlainEvent?(event)
