@@ -1,17 +1,11 @@
-[000]
+﻿[000]
 PlayerA=POKEMONTRAINER_TroyLight,trchar250,boy_bike,boy_surf,boy_run,boy_surf,boy_fish_offset,xxx
-PlayerB=POKEMONTRAINER_TroyMed,trchar251,boy_bike,boy_surf,boy_run,boy_surf,boy_fish_offset,xxx
-PlayerC=POKEMONTRAINER_TroyDark,trchar252,boy_bike,boy_surf,boy_run,boy_surf,boy_fish_offset,xxx
 PlayerD=POKEMONTRAINER_EllisLight,trchar253,girl_bike,girl_surf,girl_run,girl_surf,girl_fish_offset,xxx
 TrainerVictoryME=Victory! Trainer
-PlayerE=POKEMONTRAINER_EllisMed,trchar254,girl_bike,girl_surf,girl_run,girl_surf,girl_fish_offset,xxx
-WildVictoryME=Victory! Wild
-PlayerF=POKEMONTRAINER_EllisDark,trchar255,girl_bike,girl_surf,girl_run,girl_surf,girl_fish_offset,xxx
-TrainerBattleBGM=Battle! Trainer
 PlayerG=POKEMONTRAINER_KeyLight,trchar256,nb_bike,nb_surf,nb_run,nb_surf,nb_fish_offset,xxx
-PlayerH=POKEMONTRAINER_KeyMed,trchar257,nb_bike,nb_surf,nb_run,nb_surf,nb_fish_offset,xxx
-SurfBGM=Surf.ogg
-PlayerI=POKEMONTRAINER_KeyDark,trchar258,nb_bike,nb_surf,nb_run,nb_surf,nb_fish_offset,xxx
+PlayerH=KODA,Koda,,,Koda,,,xxx
+PlayerI=KAINE,Kaine,,,Kaine,,,xxx
+PlayerJ=KAINE2,KaineOlder,,,KaineOlder,,,xxx
 BicycleBGM=Bicycle.mid
 Home=3,5,7,0
 WildBattleBGM=Battle! Wild
@@ -264,7 +258,7 @@ MapPosition=0,18,3
 Outdoor=false
 ShowArea=false
 [056]
-# Jailhouse
+# Koneli City Jailhouse
 BattleBack=Icy2
 MapPosition=0,6,16
 Outdoor=false
@@ -353,11 +347,11 @@ MapPosition=0,18,3
 Outdoor=false
 ShowArea=false
 [106]
-# Koneli Manor
+# Koneli Catacombs
 BattleBack=Icy2
 Outdoor=false
 [108]
-# Koneli Manor
+# Koneli Catacombs
 BattleBack=Icy2
 MapPosition=0,6,16
 Outdoor=false
@@ -379,6 +373,3 @@ Outdoor=false
 BattleBack=Darchlight
 MapPosition=0,6,16
 Outdoor=false
-[114]
-# Koneli Grove
-BattleBack=Darchlight
