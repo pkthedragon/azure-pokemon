@@ -624,7 +624,7 @@ def characterSwitch(character)
       $Trainer.party = trainerinfo[2]
       $PokemonBag.pbStoreItem(PBItems::MEGARING,1)
     when "Myron"
-      pbChangePlayer(9)
+      pbChangePlayer(11)
       $Trainer.name = "Myron"
       $Trainer.outfit = 0
       $Trainer.party = []
