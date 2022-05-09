@@ -56,6 +56,7 @@ Electric Terrain:
 *       Elemental Seed boosts defense and applies to Charge to the user.
 
 
+
 #------------------ 2. Grassy Terrain [GT] ------------------#
 "The field is in full bloom."
 (Passive effects by the field.):
@@ -100,6 +101,7 @@ Grassy Terrain:
 		Sludge Wave			Acid Downpour
 (The following items are affected by this field):
 *	Elemental Seed boosts Defense and applies Ingrain to the user
+
 
 
 #------------------- 3. Misty Terrain [MT] --------------------#
@@ -160,6 +162,7 @@ Misty Terrain:
 *	Elemental Seed boosts Sp. Def and applies Healing Wish to the user
 
 
+
 #---------------- 4. Dark Crystal Cavern [DCC] -----------------#
 "Darkness is gathering..."
 (The following moves are affected by this field.):
@@ -176,7 +179,7 @@ Misty Terrain:
 *	The base accuracy of these moves becomes 100:
 		Dark Void
 *	Solar Beam and Solar Blade always fail.
-*       Enables Aurora Veil
+*	Enables Aurora Veil
 *	Moonlight restores 75% of the user's Max HP
 * 	Nature Power becomes Dark Pulse
 *	Camouflage changes the user's type to Dark
@@ -190,6 +193,7 @@ Misty Terrain:
 		Earthquake		Bulldoze		Magnitude		Tectonic Rage
 (The following items are affected by this field):
 *	Magical Seed boosts Sp.Def and applies Magic Coat to the user
+
 
 #--------------------- 5. Chess Board [CB] ---------------------#
 "Opening variation set."
@@ -233,6 +237,7 @@ Klutz		Defeatist
 *       Synthetic Seed boosts Sp.Atk and applies Magic Coat to the user
 
 
+
 #------------------- 6. Big Top Arena [BTA] --------------------#
 "Now presenting...!"
 (The following moves are affected by this field.):
@@ -247,13 +252,13 @@ Klutz		Defeatist
 *	These moves increase in base power x2:
 		Payday
 *	These moves increase in base power x1.5:
-		Vine Whip		Power Whip		Fiery Dance		Petal Dance		
-		Fly			    Acrobatics      Fire Lash 		Revelation Dance
-        First Impression                Drum Beating
+		Vine Whip		Power Whip		Fiery Dance		Petal Dance
+		Fly			Acrobatics		Fire Lash 		
+Revelation Dance	First Impression	Drum Beating
 *	The length of Encore's effect is doubled.
 *	The stat-changing effect of these moves is amplified:
-		Dragon Dance		Quiver Dance		Swords Dance		Feather Dance
-		Aquabatics
+		Dragon Dance		Quiver Dance		Swords Dance	
+Feather Dance
 *	The base accuracy of these moves becomes 100:
 		Sing
 *	The effect of Rain Dance lasts 8 turns
@@ -276,6 +281,7 @@ Klutz		Defeatist
 *   Punk Rock increases the power of sound moves by 50%
 (The following items are affected by this field):
 *   Synthetic Seed boosts Attack and applies Helping Hand to the user
+
 
 #---------------- 7. Volcanic Field [VF] -----------------#
 "The field is molten!"
@@ -315,15 +321,16 @@ Klutz		Defeatist
 *   Tar Shot increases field damage taken by x2
 *   Ice Face melts instantly upon being switched in
 *   Mimicry changes the users type to Fire
+
 (The following moves change this field):
 *	These moves will change this field into a Cave field
 		Surf			Muddy Water		Gust			Whirlwind
-		Razor Wind		Defog			Sand Tomb		Water Sport		Water Pledge
-		Hurricane	    Water Spout		Tailwind    Sparkling Aria  Continental Crush
+Razor Wind		Defog			Sand Tomb		Water Sport	Water Pledge		Hurricane	    	Water Spout		Tailwind    Sparkling Aria  Continental Crush
 		Hydro Vortex    Oceanic Operetta        Blizzard
 *   Sand and Rain weather effects change the field into Cave field.
 (The following items are affected by this field):
 *       Elemental Seed boosts Sp.Atk, Atk, and Speed and applies Fire Spin to the user
+
 
 #---------------- 8. Swamp Field [SF] -------------------#
 "The field is swamped."
@@ -347,7 +354,7 @@ Klutz		Defeatist
 *	Camouflage changes the user's type to Water
 *	Secret Power may lower Speed
 * 	Aqua Ring restores 1/8 Max HP each turn (from 1/16)
-*   Strength Sap heals 30% more HP	
+*	Strength Sap heals 30% more HP	
 *	The base accuracy of these moves becomes 100:
 		Sleep Powder	
 *	Ingrain damages its user instead of heals, unless the user is Poison or Steel type.
@@ -362,6 +369,7 @@ Klutz		Defeatist
 *   Mimicry changes the user's type to Water.
 (The following items are affected by this field):
 *       Telluric Seed boosts Defense and Sp. Def and applies Ingrain to the user
+
 
 #---------------- 9. Rainbow Field [RBF] -----------------#
 "What does it mean?"
@@ -404,6 +412,7 @@ Klutz		Defeatist
 (The following items are affected by this field):
 *       Magical Seed boosts Sp.Atk and applies Healing Wish to the user
 
+
 #---------------- 10. Corrosive Field [CF] -------------------#
 "The field is corrupted!"
 (Passive effects by the field.):
@@ -441,6 +450,7 @@ Klutz		Defeatist
 		Seed Flare		Purify
 (The following items are affected by this field):
 *       Telluric Seed boosts Attack and applies Baneful Bunker to the user
+
 
 #-------------- 11. Corrosive Mist Field [CMF] ----------------#
 "Corrosive mist settles on the field!"
@@ -489,6 +499,7 @@ Klutz		Defeatist
 *       Elemental Seed boosts Attack and Sp.Atk and badly poisons the user
 
 
+
 #---------------- 12. Desert Field [DF] ------------------#
 "The field is rife with sand."
 (Passive effects by the field.):
@@ -524,6 +535,7 @@ Klutz		Defeatist
 (The following items are affected by this field):
 * 	Telluric Seed boosts Defense, Sp.Def and Speed and applies Sand Tomb to the user
 
+
 #---------------- 13. Icy Field [IF] ----------------#
 "The field is covered in ice."
 (The following moves are affected by this field.):
@@ -545,20 +557,22 @@ Klutz		Defeatist
 *	Enables Aurora Veil
 (The following abilities are affected by this field):
 *	Activates Ice Body and Snow Cloak
+*	Ice Scales also halves physical damage
 *	Refrigerate's base power boost becomes x1.5 (from x1.2)
 *	Liquid Voice's makes attacks Ice type instead of Water.
-*   Activates Slush Rush
-*   Mimicry changes the user's type to Ice
+*	Activates Slush Rush
+*	Mimicry changes the user's type to Ice
 (The following moves change this field):
 *	These moves will transform this field into the Water Surface. If the field was originally Cave it returns to that instead.
 		Heat Wave		Flame Burst		Lava Plume		Eruption		Searing Shot
 		Fire Pledge		Inferno Overdrive       Magma Drift  
 *	These moves will transform this field to the Cave Field. If the field was originally Water or Murkwater Surface, it returns to those instead.
-		Earthquake		Magnitude		Bulldoze     Tectonic Rage
+		Earthquake		Magnitude		Bulldoze	Tectonic Rage
 *   If a field exists beneath the Icy Field, and that field is either Water Surface or Murkwater Surface then these moves transform this field:
         Dive
 (The following items are affected by this field):
 *	Elemental Seed boosts Speed two stages
+
 
 #---------------- 14. Rocky Field [ROF] ----------------#
 "The field is littered with rocks."
@@ -587,6 +601,7 @@ Klutz		Defeatist
 *   Long Reach drops accuracy by x0.9
 (The following items are affected by this field):
 *       Telluric Seed boosts Defense and Sp.Def and damages the user with Stealth Rocks
+
 
 #---------------- 15. Forest Field [FOF] ------------------#
 "The field is abound with trees."
@@ -623,72 +638,6 @@ Klutz		Defeatist
 (The following items are affected by this field)
 *	Telluric Seed boosts Attack and applies Spiky Shield to the user
 
-
-#---------------- 16. Volcanic Top Field [VTF] -----------------#
-"The mountain top is super-heated!"
-(Passive effects by the field.):
-*   Burned up Pokemon regain their type at the end of the turn.
-(The following moves are affected by this field.):
-*	Tailwind lasts 6 turns and creates Strong Winds for its duration
-*   Thunder never misses.
-*	Hail is terminated
-*	Fire moves increase in base power x1.2
-*	Ice moves decrease in base power x0.5
-*	Water moves from grounded Pokemon decrease in base power x0.9
-*	These moves suffer a x0.555 decrease of base power (totaling x0.5) and generate steam at the end of the attack, once per turn, lowering all active Pokemon's accuracy one stage:
-		Surf			Muddy Water		Water Pledge		Water Spout		Water Sport
-		Sparkling Aria  Oceanic Operetta                    Hydro Pump      Hydro Vortex
-*	The following moves increase in base power x1.3:
-		Eruption		Heat Wave		Magma Storm		Lava Plume		Magma Drift
-*	These moves increase in base power x1.667 (totaling x1.5):
-		Steam Eruption
-*	The following moves gain an additional Fire-typing:
-		Explosion   Self Destruct           Dig             Dive            Seismic Toss
-		Magnet Bomb Egg Bomb
-*   The following moves increase in power x1.5 and gain additional fire-typing
-		Ominous Wind		Silver Wind		Razor Wind		Icy Wind		Gust
-		Twister		        Precipice Blade Smog		    Clear Smog
-*	These moves increase in base power x1.5
-		Thunder                
-*   Stealth Rocks deal Fire Typed damage.
-*	Smokescreen has its effect doubled
-*	Poison Gas causes badly poisoned status
-* 	Outrage, Thrash, and Petal Dance fatigue after a single turn
-*	Nature Power becomes Eruption
-*	Camouflage changes the user's type to Fire
-*	Secret Power may Burn
-(The following moves change this field):
-*	These moves transform the field into Sky field:
-		Fly		Bounce      Heavenly Wing
-*	These moves will transform the field into a Mountain Field:	
-		Blizzard	Glaciate		Subzero Slammer
-
-(The following moves cause the field to react):	
-*	The following moves cause the volcano to erupt:
-		Bulldoze		Earthquake		Magnitude		Eruption		
-        Precipice Blades Lava Plume     Magma Drift     Earth Power
-*	Eruptions will deal 25% of damage to pokemon weak to fire, 12.5% to pokemon neutral to fire, and 6.25% to pokemon resistant to fire.
-*	The field is cleared of hazards and Leech Seed after an eruption
-*	Desolate Land causes an eruption at the end of the turn
-*   Pokemon with Tar Shot active take an extra 25% max HP damage from Volcanic Eruptions.
-*	Sleeping Pokemon are woken up after an eruption, unless they have Soundproof
-*	Fire-type pokemon and pokemon with the following abilities/moves will take no damage from the eruption:
-		Magma Armor		Flash Fire		Flare Boost		Blaze		Flame Body
-		Solid Rock		Sturdy		Battle Armor		Shell Armor		Water Bubble
-		Magic Guard		Wonder Guard		Prism Armor		Aqua Ring		Wide Guard
- 
-(The following abilities are affected by this field):
-*	Activates Gale Wings during Strong Winds
-*	Magma Armor raises Defense and Special Defense after an eruption, as well as making them immune to fire-typed moves.
-*	Flare Boost raises Special Attack one stage after an eruption
-*	Flash Fire and Blaze are activated after an eruption
-*   Solar Idol is activated.
-*   Steam Engine raises Speed at the end of every turn.
-*	Mimicry changes the user's type to Fire
-*   Ice Face melts on entry.
- 
-(The following items are affected by this field):
-*	Telluric Seed boosts Defense and applies Shell Trap to the user
 
 #---------------- 17. Factory Field [FAF] -----------------#
 "Machines whir in the background."
@@ -727,6 +676,7 @@ Klutz		Defeatist
  
 (The following items are affected by this field):
 *       Synthetic Seed boosts Sp. Atk and applies Laser Focus to the user
+
 
 #---------------- 18. Short-circuit Field [SCF] -----------------#
 "Bzzt!"
@@ -772,6 +722,7 @@ Klutz		Defeatist
 (The following items are affected by this field):
 *   Synthetic Seed boosts Sp. Def and applies Magnet Rise to the user
 
+
 #---------------- 19. Wasteland [WL] -----------------#
 "The waste is watching..."
  
@@ -809,51 +760,58 @@ Klutz		Defeatist
 (The following items are affected by this field):
 *   Telluric Seed boosts Atk and Sp Atk and applies a random status to the user
 
+
 #---------------- 20. Ashen Beach [AB] -----------------#
 "Ash and sand line the field."
  
 (Passive effects by the field.):
 *	Fighting types are immune to confusion
-*	Pokemon with the following abilities ignore accuracy and evasion changes when attacking, unless an opponent has Unnerve
-		Own Tempo		Inner Focus			Pure Power		Steadfast
+*	Pokemon with the following abilities ignore accuracy and evasion changes when attacking, unless an opponent has Unnerve:
+		Own Tempo		Inner Focus		Pure Power
+Steadfast
  
 (The following moves are affected by this field.):
-*	These moves stir up ash, lowering all active Pokemons' accuracy one stage at the end of the attack, once per turn:
+*	These moves stir up ash, lowering all active Pokemons' accuracy:
 		Special Flying attacks
-		Twister			Fire Spin			Leaf Tornado		Razor Wind		Whirlpool
+		Twister			Fire Spin		Leaf Tornado
+Razor Wind		Whirlpool
 *	The following moves' stat-boosting effect is amplified:
-		Calm Mind		Sand Attack		Kinesis			Meditate
-*	Sand Storm and Sandstream last for 8 turns
+		Calm Mind		Sand Attack		Kinesis		
+Meditate
+*	Sandstorm and Sand Stream last for 8 turns
 *	Psych-up cures the user's status		
-* 	Focus Energy boosts the critical hit rate 3 stages (from 2)		
+* 	Focus Energy boosts Critical Hit rate by three stages		
 *	These moves increase in base power x2:
-		Mud Slap			Mud Shot		Mud Bomb
-	    Sand Tomb
+		Mud Slap		Mud Shot		Mud Bomb
+	    	Sand Tomb
 *	These moves increase in base power x1.5 and apply Fighting/Psychic type damage
 		Strength
 *	These moves increase in base power x1.5:
-		Hidden Power		Land's Wrath		Surf			Muddy Water		Thousand Waves
+		Hidden Power		Land's Wrath		Surf
+Muddy Water		Thousand Waves
 *	These moves increase in base power x1.3:
-		Zen Headbutt		Stored Power		Aura Sphere		Focus Blast
+		Zen Headbutt		Stored Power		Aura Sphere
+Focus Blast
 *	These moves increase in base power x1.2:
 		Psychic		
 *	Pokemon trapped in Sand Tomb suffer an accuracy drop each turn.
-*   Arenite Wall lasts 8 turns
-*   Arenite Wall works without the need for a Sandstorm
+*	Arenite Wall lasts 8 turns
+*	Arenite Wall works without the need for a Sandstorm
 *	Nature Power becomes Meditate
 *	Camouflage changes user's type to Ground
 *	Secret Power may lower accuracy
-*   Shore up restores 75% HP (from 50%)
+*	Shore Up restores 75% HP (from 50%)
  
 (The following abilities are affected by this field):
 *	Activates Sand Veil, Sand Rush and Sand Force
-*   Water Compaction additionally boosts Sp. Def on use
+*	Water Compaction additionally boosts Sp. Def on use
 *	Sand Spit lowers accuracy of foes upon activation.
-*   Zen Mode is active.
-*   Mimicry changes the user's type to Ground
+*	Zen Mode is active.
+*	Mimicry changes the user's type to Ground
  
 (The following items are affected by this field):
 *       Telluric Seed applies Focus Energy.
+
 
 #---------------- 21. Water Surface [WS] -----------------#
 "The water's surface is calm."
@@ -898,13 +856,13 @@ Klutz		Defeatist
  
 (The following items are affected by this field):
 *	Elemental Seed boosts Sp. Def and applies Aqua Ring to the user	
+
 #---------------- 22. Underwater [UW] -----------------#
 "Blub blub..."
  
 (Passive effects by the field.):
 *	All weather is annulled
-*	Non-water types' Speed is quartered, except for Swift Swimmers
-*	Physical, Non-Water type moves used by Non-Water types decrease in base power 0.5x
+*	Non-water types' Speed is halved, except for Swift Swimmers
 *   Pokemon with the following abilities are immune to the damage and speed decrease:
                 Swift Swim              Steelworker
  
@@ -953,6 +911,7 @@ Klutz		Defeatist
 (The following items are affected by this field):
 *	Elemental Seed boosts Speed and applies Soak to the user
 
+
 #---------------- 23. Cave [CV] -----------------#
 "The cave echoes dully..."
  
@@ -999,6 +958,7 @@ Klutz		Defeatist
  
 (The following items are affected by this field):
 *	Telluric Seed boosts Defense and damages the user with Stealth Rocks
+
 
 #---------------- 24. Glitch Field [GF] -----------------#
 "1n!taliz3 .b//////attl3"
@@ -1077,6 +1037,7 @@ Klutz		Defeatist
 (The following items are affected by this field):
 *	Magical Seed boosts Sp Atk and applies Magic Coat to the user
 
+
 #---------------- 26. Murkwater Surface [MS] -----------------#
 "The water is tainted..."
  
@@ -1134,6 +1095,7 @@ Klutz		Defeatist
  
 (The following items are affected by this field):
 *       Elemental Seed applies Soak and Aqua Ring, and poisons the user.
+
 
 #---------------- 27. Mountain [MTN] -----------------#
 "High up!"
@@ -1229,6 +1191,7 @@ Klutz		Defeatist
 (The following items are affected by this field):
 *       Telluric Seed boosts Sp.Atk and lowers Accuracy
 
+
 #---------------- 29. Blessed Field [HF] -----------------#
 "The field is blessed!"
  
@@ -1238,13 +1201,15 @@ Klutz		Defeatist
 *	Fairy and special Normal moves increase in base power x1.5
 *	Dragon and Psychic moves increase in base power x1.2
 *	These moves increase in base power x1.3:
-		Psystrike 		Aeroblast 		Origin Pulse 		Precipice Blades		Dragon Ascent
- 		Doom Desire	 	Mist Ball		Luster Purge 		Psycho Boost 		    Spacial Rend
-		Roar of Time    Crush Grip 		Secret Sword		Relic Song 		        Hyperspace Hole		
-		Land's Wrath	Moongiest Beam  Sunsteel Strike		Prismatic Laser		    Fleur Cannon
-		Multipulse      Genesis Supernova	Retribution
-	    Behemoth Blade  Behemoth Bash
+		Psystrike 		Aeroblast 		Origin Pulse
+Precipice Blades		Dragon Ascent
+ 		Doom Desire	 	Mist Ball		Luster Purge 		Psycho Boost 		    	Spacial Rend
+Roar of Time    Crush Grip 		Secret Sword		Relic Song 		 Hyperspace Hole		
+		Land's Wrath	Moongeist Beam  Sunsteel Strike		Prismatic Laser		    	Fleur Cannon
+		Genesis Supernova 
+	    	Behemoth Blade  Behemoth Bash
 		Eternabeam      Dynamax Cannon
+		Retribution
 *	These moves increase in base power x1.5:
 		Mystical Fire		Magical Leaf		Judgment		Sacred Fire
 		Ancient Power
@@ -1265,62 +1230,20 @@ Klutz		Defeatist
 *	Justified's effect is doubled
 *	Cursed Body has no effect
 *	Perish Body has no effect.
-*   Power Spot increases partner's damage output by 1.5x(from 1.3x)
-*   Mimicry changes the users type to Normal.
+*	Power Spot increases partner's damage output by 1.5x
+*	Mimicry changes the users type to Normal.
 *	RKS System's type becomes Dark at all times
  
 (The following moves change this field):
+*	Two uses of these moves transform the field into Haunted Field:
+		Curse 		Ominous Wind
+
 *	These moves transform the field into Haunted Field:
-		Spectral Scream 	Shadow Force
+		Phantom Force 	Shadow Force
  
 (The following items are affected by this field):
 *	Magical Seed boosts Sp.Atk and applies Magic Coat to the user
 
-#---------------- 30. Mirror Arena [MA] -----------------#
-"Mirrors are layed around the field!"
- 
-(Passive effects by the field.):
-*	The critical hit rate is increased by one stage for each of the attacker's Evasion/Accuracy buffs, and the target's Evasion/Accuracy de-buffs
- 
-(The following moves are affected by this field.):
-*   Special non-contact attacking moves have a chance to be reflected upon a miss.
-*	The following moves increase in base power x2 when reflected per the above:
-		Charge Beam		Solar Beam		Psybeam			Tri-Attack		Ice Beam	
-		Hyper Beam		Bubblebeam		Origin Pulse    Fleur Cannon    Moongeist Beam
-*	Missing a physical contact attack causes 1/4 Max HP recoil damage
-*	Light Screen and Reflect last 8 turns each and increase the user's Evasion
-*	Mirror Coat increases Evasion, Defense and SpDef on successful use
-*	Mirror Move increases Accuracy, Attack and SpAtk on successful use
-*	Mirror Shot increases in base power x2, will never miss, and will always reduce Accuracy
-*	The following moves increase in base power x1.5 and will never miss:
-		Aurora Beam		Signal Beam		Flash Cannon		Luster Purge		Doom Desire
-		Dazzling Gleam		Techno Blast   Prismatic Laser  Photon Geyser			
-*	The stat changing effect of the following moves is amplified:
-		Flash			Double Team	
-*	Pokemon behind protect moves including Wide Guard, or having Shell Armor or Battle Armor are immune to the shatter damage
-* 	Nature Power becomes Mirror Shot
-*	Camouflage changes the user's type to Steel
-*	Secret Power may lower Evasion
-*	Enables Aurora Veil
-*   Aurora Veil lasts 8 turns and boosts Evasion on use
- 
-(The following moves change this field):
-*	The following moves terminate this field effect, damaging all active Pokemon for 1/2 of their Max HP:
-		Earthquake		Bulldoze			Boomburst		Hyper Voice			Magnitude
-		Tectonic Rage
- 
-(The following abilities are affected by this field):
-*	Pokemon with the following abilities have their Evasion boosted on switch-in:
-		Sand Veil			Snow Cloak		Illusion			Tangled Feet		Magic Bounce
-		Color Change
-*	Illuminate lowers opponents' Accuracy on switch-in
-*	Magic Bounce increases Evasion on successful bounce
-*   Mimicry changes the users type to Steel.
- 
-(The following items are affected by this field):
-*	Pokemon holding the following items have their Evasion boosted on switch-in:
-		Brightpowder		Lax Incense
-*	Synthetic Seed boosts Evasion two stages
 
 #---------------- 31. Fairy Tale Field [FTF] -----------------#
 "Once upon a time..."
@@ -1331,6 +1254,7 @@ Klutz		Defeatist
 *	Steel hits Dragon types super-effectively
 *	Floral Healing heals 2/3s target's HP (from 1/2)
 *	Fire type attacks gain Dragon typing
+*	Fighting type attacks gain Steel typing
 *	The following moves become Steel type:
 		Cut			Slash		Sacred Sword		Secret Sword
 *	These moves increase in base power x1.5:
@@ -1365,18 +1289,18 @@ Klutz		Defeatist
 *	Pokemon with the following abilities have their Defense boosted on switch-in:
 		Battle Armor		Shell Armor       
 *	Pokemon with the following abilities have their Special Defense boosted on switch-in:
-		Magic Guard			Magic Bounce      Mirror Armor
-		Pastel Veil
+		Magic Guard		Magic Bounce      
+Mirror Armor		Pastel Veil
 *	Pokemon with the following abilities have their Special Attack boosted on switch-in:
 		Magician
 *   Pokemon with the following abilities have their defenses boosted on switch-in:
-        Dauntless Shield    
-		Power of Alchemy
+      		Dauntless Shield    	Power of Alchemy
 *   Pokemon with the following abilities have their offenses boosted on switch-in:
-        Intrepid Sword
+       		 Intrepid Sword
  
 (The following items are affected by this field):
 *       Magical Seed boosts Attack and applies King's Shield to the user
+
 
 #---------------- 32. Dragon's Den [DD] -------------------#
 "If you wish to slay a dragon..."
@@ -1438,6 +1362,7 @@ Klutz		Defeatist
 (The following fields can interact with this field):
  
 
+
 #---------------- 33. Flower Garden Field [FGF] -----------------#
 "Seeds line the field."
  
@@ -1450,7 +1375,7 @@ Klutz		Defeatist
 *	At Stages 2/4 Bug type attacks increase in base power x1.5/2
 * 	These moves grow the field one stage on use:
 		Rototiller		Flower Shield	Rain Dance	Sunny Day	Growth
-		Ingrain         Grassy Terrain
+		Ingrain         Grassy Terrain	Grassy Glide
 *	The stat-changing effect of these moves is amplified:
 		Rototiller   
 *	Growth's effect increases (x2, x3) at stages (1, 3)
@@ -1504,6 +1429,7 @@ Klutz		Defeatist
 *	Synthetic Seed boosts Sp.Def and applies Ingrain to the user
 
 
+
 #---------------- 34. Starlight Arena [SA] -----------------#
 "Starlight fills the battlefield."
  
@@ -1513,20 +1439,20 @@ Klutz		Defeatist
 (The following moves are affected by this field.):
 *	Psychic type attacks increase in base power x1.5
 *	Fairy type attacks increase in base power x1.3
-*	Dark type attacks increase in base power x1.5
+*	Dark type attacks increase in base power x1.3
 *	Dark type attacks deal additional Fairy damage
 *	Enables Aurora Veil
 *	Meteor Assault has no charge up/recharge.
 *	Solar Beam and Solar Blade deal additional Fairy-type damage
 *	These moves increase in base power x1.5:
-		Aurora Beam			Signal Beam		Flash Cannon	Luster Purge	Dazzling Gleam		
-		Mirror Shot			Moonblast		Technoblast 	Solar Beam      Photon Geyser
-		Prismatic Laser	Dead Star
+		Aurora Beam		Signal Beam		Flash Cannon
+Luster Purge		Dazzling Gleam	Mirror Shot			Moonblast		Technoblast 		Solar Beam
+Photon Geyser	Prismatic Laser
 *	These moves increase in base power x2:
-		Draco Meteor 		Meteor Mash  	Comet Punch 	Spacial Rend 	Swift
-		Hyperspace Hole		Hyperspace Fury	Moongeist Beam	Sunsteel Strike  Black Hole Eclipse
-		Meteor Assault      Searing Sunraze Smash  Menacing Moonraze Maelstrom
-		Light that Burns the Sky
+		Draco Meteor 		Meteor Mash		Comet Punch
+Spacial Rend		Swift			Hyperspace Hole		Hyperspace Fury	Moongeist Beam	Sunsteel Strike
+Black Hole Eclipse	Meteor Assault      	Searing Sunraze Smash
+Menacing Moonraze Maelstrom		Light that Burns the Sky
 *	These moves increase in base power x4 and apply additional Fire type damage:
 		Doom Desire
 *	The following moves' stat-boosting effect is amplified:
@@ -1545,15 +1471,14 @@ Klutz		Defeatist
 *	Shadow Shield Pokemon take x0.5 decreased damage
 *	Solar Idol is activated.
 *	Mirror Armor protects the users side from priority moves.
-*	Illuminate activates Spotlight on partnered Mirror Armor Pokemon in Double battles.
 *	Mimicry changes the users type to Dark.
 *	Pokemon with the following abilities have their Special Attack boosted on switch-in:
 		Illuminate
-*	Pokemon with Illuminate apply Spotlight on the partner if the partner has Mirror Armor.
 *	Adaptability copies Trace's effect
  
 (The following items are affected by this field):
 *       Magical Seed boosts Sp Atk and applies Lunar Dance to the user
+
 
 
 #---------------- 35. New World [NA] -----------------#
@@ -1566,7 +1491,8 @@ Klutz		Defeatist
 (The following moves are affected by this field.):
 *	Dark type attacks increase in base power x1.5
 *	These moves increase in base power x1.5:
-		Mirror Shot		Aurora Beam		Signal Beam		Dazzling Gleam
+		Mirror Shot		Aurora Beam		Signal Beam		
+Dazzling Gleam
 		Flash Cannon	Psystrike	Aeroblast	Sacred Fire		Mist Ball	
 		Luster Purge	Origin Pulse	Precipice Blades	Dragon Ascent	
 		Psycho Boost	Roar of Time	Magma Storm		Crush Grip		
@@ -1584,7 +1510,7 @@ Klutz		Defeatist
 		Comet Punch	Spacial Rend	Swift		Future Sight
 		Ancient Power	Hyperspace Hole		Hyperspace Fury
 		Searing Sunraze Smash  Menacing Moonraze Maelstrom
-		Light that Burns the Sky	Dead Star
+		Light that Burns the Sky	Retribution
 *	These moves increase in base power x4 and apply additional Fire type damage:
 		Doom Desire
 *	These moves increase in base power x4:
@@ -1620,6 +1546,7 @@ Klutz		Defeatist
 *	Magical Seed boosts all stats and makes the user recharge
 
 
+
 #---------------- 36. Inverse Field [IF] -----------------#
 "!trats elttaB"
  
@@ -1639,6 +1566,7 @@ Klutz		Defeatist
  
 (The following items are affected by this field):
 *	Magical Seed changes the user's type to Normal and gives them Normalize.
+
 
 
 #---------------- 37. Psychic Terrain [PT] -----------------#
@@ -1683,43 +1611,44 @@ Psychic Terrain:
 (The following abilities are affected by this field):
 *	Pure Power doubles Sp.Atk instead of Atk
 *	Anticipation and Forewarn boost Sp.Atk on switch in
-*   Zen Mode is activated.
-*   Power Spot increases partner's damage output by 1.5x(from 1.3x)
-*	Magician additionally lowers the accuracy of status moves targeted to the user to 50% (similar to Wonder skin)
+*	Zen Mode is activated.
+*	Power Spot increases partner's damage output by 1.5x(from 1.3x)
+*	Magician additionally lowers the accuracy of status moves targeted to the user to 50% 
 *	Telepathy Pokemon's Speed doubles
  
 (The following items are affected by this field):
 *	Magical Seed boosts Sp.Def and Sp.Atk and confuses the user
 
-#---------------- 40. Haunted Field [HF] -----------------#
-"The field is haunted!'
- 
-(The field can be created by):
+
+#---------------- 40. Cursed Field [CF] -----------------#
+"The field is cursed!'
  
 (Passive effects by the field.):
-*   Pokemon gradually lose health while asleep if they are not Ghost Types
+*	Pokemon gradually lose health while asleep if they are not Ghost-type
  
 (The following moves are affected by this field.):
-*   Ghost type moves gain a 1.5x boost in power
-*   The following moves have their accuracy boosted to 90:
+*	Ghost-type moves gain a 1.5x boost in power
+*	Dark-type moves gain a 1.3x boost in power
+*	Ghost and Dark-types deal neutral damage to each other
+*	The following moves have their accuracy boosted to 90:
 		Will-o-Wisp		Hypnosis		Inferno
-*   Ghost types deal super effective damage to Normal Type Pokemon.
-*   Nightmare inflicts more damage. 
-*   Cursed Body always activates upon fainting.
+*	Ghost types deal super effective damage to Normal Type Pokemon.
+*	Nightmare inflicts more damage. 
+*	Cursed Body always activates upon fainting.
 *	The following move(s) gets a 1.3x increase in power and gain the Ghost type
-		Flame Burst		Inferno		Flame Charge		Fire Spin
-*   Spite depletes two more PP than usual.
+		Flame Burst		Inferno
+Flame Charge		Fire Spin
+*	Spite depletes two more PP than usual.
 *	Ominous wind has a 20% chance of raising all stats
 *	Curse, when used by a Ghost-type, uses only 25% of the user's HP
 *	The following moves become single turn moves:
-		Phantom Force		Shadow Force
+		Phantom Force	Shadow Force
 *  	The following moves target both opponents
 		Mean Look	Fire Spin	Ominous Wind	Inferno
-*   Fire Spin deals 1/6 Max HP damage per turn (from 1/8)
-*   Spirit Break deals super effective damage to Ghost types.
-*	Lick has a 100% chance to Paralyze
+*	Fire Spin deals 1/6 Max HP damage per turn (from 1/8)
+*	Spirit Break deals super effective damage to Ghost types.
 *	Night Shade deals 1.5x more damage
-*   Magic Powder puts the target to Sleep.
+*	Magic Powder puts the target to Sleep.
 *	Scary Face has its effect doubled
 *	Destiny Bond can no longer fail when used consecutively
 *	Nature Power becomes Phantom Force
@@ -1727,45 +1656,47 @@ Psychic Terrain:
 *	Secret Power inflicts Curse
  
 (The following abilities are affected by this field): 
-*	Perish Body traps the opponent upon triggering.
-*   Mimicry changes the user's type to Ghost.
-*   Pokemon that gain Wandering Spirit lose speed every turn.
-*   Resuscitation resets stat changes.
-*   Power Spot damage increase is 1.5x.
+*	Perish Body traps the opponent upon triggering
+*	Cursed Body always activates upon fainting
+*	Mimicry changes the user's type to Ghost.
+*	Pokemon that gain Wandering Spirit lose speed every turn
+*	Power Spot damage increase is 1.5x.
 *	Rattled boosts the user's Speed upon switch-in
  
+
 (The following moves change this field): 
 *	The following moves can turn this field into a Blessed Field:
-		Judgement	Sacred Fire
-		Purify      Origin Pulse
-*   These moves temporarily nullify this field:
-        Flash       Dazzling Gleam
+		Judgement	Sacred Fire	Purify
+Origin Pulse	Retribution
+*	These moves temporarily nullify this field:
+     		Flash       Dazzling Gleam
  
 (The following items are affected by this field):
-*	Magical Seed raises Defense and Special Defense and applies burn to the user
+*	Magical Seed raises Defense and Special Defense and burns the user
+
 
 #---------------- 41. Corrupted Cave [CC] -----------------#
 "Corruption seeps from every crevice!"
  
 (The following moves are affected by this field.):
 *	Poison-type moves get a x1.5 boost in power
-*	Rock- and Grass-type get a x1.2 boost in power
-*	Fairy-type moves gets a x0.5 decrease in power
+*	Rock- and Grass-type moves get a x1.2 boost in power
+*	Ground-type moves gain the Poison-type
 *	Non-contact Flying moves decrease in base power x0.5
 *	The following moves gain a x1.5 boost
 		Seed Flare      Apple Acid
 *	The following moves deal additional Poison-type damage:
-		Rock Slide		Smack Down		Stone Edge		Rock Tomb
-		Diamond Storm   Apple Acid
+		Rock Slide		Smack Down		Stone Edge
+Rock Tomb		Diamond Storm   	Apple Acid
 *	The following moves deal additional Rock-type damage:
 		Sludge Wave             Gunk Shot
-*	Stealth Rock deals damage based on the Poison-type type chart
-*   Tar Shot additionally poisons.
+*	Stealth Rock deals Poison-type scaling damage
+*	Tar Shot additionally poisons.
 *	Toxic Thread inflicts badly poisoned status
 *	Nature Power becomes Gunk Shot
 *	Camouflage changes the user's type to Poison
 *	Secret Power inflicts poison
-*	Ingrain damages the user, unless the user is Poison- or Steel-type
+*	Ingrain damages the user, unless the user is Poison- Rock- or Steel-type
  
 (The following abilities are affected by this field):
 *	Pokemon with the following abilities are hurt each round:
@@ -1774,7 +1705,7 @@ Psychic Terrain:
 		Poison Heal
 *	The following abilities have a doubled activation rate:
 		Poison Touch		Poison Point
-*	All Grounded non-Poison-type Pokemon are poisoned at the end of the round, unless they have:
+*	All grounded non-Poison-types are poisoned at the end of turn unless they have:
 		Wonder Skin		Immunity   
 		Pastel Veil
 *	The boost from Toxic Boost is doubled from 50% to 100%
@@ -1786,44 +1717,45 @@ Psychic Terrain:
 (The following moves change this field):
 *	The following moves will transform this field into a normal cave field:
 		Seed Flare		Purify
-		Solar Beam      Solar Blade
+		Solar Beam      	Solar Blade
+
 *	The following moves combust the field, dealing 50% of max HP to all Pokemon:
-		Heat Wave		Blast Burn		Eruption		Lava Plume 	
-		Inferno Overdrive
+		Heat Wave		Blast Burn		Eruption
+Lava Plume 		Inferno Overdrive
  
 (The following items are affected by this field):
 *	The effects of Black Sludge is doubled
 *	Synthetic Seed increases Defense by two stages and applies Poison status to the user
 
-#---------------- 42. Bewitched Woods [BW] -----------------#
-"Everlasting glow and glamour!"
+
+#---------------- 42. Bewitched Woods [BW] ----------------#
+"Double, double toil and trouble…"
  
 (Passive effects by the field.):
 *	Pokemon sleeping in the fairy rings take damage equal to 1/16th of max HP.
-*	Grounded Grass Pokemon restore 1/8th Max HP each turn 
-*	Dark-types are no longer immune to Prankster moves
- 
+*	Grounded Grass Pokemon restore 1/16th Max HP each turn 
+
 (The following moves are affected by this field.):
-*	Fairy type moves increase in base power by x1.5.
-*	Grass type moves increase in base power by x1.5.
-*	Dark type moves increase in base power by x1.3.
-*	Fairy and Grass types now hit Steel type Pokemon for Super Effective damage.
-*	Poison attacks deal neutral to Grass and Fairy types.
-*	Dark- and Fairy-types now hit each other neutrally
-*	The following moves gain a 1.4x boost in power:
-		Ice Beam		Hyper Beam		Signal Beam		Aurora Beam		Bubblebeam
-		Charge Beam		Psybeam		Flash Cannon		Magical Leaf
-*	The following moves gain a 1.2x boost in power:
-		Dark Pulse		Night Daze		Moonblast
-*   The following moves gain a 1.5x boost in power:
-        Hex             Mystical Fire
-	    Spirit Break
-*   Magic Powder puts the target to sleep.
-*   Spirit Break increases in base power by 1.5x
-*	The following moves accuracy has been increased to 95:
-		Poison Powder	Sleep Powder	Grasswhistle	Stun Spore.
-*	The following moves change the field to Forest Field:
-		Purify
+*	Grass-type moves increase in base power x1.5
+*	Fairy-type moves increase in base power x1.3
+*	Dark-type moves increase in base power x1.3
+*	Grass-type attacks now hit Steel-type Pokemon super effectively
+*	Poison-, Fairy-, and Dark-types now hit each other neutrally
+*	The following moves gain a 1.3x boost in power:
+		Magical Leaf		Dark Pulse
+		Night Daze		Moonblast
+		Dream Eater		Night Slash
+*	The following moves gain a 1.5x boost in power:
+		Hex             Mystical Fire	Spirit Break
+*	The following moves’ accuracy has been increased to 80:
+		Sleep Powder		Grass Whistle
+		Hypnosis
+*	The following moves’ accuracy has been increased to 90:
+		Poison Powder	Stun Spore
+		Will-O-Wisp
+*	Magic Powder puts the target to sleep
+*	Torment lasts for 8 turns and traps the target
+*	Damage taken from Nightmare is doubled
 *	Strength Sap now also lowers Special Attack
 *	Moonlight restores 75% of the user's Max HP
 *	Forest's Curse additionally curses the target
@@ -1832,21 +1764,21 @@ Psychic Terrain:
 *	Secret Power may randomly inflict Sleep, Poison, or Paralysis.
  
 (The following abilities are affected by this field):
+*	Prankster affects Dark-type Pokémon
 *	Effect Spore has a doubled activation rate
 *	Natural Cure heals status at the end of the turn
-*	Flower Veil affects all types of Pokemon
-*	Flower Gift is active regardless of the weather
-*	Pastel Veil removes the user's Fairy Type weaknesses.
-*   Cotton Down's effect is doubled
-*   Power Spot damage increase is 1.5x here.
-*   Mimicry changes the user's type to Fairy.
+*	Pastel Veil and Aroma Veil remove the user's Fairy-type weaknesses
+*	Power Spot damage increase is 1.5x here.
+*	Mimicry changes the user's type to Fairy
  
+
 (The following moves change this field):
-*	The following moves will transform this field into a normal forest field:
-		Purify
+*	The following moves will transform this field into a Forest Field:
+		Purify		Geomancy		
  
 (The following items are affected by this field):
 *	Magical Seed raises Special Defense and applies ingrain to the user
+
 
 #---------------- 43. Sky Field [SKF] -----------------#
 "The sky is filled with clouds."
@@ -1855,15 +1787,12 @@ Psychic Terrain:
 *	All weather effects and Tailwind will last 8 turns
  
 (The following moves are affected by this field.):
-*   Tailwind creates Strong Winds.
+*	Tailwind creates Strong Winds.
 *	Flying-type moves increase in base power by 1.5x
 *	The following moves will be used immediately, rather than charging up:
 		Razor Wind		Sky Attack		Bounce		Fly
 *	The following moves are boosted in power 1.5x:
-		Icy Wind		Ominous Wind	Silver Wind		Razor Wind		Fairy Wind
-		Aeroblast		Sky Uppercut	Flying Press    Thundershock    Thunderbolt
-	Thunder			Steel Wing      Twister         Dragon Darts 	Grav Apple
-		Dragon Ascent	Heat Wave
+Icy Wind		Ominous Wind	Silver Wind		Razor Wind	Fairy Wind		Aeroblast		Sky Uppercut		Flying Press    Thundershock    	Thunderbolt		Thunder		Steel Wing      Twister        		Grav Apple		Dragon Ascent	Heat Wave
 *	These moves will fail under this field:
 		Earthquake		Magnitude		Bulldoze		Rototiller
 		Dig
@@ -1872,7 +1801,7 @@ Psychic Terrain:
 *	Thunder and Hurricane never miss
 * 	Flying Press's Flying type damage does not account for resistances.
 *	Spikes, Toxic Spikes, and Sticky Webs will fail when used
-*	Mirror Move will boost Attack, Special Attack, and Speed by one stage if used successfully
+*	Ingrain fails when used
 *	Weather Ball becomes Flying-type during Strong Winds
 *	Nature Power becomes Sky Attack
 *	Camouflage changes the user's type to Flying
@@ -1882,190 +1811,264 @@ Psychic Terrain:
 *	Big Pecks additionally boosts Defense upon switch-in
 *	Gale Wings is active regardless of HP
 *	Early Bird makes the user immune to Sleep
-*   Mimicry changes the user's type to Flying.
+*   	Mimicry changes the user's type to Flying.
 *	Aerilate's base power boost becomes x1.5 (from x1.2)
 *	Levitate additionally boosts Speed upon switch-in
-*	Cloud Nine removes weather instead of nullifying it (including very harsh sunlight, very heavy rain, and strong winds)
+*	Cloud Nine removes weather
  
 (The following moves change this field):
 *	Two uses of these moves will turn the field into Mountain Field:
-		Grav Apple	Smack Down   	
+		Grav Apple	Smack Down 	
 *	One use of these moves will turn the field into Mountain Field
-        		Gravity     Ingrain   	
-		Thousand Arrows
- 
-(The following items are affected by this field):
+        		Gravity   	Thousand Arrows
+ (The following items are affected by this field):
 *	Elemental Seed lowers Defense and Special Defense and applies Tailwind
 
-#---------------- 44. Colosseum Field [CF] -----------------#
-"All eyes are on the fighters!"
- 
-(Passive effects by the field.):
-*  Neither player can switch out. Moves that force the opponent out fail.
-*  Knocking out a Pokemon raises one of the user's stats based on the highest stat of the KO'd opponent (ala Beast Boost) 
- 
-(The following moves are affected by this field.):
-*  Flying type moves decrease in base power 0.5x
-*  The following moves deal double damage:
-        Fell Stinger, Reversal, Beat Up, Pay Day
-        Pursuit
-*  The following moves deal 1.5x damage:
-        Electroweb, Vine Whip, Smart Strike, Smack Down,
-        Sacred Sword, Secret Sword, Psycho Cut, Night Slash
-        Submission, Bonemerang, Bone Rush, Bone Club, Leaf Blade, Payback, Punishment
-        Meteor Mash, Bullet Punch, Clanging Scales, 
-        First Impression, Steamroller, Brutal Swing, Meteor Assault
-*  The following moves deal 1.2x damage:
-        Wood Hammer, Dragon Hammer, Power Whip, Spirit Shackle,
-        Drill Run, Drill Peck, Ice Hammer, Icicle Spear, Anchor Shot,
-        Crabhammer, Shadow Bone, Fire Lash, Sucker Punch, Throat Chop
-        Storm Throw, Hammer Arm
-*  The following moves have increased effects:
-        Swords Dance, King's Shield, Howl
-*  No Retreat's stat increase is doubled.
-*  These moves fail:
-         Baton Pass	Encore
-*  Roar raises the active Pokemon's attack stats by 2 stages.
-*  First Impression goes through Protect moves.
-*  Swagger and Flatter's effects are increased.
-*  Camouflage changes the user's type to Steel
-*  Spiky Shield's damage is doubled.
-*  Secret Power raises Attack
-*  Nature Power turns into Beat Up
- 
-(The following abilities are affected by this field):
-*  Skill Link boosts affected moves by 1.2x
-*  Defiant additionally raises Defense 2 stages.
-*  Competitive additionally raises Special Defense 2 stages.
-*  Pokemon with Stalwart live attacks with 1HP if they were at Max HP.
-*  Attacks against a Pokemon with the following abilities are always Critical hits:
-       Rattled, Wimp Out
-*  These abilities raise Special Defense:
-       Mirror Armor	Magic Guard
-*  These abilities raise Defense:
-       Battle Armor	Shell Armor
-*   Pokemon with the following abilities have their defenses boosted on switch-in:
-       Dauntless Shield
-*   Pokemon with the following abilities have their offenses boosted on switch-in:
-       Intrepid Sword    Justified	No Guard 
-*  Wonder Guard additionally protects against residual damage.
-*  Emergency Exit raises speed by 2 stages instead.
-*  Mimicry changes the user's type to Steel
-*  If Quick Draw activates, the user's next move is a critical hit.
- 
-(The following items are affected by this field):
-*  Synthetic Seed raises Attack sharply but applies Taunt.
 
-#----------------- 45. Infernal Field [HEF] --------------------#
+
+
+#----------------- 44. Infernal Field [HEF] --------------------#
 "The souls of the damned burn on."
  
 (Passive effects by the field.):
-*   Bad Dreams and Nightmare's effects are doubled and trap the target for as long as they are active.
-*   Rain and Hail are terminated immediately.
+*	Bad Dreams and Nightmare's effects are doubled and trap the target
+*	Rain and Hail are terminated immediately.
  
 (The following moves are affected by this field.):
-*   Fire and Dark type moves increase in base power x1.5
-*   Fairy and Water moves decrease in base power x0.5(Excluding Spirit Break)
-*   Fire moves become super effective against Ghost types
-*   These moves now apply additional Dark type damage:
-        Aura Sphere        Frustration
-		Spirit Break
-*   These moves cannot miss:
-        Will-O-Wisp     Dark Void
-		Inferno
-*   The stat-changing effect of these moves is amplified:
-        Nasty Plot
-*   Torment causes passive damage to take effect, dealing 1/8th HP to inflicted targets at the end of the turn.
-*   Ground, Steel and Rock moves deal additional Fire type damage
-*   Stealth Rock deals Fire type damage.
-*   Burn Up targets have their type restored at the end of the turn.
-*   Activates Hex
-*   Nightmare can be used immediately
-*   These moves increase in base power x1.5:
-        Blast Burn             Earth Power             
-        Inferno Overdrive      Precipice Blades         
-		Inferno                
-*   These moves increase in base power x2:
-        Punishment          Smog     Dream Eater
-*   These moves will change this field into a Volcanic Field:
-        Judgement           Origin Pulse       Purify
-*   These moves will change this field into a Frozen Dimensional Field:
-        Glaciate
-*   Camouflage changes the user's type to Fire
-*   Secret Power may Burn
-*   Nature Power becomes Punishment
+*	Fire and Dark type moves increase in base power x1.5
+*	Fairy and Water type moves decrease in base power x0.5 (Excluding Spirit Break)
+*	Fire moves become super effective against Ghost types
+*	These moves now apply additional Dark type damage:
+        		Aura Sphere		Frustration		Spirit Break
+*	These moves cannot miss:
+      		Will-O-Wisp		Dark Void		Inferno
+*	The stat-changing effect of these moves is amplified:
+        		Nasty Plot
+*	Torment causes passive damage to take effect, dealing 1/8th HP to inflicted targets at the end of the turn.
+*	Ground, Steel and Rock moves deal additional Fire type damage
+*	Stealth Rock deals Fire-type damage.
+*	Burn Up targets have their type restored at the end of the turn.
+*	Activates Hex
+*	Nightmare can be used immediately
+*	These moves increase in base power x1.5:
+        		Blast Burn		Earth Power		Inferno            
+Inferno Overdrive      Precipice Blades               
+*	These moves increase in base power x2:
+        		Punishment		Smog			Dream Eater
+*	These moves will change this field into a Volcanic Field:
+Judgement		Origin Pulse		Purify
+*	These moves will change this field into a Frozen Dimensional Field:
+Glaciate
+*	Camouflage changes the user's type to Fire
+*	Secret Power may Burn
+*	Nature Power becomes Punishment
  
 (The following abilities are affected by this field):
-*   The following abilities are activated:
-        Blaze           Flash Fire        Flare Boost
-*   Pokemon with the following abilities get their defenses boosted upon entry:
-        Magma Armor     Flame Body
-		Desolate Land
-*   Pokemon with these abilities are immune to Fire type attacks:
-        Magma Armor
-*   Pastel Veil fails.
+*	The following abilities are activated:
+Blaze			Flash Fire		Flare Boost
+*	Pokemon with the following abilities get their defenses boosted upon entry:
+Magma Armor		Flame Body		Desolate Land
+*	Magma Armor grants immunity to Fire-type moves
+*	Pastel Veil fails.
 *	Perish Body traps the opponent upon triggering and has a countdown of 1.
-*   Ice Face melts on entry.
-*   Mimicry turns the user into a Fire type.
-*   Steam Engine raises speed at the end of every turn by 1 stage.
+*	Ice Face melts on entry.
+*	Mimicry turns the user into a Fire type.
+*	Steam Engine raises speed at the end of every turn by 1 stage.
  
 (The following items are affected by this field):
-*   Elemental Seed boosts Attack and Special Attack and traps the user.
+*	Elemental Seed boosts Attack and Special Attack and traps the user.
 
-#--------------- 48. Temple Ruins Field [TRU] ---------------#
-“God has forsaken us. Only dragons remain.”
 
-*    Dragon-type moves increase in power by x1.5
-*    Ghost and Rock-Type moves increase in power x1.3
-*    Normal and Fairy-Type moves decrease in power x0.7
-*    Dragon-type Pokemon take x0.25 reduced damage while charging or recharging
-*    Sleeping Pokemon take x0.25 reduced damage
-*    Non-Dragon-type Pokemon can't use priority moves unless they have the following abilities:
-	Pressure	Justified	Defiant		Mold Breaker		Sheer Force
 
-*    Justified's effect is doubled
-*    Pressure's effect is doubled
-*    Cursed Body's activation chance is doubled
-*    Power Spot's damage boost is increased to x1.5
-*    RKS System makes the user a Dragon-type at all times
-*    Pokemon with Wandering Spirit can't switch out unless they're Ghost-type
-*    Multiscale is active above 50% HP
-*    Dragon's Maw's damage boost is increased to x2
-*    Pokemon with Defiant and Justified deal x2 damage to Dragon-types while they have raised attack
-*    Mimicry makes the user a Dragon-type
+#--------------- 45. Beach Field [BF] ---------------#
+“The waves lap at the shore.”
 
-*    The following moves are boosted x1.1
-	Doom Desire		Spacial Rend		Roar of Time		Crush Grip		Shadow Force		Hyperspace Hole	Hyperspace Fury	Land's Wrath		Moongeist Beam	Sunsteel Strike	Eternabeam
-*    The following moves are boosted x1.3 and become part Dragon-type
-Mystical Fire		Sacred Fire		Ancient Power		Hyper Beam
-Fly			Sky Drop		Supersonic Skystrike
-*    The following moves are boosted x1.3 and become part Rock-type
-	Strength		Stomping Tantrum	Earthquake		Tectonic Rage
-*    The following moves are boosted x1.3
-Ominous Wind	Spirit Break		Phantom Force
-*    The following moves are boosted x1.5
-Draco Meteor		Sky Attack		Dragon Energy	Thousand Arrows	Dragon Ascent	Outrage		Continental Crush	Devastating Drake
-*    The following moves have their stat changing effect amplified
-	Dragon Dance		Coil			Scary Face		
-	Noble Roar			Clangorous Soul
-*    Roar increases the user's Attack and Special Attack
-*    Dragon Ascent becomes part Dragon-Type
-*    Nature's Madness also curses the target
-*    Dragon Rush has 100 accuracy
-*    Stealth Rock damage is doubled
-*    Clangorous Soul becomes a two turn move with HP loss first and stat boost second
-*    Outrage doesn't confuse the user
-*    Nature's Madness curses the target
+(Passive effects by the field.):
+*	Sun lasts for 8 turns
 
-*    These moves will turn the field into a Blessed Field:
-	Purify		Geomancy  	
-*    These moves will turn the field into a Desert Field
-        	Dust Bowl	Light of Ruin
+(The following moves are affected by this field.):
+*	Water- and Ground-type moves increase in base power x1.3
+*	Electric-type moves increase in base power x1.5
+*	These moves are boosted in power 1.5x:
+Sand Tomb		Whirlpool		Burn Up
+Thousand Waves	Scorching Sands	Razor Shell
+*	These moves are boosted in power 1.3x:
+Scald			Surf			Muddy Water
+Steam Eruption
+*	These moves are boosted in power 1.3x and deal additional Ground-type damage:
+Ominous Wind	Razor Wind		Silver Wind
+Icy Wind		Fairy Wind		Twister
+Gust
+*	Sand Tomb and Whirlpool duration is increased to 8 turns
+*	Sand Attack is amplified
+*	Arenite Wall lasts 8 turns and can be set up without sandstorm
+*	Shore Up restores 75% of the user's Max HP
+*	Nature Power becomes Scorching Sands
+*	Camouflage changes the user's type to Ground
+*	Secret Power may lower Accuracy
 
-*    Secret Power may curse the target
-*    Camouflage changes user's type to Dragon
-*    Nature Power becomes Dragon Ascent
-*    Synthetic Seed raises Special Defense and taunts the opponent
+(The following abilities are affected by this field):
+*	These abilities are activated:
+Sand Force		Sand Veil		Sand Rush
+Swift Swim		Hydration
+*	Sand Spit additionally lowers the opposing Pokemon's Accuracy
+*	Water Compaction sharply raises Special Defense upon activation
+*	Dry Skin Pokemon lose 1/16th Max HP at the end of each turn
+*	Shell Armor boosts Defense and Special Defense on entry
+*	Mimicry changes the user's type to Ground
 
-#---------------- 4X. Distortion World [DWO] -----------------#
-#---------------- 4X. Throne Room [TR] -----------------#
+
+(The following moves change this field):
+*	The following moves can turn the field into an Ashen Beach
+Lava Plume		Eruption
+*	The following moves can turn the field into a Water Surface
+Origin Pulse		Glacial Flood		Hydro Vortex
+
+
+(The following items are affected by this field):
+*   Telluric Seed boosts Speed and Accuracy and applies Sand Tomb to the user
+#--------------- 46. Cavern Nest [CN] ---------------#
+"Skittering legs and many eyes surround you."
+
+(The following moves are affected by this field.):
+*	Bug-type moves increase in base power x1.5
+*	Rock-type moves increase in base power x1.3
+*	Bug-type moves are super effective against Rock- and Ground-types
+*	Special Flying-type moves decrease in base power x0.5
+*	Biting and Sound moves increase in base power x1.3
+*	The following moves increase in power x1.5
+Attack Order		Infestation		Belch
+Spit Up		Beat Up
+*	The following moves have accuracy increased to 80 and become spread moves:
+Poison Powder	Sleep Powder		Stun Spore
+*	The following moves have amplified stat changes
+Growth			Defend Order		Stockpile
+*	Stockpile can increase up to six stages
+*	Infestation lasts for eight turns
+*	Heal Order heals 66% max HP
+*	Swallow heals all status conditions
+*	Sticky Web's stat changes are amplified and affect airborne targets
+*	Strength Sap heals 30% more HP
+*	Sweet Scent makes all active non Bug-type Pokémon drowsy
+*	Attract prevents the target from switching out
+*	Bug-type Pokemon are not affected by Stealth Rocks
+*	Nature Power becomes Infestation
+*	Camouflage changes the user's type to Bug
+*	Secret Power may poison
+
+(The following abilities are affected by this field):
+*	Intimidate also lowers Special Attack
+*	Swarm is activated
+*	Overcoat has the same effect as Bulletproof
+*	Shield Dust protects the user from all status
+*	Solid Rock and Sturdy Pokemon resist Bug-, Fighting-, and Ground-type attacks
+*	Rattled raises Speed on entry
+*	Rivalry raises Attack on entry
+*	Mimicry changes the user's type to Bug
+
+(The following items are affected by this field):
+*   Telluric Seed boosts Defense and taunts the opponent
+#--------------- 47. Cloud Forest [CF] ---------------#
+"Where earth and sky meet."
+
+(Passive effects by the field.):
+*	Hail and Rain last for 8 turns
+*	Misty Terrain lasts for 8 turns
+*	Grounded Pokemon have reduced Speed
+
+(The following moves are affected by this field.):
+*	Flying-type moves increase in power x1.3
+*	Grass- and Water-type moves increase in power x1.2
+*	The following moves increase in power 1.5x and raise the Speed of all Pokemon on
+the field unless there are Strong Winds:
+Icy Wind		Ominous Wind	Silver Wind		Razor Wind	Fairy Wind		Aeroblast		Hurricane     		Twister        	Heat Wave		Clear Smog		Blizzard
+*	The following moves increase in power 1.3x:
+Thundershock    	Thunderbolt		Thunder
+Weather Ball		Origin Pulse		Strange Steam
+Steam Eruption
+*	The following moves will be used immediately, rather than charging up:
+		Razor Wind		Sky Attack		Fly
+*	Thunder and Hurricane never miss
+*	Ingrained Pokemon resist Flying- and Ground-type moves
+*	Growth has amplified stat changes
+*	Defog raises the Accuracy of all Pokemon on the field
+*	Tailwind lasts 8 turns and creates Strong Winds
+*	Roost boosts Defenses until an attacking move is used
+*	Nature Power becomes Weather Ball
+*	Camouflage changes the user's type to Flying
+*	Secret Power may raise the user's Accuracy
+
+(The following abilities are affected by this field):
+*	The following abilities raise Defenses on entry:
+		Leaf Guard		Grass Pelt		Cloud Nine
+		Forecast		Overcoat		Water Veil
+*	Aerilate's base power boost becomes x1.5
+*	Early Bird has Gale Wings's effect
+*	Forecast raises Speed on entry
+*	Gale Wings is always activated during Strong Winds
+*	Keen Eye and Long Reach Pokemon ignore Accuracy checks
+*	Serene Grace prevents flinching or effects that limit move choice
+*	Hydration and Sap Sipper restore 1/8th max HP each turn
+*	Mimicry changes the user's type to Flying
+
+
+(The following items are affected by this field):
+*	Telluric Seed boosts Speed and makes the holder airborne
+
+#--------------- 48. Boxing Ring [BR] ---------------#
+“Fight to the faint!”
+
+(Passive effects by the field.):
+*	Pokemon can score points during the match (if a multiple conditions are triggered, the points stack), every 10 points, their attack becomes a combo and hits an additional time:
+One Point: Using attacking moves, making the target flinch, inflicting a status condition, hitting through confusion
+Two Points: dealing over 50% max HP with one attack, making the target faint, dodging/protecting from an attack
+Three Points: One-Hit KOing the opponent, living an attack at 10% max HP or less, getting a critical hit
+*	Damage taken from recoil is reduced by 0.2x
+
+(The following moves are affected by the field.):
+*	Physical Fighting-type moves get an x1.5 boost
+*	Physical Dark-type moves get an x1.3 boost
+*	Physical Normal-type moves get an x1.3 boost and become part Fighting
+*	The following moves are boosted x1.3:
+Submission		Strength		Retaliate	
+Thrash			Outrage		Vital Throw
+Storm Throw		Circle Throw		Rage			
+Body Slam		Heavy Slam		Body Press
+Ice Punch		Thunder Punch	Fire Punch
+Shadow Punch	Bullet Punch		Ice Hammer
+Dragon Hammer	Double Iron Bash	Mega Punch
+Triple Axel		Blaze Kick		Trop Kick		
+Mega Kick		Pound			Smack Down
+Dragon Rush		Play Rough		Beat Up		
+Foul Play		Meteor Mash		Skull Bash		
+Flying Press		Darkest Lariat		All-Out Pummeling	
+Malicious Moonsault
+*	The following moves have amplified stat changes: 
+Leer			Growl			Double Team
+Defense Curl		Agility
+*	Mirror Move raises the user’s speed by one stage when used
+*	Obstruct lowers speed in addition to its normal effect
+*	Substitute blocks critical hits
+*	Camouflage makes the user a Fighting-type
+*	Secret Power may give the user a point
+*	Nature Power becomes Submission
+
+(The following abilities are affected by this field): 
+*	Pressure and Moxie's effects are doubled
+*	Intimidate also lowers Special Attack
+*	Arena Trap affects non-grounded and Ghost-type pokémon 
+*	Defiant boosts Defense by two stages upon activation
+*	Competitive boosts Special Defense by two stages upon activation
+*	Justified raises Special Attack upon activation
+*	Anger Point activates whenever hit by a super-effective move
+*	Rattled is triggered by all contact moves
+*	Rivalry’s boost is increased to x1.5 and activated regardless of gender
+*	Guts decreases damage taken by x0.2
+*	Iron Fist boosts affected moves by x1.5 instead
+*	No Guard raises Speed and critical hit rate but lowers Defense and Special Defense
+*	Hustle raises Speed
+*	Mimicry makes the user a Fighting-type
+
+(The following items are affected by this field): 
+*	Synthetic Seed increases critical hit rate and Speed and traps the user
+

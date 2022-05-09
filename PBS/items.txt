@@ -527,7 +527,7 @@
 527,MYSTERYGOOD,Mystery Good,8,0,An item that you can't quite make out. What is it?,0,0,6,
 528,TM90_1,TM 90,4,0,pOISON,0,0,0,
 529,ITEM529,TM96,4,300,The user smashes the opponent with  powerful tail covered in poison.,3,0,0,POISONTAIL
-
+530,LOVELETTE,Love Letter,8,0,"\"A mystery love letter that is meant for Cameron\"",0,0,6,
 531,DEMONSTONE,Rift Matter,1,0,A mysterious stone,0,0,0,
 532,CHINESEFOOD,Mystery Bowl,2,100,"Weird concoction of ingredients. It smells good-ish?",1,1,0,
 533,SOULSTONE,Soul Stone,8,0,A mysterious stone with a mystical presence inside.,0,0,6,
@@ -590,7 +590,7 @@
 590,EMOTIONPOWDER,Emotion Powder,8,0,A mysterious substance that is used to travel in Valor Mountain.,0,0,6,
 591,DULLKEY,Dull Key,8,0,"A peculiar key to some door in Aevium.",0,0,6,
 592,SECRETPOTION,Secret Potion,8,0,An extremely powerful medicine that originated from Olivine City in the Johto region.,0,0,6,
-
+593,EXCLUSIVEPASS,Exclusive Pass,8,0,A pass that allows the lucky weilder to enter Grand Dream City during their celebrity event.,0,0,6,
 601,JOYSCENT,Joy Scent,1,300,This scent massage opens the hearts of Pokémon a little.,1,0,0,
 602,EXCITESCENT,Excite Scent,1,500,This scent massage opens the hearts of Pokémon.,1,0,0,
 603,VIVIDSCENT,Vivid Scent,1,800,This scent massage opens the hearts of Pokémon a lot.,1,0,0,
@@ -600,7 +600,7 @@
 607,MININGKIT,Mining Kit,8,0,A kit that contains tools for mining.,0,0,6,
 608,LADDER,Ladder,8,0,A sturdy ladder,0,0,6,
 609,ODDKEY,Odd Key,8,0,A key to some house in Goldenleaf.,0,0,6,
-
+610,BRASSKEY,Brass Key,8,0,A key that can be used to open up the way to the Lost Camp.,0,0,6,
 611,BLACKSHARD,Black Shard,8,0,An extremely rare shard that can only be found in certain places.,0,0,6,
 612,TM101,TM101,4,2000,The Pokémon uses its claws to grapple onto certain surfaces. Enabling it to climb.,3,0,0,ROCKCLIMB
 613,CHESTNUT,Chestnut,2,300,A spiny delicacy. It restores 20 HP.,1,1,0,
@@ -611,7 +611,7 @@
 618,YACHTKEYS,Yacht Keys,8,0,Keys to Tesla's Yacht on Teila Town's shore.,0,0,6,
 619,MOONDIAL,Moon Dial,8,0,A pendant that's oddly shaped like a Pokemon...,0,0,6,
 620,PHASEDIAL,Phase Dial,8,0,A pendant that's simultaneously shaped like the sun and the moon.,5,0,6,
-
+621,CENTERKEYS,Center Keys,8,0,Keys to another Help Center somewhere on Terajuma Island.,0,0,6,
 622,FUNNELCAKE,Funnel Cake,2,7000,"A delicious pastry that has the ability to revive fainted Pokemon.",1,1,0
 623,TM102,TM102,4,2000,The user engulfs their foot with poison and proceeds to knock over their opponent. It may lower Speed.,3,0,0,POISONSWEEP
 624,TM103,TM103,4,2000,The user proceeds to attack the opponent with quick jabs. The more it's used the more powerful it is.,3,0,0,STACKINGSHOT
@@ -633,15 +633,15 @@
 640,TM104,TM104,4,0,The user soaks the opponent with a strong blast of water.,3,0,0,DOUSE
 641,STOREKEY1,Storage Key1,8,0,A key that can be used to open up a Storage Unit.,0,0,6,
 642,POLIFLUTE,Troupe Flute,8,0,"A flute that can be used to gather the Poliwag Troupe.",0,0,6,
-
+643,XENKEY,HQ Railnet Key,8,0,"A key that can be used to access the train at the Shadow Backup HQ.",0,0,6,
 644,CARDKEYS,Card Key Shard,8,0,"A piece of a broken card key.",0,0,6,
 645,CARDKEYS2,Card Key Shard,8,0,"A piece of a broken card key.",0,0,6,
 646,CARDKEYS3,Card Key Shard,8,0,"A piece of a broken card key.",0,0,6,
 647,TM105,TM105,4,0,"The user creates a large wall out of sediment, weakening the power of Super Effective moves for 5 turns. It can only be used in a sandstorm.",3,0,0,ARENITEWALL
 648,TM106,TM106,4,0,Does massive damage if the opponent is inflicted with a status.,3,0,0,IRRITATION
-
+649,KKEY,Apartment Key,8,0,"A key to some apartment in Kugearen City.",0,0,6,
 650,TP,Toilet Paper,8,0,"Toilet Paper... okay?",0,0,6,
-
+651,WEIRDDIARY,Weird Diary,8,0,"A weird diary that claims to have the answer to Dimensional Rift purification.",0,0,6,
 652,ATKCARD,Attack Card,8,0,"A card that allows the owner to participate in the Attack EV center service.",0,0,6,
 653,SPATKCARD,SPAttack Card,8,0,"A card that allows the owner to participate in the Special Attack EV center service.",0,0,6,
 654,DEFCARD,Defense Card,8,0,"A card that allows the owner to participate in the Defense EV center service.",0,0,6,
@@ -658,7 +658,7 @@
 665,STEAMBALL,Steam Ball,3,1200,A somewhat different Poké Ball that works especially well on Water- and Fire-type Pokémon.,0,2,4,
 666,MINERALBALL,Mineral Ball,3,1200,A somewhat different Poké Ball that works especially well on Rock- Ground- and Steel-type Pokémon.,0,2,4,
 667,GATHERCUBE,Gather Cube,8,0,A Mysterious Cube that has the power to gather various types of cells.,2,0,6,
-
+668,ANJUPENDANT,Anju's Pendant,8,0,"A pendant that belongs to a mysterious woman named Anju. It apparently means a lot to her.",0,0,6,
 669,SNAGMACHINE,Snag Machine,8,0,"A machine that allows the user to snag Shadow Pokemon.",0,0,6,
 670,SNAGMACHINE1,Snag Machine,8,0,"Once was a machine that was capable of capturing Shadow Pokemon. Madelis interfered with the device and destroyed it.",0,0,6,
 671,APOPHYLLPAN,Apophyll Pancakes,1,3000,"Delicious pancakes imported in from Apophyll Academy. They're magically delicious!",1,1,0,
@@ -668,8 +668,8 @@
 675,STARSHARD2,Crystal Shard,8,0,"A piece of a bigger whole.",0,0,6,
 676,STARSHARD3,Crystal Shard,8,0,"A piece of a bigger whole.",0,0,6,
 677,STARSHARD4,Crystal Shard,8,0,"A piece of a bigger whole.",0,0,6,
-
-
+678,INVITATION,Secret Invitation,8,0,"An invitation to a secret event! Take it to the Gearen Laboratory!",0,0,6,
+679,FAMILYPORTRAIT,Family Portrait,8,0,"A portait of a family that once lived in Aevium. Their history is unknown.",0,0,6,
 680,ULTRAPOTION,Ultra Potion,2,2200,A spray-type medicine for wounds. It restores the HP of one Pokémon by 200 points.,1,1,0,
 690,ADRENALINEORB,Adrenaline Orb,1,300,"If held by a Pokémon, it boosts Speed when intimidated. It can be used only once.",0,0,0
 691,BIGMALASADA,Big Malasada,2,200,"The Alola region’s local specialty—fried bread. It can be used once to heal all the status conditions of a Pokémon.",1,1,0
@@ -758,21 +758,12 @@
 775,MAGICALSEED,Magical Seed,1,3000,"A single-use seed that boosts its holder in Magical Fields.",0,0,0
 776,TELLURICSEED,Telluric Seed,1,3000,"A single-use seed that boosts its holder in Telluric Fields.",0,0,0
 777,SYNTHETICSEED,Synthetic Seed,1,3000,"A single-use seed that boosts its holder in Synthetic Fields.",0,0,0
-
-
-
 781,PIDGEOTITE,Pidgeotite,6,999,"One variety of Mega Stone. Have Pidgeot hold it, and this stone will enable it to Mega Evolve in battle.",0,0,0,
 782,SLOWBRONITE,Slowbronite,6,999,"One variety of Mega Stone. Have Slowbro hold it, and this stone will enable it to Mega Evolve in battle.",0,0,0,
 783,TM112,TM112,4,0,The user stabs the target with a sharp horn. This attack never misses.,3,0,0,SMARTSTRIKE
 784,TM113,TM113,4,0,The user swings its body around violently to inflict damage on everything in its vicinity.,3,0,0,BRUTALSWING
 785,TM114,TM114,4,0,The user drains the target's blood. The user's HP is restored by half the damage taken by the target.,3,0,0,LEECHLIFE
 786,MYSTEMBLEM,Mysterious Emblem,8,0,"A mysterious emblem that depicts an odd shape.",0,0,6,
-
-
-
-
-
-
 793,ACHIEVEMENTCARD,Achievement Card,8,0,"A card that displays the amount of AP on hand.",2,0,6
 794,GOLDENGAUNTLET,Golden Gauntlet,8,0,"A golden item that allows for the use of Strength without the use of TM's.",2,0,6
 795,GOLDENAXE,Golden Axe,8,0,"A golden item that allows for the use of Cut without the use of TM's.",2,0,6
@@ -816,8 +807,6 @@
 835,DUSKCREST,Dusknoir Crest,6,0,"It increases Dusknoir's Attack by 20% and boosts weaker moves.",0,0,13,
 836,BADGECARD,Badge Card,8,0,"A card that holds every virtual badge earned.",0,0,6,
 837,PULSEPLUS,Pulse+,8,0,"???.",0,0,6,
-
-
 840,NSOLARIZER,N-Solarizer,6,0,"This item is used to fuse Necrozma and Solgaleo to create Dusk Mane Necrozma.",5,0,6
 841,NLUNARIZER,N-Lunarizer,6,0,"This item is used to fuse Necrozma and Lunala to create Dawn Wings Necrozma.",5,0,6
 842,KOMMONIUMZ,Kommonium-Z,6,0,"It converts Z-Power into crystals that upgrade Kommo-o's Clanging Scales to an exclusive Z-Move.",5,0,8
@@ -835,10 +824,6 @@
 854,BLASTPOWDER,Blast Powder,1,2500,"A powder made from Electrode. Explodes to break up certain rock formations.",0,0,0
 855,AMPLIFIELDROCK,Amplifield Rock,1,3000,"A Pokémon held item that extends the duration of the area-altering moves used by the holder.",0,0,0
 856,RIFTSEED,Rift Seed,1,3000,"A single-use seed that boosts its holder in Telluric Fields.",0,0,
-
-
-
-
 861,SKUNCREST,Skuntank Crest,6,0,"Nullifies damage and boosts Attack when hit by a Ground-type move. ",0,0,13,
 862,TRANSMITTER,Transmitter,8,0,"A transmitter given to you by Nastasia. It can be used to speak to Ren or Aelita.",0,0,6,
 863,ZONEZEROKEY,Zone Zero Key,8,0,"A key to open the gate to Zone Zero from Alamissa Urben.",0,0,6,
@@ -861,8 +846,6 @@
 880,TORCREST,Torterra Crest,6,0,"Swaps resistances and weaknesses.",0,0,13,
 881,INFCREST,Infernape Crest,6,0,"Swaps Attacks and Defenses.",0,0,13,
 882,EMPCREST,Empoleon Crest,6,0,"Gains Ice Type STAB and doubles speed in Hail or Ice Fields.",0,0,13,
-
-
 885,TM115,RM01,4,150000,The user sharpens its claws to boost its Attack stat and accuracy.,3,0,0,HONECLAWS
 886,TM116,RM02,4,50000,This move deals double damage if the user is hurt by the target that turn.,3,0,0,AVALANCHE
 887,TM117,RM03,4,50000,The user fires an electric blast like a cannon to inflict damage and cause paralysis.,3,0,0,ZAPCANNON
@@ -922,8 +905,6 @@
 941,DREAMBALL,Dream Ball,3,200,A somewhat different Poké Ball that works especially well on sleeping Pokémon.,0,2,4,
 942,PECHABERRY2,Pecha Berry?,8,0,A special "Pecha Berry" given to you by the employee at The Berry Emporium.,0,0,6,
 943,ROTOMPHONE,Rotom Phone,8,0,"A smartphone that was enhanced with a Rotom!",0,0,6,
-
-
 946,TM124,TM115,4,0,"The target is slugged by a punch thrown with muscle-packed power.",3,0,0,MEGAPUNCH
 947,TM125,TM116,4,150000,"The target is attacked by a kick launched with muscle-packed power.",3,0,0,MEGAKICK
 948,TM126,TM117,4,0,"Numerous coins are hurled at the target to inflict damage. Money is earned after the battle.",3,0,0,PAYDAY
@@ -1020,8 +1001,6 @@
 1039,MASTERKEY,Master Key,8,0,"A key to open boss doors in various dungeons",0,0,6,
 1040,FAIRYGEM,Fairy Gem,1,200,"A gem with a mystical essence. When held, it strengthens the power of a Fairy-type move only once.",0,0,0,
 1041,SKYRELIC,Sky Relic,8,0,"A Relic that is imbued with the power of the sky.",0,0,6,
-
-
 1044,IVIOLITE,Iviolite,1,200,"A mysterious evolutionary lump. When held, it raises the Attack and Sp. Attack of a Pokemon that can still evolve.",0,0,0,
 1045,FULLPLATE,Full Plate,6,999,An item to be held by a Pokemon. This offensive vest raises Def but prevents the use of status moves.,0,0,0,
 1046,SKARMORITE,Skarmorite,6,999,"One variety of the mysterious Mega Stones. Have Skarmory hold it, and this stone will enable it to Mega Evolve in battle.",0,0,0,
