@@ -20,26 +20,11 @@
     //
     // "rgssVersion": 1,
 
-
-    // Request an OpenGL 4.1 context. This
-    // introduces these minimum requirements
-    // for GPUs:
-    //
-    // +    NVIDIA 400 Series+
-    // +    AMD Radeon HD 5000+
-    // +    Intel HD Graphics 4000+
-    //
-    // If disabled, OpenGL 3.3 is used instead.
-    // (default: disabled)
-    //
-    // "openGL4": false,
-
-
     // Create a debug context and log
     // OpenGL debug information to the console
     // (default: disabled)
     //
-    // "debugMode": false,
+    // "debugMode": true,
 
 
     // Continuously print average FPS to console.
@@ -155,7 +140,7 @@
     // disabling it can be used as a workaround
     // (default: enabled)
     //
-    // "enableBlitting": true,
+    "enableBlitting": false,
 
 
     // Limit the maximum size (width, height) of
@@ -166,13 +151,13 @@
     // be played back on machines with lower specs.
     // (default: 0)
     //
-    // "maxTextureSize": 4096,
+    // "maxTextureSize": 0,
 
 
     // Set the base path of the game to '/path/to/game'
     // (default: executable directory)
     //
-    // "gameFolder": "/path/to/game",
+    // "gameFolder": ".",
 
 
     // Use either right or left Alt + Enter to toggle
@@ -287,6 +272,7 @@
     // "fontSub": ["Arial>Open Sans",
     //             "Times New Roman>Liberation Serif"]
 
+
     // Because mkxp is usually distributed as a stand alone
     // build, no predefined load paths are initialized
     // ($:, $LOAD_PATH) in the MRI backend. With this option,
@@ -297,6 +283,12 @@
     //
     // "rubyLoadpath": ["/usr/lib64/ruby/",
     //                  "/usr/local/share/ruby/site_ruby"],
+
+    // Commandline arguments to pass to Ruby, such as to enable JIT.
+    // Only supported for Ruby ≥2.
+    // (default: none)
+    //
+    // "rubyArg": ["--jit-verbose=1"],
 
 
     // SoundFont to use for midi playback (via fluidsynth)
@@ -334,5 +326,14 @@
     // is a tiny bit less intrusive.
     //
     // "execName": "Game"
+	
+	"bindingNames": {"c": "Use",
+                     "b": "Back",
+                     "a": "Action",
+                     "x": "(cass doesn't remember)",
+                     "y": "Autorun",
+                     "z": "Quicksave,Special",
+                     "l": "Previous Page",
+                     "r": "Next Page"},
 
 }
