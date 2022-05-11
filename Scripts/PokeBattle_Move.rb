@@ -799,6 +799,12 @@ class PokeBattle_Move
     if id == PBMoves::FREEZEDRY && opponent.pbHasType?(PBTypes::WATER)
       typemod *= 4
     end
+    if id == PBMoves::PERMAFROST && opponent.pbHasType?(PBTypes::ROCK)
+      typemod *= 4
+    end
+    if id == PBMoves::PERMAFROST && opponent.pbHasType?(PBTypes::STEEL)
+      typemod *= 4
+    end
     if id == PBMoves::SPIRITBREAK && opponent.pbHasType?(PBTypes::GHOST) &&
      ($fefieldeffect == 29 || $fefieldeffect == 40)
       typemod *= 2

@@ -799,7 +799,7 @@
 
 
 
-802,HEAVYBASH,Heavy Bash,269,80,STEEL,Physical,100,10,0,00,0,abef,"The user attacks by slamming its body into the target. The higher the user's Defense, the more damage it can inflict on the target."
+802,HEAVYBASH,Heavy Bash,184,80,STEEL,Physical,100,10,0,00,0,abef,"The user attacks by slamming its body into the target. The higher the user's Defense, the more damage it can inflict on the target."
 803,PERMAFROST,Permafrost,00C,70,ICE,Special,100,20,10,00,0,bef,"The user rapidly cools the target, making it brittle. It's super effective against the Rock and Steel type."
 804,NUMBINGMISTS,Numbing Mists,007,75,FAIRY,Special,100,15,30,08,0,bef,"Paralyzing mists surround all other Pokémon. It may also cause paralysis."
 805,DRAGONCLUB,Dragon Club,00F,110,DRAGON,Physical,90,15,10,00,0,abe,"The user focuses power to its head and hits the target. It may make the target flinch."
