@@ -267,7 +267,7 @@
 243,CLOUDQUEEN,Cloud Queen,100,Battle! Governor,,,Female,255,
 275,VIOLET,Violet,100,,,,Female,255,
 #####SIDEQUEST#############################################################################
-248,TEMPLAR1,Templar,100,Battle! Templar,,,,255,
+248,TEMPLAR1,Templar,100,Battle! Church Good,,,,255,
 270,AURORA,League Founder,100,Battle! League,,,,255,
 271,RYOU,League Founder,100,Battle! League,,,,255,
 272,TRENT,Gym Leader,100,Battle! Faux,,,,255,

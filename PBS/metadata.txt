@@ -1,4 +1,4 @@
-﻿[000]
+[000]
 Home=3,5,7,0
 WildBattleBGM=Battle! Wild
 TrainerBattleBGM=Battle! Trainer
