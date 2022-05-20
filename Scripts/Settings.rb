@@ -53,7 +53,7 @@ MAPVIEWMODE         = 1
 #      item version) being distributed to all Exp Share holders. This is true in
 #      Gen 6 and false otherwise.
 #===============================================================================
-POISONINFIELD         = true
+POISONINFIELD         = false
 POISONFAINTINFIELD    = false
 FISHINGAUTOHOOK       = false
 INFINITETMS           = true

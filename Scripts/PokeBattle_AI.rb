@@ -24261,10 +24261,20 @@ class PokeBattle_Battle
         return 0
       end
     end
+    # pk edit
     if (((!opponent.abilitynulled && opponent.ability == PBAbilities::STORMDRAIN) && (isConst?(type,PBTypes,:WATER) || move.FieldTypeChange(attacker,opponent,1,true)==PBTypes::WATER)) ||
       ((!opponent.abilitynulled && opponent.ability == PBAbilities::LIGHTNINGROD) && (isConst?(type,PBTypes,:ELECTRIC) || move.FieldTypeChange(attacker,opponent,1,true)==PBTypes::ELECTRIC))) &&
       !(opponent.moldbroken)
       return 0
+    end
+    if @doublebattle
+      if !(opponent.pbPartner.isFainted?)
+        if (((!opponent.pbPartner.abilitynulled && opponent.pbPartner.ability == PBAbilities::STORMDRAIN) && (isConst?(type,PBTypes,:WATER) || move.FieldTypeChange(attacker,opponent.pbPartner,1,true)==PBTypes::WATER)) ||
+            ((!opponent.pbPartner.abilitynulled && opponent.pbPartner.ability == PBAbilities::LIGHTNINGROD) && (isConst?(type,PBTypes,:ELECTRIC) || move.FieldTypeChange(attacker,opponent.pbPartner,1,true)==PBTypes::ELECTRIC))) &&
+            !(opponent.pbPartner.moldbroken)
+          return 0
+        end
+      end
     end
     if (isConst?(opponent.ability,PBAbilities,:MOTORDRIVE)) &&
       (isConst?(type,PBTypes,:ELECTRIC) || move.FieldTypeChange(attacker,opponent,1,true)==PBTypes::ELECTRIC) &&

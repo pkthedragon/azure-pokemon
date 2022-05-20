@@ -271,7 +271,7 @@ Events.onWildPokemonCreate+=proc {|sender,e|
     when 20 # Spinarak
       pokemon.pbLearnMove(:RAGEPOWDER)
       pokemon.pbLearnMove(:NIGHTSLASH)
-    when 21 # Swinub
-      pokemon.pbLearnMove(:ICICLECRASH)
+    when 21 # Dedenne
+      pokemon.pbLearnMove(:MAGNETRISE)
     end
 }

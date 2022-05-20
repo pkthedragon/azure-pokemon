@@ -4460,7 +4460,7 @@ MultipleForms.register(:SWAMPERT,{
 },
 "getBaseStats"=>proc{|pokemon|
    next if pokemon.form==0      # Normal
-   next [70,85,70,60,50,70]   # Mystic
+   next [100,110,90,90,60,80]   # Mystic
 },
 "getMoveList"=>proc{|pokemon|
    next if pokemon.form==0      # Normal

@@ -43,10 +43,10 @@ module DifficultModes
     hardMode = Difficult.new
     hardMode.idJump = 200
     hardMode.levelProcedure = proc{|level|
-      next level*1.1
+      next level*1.0
     }
     hardMode.moneyProcedure = proc{|money|
-      next money*0.8
+      next money*1.0
     }
     difficultHash[2] = hardMode
     

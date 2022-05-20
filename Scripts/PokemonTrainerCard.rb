@@ -71,8 +71,8 @@ class PokemonTrainerCardScene
 y=262
 imagePositions=[]
 for region in 0...2 # Two rows
-  x=32
-  for i in 0...9
+  x=54
+  for i in 0...8
     if $Trainer.badges[i+region*9]
       if $game_variables[646]>=11
         imagePositions.push( ["Graphics/Pictures/Trainer Card/badges_1",x,y,i*48,region*48,48,48])

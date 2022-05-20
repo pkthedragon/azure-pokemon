@@ -537,8 +537,8 @@ class PokeBattle_Move
       end
       return 0
     end
-    if (opponent.hasWorkingAbility(:STORMDRAIN) && (isConst?(type,PBTypes,:WATER) || FieldTypeChange(attacker,opponent,1,true)==PBTypes::WATER)) ||
-       (opponent.hasWorkingAbility(:LIGHTNINGROD) && (isConst?(type,PBTypes,:ELECTRIC) || FieldTypeChange(attacker,opponent,1,true)==PBTypes::ELECTRIC)) &&
+    if ((opponent.hasWorkingAbility(:STORMDRAIN) && (isConst?(type,PBTypes,:WATER) || FieldTypeChange(attacker,opponent,1,true)==PBTypes::WATER)) ||
+       (opponent.hasWorkingAbility(:LIGHTNINGROD) && (isConst?(type,PBTypes,:ELECTRIC) || FieldTypeChange(attacker,opponent,1,true)==PBTypes::ELECTRIC))) &&
        !(opponent.moldbroken)
       if opponent.pbCanIncreaseStatStage?(PBStats::SPATK)
         opponent.pbIncreaseStatBasic(PBStats::SPATK,1)
