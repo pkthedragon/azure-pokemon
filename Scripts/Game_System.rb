@@ -37,8 +37,12 @@ class Game_System
     @bgs_position=0
   end
 
-  def bgm_play(bgm) 
-    bgm_play_internal(bgm,0)
+  def bgm_play(bgm, *position) 
+    if !position
+      bgm_play_internal(bgm,0.0)
+    else
+      bgm_play_internal(bgm,position[0].to_f)
+    end
   end
 
   def bgm_play_internal2(name,volume,pitch,position) # :nodoc:
@@ -73,12 +77,33 @@ class Game_System
     Graphics.frame_reset
   end
 
-  def bgm_pause(fadetime=0.0) # :nodoc:
+  def bgm_position_store
     pos=Audio.bgm_position rescue 0
+    @stored_bgm = @playing_bgm
+    @stored_position = pos
+  end
+
+  def bgm_get_stored_bgm
+    if @stored_bgm
+      return @stored_bgm
+    else
+      return nil
+    end
+  end
+
+  def bgm_get_stored_position
+    if @stored_position
+      return @stored_position
+    else
+      return 0.0
+    end
+  end
+
+  def bgm_pause(fadetime=0.0) # :nodoc:
+    bgm_position_store
     if fadetime>0.0
       self.bgm_fade(fadetime)
     end
-    @bgm_position=pos
     @bgm_paused=true
   end
 

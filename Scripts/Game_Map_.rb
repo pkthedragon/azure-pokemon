@@ -123,11 +123,12 @@ class Game_Map
   #-----------------------------------------------------------------------------
   def autoplay
     if @map.autoplay_bgm
+      stored_position=$game_system.bgm_get_stored_position
       if PBDayNight.isNight?(pbGetTimeNow) &&
             FileTest.audio_exist?("Audio/BGM/"+ @map.bgm.name+ "n")
-        pbBGMPlay(@map.bgm.name+"n",@map.bgm.volume,@map.bgm.pitch)
+        pbBGMPlay(@map.bgm.name+"n",@map.bgm.volume,@map.bgm.pitch,stored_position)
       else
-        pbBGMPlay(@map.bgm.name,@map.bgm.volume,@map.bgm.pitch) if $game_switches[1404] != true #don't stop the music switch
+        pbBGMPlay(@map.bgm.name,@map.bgm.volume,@map.bgm.pitch,stored_position) if $game_switches[1404] != true #don't stop the music switch
       end
     end
     if @map.autoplay_bgs

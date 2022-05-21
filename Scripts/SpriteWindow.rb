@@ -795,7 +795,7 @@ end
 # filename:volume:pitch
 # volume -- Volume of the file, up to 100
 # pitch -- Pitch of the file, normally 100
-def pbBGMPlay(param,volume=nil,pitch=nil)
+def pbBGMPlay(param,volume=nil,pitch=nil, *position)
   return if !param
   if volume and $PokemonSystem.volume
     volume = volume * ($PokemonSystem.volume/100.00)
@@ -807,7 +807,7 @@ def pbBGMPlay(param,volume=nil,pitch=nil)
   param=pbResolveAudioFile(param,volume,pitch)
   if param.name && param.name!=""
     if $game_system && $game_system.respond_to?("bgm_play")
-      $game_system.bgm_play(param)
+      $game_system.bgm_play(param,position[0])
       return
     elsif (RPG.const_defined?(:BGM) rescue false)
       b=RPG::BGM.new(param.name,param.volume,param.pitch)
