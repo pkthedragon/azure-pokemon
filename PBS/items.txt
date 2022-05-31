@@ -995,9 +995,9 @@
 1033,PHIONECREST,Phione Crest,6,0,"50% increase in defenses, grants Aqua Ring.",0,0,13,
 1034,DELCREST,Delcatty Crest,6,0,"The power of its friends increases Delcatty's stats by 10% each.",0,0,13,
 1035,SWACREST,Swalot Crest,6,0,"Stockpiles gained after an attack. Belch always usable and followed by Spit Up.",0,0,13,
-1036,TANGROWTHCREST,Tangrowth Crest,6,0,"Allows Tangrowth to recover health opponents lose at the end of turn.",0,0,13,
-1037,MISMAGIUSCREST,Mismagius Crest,6,0,"Swaps Mismagius' defenses and makes it immune to contact moves.",0,0,13,
-1038,SNORLAXCREST,Snorlax Crest,6,0,"Merges Snorlax's attack and speed stats while asleep.",0,0,13,
+1036,TANTRIBUTE,Tangrowth Tribute,6,0,"Allows Tangrowth to become Heroic!",0,0,13,
+1037,MISTRIBUTE,Mismagius Tribute,6,0,"Allows Mismagius to become Heroic!",0,0,13,
+
 1039,MASTERKEY,Master Key,8,0,"A key to open boss doors in various dungeons",0,0,6,
 1040,FAIRYGEM,Fairy Gem,1,200,"A gem with a mystical essence. When held, it strengthens the power of a Fairy-type move only once.",0,0,0,
 1041,SKYRELIC,Sky Relic,8,0,"A Relic that is imbued with the power of the sky.",0,0,6,

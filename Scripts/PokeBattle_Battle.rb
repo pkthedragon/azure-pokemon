@@ -2767,8 +2767,7 @@ class PokeBattle_Battle
       @battlers[index].attack = @battlers[index].speed
       @battlers[index].speed = temp1
     end
-    if isConst?(@battlers[index].species,PBSpecies,:MISMAGIUS) &&
-       isConst?(@battlers[index].item,PBItems,:MISMAGIUSCREST)
+    if isConst?(@battlers[index].ability,PBAbilities,:ILLUSORYSHROUD)
       temp = @battlers[index].defense
       @battlers[index].defense = @battlers[index].spdef
       @battlers[index].spdef = temp

@@ -266,3 +266,5 @@
 308,SOLARIDOL,Solar Idol,"STAB Fire moves. 50% ATK boost in Sun. Levitates."
 309,LUNARIDOL,Lunar Idol,"STAB on Ice moves. 50% SPATK boost in Hail. Levitates."
 310,WORLDOFNIGHTMARES,World of Nightmares,"End of turn damage on all foes. Changes field to New World over time. Allows use of Nightmare freely."
+311,MAENADSFERVOR,Maenad's Fervor,"This Pokemon's Speed stat is doubled when confused or on Grassy Terrain."
+312,ILLUSORYSHROUD,Illusory Shroud,"This Pokeon is immune to contact moves, but its Defenses are swapped."

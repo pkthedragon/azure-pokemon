@@ -12503,3 +12503,46 @@ class PokeBattle_Move_215 < PokeBattle_Move
     end
   end
 end
+################################################################################
+# Confuses the target and the user.
+################################################################################
+class PokeBattle_Move_216 < PokeBattle_Move
+  def pbEffect(attacker,opponent,hitnum=0,alltargets=nil,showanimation=true)
+    return super(attacker,opponent,hitnum,alltargets,showanimation) if @basedamage>0
+    if $fefieldeffect == 31 && isConst?(@id,PBMoves,:SWEETKISS) 
+      if !opponent.damagestate.substitute && opponent.status==PBStatuses::SLEEP
+        opponent.pbCureStatus
+      end
+    end
+    if opponent.pbCanConfuse?(true)
+      pbShowAnimation(@id,attacker,opponent,hitnum,alltargets,showanimation)
+      opponent.effects[PBEffects::Confusion]=2+@battle.pbRandom(4)
+      @battle.pbCommonAnimation("Confusion",opponent,nil)
+      @battle.pbDisplay(_INTL("{1} became confused!",opponent.pbThis))
+      return 0
+    end
+    if attacker.pbCanConfuseSelf?(true)
+      attacker.effects[PBEffects::Confusion]=2+@battle.pbRandom(4)
+      @battle.pbCommonAnimation("Confusion",attacker,nil)
+      @battle.pbDisplay(_INTL("{1} became confused!",attacker.pbThis))
+      return 0
+    end
+    return -1
+  end
+
+  def pbAdditionalEffect(attacker,opponent)
+    if opponent.pbCanConfuse?(false)
+      opponent.effects[PBEffects::Confusion]=2+@battle.pbRandom(4)
+      @battle.pbCommonAnimation("Confusion",opponent,nil)
+      @battle.pbDisplay(_INTL("{1} became confused!",opponent.pbThis))
+      return true
+    end
+    if attacker.pbCanConfuseSelf?(true)
+      attacker.effects[PBEffects::Confusion]=2+@battle.pbRandom(4)
+      @battle.pbCommonAnimation("Confusion",attacker,nil)
+      @battle.pbDisplay(_INTL("{1} became confused!",attacker.pbThis))
+      return true
+    end
+    return false
+  end
+end

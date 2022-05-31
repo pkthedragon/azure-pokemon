@@ -1737,7 +1737,24 @@ MultipleForms.register(:EISCUE,{
       pbSeenForm(pokemon)
     }
   })
-
+  
+### Heroic Pokemon ###
+MultipleForms.register(:TANGROWTH,{
+    "ability"=>proc{|pokemon|
+      next if pokemon.form==0 # Normal
+      if (pokemon.abilityIndex==1 || (pokemon.abilityflag && pokemon.abilityflag==1)) || (pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)) || (pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0)) # Heroic
+        next getID(PBAbilities,:MAENADSFERVOR) 
+      end
+    },
+    "getForm"=>proc{|pokemon|
+      next 1  if isConst?(pokemon.item,PBItems,:TANTRIBUTE)
+      next 0
+    },
+    "onSetForm"=>proc{|pokemon,form|
+      pbSeenForm(pokemon)
+    }
+  })
+  
 ### Regional Variants ###
 MultipleForms.register(:RATTATA,{
     "dexEntry"=>proc{|pokemon|
@@ -4688,7 +4705,7 @@ MultipleForms.register(:VOLTORB,{
    if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0) # Mystic
      next getID(PBAbilities,:TELEPATHY)
    elsif pokemon.abilityIndex==1 || (pokemon.abilityflag && pokemon.abilityflag==1) # Mystic
-     next getID(PBAbilities,:ANTICIPATE)
+     next getID(PBAbilities,:ANTICIPATION)
    elsif pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)
      next getID(PBAbilities,:SYNCHRONIZE)       
    end
@@ -4700,6 +4717,10 @@ MultipleForms.register(:VOLTORB,{
    else
      next 0
    end
+},
+"getEvo"=>proc{|pokemon|
+   next if pokemon.form==0                  # Normal
+   next [[4,50,0]]                        # Galarian    [Level,42,Mr. Rime]  
 },
 "onSetForm"=>proc{|pokemon,form|
    pbSeenForm(pokemon)

@@ -621,11 +621,11 @@ class PokeBattle_Battler
       return true
     end
     if isConst?(self.species,PBSpecies,:TANGROWTH) &&
-       isConst?(self.item,PBItems,:TANGROWTHCREST)
+       isConst?(self.item,PBItems,:TANTRIBUTE)
       return true
     end
     if isConst?(self.species,PBSpecies,:MISMAGIUS) &&
-       isConst?(self.item,PBItems,:MISMAGIUSCREST)
+       isConst?(self.item,PBItems,:MISTRIBUTE)
       return true
     end
     if isConst?(self.species,PBSpecies,:SWALOT) &&
@@ -1676,6 +1676,13 @@ class PokeBattle_Battler
     stage=@stages[PBStats::SPEED]+6
     speed=(speed*stagemul[stage]/stagediv[stage]).floor
     if isConst?(@ability, PBAbilities, :UNBURDEN) && @unburdened
+      speed=speed*2
+    end
+    if self.hasWorkingAbility(:MAENADSFERVOR) && $fefieldeffect == 3
+      speed=speed*2
+    end
+    if self.hasWorkingAbility(:MAENADSFERVOR) &&
+      self.effects[PBEffects::Confusion]>0
       speed=speed*2
     end
     if self.pbOwnSide.effects[PBEffects::Tailwind]>0

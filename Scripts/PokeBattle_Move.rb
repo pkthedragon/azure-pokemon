@@ -645,9 +645,9 @@ class PokeBattle_Move
         return 0
       end
     end
-    if isConst?(opponent.species,PBSpecies,:MISMAGIUS) && opponent.hasWorkingItem(:MISMAGIUSCREST) && isContactMove?
-      PBDebug.log("[Ability triggered] #{opponent.pbThis}'s Crest (made #{@name} ineffective)")
-      @battle.pbDisplay(_INTL("{1}' Crest makes contact moves ineffective!",opponent.pbThis,self.name))
+    if isConst?(opponent.ability,PBAbilities,:ILLUSORYSHROUD) && !(opponent.moldbroken) && isContactMove?
+        @battle.pbDisplay(_INTL("{1}'s {2} blocked the attack!",
+        opponent.pbThis,PBAbilities.getName(opponent.ability),self.name))
       return 0
     end
     if $fefieldeffect == 14 && (opponent.effects[PBEffects::Substitute]>0 ||

@@ -258,7 +258,7 @@
 232,BISHOP_6,Bishop,100,,,,Female,,
 233,BISHOP_7,Bishop,100,,,,Female,,
 234,ARCHBISHOP_Olga,Archbishop,100,Battle! Olga,,,Female,255,
-235,TOTEM,Totem,100,Battle! Totem,,,,200,
+235,GUARDIAN,Guardian,100,Battle! Totem,,,,200,
 240,MYRON,Doctrine Elder,100,Battle! Elder Cultist,,,Male,255,
 241,MYRON2,Lingering Insanity,100,Battle! Myron,,,Male,255,
 266,ELMIN,Sin of Wrath,100,Battle! Elder Cultist,,,Male,255,
