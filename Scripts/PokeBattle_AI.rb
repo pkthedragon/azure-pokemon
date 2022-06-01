@@ -1776,7 +1776,7 @@ class PokeBattle_Battle
       else
         score=0
       end
-    when 0x13 # Confusion
+    when 0x13 || 0x216 # Confusion
       if opponent.pbCanConfuse?(false)
         miniscore=100
         miniscore*=1.2

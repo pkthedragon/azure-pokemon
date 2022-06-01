@@ -213,8 +213,8 @@ Events.onWildPokemonCreate+=proc {|sender,e|
     end
   # Egg moves for wild events
   case $game_variables[545]
-    when 1 # Sandygast
-      pokemon.pbLearnMove(:STOCKPILE)
+    when 1 # Clobbopus
+      pokemon.pbLearnMove(:SOAK)
     when 2 # Shieldon
       pokemon.pbLearnMove(:ROCKBLAST)
       pokemon.pbLearnMove(:SCREECH)

@@ -808,14 +808,16 @@ JETSPIKE=809
 POLTERSWAP=810
 DRAGONJAUNT=811
 RETRIBUTION=812
+WINEGODSBLESSING=813
+POLYMORPHIZE=814
 
 def self.getName(id)
 return pbGetMessage(MessageTypes::Moves,id)
 end
 def self.getCount
-return 809
+return 811
 end
 def self.maxValue
-return 812
+return 814
 end
 end
