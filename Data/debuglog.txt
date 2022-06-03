@@ -2199,3 +2199,2801 @@ Battle Start!
 Wild Battle
 ==============================
 ***Round 1***
+==============================
+Battle Start!
+235 - Tangrowth
+==============================
+***Round 1***
+==============================
+Battle Start!
+235 - Tangrowth
+==============================
+***Round 1***
+Player Pokemon Pikachu is faster than Tangela.
+Player Pokemon Kadabra is faster than Tangela.
+Leech Seed: initial score: 30
+Leech Seed: final score: 5
+ 
+Leech Seed: initial score: 30
+Leech Seed: final score: 47
+ 
+Leech Seed: Final Score after Status-Target Adjustment: 5
+Leech Seed: Final Score after Status-Target Adjustment: 47
+
+Grass Whistle: initial score: 25
+Grass Whistle: final score: 52
+ 
+Grass Whistle: initial score: 25
+Grass Whistle: final score: 52
+ 
+Grass Whistle: Final Score after Status-Target Adjustment: 52
+Grass Whistle: Final Score after Status-Target Adjustment: 52
+
+Volt Absorb Disrupt
+Mega Drain: initial score: 110
+Mega Drain: final score: 121
+ 
+Mega Drain: initial score: 36
+Mega Drain: final score: 36
+ 
+Ancient Power: initial score: 108
+Ancient Power: final score: 108
+ 
+Ancient Power: initial score: 22
+Ancient Power: final score: 22
+ 
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (0)
+Initial switchscore building: Healing (0)
+Initial switchscore building: fsteak (0)
+Initial switchscore building: Specific Switches (0)
+Initial switchscore building: worthsaving not activated
+Initial switchscore building: Typing (0)
+Tangela: initial switchscore: -20
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+Tangela: initial noswitchscore: 116
+ 
+{
+ 
+}
+ 
+Tangela: highest move score: 121
+Tangela: final switching score: -136
+121 > -136, will not switch
+ 
+Beginning AI Item use check.
+ 
+Highest item score: -10000
+Highest move score: 121
+Not using an item.
+ 
+[The foe Tangela: Leech Seed=5, Grass Whistle=5, Mega Drain=121, Ancient Power=108]
+[Prefer Mega Drain]
+[No Z-Move.]
+Player Pokemon Kadabra is faster than Tangela.
+Player Pokemon Pikachu is faster than Tangela.
+Rage Powder: initial score: 25
+Priority Check End
+Rage Powder: final score: 81
+ 
+Rage Powder: initial score: 25
+Priority Check End
+Rage Powder: final score: 48
+ 
+Rage Powder: Final Score after Status-Target Adjustment: 81
+Rage Powder: Final Score after Status-Target Adjustment: 48
+
+Mega Drain: initial score: 42
+Mega Drain: final score: 42
+ 
+Mega Drain: initial score: 110
+Mega Drain: final score: 121
+ 
+Knock Off: initial score: 69
+Knock Off: final score: 69
+ 
+Knock Off: initial score: 110
+Knock Off: final score: 110
+ 
+Grass Whistle: initial score: 25
+Grass Whistle: final score: 40
+ 
+Grass Whistle: initial score: 25
+Grass Whistle: final score: 40
+ 
+Grass Whistle: Final Score after Status-Target Adjustment: 40
+Grass Whistle: Final Score after Status-Target Adjustment: 40
+
+Volt Absorb Disrupt
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (0)
+Initial switchscore building: Healing (0)
+Initial switchscore building: fsteak (0)
+Initial switchscore building: Specific Switches (0)
+Initial switchscore building: worthsaving not activated
+Initial switchscore building: Typing (0)
+Tangela: initial switchscore: -20
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+Tangela: initial noswitchscore: 116
+ 
+{
+ 
+}
+ 
+Tangela: highest move score: 121
+Tangela: final switching score: -136
+121 > -136, will not switch
+ 
+Beginning AI Item use check.
+ 
+Highest item score: -10000
+Highest move score: 121
+Not using an item.
+ 
+[The foe Tangela: Rage Powder=81, Mega Drain=121, Knock Off=110, Grass Whistle=5]
+[Prefer Mega Drain]
+[No Z-Move.]
+[The foe Tangela lost 34 HP, now has 19 HP]
+[The foe Tangela lost 11 HP, now has 8 HP]
+[Pikachu lost 12 HP, now has 0 HP]
+[The foe Tangela gained 7 HP, now has 15 HP]
+[Kadabra lost 21 HP, now has 28 HP]
+[Kadabra gained 3 HP, now has 31 HP]
+[The foe Tangela gained 3 HP, now has 18 HP]
+***Round 2***
+Player Pokemon Gyarados is faster than Tangela.
+Player Pokemon Kadabra is faster than Tangela.
+Leech Seed: initial score: 30
+Leech Seed: final score: 47
+ 
+Leech Seed: initial score: 30
+Leech Seed: final score: 27
+ 
+Leech Seed: Final Score after Status-Target Adjustment: 47
+Leech Seed: Final Score after Status-Target Adjustment: 27
+
+Grass Whistle: initial score: 25
+Grass Whistle: final score: 68
+ 
+Grass Whistle: initial score: 25
+Grass Whistle: final score: 21
+ 
+Grass Whistle: Final Score after Status-Target Adjustment: 68
+Grass Whistle: Final Score after Status-Target Adjustment: 21
+
+Mega Drain: initial score: 22
+Mega Drain: final score: 26
+ 
+Mega Drain: initial score: 58
+Mega Drain: final score: 70
+ 
+Ancient Power: initial score: 31
+Ancient Power: final score: 31
+ 
+Ancient Power: initial score: 35
+Ancient Power: final score: 35
+ 
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (0)
+Initial switchscore building: Healing (0)
+Initial switchscore building: fsteak (0)
+Initial switchscore building: Specific Switches (0)
+Initial switchscore building: worthsaving not activated
+Initial switchscore building: Typing (0)
+Tangela: initial switchscore: 0
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+Tangela: initial noswitchscore: 100
+ 
+{
+ 
+}
+ 
+Tangela: highest move score: 70
+Tangela: final switching score: -100
+70 > -100, will not switch
+ 
+Beginning AI Item use check.
+ 
+Highest item score: -10000
+Highest move score: 70
+Not using an item.
+ 
+[The foe Tangela: Leech Seed=47, Grass Whistle=68, Mega Drain=70, Ancient Power=5]
+[Prefer Mega Drain]
+[No Z-Move.]
+Player Pokemon Kadabra is faster than Tangela.
+Player Pokemon Gyarados is faster than Tangela.
+Rage Powder: initial score: 25
+Priority Check End
+Rage Powder: final score: 64
+ 
+Rage Powder: initial score: 25
+Priority Check End
+Rage Powder: final score: 64
+ 
+Rage Powder: Final Score after Status-Target Adjustment: 64
+Rage Powder: Final Score after Status-Target Adjustment: 64
+
+Mega Drain: initial score: 67
+Mega Drain: final score: 67
+ 
+Mega Drain: initial score: 25
+Mega Drain: final score: 25
+ 
+Knock Off: initial score: 74
+Knock Off: final score: 74
+ 
+Knock Off: initial score: 10
+Knock Off: final score: 10
+ 
+Grass Whistle: initial score: 25
+Grass Whistle: final score: 33
+ 
+Grass Whistle: initial score: 25
+Grass Whistle: final score: 105
+ 
+Grass Whistle: Final Score after Status-Target Adjustment: 33
+Grass Whistle: Final Score after Status-Target Adjustment: 105
+
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (0)
+Initial switchscore building: Healing (15)
+Initial switchscore building: fsteak (15)
+Initial switchscore building: Specific Switches (15)
+Initial switchscore building: worthsaving not activated
+Initial switchscore building: Typing (15)
+Tangela: initial switchscore: 15
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+Tangela: initial noswitchscore: 100
+ 
+{
+ 
+}
+ 
+Tangela: highest move score: 105
+Tangela: final switching score: -85
+105 > -85, will not switch
+ 
+Beginning AI Item use check.
+ 
+Highest item score: -10000
+Highest move score: 105
+Not using an item.
+ 
+[The foe Tangela: Rage Powder=5, Mega Drain=5, Knock Off=74, Grass Whistle=105]
+[Prefer Grass Whistle]
+[No Z-Move.]
+[The foe Tangela lost 18 HP, now has 0 HP]
+[Kadabra lost 11 HP, now has 20 HP]
+[The foe Tangela lost 8 HP, now has 45 HP]
+[Kadabra gained 3 HP, now has 23 HP]
+[The foe Tangela gained 3 HP, now has 48 HP]
+Scoring for Tangela switching to: Tangela
+Score: -10000000
+Not switching to self.
+Scoring for Tangela switching to: Tangela
+Score: -10000000
+ 
+Scoring for Tangela switching to: Tangrowth
+Offensive: 34
+Defensive: 184
+Roles: 184
+Weather: 184
+Moves: 184
+Abilities: 184
+Items: 184
+Fields: 209
+Score: 209
+ 
+***Round 3***
+Player Pokemon Gyarados is faster than Tangrowth.
+Player Pokemon Kadabra is faster than Tangrowth.
+Ancient Power: initial score: 41
+Ancient Power: final score: 41
+ 
+Ancient Power: initial score: 69
+Ancient Power: final score: 69
+ 
+Leech Seed: initial score: 30
+Leech Seed: final score: 47
+ 
+Leech Seed: initial score: 30
+Leech Seed: final score: 2
+ 
+Leech Seed: Final Score after Status-Target Adjustment: 47
+Leech Seed: Final Score after Status-Target Adjustment: 2
+
+Growth: initial score: 20
+Growth: final score: 26
+ 
+Growth: initial score: 20
+Growth: final score: 2
+ 
+Growth: Final Score after Status-Target Adjustment: 26
+Growth: Final Score after Status-Target Adjustment: 2
+
+Beginning AI Item use check.
+ 
+Highest item score: -10000
+Highest move score: 69
+Not using an item.
+ 
+[The foe Tangrowth: Wine God's Blessing=0, Ancient Power=69, Leech Seed=47, Growth=5]
+[Prefer Ancient Power]
+[No Z-Move.]
+Player Pokemon Kadabra is faster than Tangela.
+Player Pokemon Gyarados is faster than Tangela.
+Rage Powder: initial score: 25
+Priority Check End
+Rage Powder: final score: 64
+ 
+Rage Powder: initial score: 25
+Priority Check End
+Rage Powder: final score: 64
+ 
+Rage Powder: Final Score after Status-Target Adjustment: 64
+Rage Powder: Final Score after Status-Target Adjustment: 64
+
+Mega Drain: initial score: 91
+Mega Drain: final score: 102
+ 
+Mega Drain: initial score: 25
+Mega Drain: final score: 28
+ 
+Mega Drain: Final Score after Doubles-Target Adjustment: 20
+Mega Drain: Final Score after Doubles-Target Adjustment: 28
+
+Knock Off: initial score: 100
+Knock Off: final score: 100
+ 
+Knock Off: initial score: 10
+Knock Off: final score: 10
+ 
+Knock Off: Final Score after Doubles-Target Adjustment: 20
+Knock Off: Final Score after Doubles-Target Adjustment: 10
+
+Grass Whistle: initial score: 25
+Grass Whistle: final score: 33
+ 
+Grass Whistle: initial score: 25
+Grass Whistle: final score: 0
+ 
+Grass Whistle: Final Score after Status-Target Adjustment: 33
+Grass Whistle: Final Score after Status-Target Adjustment: 0
+
+Grass Whistle: Final Score after Doubles-Target Adjustment: 6
+Grass Whistle: Final Score after Doubles-Target Adjustment: 0
+
+Beginning AI Item use check.
+ 
+Highest item score: -10000
+Highest move score: 64
+Not using an item.
+ 
+[The foe Tangela: Rage Powder=64, Mega Drain=5, Knock Off=5, Grass Whistle=5]
+[Prefer Rage Powder]
+[No Z-Move.]
+[The foe Tangela lost 34 HP, now has 14 HP]
+[Kadabra lost 16 HP, now has 7 HP]
+[The foe Tangela gained 3 HP, now has 17 HP]
+[Kadabra gained 3 HP, now has 10 HP]
+***Round 4***
+==============================
+Battle Start!
+235 - Tangrowth
+==============================
+***Round 1***
+Player Pokemon Pikachu is faster than Tangela.
+Player Pokemon Pidgeotto is faster than Tangela.
+Leech Seed: initial score: 30
+Leech Seed: final score: 47
+ 
+Leech Seed: initial score: 30
+Leech Seed: final score: 47
+ 
+Leech Seed: Final Score after Status-Target Adjustment: 47
+Leech Seed: Final Score after Status-Target Adjustment: 4
+
+Grass Whistle: initial score: 25
+Grass Whistle: final score: 105
+ 
+Grass Whistle: initial score: 25
+Grass Whistle: final score: 105
+ 
+Grass Whistle: Final Score after Status-Target Adjustment: 105
+Grass Whistle: Final Score after Status-Target Adjustment: 10
+
+Mega Drain: initial score: 46
+Mega Drain: final score: 46
+ 
+Mega Drain: initial score: 19
+Mega Drain: final score: 19
+ 
+Ancient Power: initial score: 27
+Ancient Power: final score: 27
+ 
+Ancient Power: initial score: 51
+Ancient Power: final score: 51
+ 
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (0)
+Initial switchscore building: Healing (0)
+Initial switchscore building: fsteak (0)
+Initial switchscore building: Specific Switches (0)
+Initial switchscore building: worthsaving not activated
+Initial switchscore building: Typing (0)
+Tangela: initial switchscore: -10
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+Tangela: initial noswitchscore: 116
+ 
+{
+ 
+}
+ 
+Tangela: highest move score: 105
+Tangela: final switching score: -126
+105 > -126, will not switch
+ 
+Beginning AI Item use check.
+ 
+Highest item score: -10000
+Highest move score: 105
+Not using an item.
+ 
+[The foe Tangela: Leech Seed=5, Grass Whistle=105, Mega Drain=5, Ancient Power=5]
+[Prefer Grass Whistle]
+[No Z-Move.]
+Player Pokemon Pidgeotto is faster than Tangela.
+Player Pokemon Pikachu is faster than Tangela.
+Rage Powder: initial score: 25
+Priority Check End
+Rage Powder: final score: 81
+ 
+Rage Powder: initial score: 25
+Priority Check End
+Rage Powder: final score: 81
+ 
+Rage Powder: Final Score after Status-Target Adjustment: 81
+Rage Powder: Final Score after Status-Target Adjustment: 81
+
+Mega Drain: initial score: 21
+Mega Drain: final score: 21
+ 
+Mega Drain: initial score: 51
+Mega Drain: final score: 51
+ 
+Knock Off: initial score: 25
+Knock Off: final score: 25
+ 
+Knock Off: initial score: 31
+Knock Off: final score: 31
+ 
+Grass Whistle: initial score: 25
+Grass Whistle: final score: 105
+ 
+Grass Whistle: initial score: 25
+Grass Whistle: final score: 81
+ 
+Grass Whistle: Final Score after Status-Target Adjustment: 10
+Grass Whistle: Final Score after Status-Target Adjustment: 81
+
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (0)
+Initial switchscore building: Healing (0)
+Initial switchscore building: fsteak (0)
+Initial switchscore building: Specific Switches (0)
+Initial switchscore building: worthsaving not activated
+Initial switchscore building: Typing (0)
+Tangela: initial switchscore: -10
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+Tangela: initial noswitchscore: 116
+ 
+{
+ 
+}
+ 
+Tangela: highest move score: 81
+Tangela: final switching score: -126
+81 > -126, will not switch
+ 
+Beginning AI Item use check.
+ 
+Highest item score: -10000
+Highest move score: 81
+Not using an item.
+ 
+[The foe Tangela: Rage Powder=81, Mega Drain=5, Knock Off=5, Grass Whistle=81]
+[Prefer Grass Whistle]
+[No Z-Move.]
+[The foe Tangela lost 11 HP, now has 42 HP]
+[The foe Tangela lost 33 HP, now has 9 HP]
+[The foe Tangela gained 3 HP, now has 12 HP]
+***Round 2***
+Player Pokemon Pikachu is faster than Tangela.
+Player Pokemon Pidgeotto is faster than Tangela.
+ 
+Leech Seed: initial score: 30
+Leech Seed: final score: 57
+ 
+Leech Seed: initial score: 30
+Leech Seed: final score: 47
+ 
+Leech Seed: Final Score after Status-Target Adjustment: 5
+Leech Seed: Final Score after Status-Target Adjustment: 4
+
+Grass Whistle: initial score: 25
+Grass Whistle: final score: 0
+ 
+Grass Whistle: initial score: 25
+Grass Whistle: final score: 52
+ 
+Grass Whistle: Final Score after Status-Target Adjustment: 0
+Grass Whistle: Final Score after Status-Target Adjustment: 5
+
+Mega Drain: initial score: 46
+Mega Drain: final score: 58
+ 
+Mega Drain: initial score: 19
+Mega Drain: final score: 21
+ 
+Ancient Power: initial score: 27
+Ancient Power: final score: 27
+ 
+Ancient Power: initial score: 51
+Ancient Power: final score: 51
+ 
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (-100)
+Initial switchscore building: Healing (-100)
+Initial switchscore building: fsteak (-100)
+Initial switchscore building: Specific Switches (-100)
+Initial switchscore building: worthsaving not activated
+Initial switchscore building: Typing (-70)
+Tangela: initial switchscore: -80
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+Tangela: initial noswitchscore: 100
+ 
+{
+ 
+}
+ 
+Tangela: highest move score: 58
+Tangela: final switching score: -180
+58 > -180, will not switch
+ 
+Beginning AI Item use check.
+ 
+Highest item score: -10000
+Highest move score: 58
+Not using an item.
+ 
+[The foe Tangela: Leech Seed=5, Grass Whistle=5, Mega Drain=58, Ancient Power=51]
+[Prefer Mega Drain]
+[No Z-Move.]
+Player Pokemon Pidgeotto is faster than Tangela.
+Player Pokemon Pikachu is faster than Tangela.
+ 
+Rage Powder: initial score: 25
+Priority Check End
+Rage Powder: final score: 64
+ 
+Rage Powder: initial score: 25
+Priority Check End
+Rage Powder: final score: 64
+ 
+Rage Powder: Final Score after Status-Target Adjustment: 64
+Rage Powder: Final Score after Status-Target Adjustment: 64
+
+Mega Drain: initial score: 21
+Mega Drain: final score: 21
+ 
+Mega Drain: initial score: 51
+Mega Drain: final score: 51
+ 
+Knock Off: initial score: 25
+Knock Off: final score: 25
+ 
+Knock Off: initial score: 31
+Knock Off: final score: 31
+ 
+Grass Whistle: initial score: 25
+Grass Whistle: final score: 105
+ 
+Grass Whistle: initial score: 25
+Grass Whistle: final score: 0
+ 
+Grass Whistle: Final Score after Status-Target Adjustment: 105
+Grass Whistle: Final Score after Status-Target Adjustment: 0
+
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (0)
+Initial switchscore building: Healing (0)
+Initial switchscore building: fsteak (0)
+Initial switchscore building: Specific Switches (0)
+Initial switchscore building: worthsaving not activated
+Initial switchscore building: Typing (0)
+Tangela: initial switchscore: -10
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+Tangela: initial noswitchscore: 100
+ 
+{
+ 
+}
+ 
+Tangela: highest move score: 105
+Tangela: final switching score: -110
+105 > -110, will not switch
+ 
+Beginning AI Item use check.
+ 
+Highest item score: -10000
+Highest move score: 105
+Not using an item.
+ 
+[The foe Tangela: Rage Powder=5, Mega Drain=5, Knock Off=5, Grass Whistle=105]
+[Prefer Grass Whistle]
+[No Z-Move.]
+[The foe Tangela lost 12 HP, now has 0 HP]
+Scoring for Tangela switching to: Tangela
+Score: -10000000
+Not switching to self.
+Scoring for Tangela switching to: Tangela
+Score: -10000000
+ 
+Scoring for Tangela switching to: Tangrowth
+Offensive: 41
+Defensive: 241
+Roles: 241
+Weather: 241
+Moves: 241
+Abilities: 241
+Items: 241
+Fields: 266
+Score: 266
+ 
+***Round 3***
+Player Pokemon Pikachu is faster than Tangrowth.
+Player Pokemon Pidgeotto is faster than Tangrowth.
+Ancient Power: initial score: 40
+Ancient Power: final score: 40
+ 
+Ancient Power: initial score: 71
+Ancient Power: final score: 72
+ 
+Leech Seed: initial score: 30
+Leech Seed: final score: 28
+ 
+Leech Seed: initial score: 30
+Leech Seed: final score: 47
+ 
+Leech Seed: Final Score after Status-Target Adjustment: 28
+Leech Seed: Final Score after Status-Target Adjustment: 47
+
+Growth: initial score: 20
+Growth: final score: 16
+ 
+Growth: initial score: 20
+Growth: final score: 53
+ 
+Growth: Final Score after Status-Target Adjustment: 16
+Growth: Final Score after Status-Target Adjustment: 53
+
+Beginning AI Item use check.
+ 
+Highest item score: -10000
+Highest move score: 72
+Not using an item.
+ 
+[The foe Tangrowth: Wine God's Blessing=0, Ancient Power=72, Leech Seed=5, Growth=53]
+[Prefer Ancient Power]
+[No Z-Move.]
+Player Pokemon Pidgeotto is faster than Tangela.
+Player Pokemon Pikachu is faster than Tangela.
+Rage Powder: initial score: 25
+Priority Check End
+Rage Powder: final score: 81
+ 
+Rage Powder: initial score: 25
+Priority Check End
+Rage Powder: final score: 81
+ 
+Rage Powder: Final Score after Status-Target Adjustment: 81
+Rage Powder: Final Score after Status-Target Adjustment: 81
+
+Mega Drain: initial score: 21
+Mega Drain: final score: 21
+ 
+Mega Drain: initial score: 51
+Mega Drain: final score: 51
+ 
+Mega Drain: Final Score after Doubles-Target Adjustment: 21
+Mega Drain: Final Score after Doubles-Target Adjustment: 51
+
+Knock Off: initial score: 25
+Knock Off: final score: 25
+ 
+Knock Off: initial score: 31
+Knock Off: final score: 31
+ 
+Knock Off: Final Score after Doubles-Target Adjustment: 25
+Knock Off: Final Score after Doubles-Target Adjustment: 31
+
+Grass Whistle: initial score: 25
+Grass Whistle: final score: 0
+ 
+Grass Whistle: initial score: 25
+Grass Whistle: final score: 0
+ 
+Grass Whistle: Final Score after Status-Target Adjustment: 0
+Grass Whistle: Final Score after Status-Target Adjustment: 0
+
+Grass Whistle: Final Score after Doubles-Target Adjustment: 0
+Grass Whistle: Final Score after Doubles-Target Adjustment: 0
+
+Volt Absorb Disrupt
+Beginning AI Item use check.
+ 
+Highest item score: -10000
+Highest move score: 81
+Not using an item.
+ 
+[The foe Tangela: Rage Powder=81, Mega Drain=5, Knock Off=5, Grass Whistle=0]
+[Prefer Rage Powder]
+[No Z-Move.]
+[Pidgeotto lost 40 HP, now has 16 HP]
+***Round 4***
+Player Pokemon Pikachu is faster than Tangrowth.
+Player Pokemon Pidgeotto is faster than Tangrowth.
+Ancient Power: initial score: 40
+Ancient Power: final score: 40
+ 
+Ancient Power: initial score: 110
+Ancient Power: final score: 110
+ 
+Leech Seed: initial score: 30
+Leech Seed: final score: 28
+ 
+Leech Seed: initial score: 30
+Leech Seed: final score: 1
+ 
+Leech Seed: Final Score after Status-Target Adjustment: 28
+Leech Seed: Final Score after Status-Target Adjustment: 1
+
+Growth: initial score: 20
+Growth: final score: 10
+ 
+Growth: initial score: 20
+Growth: final score: 4
+ 
+Growth: Final Score after Status-Target Adjustment: 10
+Growth: Final Score after Status-Target Adjustment: 4
+
+Beginning AI Item use check.
+ 
+Highest item score: -10000
+Highest move score: 110
+Not using an item.
+ 
+[The foe Tangrowth: Wine God's Blessing=0, Ancient Power=110, Leech Seed=5, Growth=5]
+[Prefer Ancient Power]
+[No Z-Move.]
+Player Pokemon Pidgeotto is faster than Tangela.
+Player Pokemon Pikachu is faster than Tangela.
+Rage Powder: initial score: 25
+Priority Check End
+Rage Powder: final score: 64
+ 
+Rage Powder: initial score: 25
+Priority Check End
+Rage Powder: final score: 64
+ 
+Rage Powder: Final Score after Status-Target Adjustment: 64
+Rage Powder: Final Score after Status-Target Adjustment: 64
+
+Mega Drain: initial score: 75
+Mega Drain: final score: 75
+ 
+Mega Drain: initial score: 51
+Mega Drain: final score: 51
+ 
+Mega Drain: Final Score after Doubles-Target Adjustment: 75
+Mega Drain: Final Score after Doubles-Target Adjustment: 10
+
+Knock Off: initial score: 87
+Knock Off: final score: 87
+ 
+Knock Off: initial score: 31
+Knock Off: final score: 31
+ 
+Knock Off: Final Score after Doubles-Target Adjustment: 87
+Knock Off: Final Score after Doubles-Target Adjustment: 6
+
+Grass Whistle: initial score: 25
+Grass Whistle: final score: 0
+ 
+Grass Whistle: initial score: 25
+Grass Whistle: final score: 0
+ 
+Grass Whistle: Final Score after Status-Target Adjustment: 0
+Grass Whistle: Final Score after Status-Target Adjustment: 0
+
+Grass Whistle: Final Score after Doubles-Target Adjustment: 0
+Grass Whistle: Final Score after Doubles-Target Adjustment: 0
+
+Volt Absorb Disrupt
+Beginning AI Item use check.
+ 
+Highest item score: -10000
+Highest move score: 87
+Not using an item.
+ 
+[The foe Tangela: Rage Powder=64, Mega Drain=75, Knock Off=87, Grass Whistle=1]
+[Prefer Knock Off]
+[No Z-Move.]
+[The foe Tangrowth lost 9 HP, now has 65 HP]
+[The foe Tangrowth lost 25 HP, now has 40 HP]
+[Pidgeotto lost 16 HP, now has 0 HP]
+[Pikachu lost 11 HP, now has 36 HP]
+[Pikachu gained 2 HP, now has 38 HP]
+[The foe Tangrowth gained 4 HP, now has 44 HP]
+***Round 5***
+Player Pokemon Pikachu is faster than Tangrowth.
+Player Pokemon Diglett is faster than Tangrowth.
+Ancient Power: initial score: 50
+Ancient Power: final score: 50
+ 
+Ancient Power: initial score: 28
+Ancient Power: final score: 28
+ 
+Leech Seed: initial score: 30
+Leech Seed: final score: 17
+ 
+Leech Seed: initial score: 30
+Leech Seed: final score: 23
+ 
+Leech Seed: Final Score after Status-Target Adjustment: 17
+Leech Seed: Final Score after Status-Target Adjustment: 23
+
+Growth: initial score: 20
+Growth: final score: 7
+ 
+Growth: initial score: 20
+Growth: final score: 7
+ 
+Growth: Final Score after Status-Target Adjustment: 7
+Growth: Final Score after Status-Target Adjustment: 7
+
+Beginning AI Item use check.
+ 
+Highest item score: -10000
+Highest move score: 50
+Not using an item.
+ 
+[The foe Tangrowth: Wine God's Blessing=0, Ancient Power=50, Leech Seed=5, Growth=5]
+[Prefer Ancient Power]
+[No Z-Move.]
+Player Pokemon Diglett is faster than Tangela.
+Player Pokemon Pikachu is faster than Tangela.
+Rage Powder: initial score: 25
+Priority Check End
+Rage Powder: final score: 38
+ 
+Rage Powder: initial score: 25
+Priority Check End
+Rage Powder: final score: 64
+ 
+Rage Powder: Final Score after Status-Target Adjustment: 38
+Rage Powder: Final Score after Status-Target Adjustment: 64
+
+Mega Drain: initial score: 110
+Mega Drain: final score: 121
+ 
+Mega Drain: initial score: 63
+Mega Drain: final score: 63
+ 
+Mega Drain: Final Score after Doubles-Target Adjustment: 24
+Mega Drain: Final Score after Doubles-Target Adjustment: 63
+
+Knock Off: initial score: 52
+Knock Off: final score: 52
+ 
+Knock Off: initial score: 39
+Knock Off: final score: 39
+ 
+Knock Off: Final Score after Doubles-Target Adjustment: 10
+Knock Off: Final Score after Doubles-Target Adjustment: 39
+
+Grass Whistle: initial score: 25
+Grass Whistle: final score: 48
+ 
+Grass Whistle: initial score: 25
+Grass Whistle: final score: 67
+ 
+Grass Whistle: Final Score after Status-Target Adjustment: 48
+Grass Whistle: Final Score after Status-Target Adjustment: 67
+
+Grass Whistle: Final Score after Doubles-Target Adjustment: 9
+Grass Whistle: Final Score after Doubles-Target Adjustment: 67
+
+Beginning AI Item use check.
+ 
+Highest item score: -10000
+Highest move score: 67
+Not using an item.
+ 
+[The foe Tangela: Rage Powder=64, Mega Drain=63, Knock Off=5, Grass Whistle=67]
+[Prefer Grass Whistle]
+[No Z-Move.]
+[Using two-turn attack]
+[The foe Tangela lost 11 HP, now has 42 HP]
+[Pikachu lost 19 HP, now has 19 HP]
+[Pikachu gained 2 HP, now has 21 HP]
+[The foe Tangrowth gained 4 HP, now has 48 HP]
+[The foe Tangela gained 3 HP, now has 45 HP]
+***Round 6***
+[reusing commands for Diglett]
+==============================
+Battle Start!
+235 - Tangrowth
+==============================
+***Round 1***
+Player Pokemon Pikachu is faster than Tangela.
+Player Pokemon Kadabra is faster than Tangela.
+Leech Seed: initial score: 30
+Leech Seed: final score: 5
+ 
+Leech Seed: initial score: 30
+Leech Seed: final score: 47
+ 
+Leech Seed: Final Score after Status-Target Adjustment: 5
+Leech Seed: Final Score after Status-Target Adjustment: 47
+
+Grass Whistle: initial score: 25
+Grass Whistle: final score: 52
+ 
+Grass Whistle: initial score: 25
+Grass Whistle: final score: 52
+ 
+Grass Whistle: Final Score after Status-Target Adjustment: 52
+Grass Whistle: Final Score after Status-Target Adjustment: 52
+
+Volt Absorb Disrupt
+Mega Drain: initial score: 110
+Mega Drain: final score: 121
+ 
+Mega Drain: initial score: 36
+Mega Drain: final score: 36
+ 
+Ancient Power: initial score: 108
+Ancient Power: final score: 108
+ 
+Ancient Power: initial score: 22
+Ancient Power: final score: 22
+ 
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (0)
+Initial switchscore building: Healing (0)
+Initial switchscore building: fsteak (0)
+Initial switchscore building: Specific Switches (0)
+Initial switchscore building: worthsaving not activated
+Initial switchscore building: Typing (0)
+Tangela: initial switchscore: -20
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+Tangela: initial noswitchscore: 116
+ 
+{
+ 
+}
+ 
+Tangela: highest move score: 121
+Tangela: final switching score: -136
+121 > -136, will not switch
+ 
+Beginning AI Item use check.
+ 
+Highest item score: -10000
+Highest move score: 121
+Not using an item.
+ 
+[The foe Tangela: Leech Seed=5, Grass Whistle=5, Mega Drain=121, Ancient Power=108]
+[Prefer Mega Drain]
+[No Z-Move.]
+Player Pokemon Kadabra is faster than Tangela.
+Player Pokemon Pikachu is faster than Tangela.
+Rage Powder: initial score: 25
+Priority Check End
+Rage Powder: final score: 81
+ 
+Rage Powder: initial score: 25
+Priority Check End
+Rage Powder: final score: 48
+ 
+Rage Powder: Final Score after Status-Target Adjustment: 81
+Rage Powder: Final Score after Status-Target Adjustment: 48
+
+Mega Drain: initial score: 42
+Mega Drain: final score: 42
+ 
+Mega Drain: initial score: 110
+Mega Drain: final score: 121
+ 
+Knock Off: initial score: 69
+Knock Off: final score: 69
+ 
+Knock Off: initial score: 110
+Knock Off: final score: 110
+ 
+Grass Whistle: initial score: 25
+Grass Whistle: final score: 40
+ 
+Grass Whistle: initial score: 25
+Grass Whistle: final score: 40
+ 
+Grass Whistle: Final Score after Status-Target Adjustment: 40
+Grass Whistle: Final Score after Status-Target Adjustment: 40
+
+Volt Absorb Disrupt
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (0)
+Initial switchscore building: Healing (0)
+Initial switchscore building: fsteak (0)
+Initial switchscore building: Specific Switches (0)
+Initial switchscore building: worthsaving not activated
+Initial switchscore building: Typing (0)
+Tangela: initial switchscore: -20
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+Tangela: initial noswitchscore: 116
+ 
+{
+ 
+}
+ 
+Tangela: highest move score: 121
+Tangela: final switching score: -136
+121 > -136, will not switch
+ 
+Beginning AI Item use check.
+ 
+Highest item score: -10000
+Highest move score: 121
+Not using an item.
+ 
+[The foe Tangela: Rage Powder=81, Mega Drain=121, Knock Off=110, Grass Whistle=5]
+[Prefer Mega Drain]
+[No Z-Move.]
+[The foe Tangela lost 34 HP, now has 19 HP]
+[The foe Tangela lost 11 HP, now has 8 HP]
+[ Pikachu lost 12 HP, now has 0 HP]
+[The foe Tangela gained 7 HP, now has 15 HP]
+[ Kadabra lost 21 HP, now has 28 HP]
+[ Kadabra gained 3 HP, now has 31 HP]
+[The foe Tangela gained 3 HP, now has 18 HP]
+***Round 2***
+AI Pokemon Tangela is faster than Chansey.
+Player Pokemon Kadabra is faster than Tangela.
+Leech Seed: initial score: 30
+Leech Seed: final score: 61
+ 
+Leech Seed: initial score: 30
+Leech Seed: final score: 27
+ 
+Leech Seed: Final Score after Status-Target Adjustment: 61
+Leech Seed: Final Score after Status-Target Adjustment: 27
+
+Grass Whistle: initial score: 25
+Grass Whistle: final score: 69
+ 
+Grass Whistle: initial score: 25
+Grass Whistle: final score: 21
+ 
+Grass Whistle: Final Score after Status-Target Adjustment: 69
+Grass Whistle: Final Score after Status-Target Adjustment: 21
+
+Mega Drain: initial score: 9
+Mega Drain: final score: 10
+ 
+Mega Drain: initial score: 58
+Mega Drain: final score: 70
+ 
+Ancient Power: initial score: 6
+Ancient Power: final score: 6
+ 
+Ancient Power: initial score: 35
+Ancient Power: final score: 35
+ 
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (60)
+Initial switchscore building: Healing (60)
+Initial switchscore building: fsteak (60)
+Initial switchscore building: Specific Switches (60)
+Initial switchscore building: worthsaving not activated
+Initial switchscore building: Typing (90)
+Tangela: initial switchscore: 90
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+Tangela: initial noswitchscore: 100
+ 
+{
+ 
+}
+ 
+Tangela: highest move score: 70
+Tangela: final switching score: -10
+70 > -10, will not switch
+ 
+Beginning AI Item use check.
+ 
+Highest item score: -10000
+Highest move score: 70
+Not using an item.
+ 
+[The foe Tangela: Leech Seed=61, Grass Whistle=69, Mega Drain=70, Ancient Power=5]
+[Prefer Mega Drain]
+[No Z-Move.]
+Player Pokemon Kadabra is faster than Tangela.
+AI Pokemon Tangela is faster than Chansey.
+Rage Powder: initial score: 25
+Priority Check End
+Rage Powder: final score: 64
+ 
+Rage Powder: initial score: 25
+Priority Check End
+Rage Powder: final score: 64
+ 
+Rage Powder: Final Score after Status-Target Adjustment: 64
+Rage Powder: Final Score after Status-Target Adjustment: 64
+
+Mega Drain: initial score: 67
+Mega Drain: final score: 67
+ 
+Mega Drain: initial score: 11
+Mega Drain: final score: 11
+ 
+Knock Off: initial score: 109
+Knock Off: final score: 109
+ 
+Knock Off: initial score: 25
+Knock Off: final score: 25
+ 
+Grass Whistle: initial score: 25
+Grass Whistle: final score: 33
+ 
+Grass Whistle: initial score: 25
+Grass Whistle: final score: 53
+ 
+Grass Whistle: Final Score after Status-Target Adjustment: 33
+Grass Whistle: Final Score after Status-Target Adjustment: 53
+
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (0)
+Initial switchscore building: Healing (0)
+Initial switchscore building: fsteak (0)
+Initial switchscore building: Specific Switches (0)
+Initial switchscore building: worthsaving not activated
+Initial switchscore building: Typing (0)
+Tangela: initial switchscore: 0
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+Tangela: initial noswitchscore: 100
+ 
+{
+ 
+}
+ 
+Tangela: highest move score: 109
+Tangela: final switching score: -100
+109 > -100, will not switch
+ 
+Beginning AI Item use check.
+ 
+Highest item score: -10000
+Highest move score: 109
+Not using an item.
+ 
+[The foe Tangela: Rage Powder=5, Mega Drain=5, Knock Off=109, Grass Whistle=5]
+[Prefer Knock Off]
+[No Z-Move.]
+[The foe Tangela lost 18 HP, now has 0 HP]
+[ Kadabra lost 23 HP, now has 8 HP]
+[The foe Tangela lost 7 HP, now has 46 HP]
+[ Kadabra gained 3 HP, now has 11 HP]
+[The foe Tangela gained 3 HP, now has 49 HP]
+Scoring for Tangela switching to: Tangela
+Score: -10000000
+Not switching to self.
+Scoring for Tangela switching to: Tangela
+Score: -10000000
+ 
+Scoring for Tangela switching to: Tangrowth
+Offensive: 34
+Defensive: 184
+Roles: 184
+Weather: 184
+Moves: 184
+Abilities: 184
+Items: 184
+Fields: 209
+Score: 209
+ 
+***Round 3***
+AI Pokemon Tangrowth is faster than Chansey.
+Player Pokemon Kadabra is faster than Tangrowth.
+Ancient Power: initial score: 8
+Ancient Power: final score: 8
+ 
+Ancient Power: initial score: 110
+Ancient Power: final score: 110
+ 
+Leech Seed: initial score: 30
+Leech Seed: final score: 51
+ 
+Leech Seed: initial score: 30
+Leech Seed: final score: 0
+ 
+Leech Seed: Final Score after Status-Target Adjustment: 51
+Leech Seed: Final Score after Status-Target Adjustment: 0
+
+Growth: initial score: 20
+Growth: final score: 25
+ 
+Growth: initial score: 20
+Growth: final score: 2
+ 
+Growth: Final Score after Status-Target Adjustment: 25
+Growth: Final Score after Status-Target Adjustment: 2
+
+Beginning AI Item use check.
+ 
+Highest item score: -10000
+Highest move score: 110
+Not using an item.
+ 
+[The foe Tangrowth: Wine God's Blessing=0, Ancient Power=110, Leech Seed=5, Growth=5]
+[Prefer Ancient Power]
+[No Z-Move.]
+Player Pokemon Kadabra is faster than Tangela.
+AI Pokemon Tangela is faster than Chansey.
+Rage Powder: initial score: 25
+Priority Check End
+Rage Powder: final score: 12
+ 
+Rage Powder: initial score: 25
+Priority Check End
+Rage Powder: final score: 64
+ 
+Rage Powder: Final Score after Status-Target Adjustment: 12
+Rage Powder: Final Score after Status-Target Adjustment: 64
+
+Mega Drain: initial score: 110
+Mega Drain: final score: 132
+ 
+Mega Drain: initial score: 11
+Mega Drain: final score: 12
+ 
+Mega Drain: Final Score after Doubles-Target Adjustment: 26
+Mega Drain: Final Score after Doubles-Target Adjustment: 12
+
+Knock Off: initial score: 110
+Knock Off: final score: 110
+ 
+Knock Off: initial score: 25
+Knock Off: final score: 25
+ 
+Knock Off: Final Score after Doubles-Target Adjustment: 22
+Knock Off: Final Score after Doubles-Target Adjustment: 25
+
+Grass Whistle: initial score: 25
+Grass Whistle: final score: 6
+ 
+Grass Whistle: initial score: 25
+Grass Whistle: final score: 41
+ 
+Grass Whistle: Final Score after Status-Target Adjustment: 6
+Grass Whistle: Final Score after Status-Target Adjustment: 41
+
+Grass Whistle: Final Score after Doubles-Target Adjustment: 1
+Grass Whistle: Final Score after Doubles-Target Adjustment: 41
+
+Beginning AI Item use check.
+ 
+Highest item score: -10000
+Highest move score: 64
+Not using an item.
+ 
+[The foe Tangela: Rage Powder=64, Mega Drain=5, Knock Off=5, Grass Whistle=5]
+[Prefer Rage Powder]
+[No Z-Move.]
+[The foe Tangela lost 34 HP, now has 15 HP]
+[ Kadabra lost 11 HP, now has 0 HP]
+[The foe Tangela lost 7 HP, now has 8 HP]
+[The foe Tangela gained 3 HP, now has 11 HP]
+***Round 4***
+AI Pokemon Tangrowth is faster than Chansey.
+Player Pokemon Diglett is faster than Tangrowth.
+Ancient Power: initial score: 8
+Ancient Power: final score: 8
+ 
+Ancient Power: initial score: 28
+Ancient Power: final score: 28
+ 
+Leech Seed: initial score: 30
+Leech Seed: final score: 51
+ 
+Leech Seed: initial score: 30
+Leech Seed: final score: 23
+ 
+Leech Seed: Final Score after Status-Target Adjustment: 51
+Leech Seed: Final Score after Status-Target Adjustment: 23
+
+Growth: initial score: 20
+Growth: final score: 25
+ 
+Growth: initial score: 20
+Growth: final score: 10
+ 
+Growth: Final Score after Status-Target Adjustment: 25
+Growth: Final Score after Status-Target Adjustment: 10
+
+Beginning AI Item use check.
+ 
+Highest item score: -10000
+Highest move score: 51
+Not using an item.
+ 
+[The foe Tangrowth: Wine God's Blessing=0, Ancient Power=5, Leech Seed=51, Growth=5]
+[Prefer Leech Seed]
+[No Z-Move.]
+Player Pokemon Diglett is faster than Tangela.
+AI Pokemon Tangela is faster than Chansey.
+Rage Powder: initial score: 25
+Priority Check End
+Rage Powder: final score: 5
+ 
+Rage Powder: initial score: 25
+Priority Check End
+Rage Powder: final score: 25
+ 
+Rage Powder: Final Score after Status-Target Adjustment: 5
+Rage Powder: Final Score after Status-Target Adjustment: 25
+
+Mega Drain: initial score: 110
+Mega Drain: final score: 183
+ 
+Mega Drain: initial score: 11
+Mega Drain: final score: 13
+ 
+Knock Off: initial score: 52
+Knock Off: final score: 52
+ 
+Knock Off: initial score: 25
+Knock Off: final score: 25
+ 
+Grass Whistle: initial score: 25
+Grass Whistle: final score: 16
+ 
+Grass Whistle: initial score: 25
+Grass Whistle: final score: 41
+ 
+Grass Whistle: Final Score after Status-Target Adjustment: 16
+Grass Whistle: Final Score after Status-Target Adjustment: 4
+
+Beginning AI Item use check.
+ 
+Highest item score: -10000
+Highest move score: 183
+Not using an item.
+ 
+[The foe Tangela: Rage Powder=5, Mega Drain=183, Knock Off=5, Grass Whistle=5]
+[Prefer Mega Drain]
+[No Z-Move.]
+[The foe Tangela lost 6 HP, now has 5 HP]
+[ Diglett lost 38 HP, now has 0 HP]
+[The foe Tangela gained 24 HP, now has 29 HP]
+[The foe Tangela lost 7 HP, now has 22 HP]
+[The foe Tangela gained 3 HP, now has 25 HP]
+[ Chansey lost 16 HP, now has 119 HP]
+***Round 5***
+AI Pokemon Tangrowth is faster than Chansey.
+Player Pokemon Gyarados is faster than Tangrowth.
+Ancient Power: initial score: 9
+Ancient Power: final score: 9
+ 
+Ancient Power: initial score: 41
+Ancient Power: final score: 41
+ 
+Leech Seed: initial score: 30
+Leech Seed: final score: 0
+ 
+Leech Seed: initial score: 30
+[Not preferring status move]
+Leech Seed: final score: 35
+ 
+Leech Seed: Final Score after Status-Target Adjustment: 0
+Leech Seed: Final Score after Status-Target Adjustment: 35
+
+Growth: initial score: 20
+[Not preferring status move]
+Growth: final score: 19
+ 
+Growth: initial score: 20
+[Not preferring status move]
+Growth: final score: 8
+ 
+Growth: Final Score after Status-Target Adjustment: 19
+Growth: Final Score after Status-Target Adjustment: 8
+
+Beginning AI Item use check.
+ 
+Highest item score: -10000
+Highest move score: 41
+Not using an item.
+ 
+[The foe Tangrowth: Wine God's Blessing=0, Ancient Power=41, Leech Seed=35, Growth=5]
+[Prefer Ancient Power]
+[No Z-Move.]
+Player Pokemon Gyarados is faster than Tangela.
+AI Pokemon Tangela is faster than Chansey.
+ 
+Rage Powder: initial score: 25
+Priority Check End
+[Not preferring status move]
+Rage Powder: final score: 23
+ 
+Rage Powder: initial score: 25
+Priority Check End
+[Not preferring status move]
+Rage Powder: final score: 23
+ 
+Rage Powder: Final Score after Status-Target Adjustment: 23
+Rage Powder: Final Score after Status-Target Adjustment: 23
+
+Mega Drain: initial score: 25
+Mega Drain: final score: 30
+ 
+Mega Drain: initial score: 13
+Mega Drain: final score: 15
+ 
+Mega Drain: Final Score after Doubles-Target Adjustment: 30
+Mega Drain: Final Score after Doubles-Target Adjustment: 15
+
+Knock Off: initial score: 10
+Knock Off: final score: 10
+ 
+Knock Off: initial score: 18
+Knock Off: final score: 18
+ 
+Knock Off: Final Score after Doubles-Target Adjustment: 10
+Knock Off: Final Score after Doubles-Target Adjustment: 18
+
+Grass Whistle: initial score: 25
+[Not preferring status move]
+Grass Whistle: final score: 47
+ 
+Grass Whistle: initial score: 25
+[Not preferring status move]
+Grass Whistle: final score: 30
+ 
+Grass Whistle: Final Score after Status-Target Adjustment: 47
+Grass Whistle: Final Score after Status-Target Adjustment: 30
+
+Grass Whistle: Final Score after Doubles-Target Adjustment: 47
+Grass Whistle: Final Score after Doubles-Target Adjustment: 30
+
+Beginning AI Item use check.
+ 
+Highest item score: -10000
+Highest move score: 47
+Not using an item.
+ 
+[The foe Tangela: Rage Powder=5, Mega Drain=5, Knock Off=5, Grass Whistle=47]
+[Prefer Grass Whistle]
+[No Z-Move.]
+[The foe Tangela lost 25 HP, now has 0 HP]
+[ Gyarados lost 29 HP, now has 41 HP]
+[The foe Tangrowth lost 5 HP, now has 69 HP]
+[The foe Tangrowth gained 4 HP, now has 73 HP]
+[ Chansey gained 8 HP, now has 127 HP]
+[ Chansey lost 16 HP, now has 111 HP]
+[The foe Tangrowth gained 1 HP, now has 74 HP]
+***Round 6***
+[reusing commands for  Gyarados]
+==============================
+Battle Start!
+235 - Tangrowth
+==============================
+***Round 1***
+Player Pokemon Pikachu is faster than Tangela.
+Player Pokemon Pidgeotto is faster than Tangela.
+Leech Seed: initial score: 30
+Leech Seed: final score: 47
+ 
+Leech Seed: initial score: 30
+Leech Seed: final score: 47
+ 
+Leech Seed: Final Score after Status-Target Adjustment: 47
+Leech Seed: Final Score after Status-Target Adjustment: 4
+
+Grass Whistle: initial score: 25
+Grass Whistle: final score: 105
+ 
+Grass Whistle: initial score: 25
+Grass Whistle: final score: 105
+ 
+Grass Whistle: Final Score after Status-Target Adjustment: 105
+Grass Whistle: Final Score after Status-Target Adjustment: 10
+
+Mega Drain: initial score: 46
+Mega Drain: final score: 46
+ 
+Mega Drain: initial score: 19
+Mega Drain: final score: 19
+ 
+Ancient Power: initial score: 27
+Ancient Power: final score: 27
+ 
+Ancient Power: initial score: 51
+Ancient Power: final score: 51
+ 
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (0)
+Initial switchscore building: Healing (0)
+Initial switchscore building: fsteak (0)
+Initial switchscore building: Specific Switches (0)
+Initial switchscore building: worthsaving not activated
+Initial switchscore building: Typing (0)
+Tangela: initial switchscore: -10
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+Tangela: initial noswitchscore: 116
+ 
+{
+ 
+}
+ 
+Tangela: highest move score: 105
+Tangela: final switching score: -126
+105 > -126, will not switch
+ 
+Beginning AI Item use check.
+ 
+Highest item score: -10000
+Highest move score: 105
+Not using an item.
+ 
+[The foe Tangela: Leech Seed=5, Grass Whistle=105, Mega Drain=5, Ancient Power=5]
+[Prefer Grass Whistle]
+[No Z-Move.]
+Player Pokemon Pidgeotto is faster than Tangela.
+Player Pokemon Pikachu is faster than Tangela.
+Rage Powder: initial score: 25
+Priority Check End
+Rage Powder: final score: 81
+ 
+Rage Powder: initial score: 25
+Priority Check End
+Rage Powder: final score: 81
+ 
+Rage Powder: Final Score after Status-Target Adjustment: 81
+Rage Powder: Final Score after Status-Target Adjustment: 81
+
+Mega Drain: initial score: 21
+Mega Drain: final score: 21
+ 
+Mega Drain: initial score: 51
+Mega Drain: final score: 51
+ 
+Knock Off: initial score: 25
+Knock Off: final score: 25
+ 
+Knock Off: initial score: 31
+Knock Off: final score: 31
+ 
+Grass Whistle: initial score: 25
+Grass Whistle: final score: 105
+ 
+Grass Whistle: initial score: 25
+Grass Whistle: final score: 81
+ 
+Grass Whistle: Final Score after Status-Target Adjustment: 10
+Grass Whistle: Final Score after Status-Target Adjustment: 81
+
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (0)
+Initial switchscore building: Healing (0)
+Initial switchscore building: fsteak (0)
+Initial switchscore building: Specific Switches (0)
+Initial switchscore building: worthsaving not activated
+Initial switchscore building: Typing (0)
+Tangela: initial switchscore: -10
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+Tangela: initial noswitchscore: 116
+ 
+{
+ 
+}
+ 
+Tangela: highest move score: 81
+Tangela: final switching score: -126
+81 > -126, will not switch
+ 
+Beginning AI Item use check.
+ 
+Highest item score: -10000
+Highest move score: 81
+Not using an item.
+ 
+[The foe Tangela: Rage Powder=81, Mega Drain=5, Knock Off=5, Grass Whistle=81]
+[Prefer Grass Whistle]
+[No Z-Move.]
+[The foe Tangela lost 33 HP, now has 20 HP]
+[The foe Tangela gained 3 HP, now has 23 HP]
+***Round 2***
+Player Pokemon Pikachu is faster than Tangela.
+Player Pokemon Pidgeotto is faster than Tangela.
+ 
+Leech Seed: initial score: 30
+Leech Seed: final score: 57
+ 
+Leech Seed: initial score: 30
+Leech Seed: final score: 47
+ 
+Leech Seed: Final Score after Status-Target Adjustment: 5
+Leech Seed: Final Score after Status-Target Adjustment: 4
+
+Grass Whistle: initial score: 25
+Grass Whistle: final score: 0
+ 
+Grass Whistle: initial score: 25
+Grass Whistle: final score: 52
+ 
+Grass Whistle: Final Score after Status-Target Adjustment: 0
+Grass Whistle: Final Score after Status-Target Adjustment: 5
+
+Mega Drain: initial score: 46
+Mega Drain: final score: 58
+ 
+Mega Drain: initial score: 19
+Mega Drain: final score: 21
+ 
+Ancient Power: initial score: 27
+Ancient Power: final score: 27
+ 
+Ancient Power: initial score: 51
+Ancient Power: final score: 51
+ 
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (0)
+Initial switchscore building: Healing (0)
+Initial switchscore building: fsteak (0)
+Initial switchscore building: Specific Switches (0)
+Initial switchscore building: worthsaving not activated
+Initial switchscore building: Typing (30)
+Tangela: initial switchscore: 20
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+Tangela: initial noswitchscore: 100
+ 
+{
+ 
+}
+ 
+Tangela: highest move score: 58
+Tangela: final switching score: -80
+58 > -80, will not switch
+ 
+Beginning AI Item use check.
+ 
+Highest item score: -10000
+Highest move score: 58
+Not using an item.
+ 
+[The foe Tangela: Leech Seed=5, Grass Whistle=5, Mega Drain=58, Ancient Power=51]
+[Prefer Mega Drain]
+[No Z-Move.]
+Player Pokemon Pidgeotto is faster than Tangela.
+Player Pokemon Pikachu is faster than Tangela.
+ 
+Rage Powder: initial score: 25
+Priority Check End
+Rage Powder: final score: 64
+ 
+Rage Powder: initial score: 25
+Priority Check End
+Rage Powder: final score: 64
+ 
+Rage Powder: Final Score after Status-Target Adjustment: 64
+Rage Powder: Final Score after Status-Target Adjustment: 64
+
+Mega Drain: initial score: 21
+Mega Drain: final score: 21
+ 
+Mega Drain: initial score: 51
+Mega Drain: final score: 51
+ 
+Knock Off: initial score: 25
+Knock Off: final score: 25
+ 
+Knock Off: initial score: 31
+Knock Off: final score: 31
+ 
+Grass Whistle: initial score: 25
+Grass Whistle: final score: 105
+ 
+Grass Whistle: initial score: 25
+Grass Whistle: final score: 0
+ 
+Grass Whistle: Final Score after Status-Target Adjustment: 105
+Grass Whistle: Final Score after Status-Target Adjustment: 0
+
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (0)
+Initial switchscore building: Healing (0)
+Initial switchscore building: fsteak (0)
+Initial switchscore building: Specific Switches (0)
+Initial switchscore building: worthsaving not activated
+Initial switchscore building: Typing (0)
+Tangela: initial switchscore: -10
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+Tangela: initial noswitchscore: 100
+ 
+{
+ 
+}
+ 
+Tangela: highest move score: 105
+Tangela: final switching score: -110
+105 > -110, will not switch
+ 
+Beginning AI Item use check.
+ 
+Highest item score: -10000
+Highest move score: 105
+Not using an item.
+ 
+[The foe Tangela: Rage Powder=5, Mega Drain=5, Knock Off=5, Grass Whistle=105]
+[Prefer Grass Whistle]
+[No Z-Move.]
+[The foe Tangela lost 23 HP, now has 0 HP]
+Scoring for Tangela switching to: Tangela
+Score: -10000000
+Not switching to self.
+Scoring for Tangela switching to: Tangela
+Score: -10000000
+ 
+Scoring for Tangela switching to: Tangrowth
+Offensive: 41
+Defensive: 241
+Roles: 241
+Weather: 241
+Moves: 241
+Abilities: 241
+Items: 241
+Fields: 266
+Score: 266
+ 
+***Round 3***
+Player Pokemon Pikachu is faster than Tangrowth.
+Player Pokemon Pidgeotto is faster than Tangrowth.
+Ancient Power: initial score: 40
+Ancient Power: final score: 40
+ 
+Ancient Power: initial score: 71
+Ancient Power: final score: 72
+ 
+Leech Seed: initial score: 30
+Leech Seed: final score: 28
+ 
+Leech Seed: initial score: 30
+Leech Seed: final score: 47
+ 
+Leech Seed: Final Score after Status-Target Adjustment: 28
+Leech Seed: Final Score after Status-Target Adjustment: 47
+
+Growth: initial score: 20
+Growth: final score: 16
+ 
+Growth: initial score: 20
+Growth: final score: 53
+ 
+Growth: Final Score after Status-Target Adjustment: 16
+Growth: Final Score after Status-Target Adjustment: 53
+
+Beginning AI Item use check.
+ 
+Highest item score: -10000
+Highest move score: 72
+Not using an item.
+ 
+[The foe Tangrowth: Wine God's Blessing=0, Ancient Power=72, Leech Seed=5, Growth=53]
+[Prefer Ancient Power]
+[No Z-Move.]
+Player Pokemon Pidgeotto is faster than Tangela.
+Player Pokemon Pikachu is faster than Tangela.
+Rage Powder: initial score: 25
+Priority Check End
+Rage Powder: final score: 81
+ 
+Rage Powder: initial score: 25
+Priority Check End
+Rage Powder: final score: 81
+ 
+Rage Powder: Final Score after Status-Target Adjustment: 81
+Rage Powder: Final Score after Status-Target Adjustment: 81
+
+Mega Drain: initial score: 21
+Mega Drain: final score: 21
+ 
+Mega Drain: initial score: 51
+Mega Drain: final score: 51
+ 
+Mega Drain: Final Score after Doubles-Target Adjustment: 21
+Mega Drain: Final Score after Doubles-Target Adjustment: 51
+
+Knock Off: initial score: 25
+Knock Off: final score: 25
+ 
+Knock Off: initial score: 31
+Knock Off: final score: 31
+ 
+Knock Off: Final Score after Doubles-Target Adjustment: 25
+Knock Off: Final Score after Doubles-Target Adjustment: 31
+
+Grass Whistle: initial score: 25
+Grass Whistle: final score: 0
+ 
+Grass Whistle: initial score: 25
+Grass Whistle: final score: 0
+ 
+Grass Whistle: Final Score after Status-Target Adjustment: 0
+Grass Whistle: Final Score after Status-Target Adjustment: 0
+
+Grass Whistle: Final Score after Doubles-Target Adjustment: 0
+Grass Whistle: Final Score after Doubles-Target Adjustment: 0
+
+Volt Absorb Disrupt
+Beginning AI Item use check.
+ 
+Highest item score: -10000
+Highest move score: 81
+Not using an item.
+ 
+[The foe Tangela: Rage Powder=81, Mega Drain=5, Knock Off=5, Grass Whistle=0]
+[Prefer Rage Powder]
+[No Z-Move.]
+[Pidgeotto lost 40 HP, now has 16 HP]
+***Round 4***
+Player Pokemon Pikachu is faster than Tangrowth.
+Player Pokemon Pidgeotto is faster than Tangrowth.
+Ancient Power: initial score: 40
+Ancient Power: final score: 40
+ 
+Ancient Power: initial score: 110
+Ancient Power: final score: 110
+ 
+Leech Seed: initial score: 30
+Leech Seed: final score: 28
+ 
+Leech Seed: initial score: 30
+Leech Seed: final score: 5
+ 
+Leech Seed: Final Score after Status-Target Adjustment: 28
+Leech Seed: Final Score after Status-Target Adjustment: 5
+
+Growth: initial score: 20
+Growth: final score: 10
+ 
+Growth: initial score: 20
+Growth: final score: 32
+ 
+Growth: Final Score after Status-Target Adjustment: 10
+Growth: Final Score after Status-Target Adjustment: 32
+
+Beginning AI Item use check.
+ 
+Highest item score: -10000
+Highest move score: 110
+Not using an item.
+ 
+[The foe Tangrowth: Wine God's Blessing=0, Ancient Power=110, Leech Seed=5, Growth=5]
+[Prefer Ancient Power]
+[No Z-Move.]
+Player Pokemon Pidgeotto is faster than Tangela.
+Player Pokemon Pikachu is faster than Tangela.
+Rage Powder: initial score: 25
+Priority Check End
+Rage Powder: final score: 64
+ 
+Rage Powder: initial score: 25
+Priority Check End
+Rage Powder: final score: 64
+ 
+Rage Powder: Final Score after Status-Target Adjustment: 64
+Rage Powder: Final Score after Status-Target Adjustment: 64
+
+Mega Drain: initial score: 75
+Mega Drain: final score: 75
+ 
+Mega Drain: initial score: 51
+Mega Drain: final score: 51
+ 
+Mega Drain: Final Score after Doubles-Target Adjustment: 75
+Mega Drain: Final Score after Doubles-Target Adjustment: 10
+
+Knock Off: initial score: 87
+Knock Off: final score: 87
+ 
+Knock Off: initial score: 31
+Knock Off: final score: 31
+ 
+Knock Off: Final Score after Doubles-Target Adjustment: 87
+Knock Off: Final Score after Doubles-Target Adjustment: 6
+
+Grass Whistle: initial score: 25
+Grass Whistle: final score: 0
+ 
+Grass Whistle: initial score: 25
+Grass Whistle: final score: 0
+ 
+Grass Whistle: Final Score after Status-Target Adjustment: 0
+Grass Whistle: Final Score after Status-Target Adjustment: 0
+
+Grass Whistle: Final Score after Doubles-Target Adjustment: 0
+Grass Whistle: Final Score after Doubles-Target Adjustment: 0
+
+Volt Absorb Disrupt
+Beginning AI Item use check.
+ 
+Highest item score: -10000
+Highest move score: 87
+Not using an item.
+ 
+[The foe Tangela: Rage Powder=64, Mega Drain=75, Knock Off=87, Grass Whistle=0]
+[Prefer Knock Off]
+[No Z-Move.]
+[Pidgeotto lost 16 HP, now has 0 HP]
+[Pikachu lost 11 HP, now has 36 HP]
+[Pikachu gained 2 HP, now has 38 HP]
+***Round 5***
+Player Pokemon Pikachu is faster than Tangrowth.
+Player Pokemon Diglett is faster than Tangrowth.
+Ancient Power: initial score: 50
+Ancient Power: final score: 50
+ 
+Ancient Power: initial score: 28
+Ancient Power: final score: 28
+ 
+Leech Seed: initial score: 30
+Leech Seed: final score: 17
+ 
+Leech Seed: initial score: 30
+Leech Seed: final score: 23
+ 
+Leech Seed: Final Score after Status-Target Adjustment: 17
+Leech Seed: Final Score after Status-Target Adjustment: 23
+
+Growth: initial score: 20
+Growth: final score: 8
+ 
+Growth: initial score: 20
+Growth: final score: 8
+ 
+Growth: Final Score after Status-Target Adjustment: 8
+Growth: Final Score after Status-Target Adjustment: 8
+
+Beginning AI Item use check.
+ 
+Highest item score: -10000
+Highest move score: 50
+Not using an item.
+ 
+[The foe Tangrowth: Wine God's Blessing=0, Ancient Power=50, Leech Seed=5, Growth=5]
+[Prefer Ancient Power]
+[No Z-Move.]
+Player Pokemon Diglett is faster than Tangela.
+Player Pokemon Pikachu is faster than Tangela.
+Rage Powder: initial score: 25
+Priority Check End
+Rage Powder: final score: 38
+ 
+Rage Powder: initial score: 25
+Priority Check End
+Rage Powder: final score: 64
+ 
+Rage Powder: Final Score after Status-Target Adjustment: 38
+Rage Powder: Final Score after Status-Target Adjustment: 64
+
+Mega Drain: initial score: 110
+Mega Drain: final score: 121
+ 
+Mega Drain: initial score: 63
+Mega Drain: final score: 63
+ 
+Mega Drain: Final Score after Doubles-Target Adjustment: 24
+Mega Drain: Final Score after Doubles-Target Adjustment: 63
+
+Knock Off: initial score: 52
+Knock Off: final score: 52
+ 
+Knock Off: initial score: 39
+Knock Off: final score: 39
+ 
+Knock Off: Final Score after Doubles-Target Adjustment: 10
+Knock Off: Final Score after Doubles-Target Adjustment: 39
+
+Grass Whistle: initial score: 25
+Grass Whistle: final score: 48
+ 
+Grass Whistle: initial score: 25
+Grass Whistle: final score: 67
+ 
+Grass Whistle: Final Score after Status-Target Adjustment: 48
+Grass Whistle: Final Score after Status-Target Adjustment: 67
+
+Grass Whistle: Final Score after Doubles-Target Adjustment: 9
+Grass Whistle: Final Score after Doubles-Target Adjustment: 67
+
+Beginning AI Item use check.
+ 
+Highest item score: -10000
+Highest move score: 67
+Not using an item.
+ 
+[The foe Tangela: Rage Powder=64, Mega Drain=63, Knock Off=5, Grass Whistle=67]
+[Prefer Grass Whistle]
+[No Z-Move.]
+[The foe Tangela lost 8 HP, now has 45 HP]
+[Pikachu lost 19 HP, now has 19 HP]
+[Pikachu gained 2 HP, now has 21 HP]
+[The foe Tangela gained 3 HP, now has 48 HP]
+***Round 6***
+==============================
+Battle Start!
+235 - Tangrowth
+==============================
+***Round 1***
+Player Pokemon Pikachu is faster than Tangela.
+Player Pokemon Pidgeotto is faster than Tangela.
+Leech Seed: initial score: 30
+Leech Seed: final score: 47
+ 
+Leech Seed: initial score: 30
+Leech Seed: final score: 47
+ 
+Leech Seed: Final Score after Status-Target Adjustment: 47
+Leech Seed: Final Score after Status-Target Adjustment: 4
+
+Grass Whistle: initial score: 25
+Grass Whistle: final score: 105
+ 
+Grass Whistle: initial score: 25
+Grass Whistle: final score: 105
+ 
+Grass Whistle: Final Score after Status-Target Adjustment: 105
+Grass Whistle: Final Score after Status-Target Adjustment: 10
+
+Mega Drain: initial score: 46
+Mega Drain: final score: 46
+ 
+Mega Drain: initial score: 19
+Mega Drain: final score: 19
+ 
+Ancient Power: initial score: 27
+Ancient Power: final score: 27
+ 
+Ancient Power: initial score: 51
+Ancient Power: final score: 51
+ 
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (0)
+Initial switchscore building: Healing (0)
+Initial switchscore building: fsteak (0)
+Initial switchscore building: Specific Switches (0)
+Initial switchscore building: worthsaving not activated
+Initial switchscore building: Typing (0)
+Tangela: initial switchscore: -10
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+Tangela: initial noswitchscore: 116
+ 
+{
+ 
+}
+ 
+Tangela: highest move score: 105
+Tangela: final switching score: -126
+105 > -126, will not switch
+ 
+Beginning AI Item use check.
+ 
+Highest item score: -10000
+Highest move score: 105
+Not using an item.
+ 
+[The foe Tangela: Leech Seed=5, Grass Whistle=105, Mega Drain=5, Ancient Power=5]
+[Prefer Grass Whistle]
+[No Z-Move.]
+Player Pokemon Pidgeotto is faster than Tangela.
+Player Pokemon Pikachu is faster than Tangela.
+Rage Powder: initial score: 25
+Priority Check End
+Rage Powder: final score: 81
+ 
+Rage Powder: initial score: 25
+Priority Check End
+Rage Powder: final score: 81
+ 
+Rage Powder: Final Score after Status-Target Adjustment: 81
+Rage Powder: Final Score after Status-Target Adjustment: 81
+
+Mega Drain: initial score: 21
+Mega Drain: final score: 21
+ 
+Mega Drain: initial score: 51
+Mega Drain: final score: 51
+ 
+Knock Off: initial score: 25
+Knock Off: final score: 25
+ 
+Knock Off: initial score: 31
+Knock Off: final score: 31
+ 
+Grass Whistle: initial score: 25
+Grass Whistle: final score: 105
+ 
+Grass Whistle: initial score: 25
+Grass Whistle: final score: 81
+ 
+Grass Whistle: Final Score after Status-Target Adjustment: 10
+Grass Whistle: Final Score after Status-Target Adjustment: 81
+
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (0)
+Initial switchscore building: Healing (0)
+Initial switchscore building: fsteak (0)
+Initial switchscore building: Specific Switches (0)
+Initial switchscore building: worthsaving not activated
+Initial switchscore building: Typing (0)
+Tangela: initial switchscore: -10
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+Tangela: initial noswitchscore: 116
+ 
+{
+ 
+}
+ 
+Tangela: highest move score: 81
+Tangela: final switching score: -126
+81 > -126, will not switch
+ 
+Beginning AI Item use check.
+ 
+Highest item score: -10000
+Highest move score: 81
+Not using an item.
+ 
+[The foe Tangela: Rage Powder=81, Mega Drain=5, Knock Off=5, Grass Whistle=81]
+[Prefer Grass Whistle]
+[No Z-Move.]
+[The foe Tangela lost 11 HP, now has 42 HP]
+[The foe Tangela lost 33 HP, now has 9 HP]
+[The foe Tangela gained 3 HP, now has 12 HP]
+***Round 2***
+Player Pokemon Pikachu is faster than Tangela.
+Player Pokemon Pidgeotto is faster than Tangela.
+ 
+Leech Seed: initial score: 30
+Leech Seed: final score: 57
+ 
+Leech Seed: initial score: 30
+Leech Seed: final score: 47
+ 
+Leech Seed: Final Score after Status-Target Adjustment: 5
+Leech Seed: Final Score after Status-Target Adjustment: 4
+
+Grass Whistle: initial score: 25
+Grass Whistle: final score: 0
+ 
+Grass Whistle: initial score: 25
+Grass Whistle: final score: 52
+ 
+Grass Whistle: Final Score after Status-Target Adjustment: 0
+Grass Whistle: Final Score after Status-Target Adjustment: 5
+
+Mega Drain: initial score: 46
+Mega Drain: final score: 58
+ 
+Mega Drain: initial score: 19
+Mega Drain: final score: 21
+ 
+Ancient Power: initial score: 27
+Ancient Power: final score: 27
+ 
+Ancient Power: initial score: 51
+Ancient Power: final score: 51
+ 
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (-100)
+Initial switchscore building: Healing (-100)
+Initial switchscore building: fsteak (-100)
+Initial switchscore building: Specific Switches (-100)
+Initial switchscore building: worthsaving not activated
+Initial switchscore building: Typing (-70)
+Tangela: initial switchscore: -80
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+Tangela: initial noswitchscore: 100
+ 
+{
+ 
+}
+ 
+Tangela: highest move score: 58
+Tangela: final switching score: -180
+58 > -180, will not switch
+ 
+Beginning AI Item use check.
+ 
+Highest item score: -10000
+Highest move score: 58
+Not using an item.
+ 
+[The foe Tangela: Leech Seed=5, Grass Whistle=5, Mega Drain=58, Ancient Power=51]
+[Prefer Mega Drain]
+[No Z-Move.]
+Player Pokemon Pidgeotto is faster than Tangela.
+Player Pokemon Pikachu is faster than Tangela.
+ 
+Rage Powder: initial score: 25
+Priority Check End
+Rage Powder: final score: 64
+ 
+Rage Powder: initial score: 25
+Priority Check End
+Rage Powder: final score: 64
+ 
+Rage Powder: Final Score after Status-Target Adjustment: 64
+Rage Powder: Final Score after Status-Target Adjustment: 64
+
+Mega Drain: initial score: 21
+Mega Drain: final score: 21
+ 
+Mega Drain: initial score: 51
+Mega Drain: final score: 51
+ 
+Knock Off: initial score: 25
+Knock Off: final score: 25
+ 
+Knock Off: initial score: 31
+Knock Off: final score: 31
+ 
+Grass Whistle: initial score: 25
+Grass Whistle: final score: 105
+ 
+Grass Whistle: initial score: 25
+Grass Whistle: final score: 0
+ 
+Grass Whistle: Final Score after Status-Target Adjustment: 105
+Grass Whistle: Final Score after Status-Target Adjustment: 0
+
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (0)
+Initial switchscore building: Healing (0)
+Initial switchscore building: fsteak (0)
+Initial switchscore building: Specific Switches (0)
+Initial switchscore building: worthsaving not activated
+Initial switchscore building: Typing (0)
+Tangela: initial switchscore: -10
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+Tangela: initial noswitchscore: 100
+ 
+{
+ 
+}
+ 
+Tangela: highest move score: 105
+Tangela: final switching score: -110
+105 > -110, will not switch
+ 
+Beginning AI Item use check.
+ 
+Highest item score: -10000
+Highest move score: 105
+Not using an item.
+ 
+[The foe Tangela: Rage Powder=5, Mega Drain=5, Knock Off=5, Grass Whistle=105]
+[Prefer Grass Whistle]
+[No Z-Move.]
+[The foe Tangela lost 12 HP, now has 0 HP]
+Scoring for Tangela switching to: Tangela
+Score: -10000000
+Not switching to self.
+Scoring for Tangela switching to: Tangela
+Score: -10000000
+ 
+Scoring for Tangela switching to: Tangrowth
+Offensive: 41
+Defensive: 241
+Roles: 241
+Weather: 241
+Moves: 241
+Abilities: 241
+Items: 241
+Fields: 266
+Score: 266
+ 
+***Round 3***
+Beginning AI Item use check.
+ 
+Highest item score: -10000
+Highest move score: 105
+Not using an item.
+ 
+Player Pokemon Pidgeotto is faster than Tangela.
+Player Pokemon Pikachu is faster than Tangela.
+Rage Powder: initial score: 25
+Priority Check End
+Rage Powder: final score: 81
+ 
+Rage Powder: initial score: 25
+Priority Check End
+Rage Powder: final score: 81
+ 
+Rage Powder: Final Score after Status-Target Adjustment: 81
+Rage Powder: Final Score after Status-Target Adjustment: 81
+
+Mega Drain: initial score: 21
+Mega Drain: final score: 21
+ 
+Mega Drain: initial score: 51
+Mega Drain: final score: 51
+ 
+Knock Off: initial score: 25
+Knock Off: final score: 25
+ 
+Knock Off: initial score: 31
+Knock Off: final score: 31
+ 
+Grass Whistle: initial score: 25
+Grass Whistle: final score: 0
+ 
+Grass Whistle: initial score: 25
+Grass Whistle: final score: 0
+ 
+Grass Whistle: Final Score after Status-Target Adjustment: 0
+Grass Whistle: Final Score after Status-Target Adjustment: 0
+
+Volt Absorb Disrupt
+Beginning AI Item use check.
+ 
+Highest item score: -10000
+Highest move score: 81
+Not using an item.
+ 
+[The foe Tangela: Rage Powder=81, Mega Drain=5, Knock Off=5, Grass Whistle=0]
+[Prefer Rage Powder]
+[No Z-Move.]
+[ Pikachu lost 15 HP, now has 32 HP]
+[The foe Tangrowth lost 18 HP, now has 56 HP]
+[ Pikachu gained 2 HP, now has 34 HP]
+[The foe Tangrowth gained 4 HP, now has 60 HP]
+***Round 4***
+==============================
+Battle Start!
+235 - Tangrowth
+==============================
+***Round 1***
+Player Pokemon Pikachu is faster than .
+Player Pokemon Pidgeotto is faster than .
+Leech Seed: initial score: 30
+Leech Seed: final score: 47
+ 
+Leech Seed: initial score: 30
+Leech Seed: final score: 47
+ 
+Leech Seed: Final Score after Status-Target Adjustment: 47
+Leech Seed: Final Score after Status-Target Adjustment: 4
+
+Grass Whistle: initial score: 25
+Grass Whistle: final score: 105
+ 
+Grass Whistle: initial score: 25
+Grass Whistle: final score: 105
+ 
+Grass Whistle: Final Score after Status-Target Adjustment: 105
+Grass Whistle: Final Score after Status-Target Adjustment: 10
+
+Mega Drain: initial score: 46
+Mega Drain: final score: 46
+ 
+Mega Drain: initial score: 19
+Mega Drain: final score: 19
+ 
+Ancient Power: initial score: 27
+Ancient Power: final score: 27
+ 
+Ancient Power: initial score: 51
+Ancient Power: final score: 51
+ 
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (0)
+Initial switchscore building: Healing (0)
+Initial switchscore building: fsteak (0)
+Initial switchscore building: Specific Switches (0)
+Initial switchscore building: worthsaving not activated
+Initial switchscore building: Typing (0)
+: initial switchscore: -10
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+: initial noswitchscore: 116
+ 
+{
+ 
+}
+ 
+: highest move score: 105
+: final switching score: -126
+105 > -126, will not switch
+ 
+Beginning AI Item use check.
+ 
+Highest item score: -10000
+Highest move score: 105
+Not using an item.
+ 
+[The foe : Leech Seed=5, Grass Whistle=105, Mega Drain=5, Ancient Power=5]
+[Prefer Grass Whistle]
+[No Z-Move.]
+Player Pokemon Pidgeotto is faster than .
+Player Pokemon Pikachu is faster than .
+Rage Powder: initial score: 25
+Priority Check End
+Rage Powder: final score: 81
+ 
+Rage Powder: initial score: 25
+Priority Check End
+Rage Powder: final score: 81
+ 
+Rage Powder: Final Score after Status-Target Adjustment: 81
+Rage Powder: Final Score after Status-Target Adjustment: 81
+
+Mega Drain: initial score: 21
+Mega Drain: final score: 21
+ 
+Mega Drain: initial score: 51
+Mega Drain: final score: 51
+ 
+Knock Off: initial score: 25
+Knock Off: final score: 25
+ 
+Knock Off: initial score: 31
+Knock Off: final score: 31
+ 
+Grass Whistle: initial score: 25
+Grass Whistle: final score: 105
+ 
+Grass Whistle: initial score: 25
+Grass Whistle: final score: 81
+ 
+Grass Whistle: Final Score after Status-Target Adjustment: 10
+Grass Whistle: Final Score after Status-Target Adjustment: 81
+
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (0)
+Initial switchscore building: Healing (0)
+Initial switchscore building: fsteak (0)
+Initial switchscore building: Specific Switches (0)
+Initial switchscore building: worthsaving not activated
+Initial switchscore building: Typing (0)
+: initial switchscore: -10
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+: initial noswitchscore: 116
+ 
+{
+ 
+}
+ 
+: highest move score: 81
+: final switching score: -126
+81 > -126, will not switch
+ 
+Beginning AI Item use check.
+ 
+Highest item score: -10000
+Highest move score: 81
+Not using an item.
+ 
+[The foe : Rage Powder=81, Mega Drain=5, Knock Off=5, Grass Whistle=81]
+[Prefer Grass Whistle]
+[No Z-Move.]
+[The foe  lost 11 HP, now has 42 HP]
+[The foe  lost 33 HP, now has 9 HP]
+[The foe  gained 3 HP, now has 12 HP]
+***Round 2***
+Player Pokemon Pikachu is faster than .
+Player Pokemon Pidgeotto is faster than .
+ 
+Leech Seed: initial score: 30
+Leech Seed: final score: 57
+ 
+Leech Seed: initial score: 30
+Leech Seed: final score: 47
+ 
+Leech Seed: Final Score after Status-Target Adjustment: 5
+Leech Seed: Final Score after Status-Target Adjustment: 4
+
+Grass Whistle: initial score: 25
+Grass Whistle: final score: 0
+ 
+Grass Whistle: initial score: 25
+Grass Whistle: final score: 52
+ 
+Grass Whistle: Final Score after Status-Target Adjustment: 0
+Grass Whistle: Final Score after Status-Target Adjustment: 5
+
+Mega Drain: initial score: 46
+Mega Drain: final score: 58
+ 
+Mega Drain: initial score: 19
+Mega Drain: final score: 21
+ 
+Ancient Power: initial score: 27
+Ancient Power: final score: 27
+ 
+Ancient Power: initial score: 51
+Ancient Power: final score: 51
+ 
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (-100)
+Initial switchscore building: Healing (-100)
+Initial switchscore building: fsteak (-100)
+Initial switchscore building: Specific Switches (-100)
+Initial switchscore building: worthsaving not activated
+Initial switchscore building: Typing (-70)
+: initial switchscore: -80
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+: initial noswitchscore: 100
+ 
+{
+ 
+}
+ 
+: highest move score: 58
+: final switching score: -180
+58 > -180, will not switch
+ 
+Beginning AI Item use check.
+ 
+Highest item score: -10000
+Highest move score: 58
+Not using an item.
+ 
+[The foe : Leech Seed=5, Grass Whistle=5, Mega Drain=58, Ancient Power=51]
+[Prefer Mega Drain]
+[No Z-Move.]
+Player Pokemon Pidgeotto is faster than .
+Player Pokemon Pikachu is faster than .
+ 
+Rage Powder: initial score: 25
+Priority Check End
+Rage Powder: final score: 64
+ 
+Rage Powder: initial score: 25
+Priority Check End
+Rage Powder: final score: 64
+ 
+Rage Powder: Final Score after Status-Target Adjustment: 64
+Rage Powder: Final Score after Status-Target Adjustment: 64
+
+Mega Drain: initial score: 21
+Mega Drain: final score: 21
+ 
+Mega Drain: initial score: 51
+Mega Drain: final score: 51
+ 
+Knock Off: initial score: 25
+Knock Off: final score: 25
+ 
+Knock Off: initial score: 31
+Knock Off: final score: 31
+ 
+Grass Whistle: initial score: 25
+Grass Whistle: final score: 105
+ 
+Grass Whistle: initial score: 25
+Grass Whistle: final score: 0
+ 
+Grass Whistle: Final Score after Status-Target Adjustment: 105
+Grass Whistle: Final Score after Status-Target Adjustment: 0
+
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (0)
+Initial switchscore building: Healing (0)
+Initial switchscore building: fsteak (0)
+Initial switchscore building: Specific Switches (0)
+Initial switchscore building: worthsaving not activated
+Initial switchscore building: Typing (0)
+: initial switchscore: -10
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+: initial noswitchscore: 100
+ 
+{
+ 
+}
+ 
+: highest move score: 105
+: final switching score: -110
+105 > -110, will not switch
+ 
+Beginning AI Item use check.
+ 
+Highest item score: -10000
+Highest move score: 105
+Not using an item.
+ 
+[The foe : Rage Powder=5, Mega Drain=5, Knock Off=5, Grass Whistle=105]
+[Prefer Grass Whistle]
+[No Z-Move.]
+[The foe  lost 12 HP, now has 0 HP]
+Scoring for  switching to: 
+Score: -10000000
+Not switching to self.
+Scoring for  switching to: 
+Score: -10000000
+ 
+Scoring for  switching to: 
+Offensive: 41
+Defensive: 191
+Roles: 191
+Weather: 191
+Moves: 191
+Abilities: 191
+Items: 191
+Fields: 216
+Score: 216
+ 
+***Round 3***
+Beginning AI Item use check.
+ 
+Highest item score: -10000
+Highest move score: 105
+Not using an item.
+ 
+Player Pokemon Pidgeotto is faster than .
+Player Pokemon Pikachu is faster than .
+Rage Powder: initial score: 25
+Priority Check End
+Rage Powder: final score: 81
+ 
+Rage Powder: initial score: 25
+Priority Check End
+Rage Powder: final score: 81
+ 
+Rage Powder: Final Score after Status-Target Adjustment: 81
+Rage Powder: Final Score after Status-Target Adjustment: 81
+
+Mega Drain: initial score: 21
+Mega Drain: final score: 21
+ 
+Mega Drain: initial score: 51
+Mega Drain: final score: 51
+ 
+Knock Off: initial score: 25
+Knock Off: final score: 25
+ 
+Knock Off: initial score: 31
+Knock Off: final score: 31
+ 
+Grass Whistle: initial score: 25
+Grass Whistle: final score: 0
+ 
+Grass Whistle: initial score: 25
+Grass Whistle: final score: 0
+ 
+Grass Whistle: Final Score after Status-Target Adjustment: 0
+Grass Whistle: Final Score after Status-Target Adjustment: 0
+
+Volt Absorb Disrupt
+Beginning AI Item use check.
+ 
+Highest item score: -10000
+Highest move score: 81
+Not using an item.
+ 
+[The foe : Rage Powder=81, Mega Drain=5, Knock Off=5, Grass Whistle=0]
+[Prefer Rage Powder]
+[No Z-Move.]
+[The foe  lost 11 HP, now has 42 HP]
+[Pidgeotto lost 15 HP, now has 41 HP]
+[The foe  lost 18 HP, now has 56 HP]
+[The foe  gained 3 HP, now has 45 HP]
+[The foe  gained 4 HP, now has 60 HP]
+***Round 4***

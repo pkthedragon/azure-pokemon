@@ -1681,8 +1681,7 @@ class PokeBattle_Battler
     if self.hasWorkingAbility(:MAENADSFERVOR) && $fefieldeffect == 3
       speed=speed*2
     end
-    if self.hasWorkingAbility(:MAENADSFERVOR) &&
-      self.effects[PBEffects::Confusion]>0
+    if self.hasWorkingAbility(:MAENADSFERVOR) && self.effects[PBEffects::Confusion]>0
       speed=speed*2
     end
     if self.pbOwnSide.effects[PBEffects::Tailwind]>0

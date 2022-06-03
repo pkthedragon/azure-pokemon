@@ -1742,7 +1742,7 @@ MultipleForms.register(:EISCUE,{
 MultipleForms.register(:TANGROWTH,{
     "ability"=>proc{|pokemon|
       next if pokemon.form==0 # Normal
-      if (pokemon.abilityIndex==1 || (pokemon.abilityflag && pokemon.abilityflag==1)) || (pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)) || (pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0)) # Heroic
+      if ((pokemon.abilityIndex==1 || (pokemon.abilityflag && pokemon.abilityflag==1)) || (pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)) || (pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0))) # Heroic
         next getID(PBAbilities,:MAENADSFERVOR) 
       end
     },
@@ -1752,6 +1752,18 @@ MultipleForms.register(:TANGROWTH,{
     },
     "onSetForm"=>proc{|pokemon,form|
       pbSeenForm(pokemon)
+      moves=[
+        :WINEGODSBLESSING
+      ]
+      moves.each{|move|
+        pbDeleteMoveByID(pokemon,getID(PBMoves,move))
+      }
+      if form>0
+        pokemon.pbLearnMove(moves[form-1])
+      end
+      if pokemon.moves.find_all{|i| i.id!=0}.length==0
+        pokemon.pbLearnMove(:VINEWHIP)
+      end
     }
   })
   

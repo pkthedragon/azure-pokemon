@@ -1776,7 +1776,7 @@ class PokeBattle_Battle
       else
         score=0
       end
-    when 0x13 || 0x216 # Confusion
+    when 0x13 # Confusion
       if opponent.pbCanConfuse?(false)
         miniscore=100
         miniscore*=1.2
@@ -1850,9 +1850,80 @@ class PokeBattle_Battle
           score=0
         end
       end
-    when 0x14 # Chatter
-      #This is no longer used, Chatter works off of the standard confusion
-      #function code, 0x13
+    when 0x216 # Wine God's Blessing
+      if opponent.pbCanConfuse?(false)
+        miniscore=100
+        miniscore*=1.2
+        ministat=0
+        ministat+=opponent.stages[PBStats::ATTACK]
+        if ministat>0
+          minimini=10*ministat
+          minimini+=100
+          minimini/=100.0
+          miniscore*=minimini
+        end
+        if pbRoughStat(opponent,PBStats::ATTACK,skill)>pbRoughStat(opponent,PBStats::SPATK,skill)
+          miniscore*=1.2
+        end
+        if roles.include?("Physical Wall") || roles.include?("Special Wall")
+          miniscore*=1.3
+        end
+        if opponent.effects[PBEffects::Attract]>=0
+          miniscore*=1.1
+        end
+        if opponent.status==PBStatuses::PARALYSIS
+          miniscore*=1.1
+        end
+        if opponent.effects[PBEffects::Yawn]>0 || opponent.status==PBStatuses::SLEEP
+          miniscore*=0.4
+        end
+        if (!opponent.abilitynulled && opponent.ability == PBAbilities::TANGLEDFEET)
+          miniscore*=0.7
+        end
+        if attacker.pbHasMove?(getID(PBMoves,:SUBSTITUTE))
+          miniscore*=1.2
+          if attacker.effects[PBEffects::Substitute]>0
+            miniscore*=1.3
+          end
+        end
+        if skill>=PBTrainerAI.highSkill
+          if move.id==getID(PBMoves,:SIGNALBEAM)
+            if $fefieldeffect==30 # Mirror Arena
+              if (attacker.stages[PBStats::ACCURACY] < 0 || opponent.stages[PBStats::EVASION] > 0 ||
+                  opponent.hasWorkingItem(:BRIGHTPOWDER) || opponent.hasWorkingItem(:LAXINCENSE) ||
+                  ((!opponent.abilitynulled && opponent.ability == PBAbilities::SANDVEIL) && pbWeather==PBWeather::SANDSTORM) ||
+                  ((!opponent.abilitynulled && opponent.ability == PBAbilities::SNOWCLOAK) && pbWeather==PBWeather::HAIL) ||
+                  opponent.vanished) && !(!opponent.abilitynulled && opponent.ability == PBAbilities::NOGUARD) && !(!attacker.abilitynulled && attacker.ability == PBAbilities::NOGUARD)
+                miniscore*=2
+              end
+            end
+          end
+          if move.id==getID(PBMoves,:SWEETKISS)
+            if $fefieldeffect==3 # Misty
+              miniscore*=1.25
+            end
+            if $fefieldeffect==31 # Fairy Tale
+              if opponent.status==PBStatuses::SLEEP
+                miniscore*=0.2
+              end
+            end
+          end
+        end
+        if move.basedamage>0
+          miniscore-=100
+          miniscore*=(move.addlEffect.to_f/100)
+          if (!attacker.abilitynulled && attacker.ability == PBAbilities::SERENEGRACE)
+            miniscore*=2
+          end
+          miniscore+=100
+        end
+        miniscore/=100.0
+        score*=miniscore if !(!attacker.abilitynulled && attacker.ability == PBAbilities::SHEERFORCE) && !((!opponent.abilitynulled && opponent.ability == PBAbilities::SHIELDDUST) && !opponent.moldbroken) && !hasgreatmoves(initialscores,scoreindex,skill,true)
+      else
+        if move.basedamage<=0
+          score=0
+        end
+      end
     when 0x15 # Hurricane
       if opponent.pbCanConfuse?(false)
         miniscore=100
