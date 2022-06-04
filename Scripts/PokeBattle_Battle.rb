@@ -2908,14 +2908,14 @@ class PokeBattle_Battle
               pbDisplayPaused(_INTL("Oh, I might have just met my match."))
               @scene.pbHideOpponent 
             end
-          elsif isConst?(trainertext.trainertype,PBTrainers,:LEADER_Two)
+          elsif isConst?(trainertext.trainertype,PBTrainers,:AGRUS)
             if $game_variables[226] == 0
               @scene.pbShowOpponent(0)
               pbBGMPlay("Battle! Gym Leader",100,105)
               pbDisplayPaused(_INTL("I ain't accepting a loss just yet!"))
               @scene.pbHideOpponent 
             end
-          elsif isConst?(trainertext.trainertype,PBTrainers,:LEADER_Three)
+          elsif isConst?(trainertext.trainertype,PBTrainers,:HYACINTH)
             if $game_variables[226] == 0
               @scene.pbShowOpponent(0)
               pbBGMPlay("Battle! Gym Leader",100,105)
