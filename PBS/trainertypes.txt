@@ -206,7 +206,7 @@
 239,GHOSTCHILDF,Lingering Entity,32,Battle! Spooky,,,Female,,
 ####PANTHEON#################################################################################
 181,MINERVA,Head Librarian,100,Battle! Pantheon Minerva,,,Female,255,
-182,AGRUS,Wandering Ranger,100,Battle! Gym Leader,,,Male,255,
+182,AGRUS,Wandering Ranger,100,Battle! Pantheon Agrus,,,Male,255,
 263,HYACINTH,Paragon,100,Battle! Gym Leader,,,Male,255,
 183,VULCAN,Stone Justice,100,Battle! Gym Leader,,,Male,255,
 184,MARCUS,Gladiator,100,Battle! Gym Leader,,,Male,255,
@@ -258,7 +258,7 @@
 232,BISHOP_6,Bishop,100,,,,Female,,
 233,BISHOP_7,Bishop,100,,,,Female,,
 234,ARCHBISHOP_Olga,Archbishop,100,Battle! Olga,,,Female,255,
-235,GUARDIAN,Guardian,100,Battle! Totem,,,,200,
+235,GUARDIAN,Guardian,100,Battle! Totem,,,,255,
 240,MYRON,Doctrine Elder,100,Battle! Elder Cultist,,,Male,255,
 241,MYRON2,Lingering Insanity,100,Battle! Myron,,,Male,255,
 266,ELMIN,Sin of Wrath,100,Battle! Elder Cultist,,,Male,255,

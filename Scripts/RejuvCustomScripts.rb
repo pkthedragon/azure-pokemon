@@ -624,7 +624,7 @@ def characterSwitch(character)
       $Trainer.party = trainerinfo[2]
       $PokemonBag.pbStoreItem(PBItems::MEGARING,1)
     when "Myron"
-      pbChangePlayer(11)
+      pbChangePlayer(9)
       $Trainer.name = "Myron"
       $Trainer.outfit = 0
       $Trainer.party = []
@@ -711,12 +711,12 @@ def pyramidSwitch(character)
 end
 
 def characterChecker
-  val = getConstantName(PBTrainers,$Trainer.trainertype)
-  if val == "POKEMONTRAINER_TroyLight"
+  val = $PokemonGlobal.playerID
+  if val == 0
     $game_switches[94] = true
-  elsif val == "POKEMONTRAINER_EllisLight"
+  elsif val == 3
     $game_switches[95] = true
-  elsif val == "POKEMONTRAINER_KeyLight"
+  elsif val == 6
     $game_switches[96] = true
   end
 end

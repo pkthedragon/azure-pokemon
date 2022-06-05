@@ -15,6 +15,7 @@ PlayerF=POKEMONTRAINER_EllisDark,trchar255,girl_bike,girl_surf,girl_run,girl_sur
 PlayerG=POKEMONTRAINER_KeyLight,trchar256,nb_bike,nb_surf,nb_run,nb_surf,nb_fish_offset,xxx
 PlayerH=POKEMONTRAINER_KeyMed,trchar257,nb_bike,nb_surf,nb_run,nb_surf,nb_fish_offset,xxx
 PlayerI=POKEMONTRAINER_KeyDark,trchar258,nb_bike,nb_surf,nb_run,nb_surf,nb_fish_offset,xxx
+PlayerJ=MYRON,Myron,Myron,Myron,Myron,Myron,Myron,xxx
 [001]
 # Logium Town A
 Outdoor=true
