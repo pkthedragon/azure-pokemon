@@ -2904,22 +2904,22 @@ class PokeBattle_Battle
           elsif isConst?(trainertext.trainertype,PBTrainers,:MINERVA)
             if $game_variables[226] == 0
               @scene.pbShowOpponent(0)
-              pbBGMPlay("Battle! Gym Leader",100,105)
+              pbBGMPlay("Music - Don't Lose Hope!",100,100)
               pbDisplayPaused(_INTL("Oh, I might have just met my match."))
               @scene.pbHideOpponent 
             end
           elsif isConst?(trainertext.trainertype,PBTrainers,:AGRUS)
             if $game_variables[226] == 0
               @scene.pbShowOpponent(0)
-              pbBGMPlay("Battle! Gym Leader",100,105)
+              pbBGMPlay("Music - Don't Lose Hope!",100,100)
               pbDisplayPaused(_INTL("I ain't accepting a loss just yet!"))
               @scene.pbHideOpponent 
             end
           elsif isConst?(trainertext.trainertype,PBTrainers,:HYACINTH)
             if $game_variables[226] == 0
               @scene.pbShowOpponent(0)
-              pbBGMPlay("Battle! Gym Leader",100,105)
-              pbDisplayPaused(_INTL("Why must everyone meddle..."))
+              pbBGMPlay("Music - Don't Lose Hope!",100,100)
+              pbDisplayPaused(_INTL("The end is within your grasp!"))
               @scene.pbHideOpponent 
             end
           elsif isConst?(trainertext.trainertype,PBTrainers,:LEADER_Four)
