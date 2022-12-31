@@ -273,5 +273,17 @@ Events.onWildPokemonCreate+=proc {|sender,e|
       pokemon.pbLearnMove(:NIGHTSLASH)
     when 21 # Dedenne
       pokemon.pbLearnMove(:MAGNETRISE)
+    when 22 # Parasect
+      pokemon.pbLearnMove(:LEECHSEED)
+    when 31 # Houndour
+      pokemon.pbLearnMove(:FIRESPIN)
+    when 32 # Thievul
+      pokemon.pbLearnMove(:QUICKGUARD)
+    when 33 # Mystic Poochyena
+      pokemon.form=1
+      pokemon.resetMoves
+      pokemon.calcStats
+    when 34 # Mawile
+      pokemon.pbLearnMove(:FIREFANG)
     end
 }

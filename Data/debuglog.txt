@@ -4997,3 +4997,742 @@ Not using an item.
 [The foe  gained 3 HP, now has 45 HP]
 [The foe  gained 4 HP, now has 60 HP]
 ***Round 4***
+==============================
+Battle Start!
+182 - Agrus
+==============================
+***Round 1***
+AI Pokemon Frosmoth is faster than g.
+Player Pokemon vv is faster than Frosmoth.
+Quiver Dance: initial score: 35
+Quiver Dance: final score: 20
+ 
+Quiver Dance: initial score: 35
+Quiver Dance: final score: 1
+ 
+Quiver Dance: Final Score after Status-Target Adjustment: 20
+Quiver Dance: Final Score after Status-Target Adjustment: 1
+
+Aurora Veil: initial score: 35
+Aurora Veil: final score: 86
+ 
+Aurora Veil: initial score: 35
+Aurora Veil: final score: 15
+ 
+Aurora Veil: Final Score after Status-Target Adjustment: 86
+Aurora Veil: Final Score after Status-Target Adjustment: 15
+
+Struggle Bug: initial score: 12
+Struggle Bug: final score: 13
+ 
+Struggle Bug: initial score: 9
+Struggle Bug: final score: 9
+ 
+Struggle Bug: Final Score after Multi-Target Adjustment: 22
+
+Icy Wind: initial score: 40
+Icy Wind: final score: 40
+ 
+Icy Wind: initial score: 110
+Icy Wind: final score: 121
+ 
+Icy Wind: Final Score after Multi-Target Adjustment: 161
+
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (0)
+Initial switchscore building: Healing (0)
+Initial switchscore building: fsteak (0)
+Initial switchscore building: Specific Switches (0)
+Initial switchscore building: worthsaving not activated
+Initial switchscore building: Typing (0)
+Frosmoth: initial switchscore: 20
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+Frosmoth: initial noswitchscore: 116
+ 
+{
+ 
+}
+ 
+Frosmoth: highest move score: 161
+Frosmoth: final switching score: -96
+161 > -96, will not switch
+ 
+Beginning AI Item use check.
+ 
+This is a HP-healing item.
+Icy Field Disrupt
+Score for Super Potion: -100
+This is a HP-healing item.
+Icy Field Disrupt
+Score for Super Potion: -100
+Highest item score: -100
+Highest move score: 161
+Not using an item.
+ 
+[The foe Frosmoth: Quiver Dance=5, Aurora Veil=5, Struggle Bug=5, Icy Wind=161]
+[Prefer Icy Wind]
+[No Z-Move.]
+Player Pokemon vv is faster than Charjabug.
+Player Pokemon g is faster than Charjabug.
+Sticky Web: initial score: 35
+Sticky Web: final score: 69
+ 
+Sticky Web: initial score: 35
+Sticky Web: final score: 69
+ 
+Sticky Web: Final Score after Status-Target Adjustment: 69
+Sticky Web: Final Score after Status-Target Adjustment: 69
+
+Sticky Web: Final Score after Doubles-Target Adjustment: 13
+Sticky Web: Final Score after Doubles-Target Adjustment: 69
+
+Electroweb: initial score: 50
+Electroweb: final score: 60
+ 
+Electroweb: initial score: 25
+Electroweb: final score: 30
+ 
+Electroweb: Final Score after Multi-Target Adjustment: 90
+
+Electroweb: Final Score after Doubles-Target Adjustment: 18
+Electroweb: Final Score after Doubles-Target Adjustment: 30
+
+Struggle Bug: initial score: 4
+Struggle Bug: final score: 5
+ 
+Struggle Bug: initial score: 5
+Struggle Bug: final score: 7
+ 
+Struggle Bug: Final Score after Multi-Target Adjustment: 12
+
+Struggle Bug: Final Score after Doubles-Target Adjustment: 2
+Struggle Bug: Final Score after Doubles-Target Adjustment: 7
+
+Volt Switch: initial score: 75
+Volt Switch: final score: 108
+ 
+Volt Switch: initial score: 44
+Volt Switch: final score: 92
+ 
+Volt Switch: Final Score after Doubles-Target Adjustment: 21
+Volt Switch: Final Score after Doubles-Target Adjustment: 92
+
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (0)
+Initial switchscore building: Healing (0)
+Initial switchscore building: fsteak (0)
+Initial switchscore building: Specific Switches (0)
+Initial switchscore building: worthsaving not activated
+Initial switchscore building: Typing (0)
+Charjabug: initial switchscore: 10
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+Charjabug: initial noswitchscore: 116
+ 
+{
+ 
+}
+ 
+Charjabug: highest move score: 92
+Charjabug: final switching score: -106
+92 > -106, will not switch
+ 
+Beginning AI Item use check.
+ 
+This is a HP-healing item.
+Icy Field Disrupt
+Score for Super Potion: -100
+This is a HP-healing item.
+Icy Field Disrupt
+Score for Super Potion: -100
+Highest item score: -100
+Highest move score: 92
+Not using an item.
+ 
+[The foe Charjabug: Sticky Web=69, Electroweb=5, Struggle Bug=5, Volt Switch=92]
+[Prefer Volt Switch]
+[No Z-Move.]
+[The foe Frosmoth lost 33 HP, now has 44 HP]
+[The foe Charjabug lost 13 HP, now has 57 HP]
+[g lost 30 HP, now has 44 HP]
+[vv lost 62 HP, now has 0 HP]
+[The foe Frosmoth lost 36 HP, now has 8 HP]
+[The foe Charjabug lost 14 HP, now has 43 HP]
+[g lost 44 HP, now has 0 HP]
+Scoring for Charjabug switching to: Frosmoth
+Score: -10000000
+ 
+Scoring for Charjabug switching to: Charjabug
+Score: -10000000
+Not switching to self.
+Scoring for Charjabug switching to: Volbeat
+Offensive: 45
+Defensive: 245
+Roles: 305
+Weather: 305
+Moves: 325
+Abilities: 325
+Items: 325
+Fields: 325
+Score: 325
+ 
+Scoring for Charjabug switching to: Ariados
+Offensive: 45
+Defensive: 245
+Roles: 245
+Weather: 245
+Moves: 245
+Abilities: 245
+Items: 245
+Fields: 245
+Score: 245
+ 
+Scoring for Charjabug switching to: Araquanid
+Offensive: 173
+Defensive: 373
+Roles: 373
+Weather: 373
+Moves: 373
+Abilities: 403
+Items: 403
+Fields: 428
+Score: 428
+ 
+Scoring for Charjabug switching to: Pinsir
+Offensive: 95
+Defensive: 295
+Roles: 355
+Weather: 355
+Moves: 355
+Abilities: 435
+Items: 435
+Fields: 435
+Score: 174
+ 
+***Round 2***
+AI Pokemon Frosmoth is faster than r.
+AI Pokemon Frosmoth is faster than t.
+Quiver Dance: initial score: 35
+Quiver Dance: final score: 0
+ 
+Quiver Dance: initial score: 35
+Quiver Dance: final score: 0
+ 
+Quiver Dance: Final Score after Status-Target Adjustment: 0
+Quiver Dance: Final Score after Status-Target Adjustment: 0
+
+Aurora Veil: initial score: 35
+Aurora Veil: final score: 0
+ 
+Aurora Veil: initial score: 35
+Aurora Veil: final score: 0
+ 
+Aurora Veil: Final Score after Status-Target Adjustment: 0
+Aurora Veil: Final Score after Status-Target Adjustment: 0
+
+Struggle Bug: initial score: 33
+Struggle Bug: final score: 33
+ 
+Struggle Bug: initial score: 9
+Struggle Bug: final score: 9
+ 
+Struggle Bug: Final Score after Multi-Target Adjustment: 42
+
+Icy Wind: initial score: 37
+Icy Wind: final score: 37
+ 
+Icy Wind: initial score: 20
+Icy Wind: final score: 20
+ 
+Icy Wind: Final Score after Multi-Target Adjustment: 57
+
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (-100)
+Initial switchscore building: Healing (-100)
+Initial switchscore building: fsteak (-100)
+Initial switchscore building: Specific Switches (-100)
+Initial switchscore building: worthsaving not activated
+Initial switchscore building: Typing (-100)
+Frosmoth: initial switchscore: -100
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+Frosmoth: initial noswitchscore: 100
+ 
+{
+ 
+}
+ 
+Frosmoth: highest move score: 57
+Frosmoth: final switching score: -200
+57 > -200, will not switch
+ 
+Beginning AI Item use check.
+ 
+This is a HP-healing item.
+Water Surface Field Disrupt
+Score for Super Potion: -64
+This is a HP-healing item.
+Water Surface Field Disrupt
+Score for Super Potion: -64
+Highest item score: -64
+Highest move score: 57
+Not using an item.
+ 
+[The foe Frosmoth: Quiver Dance=0, Aurora Veil=0, Struggle Bug=42, Icy Wind=57]
+[Prefer Icy Wind]
+[No Z-Move.]
+AI Pokemon Araquanid is faster than t.
+AI Pokemon Araquanid is faster than r.
+ 
+ 
+Aqua Ring: initial score: 20
+Aqua Ring: final score: 15
+ 
+Aqua Ring: initial score: 20
+Aqua Ring: final score: 0
+ 
+Aqua Ring: Final Score after Status-Target Adjustment: 15
+Aqua Ring: Final Score after Status-Target Adjustment: 0
+
+Icy Wind: initial score: 8
+Icy Wind: final score: 8
+ 
+Icy Wind: initial score: 15
+Icy Wind: final score: 15
+ 
+Icy Wind: Final Score after Multi-Target Adjustment: 23
+
+Icy Wind: Final Score after Doubles-Target Adjustment: 23
+Icy Wind: Final Score after Doubles-Target Adjustment: 23
+
+Struggle Bug: initial score: 6
+Struggle Bug: final score: 6
+ 
+Struggle Bug: initial score: 21
+Struggle Bug: final score: 21
+ 
+Struggle Bug: Final Score after Multi-Target Adjustment: 27
+
+Struggle Bug: Final Score after Doubles-Target Adjustment: 27
+Struggle Bug: Final Score after Doubles-Target Adjustment: 27
+
+Bubble Beam: initial score: 73
+Bubble Beam: final score: 73
+ 
+Bubble Beam: initial score: 110
+Bubble Beam: final score: 110
+ 
+Bubble Beam: Final Score after Doubles-Target Adjustment: 73
+Bubble Beam: Final Score after Doubles-Target Adjustment: 110
+
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (0)
+Initial switchscore building: Healing (0)
+Initial switchscore building: fsteak (0)
+Initial switchscore building: Specific Switches (0)
+Initial switchscore building: worthsaving not activated
+Initial switchscore building: Typing (0)
+Araquanid: initial switchscore: 0
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+Araquanid: initial noswitchscore: 116
+ 
+{
+ 
+}
+ 
+Araquanid: highest move score: 110
+Araquanid: final switching score: -116
+110 > -116, will not switch
+ 
+Beginning AI Item use check.
+ 
+This is a HP-healing item.
+Water Surface Field Disrupt
+Score for Super Potion: -100
+This is a HP-healing item.
+Water Surface Field Disrupt
+Score for Super Potion: -100
+Highest item score: -100
+Highest move score: 110
+Not using an item.
+ 
+[The foe Araquanid: Aqua Ring=5, Icy Wind=5, Struggle Bug=5, Bubble Beam=110]
+[Prefer Bubble Beam]
+[No Z-Move.]
+[The foe Frosmoth lost 8 HP, now has 0 HP]
+[r lost 69 HP, now has 0 HP]
+Scoring for Frosmoth switching to: Frosmoth
+Score: -10000000
+Not switching to self.
+Scoring for Frosmoth switching to: Charjabug
+Offensive: 69
+Defensive: -231
+Roles: -231
+Weather: -231
+Moves: -231
+Abilities: -231
+Items: -231
+Fields: -206
+Score: -206
+ 
+Scoring for Frosmoth switching to: Volbeat
+Offensive: 53
+Defensive: 53
+Roles: 53
+Weather: 53
+Moves: 103
+Abilities: 153
+Items: 153
+Fields: 153
+Score: 153
+ 
+Scoring for Frosmoth switching to: Ariados
+Offensive: 56
+Defensive: 56
+Roles: 56
+Weather: 56
+Moves: 56
+Abilities: 56
+Items: 56
+Fields: 56
+Score: 56
+ 
+Scoring for Frosmoth switching to: Araquanid
+Score: -10000000
+ 
+Scoring for Frosmoth switching to: Pinsir
+Offensive: 62
+Defensive: 62
+Roles: 62
+Weather: 62
+Moves: 62
+Abilities: 62
+Items: 62
+Fields: 62
+Score: 62
+ 
+***Round 3***
+Player Pokemon a is faster than Volbeat.
+AI Pokemon Volbeat is faster than t.
+Lunge: initial score: 57
+Lunge: final score: 57
+ 
+Lunge: initial score: 15
+Lunge: final score: 16
+ 
+Thunder Punch: initial score: 107
+Thunder Punch: final score: 119
+ 
+Thunder Punch: initial score: 29
+Thunder Punch: final score: 29
+ 
+Moonlight: initial score: 30
+Priority Check End
+Moonlight: final score: 0
+ 
+Moonlight: initial score: 30
+Priority Check End
+Moonlight: final score: 0
+ 
+Moonlight: Final Score after Status-Target Adjustment: 0
+Moonlight: Final Score after Status-Target Adjustment: 0
+
+Thunder Wave: initial score: 30
+Priority Check End
+Thunder Wave: final score: 98
+ 
+Thunder Wave: initial score: 30
+Priority Check End
+Thunder Wave: final score: 59
+ 
+Thunder Wave: Final Score after Status-Target Adjustment: 98
+Thunder Wave: Final Score after Status-Target Adjustment: 59
+
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (0)
+Initial switchscore building: Healing (0)
+Initial switchscore building: fsteak (0)
+Initial switchscore building: Specific Switches (0)
+Initial switchscore building: worthsaving not activated
+Initial switchscore building: Typing (0)
+Volbeat: initial switchscore: -20
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+Volbeat: initial noswitchscore: 116
+ 
+{
+ 
+}
+ 
+Volbeat: highest move score: 119
+Volbeat: final switching score: -136
+119 > -136, will not switch
+ 
+Beginning AI Item use check.
+ 
+This is a HP-healing item.
+Water Surface Field Disrupt
+Score for Super Potion: -100
+This is a HP-healing item.
+Water Surface Field Disrupt
+Score for Super Potion: -100
+Highest item score: -100
+Highest move score: 119
+Not using an item.
+ 
+[The foe Volbeat: Lunge=5, Thunder Punch=119, Moonlight=0, Thunder Wave=98]
+[Prefer Thunder Punch]
+[No Z-Move.]
+AI Pokemon Araquanid is faster than t.
+Player Pokemon a is faster than Araquanid.
+Aqua Ring: initial score: 20
+Aqua Ring: final score: 15
+ 
+Aqua Ring: initial score: 20
+Aqua Ring: final score: 18
+ 
+Aqua Ring: Final Score after Status-Target Adjustment: 15
+Aqua Ring: Final Score after Status-Target Adjustment: 18
+
+Icy Wind: initial score: 8
+Icy Wind: final score: 8
+ 
+Icy Wind: initial score: 9
+Icy Wind: final score: 9
+ 
+Icy Wind: Final Score after Multi-Target Adjustment: 17
+
+Icy Wind: Final Score after Doubles-Target Adjustment: 17
+Icy Wind: Final Score after Doubles-Target Adjustment: 17
+
+Struggle Bug: initial score: 6
+Struggle Bug: final score: 6
+ 
+Struggle Bug: initial score: 27
+Struggle Bug: final score: 29
+ 
+Struggle Bug: Final Score after Multi-Target Adjustment: 35
+
+Struggle Bug: Final Score after Doubles-Target Adjustment: 35
+Struggle Bug: Final Score after Doubles-Target Adjustment: 35
+
+Bubble Beam: initial score: 73
+Bubble Beam: final score: 73
+ 
+Bubble Beam: initial score: 81
+Bubble Beam: final score: 81
+ 
+Bubble Beam: Final Score after Doubles-Target Adjustment: 73
+Bubble Beam: Final Score after Doubles-Target Adjustment: 81
+
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (0)
+Initial switchscore building: Healing (0)
+Initial switchscore building: fsteak (0)
+Initial switchscore building: Specific Switches (0)
+Initial switchscore building: worthsaving not activated
+Initial switchscore building: Typing (0)
+Araquanid: initial switchscore: -40
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+Araquanid: initial noswitchscore: 100
+ 
+{
+ 
+}
+ 
+Araquanid: highest move score: 81
+Araquanid: final switching score: -140
+81 > -140, will not switch
+ 
+Beginning AI Item use check.
+ 
+This is a HP-healing item.
+Water Surface Field Disrupt
+Score for Super Potion: -100
+This is a HP-healing item.
+Water Surface Field Disrupt
+Score for Super Potion: -100
+Highest item score: -100
+Highest move score: 81
+Not using an item.
+ 
+[The foe Araquanid: Aqua Ring=5, Icy Wind=5, Struggle Bug=5, Bubble Beam=81]
+[Prefer Bubble Beam]
+[No Z-Move.]
+[The foe Volbeat lost 41 HP, now has 33 HP]
+[The foe Volbeat lost 11 HP, now has 22 HP]
+[a lost 54 HP, now has 12 HP]
+[The foe Araquanid lost 25 HP, now has 54 HP]
+***Round 4***
+Player Pokemon a is faster than Volbeat.
+AI Pokemon Volbeat is faster than t.
+Lunge: initial score: 110
+Lunge: final score: 110
+ 
+Lunge: initial score: 15
+Lunge: final score: 16
+ 
+Thunder Punch: initial score: 110
+Thunder Punch: final score: 110
+ 
+Thunder Punch: initial score: 29
+Thunder Punch: final score: 29
+ 
+Moonlight: initial score: 30
+Priority Check End
+Moonlight: final score: 15
+ 
+Moonlight: initial score: 30
+Priority Check End
+Moonlight: final score: 495
+ 
+Moonlight: Final Score after Status-Target Adjustment: 15
+Moonlight: Final Score after Status-Target Adjustment: 495
+
+Thunder Wave: initial score: 30
+Priority Check End
+Thunder Wave: final score: 16
+ 
+Thunder Wave: initial score: 30
+Priority Check End
+Thunder Wave: final score: 59
+ 
+Thunder Wave: Final Score after Status-Target Adjustment: 16
+Thunder Wave: Final Score after Status-Target Adjustment: 59
+
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (-40)
+Initial switchscore building: Healing (-40)
+Initial switchscore building: fsteak (-40)
+Initial switchscore building: Specific Switches (-40)
+Initial switchscore building: worthsaving not activated
+Initial switchscore building: Typing (-30)
+Volbeat: initial switchscore: -50
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+Volbeat: initial noswitchscore: 100
+ 
+{
+ 
+}
+ 
+Volbeat: highest move score: 495
+Volbeat: final switching score: -150
+495 > -150, will not switch
+ 
+Beginning AI Item use check.
+ 
+This is a HP-healing item.
+Water Surface Field Disrupt
+Score for Super Potion: -100
+This is a HP-healing item.
+Water Surface Field Disrupt
+Score for Super Potion: -100
+Highest item score: -100
+Highest move score: 495
+Not using an item.
+ 
+[The foe Volbeat: Lunge=5, Thunder Punch=5, Moonlight=495, Thunder Wave=5]
+[Prefer Moonlight]
+[No Z-Move.]
+AI Pokemon Araquanid is faster than t.
+Player Pokemon a is faster than Araquanid.
+Aqua Ring: initial score: 20
+Aqua Ring: final score: 13
+ 
+Aqua Ring: initial score: 20
+Aqua Ring: final score: 9
+ 
+Aqua Ring: Final Score after Status-Target Adjustment: 13
+Aqua Ring: Final Score after Status-Target Adjustment: 9
+
+Icy Wind: initial score: 8
+Icy Wind: final score: 8
+ 
+Icy Wind: initial score: 50
+Icy Wind: final score: 55
+ 
+Icy Wind: Final Score after Multi-Target Adjustment: 63
+
+Struggle Bug: initial score: 6
+Struggle Bug: final score: 6
+ 
+Struggle Bug: initial score: 110
+Struggle Bug: final score: 121
+ 
+Struggle Bug: Final Score after Multi-Target Adjustment: 127
+
+Bubble Beam: initial score: 64
+Bubble Beam: final score: 64
+ 
+Bubble Beam: initial score: 110
+Bubble Beam: final score: 111
+ 
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (0)
+Initial switchscore building: Healing (0)
+Initial switchscore building: fsteak (0)
+Initial switchscore building: Specific Switches (0)
+Initial switchscore building: worthsaving not activated
+Initial switchscore building: Typing (0)
+Araquanid: initial switchscore: -40
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+Araquanid: initial noswitchscore: 83
+ 
+{
+ 
+}
+ 
+Araquanid: highest move score: 127
+Araquanid: final switching score: -123
+127 > -123, will not switch
+ 
+Beginning AI Item use check.
+ 
+This is a HP-healing item.
+Water Surface Field Disrupt
+Score for Super Potion: -100
+This is a HP-healing item.
+Water Surface Field Disrupt
+Score for Super Potion: -100
+Highest item score: -100
+Highest move score: 127
+Not using an item.
+ 
+[The foe Araquanid: Aqua Ring=5, Icy Wind=5, Struggle Bug=127, Bubble Beam=111]
+[Prefer Struggle Bug]
+[No Z-Move.]
+[The foe Volbeat gained 37 HP, now has 59 HP]
+[The foe Volbeat lost 41 HP, now has 18 HP]
+[a lost 12 HP, now has 0 HP]
+[t lost 10 HP, now has 105 HP]
+[The foe Araquanid lost 15 HP, now has 39 HP]
+***Round 5***

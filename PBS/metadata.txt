@@ -384,5 +384,25 @@ BattleBack=Darchlight
 # Koneli Grove
 BattleBack=Darchlight
 [115]
-# Drowned Catacombs
+# Koneli City
 DarkMap=true
+[117]
+# Koneli City Ruins
+Outdoor=true
+ShowArea=true
+MapPosition=0,6,16
+BattleBack=Darchlight
+[121]
+# Koneli City Ruins
+Outdoor=false
+ShowArea=false
+MapPosition=0,6,16
+DarkMap=false
+BattleBack=Darchlight
+[122]
+# Koneli City Ruins
+Outdoor=false
+ShowArea=false
+MapPosition=0,6,16
+DarkMap=false
+BattleBack=Darchlight

@@ -2448,7 +2448,7 @@ MultipleForms.register(:DIGLETT,{
       pbSeenForm(pokemon)
     },
     "getFormOnCreation"=>proc{|pokemon|
-      maps=[97,116,403,404]   # Map IDs for second form
+      maps=[117,121]   # Map IDs for second form
       if $game_map && maps.include?($game_map.map_id)
         next 1
       else
@@ -2875,7 +2875,7 @@ MultipleForms.register(:GRAVELER,{
       pbSeenForm(pokemon)
     },
     "getFormOnCreation"=>proc{|pokemon|
-      maps=[269,289,419,489,569]   # Map IDs for second form
+      maps=[117]   # Map IDs for second form
       if $game_map && maps.include?($game_map.map_id)
         next 1
       else
@@ -3867,7 +3867,7 @@ MultipleForms.register(:YAMASK,{
       next "It's said that this Pokémon was formed when an ancient clay tablet was drawn to a vengeful spirit."     # Galarian
     },
     "getFormOnCreation"=>proc{|pokemon|
-      maps=[86]  
+      maps=[117,121]  
       # Map IDs for Galarian form
       if $game_map && maps.include?($game_map.map_id)
         next 1
@@ -4730,14 +4730,174 @@ MultipleForms.register(:VOLTORB,{
      next 0
    end
 },
-"getEvo"=>proc{|pokemon|
-   next if pokemon.form==0                  # Normal
-   next [[4,50,0]]                        # Galarian    [Level,42,Mr. Rime]  
+"onSetForm"=>proc{|pokemon,form|
+   pbSeenForm(pokemon)
+}
+})
+
+MultipleForms.register(:ELECTRODE,{
+"dexEntry"=>proc{|pokemon|
+   next if pokemon.form==0      # Normal
+   next "BOOM!!!"     # Mystic
+},
+"type1"=>proc{|pokemon|
+   next if pokemon.form==0      # Normal
+   next getID(PBTypes,:PSYCHIC)    # Mystic
+},
+"type2"=>proc{|pokemon|
+   next if pokemon.form==0      # Normal
+   next getID(PBTypes,:PSYCHIC)    # Mystic
+},
+"getBaseStats"=>proc{|pokemon|
+   next if pokemon.form==0      # Normal
+   next [60,50,70,80,80,150]   # Mystic
+},
+"getMoveList"=>proc{|pokemon|
+   next if pokemon.form==0      # Normal
+   movelist=[]
+   case pokemon.form            # Mystic
+     when 1 ; movelist=[[1,:TELEPORT],[1,:ZAPCANNON],[1,:MIRACLEEYE],[1,:TACKLE],[4,:SONICBOOM],[6,:AMNESIA],
+                        [9,:CONFUSION],[11,:ROLLOUT],[13,:HYPNOSIS],[16,:PSYWAVE],
+                        [20,:SWIFT],[22,:PSYBEAM],[26,:SELFDESTRUCT],[29,:LIGHTSCREEN],
+                        [36,:AGILITY],[41,:PSYCHIC],[47,:EXPLOSION],[54,:GYROBALL],
+                        [58,:MIRRORCOAT]]
+   end
+   for i in movelist
+     i[1]=getConst(PBMoves,i[1])
+   end
+   next movelist
+},
+"ability"=>proc{|pokemon|
+   next if pokemon.form==0 # Normal
+   if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0) # Mystic
+     next getID(PBAbilities,:TELEPATHY)
+   elsif pokemon.abilityIndex==1 || (pokemon.abilityflag && pokemon.abilityflag==1) # Mystic
+     next getID(PBAbilities,:ANTICIPATION)
+   elsif pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)
+     next getID(PBAbilities,:SYNCHRONIZE)       
+   end
+},
+"getFormOnCreation"=>proc{|pokemon|
+   maps=[]   # Map IDs for second form
+   if $game_map && maps.include?($game_map.map_id)
+     next 1
+   else
+     next 0
+   end
 },
 "onSetForm"=>proc{|pokemon,form|
    pbSeenForm(pokemon)
 }
 })
+
+MultipleForms.register(:POOCHYENA,{
+"dexEntry"=>proc{|pokemon|
+   next if pokemon.form==0      # Normal
+   next "filler"     # Mystic
+},
+"type1"=>proc{|pokemon|
+   next if pokemon.form==0      # Normal
+   next getID(PBTypes,:FIRE)    # Mystic
+},
+"type2"=>proc{|pokemon|
+   next if pokemon.form==0      # Normal
+   next getID(PBTypes,:GHOST)    # Mystic
+},
+"getBaseStats"=>proc{|pokemon|
+   next if pokemon.form==0      # Normal
+   next [35,30,35,55,30,35]   # Mystic
+},
+"getMoveList"=>proc{|pokemon|
+   next if pokemon.form==0      # Normal
+   movelist=[]
+   case pokemon.form            # Mystic
+     when 1 ; movelist=[[1,:TACKLE],[1,:LEER],[7,:GLARE],[10,:LICK],
+                        [13,:EMBER],[16,:CONFUSERAY],[19,:SWAGGER],[22,:INCINERATE],
+                        [25,:WILLOWISP],[28,:SHADOWSNEAK],[31,:TAUNT],[34,:FIREFANG],
+                        [37,:YAWN],[40,:SHADOWBALL],[43,:SUCKERPUNCH],[46,:FLAMETHROWER]]
+   end
+   for i in movelist
+     i[1]=getConst(PBMoves,i[1])
+   end
+   next movelist
+},
+"ability"=>proc{|pokemon|
+   next if pokemon.form==0 # Normal
+   if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0) # Mystic
+     next getID(PBAbilities,:INTIMIDATE)
+   elsif pokemon.abilityIndex==1 || (pokemon.abilityflag && pokemon.abilityflag==1) # Mystic
+     next getID(PBAbilities,:SHADOWTAG)
+   elsif pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2) # Mystic
+     next getID(PBAbilities,:ADAPTABILITY)       
+   end
+},
+"getFormOnCreation"=>proc{|pokemon|
+   maps=[]   # Map IDs for second form
+   if $game_map && maps.include?($game_map.map_id)
+     next 1
+   else
+     next 0
+   end
+},
+"onSetForm"=>proc{|pokemon,form|
+   pbSeenForm(pokemon)
+}
+})
+
+MultipleForms.register(:MIGHTYENA,{
+"dexEntry"=>proc{|pokemon|
+   next if pokemon.form==0      # Normal
+   next "filler"     # Mystic
+},
+"type1"=>proc{|pokemon|
+   next if pokemon.form==0      # Normal
+   next getID(PBTypes,:FIRE)    # Mystic
+},
+"type2"=>proc{|pokemon|
+   next if pokemon.form==0      # Normal
+   next getID(PBTypes,:GHOST)    # Mystic
+},
+"getBaseStats"=>proc{|pokemon|
+   next if pokemon.form==0      # Normal
+   next [70,60,70,70,90,60]   # Mystic
+},
+"getMoveList"=>proc{|pokemon|
+   next if pokemon.form==0      # Normal
+   movelist=[]
+   case pokemon.form            # Mystic
+     when 1 ; movelist=[[1,:DARKPULSE],[1,:FLAMETHROWER],[1,:SHADOWBALL],[1,:MYSTICALFIRE],
+                        [1,:TACKLE],[1,:LEER],[7,:GLARE],[10,:LICK],[13,:EMBER],[16,:CONFUSERAY],
+                        [20,:SWAGGER],[24,:INCINERATE],[28,:WILLOWISP],[32,:SHADOWSNEAK],[36,:TAUNT],
+                        [40,:FIREFANG],[44,:YAWN],[48,:SHADOWBALL],[52,:SUCKERPUNCH],[56,:FLAMETHROWER],[60,:DARKPULSE]]
+   end
+   for i in movelist
+     i[1]=getConst(PBMoves,i[1])
+   end
+   next movelist
+},
+"ability"=>proc{|pokemon|
+   next if pokemon.form==0 # Normal
+   if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0) # Mystic
+     next getID(PBAbilities,:INTIMIDATE)
+   elsif pokemon.abilityIndex==1 || (pokemon.abilityflag && pokemon.abilityflag==1) # Mystic
+     next getID(PBAbilities,:SHADOWTAG)
+   elsif pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)
+     next getID(PBAbilities,:ADAPTABILITY)       
+   end
+},
+"getFormOnCreation"=>proc{|pokemon|
+   maps=[]   # Map IDs for second form
+   if $game_map && maps.include?($game_map.map_id)
+     next 1
+   else
+     next 0
+   end
+},
+"onSetForm"=>proc{|pokemon,form|
+   pbSeenForm(pokemon)
+}
+})
+
 
 MultipleForms.register(:LARVITAR,{
 "type1"=>proc{|pokemon|
