@@ -7359,7 +7359,7 @@ class PokeBattle_Battler
             thismove.id == PBMoves::SEARINGSHOT || thismove.id == PBMoves::FLAMEBURST ||
             thismove.id == PBMoves::LAVAPLUME || thismove.id == PBMoves::FIREPLEDGE ||
             thismove.id == PBMoves::LAVASURF)
-            if $game_switches[1495] = true
+            if $game_switches[1409] = true
                 hazardsExist = false
                 if user.pbOwnSide.effects[PBEffects::Spikes]>0 || user.pbOpposingSide.effects[PBEffects::Spikes]>0
                   user.pbOwnSide.effects[PBEffects::Spikes] = 0

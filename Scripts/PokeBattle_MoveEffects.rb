@@ -5217,9 +5217,8 @@ class PokeBattle_Move_0A4 < PokeBattle_Move
         return false if !opponent.pbCanReduceStatStage?(PBStats::ACCURACY,1,false)
         opponent.pbReduceStat(PBStats::ACCURACY,1,false)
       when 13
-        return false if !opponent.pbCanFreeze?(false)
-        opponent.pbFreeze
-        @battle.pbDisplay(_INTL("{1} was frozen!",opponent.pbThis))  
+        return false if !opponent.pbCanReduceStatStage?(PBStats::SPEED,1,false)
+        opponent.pbReduceStat(PBStats::SPEED,1,false)  
       when 14
         return false if opponent.hasWorkingAbility(:INNERFOCUS) ||
          opponent.effects[PBEffects::Substitute]>0 || (opponent.status!=PBStatuses::SLEEP && 

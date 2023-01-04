@@ -200,9 +200,9 @@
 176,TWINS3,Twins,32,,,,Mixed,,
 177,YOUNGCOUPLE,Young Couple,128,,,,Mixed,,
 178,YOUNGCOUPLE2,Young Couple,128,,,,Mixed,,
-236,GHOSTLADY,Lingering Entity,32,Battle! Spooky,,,Female,,
-237,GHOSTMAN,Lingering Entity,32,Battle! Spooky,,,Male,,
-238,GHOSTCHILDM,Lingering Entity,32,Battle! Spooky,,,Male,,
+236,GHOSTLADY,Lingering Entity,32,Battle! Spooky,,,Female,175,
+237,GHOSTMAN,Lingering Entity,32,Battle! Spooky,,,Male,175,
+238,BERITH,Lingering Entity,32,Battle! Spooky,,,Female,255,
 239,GHOSTCHILDF,Lingering Entity,32,Battle! Spooky,,,Female,,
 ####PANTHEON#################################################################################
 181,MINERVA,Head Librarian,100,Battle! Pantheon Minerva,,,Female,255,

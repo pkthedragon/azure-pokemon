@@ -406,3 +406,17 @@ ShowArea=false
 MapPosition=0,6,16
 DarkMap=false
 BattleBack=Darchlight
+[123]
+# Koneli Cave
+Outdoor=false
+ShowArea=false
+MapPosition=0,6,16
+DarkMap=true
+BattleBack=Cave
+[124]
+# Koneli Cave
+Outdoor=false
+ShowArea=true
+MapPosition=0,6,16
+DarkMap=true
+BattleBack=Cave

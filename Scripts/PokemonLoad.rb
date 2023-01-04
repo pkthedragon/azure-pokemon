@@ -604,15 +604,15 @@ class PokemonLoad
             end
           end
           if $Trainer.initialquestion.nil?
-            if $game_switches[1409]==false
+            if $game_switches[1493]==false
               if $game_variables[200]==2
                 Kernel.pbMessage(_INTL("Some specific settings seem to be disabled on this savefile. These include Set Mode and Bag Item Ban for both sides, among others."))
                 askmessage=_INTL("Would you like to enable them?")
                 if Kernel.pbConfirmMessage(askmessage)
-                  $game_switches[1409]=true
+                  $game_switches[1493]=true
                   $PokemonSystem.battlestyle=1
                 else
-                  $game_switches[1409]=false
+                  $game_switches[1493]=false
                   $PokemonSystem.battlestyle=0
                 end
                 $Trainer.initialquestion=true

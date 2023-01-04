@@ -22,6 +22,7 @@ class PokeBattle_Trainer
   attr_accessor(:onlineMusic) 
   attr_accessor(:trainercardbackup)
   attr_accessor(:initialquestion)
+  attr_accessor(:tutorlist)
 
 
   def trainerTypeName   # Name of this trainer type (localized)
@@ -270,6 +271,7 @@ class PokeBattle_Trainer
     @money=INITIALMONEY
     @party=[]
     @lastSave=""
+    @tutorlist=[]
     @saveNumber = 0
     @noOnlineBattle = false
     @storedOnlineParty=[]   

@@ -1012,16 +1012,19 @@ TM116=1051
 INTERCEPTORWISH=1052
 INTERCEPTZ2=1053
 GASMASK=1054
+MYRONNOTEONE=1055
+MYRONNOTETWO=1056
+MYRONNOTETHREE=1057
 
 def PBItems.getName(id)
 return pbGetMessage(MessageTypes::Items,id)
 end
 
 def PBItems.getCount
-return 1055
+return 1058
 end
 
 def PBItems.maxValue
-return 1054
+return 1057
 end
 end

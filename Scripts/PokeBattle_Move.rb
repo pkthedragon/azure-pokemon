@@ -908,8 +908,7 @@ class PokeBattle_Move
     end
     if $fefieldeffect == 42 && # Bewitched Woods Pastel Veil/Aroma Veil
      (opponent.hasWorkingAbility(:PASTELVEIL) || opponent.hasWorkingAbility(:AROMAVEIL)) && 
-     (isConst?(type,PBTypes,:POISON) || isConst?(type,PBTypes,:STEEL)) && 
-     !(opponent.moldbroken)
+     (isConst?(type,PBTypes,:STEEL)) &&  !(opponent.moldbroken)
       typemod /= 2
     end
     if id == PBMoves::FLYINGPRESS

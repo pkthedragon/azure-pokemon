@@ -285,5 +285,7 @@ Events.onWildPokemonCreate+=proc {|sender,e|
       pokemon.calcStats
     when 34 # Mawile
       pokemon.pbLearnMove(:FIREFANG)
+    when 35 # Smoochum
+      pokemon.pbLearnMove(:POWERUPPUNCH)
     end
 }

@@ -3490,9 +3490,9 @@ def pbItemMenu(index)
     command=itemscene.pbShowCommands(_INTL("{1} is selected.",itemname),commands)
     if cmdUse>=0 && command==cmdUse
       if (usetype==1 || usetype==3) 
-        if (($game_variables[200]==2) && @battle.opponent) && $game_switches[1409]==true
+        if (($game_variables[200]==2) && @battle.opponent) && $game_switches[1493]==true
           itemscene.pbDisplay(_INTL("Use of items in Trainer battles is not allowed on Intense mode."))
-        elsif ($game_variables[200]==2) && $game_switches[1500]==true && $game_switches[1409]==true
+        elsif ($game_variables[200]==2) && $game_switches[1500]==true && $game_switches[1493]==true
           itemscene.pbDisplay(_INTL("Use of items in Boss battles is not allowed on Intense mode."))
         else
           modparty=[]
@@ -3520,7 +3520,7 @@ def pbItemMenu(index)
           itemscene.pbStartScene($PokemonBag)
         end
       elsif (usetype==2 || usetype==4) 
-        if ($game_variables[200]==2 && $game_switches[1409]==true) && (@battle.opponent || $game_switches[1500]==true)
+        if ($game_variables[200]==2 && $game_switches[1493]==true) && (@battle.opponent || $game_switches[1500]==true)
           if pbIsPokeBall?(item)
             if ItemHandlers.hasBattleUseOnBattler(item)
               ret=item

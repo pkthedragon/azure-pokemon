@@ -1024,7 +1024,7 @@ def pbPrepareBattle(battle)
     battle.weather=PBWeather::STRONGWINDS
     battle.weatherduration=-1
   end
-  if $game_switches[1409]==false
+  if $game_switches[1493]==false
     battle.shiftStyle=($PokemonSystem.battlestyle==0) 
   else
     battle.shiftStyle=false

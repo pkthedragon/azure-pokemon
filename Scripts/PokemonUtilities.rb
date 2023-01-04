@@ -2687,7 +2687,7 @@ def pbMoveTutorAnnotations(move,movelist=nil)
     if !$Trainer.party[i].isEgg? && movelist && movelist.any?{|j| j==species }
       # Checked data from movelist
       ret[i]=_INTL("ABLE")
-    elsif !$Trainer.party[i].isEgg? && $Trainer.party[i].isCompatibleWithMove?(move) # && pbSpeciesCompatible?(species,move,$Trainer.party[i])
+    elsif !$Trainer.party[i].isEgg? && pbSpeciesCompatible?(species,move,$Trainer.party[i])
       # Checked data from PBS/tm.txt
       ret[i]=_INTL("ABLE")
     else
@@ -2697,7 +2697,24 @@ def pbMoveTutorAnnotations(move,movelist=nil)
   return ret
 end
 
-def pbMoveTutorChoose(move,movelist=nil,bymachine=false)
+def pbMoveTutorListAdd(move)
+  if !($Trainer.tutorlist)
+    $Trainer.tutorlist=[]
+  end
+  if $Trainer.tutorlist==[]
+    Kernel.pbMessage(_INTL("Hey did you know us Move Tutors have an app set up? Check it out on your Pokegear!"))
+  end
+  if !($Trainer.tutorlist.include?(move))
+    $Trainer.tutorlist.push(move)
+		return true
+	else
+		Kernel.pbMessage(_INTL("You've already bought {1}. Check out the app on the Pokegear!",PBMoves.getName(move)))
+		return false
+  end
+end
+  
+
+def pbMoveTutorChoose(move,movelist=nil,bymachine=false,bytutor=false)
   ret=false
   pbFadeOutIn(99999){
      scene=PokemonScreen_Scene.new
@@ -2705,6 +2722,9 @@ def pbMoveTutorChoose(move,movelist=nil,bymachine=false)
      screen=PokemonScreen.new(scene,$Trainer.party)
      annot=pbMoveTutorAnnotations(move,movelist)
      screen.pbStartScene(_INTL("Teach which Pokémon?"),false,annot)
+     if !($Trainer.tutorlist)
+      $Trainer.tutorlist=[]
+     end
      loop do
        chosen=screen.pbChoosePokemon
        if chosen>=0
@@ -2716,11 +2736,14 @@ def pbMoveTutorChoose(move,movelist=nil,bymachine=false)
          elsif movelist && !movelist.any?{|j| j==pokemon.species }
            Kernel.pbMessage(_INTL("{1} is not compatible with {2}.",pokemon.name,movename))
            Kernel.pbMessage(_INTL("{1} can't be learned.",movename))
+         elsif $Trainer.tutorlist.length>0 && ($Trainer.tutorlist.include?(move)) && bytutor==false
+           Kernel.pbMessage(_INTL("You've already bought {1}. Check out the app on the Pokegear!",movename))
          elsif !pokemon.isCompatibleWithMove?(move) # elsif !pbSpeciesCompatible?(pokemon.species,move,pokemon)
            Kernel.pbMessage(_INTL("{1} is not compatible with {2}.",pokemon.name,movename))
            Kernel.pbMessage(_INTL("{1} can't be learned.",movename))
          else
            if pbLearnMove(pokemon,move,false,bymachine)
+             pbMoveTutorListAdd(move) if bymachine==false && bytutor==false
              ret=true
              break
            end

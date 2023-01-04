@@ -1012,3 +1012,6 @@
 1052,INTERCEPTORWISH,Interceptor's Wish,8,0,"An item that allows the Interceptor to scatter their strength to aid others.",0,0,6,
 1053,INTERCEPTZ2,Interceptium-Z,1,0,"It converts Z-Power into crystals that allow the chance to intercept fate!",0,0,7,
 1054,GASMASK,Gas Mask,8,0,"For easy breathing and communication!",0,0,6,
+1055,MYRONNOTEONE,Access Code Echo,8,0,"A mess of numbers and symbols.",0,0,6,
+1056,MYRONNOTETWO,Access Code November,8,0,"A mess of numbers and symbols.",0,0,6,
+1057,MYRONNOTETHREE,Access Code Delta,8,0,"A mess of numbers and symbols.",0,0,6,

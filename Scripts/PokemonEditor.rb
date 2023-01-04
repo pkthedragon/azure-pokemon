@@ -1016,6 +1016,29 @@ def pbChooseMoveList(defaultMoveID=0)
   return ret>=0 ? commands[ret][0] : 0
 end
 
+def pbChooseTutorList(defaultMoveID=0)
+  cmdwin=pbListWindow([],200)
+  commands=[]
+  moveDefault=0
+  for i in $Trainer.tutorlist
+    name=PBMoves.getName(i)
+    commands.push([i,name]) if name!=nil && name!=""
+  end
+  commands.sort! {|a,b| a[1]<=>b[1]}
+  if defaultMoveID>0
+    commands.each_with_index {|item,index|
+       moveDefault=index if item[0]==defaultMoveID
+    }
+  end
+  realcommands=[]
+  for command in commands
+    realcommands.push(_ISPRINTF("{1:s}",command[1]))
+  end
+  ret=pbCommands2(cmdwin,realcommands,-1,moveDefault,true) 
+  cmdwin.dispose
+  return ret>=0 ? commands[ret][0] : 0
+end
+
 def pbChooseTypeList(defaultMoveID=0,movetype=false)
   cmdwin=pbListWindow([],200)
   commands=[]

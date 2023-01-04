@@ -2448,7 +2448,7 @@ MultipleForms.register(:DIGLETT,{
       pbSeenForm(pokemon)
     },
     "getFormOnCreation"=>proc{|pokemon|
-      maps=[117,121]   # Map IDs for second form
+      maps=[117,121,122,123,124]   # Map IDs for second form
       if $game_map && maps.include?($game_map.map_id)
         next 1
       else
@@ -2630,7 +2630,7 @@ MultipleForms.register(:MEOWTH,{
       pbSeenForm(pokemon)
     },
     "getFormOnCreation"=>proc{|pokemon|
-      aMaps=[24,82,91,390,391]   # Map IDs for second form
+      aMaps=[123,124]   # Map IDs for second form
       gMaps=[97,238]
       # Map IDs for alolan and galarian forms respectively
       if $game_map && aMaps.include?($game_map.map_id)
@@ -2875,7 +2875,7 @@ MultipleForms.register(:GRAVELER,{
       pbSeenForm(pokemon)
     },
     "getFormOnCreation"=>proc{|pokemon|
-      maps=[117]   # Map IDs for second form
+      maps=[117,121,122]   # Map IDs for second form
       if $game_map && maps.include?($game_map.map_id)
         next 1
       else
@@ -4250,9 +4250,9 @@ MultipleForms.register(:TORCHIC,{
    next if pokemon.form==0      # Normal
    movelist=[]
    case pokemon.form            # Mystic
-     when 1 ; movelist=[[1,:GROWL],[1,:SCRATCH],[7,:ACID],[10,:SANDATTACK],
-                        [13,:ROCKTHROW],[17,:METALCLAW],[21,:SLUDGE],
-                        [25,:ROCKSLIDE],[29,:POISONGAS],[33,:FOCUSENERGY],[36,:MERCYJAB],
+     when 1 ; movelist=[[1,:GROWL],[1,:SCRATCH],[7,:ROCKTHROW],[10,:POISONGAS],
+                        [13,:SLUDGE],[17,:METALCLAW],[21,:ROCKTOMB],
+                        [25,:VENOSHOCK],[29,:ROCKSLIDE],[33,:FOCUSENERGY],[36,:MERCYJAB],
                         [39,:BULLETPUNCH],[42,:SLASH],[45,:MIRRORMOVE],[48,:GUNKSHOT],
                         [51,:SWORDSDANCE]]
    end
@@ -4299,9 +4299,9 @@ MultipleForms.register(:COMBUSKEN,{
    next if pokemon.form==0      # Normal
    movelist=[]
    case pokemon.form            # Mystic
-     when 1 ; movelist=[[1,:GROWL],[1,:SCRATCH],[7,:ACID],[10,:SANDATTACK],
-                        [13,:ROCKTHROW],[18,:METALCLAW],[22,:SLUDGE],
-                        [26,:ROCKSLIDE],[29,:POISONGAS],[33,:FOCUSENERGY],[36,:MERCYJAB],
+     when 1 ; movelist=[[1,:GROWL],[1,:SCRATCH],[7,:ROCKTHROW],[10,:POISONGAS],
+                        [13,:SLUDGE],[18,:METALCLAW],[22,:ROCKTOMB],
+                        [26,:VENOSHOCK],[29,:ROCKSLIDE],[33,:FOCUSENERGY],[36,:MERCYJAB],
                         [41,:BULLETPUNCH],[44,:SLASH],[47,:MIRRORMOVE],[50,:GUNKSHOT],
                         [54,:SWORDSDANCE]]
    end
@@ -4348,9 +4348,9 @@ MultipleForms.register(:BLAZIKEN,{
    next if pokemon.form==0      # Normal
    movelist=[]
    case pokemon.form            # Mystic
-     when 1 ; movelist=[[1,:GROWL],[1,:SCRATCH],[1,:METEORMASH],[1,:ACCELEROCK],[7,:ACID],
-                        [10,:SANDATTACK],[13,:ROCKTHROW],[18,:METALCLAW],[22,:SLUDGE],
-                        [26,:ROCKSLIDE],[29,:POISONGAS],[33,:FOCUSENERGY],[36,:MERCYJAB],
+     when 1 ; movelist=[[1,:GROWL],[1,:SCRATCH],[1,:METEORMASH],[1,:ACCELEROCK],[7,:ROCKTHROW],
+                        [10,:POISONGAS],[13,:SLUDGE],[18,:METALCLAW],[22,:ROCKTOMB],
+                        [26,:VENOSHOCK],[29,:ROCKSLIDE],[33,:FOCUSENERGY],[36,:MERCYJAB],
                         [41,:BULLETPUNCH],[44,:SLASH],[47,:STEALTHROCK],[50,:MIRRORMOVE],
                         [53,:GUNKSHOT],[56,:NIGHTSLASH],[60,:SWORDSDANCE]]
    end

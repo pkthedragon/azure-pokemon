@@ -1,6 +1,9 @@
-#-------------------------------
+#########################
 001 # Logium Town A
 14,3,5
+OldRod
+FINNEON,6,9
+BUIZEL,7,10
 LandDay
 SANDYGAST,3,4
 CLAUNCHER,3,4
@@ -27,10 +30,23 @@ KRABBY,3,5
 MEOWTH,3,5
 BUIZEL,4,5
 BUIZEL,4,5
-OldRod
-FINNEON,20,22
-BUIZEL,20,22
-#-------------------------------
+#########################
+004 # Meadow Temple
+21,6,7
+Land
+TANGELA,10,12
+TANGELA,10,12
+PHANTUMP,12
+TANGELA,10,12
+TANGELA,10,12
+TANGELA,10,12
+TANGELA,10,12
+TANGELA,10,12
+TANGELA,10,12
+TANGELA,10,12
+TANGELA,10,12
+PHANTUMP,12
+#########################
 009 # Connecting Caves
 21,4,4
 Cave
@@ -47,9 +63,9 @@ NOSEPASS,5,7
 NOSEPASS,6,7
 NOSEPASS,6,7
 OldRod
-FINNEON,20,22
-SHELLDER,20,22
-#-------------------------------
+FINNEON,6,9
+GOLDEEN,7,10
+#########################
 018 # Connecting Caves
 21,4,4
 Cave
@@ -65,23 +81,7 @@ ROGGENROLA,6,8
 NOSEPASS,6,8
 NOSEPASS,7,8
 NOSEPASS,7,8
-#-------------------------------
-044 # Connecting Caves
-21,4,4
-Cave
-NOIBAT,16,18
-ROGGENROLA,16,18
-ZUBAT,16,18
-ROGGENROLA,7,8
-NOIBAT,17,18
-ZUBAT,17,18
-ZUBAT,17,18
-DWEBBLE,16,18
-ROGGENROLA,16,18
-DWEBBLE,16,18
-NOSEPASS,17,18
-NOSEPASS,17,18
-#-------------------------------
+#########################
 019 # Logium Path
 21,6,7
 LandMorning
@@ -123,39 +123,7 @@ STUNKY,7,9
 SIZZLIPEDE,7,9
 SIZZLIPEDE,8,9
 SIZZLIPEDE,8,9
-#-------------------------------
-030 # Apolvita Cavern
-21,4,4
-Cave
-WOOBAT,7,9
-MACHOP,7,9
-WOOBAT,8,9
-MACHOP,8,9
-CARBINK,7,8
-CARBINK,7,8
-CARBINK,8,9
-BALTOY,8,9
-WOOBAT,6,8
-BALTOY,8,9
-BALTOY,10
-BALTOY,10
-#-------------------------------
-036 # Apolvita Cavern
-21,4,4
-Cave
-WOOBAT,7,9
-MACHOP,7,9
-WOOBAT,8,9
-MACHOP,8,9
-CARBINK,7,8
-CARBINK,7,8
-CARBINK,8,9
-BALTOY,8,9
-WOOBAT,6,8
-BALTOY,8,9
-BALTOY,10
-BALTOY,10
-#-------------------------------
+#########################
 026 # Apolvita Grove
 21,6,7
 LandDay
@@ -184,26 +152,23 @@ PANPOUR,8,10
 PANSEAR,8,10
 PANPOUR,9,10
 PANSEAR,9,10
-#-------------------------------
-055 # Apolvita Pools
+#########################
+030 # Apolvita Cavern
 21,4,4
-Land
-BALTOY,15,17
-BINACLE,15,17
-BALTOY,16,17
-BINACLE,17,18
-CARBINK,16,17
-CARBINK,16,17
-CARBINK,17,18
-CLAMPERL,17,18
-BALTOY,15,18
-CLAMPERL,17,18
-CLAMPERL,17,18
-CLAMPERL,17,18
-OldRod
-STARYU,20,22
-BRUXISH,20,22
-#-------------------------------
+Cave
+WOOBAT,7,9
+MACHOP,7,9
+WOOBAT,8,9
+MACHOP,8,9
+CARBINK,7,8
+CARBINK,7,8
+CARBINK,8,9
+BALTOY,8,9
+WOOBAT,6,8
+BALTOY,8,9
+BALTOY,10
+BALTOY,10
+#########################
 031 # Underground Ruins
 21,4,4
 Cave
@@ -219,7 +184,7 @@ ROGGENROLA,9,11
 HOOTHOOT,9,11
 HOOTHOOT,10,11
 HOOTHOOT,10,11
-#-------------------------------
+#########################
 032 # Underground Ruins
 21,4,4
 Cave
@@ -235,9 +200,12 @@ ROGGENROLA,9,11
 HOOTHOOT,9,11
 HOOTHOOT,10,11
 HOOTHOOT,10,11
-#-------------------------------
+#########################
 033 # Underground Forest
 21,6,7
+OldRod
+FINNEON,9,12
+LOTAD,10,13
 LandDay
 TANGELA,10,11
 BEAUTIFLY,10,11
@@ -264,12 +232,12 @@ TANGELA,10,12
 SEEDOT,10,12
 SEEDOT,11,12
 SEEDOT,11,12
-OldRod
-FINNEON,20,22
-POLIWAG,20,22
-#-------------------------------
+#########################
 034 # Underground Forest
 21,6,7
+OldRod
+FINNEON,9,12
+LOTAD,10,13
 LandDay
 TANGELA,10,11
 BEAUTIFLY,10,11
@@ -296,10 +264,7 @@ TANGELA,10,12
 HOOTHOOT,10,12
 HOOTHOOT,11,12
 HOOTHOOT,11,12
-OldRod
-FINNEON,20,22
-POLIWAG,20,22
-#-------------------------------
+#########################
 035 # Meadow Temple
 21,6,7
 Land
@@ -315,25 +280,60 @@ TANGELA,10,12
 TANGELA,10,12
 TANGELA,10,12
 PHANTUMP,12
-#-------------------------------
-004 # Meadow Temple
-21,6,7
-Land
-TANGELA,10,12
-TANGELA,10,12
-PHANTUMP,12
-TANGELA,10,12
-TANGELA,10,12
-TANGELA,10,12
-TANGELA,10,12
-TANGELA,10,12
-TANGELA,10,12
-TANGELA,10,12
-TANGELA,10,12
-PHANTUMP,12
-#-------------------------------
+#########################
+036 # Aplovita Cavern
+21,4,4
+Cave
+WOOBAT,7,9
+MACHOP,7,9
+WOOBAT,8,9
+MACHOP,8,9
+CARBINK,7,8
+CARBINK,7,8
+CARBINK,8,9
+BALTOY,8,9
+WOOBAT,6,8
+BALTOY,8,9
+BALTOY,10
+BALTOY,10
+#########################
+044 # Connecting Caves
+21,4,4
+Cave
+NOIBAT,16,18
+ROGGENROLA,16,18
+ZUBAT,16,18
+ROGGENROLA,7,8
+NOIBAT,17,18
+ZUBAT,17,18
+ZUBAT,17,18
+NOSEPASS,16,18
+ROGGENROLA,16,18
+DWEBBLE,16,18
+NOSEPASS,17,18
+NOSEPASS,17,18
+#########################
+053 # Drowned Catacombs
+21,4,4
+Cave
+BERGMITE,23,24
+MIGHTYENA,23,24
+BERGMITE,23,24
+MIGHTYENA,23,24
+SNORUNT,24,25
+SNORUNT,24,25
+SNORUNT,24,25
+MISDREAVUS,23,24
+BERGMITE,23,24
+MISDREAVUS,23,24
+MISDREAVUS,30
+MISDREAVUS,30
+#########################
 054 # Logium Town C
 14,3,5
+OldRod
+FINNEON,17,20
+BUIZEL,18,21
 LandDay
 SANDYGAST,18,19
 CLAUNCHER,18,19
@@ -360,42 +360,26 @@ KRABBY,18,20
 MEOWTH,18,20
 INKAY,19,20
 INKAY,19,20
-OldRod
-FINNEON,20,22
-BUIZEL,20,22
-#-------------------------------
-090 # Calypsan Sanctuary
+#########################
+055 # Apolvita Pools
 21,4,4
-LandDay
-BURMY,17,18
-BUNEARY,17,18
-MAKUHITA,17,18
-BUNEARY,16,18
-MAKUHITA,16,18
-BURMY,16,18
-MAKUHITA,17,19
-BUNEARY,17,19
-MAKUHITA,17,19
-BURMY,17,19
-KLINK,18,19
-KLINK,18,19
-LandNight
-BURMY,17,18
-PURRLOIN,17,18
-MANKEY,17,18
-PURRLOIN,16,18
-MANKEY,16,18
-BURMY,16,18
-MANKEY,17,19
-PURRLOIN,17,19
-MANKEY,17,19
-BURMY,17,19
-KLINK,18,19
-KLINK,18,19
+Land
+BALTOY,15,17
+BINACLE,15,17
+BALTOY,16,17
+BINACLE,17,18
+CARBINK,16,17
+CARBINK,16,17
+CARBINK,17,18
+CLAMPERL,17,18
+BALTOY,15,18
+CLAMPERL,17,18
+CLAMPERL,17,18
+CLAMPERL,17,18
 OldRod
-GOLDEEN,20,22
-SURSKIT,5,10
-#-------------------------------
+FINNEON,16,19
+STARYU,17,20
+#########################
 084 # Koneli Demesne
 21,6,7
 LandMorning
@@ -437,9 +421,12 @@ NATU,19,20
 NATU,19,20
 NATU,20,22
 NATU,20,22
-#-------------------------------
-085 # Koneli Shore
+#########################
+085 # Ranger Encampment
 21,4,4
+OldRod
+GOLDEEN,20,22
+FRILLISH,20,22
 LandDay
 SEEL,21,23
 FLETCHINDER,20,22
@@ -466,10 +453,7 @@ SEEL,10,12
 TYNAMO,24
 TYNAMO,24
 TYNAMO,24
-OldRod
-GOLDEEN,20,22
-FINNEON,20,22
-#-------------------------------
+#########################
 086 # Koneli Demesne
 21,6,7
 LandMorning
@@ -511,7 +495,55 @@ FLOETTE,21,23
 FLOETTE,21,23
 FLOETTE,24,26
 FLOETTE,24,26
-#-------------------------------
+#########################
+090 # Calypsan Sanctuary
+21,4,4
+OldRod
+GOLDEEN,20,22
+SURSKIT,5,10
+LandDay
+BURMY,17,18
+BUNEARY,17,18
+MAKUHITA,17,18
+BUNEARY,16,18
+MAKUHITA,16,18
+BURMY,16,18
+MAKUHITA,17,19
+BUNEARY,17,19
+MAKUHITA,17,19
+BURMY,17,19
+KLINK,18,19
+KLINK,18,19
+LandNight
+BURMY,17,18
+PURRLOIN,17,18
+MANKEY,17,18
+PURRLOIN,16,18
+MANKEY,16,18
+BURMY,16,18
+MANKEY,17,19
+PURRLOIN,17,19
+MANKEY,17,19
+BURMY,17,19
+KLINK,18,19
+KLINK,18,19
+#########################
+110 # Drowned Catacombs
+21,4,4
+Cave
+BERGMITE,23,24
+MIGHTYENA,23,24
+BERGMITE,23,24
+MIGHTYENA,23,24
+SNORUNT,24,25
+SNORUNT,24,25
+SNORUNT,24,25
+MISDREAVUS,23,24
+BERGMITE,23,24
+MISDREAVUS,23,24
+MISDREAVUS,30
+MISDREAVUS,30
+#########################
 114 # Koneli Grove
 21,6,7
 LandDay
@@ -540,39 +572,7 @@ MISDREAVUS,8,10
 SLAKOTH,8,10
 MISDREAVUS,9,11
 SLAKOTH,9,10
-#-------------------------------
-110 # Koneli Catacombs
-21,4,4
-Cave
-BERGMITE,23,24
-MIGHTYENA,23,24
-BERGMITE,23,24
-MIGHTYENA,23,24
-SNORUNT,24,25
-SNORUNT,24,25
-SNORUNT,24,25
-MISDREAVUS,23,24
-BERGMITE,23,24
-MISDREAVUS,23,24
-MISDREAVUS,30
-MISDREAVUS,30
-#-------------------------------
-053 # Koneli Catacombs
-21,4,4
-Cave
-BERGMITE,23,24
-MIGHTYENA,23,24
-BERGMITE,23,24
-MIGHTYENA,23,24
-SNORUNT,24,25
-SNORUNT,24,25
-SNORUNT,24,25
-MISDREAVUS,23,24
-BERGMITE,23,24
-MISDREAVUS,23,24
-MISDREAVUS,30
-MISDREAVUS,30
-#-------------------------------
+#########################
 117 # Koneli City Ruins
 21,6,7
 LandMorning
@@ -614,7 +614,7 @@ BRONZOR,26,29
 BRONZOR,26,29
 YAMASK,25,29
 YAMASK,25,29
-#-------------------------------
+#########################
 121 # Koneli City Ruins
 21,6,7
 LandMorning
@@ -656,7 +656,7 @@ BRONZOR,26,29
 BRONZOR,26,29
 YAMASK,25,29
 YAMASK,25,29
-#-------------------------------
+#########################
 122 # Koneli City Ruins
 21,6,7
 LandMorning
@@ -698,4 +698,35 @@ BRONZOR,26,29
 BRONZOR,26,29
 YAMASK,25,29
 YAMASK,25,29
-
+#########################
+123 # Koneli Cave
+21,4,4
+Cave
+JOLTIK,25,29
+MEOWTH,26,29
+JOLTIK,26,29
+MEOWTH,27,30
+WHIRLIPEDE,26,29
+WHIRLIPEDE,27,30
+DIGLETT,26,29
+DIGLETT,26,29
+EKANS,26,29
+EKANS,26,29
+ARBOK,32
+ARBOK,32
+#########################
+124 # Koneli Cave
+21,4,4
+Cave
+JOLTIK,25,29
+MEOWTH,26,29
+JOLTIK,26,29
+MEOWTH,27,30
+WHIRLIPEDE,26,29
+WHIRLIPEDE,27,30
+DIGLETT,26,29
+DIGLETT,26,29
+EKANS,26,29
+EKANS,26,29
+ARBOK,32
+ARBOK,32

@@ -80,6 +80,7 @@ class Scene_Pokegear
 # OPTIONS - If you change these, you should also change update_command below.
     @cmdMap=-1
     @cmdPhone=-1
+    @cmdTutor=-1
     @cmdJukebox=-1
     @cmdOnline=-1    
     #@cmdPortablePC=-1
@@ -92,6 +93,7 @@ class Scene_Pokegear
     commands[@cmdPhone=commands.length]=_INTL("Phone") if $PokemonGlobal.phoneNumbers &&
                                                           $PokemonGlobal.phoneNumbers.length>0
     commands[@cmdJukebox=commands.length]=_INTL("Jukebox")
+    commands[@cmdTutor=commands.length]=_INTL("Tutors") if $Trainer.tutorlist && $Trainer.tutorlist.length>0
 #    commands[@cmdNews=commands.length]=_INTL("Gearen News")
     if $game_switches[1176]
       commands[@cmdPulse=commands.length]=_INTL("Rift Dex")
@@ -201,6 +203,12 @@ class Scene_Pokegear
         pbPlayDecisionSE()
         $scene = Scene_PulseDex.new
       end
+	if @cmdTutor>=0 && @sprites["command_window"].index==@cmdTutor
+	  move=pbChooseTutorList
+	    if move!=0
+	      pbMoveTutorChoose(move,false,false,true)
+	    end
+	end
       if @cmdRiftNotes>=0 && @sprites["command_window"].index==@cmdRiftNotes
         pbPlayDecisionSE()
         $scene = Scene_RiftNotes.new

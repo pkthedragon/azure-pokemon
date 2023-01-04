@@ -127,7 +127,7 @@ module Input
     if trigger?(:F7)
       pbDebugF7
     end
-    if triggerex?(:M)
+    if triggerex?(:F)
       pbTurbo()
     end
     if triggerex?(:F10)

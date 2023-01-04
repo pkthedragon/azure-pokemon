@@ -29766,7 +29766,7 @@ def pbEnemyShouldUseItem?(index)
   #### Sash/Sturdy case
   attacker = @battlers[index]
   item=pbEnemyItemToUse(index)
-  return false if $game_switches[1409]==true
+  return false if $game_switches[1493]==true
   if item>0 && @battlers[index].effects[PBEffects::Embargo]==0
     pbRegisterItem(index,item,nil)
     return true
