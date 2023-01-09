@@ -233,7 +233,7 @@ GUARDIAN=235
 GHOSTLADY=236
 GHOSTMAN=237
 BERITH=238
-GHOSTCHILDF=239
+GHOSTCHILDM=239
 MYRON=240
 MYRON2=241
 POKEMONGANG=242
@@ -268,15 +268,16 @@ RYOU=271
 TRENT=272
 GOLEM=273
 ATEN=274
-VIOLET=275
+GHOSTCHILDF=275
+GHOSTMAID=276
 
 def self.getName(id)
 return pbGetMessage(MessageTypes::TrainerTypes,id)
 end
 def self.getCount
-return 270
+return 271
 end
 def self.maxValue
-return 275
+return 276
 end
 end

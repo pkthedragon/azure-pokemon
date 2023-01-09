@@ -2697,24 +2697,7 @@ def pbMoveTutorAnnotations(move,movelist=nil)
   return ret
 end
 
-def pbMoveTutorListAdd(move)
-  if !($Trainer.tutorlist)
-    $Trainer.tutorlist=[]
-  end
-  if $Trainer.tutorlist==[]
-    Kernel.pbMessage(_INTL("Hey did you know us Move Tutors have an app set up? Check it out on your Pokegear!"))
-  end
-  if !($Trainer.tutorlist.include?(move))
-    $Trainer.tutorlist.push(move)
-		return true
-	else
-		Kernel.pbMessage(_INTL("You've already bought {1}. Check out the app on the Pokegear!",PBMoves.getName(move)))
-		return false
-  end
-end
-  
-
-def pbMoveTutorChoose(move,movelist=nil,bymachine=false,bytutor=false)
+def pbMoveTutorChoose(move,movelist=nil,bymachine=false,cost=0,color="Red")
   ret=false
   pbFadeOutIn(99999){
      scene=PokemonScreen_Scene.new
@@ -2722,31 +2705,100 @@ def pbMoveTutorChoose(move,movelist=nil,bymachine=false,bytutor=false)
      screen=PokemonScreen.new(scene,$Trainer.party)
      annot=pbMoveTutorAnnotations(move,movelist)
      screen.pbStartScene(_INTL("Teach which Pokémon?"),false,annot)
-     if !($Trainer.tutorlist)
-      $Trainer.tutorlist=[]
-     end
      loop do
        chosen=screen.pbChoosePokemon
        if chosen>=0
-         pokemon=$Trainer.party[chosen]
-         if pokemon.isEgg?
-           Kernel.pbMessage(_INTL("{1} can't be taught to an Egg.",movename))
-         elsif (pokemon.isShadow? rescue false)
-           Kernel.pbMessage(_INTL("Shadow Pokémon can't be taught any moves."))
-         elsif movelist && !movelist.any?{|j| j==pokemon.species }
-           Kernel.pbMessage(_INTL("{1} is not compatible with {2}.",pokemon.name,movename))
-           Kernel.pbMessage(_INTL("{1} can't be learned.",movename))
-         elsif $Trainer.tutorlist.length>0 && ($Trainer.tutorlist.include?(move)) && bytutor==false
-           Kernel.pbMessage(_INTL("You've already bought {1}. Check out the app on the Pokegear!",movename))
-         elsif !pokemon.isCompatibleWithMove?(move) # elsif !pbSpeciesCompatible?(pokemon.species,move,pokemon)
-           Kernel.pbMessage(_INTL("{1} is not compatible with {2}.",pokemon.name,movename))
-           Kernel.pbMessage(_INTL("{1} can't be learned.",movename))
-         else
-           if pbLearnMove(pokemon,move,false,bymachine)
-             pbMoveTutorListAdd(move) if bymachine==false && bytutor==false
-             ret=true
-             break
-           end
+        pokemon=$Trainer.party[chosen]
+        if pokemon.isEgg?
+          Kernel.pbMessage(_INTL("{1} can't be taught to an Egg.",movename))
+        elsif (pokemon.isShadow? rescue false)
+          Kernel.pbMessage(_INTL("Shadow Pokémon can't be taught any moves."))
+        elsif movelist && !movelist.any?{|j| j==pokemon.species }
+          Kernel.pbMessage(_INTL("{1} is not compatible with {2}.",pokemon.name,movename))
+          Kernel.pbMessage(_INTL("{1} can't be learned.",movename))
+        elsif !pokemon.isCompatibleWithMove?(move) # elsif !pbSpeciesCompatible?(pokemon.species,move,pokemon)
+          Kernel.pbMessage(_INTL("{1} is not compatible with {2}.",pokemon.name,movename))
+          Kernel.pbMessage(_INTL("{1} can't be learned.",movename))
+        else
+          if cost>0
+            if Kernel.pbConfirmMessage(_INTL("Purchase this move?"))
+              case color
+                when "Red"
+                  if $PokemonBag.pbQuantity(PBItems::REDSHARD)>cost
+                    pbSEPlay("save",volume=80,pitch=80)
+                    $PokemonBag.pbDeleteItem(PBItems::REDSHARD,cost)
+                    cost=0
+                    for i in 0...$Trainer.tutorlist.length
+                      if $Trainer.tutorlist[i][0]==move
+                        $Trainer.tutorlist[i][1]=0            
+                        if pbLearnMove(pokemon,move,false,bymachine)
+                          ret=true
+                          break
+                        end
+                      end
+                    end
+                  else
+                    Kernel.pbMessage(_INTL("You don't have enough shards."))
+                  end
+                when "Blue"
+                  if $PokemonBag.pbQuantity(PBItems::BLUESHARD)>cost
+                      pbSEPlay("save",volume=80,pitch=80)
+                      $PokemonBag.pbDeleteItem(PBItems::BLUESHARD,cost)
+                      cost=0
+                      for i in 0...$Trainer.tutorlist.length
+                        if $Trainer.tutorlist[i][0]==move
+                          $Trainer.tutorlist[i][1]=0            
+                          if pbLearnMove(pokemon,move,false,bymachine)
+                            ret=true
+                            break
+                          end
+                        end
+                      end
+                    else
+                      Kernel.pbMessage(_INTL("You don't have enough shards."))
+                    end
+                when "Green"
+                  if $PokemonBag.pbQuantity(PBItems::GREENSHARD)>cost
+                    pbSEPlay("save",volume=80,pitch=80)
+                    $PokemonBag.pbDeleteItem(PBItems::GREENSHARD,cost)
+                    cost=0
+                    for i in 0...$Trainer.tutorlist.length
+                      if $Trainer.tutorlist[i][0]==move
+                        $Trainer.tutorlist[i][1]=0            
+                        if pbLearnMove(pokemon,move,false,bymachine)
+                          ret=true
+                          break
+                        end
+                      end
+                    end
+                  else
+                    Kernel.pbMessage(_INTL("You don't have enough shards."))
+                  end
+                when "Yellow"
+                  if $PokemonBag.pbQuantity(PBItems::YELLOWSHARD)>cost
+                    pbSEPlay("save",volume=80,pitch=80)
+                    $PokemonBag.pbDeleteItem(PBItems::YELLOWSHARD,cost)
+                    cost=0
+                    for i in 0...$Trainer.tutorlist.length
+                      if $Trainer.tutorlist[i][0]==move
+                        $Trainer.tutorlist[i][1]=0            
+                          if pbLearnMove(pokemon,move,false,bymachine)
+                            ret=true
+                            break
+                          end
+                      end
+                    end
+                  else
+                    Kernel.pbMessage(_INTL("You don't have enough shards."))
+                  end
+              end
+            end
+          else            
+             if pbLearnMove(pokemon,move,false,bymachine)
+               ret=true
+               break
+             end
+          end
          end
        else
          break
@@ -2881,4 +2933,291 @@ end
 
 def pbGetSelfSwitch(mapid,event,switch)
   return $game_self_switches[[mapid,event,switch]]
+end
+
+def pbChooseTutorNetList(defaultMoveID=0)
+  cmdwin=pbListWindow([],300)
+  commands=[]
+  moveDefault=0
+  for i in 0...$Trainer.tutorlist.length  
+    if !$Trainer.tutorlist[i].is_a?(Array)
+      makeit=[$Trainer.tutorlist[i],0]
+      $Trainer.tutorlist[i]=makeit
+    end
+  end   
+  for i in $Trainer.tutorlist
+    name=PBMoves.getName(i[0])
+    if i[1]>0
+      name+=" - "+i[1].to_s+" "+i[2]
+    end  
+    commands.push([i,name]) if name!=nil && name!=""
+  end
+  commands.sort! {|a,b| a[1]<=>b[1]}
+  if defaultMoveID>0
+    commands.each_with_index {|item,index|
+       moveDefault=index if item[0]==defaultMoveID
+    }
+  end
+  realcommands=[]
+  for command in commands
+    realcommands.push(_ISPRINTF("{1:s}",command[1]))
+  end
+  ret=0
+  ret=pbCommands2(cmdwin,realcommands,-1,moveDefault,true) 
+  cmdwin.dispose
+  return ret>=0 ? commands[ret][0] : 0
+end
+
+#$Trainer.tutorNet
+def pbTutorNet
+  loop do
+    move=pbChooseTutorNetList
+    if move[0]!=0
+      #~ if move[1]>0
+        #~ if Kernel.pbConfirmMessage(_INTL("Purchase this move?"))
+          #~ if $Trainer.money>=move[1]
+            #~ pbSEPlay("save",volume=80,pitch=80)
+            #~ $Trainer.money-=move[1]
+            #~ for i in 0...$Trainer.tutorlist.length
+              #~ if $Trainer.tutorlist[i][0]==move[0]
+                #~ $Trainer.tutorlist[i][1]=0
+                #~ pbMoveTutorChoose(move[0],false,false)#,true)
+              #~ end
+            #~ end
+          #~ else
+            #~ Kernel.pbMessage(_INTL("You don't have enough money."))
+          #~ end    
+        #~ end
+      #~ else
+        #~ pbMoveTutorChoose(move[0],false,false)#,true)
+      #~ end  
+        pbMoveTutorChoose(move[0],false,false,move[1],move[2])
+        #pbMoveTutorListAdd(move[0],move[1])
+    else
+      return    
+    end
+  end  
+end
+    
+
+
+def pbMoveTutorListAdd(move,cost=0,color="Red",fast=false)
+  if !($Trainer.tutorlist)
+    $Trainer.tutorlist=[]
+  end
+  if !$game_switches[1492]
+    Kernel.pbMessage(_INTL("By the way are you aware of Tutor.net? It's a phone app we tutors have set up to make our services more accessible. Here, let me help you make an account."))
+    $game_switches[1492]=true
+  end
+  for i in 0...$Trainer.tutorlist.length  
+    if !$Trainer.tutorlist[i].is_a?(Array)
+      makeit=[$Trainer.tutorlist[i],0,"Red"]
+      $Trainer.tutorlist[i]=makeit
+    end
+  end
+  found=false
+  for i in $Trainer.tutorlist
+    if i[0]==move
+      found=true
+    end
+  end        
+  if !found#!($Trainer.tutorlist.include?(move))
+    if fast
+      $Trainer.tutorlist.push([move,cost,color])
+      if cost==0
+        Kernel.pbMessage(_INTL("{1} is now available on your Tutor.net account!",PBMoves.getName(move)))
+      else  
+        Kernel.pbMessage(_INTL("{1} has been added to your Tutor.net wishlist!",PBMoves.getName(move)))
+      end  
+      return true
+    end
+    case color
+      when "Red"
+        if $PokemonBag.pbQuantity(PBItems::REDSHARD)>cost
+          if pbMoveTutorChoose(move,false,false)#,true)
+            pbSEPlay("save",volume=80,pitch=80)
+            $PokemonBag.pbDeleteItem(PBItems::REDSHARD,cost)
+            $Trainer.tutorlist.push([move,0,color])
+            Kernel.pbMessage(_INTL("{1} is now available on your Tutor.net account!",PBMoves.getName(move)))    
+            return true        
+          else
+            if Kernel.pbConfirmMessage(_INTL("Permanently unlock this move?"))
+              pbSEPlay("save",volume=80,pitch=80)
+              $PokemonBag.pbDeleteItem(PBItems::REDSHARD,cost)
+              $Trainer.tutorlist.push([move,0,color])
+              Kernel.pbMessage(_INTL("{1} is now available on your Tutor.net account!",PBMoves.getName(move)))
+              return true
+            else
+              return false  
+            end
+          end
+        else
+          $Trainer.tutorlist.push([move,cost,color])
+          Kernel.pbMessage(_INTL("You don't have enough shards. Move has been added to your Tutor.net wishlist."))
+          return false
+        end
+      when "Blue"
+        if $PokemonBag.pbQuantity(PBItems::BLUESHARD)>cost
+          if pbMoveTutorChoose(move,false,false)#,true)
+            pbSEPlay("save",volume=80,pitch=80)
+            $PokemonBag.pbDeleteItem(PBItems::BLUESHARD,cost)
+            $Trainer.tutorlist.push([move,0,color])
+            Kernel.pbMessage(_INTL("{1} is now available on your Tutor.net account!",PBMoves.getName(move)))    
+            return true        
+          else
+            if Kernel.pbConfirmMessage(_INTL("Permanently unlock this move?"))
+              pbSEPlay("save",volume=80,pitch=80)
+              $PokemonBag.pbDeleteItem(PBItems::BLUESHARD,cost)
+              $Trainer.tutorlist.push([move,0,color])
+              Kernel.pbMessage(_INTL("{1} is now available on your Tutor.net account!",PBMoves.getName(move)))
+              return true
+            else
+              return false  
+            end
+          end
+        else
+          $Trainer.tutorlist.push([move,cost,color])
+          Kernel.pbMessage(_INTL("You don't have enough shards. Move has been added to your Tutor.net wishlist."))
+          return false
+        end
+      when "Green"
+        if $PokemonBag.pbQuantity(PBItems::GREENSHARD)>cost
+          if pbMoveTutorChoose(move,false,false)#,true)
+            pbSEPlay("save",volume=80,pitch=80)
+            $PokemonBag.pbDeleteItem(PBItems::GREENSHARD,cost)
+            $Trainer.tutorlist.push([move,0,color])
+            Kernel.pbMessage(_INTL("{1} is now available on your Tutor.net account!",PBMoves.getName(move)))    
+            return true        
+          else
+            if Kernel.pbConfirmMessage(_INTL("Permanently unlock this move?"))
+              pbSEPlay("save",volume=80,pitch=80)
+              $PokemonBag.pbDeleteItem(PBItems::GREENSHARD,cost)
+              $Trainer.tutorlist.push([move,0,color])
+              Kernel.pbMessage(_INTL("{1} is now available on your Tutor.net account!",PBMoves.getName(move)))
+              return true
+            else
+              return false  
+            end
+          end
+        else
+          $Trainer.tutorlist.push([move,cost,color])
+          Kernel.pbMessage(_INTL("You don't have enough shards. Move has been added to your Tutor.net wishlist."))
+          return false
+        end
+      when "Yellow"
+        if $PokemonBag.pbQuantity(PBItems::YELLOWSHARD)>cost
+          if pbMoveTutorChoose(move,false,false)#,true)
+            pbSEPlay("save",volume=80,pitch=80)
+            $PokemonBag.pbDeleteItem(PBItems::YELLOWSHARD,cost)
+            $Trainer.tutorlist.push([move,0,color])
+            Kernel.pbMessage(_INTL("{1} is now available on your Tutor.net account!",PBMoves.getName(move)))    
+            return true        
+          else
+            if Kernel.pbConfirmMessage(_INTL("Permanently unlock this move?"))
+              pbSEPlay("save",volume=80,pitch=80)
+              $PokemonBag.pbDeleteItem(PBItems::YELLOWSHARD,cost)
+              $Trainer.tutorlist.push([move,0,color])
+              Kernel.pbMessage(_INTL("{1} is now available on your Tutor.net account!",PBMoves.getName(move)))
+              return true
+            else
+              return false  
+            end
+          end
+        else
+          $Trainer.tutorlist.push([move,cost,color])
+          Kernel.pbMessage(_INTL("You don't have enough shards. Move has been added to your Tutor.net wishlist."))
+          return false
+        end
+    end  
+  else
+    return false if fast
+    for i in 0...$Trainer.tutorlist.length
+      if $Trainer.tutorlist[i][0]==move
+        if $Trainer.tutorlist[i][1]>0
+      case color
+      when "Red"
+      if $PokemonBag.pbQuantity(PBItems::REDSHARD)>cost
+            if pbMoveTutorChoose(move,false,false)#,true)
+              pbSEPlay("save",volume=80,pitch=80)
+              $PokemonBag.pbDeleteItem(PBItems::REDSHARD,cost)
+              $Trainer.tutorlist[i][1]=0
+              return true          
+            else
+              if Kernel.pbConfirmMessage(_INTL("Permanently unlock this move?"))
+                pbSEPlay("save",volume=80,pitch=80)
+                $PokemonBag.pbDeleteItem(PBItems::REDSHARD,cost)
+                $Trainer.tutorlist[i][1]=0    
+                Kernel.pbMessage(_INTL("Purchase successful."))
+                return true
+              end
+            end
+          else
+            Kernel.pbMessage(_INTL("You don't have enough shards."))
+          end
+      when "Blue"
+      if $PokemonBag.pbQuantity(PBItems::BLUESHARD)>cost
+            if pbMoveTutorChoose(move,false,false)#,true)
+              pbSEPlay("save",volume=80,pitch=80)
+              $PokemonBag.pbDeleteItem(PBItems::BLUESHARD,cost)
+              $Trainer.tutorlist[i][1]=0
+              return true          
+            else
+              if Kernel.pbConfirmMessage(_INTL("Permanently unlock this move?"))
+                pbSEPlay("save",volume=80,pitch=80)
+                $PokemonBag.pbDeleteItem(PBItems::BLUESHARD,cost)
+                $Trainer.tutorlist[i][1]=0    
+                Kernel.pbMessage(_INTL("Purchase successful."))
+                return true
+              end
+            end
+          else
+            Kernel.pbMessage(_INTL("You don't have enough shards."))
+          end
+      when "Green"
+      if $PokemonBag.pbQuantity(PBItems::GREENSHARD)>cost
+            if pbMoveTutorChoose(move,false,false)#,true)
+              pbSEPlay("save",volume=80,pitch=80)
+              $PokemonBag.pbDeleteItem(PBItems::GREENSHARD,cost)
+              $Trainer.tutorlist[i][1]=0
+              return true          
+            else
+              if Kernel.pbConfirmMessage(_INTL("Permanently unlock this move?"))
+                pbSEPlay("save",volume=80,pitch=80)
+                $PokemonBag.pbDeleteItem(PBItems::GREENSHARD,cost)
+                $Trainer.tutorlist[i][1]=0    
+                Kernel.pbMessage(_INTL("Purchase successful."))
+                return true
+              end
+            end
+          else
+            Kernel.pbMessage(_INTL("You don't have enough shards."))
+          end
+      when "Yellow"
+      if $PokemonBag.pbQuantity(PBItems::YELLOWSHARD)>cost
+            if pbMoveTutorChoose(move,false,false)#,true)
+              pbSEPlay("save",volume=80,pitch=80)
+              $PokemonBag.pbDeleteItem(PBItems::YELLOWSHARD,cost)
+              $Trainer.tutorlist[i][1]=0
+              return true          
+            else
+              if Kernel.pbConfirmMessage(_INTL("Permanently unlock this move?"))
+                pbSEPlay("save",volume=80,pitch=80)
+                $PokemonBag.pbDeleteItem(PBItems::YELLOWSHARD,cost)
+                $Trainer.tutorlist[i][1]=0    
+                Kernel.pbMessage(_INTL("Purchase successful."))
+                return true
+              end
+            end
+          else
+            Kernel.pbMessage(_INTL("You don't have enough shards."))
+          end
+      end
+        else
+          pbMoveTutorChoose(move,false,false)#,true)
+          return true  
+        end
+      end  
+    end                        
+  end
+  return false
 end

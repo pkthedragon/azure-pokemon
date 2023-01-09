@@ -203,7 +203,9 @@
 236,GHOSTLADY,Lingering Entity,32,Battle! Spooky,,,Female,175,
 237,GHOSTMAN,Lingering Entity,32,Battle! Spooky,,,Male,175,
 238,BERITH,Lingering Entity,32,Battle! Spooky,,,Female,255,
-239,GHOSTCHILDF,Lingering Entity,32,Battle! Spooky,,,Female,,
+239,GHOSTCHILDM,Lingering Entity,32,Battle! Spooky,,,Male,,
+275,GHOSTCHILDF,Lingering Entity,32,Battle! Spooky,,,Female,175,
+276,GHOSTMAID,Lingering Entity,32,Battle! Spooky,,,Female,175,
 ####PANTHEON#################################################################################
 181,MINERVA,Head Librarian,100,Battle! Pantheon Minerva,,,Female,255,
 182,AGRUS,Wandering Ranger,100,Battle! Pantheon Agrus,,,Male,255,
@@ -265,7 +267,6 @@
 242,POKEMONGANG,A horde of,100,,,,,200,
 269,POKEMONTWO,The,100,,,,,200,
 243,CLOUDQUEEN,Cloud Queen,100,Battle! Governor,,,Female,255,
-275,VIOLET,Violet,100,,,,Female,255,
 #####SIDEQUEST#############################################################################
 248,TEMPLAR1,Templar,100,Battle! Church Good,,,,255,
 270,AURORA,League Founder,100,Battle! League,,,,255,

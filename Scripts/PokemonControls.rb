@@ -1,6 +1,6 @@
 module Input
   C  = 13
-  A  = 14
+  Z  = 14
   #F3    = 20
   SHIFT  = 21
   CTRL  = 22

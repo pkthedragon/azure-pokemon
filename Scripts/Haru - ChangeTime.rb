@@ -34,7 +34,7 @@ class Scene_Pokegear
     if $game_switches[1177]
       commands[@cmdNotes=commands.length]=_INTL("Field Notes")
     end
-    commands[@cmdTutor=commands.length]=_INTL("Tutors") if $Trainer.tutorlist && $Trainer.tutorlist.length>0
+    commands[@cmdTutor=commands.length]=_INTL("Tutor.net") if $game_switches[1492]=true
     @viewport=Viewport.new(0,0,Graphics.width,Graphics.height)
     @viewport.z=99999
     @button=AnimatedBitmap.new("Graphics/Pictures/Pokegear/pokegearButton")
@@ -163,12 +163,9 @@ class Scene_Pokegear
         $scene = Scene_RiftNotes.new
       end
 
-	if @cmdTutor>=0 && @sprites["command_window"].index==@cmdTutor
-	  move=pbChooseTutorList
-	    if move!=0
-	      pbMoveTutorChoose(move,false,false,true)
-	    end
-	end
+  if @cmdTutor>=0 && @sprites["command_window"].index==@cmdTutor
+    pbTutorNet
+  end
         
       return
     end

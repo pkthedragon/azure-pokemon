@@ -1015,16 +1015,19 @@ GASMASK=1054
 MYRONNOTEONE=1055
 MYRONNOTETWO=1056
 MYRONNOTETHREE=1057
+TM167=1058
+TM168=1059
+TM169=1060
 
 def PBItems.getName(id)
 return pbGetMessage(MessageTypes::Items,id)
 end
 
 def PBItems.getCount
-return 1058
+return 1061
 end
 
 def PBItems.maxValue
-return 1057
+return 1060
 end
 end

@@ -4105,7 +4105,7 @@ MultipleForms.register(:TREECKO,{
    case pokemon.form            # Mystic
      when 1 ; movelist=[[1,:LEER],[1,:POUND],[7,:GUST],[10,:QUICKATTACK],
                         [13,:FAIRYWIND],[17,:SWIFT],[21,:AIRCUTTER],
-                        [25,:DRANINGKISS],[29,:SWEETKISS],[33,:DETECT],[36,:NUMBINGMISTS],
+                        [25,:DRANINGKISS],[29,:SWEETKISS],[33,:DETECT],[36,:MISTYSTEP],
                         [39,:EXTRASENSORY],[42,:AIRSLASH],[45,:AGILITY],[48,:MOONBLAST],
                         [51,:NASTYPLOT]]
    end
@@ -4154,7 +4154,7 @@ MultipleForms.register(:GROVYLE,{
    case pokemon.form            # Mystic
      when 1 ; movelist=[[1,:LEER],[1,:POUND],[7,:GUST],[10,:QUICKATTACK],
                         [13,:FAIRYWIND],[18,:SWIFT],[22,:AIRCUTTER],
-                        [26,:DRAININGKISS],[29,:SWEETKISS],[33,:DETECT],[36,:NUMBINGMISTS],
+                        [26,:DRAININGKISS],[29,:SWEETKISS],[33,:DETECT],[36,:MISTYSTEP],
                         [41,:EXTRASENSORY],[45,:AIRSLASH],[48,:AGILITY],[51,:MOONBLAST],
                         [54,:NASTYPLOT]]
    end
@@ -4203,7 +4203,7 @@ MultipleForms.register(:SCEPTILE,{
    case pokemon.form            # Mystic
      when 1 ; movelist=[[1,:LEER],[1,:POUND],[1,:AURASPHERE],[7,:GUST],[10,:QUICKATTACK],
                         [13,:FAIRYWIND],[18,:SWIFT],[22,:AIRCUTTER],
-                        [26,:DRAININGKISS],[29,:SWEETKISS],[33,:DETECT],[36,:NUMBINGMISTS],
+                        [26,:DRAININGKISS],[29,:SWEETKISS],[33,:DETECT],[36,:MISTYSTEP],
                         [41,:EXTRASENSORY],[45,:AMNESIA],[48,:AIRSLASH],[51,:AGILITY],[54,:MOONBLAST],
                         [57,:HYPERVOICE],[60,:CALMMIND]]
    end
@@ -5564,35 +5564,6 @@ MultipleForms.register(:TYRANITAR,{
     }
   })
 
-MultipleForms.register(:BLAZIKEN,{
-    "getMegaForm"=>proc{|pokemon|
-      next 2 if (isConst?(pokemon.item,PBItems,:BLAZIKENITE) || pokemon.isPreMega?)
-      next
-    },
-    "getUnmegaForm"=>proc{|pokemon|
-      next 0
-    },
-    "getMegaName"=>proc{|pokemon|
-      next _INTL("Mega Blaziken") if pokemon.form==2
-      next
-    },
-    "getBaseStats"=>proc{|pokemon|
-      next [80,160,80,100,130,80] if pokemon.form==2
-      next
-    },
-    "ability"=>proc{|pokemon|
-      next getID(PBAbilities,:SPEEDBOOST) if pokemon.form==2
-      next
-    },
-    "weight"=>proc{|pokemon|
-      next 520 if pokemon.form==2
-      next
-    },
-    "onSetForm"=>proc{|pokemon,form|
-      pbSeenForm(pokemon)
-    }
-  })
-
 MultipleForms.register(:GARDEVOIR,{
     "getMegaForm"=>proc{|pokemon|
       next 1 if isConst?(pokemon.item,PBItems,:GARDEVOIRITE) || pokemon.isPreMega?
@@ -6033,76 +6004,6 @@ MultipleForms.register(:STEELIX,{
     },
     "weight"=>proc{|pokemon|
       next 7400 if pokemon.form==1
-      next
-    },
-    "onSetForm"=>proc{|pokemon,form|
-      pbSeenForm(pokemon)
-    }
-  })
-
-MultipleForms.register(:SCEPTILE,{
-    "getMegaForm"=>proc{|pokemon|
-      next 2 if (isConst?(pokemon.item,PBItems,:SCEPTILITE) || pokemon.isPreMega?)
-      next
-    },
-    "getUnmegaForm"=>proc{|pokemon|
-      next 0
-    },
-    "getMegaName"=>proc{|pokemon|
-      next _INTL("Mega Sceptile") if pokemon.form==2
-      next
-    },
-    "getBaseStats"=>proc{|pokemon|
-      next [70,110,75,145,145,85] if pokemon.form==2
-      next
-    },
-    "type2"=>proc{|pokemon|
-      next getID(PBTypes,:DRAGON) if pokemon.form==2
-      next
-    },
-    "ability"=>proc{|pokemon|
-      next getID(PBAbilities,:LIGHTNINGROD) if pokemon.form==2
-      next
-    },
-    "height"=>proc{|pokemon|
-      next 19 if pokemon.form==2
-      next
-    },
-    "weight"=>proc{|pokemon|
-      next 552 if pokemon.form==2
-      next
-    },
-    "onSetForm"=>proc{|pokemon,form|
-      pbSeenForm(pokemon)
-    }
-  })
-
-MultipleForms.register(:SWAMPERT,{
-    "getMegaForm"=>proc{|pokemon|
-      next 2 if isConst?(pokemon.item,PBItems,:SWAMPERTITE) || pokemon.isPreMega?
-      next
-    },
-    "getUnmegaForm"=>proc{|pokemon|
-      next 0
-    },
-    "getMegaName"=>proc{|pokemon|
-      next _INTL("Mega Swampert") if pokemon.form==2
-      next
-    },
-    "getBaseStats"=>proc{|pokemon|
-      next [100,150,110,70,95,110] if pokemon.form==2
-      next
-    },
-    "ability"=>proc{|pokemon|
-      next getID(PBAbilities,:SWIFTSWIM) if pokemon.form==2
-      next
-    },
-    "height"=>proc{|pokemon|
-      next 19 if pokemon.form==2
-      next
-    },
-    "weight"=>proc{|pokemon|
-      next 1020 if pokemon.form==2
       next
     },
     "onSetForm"=>proc{|pokemon,form|

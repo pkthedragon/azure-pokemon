@@ -4144,7 +4144,6 @@ class PokeBattle_Move_07B < PokeBattle_Move
     return basedmg
   end
 end
- 
 
 
 ################################################################################
@@ -12517,5 +12516,25 @@ class PokeBattle_Move_216 < PokeBattle_Move
       return true
     end
     return false
+  end
+end
+
+################################################################################
+# Power is doubled if the target has negative stat changes.
+################################################################################
+class PokeBattle_Move_218 < PokeBattle_Move
+  def pbBaseDamage(basedmg,attacker,opponent)
+      reducedstats=false
+      for i in [PBStats::ATTACK,PBStats::DEFENSE,
+                    PBStats::SPEED,PBStats::SPATK,PBStats::SPDEF,
+                    PBStats::EVASION,PBStats::ACCURACY]
+         if opponent.stages[i]<0
+             opponent.stages[i]=0; reducedstats=true
+         end
+      end
+      if reducedstats=true
+         return basedmg*2
+     end
+      return basedmg
   end
 end
