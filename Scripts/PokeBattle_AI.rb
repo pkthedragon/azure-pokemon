@@ -89,7 +89,7 @@ class PokeBattle_Battle
         if olddata!=-1
           oldmove = PokeBattle_Move.pbFromPBMove(self,olddata,opponent)
           #if oldmove.basepower==0
-          if oldmove.basedamage==0 && opponent.effects[PBEffects::Attacking]==false
+          if (PBStuff::SETUPMOVE).include?(oldmove.id) || (PBStuff::DEFSETUPMOVE).include?(oldmove.id)
             rndpredict=pbAIRandom(4)
             if rndpredict>=2
               abusing=true
@@ -217,6 +217,7 @@ class PokeBattle_Battle
             end
           end
         end
+  #pkedit
         if @doublebattle && !(opponent.pbPartner.isFainted?)
           movedamage2=checkAIdamage(aimem,attacker,opponent.pbPartner,skill)
         end
@@ -250,7 +251,7 @@ class PokeBattle_Battle
         end
         if !fastermon
           if ((movedamage>=attacker.hp && aegischeck==false || movedamage>attacker.hp && shielddam>attacker.hp && aegischeck==true) && !(opponent.status==PBStatuses::SLEEP && opponent.statusCount>1) && !icansurvive && !shielded) && !(attacker.species == PBSpecies::PARASECT && attacker.form==1) && abusing==false && !(@shieldCount>0)
-            if (@doublebattle && opponent.effects[PBEffects::AttackingTarget].include?(attacker.index))
+            if (@doublebattle)
               if fakefree==false
                 score+=75
               end
@@ -259,15 +260,12 @@ class PokeBattle_Battle
                 score+=150 
               elsif ((opponent.moves.any? {|moveloop| (PBStuff::SETUPMOVE).include?(moveloop.id)}) && !(pridam<opponent.hp/3))
                 score+=75
-              elsif ((opponent.moves.any? {|moveloop| (PBStuff::SETUPMOVE).include?(moveloop.id)}) || (opponent.moves.any? {|moveloop| (PBStuff::DEFSETUPMOVE).include?(moveloop.id)})) && (pridam<opponent.hp/3)
-                if (opponent.effects[PBEffects::AttackingTarget].include?(attacker.index))
-                  score+=75
-                else
-                  rndpredict=pbAIRandom(4)
-                  if rndpredict>2 && abusing==false
-                    score+=50
-                  end
+              elsif (((opponent.moves.any? {|moveloop| (PBStuff::SETUPMOVE).include?(moveloop.id)}) && (pridam<opponent.hp/3)) || (opponent.moves.any? {|moveloop| (PBStuff::DEFSETUPMOVE).include?(moveloop.id)}) && (pridam<opponent.hp/3))
+                if abusing==false
+                  score+=50
                 end
+              else
+                score+=75
               end 
             end
           end
@@ -7602,9 +7600,6 @@ class PokeBattle_Battle
       end
       if pbTypeModNoMessages(bettertype,attacker,opponent,move,skill)>4
         score*=1.5
-      end
-      if opponent.effects[PBEffects::Switching]==true
-        score*=5
       end
     when 0x89 # Return - to do
     when 0x8A # Frustration - to do
@@ -33127,11 +33122,6 @@ def pbSwitchTo(currentmon,party,skill,pivoting=false,hardswitch=false,incomingmo
         battler.defense = pbSeedStatChange(battler,currentmon,true)[1]
         battler.spatk = pbSeedStatChange(battler,currentmon,true)[2]
         battler.spdef = pbSeedStatChange(battler,currentmon,true)[3]
-        if battler.pokemon.species==PBSpecies::MAGCARGO && battler.hasCrest
-          temp = battler.speed
-          battler.speed=pbRoughStat(battler,PBStats::DEFENSE,skill)
-          battler.defense = temp
-        end
       end
     else
       if !(scorearray.length==currentmon.pokemonIndex)
@@ -33141,11 +33131,6 @@ def pbSwitchTo(currentmon,party,skill,pivoting=false,hardswitch=false,incomingmo
         battler.defense = pbSeedStatChange(battler,currentmon)[1]
         battler.spatk = pbSeedStatChange(battler,currentmon)[2]
         battler.spdef = pbSeedStatChange(battler,currentmon)[3]
-        if battler.pokemon.species==PBSpecies::MAGCARGO && battler.hasCrest
-          temp = battler.speed
-          battler.speed=pbRoughStat(battler,PBStats::DEFENSE,skill)
-          battler.defense = temp
-        end
       end
     end
     theseRoles = pbGetMonRole(battler,opponent1,skill,supercount,party)

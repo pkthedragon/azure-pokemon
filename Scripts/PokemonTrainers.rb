@@ -100,16 +100,50 @@ def pbLoadTrainerDifficult(trainerid,trainername,partyid=0,procedure=nil)
       if poke[TPBOSS]=="true"
         pokemon.enablebossmon
       end
+      #-MOTO
       # New EV method
       evsum = poke[TPHPEV].to_i+poke[TPATKEV].to_i+poke[TPDEFEV].to_i+poke[TPSPEEV].to_i+poke[TPSPAEV].to_i+poke[TPSPDEV].to_i
       #if evsum<=510 && evsum>0
-      if evsum>0 # no EV cap :woke:
-      pokemon.ev=[poke[TPHPEV].to_i,
-                          poke[TPATKEV].to_i,
-                          poke[TPDEFEV].to_i,
-                          poke[TPSPEEV].to_i,
-                          poke[TPSPAEV].to_i,
-                          poke[TPSPDEV].to_i]
+      if evsum>0 # What is an EV cap? PULSE2 away tbh
+        if poke[TPHPEV].to_i == 252
+          pokemon.ev[0]=40+pokemon.level*4
+          pokemon.ev[0]=252 if pokemon.ev[0]>252    
+        else
+          pokemon.ev[0]=poke[TPHPEV].to_i
+        end  
+        if poke[TPATKEV].to_i == 252
+          pokemon.ev[1]=40+pokemon.level*4
+          pokemon.ev[1]=252 if pokemon.ev[1]>252    
+        else
+          pokemon.ev[1]=poke[TPATKEV].to_i
+        end  
+        if poke[TPDEFEV].to_i == 252
+          pokemon.ev[2]=40+pokemon.level*4
+          pokemon.ev[2]=252 if pokemon.ev[2]>252    
+        else
+          pokemon.ev[2]=poke[TPDEFEV].to_i
+        end  
+        if poke[TPSPEEV].to_i == 252
+          pokemon.ev[3]=40+pokemon.level*4
+          pokemon.ev[3]=252 if pokemon.ev[3]>252    
+        else
+          pokemon.ev[3]=poke[TPSPEEV].to_i
+        end  
+        if poke[TPSPAEV].to_i == 252
+          pokemon.ev[4]=40+pokemon.level*4
+          pokemon.ev[4]=252 if pokemon.ev[4]>252    
+        else
+          pokemon.ev[4]=poke[TPSPAEV].to_i
+        end      
+        if poke[TPSPDEV].to_i == 252
+          pokemon.ev[5]=40+pokemon.level*4
+          pokemon.ev[5]=252 if pokemon.ev[5]>252    
+        else          
+          pokemon.ev[5]=poke[TPSPDEV].to_i
+        end          
+        if pokemon.ev[1]<pokemon.ev[4]
+          pokemon.ev[1]=pokemon.ev[4]
+        end
       elsif evsum == 0
         for i in 0...6
           pokemon.ev[i]=[85,level*3/2].min

@@ -363,6 +363,35 @@ def pbRaiseEffortValues(pokemon,ev,evgain=10,evlimit=true)
   return evgain
 end
 
+def pbRaiseIV(pokemon,iv,ivgain=1)
+  totaliv=0
+  for i in 0...6
+    totaliv+=pokemon.iv[i]
+  end
+  if totaliv+ivgain>155
+    ivgain=155-totaliv
+  end
+  if pokemon.iv[iv]+ivgain>31
+    ivgain=31-pokemon.iv[iv]
+  end
+  if ivgain>0
+    pokemon.iv[iv]+=ivgain
+    pokemon.calcStats
+  end
+  return ivgain
+end
+
+def pbLowerIV(pokemon,iv,ivgain=1)
+  if pokemon.iv[iv]-ivgain<0
+    ivgain=0
+  end
+  if ivgain>0
+    pokemon.iv[iv]-=ivgain
+    pokemon.calcStats
+  end
+  return ivgain
+end
+
 def pbRestorePP(pokemon,move,pp)
   return 0 if pokemon.moves[move].id==0
   return 0 if pokemon.moves[move].totalpp==0

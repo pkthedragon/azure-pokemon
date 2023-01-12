@@ -356,12 +356,27 @@ BattleBack=Ruin
 [106]
 # Koneli Manor
 Outdoor=false
-BattleBack=Icy2
+ShowArea=true
+MapPosition=0,6,16
+BattleBack=Haunted3
 [108]
+# Koneli Manor
 Outdoor=false
 ShowArea=false
 MapPosition=0,6,16
-BattleBack=Icy2
+BattleBack=Haunted3
+[112]
+# Koneli Manor
+Outdoor=false
+ShowArea=false
+MapPosition=0,6,16
+BattleBack=Haunted3
+[126]
+# Koneli Manor
+Outdoor=false
+ShowArea=false
+MapPosition=0,6,16
+BattleBack=Haunted3
 [109]
 # Koneli City
 Outdoor=true

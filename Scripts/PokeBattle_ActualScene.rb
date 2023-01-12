@@ -4069,7 +4069,9 @@ end
             break
           end
         elsif cmdSummary>=0 && command==cmdSummary
+          $donteditEVs=true
           scene.pbSummary(activecmd)
+          $donteditEVs=false
         end
       end
     end

@@ -4084,6 +4084,88 @@ MultipleForms.register(:MRMIME,{
     }
   })
 
+# Hisuian Forms
+
+MultipleForms.register(:ZORUA,{
+"type1"=>proc{|pokemon|
+   next if pokemon.form==0      # Normal
+   next getID(PBTypes,:NORMAL)    # Hisuian
+},
+"type2"=>proc{|pokemon|
+   next if pokemon.form==0      # Normal
+   next getID(PBTypes,:GHOST)    # Hisuian
+},
+"getBaseStats"=>proc{|pokemon|
+   next if pokemon.form==0      # Normal
+   next [40,65,40,65,80,40]   # Hisuian
+},
+"getMoveList"=>proc{|pokemon|
+   next if pokemon.form==0      # Normal
+   movelist=[]
+   case pokemon.form            # Hisuian
+     when 1 ; movelist=[[1,:SCRATCH],[1,:LEER],[4,:TORMENT],[8,:HONECLAWS],
+                        [12,:SHADOWSNEAK],[16,:CURSE],[20,:TAUNT],
+                        [24,:KNOCKOFF],[28,:SPITE],[32,:AGILITY],[36,:SHADOWBALL],
+                        [40,:HEX],[44,:NASTYPLOT],[48,:FOULPLAY]]
+   end
+   for i in movelist
+     i[1]=getConst(PBMoves,i[1])
+   end
+   next movelist
+},
+"getFormOnCreation"=>proc{|pokemon|
+   maps=[]   # Map IDs for second form
+   if $game_map && maps.include?($game_map.map_id)
+     next 1
+   else
+     next 0
+   end
+},
+"onSetForm"=>proc{|pokemon,form|
+   pbSeenForm(pokemon)
+}
+})
+
+MultipleForms.register(:ZOROARK,{
+"type1"=>proc{|pokemon|
+   next if pokemon.form==0      # Normal
+   next getID(PBTypes,:NORMAL)    # Hisuian
+},
+"type2"=>proc{|pokemon|
+   next if pokemon.form==0      # Normal
+   next getID(PBTypes,:GHOST)    # Hisuian
+},
+"getBaseStats"=>proc{|pokemon|
+   next if pokemon.form==0      # Normal
+   next [60,105,60,105,120,60]   # Hisuian
+},
+"getMoveList"=>proc{|pokemon|
+   next if pokemon.form==0      # Normal
+   movelist=[]
+   case pokemon.form            # Hisuian
+     when 1 ; movelist=[[0,:SHADOWCLAW],[1,:SCRATCH],[1,:LEER],[4,:TORMENT],[8,:HONECLAWS],
+                        [12,:SHADOWSNEAK],[16,:CURSE],[20,:TAUNT],
+                        [24,:KNOCKOFF],[28,:SPITE],[34,:AGILITY],[40,:SHADOWBALL],
+                        [46,:HEX],[52,:NASTYPLOT],[58,:FOULPLAY]]
+   end
+   for i in movelist
+     i[1]=getConst(PBMoves,i[1])
+   end
+   next movelist
+},
+"getFormOnCreation"=>proc{|pokemon|
+   maps=[]   # Map IDs for second form
+   if $game_map && maps.include?($game_map.map_id)
+     next 1
+   else
+     next 0
+   end
+},
+"onSetForm"=>proc{|pokemon,form|
+   pbSeenForm(pokemon)
+}
+})
+
 # Mystic Forms
 
 MultipleForms.register(:TREECKO,{

@@ -1,3 +1,64 @@
+#DemICE>>
+class EVAllocationSprite < SpriteWrapper
+  attr_reader :preselected
+  attr_reader :index
+  
+  def initialize(viewport=nil,fifthmove=false)
+    super(viewport)
+    @EVsel=AnimatedBitmap.new("Graphics/Pictures/EVsel")    
+    @frame=0
+    @index=0
+    @fifthmove=fifthmove
+    @preselected=false
+    @updating=false
+    @spriteVisible=true
+    refresh
+  end
+  
+  def dispose
+    @EVsel.dispose
+    super
+  end
+  
+  def index=(value)
+    @index=value
+    refresh
+  end
+  
+  def preselected=(value)
+    @preselected=value
+    refresh
+  end
+  
+  def visible=(value)
+    super
+    @spriteVisible=value if !@updating
+  end
+  
+  def refresh
+    w=@EVsel.width
+    h=@EVsel.height
+    self.x=239
+    self.y=116+(self.index*32)
+    #~ self.y-=76 if @fifthmove
+    #~ self.y+=20 if @fifthmove && self.index==4
+    self.bitmap=@EVsel.bitmap
+    if self.preselected
+      self.src_rect.set(0,h,w,h)
+    else
+      self.src_rect.set(0,0,w,h)
+    end
+  end
+  
+  def update
+    @updating=true
+    super
+    @EVsel.update
+    @updating=false
+    refresh
+  end
+end
+
 class MoveSelectionSprite < SpriteWrapper
   attr_reader :preselected
   attr_reader :index
@@ -92,6 +153,9 @@ class PokemonSummaryScene
     @sprites["movepresel"]=MoveSelectionSprite.new(@viewport)
     @sprites["movepresel"].visible=false
     @sprites["movepresel"].preselected=true
+        #DemICE>>
+    @sprites["EVsel"]=EVAllocationSprite.new(@viewport)
+    @sprites["EVsel"].visible=false  
     @sprites["movesel"]=MoveSelectionSprite.new(@viewport)
     @sprites["movesel"].visible=false
     if @pokemon.species == 103 && @pokemon.form ==1
@@ -475,25 +539,31 @@ class PokemonSummaryScene
     itemname=pokemon.hasItem? ? PBItems.getName(pokemon.item) : _INTL("None")
     pokename=@pokemon.name
     textpos=[
-       [_INTL("SKILLS"),26,16,0,base,shadow],
+       [_INTL("STATS & IVs"),26,16,0,base,shadow],
        [pokename,46,62,0,base,shadow],
        [pokemon.level.to_s,46,92,0,Color.new(64,64,64),Color.new(176,176,176)],
        [_INTL("Item"),16,320,0,base,shadow],
        [itemname,16,352,0,Color.new(64,64,64),Color.new(176,176,176)],
        [_INTL("HP"),292,76,2,base,shadow],
-       [sprintf("%3d/%3d",pokemon.hp,pokemon.totalhp),462,76,1,Color.new(64,64,64),Color.new(176,176,176)],
+       [sprintf("%3d/%3d",pokemon.hp,pokemon.totalhp),446,76,1,Color.new(64,64,64),Color.new(176,176,176)],
        [_INTL("Attack"),248,120,0,base,statshadows[0]],
-       [sprintf("%d",pokemon.attack),456,120,1,Color.new(64,64,64),Color.new(176,176,176)],
+       [sprintf("%d",pokemon.attack),440,120,1,Color.new(64,64,64),Color.new(176,176,176)],
        [_INTL("Defense"),248,152,0,base,statshadows[1]],
-       [sprintf("%d",pokemon.defense),456,152,1,Color.new(64,64,64),Color.new(176,176,176)],
+       [sprintf("%d",pokemon.defense),440,152,1,Color.new(64,64,64),Color.new(176,176,176)],
        [_INTL("Sp. Atk"),248,184,0,base,statshadows[3]],
-       [sprintf("%d",pokemon.spatk),456,184,1,Color.new(64,64,64),Color.new(176,176,176)],
+       [sprintf("%d",pokemon.spatk),440,184,1,Color.new(64,64,64),Color.new(176,176,176)],
        [_INTL("Sp. Def"),248,216,0,base,statshadows[4]],
-       [sprintf("%d",pokemon.spdef),456,216,1,Color.new(64,64,64),Color.new(176,176,176)],
+       [sprintf("%d",pokemon.spdef),440,216,1,Color.new(64,64,64),Color.new(176,176,176)],
        [_INTL("Speed"),248,248,0,base,statshadows[2]],
-       [sprintf("%d",pokemon.speed),456,248,1,Color.new(64,64,64),Color.new(176,176,176)],
+       [sprintf("%d",pokemon.speed),440,248,1,Color.new(64,64,64),Color.new(176,176,176)],
        [_INTL("Ability"),224,284,0,base,shadow],
        [abilityname,362,284,0,Color.new(64,64,64),Color.new(176,176,176)],
+       [sprintf("%d",pokemon.iv[0]),484,76,1,Color.new(64,64,64),Color.new(176,176,176)],
+       [sprintf("%d",pokemon.iv[1]),484,120,1,Color.new(64,64,64),Color.new(176,176,176)],
+       [sprintf("%d",pokemon.iv[2]),484,152,1,Color.new(64,64,64),Color.new(176,176,176)],
+       [sprintf("%d",pokemon.iv[4]),484,184,1,Color.new(64,64,64),Color.new(176,176,176)],
+       [sprintf("%d",pokemon.iv[5]),484,216,1,Color.new(64,64,64),Color.new(176,176,176)],
+       [sprintf("%d",pokemon.iv[3]),484,248,1,Color.new(64,64,64),Color.new(176,176,176)],  
     ]
     if pokemon.isMale?
       textpos.push([_INTL("♂"),178,62,0,Color.new(24,112,216),Color.new(136,168,208)])
@@ -526,11 +596,14 @@ class PokemonSummaryScene
       status=6 if pbPokerus(pokemon)==1
       status=@pokemon.status-1 if @pokemon.status>0
       status=5 if pokemon.hp==0
-      imagepos.push(["Graphics/Pictures/statuses",124,100,0,16*status,44,16])
+      imagepos.push(["Graphics/Pictures/Summary/statuses",124,100,0,16*status,44,16])
     end
     if pokemon.isShiny?
-      imagepos.push([sprintf("Graphics/Pictures/shiny"),2,134,0,0,-1,-1])
+      imagepos.push([sprintf("Graphics/Pictures/Summary/shiny"),2,134,0,0,-1,-1])
     end
+#    if pokemon.isPULSE3?
+#      imagepos.push([sprintf("Graphics/Pictures/battlePulse3EvoBox"),0,156,0,0,-1,-1])
+#    end    
     if pbPokerus(pokemon)==2
       imagepos.push([sprintf("Graphics/Pictures/Summary/summaryPokerus"),176,100,0,0,-1,-1])
     end
@@ -541,10 +614,10 @@ class PokemonSummaryScene
     base=Color.new(248,248,248)
     shadow=Color.new(104,104,104)
     statshadows=[]
-    for i in 0...5; statshadows[i]=shadow; end
+    for i in 0...6; statshadows[i]=shadow; end
     if !(pokemon.isShadow? rescue false) || pokemon.heartStage<=3
-      natup=(pokemon.nature/5).floor
-      natdn=(pokemon.nature%5).floor
+      natup=(pokemon.nature/6).floor
+      natdn=(pokemon.nature%6).floor
       statshadows[natup]=Color.new(136,96,72) if natup!=natdn
       statshadows[natdn]=Color.new(64,120,152) if natup!=natdn
     end
@@ -556,40 +629,48 @@ class PokemonSummaryScene
     if @pokemon.name.split().last=="?" || @pokemon.name.split().last=="?"
       pokename=@pokemon.name[0..-2]
     end
+    #>>DemICE    
+    totalevs=80+pokemon.level*8
+    totalevs=(totalevs.div(4))*4      
+    totalevs=512 if totalevs>512        
+    evpool=totalevs-pokemon.ev[0]-pokemon.ev[1]-pokemon.ev[2]-pokemon.ev[3]-pokemon.ev[4]-pokemon.ev[5]
     textpos=[
-       [_INTL("EV & IV"),26,16,0,base,shadow],
-       [pokename,46,62,0,base,shadow],
-       [pokemon.level.to_s,46,92,0,Color.new(64,64,64),Color.new(176,176,176)],
-       [_INTL("Item"),16,320,0,base,shadow],
-       [itemname,16,352,0,Color.new(64,64,64),Color.new(176,176,176)],
-       [_INTL("HP"),292,76,2,base,shadow],
-       [_ISPRINTF("{1:3d}/{2:3d}",pokemon.ev[0],pokemon.iv[0]),462,76,1,Color.new(64,64,64),Color.new(176,176,176)],
-       [_INTL("Attack"),248,120,0,base,statshadows[0]],
-       [_ISPRINTF("{1:3d}/{2:3d}",pokemon.ev[1],pokemon.iv[1]),456,120,1,Color.new(64,64,64),Color.new(176,176,176)],
-       [_INTL("Defense"),248,152,0,base,statshadows[1]],
-       [_ISPRINTF("{1:3d}/{2:3d}",pokemon.ev[2],pokemon.iv[2]),456,152,1,Color.new(64,64,64),Color.new(176,176,176)],
-       [_INTL("Sp. Atk"),248,184,0,base,statshadows[3]],
-       [_ISPRINTF("{1:3d}/{2:3d}",pokemon.ev[4],pokemon.iv[4]),456,184,1,Color.new(64,64,64),Color.new(176,176,176)],
-       [_INTL("Sp. Def"),248,216,0,base,statshadows[4]],
-       [_ISPRINTF("{1:3d}/{2:3d}",pokemon.ev[5],pokemon.iv[5]),456,216,1,Color.new(64,64,64),Color.new(176,176,176)],
-       [_INTL("Speed"),248,248,0,base,statshadows[2]],
-       [_ISPRINTF("{1:3d}/{2:3d}",pokemon.ev[3],pokemon.iv[3]),456,248,1,Color.new(64,64,64),Color.new(176,176,176)],
-       [_INTL("Ability"),224,284,0,base,shadow],
-       [abilityname,362,284,0,Color.new(64,64,64),Color.new(176,176,176)],
+      [_INTL("EV ALLOCATION"),26,16,0,base,shadow],
+      [pokename,46,62,0,base,shadow],
+      [_INTL("{1}",pokemon.level),46,92,0,Color.new(64,64,64),Color.new(176,176,176)],
+      [_INTL("Item"),16,320,0,base,shadow],
+      [itemname,16,352,0,Color.new(64,64,64),Color.new(176,176,176)],
+      [_INTL("Unused EVs"),298,76,2,base,shadow],
+      [_ISPRINTF("{1:3d}",evpool,pokemon.iv[0]),438,76,1,Color.new(64,64,64),Color.new(176,176,176)],
+      [_INTL("HP"),248,120,0,base,shadow],
+      [_ISPRINTF("{1:3d}",pokemon.ev[0],pokemon.iv[0]),438,120,1,Color.new(64,64,64),Color.new(176,176,176)],
+      [_INTL("Attack"),248,152,0,base,shadow],
+      [_ISPRINTF("{1:3d}",pokemon.ev[1],pokemon.iv[1]),438,152,1,Color.new(64,64,64),Color.new(176,176,176)],
+      [_INTL("Defense"),248,184,0,base,shadow],
+      [_ISPRINTF("{1:3d}",pokemon.ev[2],pokemon.iv[2]),438,184,1,Color.new(64,64,64),Color.new(176,176,176)],
+      [_INTL("Sp. Atk"),248,216,0,base,shadow],
+      [_ISPRINTF("{1:3d}",pokemon.ev[4],pokemon.iv[1]),438,216,1,Color.new(64,64,64),Color.new(176,176,176)],
+      [_INTL("Sp. Def"),248,248,0,base,shadow],
+      [_ISPRINTF("{1:3d}",pokemon.ev[5],pokemon.iv[5]),438,248,1,Color.new(64,64,64),Color.new(176,176,176)],
+      [_INTL("Speed"),248,280,0,base,shadow],
+      [_ISPRINTF("{1:3d}",pokemon.ev[3],pokemon.iv[3]),438,280,1,Color.new(64,64,64),Color.new(176,176,176)],
+      [_INTL("       [S] key:"),224,316,0,base,shadow],
+      ["Resets all EVs",362,316,0,Color.new(64,64,64),Color.new(176,176,176)],
     ]
+    #DemICE>>
     if pokemon.isMale?
       textpos.push([_INTL("♂"),178,62,0,Color.new(24,112,216),Color.new(136,168,208)])
     elsif pokemon.isFemale?
       textpos.push([_INTL("♀"),178,62,0,Color.new(248,56,32),Color.new(224,152,144)])
     end
     pbDrawTextPositions(overlay,textpos)
-    drawTextEx(overlay,224,316,282,2,abilitydesc,Color.new(64,64,64),Color.new(176,176,176))
+    drawTextEx(overlay,236,348,282,2,"0: [←] to max, max: [→] to 0",Color.new(64,64,64),Color.new(176,176,176))
     drawMarkings(overlay,15,291,72,20,pokemon.markings)
     if pokemon.hp>0
       hpcolors=[
-         Color.new(24,192,32),Color.new(0,144,0),     # Green
-         Color.new(248,184,0),Color.new(184,112,0),   # Orange
-         Color.new(240,80,32),Color.new(168,48,56)    # Red
+        Color.new(24,192,32),Color.new(0,144,0),     # Green
+        Color.new(248,184,0),Color.new(184,112,0),   # Orange
+        Color.new(240,80,32),Color.new(168,48,56)    # Red
       ]
       hpzone=0
       hpzone=1 if pokemon.hp<=(@pokemon.totalhp/2).floor
@@ -598,6 +679,188 @@ class PokemonSummaryScene
       overlay.fill_rect(360,112,pokemon.hp*96/pokemon.totalhp,4,hpcolors[hpzone*2])
     end      
   end
+  #DemICE>>  
+  def pbEVAllocation(pokemon)
+    @sprites["EVsel"].visible=true
+    @sprites["EVsel"].index=0
+    selEV=0
+    editev=0
+    evpool=80+pokemon.level*8
+    evpool=(evpool.div(4))*4      
+    evpool=512 if evpool>512    
+    evcap=40+pokemon.level*4
+    evcap=(evcap.div(4))*4
+    evcap=252 if evcap>252
+    evsum=pokemon.ev[0]+pokemon.ev[1]+pokemon.ev[2]+pokemon.ev[4]+pokemon.ev[5]+pokemon.ev[3]  
+    loop do
+      evpool=80+pokemon.level*8
+      evpool=(evpool.div(4))*4      
+      evpool=512 if evpool>512    
+      evcap=40+pokemon.level*4
+      evcap=(evcap.div(4))*4
+      evcap=252 if evcap>252
+      evsum=pokemon.ev[0]+pokemon.ev[1]+pokemon.ev[2]+pokemon.ev[4]+pokemon.ev[5]+pokemon.ev[3]      
+      Graphics.update
+      Input.update
+      pbUpdate
+      case selEV
+      when 0
+        editev=pokemon.ev[0]
+      when 1
+        editev=pokemon.ev[1]
+      when 2
+        editev=pokemon.ev[2]
+      when 3
+        editev=pokemon.ev[4]
+      when 4
+        editev=pokemon.ev[5]
+      when 5
+        editev=pokemon.ev[3]
+      end  
+      if Input.trigger?(Input::B)
+        @sprites["EVsel"].visible=false
+        break
+      end
+      if Input.trigger?(Input::Y)
+        for i in 0...6
+          pokemon.ev[i]=0
+        end
+        pokemon.calcStats
+        Graphics.update
+        Input.update
+        pbUpdate    
+        dorefresh=true
+        drawPageFour(@pokemon)  
+      end
+      if Input.trigger?(Input::DOWN)
+        selEV+=1
+        selEV=0 if selEV>5
+        selEV=5 if selEV<0
+        @sprites["EVsel"].index=selEV
+        pbPlayCursorSE()
+      end
+      if Input.trigger?(Input::UP)
+        selEV-=1
+        selEV=0 if selEV>5
+        selEV=5 if selEV<0
+        @sprites["EVsel"].index=selEV
+        pbPlayCursorSE()
+      end
+      if Input.trigger?(Input::LEFT)
+        case selEV
+        when 0
+          pokemon.ev[0]-=4
+          if pokemon.ev[0]<0
+            pokemon.ev[0]=0
+            if (evpool-evsum)>evcap
+              pokemon.ev[0]=evcap
+            else
+              pokemon.ev[0]=evpool-evsum
+            end
+            pokemon.ev[0]=(pokemon.ev[0].div(4))*4
+          end
+          pokemon.calcStats
+        when 1
+          pokemon.ev[1]-=4
+          if pokemon.ev[1]<0
+            pokemon.ev[1]=0
+            if (evpool-evsum)>evcap
+              pokemon.ev[1]=evcap
+            else
+              pokemon.ev[1]=evpool-evsum
+            end
+            pokemon.ev[1]=(pokemon.ev[1].div(4))*4
+          end
+          pokemon.calcStats
+        when 2
+          pokemon.ev[2]-=4
+          if pokemon.ev[2]<0
+            pokemon.ev[2]=0
+            if (evpool-evsum)>evcap
+              pokemon.ev[2]=evcap
+            else
+              pokemon.ev[2]=evpool-evsum
+            end
+            pokemon.ev[2]=(pokemon.ev[2].div(4))*4
+          end
+          pokemon.calcStats
+        when 3
+          pokemon.ev[4]-=4
+          if pokemon.ev[4]<0
+            pokemon.ev[4]=0
+            if (evpool-evsum)>evcap
+              pokemon.ev[4]=evcap
+            else
+              pokemon.ev[4]=evpool-evsum
+            end
+            pokemon.ev[4]=(pokemon.ev[4].div(4))*4
+          end
+          pokemon.calcStats
+        when 4
+          pokemon.ev[5]-=4
+          if pokemon.ev[5]<0
+            pokemon.ev[5]=0
+            if (evpool-evsum)>evcap
+              pokemon.ev[5]=evcap
+            else
+              pokemon.ev[5]=evpool-evsum
+            end
+            pokemon.ev[5]=(pokemon.ev[5].div(4))*4
+          end
+          pokemon.calcStats
+        when 5
+          pokemon.ev[3]-=4
+          if pokemon.ev[3]<0
+            pokemon.ev[3]=0
+            if (evpool-evsum)>evcap
+              pokemon.ev[3]=evcap
+            else
+              pokemon.ev[3]=evpool-evsum
+            end
+            pokemon.ev[3]=(pokemon.ev[3].div(4))*4
+          end
+          pokemon.calcStats
+        end  
+        pokemon.calcStats
+        Graphics.update
+        Input.update
+        pbUpdate    
+        dorefresh=true
+        drawPageFour(@pokemon)              
+      end
+      if Input.trigger?(Input::RIGHT)
+        case selEV
+        when 0
+          pokemon.ev[0]+=4
+          pokemon.ev[0]=0 if pokemon.ev[0]>evcap || evsum>=evpool
+        when 1
+          pokemon.ev[1]+=4
+          pokemon.ev[1]=0 if pokemon.ev[1]>evcap || evsum>=evpool
+        when 2
+          pokemon.ev[2]+=4
+          pokemon.ev[2]=0 if pokemon.ev[2]>evcap || evsum>=evpool
+        when 3
+          pokemon.ev[4]+=4
+          pokemon.ev[4]=0 if pokemon.ev[4]>evcap || evsum>=evpool
+        when 4
+          pokemon.ev[5]+=4
+          pokemon.ev[5]=0 if pokemon.ev[5]>evcap || evsum>=evpool
+        when 5
+          pokemon.ev[3]+=4
+          pokemon.ev[3]=0 if pokemon.ev[3]>evcap || evsum>=evpool
+          pokemon.ev[3]=(pokemon.ev[3].div(4))*4
+        end  
+        pokemon.calcStats
+        Graphics.update
+        Input.update
+        pbUpdate    
+        dorefresh=true
+        drawPageFour(@pokemon)              
+      end      
+    end 
+    @sprites["EVsel"].visible=false
+  end  
+  #>>DemICE
 
 
   def drawPageFive(pokemon)
@@ -939,6 +1202,10 @@ class PokemonSummaryScene
       if Input.trigger?(Input::C)
         if @page==0
           break
+        elsif @page==3
+          pbEVAllocation(@pokemon)   if !$donteditEVs
+          dorefresh=true
+          drawPageFour(@pokemon)    
         elsif @page==4
           pbMoveSelection
           dorefresh=true

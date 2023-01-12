@@ -202,8 +202,8 @@
 178,YOUNGCOUPLE2,Young Couple,128,,,,Mixed,,
 236,GHOSTLADY,Lingering Entity,32,Battle! Spooky,,,Female,175,
 237,GHOSTMAN,Lingering Entity,32,Battle! Spooky,,,Male,175,
-238,BERITH,Lingering Entity,32,Battle! Spooky,,,Female,255,
-239,GHOSTCHILDM,Lingering Entity,32,Battle! Spooky,,,Male,,
+238,BERITH,Lingering Entity,32,Battle! Insanity,,,Female,255,
+239,GHOSTCHILDM,Lingering Entity,32,Battle! Spooky,,,Male,175,
 275,GHOSTCHILDF,Lingering Entity,32,Battle! Spooky,,,Female,175,
 276,GHOSTMAID,Lingering Entity,32,Battle! Spooky,,,Female,175,
 ####PANTHEON#################################################################################

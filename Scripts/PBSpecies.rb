@@ -889,13 +889,14 @@ DRAGAPULT=887
 ZACIAN=888
 ZAMAZENTA=889
 ETERNATUS=890
+JESTERIME=906
 def PBSpecies.getName(id)
 return pbGetMessage(MessageTypes::Species,id)
 end
 def PBSpecies.getCount
-return 890
+return 891
 end
 def PBSpecies.maxValue
-return 890
+return 906
 end
 end

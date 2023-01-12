@@ -3768,52 +3768,60 @@ end
     baseexp=defeated.pokemon.baseExp
     evyield=defeated.pokemon.evYield
     # Gain effort value points, using RS effort values
-    totalev=0
-    for k in 0...6
-      totalev+=thispoke.ev[k]
-    end
-    for k in 0...6
-      evgain=evyield[k]
-      evgain*=2 if isConst?(thispoke.item,PBItems,:MACHOBRACE) ||
-                   isConst?(thispoke.itemInitial,PBItems,:MACHOBRACE)
-      case k
-      when PBStats::HP
-        evgain+=8 if isConst?(thispoke.item,PBItems,:POWERWEIGHT) ||
-                     isConst?(thispoke.itemInitial,PBItems,:POWERWEIGHT)
-      when PBStats::ATTACK
-        evgain+=8 if isConst?(thispoke.item,PBItems,:POWERBRACER) ||
-                     isConst?(thispoke.itemInitial,PBItems,:POWERBRACER)
-      when PBStats::DEFENSE
-        evgain+=8 if isConst?(thispoke.item,PBItems,:POWERBELT) ||
-                     isConst?(thispoke.itemInitial,PBItems,:POWERBELT)
-      when PBStats::SPATK
-        evgain+=8 if isConst?(thispoke.item,PBItems,:POWERLENS) ||
-                     isConst?(thispoke.itemInitial,PBItems,:POWERLENS)
-      when PBStats::SPDEF
-        evgain+=8 if isConst?(thispoke.item,PBItems,:POWERBAND) ||
-                     isConst?(thispoke.itemInitial,PBItems,:POWERBAND)
-      when PBStats::SPEED
-        evgain+=8 if isConst?(thispoke.item,PBItems,:POWERANKLET) ||
-                     isConst?(thispoke.itemInitial,PBItems,:POWERANKLET)
-      end
-      evgain*=2 if thispoke.pokerusStage>=1 # Infected or cured
-      if evgain>0
-        # Can't exceed overall limit
-        evgain-=totalev+evgain-510 if totalev+evgain>510
-        # Can't exceed stat limit
-        evgain-=thispoke.ev[k]+evgain-252 if thispoke.ev[k]+evgain>252
-        # Add EV gain
-        thispoke.ev[k]+=evgain
-        if thispoke.ev[k]>252
-          "Single-stat EV limit 252 exceeded.\r\nStat: #{k}  EV gain: #{evgain}  EVs: #{thispoke.ev.inspect}"
-          thispoke.ev[k]=252
-        end
-        totalev+=evgain
-        if totalev>510
-          print "EV limit 510 exceeded.\r\nTotal EVs: #{totalev} EV gain: #{evgain}  EVs: #{thispoke.ev.inspect}"
-        end
-      end
-    end
+    #~ totalev=0
+    #~ for k in 0...6
+    #~ totalev+=thispoke.ev[k]
+    #~ end
+    #~ for k in 0...6
+    #~ evgain=evyield[k]
+    #~ evgain*=2 if isConst?(thispoke.item,PBItems,:MACHOBRACE) ||
+    #~ isConst?(thispoke.itemInitial,PBItems,:MACHOBRACE)
+    #~ case k
+    #~ when PBStats::HP
+    #~ evgain+=4 if isConst?(thispoke.item,PBItems,:POWERWEIGHT) ||
+    #~ isConst?(thispoke.itemInitial,PBItems,:POWERWEIGHT)
+    #~ when PBStats::ATTACK
+    #~ evgain+=4 if isConst?(thispoke.item,PBItems,:POWERBRACER) ||
+    #~ isConst?(thispoke.itemInitial,PBItems,:POWERBRACER)
+    #~ when PBStats::DEFENSE
+    #~ evgain+=4 if isConst?(thispoke.item,PBItems,:POWERBELT) ||
+    #~ isConst?(thispoke.itemInitial,PBItems,:POWERBELT)
+    #~ when PBStats::SPATK
+    #~ evgain+=4 if isConst?(thispoke.item,PBItems,:POWERLENS) ||
+    #~ isConst?(thispoke.itemInitial,PBItems,:POWERLENS)
+    #~ when PBStats::SPDEF
+    #~ evgain+=4 if isConst?(thispoke.item,PBItems,:POWERBAND) ||
+    #~ isConst?(thispoke.itemInitial,PBItems,:POWERBAND)
+    #~ when PBStats::SPEED
+    #~ evgain+=4 if isConst?(thispoke.item,PBItems,:POWERANKLET) ||
+    #~ isConst?(thispoke.itemInitial,PBItems,:POWERANKLET)
+    #~ end
+    #~ evgain*=2 if thispoke.pokerusStage>=1 # Infected or cured
+    #~ if evgain>0
+    #~ # Can't exceed overall limit
+    #~ evgain-=totalev+evgain-510 if totalev+evgain>510
+    #~ # Can't exceed stat limit
+    #~ evgain-=thispoke.ev[k]+evgain-252 if thispoke.ev[k]+evgain>252
+    #~ # Add EV gain
+    #~ if k==4 #>>DemICE
+    #~ thispoke.ev[1]+=evgain          
+    #~ if thispoke.ev[1]>252
+    #~ print "Single-stat EV limit 252 exceeded.\r\nStat: #{1}  EV gain: #{evgain}  EVs: #{thispoke.ev.inspect}"
+    #~ thispoke.ev[1]=252
+    #~ end
+    #~ else  
+    #~ thispoke.ev[k]+=evgain                      
+    #~ if thispoke.ev[k]>252
+    #~ print "Single-stat EV limit 252 exceeded.\r\nStat: #{k}  EV gain: #{evgain}  EVs: #{thispoke.ev.inspect}"
+    #~ thispoke.ev[k]=252
+    #~ end
+    #~ end  
+    #~ totalev+=evgain
+    #~ if totalev>510
+    #~ print "EV limit 510 exceeded.\r\nTotal EVs: #{totalev} EV gain: #{evgain}  EVs: #{thispoke.ev.inspect}"
+    #~ end
+    #~ end
+    #~ end
     # Gain experience
     ispartic=0
     ispartic=1 if defeated.participants.include?(index)
@@ -3934,11 +3942,38 @@ end
           # Finding all moves learned at this level
           movelist=thispoke.getMoveList
           for k in movelist
-            if k[0]==thispoke.level   # Learned a new move
+             if k[0]==thispoke.level   # Learned a new move
               pbLearnMove(index,k[1])
+              thispoke.firstmoves.push(k[1])
             end
-          end
+          end               
         end
+        evpool=80+thispoke.level*8
+        evpool=(evpool.div(4))*4      
+        evpool=512 if evpool>512    
+        evcap=40+thispoke.level*4
+        evcap=(evcap.div(4))*4
+        evcap=252 if evcap>252
+        evsum=thispoke.ev[0]+thispoke.ev[1]+thispoke.ev[2]+thispoke.ev[4]+thispoke.ev[5]+thispoke.ev[3]    
+        if evsum>0 && evpool>evsum && thispoke.ev.max<evcap && thispoke.ev.max_nth(2)<evcap
+          for i in 0..6
+            if thispoke.ev[i]==thispoke.ev.max
+              thispoke.ev[i]+=4
+              thispoke.calcStats
+              thispoke.ev[i]+=4 if thispoke.ev[i]<evcap
+              thispoke.calcStats
+            end
+          end  
+          evsum=thispoke.ev[0]+thispoke.ev[1]+thispoke.ev[2]+thispoke.ev[4]+thispoke.ev[5]+thispoke.ev[3]
+          if evpool>evsum
+            for i in 0..6
+              if thispoke.ev[i]==thispoke.ev.max_nth(2)
+                thispoke.ev[i]+=4
+                thispoke.calcStats
+              end
+            end  
+          end                            
+        end  
       end
     end
   end

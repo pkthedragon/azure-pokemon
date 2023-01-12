@@ -5736,3 +5736,174 @@ Not using an item.
 [t lost 10 HP, now has 105 HP]
 [The foe Araquanid lost 15 HP, now has 39 HP]
 ***Round 5***
+==============================
+Battle Start!
+274 - Aten
+==============================
+***Round 1***
+Player Pokemon Sizzlipede is faster than Vulpix.
+Aurora Veil: initial score: 35
+Aurora Veil: final score: 78
+ 
+Icy Wind: initial score: 13
+Icy Wind: final score: 13
+ 
+Draining Kiss: initial score: 11
+Draining Kiss: final score: 11
+ 
+Ice Shard: initial score: 8
+Priority Check Begin
+Player Pokemon is faster.
+Expected damage taken: 80
+Priority Check End
+Ice Shard: final score: 83
+ 
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (0)
+Initial switchscore building: Healing (0)
+Initial switchscore building: fsteak (0)
+Initial switchscore building: Specific Switches (0)
+Initial switchscore building: AI Safe Switches (0)
+Initial switchscore building: worthsaving not activated
+Initial switchscore building: Typing (0)
+Vulpix: initial switchscore: 20
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+Vulpix: initial noswitchscore: 66
+ 
+{
+ 
+}
+ 
+Vulpix: highest move score: 83
+Vulpix: final switching score: -46
+83 > -46, will not switch
+ 
+Beginning AI Item use check.
+ 
+Highest item score: -10000
+Highest move score: 83
+Item use turned off.
+[The foe Vulpix: Aurora Veil=78, Icy Wind=5, Draining Kiss=5, Ice Shard=83]
+[Prefer Ice Shard]
+[No Z-Move.]
+[Sizzlipede lost 6 HP, now has 61 HP]
+[The foe Vulpix lost 59 HP, now has 0 HP]
+[Sizzlipede lost 4 HP, now has 57 HP]
+Scoring for Vulpix switching to: Vulpix
+Score: -10000000
+Not switching to self.
+Scoring for Vulpix switching to: Bayleef
+Offensive: 85
+Defensive: 85
+Roles: 85
+Weather: 85
+Moves: 85
+Abilities: 85
+Items: 85
+Fields: 85
+Score: 85
+ 
+Scoring for Vulpix switching to: Indeedee
+Offensive: 49
+Defensive: 49
+Roles: 49
+Weather: 49
+Moves: 49
+Abilities: 49
+Items: 49
+Fields: 109
+Score: 109
+ 
+Scoring for Vulpix switching to: Chimecho
+Offensive: 15
+Defensive: 90
+Roles: 90
+Weather: 90
+Moves: 90
+Abilities: 90
+Items: 90
+Fields: 110
+Score: 110
+ 
+Scoring for Vulpix switching to: Metang
+Offensive: 19
+Defensive: 94
+Roles: 94
+Weather: 94
+Moves: 94
+Abilities: 94
+Items: 94
+Fields: 114
+Score: 114
+ 
+Scoring for Vulpix switching to: Xatu
+Offensive: 138
+Defensive: 288
+Roles: 348
+Weather: 348
+Moves: 368
+Abilities: 368
+Items: 368
+Fields: 388
+Score: 388
+ 
+==============================
+Battle Start!
+274 - Aten
+==============================
+***Round 1***
+Player Pokemon Sizzlipede is faster than Vulpix.
+Aurora Veil: initial score: 35
+Aurora Veil: final score: 78
+ 
+Icy Wind: initial score: 13
+Icy Wind: final score: 13
+ 
+Draining Kiss: initial score: 11
+Draining Kiss: final score: 11
+ 
+Ice Shard: initial score: 8
+Priority Check Begin
+Player Pokemon is faster.
+Expected damage taken: 80
+Priority Check End
+Ice Shard: final score: 58
+ 
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (0)
+Initial switchscore building: Healing (0)
+Initial switchscore building: fsteak (0)
+Initial switchscore building: Specific Switches (0)
+Initial switchscore building: AI Safe Switches (0)
+Initial switchscore building: worthsaving not activated
+Initial switchscore building: Typing (0)
+Vulpix: initial switchscore: 20
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+Vulpix: initial noswitchscore: 66
+ 
+{
+ 
+}
+ 
+Vulpix: highest move score: 78
+Vulpix: final switching score: -46
+78 > -46, will not switch
+ 
+Beginning AI Item use check.
+ 
+Highest item score: -10000
+Highest move score: 78
+Item use turned off.
+[The foe Vulpix: Aurora Veil=78, Icy Wind=5, Draining Kiss=5, Ice Shard=58]
+[Prefer Aurora Veil]
+[No Z-Move.]
+[Sizzlipede lost 4 HP, now has 63 HP]
+***Round 2***

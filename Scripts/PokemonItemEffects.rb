@@ -924,134 +924,134 @@ ItemHandlers::UseOnPokemon.add(:PPMAX,proc{|item,pokemon,scene|
 })
 
 ItemHandlers::UseOnPokemon.add(:HPUP,proc{|item,pokemon,scene|
-   if pbRaiseEffortValues(pokemon,0)==0
+   if pbRaiseIV(pokemon,0)==0
      scene.pbDisplay(_INTL("It won't have any effect."))
      next false
    else
      scene.pbRefresh
-     scene.pbDisplay(_INTL("{1}'s HP increased.",pokemon.name))
+     scene.pbDisplay(_INTL("{1}'s HP IV increased.",pokemon.name))
      pokemon.changeHappiness("vitamin")
      next true
    end
 })
 
 ItemHandlers::UseOnPokemon.add(:PROTEIN,proc{|item,pokemon,scene|
-   if pbRaiseEffortValues(pokemon,1)==0
+   if pbRaiseIV(pokemon,1)==0
      scene.pbDisplay(_INTL("It won't have any effect."))
      next false
    else
-     scene.pbDisplay(_INTL("{1}'s Attack increased.",pokemon.name))
+     scene.pbDisplay(_INTL("{1}'s Attack IV increased.",pokemon.name))
      pokemon.changeHappiness("vitamin")
      next true
    end
 })
 
 ItemHandlers::UseOnPokemon.add(:IRON,proc{|item,pokemon,scene|
-   if pbRaiseEffortValues(pokemon,2)==0
+   if pbRaiseIV(pokemon,2)==0
      scene.pbDisplay(_INTL("It won't have any effect."))
      next false
    else
-     scene.pbDisplay(_INTL("{1}'s Defense increased.",pokemon.name))
+     scene.pbDisplay(_INTL("{1}'s Defense IV increased.",pokemon.name))
      pokemon.changeHappiness("vitamin")
      next true
    end
 })
 
 ItemHandlers::UseOnPokemon.add(:CALCIUM,proc{|item,pokemon,scene|
-   if pbRaiseEffortValues(pokemon,4)==0
+   if pbRaiseIV(pokemon,4)==0
      scene.pbDisplay(_INTL("It won't have any effect."))
      next false
    else
-     scene.pbDisplay(_INTL("{1}'s Special Attack increased.",pokemon.name))
+     scene.pbDisplay(_INTL("{1}'s Special Attack IV increased.",pokemon.name))
      pokemon.changeHappiness("vitamin")
      next true
    end
 })
 
 ItemHandlers::UseOnPokemon.add(:ZINC,proc{|item,pokemon,scene|
-   if pbRaiseEffortValues(pokemon,5)==0
+   if pbRaiseIV(pokemon,5)==0
      scene.pbDisplay(_INTL("It won't have any effect."))
      next false
    else
-     scene.pbDisplay(_INTL("{1}'s Special Defense increased.",pokemon.name))
+     scene.pbDisplay(_INTL("{1}'s Special Defense IV increased.",pokemon.name))
      pokemon.changeHappiness("vitamin")
      next true
    end
 })
 
 ItemHandlers::UseOnPokemon.add(:CARBOS,proc{|item,pokemon,scene|
-   if pbRaiseEffortValues(pokemon,3)==0
+   if pbRaiseIV(pokemon,3)==0
      scene.pbDisplay(_INTL("It won't have any effect."))
      next false
    else
-     scene.pbDisplay(_INTL("{1}'s Speed increased.",pokemon.name))
+     scene.pbDisplay(_INTL("{1}'s Speed IV increased.",pokemon.name))
      pokemon.changeHappiness("vitamin")
      next true
    end
 })
 
 ItemHandlers::UseOnPokemon.add(:HEALTHWING,proc{|item,pokemon,scene|
-   if pbRaiseEffortValues(pokemon,0,1,false)==0
+   if pbLowerIV(pokemon,0)==0
      scene.pbDisplay(_INTL("It won't have any effect."))
      next false
    else
      scene.pbRefresh
-     scene.pbDisplay(_INTL("{1}'s HP increased.",pokemon.name))
+     scene.pbDisplay(_INTL("{1}'s HP IV decreased.",pokemon.name))
      pokemon.changeHappiness("wing")
      next true
    end
 })
 
 ItemHandlers::UseOnPokemon.add(:MUSCLEWING,proc{|item,pokemon,scene|
-   if pbRaiseEffortValues(pokemon,1,1,false)==0
+   if pbLowerIV(pokemon,1)==0
      scene.pbDisplay(_INTL("It won't have any effect."))
      next false
    else
-     scene.pbDisplay(_INTL("{1}'s Attack increased.",pokemon.name))
+     scene.pbDisplay(_INTL("{1}'s Attack IV decreased.",pokemon.name))
      pokemon.changeHappiness("wing")
      next true
    end
 })
 
 ItemHandlers::UseOnPokemon.add(:RESISTWING,proc{|item,pokemon,scene|
-   if pbRaiseEffortValues(pokemon,2,1,false)==0
+   if pbLowerIV(pokemon,2)==0
      scene.pbDisplay(_INTL("It won't have any effect."))
      next false
    else
-     scene.pbDisplay(_INTL("{1}'s Defense increased.",pokemon.name))
+     scene.pbDisplay(_INTL("{1}'s Defense IV decreased.",pokemon.name))
      pokemon.changeHappiness("wing")
      next true
    end
 })
 
 ItemHandlers::UseOnPokemon.add(:GENIUSWING,proc{|item,pokemon,scene|
-   if pbRaiseEffortValues(pokemon,4,1,false)==0
+   if pbLowerIV(pokemon,4)==0
      scene.pbDisplay(_INTL("It won't have any effect."))
      next false
    else
-     scene.pbDisplay(_INTL("{1}'s Special Attack increased.",pokemon.name))
+     scene.pbDisplay(_INTL("{1}'s Special Attack IV decreased.",pokemon.name))
      pokemon.changeHappiness("wing")
      next true
    end
 })
 
 ItemHandlers::UseOnPokemon.add(:CLEVERWING,proc{|item,pokemon,scene|
-   if pbRaiseEffortValues(pokemon,5,1,false)==0
+   if pbLowerIV(pokemon,5)==0
      scene.pbDisplay(_INTL("It won't have any effect."))
      next false
    else
-     scene.pbDisplay(_INTL("{1}'s Special Defense increased.",pokemon.name))
+     scene.pbDisplay(_INTL("{1}'s Special Defense IV decreased.",pokemon.name))
      pokemon.changeHappiness("wing")
      next true
    end
 })
 
 ItemHandlers::UseOnPokemon.add(:SWIFTWING,proc{|item,pokemon,scene|
-   if pbRaiseEffortValues(pokemon,3,1,false)==0
+   if pbLowerIV(pokemon,3)==0
      scene.pbDisplay(_INTL("It won't have any effect."))
      next false
    else
-     scene.pbDisplay(_INTL("{1}'s Speed increased.",pokemon.name))
+     scene.pbDisplay(_INTL("{1}'s Speed IV decreased.",pokemon.name))
      pokemon.changeHappiness("wing")
      next true
    end
