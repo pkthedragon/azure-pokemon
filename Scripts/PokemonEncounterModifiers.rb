@@ -274,5 +274,9 @@ Events.onWildPokemonCreate+=proc {|sender,e|
       pokemon.pbLearnMove(:ENDURE)
     when 40 # Joltik
       pokemon.pbLearnMove(:CROSSPOISON)
+    when 41 # Nidoran Male
+      pokemon.pbLearnMove(:CONFUSION)
+    when 42 # Nidoran Female
+      pokemon.pbLearnMove(:SUPERSONIC)
     end
 }
