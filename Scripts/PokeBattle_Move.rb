@@ -411,12 +411,6 @@ class PokeBattle_Move
       mod2=2 if isConst?(otype2,PBTypes,:GHOST) &&
         isConst?(atype,PBTypes,:NORMAL)
     end
-    if $fefieldeffect == 40
-      mod1=2 if isConst?(otype1,PBTypes,:NORMAL) &&
-        isConst?(atype,PBTypes,:GHOST)
-      mod2=2 if isConst?(otype2,PBTypes,:NORMAL) &&
-        isConst?(atype,PBTypes,:GHOST)
-    end
     if attacker.hasWorkingAbility(:PIXILATE) || 
      attacker.hasWorkingAbility(:AERILATE) || 
      attacker.hasWorkingAbility(:REFRIGERATE) ||
@@ -484,12 +478,6 @@ class PokeBattle_Move
         isConst?(atype,PBTypes,:NORMAL)
       mod2=2 if isConst?(otype2,PBTypes,:GHOST) &&
         isConst?(atype,PBTypes,:NORMAL)
-    end
-    if $fefieldeffect == 40
-      mod1=2 if isConst?(otype1,PBTypes,:NORMAL) &&
-        isConst?(atype,PBTypes,:GHOST)
-      mod2=2 if isConst?(otype2,PBTypes,:NORMAL) &&
-        isConst?(atype,PBTypes,:GHOST)
     end
     if isConst?(attacker.ability,PBAbilities,:PIXILATE) || 
      isConst?(attacker.ability,PBAbilities,:AERILATE) || 
@@ -792,8 +780,11 @@ class PokeBattle_Move
       end
     end
     if $fefieldeffect == 40
-      if isConst?(type,PBTypes,:GHOST) && (opponent.pbHasType?(PBTypes::NORMAL))
+      if isConst?(type,PBTypes,:GHOST) && (opponent.pbHasType?(PBTypes::DARK))
         typemod *= 2
+      end
+      if isConst?(type,PBTypes,:DARK) && (opponent.pbHasType?(PBTypes::GHOST))
+        typemod /= 2
       end
     end
     if id == PBMoves::FREEZEDRY && opponent.pbHasType?(PBTypes::WATER)
@@ -1424,7 +1415,7 @@ class PokeBattle_Move
         baseaccuracy=100
       end
     when 40 # Haunted
-      if (id == PBMoves::WILLOWISP || id == PBMoves::HYPNOSIS)
+      if (id == PBMoves::WILLOWISP || id == PBMoves::HYPNOSIS || id == PBMoves::INFERNO)
         baseaccuracy=90
       end
     when 42 # Darchlight Field
@@ -4287,6 +4278,16 @@ class PokeBattle_Move
         if isConst?(type,PBTypes,:GHOST)
           damage=(damage*1.5).floor
           @battle.pbDisplay(_INTL("The evil aura powered up the attack!",opponent.pbThis)) if $feshutup2 == 0
+          $feshutup2+=1
+        end
+        if isConst?(type,PBTypes,:DARK)
+          damage=(damage*1.3).floor
+          @battle.pbDisplay(_INTL("The shadows strengthened the attack!",opponent.pbThis)) if $feshutup2 == 0
+          $feshutup2+=1
+        end
+        if isConst?(type,PBTypes,:FAIRY)
+          damage=(damage*0.7).floor
+          @battle.pbDisplay(_INTL("The light withered away...",opponent.pbThis)) if $feshutup2 == 0
           $feshutup2+=1
         end
       when 41 # Corrupted Cave

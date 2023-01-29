@@ -1235,10 +1235,10 @@ Roar of Time    Crush Grip 		Secret Sword		Relic Song 		 Hyperspace Hole
 *	RKS System's type becomes Dark at all times
  
 (The following moves change this field):
-*	Two uses of these moves transform the field into Haunted Field:
+*	Two uses of these moves transform the field into Cursed Field:
 		Curse 		Ominous Wind
 
-*	These moves transform the field into Haunted Field:
+*	These moves transform the field into Cursed Field:
 		Phantom Force 	Shadow Force
  
 (The following items are affected by this field):
@@ -1579,7 +1579,7 @@ Dazzling Gleam
  
 (Overlay):
 Psychic Terrain:
-*	Psychic moves from grounded Pokemon increase in base power x1.3
+*	Psychic moves increase in base power x1.3
 *	These moves increase in base power x1.3:
 		Mystical Fire	Magical Leaf   Aura Sphere
 		Hex             Moonblast      Mind Blown
@@ -1587,7 +1587,7 @@ Psychic Terrain:
 *	Pure Power doubles Sp.Atk instead of Atk
  
 (The following moves are affected by this field.):
-*	Grounded Pokemon's Psychic attacks deal x1.5 increased damage
+*	Psychic attacks deal x1.5 increased damage
 *	Hex, Magical Leaf, Mystical Fire, Moonblast and Aura Sphere damage increased x1.5
 *	The effect of the following stat-altering moves is increased:
 		Nasty Plot	Calm Mind	Cosmic Power		Meditate
@@ -1878,8 +1878,6 @@ Magma Armor		Flame Body		Desolate Land
 (The following items are affected by this field):
 *	Elemental Seed boosts Attack and Special Attack and traps the user.
 
-
-
 #--------------- 45. Beach Field [BF] ---------------#
 “The waves lap at the shore.”
 
@@ -1917,7 +1915,6 @@ Swift Swim		Hydration
 *	Shell Armor boosts Defense and Special Defense on entry
 *	Mimicry changes the user's type to Ground
 
-
 (The following moves change this field):
 *	The following moves can turn the field into an Ashen Beach
 Lava Plume		Eruption
@@ -1927,7 +1924,59 @@ Origin Pulse		Glacial Flood		Hydro Vortex
 
 (The following items are affected by this field):
 *   Telluric Seed boosts Speed and Accuracy and applies Sand Tomb to the user
-#--------------- 46. Cavern Nest [CN] ---------------#
+
+#--------------- 46. Chargestone Cave [HC] ---------------#
+"Brimming with power!"
+
+(Passive effects by the field.):
+*	Rock- and Electric-type Pokemon levitate
+
+(The following moves are affected by this field.):
+*	Rock-type moves increase in base power x1.3
+*	Electric-type moves increase in base power x1.3
+*	Special Flying-type moves increase in base power x1.3 and gain the Electric-type
+*	Rock-type moves have a 20% chance to paralyze
+*	These moves increase in base power x1.3 and deal additional Rock/Electric damage at
+the end of turn to all Pokemon unless they are Rock- or Electric-type:
+Bullet Punch		Comet Punch		Dizzy Punch
+Double Iron Bash	Drain Punch		Dynamic Punch
+Fire Punch		Focus Punch		Hammer Arm
+Ice Hammer		Ice Punch		Mach Punch
+Mega Punch		Meteor Mash		Plasma Fists
+Power-Up Punch	Shadow Punch	Sky Uppercut
+Thunder Punch	Accelerock		Magnet Bomb
+Strength		Rock Smash		Headbutt
+Zen Headbutt		Head Smash		Heavy Slam
+Body Slam		Slam			Giga Impact
+Dragon Rush		Wood Hammer	Dragon Hammer
+*	Magnet Rise sharply raises Speed
+*	Charge additionally raises Defense
+*	Magnetic Flux affects all allied Pokemon
+*	Stealth Rock deals Rock/Electric scaling damage
+*	Nature Power becomes Magnetic Flux
+*	Camouflage changes the user's type to Electric
+*	Secret Power may deal additional Rock/Electric damage to
+all Pokemon unless they are Rock- or Electric-type
+
+(The following abilities are affected by this field):
+*	Lightning Rod raises Special Attack
+*	Motor Drive raises Speed
+*	Volt Absorb restores 1/16th Max HP at the end of each turn
+*	Plus and Minus are activated
+*	Magnet Pull additionally traps Rock- and Electric-type Pokemon
+*	Solid Rock grants Electric-type resistances
+*	Rock Head Pokemon have a 20% chance to paralyze with all contact moves
+*	Galvanize's base power boost becomes x1.5
+*	Power Spot's boost becomes x1.5
+*	Mimicry changes the user's type to Electric
+(The following moves change this field):
+*	Tectonic Rage will transform the field into a Cave
+*	Mud Sport temporarily transforms the field into a Cave
+
+(The following items are affected by this field):
+*	Telluric Seed raises Defense and Special Defense and paralyzes the holder
+
+#--------------- 47. Cavern Nest [CN] ---------------#
 "Skittering legs and many eyes surround you."
 
 (The following moves are affected by this field.):
@@ -1968,7 +2017,8 @@ Growth			Defend Order		Stockpile
 
 (The following items are affected by this field):
 *   Telluric Seed boosts Defense and taunts the opponent
-#--------------- 47. Cloud Forest [CF] ---------------#
+
+#--------------- 48. Cloud Forest [CF] ---------------#
 "Where earth and sky meet."
 
 (Passive effects by the field.):
@@ -2015,7 +2065,7 @@ Steam Eruption
 (The following items are affected by this field):
 *	Telluric Seed boosts Speed and makes the holder airborne
 
-#--------------- 48. Boxing Ring [BR] ---------------#
+#--------------- 49. Boxing Ring [BR] ---------------#
 “Fight to the faint!”
 
 (Passive effects by the field.):
@@ -2071,4 +2121,50 @@ Defense Curl		Agility
 
 (The following items are affected by this field): 
 *	Synthetic Seed increases critical hit rate and Speed and traps the user
+
+#--------------- 50A. Dream World [DWA] ---------------#
+"More powerful than a thousand realities."
+
+(Passive effects by the field.):
+*	All non Ghost-type pokémon are asleep unless they have the following abilities:
+Insomnia		Vital Spirit		Magic Guard
+Magic Bounce
+*	Sleeping pokémon restore 1/16th max HP each turn
+
+(The following moves are affected by the field.):
+*	Psychic-type moves increase in base power x1.5
+*	Fairy and Ghost-type moves increase in base power x1.3 and deal neutral damage to Psychic-types
+*	Dark-type moves decrease in power x0.5
+*	Psychic and Ghost-type moves ignore immunities
+*	The following moves are boosted x1.5:
+Dream Eater		Play Rough		Let’s Snuggle Forever
+*	The following moves’ stat changing effects are amplified: 
+Calm Mind		Play Nice
+*	The following moves have a duration of 8 turns:
+Trick Room		Wonder Room		Magic Room
+Gravity
+*	Snore is boosted x2
+*	Sleep Talk boosts the selected move x2
+*	Metronome can only select moves with base 80 power or higher
+*	Lunar Dance grants Wonder Guard to the recipient for one turn
+*	Camouflage makes the user a Psychic-type
+*	Nature Power becomes Dream Eater
+
+(The following abilities are affected by this field):   
+*	The following abilities have the effects of Wonder Guard the turn they enter:
+Illusion			Disguise		Infiltrator
+Mimicry		Imposter		Wandering Spirit
+*	Comatose boosts Defense and Special Defense on entry
+*	Marvel Scale has the effects of Magic Guard
+*	Mimicry makes the user a Psychic-type
+
+(The following moves change this field):
+*	The following moves will turn the field into a Nightmare World: 
+Hex			Curse			Phantom Force
+Shadow Force		Dark Void		Never-Ending Nightmare
+Nightmare (for as long as it’s active)
+*	The following abilities will turn the field to a Nightmare World on entry: 
+Bad Dreams		Dark Aura
+(The following items are affected by this field): 
+*	Magical Seed boosts Defense and Special defense and infatuates the holder
 

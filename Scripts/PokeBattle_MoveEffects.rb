@@ -5388,7 +5388,7 @@ class PokeBattle_Move_0A4 < PokeBattle_Move
         case rnd
           when 0
             return false if !opponent.pbCanSleep?(false)
-            opponent.pbSleep(attacker)
+            opponent.pbSleep
             @battle.pbDisplay(_INTL("{1} fell asleep!",opponent.pbThis))
           when 1
             return false if !opponent.pbCanPoison?(false)
@@ -7839,7 +7839,7 @@ class PokeBattle_Move_0EB < PokeBattle_Move
       @battle.pbDisplay(_INTL("{1} anchored itself with its roots!",opponent.pbThis))
       return -1
     end
-    if !@battle.opponent && !$game_switches[1500]
+    if !@battle.opponent && !$game_switches[1998]
       if opponent.level>=attacker.level
         @battle.pbDisplay(_INTL("But it failed!"))
         return -1

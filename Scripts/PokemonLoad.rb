@@ -603,22 +603,49 @@ class PokemonLoad
               end
             end
           end
-          if $Trainer.initialquestion.nil?
-            if $game_switches[1493]==false
-              if $game_variables[200]==2
-                Kernel.pbMessage(_INTL("Some specific settings seem to be disabled on this savefile. These include Set Mode and Bag Item Ban for both sides, among others."))
-                askmessage=_INTL("Would you like to enable them?")
-                if Kernel.pbConfirmMessage(askmessage)
-                  $game_switches[1493]=true
-                  $PokemonSystem.battlestyle=1
-                else
-                  $game_switches[1493]=false
-                  $PokemonSystem.battlestyle=0
-                end
-                $Trainer.initialquestion=true
-              end
+#          if $Trainer.initialquestion.nil?
+#            if $game_switches[1493]==false
+#              if $game_variables[200]==2
+#                Kernel.pbMessage(_INTL("Some specific settings seem to be disabled on this savefile. These include Set Mode and Bag Item Ban for both sides, among others."))
+#                askmessage=_INTL("Would you like to enable them?")
+#                if Kernel.pbConfirmMessage(askmessage)
+#                  $game_switches[1493]=true
+#                  $PokemonSystem.battlestyle=1
+#                else
+#                  $game_switches[1493]=false
+#                  $PokemonSystem.battlestyle=0
+#                end
+#                $Trainer.initialquestion=true
+#              end
+#            end
+#           end
+          if !$game_switches[2001]
+            $game_variables[700]=15
+            if $game_switches[1304]
+              $game_variables[700]=20
             end
+            if $game_switches[1324]
+              $game_variables[700]=25
+            end
+            if $game_switches[0005]
+              $game_variables[700]=30
+            end
+            if $game_variables[676]>25
+              $game_variables[700]=35
+            end
+            $game_switches[2001]=true
           end
+#          if !$game_switches[9999]
+#            for i in $Trainer.party
+#             i.ev[0]=0
+#             i.ev[1]=0
+#             i.ev[2]=0
+#             i.ev[3]=0
+#             i.ev[4]=0
+#             i.ev[5]=0
+#            end
+#            $game_switches[9999]=true
+#          end
           magicNumberMatches=false
           if $data_system.respond_to?("magic_number")
             magicNumberMatches=($game_system.magic_number==$data_system.magic_number)

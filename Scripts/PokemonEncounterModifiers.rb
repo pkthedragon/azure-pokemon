@@ -51,13 +51,6 @@ Events.onTrainerPartyLoad+=proc {|sender,e|
         i.hp=1
       end
     end
-    if trainer.trainertype==PBTrainers::HANDMAIDEN && trainer.name=="Rose"
-      for i in party
-        if (i.species==PBSpecies::DRAGONAIR && i.item==PBItems::LEFTOVERS)
-          i.status=PBStatuses::BURN
-        end  
-      end
-    end
     if trainer.trainertype==PBTrainers::MYRON && trainer.name=="Myron"
       for i in party
         if (i.species==PBSpecies::MISMAGIUS)
@@ -145,7 +138,7 @@ Events.onWildPokemonCreate+=proc {|sender,e|
     when PBSpecies::TANGROWTH
       if $game_map.map_id == 34
         $game_switches[290]=true
-        $game_switches[1500]=true
+        $game_switches[1998]=true
         pokemon.isbossmon=true
         $game_variables[704]=2
         if $game_variables[200] == 0
@@ -155,59 +148,41 @@ Events.onWildPokemonCreate+=proc {|sender,e|
         elsif $game_variables[200] == 2
           pokemon.level=22 
         end
-        pokemon.pbLearnMove(:MEGADRAIN)
-        pokemon.pbLearnMove(:INGRAIN)
+        pokemon.pbLearnMove(:WINEGODSBLESSING)
+        pokemon.pbLearnMove(:SHOCKWAVE)
         pokemon.pbLearnMove(:ANCIENTPOWER)
-        pokemon.pbLearnMove(:AMNESIA)
-        pokemon.item = PBItems::TANGROWTHCREST
+        pokemon.pbLearnMove(:LEECHSEED)
+        pokemon.item = PBItems::TANTRIBUTE
         pokemon.setNature(PBNatures::TIMID)    
         for i in 0...6
           pokemon.ev[i]=(20)
         end
       end
-    when PBSpecies::ROTOM
-      if $game_map.map_id == 51
+    when PBSpecies::GIRATINA
+      if $game_map.map_id == 106
         $game_switches[290]=true
-        $game_switches[1500]=true
+        $game_switches[1998]=true
         pokemon.isbossmon=true
-        $game_variables[704]=2
         if $game_variables[200] == 0
-          pokemon.level=30
+          pokemon.level=35
+          $game_variables[704]=3
         elsif $game_variables[200] == 1
-          pokemon.level=25 
+          pokemon.level=32
+          $game_variables[704]=2
         elsif $game_variables[200] == 2
-          pokemon.level=35 
+          pokemon.level=38 
+          $game_variables[704]=3
         end
-        pokemon.pbLearnMove(:OMINOUSWIND)
-        pokemon.pbLearnMove(:DISCHARGE)
-        pokemon.pbLearnMove(:DOUBLETEAM)
-        pokemon.pbLearnMove(:CONFUSERAY)
-        pokemon.setNature(PBNatures::QUIET)    
+        pokemon.pbLearnMove(:SHADOWSNEAK)
+        pokemon.pbLearnMove(:BREAKINGSWIPE)
+        pokemon.pbLearnMove(:BODYSLAM)
+        pokemon.pbLearnMove(:MAGICCOAT)
+        if $game_switches[1430]==true
+          pokemon.item = PBItems::GRISEOUSORB
+        end
+        pokemon.setNature(PBNatures::ADAMANT)    
         for i in 0...6
-          pokemon.ev[i]=(31)
-        end
-      end
-    when PBSpecies::MISMAGIUS
-      if $game_map.map_id == 43 || $game_map.map_id == 2 || $game_map.map_id == 56
-        $game_switches[290]=true
-        $game_switches[1500]=true
-        pokemon.isbossmon=true
-        $game_variables[704]=1
-        if $game_variables[200] == 0
-          pokemon.level=25
-        elsif $game_variables[200] == 1
-          pokemon.level=22 
-        elsif $game_variables[200] == 2
-          pokemon.level=27 
-        end
-        pokemon.pbLearnMove(:OMINOUSWIND)
-        pokemon.pbLearnMove(:THUNDERBOLT)
-        pokemon.pbLearnMove(:TORMENT)
-        pokemon.pbLearnMove(:NASTYPLOT)
-        pokemon.item = PBItems::MISMAGIUSCREST
-        pokemon.setNature(PBNatures::MODEST)    
-        for i in 0...6
-          pokemon.ev[i]=(25)
+          pokemon.ev[i]=(20)
         end
       end
     end
@@ -215,9 +190,9 @@ Events.onWildPokemonCreate+=proc {|sender,e|
   case $game_variables[545]
     when 1 # Clobbopus
       pokemon.pbLearnMove(:SOAK)
-    when 2 # Shieldon
-      pokemon.pbLearnMove(:ROCKBLAST)
-      pokemon.pbLearnMove(:SCREECH)
+    when 2 # Shuppet
+      pokemon.pbLearnMove(:PURSUIT)
+      pokemon.pbLearnMove(:FORESIGHT)
     when 3 # Wooloo
       pokemon.pbLearnMove(:COUNTER)
     when 4 # Smoochum
@@ -285,7 +260,19 @@ Events.onWildPokemonCreate+=proc {|sender,e|
       pokemon.calcStats
     when 34 # Mawile
       pokemon.pbLearnMove(:FIREFANG)
-    when 35 # Smoochum
+    when 35 # Snubbull
       pokemon.pbLearnMove(:POWERUPPUNCH)
+    when 36 # Skitty
+      pokemon.pbLearnMove(:WISH)
+    when 37 # Sinistea
+      pokemon.pbLearnMove(:BATONPASS)
+    when 38 # Mystic Stufful
+      pokemon.form=1
+      pokemon.resetMoves
+      pokemon.calcStats
+    when 39 # Voltorb
+      pokemon.pbLearnMove(:ENDURE)
+    when 40 # Joltik
+      pokemon.pbLearnMove(:CROSSPOISON)
     end
 }

@@ -199,7 +199,7 @@ class PokeBattle_Battle
             end
           #end
         end
-        if !$game_switches[1500]
+        if !$game_switches[1998]
           if @doublebattle && !opponent.pbPartner.isFainted?
             for i in opponent.pbPartner.moves
               #if (attacker.pbSpeed<=pbRoughStat(opponent,PBStats::SPEED,skill)) ^ (@trickroom!=0)
@@ -20471,12 +20471,6 @@ class PokeBattle_Battle
       mod2=2 if isConst?(otype2,PBTypes,:GHOST) &&
       isConst?(atype,PBTypes,:NORMAL)
     end
-    if $fefieldeffect == 40
-      mod1=2 if isConst?(otype1,PBTypes,:NORMAL) &&
-      isConst?(atype,PBTypes,:GHOST)
-      mod2=2 if isConst?(otype2,PBTypes,:NORMAL) &&
-      isConst?(atype,PBTypes,:GHOST)
-    end
     if (!attacker.abilitynulled && attacker.ability == PBAbilities::PIXILATE) ||
       (!attacker.abilitynulled && attacker.ability == PBAbilities::AERILATE) ||
       (!attacker.abilitynulled && attacker.ability == PBAbilities::REFRIGERATE) ||
@@ -23623,6 +23617,12 @@ class PokeBattle_Battle
         if isConst?(type,PBTypes,:GHOST)
           damage=(damage*1.5).floor
         end
+        if isConst?(type,PBTypes,:DARK)
+          damage=(damage*1.3).floor
+        end
+        if isConst?(type,PBTypes,:FAIRY)
+          damage=(damage*0.7).floor
+        end
       when 41 # Corrupted Cave
         if isConst?(type,PBTypes,:POISON)
           damage=(damage*1.5).floor
@@ -24453,28 +24453,28 @@ class PokeBattle_Battle
       end
     end
     if $fefieldeffect == 40
-      if isConst?(type,PBTypes,:GHOST) && (opponent.pbHasType?(PBTypes::NORMAL))
+      if isConst?(type,PBTypes,:GHOST) && (opponent.pbHasType?(PBTypes::DARK))
         typemod *= 2
+      end
+      if isConst?(type,PBTypes,:DARK) && (opponent.pbHasType?(PBTypes::GHOST))
+        typemod*= 0.5
       end
     end
     if $fefieldeffect == 42
-      if isConst?(type,PBTypes,:FAIRY) && (opponent.pbHasType?(PBTypes::STEEL))
-        typemod*= 4
-      end
       if isConst?(type,PBTypes,:GRASS) && (opponent.pbHasType?(PBTypes::STEEL))
         typemod*= 4
       end
       if isConst?(type,PBTypes,:DARK) && (opponent.pbHasType?(PBTypes::FAIRY))
-        typemod*= 4
+        typemod*= 2
       end
       if isConst?(type,PBTypes,:FAIRY) && (opponent.pbHasType?(PBTypes::DARK))
         typemod*= 0.5
       end
-      if isConst?(type,PBTypes,:POISON) && (opponent.pbHasType?(PBTypes::GRASS))
-        typemod*= 0.5
-      end
       if isConst?(type,PBTypes,:POISON) && (opponent.pbHasType?(PBTypes::FAIRY))
         typemod*= 0.5
+      end
+      if isConst?(type,PBTypes,:FAIRY) && (opponent.pbHasType?(PBTypes::POISON))
+        typemod*= 2
       end
     end
     if id == PBMoves::FREEZEDRY && (opponent.pbHasType?(PBTypes::WATER))
@@ -28187,7 +28187,7 @@ class PokeBattle_Battle
   def checkAIdamage(memory,attacker,opponent,skill,shutup=false,movename=false,hardswitch=false)
     #returns how much damage the AI expects to take
     #return -1 if memory.length == 0
-    return 0 if (@doublebattle && opponent.index==@battlers[3].index && $game_switches[1500]==true)
+    return 0 if (@doublebattle && opponent.index==@battlers[3].index && $game_switches[1998]==true)
     return 0 if opponent.nil? || opponent.isFainted?
     maxdam=0
     nextdamage=0
@@ -28271,7 +28271,7 @@ class PokeBattle_Battle
   def checkAIdamageNoZ(memory,attacker,opponent,skill,shutup=false,movename=false,hardswitch=false)
     #returns how much damage the AI expects to take
     #return -1 if memory.length == 0
-    return 0 if (@doublebattle && opponent.index==@battlers[3].index && $game_switches[1500]==true)
+    return 0 if (@doublebattle && opponent.index==@battlers[3].index && $game_switches[1998]==true)
     return 0 if opponent.nil? || opponent.isFainted?
     maxdam=0
     nextdamage=0
@@ -28440,7 +28440,7 @@ class PokeBattle_Battle
       end
     end
     if opponent==@battlers[3] || otheropp==@battlers[3]
-      if $game_switches[1500]
+      if $game_switches[1998]
         opponent=@battlers[1]
         otheropp=@battlers[1]
       end
@@ -28777,7 +28777,7 @@ class PokeBattle_Battle
         end
         maxdam1=checkAIdamage(aimem,attacker.pbPartner,otheropp,skill)
         maxdam2=checkAIdamage(aimem,attacker.pbPartner,opponent,skill)
-        if !($game_switches[1500]) && !(attacker==@battlers[2])
+        if !($game_switches[1998]) && !(attacker==@battlers[2])
           damagevalues=pbBuildMoveScores(attacker.pbPartner.index,true,true)
           adjusted=nil
           priomove=false 
@@ -29021,7 +29021,7 @@ class PokeBattle_Battle
               PBDebug.log(sprintf("%s: Final Score after Multi-Target Adjustment: %d",PBMoves.getName(attacker.moves[i].id),score1)) if $INTERNAL && shutup==false 
               PBDebug.log(sprintf("")) if $INTERNAL && shutup==false 
             end 
-            if !($game_switches[1500]) && attacker!=@battlers[2]
+            if !($game_switches[1998]) && attacker!=@battlers[2]
               if attacker.moves[i].basedamage==0 && (i<4) && (!attacker.pbPartner.isFainted? && !attacker.pbPartner.nil?) &&  !((opponent.isFainted? || opponent.nil?)  || (otheropp.isFainted? || otheropp.nil?)) 
                 if ((((attacker.pbSpeed<=pbRoughStat(attacker.pbPartner,PBStats::SPEED,skill)) ^ (@trickroom!=0)) || ((priomove==true && damagevalues[3]==true) || attacker.pbPartner.ability == PBAbilities::PRANKSTER)))
                   if !biggerscore.nil?
@@ -29074,7 +29074,7 @@ class PokeBattle_Battle
                 PBDebug.log(sprintf("%s: Final Score after Status-Target Adjustment: %d",PBMoves.getName(attacker.moves[i].id),score2)) if $INTERNAL && shutup==false 
                 PBDebug.log(sprintf("")) 
               end 
-              if !$game_switches[1500]
+              if !$game_switches[1998]
                 if !(attacker.moves[i].target==PBTargets::User || attacker.moves[i].target==PBTargets::UserSide || attacker.moves[i].target==PBTargets::BothSides) && (!attacker.pbPartner.isFainted? && !attacker.pbPartner.nil?) && !((opponent.isFainted? || opponent.nil?)  || (otheropp.isFainted? || otheropp.nil?))# && !attacker.index==@battlers[2].index
                   if (((attacker==@battlers[1]) && ((((attacker.pbSpeed<pbRoughStat(attacker.pbPartner,PBStats::SPEED,skill)) ^ (@trickroom!=0))) || (priomove==true && damagevalues[3]==true)))) 
                     if (killingmove1 && killingmove2) && partnercanattack && killingmove3==false && ((!fakeouter) || (fakeouter && (fakeoutdam>otheropp.hp)))
@@ -29557,7 +29557,7 @@ def pbEnemyShouldMegaEvolve?(index)
   opponent=attacker.pbOppositeOpposing
   opponent2=opponent.pbPartner
   if (opponent==@battlers[3] || opponent2==@battlers[3])
-    if $game_switches[1500]==true
+    if $game_switches[1998]==true
       opponent==@battlers[1]
       opponent2==@battlers[1]  
     end
@@ -29791,7 +29791,7 @@ def pbEnemyItemToUse(index)
   opponent1 = battler.pbOppositeOpposing
   opponent2 = opponent1.pbPartner
   if (opponent1==@battlers[3] || opponent2==@battlers[3])
-    if ($game_switches[1500]==true || opponent1.isFainted? || opponent2.isFainted?)
+    if ($game_switches[1998]==true || opponent1.isFainted? || opponent2.isFainted?)
       opponent1=@battlers[1]
       opponent2=@battlers[1]  
     end
@@ -30777,7 +30777,7 @@ def pbShouldSwitch?(index,hardswitch=false)
   opponent1 = currentmon.pbOppositeOpposing
   opponent2 = opponent1.pbPartner
   if (opponent1==@battlers[3] || opponent2==@battlers[3])  
-    if $game_switches[1500]==true
+    if $game_switches[1998]==true
       opponent1=@battlers[1] 
       opponent2=@battlers[1] 
     end
@@ -32942,7 +32942,7 @@ def pbSwitchTo(currentmon,party,skill,pivoting=false,hardswitch=false,incomingmo
     opponent1=currentmon.pbPartner.pbOppositeOpposing 
   end
   if (opponent1==@battlers[3] || opponent2==@battlers[3])  
-    if $game_switches[1500]==true
+    if $game_switches[1998]==true
       opponent1=@battlers[1] 
       opponent2=@battlers[1] 
     end
@@ -35297,7 +35297,7 @@ def pbChooseEnemyZMove(index)  #Put specific cases for trainers using status Z-M
   opponent=attacker.pbOppositeOpposing
   otheropp=opponent.pbPartner
   if opponent==@battlers[3] || otheropp==@battlers[3]
-    if $game_switches[1500]
+    if $game_switches[1998]
       opponent=@battlers[1]
       otheropp=@battlers[1]
     end

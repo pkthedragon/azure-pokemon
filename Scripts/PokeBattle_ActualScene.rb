@@ -678,7 +678,7 @@ class PokemonDataBox < SpriteWrapper
           @showhp=true
           @showexp=true
         when 1 
-#          if $game_switches[1500]
+#          if $game_switches[1998]
 #            @databox=AnimatedBitmap.new("Graphics/Pictures/Battle/boss_bar")
 #          else
             @databox=AnimatedBitmap.new("Graphics/Pictures/Battle/battleFoeBoxS")
@@ -1031,7 +1031,7 @@ class PokemonDataBox < SpriteWrapper
          Rect.new(0,(@battler.status-1)*16,44,16))
     end
     hpGaugeSize=PokeBattle_SceneConstants::HPGAUGESIZE
-#    if $game_switches[1500] && !((@battler.index&1)==0)
+#    if $game_switches[1998] && !((@battler.index&1)==0)
 #      hpGaugeSize=240
 #    end
     hpgauge=@battler.totalhp==0 ? 0 : (self.hp*hpGaugeSize/@battler.totalhp)
@@ -1050,7 +1050,7 @@ class PokemonDataBox < SpriteWrapper
     # fill with black (shows what the HP used to be)
     hpGaugeX=PokeBattle_SceneConstants::HPGAUGE_X
     hpGaugeY=PokeBattle_SceneConstants::HPGAUGE_Y
-#    if $game_switches[1500] && !((@battler.index&1)==0)
+#    if $game_switches[1998] && !((@battler.index&1)==0)
 #      hpGaugeY=25
 #    end
     if @animatingHP && self.hp>0
@@ -1179,7 +1179,7 @@ class PokeballSendOutAnimation
     @PokemonBattlerSprite.tone=Tone.new(248,248,248,248)
     @pokeballsprite=IconSprite.new(0,0,sprite.viewport)
     @pokeballsprite.setBitmap(sprintf("Graphics/Pictures/Battle/ball%02d",@ballused))
-    if (doublebattle && !($game_switches[1500]==true || $game_variables[246]==17))
+    if (doublebattle && !($game_switches[1998]==true || $game_variables[246]==17))
       @spritex=PokeBattle_SceneConstants::FOEBATTLERD1_X if pkmn.index==1 
       @spritex=PokeBattle_SceneConstants::FOEBATTLERD2_X if pkmn.index==3
     else
@@ -2686,7 +2686,7 @@ class PokeBattle_Scene
        return BossPokemonDataBox.new(@battle.party2[0], doublebattle, viewport,battler.index,@battle)
       end
     elsif !@battle.opponent 
-      if ($game_switches[1500]==true || battler.isbossmon || @battle.raidbattle) && (battler.index == 1 || battler.index == 3)
+      if ($game_switches[1998]==true || battler.isbossmon || @battle.raidbattle) && (battler.index == 1 || battler.index == 3)
        @battle.bossfight = true
        if $game_variables[704]!=0
         @battle.shieldCount = $game_variables[704]
@@ -3492,7 +3492,7 @@ def pbItemMenu(index)
       if (usetype==1 || usetype==3) 
         if (($game_variables[200]==2) && @battle.opponent) && $game_switches[1493]==true
           itemscene.pbDisplay(_INTL("Use of items in Trainer battles is not allowed on Intense mode."))
-        elsif ($game_variables[200]==2) && $game_switches[1500]==true && $game_switches[1493]==true
+        elsif ($game_variables[200]==2) && $game_switches[1998]==true && $game_switches[1493]==true
           itemscene.pbDisplay(_INTL("Use of items in Boss battles is not allowed on Intense mode."))
         else
           modparty=[]
@@ -3520,7 +3520,7 @@ def pbItemMenu(index)
           itemscene.pbStartScene($PokemonBag)
         end
       elsif (usetype==2 || usetype==4) 
-        if ($game_variables[200]==2 && $game_switches[1493]==true) && (@battle.opponent || $game_switches[1500]==true)
+        if ($game_variables[200]==2 && $game_switches[1493]==true) && (@battle.opponent || $game_switches[1998]==true)
           if pbIsPokeBall?(item)
             if ItemHandlers.hasBattleUseOnBattler(item)
               ret=item

@@ -206,6 +206,10 @@
 239,GHOSTCHILDM,Lingering Entity,32,Battle! Spooky,,,Male,175,
 275,GHOSTCHILDF,Lingering Entity,32,Battle! Spooky,,,Female,175,
 276,GHOSTMAID,Lingering Entity,32,Battle! Spooky,,,Female,175,
+277,LINSEY,Lingering Entity,32,Battle! Spooky,,,Female,200,
+278,VERARITTE,Lingering Entities,32,Battle! Spooky,,,Female,200,
+279,VINCENT,Lingering Entity,32,Battle! Spooky,,,Male,200,
+280,KAINE,Lingering Entity,32,Battle! Spooky,,,Male,200,
 ####PANTHEON#################################################################################
 181,MINERVA,Head Librarian,100,Battle! Pantheon Minerva,,,Female,255,
 182,AGRUS,Wandering Ranger,100,Battle! Pantheon Agrus,,,Male,255,

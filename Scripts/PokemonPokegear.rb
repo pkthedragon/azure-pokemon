@@ -93,7 +93,7 @@ class Scene_Pokegear
     commands[@cmdPhone=commands.length]=_INTL("Phone") if $PokemonGlobal.phoneNumbers &&
                                                           $PokemonGlobal.phoneNumbers.length>0
     commands[@cmdJukebox=commands.length]=_INTL("Jukebox")
-    commands[@cmdTutor=commands.length]=_INTL("Tutor.net") if $Trainer.tutorlist && $Trainer.tutorlist.length>0
+    commands[@cmdTutor=commands.length]=_INTL("Tutor.net") if $game_switches[1492]==true
 #    commands[@cmdNews=commands.length]=_INTL("Gearen News")
     if $game_switches[1176]
       commands[@cmdPulse=commands.length]=_INTL("Rift Dex")

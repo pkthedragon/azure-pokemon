@@ -753,7 +753,7 @@ class PokeBattle_Battler
     @missed       = true
     @missAcc      = false
     @statLowered  = false
-    @isBoss       = (($game_switches[1499] || $game_switches[1500]) && @battle.pbIsOpposing?(@index))
+    @isBoss       = (($game_switches[1998] || $game_switches[1998]) && @battle.pbIsOpposing?(@index))
     @hasmegad     = false
     pbInitBlank
     pbInitEffects(false,true,true)
@@ -4930,7 +4930,7 @@ class PokeBattle_Battler
       pbAddTarget(targets,pbOpposing2) if !pbAddTarget(targets,pbOpposing1) 
     elsif self.hasWorkingAbility(:WORLDOFNIGHTMARES) && (move.id == 188)
       pbAddTarget(targets,pbOpposing2) if !pbAddTarget(targets,pbOpposing1) 
-    elsif $fefieldeffect == 40 && (move.id == 147 || move.id == 379)
+    elsif $fefieldeffect == 40 && (move.id == 147 || move.id == 379 || move.id == 177 || move.id == 133)
       pbAddTarget(targets,pbOpposing2) if !pbAddTarget(targets,pbOpposing1) 
     elsif self.hasWorkingAbility(:TEMPEST) && (move.id == 304)
       pbAddTarget(targets,pbOpposing2) if !pbAddTarget(targets,pbOpposing1) 
@@ -5272,8 +5272,16 @@ class PokeBattle_Battler
     return true if choice[0]!=1
     if (@battle.pbOwnedByPlayer?(@index) && @battle.internalbattle) || (!@battle.pbOwnedByPlayer?(@index) && @index==@battle.battlers[2].index && isConst?(self.species,PBSpecies,:CHARIZARD) && $game_variables[246]==14)
       #### SARDINES - Disobedience - START
-      levelLimits = [20,25,35,40,45,50,55,60,65,70,75,80,85,90,95]
-      badgelevel = levelLimits[@battle.pbPlayer.numbadges]
+      #~ if !$game_switches[1512] ### Azery
+        #~ levelLimits = [20, 25, 30, 40, 42, 50, 53, 55, 58, 62, 65, 70, 75, 80, 85, 90, 90, 95, 100]
+      #~ else
+        #~ levelLimits = [20, 25, 35, 40, 45, 50, 53, 55, 58, 62, 65, 70, 75, 80, 85, 90, 90, 95, 100]
+      #~ end
+      if $game_switches[1489] == false
+       badgelevel = $game_variables[700]
+      else
+       badgelevel = 100
+      end
       #### SARDINES - Disobedience - END
       move=choice[2] 
       disobedient=false 
@@ -6913,7 +6921,7 @@ class PokeBattle_Battler
               (thismove.id == 192 || thismove.id == 214 || thismove.id == 218 || 
                 thismove.id == 219 || thismove.id == 220 || thismove.id == 445 || 
                 thismove.id == 596 || thismove.id == 600)) || $fefieldeffect == 40 &&
-            (thismove.id == 147 || thismove.id == 379) || user.hasWorkingAbility(:WORLDOFNIGHTMARES) &&
+            (thismove.id == 147 || thismove.id == 379 || thismove.id == 177 || thismove.id == 133) || user.hasWorkingAbility(:WORLDOFNIGHTMARES) &&
             (thismove.id == 188) || user.hasWorkingAbility(:TEMPEST) && (thismove.id == 304))  
           # Add target's partner to list of targets
           pbAddTarget(targets,target.pbPartner)

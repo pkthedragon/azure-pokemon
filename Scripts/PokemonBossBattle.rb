@@ -5,11 +5,12 @@
 
 def isBossPokemon?(pokemon)
 #                 mon_species             => initial form
-  pokemon_form = {  }
+  pokemon_form = {PBSpecies::TANGROWTH     => 0,
+                  PBSpecies::MISMAGIUS   => 0}
   return false if (!pokemon || !pokemon.isbossmon)
   if pokemon_form[pokemon.species] == pokemon.form && (pokemon.isbossmon)
     return true
-  elsif pokemon_form[pokemon.species] == pokemon.form && (($game_switches[1500]==true))
+  elsif pokemon_form[pokemon.species] == pokemon.form && (($game_switches[1998]==true))
     return true
   elsif pokemon.isbossmon
     return true
@@ -20,13 +21,14 @@ end
 
 def isBossPokemonInRiftForm?(pokemon)
 #                 mon_species             => rift form
-  pokemon_form = {    }
+  pokemon_form = {PBSpecies::TANGROWTH     => 1,
+                  PBSpecies::MISMAGIUS   => 1}
   
   return false if !pokemon
   if (pokemon_form[pokemon.species] == pokemon.form) && (pokemon.isbossmon)
     return true
   end
-  if (pokemon_form[pokemon.species] == pokemon.form) && (($game_switches[1500]==true))
+  if (pokemon_form[pokemon.species] == pokemon.form) && (($game_switches[1998]==true))
     return true
   end
   if pokemon_form[pokemon.species] == pokemon.form

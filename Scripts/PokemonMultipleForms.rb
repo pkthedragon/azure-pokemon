@@ -4196,6 +4196,29 @@ MultipleForms.register(:TREECKO,{
    end
    next movelist
 },
+"getMoveCompatibility"=>proc{|pokemon|
+  next if pokemon.form==0
+  movelist=[]
+  case pokemon.form
+  when 1; movelist=[
+      :CUT,:FLY,:WORKUP,:PSYSHOCK,:CALMMIND,:HAIL,
+      :HIDDENPOWER,:SUNNYDAY,:TAUNT,:ICEBEAM,:BLIZZARD,
+      :LIGHTSCREEN,:PROTECT,:SECRETPOWER,:SAFEGUARD,:SMACKDOWN,
+      :RETURN,:FRUSTRATION,:DOUBLETEAM,:REFLECT,:AERIALACE,
+      :TORMENT,:FACADE,:REST,:ATTRACT,:THIEF,:LOWSWEEP,
+      :ROUND,:ECHOEDVOICE,:STEELWING,:ENEGRYBALL,:FALSESWIPE,
+      :SCALD,:SKYDROP,:ACROBATICS,:ROOST,:FLASH,
+      :FROSTBREATH,:DREAMEATER,:SLEEPTALK,:UTURN,:SUBSTITUTE,
+      :TRICKROOM,:NATUREPOWER,:DAZZLINGGLEAM,:ROCKCLIMB,:PLAYROUGH,
+      :SCREECH,:SCARYFACE,:CHARM,:WEATHERBALL,:FAKETEARS,
+      :TOUGHLOVE,:TAILSLAP,:DRAININGKISS,:MISTYTERRAIN,:AIRSLASH,
+      :METRONOME,:SUCKERPUNCH,:SCRUTINIZE]
+      end
+      for i in 0...movelist.length
+        movelist[i]=getConst(PBMoves,movelist[i])
+      end
+      next movelist
+},
 "ability"=>proc{|pokemon|
    next if pokemon.form==0 # Normal
    if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0) # Mystic
@@ -4244,6 +4267,29 @@ MultipleForms.register(:GROVYLE,{
      i[1]=getConst(PBMoves,i[1])
    end
    next movelist
+},
+"getMoveCompatibility"=>proc{|pokemon|
+  next if pokemon.form==0
+  movelist=[]
+  case pokemon.form
+  when 1; movelist=[
+      :CUT,:FLY,:WORKUP,:PSYSHOCK,:CALMMIND,:HAIL,
+      :HIDDENPOWER,:SUNNYDAY,:TAUNT,:ICEBEAM,:BLIZZARD,
+      :LIGHTSCREEN,:PROTECT,:SECRETPOWER,:SAFEGUARD,:SMACKDOWN,
+      :RETURN,:FRUSTRATION,:DOUBLETEAM,:REFLECT,:AERIALACE,
+      :TORMENT,:FACADE,:REST,:ATTRACT,:THIEF,:LOWSWEEP,
+      :ROUND,:ECHOEDVOICE,:STEELWING,:ENEGRYBALL,:FALSESWIPE,
+      :SCALD,:SKYDROP,:ACROBATICS,:ROOST,:FLASH,
+      :FROSTBREATH,:DREAMEATER,:SLEEPTALK,:UTURN,:SUBSTITUTE,
+      :TRICKROOM,:NATUREPOWER,:DAZZLINGGLEAM,:ROCKCLIMB,:PLAYROUGH,
+      :SCREECH,:SCARYFACE,:CHARM,:WEATHERBALL,:FAKETEARS,
+      :TOUGHLOVE,:TAILSLAP,:DRAININGKISS,:MISTYTERRAIN,:AIRSLASH,
+      :METRONOME,:SUCKERPUNCH,:SCRUTINIZE]
+      end
+      for i in 0...movelist.length
+        movelist[i]=getConst(PBMoves,movelist[i])
+      end
+      next movelist
 },
 "ability"=>proc{|pokemon|
    next if pokemon.form==0 # Normal
@@ -4294,6 +4340,29 @@ MultipleForms.register(:SCEPTILE,{
    end
    next movelist
 },
+"getMoveCompatibility"=>proc{|pokemon|
+  next if pokemon.form==0
+  movelist=[]
+  case pokemon.form
+  when 1; movelist=[
+      :CUT,:FLY,:WORKUP,:PSYSHOCK,:CALMMIND,:HAIL,
+      :HIDDENPOWER,:SUNNYDAY,:TAUNT,:ICEBEAM,:BLIZZARD,
+      :LIGHTSCREEN,:PROTECT,:SECRETPOWER,:SAFEGUARD,:SMACKDOWN,
+      :RETURN,:FRUSTRATION,:DOUBLETEAM,:REFLECT,:AERIALACE,
+      :TORMENT,:FACADE,:REST,:ATTRACT,:THIEF,:LOWSWEEP,
+      :ROUND,:ECHOEDVOICE,:STEELWING,:ENEGRYBALL,:FALSESWIPE,
+      :SCALD,:SKYDROP,:ACROBATICS,:ROOST,:FLASH,
+      :FROSTBREATH,:DREAMEATER,:SLEEPTALK,:UTURN,:SUBSTITUTE,
+      :TRICKROOM,:NATUREPOWER,:DAZZLINGGLEAM,:ROCKCLIMB,:PLAYROUGH,
+      :SCREECH,:SCARYFACE,:CHARM,:WEATHERBALL,:FAKETEARS,
+      :TOUGHLOVE,:TAILSLAP,:DRAININGKISS,:MISTYTERRAIN,:AIRSLASH,
+      :METRONOME,:SUCKERPUNCH,:SCRUTINIZE]
+      end
+      for i in 0...movelist.length
+        movelist[i]=getConst(PBMoves,movelist[i])
+      end
+      next movelist
+},
 "ability"=>proc{|pokemon|
    next if pokemon.form==0 # Normal
    if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0) # Mystic
@@ -4342,6 +4411,31 @@ MultipleForms.register(:TORCHIC,{
      i[1]=getConst(PBMoves,i[1])
    end
    next movelist
+},
+"getMoveCompatibility"=>proc{|pokemon|
+  next if pokemon.form==0
+  movelist=[]
+  case pokemon.form
+  when 1; movelist=[
+      :CUT,:STRENGTH,:DRAGONCLAW,:ROAR,:TOXIC,:BULKUP,:VENOSHOCK,
+      :HIDDENPOWER,:TAUNT,:PROTECT,:SECRETPOWER,:SAFEGUARD,:EARTHQUAKE,
+      :SMACKDOWN,:RETURN,:FRUSTRATION,:DIG,:BRICKBREAK,:DOUBLETEAM,
+      :SLUDGEWAVE,:SLUDGEBOMB,:SANDSTORM,:AERIALACE,:TORMENT,
+      :FACADE,:REST,:ATTRACT,:THIEF,:LOWSWEEP,:FALSESWIPE,
+      :FLING,:QUASH,:ACROBATICS,:EMBARGO,:SHADOWCLAW,:SCREECH,
+      :PAYBACK,:ROOST,:GIGAIMPACT,:ROCKPOLISH,:STONEEDGE,:GYROBALL,
+      :SWORDSDANCE,:BULLDOZE,:ROCKSLIDE,:DRAGONTAIL,:POISONJAB,
+      :SWAGGER,:SLEEPTALK,:UTURN,:SUBSTITUTE,:WILDCHARGE,:ROCKSMASH,
+      :NATUREPOWER,:POWERUPPUNCH,:ROCKCLIMB,:POISONSWEEP,:STACKINGSHOT,
+      :ARENITEWALL,:SLASHANDBURN,:BRUTALSWING,:PINMISSILE,:SELFDESTRUCT,
+      :SCARYFACE,:BEATUP,:FAKETEARS,:SANDTOMB,:MUDSHOT,:ROCKBLAST,
+      :ASSURANCE,:CROSSPOISON,:TAILSLAP,:BREAKINGSWIPE,:HONECLAWS,
+      :SUCKERPUNCH,:RETALIATE,:VACUUMWAVE]
+      end
+      for i in 0...movelist.length
+        movelist[i]=getConst(PBMoves,movelist[i])
+      end
+      next movelist
 },
 "ability"=>proc{|pokemon|
    next if pokemon.form==0 # Normal
@@ -4392,6 +4486,31 @@ MultipleForms.register(:COMBUSKEN,{
    end
    next movelist
 },
+"getMoveCompatibility"=>proc{|pokemon|
+  next if pokemon.form==0
+  movelist=[]
+  case pokemon.form
+  when 1; movelist=[
+      :CUT,:STRENGTH,:DRAGONCLAW,:ROAR,:TOXIC,:BULKUP,:VENOSHOCK,
+      :HIDDENPOWER,:TAUNT,:PROTECT,:SECRETPOWER,:SAFEGUARD,:EARTHQUAKE,
+      :SMACKDOWN,:RETURN,:FRUSTRATION,:DIG,:BRICKBREAK,:DOUBLETEAM,
+      :SLUDGEWAVE,:SLUDGEBOMB,:SANDSTORM,:AERIALACE,:TORMENT,
+      :FACADE,:REST,:ATTRACT,:THIEF,:LOWSWEEP,:FALSESWIPE,
+      :FLING,:QUASH,:ACROBATICS,:EMBARGO,:SHADOWCLAW,:SCREECH,
+      :PAYBACK,:ROOST,:GIGAIMPACT,:ROCKPOLISH,:STONEEDGE,:GYROBALL,
+      :SWORDSDANCE,:BULLDOZE,:ROCKSLIDE,:DRAGONTAIL,:POISONJAB,
+      :SWAGGER,:SLEEPTALK,:UTURN,:SUBSTITUTE,:WILDCHARGE,:ROCKSMASH,
+      :NATUREPOWER,:POWERUPPUNCH,:ROCKCLIMB,:POISONSWEEP,:STACKINGSHOT,
+      :ARENITEWALL,:SLASHANDBURN,:BRUTALSWING,:PINMISSILE,:SELFDESTRUCT,
+      :SCARYFACE,:BEATUP,:FAKETEARS,:SANDTOMB,:MUDSHOT,:ROCKBLAST,
+      :ASSURANCE,:CROSSPOISON,:TAILSLAP,:BREAKINGSWIPE,:HONECLAWS,
+      :SUCKERPUNCH,:RETALIATE,:VACUUMWAVE]
+      end
+      for i in 0...movelist.length
+        movelist[i]=getConst(PBMoves,movelist[i])
+      end
+      next movelist
+},
 "ability"=>proc{|pokemon|
    next if pokemon.form==0 # Normal
    if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0) # Mystic
@@ -4440,6 +4559,31 @@ MultipleForms.register(:BLAZIKEN,{
      i[1]=getConst(PBMoves,i[1])
    end
    next movelist
+},
+"getMoveCompatibility"=>proc{|pokemon|
+  next if pokemon.form==0
+  movelist=[]
+  case pokemon.form
+  when 1; movelist=[
+      :CUT,:STRENGTH,:DRAGONCLAW,:ROAR,:TOXIC,:BULKUP,:VENOSHOCK,
+      :HIDDENPOWER,:TAUNT,:PROTECT,:SECRETPOWER,:SAFEGUARD,:EARTHQUAKE,
+      :SMACKDOWN,:RETURN,:FRUSTRATION,:DIG,:BRICKBREAK,:DOUBLETEAM,
+      :SLUDGEWAVE,:SLUDGEBOMB,:SANDSTORM,:AERIALACE,:TORMENT,
+      :FACADE,:REST,:ATTRACT,:THIEF,:LOWSWEEP,:FALSESWIPE,
+      :FLING,:QUASH,:ACROBATICS,:EMBARGO,:SHADOWCLAW,:SCREECH,
+      :PAYBACK,:ROOST,:GIGAIMPACT,:ROCKPOLISH,:STONEEDGE,:GYROBALL,
+      :SWORDSDANCE,:BULLDOZE,:ROCKSLIDE,:DRAGONTAIL,:POISONJAB,
+      :SWAGGER,:SLEEPTALK,:UTURN,:SUBSTITUTE,:WILDCHARGE,:ROCKSMASH,
+      :NATUREPOWER,:POWERUPPUNCH,:ROCKCLIMB,:POISONSWEEP,:STACKINGSHOT,
+      :ARENITEWALL,:SLASHANDBURN,:BRUTALSWING,:PINMISSILE,:SELFDESTRUCT,
+      :SCARYFACE,:BEATUP,:FAKETEARS,:SANDTOMB,:MUDSHOT,:ROCKBLAST,
+      :ASSURANCE,:CROSSPOISON,:TAILSLAP,:BREAKINGSWIPE,:HONECLAWS,
+      :SUCKERPUNCH,:RETALIATE,:VACUUMWAVE]
+      end
+      for i in 0...movelist.length
+        movelist[i]=getConst(PBMoves,movelist[i])
+      end
+      next movelist
 },
 "ability"=>proc{|pokemon|
    next if pokemon.form==0 # Normal
@@ -4490,6 +4634,30 @@ MultipleForms.register(:MUDKIP,{
    end
    next movelist
 },
+"getMoveCompatibility"=>proc{|pokemon|
+  next if pokemon.form==0
+  movelist=[]
+  case pokemon.form
+  when 1; movelist=[
+      :CUT,:WORKUP,:STRENGTH,:DRAGONCLAW,:ROAR,:TOXIC,:BULKUP,:RAINDANCE,
+      :HIDDENPOWER,:TAUNT,:PROTECT,:SECRETPOWER,:SAFEGUARD,:EARTHQUAKE,
+      :SMACKDOWN,:RETURN,:FRUSTRATION,:DIG,:BRICKBREAK,:REFLECT,
+      :FLAMETHROWER,:FIREBLAST,:TORMENT,:FACADE,:REST,:ATTRACT,:THIEF,
+      :LOWSWEEP,:FALSESWIPE,:OVERHEAT,:FLING,:SKYDROP,:INCINERATE,
+      :FOCUSBLAST,:SHADOWCLAW,:SCREECH,:SMARTSTRIKE,
+      :PAYBACK,:GIGAIMPACT,:SWORDSDANCE,:BULLDOZE,:DRAGONTAIL,
+      :SWAGGER,:SLEEPTALK,:SUBSTITUTE,:ROCKSMASH,
+      :NATUREPOWER,:POWERUPPUNCH,:ROCKCLIMB,:STACKINGSHOT,
+      :SLASHANDBURN,:BRUTALSWING,:POWERSWAP,:GUARDSWAP,
+      :SCARYFACE,:BEATUP,:FAKETEARS,:SANDTOMB,:MUDSHOT,:SPEEDSWAP,
+      :ASSURANCE,:TAILSLAP,:BREAKINGSWIPE,:DYNAMICPUNCH,
+      :SUCKERPUNCH,:RETALIATE,:VACUUMWAVE,:CONDESCEND]
+      end
+      for i in 0...movelist.length
+        movelist[i]=getConst(PBMoves,movelist[i])
+      end
+      next movelist
+},
 "ability"=>proc{|pokemon|
    next if pokemon.form==0 # Normal
    if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0) # Mystic
@@ -4539,6 +4707,30 @@ MultipleForms.register(:MARSHTOMP,{
    end
    next movelist
 },
+"getMoveCompatibility"=>proc{|pokemon|
+  next if pokemon.form==0
+  movelist=[]
+  case pokemon.form
+  when 1; movelist=[
+      :CUT,:WORKUP,:STRENGTH,:DRAGONCLAW,:ROAR,:TOXIC,:BULKUP,:RAINDANCE,
+      :HIDDENPOWER,:TAUNT,:PROTECT,:SECRETPOWER,:SAFEGUARD,:EARTHQUAKE,
+      :SMACKDOWN,:RETURN,:FRUSTRATION,:DIG,:BRICKBREAK,:REFLECT,
+      :FLAMETHROWER,:FIREBLAST,:TORMENT,:FACADE,:REST,:ATTRACT,:THIEF,
+      :LOWSWEEP,:FALSESWIPE,:OVERHEAT,:FLING,:SKYDROP,:INCINERATE,
+      :FOCUSBLAST,:SHADOWCLAW,:SCREECH,:SMARTSTRIKE,
+      :PAYBACK,:GIGAIMPACT,:SWORDSDANCE,:BULLDOZE,:DRAGONTAIL,
+      :SWAGGER,:SLEEPTALK,:SUBSTITUTE,:ROCKSMASH,
+      :NATUREPOWER,:POWERUPPUNCH,:ROCKCLIMB,:STACKINGSHOT,
+      :SLASHANDBURN,:BRUTALSWING,:POWERSWAP,:GUARDSWAP,
+      :SCARYFACE,:BEATUP,:FAKETEARS,:SANDTOMB,:MUDSHOT,:SPEEDSWAP,
+      :ASSURANCE,:TAILSLAP,:BREAKINGSWIPE,:DYNAMICPUNCH,
+      :SUCKERPUNCH,:RETALIATE,:VACUUMWAVE,:CONDESCEND]
+      end
+      for i in 0...movelist.length
+        movelist[i]=getConst(PBMoves,movelist[i])
+      end
+      next movelist
+},
 "ability"=>proc{|pokemon|
    next if pokemon.form==0 # Normal
    if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0) # Mystic
@@ -4587,6 +4779,30 @@ MultipleForms.register(:SWAMPERT,{
      i[1]=getConst(PBMoves,i[1])
    end
    next movelist
+},
+"getMoveCompatibility"=>proc{|pokemon|
+  next if pokemon.form==0
+  movelist=[]
+  case pokemon.form
+  when 1; movelist=[
+      :CUT,:WORKUP,:STRENGTH,:DRAGONCLAW,:ROAR,:TOXIC,:BULKUP,:RAINDANCE,
+      :HIDDENPOWER,:TAUNT,:PROTECT,:SECRETPOWER,:SAFEGUARD,:EARTHQUAKE,
+      :SMACKDOWN,:RETURN,:FRUSTRATION,:DIG,:BRICKBREAK,:REFLECT,
+      :FLAMETHROWER,:FIREBLAST,:TORMENT,:FACADE,:REST,:ATTRACT,:THIEF,
+      :LOWSWEEP,:FALSESWIPE,:OVERHEAT,:FLING,:SKYDROP,:INCINERATE,
+      :FOCUSBLAST,:SHADOWCLAW,:SCREECH,:SMARTSTRIKE,
+      :PAYBACK,:GIGAIMPACT,:SWORDSDANCE,:BULLDOZE,:DRAGONTAIL,
+      :SWAGGER,:SLEEPTALK,:SUBSTITUTE,:ROCKSMASH,
+      :NATUREPOWER,:POWERUPPUNCH,:ROCKCLIMB,:STACKINGSHOT,
+      :SLASHANDBURN,:BRUTALSWING,:POWERSWAP,:GUARDSWAP,
+      :SCARYFACE,:BEATUP,:FAKETEARS,:SANDTOMB,:MUDSHOT,:SPEEDSWAP,
+      :ASSURANCE,:TAILSLAP,:BREAKINGSWIPE,:DYNAMICPUNCH,
+      :SUCKERPUNCH,:RETALIATE,:VACUUMWAVE,:CONDESCEND]
+      end
+      for i in 0...movelist.length
+        movelist[i]=getConst(PBMoves,movelist[i])
+      end
+      next movelist
 },
 "ability"=>proc{|pokemon|
    next if pokemon.form==0 # Normal
@@ -4762,6 +4978,227 @@ MultipleForms.register(:REUNICLUS,{
 }
 })
 
+MultipleForms.register(:STUFFUL,{
+"dexEntry"=>proc{|pokemon|
+   next if pokemon.form==0      # Normal
+   next "Stufful loves humans, and becomes incredibly upset when not in physical contact with its trainer."     # Mystic
+},
+"type1"=>proc{|pokemon|
+   next if pokemon.form==0      # Normal
+   next getID(PBTypes,:NORMAL)    # Mystic
+},
+"type2"=>proc{|pokemon|
+   next if pokemon.form==0      # Normal
+   next getID(PBTypes,:GHOST)    # Mystic
+},
+"getBaseStats"=>proc{|pokemon|
+   next if pokemon.form==0      # Normal
+   next [75,70,50,45,50,50]   # Mystic
+},
+"getMoveList"=>proc{|pokemon|
+   next if pokemon.form==0      # Normal
+   movelist=[]
+   case pokemon.form            # Mystic
+     when 1 ; movelist=[[1,:LEER],[1,:TACKLE],[4,:CONFUSERAY],[8,:LICK],
+                        [10,:ASTONISH],[14,:MEANLOOK],[19,:DOUBLEHIT],[23,:SHADOWPUNCH],
+                        [28,:FLAIL],[32,:BRUTALSWING],[37,:ENDURE],[41,:PAINSPLIT],
+                        [46,:DOUBLEEDGE],[50,:PHANTOMFORCE]]
+   end
+   for i in movelist
+     i[1]=getConst(PBMoves,i[1])
+   end
+   next movelist
+},
+"getMoveCompatibility"=>proc{|pokemon|
+  next if pokemon.form==0
+  movelist=[]
+  case pokemon.form
+  when 1; movelist=[
+      :CUT,:WORKUP,:STRENGTH,:DRAGONCLAW,:ROAR,:TOXIC,:BULKUP,
+      :HIDDENPOWER,:TAUNT,:HYPERBEAM,:PROTECT,:SECRETPOWER,
+      :SAFEGUARD,:FRUSTRATION,:RETURN,:SHADOWBALL,:BRICKBREAK,
+      :REFLECT,:TORMENT,:FACADE,:REST,:ATTRACT,:THIEF,:ECHOEDVOICE,
+      :FALSESWIPE,:WILLOWISP,:EMBARGO,:SHADOWCLAW,:PAYBACK,
+      :SWORDSDANCE,:POISONJAB,:DREAMEATER,:SWAGGER,:SLEEPTALK,
+      :SUBSTITUTE,:ROCKSMASH,:SNARL,:DARKPULSE,:CONFIDE,:PLAYROUGH,
+      :BRUTALSWING,:LEECHLIFE,:HEX,:SCREECH,:SCARYFACE,:ASSURANCE,
+      :PHANTOMFORCE,:DRAININGKISS,:HONECLAWS,:METRONOME,:SUCKERPUNCH,
+      :RETALIATE]
+      end
+      for i in 0...movelist.length
+        movelist[i]=getConst(PBMoves,movelist[i])
+      end
+      next movelist
+},
+"ability"=>proc{|pokemon|
+   next if pokemon.form==0 # Normal
+   if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0) # Mystic
+     next getID(PBAbilities,:FLUFFY)
+   elsif pokemon.abilityIndex==1 || (pokemon.abilityflag && pokemon.abilityflag==1) # Mystic
+     next getID(PBAbilities,:UNAWARE)
+   elsif pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)
+     next getID(PBAbilities,:CUTECHARM)       
+   end
+},
+"getFormOnCreation"=>proc{|pokemon|
+   maps=[]   # Map IDs for second form
+   if $game_map && maps.include?($game_map.map_id)
+     next 1
+   else
+     next 0
+   end
+},
+"onSetForm"=>proc{|pokemon,form|
+   pbSeenForm(pokemon)
+}
+})
+
+MultipleForms.register(:BEWEAR,{
+"dexEntry"=>proc{|pokemon|
+   next if pokemon.form==0      # Normal
+   next "Stufful loves humans, and becomes incredibly upset when not in physical contact with its trainer."     # Mystic
+},
+"type1"=>proc{|pokemon|
+   next if pokemon.form==0      # Normal
+   next getID(PBTypes,:GHOST)    # Mystic
+},
+"type2"=>proc{|pokemon|
+   next if pokemon.form==0      # Normal
+   next getID(PBTypes,:NORMAL)    # Mystic
+},
+"getBaseStats"=>proc{|pokemon|
+   next if pokemon.form==0      # Normal
+   next [125,120,60,55,80,60]   # Mystic
+},
+"getMoveList"=>proc{|pokemon|
+   next if pokemon.form==0      # Normal
+   movelist=[]
+   case pokemon.form            # Mystic
+     when 1 ; movelist=[[1,:SUPERPOWER],[1,:LEER],[1,:TACKLE],[4,:CONFUSERAY],[8,:LICK],
+                        [10,:ASTONISH],[14,:MEANLOOK],[19,:DOUBLEHIT],[23,:SHADOWPUNCH],
+                        [30,:FLAIL],[36,:BRUTALSWING],[43,:ENDURE],[49,:PAINSPLIT],
+                        [56,:DOUBLEEDGE],[62,:PHANTOMFORCE]]
+   end
+   for i in movelist
+     i[1]=getConst(PBMoves,i[1])
+   end
+   next movelist
+},
+"getMoveCompatibility"=>proc{|pokemon|
+  next if pokemon.form==0
+  movelist=[]
+  case pokemon.form
+  when 1; movelist=[
+      :CUT,:WORKUP,:STRENGTH,:DRAGONCLAW,:ROAR,:TOXIC,:BULKUP,
+      :HIDDENPOWER,:TAUNT,:HYPERBEAM,:PROTECT,:SECRETPOWER,
+      :SAFEGUARD,:FRUSTRATION,:RETURN,:SHADOWBALL,:BRICKBREAK,
+      :REFLECT,:TORMENT,:FACADE,:REST,:ATTRACT,:THIEF,:ECHOEDVOICE,
+      :FALSESWIPE,:WILLOWISP,:EMBARGO,:SHADOWCLAW,:PAYBACK,
+      :SWORDSDANCE,:POISONJAB,:DREAMEATER,:SWAGGER,:SLEEPTALK,
+      :SUBSTITUTE,:ROCKSMASH,:SNARL,:DARKPULSE,:CONFIDE,:PLAYROUGH,
+      :BRUTALSWING,:LEECHLIFE,:HEX,:SCREECH,:SCARYFACE,:ASSURANCE,
+      :PHANTOMFORCE,:DRAININGKISS,:HONECLAWS,:METRONOME,:SUCKERPUNCH,
+      :RETALIATE]
+      end
+      for i in 0...movelist.length
+        movelist[i]=getConst(PBMoves,movelist[i])
+      end
+      next movelist
+},
+"ability"=>proc{|pokemon|
+   next if pokemon.form==0 # Normal
+   if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0) # Mystic
+     next getID(PBAbilities,:CURSEDBODY)
+   elsif pokemon.abilityIndex==1 || (pokemon.abilityflag && pokemon.abilityflag==1) # Mystic
+     next getID(PBAbilities,:UNAWARE)
+   elsif pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)
+     next getID(PBAbilities,:UNNERVE)       
+   end
+},
+"getFormOnCreation"=>proc{|pokemon|
+   maps=[]   # Map IDs for second form
+   if $game_map && maps.include?($game_map.map_id)
+     next 1
+   else
+     next 0
+   end
+},
+"onSetForm"=>proc{|pokemon,form|
+   pbSeenForm(pokemon)
+}
+})
+
+MultipleForms.register(:ELDEGOSS,{
+"dexEntry"=>proc{|pokemon|
+   next if pokemon.form==0      # Normal
+   next "Vengeant and lost."     # Mystic
+},
+"type1"=>proc{|pokemon|
+   next if pokemon.form==0      # Normal
+   next getID(PBTypes,:GRASS)    # Mystic
+},
+"type2"=>proc{|pokemon|
+   next if pokemon.form==0      # Normal
+   next getID(PBTypes,:GHOST)    # Mystic
+},
+"getBaseStats"=>proc{|pokemon|
+   next if pokemon.form==0      # Normal
+   next [60,90,50,80,120,60]   # Mystic
+},
+"getMoveList"=>proc{|pokemon|
+   next if pokemon.form==0      # Normal
+   movelist=[]
+   case pokemon.form            # Mystic
+     when 1 ; movelist=[[0,:OMINOUSWIND],[1,:COTTONSPORE],[1,:LEAFAGE],[1,:SING],[1,:SWEETSCENT],
+                        [1,:RAPIDSPIN],[12,:RAZORLEAF],[16,:ROUND],[23,:LEAFTORNADO],[28,:LEECHSEED],
+                        [34,:HEX],[40,:CURSE],[46,:LEAFSTORM],[52,:SHADOWBALL]]
+   end
+   for i in movelist
+     i[1]=getConst(PBMoves,i[1])
+   end
+   next movelist
+},
+"getMoveCompatibility"=>proc{|pokemon|
+  next if pokemon.form==0
+  movelist=[]
+  case pokemon.form
+  when 1; movelist=[
+      :CUT,:WORKUP,:TOXIC,:HIDDENPOWER,:RAINDANCE,:LIGHTSCREEN,:REFLECT,:PROTECT,
+      :SECRETPOWER,:NATUREPOWER,:FRUSTRATION,:SOLARBEAM,:SHADOWBALL,:DOUBLETEAM,
+      :TORMENT,:THIEF,:ATTRACT,:ROUND,:ECHOEDVOICE,:FLING,:QUASH,:EMBARGO,
+      :PSYCHUP,:INFESTATION,:DREAMEATER,:UTURN,:SUBSTITUTE,:SNARL,:DARKPULSE,
+      :CONFIDE,:IRRITATION,:SLASHANDBURN,:HEX,:SOLARBLADE,:BRUTALSWING,
+      :SCREECH,:SCARYFACE,:BEATUP,:ASSURANCE,:PHANTOMFORCE,:GRASSYTERRAIN,
+      :AIRSLASH,:SUCKERPUNCH,:VACUUMWAVE,:SCRUTINIZE,:CONDESCEND]
+      end
+      for i in 0...movelist.length
+        movelist[i]=getConst(PBMoves,movelist[i])
+      end
+      next movelist
+},
+"ability"=>proc{|pokemon|
+   next if pokemon.form==0 # Normal
+   if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0) # Mystic
+     next getID(PBAbilities,:COTTONDOWN)
+   elsif pokemon.abilityIndex==1 || (pokemon.abilityflag && pokemon.abilityflag==1) # Mystic
+     next getID(PBAbilities,:NOGUARD)
+   elsif pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)
+     next getID(PBAbilities,:SHEDSKIN)       
+   end
+},
+"getFormOnCreation"=>proc{|pokemon|
+   maps=[]   # Map IDs for second form
+   if $game_map && maps.include?($game_map.map_id)
+     next 1
+   else
+     next 0
+   end
+},
+"onSetForm"=>proc{|pokemon,form|
+   pbSeenForm(pokemon)
+}
+})
+
 MultipleForms.register(:VOLTORB,{
 "dexEntry"=>proc{|pokemon|
    next if pokemon.form==0      # Normal
@@ -4793,6 +5230,25 @@ MultipleForms.register(:VOLTORB,{
      i[1]=getConst(PBMoves,i[1])
    end
    next movelist
+},
+"getMoveCompatibility"=>proc{|pokemon|
+  next if pokemon.form==0
+  movelist=[]
+  case pokemon.form
+  when 1; movelist=[
+      :WORKUP,:PSYSHOCK,:CALMMIND,:HIDDENPOWER,:HYPERBEAM,:LIGHTSCREEEN,
+      :PROTECT,:SECRETPOWER,:SAFEGUARD,:FRUSTRATION,:THUNDERBOLT,
+      :THUNDER,:RETURN,:PSYCHIC,:SHADOWBALL,:DOUBLETEAM,:REFLECT,
+      :FLAMECHARGE,:REST,:ATTRACT,:ECHOEDVOICE,:FOCUSBLAST,:ENERGYBALL,
+      :EXPLOSION,:FLASH,:THUNDERWAVE,:PSYCHUP,:DREAMEATER,:SUBSTITUTE,
+      :FLASHCANNON,:TRICKROOM,:DAZZLINGGLEAM,:COSMICPOWER,:HEX,:SCREECH,
+      :SCARYFACE,:POWERSWAP,:GUARDSWAP,:SPEEDSWAP,:PSYCHICTERRAIN,
+      :EERIEIMPULSE,:METRONOME,:TRIATTACK,:SCRUTINIZE]
+      end
+      for i in 0...movelist.length
+        movelist[i]=getConst(PBMoves,movelist[i])
+      end
+      next movelist
 },
 "ability"=>proc{|pokemon|
    next if pokemon.form==0 # Normal
@@ -4849,6 +5305,25 @@ MultipleForms.register(:ELECTRODE,{
    end
    next movelist
 },
+"getMoveCompatibility"=>proc{|pokemon|
+  next if pokemon.form==0
+  movelist=[]
+  case pokemon.form
+  when 1; movelist=[
+      :WORKUP,:PSYSHOCK,:CALMMIND,:HIDDENPOWER,:HYPERBEAM,:LIGHTSCREEEN,
+      :PROTECT,:SECRETPOWER,:SAFEGUARD,:FRUSTRATION,:THUNDERBOLT,
+      :THUNDER,:RETURN,:PSYCHIC,:SHADOWBALL,:DOUBLETEAM,:REFLECT,
+      :FLAMECHARGE,:REST,:ATTRACT,:ECHOEDVOICE,:FOCUSBLAST,:ENERGYBALL,
+      :EXPLOSION,:FLASH,:THUNDERWAVE,:PSYCHUP,:DREAMEATER,:SUBSTITUTE,
+      :FLASHCANNON,:TRICKROOM,:DAZZLINGGLEAM,:COSMICPOWER,:HEX,:SCREECH,
+      :SCARYFACE,:POWERSWAP,:GUARDSWAP,:SPEEDSWAP,:PSYCHICTERRAIN,
+      :EERIEIMPULSE,:METRONOME,:TRIATTACK,:SCRUTINIZE]
+      end
+      for i in 0...movelist.length
+        movelist[i]=getConst(PBMoves,movelist[i])
+      end
+      next movelist
+},
 "ability"=>proc{|pokemon|
    next if pokemon.form==0 # Normal
    if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0) # Mystic
@@ -4903,6 +5378,25 @@ MultipleForms.register(:POOCHYENA,{
    end
    next movelist
 },
+"getMoveCompatibility"=>proc{|pokemon|
+  next if pokemon.form==0
+  movelist=[]
+  case pokemon.form
+  when 1; movelist=[
+      :WORKUP,:CALMMIND,:ROAR,:HIDDENPOWER,:SUNNYDAY,:PROTECT,:SECRETPOWER,
+      :RETURN,:DIG,:SHADOWBALL,:DOUBLETEAM,:FLAMETHROWER,:SHADOWBALL,
+      :DOUBLETEAM,:FLAMETHROWER,:SLUDGEBOMB,:FIREBLAST,:TORMENT,:FACADE,
+      :FLAMECHARGE,:REST,:ATTRACT,:THIEF,:OVERHEAT,:INCINERATE,:WILLOWISP,
+      :EMBARGO,:EXPLOSION,:SHADOWCLAW,:PAYBACK,:FLASH,:DREAMEATER,:SWAGGER,
+      :SLEEPTALK,:WILDCHARGE,:SNARL,:DARKPULSE,:MAGMADRIFT,:HEX,:FIRESPIN,
+      :SCREECH,:SELFDESTRUCT,:SCARYFACE,:ICEFANG,:FIREFANG,:THUNDERFANG,
+      :TAILSLAP,:PHANTOMFORCE,:MYSTICALFIRE,:HONECLAWS,:RETALIATE]
+      end
+      for i in 0...movelist.length
+        movelist[i]=getConst(PBMoves,movelist[i])
+      end
+      next movelist
+},
 "ability"=>proc{|pokemon|
    next if pokemon.form==0 # Normal
    if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0) # Mystic
@@ -4956,6 +5450,25 @@ MultipleForms.register(:MIGHTYENA,{
      i[1]=getConst(PBMoves,i[1])
    end
    next movelist
+},
+"getMoveCompatibility"=>proc{|pokemon|
+  next if pokemon.form==0
+  movelist=[]
+  case pokemon.form
+  when 1; movelist=[
+      :WORKUP,:CALMMIND,:ROAR,:HIDDENPOWER,:SUNNYDAY,:PROTECT,:SECRETPOWER,
+      :RETURN,:DIG,:SHADOWBALL,:DOUBLETEAM,:FLAMETHROWER,:SHADOWBALL,
+      :DOUBLETEAM,:FLAMETHROWER,:SLUDGEBOMB,:FIREBLAST,:TORMENT,:FACADE,
+      :FLAMECHARGE,:REST,:ATTRACT,:THIEF,:OVERHEAT,:INCINERATE,:WILLOWISP,
+      :EMBARGO,:EXPLOSION,:SHADOWCLAW,:PAYBACK,:FLASH,:DREAMEATER,:SWAGGER,
+      :SLEEPTALK,:WILDCHARGE,:SNARL,:DARKPULSE,:MAGMADRIFT,:HEX,:FIRESPIN,
+      :SCREECH,:SELFDESTRUCT,:SCARYFACE,:ICEFANG,:FIREFANG,:THUNDERFANG,
+      :TAILSLAP,:PHANTOMFORCE,:MYSTICALFIRE,:HONECLAWS,:RETALIATE]
+      end
+      for i in 0...movelist.length
+        movelist[i]=getConst(PBMoves,movelist[i])
+      end
+      next movelist
 },
 "ability"=>proc{|pokemon|
    next if pokemon.form==0 # Normal

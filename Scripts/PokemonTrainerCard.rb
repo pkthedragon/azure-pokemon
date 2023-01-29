@@ -21,7 +21,7 @@ class PokemonTrainerCardScene
       @sprites["card"].setBitmap("Graphics/Pictures/Trainer Card/trainercard")
     end
     @sprites["overlay"]=BitmapSprite.new(Graphics.width,Graphics.height,@viewport)
-    @sprites["trainer"]=IconSprite.new(336,112,@viewport)
+    @sprites["trainer"]=IconSprite.new(336,118,@viewport)
     @sprites["trainer"].setBitmap(pbPlayerSpriteFile($Trainer.trainertype))
     @sprites["trainer"].x-=(@sprites["trainer"].bitmap.width-128)/2
   @sprites["trainer"].y-=(@sprites["trainer"].bitmap.height-136) #UPDATED
@@ -40,6 +40,7 @@ class PokemonTrainerCardScene
     totalsec = Graphics.frame_count / 44 #Graphics.frame_rate  #Because Turbo exists
     hour = totalsec / 60 / 60
     min = totalsec / 60 % 60
+    cap = $game_variables[700]
     time=_ISPRINTF("{1:02d}:{2:02d}",hour,min)
     $PokemonGlobal.startTime=pbGetTimeNow if !$PokemonGlobal.startTime
     starttime=_ISPRINTF("{1:s} {2:d}, {3:d}",
@@ -50,10 +51,10 @@ class PokemonTrainerCardScene
     baseColor=Color.new(210,215,220) # Updated
     shadowColor=Color.new(70,75,80) # Updated
     textPositions=[
-       [_INTL("Name"),34,64,0,baseColor,shadowColor],
-       [_INTL("{1}",$Trainer.name),302,64,1,baseColor,shadowColor],
-       [_INTL("ID No."),332,64,0,baseColor,shadowColor],
-       [_INTL("{1}",pubid),468,64,1,baseColor,shadowColor],
+       [_INTL("ID"),34,64,0,baseColor,shadowColor],
+       [_INTL("No. {2} / {1}",$Trainer.name,pubid),302,64,1,baseColor,shadowColor],
+       [_INTL("Level Cap:"),332,64,0,baseColor,shadowColor],
+       [_INTL("{1}",cap),468,64,1,baseColor,shadowColor],
        [_INTL("Money"),34,112,0,baseColor,shadowColor],
        [_INTL("${1}",pbCommaNumber($Trainer.money)),302,112,1,baseColor,shadowColor],
        [_INTL("Pokédex"),34,160,0,baseColor,shadowColor],

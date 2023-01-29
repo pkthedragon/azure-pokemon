@@ -2249,7 +2249,31 @@ def pbChangeLevel(pokemon,newlevel,scene)
     speeddiff=pokemon.speed
     spatkdiff=pokemon.spatk
     spdefdiff=pokemon.spdef
-    totalhpdiff=pokemon.totalhp
+    totalhpdiff=pokemon.totalhp        
+    #pkedit
+    evpool=80+pokemon.level*8
+    evpool=(evpool.div(4))*4 
+    evsum=pokemon.ev[0]+pokemon.ev[1]+pokemon.ev[2]+pokemon.ev[4]+pokemon.ev[5]+pokemon.ev[3]
+    if evsum==evpool
+      count=0
+      for i in 0..5
+        if pokemon.ev[i]>0 && count<=8
+          pokemon.ev[i]-=4
+          pokemon.calcStats
+          count+=4
+        end        
+      end
+    end
+    if evsum==(evpool-4)
+      count=0
+      for i in 0..5
+        if pokemon.ev[i]>4 && count<=4
+          pokemon.ev[i]-=4
+          pokemon.calcStats
+          count+=4
+        end        
+      end
+    end    
     pokemon.level=newlevel
     pokemon.poklevel = newlevel 
     pokemon.calcStats
@@ -4289,7 +4313,7 @@ ItemHandlers::BattleUseOnBattler.add(:GUARDSPEC,lambda{|item,battler,scene|
 
 ItemHandlers::BattleUseOnBattler.add(:POKEDOLL,lambda{|item,battler,scene|
    battle=battler.battle
-   if battle.opponent
+   if battle.opponent || $game_switches[1998]==true
      scene.pbDisplay(_INTL("Can't use that here."))
      return false
    else

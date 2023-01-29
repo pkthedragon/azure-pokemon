@@ -723,6 +723,7 @@ def pbMiniCheckEvolution(pokemon,evonib,level,poke)
   yamaskMaps=[489,12,507,11,508]
   mrmimeMaps=[75,146,150,165,171,174,178,181,269,470,471,479,480,481,482,483,485,486,490,491]
   weezingMaps=[238,239,256,266,270,271,415]
+  eldegossMaps=[83,84,10,85,2,43,45,46,47,51,52,86,111,114,110,053,117,106,108,112,126,131,127,113,120,130,128,129,121,122,124,123,125,116]
   case evonib
     when PBEvolution::Happiness
       return poke if pokemon.happiness>=220
@@ -750,6 +751,12 @@ def pbMiniCheckEvolution(pokemon,evonib,level,poke)
           elsif PBDayNight.isNight?(pbGetTimeNow)
             pokemon.form=1
           elsif PBDayNight.isDay?(pbGetTimeNow)
+            pokemon.form=0
+          end
+        when 829            # Eldegoss -> Eldegoss forms
+          if eldegossMaps.include?($game_map.map_id)
+            pokemon.form=1
+          else
             pokemon.form=0
           end
       end            

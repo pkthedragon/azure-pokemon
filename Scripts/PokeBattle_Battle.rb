@@ -169,7 +169,7 @@ module PokeBattle_BattleCommon
       pbDisplay(_INTL("The Pokémon knocked the ball away!"))
       pbBallFetch(ball)
     else
-      if $game_switches[1500]==true
+      if $game_switches[1998]==true
         pbDisplay(_INTL("The Ball didn't work!"))
         return
       end
@@ -1465,7 +1465,7 @@ class PokeBattle_Battle
     if pbIsOpposing?(battlerindex)
       if @opponent 
         return _INTL("The foe {1}",party[pokemonindex].name)
-      elsif ($game_switches[1500]==true || $game_switches[290]==true)
+      elsif ($game_switches[1998]==true || $game_switches[290]==true)
         return _INTL("{1}",party[pokemonindex].name)
       else
         return _INTL("The wild {1}",party[pokemonindex].name)
@@ -2678,7 +2678,7 @@ class PokeBattle_Battle
         newpoke=pbSwitchInBetween(index,true,false)
         pbRecallAndReplace(index,newpoke)
         switched.push(index)
-      elsif $game_switches[1500] || $game_switches[290]
+      elsif $game_switches[1998] || $game_switches[290]
         newpoke=pbSwitchInBetween(index,true,false)
         pbRecallAndReplace(index,newpoke)
         switched.push(index)
@@ -2874,6 +2874,12 @@ class PokeBattle_Battle
               pbDisplayPaused(_INTL("You may be talented, sure. But that means nothing."))
               @scene.pbHideOpponent 
             end
+          elsif isConst?(trainertext.trainertype,PBTrainers,:HANDMAIDEN)
+            if $game_variables[226] == 1
+              @scene.pbShowOpponent(0)
+              pbDisplayPaused(_INTL("Not again! I will not let this happen again!"))
+              @scene.pbHideOpponent 
+            end
           elsif isConst?(trainertext.trainertype,PBTrainers,:CONDUIT)
             if $game_variables[226] == 0
               @scene.pbShowOpponent(0)
@@ -2885,6 +2891,13 @@ class PokeBattle_Battle
               @scene.pbShowOpponent(0)
               pbBGMPlay("Battle! Elder Cultist",100,105)
               pbDisplayPaused(_INTL("What the hell is this?!"))
+              @scene.pbHideOpponent 
+            end
+          elsif isConst?(trainertext.trainertype,PBTrainers,:ELDERCULTIST_Echo)
+            if $game_variables[226] == 1
+              @scene.pbShowOpponent(0)
+              pbBGMPlay("Battle! Elder Cultist",100,105)
+              pbDisplayPaused(_INTL("Maybe we can turn this one around?"))
               @scene.pbHideOpponent 
             end
           elsif isConst?(trainertext.trainertype,PBTrainers,:ELDERCULTIST_Doran)
@@ -3416,7 +3429,7 @@ class PokeBattle_Battle
       @choices[i][2]=nil
       return -1
     end
-    if @opponent || $game_switches[1500]
+    if @opponent || $game_switches[1998]
       if $DEBUG && Input.press?(Input::CTRL)
         if pbDisplayConfirm(_INTL("Treat this battle as a win?"))
           @decision=1
@@ -3425,9 +3438,9 @@ class PokeBattle_Battle
           @decision=2
           return 1
         end
-      elsif @internalbattle && $game_switches[1500]==false
+      elsif @internalbattle && $game_switches[1998]==false
         pbDisplayPaused(_INTL("No!  There's no running from a Trainer battle!"))
-      elsif $game_switches[1500]
+      elsif $game_switches[1998]
         pbDisplayPaused(_INTL("No!  There's no running from this battle!"))
       elsif pbDisplayConfirm(_INTL("Would you like to forfeit the match and quit now?"))
         pbSEPlay("Battle flee")
@@ -4730,7 +4743,7 @@ def pbStartBattle(canlose=false)
 # Initialize wild Pokémon
 #========================
       if @party2.length==1 
-        if @doublebattle && !$game_switches[1500]
+        if @doublebattle && !$game_switches[1998]
           raise _INTL("Only two wild Pokémon are allowed in double battles")
         end
         wildpoke=@party2[0]
@@ -4738,12 +4751,12 @@ def pbStartBattle(canlose=false)
         @peer.pbOnEnteringBattle(self,wildpoke)
         pbSetSeen(wildpoke)
         @scene.pbStartBattle(self)
-        pbDisplayPaused(_INTL("Wild {1} appeared!",wildpoke.name)) if ($game_switches[1500]==false) && ($game_switches[290] == false)
-        if ($game_switches[1500] == true) || ($game_switches[290] == true)
+        pbDisplayPaused(_INTL("Wild {1} appeared!",wildpoke.name)) if ($game_switches[1998]==false) && ($game_switches[290] == false)
+        if ($game_switches[1998] == true) || ($game_switches[290] == true)
            if wildpoke.name == "Kyogre"
               pbDisplayPaused(_INTL("Ancient Leviathan {1} attacked!",wildpoke.name)) 
            elsif wildpoke.name == "Giratina"
-            pbDisplayPaused(_INTL("The Renegade {1} attacked!",wildpoke.name)) 
+            pbDisplayPaused(_INTL("The Anachronism attacked!",wildpoke.name)) 
           elsif wildpoke.name == "Regirock"
             pbDisplayPaused(_INTL("Guardian Soldier {1} attacked!",wildpoke.name)) 
           elsif wildpoke.name == "Gardevoir"

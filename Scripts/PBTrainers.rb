@@ -270,14 +270,18 @@ GOLEM=273
 ATEN=274
 GHOSTCHILDF=275
 GHOSTMAID=276
+LINSEY=277
+VERARITTE=278
+VINCENT=279
+KAINE=280
 
 def self.getName(id)
 return pbGetMessage(MessageTypes::TrainerTypes,id)
 end
 def self.getCount
-return 271
+return 275
 end
 def self.maxValue
-return 276
+return 280
 end
 end

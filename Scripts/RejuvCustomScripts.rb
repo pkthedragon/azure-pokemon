@@ -342,13 +342,13 @@ end
 
 # Exp to level limit (get full exp if doesn't touch level limit)
 def LevelLimitExpGain(pokemon, exp)
-  levelLimits = [20,25,35,40,45,50,55,60,65,70,75,80,85,90,95]
-  leadersDefeated = $Trainer.numbadges
+ # levelLimits = [15, 20, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 85, 90]
+ # leadersDefeated = $Trainer.numbadges
     
-  if pokemon.level>=levelLimits[leadersDefeated]
+  if pokemon.level>=$game_variables[700]
     return -1
-  elsif pokemon.level<levelLimits[leadersDefeated]
-    totalExpNeeded = PBExperience.pbGetStartExperience(levelLimits[leadersDefeated], pokemon.growthrate)
+  elsif pokemon.level<$game_variables[700]
+    totalExpNeeded = PBExperience.pbGetStartExperience($game_variables[700], pokemon.growthrate)
     currExpNeeded = totalExpNeeded - pokemon.exp
     if exp > currExpNeeded
       return currExpNeeded

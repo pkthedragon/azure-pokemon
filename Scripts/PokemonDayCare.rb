@@ -503,12 +503,12 @@ Events.onStepTaken+=proc {|sender,e|
        end
      end
    end
-   for i in 0...2
-     pkmn=$PokemonGlobal.daycare[i][0]
-     next if !pkmn
-     maxexp=PBExperience.pbGetMaxExperience(pkmn.growthrate)
-     levelLimits = [15, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 85]
-     leadersDefeated = $Trainer.numbadges
+ #  for i in 0...2
+ #    pkmn=$PokemonGlobal.daycare[i][0]
+ #    next if !pkmn
+ #    maxexp=PBExperience.pbGetMaxExperience(pkmn.growthrate)
+ #    levelLimits = [15, 20, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 85]
+ #    leadersDefeated = $Trainer.numbadges
      #if pkmn.exp<maxexp && pkmn.level<levelLimits[leadersDefeated]
       # oldlevel=pkmn.level
        #pkmn.exp+=1
@@ -520,5 +520,5 @@ Events.onStepTaken+=proc {|sender,e|
 #         end
       # end
      #end
-   end
+   #end
 }

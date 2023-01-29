@@ -1184,7 +1184,7 @@ def pbWildBattle(species,level,variable=nil,canescape=true,canlose=false)
   $game_switches[290]=false
   $game_variables[704]=0
   $game_variables[699]=0
-  $game_switches[1500]=false
+  $game_switches[1998]=false
   if decision==4
     Achievements.incrementProgress("POKEMON_CAUGHT",1)
     if shinyMon
@@ -1292,7 +1292,7 @@ def pbWildBattleBoss(species,level,variable=nil,canescape=true,canlose=false)
   $game_switches[290]=false
   $game_variables[704]=0
   $game_variables[699]=0
-  $game_switches[1500]=false
+  $game_switches[1998]=false
   Input.update
   pbSet(variable,decision)
   return (decision!=2 && decision!=5)

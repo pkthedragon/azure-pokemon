@@ -588,7 +588,7 @@
 588,ANCIENTWING,Ancient Wing,8,0,A mysterious stone wing. It looks like it was attatched to something.,0,0,6,
 589,ROOMIDCARD,Room ID Card,8,0,A card key that was found in Melia's lab coat.It seems a little damaged...,0,0,6,
 590,EMOTIONPOWDER,Emotion Powder,8,0,A mysterious substance that is used to travel in Valor Mountain.,0,0,6,
-591,DULLKEY,Dull Key,8,0,"A peculiar key to some door in Aevium.",0,0,6,
+591,DULLKEY,Dull Key,8,0,"A peculiar key. It seems to be falling apart.",0,0,6,
 592,SECRETPOTION,Secret Potion,8,0,An extremely powerful medicine that originated from Olivine City in the Johto region.,0,0,6,
 593,EXCLUSIVEPASS,Exclusive Pass,8,0,A pass that allows the lucky weilder to enter Grand Dream City during their celebrity event.,0,0,6,
 601,JOYSCENT,Joy Scent,1,300,This scent massage opens the hearts of Pokémon a little.,1,0,0,

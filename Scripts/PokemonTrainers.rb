@@ -630,7 +630,7 @@ def pbTrainerBattle(trainerid,trainername,endspeech,
   $game_variables[702]=0
   $game_variables[298]=0
   $game_variables[708]=0
-  $game_switches[1500]=false
+  $game_switches[1998]=false
   $game_switches[1121]=false
   Input.update
   pbSet(variable,decision)

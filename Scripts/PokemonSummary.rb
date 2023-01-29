@@ -649,7 +649,7 @@ class PokemonSummaryScene
       [_INTL("Defense"),248,184,0,base,shadow],
       [_ISPRINTF("{1:3d}",pokemon.ev[2],pokemon.iv[2]),438,184,1,Color.new(64,64,64),Color.new(176,176,176)],
       [_INTL("Sp. Atk"),248,216,0,base,shadow],
-      [_ISPRINTF("{1:3d}",pokemon.ev[4],pokemon.iv[1]),438,216,1,Color.new(64,64,64),Color.new(176,176,176)],
+      [_ISPRINTF("{1:3d}",pokemon.ev[4],pokemon.iv[4]),438,216,1,Color.new(64,64,64),Color.new(176,176,176)],
       [_INTL("Sp. Def"),248,248,0,base,shadow],
       [_ISPRINTF("{1:3d}",pokemon.ev[5],pokemon.iv[5]),438,248,1,Color.new(64,64,64),Color.new(176,176,176)],
       [_INTL("Speed"),248,280,0,base,shadow],
