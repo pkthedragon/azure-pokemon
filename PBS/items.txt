@@ -1018,4 +1018,3 @@
 1058,TM167,TM158,4,0,"Resets the target's stat changes. This move cannot miss.",3,0,0,SCRUTINIZE
 1059,TM168,TM159,4,0,"The user lunges at the target, moving first and trapping the target.",3,0,0,PINCERGRIP
 1060,TM169,TM160,4,0,"This attack doubles in power if the target has negative stat changes.",3,0,0,CONDESCEND
-1061,REPELSPRAY,Repel Spray,

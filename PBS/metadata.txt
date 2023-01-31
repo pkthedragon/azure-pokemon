@@ -438,3 +438,14 @@ BattleBack=Cave
 # Tent of Mystery
 Outdoor=false
 MapPosition=0,6,16
+[132]
+# Koneli Laboratory
+Outdoor=false
+ShowArea=true
+MapPosition=0,6,16
+BattleBack=ShortCircuit
+[133]
+# Koneli Laboratory
+Outdoor=false
+MapPosition=0,6,16
+BattleBack=ShortCircuit
