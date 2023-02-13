@@ -449,3 +449,21 @@ BattleBack=ShortCircuit
 Outdoor=false
 MapPosition=0,6,16
 BattleBack=ShortCircuit
+[127]
+# Koneli Manor
+Outdoor=false
+ShowArea=true
+MapPosition=0,6,16
+BattleBack=Haunted3
+[128]
+# Koneli Manor
+Outdoor=false
+ShowArea=false
+MapPosition=0,6,16
+BattleBack=Haunted3
+[129]
+# Koneli Manor
+Outdoor=false
+ShowArea=false
+MapPosition=0,6,16
+BattleBack=Haunted3

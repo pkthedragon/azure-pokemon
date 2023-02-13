@@ -3026,10 +3026,10 @@ class PokeBattle_Battle
               pbDisplayPaused(_INTL("I do love a twist ending!"))
               @scene.pbHideOpponent 
             end
-          elsif isConst?(trainertext.trainertype,PBTrainers,:MYRON)
+          elsif isConst?(trainertext.trainertype,PBTrainers,:MYRON2)
             if $game_variables[226] == 0
               @scene.pbShowOpponent(0)
-              pbDisplayPaused(_INTL("SO. MUCH. DATA!"))
+              pbDisplayPaused(_INTL("This can't be happening, this can't be-"))
               @scene.pbHideOpponent 
             end
           elsif isConst?(trainertext.trainertype,PBTrainers,:CLOUDQUEEN)
