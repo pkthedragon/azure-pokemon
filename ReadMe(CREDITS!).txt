@@ -5,7 +5,7 @@ If your name is missing, PLEASE contact me and I will update this list immediate
 --------Developers--------
 Lead Developer: pkchu, darius, vincenzonova
 Artists: Ace, cheselth, anting, Avislone, Techno, ali760, BootyXXL, misenrol, Candii
-Composers: daforlynx, Lyn
+Composers: daforlynx, Rust, Lyn
 Writers: treeckoz, Fe = Iron
 Mappers: Citrus, Vird3n, Cervys
 Balancing: Alexandra, GAlexander, Avery

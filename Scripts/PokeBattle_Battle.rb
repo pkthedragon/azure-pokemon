@@ -2855,6 +2855,10 @@ class PokeBattle_Battle
               @scene.pbShowOpponent(0)
               pbDisplayPaused(_INTL("This is starting to piss me off."))
               @scene.pbHideOpponent
+            elsif $game_variables[226] == 4
+              @scene.pbShowOpponent(0)
+              pbDisplayPaused(_INTL("What am I doing wrong?"))
+              @scene.pbHideOpponent
             end
           elsif isConst?(trainertext.trainertype,PBTrainers,:POKEMONTRAINER_Percy)
             if $game_variables[226] == 0

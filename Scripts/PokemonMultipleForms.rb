@@ -6493,35 +6493,6 @@ MultipleForms.register(:GARCHOMP,{
     }
   })
 
-MultipleForms.register(:LUCARIO,{
-    "getMegaForm"=>proc{|pokemon|
-      next 2 if (isConst?(pokemon.item,PBItems,:LUCARIONITE) || pokemon.isPreMega?)
-      next
-    },
-    "getUnmegaForm"=>proc{|pokemon|
-      next 0
-    },
-    "getMegaName"=>proc{|pokemon|
-      next _INTL("Mega Lucario") if pokemon.form==2
-      next
-    },
-    "getBaseStats"=>proc{|pokemon|
-      next [70,145,88,112,140,70] if pokemon.form==2
-      next
-    },
-    "ability"=>proc{|pokemon|
-      next getID(PBAbilities,:ADAPTABILITY) if pokemon.form==2
-      next
-    },
-    "weight"=>proc{|pokemon|
-      next 575 if pokemon.form==2
-      next
-    },
-    "onSetForm"=>proc{|pokemon,form|
-      pbSeenForm(pokemon)
-    }
-  })
-
 MultipleForms.register(:ABOMASNOW,{
     "getMegaForm"=>proc{|pokemon|
       next 1 if (isConst?(pokemon.item,PBItems,:ABOMASITE) || pokemon.isPreMega?)
