@@ -81,6 +81,7 @@ class Scene_Pokegear
     @cmdMap=-1
     @cmdPhone=-1
     @cmdTutor=-1
+    @cmdMagnet=-1
     @cmdJukebox=-1
     @cmdOnline=-1    
     #@cmdPortablePC=-1
@@ -94,6 +95,7 @@ class Scene_Pokegear
                                                           $PokemonGlobal.phoneNumbers.length>0
     commands[@cmdJukebox=commands.length]=_INTL("Jukebox")
     commands[@cmdTutor=commands.length]=_INTL("Tutor.net") if $game_switches[1492]==true
+    commands[@cmdMagnet=commands.length]=_INTL("PokeMagnet") if $game_switches[1437]==true
 #    commands[@cmdNews=commands.length]=_INTL("Gearen News")
     if $game_switches[1176]
       commands[@cmdPulse=commands.length]=_INTL("Rift Dex")
@@ -210,7 +212,8 @@ class Scene_Pokegear
  #       end
     pbTutorNet
     end
-      if @cmdRiftNotes>=0 && @sprites["command_window"].index==@cmdRiftNotes
+      
+    if @cmdRiftNotes>=0 && @sprites["command_window"].index==@cmdRiftNotes
         pbPlayDecisionSE()
         $scene = Scene_RiftNotes.new
       end

@@ -2687,7 +2687,7 @@ def pbMoveTutorAnnotations(move,movelist=nil)
     if !$Trainer.party[i].isEgg? && movelist && movelist.any?{|j| j==species }
       # Checked data from movelist
       ret[i]=_INTL("ABLE")
-    elsif !$Trainer.party[i].isEgg? && pbSpeciesCompatible?(species,move,$Trainer.party[i])
+    elsif !$Trainer.party[i].isEgg? && $Trainer.party[i].isCompatibleWithMove?(move) # && pbSpeciesCompatible?(species,move,$Trainer.party[i])
       # Checked data from PBS/tm.txt
       ret[i]=_INTL("ABLE")
     else

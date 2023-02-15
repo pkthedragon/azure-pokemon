@@ -274,14 +274,16 @@ LINSEY=277
 VERARITTE=278
 VINCENT=279
 KAINE=280
+JOLLY=281
+NODE=282
 
 def self.getName(id)
 return pbGetMessage(MessageTypes::TrainerTypes,id)
 end
 def self.getCount
-return 275
+return 277
 end
 def self.maxValue
-return 280
+return 282
 end
 end

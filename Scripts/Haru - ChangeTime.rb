@@ -14,6 +14,7 @@ class Scene_Pokegear
     @cmdChangeTime=-1
     @cmdMap=-1
     @cmdTutor=-1
+    @cmdMagnet=-1
     @cmdPhone=-1
     @cmdJukebox=-1
     @cmdOnline=-1    
@@ -35,6 +36,7 @@ class Scene_Pokegear
       commands[@cmdNotes=commands.length]=_INTL("Field Notes")
     end
     commands[@cmdTutor=commands.length]=_INTL("Tutor.net") if $game_switches[1492]=true
+    commands[@cmdMagnet=commands.length]=_INTL("PokeMagnet") if $game_switches[1437]==true
     @viewport=Viewport.new(0,0,Graphics.width,Graphics.height)
     @viewport.z=99999
     @button=AnimatedBitmap.new("Graphics/Pictures/Pokegear/pokegearButton")
@@ -161,6 +163,27 @@ class Scene_Pokegear
       if @cmdRiftNotes>=0 && @sprites["command_window"].index==@cmdRiftNotes
         pbPlayDecisionSE()
         $scene = Scene_RiftNotes.new
+      end
+      
+      if @cmdMagnet>=0 && @sprites["command_window"].index==@cmdMagnet
+        if $game_variables[687]<2
+          $game_variables[687]+=1
+        else
+          $game_variables[687]=0
+        end
+        if $game_variables[687]==0
+          $game_switches[74]=false
+          $game_switches[75]=false
+          Kernel.pbMessage(_INTL("Now in neutral mode."))
+        elsif $game_variables[687]==1
+          $game_switches[74]=true
+          $game_switches[75]=false
+          Kernel.pbMessage(_INTL("Now in attract mode."))
+        elsif $game_variables[687]==2
+          $game_switches[74]=false
+          $game_switches[75]=true
+          Kernel.pbMessage(_INTL("Now in repel mode."))
+        end
       end
 
   if @cmdTutor>=0 && @sprites["command_window"].index==@cmdTutor

@@ -1767,6 +1767,33 @@ MultipleForms.register(:TANGROWTH,{
     }
   })
   
+MultipleForms.register(:MISMAGIUS,{
+    "ability"=>proc{|pokemon|
+      next if pokemon.form==0 # Normal
+      if ((pokemon.abilityIndex==1 || (pokemon.abilityflag && pokemon.abilityflag==1)) || (pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)) || (pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0))) # Heroic
+        next getID(PBAbilities,:ILLUSORYSHROUD) 
+      end
+    },
+    "getForm"=>proc{|pokemon|
+      next 1  if isConst?(pokemon.item,PBItems,:MISTRIBUTE)
+      next 0
+    },
+    "onSetForm"=>proc{|pokemon,form|
+      pbSeenForm(pokemon)
+      moves=[
+        :POLYMORPHIZE
+      ]
+      moves.each{|move|
+        pbDeleteMoveByID(pokemon,getID(PBMoves,move))
+      }
+      if form>0
+        pokemon.pbLearnMove(moves[form-1])
+      end
+      if pokemon.moves.find_all{|i| i.id!=0}.length==0
+        pokemon.pbLearnMove(:HEX)
+      end
+    }
+  })
 ### Regional Variants ###
 MultipleForms.register(:RATTATA,{
     "dexEntry"=>proc{|pokemon|
@@ -5544,6 +5571,56 @@ MultipleForms.register(:LARVITAR,{
 }
 })
 
+MultipleForms.register(:LUCARIO,{
+"type1"=>proc{|pokemon|
+   next if pokemon.form==0      # Normal
+   next getID(PBTypes,:GROUND)    # Mystic
+},
+"type2"=>proc{|pokemon|
+   next if pokemon.form==0      # Normal
+   next getID(PBTypes,:FAIRY)    # Mystic
+},
+"getBaseStats"=>proc{|pokemon|
+   next if pokemon.form==0      # Normal
+   next [115,90,70,70,110,70]   # Mystic
+},
+"getMoveList"=>proc{|pokemon|
+   next if pokemon.form==0      # Normal
+   movelist=[]
+   case pokemon.form            # Mystic
+     when 1 ; movelist=[[1,:BITE],[1,:LEER],[5,:WITHDRAW],[10,:SCREECH],
+                        [14,:FURYATTACK],[19,:BUGBITE],[23,:SCARYFACE],
+                        [28,:CHIPAWAY],[32,:LUNGE],[37,:PAYBACK],[41,:CRUNCH],
+                        [46,:CLOSECOMBAT],[50,:MEGAHORN],[55,:GIGAIMPACT]]
+   end
+   for i in movelist
+     i[1]=getConst(PBMoves,i[1])
+   end
+   next movelist
+},
+"ability"=>proc{|pokemon|
+   next if pokemon.form==0 # Normal
+   if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0) # Mystic
+     next getID(PBAbilities,:REGENERATOR)
+   elsif pokemon.abilityIndex==1 || (pokemon.abilityflag && pokemon.abilityflag==1) # Mystic
+     next getID(PBAbilities,:REGENERATOR)
+   elsif pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)
+     next getID(PBAbilities,:STEELWORKER)       
+   end
+},
+"getFormOnCreation"=>proc{|pokemon|
+   maps=[]   # Map IDs for second form
+   if $game_map && maps.include?($game_map.map_id)
+     next 1
+   else
+     next 0
+   end
+},
+"onSetForm"=>proc{|pokemon,form|
+   pbSeenForm(pokemon)
+}
+})
+
 ## End of Regional Variants ##
 
 #### KUROTSUNE - 001 - START
@@ -6418,26 +6495,26 @@ MultipleForms.register(:GARCHOMP,{
 
 MultipleForms.register(:LUCARIO,{
     "getMegaForm"=>proc{|pokemon|
-      next 1 if (isConst?(pokemon.item,PBItems,:LUCARIONITE) || pokemon.isPreMega?)
+      next 2 if (isConst?(pokemon.item,PBItems,:LUCARIONITE) || pokemon.isPreMega?)
       next
     },
     "getUnmegaForm"=>proc{|pokemon|
       next 0
     },
     "getMegaName"=>proc{|pokemon|
-      next _INTL("Mega Lucario") if pokemon.form==1
+      next _INTL("Mega Lucario") if pokemon.form==2
       next
     },
     "getBaseStats"=>proc{|pokemon|
-      next [70,145,88,112,140,70] if pokemon.form==1
+      next [70,145,88,112,140,70] if pokemon.form==2
       next
     },
     "ability"=>proc{|pokemon|
-      next getID(PBAbilities,:ADAPTABILITY) if pokemon.form==1
+      next getID(PBAbilities,:ADAPTABILITY) if pokemon.form==2
       next
     },
     "weight"=>proc{|pokemon|
-      next 575 if pokemon.form==1
+      next 575 if pokemon.form==2
       next
     },
     "onSetForm"=>proc{|pokemon,form|

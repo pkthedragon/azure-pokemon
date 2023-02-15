@@ -1832,6 +1832,7 @@ Events.onStepTakenFieldMovement+=proc{|sender,e|
 }
 
 def pbBattleOnStepTaken(repel=false)
+  return if $game_switches[75]
   return if $Trainer.ablePokemonCount==0
   encounterType = $PokemonEncounters.pbEncounterType
   return if encounterType<0

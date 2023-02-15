@@ -275,6 +275,26 @@ class PokemonEncounters
       end
     end
 # end of update
+# pkedit
+  #####MODDED
+  aArr = []
+  if !$Trainer.party[0].egg? #Should also check for $Trainer.party[0].hp > 0 by logic, but then it wouldn't be in line with the other overworld party leader checks
+    if $game_switches[74]
+      for i in 0...chances.length
+        aEnc = @enctypes[enctype][i]        
+        if !(aEnc == nil)
+          if !$Trainer.owned[aEnc[0]]
+            aArr.push(i)
+          end
+        end
+      end
+    end
+  end  
+  if aArr.length > 0
+    chosenpkmn = aArr[rand(aArr.length)]
+    encounter = @enctypes[enctype][chosenpkmn]
+  else
+    #####/MODDED
     chancetotal=0
     chances.each {|a| chancetotal+=a}
     rnd=0
@@ -292,7 +312,8 @@ class PokemonEncounters
       end
     end
     encounter=@enctypes[enctype][chosenpkmn]
-    return nil if !encounter
+  end #####MODDED
+  return nil if !encounter
 # UPDATE 11/19/2013
 # pressure, hustle and vital spirit will now have a 150% chance of
 # finding higher leveled pokemon in encounters

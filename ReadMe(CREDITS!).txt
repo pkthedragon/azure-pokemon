@@ -1,132 +1,108 @@
-Pokemon Rejuvenation v13
-
-Mysticalmew24
-
 #########CREDITS##############
 
 If your name is missing, PLEASE contact me and I will update this list immediately.
 
-Twitter/Reborn Forums:
-Janichroma
-Email:
-Janichroma@gmail.com
+--------Developers--------
+Lead Developer: pkchu, darius, vincenzonova
+Artists: Ace, cheselth, anting, Avislone, Techno, ali760, BootyXXL, misenrol, Candii
+Composers: daforlynx, Lyn
+Writers: treeckoz, Fe = Iron
+Mappers: Citrus, Vird3n, Cervys
+Balancing: Alexandra, GAlexander, Avery
+Wiki: TechSkylander, Lexa
 
---------Main Development-------------
-Janichroma
---------Sprites----------------------
-Janichroma
-Kyledove(Deviantart)
-ligtherzein
-Amethyst(Inspiration&Tutorials/Overworld Sprites/BattlerSprites)
-Zumi (Honnojis)
-Zerudez (Deviantart)
-Lemon
-princess-phoenix
-Kidkatt
-SacredDragonair
---------Generation 8 Addition--------
-ActionReplayer
-Pokemon Trainer Jackey
-http://www.pokecommunity.com/showthread.php?t=314567
-	Noscium
-	Quanyails
-	Zermonious
-	GeoIsEvil
-	Kyle Dove
-	dDialgaDiamondb
-	N-kin
-	Misterreno
-	Kevfin
-	Xtreme1992
-	Vale98PM
-	Branflakes325
-	Dreadwing93
-	Amethyst
-	Jan
-	Zumi
-	Bazaro
-	Koyo
-	Smeargletail
-	Noscium
-	Lepagon
-	N-kin
-	fishbowlsoul90
-	princess-phoenix
-	SageDeoxys
-	Kyle-Dove
-	DatLopunnyTho
-	Conyjams 
-	kaji atsu 
-	The cynical poet
-	LuigiPlayer
-	Falgaia of the Smogon S/M sprite project
-	Pikafan2000
-	Lord-Myre
-	Lepargon
-	Amethyst
-	conyjams
-	KingOfThe-X-Roads
-	Crocovyle
-	Cynda
-	InvoluntaryTwitch
-	zlolxd
-	mjco
-	G.E.Z.
---Mega Sprites: 
-Julian
-Amethyst
-Gardrow
-FlameJow
-The Cynical Poet
-Minhnerd
-Branflakes325
---------Music------------------------
-GlitchXCity
-NickOleksiak
-Solkrieg
-The Ophidians
-xxxshadowgiratinaxxx
-TheGuitahHeroe
-Pianoman91894
-LightUmbreon
-KunningFox
-Zumi
-Anthos
-Glaf Glorf
-Kamex
-vanilluxePavilion
-insanetherainmusic
---------Pokémon Essentials-----------
-Poccil
-Flameguru
-Maruno
-FL.
-P-Sign
--------Animations--------------------
-Reborn Animation Team: 
-Smeargletail
-Robin
-Amethyst
-Mde
-Cass
-Vulpes
---------Scripting--------------------
-Janichroma
-Maruno(Pkmn Essentials)
-Amethyst(PBS files/Field Effect concept)
-Kurotsune(Backup save system)
-Sardines
-DemICE(In-battle info script)
-Cassie Rose
---------Tutorials--------------------
--FL- (Difficulty Modes, etc)
-HelioAu
-Playerin
-Amethyst
---------Graphics---------------------
+--------Playtesters--------
+
+--------Pokémon--------
+Gamefreak/Nintendo
+The Pokémon Company
+--------Tiles--------
+Amethyst and the Reborn Team
+Janichroma and the Rejuvenation Team
+Juno & Ice and the Floral Tempus Team
+Magiscarf
+KingTapir
+IcyCatElf
+Alucus
+PeekyChew
+Kyle Dove
+Dewitty
+CNC
+Zetavares852
+Lark125
+ThatsSoWitty
+xAlien95
+UltimoSpriter
+Heavy-Metal-Lover
+WesleyFG
+XDinky
+Newtiteuf
+Erma96
+Hydrargirium
+Poison-Master
+Thedeadheroalistair
+Shutwig
+Asdsimone
+Xxdevil
+Steinnaples
+Hek-el-grande
+sylver1984
+NikNak93
+TeaAddiction
+Cuddlesthefatcat
+Gigatom
+The-Red-eX
+ChaoticCherryCake
+rayd12smitty
+GlitchxCity
+Zeak6464
+TapuFini
+SpartaLazor
+leparagon
+Bulbapedia
+Serebii
+M3rein
+BlackOutG5
+Rune
+Rigbycwts
+Rot8ter_ConeX
+James Davy
+Luka-SJ
+THECubberx
+Akizakura16
+Carmaniac
+Jan
+CNickC
+The Musical Ghost
+WolfPP
+mybusiness
+Leparagon
+N-Kin
+Conyjams
+Smogon
+SelenaArmorclaw
+FishbowlSoul90
+Princess-Pheonix
+Drawn-Mario
+WilsonScarloxy
+LaPampa-Fr
+Zeo254
+Mewmore
+Kalalokki
+RadicalCharizard
+NoelleMBrooks
+Anarlaurendil
+Kingofthe-x-roads
+Smogon
+Smash 27
+--------Graphics--------
+Pokemon Desolation Team
 Janichroma
 Maruno&Pkmn Essentials Team
 Amethyst
+Juno& Ice
+No.XII
+Senpai Diego
 Alistair
 Clara-WaH
 Pyrolusite
@@ -135,7 +111,18 @@ Ekat
 SacredDragonair
 ChaoticCherryCake
 PrincessPhoenix
--------Shiny Sprites-----------------
+Sorrow-Divine (https://twitter.com/sorrowdivine)
+AerunFE (https://twitter.com/aerunfe)
+hut (https://twitter.com/huttaburger)
+-------Animations--------
+Reborn Animation Team:
+Smeargletail
+Robin
+Amethyst
+Mde
+Cass
+Vulpes
+-------Shiny Sprites-------
 Alex
 Bluedodobob
 Dypatome
@@ -176,190 +163,101 @@ luis
 Sceptilespy
 Candy
 MOLVEGQ
-
-
-##################################
-###########Patrons################
-##################################
-Arthesia
-CameronMcevoy
-Jordan Lech
-Robert Killeen
-Ramona Anderson
-Noowbie Z Gaming
-Steven Musso
-Victor Rodriguez
-Kumail Sharifi
-Rue English
-NPI
-MinecraftMew Minecraft & More
-Arion Rudari
-Max
-Timothy Schmitt
-Darius Smith
-Burton J George
-Sierra Cook
-LLudovica Guardi
-Elizabeth Brickner
-win
-Anthrax.EXE
-SaraElizabeth-J
-Matthew Caspary
-ThatGuyHanzo
-William Minnikin
-Jeanot Reinders
-Matthew
-PaulMSZ-006
-Pigerts
-Tom Hobbs
-Bradley Hunt
-Gham
-Kostas
-Aio
-Ant Hax
-Thomas
-Melons
-Lindbergh
-Azeria B
-Ismael Montero Iáñez
-Adrein Lange
-Samin Thanic Nur
-vi meridian
-Vina 
-ShadowBolt 62
-LeoYT
-Kyublivion
-Hachilio Murray
-Hexagon
-Silver Shadows
-Fawn
-Daniel Scanlan
-Fry321
-Andrew
-Tobias Dahl Kristensen
-Shadow_Shali_Lions
-Mars
-Xin Yang
-Bill Gall
-Will
-Epharam
-SkyKamui
-Rokusho
-TheAimanac
-Izetarion
-Merry Feng
-CeriseBlossome
-George Hanna
-VixenZ
-Simon Wu
-Silky
-Justins Holderness
-Zan
-SimonsZombie
-Seyon Rodé
-Will Drake
-KORMA
-Anime 901
-Max Fleming
-pHr3nzee
-Adam A
-Trung
-Profrobot
-Jay deJesu
-T'varus Hardy
-Abyssreaper99
-o0kmac0o
-Newt
-Anstane
-Punch-Trikephalo
-MangaKamen
-Name Lastname
-Odd Arne Thoreson
-Jake Atkinson
-Antarte
-Bassem
-Joy
-Maruku
-Alva Akasha
-Mattception
-Toothpastefairy
-Joao Pedro
-Gianni
-Vassilios Karagiannis
-Sunny
-Why
-Ramiru
-Ed
-Ducks
-Kelly Nelson
-Kenton Morgan
-Halcy Grand
-Sora Bell
-Clayton Haefs
-Hybridizater
-Zayele Nadira
-Janelle Freeman
-BumJoon Cho
-EternalLight95
-Ermast
-Advesha
-Jake Taylor
-ThatQuietGuy
-Kyle
-Stephen Lerminiaux
-Azzie
-Debkrat
-Fernando Winegar
-Lone
-Alex Caravella
-Grovyle The Best
-BlazingAngel123
-Kin9ofparadise
-Shadowgraph
-Heather
-Amro Albahrawy
-Nicky
-Ama
-Jordan Davis
-Tahar
-Kevin O'Keeffe
-Marsh
-Enkhidu
-Datz Boss
-ThunderInuki (Robin)
-Yumi
-LightningGear
-Christoph Plakolm
-ZotBuster
-C.Ryan Smith
-LilyAwaka
-RobS
-Cassie Rose
-Izzy
-Bliggleblurb
-Crimson
-Rafaela Albernaz
-Rainstrider
-KittyKatzVillage
-Iosgino
-Rik
-Azery
-Mester
-Addie Mori
-Tristan Walton
-Brian Crocetti
-Syglory
-Jean-François Piron
-Kyuuki
-David Kalezis
-Trevor Mayfield
-Amethyst Liddell
-Jake Ryan Annis
-Leone
-Nadrel Andrimor
-Winter Erikson
-Christian Horton
+--------Maps--------
+Juno & Ice and the Floral Tempus Team (Meadow Temple)
+--------Music--------
+GlitchXCity
+NickOleksiak
+Solkrieg
+The Ophidians
+xxxshadowgiratinaxxx
+TheGuitahHeroe
+Pianoman91894
+LightUmbreon
+KunningFox
 Zumi
-
-
-
+Anthos
+Glaf Glorf
+Kamex
+vanilluxePavilion
+insanetherainmusic
+--------Scripting--------
+Janichroma
+Maruno(Pkmn Essentials)
+Amethyst(PBS files/Field Effect concept)
+Kurotsune(Backup save system)
+Sardines
+DemICE(In-battle info script)
+Cassie Rose
+Reborn Devolved League (Field Effects)
+--------Generation 8 Addition--------
+ActionReplayer
+Pokemon Trainer Jackey
+www.pokecommunity.com
+Project: Generation 6 for Pokémon Essentials (Pokémon sprites and PBS files)
+See the discussion at PokéCommunity!
+www.pokecommunity.com
+Noscium
+Quanyails
+Zermonious
+GeoIsEvil
+Kyle Dove
+dDialgaDiamondb
+N-kin
+Misterreno
+Kevfin
+Xtreme1992
+Vale98PM
+Branflakes325
+Dreadwing93
+Amethyst
+Jan
+Zumi
+Bazaro
+Koyo
+Smeargletail
+Noscium
+Lepagon
+N-kin
+fishbowlsoul90
+princess-phoenix
+SageDeoxys
+Kyle-Dove
+DatLopunnyTho
+Conyjams
+kaji atsu
+The cynical poet
+LuigiPlayer
+Falgaia of the Smogon S/M sprite project
+Pikafan2000
+Lord-Myre
+Lepargon
+Amethyst
+conyjams
+KingOfThe-X-Roads
+Crocovyle
+Cynda
+InvoluntaryTwitch
+zlolxd
+mjco
+G.E.Z.
+--Mega Sprites:
+Julian
+Amethyst
+Gardrow
+FlameJow
+The Cynical Poet
+Minhnerd
+Branflakes325
+--------Tutorials------
+Thundaga
+-FL-
+HelioAu
+Playerin
+Amethyst
+--------Pokémon Essentials-----------
+Poccil
+Flameguru
+Maruno
+FL.
+P-Sign

@@ -11,15 +11,15 @@ def gameCornerShop(index)
   # List of prizes in internal name
   prizes = [
     [],
-    [:SEEL,:SPOINK,:MARACTUS,:HELIOPTILE,0],
-    [:ADAMANTMINT,:JOLLYMINT,:BRAVEMINT,:MODESTMINT,:TIMIDMINT,:QUIETMINT,:CALMMINT,:BOLDMINT,:NAUGHTYMINT,:RASHMINT,:LONELYMINT,:MILDMINT,:HPUP,:PPUP,:PROTEIN,:IRON,:CALCIUM,:ZINC,:CARBOS,:EXPCANDYM,:ABILITYCAPSULE],
+    [:SLUGMA,:SPOINK,:MARACTUS,:HELIOPTILE,0],
+    [:GOURMETTREAT,:ADAMANTMINT,:JOLLYMINT,:BRAVEMINT,:MODESTMINT,:TIMIDMINT,:QUIETMINT,:CALMMINT,:BOLDMINT,:NAUGHTYMINT,:RASHMINT,:LONELYMINT,:MILDMINT,:HPUP,:PPUP,:PROTEIN,:IRON,:CALCIUM,:ZINC,:CARBOS,:EXPCANDYM,:ABILITYCAPSULE],
     [:ARON,:DURANT,:MIENFOO,:RUFFLET,:AXEW,0]
   ]
   # List of prices
   prices = [
     [],
-    [1000,4000,5000,6500,0],
-    [3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,6,6],
+    [15,20,30,40,0],
+    [3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,6,6],
     [5000,13500,15000,20000,30000,0]
   ]  
   # Only sell key items not already obtained
@@ -92,7 +92,7 @@ def gameCornerShop(index)
   text_1 = "\\CN"
   text_2 = "\\CN"
   text_3 = "\\CN"
-  if index==2
+  if index==2 || index==1
     text   = "\\AP"
     text_0 = "\\AP"
     text_1 = "\\AP"
@@ -117,7 +117,7 @@ def gameCornerShop(index)
       prizename = PBItems.getName(itemid)
       price = prices[index][i]
     end
-    if index==2
+    if index==2 || index==1
       text_0 += "#{prizename} - #{price} AP,"
     else
       text_0 += "#{prizename} - #{price} coins,"
@@ -151,7 +151,7 @@ def gameCornerShop(index)
       # Calculate price in coins
       price = prices[index][choice]
 
-      if index==2
+      if index==2 || index == 1
         # Not enough AP
         if price > $game_variables[526]
           text_2 += "#{strings[5]}"
@@ -162,9 +162,23 @@ def gameCornerShop(index)
           Kernel.pbMessage(_INTL("{1}",text_3))
         # Pay for prize (in AP)
         else
-          $game_variables[526]-=price
+        $game_variables[526]-=price
+    if index == 1
+    p = PokeBattle_Pokemon.new(itemid,10,$Trainer)
+            if itemid == 218
+              p.pbLearnMove(:STOCKPILE)
+            elsif itemid == 325
+              p.pbLearnMove(:FUTURESIGHT)
+            elsif itemid == 556
+              p.pbLearnMove(:SPIKES)
+            elsif itemid == 694
+              p.pbLearnMove(:GLARE)
+    end
+            Kernel.pbAddPokemon(p)
+        else
           Kernel.pbReceiveItem(itemid)
         end
+       end
       else
         # Not enough coins
         if price > $PokemonGlobal.coins

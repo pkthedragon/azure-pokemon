@@ -603,19 +603,6 @@ class PokeBattle_Move
         return 0
       end
     end
-    if $fefieldeffect == 12 && @battle.pbWeather==PBWeather::SUNNYDAY && !opponent.hasWorkingItem(:UTILITYUMBRELLA) &&
-     (opponent.pbHasType?(:WATER) || opponent.pbHasType?(:GRASS)) && isConst?(type,PBTypes,:WATER)
-      if opponent.effects[PBEffects::HealBlock]==0
-        if opponent.pbRecoverHP((opponent.totalhp/4).floor,true)>0
-          @battle.pbDisplay(_INTL("{1} instead restored {2}'s HP!",
-          @name,opponent.pbThis))
-        else
-          @battle.pbDisplay(_INTL("{1} was made useless!",
-          @name))
-        end
-        return 0
-      end
-    end
     if isConst?(opponent.ability,PBAbilities,:BULLETPROOF) && !(opponent.moldbroken)
       if (id == PBMoves::ACIDSPRAY || id == PBMoves::AURASPHERE ||
        id == PBMoves::BARRAGE || id == PBMoves::BULLETSEED ||
@@ -634,9 +621,11 @@ class PokeBattle_Move
       end
     end
     if isConst?(opponent.ability,PBAbilities,:ILLUSORYSHROUD) && !(opponent.moldbroken) && isContactMove?
-        @battle.pbDisplay(_INTL("{1}'s {2} blocked the attack!",
-        opponent.pbThis,PBAbilities.getName(opponent.ability),self.name))
-      return 0
+        @battle.pbDisplay(_INTL("{1}'s {2} blocked the attack!",opponent.pbThis,PBAbilities.getName(opponent.ability),self.name))
+        if opponent.pbReduceHP((opponent.totalhp/6).floor,true)>0
+          @battle.pbDisplay(_INTL("{1}'s {2} sapped its HP!",opponent.pbThis,PBAbilities.getName(opponent.ability)))
+        end
+        return 0
     end
     if $fefieldeffect == 14 && (opponent.effects[PBEffects::Substitute]>0 ||
      opponent.stages[PBStats::EVASION] > 0)

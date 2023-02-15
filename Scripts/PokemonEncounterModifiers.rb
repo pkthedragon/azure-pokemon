@@ -51,7 +51,7 @@ Events.onTrainerPartyLoad+=proc {|sender,e|
         i.hp=1
       end
     end
-    if trainer.trainertype==PBTrainers::MYRON && trainer.name=="Myron"
+    if trainer.trainertype==PBTrainers::MYRON2 && trainer.name=="Myron"
       for i in party
         if (i.species==PBSpecies::MISMAGIUS)
           case $game_variables[200]
@@ -278,5 +278,12 @@ Events.onWildPokemonCreate+=proc {|sender,e|
       pokemon.pbLearnMove(:CONFUSION)
     when 42 # Nidoran Female
       pokemon.pbLearnMove(:SUPERSONIC)
+    when 43 # Stantler
+      pokemon.pbLearnMove(:ZENHEADBUTT)
+    when 44 # Farfetch'd
+      pokemon.form=1
+      pokemon.resetMoves
+      pokemon.calcStats
+      pokemon.pbLearnMove(:BRICKBREAK)
     end
 }

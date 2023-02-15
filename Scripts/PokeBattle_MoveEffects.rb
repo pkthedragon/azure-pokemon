@@ -12532,9 +12532,48 @@ class PokeBattle_Move_218 < PokeBattle_Move
              opponent.stages[i]=0; reducedstats=true
          end
       end
-      if reducedstats=true
+      if reducedstats==true
          return basedmg*2
-     end
+      end
       return basedmg
+  end
+end
+
+################################################################################
+# Turns the target into a pig!
+################################################################################
+class PokeBattle_Move_217 < PokeBattle_Move
+  def pbAdditionalEffect(attacker,opponent)
+    if @battle.bossfight && opponent.isBoss
+      @battle.pbDisplay(_INTL("The opponent's aura suppressed the move!"))
+      return false
+    end
+    if isConst?(opponent.ability,PBAbilities,:MULTITYPE) ||
+       isConst?(opponent.ability,PBAbilities,:CUTECHARM) ||
+       isConst?(opponent.ability,PBAbilities,:TRUANT) ||
+       isConst?(opponent.ability,PBAbilities,:COMATOSE) ||
+       isConst?(opponent.ability,PBAbilities,:SCHOOLING) ||
+       isConst?(opponent.ability,PBAbilities,:RKSSYSTEM)
+      @battle.pbDisplay(_INTL("But it failed!"))
+      return false
+    end
+    opponent.ability=getConst(PBAbilities,:CUTECHARM) || 0
+    abilityname=PBAbilities.getName(getConst(PBAbilities,:CUTECHARM))
+    @battle.pbDisplay(_INTL("{1} acquired {2}!",opponent.pbThis,abilityname))
+    opponent.type1=getConst(PBTypes,:GRASS)
+    opponent.type2=getConst(PBTypes,:GRASS)
+    typename=PBTypes.getName(getConst(PBTypes,:GRASS))
+    @battle.pbDisplay(_INTL("{1} transformed into the {2} type!",opponent.pbThis,typename))
+    #### JERICHO - 001 - START
+    if opponent.effects[PBEffects::Illusion]!=nil #ILLUSION
+      # Animation should go here
+      # Break the illusion
+      opponent.effects[PBEffects::Illusion]=nil
+      @battle.scene.pbChangePokemon(opponent,opponent.pokemon)
+      @battle.pbDisplay(_INTL("{1}'s {2} was broken!",opponent.pbThis,
+      PBAbilities.getName(opponent.ability)))
+    end #ILLUSION
+    #### JERICHO - 001 - END        
+    return true
   end
 end

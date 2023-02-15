@@ -467,3 +467,15 @@ Outdoor=false
 ShowArea=false
 MapPosition=0,6,16
 BattleBack=Haunted3
+[130]
+# Spooky Temple
+Outdoor=false
+ShowArea=true
+MapPosition=0,6,16
+BattleBack=DarkCrystalCavern
+[113]
+# Spooky Temple
+Outdoor=false
+ShowArea=false
+MapPosition=0,6,16
+BattleBack=DarkCrystalCavern

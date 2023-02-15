@@ -550,7 +550,7 @@ end
       end
       if learned
         trutharray.push(2) #learned
-      elsif i.isEgg? || (i.isShadow? rescue false) || !pbSpeciesCompatible?(i.species,move,i)
+      elsif i.isEgg? || (i.isShadow? rescue false) || !i.isCompatibleWithMove?(move)
         trutharray.push(0) #unable
       else 
         trutharray.push(1) #able
