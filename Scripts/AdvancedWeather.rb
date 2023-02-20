@@ -87,7 +87,7 @@
   WEATHER_TYPE_VARIABLE  = 491 
   # ID of game variable. Will be equal to the "type" of weather.
   
-  ADVERSE_WEATHER_SWITCH = 1298
+  ADVERSE_WEATHER_SWITCH = 2099
   # ID of the game switch. Will be true during bad weather. (see below) 
   
   ADVERSE_WEATHER = [1, 2, 4, 5, 9, 16]

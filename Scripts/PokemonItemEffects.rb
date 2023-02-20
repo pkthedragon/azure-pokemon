@@ -2851,38 +2851,54 @@ ItemHandlers::UseOnPokemon.add(:ABILITYCAPSULE,proc{|item,pokemon,scene|
     scene.pbDisplay(_INTL("It won't have any effect."))
     next false
   end
-  
-#### KUROTSUNE - 030 - START  
-  if abillist[0][0]     == abillist[0][1] && 
-    (tempabil           == 0              || 
-     tempabil           == 1)             && 
-     abillist[0].length == 3
-    pokemon.setAbility(2)
-
-  elsif abillist[0].length == 2
-    case tempabil
-      when 0
-        pokemon.setAbility(1)
-      when 1
-        pokemon.setAbility(0)
-      when 2
-        pokemon.setAbility(0)
-        newabilid     = pokemon.ability
-        if newabilid == abilid
-          pokemon.setAbility(1)
-        end
-    end
-
-  elsif abillist[0].length == 3
-    case tempabil
-      when 0
-        pokemon.setAbility(1)
-      when 1
-        pokemon.setAbility(2)
-      when 2
-        pokemon.setAbility(0)
-    end
+  commands=[]
+  for i in 0...abillist[0].length
+    commands.push((abillist[1][i]<2 ? "" : "(H) ")+PBAbilities.getName(abillist[0][i]))
   end
+  height=3
+  msg=[_INTL("Which ability would you like to change to?")][height]
+  cmd=Kernel.pbShowCommands(msg,commands,tempabil)
+  # Break
+  if cmd==-1
+    break
+  # Set ability override
+  elsif cmd>=0 && cmd<abillist[0].length
+    pokemon.setAbility(abillist[1][cmd])
+  # Remove override
+  elsif cmd==abillist[0].length
+    pokemon.abilityflag=nil
+  end
+# #### KUROTSUNE - 030 - START  
+#   if abillist[0][0]     == abillist[0][1] && 
+#     (tempabil           == 0              || 
+#      tempabil           == 1)             && 
+#      abillist[0].length == 3
+#     pokemon.setAbility(2)
+
+#   elsif abillist[0].length == 2
+#     case tempabil
+#       when 0
+#         pokemon.setAbility(1)
+#       when 1
+#         pokemon.setAbility(0)
+#       when 2
+#         pokemon.setAbility(0)
+#         newabilid     = pokemon.ability
+#         if newabilid == abilid
+#           pokemon.setAbility(1)
+#         end
+#     end
+
+#   elsif abillist[0].length == 3
+#     case tempabil
+#       when 0
+#         pokemon.setAbility(1)
+#       when 1
+#         pokemon.setAbility(2)
+#       when 2
+#         pokemon.setAbility(0)
+#     end
+#   end
 #### KUROTSUNE - 030 - END
   scene.pbDisplay(_INTL("{1}'s ability was shuffled to {2}!",pokemon.name,PBAbilities.getName(pokemon.ability)))
   next true

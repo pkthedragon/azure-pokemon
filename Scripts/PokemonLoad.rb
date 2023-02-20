@@ -635,17 +635,23 @@ class PokemonLoad
             end
             $game_switches[2001]=true
           end
-#          if !$game_switches[9999]
-#            for i in $Trainer.party
-#             i.ev[0]=0
-#             i.ev[1]=0
-#             i.ev[2]=0
-#             i.ev[3]=0
-#             i.ev[4]=0
-#             i.ev[5]=0
-#            end
-#            $game_switches[9999]=true
-#          end
+          if !$game_switches[2098]
+            for i in $Trainer.party
+             i.ev[0]=0
+             i.ev[1]=0
+             i.ev[2]=0
+             i.ev[3]=0
+             i.ev[4]=0
+             i.ev[5]=0
+            end
+            $game_switches[2098]=true
+          end
+          if !$game_switches[1701] && $game_variables[661]>9
+    		$game_switches[1701]=true
+          end
+          if $game_switches[1495]
+    		$game_switches[1495]==false
+          end
           magicNumberMatches=false
           if $data_system.respond_to?("magic_number")
             magicNumberMatches=($game_system.magic_number==$data_system.magic_number)

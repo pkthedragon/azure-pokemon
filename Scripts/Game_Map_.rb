@@ -110,7 +110,7 @@ class Game_Map
             FileTest.audio_exist?("Audio/BGM/"+ @map.bgm.name+ "n")
         pbCueBGM(@map.bgm.name+"n",1.0,@map.bgm.volume,@map.bgm.pitch)
       else
-        pbCueBGM(@map.bgm,1.0) if $game_switches[1404] != true #don't stop the music switch
+        pbCueBGM(@map.bgm,1.0) if $game_switches[2100] != true #don't stop the music switch
       end
     end
     if @map.autoplay_bgs
@@ -128,7 +128,7 @@ class Game_Map
             FileTest.audio_exist?("Audio/BGM/"+ @map.bgm.name+ "n")
         pbBGMPlay(@map.bgm.name+"n",@map.bgm.volume,@map.bgm.pitch,stored_position)
       else
-        pbBGMPlay(@map.bgm.name,@map.bgm.volume,@map.bgm.pitch,stored_position) if $game_switches[1404] != true #don't stop the music switch
+        pbBGMPlay(@map.bgm.name,@map.bgm.volume,@map.bgm.pitch,stored_position) if $game_switches[2100] != true #don't stop the music switch
       end
     end
     if @map.autoplay_bgs

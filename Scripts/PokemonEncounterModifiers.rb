@@ -227,8 +227,9 @@ Events.onWildPokemonCreate+=proc {|sender,e|
       pokemon.pbLearnMove(:WEATHERBALL)
     when 15 # Whismur
       pokemon.pbLearnMove(:EXTRASENSORY)
-    when 16 # Turtwig
-      pokemon.pbLearnMove(:HEAVYSLAM)
+    when 16 # Chikorita
+      pokemon.pbLearnMove(:LEECHSEED)
+      pokemon.pbLearnMove(:NATUREPOWER)
     when 16 # Turtwig
       pokemon.pbLearnMove(:WIDEGUARD)
     when 17 # Castform
@@ -285,5 +286,16 @@ Events.onWildPokemonCreate+=proc {|sender,e|
       pokemon.resetMoves
       pokemon.calcStats
       pokemon.pbLearnMove(:BRICKBREAK)
+    when 46 # Tauros No Catch
+      pokemon.pbLearnMove(:THRASH)  
+      pokemon.pbLearnMove(:PAYBACK)
+      pokemon.pbLearnMove(:ZENHEADBUTT)
+      pokemon.pbLearnMove(:GIGAIMPACT)
+    when 47 # Corsola
+      pokemon.pbLearnMove(:MIST)
+    when 48 # Mystic Skorupi
+      pokemon.form=1
+      pokemon.resetMoves
+      pokemon.calcStats	
     end
 }

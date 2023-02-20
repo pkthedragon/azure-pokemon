@@ -1631,6 +1631,59 @@ def pbSpeciesCompatible?(species,move,pokemon)
           return false
         end
       end
+    when 451 # Skorupi
+      if pokemon.form==0
+        if (move == PBMoves::WORKUP) || (move == PBMoves::DRAGONCLAW) ||
+          (move == PBMoves::BULKUP) || (move == PBMoves::SMACKDOWN) ||
+          (move == PBMoves::LOWSWEEP) || (move == PBMoves::QUASH) ||
+          (move == PBMoves::EMBARGO) || (move == PBMoves::SHADOWCLAW) ||
+          (move == PBMoves::STONEEDGE) || (move == PBMoves::DRAGONTAIL) ||
+          (move == PBMoves::POWERUPPUNCH) || (move == PBMoves::ROCKCLIMB) ||
+          (move == PBMoves::RAZORSHELL) || (move == PBMoves::BREAKINGSWIPE) ||
+          (move == PBMoves::SUCKERPUNCH) || (move == PBMoves::CONDESCEND)          
+          return false
+        end
+      elsif pokemon.form==1
+        if (move == PBMoves::TOXIC) || (move == PBMoves::SUNNYDAY) ||  
+          (move == PBMoves::RAINDANCE) ||  (move == PBMoves::SECRETPOWER) ||  
+          (move == PBMoves::SHADOWBALL) ||  (move == PBMoves::DOUBLETEAM) ||
+          (move == PBMoves::AERIALACE) ||  (move == PBMoves::FACADE) ||
+          (move == PBMoves::ATTRACT) ||  (move == PBMoves::ROUND) ||
+          (move == PBMoves::FLING) ||  (move == PBMoves::FLASH) ||
+          (move == PBMoves::STRUGGLEBUG) ||
+          (move == PBMoves::CONFIDE) ||  (move == PBMoves::PINMISSILE) ||
+          (move == PBMoves::SANDTOMB) ||  (move == PBMoves::ROUND)
+          return false
+        end
+      end
+    when 452 # Drapion
+      if pokemon.form==0
+        if (move == PBMoves::SECRETPOWER) || (move == PBMoves::SAFEGUARD) ||  
+          (move == PBMoves::SHADOWBALL) ||  (move == PBMoves::REFLECT) ||  
+          (move == PBMoves::TORMENT) ||  (move == PBMoves::THIEF) ||
+          (move == PBMoves::ECHOEDVOICE) ||  (move == PBMoves::FALSESWIPE) ||
+          (move == PBMoves::WILLOWISP) ||  (move == PBMoves::EMBARGO) ||
+          (move == PBMoves::POISONJAB) ||  (move == PBMoves::DREAMEATER) ||
+          (move == PBMoves::ROCKSMASH) ||  (move == PBMoves::SNARL) ||
+          (move == PBMoves::DARKPULSE) ||  (move == PBMoves::PLAYROUGH) ||
+          (move == PBMoves::LEECHLIFE) ||  (move == PBMoves::HEX) ||
+          (move == PBMoves::SCREECH) ||  (move == PBMoves::SCARYFACE) ||
+          (move == PBMoves::ASSURANCE) ||  (move == PBMoves::PHANTOMFORCE) ||
+          (move == PBMoves::DRAININGKISS) ||  (move == PBMoves::HONECLAWS) ||
+          (move == PBMoves::METRONOME) ||  (move == PBMoves::SUCKERPUNCH) ||
+          (move == PBMoves::RETALIATE)
+          return false
+        end
+      elsif pokemon.form==1
+        if (move == PBMoves::STRENGTH) || (move == PBMoves::EARTHQUAKE) ||  
+          (move == PBMoves::DOUBLETEAM) ||  (move == PBMoves::ROCKTOMB) ||  
+          (move == PBMoves::AERIALACE) ||  (move == PBMoves::FOCUSBLAST) ||
+          (move == PBMoves::FLING) ||  (move == PBMoves::GIGAIMPACT) ||
+          (move == PBMoves::BULLDOZE) ||  (move == PBMoves::ROCKSLIDE) ||
+          (move == PBMoves::CHARM)
+          return false
+        end
+      end
   end    
   data=load_data("Data/tm.dat")
   return false if !data[move]

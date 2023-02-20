@@ -1476,6 +1476,9 @@ class PokeBattle_Battler
     if self.hasWorkingAbility(:FURCOAT)
       defmult=(defmult*2).round
     end
+    if self.hasWorkingAbility(:MAENADSFERVOR) && self.effects[PBEffects::Confusion]>0
+      defmult=(defmult*1.5).round
+    end
     if self.hasWorkingItem(:EVIOLITE)
       evos=pbGetEvolvedFormData(self.species)
       if evos && evos.length>0
@@ -1548,6 +1551,9 @@ class PokeBattle_Battler
         isConst?(self.pbPartner.species,PBSpecies,:CHERRIM)
         defmult=(defmult*1.5).round
       end
+    end
+    if self.hasWorkingAbility(:MAENADSFERVOR) && self.effects[PBEffects::Confusion]>0
+      defmult=(defmult*1.5).round
     end
     if self.hasWorkingItem(:EVIOLITE)
       evos=pbGetEvolvedFormData(self.species)
@@ -1678,12 +1684,6 @@ class PokeBattle_Battler
     if isConst?(@ability, PBAbilities, :UNBURDEN) && @unburdened
       speed=speed*2
     end
-    if self.hasWorkingAbility(:MAENADSFERVOR) && $fefieldeffect == 3
-      speed=speed*2
-    end
-    if self.hasWorkingAbility(:MAENADSFERVOR) && self.effects[PBEffects::Confusion]>0
-      speed=speed*2
-    end
     if self.pbOwnSide.effects[PBEffects::Tailwind]>0
       speed=speed*2
     end
@@ -1725,6 +1725,9 @@ class PokeBattle_Battler
     end
     if self.hasWorkingAbility(:QUICKFEET) && self.status>0
       speed=(speed*1.5).floor
+    end
+    if self.hasWorkingAbility(:MAENADSFERVOR) && self.effects[PBEffects::Confusion]>0
+      speed=(speed*2).floor
     end
     if self.hasWorkingItem(:MACHOBRACE) ||
       self.hasWorkingItem(:POWERWEIGHT) ||

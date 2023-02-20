@@ -1025,7 +1025,7 @@ def pbPrepareBattle(battle)
     battle.weatherduration=-1
   end
   if $game_switches[1493]==false
-    battle.shiftStyle=($PokemonSystem.battlestyle==0) 
+    battle.shiftStyle=($PokemonSystem.battlestyle==1) 
   else
     battle.shiftStyle=false
   end

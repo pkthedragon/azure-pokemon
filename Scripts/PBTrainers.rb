@@ -237,7 +237,7 @@ GHOSTCHILDM=239
 MYRON=240
 MYRON2=241
 POKEMONGANG=242
-CLOUDQUEEN=243
+LISTIS=243
 ALCHEMIST=244
 ULTRARECON=245
 ZOSSIE=246
@@ -276,14 +276,15 @@ VINCENT=279
 KAINE=280
 JOLLY=281
 NODE=282
+XEVON=283
 
 def self.getName(id)
 return pbGetMessage(MessageTypes::TrainerTypes,id)
 end
 def self.getCount
-return 277
+return 278
 end
 def self.maxValue
-return 282
+return 283
 end
 end

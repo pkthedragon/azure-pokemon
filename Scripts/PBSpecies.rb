@@ -905,13 +905,15 @@ ZARUDETEN=903
 ZARUDEELEVEN=904
 ZARUDETWELVE=905
 JESTERIME=906
+VULCLADE=907
+EXCALIBURN=908
 def PBSpecies.getName(id)
 return pbGetMessage(MessageTypes::Species,id)
 end
 def PBSpecies.getCount
-return 906
+return 908
 end
 def PBSpecies.maxValue
-return 906
+return 908
 end
 end

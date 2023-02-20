@@ -606,8 +606,8 @@ def pbTrainerBattle(trainerid,trainername,endspeech,
         end
         PokemonSelection.restore
       else
-        $game_system.bgm_unpause if $game_switches[1404] != true #don't stop the music switch
-        $game_system.bgs_unpause if $game_switches[1404] != true #don't stop the music switch
+        $game_system.bgm_unpause if $game_switches[2100] != true #don't stop the music switch
+        $game_system.bgs_unpause if $game_switches[2100] != true #don't stop the music switch
         #EXTREMELY CLUNKY PICTURE FIX
         $game_screen.pictures[1].erase
         $game_screen.pictures[2].erase

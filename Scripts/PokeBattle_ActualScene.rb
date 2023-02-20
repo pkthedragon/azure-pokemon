@@ -3017,7 +3017,7 @@ class PokeBattle_Scene
     @abortable=false
     pbShowWindow(BLANK)
     # Fade out all sprites
-    pbBGMFade(1.0) if $game_switches[1404] != true #don't stop the music switch
+    pbBGMFade(1.0) if $game_switches[2100] != true #don't stop the music switch
     pbFadeOutAndHide(@sprites)
     pbDisposeSprites
   end
@@ -4287,7 +4287,7 @@ end
 # This method is called when the player wins a Trainer battle.
 # This method can change the battle's music for example.
   def pbTrainerBattleSuccess
-    pbBGMPlay(pbGetTrainerVictoryME(@battle.opponent)) if $game_switches[1404] != true
+    pbBGMPlay(pbGetTrainerVictoryME(@battle.opponent)) if $game_switches[2100] != true
   end
 
   def pbEXPBar(pokemon,battler,startexp,endexp,tempexp1,tempexp2)

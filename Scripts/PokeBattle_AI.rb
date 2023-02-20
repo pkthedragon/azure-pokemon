@@ -308,6 +308,9 @@ class PokeBattle_Battle
          score*=1.5 if (PBStuff::SLEEPMOVE).include?(move.id) || (PBStuff::BURNMOVE).include?(move.id) || 
          (PBStuff::PARAMOVE).include?(move.id) 
       end
+      if prankpri && ((!opponent.abilitynulled && opponent.ability == PBAbilities::DAZZLING) || (!opponent.abilitynulled && opponent.ability == PBAbilities::QUEENLYMAJESTY))
+         score*=0
+      end
       PBDebug.log(sprintf("Priority Check End")) if $INTERNAL && shutup==false
     elsif move.priority<0
       if fastermon
@@ -8646,16 +8649,7 @@ class PokeBattle_Battle
         score*=1.5 if (attacker.pbSpeed<pbRoughStat(opponent,PBStats::SPEED,skill)) ^ (@trickroom!=0)
       end
       score*=0.1 if checkAImoves(PBStuff::PROTECTIGNORINGMOVE,aimem)
-      if !(attacker==@battlers[2])
-        if !(opponent.effects[PBEffects::Attacking]==true)
-          if !(opponent.effects[PBEffects::AttackingTarget].include?(attacker.index))
-            rnd=pbAIRandom(10)
-            if rnd>=6
-              score*=0.01 
-            end
-          end
-        end
-      end
+      #azedit: remove check for PBEffects:Attacking
       if attacker.effects[PBEffects::Wish]>0
         if attacker.hp!=attacker.totalhp
           if checkAIdamage(aimem,attacker,opponent,skill)>attacker.hp
@@ -8745,7 +8739,7 @@ class PokeBattle_Battle
           if (attacker.pbSpeed<pbRoughStat(opponent,PBStats::SPEED,skill)) ^ (@trickroom!=0)
             score*=0.5
           else
-            if rough>opponent.hp && opponent.effects[PBEffects::Attacking]==true
+            if rough>opponent.hp
               score*=1.5
             end
           end
@@ -8799,7 +8793,8 @@ class PokeBattle_Battle
       if attacker.lastMoveUsed>0
         olddata = PBMove.new(attacker.lastMoveUsed)
         oldmove = PokeBattle_Move.pbFromPBMove(self,olddata,attacker)
-        if oldmove.function==0xB1 && opponent.effects[PBEffects::Attacking]==true
+        #azedit: removed checks for attacking/attackingtarget
+        if oldmove.function==0xB1
           score*=0.2
         else
           if attacker.hp==attacker.totalhp
@@ -12080,6 +12075,9 @@ class PokeBattle_Battle
       if attacker.lastMoveUsed == 186
         score=0
       end
+      if attacker.hasWorkingItem(:FOCUSSASH) && attacker.hp==attacker.totalhp &&                   ((attacker.pbSpeed)>pbRoughStat(opponent,PBStats::SPEED,skill)) ^ (@trickroom!=0)
+        score*=0
+      end
     when 0xE8 # Endure
       if attacker.hp>1
         if attacker.hp==attacker.totalhp && ((attitemworks && attacker.item == PBItems::FOCUSSASH) || (!attacker.abilitynulled && attacker.ability == PBAbilities::STURDY))
@@ -13611,6 +13609,9 @@ class PokeBattle_Battle
             score*=0
           end
         end
+        if opponent.pbHasMove?(PBMoves::MAGICCOAT) || opponent.pbHasMove?(PBMoves::SNATCH)
+          score*=0
+        end
       else
         score*=0
       end
@@ -13680,6 +13681,9 @@ class PokeBattle_Battle
           if $fefieldeffect==21 || $fefieldeffect==26 || $fefieldeffect==43 # (Murk)Water Surface
             score*=0
           end
+        end
+        if opponent.pbHasMove?(PBMoves::MAGICCOAT) || opponent.pbHasMove?(PBMoves::SNATCH)
+          score*=0
         end
       else
         score*=0
@@ -13753,6 +13757,9 @@ class PokeBattle_Battle
           if $fefieldeffect==25 # Crystal Cavern
             score*=1.3
           end
+        end
+        if opponent.pbHasMove?(PBMoves::MAGICCOAT) || opponent.pbHasMove?(PBMoves::SNATCH)
+          score*=0
         end
       else
         score*=0
@@ -15371,23 +15378,7 @@ class PokeBattle_Battle
         score*=0.5
       end
       score*=0.1 if checkAImoves(PBStuff::PROTECTIGNORINGMOVE,aimem)
-      if !(opponent.effects[PBEffects::Attacking]==true)
-        if $fefieldeffect==31
-          if !(opponent.effects[PBEffects::AttackingTarget].include?(attacker.index))
-            rnd=pbAIRandom(10)
-            if rnd>=7
-              score*=0.01 
-            end
-          end
-        else
-          if !(opponent.effects[PBEffects::Attacking]==true)
-            rnd=pbAIRandom(10)
-            if rnd>=7
-              score*=0.01 
-            end
-          end
-        end
-      end
+      #azedit: removed attacking/attacking target checks.
       if attacker.effects[PBEffects::KingsShield]== true  ||
         attacker.effects[PBEffects::BanefulBunker]== true ||
         attacker.effects[PBEffects::SpikyShield]== true
@@ -16185,6 +16176,9 @@ class PokeBattle_Battle
           if magiccheck==false
             score*=2
           end
+        end
+        if opponent.pbHasMove?(PBMoves::MAGICCOAT) || opponent.pbHasMove?(PBMoves::SNATCH)
+          score*=0
         end
       else
         score*=0
@@ -28635,40 +28629,7 @@ class PokeBattle_Battle
           changed1=false
           changed2=false
           # check attacker.moves[j].basedamage and if this is 0 instead check the status method
-          if !(attacker==@battlers[2])
-            hpvalue=opponent.hp
-            if opponent.effects[PBEffects::UsingItem].length>0 && opponent.effects[PBEffects::UsingItem][0]>0 && opponent.effects[PBEffects::UsingItem][1]==opponent.pokemonIndex
-              restoreamount=pbHPConversion(opponent.effects[PBEffects::UsingItem][0],opponent)
-            elsif otheropp.effects[PBEffects::UsingItem].length>0 && otheropp.effects[PBEffects::UsingItem][0]>0 && otheropp.effects[PBEffects::UsingItem][1]==opponent.pokemonIndex
-              restoreamount=pbHPConversion(otheropp.effects[PBEffects::UsingItem][0],opponent)
-            else
-              restoreamount=0
-            end
-            if restoreamount>0
-              if opponent.hp<opponent.totalhp
-                opponent.hp=opponent.hp+restoreamount
-              else 
-                opponent.hp=opponent.totalhp
-              end
-              changed1=true
-            end
-            hpvalue2=otheropp.hp
-            if otheropp.effects[PBEffects::UsingItem].length>0 && otheropp.effects[PBEffects::UsingItem][0]>0 && otheropp.effects[PBEffects::UsingItem][1]==otheropp.pokemonIndex
-              restoreamount=pbHPConversion(otheropp.effects[PBEffects::UsingItem][0],otheropp)
-            elsif opponent.effects[PBEffects::UsingItem].length>0 && opponent.effects[PBEffects::UsingItem][0]>0 && opponent.effects[PBEffects::UsingItem][1]==otheropp.pokemonIndex
-              restoreamount=pbHPConversion(otheropp.effects[PBEffects::UsingItem][0],otheropp)
-            else
-              restoreamount=0
-            end
-            if restoreamount>0
-              if otheropp.hp>otheropp.totalhp
-                otheropp.hp=otheropp.totalhp
-              else
-                otheropp.hp=otheropp.hp+restoreamount
-              end
-              changed2=true
-            end
-          end
+          #azedit: removed healing item checks
           dmgValue = pbRoughDamage(attacker.moves[j],attacker,opponent,skill,attacker.moves[j].basedamage)
           if attacker.moves[j].basedamage!=0 || attacker.moves[j].id==getID(PBMoves,:NATUREPOWER)
             if opponent.hp==0

@@ -365,6 +365,12 @@ Outdoor=false
 ShowArea=false
 MapPosition=0,6,16
 BattleBack=Haunted3
+[109]
+# Koneli City Ruins
+Outdoor=true
+ShowArea=true
+MapPosition=0,6,16
+BattleBack=Darchlight
 [112]
 # Koneli Manor
 Outdoor=false
@@ -399,13 +405,22 @@ BattleBack=Darchlight
 BattleBack=Darchlight
 [115]
 # Koneli City
-DarkMap=true
+Outdoor=false
+MapPosition=0,6,16
 [117]
 # Koneli City Ruins
 Outdoor=true
 ShowArea=true
 MapPosition=0,6,16
 BattleBack=Darchlight
+[118]
+# Koneli City
+Outdoor=false
+MapPosition=0,6,16
+[119]
+# Koneli City
+Outdoor=false
+MapPosition=0,6,16
 [121]
 # Koneli City Ruins
 Outdoor=false

@@ -5095,7 +5095,7 @@ MultipleForms.register(:BEWEAR,{
 },
 "getBaseStats"=>proc{|pokemon|
    next if pokemon.form==0      # Normal
-   next [125,120,60,55,80,60]   # Mystic
+   next [125,120,60,55,60,80]   # Mystic
 },
 "getMoveList"=>proc{|pokemon|
    next if pokemon.form==0      # Normal
@@ -5520,6 +5520,156 @@ MultipleForms.register(:MIGHTYENA,{
 }
 })
 
+MultipleForms.register(:SKORUPI,{
+"dexEntry"=>proc{|pokemon|
+   next if pokemon.form==0      # Normal
+   next "Skorupi gather in hordes, sweeping through farms for food and places to breed."     # Mystic
+},
+"type1"=>proc{|pokemon|
+   next if pokemon.form==0      # Normal
+   next getID(PBTypes,:DRAGON)    # Mystic
+},
+"type2"=>proc{|pokemon|
+   next if pokemon.form==0      # Normal
+   next getID(PBTypes,:DRAGON)    # Mystic
+},
+"getBaseStats"=>proc{|pokemon|
+   next if pokemon.form==0      # Normal
+   next [65,50,90,30,40,55]   # Mystic
+},
+"getMoveList"=>proc{|pokemon|
+   next if pokemon.form==0      # Normal
+   movelist=[]
+   case pokemon.form            # Mystic
+     when 1 ; movelist=[[1,:LEER],[1,:SCRATCH],[3,:HONECLAWS],[6,:BITE],
+                        [9,:PURSUIT],[12,:DRAGONRAGE],[15,:HOWL],[18,:BRUTALSWING],
+                        [21,:DUALCHOP],[24,:KNOCKOFF],[27,:SCARYFACE],[30,:REVENGE],
+                        [33,:NIGHTSLASH],[36,:DRAGONTAIL],[39,:FALSESWIPE],
+                        [42,:DRAGONCLAW],[45,:ACUPRESSURE],[48,:SUPERPOWER]]
+   end
+   for i in movelist
+     i[1]=getConst(PBMoves,i[1])
+   end
+   next movelist
+},
+"getMoveCompatibility"=>proc{|pokemon|
+  next if pokemon.form==0
+  movelist=[]
+  case pokemon.form
+  when 1; movelist=[
+      :STRENGTH,:WORKUP,:DRAGONCLAW,:ROAR,:BULKUP,:TAUNT,:PROTECT,:FRUSTRATION,:SMACKDOWN,
+	:EARTHQUAKE,:RETURN,:DIG,:BRICKBREAK,:TORMENT,:REST,:THIEF,:LOWSWEEP,:FALSESWIPE,:QUASH,
+	:EMBARGO,:SHADOWCLAW,:PAYBACK,:GIGAIMPACT,:STONEEDGE,:SWORDSDANCE,:BULLDOZE,:ROCKSLIDE,
+	:XSCISSOR,:DRAGONTAIL,:POISONJAB,:INFESTATION,:SWAGGER,:SLEEPTALK,:ROCKSMASH,
+	:POWERUPPUNCH,:ROCKCLIMB,:POISONSWEEP,:STACKINGSHOT,:SLASHANDBURN,:IRRITATION,
+	:BRUTALSWING,:LEECHLIFE,:SCREECH,:SCARYFACE,:CROSSPOISON,:RAZORSHELL,
+	:BREAKINGSWIPE,:HONECLAWS,:SUCKERPUNCH,:RETALIATE,:CONDESCEND,:PINCERGRIP,
+	:FOCUSBLAST,:FLAMETHROWER,:SLUDGEWAVE,:SLUDGEBOMB,:DARKPULSE,:HYPERBEAM,:HIDDENPOWER,
+	:VENOSHOCK,:FIREBLAST,:INCINERATE,:ASSURANCE,:SNARL,:ICEFANG,:FIREFANG,:THUNDERFANG]
+      end
+      for i in 0...movelist.length
+        movelist[i]=getConst(PBMoves,movelist[i])
+      end
+      next movelist
+},
+"ability"=>proc{|pokemon|
+   next if pokemon.form==0 # Normal
+   if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0) # Mystic
+     next getID(PBAbilities,:BATTLEARMOR)
+   elsif pokemon.abilityIndex==1 || (pokemon.abilityflag && pokemon.abilityflag==1) # Mystic
+     next getID(PBAbilities,:MOLDBREAKER)
+   elsif pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)
+     next getID(PBAbilities,:CONTRARY)       
+   end
+},
+"getFormOnCreation"=>proc{|pokemon|
+   maps=[]   # Map IDs for second form
+   if $game_map && maps.include?($game_map.map_id)
+     next 1
+   else
+     next 0
+   end
+},
+"onSetForm"=>proc{|pokemon,form|
+   pbSeenForm(pokemon)
+}
+})
+
+MultipleForms.register(:DRAPION,{
+"dexEntry"=>proc{|pokemon|
+   next if pokemon.form==0      # Normal
+   next "Drapion lead hordes of Skorupi to pillage villages and farms."     # Mystic
+},
+"type1"=>proc{|pokemon|
+   next if pokemon.form==0      # Normal
+   next getID(PBTypes,:DRAGON)    # Mystic
+},
+"type2"=>proc{|pokemon|
+   next if pokemon.form==0      # Normal
+   next getID(PBTypes,:DRAGON)    # Mystic
+},
+"getBaseStats"=>proc{|pokemon|
+   next if pokemon.form==0      # Normal
+   next [95,90,110,60,70,75]   # Mystic
+},
+"getMoveList"=>proc{|pokemon|
+   next if pokemon.form==0      # Normal
+   movelist=[]
+   case pokemon.form            # Mystic
+     when 1 ; movelist=[[0,:DRAGONCLAW],[1,:LEER],[1,:SCRATCH],[1,:GLARE],[1,:DRAGONRUSH],
+                        [3,:HONECLAWS],[6,:BITE],[9,:PURSUIT],[12,:DRAGONRAGE],[15,:HOWL],
+                        [18,:BRUTALSWING],[21,:DUALCHOP],[24,:KNOCKOFF],[27,:SCARYFACE],
+                        [30,:REVENGE],[33,:NIGHTSLASH],[36,:DRAGONTAIL],[39,:FALSESWIPE],
+                        [44,:FLAMETHROWER],[49,:ACUPRESSURE],[54,:SUPERPOWER]]
+   end
+   for i in movelist
+     i[1]=getConst(PBMoves,i[1])
+   end
+   next movelist
+},
+"getMoveCompatibility"=>proc{|pokemon|
+  next if pokemon.form==0
+  movelist=[]
+  case pokemon.form
+  when 1; movelist=[
+      :STRENGTH,:WORKUP,:DRAGONCLAW,:ROAR,:BULKUP,:TAUNT,:PROTECT,:FRUSTRATION,:SMACKDOWN,
+	:EARTHQUAKE,:RETURN,:DIG,:BRICKBREAK,:TORMENT,:REST,:THIEF,:LOWSWEEP,:FALSESWIPE,:QUASH,
+	:EMBARGO,:SHADOWCLAW,:PAYBACK,:GIGAIMPACT,:STONEEDGE,:SWORDSDANCE,:BULLDOZE,:ROCKSLIDE,
+	:XSCISSOR,:DRAGONTAIL,:POISONJAB,:INFESTATION,:SWAGGER,:SLEEPTALK,:ROCKSMASH,
+	:POWERUPPUNCH,:ROCKCLIMB,:POISONSWEEP,:STACKINGSHOT,:SLASHANDBURN,:IRRITATION,
+	:BRUTALSWING,:LEECHLIFE,:SCREECH,:SCARYFACE,:CROSSPOISON,:RAZORSHELL,
+	:BREAKINGSWIPE,:HONECLAWS,:SUCKERPUNCH,:RETALIATE,:CONDESCEND,:PINCERGRIP,
+	:FOCUSBLAST,:FLAMETHROWER,:SLUDGEWAVE,:SLUDGEBOMB,:DARKPULSE,:HYPERBEAM,:HIDDENPOWER,
+	:VENOSHOCK,:FIREBLAST,:INCINERATE,:ASSURANCE,:SNARL,:ICEFANG,:FIREFANG,:THUNDERFANG]
+      end
+      for i in 0...movelist.length
+        movelist[i]=getConst(PBMoves,movelist[i])
+      end
+      next movelist
+},
+"ability"=>proc{|pokemon|
+   next if pokemon.form==0 # Normal
+   if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0) # Mystic
+     next getID(PBAbilities,:BATTLEARMOR)
+   elsif pokemon.abilityIndex==1 || (pokemon.abilityflag && pokemon.abilityflag==1) # Mystic
+     next getID(PBAbilities,:MOLDBREAKER)
+   elsif pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)
+     next getID(PBAbilities,:CONTRARY)       
+   end
+},
+"getFormOnCreation"=>proc{|pokemon|
+   maps=[]   # Map IDs for second form
+   if $game_map && maps.include?($game_map.map_id)
+     next 1
+   else
+     next 0
+   end
+},
+"onSetForm"=>proc{|pokemon,form|
+   pbSeenForm(pokemon)
+}
+})
+
 
 MultipleForms.register(:LARVITAR,{
 "type1"=>proc{|pokemon|
@@ -5620,6 +5770,7 @@ MultipleForms.register(:LUCARIO,{
    pbSeenForm(pokemon)
 }
 })
+
 
 ## End of Regional Variants ##
 

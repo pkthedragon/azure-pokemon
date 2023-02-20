@@ -423,7 +423,7 @@ class PokemonOptionScene
           proc { $PokemonSystem.battlescene },
           proc {|value|  $PokemonSystem.battlescene=value }
        ),
-       EnumOption.new(_INTL("Battle Style"),[_INTL("Shift"),_INTL("Set")],
+       EnumOption.new(_INTL("Battle Style"),[_INTL("Set"),_INTL("Shift")],
           proc { $PokemonSystem.battlestyle },
           proc {|value|  $PokemonSystem.battlestyle=value }
        ),

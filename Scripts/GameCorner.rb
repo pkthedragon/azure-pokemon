@@ -18,13 +18,13 @@ def gameCornerShop(index)
   # List of prices
   prices = [
     [],
-    [15,20,30,40,0],
+    [10,15,20,25,0],
     [3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,6,6],
     [5000,13500,15000,20000,30000,0]
   ]  
   # Only sell key items not already obtained
   check_prizes = [:GOLDENAXE,:GOLDENHAMMER,:GOLDENSURFBOARD,:GOLDENGAUNTLET,:GOLDENSCUBAGEAR,:GOLDENWINGS,:GOLDENJETPACK,:GOLDENDRIFTBOARD,:GOLDENCLAWS,:EXPALL]
-  check_prices = [15,15,20,25,25,25,25,25,25,25]
+  check_prices = [10,10,15,20,20,20,20,20,20,20]
   for i in 0...check_prizes.length
     if !$PokemonBag.pbHasItem?(check_prizes[i])
       prizes[2].insert(-1,check_prizes[i])

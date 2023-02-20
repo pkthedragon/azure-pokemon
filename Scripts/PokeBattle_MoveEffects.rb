@@ -12073,10 +12073,10 @@ class PokeBattle_Move_187 < PokeBattle_Move
       attacker.pbRecoverHP(hpgain1,true)
       @battle.pbDisplay(_INTL("{1}'s HP was restored.",attacker.pbThis)) 
     end
-    if attacker.pbPartner.totalhp!=0
+    if !attacker.pbPartner.isFainted?
       if attacker.pbPartner.hp != attacker.pbPartner.totalhp
-        attacker.pbPartner.pbRecoverHP(hpgain2,true) 
-        @battle.pbDisplay(_INTL("{1}'s HP was restored.",attacker.pbPartner.pbThis)) 
+        attacker.pbPartner.pbRecoverHP(hpgain2,true)
+        @battle.pbDisplay(_INTL("{1}'s HP was restored.",attacker.pbPartner.pbThis))
       end
     end
     if ($fefieldeffect == 11 || $fefieldeffect == 26) && 
