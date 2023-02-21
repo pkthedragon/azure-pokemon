@@ -3835,6 +3835,20 @@ class PokeBattle_Battler
         @battle.pbDisplay(_INTL("{1}'s {2} poisoned {3}!",user.pbThis,
             PBAbilities.getName(user.ability),target.pbThis(true)))
       end
+      if user.hasWorkingAbility(:COTTONMOLT,true)
+        @battle.pbDisplay(_INTL("{1}'s {2} scatters cotton around!",
+            target.pbThis,PBAbilities.getName(target.ability)))
+        for i in @battle.battlers
+          next if i==target
+          if i.pbCanReduceStatStage?(PBStats::SPEED)
+            boost = 1
+            if ($fefieldeffect == 2)
+              boost = 2
+            end
+            i.pbReduceStat(PBStats::SPEED,boost,false)
+          end
+        end
+      end
       if target.hasWorkingAbility(:PERISHBODY,true) && !$fefieldeffect==29 &&
         user.effects[PBEffects::PerishSong]==0 && target.effects[PBEffects::PerishSong]==0
         @battle.pbDisplay(_INTL("Both Pokémon will faint in three turns!"))

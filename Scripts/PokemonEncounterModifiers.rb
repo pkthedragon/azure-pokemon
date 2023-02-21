@@ -142,16 +142,16 @@ Events.onWildPokemonCreate+=proc {|sender,e|
         pokemon.isbossmon=true
         $game_variables[704]=2
         if $game_variables[200] == 0
-          pokemon.level=20
+          pokemon.level=18
         elsif $game_variables[200] == 1
-          pokemon.level=15 
+          pokemon.level=13 
         elsif $game_variables[200] == 2
-          pokemon.level=22 
+          pokemon.level=20 
         end
         pokemon.pbLearnMove(:WINEGODSBLESSING)
-        pokemon.pbLearnMove(:SHOCKWAVE)
+        pokemon.pbLearnMove(:INGRAIN)
         pokemon.pbLearnMove(:ANCIENTPOWER)
-        pokemon.pbLearnMove(:LEECHSEED)
+        pokemon.pbLearnMove(:AMNESIA)
         pokemon.item = PBItems::TANTRIBUTE
         pokemon.setNature(PBNatures::TIMID)    
         for i in 0...6
@@ -296,6 +296,9 @@ Events.onWildPokemonCreate+=proc {|sender,e|
     when 48 # Mystic Skorupi
       pokemon.form=1
       pokemon.resetMoves
-      pokemon.calcStats	
+      pokemon.calcStats 
+    when 49 # Totodile
+      pokemon.pbLearnMove(:ICEPUNCH) 
+      pokemon.pbLearnMove(:AQUAJET) 
     end
 }

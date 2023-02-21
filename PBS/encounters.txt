@@ -204,7 +204,7 @@ HOOTHOOT,10,11
 033 # Underground Forest
 21,6,7
 OldRod
-FINNEON,9,12
+GOLDEEN,9,12
 LOTAD,10,13
 LandDay
 TANGELA,10,11
@@ -236,7 +236,7 @@ SEEDOT,11,12
 034 # Underground Forest
 21,6,7
 OldRod
-FINNEON,9,12
+GOLDEEN,9,12
 LOTAD,10,13
 LandDay
 TANGELA,10,11
@@ -377,7 +377,7 @@ CLAMPERL,17,18
 CLAMPERL,17,18
 CLAMPERL,17,18
 OldRod
-FINNEON,16,19
+GOLDEEN,16,19
 STARYU,17,20
 #########################
 084 # Koneli Demesne
@@ -425,8 +425,8 @@ NATU,20,22
 085 # Ranger Encampment
 21,4,4
 OldRod
-GOLDEEN,20,22
-FRILLISH,20,22
+FINNEON,20,22
+TYNAMO,20,22
 LandDay
 SEEL,21,23
 FLETCHINDER,20,22
@@ -499,7 +499,7 @@ FLOETTE,24,26
 090 # Calypsan Sanctuary
 21,4,4
 OldRod
-GOLDEEN,20,22
+FINNEON,20,22
 SURSKIT,5,10
 LandDay
 BURMY,17,18
@@ -575,6 +575,9 @@ SLAKOTH,9,10
 #########################
 117 # Koneli City Ruins
 21,6,7
+OldRod
+FINNEON,21,25
+WOOPER,15
 LandMorning
 MISDREAVUS,21,25
 XATU,24,27
@@ -845,6 +848,9 @@ SABLEYE,33
 #########################
 113 # Spooky Temple
 21,4,4
+OldRod
+BARBOACH,21,25
+FRILLISH,15
 Cave
 MISDREAVUS,31,33
 MISDREAVUS,31,33

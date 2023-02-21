@@ -35,7 +35,7 @@ class Scene_Pokegear
     if $game_switches[1177]
       commands[@cmdNotes=commands.length]=_INTL("Field Notes")
     end
-    commands[@cmdTutor=commands.length]=_INTL("Tutor.net") if $game_switches[1492]=true
+    commands[@cmdTutor=commands.length]=_INTL("Tutor.net") if $game_switches[1492]==true
     commands[@cmdMagnet=commands.length]=_INTL("PokeMagnet") if $game_switches[1437]==true
     @viewport=Viewport.new(0,0,Graphics.width,Graphics.height)
     @viewport.z=99999
