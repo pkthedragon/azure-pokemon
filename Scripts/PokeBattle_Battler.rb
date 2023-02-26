@@ -7474,7 +7474,7 @@ class PokeBattle_Battler
         end
         if (thismove.id == PBMoves::EARTHQUAKE || thismove.id == PBMoves::MAGNITUDE ||
             thismove.id == PBMoves::BULLDOZE)
-            if $game_switches[1495] = true
+            if $game_switches[1409] = true
                 hazardsExist = false
                 if user.pbOwnSide.effects[PBEffects::Spikes]>0 || user.pbOpposingSide.effects[PBEffects::Spikes]>0
                   user.pbOwnSide.effects[PBEffects::Spikes] = 0

@@ -269,7 +269,7 @@ LUNARIDOL=309
 WORLDOFNIGHTMARES=310
 MAENADSFERVOR=311
 ILLUSORYSHROUD=312
-COTTONMOLT=312
+COTTONMOLT=313
 
 def self.getName(id)
 return pbGetMessage(MessageTypes::Abilities,id)
@@ -279,6 +279,6 @@ return 271
 end
 
 def self.maxValue
-return 312
+return 313
 end
 end

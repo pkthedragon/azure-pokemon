@@ -5060,7 +5060,7 @@ def pbStartBattle(canlose=false)
      when 39
       pbDisplay(_INTL("Hate and anger radiates."))
      when 40
-      pbDisplay(_INTL("The field is haunted!"))
+      pbDisplay(_INTL("The field is cursed!"))
      when 41
       pbDisplay(_INTL("Corruption seeps from every crevice!"))
      when 42

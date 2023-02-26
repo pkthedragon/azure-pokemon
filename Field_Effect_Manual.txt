@@ -1632,7 +1632,6 @@ Psychic Terrain:
 *	Ghost and Dark-types deal neutral damage to each other
 *	The following moves have their accuracy boosted to 90:
 		Will-o-Wisp		Hypnosis		Inferno
-*	Ghost types deal super effective damage to Normal Type Pokemon.
 *	Nightmare inflicts more damage. 
 *	Cursed Body always activates upon fainting.
 *	The following move(s) gets a 1.3x increase in power and gain the Ghost type
@@ -1878,6 +1877,7 @@ Magma Armor		Flame Body		Desolate Land
 (The following items are affected by this field):
 *	Elemental Seed boosts Attack and Special Attack and traps the user.
 
+
 #--------------- 45. Beach Field [BF] ---------------#
 “The waves lap at the shore.”
 
@@ -1944,9 +1944,9 @@ Fire Punch		Focus Punch		Hammer Arm
 Ice Hammer		Ice Punch		Mach Punch
 Mega Punch		Meteor Mash		Plasma Fists
 Power-Up Punch	Shadow Punch	Sky Uppercut
-Thunder Punch	Accelerock		Magnet Bomb
+is Thunder Punch	Accelerock		Magnet Bomb
 Strength		Rock Smash		Headbutt
-Zen Headbutt		Head Smash		Heavy Slam
+Zen Headbutt		Head Smash	qq	Heavy Slam
 Body Slam		Slam			Giga Impact
 Dragon Rush		Wood Hammer	Dragon Hammer
 *	Magnet Rise sharply raises Speed
@@ -2121,50 +2121,3 @@ Defense Curl		Agility
 
 (The following items are affected by this field): 
 *	Synthetic Seed increases critical hit rate and Speed and traps the user
-
-#--------------- 50A. Dream World [DWA] ---------------#
-"More powerful than a thousand realities."
-
-(Passive effects by the field.):
-*	All non Ghost-type pokémon are asleep unless they have the following abilities:
-Insomnia		Vital Spirit		Magic Guard
-Magic Bounce
-*	Sleeping pokémon restore 1/16th max HP each turn
-
-(The following moves are affected by the field.):
-*	Psychic-type moves increase in base power x1.5
-*	Fairy and Ghost-type moves increase in base power x1.3 and deal neutral damage to Psychic-types
-*	Dark-type moves decrease in power x0.5
-*	Psychic and Ghost-type moves ignore immunities
-*	The following moves are boosted x1.5:
-Dream Eater		Play Rough		Let’s Snuggle Forever
-*	The following moves’ stat changing effects are amplified: 
-Calm Mind		Play Nice
-*	The following moves have a duration of 8 turns:
-Trick Room		Wonder Room		Magic Room
-Gravity
-*	Snore is boosted x2
-*	Sleep Talk boosts the selected move x2
-*	Metronome can only select moves with base 80 power or higher
-*	Lunar Dance grants Wonder Guard to the recipient for one turn
-*	Camouflage makes the user a Psychic-type
-*	Nature Power becomes Dream Eater
-
-(The following abilities are affected by this field):   
-*	The following abilities have the effects of Wonder Guard the turn they enter:
-Illusion			Disguise		Infiltrator
-Mimicry		Imposter		Wandering Spirit
-*	Comatose boosts Defense and Special Defense on entry
-*	Marvel Scale has the effects of Magic Guard
-*	Mimicry makes the user a Psychic-type
-
-(The following moves change this field):
-*	The following moves will turn the field into a Nightmare World: 
-Hex			Curse			Phantom Force
-Shadow Force		Dark Void		Never-Ending Nightmare
-Nightmare (for as long as it’s active)
-*	The following abilities will turn the field to a Nightmare World on entry: 
-Bad Dreams		Dark Aura
-(The following items are affected by this field): 
-*	Magical Seed boosts Defense and Special defense and infatuates the holder
-

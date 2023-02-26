@@ -25,7 +25,7 @@ class PokeBattle_Battle
   # Get a score for each move being considered (trainer-owned Pokémon only).
   # Moves with higher scores are more likely to be chosen.
   ################################################################################
-  def pbGetMoveScore(move,attacker,opponent,skill=100,roughdamage=10,initialscores=[],scoreindex=-1,shutup=false)
+  def pbGetMoveScore(move,attacker,opponent,skill=100,roughdamage=10,initialscores=[],scoreindex=-1,shutup=false,naturepri=false)
     if roughdamage<1
       roughdamage=1
     end
@@ -37,7 +37,7 @@ class PokeBattle_Battle
     skill=PBTrainerAI.minimumSkill if skill<PBTrainerAI.minimumSkill
     $shutupmega=true
     #Temporarly mega-ing pokemon if it can    #perry
-    if move.basedamage==0 && attacker.hasWorkingAbility(:PRANKSTER)
+    if (move.basedamage==0 || naturepri) && attacker.hasWorkingAbility(:PRANKSTER)
       prankpri = true
     end
     #Little bit of prep before getting into the case statement
@@ -308,7 +308,7 @@ class PokeBattle_Battle
          score*=1.5 if (PBStuff::SLEEPMOVE).include?(move.id) || (PBStuff::BURNMOVE).include?(move.id) || 
          (PBStuff::PARAMOVE).include?(move.id) 
       end
-      if prankpri && ((!opponent.abilitynulled && opponent.ability == PBAbilities::DAZZLING) || (!opponent.abilitynulled && opponent.ability == PBAbilities::QUEENLYMAJESTY))
+      if prankpri && (!opponent.hasType?(:DARK) || ((!opponent.abilitynulled && opponent.ability == PBAbilities::DAZZLING) || (!opponent.abilitynulled && opponent.ability == PBAbilities::QUEENLYMAJESTY)))
          score*=0
       end
       PBDebug.log(sprintf("Priority Check End")) if $INTERNAL && shutup==false
@@ -8975,7 +8975,7 @@ class PokeBattle_Battle
         naturedam=(tempdam*100)/(opponent.hp.to_f)
       end
       naturedam=110 if naturedam>110
-      score = pbGetMoveScore(naturemove,attacker,opponent,skill,naturedam)
+      score = pbGetMoveScore(naturemove,attacker,opponent,skill,naturedam,initialscores,scoreindex,false,true)
     when 0xB4 # Sleep Talk
       if attacker.status==PBStatuses::SLEEP
         opponentdamage=checkAIdamage(aimem,attacker,opponent,skill,true,true)[0]
@@ -12421,6 +12421,11 @@ class PokeBattle_Battle
           score*=1.2
           if ((!attacker.abilitynulled && attacker.ability == PBAbilities::REGENERATOR) || SilvallyCheck(attacker,PBTypes::POISON)) && ((attacker.hp.to_f)/attacker.totalhp)<0.5
             score*=1.2
+          end
+        end
+    if attacker.species==PBSpecies::RIBOMBEE
+          if checkAImoves([PBMoves::DEFOG,PBMoves::RAPIDSPIN,PBMoves::MAGICCOAT],aimem)
+            score*=1.5
           end
         end
         if !@doublebattle
@@ -16137,6 +16142,13 @@ class PokeBattle_Battle
         end
         if (attitemworks && attacker.item == PBItems::FOCUSSASH) && attacker.hp==attacker.totalhp
           score*=1.3
+        end
+    if attacker.species==PBSpecies::RIBOMBEE
+          if checkAImoves([PBMoves::DEFOG,PBMoves::RAPIDSPIN,PBMoves::MAGICCOAT],aimem)
+            score*=0
+         else
+            score*=2
+         end
         end
         if attacker.turncount<2
           score*=1.5
