@@ -1531,7 +1531,7 @@ def pbSpeciesCompatible?(species,move,pokemon)
           (move == PBMoves::OVERHEAT) ||  (move == PBMoves::WILLOWISP) ||
           (move == PBMoves::EXPLOSION) ||  (move == PBMoves::SHADOWCLAW) ||
           (move == PBMoves::FLASH) ||  (move == PBMoves::DREAMEATER) ||
-          (move == PBMoves::WILDCHARGE) ||  (move == PBMoves::MAGMADRIFT) ||
+          (move == PBMoves::WILDCHARGE) ||  (move == PBMoves::LAVASURF) ||
           (move == PBMoves::HEX) ||  (move == PBMoves::FIRESPIN) ||
           (move == PBMoves::SELFDESTRUCT) ||  (move == PBMoves::TAILSLAP) ||
           (move == PBMoves::PHANTOMFORCE) ||  (move == PBMoves::MYSTICALFIRE) ||
@@ -1557,7 +1557,7 @@ def pbSpeciesCompatible?(species,move,pokemon)
           (move == PBMoves::OVERHEAT) ||  (move == PBMoves::WILLOWISP) ||
           (move == PBMoves::EXPLOSION) ||  (move == PBMoves::SHADOWCLAW) ||
           (move == PBMoves::FLASH) ||  (move == PBMoves::DREAMEATER) ||
-          (move == PBMoves::WILDCHARGE) ||  (move == PBMoves::MAGMADRIFT) ||
+          (move == PBMoves::WILDCHARGE) ||  (move == PBMoves::LAVASURF) ||
           (move == PBMoves::HEX) ||  (move == PBMoves::FIRESPIN) ||
           (move == PBMoves::SELFDESTRUCT) ||  (move == PBMoves::TAILSLAP) ||
           (move == PBMoves::PHANTOMFORCE) ||  (move == PBMoves::MYSTICALFIRE) ||

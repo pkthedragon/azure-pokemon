@@ -268,4 +268,4 @@
 310,WORLDOFNIGHTMARES,World of Nightmares,"End of turn damage on all foes. Changes field to New World over time. Allows use of Nightmare freely."
 311,MAENADSFERVOR,Maenad's Fervor,"This Pokemon's Defenses and Speed are raised when confused."
 312,ILLUSORYSHROUD,Illusory Shroud,"This Pokemon is immune to contact moves, but its Defenses are swapped."
-312,COTTONMOLT,Cotton Molt,"This Pokemon scatters cotton around when it attacks, lowering all other Pokemon's speed."
+313,COTTONMOLT,Cotton Molt,"This Pokemon scatters cotton around when it attacks, lowering all other Pokemon's speed."

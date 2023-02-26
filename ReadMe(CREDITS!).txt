@@ -2,16 +2,48 @@
 
 If your name is missing, PLEASE contact me and I will update this list immediately.
 
+Special thanks to the Calamity League, this wouldn't be possible without their support, and go check them out!
+
 --------Developers--------
 Lead Developer: pkchu, darius, vincenzonova
 Artists: Ace, cheselth, anting, Avislone, Techno, ali760, BootyXXL, misenrol, Candii
 Composers: daforlynx, Rust, Lyn
 Writers: treeckoz, Fe = Iron
-Mappers: Citrus, Vird3n, Cervys
+Mappers: Citrus, Cervys
 Balancing: Alexandra, GAlexander, Avery
 Wiki: TechSkylander, Lexa
 
 --------Playtesters--------
+Zervixen
+TridentGreen
+SleepyBoi
+Shinyrio
+ShinyGolem
+Ryouyashi
+ReintendoO
+Pingu
+Orion89
+R--
+Martenaizor
+Liridium
+kaleidoscope
+LEmonetteee_
+Julius Caesar
+Deeffect
+couchchurro
+chxxo
+Badman
+Pyuku
+AceTrainerDevin
+A11
+DemICE
+Moto
+Azery
+SG
+Mizz
+Commander
+Glow
+BIGFriv
 
 --------Pokémon--------
 Gamefreak/Nintendo
@@ -95,6 +127,7 @@ Anarlaurendil
 Kingofthe-x-roads
 Smogon
 Smash 27
+BIGFriv
 --------Graphics--------
 Pokemon Desolation Team
 Janichroma
@@ -111,9 +144,15 @@ Ekat
 SacredDragonair
 ChaoticCherryCake
 PrincessPhoenix
+ranko
 Sorrow-Divine (https://twitter.com/sorrowdivine)
 AerunFE (https://twitter.com/aerunfe)
 hut (https://twitter.com/huttaburger)
+Crimson (https://twitter.com/crimcrimart)
+Dewdneym (https://twitter.com/Dewndeym)
+AnonAlpaca
+Lichen
+Alexandre
 -------Animations--------
 Reborn Animation Team:
 Smeargletail
@@ -189,7 +228,7 @@ Kurotsune(Backup save system)
 Sardines
 DemICE(In-battle info script)
 Cassie Rose
-Reborn Devolved League (Field Effects)
+Calamity League (Field Effects)
 --------Generation 8 Addition--------
 ActionReplayer
 Pokemon Trainer Jackey
@@ -255,6 +294,14 @@ Thundaga
 HelioAu
 Playerin
 Amethyst
+--------Scripting Help--------
+Cass
+Jan
+DemICE
+Moto
+Azery
+Commander
+BIGFriv
 --------Pokémon Essentials-----------
 Poccil
 Flameguru

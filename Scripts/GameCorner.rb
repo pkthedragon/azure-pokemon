@@ -11,7 +11,7 @@ def gameCornerShop(index)
   # List of prizes in internal name
   prizes = [
     [],
-    [:SLUGMA,:SPOINK,:MARACTUS,:HELIOPTILE,0],
+    [:SLUGMA,:MUNNA,:MARACTUS,:HELIOPTILE,0],
     [:GOURMETTREAT,:ADAMANTMINT,:JOLLYMINT,:BRAVEMINT,:MODESTMINT,:TIMIDMINT,:QUIETMINT,:CALMMINT,:BOLDMINT,:NAUGHTYMINT,:RASHMINT,:LONELYMINT,:MILDMINT,:HPUP,:PPUP,:PROTEIN,:IRON,:CALCIUM,:ZINC,:CARBOS,:EXPCANDYM,:ABILITYCAPSULE],
     [:ARON,:DURANT,:MIENFOO,:RUFFLET,:AXEW,0]
   ]
@@ -167,8 +167,8 @@ def gameCornerShop(index)
     p = PokeBattle_Pokemon.new(itemid,10,$Trainer)
             if itemid == 218
               p.pbLearnMove(:STOCKPILE)
-            elsif itemid == 325
-              p.pbLearnMove(:FUTURESIGHT)
+            elsif itemid == 517
+              p.pbLearnMove(:HEALINGWISH)
             elsif itemid == 556
               p.pbLearnMove(:SPIKES)
             elsif itemid == 694
