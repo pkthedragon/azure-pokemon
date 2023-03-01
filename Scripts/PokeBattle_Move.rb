@@ -3597,6 +3597,10 @@ class PokeBattle_Move
        opponent.pbHasType?(:ROCK) && applysandstorm
       defense=(defense*1.5).round
     end
+    if @battle.pbWeather==PBWeather::HAIL &&
+       opponent.pbHasType?(:ICE) && pbIsPhysical?(type)
+      defense=(defense*1.5).round
+    end
     defmult=0x1000
     if opponent.hasWorkingItem(:CHOICESPECS) && $fefieldeffect == 24
       if gl1 > gl2   

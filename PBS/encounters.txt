@@ -380,8 +380,17 @@ OldRod
 GOLDEEN,16,19
 STARYU,17,20
 #########################
+085 # Koneli Shore
+21,4,4
+OldRod
+FINNEON,20,22
+TYNAMO,20,22
+#########################
 084 # Koneli Demesne
 21,6,7
+OldRod
+FINNEON,20,22
+TYNAMO,20,22
 LandMorning
 FLETCHINDER,20,22
 DEERLING,21,23

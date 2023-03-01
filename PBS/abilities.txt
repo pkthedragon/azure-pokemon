@@ -97,7 +97,7 @@
 97,SNIPER,Sniper,"Powers up critical hits."
 98,MAGICGUARD,Magic Guard,"The Pokémon only takes damage from attacks."
 99,NOGUARD,No Guard,"Ensures attacks by or against the user land."
-100,STALL,Stall,"The Pokémon moves after all other Pokémon do."
+100,STALL,Stall,"The user moves last and causes an extra turn to pass each turn."
 101,TECHNICIAN,Technician,"Powers up the Pokémon's weaker moves."
 102,LEAFGUARD,Leaf Guard,"Prevents status problems in sunny weather."
 103,KLUTZ,Klutz,"The Pokémon can't use any held items."

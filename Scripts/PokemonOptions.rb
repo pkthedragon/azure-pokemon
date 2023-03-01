@@ -458,29 +458,29 @@ class PokemonOptionScene
        ),       
 # Quote this section out if you don't want to allow players to change the screen
 # size.
-       EnumOption.new(_INTL("Screen Size"),[_INTL("S"),_INTL("M"),_INTL("L"),_INTL("Full")],
-          proc { $PokemonSystem.screensize },
-          proc {|value|
-             oldvalue=$PokemonSystem.screensize
-             $PokemonSystem.screensize=value
-             if value!=oldvalue
-               pbSetResizeFactor($PokemonSystem.screensize)
-               ObjectSpace.each_object(TilemapLoader){|o| next if o.disposed?; o.updateClass }
-             end
-          }
-       ),   
+#       EnumOption.new(_INTL("Screen Size"),[_INTL("S"),_INTL("M"),_INTL("L"),_INTL("Full")],
+#          proc { $PokemonSystem.screensize },
+#          proc {|value|
+#             oldvalue=$PokemonSystem.screensize
+#             $PokemonSystem.screensize=value
+#             if value!=oldvalue
+#               pbSetResizeFactor($PokemonSystem.screensize)
+#               ObjectSpace.each_object(TilemapLoader){|o| next if o.disposed?; o.updateClass }
+#             end
+#          }
+#       ),   
 # ------------------------------------------------------------------------------   
-       EnumOption.new(_INTL("Screen Border"),[_INTL("Off"),_INTL("On")],
-          proc { $PokemonSystem.border },
-          proc {|value|
-             oldvalue=$PokemonSystem.border
-             $PokemonSystem.border=value
-             if value!=oldvalue
-               pbSetResizeFactor($PokemonSystem.screensize)
-               ObjectSpace.each_object(TilemapLoader){|o| next if o.disposed?; o.updateClass }
-             end
-          }
-       ),
+#       EnumOption.new(_INTL("Screen Border"),[_INTL("Off"),_INTL("On")],
+#          proc { $PokemonSystem.border },
+#          proc {|value|
+#             oldvalue=$PokemonSystem.border
+#             $PokemonSystem.border=value
+#             if value!=oldvalue
+#               pbSetResizeFactor($PokemonSystem.screensize)
+#               ObjectSpace.each_object(TilemapLoader){|o| next if o.disposed?; o.updateClass }
+#             end
+#          }
+#       ),
        EnumOption.new(_INTL("Turbo Speed"),[_INTL("2x"),_INTL("2.5x"),_INTL("3x"),_INTL("4x")],
           proc { $PokemonSystem.turbospeed },
           proc {|value|  $PokemonSystem.turbospeed=value }

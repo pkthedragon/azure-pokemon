@@ -145,12 +145,12 @@ class PokeBattle_Battler
 
   def pbSleep
     self.status=PBStatuses::SLEEP
-    self.statusCount=2+@battle.pbRandom(3)
+    self.statusCount=2
     if $fefieldeffect==40
       opp=self.pbOppositeOpposing
       opppartner=opp.pbPartner
       if isConst?(opp.ability,PBAbilities,:SHADOWTAG) || isConst?(opp.pbPartner.ability,PBAbilities,:SHADOWTAG)
-        self.statusCount=3+@battle.pbRandom(2)
+        self.statusCount=3
       end
     end
     pbCancelMoves
@@ -162,7 +162,7 @@ class PokeBattle_Battler
     if duration>0
       self.statusCount=duration
     else
-      self.statusCount=2+@battle.pbRandom(3)
+      self.statusCount=2
     end
     pbCancelMoves
     @battle.pbCommonAnimation("Sleep",self,nil)

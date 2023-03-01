@@ -2871,7 +2871,7 @@ class PokeBattle_Move_055 < PokeBattle_Move
   end
 end
 
-
+#pkmisty
 ################################################################################
 # For 5 rounds, user's and ally's stat stages cannot be lowered by foes.
 ################################################################################
@@ -2888,26 +2888,8 @@ class PokeBattle_Move_056 < PokeBattle_Move
     else
       @battle.pbDisplay(_INTL("The foe's team became shrouded in mist!"))
     end
-    if $febackup>0 && $febackup<46 && @battle.field.effects[PBEffects::Splintered]==0 && !($game_map.map_id==53)  && !$fefieldeffect==35
-      if @battle.field.effects[PBEffects::MistyTerrain]>0 || $fefieldeffect==3
-        @battle.pbDisplay(_INTL("But the field is already misty!"))
-      else
-        @battle.field.effects[PBEffects::MistyTerrain]=3
-        @battle.pbDisplay(_INTL("The terrain became misty!"))
-      end  
-    else      
-      if (!isConst?(attacker.item,PBItems,:EVERSTONE) || !isConst?(attacker.item,PBItems,:EVIOLITE)) && !($fefieldeffect == 11 || $fefieldeffect == 22 || $fefieldeffect == 35 || $fefieldeffect == 38 || $fefieldeffect == 39 || $fefieldeffect == 43)
-        $fetempfield = 3 #Configure this per move
-        $fefieldeffect = $fetempfield
-        @battle.pbChangeBGSprite
-        @battle.field.effects[PBEffects::Terrain]=3
-        @battle.field.effects[PBEffects::MistyTerrain]=3
-        @battle.pbDisplay(_INTL("The terrain became misty!"))
-        @battle.seedCheck
-      end
       return 0
     end  
-  end
 end
 
 
@@ -6092,7 +6074,7 @@ class PokeBattle_Move_0B6 < PokeBattle_Move
        :HOTTEMPO,:THUNDERRAID,:UPROOT,:ULTRAMEGADEATH,:QUICKSILVERSPEAR,
        :DIMZAP,:DIMPULSE,:DIMSNARE,:DIMTHRASH,:DECIMATION,:RIFTCANNON,
        :MATRIXSHOT,:DESERTSMARK,:BIGEMBER,:HEXDUMMY,:HEXINGSLASH,
-       :PROBOPOG
+       :PROBOPOG,:PYROKINESIS,:SOLARFLARE
     ]
     i=0; loop do break unless i<1000
       #move=@battle.pbRandom(PBMoves.maxValue)+1
@@ -10035,7 +10017,7 @@ class PokeBattle_Move_136 < PokeBattle_Move
       @battle.pbDisplay(_INTL("But it failed!"))      
       return -1
     end
-    if ($febackup>0 && $febackup<46 && @battle.field.effects[PBEffects::Splintered]==0) || ($game_map.map_id==53)
+    if ($febackup>0 && $febackup<47 && @battle.field.effects[PBEffects::Splintered]==0) || ($game_map.map_id==53)
       if @battle.field.effects[PBEffects::MistyTerrain]>0 || $fefieldeffect==3
         @battle.pbDisplay(_INTL("But the field is already misty!"))
       else

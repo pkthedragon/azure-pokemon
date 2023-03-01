@@ -1068,61 +1068,6 @@ HiddenMoveHandlers::UseMove.add(:FLASH,lambda{|move,pokemon|
 })
 
 #===============================================================================
-# Teleport
-#===============================================================================
-HiddenMoveHandlers::CanUseMove.add(:TELEPORT,lambda{|move,pkmn,showmsg|
-  if !pbGetMetadata($game_map.map_id,MetadataOutdoor)
-    Kernel.pbMessage(_INTL("Can't use that here.")) if showmsg
-    return false
-  end
-  if $game_switches[999]
-    Kernel.pbMessage(_INTL("It can't be used while riding a Pokemon.")) if showmsg
-    return false
-  end
-  healing = $PokemonGlobal.healingSpot
-  healing = pbGetMetadata(0,MetadataHome) if !healing # Home
-  if !healing
-    Kernel.pbMessage(_INTL("Can't use that here.")) if showmsg
-    return false
-  end
-  if $game_player.pbHasDependentEvents?
-    Kernel.pbMessage(_INTL("It can't be used when you have someone with you.")) if showmsg
-    return false
-  end
-  return true
-})
-
-HiddenMoveHandlers::ConfirmUseMove.add(:TELEPORT,lambda{|move,pkmn|
-   healing = $PokemonGlobal.healingSpot
-   healing = pbGetMetadata(0,MetadataHome) if !healing   # Home
-   return false if !healing
-   mapname = pbGetMapNameFromId(healing[0])
-   return Kernel.pbConfirmMessage(_INTL("Want to return to the healing spot used last in {1}?",mapname))
-})
-
-HiddenMoveHandlers::UseMove.add(:TELEPORT,lambda{|move,pokemon|
-  healing = $PokemonGlobal.healingSpot
-  healing = pbGetMetadata(0,MetadataHome) if !healing # Home
-  return false if !healing
-  if !pbHiddenMoveAnimation(pokemon)
-    Kernel.pbMessage(_INTL("{1} used {2}!",pokemon.name,PBMoves.getName(move)))
-  end
-  pbFadeOutIn(99999){
-     $game_temp.player_new_map_id    = healing[0]
-     $game_temp.player_new_x         = healing[1]
-     $game_temp.player_new_y         = healing[2]
-     $game_temp.player_new_direction = 2
-     Kernel.pbCancelVehicles
-     $scene.transfer_player
-     $game_map.autoplay
-     $game_map.refresh
-     $game_variables[298] = 0
-  }
-  pbEraseEscapePoint
-  return true
-})
-
-#===============================================================================
 # Dig
 #===============================================================================
 HiddenMoveHandlers::CanUseMove.add(:DIG,lambda{|move,pkmn,showmsg|

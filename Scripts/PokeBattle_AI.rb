@@ -23075,6 +23075,13 @@ class PokeBattle_Battle
         defense=(defense*1.5).round
       end
     end
+    # Hail weather
+    if skill>=PBTrainerAI.mediumSkill
+      if pbWeather==PBWeather::HAIL &&
+        opponent.pbHasType?(:ICE) && move.pbIsPhysical?(type)
+        defense=(defense*1.5).round
+      end
+    end
     # Glitch Specs
     if skill>=PBTrainerAI.averageSkill
       if opponent.hasWorkingItem(:CHOICESPECS) && $fefieldeffect == 24
@@ -27931,6 +27938,7 @@ class PokeBattle_Battle
       healing += 0.0625 if $fefieldeffect==42 && !attacker.pbHasType?(:GRASS) 
     end
     healing*=0 if attacker.effects[PBEffects::HealBlock]>0
+    healing*=2 if (!attacker.abilitynulled && attacker.ability == PBAbilities::STALL) || (!opponent.abilitynulled && opponent.ability == PBAbilities::STALL)    
     return healing if heal
     if attacker.effects[PBEffects::FutureSight]==1
       futurechip=0
@@ -28002,7 +28010,8 @@ class PokeBattle_Battle
         fieldchip *= 2 if (attacker.ability == PBAbilities::FLAMEBODY || attacker.ability == PBAbilities::MAGMAARMOR || attacker.ability == PBAbilities::WATERABSORB || attacker.ability == PBAbilities::DRYSKIN) && $fefieldeffect==26
         fieldchip *= 4 if PBMoveData.new(attacker.effects[PBEffects::TwoTurnAttack]).function==0xCB && $fefieldeffect==26
         chip+=fieldchip
-      end    
+      end
+      chip*=2 if (!attacker.abilitynulled && attacker.ability == PBAbilities::STALL) || (!opponent.abilitynulled && opponent.ability == PBAbilities::STALL)
     end
     return chip if chips
     diff=(healing-chip)

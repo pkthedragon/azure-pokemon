@@ -12127,7 +12127,7 @@ WildItemUncommon=COLBURBERRY
 BattlerPlayerY=33
 BattlerEnemyY=20
 BattlerAltitude=12
-Evolutions=CHIMECHO,HappinessNight,
+Evolutions=CHIMECHO,LevelNight,15
 [434]
 Name=Stunky
 InternalName=STUNKY
@@ -22941,7 +22941,7 @@ BaseEXP=54
 EffortPoints=1,0,0,0,0,0
 Rareness=255
 Happiness=50
-Abilities=BALLFETCH
+Abilities=CUTECHARM
 HiddenAbility=RATTLED
 Moves=1,TACKLE,1,TAILWHIP,5,NUZZLE,10,BITE,15,ROAR,20,SPARK,26,CHARM,30,CRUNCH,35,CHARGE,40,WILDCHARGE,45,PLAYROUGH
 EggMoves=DOUBLEEDGE,SANDATTACK,FLAMECHARGE,DISCHARGE,HOWL

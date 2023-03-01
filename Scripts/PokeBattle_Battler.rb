@@ -1037,6 +1037,7 @@ class PokeBattle_Battler
     @effects[PBEffects::Tantrum]          = false
     @effects[PBEffects::ThroatChop]      = 0
     @effects[PBEffects::ShieldLife]      = 0
+    @effects[PBEffects::StallEntry]     = false
     #### JERICHO - 001 - START
     if illusion==true
       if isConst?(self.ability,PBAbilities,:ILLUSION) #Illusion
@@ -1445,9 +1446,11 @@ class PokeBattle_Battler
   
   def pbCalcDefense()
     stagemul=[2,2,2,2,2,2,2,3,4,5,6,7,8]
-    stagediv=[8,7,6,5,4,3,2,2,2,2,2,2,2]      
+    stagediv=[8,7,6,5,4,3,2,2,2,2,2,2,2]
+    applyhail=false
     defense=@defense
     defstage=@stages[PBStats::DEFENSE]+6
+    applyhail=true
     if @effects[PBEffects::PowerTrick]
       defense=@attack
       defstage=@stages[PBStats::DEFENSE]+6
@@ -1458,7 +1461,11 @@ class PokeBattle_Battler
       defense=(defense*1.0*stagemulp).floor
     else        
       defense=(defense*1.0*stagemul[defstage]/stagediv[defstage]).floor
-    end  
+    end
+    if @battle.pbWeather==PBWeather::HAIL &&
+      self.pbHasType?(:ICE) && applyhail
+      defense=(defense*1.5).round
+    end
     defmult=0x1000  
     if $fefieldeffect == 24 && @function==0xE0
       defmult=(defmult*0.5).round
@@ -3224,7 +3231,8 @@ class PokeBattle_Battler
     end
     # Chess Board Entry  
     if $fefieldeffect == 5  
-      if (self.hasWorkingAbility(:STALL)) && onactive  
+      if (self.hasWorkingAbility(:STALL)) && onactive
+        self.effects[PBEffects::StallEntry]==true
         @battle.pbDisplay(_INTL("{1}'s Stall boosted its defenses!",  
             pbThis,PBAbilities.getName(ability)))  
         if !pbTooHigh?(PBStats::DEFENSE)  

@@ -292,7 +292,7 @@ Events.onWildPokemonCreate+=proc {|sender,e|
       pokemon.pbLearnMove(:ZENHEADBUTT)
       pokemon.pbLearnMove(:GIGAIMPACT)
     when 47 # Corsola
-      pokemon.pbLearnMove(:MIST)
+      pokemon.pbLearnMove(:AQUARING)
     when 48 # Mystic Skorupi
       pokemon.form=1
       pokemon.resetMoves

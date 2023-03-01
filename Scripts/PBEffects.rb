@@ -137,6 +137,7 @@ begin
     SusCrit           = 144  
     Obstruct          = 145
     Octolock          = 146
+    StallEntry        = 705
     # -1 = no stance, 0 = defense stance, 1 = attack stance
     VespiCrest       = 146
     DesertsMark       = 147

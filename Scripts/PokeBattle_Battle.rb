@@ -5144,6 +5144,14 @@ def pbStartBattle(canlose=false)
       PBDebug.logonerr{
          pbEndOfRoundPhase
       }
+      for i in 0...4
+        if @battlers[i].hasWorkingAbility(:STALL) && @battlers[i].turncount>0
+          pbDisplay(_INTL("{1} stalls for time.",@battlers[i].name))
+          PBDebug.logonerr{
+            pbEndOfRoundPhase
+          }
+        end    
+      end 
       break if @decision>0
       @turncount+=1
     end
