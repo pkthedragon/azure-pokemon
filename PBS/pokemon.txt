@@ -15038,7 +15038,7 @@ WildItemRare=MENTALHERB
 BattlerPlayerY=24
 BattlerEnemyY=33
 BattlerAltitude=0
-Evolutions=LEAVANNY,Happiness,
+Evolutions=LEAVANNY,Item,LEAFSTONE
 [542]
 Name=Leavanny
 InternalName=LEAVANNY

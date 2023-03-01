@@ -2650,7 +2650,7 @@ MultipleForms.register(:MEOWTH,{
     },
     "getEvo"=>proc{|pokemon|
       next if pokemon.form==0                  # Normal
-      next [[1,0,53]]                          # Alola    [Happiness,,Persian]  
+      next [[4,28,53]]                          # Alola    [Happiness,,Persian]  
       next [[4,28,863]]                        # Galar    [Level,28,Perrserker]   
     },
     "onSetForm"=>proc{|pokemon,form|

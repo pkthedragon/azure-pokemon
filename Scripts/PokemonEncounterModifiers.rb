@@ -221,10 +221,8 @@ Events.onWildPokemonCreate+=proc {|sender,e|
       pokemon.form=1
       pokemon.resetMoves
       pokemon.calcStats
-    when 14 # Drifloon
-      pokemon.pbLearnMove(:TAILWIND)
-    when 14 # Drifloon
-      pokemon.pbLearnMove(:WEATHERBALL)
+    when 14 # Sewaddle
+      pokemon.pbLearnMove(:SYNTHESIS)
     when 15 # Whismur
       pokemon.pbLearnMove(:EXTRASENSORY)
     when 16 # Chikorita
