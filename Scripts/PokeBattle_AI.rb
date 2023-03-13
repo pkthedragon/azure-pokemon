@@ -37,7 +37,8 @@ class PokeBattle_Battle
     skill=PBTrainerAI.minimumSkill if skill<PBTrainerAI.minimumSkill
     $shutupmega=true
     #Temporarly mega-ing pokemon if it can    #perry
-    if (move.basedamage==0 || naturepri) && attacker.hasWorkingAbility(:PRANKSTER)
+#    if (move.basedamage==0 || naturepri) && attacker.hasWorkingAbility(:PRANKSTER)
+    if move.basedamage==0 && attacker.hasWorkingAbility(:PRANKSTER)
       prankpri = true
     end
     #Little bit of prep before getting into the case statement
@@ -13627,7 +13628,7 @@ class PokeBattle_Battle
         end
       end
     when 0x104 # Toxic Spikes
-      if attacker.pbOpposingSide.effects[PBEffects::ToxicSpikes]!=2
+      if attacker.pbOpposingSide.effects[PBEffects::ToxicSpikes]!=1
         if roles.include?(PBMonRoles::LEAD)
           score*=1.1
         end
@@ -20328,7 +20329,8 @@ class PokeBattle_Battle
           if (move.type == PBTypes::GROUND && move.name!="Thousand Arrows" && (opponent.ability == PBAbilities::LEVITATE || opponent.ability == PBAbilities::SOLARIDOL || opponent.ability == PBAbilities::LUNARIDOL || (isConst?(opponent.species,PBSpecies,:SKUNTANK) && opponent.hasWorkingItem(:SKUNCREST)) || (oppitemworks && opponent.item == PBItems::AIRBALLOON) || opponent.effects[PBEffects::MagnetRise]>0)) ||
             (move.type == PBTypes::FIRE && opponent.ability == PBAbilities::FLASHFIRE) ||
             (move.type == PBTypes::WATER && (opponent.ability == PBAbilities::WATERABSORB || opponent.ability == PBAbilities::STORMDRAIN || opponent.ability == PBAbilities::DRYSKIN)) ||
-            (move.type == PBTypes::GRASS && (opponent.ability == PBAbilities::SAPSIPPER || (isConst?(opponent.species,PBSpecies,:WHISCASH) && opponent.hasWorkingItem(:WHISCREST)))) ||
+            (move.isContactMove? && opponent.ability == PBAbilities::ILLUSORYSHROUD && (opponent.hp >= (opponent.totalhp/8).floor)) ||
+     (move.type == PBTypes::GRASS && (opponent.ability == PBAbilities::SAPSIPPER || (isConst?(opponent.species,PBSpecies,:WHISCASH) && opponent.hasWorkingItem(:WHISCREST)))) ||
             (move.type == PBTypes::ELECTRIC && (opponent.ability == PBAbilities::VOLTABSORB || opponent.ability == PBAbilities::LIGHTNINGROD || opponent.ability == PBAbilities::MOTORDRIVE)) ||
             (typemod<=4 && opponent.ability == PBAbilities::WONDERGUARD)  
             score=0

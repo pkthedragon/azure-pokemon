@@ -5208,7 +5208,7 @@ MultipleForms.register(:ELDEGOSS,{
    if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0) # Mystic
      next getID(PBAbilities,:COTTONMOLT)
    elsif pokemon.abilityIndex==1 || (pokemon.abilityflag && pokemon.abilityflag==1) # Mystic
-     next getID(PBAbilities,:NOGUARD)
+     next getID(PBAbilities,:BERSERK)
    elsif pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)
      next getID(PBAbilities,:SHEDSKIN)       
    end

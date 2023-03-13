@@ -4422,6 +4422,10 @@ class PokeBattle_Battler
       @battle.pbDisplay(_INTL("{1}'s Insomnia cured its sleep problem!",pbThis))
       self.status=0
     end
+    if self.hasWorkingAbility(:PASTELVEIL) && self.status==PBStatuses::POISON
+      @battle.pbDisplay(_INTL("{1}'s Pastel Veil cured its poison problem!",pbThis))
+      self.status=0
+    end
     if self.hasWorkingAbility(:IMMUNITY) && self.status==PBStatuses::POISON
       @battle.pbDisplay(_INTL("{1}'s Immunity cured its poison problem!",pbThis))
       self.status=0

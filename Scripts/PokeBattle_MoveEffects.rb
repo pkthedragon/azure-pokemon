@@ -8771,7 +8771,7 @@ end
 ################################################################################
 class PokeBattle_Move_104 < PokeBattle_Move
   def pbEffect(attacker,opponent,hitnum=0,alltargets=nil,showanimation=true)
-    if attacker.pbOpposingSide.effects[PBEffects::ToxicSpikes]>=2 || $fefieldeffect == 43
+    if attacker.pbOpposingSide.effects[PBEffects::ToxicSpikes]>=1 || $fefieldeffect == 43
       @battle.pbDisplay(_INTL("But it failed!"))
       return -1
     elsif $fefieldeffect == 21 || $fefieldeffect == 26

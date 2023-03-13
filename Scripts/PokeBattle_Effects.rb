@@ -145,12 +145,12 @@ class PokeBattle_Battler
 
   def pbSleep
     self.status=PBStatuses::SLEEP
-    self.statusCount=2
+    self.statusCount=3
     if $fefieldeffect==40
       opp=self.pbOppositeOpposing
       opppartner=opp.pbPartner
       if isConst?(opp.ability,PBAbilities,:SHADOWTAG) || isConst?(opp.pbPartner.ability,PBAbilities,:SHADOWTAG)
-        self.statusCount=3
+        self.statusCount=4
       end
     end
     pbCancelMoves
@@ -162,7 +162,7 @@ class PokeBattle_Battler
     if duration>0
       self.statusCount=duration
     else
-      self.statusCount=2
+      self.statusCount=3
     end
     pbCancelMoves
     @battle.pbCommonAnimation("Sleep",self,nil)
@@ -245,7 +245,7 @@ class PokeBattle_Battler
     end   
     return false if self.status!=0 || (isConst?(ability,PBAbilities,:COMATOSE) && $fefieldeffect!=1)
     return false if pbShieldsUp?
-    if hasWorkingAbility(:IMMUNITY) ||
+    if hasWorkingAbility(:IMMUNITY) || hasWorkingAbility(:PASTELVEIL) ||
        (hasWorkingAbility(:LEAFGUARD) &&
        ((@battle.pbWeather==PBWeather::SUNNYDAY && !hasWorkingItem(:UTILITYUMBRELLA))||
         $fefieldeffect == 15 || ($fefieldeffect == 33 &&
@@ -275,6 +275,7 @@ class PokeBattle_Battler
     return false if self.status!=0 || (isConst?(ability,PBAbilities,:COMATOSE) && $fefieldeffect!=1)
     return false if pbHasType?(:POISON) || pbHasType?(:STEEL)
     return false if hasWorkingAbility(:IMMUNITY)
+    return false if hasWorkingAbility(:PASTELVEIL)
     return false if pbShieldsUp?
     return false if hasWorkingAbility(:LEAFGUARD) &&
                    ((@battle.pbWeather==PBWeather::SUNNYDAY && !hasWorkingItem(:UTILITYUMBRELLA)) ||

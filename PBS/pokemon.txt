@@ -10894,7 +10894,7 @@ Pokedex=Made from soil, the shell on its back hardens when it drinks water. It l
 BattlerPlayerY=27
 BattlerEnemyY=21
 BattlerAltitude=0
-Evolutions=GROTLE,Level,18
+Evolutions=GROTLE,Level,16
 [388]
 Name=Grotle
 InternalName=GROTLE
@@ -10919,7 +10919,7 @@ Pokedex=It lives along water in forests. In the daytime, it leaves the forest to
 BattlerPlayerY=19
 BattlerEnemyY=13
 BattlerAltitude=0
-Evolutions=TORTERRA,Level,32
+Evolutions=TORTERRA,Level,36
 [389]
 Name=Torterra
 InternalName=TORTERRA
@@ -10971,7 +10971,7 @@ Pokedex=It agilely scales sheer cliffs to live atop craggy mountains. Its fire i
 BattlerPlayerY=25
 BattlerEnemyY=20
 BattlerAltitude=0
-Evolutions=MONFERNO,Level,14
+Evolutions=MONFERNO,Level,16
 [391]
 Name=Monferno
 InternalName=MONFERNO
@@ -14996,8 +14996,8 @@ Rareness=255
 Happiness=70
 Abilities=SWARM,CHLOROPHYLL
 HiddenAbility=OVERCOAT
-Moves=1,TACKLE,1,STRINGSHOT,8,BUGBITE,15,RAZORLEAF,22,STRUGGLEBUG,29,ENDURE,31,STICKYWEB,36,BUGBUZZ,43,FLAIL
-EggMoves=AGILITY,AIRSLASH,BATONPASS,CAMOUFLAGE,MEFIRST,MINDREADER,RAZORWIND,SCREECH,SILVERWIND,GRASSYTERRAIN
+Moves=1,TACKLE,1,STRINGSHOT,8,BUGBITE,15,RAZORLEAF,22,STRUGGLEBUG,29,ENDURE,31,FOCUSENERGY,36,BUGBUZZ,43,FLAIL
+EggMoves=AGILITY,AIRSLASH,BATONPASS,CAMOUFLAGE,MEFIRST,MINDREADER,RAZORWIND,SCREECH,SILVERWIND,GRASSYTERRAIN,STICKYWEB
 Compatibility=Bug
 StepsToHatch=3840
 Height=0.3
@@ -19919,7 +19919,7 @@ Pokedex=A bit of a dandy, it spends its free time preening its wings. Its preocc
 BattlerPlayerY=19
 BattlerEnemyY=20
 BattlerAltitude=0
-Evolutions=DECIDUEYE,Level,34
+Evolutions=DECIDUEYE,Level,36
 [724]
 Name=Decidueye
 InternalName=DECIDUEYE
@@ -19996,7 +19996,7 @@ Pokedex=At its throat, it bears a bell of fire. The bell rings brightly whenever
 BattlerPlayerY=16
 BattlerEnemyY=25
 BattlerAltitude=0
-Evolutions=INCINEROAR,Level,34
+Evolutions=INCINEROAR,Level,36
 [727]
 Name=Incineroar
 InternalName=INCINEROAR
@@ -20073,7 +20073,7 @@ Pokedex=It cares deeply for its companions. When its Trainer is feeling down, it
 BattlerPlayerY=19
 BattlerEnemyY=23
 BattlerAltitude=0
-Evolutions=PRIMARINA,Level,34
+Evolutions=PRIMARINA,Level,36
 [730]
 Name=Primarina
 InternalName=PRIMARINA

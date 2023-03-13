@@ -4229,7 +4229,7 @@ end
             pkmn.pbOwnSide.effects[PBEffects::ToxicSpikes]=0
             pbDisplay(_INTL("{1} absorbed the poison spikes!",pkmn.pbThis))
           elsif pkmn.pbCanPoisonSpikes? && !pkmn.hasWorkingItem(:HEAVYDUTYBOOTS)
-            if pkmn.pbOwnSide.effects[PBEffects::ToxicSpikes]==2
+            if pkmn.pbHasType?(:GRASS) || (pkmn.pbHasType?(:FAIRY) && $fefieldeffect != 42)
               pkmn.pbPoison(pkmn,true)
               pbDisplay(_INTL("{1} was badly poisoned!",pkmn.pbThis))
             else

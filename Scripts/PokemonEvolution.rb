@@ -717,12 +717,12 @@ end
 
 
 def pbMiniCheckEvolution(pokemon,evonib,level,poke)
-  marowakMaps=[14,71,62,85,90,95,102,112,113,155,158,321,357,358,359,360,362,368,396,400,401,403,404,408,434]
-  crabominableMaps=[146,150,168,165,171,174,178,181,189,217,269,338,339,340,341,343,344,345,346,366,395,479,480,481,482,483,485,486,490,491]
-  vikavoltMaps=[26,29,30,63,65,92,120,154,175,191,203,207,208,210,211,225,226,268,295,298,299,300,301,302,309,323,324,325,326,327,329,330,331,332,333,334,335,347,348,406,409,410,411,412,414,543]
-  yamaskMaps=[489,12,507,11,508]
-  mrmimeMaps=[75,146,150,165,171,174,178,181,269,470,471,479,480,481,482,483,485,486,490,491]
-  weezingMaps=[238,239,256,266,270,271,415]
+  marowakMaps=[]
+  crabominableMaps=[]
+  vikavoltMaps=[]
+  yamaskMaps=[117,121,122]
+  mrmimeMaps=[]
+  weezingMaps=[]
   eldegossMaps=[83,84,10,85,2,43,45,46,47,51,52,86,111,114,110,053,117,106,108,112,126,131,127,113,120,130,128,129,121,122,124,123,125,116]
   case evonib
     when PBEvolution::Happiness
@@ -844,7 +844,7 @@ end
 
 def pbMiniCheckEvolutionItem(pokemon,evonib,level,poke,item)
   # Checks for when an item is used on the Pokémon (e.g. an evolution stone)
-  exeggutorMaps=[26,29,30,63,65,92,120,154,175,191,203,207,208,210,211,225,226,268,295,298,299,300,301,302,309,323,324,325,326,327,329,330,331,332,333,334,335,347,348,406,409,410,411,412,414,543]
+  exeggutorMaps=[]
   case evonib
     when PBEvolution::Item
       case pokemon.species
