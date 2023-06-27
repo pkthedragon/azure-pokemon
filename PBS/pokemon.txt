@@ -24943,3 +24943,4 @@ BattlerPlayerY=8
 BattlerEnemyY=4
 BattlerAltitude=0
 Evolutions=
+

@@ -11557,21 +11557,45 @@ end
 # Strength Sap
 ################################################################################
 class PokeBattle_Move_172 < PokeBattle_Move
-  def pbEffect(attacker,opponent,hitnum=0,alltargets=nil,showanimation=true)  
+
+  def pbRoughStat(battler,stat)
+    stagemul=[2,2,2,2,2,2,2,3,4,5,6,7,8]
+    stagediv=[8,7,6,5,4,3,2,2,2,2,2,2,2]
+    stage=battler.stages[stat]+6
+    value=0
+    value=battler.attack if stat==PBStats::ATTACK
+    value=battler.defense if stat==PBStats::DEFENSE
+    value=battler.speed if stat==PBStats::SPEED
+    value=battler.spatk if stat==PBStats::SPATK
+    value=battler.spdef if stat==PBStats::SPDEF
+    return (value*1.0*stagemul[stage]/stagediv[stage]).floor
+  end
+
+  def pbEffect(attacker,opponent,hitnum=0,alltargets=nil,showanimation=true)
     return -1 if !opponent.pbCanReduceStatStage?(PBStats::ATTACK,true)
-    hpgain = opponent.attack    
+    if opponent.hasWorkingAbility(:CONTRARY)  #>>DemICE
+      opponent.effects[PBEffects::StrengthSap]=true
+    end
+    if opponent.hasWorkingAbility(:SAPSIPPER) && !(opponent.moldbroken)
+    opponent.effects[PBEffects::SapSipper]=true  #>>DemICE
+      if opponent.pbCanIncreaseStatStage?(PBStats::ATTACK)
+      opponent.pbIncreaseStatBasic(PBStats::ATTACK,1)
+      @battle.pbCommonAnimation("StatUp",opponent,nil)
+      @battle.pbDisplay(_INTL("{1}'s {2} raised its Attack!",
+      opponent.pbThis,PBAbilities.getName(opponent.ability)))
+      end
+      return -1
+    end
+    hpgain = pbRoughStat(opponent,PBStats::ATTACK)
     hpgain=(hpgain*1.3).floor if attacker.hasWorkingItem(:BIGROOT)
     hpgain=(hpgain*1.3).floor if $fefieldeffect == 8 # Swamp Field
     hpgain=(hpgain*1.3).floor if $fefieldeffect == 15 # Forest Field
     pbShowAnimation(@id,attacker,opponent,hitnum,alltargets,showanimation)
     opponent.pbReduceStat(PBStats::ATTACK,1,false)
-    if $fefieldeffects == 41 && opponent.pbCanReduceStatStage?(PBStats::SPATK,true)
-      opponent.pbReduceStat(PBStats::SPATK,1,false)
-    end
     if attacker.hp!=attacker.totalhp
       attacker.pbRecoverHP(hpgain,true)
       @battle.pbDisplay(_INTL("{1}'s HP was restored.",attacker.pbThis))
-    end    
+    end
     return 0
   end
 end

@@ -717,7 +717,7 @@ end
 
 
 def pbMiniCheckEvolution(pokemon,evonib,level,poke)
-  marowakMaps=[]
+  marowakMaps=[117,121,122]
   crabominableMaps=[]
   vikavoltMaps=[]
   yamaskMaps=[117,121,122]
