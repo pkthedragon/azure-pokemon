@@ -871,7 +871,7 @@ class PokeBattle_Battler
       @effects[PBEffects::FocusEnergy] = 0
       @effects[PBEffects::LaserFocus]  = 0
       @effects[PBEffects::GastroAcid]  = false
-      @effects[PBEffects::HealBlock]   = 0
+      @effects[PBEffects::Grievous]   = 0
       @effects[PBEffects::Ingrain]     = false
       @effects[PBEffects::LeechSeed]   = -1
       @effects[PBEffects::Petrification]   = -1
@@ -1003,6 +1003,7 @@ class PokeBattle_Battler
     @effects[PBEffects::Pursuit]          = false
     @effects[PBEffects::Rage]             = false
     @effects[PBEffects::Revenge]          = 0
+    @effects[PBEffects::Assassinate]      = false
     @effects[PBEffects::Rollout]          = 0
     @effects[PBEffects::Roost]            = false
     @effects[PBEffects::SkyDrop]          = false
@@ -4497,7 +4498,7 @@ class PokeBattle_Battler
       pbOpposing2.hasWorkingAbility(:UNNERVE))
     itemname=(self.item==0) ? "" : PBItems.getName(self.item)
     if self.hasWorkingItem(:BERRYJUICE) && self.hp<=(self.totalhp/2).floor && 
-      @effects[PBEffects::HealBlock]==0
+      @effects[PBEffects::Grievous]==0
       self.pbRecoverHP(20,true)
       @battle.pbDisplay(_INTL("{1}'s {2} restored health!",pbThis,itemname))   
       @pokemon.itemRecycle=self.item
@@ -4507,7 +4508,7 @@ class PokeBattle_Battler
     end        
     if !unnerver
       if self.hasWorkingItem(:ORANBERRY) && self.hp<=(self.totalhp/2).floor && 
-        @effects[PBEffects::HealBlock]==0
+        @effects[PBEffects::Grievous]==0
         berryconsumed = true
         if self.hasWorkingAbility(:RIPEN)
           self.pbRecoverHP(20,true)
@@ -4521,7 +4522,7 @@ class PokeBattle_Battler
         self.item=0
       end
       if self.hasWorkingItem(:SITRUSBERRY) && self.hp<=(self.totalhp/2).floor && 
-        @effects[PBEffects::HealBlock]==0
+        @effects[PBEffects::Grievous]==0
         berryconsumed = true
         if self.hasWorkingAbility(:RIPEN)
           self.pbRecoverHP((self.totalhp/2).floor,true)
@@ -4536,7 +4537,7 @@ class PokeBattle_Battler
       end
       #### JERICHO - 014 - START        
       if self.hasWorkingItem(:ENIGMABERRY) && self.damagestate.typemod>4 && 
-        @effects[PBEffects::HealBlock]==0
+        @effects[PBEffects::Grievous]==0
         berryconsumed = true
         if self.hasWorkingAbility(:RIPEN)
           self.pbRecoverHP((self.totalhp/2).floor,true)
@@ -4712,7 +4713,7 @@ class PokeBattle_Battler
         end
       end
       if berryconsumed && self.hasWorkingAbility(:CHEEKPOUCH) && 
-        @effects[PBEffects::HealBlock]==0
+        @effects[PBEffects::Grievous]==0
         self.pbRecoverHP((self.totalhp/3).floor,true)
         @battle.pbDisplay(_INTL("{1}'s {2} restored health!",pbThis,PBAbilities.getName(self.ability)))
         berryconsumed = false
@@ -4756,7 +4757,7 @@ class PokeBattle_Battler
       @pokemon.itemInitial=0 if @pokemon.itemInitial==self.item
       self.item=0
     end
-    if hpcure && self.hp!=self.totalhp && @effects[PBEffects::HealBlock]==0
+    if hpcure && self.hp!=self.totalhp && @effects[PBEffects::Grievous]==0
       if (isConst?(self.species,PBSpecies,:INFERNAPE) && isConst?(self.item,PBItems,:INFCREST)) || self.hasWorkingItem(:LEFTOVERS)
         pbRecoverHP((self.totalhp/16).floor,true)
         @battle.pbDisplay(_INTL("{1}'s {2} restored its HP a little!",pbThis,itemname))
@@ -4770,7 +4771,7 @@ class PokeBattle_Battler
     end
     
     if hpcure && self.hasWorkingItem(:BLACKSLUDGE)
-      if pbHasType?(:POISON) && @effects[PBEffects::HealBlock]==0
+      if pbHasType?(:POISON) && @effects[PBEffects::Grievous]==0
         if self.hp!=self.totalhp
           hpgain = self.totalhp/16
           hpgain = self.totalhp/8 if $fefieldeffect == 41
@@ -5496,11 +5497,11 @@ class PokeBattle_Battler
       return true
     end
     # TODO: "Before Protect" applies to Counter/Mirror Coat
-    if thismove.function==0xDE && ((target.status!=PBStatuses::SLEEP && (!target.hasWorkingAbility(:COMATOSE) && $fefieldeffect!=1) && (!user.hasWorkingAbility(:WORLDOFNIGHTMARES))) || !(user.effects[PBEffects::HealBlock]==0))  # Dream Eater
+    if thismove.function==0xDE && ((target.status!=PBStatuses::SLEEP && (!target.hasWorkingAbility(:COMATOSE) && $fefieldeffect!=1) && (!user.hasWorkingAbility(:WORLDOFNIGHTMARES))) || !(user.effects[PBEffects::Grievous]==0))  # Dream Eater
       @battle.pbDisplay(_INTL("{1} wasn't affected!",target.pbThis))
       return false
     end
-    if (thismove.function==0xDD || thismove.function==0x139 || thismove.function==0x158) && !(user.effects[PBEffects::HealBlock]==0) # Absorbtion Moves
+    if (thismove.function==0xDD || thismove.function==0x139 || thismove.function==0x158) && !(user.effects[PBEffects::Grievous]==0) # Absorbtion Moves
       @battle.pbDisplay(_INTL("{1} wasn't affected!",target.pbThis))
       return false
     end   
@@ -5842,8 +5843,8 @@ class PokeBattle_Battler
           pbThis,thismove.name))
       return false
     end
-    if @effects[PBEffects::HealBlock]>0 && thismove.isHealingMove?
-      @battle.pbDisplay(_INTL("{1} can't use {2} after the Heal Block!",
+    if @effects[PBEffects::Grievous]>0 && thismove.isHealingMove?
+      @battle.pbDisplay(_INTL("{1} can't use {2} because of their grievous wound!",
           pbThis,thismove.name))
       return false
     end
@@ -8077,7 +8078,7 @@ class PokeBattle_Battler
       #       trigger here - which ones?
       if !((user.hasWorkingAbility(:SHEERFORCE) || @battle.SilvallyCheck(user,PBTypes::GROUND)) && thismove.addlEffect>0)
         # Shell Bell
-        if user.hasWorkingItem(:SHELLBELL) && turneffects[PBEffects::TotalDamage]>0 && @effects[PBEffects::HealBlock]==0
+        if user.hasWorkingItem(:SHELLBELL) && turneffects[PBEffects::TotalDamage]>0 && @effects[PBEffects::Grievous]==0
           hpgain=user.pbRecoverHP([(turneffects[PBEffects::TotalDamage]/8).floor,1].max,true)
           if hpgain>0
             @battle.pbDisplay(_INTL("{1} restored a little HP using its Shell Bell!",user.pbThis))

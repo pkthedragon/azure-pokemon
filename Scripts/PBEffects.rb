@@ -34,7 +34,7 @@ begin
     FutureSightUser   = 30
     GastroAcid        = 31
     Grudge            = 32
-    HealBlock         = 33
+    Grievous          = 33
     HealingWish       = 34
     HelpingHand       = 35
     HyperBeam         = 36
@@ -68,6 +68,7 @@ begin
     Pursuit           = 64
     Rage              = 65
     Revenge           = 66
+    Assassinate       = 92
     Rollout           = 67
     Roost             = 68
     SkyDrop           = 69

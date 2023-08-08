@@ -395,6 +395,10 @@ class PokeBattle_Move
       mod1=2 if mod1==0
       mod2=2 if mod2==0
     end
+    if attacker.hasWorkingAbility(:HEADSTRONG) || opponent.hasWorkingAbility(:HEADSTRONG)
+      mod1=2 if mod1==0
+      mod2=2 if mod2==0
+    end 
     if attacker.hasWorkingAbility(:SCRAPPY) || opponent.effects[PBEffects::Foresight] || (@battle.SilvallyCheck(opponent,PBTypes::NORMAL) rescue nil)
       mod1=2 if isConst?(otype1,PBTypes,:GHOST) &&
         (isConst?(atype,PBTypes,:NORMAL) || isConst?(atype,PBTypes,:FIGHTING))
@@ -467,6 +471,10 @@ class PokeBattle_Move
       mod1=2 if mod1==0
       mod2=2 if mod2==0
     end
+    if isConst?(attacker.ability,PBAbilities,:HEADSTRONG) || (opponent.ability,PBAbilities,:HEADSTRONG)
+      mod1=2 if mod1==0
+      mod2=2 if mod2==0
+    end    
     if isConst?(attacker.ability,PBAbilities,:SCRAPPY) || @battle.SilvallyCheck(attacker,PBTypes::NORMAL)
       mod1=2 if isConst?(otype1,PBTypes,:GHOST) &&
         (isConst?(atype,PBTypes,:NORMAL) || isConst?(atype,PBTypes,:FIGHTING))
@@ -592,7 +600,7 @@ class PokeBattle_Move
        (opponent.hasWorkingAbility(:VOLTABSORB) && !(opponent.moldbroken) && (isConst?(type,PBTypes,:ELECTRIC) || FieldTypeChange(attacker,opponent,1,true)==PBTypes::ELECTRIC)) ||
        (opponent.hasWorkingAbility(:WATERABSORB) && !(opponent.moldbroken) && (isConst?(type,PBTypes,:WATER) || FieldTypeChange(attacker,opponent,1,true)==PBTypes::WATER)) ||
        (isConst?(opponent.species,PBSpecies,:DRUDDIGON) && opponent.hasWorkingItem(:DRUDDICREST) && !(opponent.moldbroken) && (isConst?(type,PBTypes,:FIRE) || FieldTypeChange(attacker,opponent,1,true)==PBTypes::FIRE))
-       if opponent.effects[PBEffects::HealBlock]==0
+       if opponent.effects[PBEffects::Grievous]==0
         if opponent.pbRecoverHP((opponent.totalhp/4).floor,true)>0
           @battle.pbDisplay(_INTL("{1}'s {2} restored its HP!",
              opponent.pbThis,PBAbilities.getName(opponent.ability)))
@@ -671,7 +679,7 @@ class PokeBattle_Move
     end
     if opponent.hasWorkingItem(:CHILLDRIVE) && (opponent.pokemon.species == PBSpecies::GENESECT) && $fefieldeffect==24 &&
       (isConst?(type,PBTypes,:ICE) || FieldTypeChange(attacker,opponent,1,true)==PBTypes::ICE)
-      if opponent.effects[PBEffects::HealBlock]==0
+      if opponent.effects[PBEffects::Grievous]==0
         if opponent.pbRecoverHP((opponent.totalhp/4).floor,true)>0
           @battle.pbDisplay(_INTL("{1}'s {2} restored its HP!",
           opponent.pbThis,PBItems.getName(opponent.item)))
@@ -685,7 +693,7 @@ class PokeBattle_Move
     end
     if opponent.hasWorkingItem(:DOUSEDRIVE) && (opponent.pokemon.species == PBSpecies::GENESECT) && $fefieldeffect==24 &&
       (isConst?(type,PBTypes,:ICE) || FieldTypeChange(attacker,opponent,1,true)==PBTypes::WATER)
-      if opponent.effects[PBEffects::HealBlock]==0
+      if opponent.effects[PBEffects::Grievous]==0
         if opponent.pbRecoverHP((opponent.totalhp/4).floor,true)>0
           @battle.pbDisplay(_INTL("{1}'s {2} restored its HP!",
           opponent.pbThis,PBItems.getName(opponent.item)))
@@ -1750,6 +1758,9 @@ class PokeBattle_Move
     end
 #### KUROTSUNE - 003 START
     if attacker.hasWorkingAbility(:ANALYTIC) && opponent.hasMovedThisRound?
+      damagemult = (damagemult*1.3).round
+    end
+    if attacker.hasWorkingAbility(:ASSASSINATE) && opponent.effects[PBEffects::Assassinate]==true
       damagemult = (damagemult*1.3).round
     end
 #### KUROTSUNE - 003 END
@@ -4646,7 +4657,10 @@ class PokeBattle_Move
     end
     if attacker.hasWorkingAbility(:WATERBUBBLE) && type == PBTypes::WATER
       damage=(damage*=2).round
-    end      
+    end
+    if attacker.hasWorkingAbility(:AMBIDEXTROUS) && (type!=attacker.pokemon.type1 || type!=attacker.pokemon.type2)
+      damage=(damage*=1.3).round
+    end
     # STAB
     if (attacker.pbHasType?(type) || attacker.isShadow? && (type==attacker.pokemon.type1 || type==attacker.pokemon.type2) || (attacker.hasWorkingAbility(:STEELWORKER) && type==PBTypes::STEEL) ||
       (isConst?(attacker.species,PBSpecies,:EMPOLEON) && attacker.hasWorkingItem(:EMPCREST) && type==PBTypes::ICE) ||
@@ -5212,6 +5226,7 @@ class PokeBattle_Move
       opponent.effects[PBEffects::MirrorCoat]=damage
       opponent.effects[PBEffects::MirrorCoatTarget]=attacker.index
     end
+    opponent.effects[PBEffects::Assassinate]=true
     opponent.lastHPLost=damage # for Revenge/Focus Punch/Metal Burst
     opponent.lastAttacker=attacker.index # for Revenge/Metal Burst
   end

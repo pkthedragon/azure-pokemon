@@ -5748,7 +5748,7 @@ def pbStartBattle(canlose=false)
         when 2 # Grassy Field
           next if i.hp<=0
           if !i.isAirborne? 
-            if i.effects[PBEffects::HealBlock]==0 && i.totalhp != i.hp
+            if i.effects[PBEffects::Grievous]==0 && i.totalhp != i.hp
               pbDisplay(_INTL("The grassy terrain healed the Pokemon on the field.",i.pbThis)) if endmessage == false
               endmessage=true
               hpgain=(i.totalhp/16).floor
@@ -5814,7 +5814,7 @@ def pbStartBattle(canlose=false)
           end 
           if i.hasWorkingAbility(:POISONHEAL)
             if !i.isAirborne?     
-              if i.effects[PBEffects::HealBlock]==0
+              if i.effects[PBEffects::Grievous]==0
                 if i.hp<i.totalhp
                   pbCommonAnimation("Poison",i,nil)
                   i.pbRecoverHP((i.totalhp/8).floor,true)
@@ -5830,7 +5830,7 @@ def pbStartBattle(canlose=false)
             i.pbPoison(i)
           end
           if isConst?(i.ability,PBAbilities,:POISONHEAL)
-            if i.effects[PBEffects::HealBlock]==0
+            if i.effects[PBEffects::Grievous]==0
               if i.hp<i.totalhp
                 pbCommonAnimation("Poison",i,nil)
                 i.pbRecoverHP((i.totalhp/8).floor,true)
@@ -5840,7 +5840,7 @@ def pbStartBattle(canlose=false)
           end
         when 15 # Forest Field      
           next if i.hp<=0
-          if i.hasWorkingAbility(:SAPSIPPER) && i.effects[PBEffects::HealBlock]==0        
+          if i.hasWorkingAbility(:SAPSIPPER) && i.effects[PBEffects::Grievous]==0        
             hpgain=(i.totalhp/16).floor
             hpgain=i.pbRecoverHP(hpgain,true)
             pbDisplay(_INTL("{1} drank tree sap to recover!",i.pbThis)) if hpgain>0
@@ -5920,7 +5920,7 @@ def pbStartBattle(canlose=false)
 # eruption check - insane, too much, but makes typh op, so i no question
         when 18 # Shortcircuit Field
           next if i.hp<=0
-          if i.hasWorkingAbility(:VOLTABSORB) && i.effects[PBEffects::HealBlock]==0       
+          if i.hasWorkingAbility(:VOLTABSORB) && i.effects[PBEffects::Grievous]==0       
             hpgain=(i.totalhp/16).floor
             hpgain=i.pbRecoverHP(hpgain,true)
             pbDisplay(_INTL("{1} absorbed stray electricity!",i.pbThis)) if hpgain>0
@@ -5928,7 +5928,7 @@ def pbStartBattle(canlose=false)
         when 19 # Wasteland
           if i.hasWorkingAbility(:POISONHEAL)
             if !i.isAirborne?     
-              if i.effects[PBEffects::HealBlock]==0
+              if i.effects[PBEffects::Grievous]==0
                 if i.hp<i.totalhp
                   pbCommonAnimation("Poison",i,nil)
                   i.pbRecoverHP((i.totalhp/8).floor,true)
@@ -5939,7 +5939,7 @@ def pbStartBattle(canlose=false)
           end
         when 21 # Water Surface
           next if i.hp<=0
-          if i.hasWorkingAbility(:WATERABSORB) && i.effects[PBEffects::HealBlock]==0
+          if i.hasWorkingAbility(:WATERABSORB) && i.effects[PBEffects::Grievous]==0
             if !i.isAirborne?
               hpgain=(i.totalhp/16).floor
               hpgain=i.pbRecoverHP(hpgain,true)
@@ -6004,7 +6004,7 @@ def pbStartBattle(canlose=false)
           end
           if i.hasWorkingAbility(:POISONHEAL)
             if !i.isAirborne?     
-              if i.effects[PBEffects::HealBlock]==0
+              if i.effects[PBEffects::Grievous]==0
                 if i.hp<i.totalhp
                   pbCommonAnimation("Poison",i,nil)
                   i.pbRecoverHP((i.totalhp/8).floor,true)
@@ -6015,7 +6015,7 @@ def pbStartBattle(canlose=false)
           end
           if i.pbHasType?(:POISON) && (i.hasWorkingAbility(:WATERABSORB) || i.hasWorkingAbility(:DRYSKIN))
             if !i.isAirborne?     
-              if i.effects[PBEffects::HealBlock]==0
+              if i.effects[PBEffects::Grievous]==0
                 if i.hp<i.totalhp
                   pbCommonAnimation("Poison",i,nil)
                   i.pbRecoverHP((i.totalhp/8).floor,true)
@@ -6027,7 +6027,7 @@ def pbStartBattle(canlose=false)
         when 35 # New World
           $fecounter = 1
         when 38 # Dimension Field
-          if i.effects[PBEffects::HealBlock]!=0
+          if i.effects[PBEffects::Grievous]!=0
             @scene.pbDamageAnimation(i,0)
             i.pbReduceHP((i.totalhp/16).floor)
             pbDisplay(_INTL("{1} was damaged by the Heal Block!",i.pbThis))
@@ -6048,7 +6048,7 @@ def pbStartBattle(canlose=false)
           end 
           if i.hasWorkingAbility(:POISONHEAL)
             if !i.isAirborne?     
-              if i.effects[PBEffects::HealBlock]==0
+              if i.effects[PBEffects::Grievous]==0
                 if i.hp<i.totalhp
                   pbCommonAnimation("Poison",i,nil)
                   i.pbRecoverHP((i.totalhp/8).floor,true)
@@ -6069,7 +6069,7 @@ def pbStartBattle(canlose=false)
         when 42 # Bewitched Woods
           next if i.hp<=0
           if !i.isAirborne? && i.pbHasType?(:GRASS)
-            if i.effects[PBEffects::HealBlock]==0 && i.totalhp != i.hp
+            if i.effects[PBEffects::Grievous]==0 && i.totalhp != i.hp
               pbDisplay(_INTL("The woods healed the grass Pokemon on the field.",i.pbThis)) if endmessage == false
               endmessage=true
               if !(@field.effects[PBEffects::GrassyTerrain]>0)
@@ -6114,7 +6114,7 @@ def pbStartBattle(canlose=false)
         if  !($fefieldeffect==2 || $fefieldeffect==42) # Grassy Terrain - Terrain Overlay
           next if i.hp<=0   
           if !i.isAirborne? 
-            if i.effects[PBEffects::HealBlock]==0 && i.totalhp != i.hp
+            if i.effects[PBEffects::Grievous]==0 && i.totalhp != i.hp
               pbDisplay(_INTL("The grassy terrain healed the Pokemon on the field.",i.pbThis)) if endmessage == false
               endmessage=true
               hpgain=(i.totalhp/16).floor
@@ -6125,7 +6125,7 @@ def pbStartBattle(canlose=false)
         if !($fefieldeffect==15)
           next if i.hp<=0   
           if !i.isAirborne? 
-            if i.hasWorkingAbility(:SAPSIPPER) && i.effects[PBEffects::HealBlock]==0  && i.totalhp != i.hp
+            if i.hasWorkingAbility(:SAPSIPPER) && i.effects[PBEffects::Grievous]==0  && i.totalhp != i.hp
               endmessage=true  
               hpgain=(i.totalhp/16).floor
               hpgain=i.pbRecoverHP(hpgain,true)
@@ -6655,13 +6655,13 @@ def pbStartBattle(canlose=false)
       end
       # Rain Dish
       if pbWeather==PBWeather::RAINDANCE && !i.hasWorkingItem(:UTILITYUMBRELLA) && (i.hasWorkingAbility(:RAINDISH) ||
-       ( isConst?(i.species,PBSpecies,:CASTFORM) && isConst?(i.item,PBItems,:CASTCREST) && i.form==2) ) && i.effects[PBEffects::HealBlock]==0
+       ( isConst?(i.species,PBSpecies,:CASTFORM) && isConst?(i.item,PBItems,:CASTCREST) && i.form==2) ) && i.effects[PBEffects::Grievous]==0
         hpgain=i.pbRecoverHP((i.totalhp/16).floor,true)
         pbDisplay(_INTL("{1}'s Rain Dish restored its HP a little!",i.pbThis)) if hpgain>0
       end
       # Dry Skin
       if isConst?(i.ability,PBAbilities,:DRYSKIN)
-        if pbWeather==PBWeather::RAINDANCE && !i.hasWorkingItem(:UTILITYUMBRELLA) && i.effects[PBEffects::HealBlock]==0 
+        if pbWeather==PBWeather::RAINDANCE && !i.hasWorkingItem(:UTILITYUMBRELLA) && i.effects[PBEffects::Grievous]==0 
           hpgain=i.pbRecoverHP((i.totalhp/8).floor,true)
           pbDisplay(_INTL("{1}'s Dry Skin was healed by the rain!",i.pbThis)) if hpgain>0
         elsif pbWeather==PBWeather::SUNNYDAY && !i.hasWorkingItem(:UTILITYUMBRELLA)
@@ -6673,7 +6673,7 @@ def pbStartBattle(canlose=false)
             @scene.pbDamageAnimation(i,0)
             hploss=i.pbReduceHP((i.totalhp/8).floor)
             pbDisplay(_INTL("{1}'s Dry Skin absorbed the poison!",i.pbThis)) if hploss>0
-          elsif i.effects[PBEffects::HealBlock]==0
+          elsif i.effects[PBEffects::Grievous]==0
             hpgain=i.pbRecoverHP((i.totalhp/8).floor,true)
             pbDisplay(_INTL("{1}'s Dry Skin was healed by the poison!",i.pbThis)) if hpgain>0
           end
@@ -6682,12 +6682,12 @@ def pbStartBattle(canlose=false)
           hploss=i.pbReduceHP((i.totalhp/8).floor)
           pbDisplay(_INTL("{1}'s Dry Skin was hurt by the desert air!",i.pbThis)) if hploss>0
         elsif ($fefieldeffect == 3 || $fefieldeffect == 8 || @field.effects[PBEffects::MistyTerrain]>0) && # Misty/Swamp Field 
-          i.effects[PBEffects::HealBlock]==0     
+          i.effects[PBEffects::Grievous]==0     
           hpgain=(i.totalhp/16).floor
           hpgain=i.pbRecoverHP(hpgain,true)
           pbDisplay(_INTL("{1}'s Dry Skin was healed by the mist!",i.pbThis)) if hpgain>0
         elsif ($fefieldeffect == 21 || $fefieldeffect == 22) && #Water fields 
-          i.effects[PBEffects::HealBlock]==0     
+          i.effects[PBEffects::Grievous]==0     
           hpgain=(i.totalhp/16).floor
           hpgain=i.pbRecoverHP(hpgain,true)
           pbDisplay(_INTL("{1}'s Dry Skin was healed by the water!",i.pbThis)) if hpgain>0
@@ -6699,11 +6699,11 @@ def pbStartBattle(canlose=false)
       end
       # Druddigon Crest
       if isConst?(i.species,PBSpecies,:DRUDDIGON) && isConst?(i.item,PBItems,:DRUDDICREST)
-        if pbWeather==PBWeather::SUNNYDAY && i.effects[PBEffects::HealBlock]==0 
+        if pbWeather==PBWeather::SUNNYDAY && i.effects[PBEffects::Grievous]==0 
           hpgain=i.pbRecoverHP((i.totalhp/8).floor,true)
           pbDisplay(_INTL("{1} was replenished by the sunlight!",i.pbThis)) if hpgain>0
         elsif $fefieldeffect == 7 || $fefieldeffect == 16 || $fefieldeffect == 32  # Volcanic/Volcano Top Field/Dragon's Den
-          i.effects[PBEffects::HealBlock]==0     
+          i.effects[PBEffects::Grievous]==0     
           hpgain=(i.totalhp/16).floor
           hpgain=i.pbRecoverHP(hpgain,true)
           pbDisplay(_INTL("{1} was healed by the heat!",i.pbThis)) if hpgain>0
@@ -6713,7 +6713,7 @@ def pbStartBattle(canlose=false)
       if (pbWeather==PBWeather::HAIL || $fefieldeffect == 13 || $fefieldeffect == 39 ||
        $fefieldeffefct == 28) &&
        (i.hasWorkingAbility(:ICEBODY)) && 
-       i.effects[PBEffects::HealBlock]==0
+       i.effects[PBEffects::Grievous]==0
         hpgain=i.pbRecoverHP((i.totalhp/16).floor,true)
         pbDisplay(_INTL("{1}'s Ice Body restored its HP a little!",i.pbThis)) if hpgain>0
       end
@@ -6849,7 +6849,7 @@ def pbStartBattle(canlose=false)
           if i.hp<=0
             return if !i.pbFaint
           end
-        elsif i.effects[PBEffects::HealBlock]==0
+        elsif i.effects[PBEffects::Grievous]==0
           hpgain=(i.totalhp/16).floor
           hpgain=(hpgain*1.3).floor if isConst?(i.item,PBItems,:BIGROOT) || isConst?(i.species,PBSpecies,:TANGROWTH) && i.hasWorkingItem(:TANGROWTHCREST)
           hpgain=(hpgain*2).floor if $fefieldeffect == 3 || 
@@ -6876,10 +6876,10 @@ def pbStartBattle(canlose=false)
             hpgain=(i.totalhp/4).floor            
           elsif ($fefieldeffect == 15 || ($fefieldeffect == 33 && $fecounter >0))
             hpgain=(i.totalhp/8).floor
-          elsif i.effects[PBEffects::HealBlock]==0
+          elsif i.effects[PBEffects::Grievous]==0
             hpgain=(i.totalhp/16).floor
           end
-          if i.effects[PBEffects::HealBlock]==0
+          if i.effects[PBEffects::Grievous]==0
             hpgain=(hpgain*1.3).floor if isConst?(i.item,PBItems,:BIGROOT) || isConst?(i.species,PBSpecies,:TANGROWTH) && i.hasWorkingItem(:TANGROWTHCREST)
             hpgain=i.pbRecoverHP(hpgain,true)
             pbDisplay(_INTL("{1} absorbed nutrients with its roots!",i.pbThis)) if hpgain>0
@@ -6929,7 +6929,7 @@ def pbStartBattle(canlose=false)
             recipient.pbReduceHP(hploss,true)
             pbDisplay(_INTL("{1} sucked up the liquid ooze!",recipient.pbThis))
             hploss= hploss / 2 if $fefieldeffect == 19 || $fefieldeffect == 26
-          elsif recipient.effects[PBEffects::HealBlock]==0
+          elsif recipient.effects[PBEffects::Grievous]==0
             hploss=(hploss*1.3).floor if recipient.hasWorkingItem(:BIGROOT) || isConst?(i.species,PBSpecies,:TANGROWTH) && i.hasWorkingItem(:TANGROWTHCREST)
             recipient.pbRecoverHP(hploss,true)
             pbDisplay(_INTL("{1}'s health was sapped by Leech Seed!",i.pbThis))
@@ -6956,7 +6956,7 @@ def pbStartBattle(canlose=false)
             hploss=i.pbReduceHP((i.totalhp/8).floor,true)
           end
           hploss= hploss * 2 if $fefieldeffect == 19
-          recipient.effects[PBEffects::HealBlock]==0
+          recipient.effects[PBEffects::Grievous]==0
           hploss=(hploss*1.3).floor if recipient.hasWorkingItem(:BIGROOT)
           recipient.pbRecoverHP(hploss,true)
           pbDisplay(_INTL("{1}'s health was drained by {2}!",i.pbThis,recipient.pbThis))
@@ -6981,7 +6981,7 @@ def pbStartBattle(canlose=false)
       if i.status==PBStatuses::POISON  && !i.hasWorkingAbility(:MAGICGUARD) &&  !(i.hasWorkingAbility(:WONDERGUARD) && $fefieldeffect == 44)
         if i.hasWorkingAbility(:POISONHEAL) || (isConst?(i.species,PBSpecies,:ZANGOOSE) &&
            isConst?(i.item,PBItems,:ZANGCREST))
-          if i.effects[PBEffects::HealBlock]==0
+          if i.effects[PBEffects::Grievous]==0
             if i.hp<i.totalhp
               pbCommonAnimation("Poison",i,nil)
               i.pbRecoverHP((i.totalhp/8).floor,true)
@@ -7233,9 +7233,9 @@ def pbStartBattle(canlose=false)
     # Heal Block
     for i in priority
       next if i.isFainted?
-      if i.effects[PBEffects::HealBlock]>0
-        i.effects[PBEffects::HealBlock]-=1
-        if i.effects[PBEffects::HealBlock]==0
+      if i.effects[PBEffects::Grievous]>0
+        i.effects[PBEffects::Grievous]-=1
+        if i.effects[PBEffects::Grievous]==0
           pbDisplay(_INTL("The heal block on {1} ended.",i.pbThis))
         end
       end
@@ -7878,7 +7878,7 @@ def pbStartBattle(canlose=false)
     end
     #sleepyrainbow
     if i.status==PBStatuses::SLEEP
-      if ($fefieldeffect == 9 || @field.effects[PBEffects::Rainbow]>0) && i.effects[PBEffects::HealBlock]==0#Rainbow Field
+      if ($fefieldeffect == 9 || @field.effects[PBEffects::Rainbow]>0) && i.effects[PBEffects::Grievous]==0#Rainbow Field
       hpgain=(i.totalhp/16).floor
       hpgain=(hpgain*1.3).floor if isConst?(i.item,PBItems,:BIGROOT) || isConst?(i.species,PBSpecies,:TANGROWTH) && i.hasWorkingItem(:TANGROWTHCREST)
       hpgain=i.pbRecoverHP(hpgain,true)
@@ -8157,6 +8157,15 @@ def pbStartBattle(canlose=false)
           i.pbUpdate(true)
           scene.pbChangePokemon(i,i.pokemon)
           pbDisplay(_INTL("{1} transformed!",i.pbThis))
+      end
+    end
+    # Grievous
+    for i in priority
+      if i.effects[PBEffects::Grievous]>0
+        i.effects[PBEffects::Grievous]-=0
+        if i.effects[PBEffects::Grievous]==0
+          pbDisplay(_INTL("{1}'s wounds healed!",i.pbThis))
+        end
       end
     end
 #### SAVAGERY - START

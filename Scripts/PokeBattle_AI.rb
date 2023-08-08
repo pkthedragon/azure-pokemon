@@ -9268,7 +9268,7 @@ class PokeBattle_Battle
     when 0xBB # Heal Block
       olddata = PBMove.new(opponent.lastMoveUsed)
       oldmove = PokeBattle_Move.pbFromPBMove(self,olddata,opponent)
-      if opponent.effects[PBEffects::HealBlock]>0
+      if opponent.effects[PBEffects::Grievous]>0
         score=0
       else
         if ((attacker.pbSpeed>pbRoughStat(opponent,PBStats::SPEED,skill)) ^ (@trickroom!=0)) || ((!attacker.abilitynulled && attacker.ability == PBAbilities::PRANKSTER) && !opponent.pbHasType?(:DARK))
@@ -17869,7 +17869,7 @@ class PokeBattle_Battle
             score*=0
           end
         end
-        if attacker.effects[PBEffects::HealBlock]>0 || opponent.effects[PBEffects::HealBlock]>0
+        if attacker.effects[PBEffects::Grievous]>0 || opponent.effects[PBEffects::Grievous]>0
           score*=0
         end
       end
@@ -18160,7 +18160,7 @@ class PokeBattle_Battle
       end
     when 0x172 # Strength Sap
       if opponent.effects[PBEffects::Substitute]<=0
-        if attacker.effects[PBEffects::HealBlock]>0
+        if attacker.effects[PBEffects::Grievous]>0
           score*=0
         else
           if checkAIdamage(aimem,attacker,opponent,skill)>attacker.hp
@@ -20462,6 +20462,10 @@ class PokeBattle_Battle
       mod1=2 if mod1==0
       mod2=2 if mod2==0
     end
+    if (!attacker.abilitynulled && attacker.ability == PBAbilities::HEADSTRONG) || (!opponent.abilitynulled && opponent.ability == PBAbilities::HEADSTRONG)
+      mod1=2 if mod1==0
+      mod2=2 if mod2==0
+    end 
     if (!attacker.abilitynulled && attacker.ability == PBAbilities::SCRAPPY) || SilvallyCheck(attacker,PBTypes::NORMAL) ||
       opponent.effects[PBEffects::Foresight]
       mod1=2 if isConst?(otype1,PBTypes,:GHOST) &&
@@ -21020,7 +21024,7 @@ class PokeBattle_Battle
       return 0
     elsif (move.id == PBMoves::ALLYSWITCH || move.id == PBMoves::AROMATICMIST ||
         move.id == PBMoves::ENTRAINMENT || move.id == PBMoves::FORESIGHT ||
-        move.id == PBMoves::GUARDSWAP || move.id == PBMoves::HEALBLOCK ||
+        move.id == PBMoves::GUARDSWAP || move.id == PBMoves::Grievous ||
         move.id == PBMoves::IMPRISON || move.id == PBMoves::INSTRUCT ||
         move.id == PBMoves::FAIRYLOCK || move.id == PBMoves::LASERFOCUS ||
         move.id == PBMoves::HELPINGHAND || move.id == PBMoves::MAGICROOM ||
@@ -21490,6 +21494,12 @@ class PokeBattle_Battle
     # Analytic
     if skill>=PBTrainerAI.mediumSkill
       if (!attacker.abilitynulled && attacker.ability == PBAbilities::ANALYTIC) && (opponent.hasMovedThisRound?) #|| hardswitch)
+        basedamage = (basedamage*1.3).round
+      end
+    end
+    # Assassinate
+    if skill>=PBTrainerAI.mediumSkill
+      if (!attacker.abilitynulled && attacker.ability == PBAbilities::ASSASSINATE) && (opponent.effects[PBEffects::Assassinate]==true) #|| hardswitch)
         basedamage = (basedamage*1.3).round
       end
     end
@@ -23970,6 +23980,10 @@ class PokeBattle_Battle
           damage=(damage*=1.5).round
         end
       end
+      # Ambidextrous
+      if !attacker.abilitynulled && attacker.ability == PBAbilities::AMBIDEXTROUS) && (type!=attacker.pokemon.type1 || type!=attacker.pokemon.type2)
+        damage=(damage*=1.3).round
+      end
     end
     # STAB
     if (((attacker.pbHasType?(type)) || attacker.isShadow? && (type==attacker.pokemon.type1 || type==attacker.pokemon.type2) || (!attacker.abilitynulled && attacker.ability == PBAbilities::PROTEAN) || (!attacker.abilitynulled && attacker.ability == PBAbilities::LIBERO)) && !((attacker.pokemon.species == PBSpecies::SILVALLY) && SilvallyCheck(attacker,type))) && !(attacker.effects[PBEffects::DesertsMark])
@@ -24365,7 +24379,7 @@ class PokeBattle_Battle
     if (((!opponent.abilitynulled && opponent.ability == PBAbilities::DRYSKIN) && !(opponent.moldbroken)) && (isConst?(type,PBTypes,:WATER) || move.FieldTypeChange(attacker,opponent,1,true)==PBTypes::WATER)) ||
       ((!opponent.abilitynulled && opponent.ability == PBAbilities::VOLTABSORB) && !(opponent.moldbroken) && (isConst?(type,PBTypes,:ELECTRIC) || move.FieldTypeChange(attacker,opponent,1,true)==PBTypes::ELECTRIC)) ||
       ((!opponent.abilitynulled && opponent.ability == PBAbilities::WATERABSORB) && !(opponent.moldbroken) && (isConst?(type,PBTypes,:WATER) || move.FieldTypeChange(attacker,opponent,1,true)==PBTypes::WATER))
-      if opponent.effects[PBEffects::HealBlock]==0
+      if opponent.effects[PBEffects::Grievous]==0
         return 0
       end
     end
@@ -27939,7 +27953,7 @@ class PokeBattle_Battle
       healing += 0.0625 if ($fefieldeffect==21 || $fefieldeffect==22) &&  !attacker.abilitynulled &&  attacker.ability == PBAbilities::WATERABSORB
       healing += 0.0625 if $fefieldeffect==42 && !attacker.pbHasType?(:GRASS) 
     end
-    healing*=0 if attacker.effects[PBEffects::HealBlock]>0
+    healing*=0 if attacker.effects[PBEffects::Grievous]>0
     healing*=2 if (!attacker.abilitynulled && attacker.ability == PBAbilities::STALL) || (!opponent.abilitynulled && opponent.ability == PBAbilities::STALL)    
     return healing if heal
     if attacker.effects[PBEffects::FutureSight]==1
@@ -34505,6 +34519,14 @@ def pbSwitchTo(currentmon,party,skill,pivoting=false,hardswitch=false,incomingmo
           monscore+=30
         end
         if opponent2.pbHasType?(PBTypes::GHOST)
+          monscore+=30
+        end
+      end
+      if (battler.ability == PBAbilities::HEADSTRONG) || (opponent1.ability == PBAbilities::HEADSTRONG) || (opponent2.ability == PBAbilities::HEADSTRONG)
+        if opponent1.pbHasType?(PBTypes::GHOST) || opponent1.pbHasType?(PBTypes::FLYING)
+          monscore+=30
+        end
+        if opponent2.pbHasType?(PBTypes::GHOST) || opponent1.pbHasType?(PBTypes::FLYING)
           monscore+=30
         end
       end

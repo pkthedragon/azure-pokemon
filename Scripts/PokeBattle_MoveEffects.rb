@@ -6213,20 +6213,20 @@ end
 
 
 ################################################################################
-# For 5 rounds, disables the target's healing moves.
+# For 5 rounds, disables the target's healing moves. FOR CHANGE
 ################################################################################
 class PokeBattle_Move_0BB < PokeBattle_Move
   def pbEffect(attacker,opponent,hitnum=0,alltargets=nil,showanimation=true)
-      if isConst?(@id,PBMoves,:HEALBLOCK) && attacker.effects[PBEffects::MagicBounced] && (attacker.index == 0 || attacker.index == 1)
-        if !(attacker.pbPartner.effects[PBEffects::HealBlock]>0)
+      if isConst?(@id,PBMoves,:) && attacker.effects[PBEffects::MagicBounced] && (attacker.index == 0 || attacker.index == 1)
+        if !(attacker.pbPartner.effects[PBEffects::]>0)
            pbShowAnimation(@id,opponent,attacker.pbPartner,hitnum,alltargets,showanimation)
-           attacker.pbPartner.effects[PBEffects::HealBlock]=5
+           attacker.pbPartner.effects[PBEffects::]=5
            @battle.pbDisplay(_INTL("{1} was prevented from healing!",attacker.pbPartner.pbThis))          
         end
         @battle.pbDisplay(_INTL("{1} bounced the {2} back!",attacker.pbThis,PBMoves.getName(@id)))
         attacker.effects[PBEffects::MagicBounced]=false 
       end         
-    if opponent.effects[PBEffects::HealBlock]>0
+    if opponent.effects[PBEffects::]>0
       @battle.pbDisplay(_INTL("But it failed!"))
       return -1
     end    
@@ -6235,11 +6235,11 @@ class PokeBattle_Move_0BB < PokeBattle_Move
       return -1
     end
     pbShowAnimation(@id,attacker,opponent,hitnum,alltargets,showanimation)
-    opponent.effects[PBEffects::HealBlock]=5
+    opponent.effects[PBEffects::]=5
     @battle.pbDisplay(_INTL("{1} was prevented from healing!",opponent.pbThis))
-    if isConst?(@id,PBMoves,:HEALBLOCK) && attacker.effects[PBEffects::MagicBounced] && !(opponent.pbPartner.effects[PBEffects::HealBlock]>0) && (attacker.index == 2 || attacker.index == 3)
+    if isConst?(@id,PBMoves,:) && attacker.effects[PBEffects::MagicBounced] && !(opponent.pbPartner.effects[PBEffects::]>0) && (attacker.index == 2 || attacker.index == 3)
       attacker.effects[PBEffects::MagicBounced]=false
-      opponent.pbPartner.effects[PBEffects::HealBlock]=5
+      opponent.pbPartner.effects[PBEffects::]=5
       @battle.pbDisplay(_INTL("{1} was prevented from healing!",opponent.pbPartner.pbThis))
     end       
     return 0
