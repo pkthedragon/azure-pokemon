@@ -838,7 +838,7 @@
 841,BINDINGWORD,Binding Word,000,35,NORMAL,Special,100,15,0,00,0,bef,"Traps the target for four to five turns, dealing 1/8th max HP damage each turn and suppressing the target's held items, stat stages, and ability for the duration."
 842,BLUESHIFT,Blue Shift,000,0,BUG,Status,0,5,0,10,0,,"The user faints, until the end of the next turn, all type matchups are inverted."
 843,CORALBURST,Coral Burst,000,80,WATER,Special,100,10,0,00,0,bef,"High critical hit ratio, if the target resists this move, halves in power and switches the user out."
-844,NIGHTFALL,Nightfall,0DD,65,DARK,Phyical,100,20,0,08,0,bef,"Drains 50% damage dealt, targets all Pokemon around the user."
+844,NIGHTFALL,Nightfall,0DD,65,DARK,Physical,100,20,0,08,0,bef,"Drains 50% damage dealt, targets all Pokemon around the user."
 845,CIRCADIANRRHYTHM,Circadian Rhythm,000,0,GROUND,Status,0,5,0,10,0,d,"Ignores accuracy checks, puts the target to sleep and raises their offenses and speed each sleep turn."
 846,GLACIALSTATE,Glacial State,0B9,80,ICE,Physical,100,10,0,00,-1,bef,"Always goes last, disables the target's last used move."
 847,ELECTROGENESIS,Electrogenesis,000,0,ELECTRIC,Status,0,5,0,10,0,i,"The user restores 50% max HP, 66% during electric terrain."
