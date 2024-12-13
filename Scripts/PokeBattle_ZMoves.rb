@@ -346,12 +346,12 @@ class PokeBattle_ZMoves < PokeBattle_Move
                   @battle.pbDisplay(_INTL("Your team's Aurora Veil wore off!"))
                 end
               end
-              if battler.pbOpposingSide.effects[PBEffects::AreniteWall]>0
-                battler.pbOpposingSide.effects[PBEffects::AreniteWall]=0
+              if battler.pbOpposingSide.effects[PBEffects::DuneDefense]>0
+                battler.pbOpposingSide.effects[PBEffects::DuneDefense]=0
                 if !@battle.pbIsOpposing?(battler.index)
-                  @battle.pbDisplay(_INTL("The opposing team's Arenite Wall wore off!"))
+                  @battle.pbDisplay(_INTL("The opposing team's Dune Defense wore off!"))
                 else
-                  @battle.pbDisplay(_INTL("Your team's Arenite Wall wore off!"))
+                  @battle.pbDisplay(_INTL("Your team's Dune Defense wore off!"))
                 end
               end
             end
@@ -745,7 +745,6 @@ class PokeBattle_ZMoves < PokeBattle_Move
             quakedrop =0 if (!@battle.battlers[i].abilitynulled && @battle.battlers[i].ability == PBAbilities::ROCKHEAD)
             quakedrop/=3 if (!@battle.battlers[i].abilitynulled && @battle.battlers[i].ability == PBAbilities::PRISMARMOR)
             quakedrop =0 if @battle.battlers[i].effects[PBEffects::Protect] == true
-            quakedrop=0 if @battle.battlers[i].isbossmon
             quakedrop =0 if @battle.battlers[i].pbOwnSide.effects[PBEffects::WideGuard] == true
             quakedrop-=1 if @battle.battlers[i].effects[PBEffects::Endure] == true
             quakedrop =0 if @battle.battlers[i].effects[PBEffects::KingsShield] == true

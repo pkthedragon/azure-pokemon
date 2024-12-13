@@ -350,6 +350,7 @@ module Events
   @@OnEndBattle=Event.new
   @@OnMapCreate=Event.new
   @@OnAction=Event.new
+  @@OnBossCreate=Event.new
 
 # Triggers when the player presses the Action button on the map.
   def self.onAction=(v)
@@ -498,6 +499,17 @@ module Events
 
   def self.onWildPokemonCreate
     @@OnWildPokemonCreate
+  end
+
+  # Triggers whenever a boss Pokémon is created
+# Parameters: 
+# e[0] - Boss being created
+  def self.onBossCreate=(v)
+    @@OnBossCreate=v
+  end
+
+  def self.onBossCreate
+    @@OnBossCreate
   end
 
 # Triggers whenever an NPC trainer's Pokémon party is loaded
@@ -1061,6 +1073,19 @@ def pbGetEnvironment
 end
 
 def pbGenerateWildPokemon(species,level)
+  bossdata = $bosscache
+  bossspecies = species
+  if $game_variables[:Difficulty_Mode] == 1
+    bossspecies = ((species.to_s) +"_EASY").intern
+    bossspecies = species if !bossdata[bossspecies]
+  elsif $game_variables[:Difficulty_Mode] == 2
+    bossspecies = ((species.to_s) +"_INTENSE").intern
+    bossspecies = species if !bossdata[bossspecies]
+  end
+  if bossdata[bossspecies]
+    Events.onBossCreate.trigger(nil,species)
+  end
+  return pbLoadWildBoss(bossspecies,bossdata) if bossdata[bossspecies]
   genwildpoke=PokeBattle_Pokemon.new(species,level,$Trainer)
   items=genwildpoke.wildHoldItems
   chances=[50,5,1]
@@ -1101,7 +1126,7 @@ def pbWildBattle(species,level,variable=nil,canescape=true,canlose=false)
     $PokemonGlobal.nextBattleBack=nil
     return true
   end
-  if species.is_a?(String) || species.is_a?(Symbol)
+  if species.is_a?(String) || (species.is_a?(Symbol) && !($bosscache[species]))
     species=getID(PBSpecies,species)
   end
   handled=[nil]
@@ -1181,10 +1206,7 @@ def pbWildBattle(species,level,variable=nil,canescape=true,canlose=false)
   Input.update
   pbSet(variable,decision)
   Events.onWildBattleEnd.trigger(nil,species,level,decision)
-  $game_switches[290]=false
-  $game_variables[704]=0
-  $game_variables[699]=0
-  $game_switches[1998]=false
+  bossHandler(decision, genwildpoke)
   if decision==4
     Achievements.incrementProgress("POKEMON_CAUGHT",1)
     if shinyMon
@@ -1204,6 +1226,9 @@ def pbWildBattleBoss(species,level,variable=nil,canescape=true,canlose=false)
     $PokemonGlobal.nextBattleME=nil
     $PokemonGlobal.nextBattleBack=nil
     return true
+  end
+  if species.is_a?(String) || (species.is_a?(Symbol) && !($bosscache[species]))
+    species=getID(PBSpecies,species)
   end
   currentlevels=[]
   for i in $Trainer.party
@@ -1289,12 +1314,9 @@ def pbWildBattleBoss(species,level,variable=nil,canescape=true,canlose=false)
     end
     Events.onEndBattle.trigger(nil,decision)
   }
-  $game_switches[290]=false
-  $game_variables[704]=0
-  $game_variables[699]=0
-  $game_switches[1998]=false
   Input.update
   pbSet(variable,decision)
+  bossHandler(decision, genwildpoke)
   return (decision!=2 && decision!=5)
 end
 
@@ -1308,11 +1330,11 @@ def pbDoubleWildBattle(species1,level1,species2,level2,variable=nil,canescape=tr
     $PokemonGlobal.nextBattleME=nil
     $PokemonGlobal.nextBattleBack=nil
     return true
-  end
-  if species1.is_a?(String) || species1.is_a?(Symbol)
+  end 
+  if species1.is_a?(String) || (species1.is_a?(Symbol) && !($bosscache[species1]))
     species1=getID(PBSpecies,species1)
   end
-  if species2.is_a?(String) || species2.is_a?(Symbol)
+  if species2.is_a?(String) || (species2.is_a?(Symbol) && !($bosscache[species2]))
     species2=getID(PBSpecies,species2)
   end
   currentlevels=[]
@@ -2052,6 +2074,7 @@ end
 def pbWaitForInput(msgwindow,message,frames)
   return true if FISHINGAUTOHOOK
   Kernel.pbMessageDisplay(msgwindow,message,false)
+  frames *= 3 if $speed_up
   frames.times do
     Graphics.update
     Input.update

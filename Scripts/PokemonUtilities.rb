@@ -2193,8 +2193,8 @@ end
 # Returns the first unfainted, non-egg Pokémon in the player's party.
 def pbFirstAblePokemon(variableNumber)
   for i in 0...$Trainer.party.length
-    p=$Trainer.party[i]
-    if p && !p.isEgg? && p.hp>0
+    j=$Trainer.party[i]
+    if j && !j.isEgg? && j.hp>0
       pbSet(variableNumber,i)
       return $Trainer.party[i]
     end
@@ -2207,9 +2207,9 @@ end
 # Pokémon given by _pokemonIndex_ were removed from the party.
 def pbCheckAble(pokemonIndex)
   for i in 0...$Trainer.party.length
-    p=$Trainer.party[i]
+    j=$Trainer.party[i]
     next if i==pokemonIndex
-    return true if p && !p.isEgg? && p.hp>0
+    return true if j && !j.isEgg? && j.hp>0
   end
   return false
 end
@@ -2226,7 +2226,7 @@ def pbBalancedLevel(party)
   return 1 if party.length==0
   # Calculate the mean of all levels
   sum=0
-  party.each{|p| sum+=p.level }
+  party.each{|i| sum+=i.level }
   return 1 if sum==0
   average=sum.to_f/party.length.to_f
   # Calculate the standard deviation

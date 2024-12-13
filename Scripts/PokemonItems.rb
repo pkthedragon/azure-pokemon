@@ -1228,7 +1228,7 @@ def pbSpeciesCompatible?(species,move,pokemon)
           (move == PBMoves::ROOST) ||  (move == PBMoves::ROCKPOLISH) ||
           (move == PBMoves::GYROBALL) ||  (move == PBMoves::DRAGONTAIL) ||
           (move == PBMoves::NATUREPOWER) ||  (move == PBMoves::ROCKCLIMB) ||
-          (move == PBMoves::ARENITEWALL) ||  (move == PBMoves::BRUTALSWING) ||
+          (move == PBMoves::DUNEDEFENSE) ||  (move == PBMoves::BRUTALSWING) ||
           (move == PBMoves::PINMISSILE) ||  (move == PBMoves::SCREECH) ||
           (move == PBMoves::SELFDESTRUCT) ||  (move == PBMoves::SCARYFACE) ||
           (move == PBMoves::BEATUP) ||  (move == PBMoves::FAKETEARS) ||
@@ -1264,7 +1264,7 @@ def pbSpeciesCompatible?(species,move,pokemon)
           (move == PBMoves::ROOST) ||  (move == PBMoves::ROCKPOLISH) ||
           (move == PBMoves::GYROBALL) ||  (move == PBMoves::DRAGONTAIL) ||
           (move == PBMoves::NATUREPOWER) ||  (move == PBMoves::ROCKCLIMB) ||
-          (move == PBMoves::ARENITEWALL) ||  (move == PBMoves::BRUTALSWING) ||
+          (move == PBMoves::DUNEDEFENSE) ||  (move == PBMoves::BRUTALSWING) ||
           (move == PBMoves::PINMISSILE) ||  (move == PBMoves::SCREECH) ||
           (move == PBMoves::SELFDESTRUCT) ||  (move == PBMoves::SCARYFACE) ||
           (move == PBMoves::BEATUP) ||  (move == PBMoves::FAKETEARS) ||
@@ -1300,7 +1300,7 @@ def pbSpeciesCompatible?(species,move,pokemon)
           (move == PBMoves::ROOST) ||  (move == PBMoves::ROCKPOLISH) ||
           (move == PBMoves::GYROBALL) ||  (move == PBMoves::DRAGONTAIL) ||
           (move == PBMoves::NATUREPOWER) ||  (move == PBMoves::ROCKCLIMB) ||
-          (move == PBMoves::ARENITEWALL) ||  (move == PBMoves::BRUTALSWING) ||
+          (move == PBMoves::DUNEDEFENSE) ||  (move == PBMoves::BRUTALSWING) ||
           (move == PBMoves::PINMISSILE) ||  (move == PBMoves::SCREECH) ||
           (move == PBMoves::SELFDESTRUCT) ||  (move == PBMoves::SCARYFACE) ||
           (move == PBMoves::BEATUP) ||  (move == PBMoves::FAKETEARS) ||
@@ -1356,7 +1356,7 @@ def pbSpeciesCompatible?(species,move,pokemon)
           (move == PBMoves::ECHOEDVOICE) ||  (move == PBMoves::SCALD) ||
           (move == PBMoves::STONEEDGE) ||  (move == PBMoves::ROCKSLIDE) ||
           (move == PBMoves::CONFIDE) ||  (move == PBMoves::DOUSE) ||
-          (move == PBMoves::ARENITEWALL) ||  (move == PBMoves::WHIRLPOOL) ||
+          (move == PBMoves::DUNEDEFENSE) ||  (move == PBMoves::WHIRLPOOL) ||
           (move == PBMoves::AVALANCHE) ||  (move == PBMoves::DYNAMICPUNCH)
           return false
         end
@@ -1393,7 +1393,7 @@ def pbSpeciesCompatible?(species,move,pokemon)
           (move == PBMoves::ECHOEDVOICE) ||  (move == PBMoves::SCALD) ||
           (move == PBMoves::STONEEDGE) ||  (move == PBMoves::ROCKSLIDE) ||
           (move == PBMoves::CONFIDE) ||  (move == PBMoves::DOUSE) ||
-          (move == PBMoves::ARENITEWALL) ||  (move == PBMoves::WHIRLPOOL) ||
+          (move == PBMoves::DUNEDEFENSE) ||  (move == PBMoves::WHIRLPOOL) ||
           (move == PBMoves::AVALANCHE) ||  (move == PBMoves::DYNAMICPUNCH)
           return false
         end
@@ -1430,7 +1430,7 @@ def pbSpeciesCompatible?(species,move,pokemon)
           (move == PBMoves::ECHOEDVOICE) ||  (move == PBMoves::SCALD) ||
           (move == PBMoves::STONEEDGE) ||  (move == PBMoves::ROCKSLIDE) ||
           (move == PBMoves::CONFIDE) ||  (move == PBMoves::DOUSE) ||
-          (move == PBMoves::ARENITEWALL) ||  (move == PBMoves::WHIRLPOOL) ||
+          (move == PBMoves::DUNEDEFENSE) ||  (move == PBMoves::WHIRLPOOL) ||
           (move == PBMoves::AVALANCHE) ||  (move == PBMoves::DYNAMICPUNCH)
           return false
         end

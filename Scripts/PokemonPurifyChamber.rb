@@ -1289,10 +1289,10 @@ class PurifyChamberScene
     startindex=0
     set=@sprites["setview"].set
     for i in 0...@chamber.setCount(set)*2
-      p=PurifyChamberHelper.pbGetPokemon2(@chamber,set,i)
-      if p
+      j=PurifyChamberHelper.pbGetPokemon2(@chamber,set,i)
+      if j
         startindex=party.length if i==pos
-        party.push(p)
+        party.push(j)
         indexes.push(i)
       end
     end

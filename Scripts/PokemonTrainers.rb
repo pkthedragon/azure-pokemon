@@ -1,4 +1,4 @@
-TPSPECIES   = 0
+TSPECIES   = 0
 TPLEVEL     = 1
 TPITEM      = 2
 TPMOVE1     = 3
@@ -30,7 +30,7 @@ TPDEFOB       = 28
 TPSPEOB       = 29
 TPSPAOB       = 30
 TPSPDOB       = 31
-TPDEFAULTS = [0,10,0,0,0,0,0,nil,nil,0,false,nil,10,70,nil,false,0,17,0,0,0,0,0,0,false,false,0,0,0,0,0,0]
+TPDEFAULTS = [0,10,0,0,0,0,0,nil,nil,0,false,nil,10,70,nil,false,0,17,0,0,0,0,0,0,false,nil,0,0,0,0,0,0]
 
 def pbLoadTrainerDifficult(trainerid,trainername,partyid=0,procedure=nil)
   if trainerid.is_a?(String) || trainerid.is_a?(Symbol)
@@ -59,8 +59,23 @@ def pbLoadTrainerDifficult(trainerid,trainername,partyid=0,procedure=nil)
     opponent=PokeBattle_Trainer.new(name,thistrainerid)
     opponent.setForeignID($Trainer) if $Trainer
     for poke in trainer[3]
-      species=poke[TPSPECIES]
-      level = DifficultModes.applyLevelProcedure(poke[1],procedure)
+      boss = poke[TPBOSS].is_a?(Symbol) ? $bosscache[poke[TPBOSS]] : nil
+      if boss
+        if $game_variables[:Difficulty_Mode] == 1
+          boss = ((poke[TPBOSS].to_s) +"_EASY").intern
+          boss = poke[TPBOSS] if !$bosscache[boss]
+        elsif $game_variables[:Difficulty_Mode] == 2
+          boss = ((poke[TPBOSS].to_s) +"_INTENSE").intern
+          boss = poke[TPBOSS] if !$bosscache[boss]
+        end
+        if $bosscache[boss]
+          Events.onBossCreate.trigger(nil,poke[TPBOSS])
+        end
+        party.push(pbLoadWildBoss(boss,$bosscache))
+        next
+      end
+      species=poke[TSPECIES]
+      level = DifficultModes.applyLevelProcedure(poke[TPLEVEL],procedure)
       pokemon=PokeBattle_Pokemon.new(species,level,opponent)
       pokemon.form=poke[TPFORM]
       pokemon.resetMoves
@@ -96,9 +111,6 @@ def pbLoadTrainerDifficult(trainerid,trainername,partyid=0,procedure=nil)
       end
       if poke[TPPREMEGA]=="true"
         pokemon.enablepremega
-      end
-      if poke[TPBOSS]=="true"
-        pokemon.enablebossmon
       end
       #-MOTO
       # New EV method
@@ -170,6 +182,12 @@ def pbLoadTrainerDifficult(trainerid,trainername,partyid=0,procedure=nil)
     break
   end
   return success ? [opponent,items,party] : nil
+end
+
+def bossFunction(boss,bossid,pokemon)
+  pokemon.enablebossmon 
+  pokemon.shieldCount = boss.shieldCount
+  pokemon.bossId = bossid
 end
 
 def pbConvertTrainerData
@@ -432,7 +450,6 @@ def pbDoubleTrainerBattle(trainerid1, trainername1, trainerparty1, endspeech1,
   pbSet(variable,decision)
   Achievements.incrementProgress("TRAINER_BATTLES",1)
   $game_variables[704]=0
-  $game_variables[699]=0
   $game_variables[702]=0
   $game_variables[298]=0
   $game_variables[708]=0
@@ -624,13 +641,11 @@ def pbTrainerBattle(trainerid,trainername,endspeech,
       end
     end
   }
-  $game_switches[290]=false
+  $game_switches[:No_Catch]=false
   $game_variables[704]=0
-  $game_variables[699]=0
   $game_variables[702]=0
   $game_variables[298]=0
   $game_variables[708]=0
-  $game_switches[1998]=false
   $game_switches[1121]=false
   Input.update
   pbSet(variable,decision)

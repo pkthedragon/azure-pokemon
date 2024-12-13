@@ -333,5 +333,5 @@
 375,WINDPOWER,Wind Power,"Becomes charged when hit by a wind move or when tailwind is used."
 376,WINDRIDER,Wind Rider,"Draws in wind moves to raise offenses, using tailwind raises offenses."
 377,ZEROTOHERO,Zero to Hero,"Changes forms when switching out."
-388,SELFLESS,Selfless,"Protects incoming ally after switching out."
+378,SELFLESS,Selfless,"Protects incoming ally after switching out."
 

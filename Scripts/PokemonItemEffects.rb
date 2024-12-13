@@ -4329,7 +4329,7 @@ ItemHandlers::BattleUseOnBattler.add(:GUARDSPEC,lambda{|item,battler,scene|
 
 ItemHandlers::BattleUseOnBattler.add(:POKEDOLL,lambda{|item,battler,scene|
    battle=battler.battle
-   if battle.opponent || $game_switches[1998]==true
+   if battle.opponent || (battler.pbOpposing1.isbossmon || battler.pbOpposing2.isbossmon)
      scene.pbDisplay(_INTL("Can't use that here."))
      return false
    else

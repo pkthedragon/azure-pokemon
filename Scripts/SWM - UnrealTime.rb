@@ -214,17 +214,3 @@ def Time.now
   return $game_screen.aGetTime
 end
 #####/MODDED
-
-class Scene_Map
-  def call_menu
-    $game_player.straighten
-    $game_map.update
-    sscene=PokemonMenu_Scene.new
-    sscreen=PokemonMenu.new(sscene) 
-    $game_screen.aUpdateClock #####MODDED
-    sscreen.pbStartPokemonMenu
-    $game_temp.menu_calling = false 
-    $game_screen.aUpdateClock #####MODDED
-  end
-end
-

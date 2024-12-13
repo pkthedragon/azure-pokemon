@@ -51,6 +51,7 @@ class PokeBattle_Pokemon
   attr_accessor(:natureflag)  # Forces a particular nature
   attr_accessor(:shinyflag)   # Forces the shininess (true/false)
   attr_accessor(:ribbons)     # Array of ribbons
+  attr_accessor(:abilityoverride) # Forces specific ability (necessary for boss effects)
   attr_accessor :cool,:beauty,:cute,:smart,:tough,:sheen # Contest stats
   attr_accessor(:critted)
   attr_accessor(:obhp)  
@@ -215,6 +216,9 @@ class PokeBattle_Pokemon
 
 # Returns the ID of this Pokemon's ability.
   def ability
+    if abilityoverride && abilityoverride>0
+      return abilityoverride
+    end
     abil=abilityIndex
     ret1=$pkmn_dex[@species][12][0]
     ret2=$pkmn_dex[@species][12][1]
@@ -311,8 +315,8 @@ class PokeBattle_Pokemon
     @premega = true
   end  
   def isPreMega?
-    return false if !($Trainer.numbadges>=12 && $game_variables[200] == 2) && @premega==true
-    return true if ($Trainer.numbadges>=12 && $game_variables[200] == 2) && @premega==true
+    return false if !($Trainer.numbadges>=12 && $game_variables[:Difficulty_Mode] == 2) && @premega==true
+    return true if ($Trainer.numbadges>=12 && $game_variables[:Difficulty_Mode] == 2) && @premega==true
   end
 
 ################################################################################
@@ -983,6 +987,7 @@ class PokeBattle_Pokemon
     @poklevel = level
     calcStats
     @hp=@totalhp
+    @abilityoverride=0
     if $game_map
       @obtainMap=$game_map.map_id
       @obtainText=nil

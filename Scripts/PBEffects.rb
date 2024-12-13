@@ -34,7 +34,7 @@ begin
     FutureSightUser   = 30
     GastroAcid        = 31
     Grudge            = 32
-    Grievous          = 33
+    HealBlock         = 33
     HealingWish       = 34
     HelpingHand       = 35
     HyperBeam         = 36
@@ -140,9 +140,7 @@ begin
     Octolock          = 146
     StallEntry        = 705
     # -1 = no stance, 0 = defense stance, 1 = attack stance
-    VespiCrest       = 146
     DesertsMark       = 147
-    Resusitated       = 147 # AMOGUS
     WillMega          = 148  
     WorldOfNightmares  = 149
     Petrification   = 150
@@ -171,7 +169,7 @@ begin
     CraftyShield  = 312
     MatBlock      = 313
     AuroraVeil    = 314
-    AreniteWall   = 315
+    DuneDefense   = 315
     # These effects apply to the battle (i.e. both sides) - starts from 400
     Gravity       = 400
     MagicRoom     = 401
@@ -185,6 +183,7 @@ begin
     HeavyRain     = 408
     MudSport      = 409
     WaterSport    = 410
+    SosBuffer     = 411
     # V13 + Overlay Terrains - Grassy/Electric/Misty/Psychic
     GrassyTerrain = 501
     MistyTerrain = 502
@@ -196,7 +195,6 @@ begin
     SpecialUsage = 701
     PassedTrying = 702
     TotalDamage  = 703
-    ShieldLife   = 704
   end
 rescue Exception
   if $!.is_a?(SystemExit) || "#{$!.class}"=="Reset"

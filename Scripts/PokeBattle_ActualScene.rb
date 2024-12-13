@@ -630,7 +630,7 @@ class PokemonDataBox < SpriteWrapper
   attr_reader :animatingHP
   attr_reader :animatingEXP
 
-  def initialize(battler,doublebattle,viewport=nil)
+  def initialize(battler,doublebattle,viewport=nil,battle)
     super(viewport)
     @explevel=0
     @battler=battler
@@ -668,6 +668,9 @@ class PokemonDataBox < SpriteWrapper
           @databox=AnimatedBitmap.new("Graphics/Pictures/Battle/battleFoeBoxD")
           @spriteX=PokeBattle_SceneConstants::FOEBOXD2_X
           @spriteY=PokeBattle_SceneConstants::FOEBOXD2_Y
+          if @battler.issossmon # SOS PLACEMENT HEALTH BAR
+            @spriteY+=28
+          end
       end
     else
       case @battler.index
@@ -678,7 +681,7 @@ class PokemonDataBox < SpriteWrapper
           @showhp=true
           @showexp=true
         when 1 
-#          if $game_switches[1998]
+#          if $game_switches[:Boss_Battle]
 #            @databox=AnimatedBitmap.new("Graphics/Pictures/Battle/boss_bar")
 #          else
             @databox=AnimatedBitmap.new("Graphics/Pictures/Battle/battleFoeBoxS")
@@ -1031,7 +1034,7 @@ class PokemonDataBox < SpriteWrapper
          Rect.new(0,(@battler.status-1)*16,44,16))
     end
     hpGaugeSize=PokeBattle_SceneConstants::HPGAUGESIZE
-#    if $game_switches[1998] && !((@battler.index&1)==0)
+#    if $game_switches[:Boss_Battle] && !((@battler.index&1)==0)
 #      hpGaugeSize=240
 #    end
     hpgauge=@battler.totalhp==0 ? 0 : (self.hp*hpGaugeSize/@battler.totalhp)
@@ -1050,7 +1053,7 @@ class PokemonDataBox < SpriteWrapper
     # fill with black (shows what the HP used to be)
     hpGaugeX=PokeBattle_SceneConstants::HPGAUGE_X
     hpGaugeY=PokeBattle_SceneConstants::HPGAUGE_Y
-#    if $game_switches[1998] && !((@battler.index&1)==0)
+#    if $game_switches[:Boss_Battle] && !((@battler.index&1)==0)
 #      hpGaugeY=25
 #    end
     if @animatingHP && self.hp>0
@@ -1179,7 +1182,7 @@ class PokeballSendOutAnimation
     @PokemonBattlerSprite.tone=Tone.new(248,248,248,248)
     @pokeballsprite=IconSprite.new(0,0,sprite.viewport)
     @pokeballsprite.setBitmap(sprintf("Graphics/Pictures/Battle/ball%02d",@ballused))
-    if (doublebattle && !($game_switches[1998]==true || $game_variables[246]==17))
+    if doublebattle
       @spritex=PokeBattle_SceneConstants::FOEBATTLERD1_X if pkmn.index==1 
       @spritex=PokeBattle_SceneConstants::FOEBATTLERD2_X if pkmn.index==3
     else
@@ -1318,7 +1321,7 @@ class PokeballPlayerSendOutAnimation
   STARTZOOM=0.125
 
 #### JERICHO - 001 - START  
-  def initialize(sprite,spritehash,pkmn,doublebattle,illusionpoke)
+  def initialize(sprite,spritehash,pkmn,doublebattle,illusionpoke,battle)
 #### JERICHO - 001 - END
     @disposed=false
     @PokemonBattlerSprite=sprite
@@ -1326,8 +1329,9 @@ class PokeballPlayerSendOutAnimation
     @PokemonBattlerSprite.visible=false
     @PokemonBattlerSprite.tone=Tone.new(248,248,248,248)
     @spritehash=spritehash
+    playerpos = battle.sosbattle==3 ? [PokeBattle_SceneConstants::PLAYERBATTLER_X,PokeBattle_SceneConstants::PLAYERBATTLER_Y] : [PokeBattle_SceneConstants::PLAYERBATTLERD1_X,PokeBattle_SceneConstants::PLAYERBATTLERD1_Y]
     if doublebattle
-      @spritex=PokeBattle_SceneConstants::PLAYERBATTLERD1_X if pkmn.index==0
+      @spritex=playerpos[0] if pkmn.index==0
       @spritex=PokeBattle_SceneConstants::PLAYERBATTLERD2_X if pkmn.index==2
     else
       @spritex=PokeBattle_SceneConstants::PLAYERBATTLER_X
@@ -1342,9 +1346,9 @@ class PokeballPlayerSendOutAnimation
     end #ILLUSION
 #### JERICHO - 001 - END    
     if doublebattle
-      @spritey+=PokeBattle_SceneConstants::PLAYERBATTLERD1_Y if pkmn.index==0
+      @spritey+=playerpos[1] if pkmn.index==0
       @spritey+=PokeBattle_SceneConstants::PLAYERBATTLERD2_Y if pkmn.index==2
-      @endspritey+=PokeBattle_SceneConstants::PLAYERBATTLERD1_Y if pkmn.index==0
+      @endspritey+=playerpos[1] if pkmn.index==0
       @endspritey+=PokeBattle_SceneConstants::PLAYERBATTLERD2_Y if pkmn.index==2
     else
       @spritey+=PokeBattle_SceneConstants::PLAYERBATTLER_Y
@@ -1718,21 +1722,28 @@ class PokeBattle_Scene
   
   # to update databox shield display every hit
   def pbUpdateShield(shield, index)
+    return false if !@battle.battlers[index]
+    @battle.battlers[index].pokemon.shieldCount = shield
     @sprites["battlebox#{index}"].shieldCount = shield
     @sprites["battlebox#{index}"].refresh
+    if @battle.battlers[index].lastAttacker
+      opponentindex = @battle.battlers[index].lastAttacker
+    else
+      opponentindex = @battle.battlers[index].pbOppositeOpposing.index
+    end
+    @battle.battlers[index].shieldsBrokenThisTurn[opponentindex] += 1
+    if @battle.battlers[index].capturable
+      if @battle.battlers[index].shieldCount==0
+        @battle.pbDisplayPaused(_INTL("{1}'s guard is low! Try capturing it!", @battle.battlers[index].pbThis))
+      end
+    end
   end
 
   # to update @battle.shieldCount in case mon enters as rift form
   # no shield due to transformation
   def pbUpdateBattleShield(index)
     @battle.shieldCount = @sprites["battlebox#{index}"].shieldCount
-    if @battle.shieldCount > 0
-      @battle.shieldSetup = 1
-    else
-      @battle.shieldSetup = -1
-    end
   end
-  
   
   def pbUpdate
     partyAnimationUpdate
@@ -2542,10 +2553,10 @@ class PokeBattle_Scene
     if @sprites["partybarplayer"]
       @sprites["partybarplayer"].x+=Graphics.width-PokeBattle_SceneConstants::PLAYERPARTYBAR_X
     end
-      for i in 0...6
-        pbDisposeSprite(@sprites,"enemy#{i}") unless !oppside
-        pbDisposeSprite(@sprites,"player#{i}")
-      end    
+    for i in 0...6
+      pbDisposeSprite(@sprites,"enemy#{i}") unless !oppside
+      pbDisposeSprite(@sprites,"player#{i}")
+    end    
   end  
   
   # Shows the party line-ups appearing on-screen
@@ -2654,49 +2665,15 @@ class PokeBattle_Scene
 
   def createPokemonDataBox(battler, doublebattle, viewport)
     if @battle.opponent && (battler.index == 1 || battler.index == 3)
-      if (isBossPokemon?(@battle.party2[5]) && battler.pokemonIndex==5) || (isBossPokemon?(@battle.party2[4]) && battler.pokemonIndex==4)
-        @battle.bossfight = true
-        if $game_variables[704]>0
-          @battle.shieldCount = $game_variables[704]
-        else
-          @battle.shieldCount = 2
-        end
-        if (isBossPokemon?(@battle.party2[5]) && battler.pokemonIndex==5)
-          return BossPokemonDataBox.new(@battle.party2[5], doublebattle, viewport,battler.index,@battle)
-        elsif (isBossPokemon?(@battle.party2[4]) && battler.pokemonIndex==4)
-          return BossPokemonDataBox.new(@battle.party2[4], doublebattle, viewport,battler.index,@battle)
-        end
-      end
-      if isBossPokemon?(@battle.party2[0]) || isBossPokemonInRiftForm?(@battle.party2[0])
-        @battle.bossfight = true
-        if $game_variables[704]!=0
-          @battle.shieldCount = $game_variables[704]
-        else
-          @battle.shieldCount = 2
-        end
-        return BossPokemonDataBox.new(@battle.party2[0], doublebattle, viewport,battler.index,@battle)
-      end
       if battler.isbossmon 
-       @battle.bossfight = true
-       if $game_variables[704]!=0
-         @battle.shieldCount = $game_variables[704]
-       else
-         @battle.shieldCount = 2
-       end
-       return BossPokemonDataBox.new(@battle.party2[0], doublebattle, viewport,battler.index,@battle)
+        return BossPokemonDataBox.new(battler, doublebattle, viewport,battler.index,@battle)
       end
     elsif !@battle.opponent 
-      if ($game_switches[1998]==true || battler.isbossmon || @battle.raidbattle) && (battler.index == 1 || battler.index == 3)
-       @battle.bossfight = true
-       if $game_variables[704]!=0
-        @battle.shieldCount = $game_variables[704]
-       else
-        @battle.shieldCount = 2
-       end
-       return BossPokemonDataBox.new(@battle.party2[0], doublebattle, viewport,battler.index,@battle)
+      if (battler.isbossmon || @battle.raidbattle) && (battler.index == 1 || battler.index == 3)
+        return BossPokemonDataBox.new(battler, doublebattle, viewport,battler.index,@battle)
       end
     end
-    return PokemonDataBox.new(battler, doublebattle, viewport)
+    return PokemonDataBox.new(battler, doublebattle, viewport, @battle)
   end
 
   def pbStartBattle(battle)
@@ -3013,6 +2990,137 @@ class PokeBattle_Scene
     end
   end
 
+  def pbIntroBoss(battle,sosmonindex=nil)
+    # Called on sos summon
+    @battle=battle
+    @lastcmd=[0,0,0,0]
+    @lastmove=[0,0,0,0]
+    if @battle.opponent
+      if @battle.opponent.is_a?(Array)
+        trainerfile=pbTrainerSpriteFile(@battle.opponent[1].trainertype)
+        pbAddSprite("trainer2",
+           PokeBattle_SceneConstants::FOETRAINERD2_X,
+           PokeBattle_SceneConstants::FOETRAINERD2_Y,trainerfile,@viewport)
+        trainerfile=pbTrainerSpriteFile(@battle.opponent[0].trainertype)
+        pbAddSprite("trainer",
+           PokeBattle_SceneConstants::FOETRAINERD1_X,
+           PokeBattle_SceneConstants::FOETRAINERD1_Y,trainerfile,@viewport)
+        @sprites["trainer2"].visible=false
+      else
+        trainerfile=pbTrainerSpriteFile(@battle.opponent.trainertype)
+        pbAddSprite("trainer",
+           PokeBattle_SceneConstants::FOETRAINER_X,
+           PokeBattle_SceneConstants::FOETRAINER_Y,trainerfile,@viewport)
+      end
+      @sprites["trainer"].visible=false
+    else
+      trainerfile="Graphics/Characters/trfront"
+      pbAddSprite("trainer",
+           PokeBattle_SceneConstants::FOETRAINER_X,
+           PokeBattle_SceneConstants::FOETRAINER_Y,trainerfile,@viewport)
+      @sprites["trainer"].visible=false
+    end
+    pbAddSprite("shadow3",0,0,"Graphics/Pictures/Battle/battleShadow",@viewport)
+    for i in @battle.battlers
+      battler = i if i.isbossmon
+    end
+    battlerIndex= battler.index
+    sosIndex = sosmonindex
+    # @sprites["shadow3"].z=3
+    @sprites["shadow3"].visible=false
+    species=@battle.party2[0].species
+    bossposition = battlerIndex==1 ? [PokeBattle_SceneConstants::FOEBATTLERD1_X,PokeBattle_SceneConstants::FOEBATTLERD1_Y] : [PokeBattle_SceneConstants::FOEBATTLERD2_X,PokeBattle_SceneConstants::FOEBATTLERD2_Y]
+    if sosIndex != 2
+      sosposition = sosIndex == 1 ? [PokeBattle_SceneConstants::FOEBATTLERD1_X,PokeBattle_SceneConstants::FOEBATTLERD1_Y] : [PokeBattle_SceneConstants::FOEBATTLERD2_X,PokeBattle_SceneConstants::FOEBATTLERD2_Y]
+    else
+      sosposition = [PokeBattle_SceneConstants::PLAYERBATTLERD2_X,PokeBattle_SceneConstants::PLAYERBATTLERD2_Y] 
+    end
+    @sprites["pokemon"+battlerIndex.to_s].x=bossposition[0]
+    @sprites["pokemon"+battlerIndex.to_s].x-=@sprites["pokemon"+battlerIndex.to_s].width/2 
+    @sprites["pokemon"+battlerIndex.to_s].y=bossposition[1]
+    @sprites["pokemon"+battlerIndex.to_s].y+=adjustBattleSpriteY(@sprites["pokemon"+battlerIndex.to_s],species,battlerIndex)
+    @sprites["shadow"+battlerIndex.to_s].x=bossposition[0]
+    @sprites["shadow"+battlerIndex.to_s].y=bossposition[1]
+    @sprites["shadow"+battlerIndex.to_s].x-=@sprites["shadow"+battlerIndex.to_s].bitmap.width/2 if @sprites["shadow"+battlerIndex.to_s].bitmap!=nil
+    @sprites["shadow"+battlerIndex.to_s].y-=@sprites["shadow"+battlerIndex.to_s].bitmap.height/2 if @sprites["shadow"+battlerIndex.to_s].bitmap!=nil
+    @sprites["shadow"+battlerIndex.to_s].visible=showShadow?(species)
+    if @battle.party2.length>=1
+        species=@battle.party2[-1].species
+        # another line to account for me running absolute BS for one battle; double check that the battler on the battler box is actually the battler on that index
+        @sprites["battlebox"+sosIndex.to_s].dispose if @sprites["battlebox"+sosIndex.to_s] && @sprites["battlebox"+sosIndex.to_s].battler != battle.battlers[sosIndex]
+        @sprites["battlebox"+sosIndex.to_s]=createPokemonDataBox(battle.battlers[sosIndex],battle.doublebattle,@viewport) if !@sprites["battlebox"+sosIndex.to_s] || @sprites["battlebox"+sosIndex.to_s].disposed?
+        @sprites["pokemon"+sosIndex.to_s]=PokemonBattlerSprite.new(battle.doublebattle,sosIndex,@viewport) if !@sprites["pokemon"+sosIndex.to_s]
+        if sosIndex == 2
+          @sprites["pokemon"+sosIndex.to_s].setPokemonBitmap(@battle.party2[-1],true)
+        else
+          @sprites["pokemon"+sosIndex.to_s].setPokemonBitmap(@battle.party2[-1],false)
+        end
+        @sprites["pokemon"+sosIndex.to_s].tone=Tone.new(-128,-128,-128,-128)
+        @sprites["pokemon"+sosIndex.to_s].x=sosposition[0]
+        @sprites["pokemon"+sosIndex.to_s].x-=@sprites["pokemon"+sosIndex.to_s].width/2 
+        @sprites["pokemon"+sosIndex.to_s].y=sosposition[1]
+        @sprites["pokemon"+sosIndex.to_s].y+=adjustBattleSpriteY(@sprites["pokemon"+sosIndex.to_s],species,sosIndex)
+        case sosIndex
+        when 1
+          @sprites["pokemon"+sosIndex.to_s].z=16 
+        when 2
+          @sprites["pokemon"+sosIndex.to_s].z=26 
+        when 3
+          @sprites["pokemon"+sosIndex.to_s].z=11
+        end
+        @sprites["pokemon"+sosIndex.to_s].visible=true
+        if sosIndex == 2
+          @sprites["shadow"+sosIndex.to_s]=IconSprite.new(0,0,@viewport) if !@sprites["shadow"+sosIndex.to_s]
+        end
+        @sprites["shadow"+sosIndex.to_s].x=sosposition[0]
+        @sprites["shadow"+sosIndex.to_s].y=sosposition[1]
+        @sprites["shadow"+sosIndex.to_s].x-=@sprites["shadow"+sosIndex.to_s].bitmap.width/2 if @sprites["shadow"+sosIndex.to_s].bitmap!=nil
+        @sprites["shadow"+sosIndex.to_s].y-=@sprites["shadow"+sosIndex.to_s].bitmap.height/2 if @sprites["shadow"+sosIndex.to_s].bitmap!=nil
+        @sprites["shadow"+sosIndex.to_s].visible=showShadow?(species)
+        trainersprite2=@sprites["pokemon"+sosIndex.to_s]
+    end
+    #################
+    appearspeed=12
+    (1+Graphics.width/appearspeed).times do
+      tobreak=true
+      if @viewport.rect.y>0
+        @viewport.rect.y-=appearspeed/2
+        @viewport.rect.y=0 if @viewport.rect.y<0
+        @viewport.rect.height+=appearspeed
+        @viewport.rect.height=Graphics.height if @viewport.rect.height>Graphics.height
+        tobreak=false
+      end
+      if !tobreak
+        for i in @sprites
+          next if i[1].nil?
+          i[1].ox=@viewport.rect.x
+          i[1].oy=@viewport.rect.y
+        end
+      end
+      pbGraphicsUpdate
+      Input.update
+      break if tobreak
+    end
+    # Play cry for wild Pokémon
+    pbPlayCry(@battle.party2[-1])          
+      @sprites["battlebox"+sosIndex.to_s].appear if @battle.party2.length>=2 
+      appearing=true
+      begin
+        pbGraphicsUpdate
+        Input.update
+        @sprites["battlebox"+sosIndex.to_s].update
+        @sprites["pokemon"+sosIndex.to_s].tone.red+=8 if @sprites["pokemon"+sosIndex.to_s].tone.red<0
+        @sprites["pokemon"+sosIndex.to_s].tone.blue+=8 if @sprites["pokemon"+sosIndex.to_s].tone.blue<0
+        @sprites["pokemon"+sosIndex.to_s].tone.green+=8 if @sprites["pokemon"+sosIndex.to_s].tone.green<0
+        @sprites["pokemon"+sosIndex.to_s].tone.gray+=8 if @sprites["pokemon"+sosIndex.to_s].tone.gray<0
+        appearing=(@sprites["battlebox"+sosIndex.to_s].appearing)
+      end while appearing
+      # Show shiny animation for wild Pokémon
+      if @battle.party2[-1].isShiny? && @battle.battlescene
+        pbCommonAnimation("Shiny",@battle.battlers[3],nil)
+      end
+  end
+
   def pbEndBattle(result)
     @abortable=false
     pbShowWindow(BLANK)
@@ -3083,41 +3191,46 @@ class PokeBattle_Scene
        @sprites,@battle.battlers[battlerindex],@battle.doublebattle,
        @battle.battlers[battlerindex].effects[PBEffects::Illusion]) #Illusion
        @sprites["pokemon#{battlerindex}"].opacity = 255
-    if !isBossPokemon?(battler)
+    if !@battle.battlers[battlerindex].isbossmon
 #### JERICHO - 001 - END 
-    loop do
-      pbGraphicsUpdate
-      pbInputUpdate
-      fadeanim.update if fadeanim
-      frame+=1    
-      if frame==1
-        @sprites["battlebox#{battlerindex}"].appear
+      if defined?(@sprites["battlebox#{battlerindex}"].shieldCount)
+        @sprites["battlebox#{battlerindex}"].visible=false
+        pbDisposeSprite(@sprites,["battlebox#{battlerindex}"])
+        @sprites["battlebox#{battlerindex}"]=createPokemonDataBox(@battle.battlers[battlerindex],@battle.doublebattle,@viewport)   
       end
-      if frame>=10
-        sendout.update
-      end
-      @sprites["battlebox#{battlerindex}"].update
-      break if (!fadeanim || fadeanim.animdone?) && sendout.animdone? &&
-        !@sprites["battlebox#{battlerindex}"].appearing
+      loop do
+        pbGraphicsUpdate
+        pbInputUpdate
+        fadeanim.update if fadeanim
+        frame+=1    
+        if frame==1
+          @sprites["battlebox#{battlerindex}"].appear
+        end
+        if frame>=10
+          sendout.update
+        end
+        @sprites["battlebox#{battlerindex}"].update
+        break if (!fadeanim || fadeanim.animdone?) && sendout.animdone? &&
+          !@sprites["battlebox#{battlerindex}"].appearing
       end 
     else
       @sprites["battlebox#{battlerindex}"].visible=false
       pbDisposeSprite(@sprites,["battlebox#{battlerindex}"])
       @sprites["battlebox#{battlerindex}"]=createPokemonDataBox(@battle.battlers[battlerindex],@battle.doublebattle,@viewport)   
       loop do
-      pbGraphicsUpdate
-      pbInputUpdate
-      fadeanim.update if fadeanim
-      frame+=1    
-      if frame==1
-        @sprites["battlebox#{battlerindex}"].appear
-      end
-      if frame>=10
-        sendout.update
-      end
-      @sprites["battlebox#{battlerindex}"].update
-      break if (!fadeanim || fadeanim.animdone?) && sendout.animdone? &&
-        !@sprites["battlebox#{battlerindex}"].appearing
+        pbGraphicsUpdate
+        pbInputUpdate
+        fadeanim.update if fadeanim
+        frame+=1    
+        if frame==1
+          @sprites["battlebox#{battlerindex}"].appear
+        end
+        if frame>=10
+          sendout.update
+        end
+        @sprites["battlebox#{battlerindex}"].update
+        break if (!fadeanim || fadeanim.animdone?) && sendout.animdone? &&
+          !@sprites["battlebox#{battlerindex}"].appearing
       end 
     end
 #### JERICHO - 001 - START        
@@ -3158,7 +3271,7 @@ class PokeBattle_Scene
     spriteBall.visible=false
     angle=0
     multiplier=1.0
-    if @battle.doublebattle
+    if @battle.doublebattle && @battle.sosbattle!=3
       multiplier=(battlerindex==0) ? 0.7 : 1.3
     end
     for coord in path
@@ -3184,7 +3297,7 @@ class PokeBattle_Scene
     end 
     sendout=PokeballPlayerSendOutAnimation.new(@sprites["pokemon#{battlerindex}"],
        @sprites,@battle.battlers[battlerindex],@battle.doublebattle,
-       @battle.battlers[battlerindex].effects[PBEffects::Illusion]) #Illusion
+       @battle.battlers[battlerindex].effects[PBEffects::Illusion],@battle) #Illusion
        @sprites["pokemon#{battlerindex}"].opacity = 255
 #### JERICHO - 001 - END     
     loop do
@@ -3312,6 +3425,7 @@ class PokeBattle_Scene
     pbSelectBattler(index)
     pbRefresh
     loop do
+      goodbyeb=false
       pbGraphicsUpdate
       pbInputUpdate
       pbFrameUpdate(cw)
@@ -3330,15 +3444,16 @@ class PokeBattle_Scene
         cw.index+=2
       elsif Input.trigger?(Input::Y)  #Show Battle Stats feature made by DemICE
         statstarget=pbStatInfo(index)
-        return -1 if statstarget==-1      
-        pbShowBattleStats(statstarget)
+        goodbyeb=true       
+        pbShowBattleStats(statstarget) if statstarget!=-1    
+        pbSelectBattler(index)  
       end
       if Input.trigger?(Input::C)   # Confirm choice
         pbPlayDecisionSE()
         ret=cw.index
         @lastcmd[index]=ret
         return ret
-      elsif Input.trigger?(Input::B) && index==2 #&& @lastcmd[0]!=2 # Cancel #Commented out for cancelling switches in doubles
+      elsif Input.trigger?(Input::B) && index==2 && !goodbyeb #&& @lastcmd[0]!=2 # Cancel #Commented out for cancelling switches in doubles
         pbPlayDecisionSE()
         return -1
       end
@@ -3376,6 +3491,7 @@ class PokeBattle_Scene
       end
     end
     loop do
+      goodbyeb=false
       pbGraphicsUpdate
       pbInputUpdate
       pbFrameUpdate(cw)
@@ -3390,8 +3506,9 @@ class PokeBattle_Scene
         pbPlayCursorSE() if cw.setIndex(cw.index+2)
       elsif Input.trigger?(Input::Y)  #Show Battle Stats feature made by DemICE
         statstarget=pbStatInfoF(index)
-        return -1 if statstarget==-1          
-        pbShowBattleStats(statstarget)
+        goodbyeb=true       
+        pbShowBattleStats(statstarget) if statstarget!=-1    
+        pbSelectBattler(index)  
       end
       if Input.trigger?(Input::C)   # Confirm choice
         ret=cw.index
@@ -3449,7 +3566,7 @@ class PokeBattle_Scene
           end
           pbPlayDecisionSE()
         end        
-      elsif Input.trigger?(Input::B)   # Cancel fight menu
+      elsif Input.trigger?(Input::B) && !goodbyeb  # Cancel fight menu
         @lastmove[index]=cw.index
         for i in 0...4
           battler.moves[i]=movesarray[i]
@@ -3490,9 +3607,9 @@ def pbItemMenu(index)
     command=itemscene.pbShowCommands(_INTL("{1} is selected.",itemname),commands)
     if cmdUse>=0 && command==cmdUse
       if (usetype==1 || usetype==3) 
-        if (($game_variables[200]==2) && @battle.opponent) && $game_switches[1493]==true
+        if (($game_variables[:Difficulty_Mode]==2) && @battle.opponent) && $game_switches[1493]
           itemscene.pbDisplay(_INTL("Use of items in Trainer battles is not allowed on Intense mode."))
-        elsif ($game_variables[200]==2) && $game_switches[1998]==true && $game_switches[1493]==true
+        elsif ($game_variables[:Difficulty_Mode]==2) && @battle.isBossBattle? && $game_switches[1493]
           itemscene.pbDisplay(_INTL("Use of items in Boss battles is not allowed on Intense mode."))
         else
           modparty=[]
@@ -3520,7 +3637,7 @@ def pbItemMenu(index)
           itemscene.pbStartScene($PokemonBag)
         end
       elsif (usetype==2 || usetype==4) 
-        if ($game_variables[200]==2 && $game_switches[1493]==true) && (@battle.opponent || $game_switches[1998]==true)
+        if ($game_variables[:Difficulty_Mode]==2 && $game_switches[1493]) && (@battle.opponent || @battle.isBossBattle?)
           if pbIsPokeBall?(item)
             if ItemHandlers.hasBattleUseOnBattler(item)
               ret=item
@@ -3766,8 +3883,10 @@ end
     numwindows=@battle.doublebattle ? 4 : 2
     for i in 0...numwindows
       sprite=@sprites["battlebox#{i}"]
+      next if !sprite
       sprite.selected=(i==index) ? selectmode : 0
       sprite=@sprites["pokemon#{i}"]
+      next if !sprite
       sprite.selected=(i==index) ? selectmode : 0
     end
   end
@@ -3795,6 +3914,8 @@ end
   def pbUpdateSelected(index)
     numwindows=@battle.doublebattle ? 4 : 2
     for i in 0...numwindows
+      next if !@sprites["battlebox#{i}"]
+      next if !@sprites["pokemon#{i}"]
       if i==index
         @sprites["battlebox#{i}"].selected=2
         @sprites["pokemon#{i}"].selected=2
@@ -4328,7 +4449,7 @@ end
     if @battle.doublebattle
       case attacker.index
         when 0
-          pkmn.x+=PokeBattle_SceneConstants::PLAYERBATTLERD1_X
+          pkmn.x+=@battle.sosbattle==3 ? PBScene::PLAYERBATTLER_X : PBScene::PLAYERBATTLERD1_X
           pkmn.y+=PokeBattle_SceneConstants::PLAYERBATTLERD1_Y
         when 1
           pkmn.x+=PokeBattle_SceneConstants::FOEBATTLERD1_X
@@ -4361,7 +4482,7 @@ end
     if @battle.doublebattle
       case attacker.index
         when 0
-          pkmn.x+=PokeBattle_SceneConstants::PLAYERBATTLERD1_X
+          pkmn.x+=@battle.sosbattle==3 ? PBScene::PLAYERBATTLER_X : PBScene::PLAYERBATTLERD1_X
           pkmn.y+=PokeBattle_SceneConstants::PLAYERBATTLERD1_Y
         when 1
           pkmn.x+=PokeBattle_SceneConstants::FOEBATTLERD1_X
@@ -4421,7 +4542,7 @@ end
     return nil
   end
 
-  def pbCommonAnimation(animname,user,target,hitnum=0)
+  def pbCommonAnimation(animname,user=nil,target=nil,hitnum=0)
     unless defined?(user.vanished).nil?
       return if user.vanished
     end    

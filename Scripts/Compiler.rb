@@ -1382,7 +1382,7 @@ def pbCompileTrainers
       poke=strsplit(lines[i+j+3],/\s*,\s*/)
       begin
         # Species
-        poke[TPSPECIES]=parseSpecies(poke[TPSPECIES])
+        poke[TSPECIES]=parseSpecies(poke[TSPECIES])
       rescue
         raise _INTL("Expected a species name: {1}\n{2}",poke[0],FileLineData.linereport)
       end
@@ -1484,6 +1484,13 @@ def pbCompileTrainers
         poke[TPBALL]=poke[TPBALL].to_i
         raise _INTL("Bad form: {1} (must be 0 or greater)\n{2}",poke[TPBALL],FileLineData.linereport) if poke[TPBALL]<0
       end
+      # Pre Mega
+      # Boss
+      if !poke[TPBOSS] || poke[TPBOSS]==""
+        poke[TPBOSS]=TPDEFAULTS[TPBOSS]
+      else
+        poke[TPBOSS]=poke[TPBOSS].to_sym
+      end
       pkmn.push(poke)
     end
     i+=3+numpoke
@@ -1492,6 +1499,17 @@ def pbCompileTrainers
     nameoffset+=name.length
   end
   save_data(trainers,"Data/trainers.dat")
+end
+
+def pbCompileBosses
+  $bosscache = nil
+	bossdata = {}
+	File.open("Scripts/BossInfo.rb"){|f| eval(f.read)}
+	BOSSINFOHASH.each {|boss, data|
+		bossdata[boss] = BossData.new(boss,data)
+	}
+	save_data(bossdata,"Data/bossdata.dat")
+  $bosscache = load_data("Data/bossdata.dat")
 end
 
 def removeConstantValue(mod,value)
@@ -2543,7 +2561,8 @@ datafiles=[
    "phone.dat",
    "trainerlists.dat",
    "shadowmoves.dat",
-   "Constants.rxdata"
+   "Constants.rxdata",
+   "bossdata.dat"
 ]
 
 textfiles=[
@@ -3007,13 +3026,13 @@ def isPlainEventOrMart?(event)
 end
 
 def applyPages(page,pages)
-  for p in pages
-    p.graphic=page.graphic
-    p.walk_anime=page.walk_anime
-    p.step_anime=page.step_anime
-    p.direction_fix=page.direction_fix
-    p.through=page.through
-    p.always_on_top=page.always_on_top
+  for i in pages
+    i.graphic=page.graphic
+    i.walk_anime=page.walk_anime
+    i.step_anime=page.step_anime
+    i.direction_fix=page.direction_fix
+    i.through=page.through
+    i.always_on_top=page.always_on_top
   end
 end
 
@@ -3937,6 +3956,9 @@ def pbCompileAllData(mustcompile,notrainers=false)
     # Depends on PBSpecies
     yield(_INTL("Compiling encounter data"))
     pbCompileEncounters
+    # Depends on BossInfo.rb (not PBS)
+    yield(_INTL("Compiling boss data"))
+    pbCompileBosses
     # Depends on PBSpecies, PBMoves
     yield(_INTL("Compiling shadow move data"))
     pbCompileShadowMoves

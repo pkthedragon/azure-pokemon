@@ -28,8 +28,8 @@ end
 $AtExitProcs=[] if !$AtExitProcs
 
 def exit(code=0)
-  for p in $AtExitProcs
-    p.call
+  for i in $AtExitProcs
+    i.call
   end
   raise SystemExit.new(code)
 end

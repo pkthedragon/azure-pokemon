@@ -17,6 +17,7 @@ class Game_Variables
   #     variable_id : variable ID
   #-----------------------------------------------------------------------------
   def [](variable_id)
+    variable_id = Variables[variable_id] if variable_id.is_a?(Symbol)
     if variable_id <= 5000 and @data[variable_id] != nil
       return @data[variable_id]
     else
@@ -29,8 +30,17 @@ class Game_Variables
   #     value       : the variable's value
   #-----------------------------------------------------------------------------
   def []=(variable_id, value)
+    variable_id = Variables[variable_id] if variable_id.is_a?(Symbol)
     if variable_id <= 5000
       @data[variable_id] = value
     end
   end
 end
+
+#===============================================================================
+# * Hashes for Variable names, in ascending order
+#===============================================================================
+
+Variables = {
+    Difficulty_Mode:    200,
+}

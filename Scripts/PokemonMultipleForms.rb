@@ -3122,7 +3122,7 @@ MultipleForms.register(:GRIMER,{
     "ability"=>proc{|pokemon|
       next if pokemon.form==0 # Normal
       if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0) # Alola
-        next getID(PBAbilities,:POISONTOUCH) 
+        next getID(PBAbilities,:POISONPOINT) 
       elsif pokemon.abilityIndex==1 || (pokemon.abilityflag && pokemon.abilityflag==1)
         next getID(PBAbilities,:GLUTTONY)     
       elsif pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)
@@ -3216,7 +3216,7 @@ MultipleForms.register(:MUK,{
       next if pokemon.form==0 # Normal
       next getID(PBAbilities,:PROTEAN) if pokemon.form==2 # PULSE
       if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0) # Alola
-        next getID(PBAbilities,:POISONTOUCH) 
+        next getID(PBAbilities,:POISONPOINT) 
       elsif pokemon.abilityIndex==1 || (pokemon.abilityflag && pokemon.abilityflag==1)
         next getID(PBAbilities,:GLUTTONY)     
       elsif pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)
@@ -4454,7 +4454,7 @@ MultipleForms.register(:TORCHIC,{
       :SWORDSDANCE,:BULLDOZE,:ROCKSLIDE,:DRAGONTAIL,:POISONJAB,
       :SWAGGER,:SLEEPTALK,:UTURN,:SUBSTITUTE,:WILDCHARGE,:ROCKSMASH,
       :NATUREPOWER,:POWERUPPUNCH,:ROCKCLIMB,:POISONSWEEP,:STACKINGSHOT,
-      :ARENITEWALL,:SLASHANDBURN,:BRUTALSWING,:PINMISSILE,:SELFDESTRUCT,
+      :DUNEDEFENSE,:SLASHANDBURN,:BRUTALSWING,:PINMISSILE,:SELFDESTRUCT,
       :SCARYFACE,:BEATUP,:FAKETEARS,:SANDTOMB,:MUDSHOT,:ROCKBLAST,
       :ASSURANCE,:CROSSPOISON,:TAILSLAP,:BREAKINGSWIPE,:HONECLAWS,
       :SUCKERPUNCH,:RETALIATE,:VACUUMWAVE]
@@ -4528,7 +4528,7 @@ MultipleForms.register(:COMBUSKEN,{
       :SWORDSDANCE,:BULLDOZE,:ROCKSLIDE,:DRAGONTAIL,:POISONJAB,
       :SWAGGER,:SLEEPTALK,:UTURN,:SUBSTITUTE,:WILDCHARGE,:ROCKSMASH,
       :NATUREPOWER,:POWERUPPUNCH,:ROCKCLIMB,:POISONSWEEP,:STACKINGSHOT,
-      :ARENITEWALL,:SLASHANDBURN,:BRUTALSWING,:PINMISSILE,:SELFDESTRUCT,
+      :DUNEDEFENSE,:SLASHANDBURN,:BRUTALSWING,:PINMISSILE,:SELFDESTRUCT,
       :SCARYFACE,:BEATUP,:FAKETEARS,:SANDTOMB,:MUDSHOT,:ROCKBLAST,
       :ASSURANCE,:CROSSPOISON,:TAILSLAP,:BREAKINGSWIPE,:HONECLAWS,
       :SUCKERPUNCH,:RETALIATE,:VACUUMWAVE]
@@ -4602,7 +4602,7 @@ MultipleForms.register(:BLAZIKEN,{
       :SWORDSDANCE,:BULLDOZE,:ROCKSLIDE,:DRAGONTAIL,:POISONJAB,
       :SWAGGER,:SLEEPTALK,:UTURN,:SUBSTITUTE,:WILDCHARGE,:ROCKSMASH,
       :NATUREPOWER,:POWERUPPUNCH,:ROCKCLIMB,:POISONSWEEP,:STACKINGSHOT,
-      :ARENITEWALL,:SLASHANDBURN,:BRUTALSWING,:PINMISSILE,:SELFDESTRUCT,
+      :DUNEDEFENSE,:SLASHANDBURN,:BRUTALSWING,:PINMISSILE,:SELFDESTRUCT,
       :SCARYFACE,:BEATUP,:FAKETEARS,:SANDTOMB,:MUDSHOT,:ROCKBLAST,
       :ASSURANCE,:CROSSPOISON,:TAILSLAP,:BREAKINGSWIPE,:HONECLAWS,
       :SUCKERPUNCH,:RETALIATE,:VACUUMWAVE]

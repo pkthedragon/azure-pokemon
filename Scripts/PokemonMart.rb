@@ -845,13 +845,13 @@ end
 
 
 class Interpreter
-  def getItem(p)
-    if p[0]==0
-      return $data_items[p[1]]
-    elsif p[0]==1
-      return $data_weapons[p[1]]
-    elsif p[0]==2
-      return $data_armors[p[1]]
+  def getItem(i)
+    if i[0]==0
+      return $data_items[i[1]]
+    elsif i[0]==1
+      return $data_weapons[i[1]]
+    elsif i[0]==2
+      return $data_armors[i[1]]
     end
     return nil
   end
@@ -896,13 +896,13 @@ end
 
 
 class Game_Interpreter
-  def getItem(p)
-    if p[0]==0
-      return $data_items[p[1]]
-    elsif p[0]==1
-      return $data_weapons[p[1]]
-    elsif p[0]==2
-      return $data_armors[p[1]]
+  def getItem(i)
+    if i[0]==0
+      return $data_items[i[1]]
+    elsif i[0]==1
+      return $data_weapons[i[1]]
+    elsif i[0]==2
+      return $data_armors[i[1]]
     end
     return nil
   end

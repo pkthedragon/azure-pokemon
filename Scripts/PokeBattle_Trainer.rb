@@ -156,15 +156,15 @@ class PokeBattle_Trainer
   end
 
   def lastPokemon
-    p=self.pokemonParty
-    return nil if p.length==0
-    return p[p.length-1]
+    i=self.pokemonParty
+    return nil if i.length==0
+    return i[i.length-1]
   end
 
   def lastAblePokemon
-    p=self.ablePokemonParty
-    return nil if p.length==0
-    return p[p.length-1]
+    i=self.ablePokemonParty
+    return nil if i.length==0
+    return i[i.length-1]
   end
 
   def pokedexSeen(region=-1)   # Number of Pokémon seen

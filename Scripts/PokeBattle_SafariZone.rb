@@ -19,8 +19,8 @@ class PokeBattle_FakeBattler
   def isShadow?; return false; end
   def hasMega?; return false; end
   def isMega?; return false; end
-  def isBoss?; return false; end
   def isbossmon; return false; end
+  def issossmon; return false; end
   def hasPrimal?; return false; end
   def isPrimal?; return false; end
   def hasCrest?; return false; end

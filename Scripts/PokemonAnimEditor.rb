@@ -3485,11 +3485,11 @@ class PointPath
   end
 
   def inspect
-    p=[]
+    i=[]
     for point in @points
-      p.push([point[0].to_i,point[1].to_i])
+      i.push([point[0].to_i,point[1].to_i])
     end
-    return p.inspect
+    return i.inspect
   end
 
   def isEndPoint?(x,y)

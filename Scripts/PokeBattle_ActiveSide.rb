@@ -26,7 +26,7 @@ begin
 #### KUROTSUNE - 025 - END
       @effects[PBEffects::StickyWeb]     = false
       @effects[PBEffects::AuroraVeil]    = 0
-      @effects[PBEffects::AreniteWall]    = 0
+      @effects[PBEffects::DuneDefense]    = 0
       $belch=false
       $fepledgefield=0
       $feconversionuse=0      
@@ -59,6 +59,7 @@ begin
       @effects[PBEffects::WonderRoom]   = 0
       @effects[PBEffects::MudSport]     = 0
       @effects[PBEffects::WaterSport]   = 0
+      @effects[PBEffects::SosBuffer]    = 0
 #### KUROTSUNE - 001 - START
       @effects[PBEffects::HeavyRain]     = false
       @effects[PBEffects::HarshSunlight] = false

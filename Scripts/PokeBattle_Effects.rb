@@ -1223,5 +1223,9 @@ end
     end
     return false
   end
+
+  def pbGetStatName(stat)
+    return ["HP","Attack", "Defense", "Sp. Attack", "Sp. Defense", "Speed", "Accuracy", "Evasion"][stat]
+  end
   
 end

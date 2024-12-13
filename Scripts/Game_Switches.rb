@@ -17,7 +17,9 @@ class Game_Switches
   #     switch_id : switch ID
   #-----------------------------------------------------------------------------
   def [](switch_id)
-    if switch_id <= 5000 and @data[switch_id] != nil
+    switch_id = Switches[switch_id] if switch_id.is_a?(Symbol)
+    return false if switch_id.nil?
+    if switch_id <= 5000 && @data[switch_id] != nil
       return @data[switch_id]
     else
       return false
@@ -29,8 +31,19 @@ class Game_Switches
   #     value     : ON (true) / OFF (false)
   #-----------------------------------------------------------------------------
   def []=(switch_id, value)
+    switch_id = Switches[switch_id] if switch_id.is_a?(Symbol)
+    return if switch_id.nil?
     if switch_id <= 5000
       @data[switch_id] = value
     end
   end
 end
+
+#===============================================================================
+# * Hashes for Variable names, in ascending order
+#===============================================================================
+
+Switches = {
+    No_Catch:       290,
+    Boss_Battle:    1998
+}

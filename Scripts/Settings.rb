@@ -325,6 +325,6 @@ LANGUAGES = [
 #===============================================================================
 USEKEYBOARDTEXTENTRY = true
 #### SARDINES - debuglog - START
-$INTERNAL=false
+$INTERNAL=true # Change on ~release
 #### SARDINES - debuglog - END
 $VERBOSE=nil

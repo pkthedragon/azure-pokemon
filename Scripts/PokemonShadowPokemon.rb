@@ -553,8 +553,8 @@ class PokeBattle_Battler
   end
 
   def isShadow?
-    p=self.pokemon
-    if p && p.respond_to?("heartgauge") && p.heartgauge>0
+    i=self.pokemon
+    if i && i.respond_to?("heartgauge") && i.heartgauge>0
       return true
     end
     return false
@@ -562,18 +562,18 @@ class PokeBattle_Battler
 
   def inHyperMode?
     return false if isFainted?
-    p=self.pokemon
-    if p && p.respond_to?("hypermode") && p.hypermode
+    i=self.pokemon
+    if i && i.respond_to?("hypermode") && i.hypermode
       return true
     end
     return false
   end
 
   def pbHyperMode
-    p=self.pokemon
-    if p.isShadow? && !p.hypermode && ((@battle.pbOwnedByPlayer?(@index)) || (!@battle.pbOwnedByPlayer?(@index) && $game_variables[646]<1))
-      if @battle.pbRandom(p.heartgauge)<=PokeBattle_Pokemon::HEARTGAUGESIZE/4
-        p.hypermode=true
+    i=self.pokemon
+    if i.isShadow? && !i.hypermode && ((@battle.pbOwnedByPlayer?(@index)) || (!@battle.pbOwnedByPlayer?(@index) && $game_variables[646]<1))
+      if @battle.pbRandom(i.heartgauge)<=PokeBattle_Pokemon::HEARTGAUGESIZE/4
+        i.hypermode=true
         @battle.pbDisplay(_INTL("{1}'s emotions rose to a fever pitch!\nIt entered Hyper Mode!",self.pbThis))
       end
     end
