@@ -288,7 +288,6 @@ class PokeBattle_Battler
        isConst?(pbPartner.ability,PBAbilities,:FLOWERVEIL)        ||
        @battle.SilvallyCheck(self,PBTypes::GRASS) || @battle.SilvallyCheck(self.pbPartner,PBTypes::GRASS)) &&
        (pbHasType?(:GRASS) || $fefieldeffect==42))
-       @battle.pbDisplay(_INTL("{1} is protected by Flower Veil!",pbThis)) if showMessages
       return false
     end 
 #### KUROTSUNE - 028 - END  #### JERICHO - 002 - END              

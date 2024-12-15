@@ -1,0 +1,70 @@
+==============================
+Battle Start!
+Wild Battle
+==============================
+***Round 1***
+[The wild Abomasnow: Powder Snow=100, Leer=200, Razor Leaf=100, Icy Wind=100]
+If this battle is not wild, something has gone wrong in scoring moves (no preference chosen).
+[The wild Abomasnow lost 24 HP, now has 0 HP]
+==============================
+Battle Start!
+Wild Battle
+==============================
+***Round 1***
+[The wild Abomasnow: Icy Wind=100, Grass Whistle=200, Swagger=100, Mist=100]
+If this battle is not wild, something has gone wrong in scoring moves (no preference chosen).
+[The wild Abomasnow lost 63 HP, now has 17 HP]
+[Grovyle lost 5 HP, now has 76 HP]
+***Round 2***
+[The wild Abomasnow: Icy Wind=200, Grass Whistle=100, Swagger=100, Mist=100]
+If this battle is not wild, something has gone wrong in scoring moves (no preference chosen).
+[The wild Abomasnow lost 17 HP, now has 0 HP]
+==============================
+Battle Start!
+Wild Battle
+==============================
+***Round 1***
+[The wild Abomasnow: Leer=200, Razor Leaf=100, Icy Wind=100, Grass Whistle=100]
+If this battle is not wild, something has gone wrong in scoring moves (no preference chosen).
+[The wild Abomasnow lost 20 HP, now has 36 HP]
+[Treecko lost 2 HP, now has 38 HP]
+***Round 2***
+[The wild Abomasnow: Leer=100, Razor Leaf=200, Icy Wind=100, Grass Whistle=100]
+If this battle is not wild, something has gone wrong in scoring moves (no preference chosen).
+[The wild Abomasnow lost 22 HP, now has 14 HP]
+[Treecko lost 2 HP, now has 36 HP]
+***Round 3***
+[The wild Abomasnow: Leer=200, Razor Leaf=100, Icy Wind=100, Grass Whistle=100]
+If this battle is not wild, something has gone wrong in scoring moves (no preference chosen).
+[The wild Abomasnow lost 14 HP, now has 0 HP]
+==============================
+Battle Start!
+Wild Battle
+==============================
+***Round 1***
+[The wild Abomasnow: Leer=200, Razor Leaf=100, Icy Wind=100, Grass Whistle=100]
+If this battle is not wild, something has gone wrong in scoring moves (no preference chosen).
+[The wild Abomasnow lost 23 HP, now has 29 HP]
+[Treecko lost 36 HP, now has 0 HP]
+***Round 2***
+==============================
+Battle Start!
+Wild Battle
+==============================
+***Round 1***
+[The wild Abomasnow: Powder Snow=100, Leer=200, Razor Leaf=100, Icy Wind=100]
+If this battle is not wild, something has gone wrong in scoring moves (no preference chosen).
+[The wild Abomasnow lost 24 HP, now has 0 HP]
+==============================
+Battle Start!
+Wild Battle
+==============================
+***Round 1***
+[The wild Abomasnow: Powder Snow=200, Leer=100, Razor Leaf=100, Icy Wind=100]
+If this battle is not wild, something has gone wrong in scoring moves (no preference chosen).
+[The wild Abomasnow lost 29 HP, now has 9 HP]
+[Treecko lost 2 HP, now has 38 HP]
+***Round 2***
+[The wild Abomasnow: Powder Snow=200, Leer=100, Razor Leaf=100, Icy Wind=100]
+If this battle is not wild, something has gone wrong in scoring moves (no preference chosen).
+[The wild Abomasnow lost 9 HP, now has 0 HP]

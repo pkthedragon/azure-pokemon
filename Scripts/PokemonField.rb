@@ -1454,11 +1454,23 @@ def pbEvolutionCheck(currentlevels)
     if currentlevel && ((!currentlevel[1] || pokemon.level!=currentlevel[1]) || ((pokemon.species==83 && pokemon.form==1) ||  (pokemon.species==562 && pokemon.form==1)))
       newspecies=Kernel.pbCheckEvolution(pokemon)
       if newspecies>0
-        # Start evolution scene
-        evo=PokemonEvolutionScene.new
-        evo.pbStartScreen(pokemon,newspecies)
-        evo.pbEvolution
-        evo.pbEndScreen
+        if newspecies == PBSpecies::MAUSHOLD
+          pokemon.species=newspecies
+          $Trainer.seen[newspecies]=true
+          $Trainer.owned[newspecies]=true
+          pbSeenForm(pokemon)
+          pokemon.name=PBSpecies.getName(newspecies) if pokemon.name==PBSpecies.getName(pokemon.species)
+          pokemon.calcStats
+          # Check moves for new species
+          movelist=pokemon.getMoveList   
+          Achievements.incrementProgress("EVOLVE_POKEMON",1)
+        else
+          # Start evolution scene
+          evo=PokemonEvolutionScene.new
+          evo.pbStartScreen(pokemon,newspecies)
+          evo.pbEvolution
+          evo.pbEndScreen
+        end
       end
     end
   end

@@ -12,7 +12,7 @@ begin
       @effects[PBEffects::Spikes]      = 0
       @effects[PBEffects::StealthRock] = false
       @effects[PBEffects::Tailwind]    = 0
-      @effects[PBEffects::ToxicSpikes] = 0
+      @effects[PBEffects::ToxicSpikes] = false
       @effects[PBEffects::WideGuard]   = false # add this line
       @effects[PBEffects::QuickGuard]  = false # add this line
 #### KUROTSUNE - 009 - START

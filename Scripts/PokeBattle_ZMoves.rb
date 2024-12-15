@@ -692,9 +692,9 @@ class PokeBattle_ZMoves < PokeBattle_Move
               user.pbOpposingSide.effects[PBEffects::Spikes] = 0
               hazardsExist = true
             end
-            if user.pbOwnSide.effects[PBEffects::ToxicSpikes]>0 || user.pbOpposingSide.effects[PBEffects::ToxicSpikes]>0
-              user.pbOwnSide.effects[PBEffects::ToxicSpikes] = 0
-              user.pbOpposingSide.effects[PBEffects::ToxicSpikes] = 0
+            if user.pbOwnSide.effects[PBEffects::ToxicSpikes] || user.pbOpposingSide.effects[PBEffects::ToxicSpikes]
+              user.pbOwnSide.effects[PBEffects::ToxicSpikes] = false
+              user.pbOpposingSide.effects[PBEffects::ToxicSpikes] = false
               hazardsExist = true
             end
             if user.pbOwnSide.effects[PBEffects::StealthRock] || user.pbOpposingSide.effects[PBEffects::StealthRock]
@@ -1208,7 +1208,7 @@ def pbZStatus(move,attacker)
   stat2  = []
   stat3  = []
   crit1  = [PBMoves::ACUPRESSURE,PBMoves::FORESIGHT,PBMoves::HEARTSWAP,PBMoves::SLEEPTALK,PBMoves::TAILWIND]
-  reset  = [PBMoves::ACIDARMOR,PBMoves::AGILITY,PBMoves::AMNESIA,PBMoves::ATTRACT,PBMoves::AUTOTOMIZE,PBMoves::BARRIER,PBMoves::BATONPASS,PBMoves::CALMMIND,PBMoves::CLANGOROUSSOUL,PBMoves::COIL,PBMoves::COTTONGUARD,PBMoves::COTTONSPORE,PBMoves::COURTCHANGE,PBMoves::DARKVOID,PBMoves::DISABLE,PBMoves::DOUBLETEAM,PBMoves::DRAGONDANCE,PBMoves::ENDURE,PBMoves::FLORALHEALING,PBMoves::FOLLOWME,PBMoves::HEALORDER,PBMoves::HEALPULSE,PBMoves::HELPINGHAND,PBMoves::IRONDEFENSE,PBMoves::KINGSSHIELD,PBMoves::LEECHSEED,PBMoves::MILKDRINK,PBMoves::MINIMIZE,PBMoves::MOONLIGHT,PBMoves::MORNINGSUN,PBMoves::NASTYPLOT,PBMoves::NORETREAT,PBMoves::OBSTRUCT,PBMoves::PERISHSONG,PBMoves::PROTECT,PBMoves::QUIVERDANCE,PBMoves::RAGEPOWDER,PBMoves::RECOVER,PBMoves::REST,PBMoves::ROCKPOLISH,PBMoves::ROOST,PBMoves::SHELLSMASH,PBMoves::SHIFTGEAR,PBMoves::SHOREUP,PBMoves::SHELLSMASH,PBMoves::SHIFTGEAR,PBMoves::SHOREUP,PBMoves::SLACKOFF,PBMoves::SOFTBOILED,PBMoves::SPORE,PBMoves::SUBSTITUTE,PBMoves::SWAGGER,PBMoves::SWALLOW,PBMoves::SWORDSDANCE,PBMoves::SYNTHESIS,PBMoves::TAILGLOW]
+  reset  = [PBMoves::ACIDARMOR,PBMoves::AGILITY,PBMoves::AMNESIA,PBMoves::ENCHANT,PBMoves::AUTOTOMIZE,PBMoves::BARRIER,PBMoves::BATONPASS,PBMoves::CALMMIND,PBMoves::CLANGOROUSSOUL,PBMoves::COIL,PBMoves::COTTONGUARD,PBMoves::COTTONSPORE,PBMoves::COURTCHANGE,PBMoves::DARKVOID,PBMoves::DISABLE,PBMoves::DOUBLETEAM,PBMoves::DRAGONDANCE,PBMoves::ENDURE,PBMoves::FLORALHEALING,PBMoves::FOLLOWME,PBMoves::HEALORDER,PBMoves::HEALPULSE,PBMoves::HELPINGHAND,PBMoves::IRONDEFENSE,PBMoves::KINGSSHIELD,PBMoves::LEECHSEED,PBMoves::MILKDRINK,PBMoves::MINIMIZE,PBMoves::MOONLIGHT,PBMoves::MORNINGSUN,PBMoves::NASTYPLOT,PBMoves::NORETREAT,PBMoves::OBSTRUCT,PBMoves::PERISHSONG,PBMoves::PROTECT,PBMoves::QUIVERDANCE,PBMoves::RAGEPOWDER,PBMoves::RECOVER,PBMoves::REST,PBMoves::ROCKPOLISH,PBMoves::ROOST,PBMoves::SHELLSMASH,PBMoves::SHIFTGEAR,PBMoves::SHOREUP,PBMoves::SHELLSMASH,PBMoves::SHIFTGEAR,PBMoves::SHOREUP,PBMoves::SLACKOFF,PBMoves::SOFTBOILED,PBMoves::SPORE,PBMoves::SUBSTITUTE,PBMoves::SWAGGER,PBMoves::SWALLOW,PBMoves::SWORDSDANCE,PBMoves::SYNTHESIS,PBMoves::TAILGLOW]
   heal   = [PBMoves::AROMATHERAPY,PBMoves::BELLYDRUM,PBMoves::CONVERSION2,PBMoves::DECORATE,PBMoves::HAZE,PBMoves::HEALBELL,PBMoves::LIFEDEW,PBMoves::MIST,PBMoves::PSYCHUP,PBMoves::REFRESH,PBMoves::SPITE,PBMoves::STOCKPILE,PBMoves::TELEPORT,PBMoves::TRANSFORM]
   heal2  = [PBMoves::MEMENTO,PBMoves::PARTINGSHOT]
   centre = [PBMoves::DESTINYBOND,PBMoves::GRUDGE]

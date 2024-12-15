@@ -71,8 +71,8 @@ def pbGetEvolutionConst(i)
      "Silcoon","Cascoon","Ninjask","Shedinja","Beauty",
      "ItemMale","ItemFemale","DayHoldItem","NightHoldItem","HasMove",
      "HasInParty","LevelMale","LevelFemale","Location","TradeSpecies",
-     "Custom1","Custom2","Custom3","Custom4","Custom5","Custom6","Custom7",
-     "Custom8"
+     "BadInfluence","Custom2","Custom3","Custom4","Custom5","BattleCrits","Custom7",
+     "GimmiCoin"
   ]
   i=0 if i>=ret.length || i<0
   return ret[i]

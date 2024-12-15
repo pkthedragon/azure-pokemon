@@ -3723,13 +3723,13 @@ class PokeBattle_Battler
               (user.gender==0 && target.gender==1)) &&
             user.effects[PBEffects::Attract]<0 && !user.isFainted?
             user.effects[PBEffects::Attract]=target.index
-            @battle.pbDisplay(_INTL("{1}'s {2} infatuated {3}!",target.pbThis,
+            @battle.pbDisplay(_INTL("{1}'s {2} charmed {3}!",target.pbThis,
                 PBAbilities.getName(target.ability),user.pbThis(true)))
             if user.hasWorkingItem(:DESTINYKNOT) &&
               !target.hasWorkingAbility(:OBLIVIOUS) &&
               target.effects[PBEffects::Attract]<0
               target.effects[PBEffects::Attract]=user.index
-              @battle.pbDisplay(_INTL("{1}'s {2} infatuated {3}!",user.pbThis,
+              @battle.pbDisplay(_INTL("{1}'s {2} charmed {3}!",user.pbThis,
                   PBItems.getName(user.item),target.pbThis(true)))
             end
           end
@@ -7422,9 +7422,9 @@ class PokeBattle_Battler
                   user.pbOpposingSide.effects[PBEffects::Spikes] = 0
                   hazardsExist = true
                 end
-                if user.pbOwnSide.effects[PBEffects::ToxicSpikes]>0 || user.pbOpposingSide.effects[PBEffects::ToxicSpikes]>0
-                  user.pbOwnSide.effects[PBEffects::ToxicSpikes] = 0
-                  user.pbOpposingSide.effects[PBEffects::ToxicSpikes] = 0
+                if user.pbOwnSide.effects[PBEffects::ToxicSpikes] || user.pbOpposingSide.effects[PBEffects::ToxicSpikes]
+                  user.pbOwnSide.effects[PBEffects::ToxicSpikes] = false
+                  user.pbOpposingSide.effects[PBEffects::ToxicSpikes] = false
                   hazardsExist = true
                 end
                 if user.pbOwnSide.effects[PBEffects::StealthRock] || user.pbOpposingSide.effects[PBEffects::StealthRock]
@@ -7468,9 +7468,9 @@ class PokeBattle_Battler
               user.pbOpposingSide.effects[PBEffects::Spikes] = 0
               hazardsExist = true
             end
-            if user.pbOwnSide.effects[PBEffects::ToxicSpikes]>0 || user.pbOpposingSide.effects[PBEffects::ToxicSpikes]>0
-              user.pbOwnSide.effects[PBEffects::ToxicSpikes] = 0
-              user.pbOpposingSide.effects[PBEffects::ToxicSpikes] = 0
+            if user.pbOwnSide.effects[PBEffects::ToxicSpikes] || user.pbOpposingSide.effects[PBEffects::ToxicSpikes]
+              user.pbOwnSide.effects[PBEffects::ToxicSpikes] = false
+              user.pbOpposingSide.effects[PBEffects::ToxicSpikes] = false
               hazardsExist = true
             end
             if user.pbOwnSide.effects[PBEffects::StealthRock] || user.pbOpposingSide.effects[PBEffects::StealthRock]
@@ -7512,9 +7512,9 @@ class PokeBattle_Battler
                   user.pbOpposingSide.effects[PBEffects::Spikes] = 0
                   hazardsExist = true
                 end
-                if user.pbOwnSide.effects[PBEffects::ToxicSpikes]>0 || user.pbOpposingSide.effects[PBEffects::ToxicSpikes]>0
-                  user.pbOwnSide.effects[PBEffects::ToxicSpikes] = 0
-                  user.pbOpposingSide.effects[PBEffects::ToxicSpikes] = 0
+                if user.pbOwnSide.effects[PBEffects::ToxicSpikes] || user.pbOpposingSide.effects[PBEffects::ToxicSpikes]
+                  user.pbOwnSide.effects[PBEffects::ToxicSpikes] = false
+                  user.pbOpposingSide.effects[PBEffects::ToxicSpikes] = false
                   hazardsExist = true
                 end
                 if user.pbOwnSide.effects[PBEffects::StealthRock] || user.pbOpposingSide.effects[PBEffects::StealthRock]
@@ -7546,9 +7546,9 @@ class PokeBattle_Battler
                   user.pbOpposingSide.effects[PBEffects::Spikes] = 0
                   hazardsExist = true
                 end
-                if user.pbOwnSide.effects[PBEffects::ToxicSpikes]>0 || user.pbOpposingSide.effects[PBEffects::ToxicSpikes]>0
-                  user.pbOwnSide.effects[PBEffects::ToxicSpikes] = 0
-                  user.pbOpposingSide.effects[PBEffects::ToxicSpikes] = 0
+                if user.pbOwnSide.effects[PBEffects::ToxicSpikes] || user.pbOpposingSide.effects[PBEffects::ToxicSpikes]
+                  user.pbOwnSide.effects[PBEffects::ToxicSpikes] = false
+                  user.pbOpposingSide.effects[PBEffects::ToxicSpikes] = false
                   hazardsExist = true
                 end
                 if user.pbOwnSide.effects[PBEffects::StealthRock] || user.pbOpposingSide.effects[PBEffects::StealthRock]
@@ -7672,9 +7672,9 @@ class PokeBattle_Battler
             user.pbOpposingSide.effects[PBEffects::Spikes] = 0
             hazardsExist = true
           end
-          if user.pbOwnSide.effects[PBEffects::ToxicSpikes]>0 || user.pbOpposingSide.effects[PBEffects::ToxicSpikes]>0
-            user.pbOwnSide.effects[PBEffects::ToxicSpikes] = 0
-            user.pbOpposingSide.effects[PBEffects::ToxicSpikes] = 0
+          if user.pbOwnSide.effects[PBEffects::ToxicSpikes] || user.pbOpposingSide.effects[PBEffects::ToxicSpikes]
+            user.pbOwnSide.effects[PBEffects::ToxicSpikes] = false
+            user.pbOpposingSide.effects[PBEffects::ToxicSpikes] = false
             hazardsExist = true
           end
           if user.pbOwnSide.effects[PBEffects::StealthRock] || user.pbOpposingSide.effects[PBEffects::StealthRock]
@@ -7794,9 +7794,9 @@ class PokeBattle_Battler
             user.pbOpposingSide.effects[PBEffects::Spikes] = 0
             hazardsExist = true
           end
-          if user.pbOwnSide.effects[PBEffects::ToxicSpikes]>0 || user.pbOpposingSide.effects[PBEffects::ToxicSpikes]>0
-            user.pbOwnSide.effects[PBEffects::ToxicSpikes] = 0
-            user.pbOpposingSide.effects[PBEffects::ToxicSpikes] = 0
+          if user.pbOwnSide.effects[PBEffects::ToxicSpikes] || user.pbOpposingSide.effects[PBEffects::ToxicSpikes]
+            user.pbOwnSide.effects[PBEffects::ToxicSpikes] = false
+            user.pbOpposingSide.effects[PBEffects::ToxicSpikes] = false
             hazardsExist = true
           end
           if user.pbOwnSide.effects[PBEffects::StealthRock] || user.pbOpposingSide.effects[PBEffects::StealthRock]

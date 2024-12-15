@@ -3323,7 +3323,7 @@ class PokeBattle_Move
        ($fefieldeffect==3 || $fefieldeffect==9) && isConst?(type,PBTypes,:POISON) && !(opponent.moldbroken)
       atkmult=(atkmult*0.5).round
     end
-    if attacker.hasWorkingAbility(:PUNKROCK) && isSoundBased?
+    if attacker.hasWorkingAbility(:AMPLIFY) && isSoundBased?
       if ($fefieldeffect == 6 || $fefieldeffect == 23)
         atkmult=(atkmult*1.5).round
       else
@@ -3705,7 +3705,7 @@ class PokeBattle_Move
         defmult=(defmult*2).round
       end
     end
-    if opponent.hasWorkingAbility(:PUNKROCK) && isSoundBased?
+    if opponent.hasWorkingAbility(:AMPLIFY) && isSoundBased?
       defmult=(defmult*2).round
     end
     if $fefieldeffect == 3 && pbIsSpecial?(type) &&

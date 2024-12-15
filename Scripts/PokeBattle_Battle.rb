@@ -4217,12 +4217,11 @@ end
         end
       end 
       # Toxic Spikes
-      pkmn.pbOwnSide.effects[PBEffects::ToxicSpikes]=0 if $fefieldeffect == 21 ||
-       $fefieldeffect == 26
-      if pkmn.pbOwnSide.effects[PBEffects::ToxicSpikes]>0
+      pkmn.pbOwnSide.effects[PBEffects::ToxicSpikes] = false if $fefieldeffect == 21 || $fefieldeffect == 26
+      if pkmn.pbOwnSide.effects[PBEffects::ToxicSpikes]
         if !pkmn.isAirborne?
           if pkmn.pbHasType?(:POISON) && $fefieldeffect != 10
-            pkmn.pbOwnSide.effects[PBEffects::ToxicSpikes]=0
+            pkmn.pbOwnSide.effects[PBEffects::ToxicSpikes] = false
             pbDisplay(_INTL("{1} absorbed the poison spikes!",pkmn.pbThis))
           elsif pkmn.pbCanPoisonSpikes? && !pkmn.hasWorkingItem(:HEAVYDUTYBOOTS)
             if pkmn.pbHasType?(:GRASS) || (pkmn.pbHasType?(:FAIRY) && $fefieldeffect != 42)
@@ -6061,8 +6060,8 @@ def pbStartBattle(canlose=false)
             i.pbOwnSide.effects[PBEffects::Spikes]=0
             hazardsOnSide = true
           end
-          if i.pbOwnSide.effects[PBEffects::ToxicSpikes]>0
-            i.pbOwnSide.effects[PBEffects::ToxicSpikes]=0
+          if i.pbOwnSide.effects[PBEffects::ToxicSpikes]
+            i.pbOwnSide.effects[PBEffects::ToxicSpikes] = false
             hazardsOnSide = true
           end
           if i.pbOwnSide.effects[PBEffects::StealthRock]
@@ -7436,9 +7435,9 @@ def pbStartBattle(canlose=false)
           end
         end
         # TSpikes
-        if i.pbOwnSide.effects[PBEffects::ToxicSpikes]>0
+        if i.pbOwnSide.effects[PBEffects::ToxicSpikes]
           pbDisplay(_INTL("The waste swallowed up the toxic spikes!"))
-          i.pbOwnSide.effects[PBEffects::ToxicSpikes]=0
+          i.pbOwnSide.effects[PBEffects::ToxicSpikes] = false
           pbDisplay(_INTL("...Poison needles shot up from the ground!"))
           if !i.isFainted? && !i.isAirborne? &&
            !i.pbHasType?(:STEEL) && !i.pbHasType?(:POISON)

@@ -298,7 +298,7 @@ class AdvancedPokedexScene
       when 1; _INTL("{1} when happy",evoPokemon)
       when 2; _INTL("{1} when happy at day",evoPokemon)
       when 3; _INTL("{1} when happy at night",evoPokemon)
-      when 4, 13;_INTL("{1} at level {2}",
+      when 4, 13, 34;_INTL("{1} at level {2}",
           evoPokemon,evoItem) # Pokémon that evolve by level AND Ninjask
       when 5; _INTL("{1} trading",evoPokemon)
       when 6; _INTL("{1} trading holding {2}",
@@ -337,14 +337,14 @@ class AdvancedPokedexScene
       when 25;_INTL("{1} trading by {2}",
           evoPokemon,PBSpecies.getName(evoItem)) # Escavalier/Accelgor
       # When HIDECUSTOMEVOLUTION = false the below 7 messages will be displayed
-      when 26;_INTL("{1} custom1 with {2}", evoPokemon,evoItem) 
+      when 26;_INTL("{1} bad influence at level {2}", evoPokemon,evoItem) 
       when 27;_INTL("{1} custom2 with {2}", evoPokemon,evoItem) 
       when 28;_INTL("{1} LevelRain with {2}", evoPokemon,evoItem) 
       when 29;_INTL("{1} LevelDay with {2}", evoPokemon,evoItem) 
       when 30;_INTL("{1} LevelNight with {2}", evoPokemon,evoItem) 
-      when 31;_INTL("{1} custom6 with {2}", evoPokemon,evoItem)
+      when 31;_INTL("{1} BattleCrits with {2}", evoPokemon,evoItem)
       when 32;_INTL("{1} custom7 with {2}", evoPokemon,evoItem)
-      when 33;_INTL("{1} custom8 with {2}", evoPokemon,evoItem)  
+      when 33;_INTL("{1} GimmiCoin with {2}", evoPokemon,evoItem)  
       else; ""  
     end  
      ret = _INTL("{1} by an unknown way", evoPokemon) if(ret.empty? ||

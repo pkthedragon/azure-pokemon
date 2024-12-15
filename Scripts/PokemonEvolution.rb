@@ -25,14 +25,14 @@ class PBEvolution
   LevelFemale    = 23
   Location       = 24
   TradeSpecies   = 25
-  Custom1        = 26
+  BadInfluence   = 26
   Affection      = 27
   LevelRain      = 28
   LevelDay       = 29
   LevelNight     = 30
-  Custom6        = 31
+  BattleCrits    = 31
   Custom7        = 32
-  Custom8        = 33
+  GimmiCoin        = 33
 
   EVONAMES=["Unknown",
      "Happiness","HappinessDay","HappinessNight","Level","Trade",
@@ -40,8 +40,8 @@ class PBEvolution
      "Silcoon","Cascoon","Ninjask","Shedinja","Beauty",
      "ItemMale","ItemFemale","DayHoldItem","NightHoldItem","HasMove",
      "HasInParty","LevelMale","LevelFemale","Location","TradeSpecies",
-     "Custom1","Affection","LevelRain","LevelDay","LevelNight","Custom6","Custom7",
-     "Custom8"]
+     "BadInfluence","Affection","LevelRain","LevelDay","LevelNight","BattleCrits","Custom7",
+     "GimmiCoin"]
 
   # 0 = no parameter
   # 1 = Positive integer
@@ -731,7 +731,7 @@ def pbMiniCheckEvolution(pokemon,evonib,level,poke)
       return poke if pokemon.happiness>=220 && PBDayNight.isDay?(pbGetTimeNow)
     when PBEvolution::HappinessNight
       return poke if pokemon.happiness>=220 && PBDayNight.isNight?(pbGetTimeNow)
-    when PBEvolution::Level 
+    when PBEvolution::Level
       case pokemon.species
         when 104            # Cubone -> Marowak forms
           if PBDayNight.isNight?(pbGetTimeNow) || marowakMaps.include?($game_map.map_id)
@@ -817,7 +817,7 @@ def pbMiniCheckEvolution(pokemon,evonib,level,poke)
       return poke if $game_map.map_id==level
     when PBEvolution::TradeSpecies
       return -1
-    when PBEvolution::Custom1
+    when PBEvolution::BadInfluence
        for i in $Trainer.party
         return poke if !i.egg? && (i.type1==17 || i.type2==17) && pokemon.level>=level
       end
@@ -832,7 +832,7 @@ def pbMiniCheckEvolution(pokemon,evonib,level,poke)
       return poke if pokemon.level>=level && PBDayNight.isDay?(pbGetTimeNow)
     when PBEvolution::LevelNight
       return poke if pokemon.level>=level && PBDayNight.isNight?(pbGetTimeNow)
-    when PBEvolution::Custom6
+    when PBEvolution::Crit
       # Add code for custom evolution type 6
       return poke if pokemon.critted==true
     when PBEvolution::Custom7
@@ -872,7 +872,7 @@ def pbMiniCheckEvolutionItem(pokemon,evonib,level,poke,item)
       return poke if level==item && pokemon.isMale?
     when PBEvolution::ItemFemale
       return poke if level==item && pokemon.isFemale?
-    when PBEvolution::Custom8
+    when PBEvolution::GimmiCoin
       return poke if level==item
   end
   return -1

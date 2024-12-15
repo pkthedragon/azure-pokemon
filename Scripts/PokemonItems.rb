@@ -1440,7 +1440,7 @@ def pbSpeciesCompatible?(species,move,pokemon)
         if (move == PBMoves::WORKUP) || (move == PBMoves::PSYSHOCK) ||  
           (move == PBMoves::CALMMIND) ||  (move == PBMoves::SAFEGUARD) ||  
           (move == PBMoves::PSYCHIC) ||  (move == PBMoves::SHADOWBALL) ||
-          (move == PBMoves::ATTRACT) ||  (move == PBMoves::ECHOEDVOICE) ||
+          (move == PBMoves::ENCHANT) ||  (move == PBMoves::ECHOEDVOICE) ||
           (move == PBMoves::FOCUSBLAST) ||  (move == PBMoves::ENERGYBALL) ||
           (move == PBMoves::PSYCHUP) ||  (move == PBMoves::DREAMEATER) ||
           (move == PBMoves::FLASHCANNON) ||  (move == PBMoves::TRICKROOM) ||
@@ -1469,7 +1469,7 @@ def pbSpeciesCompatible?(species,move,pokemon)
         if (move == PBMoves::WORKUP) || (move == PBMoves::PSYSHOCK) ||  
           (move == PBMoves::CALMMIND) ||  (move == PBMoves::SAFEGUARD) ||  
           (move == PBMoves::PSYCHIC) ||  (move == PBMoves::SHADOWBALL) ||
-          (move == PBMoves::ATTRACT) ||  (move == PBMoves::ECHOEDVOICE) ||
+          (move == PBMoves::ENCHANT) ||  (move == PBMoves::ECHOEDVOICE) ||
           (move == PBMoves::FOCUSBLAST) ||  (move == PBMoves::ENERGYBALL) ||
           (move == PBMoves::PSYCHUP) ||  (move == PBMoves::DREAMEATER) ||
           (move == PBMoves::FLASHCANNON) ||  (move == PBMoves::TRICKROOM) ||
@@ -1648,7 +1648,7 @@ def pbSpeciesCompatible?(species,move,pokemon)
           (move == PBMoves::RAINDANCE) ||  (move == PBMoves::SECRETPOWER) ||  
           (move == PBMoves::SHADOWBALL) ||  (move == PBMoves::DOUBLETEAM) ||
           (move == PBMoves::AERIALACE) ||  (move == PBMoves::FACADE) ||
-          (move == PBMoves::ATTRACT) ||  (move == PBMoves::ROUND) ||
+          (move == PBMoves::ENCHANT) ||  (move == PBMoves::ROUND) ||
           (move == PBMoves::FLING) ||  (move == PBMoves::FLASH) ||
           (move == PBMoves::STRUGGLEBUG) ||
           (move == PBMoves::CONFIDE) ||  (move == PBMoves::PINMISSILE) ||
