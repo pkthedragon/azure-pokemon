@@ -155,6 +155,21 @@ module Input
   end
 end
 
+#for a soft-reset, let the speed-up persist
+if $speed_up
+  $PokemonSystem.turbospeed = 2 if !$PokemonSystem.turbospeed
+  case $PokemonSystem.turbospeed
+  when 0
+    Graphics.frame_rate=88
+  when 1
+    Graphics.frame_rate=110
+  when 2
+    Graphics.frame_rate=132
+  when 3
+    Graphics.frame_rate=176
+  end
+end
+
 def pbTurbo()  
   if Graphics.frame_rate==44
     $PokemonSystem.turbospeed = 2 if !$PokemonSystem.turbospeed
@@ -168,8 +183,10 @@ def pbTurbo()
     when 3
       Graphics.frame_rate=176
     end
+    $speed_up = true
   else
     Graphics.frame_rate=44
+    $speed_up = false
   end
 end
 

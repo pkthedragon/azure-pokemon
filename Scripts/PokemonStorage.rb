@@ -270,8 +270,8 @@ class PokemonStorageScreen
 
   def pbAbleCount
     count=0
-    for p in @storage.party
-      count+=1 if pbAble?(p)
+    for j in @storage.party
+      count+=1 if pbAble?(j)
     end
     return count
   end
@@ -1114,8 +1114,8 @@ class PokemonStorageScreen
             # Make not infectious
             elsif cmd==1
               strain=pokerus/16
-              p=strain<<4
-              pkmn.pokerus=p
+              j=strain<<4
+              pkmn.pokerus=j
             # Clear Pokérus
             elsif cmd==2
               pkmn.pokerus=0
@@ -3178,8 +3178,8 @@ class StorageSystemPC
           next
         end
         count=0
-        for p in $PokemonStorage.party
-          count+=1 if p && !p.isEgg? && p.hp>0
+        for j in $PokemonStorage.party
+          count+=1 if j && !j.isEgg? && j.hp>0
         end
         if command==1 && count<=1
           Kernel.pbMessage(_INTL("Can't deposit the last Pokémon!"))

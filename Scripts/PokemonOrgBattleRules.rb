@@ -1153,8 +1153,8 @@ class PokemonChallengeRules
 
   def createBattle(scene,trainer1,trainer2)
     battle=@battletype.pbCreateBattle(scene,trainer1,trainer2)
-    for p in @battlerules
-      p.setRule(battle)
+    for i in @battlerules
+      i.setRule(battle)
     end
     return battle
   end

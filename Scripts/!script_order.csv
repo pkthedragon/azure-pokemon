@@ -81,7 +81,6 @@ PBRibbons
 PBEnvironment
 PBStuff
 ================~blank
-PokemonBossBattle
 PBEffects
 PBWeather
 PokeBattle_ActiveSide
@@ -135,6 +134,9 @@ PokemonEvolution
 PokemonChatter
 PokemonSprite
 PokemonStorage
+================~blank
+PokemonBossBattle
+BossInfo
 ================~blank
 PokemonPauseMenu
 PokemonPokedex

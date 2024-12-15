@@ -12,7 +12,7 @@ begin
       @effects[PBEffects::Spikes]      = 0
       @effects[PBEffects::StealthRock] = false
       @effects[PBEffects::Tailwind]    = 0
-      @effects[PBEffects::ToxicSpikes] = 0
+      @effects[PBEffects::ToxicSpikes] = false
       @effects[PBEffects::WideGuard]   = false # add this line
       @effects[PBEffects::QuickGuard]  = false # add this line
 #### KUROTSUNE - 009 - START
@@ -26,7 +26,7 @@ begin
 #### KUROTSUNE - 025 - END
       @effects[PBEffects::StickyWeb]     = false
       @effects[PBEffects::AuroraVeil]    = 0
-      @effects[PBEffects::AreniteWall]    = 0
+      @effects[PBEffects::DuneDefense]    = 0
       $belch=false
       $fepledgefield=0
       $feconversionuse=0      
@@ -59,6 +59,7 @@ begin
       @effects[PBEffects::WonderRoom]   = 0
       @effects[PBEffects::MudSport]     = 0
       @effects[PBEffects::WaterSport]   = 0
+      @effects[PBEffects::SosBuffer]    = 0
 #### KUROTSUNE - 001 - START
       @effects[PBEffects::HeavyRain]     = false
       @effects[PBEffects::HarshSunlight] = false

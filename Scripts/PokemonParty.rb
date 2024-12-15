@@ -965,14 +965,14 @@ class PokemonScreen
         # Store mail if a message was written
         poke1=poke2=poke3=nil
         if $Trainer.party[pkmnid+2]
-          p=$Trainer.party[pkmnid+2]
-          poke1=[p.species,p.gender,p.isShiny?,(p.form rescue 0),(p.isShadow? rescue false)]
-          poke1.push(true) if p.isEgg?
+          i=$Trainer.party[pkmnid+2]
+          poke1=[i.species,i.gender,i.isShiny?,(i.form rescue 0),(i.isShadow? rescue false)]
+          poke1.push(true) if i.isEgg?
         end
         if $Trainer.party[pkmnid+1]
-          p=$Trainer.party[pkmnid+1]
-          poke2=[p.species,p.gender,p.isShiny?,(p.form rescue 0),(p.isShadow? rescue false)]
-          poke2.push(true) if p.isEgg?
+          i=$Trainer.party[pkmnid+1]
+          poke2=[i.species,i.gender,i.isShiny?,(i.form rescue 0),(i.isShadow? rescue false)]
+          poke2.push(true) if i.isEgg?
         end
         poke3=[pkmn.species,pkmn.gender,pkmn.isShiny?,(pkmn.form rescue 0),(pkmn.isShadow? rescue false)]
         poke3.push(true) if pkmn.isEgg?
@@ -1712,8 +1712,8 @@ class PokemonScreen
             # Make not infectious
             elsif cmd==1
               strain=pokerus/16
-              p=strain<<4
-              pkmn.pokerus=p
+              j=strain<<4
+              pkmn.pokerus=j
             # Clear Pokérus
             elsif cmd==2
               pkmn.pokerus=0

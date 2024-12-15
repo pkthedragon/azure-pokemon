@@ -329,7 +329,7 @@
 329,TM42,TM42,4,3000,"An attack move that doubles its power if the user is poisoned, paralyzed, or has a burn.",3,0,0,FACADE
 330,TM43,TM43,4,2000,"The user cloaks itself with flame and attacks. Building up more power, it raises the user's Speed stat.",3,0,0,FLAMECHARGE
 331,TM44,TM44,4,3000,The user goes to sleep for two turns. It fully restores the user's HP and heals any status problem.,3,0,0,REST
-332,TM45,TM45,4,3000,"If it is the opposite gender of the user, the target becomes infatuated and less likely to attack.",3,0,0,ATTRACT
+332,TM45,TM45,4,3000,"If it is the opposite gender of the user, the target becomes infatuated and less likely to attack.",3,0,0,ENCHANT
 333,TM46,TM46,4,2000,The user attacks and steals the target's held item simultaneously. It can't steal if the user holds an item.,3,0,0,THIEF
 334,TM47,TM47,4,3000,"The user attacks the target's legs swiftly, reducing the target's Speed stat.",3,0,0,LOWSWEEP
 335,TM48,TM48,4,3000,The user attacks the target with a song. Others can join in the Round and make the attack do greater damage.,3,0,0,ROUND
@@ -637,7 +637,7 @@
 644,CARDKEYS,Card Key Shard,8,0,"A piece of a broken card key.",0,0,6,
 645,CARDKEYS2,Card Key Shard,8,0,"A piece of a broken card key.",0,0,6,
 646,CARDKEYS3,Card Key Shard,8,0,"A piece of a broken card key.",0,0,6,
-647,TM105,TM105,4,0,"The user creates a large wall out of sediment, weakening the power of Super Effective moves for 5 turns. It can only be used in a sandstorm.",3,0,0,ARENITEWALL
+647,TM105,TM105,4,0,"The user creates a large wall out of sediment, weakening the power of Super Effective moves for 5 turns. It can only be used in a sandstorm.",3,0,0,DUNEDEFENSE
 648,TM106,TM106,4,0,Does massive damage if the opponent is inflicted with a status.,3,0,0,IRRITATION
 649,KKEY,Apartment Key,8,0,"A key to some apartment in Kugearen City.",0,0,6,
 650,TP,Toilet Paper,8,0,"Toilet Paper... okay?",0,0,6,
@@ -1018,3 +1018,29 @@
 1058,TM167,TM158,4,0,"Resets the target's stat changes. This move cannot miss.",3,0,0,SCRUTINIZE
 1059,TM168,TM159,4,0,"The user lunges at the target, moving first and trapping the target.",3,0,0,PINCERGRIP
 1060,TM169,TM160,4,0,"This attack doubles in power if the target has negative stat changes.",3,0,0,CONDESCEND
+1061,GALARICACUFF,Galarica Cuff,1,2100,"A cuff made from woven-together Galarica Twigs. Giving it to Galarian Slowpoke makes the Pokémon very happy.",1,0,0
+1062,GALARICAWREATH,Galarica Wreath,1,2100,"A wreath made from woven- Galarica Twigs. Placing it on the head of a Galarian Slowpoke makes it very happy.",1,0,0
+1063,BLACKAUGURITE,Black Augurite,1,3000,"A glassy black stone that produces a sharp cutting edge when split. It's loved by a certain Pokémon.",1,0,0,
+1064,PEATBLOCK,Peat Block,1,3000,"A block of muddy material that can be used as fuel for burning when it is dried. It's loved by a certain Pokémon.",1,0,0,
+1065,REINSOFUNITY,Reins of Unity,8,10000,"Reins presented to the king. They enhance Calyrex’s power over bountiful harvests and unite Calyrex with its beloved steed.",5,0,6,
+1066,LUSTROUSGLOBE,Lustrous Globe,1,10000,"When held by Palkia, this large, glowing orb wells with power and allows the Pokémon to change form.",0,0,0
+1067,ADAMANTCRYSTAL,Adamant Crystal,1,10000,"When held by Dialga, this large, glowing gem wells with power and allows the Pokémon to change form.",0,0,0
+1068,HANDMIXER,Hand Mixer,1,2100,"A standard hand mixer suitable for whipping cream.",1,0,0
+1069,LEADERSCREST,Leader's Crest,1,2100,"A shard of what appears to be an old blade of some sort. It is given only to Bisharp that head up a group of Pawniard.",1,0,0
+1070,AUSPICIOUSARMOR,Auspicious Armor,1,2100,"A peculiar set of armor that can make a certain species of Pokémon evolve. Auspicious wishes live within it.",0,0,0
+1071,MALICIOUSARMOR,Malicious Armor,1,2100,"A peculiar set of armor that can make a certain species of Pokémon evolve. Malicious will lurks within it.",0,0,0
+1072,CLEARAMULET,Clear Amulet,1,1200,"An item to be held by a Pokémon. Protects the holder from having its stats lowered by moves or other Pokémon's Abilities.",0,0,0
+1073,ABILITYSHIELD,Ability Shield,1,1200,"An item to be held by a Pokémon. This rather unique-looking shield protects the holder from having its Ability changed.",0,0,0
+1074,PUNCHINGGLOVE,Punching Glove,1,1200,"An item to be held by a Pokémon. This protective glove boosts the power of punching moves and prevents direct contact.",0,0,0
+1075,COVERTCLOAK,Covert Cloak,1,1200,"An item to be held by a Pokémon. This hooded cloak conceals the holder, protecting it from the additional effects of moves.",0,0,0
+1076,LOADEDDICE,Loaded Dice,1,1200,"An item to be held by a Pokémon. This loaded dice always rolls a good number, ensuring that multistrike moves hit more times.",0,0,0
+1077,MIRRORHERB,Mirror Herb,1,1200,"An item to be held by a Pokémon. This herb allows the holder to mirror an opponent's stat increases, but only once.",0,0,0
+1078,BOOSTERENERGY,Booster Energy,1,100,"An item to be held by Pokémon with certain Abilities. The energy that fills this capsule boosts the strength of the Pokémon.",0,0,0
+1079,GIMMIGHOULCOIN,Gimmighoul Coin,1,300,"A tiny golden coin. It seems that Gimmighoul treasure and hoard these.",0,0,0
+1080,METALALLOY,Metal Alloy,1,2100,"A peculiar metal that can make certain species of Pokémon evolve. It is composed of many layers.",1,0,0,
+1081,UNREMARKABLETEACUP,Unremarkable Teacup,1,800,"A peculiar teacup that can make a certain species of Pokémon evolve. It may be cracked, but tea drunk from it is delicious.",1,0,0,
+1082,MASTERPIECETEACUP,Masterpiece Teacup,1,800,"A peculiar teacup that can make a certain species of Pokémon evolve. It may be chipped, but tea drunk from it is delicious.",1,0,0,
+1083,SYRUPYAPPLE,Syrupy Apple,1,2100,"A peculiar apple that can make a certain species of Pokémon evolve. It's exceptionally syrupy.",1,0,0,
+1084,WELLSPRINGMASK,Wellspring Mask,1,500,"An item to be held by Ogerpon. This carved wooden mask is adorned with crystals and allows Ogerpon to wield the Water type during battle.",0,0,0,
+1085,HEARTHFLAMEMASK,Hearthflame Mask,1,500,"An item to be held by Ogerpon. This carved wooden mask is adorned with crystals and allows Ogerpon to wield the Fire type during battle.",0,0,0,
+1086,CORNERSTONEMASK,Cornerstone Mask,1,500,"An item to be held by Ogerpon. This carved wooden mask is adorned with crystals and allows Ogerpon to wield the Rock type during battle.",0,0,0,

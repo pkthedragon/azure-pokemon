@@ -983,22 +983,22 @@ def pbRuledBattle(team1,team2,rule)
     items2=[]
     level=rule.ruleset.suggestedLevel
     team1.length.times {|i|
-       p=team1[i]
-       if p.level!=level
-         p.level=level
-         p.calcStats
+       team=team1[i]
+       if team.level!=level
+         team.level=level
+         team.calcStats
        end
-       items1.push(p.item)
-       trainer1.party.push(p)
+       items1.push(team.item)
+       trainer1.party.push(team)
     }
     team2.length.times {|i|
-       p=team2[i]
-       if p.level!=level
-         p.level=level
-         p.calcStats
+       team=team2[i]
+       if team.level!=level
+         team.level=level
+         team.calcStats
        end
-       items2.push(p.item)
-       trainer2.party.push(p)
+       items2.push(team.item)
+       trainer2.party.push(team)
     }
     battle=rule.createBattle(scene,trainer1,trainer2)
     battle.debug=true
@@ -1006,16 +1006,16 @@ def pbRuledBattle(team1,team2,rule)
     battle.endspeech="..."
     battle.internalbattle=false
     decision=battle.pbStartBattle
-    #p [items1,items2]
+    #team [items1,items2]
     team1.length.times {|i|
-       p=team1[i]
-       p.heal
-       p.setItem(items1[i])
+       team=team1[i]
+       team.heal
+       team.setItem(items1[i])
     }
     team2.length.times {|i|
-       p=team2[i]
-       p.heal
-       p.setItem(items2[i])
+       team=team2[i]
+       team.heal
+       team.setItem(items2[i])
     }
   end
   if decision==1 # Team 1 wins

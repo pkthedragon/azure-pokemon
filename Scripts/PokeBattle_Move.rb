@@ -471,7 +471,7 @@ class PokeBattle_Move
       mod1=2 if mod1==0
       mod2=2 if mod2==0
     end
-    if isConst?(attacker.ability,PBAbilities,:HEADSTRONG) || (opponent.ability,PBAbilities,:HEADSTRONG)
+    if isConst?(attacker.ability,PBAbilities,:HEADSTRONG) || isConst?(opponent.ability,PBAbilities,:HEADSTRONG)
       mod1=2 if mod1==0
       mod2=2 if mod2==0
     end    
@@ -600,7 +600,7 @@ class PokeBattle_Move
        (opponent.hasWorkingAbility(:VOLTABSORB) && !(opponent.moldbroken) && (isConst?(type,PBTypes,:ELECTRIC) || FieldTypeChange(attacker,opponent,1,true)==PBTypes::ELECTRIC)) ||
        (opponent.hasWorkingAbility(:WATERABSORB) && !(opponent.moldbroken) && (isConst?(type,PBTypes,:WATER) || FieldTypeChange(attacker,opponent,1,true)==PBTypes::WATER)) ||
        (isConst?(opponent.species,PBSpecies,:DRUDDIGON) && opponent.hasWorkingItem(:DRUDDICREST) && !(opponent.moldbroken) && (isConst?(type,PBTypes,:FIRE) || FieldTypeChange(attacker,opponent,1,true)==PBTypes::FIRE))
-       if opponent.effects[PBEffects::Grievous]==0
+       if opponent.effects[PBEffects::HealBlock]==0
         if opponent.pbRecoverHP((opponent.totalhp/4).floor,true)>0
           @battle.pbDisplay(_INTL("{1}'s {2} restored its HP!",
              opponent.pbThis,PBAbilities.getName(opponent.ability)))
@@ -679,7 +679,7 @@ class PokeBattle_Move
     end
     if opponent.hasWorkingItem(:CHILLDRIVE) && (opponent.pokemon.species == PBSpecies::GENESECT) && $fefieldeffect==24 &&
       (isConst?(type,PBTypes,:ICE) || FieldTypeChange(attacker,opponent,1,true)==PBTypes::ICE)
-      if opponent.effects[PBEffects::Grievous]==0
+      if opponent.effects[PBEffects::HealBlock]==0
         if opponent.pbRecoverHP((opponent.totalhp/4).floor,true)>0
           @battle.pbDisplay(_INTL("{1}'s {2} restored its HP!",
           opponent.pbThis,PBItems.getName(opponent.item)))
@@ -693,7 +693,7 @@ class PokeBattle_Move
     end
     if opponent.hasWorkingItem(:DOUSEDRIVE) && (opponent.pokemon.species == PBSpecies::GENESECT) && $fefieldeffect==24 &&
       (isConst?(type,PBTypes,:ICE) || FieldTypeChange(attacker,opponent,1,true)==PBTypes::WATER)
-      if opponent.effects[PBEffects::Grievous]==0
+      if opponent.effects[PBEffects::HealBlock]==0
         if opponent.pbRecoverHP((opponent.totalhp/4).floor,true)>0
           @battle.pbDisplay(_INTL("{1}'s {2} restored its HP!",
           opponent.pbThis,PBItems.getName(opponent.item)))
@@ -1443,7 +1443,7 @@ class PokeBattle_Move
     if attacker.hasWorkingAbility(:COMPOUNDEYES)
       accuracy*=1.3
     end
-    if !@battle.pbOwnedByPlayer?(attacker.index) && ($game_variables[200] == 2)    
+    if !@battle.pbOwnedByPlayer?(attacker.index) && ($game_variables[:Difficulty_Mode] == 2)    
       accuracy*=1.1
       if $Trainer.numbadges>=11 && @basedamage>0
         accuracy*=1.2
@@ -1760,7 +1760,7 @@ class PokeBattle_Move
     if attacker.hasWorkingAbility(:ANALYTIC) && opponent.hasMovedThisRound?
       damagemult = (damagemult*1.3).round
     end
-    if attacker.hasWorkingAbility(:ASSASSINATE) && opponent.effects[PBEffects::Assassinate]==true
+    if attacker.hasWorkingAbility(:ASSASSINATE) && opponent.effects[PBEffects::Assassinate]
       damagemult = (damagemult*1.3).round
     end
 #### KUROTSUNE - 003 END
@@ -3307,11 +3307,11 @@ class PokeBattle_Move
     end
     if @battle.internalbattle
       if !@battle.pbOwnedByPlayer?(attacker.index) && pbIsPhysical?(type) &&
-         isConst?(attacker.species,PBSpecies,:AEGISLASH) && attacker.form==1 && $game_variables[200]==2
+         isConst?(attacker.species,PBSpecies,:AEGISLASH) && attacker.form==1 && $game_variables[:Difficulty_Mode]==2
         atkmult=(atkmult*1.1).round
       end
       if @battle.pbOwnedByPlayer?(attacker.index) && pbIsSpecial?(type) &&
-         isConst?(attacker.species,PBSpecies,:AEGISLASH) && attacker.form==1 && $game_variables[200]==2
+         isConst?(attacker.species,PBSpecies,:AEGISLASH) && attacker.form==1 && $game_variables[:Difficulty_Mode]==2
         atkmult=(atkmult*1.1).round
       end
     end
@@ -3323,7 +3323,7 @@ class PokeBattle_Move
        ($fefieldeffect==3 || $fefieldeffect==9) && isConst?(type,PBTypes,:POISON) && !(opponent.moldbroken)
       atkmult=(atkmult*0.5).round
     end
-    if attacker.hasWorkingAbility(:PUNKROCK) && isSoundBased?
+    if attacker.hasWorkingAbility(:AMPLIFY) && isSoundBased?
       if ($fefieldeffect == 6 || $fefieldeffect == 23)
         atkmult=(atkmult*1.5).round
       else
@@ -3439,7 +3439,7 @@ class PokeBattle_Move
        attacker.turncount<5 && pbIsPhysical?(type)
       atkmult=(atkmult*0.5).round
     end
-    if !(@battle.pbOwnedByPlayer?(attacker.index)) && @battle.pbPlayer.numbadges>=12 && $game_variables[200]==2
+    if !(@battle.pbOwnedByPlayer?(attacker.index)) && @battle.pbPlayer.numbadges>=12 && $game_variables[:Difficulty_Mode]==2
       atkmult=(atkmult*1.1).round
     end
     if ((@battle.pbWeather==PBWeather::SUNNYDAY && !attacker.hasWorkingItem(:UTILITYUMBRELLA)) || $fefieldeffect == 33 || 
@@ -3668,11 +3668,11 @@ class PokeBattle_Move
       end
     end    
     if !@battle.pbOwnedByPlayer?(attacker.index) && pbIsPhysical?(type) &&
-         isConst?(attacker.species,PBSpecies,:AEGISLASH) && attacker.form==0 && $game_variables[200]==2
+         isConst?(attacker.species,PBSpecies,:AEGISLASH) && attacker.form==0 && $game_variables[:Difficulty_Mode]==2
         defmult=(defmult*1.1).round
     end
     if !@battle.pbOwnedByPlayer?(attacker.index) && pbIsSpecial?(type) &&
-        isConst?(attacker.species,PBSpecies,:AEGISLASH) && attacker.form==0 && $game_variables[200]==2
+        isConst?(attacker.species,PBSpecies,:AEGISLASH) && attacker.form==0 && $game_variables[:Difficulty_Mode]==2
         defmult=(defmult*1.1).round
     end
     if $fefieldeffect == 24 && @function==0xE0
@@ -3684,7 +3684,7 @@ class PokeBattle_Move
       $fefieldeffect == 31 || $fefieldeffect == 32 || $fefieldeffect == 34) && !(opponent.moldbroken) 
       defmult=(defmult*1.5).round
     end
-    if isConst?(opponent.ability,PBAbilities,:GRASSPELT) && pbIsPhysical?(type) &&
+    if isConst?(opponent.ability,PBAbilities,:NATURALSHROUD) && pbIsPhysical?(type) &&
      ($fefieldeffect == 2 || $fefieldeffect == 15 || ($fefieldeffect == 33 && $fecounter>1) || @battle.field.effects[PBEffects::GrassyTerrain]>0) # Grassy Field
       defmult=(defmult*1.5).round
     end
@@ -3705,7 +3705,7 @@ class PokeBattle_Move
         defmult=(defmult*2).round
       end
     end
-    if opponent.hasWorkingAbility(:PUNKROCK) && isSoundBased?
+    if opponent.hasWorkingAbility(:AMPLIFY) && isSoundBased?
       defmult=(defmult*2).round
     end
     if $fefieldeffect == 3 && pbIsSpecial?(type) &&
@@ -4778,7 +4778,7 @@ class PokeBattle_Move
           end
       end
     end
-    if opponent.pbOwnSide.effects[PBEffects::AreniteWall]>0 &&
+    if opponent.pbOwnSide.effects[PBEffects::DuneDefense]>0 &&
      opponent.damagestate.typemod>4 
       finaldamagemult=(finaldamagemult*0.5).round
     end
@@ -4918,15 +4918,6 @@ class PokeBattle_Move
       @battle.pbDisplayPaused(_INTL("{1} transformed!",opponent.name))
       opponent.effects[PBEffects::IceFace]=false
       damage=0
-    elsif (@battle.pbIsOpposing?(opponent.index)) && @battle.shieldCount>0 && opponent.damagestate.typemod!=0 && opponent.isBoss
-      if opponent.effects[PBEffects::ShieldLife]==0
-        shieldlife=[(opponent.totalhp/4).floor,1].max
-        opponent.effects[PBEffects::ShieldLife]=shieldlife
-      end
-      if hitnum==0
-        @battle.pbShieldDamage(opponent,damage,@thismove)
-      end
-      damage=0
     else
       opponent.damagestate.substitute=false
       if damage>=opponent.hp
@@ -4960,6 +4951,7 @@ class PokeBattle_Move
         end
         damage=0 if damage<0
       end
+      return @battle.pbShieldDamage(opponent,damage) if opponent.isbossmon
       oldhp=opponent.hp
       opponent.hp-=damage
       effectiveness=0
@@ -4973,12 +4965,6 @@ class PokeBattle_Move
       end
       @battle.scene.pbHPChanged(opponent,oldhp)
       opponent.damagestate.hplost=damage
-      if @battle.raidbattle && !@battle.pbBelongsToPlayer?(opponent.index) && @battle.pbIsOpposing?(opponent.index)
-        limit = opponent.totalhp * 0.25
-        if opponent.hp > 0 && oldhp > limit && opponent.hp < limit
-          @battle.pbDisplay(_INTL("{1} has dropped its guard!!",opponent.pbThis))
-        end
-      end
     end
     if (@id == PBMoves::ULTRAMEGADEATH)
       @battle.ultramegadeath = (@battle.ultramegadeath+1)%2
@@ -5028,7 +5014,6 @@ class PokeBattle_Move
   end
 
   def pbEffectFixedDamage(damage,attacker,opponent,hitnum=0,alltargets=nil,showanimation=true)
-    return 0 if @battle.shieldSetup>0 && hitnum>0
     type=@type
     type=pbType(type,attacker,opponent)
     typemod=pbTypeModMessages(type,attacker,opponent)
@@ -5124,7 +5109,6 @@ class PokeBattle_Move
         end
       end       
     end
-    #return 0 if @battle.shieldSetup>0 && hitnum>0
     damage=pbReduceHPDamage(damage,attacker,opponent,hitnum)
     pbEffectMessages(attacker,opponent)
     pbOnDamageLost(damage,attacker,opponent)

@@ -71,8 +71,8 @@ def pbGetEvolutionConst(i)
      "Silcoon","Cascoon","Ninjask","Shedinja","Beauty",
      "ItemMale","ItemFemale","DayHoldItem","NightHoldItem","HasMove",
      "HasInParty","LevelMale","LevelFemale","Location","TradeSpecies",
-     "Custom1","Custom2","Custom3","Custom4","Custom5","Custom6","Custom7",
-     "Custom8"
+     "BadInfluence","Custom2","Custom3","Custom4","Custom5","BattleCrits","Custom7",
+     "GimmiCoin"
   ]
   i=0 if i>=ret.length || i<0
   return ret[i]
@@ -581,8 +581,8 @@ def pbSaveTrainerBattles()
        for poke in trainer[3]
          maxindex=0
          towrite=[]
-         thistemp=getConstantName(PBSpecies,poke[TPSPECIES]) rescue pbGetSpeciesConst(poke[TPSPECIES]) rescue ""
-         towrite[TPSPECIES]=thistemp
+         thistemp=getConstantName(PBSpecies,poke[TSPECIES]) rescue pbGetSpeciesConst(poke[TSPECIES]) rescue ""
+         towrite[TSPECIES]=thistemp
          towrite[TPLEVEL]=poke[TPLEVEL].to_s
          thistemp=getConstantName(PBItems,poke[TPITEM]) rescue pbGetItemConst(poke[TPITEM]) rescue ""
          towrite[TPITEM]=thistemp
@@ -2743,7 +2743,7 @@ def pbTrainerBattleEditor
                   data[0],
                   data[1],
                   [data[9],data[10],data[11],data[12],data[13],data[14],data[15],data[16]].find_all {|i| i && i!=0 },   # Item list
-                  [data[3],data[4],data[5],data[6],data[7],data[8]].find_all {|i| i && i[TPSPECIES]!=0 },   # Pokémon list
+                  [data[3],data[4],data[5],data[6],data[7],data[8]].find_all {|i| i && i[TSPECIES]!=0 },   # Pokémon list
                   data[2]
                ]
                if trainerdata[3].length==0
@@ -2826,12 +2826,12 @@ module TrainerPokemonProperty
     oldsetting[TPMOVE2]=moves[1] ? moves[1] : TPDEFAULTS[TPMOVE2]
     oldsetting[TPMOVE3]=moves[2] ? moves[2] : TPDEFAULTS[TPMOVE3]
     oldsetting[TPMOVE4]=moves[3] ? moves[3] : TPDEFAULTS[TPMOVE4]
-    oldsetting=nil if !oldsetting[TPSPECIES] || oldsetting[TPSPECIES]==0
+    oldsetting=nil if !oldsetting[TSPECIES] || oldsetting[TSPECIES]==0
     return oldsetting
   end
 
   def self.format(value)
-    return (!value || !value[TPSPECIES] || value[TPSPECIES]==0) ? "-" : PBSpecies.getName(value[TPSPECIES])
+    return (!value || !value[TSPECIES] || value[TSPECIES]==0) ? "-" : PBSpecies.getName(value[TSPECIES])
   end
 end
 

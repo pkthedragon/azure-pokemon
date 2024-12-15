@@ -164,17 +164,17 @@ def gameCornerShop(index)
         else
         $game_variables[526]-=price
     if index == 1
-    p = PokeBattle_Pokemon.new(itemid,10,$Trainer)
+    i = PokeBattle_Pokemon.new(itemid,10,$Trainer)
             if itemid == 218
-              p.pbLearnMove(:STOCKPILE)
+              i.pbLearnMove(:STOCKPILE)
             elsif itemid == 517
-              p.pbLearnMove(:HEALINGWISH)
+              i.pbLearnMove(:HEALINGWISH)
             elsif itemid == 556
-              p.pbLearnMove(:SPIKES)
+              i.pbLearnMove(:SPIKES)
             elsif itemid == 694
-              p.pbLearnMove(:GLARE)
+              i.pbLearnMove(:GLARE)
     end
-            Kernel.pbAddPokemon(p)
+            Kernel.pbAddPokemon(i)
         else
           Kernel.pbReceiveItem(itemid)
         end
@@ -194,27 +194,27 @@ def gameCornerShop(index)
           if index==0
             Kernel.pbReceiveItem(itemid)
           else
-            p = PokeBattle_Pokemon.new(itemid,10,$Trainer)
+            i = PokeBattle_Pokemon.new(itemid,10,$Trainer)
             if itemid == 86
-              p.pbLearnMove(:STOCKPILE)
+              i.pbLearnMove(:STOCKPILE)
             elsif itemid == 325
-              p.pbLearnMove(:FUTURESIGHT)
+              i.pbLearnMove(:FUTURESIGHT)
             elsif itemid == 556
-              p.pbLearnMove(:SPIKES)
+              i.pbLearnMove(:SPIKES)
             elsif itemid == 694
-              p.pbLearnMove(:GLARE)
+              i.pbLearnMove(:GLARE)
             elsif itemid == 304
-              p.pbLearnMove(:HEADSMASH)
+              i.pbLearnMove(:HEADSMASH)
             elsif itemid == 632
-              p.pbLearnMove(:BATONPASS)
+              i.pbLearnMove(:BATONPASS)
             elsif itemid == 619
-              p.pbLearnMove(:KNOCKOFF)
+              i.pbLearnMove(:KNOCKOFF)
             elsif itemid == 627
-              p.pbLearnMove(:UTURN)
+              i.pbLearnMove(:UTURN)
             elsif itemid == 610
-              p.pbLearnMove(:NIGHTSLASH)
+              i.pbLearnMove(:NIGHTSLASH)
             end
-            Kernel.pbAddPokemon(p)
+            Kernel.pbAddPokemon(i)
           end
         end
       end

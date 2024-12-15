@@ -205,8 +205,10 @@ class Scene_Map
     $game_map.update
     sscene=PokemonMenu_Scene.new
     sscreen=PokemonMenu.new(sscene) 
+    $game_screen.aUpdateClock #####SWM
     sscreen.pbStartPokemonMenu
     $game_temp.menu_calling = false 
+    $game_screen.aUpdateClock #####SWM
   end
 
   def call_debug

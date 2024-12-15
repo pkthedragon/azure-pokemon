@@ -31,8 +31,8 @@ Events.onTrainerPartyLoad+=proc {|sender,e|
     trainer=e[0][0] # A PokeBattle_Trainer object of the loaded trainer
     items=e[0][1]   # An array of the trainer's items they can use
     party=e[0][2]   # An array of the trainer's Pokémon
-    if $Trainer.numbadges>=6 || ($game_variables[200] == 2 && $Trainer.numbadges>=3)
-      if ($game_variables[200] == 2 && $Trainer.numbadges>=10)
+    if $Trainer.numbadges>=6 || ($game_variables[:Difficulty_Mode] == 2 && $Trainer.numbadges>=3)
+      if ($game_variables[:Difficulty_Mode] == 2 && $Trainer.numbadges>=10)
         for i in party
           for j in 0...4
             i.moves[j].pp = (i.moves[j].pp * 2).floor
@@ -54,7 +54,7 @@ Events.onTrainerPartyLoad+=proc {|sender,e|
     if trainer.trainertype==PBTrainers::MYRON2 && trainer.name=="Myron"
       for i in party
         if (i.species==PBSpecies::MISMAGIUS)
-          case $game_variables[200]
+          case $game_variables[:Difficulty_Mode]
           when 0
             $game_variables[704]=2
           when 1
@@ -68,7 +68,7 @@ Events.onTrainerPartyLoad+=proc {|sender,e|
     if trainer.trainertype==PBTrainers::GHOSTMAN && trainer.name=="Myron"
       for i in party
         if (i.species==PBSpecies::GENESECT)
-          case $game_variables[200]
+          case $game_variables[:Difficulty_Mode]
           when 0
             $game_variables[704]=2
           when 1
@@ -135,41 +135,41 @@ Events.onWildPokemonCreate+=proc {|sender,e|
 Events.onWildPokemonCreate+=proc {|sender,e|
   pokemon=e[0]
   case pokemon.species
-    when PBSpecies::TANGROWTH
-      if $game_map.map_id == 34
-        $game_switches[290]=true
-        $game_switches[1998]=true
-        pokemon.isbossmon=true
-        $game_variables[704]=2
-        if $game_variables[200] == 0
-          pokemon.level=18
-        elsif $game_variables[200] == 1
-          pokemon.level=13 
-        elsif $game_variables[200] == 2
-          pokemon.level=20 
-        end
-        pokemon.pbLearnMove(:WINEGODSBLESSING)
-        pokemon.pbLearnMove(:INGRAIN)
-        pokemon.pbLearnMove(:ANCIENTPOWER)
-        pokemon.pbLearnMove(:AMNESIA)
-        pokemon.item = PBItems::TANTRIBUTE
-        pokemon.setNature(PBNatures::TIMID)    
-        for i in 0...6
-          pokemon.ev[i]=(20)
-        end
-      end
+    # when PBSpecies::TANGROWTH
+    #   if $game_map.map_id == 34
+    #     $game_switches[:No_Catch]=true
+    #     $game_switches[:Boss_Battle]=true
+    #     pokemon.isbossmon=true
+    #     $game_variables[704]=2
+    #     if $game_variables[:Difficulty_Mode] == 0
+    #       pokemon.level=18
+    #     elsif $game_variables[:Difficulty_Mode] == 1
+    #       pokemon.level=13 
+    #     elsif $game_variables[:Difficulty_Mode] == 2
+    #       pokemon.level=20 
+    #     end
+    #     pokemon.pbLearnMove(:WINEGODSBLESSING)
+    #     pokemon.pbLearnMove(:INGRAIN)
+    #     pokemon.pbLearnMove(:ANCIENTPOWER)
+    #     pokemon.pbLearnMove(:AMNESIA)
+    #     pokemon.item = PBItems::TANTRIBUTE
+    #     pokemon.setNature(PBNatures::TIMID)    
+    #     for i in 0...6
+    #       pokemon.ev[i]=(20)
+    #     end
+    #   end
     when PBSpecies::GIRATINA
       if $game_map.map_id == 106
-        $game_switches[290]=true
-        $game_switches[1998]=true
+        $game_switches[:No_Catch]=true
+        $game_switches[:Boss_Battle]=true
         pokemon.isbossmon=true
-        if $game_variables[200] == 0
+        if $game_variables[:Difficulty_Mode] == 0
           pokemon.level=35
           $game_variables[704]=3
-        elsif $game_variables[200] == 1
+        elsif $game_variables[:Difficulty_Mode] == 1
           pokemon.level=32
           $game_variables[704]=2
-        elsif $game_variables[200] == 2
+        elsif $game_variables[:Difficulty_Mode] == 2
           pokemon.level=38 
           $game_variables[704]=3
         end

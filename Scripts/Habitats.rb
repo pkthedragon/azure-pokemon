@@ -613,8 +613,8 @@ class Habitats
         end
       end
       if points.size > 0
-        points.each do |p|
-          if p[0] == x && p[1] == y
+        points.each do |i|
+          if i[0] == x && i[1] == y
             sysindex = self.getIndexByMapID(index)
             return self.visited?(sysindex) ? sysindex : -1
           end

@@ -605,7 +605,7 @@ class PokemonLoad
           end
 #          if $Trainer.initialquestion.nil?
 #            if $game_switches[1493]==false
-#              if $game_variables[200]==2
+#              if $game_variables[:Difficulty_Mode]==2
 #                Kernel.pbMessage(_INTL("Some specific settings seem to be disabled on this savefile. These include Set Mode and Bag Item Ban for both sides, among others."))
 #                askmessage=_INTL("Would you like to enable them?")
 #                if Kernel.pbConfirmMessage(askmessage)

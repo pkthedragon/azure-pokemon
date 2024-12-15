@@ -95,6 +95,7 @@ def pbShowBattleStats(pkmn)
     weatherreport=_INTL("Weather: Shadow Sky, {1} {2}",dur,turns)
   end
   report.push(weatherreport) if @battle.weather!=0
+  report.push(_INTL("Ability: {1}",pkmn.ability.nil? ? "Ability Negated" : PBAbilities.getName(pkmn.ability)))
   report.push(_INTL("Slow Start: {1} turns",(5-pkmn.turncount))) if pkmn.hasWorkingAbility(:SLOWSTART) && pkmn.turncount<=5 && (pkmn == @battle.battlers[0] || pkmn == @battle.battlers[2])
   report.push(_INTL("Throat Chop: {1} turns",pkmn.effects[PBEffects::ThroatChop])) if pkmn.effects[PBEffects::ThroatChop]!=0
   report.push(_INTL("Unburdened")) if pkmn.unburdened && (pkmn == @battle.battlers[0] || pkmn == @battle.battlers[2]) && pkmn.hasWorkingAbility(:UNBURDEN)
@@ -153,7 +154,7 @@ def pbShowBattleStats(pkmn)
   report.push(_INTL("Water Sport: {1} turns",@battle.field.effects[PBEffects::WaterSport])) if @battle.field.effects[PBEffects::WaterSport]>0
   report.push(_INTL("Mud Sport: {1} turns",@battle.field.effects[PBEffects::MudSport])) if @battle.field.effects[PBEffects::MudSport]>0
   report.push(_INTL("Spikes: {1} layers",pkmn.pbOwnSide.effects[PBEffects::Spikes])) if pkmn.pbOwnSide.effects[PBEffects::Spikes]>0
-  report.push(_INTL("Toxic Spikes: {1} layers",pkmn.pbOwnSide.effects[PBEffects::ToxicSpikes])) if pkmn.pbOwnSide.effects[PBEffects::ToxicSpikes]>0
+  report.push(_INTL("Toxic Spikes active")) if pkmn.pbOwnSide.effects[PBEffects::ToxicSpikes]
   report.push(_INTL("Stealth Rock active")) if pkmn.pbOwnSide.effects[PBEffects::StealthRock]
   report.push(_INTL("Sticky Web active")) if pkmn.pbOwnSide.effects[PBEffects::StickyWeb]
   report.push(_INTL("Wonder Room Stat Swap active")) if pkmn.wonderroom==true

@@ -983,8 +983,8 @@ def pbOrganizedBattleEx(opponent,challengedata,endspeech,endspeechwin)
   for i in 0...$Trainer.party.length
     $Trainer.party[i].heal
   end
-  olditems=$Trainer.party.transform{|p| p.item }
-  olditems2=$Trainer.party.transform{|p| p.item }
+  olditems=$Trainer.party.transform{|i| i.item }
+  olditems2=$Trainer.party.transform{|i| i.item }
   battle=challengedata.createBattle(scene,$Trainer,opponent)
   battle.internalbattle=false
   battle.endspeech=endspeech
