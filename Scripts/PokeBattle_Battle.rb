@@ -6971,6 +6971,7 @@ def pbStartBattle(canlose=false)
             pbCommonAnimation("QuicksilverSpear",i,nil)
           elsif isConst?(i.effects[PBEffects::MultiTurnAttack],PBMoves,:DESERTSMARK)
             pbCommonAnimation("DesertsMark",i,nil)
+            # Binding Word anim?
           else
             pbCommonAnimation("Wrap",i,nil)
           end

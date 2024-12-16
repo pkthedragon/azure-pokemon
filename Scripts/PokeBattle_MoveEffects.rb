@@ -3611,7 +3611,6 @@ end
 ################################################################################
 class PokeBattle_Move_068 < PokeBattle_Move
   def pbEffect(attacker,opponent,hitnum=0,alltargets=nil,showanimation=true)
-
     if opponent.effects[PBEffects::Substitute]>0
       @battle.pbDisplay(_INTL("But it failed!"))  
       return -1
@@ -7038,6 +7037,9 @@ class PokeBattle_Move_0CF < PokeBattle_Move
           @battle.pbDisplay(_INTL("{1} was wrapped by {2}!",opponent.pbThis,attacker.pbThis(true)))
         elsif isConst?(@id,PBMoves,:INFESTATION)
           @battle.pbDisplay(_INTL("{1} has been afflicted with an infestation by {2}!",opponent.pbThis,attacker.pbThis(true)))   
+        elsif isConst?(@id,PBMoves,:BINDINGWORD)
+          @battle.pbDisplay(_INTL("{1} has trapped by Binding Word!",opponent.pbThis))
+          @battle.pbDisplay(_INTL("{1}'s ability, item and stat changes were temporarily suppressed!",opponent.pbThis))
         else
           @battle.pbDisplay(_INTL("{1} was trapped in the vortex!",opponent.pbThis))
         end
@@ -8223,7 +8225,8 @@ class PokeBattle_Move_0F7 < PokeBattle_Move
                    @battle.pbIsUnlosableItem(attacker,attacker.item) ||
                    pbIsPokeBall?(attacker.item) ||
                    attacker.hasWorkingAbility(:KLUTZ) ||
-                   attacker.effects[PBEffects::Embargo]>0
+                   attacker.effects[PBEffects::Embargo]>0 ||
+                   attacker.effects[PBEffects::MultiTurnAttack]==PBMoves::BINDINGWORD
     for i in flingarray.keys
       data=flingarray[i]
       if data
@@ -8379,7 +8382,7 @@ end
 class PokeBattle_Move_0FA < PokeBattle_Move
   def pbEffect(attacker,opponent,hitnum=0,alltargets=nil,showanimation=true)
     ret=super(attacker,opponent,hitnum,alltargets,showanimation)
-    if opponent.damagestate.calcdamage>0 && !opponent.damagestate.substitute &&
+    if opponent.damagestate.calcdamage>0 &&
        !attacker.hasWorkingAbility(:ROCKHEAD) &&
        !attacker.hasWorkingAbility(:MAGICGUARD) && !(attacker.hasWorkingItem(:RAMPCREST) && attacker.species == PBSpecies::RAMPARDOS) &&
        !(attacker.hasWorkingAbility(:WONDERGUARD) && $fefieldeffect == 44)
@@ -8398,7 +8401,7 @@ end
 class PokeBattle_Move_0FB < PokeBattle_Move
   def pbEffect(attacker,opponent,hitnum=0,alltargets=nil,showanimation=true)
     ret=super(attacker,opponent,hitnum,alltargets,showanimation)
-    if opponent.damagestate.calcdamage>0 && !opponent.damagestate.substitute &&
+    if opponent.damagestate.calcdamage>0 &&
        !attacker.hasWorkingAbility(:ROCKHEAD) &&
        !attacker.hasWorkingAbility(:MAGICGUARD) && !(attacker.hasWorkingItem(:RAMPCREST) && attacker.species == PBSpecies::RAMPARDOS) &&
        !(attacker.hasWorkingAbility(:WONDERGUARD) && $fefieldeffect == 44)
@@ -8417,7 +8420,7 @@ end
 class PokeBattle_Move_0FC < PokeBattle_Move
   def pbEffect(attacker,opponent,hitnum=0,alltargets=nil,showanimation=true)
     ret=super(attacker,opponent,hitnum,alltargets,showanimation)
-    if opponent.damagestate.calcdamage>0 && !opponent.damagestate.substitute &&
+    if opponent.damagestate.calcdamage>0 &&
        !attacker.hasWorkingAbility(:ROCKHEAD) &&
        !attacker.hasWorkingAbility(:MAGICGUARD) && !(attacker.hasWorkingItem(:RAMPCREST) && attacker.species == PBSpecies::RAMPARDOS) &&
        !(attacker.hasWorkingAbility(:WONDERGUARD) && $fefieldeffect == 44)
@@ -8437,7 +8440,7 @@ end
 class PokeBattle_Move_0FD < PokeBattle_Move
   def pbEffect(attacker,opponent,hitnum=0,alltargets=nil,showanimation=true)
     ret=super(attacker,opponent,hitnum,alltargets,showanimation)
-    if opponent.damagestate.calcdamage>0 && !opponent.damagestate.substitute &&
+    if opponent.damagestate.calcdamage>0 &&
        !attacker.hasWorkingAbility(:ROCKHEAD) &&
        !attacker.hasWorkingAbility(:MAGICGUARD) && !(attacker.hasWorkingItem(:RAMPCREST) && attacker.species == PBSpecies::RAMPARDOS) &&
        !(attacker.hasWorkingAbility(:WONDERGUARD) && $fefieldeffect == 44)
@@ -8464,7 +8467,7 @@ end
 class PokeBattle_Move_0FE < PokeBattle_Move
   def pbEffect(attacker,opponent,hitnum=0,alltargets=nil,showanimation=true)
     ret=super(attacker,opponent,hitnum,alltargets,showanimation)
-    if opponent.damagestate.calcdamage>0 && !opponent.damagestate.substitute &&
+    if opponent.damagestate.calcdamage>0 &&
        !attacker.hasWorkingAbility(:ROCKHEAD) &&
        !attacker.hasWorkingAbility(:MAGICGUARD) && !(attacker.hasWorkingItem(:RAMPCREST) && attacker.species == PBSpecies::RAMPARDOS) &&
        !(attacker.hasWorkingAbility(:WONDERGUARD) && $fefieldeffect == 44)
@@ -11607,7 +11610,7 @@ end
 class PokeBattle_Move_176 < PokeBattle_Move
   def pbEffect(attacker,opponent,hitnum=0,alltargets=nil,showanimation=true)
     ret=super(attacker,opponent,hitnum,alltargets,showanimation)
-    if opponent.damagestate.calcdamage>0 && !opponent.damagestate.substitute && !isConst?(attacker.ability,PBAbilities,:MAGICGUARD)
+    if !isConst?(attacker.ability,PBAbilities,:MAGICGUARD)
       if $fefieldeffect == 17 && isConst?(@id,PBMoves,:STEELBEAM)
         attacker.pbReduceHP(((attacker.totalhp)/4).ceil)
       elsif $fefieldeffect == 18 && isConst?(@id,PBMoves,:STEELBEAM)
@@ -12377,18 +12380,23 @@ class PokeBattle_Move_211 < PokeBattle_Move
 end
 
 ################################################################################
-# Bunraku Beatdown
+# Bunraku Beatdown / Last Respects
 # Base Power increases by increments for every party member that is KO'd.
 ################################################################################
 class PokeBattle_Move_212 < PokeBattle_Move
   def pbBaseDamage(basedmg,attacker,opponent)
-    if attacker.hasWorkingAbility(:WORLDOFNIGHTMARES)
-      basedmg=(30*opponent.pbFaintedPokemonCount)
-      return basedmg
+    if @id == PBMoves::BUNRAKUBEATDOWN
+      if attacker.hasWorkingAbility(:WORLDOFNIGHTMARES)
+        basedmg=(30*opponent.pbFaintedPokemonCount)
+        return basedmg
+      else
+        fainted=attacker.pbFaintedPokemonCount
+        fainted=6 if attacker.pbFaintedPokemonCount>5
+        basedmg+=(15*fainted)
+        return basedmg
+      end
     else
-      fainted=attacker.pbFaintedPokemonCount
-      fainted=6 if attacker.pbFaintedPokemonCount>5
-      basedmg+=(15*fainted)
+      basedmg += (50 * attacker.pbFaintedPokemonCount)
       return basedmg
     end
   end
@@ -12522,16 +12530,32 @@ class PokeBattle_Move_217 < PokeBattle_Move
 end
 
 ################################################################################
-# Power is doubled if the target has negative stat changes. (Condescend)
+# Power is doubled if the target has negative stat changes + clears. (Condescend)
 ################################################################################
 class PokeBattle_Move_218 < PokeBattle_Move
+  def pbEffect(attacker,opponent,hitnum=0,alltargets=nil,showanimation=true)
+    ret=super(attacker,opponent,hitnum,alltargets,showanimation)
+    if opponent.damagestate.calcdamage>0 && !opponent.damagestate.substitute
+      for i in [PBStats::ATTACK,PBStats::DEFENSE,
+        PBStats::SPEED,PBStats::SPATK,PBStats::SPDEF,
+        PBStats::EVASION,PBStats::ACCURACY]
+        if opponent.stages[i]<0
+          opponent.stages[i]=0; reducedstats=true
+        end
+      end
+      @battle.pbDisplay(_INTL("{1}'s negative stat changes were removed!",opponent.pbThis)) if reducedstats
+    end
+    return ret
+  end
+
   def pbBaseDamage(basedmg,attacker,opponent)
     reducedstats=false
     for i in [PBStats::ATTACK,PBStats::DEFENSE,
                   PBStats::SPEED,PBStats::SPATK,PBStats::SPDEF,
                   PBStats::EVASION,PBStats::ACCURACY]
       if opponent.stages[i]<0
-        opponent.stages[i]=0; reducedstats=true
+        reducedstats=true
+        break
       end
     end
     if reducedstats
@@ -12580,8 +12604,8 @@ class PokeBattle_Move_21A < PokeBattle_Move
         showmessage=true
         damage=0
         @battle.pbDisplay(_INTL("{1} fell straight down!",opponent.pbThis)) 
-        if !opponent.hasWorkingAbility(:MAGICGUARD) && !opponent.hasWorkingAbility(:LIMBER) && !opponent.hasWorkingItem(:HEAVYDUTYBOOTS)
-          if !(opponent.hasWorkingAbility(:WONDERGUARD) && $fefieldeffect == 44) 
+        if !opponent.hasWorkingAbility(:LIMBER) && !opponent.hasWorkingItem(:HEAVYDUTYBOOTS)
+          if !opponent.hasWorkingAbility(:MAGICGUARD) && !(opponent.hasWorkingAbility(:WONDERGUARD) && $fefieldeffect == 44) 
             if opponent.pbOwnSide.effects[PBEffects::Spikes]>0
               spikesdiv = [8,8,6,4][opponent.pbOwnSide.effects[PBEffects::Spikes]]
               damage += [(opponent.totalhp/spikesdiv).floor,1].max
@@ -12663,9 +12687,39 @@ class PokeBattle_Move_21A < PokeBattle_Move
 end
 
 ################################################################################
-# >=50%, 1/4 recoil. <50%, 1.5x damage + Infiltrator effect
+# >=50%, 1/4 recoil. <50%, 1.5x damage + Infiltrator effect (Showstopper)
 ################################################################################
 class PokeBattle_Move_21B < PokeBattle_Move
   def pbEffect(attacker,opponent,hitnum=0,alltargets=nil,showanimation=true)
+    ret=super(attacker,opponent,hitnum,alltargets,showanimation)
+    if opponent.damagestate.calcdamage>0 && 
+       !attacker.hasWorkingAbility(:ROCKHEAD) && attacker.hp >= (0.5 * attacker.totalhp).floor &&
+       !attacker.hasWorkingAbility(:MAGICGUARD) && !(attacker.hasWorkingItem(:RAMPCREST) && attacker.species == PBSpecies::RAMPARDOS) &&
+       !(attacker.hasWorkingAbility(:WONDERGUARD) && $fefieldeffect == 44)
+      attacker.pbReduceHP([1,((opponent.damagestate.hplost+1)/4).floor].max)
+      @battle.pbDisplay(_INTL("{1} is damaged by the recoil!",attacker.pbThis))
+    end
+    return ret
   end
+
+  def pbCalcDamage(attacker,opponent)
+    if attacker.hp < (0.5 * attacker.totalhp).floor
+      return super(attacker,opponent,PokeBattle_Move::NOREFLECT)
+    else
+      return super(attacker,opponent)
+    end
+  end
+
+  def pbBaseDamage(basedmg,attacker,opponent)
+    if attacker.hp < (0.5 * attacker.totalhp).floor
+      return basedmg*1.5
+    end
+    return basedmg
+  end
+end
+
+################################################################################
+#  ()
+################################################################################
+class PokeBattle_Move_21C < PokeBattle_Move
 end

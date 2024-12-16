@@ -3676,7 +3676,7 @@ end
           battler = i
         end
       end
-    if battler && battler.effects[PBEffects::Embargo]>0
+    if battler && (battler.effects[PBEffects::Embargo]>0 || battler.effects[PBEffects::MultiTurnAttack]==PBMoves::BINDINGWORD)
       return false
     end       
     if  pokemon.hp < pokemon.totalhp && pokemon.hp>0 &&

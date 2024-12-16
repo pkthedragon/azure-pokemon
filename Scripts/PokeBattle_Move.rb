@@ -4886,7 +4886,8 @@ class PokeBattle_Move
       end
     end
     if opponent.effects[PBEffects::Substitute]>0 && (!attacker || attacker.index!=opponent.index) &&
-     !attacker.hasWorkingAbility(:INFILTRATOR) && !isSoundBased? && @id!=677 && $fefieldeffect!=14
+     !attacker.hasWorkingAbility(:INFILTRATOR) && !isSoundBased? && @id!=677 && $fefieldeffect!=14 &&
+     !(@function==0x21B && attacker.hp < (0.5 * attacker.totalhp).floor) # Showstopper
       damage=opponent.effects[PBEffects::Substitute] if damage>opponent.effects[PBEffects::Substitute]
       opponent.effects[PBEffects::Substitute]-=damage
       opponent.damagestate.substitute=true

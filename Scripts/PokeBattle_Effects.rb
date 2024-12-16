@@ -186,7 +186,7 @@ class PokeBattle_Battler
       @battle.pbDisplay(_INTL("{1} is already poisoned.",pbThis)) if showMessages
       return false
     end
-    if self.status!=0 || damagestate.substitute && toxicorb==false || (effects[PBEffects::Substitute]>0  && toxicorb==false && !PBMoveData.new(@battle.lastMoveUsed).isSoundBased?) || (isConst?(ability,PBAbilities,:COMATOSE) && $fefieldeffect!=1) || pbShieldsUp?
+    if self.status!=0 || damagestate.substitute && toxicorb==false || (effects[PBEffects::Substitute]>0 && toxicorb==false && !PBMoveData.new(@battle.lastMoveUsed).isSoundBased?) || (isConst?(ability,PBAbilities,:COMATOSE) && $fefieldeffect!=1) || pbShieldsUp?
       @battle.pbDisplay(_INTL("But it failed!")) if showMessages
       return false
     end
@@ -208,7 +208,7 @@ class PokeBattle_Battler
       @battle.pbDisplay(_INTL("{1} stayed healthy using its partner's {2}!",pbThis,abilityname)) if showMessages
       return false
     end
-    if pbOwnSide.effects[PBEffects::Safeguard]>0 && !(@battle.battlers[@battle.lastMoveUser]).hasWorkingAbility(:INFILTRATOR)    
+    if pbOwnSide.effects[PBEffects::Safeguard]>0 && !(@battle.battlers[@battle.lastMoveUser]).hasWorkingAbility(:INFILTRATOR) && !(PBMoveData.new(@battle.lastMoveUsed).function==0x21B && @battle.battlers[@battle.lastMoveUser].hp < (0.5 * @battle.battlers[@battle.lastMoveUser].totalhp).floor) # ie PPoint Showstopper
       @battle.pbDisplay(_INTL("{1}'s team is protected by Safeguard!",pbThis)) if showMessages
       return false
     end
@@ -346,7 +346,7 @@ class PokeBattle_Battler
       @battle.pbDisplay(_INTL("{1}'s {2} prevents burns!",pbThis,PBAbilities.getName(self.ability))) if showMessages
       return false
     end
-    if pbOwnSide.effects[PBEffects::Safeguard]>0 && !(@battle.battlers[@battle.lastMoveUser]).hasWorkingAbility(:INFILTRATOR)    
+    if pbOwnSide.effects[PBEffects::Safeguard]>0 && !(@battle.battlers[@battle.lastMoveUser]).hasWorkingAbility(:INFILTRATOR) && !(PBMoveData.new(@battle.lastMoveUsed).function==0x21B && @battle.battlers[@battle.lastMoveUser].hp < (0.5 * @battle.battlers[@battle.lastMoveUser].totalhp).floor)
       @battle.pbDisplay(_INTL("{1}'s team is protected by Safeguard!",pbThis)) if showMessages
       return false
     end
@@ -407,7 +407,7 @@ class PokeBattle_Battler
      @battle.pbDisplay(_INTL("{1}'s {2} prevents burns!",pbThis,PBAbilities.getName(self.ability))) if showMessages
      return false
    end
-    if pbOwnSide.effects[PBEffects::Safeguard]>0 && !(@battle.battlers[@battle.lastMoveUser]).hasWorkingAbility(:INFILTRATOR)    
+    if pbOwnSide.effects[PBEffects::Safeguard]>0 && !(@battle.battlers[@battle.lastMoveUser]).hasWorkingAbility(:INFILTRATOR)   
       @battle.pbDisplay(_INTL("{1}'s team is protected by Safeguard!",pbThis)) if showMessages
       return false
     end
@@ -516,7 +516,7 @@ class PokeBattle_Battler
         @battle.pbDisplay(_INTL("{1}'s {2} prevents paralysis!",pbThis,PBAbilities.getName(self.ability))) if showMessages
         return false
     end
-    if pbOwnSide.effects[PBEffects::Safeguard]>0 && !(@battle.battlers[@battle.lastMoveUser]).hasWorkingAbility(:INFILTRATOR)    
+    if pbOwnSide.effects[PBEffects::Safeguard]>0 && !(@battle.battlers[@battle.lastMoveUser]).hasWorkingAbility(:INFILTRATOR) && !(PBMoveData.new(@battle.lastMoveUsed).function==0x21B && @battle.battlers[@battle.lastMoveUser].hp < (0.5 * @battle.battlers[@battle.lastMoveUser].totalhp).floor)
       @battle.pbDisplay(_INTL("{1}'s team is protected by Safeguard!",pbThis)) if showMessages
       return false
     end
@@ -603,7 +603,7 @@ def pbCanPetrify?(showMessages=true)
     @battle.pbDisplay(_INTL("But it failed!")) if showMessages
     return false
   end
-  if pbOwnSide.effects[PBEffects::Safeguard]>0 && !(@battle.battlers[@battle.lastMoveUser]).hasWorkingAbility(:INFILTRATOR)    
+  if pbOwnSide.effects[PBEffects::Safeguard]>0 && !(@battle.battlers[@battle.lastMoveUser]).hasWorkingAbility(:INFILTRATOR) && !(PBMoveData.new(@battle.lastMoveUsed).function==0x21B && @battle.battlers[@battle.lastMoveUser].hp < (0.5 * @battle.battlers[@battle.lastMoveUser].totalhp).floor)
     @battle.pbDisplay(_INTL("{1}'s team is protected by Safeguard!",pbThis)) if showMessages
     return false
   end
@@ -655,8 +655,7 @@ end
       (hasWorkingAbility(:LEAFGUARD) && $fefieldeffect == 15 || 
       ($fefieldeffect == 33 && $fecounter>0)) ||
        (hasWorkingAbility(:MAGMAARMOR) && $fefieldeffect!=39) ||
-       pbOwnSide.effects[PBEffects::Safeguard]>0 ||
-       (pbOwnSide.effects[PBEffects::Safeguard]>0 && !(@battle.battlers[@battle.lastMoveUser]).hasWorkingAbility(:INFILTRATOR)) ||
+       (pbOwnSide.effects[PBEffects::Safeguard]>0 && !(@battle.battlers[@battle.lastMoveUser]).hasWorkingAbility(:INFILTRATOR) && !(PBMoveData.new(@battle.lastMoveUsed).function==0x21B && @battle.battlers[@battle.lastMoveUser].hp < (0.5 * @battle.battlers[@battle.lastMoveUser].totalhp).floor)) ||
        damagestate.substitute || (effects[PBEffects::Substitute]>0 && !PBMoveData.new(@battle.lastMoveUsed).isSoundBased?) || $fefieldeffect == 7 ||
       (pbHasType?(:ICE) && !hasWorkingItem(:RINGTARGET)) && !(self.moldbroken) || pbShieldsUp?
         return false
@@ -743,7 +742,7 @@ end
       @battle.pbDisplay(_INTL("{1}'s {2} prevents confusion!",pbThis,PBAbilities.getName(self.ability))) if showMessages
       return false
     end
-    if pbOwnSide.effects[PBEffects::Safeguard]>0 && !(@battle.battlers[@battle.lastMoveUser]).hasWorkingAbility(:INFILTRATOR)    
+    if pbOwnSide.effects[PBEffects::Safeguard]>0 && !(@battle.battlers[@battle.lastMoveUser]).hasWorkingAbility(:INFILTRATOR) && !(PBMoveData.new(@battle.lastMoveUsed).function==0x21B && @battle.battlers[@battle.lastMoveUser].hp < (0.5 * @battle.battlers[@battle.lastMoveUser].totalhp).floor)
       @battle.pbDisplay(_INTL("{1}'s team is protected by Safeguard!",pbThis)) if showMessages
       return false
     end
@@ -973,7 +972,7 @@ end
         @battle.pbDisplay(_INTL("But it failed!")) if showMessages
         return false
       end
-      if pbOwnSide.effects[PBEffects::Mist]>0 && !(@battle.battlers[@battle.lastMoveUser]).hasWorkingAbility(:INFILTRATOR)    
+      if pbOwnSide.effects[PBEffects::Mist]>0 && !(@battle.battlers[@battle.lastMoveUser]).hasWorkingAbility(:INFILTRATOR) && !(PBMoveData.new(@battle.lastMoveUsed).function==0x21B && @battle.battlers[@battle.lastMoveUser].hp < (0.5 * @battle.battlers[@battle.lastMoveUser].totalhp).floor)
         @battle.pbDisplay(_INTL("{1} is protected by Mist!",pbThis)) if showMessages
         return false
       end
@@ -1148,7 +1147,7 @@ end
          pbThis,abilityname,opponent.pbThis(true),oppabilityname))
       return false
     end
-    if pbOwnSide.effects[PBEffects::Mist]>0 && !(@battle.battlers[@battle.lastMoveUser]).hasWorkingAbility(:INFILTRATOR)    
+    if pbOwnSide.effects[PBEffects::Mist]>0
       @battle.pbDisplay(_INTL("{1} is protected by Mist!",pbThis))
       return false
     end
@@ -1209,7 +1208,7 @@ end
          pbThis,abilityname,opponent.pbThis(true),oppabilityname))
       return false
     end
-    if pbOwnSide.effects[PBEffects::Mist]>0 && !(@battle.battlers[@battle.lastMoveUser]).hasWorkingAbility(:INFILTRATOR)    
+    if pbOwnSide.effects[PBEffects::Mist]>0 
       @battle.pbDisplay(_INTL("{1} is protected by Mist!",pbThis))
       return false
     end

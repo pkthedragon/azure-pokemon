@@ -153,6 +153,7 @@ begin
     Switched        = 157
     CritCount       = 158
     UsingItem        = 159
+    StatChangeHolder = 160
     # These effects apply to a side - starts from 300
     LightScreen   = 300
     LuckyChant    = 301

@@ -1097,8 +1097,9 @@ class PokeBattle_Battler
     @effects[PBEffects::SusCrit]          = false  
     @effects[PBEffects::Obstruct]         = false
     @effects[PBEffects::DesertsMark]      = false
-    @effects[PBEffects::UsingItem]      = []
+    @effects[PBEffects::UsingItem]        = []
     @effects[PBEffects::WorldOfNightmares]= 0
+    @effects[PBEffects::StatChangeHolder] = [0,0,0,0,0,0,0,0] # index 0=hp for simplicity
   end
   
   def pbUpdate(fullchange=false,wonderroom=false)
@@ -1258,6 +1259,7 @@ class PokeBattle_Battler
   def abilityWorks?(ignorefainted=false)
     return false if self.isFainted? if !ignorefainted
     return false if @effects[PBEffects::GastroAcid]
+    return false if @effects[PBEffects::MultiTurnAttack]==PBMoves::BINDINGWORD
     if @battle.pbCheckGlobalAbility(:NEUTRALIZINGGAS)
       return false 
     end
@@ -1272,12 +1274,14 @@ class PokeBattle_Battler
       end
     end
     return false if @effects[PBEffects::GastroAcid]
+    return false if @effects[PBEffects::MultiTurnAttack]==PBMoves::BINDINGWORD
     return isConst?(@ability,PBAbilities,ability)
   end
   
   def itemWorks?(ignorefainted=false)
     return false if self.isFainted? if !ignorefainted
     return false if @effects[PBEffects::Embargo]>0
+    return false if @effects[PBEffects::MultiTurnAttack]==PBMoves::BINDINGWORD
     return false if @battle.field.effects[PBEffects::MagicRoom]>0
     return false if self.ability == PBAbilities::KLUTZ && !self.abilitynulled
     return true
@@ -1286,6 +1290,7 @@ class PokeBattle_Battler
   def hasWorkingItem(item,ignorefainted=false)
     return false if self.isFainted? if !ignorefainted
     return false if @effects[PBEffects::Embargo]>0
+    return false if @effects[PBEffects::MultiTurnAttack]==PBMoves::BINDINGWORD
     return false if @battle.field.effects[PBEffects::MagicRoom]>0
     return false if self.ability == PBAbilities::KLUTZ && !self.abilitynulled
     return isConst?(@item,PBItems,item)

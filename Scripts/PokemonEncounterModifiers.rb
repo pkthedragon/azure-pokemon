@@ -51,34 +51,6 @@ Events.onTrainerPartyLoad+=proc {|sender,e|
         i.hp=1
       end
     end
-    if trainer.trainertype==PBTrainers::MYRON2 && trainer.name=="Myron"
-      for i in party
-        if (i.species==PBSpecies::MISMAGIUS)
-          case $game_variables[:Difficulty_Mode]
-          when 0
-            $game_variables[704]=2
-          when 1
-            $game_variables[704]=1
-          when 2
-            $game_variables[704]=3
-          end
-        end  
-      end
-    end
-    if trainer.trainertype==PBTrainers::GHOSTMAN && trainer.name=="Myron"
-      for i in party
-        if (i.species==PBSpecies::GENESECT)
-          case $game_variables[:Difficulty_Mode]
-          when 0
-            $game_variables[704]=2
-          when 1
-            $game_variables[704]=1
-          when 2
-            $game_variables[704]=3
-          end
-        end  
-      end
-    end
   end
 }
 
