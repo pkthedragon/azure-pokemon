@@ -1125,39 +1125,6 @@ def pbCheckSignedByte(x,valuename)
   end
 end
 
-
-=begin
-why is this still even here
-
-class PBMoveDataOld
-  attr_reader :function,:basedamage,:type,:accuracy
-  attr_reader :totalpp,:addlEffect,:target,:priority
-  attr_reader :flags
-  attr_reader :contestType,:category
-
-  def initialize(moveid)
-    movedata=pbRgssOpen("Data/rsattacks.dat")
-    movedata.pos=moveid*9
-    @function=movedata.fgetb
-    @basedamage=movedata.fgetb
-    @type=movedata.fgetb
-    @accuracy=movedata.fgetb
-    @totalpp=movedata.fgetb
-    @addlEffect=movedata.fgetb
-    @target=movedata.fgetb
-    @priority=movedata.fgetsb
-    @flags=movedata.fgetb
-    movedata.close
-  end
-
-  def category
-    return 2 if @basedamage==0
-    return @type<10 ? 0 : 1
-  end
-end
-=end
-
-
 def pbCompileMoves
   records=[]
   movenames=[]
@@ -1165,6 +1132,7 @@ def pbCompileMoves
   movedata=[]
   movedata[0] = [0,0,0,0,0,0,0,0,0,0]
   maxValue=0
+  $PokemonTemp.pokemonMoveData = nil
   pbCompilerEachPreppedLine("PBS/moves.txt"){|line,lineno|
       thisline=line.clone
       record=[]
@@ -3943,7 +3911,7 @@ def pbCompileAllData(mustcompile,notrainers=false)
     pbCompileMachines
     # Depends on PBSpecies, PBItems, PBMoves
     yield(_INTL("Compiling Trainer data"))
-    pbCompileTrainers
+    #pbCompileTrainers
     # Depends on PBTrainers
     yield(_INTL("Compiling phone data"))
     pbCompilePhoneData
@@ -3952,7 +3920,7 @@ def pbCompileAllData(mustcompile,notrainers=false)
     pbCompileMetadata
     # Depends on PBTrainers
     yield(_INTL("Compiling battle Trainer data"))
-    pbCompileTrainerLists
+    #pbCompileTrainerLists
     # Depends on PBSpecies
     yield(_INTL("Compiling encounter data"))
     pbCompileEncounters

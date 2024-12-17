@@ -6952,6 +6952,7 @@ def pbStartBattle(canlose=false)
               i.effects[PBEffects::StatChangeHolder][j] = 0
             end
           end
+          i.effects[PBEffects::MultiTurnAttack] = 0
           $bindingband=0
         else
           pbDisplay(_INTL("{1} is hurt by {2}!",i.pbThis,movename))

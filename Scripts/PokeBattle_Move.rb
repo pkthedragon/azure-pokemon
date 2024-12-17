@@ -60,7 +60,6 @@ class PokeBattle_Move
     @type        = $pkmn_move[@id][2]
     @category    = $pkmn_move[@id][3]
     @accuracy    = $pkmn_move[@id][4]
-    @totalpp     = $pkmn_move[@id][5]
     @addlEffect  = $pkmn_move[@id][6]
     @target      = $pkmn_move[@id][7]
     @priority    = $pkmn_move[@id][8]

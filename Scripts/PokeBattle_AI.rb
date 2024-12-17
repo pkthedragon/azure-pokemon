@@ -28424,7 +28424,7 @@ class PokeBattle_Battle
   
   def statchangecounter(mon,initial,final,limiter=0)
     count = 0
-    if mon.effects[PBEffects::MultiTurnAttack] == PBEffects::BINDINGWORD 
+    if mon.effects[PBEffects::MultiTurnAttack] == PBMoves::BINDINGWORD 
       case limiter
       when 0 #all stats
         for i in initial..final

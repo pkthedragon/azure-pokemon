@@ -1007,6 +1007,7 @@ class PokeBattle_Battler
               @battle.battlers[i].effects[PBEffects::StatChangeHolder][j] = 0
             end
           end
+          @battle.battlers[i].effects[PBEffects::MultiTurnAttack]=0
           @battle.battlers[i].effects[PBEffects::MultiTurnUser]=-1
         end
       end

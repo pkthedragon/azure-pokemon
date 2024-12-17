@@ -68,3 +68,325 @@ If this battle is not wild, something has gone wrong in scoring moves (no prefer
 [The wild Abomasnow: Powder Snow=200, Leer=100, Razor Leaf=100, Icy Wind=100]
 If this battle is not wild, something has gone wrong in scoring moves (no preference chosen).
 [The wild Abomasnow lost 9 HP, now has 0 HP]
+==============================
+Battle Start!
+Wild Battle
+==============================
+***Round 1***
+[The wild Abomasnow: Leafage=200, Leer=100, Razor Leaf=100, Icy Wind=100]
+If this battle is not wild, something has gone wrong in scoring moves (no preference chosen).
+[The wild Abomasnow lost 25 HP, now has 0 HP]
+==============================
+Battle Start!
+Wild Battle
+==============================
+***Round 1***
+==============================
+Battle Start!
+Wild Battle
+==============================
+***Round 1***
+[The wild Abomasnow: Icy Wind=100, Hail=200, Swagger=100, Mist=100]
+If this battle is not wild, something has gone wrong in scoring moves (no preference chosen).
+[The wild Abomasnow lost 21 HP, now has 61 HP]
+[Grovyle lost 5 HP, now has 78 HP]
+[The wild Abomasnow lost 10 HP, now has 51 HP]
+***Round 2***
+[The wild Abomasnow: Icy Wind=100, Hail=200, Swagger=100, Mist=100]
+If this battle is not wild, something has gone wrong in scoring moves (no preference chosen).
+[Grovyle gained 5 HP, now has 83 HP]
+[ pk #3 lost 6 HP, now has 104 HP]
+***Round 3***
+[The wild Abomasnow: Icy Wind=200, Hail=100, Swagger=100, Mist=100]
+If this battle is not wild, something has gone wrong in scoring moves (no preference chosen).
+[ pk #3 lost 6 HP, now has 98 HP]
+***Round 4***
+[The wild Abomasnow: Icy Wind=100, Hail=200, Swagger=100, Mist=100]
+If this battle is not wild, something has gone wrong in scoring moves (no preference chosen).
+[ pk #3 lost 73 HP, now has 25 HP]
+[ pk #3 lost 6 HP, now has 19 HP]
+***Round 5***
+[The wild Abomasnow: Icy Wind=100, Hail=200, Swagger=100, Mist=100]
+If this battle is not wild, something has gone wrong in scoring moves (no preference chosen).
+[Grovyle lost 38 HP, now has 45 HP]
+[Grovyle lost 5 HP, now has 40 HP]
+***Round 6***
+[The wild Abomasnow: Icy Wind=100, Hail=200, Swagger=100, Mist=100]
+If this battle is not wild, something has gone wrong in scoring moves (no preference chosen).
+[The wild Abomasnow lost 21 HP, now has 30 HP]
+[Grovyle lost 5 HP, now has 35 HP]
+[The wild Abomasnow lost 10 HP, now has 20 HP]
+***Round 7***
+[The wild Abomasnow: Icy Wind=200, Hail=100, Swagger=100, Mist=100]
+If this battle is not wild, something has gone wrong in scoring moves (no preference chosen).
+[Grovyle gained 27 HP, now has 62 HP]
+[Xatu lost 6 HP, now has 93 HP]
+***Round 8***
+[The wild Abomasnow: Icy Wind=100, Hail=200, Swagger=100, Mist=100]
+If this battle is not wild, something has gone wrong in scoring moves (no preference chosen).
+[Xatu lost 26 HP, now has 67 HP]
+[Xatu lost 6 HP, now has 61 HP]
+***Round 9***
+==============================
+Battle Start!
+Wild Battle
+==============================
+***Round 1***
+[The wild Abomasnow: Leafage=100, Leer=200, Razor Leaf=100, Icy Wind=100]
+If this battle is not wild, something has gone wrong in scoring moves (no preference chosen).
+[The wild Abomasnow lost 24 HP, now has 0 HP]
+==============================
+Battle Start!
+253 - Pax
+==============================
+***Round 1***
+==============================
+Battle Start!
+253 - Pax
+==============================
+***Round 1***
+==============================
+Battle Start!
+253 - Pax
+==============================
+***Round 1***
+AI Pokemon Guinevere is faster than Grovyle.
+Tail Slap: initial score: 109
+Tail Slap: final score: 109
+ 
+Rock Blast: initial score: 109
+Rock Blast: final score: 109
+ 
+Bullet Seed: initial score: 110
+Bullet Seed: final score: 110
+ 
+Sing: initial score: 25
+**Exception: uninitialized constant PBEffects::BINDINGWORD
+["PokeBattle_AI:28427:in `statchangecounter'", "PokeBattle_AI:521:in `pbGetMoveScore'", "PokeBattle_AI:29632:in `block in pbBuildMoveScores'", "PokeBattle_AI:29630:in `each'", "PokeBattle_AI:29630:in `pbBuildMoveScores'", "PokeBattle_AI:35606:in `pbDefaultChooseEnemyCommand'", "PokeBattle_ActualScene:4393:in `pbChooseEnemyCommand'", "PokeBattle_Battle:5250:in `block in pbCommandPhase'", "PokeBattle_Battle:5225:in `each'", "PokeBattle_Battle:5225:in `pbCommandPhase'", "PokeBattle_Battle:5145:in `block (2 levels) in pbStartBattleCore'", "PBDebug:4:in `logonerr'", "PokeBattle_Battle:5144:in `block in pbStartBattleCore'", "PokeBattle_Battle:5136:in `loop'", "PokeBattle_Battle:5136:in `pbStartBattleCore'", "PokeBattle_Battle:4725:in `pbStartBattle'", "PokemonTrainers:583:in `block (2 levels) in pbTrainerBattle'", "PokemonField:696:in `pbSceneStandby'", "PokemonTrainers:582:in `block in pbTrainerBattle'", "PokemonField:998:in `pbBattleAnimation'", "PokemonTrainers:581:in `pbTrainerBattle'", "PokemonDebug:779:in `block in pbDebugMenu'", "PokemonDebug:301:in `loop'", "PokemonDebug:301:in `pbDebugMenu'", "PokemonPauseMenu:259:in `block (2 levels) in pbStartPokemonMenu'", "SpriteWindow:1353:in `pbFadeOutIn'", "PokemonPauseMenu:258:in `block in pbStartPokemonMenu'", "PokemonPauseMenu:145:in `loop'", "PokemonPauseMenu:145:in `pbStartPokemonMenu'", "Scene_Map:209:in `call_menu'", "Autosave:149:in `update'", "Scene_Map:72:in `block in main'", "Scene_Map:69:in `loop'", "Scene_Map:69:in `main'", "Main:78:in `mainFunctionDebug'", "Main:53:in `block in mainFunction'", "Compiler:38:in `pbCriticalCode'", "Main:53:in `mainFunction'", "Main:88:in `block (2 levels) in <main>'", "Main:87:in `loop'", "Main:87:in `block in <main>'", "000:Export/Import Scripts:336:in `eval'", "000:Export/Import Scripts:336:in `block in <main>'", "000:Export/Import Scripts:333:in `each'", "000:Export/Import Scripts:333:in `each_with_index'", "000:Export/Import Scripts:333:in `<main>'", "-e:in `eval'"]
+[The foe Guinevere lost 6 HP, now has 318 HP]
+[The foe Guinevere lost 20 HP, now has 298 HP]
+[Grovyle lost 5 HP, now has 78 HP]
+[The foe Guinevere lost 40 HP, now has 258 HP]
+***Round 2***
+AI Pokemon Guinevere is faster than Grovyle.
+Tail Slap: initial score: 109
+Tail Slap: final score: 109
+ 
+Rock Blast: initial score: 109
+Rock Blast: final score: 109
+ 
+Bullet Seed: initial score: 110
+Bullet Seed: final score: 110
+ 
+Sing: initial score: 25
+**Exception: uninitialized constant PBEffects::BINDINGWORD
+["PokeBattle_AI:28427:in `statchangecounter'", "PokeBattle_AI:521:in `pbGetMoveScore'", "PokeBattle_AI:29632:in `block in pbBuildMoveScores'", "PokeBattle_AI:29630:in `each'", "PokeBattle_AI:29630:in `pbBuildMoveScores'", "PokeBattle_AI:35606:in `pbDefaultChooseEnemyCommand'", "PokeBattle_ActualScene:4393:in `pbChooseEnemyCommand'", "PokeBattle_Battle:5250:in `block in pbCommandPhase'", "PokeBattle_Battle:5225:in `each'", "PokeBattle_Battle:5225:in `pbCommandPhase'", "PokeBattle_Battle:5145:in `block (2 levels) in pbStartBattleCore'", "PBDebug:4:in `logonerr'", "PokeBattle_Battle:5144:in `block in pbStartBattleCore'", "PokeBattle_Battle:5136:in `loop'", "PokeBattle_Battle:5136:in `pbStartBattleCore'", "PokeBattle_Battle:4725:in `pbStartBattle'", "PokemonTrainers:583:in `block (2 levels) in pbTrainerBattle'", "PokemonField:696:in `pbSceneStandby'", "PokemonTrainers:582:in `block in pbTrainerBattle'", "PokemonField:998:in `pbBattleAnimation'", "PokemonTrainers:581:in `pbTrainerBattle'", "PokemonDebug:779:in `block in pbDebugMenu'", "PokemonDebug:301:in `loop'", "PokemonDebug:301:in `pbDebugMenu'", "PokemonPauseMenu:259:in `block (2 levels) in pbStartPokemonMenu'", "SpriteWindow:1353:in `pbFadeOutIn'", "PokemonPauseMenu:258:in `block in pbStartPokemonMenu'", "PokemonPauseMenu:145:in `loop'", "PokemonPauseMenu:145:in `pbStartPokemonMenu'", "Scene_Map:209:in `call_menu'", "Autosave:149:in `update'", "Scene_Map:72:in `block in main'", "Scene_Map:69:in `loop'", "Scene_Map:69:in `main'", "Main:78:in `mainFunctionDebug'", "Main:53:in `block in mainFunction'", "Compiler:38:in `pbCriticalCode'", "Main:53:in `mainFunction'", "Main:88:in `block (2 levels) in <main>'", "Main:87:in `loop'", "Main:87:in `block in <main>'", "000:Export/Import Scripts:336:in `eval'", "000:Export/Import Scripts:336:in `block in <main>'", "000:Export/Import Scripts:333:in `each'", "000:Export/Import Scripts:333:in `each_with_index'", "000:Export/Import Scripts:333:in `<main>'", "-e:in `eval'"]
+[The foe Guinevere lost 22 HP, now has 236 HP]
+[The foe Guinevere lost 20 HP, now has 216 HP]
+[Grovyle lost 5 HP, now has 73 HP]
+[The foe Guinevere lost 40 HP, now has 176 HP]
+***Round 3***
+AI Pokemon Guinevere is faster than Grovyle.
+Tail Slap: initial score: 109
+Tail Slap: final score: 109
+ 
+Rock Blast: initial score: 109
+Rock Blast: final score: 109
+ 
+Bullet Seed: initial score: 110
+Bullet Seed: final score: 110
+ 
+Sing: initial score: 25
+**Exception: uninitialized constant PBEffects::BINDINGWORD
+["PokeBattle_AI:28427:in `statchangecounter'", "PokeBattle_AI:521:in `pbGetMoveScore'", "PokeBattle_AI:29632:in `block in pbBuildMoveScores'", "PokeBattle_AI:29630:in `each'", "PokeBattle_AI:29630:in `pbBuildMoveScores'", "PokeBattle_AI:35606:in `pbDefaultChooseEnemyCommand'", "PokeBattle_ActualScene:4393:in `pbChooseEnemyCommand'", "PokeBattle_Battle:5250:in `block in pbCommandPhase'", "PokeBattle_Battle:5225:in `each'", "PokeBattle_Battle:5225:in `pbCommandPhase'", "PokeBattle_Battle:5145:in `block (2 levels) in pbStartBattleCore'", "PBDebug:4:in `logonerr'", "PokeBattle_Battle:5144:in `block in pbStartBattleCore'", "PokeBattle_Battle:5136:in `loop'", "PokeBattle_Battle:5136:in `pbStartBattleCore'", "PokeBattle_Battle:4725:in `pbStartBattle'", "PokemonTrainers:583:in `block (2 levels) in pbTrainerBattle'", "PokemonField:696:in `pbSceneStandby'", "PokemonTrainers:582:in `block in pbTrainerBattle'", "PokemonField:998:in `pbBattleAnimation'", "PokemonTrainers:581:in `pbTrainerBattle'", "PokemonDebug:779:in `block in pbDebugMenu'", "PokemonDebug:301:in `loop'", "PokemonDebug:301:in `pbDebugMenu'", "PokemonPauseMenu:259:in `block (2 levels) in pbStartPokemonMenu'", "SpriteWindow:1353:in `pbFadeOutIn'", "PokemonPauseMenu:258:in `block in pbStartPokemonMenu'", "PokemonPauseMenu:145:in `loop'", "PokemonPauseMenu:145:in `pbStartPokemonMenu'", "Scene_Map:209:in `call_menu'", "Autosave:149:in `update'", "Scene_Map:72:in `block in main'", "Scene_Map:69:in `loop'", "Scene_Map:69:in `main'", "Main:78:in `mainFunctionDebug'", "Main:53:in `block in mainFunction'", "Compiler:38:in `pbCriticalCode'", "Main:53:in `mainFunction'", "Main:88:in `block (2 levels) in <main>'", "Main:87:in `loop'", "Main:87:in `block in <main>'", "000:Export/Import Scripts:336:in `eval'", "000:Export/Import Scripts:336:in `block in <main>'", "000:Export/Import Scripts:333:in `each'", "000:Export/Import Scripts:333:in `each_with_index'", "000:Export/Import Scripts:333:in `<main>'", "-e:in `eval'"]
+[The foe Guinevere lost 22 HP, now has 154 HP]
+[The foe Guinevere lost 20 HP, now has 134 HP]
+[Grovyle lost 5 HP, now has 68 HP]
+[The foe Guinevere lost 40 HP, now has 94 HP]
+***Round 4***
+AI Pokemon Guinevere is faster than Grovyle.
+Tail Slap: initial score: 109
+Tail Slap: final score: 109
+ 
+Rock Blast: initial score: 109
+Rock Blast: final score: 109
+ 
+Bullet Seed: initial score: 110
+Bullet Seed: final score: 110
+ 
+Sing: initial score: 25
+**Exception: uninitialized constant PBEffects::BINDINGWORD
+["PokeBattle_AI:28427:in `statchangecounter'", "PokeBattle_AI:521:in `pbGetMoveScore'", "PokeBattle_AI:29632:in `block in pbBuildMoveScores'", "PokeBattle_AI:29630:in `each'", "PokeBattle_AI:29630:in `pbBuildMoveScores'", "PokeBattle_AI:35606:in `pbDefaultChooseEnemyCommand'", "PokeBattle_ActualScene:4393:in `pbChooseEnemyCommand'", "PokeBattle_Battle:5250:in `block in pbCommandPhase'", "PokeBattle_Battle:5225:in `each'", "PokeBattle_Battle:5225:in `pbCommandPhase'", "PokeBattle_Battle:5145:in `block (2 levels) in pbStartBattleCore'", "PBDebug:4:in `logonerr'", "PokeBattle_Battle:5144:in `block in pbStartBattleCore'", "PokeBattle_Battle:5136:in `loop'", "PokeBattle_Battle:5136:in `pbStartBattleCore'", "PokeBattle_Battle:4725:in `pbStartBattle'", "PokemonTrainers:583:in `block (2 levels) in pbTrainerBattle'", "PokemonField:696:in `pbSceneStandby'", "PokemonTrainers:582:in `block in pbTrainerBattle'", "PokemonField:998:in `pbBattleAnimation'", "PokemonTrainers:581:in `pbTrainerBattle'", "PokemonDebug:779:in `block in pbDebugMenu'", "PokemonDebug:301:in `loop'", "PokemonDebug:301:in `pbDebugMenu'", "PokemonPauseMenu:259:in `block (2 levels) in pbStartPokemonMenu'", "SpriteWindow:1353:in `pbFadeOutIn'", "PokemonPauseMenu:258:in `block in pbStartPokemonMenu'", "PokemonPauseMenu:145:in `loop'", "PokemonPauseMenu:145:in `pbStartPokemonMenu'", "Scene_Map:209:in `call_menu'", "Autosave:149:in `update'", "Scene_Map:72:in `block in main'", "Scene_Map:69:in `loop'", "Scene_Map:69:in `main'", "Main:78:in `mainFunctionDebug'", "Main:53:in `block in mainFunction'", "Compiler:38:in `pbCriticalCode'", "Main:53:in `mainFunction'", "Main:88:in `block (2 levels) in <main>'", "Main:87:in `loop'", "Main:87:in `block in <main>'", "000:Export/Import Scripts:336:in `eval'", "000:Export/Import Scripts:336:in `block in <main>'", "000:Export/Import Scripts:333:in `each'", "000:Export/Import Scripts:333:in `each_with_index'", "000:Export/Import Scripts:333:in `<main>'", "-e:in `eval'"]
+[The foe Guinevere lost 10 HP, now has 84 HP]
+[The foe Guinevere lost 20 HP, now has 64 HP]
+[Grovyle lost 5 HP, now has 63 HP]
+***Round 5***
+AI Pokemon Guinevere is faster than Grovyle.
+Tail Slap: initial score: 109
+Tail Slap: final score: 109
+ 
+Rock Blast: initial score: 109
+Rock Blast: final score: 109
+ 
+Bullet Seed: initial score: 110
+Bullet Seed: final score: 110
+ 
+Sing: initial score: 25
+**Exception: uninitialized constant PBEffects::BINDINGWORD
+["PokeBattle_AI:28427:in `statchangecounter'", "PokeBattle_AI:521:in `pbGetMoveScore'", "PokeBattle_AI:29632:in `block in pbBuildMoveScores'", "PokeBattle_AI:29630:in `each'", "PokeBattle_AI:29630:in `pbBuildMoveScores'", "PokeBattle_AI:35606:in `pbDefaultChooseEnemyCommand'", "PokeBattle_ActualScene:4393:in `pbChooseEnemyCommand'", "PokeBattle_Battle:5250:in `block in pbCommandPhase'", "PokeBattle_Battle:5225:in `each'", "PokeBattle_Battle:5225:in `pbCommandPhase'", "PokeBattle_Battle:5145:in `block (2 levels) in pbStartBattleCore'", "PBDebug:4:in `logonerr'", "PokeBattle_Battle:5144:in `block in pbStartBattleCore'", "PokeBattle_Battle:5136:in `loop'", "PokeBattle_Battle:5136:in `pbStartBattleCore'", "PokeBattle_Battle:4725:in `pbStartBattle'", "PokemonTrainers:583:in `block (2 levels) in pbTrainerBattle'", "PokemonField:696:in `pbSceneStandby'", "PokemonTrainers:582:in `block in pbTrainerBattle'", "PokemonField:998:in `pbBattleAnimation'", "PokemonTrainers:581:in `pbTrainerBattle'", "PokemonDebug:779:in `block in pbDebugMenu'", "PokemonDebug:301:in `loop'", "PokemonDebug:301:in `pbDebugMenu'", "PokemonPauseMenu:259:in `block (2 levels) in pbStartPokemonMenu'", "SpriteWindow:1353:in `pbFadeOutIn'", "PokemonPauseMenu:258:in `block in pbStartPokemonMenu'", "PokemonPauseMenu:145:in `loop'", "PokemonPauseMenu:145:in `pbStartPokemonMenu'", "Scene_Map:209:in `call_menu'", "Autosave:149:in `update'", "Scene_Map:72:in `block in main'", "Scene_Map:69:in `loop'", "Scene_Map:69:in `main'", "Main:78:in `mainFunctionDebug'", "Main:53:in `block in mainFunction'", "Compiler:38:in `pbCriticalCode'", "Main:53:in `mainFunction'", "Main:88:in `block (2 levels) in <main>'", "Main:87:in `loop'", "Main:87:in `block in <main>'", "000:Export/Import Scripts:336:in `eval'", "000:Export/Import Scripts:336:in `block in <main>'", "000:Export/Import Scripts:333:in `each'", "000:Export/Import Scripts:333:in `each_with_index'", "000:Export/Import Scripts:333:in `<main>'", "-e:in `eval'"]
+[The foe Guinevere lost 22 HP, now has 42 HP]
+[The foe Guinevere lost 20 HP, now has 22 HP]
+[Grovyle lost 5 HP, now has 58 HP]
+***Round 6***
+AI Pokemon Guinevere is faster than Grovyle.
+Tail Slap: initial score: 109
+Tail Slap: final score: 109
+ 
+Rock Blast: initial score: 109
+Rock Blast: final score: 109
+ 
+Bullet Seed: initial score: 110
+Bullet Seed: final score: 110
+ 
+Sing: initial score: 25
+**Exception: uninitialized constant PBEffects::BINDINGWORD
+["PokeBattle_AI:28427:in `statchangecounter'", "PokeBattle_AI:521:in `pbGetMoveScore'", "PokeBattle_AI:29632:in `block in pbBuildMoveScores'", "PokeBattle_AI:29630:in `each'", "PokeBattle_AI:29630:in `pbBuildMoveScores'", "PokeBattle_AI:35606:in `pbDefaultChooseEnemyCommand'", "PokeBattle_ActualScene:4393:in `pbChooseEnemyCommand'", "PokeBattle_Battle:5250:in `block in pbCommandPhase'", "PokeBattle_Battle:5225:in `each'", "PokeBattle_Battle:5225:in `pbCommandPhase'", "PokeBattle_Battle:5145:in `block (2 levels) in pbStartBattleCore'", "PBDebug:4:in `logonerr'", "PokeBattle_Battle:5144:in `block in pbStartBattleCore'", "PokeBattle_Battle:5136:in `loop'", "PokeBattle_Battle:5136:in `pbStartBattleCore'", "PokeBattle_Battle:4725:in `pbStartBattle'", "PokemonTrainers:583:in `block (2 levels) in pbTrainerBattle'", "PokemonField:696:in `pbSceneStandby'", "PokemonTrainers:582:in `block in pbTrainerBattle'", "PokemonField:998:in `pbBattleAnimation'", "PokemonTrainers:581:in `pbTrainerBattle'", "PokemonDebug:779:in `block in pbDebugMenu'", "PokemonDebug:301:in `loop'", "PokemonDebug:301:in `pbDebugMenu'", "PokemonPauseMenu:259:in `block (2 levels) in pbStartPokemonMenu'", "SpriteWindow:1353:in `pbFadeOutIn'", "PokemonPauseMenu:258:in `block in pbStartPokemonMenu'", "PokemonPauseMenu:145:in `loop'", "PokemonPauseMenu:145:in `pbStartPokemonMenu'", "Scene_Map:209:in `call_menu'", "Autosave:149:in `update'", "Scene_Map:72:in `block in main'", "Scene_Map:69:in `loop'", "Scene_Map:69:in `main'", "Main:78:in `mainFunctionDebug'", "Main:53:in `block in mainFunction'", "Compiler:38:in `pbCriticalCode'", "Main:53:in `mainFunction'", "Main:88:in `block (2 levels) in <main>'", "Main:87:in `loop'", "Main:87:in `block in <main>'", "000:Export/Import Scripts:336:in `eval'", "000:Export/Import Scripts:336:in `block in <main>'", "000:Export/Import Scripts:333:in `each'", "000:Export/Import Scripts:333:in `each_with_index'", "000:Export/Import Scripts:333:in `<main>'", "-e:in `eval'"]
+[The foe Guinevere lost 6 HP, now has 16 HP]
+[The foe Guinevere lost 16 HP, now has 0 HP]
+[Grovyle lost 5 HP, now has 53 HP]
+Scoring for Cinccino switching to: Cinccino
+Score: -10000000
+Not switching to self.
+Scoring for Cinccino switching to: Hawlucha
+Offensive: 249
+Defensive: 449
+Roles: 509
+Weather: 509
+Moves: 509
+Abilities: 509
+Items: 509
+Fields: 509
+Score: 509
+ 
+Scoring for Cinccino switching to: Nidoqueen
+Offensive: 249
+Defensive: 449
+Roles: 509
+Weather: 509
+Moves: 509
+Abilities: 509
+Items: 509
+Fields: 509
+Score: 509
+ 
+Scoring for Cinccino switching to: Volcarona
+Offensive: 249
+Defensive: 449
+Roles: 509
+Weather: 509
+Moves: 529
+Abilities: 529
+Items: 529
+Fields: 554
+Score: 554
+ 
+Scoring for Cinccino switching to: Mawile
+Offensive: 298
+Defensive: 498
+Roles: 558
+Weather: 558
+Moves: 558
+Abilities: 558
+Items: 558
+Fields: 558
+Score: 558
+ 
+Scoring for Cinccino switching to: Primarina
+Offensive: 249
+Defensive: 449
+Roles: 509
+Weather: 509
+Moves: 509
+Abilities: 509
+Items: 509
+Fields: 509
+Score: 152
+ 
+***Round 7***
+AI Pokemon Mordred is faster than Grovyle.
+Iron Head: initial score: 110
+Iron Head: final score: 110
+ 
+Play Rough: initial score: 109
+Play Rough: final score: 109
+ 
+Body Slam: initial score: 110
+Body Slam: final score: 110
+ 
+Sucker Punch: initial score: 110
+Priority Check Begin
+AI Pokemon is faster.
+Expected damage taken: 7
+Priority Check End
+Sucker Punch: final score: 163
+ 
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (0)
+**Exception: uninitialized constant PBMonRoles::BINDINGWORD
+["PokeBattle_AI:31212:in `pbShouldSwitch?'", "PokeBattle_AI:35607:in `pbDefaultChooseEnemyCommand'", "PokeBattle_ActualScene:4393:in `pbChooseEnemyCommand'", "PokeBattle_Battle:5250:in `block in pbCommandPhase'", "PokeBattle_Battle:5225:in `each'", "PokeBattle_Battle:5225:in `pbCommandPhase'", "PokeBattle_Battle:5145:in `block (2 levels) in pbStartBattleCore'", "PBDebug:4:in `logonerr'", "PokeBattle_Battle:5144:in `block in pbStartBattleCore'", "PokeBattle_Battle:5136:in `loop'", "PokeBattle_Battle:5136:in `pbStartBattleCore'", "PokeBattle_Battle:4725:in `pbStartBattle'", "PokemonTrainers:583:in `block (2 levels) in pbTrainerBattle'", "PokemonField:696:in `pbSceneStandby'", "PokemonTrainers:582:in `block in pbTrainerBattle'", "PokemonField:998:in `pbBattleAnimation'", "PokemonTrainers:581:in `pbTrainerBattle'", "PokemonDebug:779:in `block in pbDebugMenu'", "PokemonDebug:301:in `loop'", "PokemonDebug:301:in `pbDebugMenu'", "PokemonPauseMenu:259:in `block (2 levels) in pbStartPokemonMenu'", "SpriteWindow:1353:in `pbFadeOutIn'", "PokemonPauseMenu:258:in `block in pbStartPokemonMenu'", "PokemonPauseMenu:145:in `loop'", "PokemonPauseMenu:145:in `pbStartPokemonMenu'", "Scene_Map:209:in `call_menu'", "Autosave:149:in `update'", "Scene_Map:72:in `block in main'", "Scene_Map:69:in `loop'", "Scene_Map:69:in `main'", "Main:78:in `mainFunctionDebug'", "Main:53:in `block in mainFunction'", "Compiler:38:in `pbCriticalCode'", "Main:53:in `mainFunction'", "Main:88:in `block (2 levels) in <main>'", "Main:87:in `loop'", "Main:87:in `block in <main>'", "000:Export/Import Scripts:336:in `eval'", "000:Export/Import Scripts:336:in `block in <main>'", "000:Export/Import Scripts:333:in `each'", "000:Export/Import Scripts:333:in `each_with_index'", "000:Export/Import Scripts:333:in `<main>'", "-e:in `eval'"]
+[The foe Mordred lost 2 HP, now has 274 HP]
+[The foe Mordred lost 17 HP, now has 257 HP]
+[Grovyle lost 5 HP, now has 48 HP]
+[The foe Mordred lost 34 HP, now has 223 HP]
+***Round 8***
+==============================
+Battle Start!
+Wild Battle
+==============================
+***Round 1***
+==============================
+Battle Start!
+Wild Battle
+==============================
+***Round 1***
+**Exception: undefined method `ppup' for #<PokeBattle_Move_0CF:0x0000028612b6c868>
+["PokeBattle_ActualScene:358:in `update'", "PokeBattle_ActualScene:1939:in `pbFrameUpdate'", "PokeBattle_ActualScene:3498:in `block in pbFightMenu'", "PokeBattle_ActualScene:3494:in `loop'", "PokeBattle_ActualScene:3494:in `pbFightMenu'", "PokeBattle_Battle:5262:in `block (2 levels) in pbCommandPhase'", "PokeBattle_Battle:5256:in `loop'", "PokeBattle_Battle:5256:in `block in pbCommandPhase'", "PokeBattle_Battle:5225:in `each'", "PokeBattle_Battle:5225:in `pbCommandPhase'", "PokeBattle_Battle:5145:in `block (2 levels) in pbStartBattleCore'", "PBDebug:4:in `logonerr'", "PokeBattle_Battle:5144:in `block in pbStartBattleCore'", "PokeBattle_Battle:5136:in `loop'", "PokeBattle_Battle:5136:in `pbStartBattleCore'", "PokeBattle_Battle:4725:in `pbStartBattle'", "PokemonField:1152:in `block (2 levels) in pbWildBattle'", "PokemonField:696:in `pbSceneStandby'", "PokemonField:1151:in `block in pbWildBattle'", "PokemonField:998:in `pbBattleAnimation'", "PokemonField:1150:in `pbWildBattle'", "PokemonDebug:746:in `block in pbDebugMenu'", "PokemonDebug:301:in `loop'", "PokemonDebug:301:in `pbDebugMenu'", "PokemonPauseMenu:259:in `block (2 levels) in pbStartPokemonMenu'", "SpriteWindow:1353:in `pbFadeOutIn'", "PokemonPauseMenu:258:in `block in pbStartPokemonMenu'", "PokemonPauseMenu:145:in `loop'", "PokemonPauseMenu:145:in `pbStartPokemonMenu'", "Scene_Map:209:in `call_menu'", "Autosave:149:in `update'", "Scene_Map:72:in `block in main'", "Scene_Map:69:in `loop'", "Scene_Map:69:in `main'", "Main:78:in `mainFunctionDebug'", "Main:53:in `block in mainFunction'", "Compiler:38:in `pbCriticalCode'", "Main:53:in `mainFunction'", "Main:88:in `block (2 levels) in <main>'", "Main:87:in `loop'", "Main:87:in `block in <main>'", "000:Export/Import Scripts:336:in `eval'", "000:Export/Import Scripts:336:in `block in <main>'", "000:Export/Import Scripts:333:in `each'", "000:Export/Import Scripts:333:in `each_with_index'", "000:Export/Import Scripts:333:in `<main>'", "-e:in `eval'"]
+[Grovyle lost 5 HP, now has 78 HP]
+***Round 2***
+**Exception: undefined method `ppup' for #<PokeBattle_Move_0CF:0x0000028612b6c868>
+["PokeBattle_ActualScene:358:in `update'", "PokeBattle_ActualScene:1939:in `pbFrameUpdate'", "PokeBattle_ActualScene:3498:in `block in pbFightMenu'", "PokeBattle_ActualScene:3494:in `loop'", "PokeBattle_ActualScene:3494:in `pbFightMenu'", "PokeBattle_Battle:5262:in `block (2 levels) in pbCommandPhase'", "PokeBattle_Battle:5256:in `loop'", "PokeBattle_Battle:5256:in `block in pbCommandPhase'", "PokeBattle_Battle:5225:in `each'", "PokeBattle_Battle:5225:in `pbCommandPhase'", "PokeBattle_Battle:5145:in `block (2 levels) in pbStartBattleCore'", "PBDebug:4:in `logonerr'", "PokeBattle_Battle:5144:in `block in pbStartBattleCore'", "PokeBattle_Battle:5136:in `loop'", "PokeBattle_Battle:5136:in `pbStartBattleCore'", "PokeBattle_Battle:4725:in `pbStartBattle'", "PokemonField:1152:in `block (2 levels) in pbWildBattle'", "PokemonField:696:in `pbSceneStandby'", "PokemonField:1151:in `block in pbWildBattle'", "PokemonField:998:in `pbBattleAnimation'", "PokemonField:1150:in `pbWildBattle'", "PokemonDebug:746:in `block in pbDebugMenu'", "PokemonDebug:301:in `loop'", "PokemonDebug:301:in `pbDebugMenu'", "PokemonPauseMenu:259:in `block (2 levels) in pbStartPokemonMenu'", "SpriteWindow:1353:in `pbFadeOutIn'", "PokemonPauseMenu:258:in `block in pbStartPokemonMenu'", "PokemonPauseMenu:145:in `loop'", "PokemonPauseMenu:145:in `pbStartPokemonMenu'", "Scene_Map:209:in `call_menu'", "Autosave:149:in `update'", "Scene_Map:72:in `block in main'", "Scene_Map:69:in `loop'", "Scene_Map:69:in `main'", "Main:78:in `mainFunctionDebug'", "Main:53:in `block in mainFunction'", "Compiler:38:in `pbCriticalCode'", "Main:53:in `mainFunction'", "Main:88:in `block (2 levels) in <main>'", "Main:87:in `loop'", "Main:87:in `block in <main>'", "000:Export/Import Scripts:336:in `eval'", "000:Export/Import Scripts:336:in `block in <main>'", "000:Export/Import Scripts:333:in `each'", "000:Export/Import Scripts:333:in `each_with_index'", "000:Export/Import Scripts:333:in `<main>'", "-e:in `eval'"]
+==============================
+Battle Start!
+Wild Battle
+==============================
+***Round 1***
+[The wild Abomasnow: Leafage=200, Leer=100, Razor Leaf=100, Icy Wind=100]
+If this battle is not wild, something has gone wrong in scoring moves (no preference chosen).
+[The wild Abomasnow lost 24 HP, now has 0 HP]
+==============================
+Battle Start!
+Wild Battle
+==============================
+***Round 1***
+==============================
+Battle Start!
+Wild Battle
+==============================
+***Round 1***
+[The wild Abomasnow: Leafage=200, Leer=100, Razor Leaf=100, Icy Wind=100]
+If this battle is not wild, something has gone wrong in scoring moves (no preference chosen).
+[The wild Abomasnow lost 25 HP, now has 0 HP]
+==============================
+Battle Start!
+Wild Battle
+==============================
+***Round 1***
+[The wild Abomasnow: Leafage=100, Leer=200, Razor Leaf=100, Icy Wind=100]
+If this battle is not wild, something has gone wrong in scoring moves (no preference chosen).
+[ pk #3 lost 6 HP, now has 104 HP]
+***Round 2***
+[The wild Abomasnow: Leafage=200, Leer=100, Razor Leaf=100, Icy Wind=100]
+If this battle is not wild, something has gone wrong in scoring moves (no preference chosen).
+[Drifblim lost 2 HP, now has 158 HP]
+[Drifblim lost 10 HP, now has 148 HP]
+***Round 3***
