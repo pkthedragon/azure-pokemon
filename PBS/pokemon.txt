@@ -10020,7 +10020,7 @@ Pokedex=Jirachi is said to make wishes come true. While it sleeps, a tough cryst
 BattlerPlayerY=28
 BattlerEnemyY=22
 BattlerAltitude=14
-[306]
+[386]
 Name=Deoxys
 InternalName=DEOXYS
 Type1=PSYCHIC

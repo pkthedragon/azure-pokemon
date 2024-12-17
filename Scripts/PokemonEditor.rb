@@ -108,7 +108,7 @@ def pbSavePokemonData
   messages=Messages.new("Data/messages.dat") rescue nil
   return if !dexdata || !messages
   metrics=load_data("Data/metrics.dat") rescue nil
-  atkdata=File.open("Data/attacksRS.dat","rb")
+  atkdata=File.open("Data/attacksRS.rxdata","rb")
   eggEmerald=File.open("Data/eggEmerald.dat","rb")
   regionaldata=File.open("Data/regionals.dat","rb")
   numRegions=regionaldata.fgetw
@@ -2902,12 +2902,10 @@ class MoveProperty2
   end
 end
 
-
-
 def pbGetLegalMoves(species)
   moves=[]
   return moves if !species || species<=0
-  pbRgssOpen("Data/attacksRS.dat","rb") {|atkdata|
+  pbRgssOpen("Data/attacksRS.rxdata","rb") {|atkdata|
      offset=atkdata.getOffset(species-1)
      length=atkdata.getLength(species-1)>>1
      atkdata.pos=offset
@@ -2929,19 +2927,13 @@ def pbGetLegalMoves(species)
     end
   end
   babyspecies=pbGetBabySpecies(species)
-  pbRgssOpen("Data/eggEmerald.dat","rb"){|f|
-     f.pos=(babyspecies-1)*8
-     offset=f.fgetdw
-     length=f.fgetdw
-     if length>0
-       f.pos=offset
-       i=0; loop do break unless i<length
-         atk=f.fgetw
-         moves.push(atk)
-         i+=1
-       end
-     end
-  }
+  movelist = $pkmn_egg[babyspecies]
+  if movelist
+    for i in movelist
+      atk = getID(PBMoves,i)
+      moves.push(atk)
+    end
+  end
   moves|=[]
   return moves
 end

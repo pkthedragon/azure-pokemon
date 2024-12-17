@@ -67,8 +67,8 @@ def mainFunctionDebug #:nodoc:
     $game_system        = Game_System.new
 
     #Game data preloading
-    $pkmn_dex           = load_data("Data/dexdata.rxdata")
-    $pkmn_move          = load_data("Data/moves.rxdata")
+    $pkmn_dex           = load_data("Data/dexdata.dat")
+    $pkmn_move          = load_data("Data/moves.dat")
     
     setScreenBorderName("border") # Sets image file for the border
     Graphics.update
