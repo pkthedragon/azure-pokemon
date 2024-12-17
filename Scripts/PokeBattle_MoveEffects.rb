@@ -1918,7 +1918,11 @@ class PokeBattle_Move_03A < PokeBattle_Move
     end
     pbShowAnimation(@id,attacker,nil,hitnum,alltargets,showanimation)
     attacker.pbReduceHP((attacker.totalhp/2).floor)
-    attacker.stages[PBStats::ATTACK]=6
+    if attacker.effects[PBEffects::MultiTurnAttack] == PBMoves::BINDINGWORD # Stats suppressed by binding word
+      attacker.effects[PBEffects::StatChangeHolder][PBStats::ATTACK] = 6
+    else
+      attacker.stages[PBStats::ATTACK] = 6
+    end
     @battle.pbCommonAnimation("StatUp",attacker,nil)
     @battle.pbDisplay(_INTL("{1} cut its own HP and maximized its Attack!",attacker.pbThis))
     if $fefieldeffect == 6
@@ -2723,13 +2727,15 @@ class PokeBattle_Move_050 < PokeBattle_Move
   def pbEffect(attacker,opponent,hitnum=0,alltargets=nil,showanimation=true)
     ret=super(attacker,opponent,hitnum,alltargets,showanimation)
     if opponent.damagestate.calcdamage>0 && !opponent.damagestate.substitute
-      opponent.stages[PBStats::ATTACK]   = 0
-      opponent.stages[PBStats::DEFENSE]  = 0
-      opponent.stages[PBStats::SPEED]    = 0
-      opponent.stages[PBStats::SPATK]    = 0
-      opponent.stages[PBStats::SPDEF]    = 0
-      opponent.stages[PBStats::ACCURACY] = 0
-      opponent.stages[PBStats::EVASION]  = 0
+      if opponent.effects[PBEffects::MultiTurnAttack] == PBMoves::BINDINGWORD # Stats suppressed by binding word
+        for i in [PBStats::ATTACK,PBStats::DEFENSE,PBStats::SPEED,PBStats::SPATK,PBStats::SPDEF,PBStats::ACCURACY,PBStats::EVASION]
+          opponent.effects[PBEffects::StatChangeHolder][i] = 0
+        end
+      else
+        for i in [PBStats::ATTACK,PBStats::DEFENSE,PBStats::SPEED,PBStats::SPATK,PBStats::SPDEF,PBStats::ACCURACY,PBStats::EVASION]
+          opponent.stages[i] = 0
+        end
+      end
       @battle.pbDisplay(_INTL("{1}'s stat changes were removed!",opponent.pbThis))
     end
     return ret
@@ -2752,13 +2758,15 @@ end
 class PokeBattle_Move_051 < PokeBattle_Move
   def pbEffect(attacker,opponent,hitnum=0,alltargets=nil,showanimation=true)
     for i in 0...4
-      @battle.battlers[i].stages[PBStats::ATTACK]   = 0
-      @battle.battlers[i].stages[PBStats::DEFENSE]  = 0
-      @battle.battlers[i].stages[PBStats::SPEED]    = 0
-      @battle.battlers[i].stages[PBStats::SPATK]    = 0
-      @battle.battlers[i].stages[PBStats::SPDEF]    = 0
-      @battle.battlers[i].stages[PBStats::ACCURACY] = 0
-      @battle.battlers[i].stages[PBStats::EVASION]  = 0
+      if @battle.battlers[i].effects[PBEffects::MultiTurnAttack] == PBMoves::BINDINGWORD # Stats suppressed by binding word
+        for j in [PBStats::ATTACK,PBStats::DEFENSE,PBStats::SPEED,PBStats::SPATK,PBStats::SPDEF,PBStats::ACCURACY,PBStats::EVASION]
+          @battle.battlers[i].stages[j] = 0
+        end
+      else
+        for j in [PBStats::ATTACK,PBStats::DEFENSE,PBStats::SPEED,PBStats::SPATK,PBStats::SPDEF,PBStats::ACCURACY,PBStats::EVASION]
+          @battle.battlers[i].effects[PBEffects::StatChangeHolder][j] = 0
+        end
+      end
     end
     pbShowAnimation(@id,attacker,opponent,hitnum,alltargets,showanimation)
     @battle.pbDisplay(_INTL("All stat changes were eliminated!"))
@@ -2774,10 +2782,21 @@ end
 class PokeBattle_Move_052 < PokeBattle_Move
   def pbEffect(attacker,opponent,hitnum=0,alltargets=nil,showanimation=true)
     pbShowAnimation(@id,attacker,opponent,hitnum,alltargets,showanimation)
-    astage=attacker.stages
-    ostage=opponent.stages
-    astage[PBStats::ATTACK],ostage[PBStats::ATTACK]=ostage[PBStats::ATTACK],astage[PBStats::ATTACK]
-    astage[PBStats::SPATK],ostage[PBStats::SPATK]=ostage[PBStats::SPATK],astage[PBStats::SPATK]
+    for i in [PBStats::ATTACK,PBStats::SPATK]
+      if attacker.effects[PBEffects::MultiTurnAttack] == PBMoves::BINDINGWORD # Stats suppressed by binding word
+        if opponent.effects[PBEffects::MultiTurnAttack] == PBMoves::BINDINGWORD # Stats suppressed by binding word
+          attacker.effects[PBEffects::StatChangeHolder][i],opponent.effects[PBEffects::StatChangeHolder][i]=opponent.effects[PBEffects::StatChangeHolder][i],attacker.effects[PBEffects::StatChangeHolder][i]
+        else
+          attacker.effects[PBEffects::StatChangeHolder][i],opponent.stages[i]=opponent.stages[i],attacker.effects[PBEffects::StatChangeHolder][i]
+        end
+      else
+        if opponent.effects[PBEffects::MultiTurnAttack] == PBMoves::BINDINGWORD # Stats suppressed by binding word
+          attacker.stages[i],opponent.effects[PBEffects::StatChangeHolder][i]=opponent.effects[PBEffects::StatChangeHolder][i],attacker.stages[i]
+        else
+          attacker.stages[i],opponent.stages[i]=opponent.stages[i],attacker.stages[i]
+        end
+      end
+    end
     @battle.pbDisplay(_INTL("{1} switched all changes to its Attack and Sp. Atk with the target!",attacker.pbThis))
     return 0
   end
@@ -2791,10 +2810,21 @@ end
 class PokeBattle_Move_053 < PokeBattle_Move
   def pbEffect(attacker,opponent,hitnum=0,alltargets=nil,showanimation=true)
     pbShowAnimation(@id,attacker,opponent,hitnum,alltargets,showanimation)
-    astage=attacker.stages
-    ostage=opponent.stages
-    astage[PBStats::DEFENSE],ostage[PBStats::DEFENSE]=ostage[PBStats::DEFENSE],astage[PBStats::DEFENSE]
-    astage[PBStats::SPDEF],ostage[PBStats::SPDEF]=ostage[PBStats::SPDEF],astage[PBStats::SPDEF]
+    for i in [PBStats::DEFENSE,PBStats::SPDEF]
+      if attacker.effects[PBEffects::MultiTurnAttack] == PBMoves::BINDINGWORD # Stats suppressed by binding word
+        if opponent.effects[PBEffects::MultiTurnAttack] == PBMoves::BINDINGWORD # Stats suppressed by binding word
+          attacker.effects[PBEffects::StatChangeHolder][i],opponent.effects[PBEffects::StatChangeHolder][i]=opponent.effects[PBEffects::StatChangeHolder][i],attacker.effects[PBEffects::StatChangeHolder][i]
+        else
+          attacker.effects[PBEffects::StatChangeHolder][i],opponent.stages[i]=opponent.stages[i],attacker.effects[PBEffects::StatChangeHolder][i]
+        end
+      else
+        if opponent.effects[PBEffects::MultiTurnAttack] == PBMoves::BINDINGWORD # Stats suppressed by binding word
+          attacker.stages[i],opponent.effects[PBEffects::StatChangeHolder][i]=opponent.effects[PBEffects::StatChangeHolder][i],attacker.stages[i]
+        else
+          attacker.stages[i],opponent.stages[i]=opponent.stages[i],attacker.stages[i]
+        end
+      end
+    end
     @battle.pbDisplay(_INTL("{1} switched all changes to its Defense and Sp. Def with the target!",attacker.pbThis))
     return 0
   end
@@ -2808,9 +2838,20 @@ end
 class PokeBattle_Move_054 < PokeBattle_Move
   def pbEffect(attacker,opponent,hitnum=0,alltargets=nil,showanimation=true)
     pbShowAnimation(@id,attacker,opponent,hitnum,alltargets,showanimation)
-    for i in [PBStats::ATTACK,PBStats::DEFENSE,PBStats::SPEED,
-              PBStats::SPATK,PBStats::SPDEF,PBStats::ACCURACY,PBStats::EVASION]
-      attacker.stages[i],opponent.stages[i]=opponent.stages[i],attacker.stages[i]
+    for i in [PBStats::ATTACK,PBStats::DEFENSE,PBStats::SPEED,PBStats::SPATK,PBStats::SPDEF,PBStats::ACCURACY,PBStats::EVASION]
+      if attacker.effects[PBEffects::MultiTurnAttack] == PBMoves::BINDINGWORD # Stats suppressed by binding word
+        if opponent.effects[PBEffects::MultiTurnAttack] == PBMoves::BINDINGWORD # Stats suppressed by binding word
+          attacker.effects[PBEffects::StatChangeHolder][i],opponent.effects[PBEffects::StatChangeHolder][i]=opponent.effects[PBEffects::StatChangeHolder][i],attacker.effects[PBEffects::StatChangeHolder][i]
+        else
+          attacker.effects[PBEffects::StatChangeHolder][i],opponent.stages[i]=opponent.stages[i],attacker.effects[PBEffects::StatChangeHolder][i]
+        end
+      else
+        if opponent.effects[PBEffects::MultiTurnAttack] == PBMoves::BINDINGWORD # Stats suppressed by binding word
+          attacker.stages[i],opponent.effects[PBEffects::StatChangeHolder][i]=opponent.effects[PBEffects::StatChangeHolder][i],attacker.stages[i]
+        else
+          attacker.stages[i],opponent.stages[i]=opponent.stages[i],attacker.stages[i]
+        end
+      end
     end
     @battle.pbDisplay(_INTL("{1} switched stat changes with the target!",attacker.pbThis))
     
@@ -2841,9 +2882,12 @@ end
 class PokeBattle_Move_055 < PokeBattle_Move
   def pbEffect(attacker,opponent,hitnum=0,alltargets=nil,showanimation=true)
     pbShowAnimation(@id,attacker,opponent,hitnum,alltargets,showanimation)
-    for i in [PBStats::ATTACK,PBStats::DEFENSE,PBStats::SPEED,
-              PBStats::SPATK,PBStats::SPDEF,PBStats::ACCURACY,PBStats::EVASION]
-      attacker.stages[i]=opponent.stages[i]
+    for i in [PBStats::ATTACK,PBStats::DEFENSE,PBStats::SPEED,PBStats::SPATK,PBStats::SPDEF,PBStats::ACCURACY,PBStats::EVASION]
+      if attacker.effects[PBEffects::MultiTurnAttack] == PBMoves::BINDINGWORD # Stats suppressed by binding word
+        attacker.effects[PBEffects::StatChangeHolder][i] = opponent.effects[PBEffects::MultiTurnAttack] == PBMoves::BINDINGWORD ? opponent.effects[PBEffects::StatChangeHolder][i] : opponent.stages[i]
+      else
+        attacker.stages[i] = opponent.effects[PBEffects::MultiTurnAttack] == PBMoves::BINDINGWORD ? opponent.effects[PBEffects::StatChangeHolder][i] : opponent.stages[i]
+      end
     end
     @battle.pbDisplay(_INTL("{1} copied {2}'s stat changes!",attacker.pbThis,opponent.pbThis(true)))
     
@@ -2898,7 +2942,11 @@ class PokeBattle_Move_057 < PokeBattle_Move
   def pbEffect(attacker,opponent,hitnum=0,alltargets=nil,showanimation=true)
     pbShowAnimation(@id,attacker,nil,hitnum,alltargets,showanimation)
  #   attacker.attack,attacker.defense=attacker.defense,attacker.attack
-    attacker.stages[PBStats::ATTACK],attacker.stages[PBStats::DEFENSE]=attacker.stages[PBStats::DEFENSE],attacker.stages[PBStats::ATTACK]  
+    if attacker.effects[PBEffects::MultiTurnAttack] == PBMoves::BINDINGWORD # Stats suppressed by binding word
+      attacker.effects[PBEffects::StatChangeHolder][PBStats::ATTACK],attacker.effects[PBEffects::StatChangeHolder][PBStats::DEFENSE]=attacker.effects[PBEffects::StatChangeHolder][PBStats::DEFENSE],attacker.effects[PBEffects::StatChangeHolder][PBStats::ATTACK] 
+    else
+      attacker.stages[PBStats::ATTACK],attacker.stages[PBStats::DEFENSE]=attacker.stages[PBStats::DEFENSE],attacker.stages[PBStats::ATTACK] 
+    end 
     attacker.effects[PBEffects::PowerTrick]=!attacker.effects[PBEffects::PowerTrick]
     @battle.pbDisplay(_INTL("{1} switched its Attack and Defense!",attacker.pbThis))
     return 0
@@ -3714,9 +3762,12 @@ class PokeBattle_Move_069 < PokeBattle_Move
     attacker.speed=irregularcopy.speed
     attacker.spatk=irregularcopy.spatk
     attacker.spdef=irregularcopy.spdef   
-    for i in [PBStats::ATTACK,PBStats::DEFENSE,PBStats::SPEED,
-              PBStats::SPATK,PBStats::SPDEF,PBStats::EVASION,PBStats::ACCURACY]
-      attacker.stages[i]=opponent.stages[i]
+    for i in [PBStats::ATTACK,PBStats::DEFENSE,PBStats::SPEED,PBStats::SPATK,PBStats::SPDEF,PBStats::EVASION,PBStats::ACCURACY]
+      if attacker.effects[PBEffects::MultiTurnAttack] == PBMoves::BINDINGWORD # Stats suppressed by binding word
+        attacker.effects[PBEffects::StatChangeHolder][i] = opponent.effects[PBEffects::MultiTurnAttack] == PBMoves::BINDINGWORD ? opponent.effects[PBEffects::StatChangeHolder][i] : opponent.stages[i]
+      else
+        attacker.stages[i] = opponent.effects[PBEffects::MultiTurnAttack] == PBMoves::BINDINGWORD ? opponent.effects[PBEffects::StatChangeHolder][i] : opponent.stages[i]
+      end
     end
     for i in 0...4
       attacker.moves[i]=PokeBattle_Move.pbFromPBMove(
@@ -4428,8 +4479,7 @@ end
 class PokeBattle_Move_08E < PokeBattle_Move
   def pbBaseDamage(basedmg,attacker,opponent)
     mult=0
-    for i in [PBStats::ATTACK,PBStats::DEFENSE,PBStats::SPEED,
-              PBStats::SPATK,PBStats::SPDEF,PBStats::ACCURACY,PBStats::EVASION]
+    for i in [PBStats::ATTACK,PBStats::DEFENSE,PBStats::SPEED,PBStats::SPATK,PBStats::SPDEF,PBStats::ACCURACY,PBStats::EVASION]
       mult+=attacker.stages[i] if attacker.stages[i]>0
     end
     bp = 20
@@ -4446,8 +4496,7 @@ end
 class PokeBattle_Move_08F < PokeBattle_Move
   def pbBaseDamage(basedmg,attacker,opponent)
     mult=0
-    for i in [PBStats::ATTACK,PBStats::DEFENSE,PBStats::SPEED,
-              PBStats::SPATK,PBStats::SPDEF,PBStats::ACCURACY,PBStats::EVASION]
+    for i in [PBStats::ATTACK,PBStats::DEFENSE,PBStats::SPEED,PBStats::SPATK,PBStats::SPDEF,PBStats::ACCURACY,PBStats::EVASION]
       mult+=opponent.stages[i] if opponent.stages[i]>0
     end
     return [20*(mult+3),200].min
@@ -7040,6 +7089,10 @@ class PokeBattle_Move_0CF < PokeBattle_Move
         elsif isConst?(@id,PBMoves,:BINDINGWORD)
           @battle.pbDisplay(_INTL("{1} has trapped by Binding Word!",opponent.pbThis))
           @battle.pbDisplay(_INTL("{1}'s ability, item and stat changes were temporarily suppressed!",opponent.pbThis))
+          for i in [PBStats::ATTACK,PBStats::DEFENSE,PBStats::SPEED,PBStats::SPATK,PBStats::SPDEF,PBStats::ACCURACY,PBStats::EVASION]
+            opponent.effects[PBEffects::StatChangeHolder][i] = opponent.stages[i]
+            opponent.stages[i] = 0
+          end
         else
           @battle.pbDisplay(_INTL("{1} was trapped in the vortex!",opponent.pbThis))
         end
@@ -8309,6 +8362,9 @@ class PokeBattle_Move_0F7 < PokeBattle_Move
             if opponent.stages[i]<0
               opponent.stages[i]=0; reducedstats=true
             end
+            if opponent.effects[PBEffects::StatChangeHolder][i] < 0
+              opponent.effects[PBEffects::StatChangeHolder][i] = 0 ; reducedstats=true
+            end
           end
           break if !reducedstats
           @battle.pbDisplay(_INTL("{1}'s {2} restored {3}'s status!",
@@ -9031,6 +9087,12 @@ class PokeBattle_Move_10C < PokeBattle_Move
     attacker.effects[PBEffects::UsingSubstituteRightNow]=false
     #@battle.scene.pbSubstituteSprite(attacker,attacker.pbIsOpposing?(1))
     attacker.effects[PBEffects::MultiTurn]=0
+    if attacker.effects[PBEffects::MultiTurnAttack] == PBMoves::BINDINGWORD
+      for i in [PBStats::ATTACK,PBStats::DEFENSE,PBStats::SPEED,PBStats::SPATK,PBStats::SPDEF,PBStats::ACCURACY,PBStats::EVASION]
+        attacker.stages[i] = attacker.effects[PBEffects::StatChangeHolder][i]
+        attacker.effects[PBEffects::StatChangeHolder][i] = 0
+      end
+    end
     attacker.effects[PBEffects::MultiTurnAttack]=0
     attacker.effects[PBEffects::Substitute]=sublife
     @battle.pbDisplay(_INTL("{1} put in a substitute!",attacker.pbThis))
@@ -9155,6 +9217,12 @@ class PokeBattle_Move_110 < PokeBattle_Move
         mtuser=@battle.battlers[attacker.effects[PBEffects::MultiTurnUser]]
         @battle.pbDisplay(_INTL("{1} got free of {2}'s {3}!",attacker.pbThis,mtuser.pbThis(true),mtattack))
         attacker.effects[PBEffects::MultiTurn]=0
+        if attacker.effects[PBEffects::MultiTurnAttack] == PBMoves::BINDINGWORD
+          for i in [PBStats::ATTACK,PBStats::DEFENSE,PBStats::SPEED,PBStats::SPATK,PBStats::SPDEF,PBStats::ACCURACY,PBStats::EVASION]
+            attacker.stages[i] = attacker.effects[PBEffects::StatChangeHolder][i]
+            attacker.effects[PBEffects::StatChangeHolder][i] = 0
+          end
+        end
         attacker.effects[PBEffects::MultiTurnAttack]=0
         attacker.effects[PBEffects::MultiTurnUser]=-1
       end
@@ -10406,9 +10474,12 @@ end
 class PokeBattle_Move_142 < PokeBattle_Move
   def pbEffect(attacker,opponent,hitnum=0,alltargets=nil,showanimation=true)
     pbShowAnimation(@id,attacker,opponent,hitnum,alltargets,showanimation)
-    for i in [PBStats::ATTACK,PBStats::DEFENSE,PBStats::SPEED,
-              PBStats::SPATK,PBStats::SPDEF,PBStats::ACCURACY,PBStats::EVASION]
-      opponent.stages[i]=-opponent.stages[i]
+    for i in [PBStats::ATTACK,PBStats::DEFENSE,PBStats::SPEED,PBStats::SPATK,PBStats::SPDEF,PBStats::ACCURACY,PBStats::EVASION]
+      if opponent.effects[PBEffects::MultiTurnAttack] == PBMoves::BINDINGWORD # Stats suppressed by binding word
+        opponent.effects[PBEffects::StatChangeHolder][i]=-opponent.effects[PBEffects::StatChangeHolder][i]
+      else
+        opponent.stages[i]=-opponent.stages[i]
+      end
     end
     @battle.pbDisplay(_INTL("{1} inverted {2}'s stat changes!",attacker.pbThis,opponent.pbThis(true)))
     if ((!isConst?(attacker.item,PBItems,:EVERSTONE) || !isConst?(attacker.item,PBItems,:EVIOLITE)) && $fefieldeffect==0 )
@@ -11423,17 +11494,39 @@ class PokeBattle_Move_16E < PokeBattle_Move
     totalboost = 0
     for i in [PBStats::ATTACK,PBStats::DEFENSE,PBStats::SPEED,
               PBStats::SPATK,PBStats::SPDEF,PBStats::ACCURACY,PBStats::EVASION]
-      if opponent.stages[i]>0
-        if attacker.stages[i] + opponent.stages[i] < 7
+      if opponent.effects[PBEffects::MultiTurnAttack] == PBMoves::BINDINGWORD # Stats suppressed by binding word
+        if opponent.effects[PBEffects::StatChangeHolder][i] > 0
+          oppboost = opponent.effects[PBEffects::StatChangeHolder][i]
+          oppboost *= -1 if attacker.ability == PBAbilities::CONTRARY
+          oppboost *= 2 if attacker.ability == PBAbilities::SIMPLE
+          if attacker.effects[PBEffects::MultiTurnAttack] == PBMoves::BINDINGWORD # Stats suppressed by binding word
+            attacker.effects[PBEffects::StatChangeHolder][i] += oppboost
+            attacker.effects[PBEffects::StatChangeHolder][i] = attacker.effects[PBEffects::StatChangeHolder][i].clamp(-6, 6)
+          else
+            attacker.stages[i] += oppboost
+            attacker.stages[i] = attacker.stages[i].clamp(-6, 6)
+          end
+          totalboost += oppboost
+          opponent.effects[PBEffects::StatChangeHolder][i] = 0
+        end
+      else
+        if opponent.stages[i] > 0
           oppboost = opponent.stages[i]
-        else
-          oppboost = 6 - attacker.stages[i]
-        end        
-        attacker.stages[i]+=oppboost
-        totalboost += oppboost
-      end      
+          oppboost *= -1 if attacker.ability == PBAbilities::CONTRARY
+          oppboost *= 2 if attacker.ability == PBAbilities::SIMPLE
+          if attacker.effects[PBEffects::MultiTurnAttack] == PBMoves::BINDINGWORD # Stats suppressed by binding word
+            attacker.effects[PBEffects::StatChangeHolder][i] += oppboost
+            attacker.effects[PBEffects::StatChangeHolder][i] = attacker.effects[PBEffects::StatChangeHolder][i].clamp(-6, 6)
+          else
+            attacker.stages[i] += oppboost
+            attacker.stages[i] = attacker.stages[i].clamp(-6, 6)
+          end
+          totalboost += oppboost
+          opponent.stages[i] = 0
+        end
+      end
     end
-    if totalboost>0
+    if totalboost != 0
       @battle.pbCommonAnimation("StatUp",attacker,nil)
       @battle.pbDisplay(_INTL("{1} stole {2}'s stat boosts!",attacker.pbThis,opponent.pbThis))            
     end  
@@ -11520,7 +11613,6 @@ end
 # Strength Sap
 ################################################################################
 class PokeBattle_Move_172 < PokeBattle_Move
-
   def pbRoughStat(battler,stat)
     stagemul=[2,2,2,2,2,2,2,3,4,5,6,7,8]
     stagediv=[8,7,6,5,4,3,2,2,2,2,2,2,2]
@@ -12541,6 +12633,9 @@ class PokeBattle_Move_218 < PokeBattle_Move
         PBStats::EVASION,PBStats::ACCURACY]
         if opponent.stages[i]<0
           opponent.stages[i]=0; reducedstats=true
+        end
+        if opponent.effects[PBEffects::StatChangeHolder][i] < 0
+          opponent.effects[PBEffects::StatChangeHolder][i] = 0 ; reducedstats=true
         end
       end
       @battle.pbDisplay(_INTL("{1}'s negative stat changes were removed!",opponent.pbThis)) if reducedstats

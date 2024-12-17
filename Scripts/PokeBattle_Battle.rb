@@ -6946,6 +6946,12 @@ def pbStartBattle(canlose=false)
         movename=PBMoves.getName(i.effects[PBEffects::MultiTurnAttack])
         if i.effects[PBEffects::MultiTurn]==0
           pbDisplay(_INTL("{1} was freed from {2}!",i.pbThis,movename))
+          if i.effects[PBEffects::MultiTurnAttack] == PBMoves::BINDINGWORD
+            for j in [PBStats::ATTACK,PBStats::DEFENSE,PBStats::SPEED,PBStats::SPATK,PBStats::SPDEF,PBStats::ACCURACY,PBStats::EVASION]
+              i.stages[j] = i.effects[PBEffects::StatChangeHolder][j]
+              i.effects[PBEffects::StatChangeHolder][j] = 0
+            end
+          end
           $bindingband=0
         else
           pbDisplay(_INTL("{1} is hurt by {2}!",i.pbThis,movename))
@@ -7855,9 +7861,14 @@ def pbStartBattle(canlose=false)
         end
       end
       statnames=[_INTL("Attack"),_INTL("Defense"),_INTL("Speed"),_INTL("Special Attack"),_INTL("Special Defense")]
-      if failsafe!=1000           
-        i.stages[randoms[0]]+=1
-        i.stages[randoms[0]]=6 if i.stages[randoms[0]]>6
+      if failsafe!=1000
+        if i.effects[PBEffects::MultiTurnAttack] == PBMoves::BINDINGWORD # Stats suppressed by binding word     
+          i.effects[PBEffects::StatChangeHolder][randoms[0]]+=1
+          i.effects[PBEffects::StatChangeHolder][randoms[0]]=6 if i.effects[PBEffects::StatChangeHolder][randoms[0]]>6
+        else
+          i.stages[randoms[0]]+=1
+          i.stages[randoms[0]]=6 if i.stages[randoms[0]]>6
+        end
         pbCommonAnimation("StatUp",i,nil)
         pbDisplay(_INTL("{1}'s Cloud Nine raised its {2}!",i.pbThis,statnames[randoms[0]-1]))
       end     
@@ -7886,14 +7897,23 @@ def pbStartBattle(canlose=false)
         end
       end
       statnames=[_INTL("Attack"),_INTL("Defense"),_INTL("Speed"),_INTL("Special Attack"),_INTL("Special Defense")]
-      if failsafe1!=1000                 
-        i.stages[randomup[0]]+=2
-        i.stages[randomup[0]]=6 if i.stages[randomup[0]]>6
+      if failsafe1!=1000   
+        if i.effects[PBEffects::MultiTurnAttack] == PBMoves::BINDINGWORD # Stats suppressed by binding word          
+          i.effects[PBEffects::StatChangeHolder][randomup[0]]+=2
+          i.effects[PBEffects::StatChangeHolder][randomup[0]]=6 if i.effects[PBEffects::StatChangeHolder][randomup[0]]>6
+        else
+          i.stages[randomup[0]]+=2
+          i.stages[randomup[0]]=6 if i.stages[randomup[0]]>6
+        end
         pbCommonAnimation("StatUp",i,nil)
         pbDisplay(_INTL("{1}'s Moody sharply raised its {2}!",i.pbThis,statnames[randomup[0]-1]))
       end
       if failsafe2!=1000
-        i.stages[randomdown[0]]-=1
+        if i.effects[PBEffects::MultiTurnAttack] == PBMoves::BINDINGWORD # Stats suppressed by binding word 
+          i.effects[PBEffects::StatChangeHolder][randomdown[0]]-=1
+        else
+          i.stages[randomdown[0]]-=1
+        end
         pbCommonAnimation("StatDown",i,nil)
         pbDisplay(_INTL("{1}'s Moody lowered its {2}!",i.pbThis,statnames[randomdown[0]-1]))
       end

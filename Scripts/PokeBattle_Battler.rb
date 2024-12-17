@@ -1001,6 +1001,12 @@ class PokeBattle_Battler
         #next if @battle.battlers[i].effects[PBEffects::MultiTurn]!=0 #&& @battle.battlers[i].effects[PBEffects::MultiTurnUser]==@index
         if @battle.battlers[i].effects[PBEffects::MultiTurnUser]==@index
           @battle.battlers[i].effects[PBEffects::MultiTurn]=0
+          if @battle.battlers[i].effects[PBEffects::MultiTurnAttack] == PBMoves::BINDINGWORD
+            for j in [PBStats::ATTACK,PBStats::DEFENSE,PBStats::SPEED,PBStats::SPATK,PBStats::SPDEF,PBStats::ACCURACY,PBStats::EVASION]
+              @battle.battlers[i].stages[j] = @battle.battlers[i].effects[PBEffects::StatChangeHolder][j]
+              @battle.battlers[i].effects[PBEffects::StatChangeHolder][j] = 0
+            end
+          end
           @battle.battlers[i].effects[PBEffects::MultiTurnUser]=-1
         end
       end
@@ -1099,7 +1105,7 @@ class PokeBattle_Battler
     @effects[PBEffects::DesertsMark]      = false
     @effects[PBEffects::UsingItem]        = []
     @effects[PBEffects::WorldOfNightmares]= 0
-    @effects[PBEffects::StatChangeHolder] = [0,0,0,0,0,0,0,0] # index 0=hp for simplicity
+    @effects[PBEffects::StatChangeHolder] = [0,0,0,0,0,0,0,0] # index 0 unused
   end
   
   def pbUpdate(fullchange=false,wonderroom=false)
@@ -3663,9 +3669,12 @@ class PokeBattle_Battler
         @speed=irregularcopy.speed
         @spatk=irregularcopy.spatk
         @spdef=irregularcopy.spdef        
-        for i in [PBStats::ATTACK,PBStats::DEFENSE,PBStats::SPEED,
-            PBStats::SPATK,PBStats::SPDEF,PBStats::EVASION,PBStats::ACCURACY]
-          @stages[i]=choice.stages[i]
+        for i in [PBStats::ATTACK,PBStats::DEFENSE,PBStats::SPEED,PBStats::SPATK,PBStats::SPDEF,PBStats::EVASION,PBStats::ACCURACY]
+          if @effects[PBEffects::MultiTurnAttack] == PBMoves::BINDINGWORD # Stats suppressed by binding word
+            @effects[PBEffects::StatChangeHolder][i] = choice.effects[PBEffects::MultiTurnAttack] == PBMoves::BINDINGWORD ? choice.effects[PBEffects::StatChangeHolder][i] : choice.stages[i]
+          else
+            @stages[i] = choice.effects[PBEffects::MultiTurnAttack] == PBMoves::BINDINGWORD ? choice.effects[PBEffects::StatChangeHolder][i] : choice.stages[i]
+          end
         end
         for i in 0...4
           @moves[i]=PokeBattle_Move.pbFromPBMove(@battle,PBMove.new(choice.moves[i].id),self)
@@ -4349,12 +4358,14 @@ class PokeBattle_Battler
         end
       end      
       if target.hasWorkingAbility(:ANGERPOINT)
-        if target.pbCanIncreaseStatStage?(PBStats::ATTACK) &&
-          target.damagestate.critical
-          target.stages[PBStats::ATTACK]=6
+        if target.pbCanIncreaseStatStage?(PBStats::ATTACK) && target.damagestate.critical
+          if target.effects[PBEffects::MultiTurnAttack] == PBMoves::BINDINGWORD # Stats suppressed by binding word
+            target.effects[PBEffects::StatChangeHolder][PBStats::ATTACK]=6
+          else
+            target.stages[PBStats::ATTACK]=6
+          end
           @battle.pbCommonAnimation("StatUp",target,nil)
-          @battle.pbDisplay(_INTL("{1}'s {2} maxed its Attack!",
-              target.pbThis,PBAbilities.getName(target.ability)))
+          @battle.pbDisplay(_INTL("{1}'s {2} maxed its Attack!",target.pbThis,PBAbilities.getName(target.ability)))
         end
       end
       if target.hasWorkingItem(:REDCARD) && !target.damagestate.substitute &&
@@ -4755,11 +4766,12 @@ class PokeBattle_Battler
     end
     if self.hasWorkingItem(:WHITEHERB)
       reducedstats=false
-      for i in [PBStats::ATTACK,PBStats::DEFENSE,
-          PBStats::SPEED,PBStats::SPATK,PBStats::SPDEF,
-          PBStats::EVASION,PBStats::ACCURACY]
+      for i in [PBStats::ATTACK,PBStats::DEFENSE,PBStats::SPEED,PBStats::SPATK,PBStats::SPDEF,PBStats::EVASION,PBStats::ACCURACY]
         if @stages[i]<0
           @stages[i]=0; reducedstats=true
+        end
+        if @effects[PBEffects::StatChangeHolder][i] < 0
+          @effects[PBEffects::StatChangeHolder][i] = 0 ; reducedstats=true
         end
       end
       if reducedstats

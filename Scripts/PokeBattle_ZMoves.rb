@@ -1226,6 +1226,12 @@ def pbZStatus(move,attacker)
     end    
     #@battle.scene.pbSubstituteSprite(attacker,attacker.pbIsOpposing?(1))
     attacker.effects[PBEffects::MultiTurn]=0
+    if attacker.effects[PBEffects::MultiTurnAttack] == PBMoves::BINDINGWORD
+      for i in [PBStats::ATTACK,PBStats::DEFENSE,PBStats::SPEED,PBStats::SPATK,PBStats::SPDEF,PBStats::ACCURACY,PBStats::EVASION]
+        attacker.stages[i] = attacker.effects[PBEffects::StatChangeHolder][i]
+        attacker.effects[PBEffects::StatChangeHolder][i] = 0
+      end
+    end
     attacker.effects[PBEffects::MultiTurnAttack]=0
     attacker.effects[PBEffects::Substitute]=sublife
     @battle.pbDisplayBrief(_INTL("{1} put in a substitute!",attacker.pbThis))
@@ -1399,9 +1405,8 @@ def pbZStatus(move,attacker)
     for i in [PBStats::ATTACK,PBStats::DEFENSE,
         PBStats::SPEED,PBStats::SPATK,PBStats::SPDEF,
         PBStats::EVASION,PBStats::ACCURACY]
-      if attacker.stages[i]<0
-        attacker.stages[i]=0
-      end
+      attacker.stages[i]=0 if attacker.stages[i]<0
+      attacker.effects[PBEffects::StatChangeHolder][i]=0 if attacker.effects[PBEffects::StatChangeHolder][i]<0
     end
     @battle.pbDisplayBrief(_INTL("{1}'s Z-Power returned its decreased stats to normal!",attacker.pbThis))
   elsif heal.include?(move)

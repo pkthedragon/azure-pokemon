@@ -850,7 +850,11 @@ end
 # Increase stat stages
 #===============================================================================
   def pbTooHigh?(stat)
-    return @stages[stat]>=6
+    if @effects[PBEffects::MultiTurnAttack] == PBMoves::BINDINGWORD # Stats suppressed by binding word
+      return @effects[PBEffects::StatChangeHolder][stat]>=6
+    else
+      return @stages[stat]>=6
+    end
   end
 
   def pbCanIncreaseStatStage?(stat,showMessages=false)
@@ -874,8 +878,13 @@ end
     if !(self.moldbroken) && (hasWorkingAbility(:SIMPLE))
       increment*=2
     end
-    @stages[stat]+=increment
-    @stages[stat]=6 if @stages[stat]>6
+    if @effects[PBEffects::MultiTurnAttack] == PBMoves::BINDINGWORD # Stats suppressed by binding word
+      @effects[PBEffects::StatChangeHolder][stat]+=increment
+      @effects[PBEffects::StatChangeHolder][stat]=6 if @effects[PBEffects::StatChangeHolder][stat]>6
+    else
+      @stages[stat]+=increment
+      @stages[stat]=6 if @stages[stat]>6
+    end
   end
 
 # UPDATE 11/29/2013
@@ -959,7 +968,11 @@ end
 # Decrease stat stages
 #===============================================================================
   def pbTooLow?(stat)
-    return @stages[stat]<=-6
+    if @effects[PBEffects::MultiTurnAttack] == PBMoves::BINDINGWORD # Stats suppressed by binding word
+      return @effects[PBEffects::StatChangeHolder][stat]<=-6
+    else
+      return @stages[stat]<=-6
+    end
   end
 
   # Tickle (04A) and Memento (0E2) can't use this, but replicate it instead.
@@ -1030,8 +1043,13 @@ end
     if !(self.moldbroken) && (hasWorkingAbility(:SIMPLE))
       increment*=2
     end
-    @stages[stat]-=increment
-    @stages[stat]=-6 if @stages[stat]<-6
+    if @effects[PBEffects::MultiTurnAttack] == PBMoves::BINDINGWORD # Stats suppressed by binding word
+      @effects[PBEffects::StatChangeHolder][stat]-=increment
+      @effects[PBEffects::StatChangeHolder][stat]=-6 if @effects[PBEffects::StatChangeHolder][stat]<-6
+    else
+      @stages[stat]-=increment
+      @stages[stat]=-6 if @stages[stat]<-6
+    end
     self.statLowered = true
   end
 
@@ -1177,11 +1195,12 @@ end
       end
       if hasWorkingItem(:WHITEHERB)
         reducedstats=false
-        for i in [PBStats::ATTACK,PBStats::DEFENSE,
-                  PBStats::SPEED,PBStats::SPATK,PBStats::SPDEF,
-                  PBStats::EVASION,PBStats::ACCURACY]
-         if self.stages[i]<0
-           self.stages[i]=0; reducedstats=true
+        for i in [PBStats::ATTACK,PBStats::DEFENSE,PBStats::SPEED,PBStats::SPATK,PBStats::SPDEF,PBStats::EVASION,PBStats::ACCURACY]
+          if self.stages[i]<0
+            self.stages[i]=0; reducedstats=true
+          end
+          if self.effects[PBEffects::StatChangeHolder][i] < 0
+            self.effects[PBEffects::StatChangeHolder][i] = 0 ; reducedstats=true
           end
         end
         if reducedstats

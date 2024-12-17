@@ -6168,22 +6168,45 @@ class PokeBattle_Battle
       end
     when 0x54 # Heart Swap
       stages=0
-      stages+=attacker.stages[PBStats::ATTACK] unless attacker.attack<attacker.spatk
-      stages+=attacker.stages[PBStats::DEFENSE] unless opponent.attack<opponent.spatk
-      stages+=attacker.stages[PBStats::SPEED]
-      stages+=attacker.stages[PBStats::SPATK] unless attacker.attack>attacker.spatk
-      stages+=attacker.stages[PBStats::SPDEF] unless opponent.attack>opponent.spatk
-      stages+=attacker.stages[PBStats::EVASION]
-      stages+=attacker.stages[PBStats::ACCURACY]
+      if attacker.effects[PBEffects::MultiTurnAttack] == PBMoves::BINDINGWORD # Stats suppressed
+        if attacker.effects[PBEffects::MultiTurn] < 3 # only care if stats are turning on soon
+          stages+=attacker.effects[PBEffects::StatChangeHolder][PBStats::ATTACK] unless attacker.attack<attacker.spatk
+          stages+=attacker.effects[PBEffects::StatChangeHolder][PBStats::DEFENSE] unless opponent.attack<opponent.spatk
+          stages+=attacker.effects[PBEffects::StatChangeHolder][PBStats::SPATK] unless attacker.attack>attacker.spatk
+          stages+=attacker.effects[PBEffects::StatChangeHolder][PBStats::SPDEF] unless opponent.attack>opponent.spatk
+          for i in [PBStats::SPEED,PBStats::EVASION,PBStats::ACCURACY]
+            stages+=attacker.effects[PBEffects::StatChangeHolder][i]
+          end
+          stages = (stages / 2).floor if attacker.effects[PBEffects::MultiTurn] == 2 # care less
+        end
+      else
+        stages+=attacker.stages[PBStats::ATTACK] unless attacker.attack<attacker.spatk
+        stages+=attacker.stages[PBStats::DEFENSE] unless opponent.attack<opponent.spatk
+        stages+=attacker.stages[PBStats::SPATK] unless attacker.attack>attacker.spatk
+        stages+=attacker.stages[PBStats::SPDEF] unless opponent.attack>opponent.spatk
+        for i in [PBStats::SPEED,PBStats::EVASION,PBStats::ACCURACY]
+          stages+=attacker.stages[i]
+        end
+      end
       miniscore = (-10)*stages
       stages=0
-      stages+=opponent.stages[PBStats::ATTACK] unless opponent.attack<opponent.spatk
-      stages+=opponent.stages[PBStats::DEFENSE] unless attacker.attack<attacker.spatk
-      stages+=opponent.stages[PBStats::SPEED]
-      stages+=opponent.stages[PBStats::SPATK] unless opponent.attack>opponent.spatk
-      stages+=opponent.stages[PBStats::SPDEF] unless attacker.attack>attacker.spatk
-      stages+=opponent.stages[PBStats::EVASION]
-      stages+=opponent.stages[PBStats::ACCURACY]
+      if opponent.effects[PBEffects::MultiTurnAttack] == PBMoves::BINDINGWORD # Stats suppressed
+        stages+=opponent.effects[PBEffects::StatChangeHolder][PBStats::ATTACK] unless opponent.attack<opponent.spatk
+        stages+=opponent.effects[PBEffects::StatChangeHolder][PBStats::DEFENSE] unless attacker.attack<attacker.spatk
+        stages+=opponent.effects[PBEffects::StatChangeHolder][PBStats::SPATK] unless opponent.attack>opponent.spatk
+        stages+=opponent.effects[PBEffects::StatChangeHolder][PBStats::SPDEF] unless attacker.attack>attacker.spatk
+        for i in [PBStats::SPEED,PBStats::EVASION,PBStats::ACCURACY]
+          stages+=opponent.effects[PBEffects::StatChangeHolder][i]
+        end
+      else
+        stages+=opponent.stages[PBStats::ATTACK] unless opponent.attack<opponent.spatk
+        stages+=opponent.stages[PBStats::DEFENSE] unless attacker.attack<attacker.spatk
+        stages+=opponent.stages[PBStats::SPATK] unless opponent.attack>opponent.spatk
+        stages+=opponent.stages[PBStats::SPDEF] unless attacker.attack>attacker.spatk
+        for i in [PBStats::SPEED,PBStats::EVASION,PBStats::ACCURACY]
+          stages+=opponent.stages[i]
+        end
+      end
       minimini = (10)*stages
       if !(miniscore==0 && minimini==0)
         miniscore+=minimini
@@ -6220,22 +6243,45 @@ class PokeBattle_Battle
       end
     when 0x55 # Psych Up
       stages=0
-      stages+=attacker.stages[PBStats::ATTACK] unless attacker.attack<attacker.spatk
-      stages+=attacker.stages[PBStats::DEFENSE] unless opponent.attack<opponent.spatk
-      stages+=attacker.stages[PBStats::SPEED]
-      stages+=attacker.stages[PBStats::SPATK] unless attacker.attack>attacker.spatk
-      stages+=attacker.stages[PBStats::SPDEF] unless opponent.attack>opponent.spatk
-      stages+=attacker.stages[PBStats::EVASION]
-      stages+=attacker.stages[PBStats::ACCURACY]
+      if attacker.effects[PBEffects::MultiTurnAttack] == PBMoves::BINDINGWORD # Stats suppressed
+        if attacker.effects[PBEffects::MultiTurn] < 3 # only care if stats are turning on soon
+          stages+=attacker.effects[PBEffects::StatChangeHolder][PBStats::ATTACK] unless attacker.attack<attacker.spatk
+          stages+=attacker.effects[PBEffects::StatChangeHolder][PBStats::DEFENSE] unless opponent.attack<opponent.spatk
+          stages+=attacker.effects[PBEffects::StatChangeHolder][PBStats::SPATK] unless attacker.attack>attacker.spatk
+          stages+=attacker.effects[PBEffects::StatChangeHolder][PBStats::SPDEF] unless opponent.attack>opponent.spatk
+          for i in [PBStats::SPEED,PBStats::EVASION,PBStats::ACCURACY]
+            stages+=attacker.effects[PBEffects::StatChangeHolder][i]
+          end
+          stages = (stages / 2).floor if attacker.effects[PBEffects::MultiTurn] == 2 # care less
+        end
+      else
+        stages+=attacker.stages[PBStats::ATTACK] unless attacker.attack<attacker.spatk
+        stages+=attacker.stages[PBStats::DEFENSE] unless opponent.attack<opponent.spatk
+        stages+=attacker.stages[PBStats::SPATK] unless attacker.attack>attacker.spatk
+        stages+=attacker.stages[PBStats::SPDEF] unless opponent.attack>opponent.spatk
+        for i in [PBStats::SPEED,PBStats::EVASION,PBStats::ACCURACY]
+          stages+=attacker.stages[i]
+        end
+      end
       miniscore = (-10)*stages
       stages=0
-      stages+=opponent.stages[PBStats::ATTACK] unless attacker.attack<attacker.spatk
-      stages+=opponent.stages[PBStats::DEFENSE] unless opponent.attack<opponent.spatk
-      stages+=opponent.stages[PBStats::SPEED]
-      stages+=opponent.stages[PBStats::SPATK] unless attacker.attack>attacker.spatk
-      stages+=opponent.stages[PBStats::SPDEF] unless opponent.attack>opponent.spatk
-      stages+=opponent.stages[PBStats::EVASION]
-      stages+=opponent.stages[PBStats::ACCURACY]
+      if opponent.effects[PBEffects::MultiTurnAttack] == PBMoves::BINDINGWORD # Stats suppressed
+        stages+=opponent.effects[PBEffects::StatChangeHolder][PBStats::ATTACK] unless opponent.attack<opponent.spatk
+        stages+=opponent.effects[PBEffects::StatChangeHolder][PBStats::DEFENSE] unless attacker.attack<attacker.spatk
+        stages+=opponent.effects[PBEffects::StatChangeHolder][PBStats::SPATK] unless opponent.attack>opponent.spatk
+        stages+=opponent.effects[PBEffects::StatChangeHolder][PBStats::SPDEF] unless attacker.attack>attacker.spatk
+        for i in [PBStats::SPEED,PBStats::EVASION,PBStats::ACCURACY]
+          stages+=opponent.effects[PBEffects::StatChangeHolder][i]
+        end
+      else
+        stages+=opponent.stages[PBStats::ATTACK] unless opponent.attack<opponent.spatk
+        stages+=opponent.stages[PBStats::DEFENSE] unless attacker.attack<attacker.spatk
+        stages+=opponent.stages[PBStats::SPATK] unless opponent.attack>opponent.spatk
+        stages+=opponent.stages[PBStats::SPDEF] unless attacker.attack>attacker.spatk
+        for i in [PBStats::SPEED,PBStats::EVASION,PBStats::ACCURACY]
+          stages+=opponent.stages[i]
+        end
+      end
       minimini = (10)*stages
       if !(miniscore==0 && minimini==0)
         miniscore+=minimini
@@ -6291,6 +6337,9 @@ class PokeBattle_Battle
           score*=miniscore
         else
           score=0
+        end
+        if attacker.effects[PBEffects::MultiTurnAttack] == PBMoves::BINDINGWORD && attacker.effects[PBEffects::MultiTurn] >= 3 
+          score=0 # Stats suppressed
         end
       end
     when 0x56 # Mist
@@ -19972,20 +20021,32 @@ class PokeBattle_Battle
         end
       end
       # Only reduce if will clear and do not kill/target sub
-      if reducedstats && initialscores[scoreindex] < 100 && opponent.effects[PBEffects::Substitute]<=0
+      if reducedstats && initialscores[scoreindex] < 100 && opponent.effects[PBEffects::Substitute]<=0 && !(opponent.effects[PBEffects::MultiTurnAttack] == PBMoves::BINDINGWORD && opponent.effects[PBEffects::MultiTurn] >= 2) 
         miniscore = 1.0
         if initialscores[scoreindex] >= 70 && ((pbRoughStat(opponent,PBStats::SPEED,skill) < attacker.pbSpeed) ^ (@trickroom!=0)) # 2HKO + faster
-          if opponent.stages[PBStats::SPEED] < 0
-            ogspeed = opponent.stages[PBStats::SPEED]
-            opponent.stages[PBStats::SPEED] = 0
-            # No longer outspeed
-            miniscore *= 0.7 if ((pbRoughStat(opponent,PBStats::SPEED,skill) > attacker.pbSpeed) ^ (@trickroom!=0)) && initialscores.length>0 && !hasbadmoves(initialscores,scoreindex,50)
-            opponent.stages[PBStats::SPEED] = ogspeed
+          if opponent.effects[PBEffects::MultiTurnAttack] == PBMoves::BINDINGWORD # stats suppressed
+            if opponent.effects[PBEffects::StatChangeHolder][PBStats::SPEED] < 0
+              ogspeed = opponent.effects[PBEffects::StatChangeHolder][PBStats::SPEED]
+              opponent.effects[PBEffects::StatChangeHolder][PBStats::SPEED] = 0
+              # No longer outspeed
+              miniscore *= 0.7 if ((pbRoughStat(opponent,PBStats::SPEED,skill) > attacker.pbSpeed) ^ (@trickroom!=0)) && initialscores.length>0 && !hasbadmoves(initialscores,scoreindex,50)
+              opponent.effects[PBEffects::StatChangeHolder][PBStats::SPEED] = ogspeed
+            end
+          else
+            if opponent.stages[PBStats::SPEED] < 0
+              ogspeed = opponent.stages[PBStats::SPEED]
+              opponent.stages[PBStats::SPEED] = 0
+              # No longer outspeed
+              miniscore *= 0.7 if ((pbRoughStat(opponent,PBStats::SPEED,skill) > attacker.pbSpeed) ^ (@trickroom!=0)) && initialscores.length>0 && !hasbadmoves(initialscores,scoreindex,50)
+              opponent.stages[PBStats::SPEED] = ogspeed
+            end
           end
         end
         if initialscores[scoreindex] >= 70 # 2HKO
           # Might not kill afterwards due to defense reset + others do 2HKO
-          miniscore *= 0.7 if initialscores>0 && opponent.stages[PBStats::DEFENSE] < 0 && !hasbadmoves(initialscores,scoreindex,50)
+          if opponent.effects[PBEffects::MultiTurnAttack] != PBMoves::BINDINGWORD # stats suppressed
+            miniscore *= 0.7 if initialscores>0 && opponent.stages[PBStats::DEFENSE] < 0 && !hasbadmoves(initialscores,scoreindex,50)
+          end
         elsif initialscores[scoreindex] < 70 # No 2HKO
           ministat=(7.5)*statchangecounter(opponent,1,7,-1)
           ministat+=100
@@ -21236,7 +21297,7 @@ class PokeBattle_Battle
       for i in [PBStats::ATTACK,PBStats::DEFENSE,
                   PBStats::SPEED,PBStats::SPATK,PBStats::SPDEF,
                   PBStats::EVASION,PBStats::ACCURACY]
-        if opponent.stages[i] < 0
+        if opponent.stages[i] < 0 || opponent.effects[PBEffects::StatChangeHolder][i] < 0
           reducedstats = true
           break
         end
@@ -28363,18 +28424,36 @@ class PokeBattle_Battle
   
   def statchangecounter(mon,initial,final,limiter=0)
     count = 0
-    case limiter
-    when 0 #all stats
-      for i in initial..final
-        count += mon.stages[i]
+    if mon.effects[PBEffects::MultiTurnAttack] == PBEffects::BINDINGWORD 
+      case limiter
+      when 0 #all stats
+        for i in initial..final
+          count += mon.effects[PBEffects::StatChangeHolder][i]
+        end
+      when 1 #increases only
+        for i in initial..final
+          count += mon.effects[PBEffects::StatChangeHolder][i] if mon.effects[PBEffects::StatChangeHolder][i]>0
+        end
+      when -1 #decreases only
+        for i in initial..final
+          count += mon.effects[PBEffects::StatChangeHolder][i] if mon.effects[PBEffects::StatChangeHolder][i]<0
+        end
       end
-    when 1 #increases only
-      for i in initial..final
-        count += mon.stages[i] if mon.stages[i]>0
-      end
-    when -1 #decreases only
-      for i in initial..final
-        count += mon.stages[i] if mon.stages[i]<0
+      count = (count / mon.effects[PBEffects::MultiTurn]).floor # Adjust by how soon the stats come back online
+    else
+      case limiter
+      when 0 #all stats
+        for i in initial..final
+          count += mon.stages[i]
+        end
+      when 1 #increases only
+        for i in initial..final
+          count += mon.stages[i] if mon.stages[i]>0
+        end
+      when -1 #decreases only
+        for i in initial..final
+          count += mon.stages[i] if mon.stages[i]<0
+        end
       end
     end
     return count
@@ -31129,44 +31208,47 @@ def pbShouldSwitch?(index,hardswitch=false)
   end
   # Stat Stages
   PBDebug.log(sprintf("Initial switchscore building: Stat Stages (%d)",switchscore)) if $INTERNAL
-  specialmove = false
-  physmove = false
-  physicalattacker=false
-  specialattacker=false
-  glitchattacker=false
-  for i in currentmon.moves
-    specialmove = true if i.pbIsSpecial?(i.type)
-    physmove = true if i.pbIsPhysical?(i.type)
-  end
-  if (pbRoughStat(currentmon,PBStats::ATTACK,skill)>pbRoughStat(currentmon,PBStats::SPATK,skill)) && physmove
-    physicalattacker=true
-  end
-  if ((pbRoughStat(currentmon,PBStats::SPATK,skill)>pbRoughStat(currentmon,PBStats::ATTACK,skill)) || (pbRoughStat(currentmon,PBStats::SPDEF,skill)>pbRoughStat(currentmon,PBStats::ATTACK,skill) && $fefieldeffect==24)) && specialmove
-    specialattacker=true
-    if (pbRoughStat(currentmon,PBStats::SPDEF,skill)>pbRoughStat(currentmon,PBStats::SPATK,skill) && $fefieldeffect==24)
-      glitchattacker=true
+  # This only matters when Binding Word isn't up
+  if !(currentmon.effects[PBEffects::MultiTurnAttack] == PBMonRoles::BINDINGWORD && currentmon.effects[PBEffects::MultiTurn] > 1)
+    specialmove = false
+    physmove = false
+    physicalattacker=false
+    specialattacker=false
+    glitchattacker=false
+    for i in currentmon.moves
+      specialmove = true if i.pbIsSpecial?(i.type)
+      physmove = true if i.pbIsPhysical?(i.type)
     end
-  end
-  if currentroles.include?(PBMonRoles::SWEEPER)
-    switchscore+= (-25)*currentmon.stages[PBStats::ATTACK] if currentmon.stages[PBStats::ATTACK]<0 && physmove 
-    switchscore+= (-25)*currentmon.stages[PBStats::SPATK] if currentmon.stages[PBStats::SPATK]<0 && specialmove && specialattacker && !glitchattacker
-    switchscore+= (-25)*currentmon.stages[PBStats::SPEED] if currentmon.stages[PBStats::SPEED]<0
-    switchscore+= (-25)*currentmon.stages[PBStats::ACCURACY] if currentmon.stages[PBStats::ACCURACY]<0
-  else
-    switchscore+= (-15)*currentmon.stages[PBStats::ATTACK] if currentmon.stages[PBStats::ATTACK]<0 && physmove  
-    switchscore+= (-15)*currentmon.stages[PBStats::SPATK] if currentmon.stages[PBStats::SPATK]<0 && specialmove && specialattacker && !glitchattacker
-    switchscore+= (-15)*currentmon.stages[PBStats::SPEED] if currentmon.stages[PBStats::SPEED]<0
-    switchscore+= (-15)*currentmon.stages[PBStats::ACCURACY] if currentmon.stages[PBStats::ACCURACY]<0
-  end
-  if currentroles.include?(PBMonRoles::PHYSICALWALL)
-    switchscore+= (-25)*currentmon.stages[PBStats::DEFENSE] if currentmon.stages[PBStats::DEFENSE]<0
-  else
-    switchscore+= (-15)*currentmon.stages[PBStats::DEFENSE] if currentmon.stages[PBStats::DEFENSE]<0
-  end
-  if currentroles.include?(PBMonRoles::SPECIALWALL) || glitchattacker
-    switchscore+= (-25)*currentmon.stages[PBStats::SPDEF] if currentmon.stages[PBStats::SPDEF]<0
-  else
-    switchscore+= (-15)*currentmon.stages[PBStats::SPDEF] if currentmon.stages[PBStats::SPDEF]<0
+    if (pbRoughStat(currentmon,PBStats::ATTACK,skill)>pbRoughStat(currentmon,PBStats::SPATK,skill)) && physmove
+      physicalattacker=true
+    end
+    if ((pbRoughStat(currentmon,PBStats::SPATK,skill)>pbRoughStat(currentmon,PBStats::ATTACK,skill)) || (pbRoughStat(currentmon,PBStats::SPDEF,skill)>pbRoughStat(currentmon,PBStats::ATTACK,skill) && $fefieldeffect==24)) && specialmove
+      specialattacker=true
+      if (pbRoughStat(currentmon,PBStats::SPDEF,skill)>pbRoughStat(currentmon,PBStats::SPATK,skill) && $fefieldeffect==24)
+        glitchattacker=true
+      end
+    end
+    if currentroles.include?(PBMonRoles::SWEEPER)
+      switchscore+= (-25)*currentmon.stages[PBStats::ATTACK] if currentmon.stages[PBStats::ATTACK]<0 && physmove 
+      switchscore+= (-25)*currentmon.stages[PBStats::SPATK] if currentmon.stages[PBStats::SPATK]<0 && specialmove && specialattacker && !glitchattacker
+      switchscore+= (-25)*currentmon.stages[PBStats::SPEED] if currentmon.stages[PBStats::SPEED]<0
+      switchscore+= (-25)*currentmon.stages[PBStats::ACCURACY] if currentmon.stages[PBStats::ACCURACY]<0
+    else
+      switchscore+= (-15)*currentmon.stages[PBStats::ATTACK] if currentmon.stages[PBStats::ATTACK]<0 && physmove  
+      switchscore+= (-15)*currentmon.stages[PBStats::SPATK] if currentmon.stages[PBStats::SPATK]<0 && specialmove && specialattacker && !glitchattacker
+      switchscore+= (-15)*currentmon.stages[PBStats::SPEED] if currentmon.stages[PBStats::SPEED]<0
+      switchscore+= (-15)*currentmon.stages[PBStats::ACCURACY] if currentmon.stages[PBStats::ACCURACY]<0
+    end
+    if currentroles.include?(PBMonRoles::PHYSICALWALL)
+      switchscore+= (-25)*currentmon.stages[PBStats::DEFENSE] if currentmon.stages[PBStats::DEFENSE]<0
+    else
+      switchscore+= (-15)*currentmon.stages[PBStats::DEFENSE] if currentmon.stages[PBStats::DEFENSE]<0
+    end
+    if currentroles.include?(PBMonRoles::SPECIALWALL) || glitchattacker
+      switchscore+= (-25)*currentmon.stages[PBStats::SPDEF] if currentmon.stages[PBStats::SPDEF]<0
+    else
+      switchscore+= (-15)*currentmon.stages[PBStats::SPDEF] if currentmon.stages[PBStats::SPDEF]<0
+    end
   end
   # Healing
   PBDebug.log(sprintf("Initial switchscore building: Healing (%d)",switchscore)) if $INTERNAL
@@ -32034,7 +32116,7 @@ def pbShouldSwitch?(index,hardswitch=false)
         end
         if battler.ability==PBAbilities::INTIMIDATE # intimidate attack drops, necessary for damage calcs
           if !(opponent1.item==PBItems::WHITEHERB || opponent1.ability==PBAbilities::CONTRARY || opponent1.ability==PBAbilities::DEFIANT)
-            opponent1.stages[PBStats::ATTACK]-=1
+            opponent1.stages[PBStats::ATTACK]-=1 unless opponent1.effects[PBEffects::MultiTurnAttack] == PBMoves::BINDINGWORD
           end
         end
         increment=1
@@ -32578,30 +32660,33 @@ def pbShouldSwitch?(index,hardswitch=false)
   PBDebug.log(sprintf(" ")) if $INTERNAL
   # Stat Stages
   PBDebug.log(sprintf("Initial noswitchscore building: Stat Stages (%d)",noswitchscore)) if $INTERNAL  
-  specialmove = false
-  physmove = false
-  for i in currentmon.moves
-    specialmove = true if i.pbIsSpecial?(i.type)
-    physmove = true if i.pbIsPhysical?(i.type)
-  end
-  if currentroles.include?(PBMonRoles::SWEEPER)
-    noswitchscore+= (30)*currentmon.stages[PBStats::ATTACK] if currentmon.stages[PBStats::ATTACK]>0 && physmove
-    noswitchscore+= (30)*currentmon.stages[PBStats::SPATK] if currentmon.stages[PBStats::SPATK]>0 && specialmove
-    noswitchscore+= (30)*currentmon.stages[PBStats::SPEED] if currentmon.stages[PBStats::SPEED]>0 unless (currentroles.include?(PBMonRoles::PHYSICALWALL) || currentroles.include?(PBMonRoles::SPECIALWALL) || currentroles.include?(PBMonRoles::TANK))
-  else
-    noswitchscore+= (15)*currentmon.stages[PBStats::ATTACK] if currentmon.stages[PBStats::ATTACK]>0 && physmove
-    noswitchscore+= (15)*currentmon.stages[PBStats::SPATK] if currentmon.stages[PBStats::SPATK]>0 && specialmove
-    noswitchscore+= (15)*currentmon.stages[PBStats::SPEED] if currentmon.stages[PBStats::SPEED]>0 unless (currentroles.include?(PBMonRoles::PHYSICALWALL) || currentroles.include?(PBMonRoles::SPECIALWALL) || currentroles.include?(PBMonRoles::TANK))
-  end
-  if currentroles.include?(PBMonRoles::PHYSICALWALL)
-    noswitchscore+= (30)*currentmon.stages[PBStats::DEFENSE] if currentmon.stages[PBStats::DEFENSE]<0
-  else
-    noswitchscore+= (15)*currentmon.stages[PBStats::DEFENSE] if currentmon.stages[PBStats::DEFENSE]<0
-  end
-  if currentroles.include?(PBMonRoles::SPECIALWALL)
-    noswitchscore+= (30)*currentmon.stages[PBStats::SPDEF] if currentmon.stages[PBStats::SPDEF]<0
-  else
-    noswitchscore+= (15)*currentmon.stages[PBStats::SPDEF] if currentmon.stages[PBStats::SPDEF]<0
+  # This only matters when Binding Word isn't up
+  if !(currentmon.effects[PBEffects::MultiTurnAttack] == PBMonRoles::BINDINGWORD && currentmon.effects[PBEffects::MultiTurn] > 1)
+    specialmove = false
+    physmove = false
+    for i in currentmon.moves
+      specialmove = true if i.pbIsSpecial?(i.type)
+      physmove = true if i.pbIsPhysical?(i.type)
+    end
+    if currentroles.include?(PBMonRoles::SWEEPER)
+      noswitchscore+= (30)*currentmon.stages[PBStats::ATTACK] if currentmon.stages[PBStats::ATTACK]>0 && physmove
+      noswitchscore+= (30)*currentmon.stages[PBStats::SPATK] if currentmon.stages[PBStats::SPATK]>0 && specialmove
+      noswitchscore+= (30)*currentmon.stages[PBStats::SPEED] if currentmon.stages[PBStats::SPEED]>0 unless (currentroles.include?(PBMonRoles::PHYSICALWALL) || currentroles.include?(PBMonRoles::SPECIALWALL) || currentroles.include?(PBMonRoles::TANK))
+    else
+      noswitchscore+= (15)*currentmon.stages[PBStats::ATTACK] if currentmon.stages[PBStats::ATTACK]>0 && physmove
+      noswitchscore+= (15)*currentmon.stages[PBStats::SPATK] if currentmon.stages[PBStats::SPATK]>0 && specialmove
+      noswitchscore+= (15)*currentmon.stages[PBStats::SPEED] if currentmon.stages[PBStats::SPEED]>0 unless (currentroles.include?(PBMonRoles::PHYSICALWALL) || currentroles.include?(PBMonRoles::SPECIALWALL) || currentroles.include?(PBMonRoles::TANK))
+    end
+    if currentroles.include?(PBMonRoles::PHYSICALWALL)
+      noswitchscore+= (30)*currentmon.stages[PBStats::DEFENSE] if currentmon.stages[PBStats::DEFENSE]<0
+    else
+      noswitchscore+= (15)*currentmon.stages[PBStats::DEFENSE] if currentmon.stages[PBStats::DEFENSE]<0
+    end
+    if currentroles.include?(PBMonRoles::SPECIALWALL)
+      noswitchscore+= (30)*currentmon.stages[PBStats::SPDEF] if currentmon.stages[PBStats::SPDEF]<0
+    else
+      noswitchscore+= (15)*currentmon.stages[PBStats::SPDEF] if currentmon.stages[PBStats::SPDEF]<0
+    end
   end
   # Entry Hazards
   PBDebug.log(sprintf("Initial noswitchscore building: Entry Hazards (%d)",noswitchscore)) if $INTERNAL 
@@ -32886,7 +32971,11 @@ def pbSpeedChangingSwitch(mon,currentmon,passing=false)
   speed = mon.speed
   defense = mon.defense
   if passing
-    speedstat = currentmon.stages[PBStats::SPEED]
+    if currentmon.effects[PBEffects::MultiTurnAttack] == PBMonRoles::BINDINGWORD
+      speedstat = currentmon.effects[PBEffects::StatChangeHolder][PBStats::SPEED]
+    else
+      speedstat = currentmon.stages[PBStats::SPEED]
+    end
   else
     speedstat = mon.stages[PBStats::SPEED]
   end
@@ -33020,10 +33109,17 @@ def pbSeedStatChange(mon,currentmon,passing=false,opponent=currentmon.pbOpposite
   spdef = mon.spdef
   speed = mon.speed
   if passing 
-    attackstat=currentmon.stages[PBStats::ATTACK]
-    defensestat=currentmon.stages[PBStats::DEFENSE]
-    spatkstat=currentmon.stages[PBStats::SPATK]
-    spdefstat=currentmon.stages[PBStats::SPDEF]
+    if currentmon.effects[PBEffects::MultiTurnAttack] == PBMonRoles::BINDINGWORD
+      attackstat=currentmon.effects[PBEffects::StatChangeHolder][PBStats::ATTACK]
+      defensestat=currentmon.effects[PBEffects::StatChangeHolder][PBStats::DEFENSE]
+      spatkstat=currentmon.effects[PBEffects::StatChangeHolder][PBStats::SPATK]
+      spdefstat=currentmon.effects[PBEffects::StatChangeHolder][PBStats::SPDEF]
+    else
+      attackstat=currentmon.stages[PBStats::ATTACK]
+      defensestat=currentmon.stages[PBStats::DEFENSE]
+      spatkstat=currentmon.stages[PBStats::SPATK]
+      spdefstat=currentmon.stages[PBStats::SPDEF]
+    end
   else
     attackstat=mon.stages[PBStats::ATTACK]
     defensestat=mon.stages[PBStats::DEFENSE]
@@ -33439,11 +33535,11 @@ def pbSwitchTo(currentmon,party,skill,pivoting=false,hardswitch=false,incomingmo
     end
     if battler.ability==PBAbilities::INTIMIDATE || (battler.species == PBSpecies::GYARADOS && battler.PULSE3 == true)
       if !(opponent1.item==PBItems::WHITEHERB || opponent1.ability==PBAbilities::CONTRARY || opponent1.ability==PBAbilities::DEFIANT)
-        opponent1.stages[PBStats::ATTACK]-=1
+        opponent1.stages[PBStats::ATTACK]-=1 unless opponent1.effects[PBEffects::MultiTurnAttack] == PBMoves::BINDINGWORD
       end
       if @doublebattle && !opponent2.nil?
         if !(opponent2.item==PBItems::WHITEHERB || opponent2.ability==PBAbilities::CONTRARY || opponent2.ability==PBAbilities::DEFIANT) 
-          opponent2.stages[PBStats::ATTACK]-=1
+          opponent2.stages[PBStats::ATTACK]-=1 unless opponent2.effects[PBEffects::MultiTurnAttack] == PBMoves::BINDINGWORD
         end
      end
     end
@@ -34764,8 +34860,13 @@ def pbSwitchTo(currentmon,party,skill,pivoting=false,hardswitch=false,incomingmo
         monscore+=40
       end
       if isConst?(battler.ability,PBAbilities,:IMPOSTER)  
-        monscore+= (20)*opponent1.stages[PBStats::ATTACK]  
-        monscore+= (20)*opponent1.stages[PBStats::SPATK]  
+        if opponent1.effects[PBEffects::MultiTurnAttack] == PBMoves::BINDINGWORD
+          monscore+= (20)*opponent1.effects[PBEffects::StatChangeHolder][PBStats::ATTACK]  
+          monscore+= (20)*opponent1.effects[PBEffects::StatChangeHolder][PBStats::SPATK]  
+        else
+          monscore+= (20)*opponent1.stages[PBStats::ATTACK]  
+          monscore+= (20)*opponent1.stages[PBStats::SPATK]  
+        end
         monscore+=50 if (opponent1.ability == PBAbilities::PUREPOWER) || (opponent1.ability == PBAbilities::HUGEPOWER) || (opponent1.ability == PBAbilities::MOXIE) || (opponent1.ability == PBAbilities::SPEEDBOOST) || (opponent1.ability == PBAbilities::BEASTBOOST) || (opponent1.ability == PBAbilities::SOULHEART) || (opponent1.ability == PBAbilities::WONDERGUARD) || (opponent1.ability == PBAbilities::PROTEAN) || (opponent1.ability == PBAbilities::LIBERO) || SilvallyCheck(opponent1, PBTypes::FIRE)  
         monscore+=30 if (opponent1.level>battler.level) || opp1roles.include?(PBMonRoles::SWEEPER)
         if opponent1.effects[PBEffects::Substitute] > 0
