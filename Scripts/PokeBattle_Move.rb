@@ -1881,11 +1881,15 @@ class PokeBattle_Move
     #if move was called using Me First
     #  damagemult=(damagemult*1.5).round
     #end
-    if attacker.effects[PBEffects::Charge]>0 && isConst?(type,PBTypes,:ELECTRIC)
+    if attacker.effects[PBEffects::Charge] && isConst?(type,PBTypes,:ELECTRIC)
       damagemult=(damagemult*2.0).round
     end
     if attacker.effects[PBEffects::HelpingHand] && (options&SELFCONFUSE)==0
       damagemult=(damagemult*1.5).round
+    end
+    if attacker.pbOwnSide.effects[PBEffects::BattleCry] % 2 == 1
+      puts "Battle Cry damage adjustment" if $INTERNAL
+      damagemult=(damagemult*1.3).round
     end
     if isConst?(type,PBTypes,:FIRE)
       if @battle.field.effects[PBEffects::WaterSport]>0

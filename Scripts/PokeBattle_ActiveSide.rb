@@ -22,11 +22,12 @@ begin
        @effects[PBEffects::CraftyShield] = false 
 #### KUROTSUNE - 016 - END
 #### KUROTSUNE - 025 - START
-       @effects[PBEffects::MatBlock]     = false
+       @effects[PBEffects::MatBlock]   = false
 #### KUROTSUNE - 025 - END
-      @effects[PBEffects::StickyWeb]     = false
-      @effects[PBEffects::AuroraVeil]    = 0
-      @effects[PBEffects::DuneDefense]    = 0
+      @effects[PBEffects::StickyWeb]   = false
+      @effects[PBEffects::AuroraVeil]  = 0
+      @effects[PBEffects::DuneDefense] = 0
+      @effects[PBEffects::BattleCry]   = 0 
       $belch=false
       $fepledgefield=0
       $feconversionuse=0      

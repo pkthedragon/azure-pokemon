@@ -171,6 +171,7 @@ begin
     MatBlock      = 313
     AuroraVeil    = 314
     DuneDefense   = 315
+    BattleCry     = 316
     # These effects apply to the battle (i.e. both sides) - starts from 400
     Gravity       = 400
     MagicRoom     = 401

@@ -106,6 +106,7 @@ def pbShowBattleStats(pkmn)
   report.push(_INTL("Toxic: {1} turns",pkmn.effects[PBEffects::Toxic])) if pkmn.effects[PBEffects::Toxic]!=0
   report.push(_INTL("Torment")) if pkmn.effects[PBEffects::Torment]
   report.push(_INTL("Miracle Eye")) if pkmn.effects[PBEffects::MiracleEye]
+  report.push(_INTL("Charge")) if pkmn.effects[PBEffects::Charge]
   report.push(_INTL("Minimized")) if pkmn.effects[PBEffects::Minimize]
   report.push(_INTL("Recharging")) if pkmn.effects[PBEffects::HyperBeam]!=0
   report.push(_INTL("Fury Cutter: +{1}",pkmn.effects[PBEffects::FuryCutter])) if pkmn.effects[PBEffects::FuryCutter]!=0
@@ -142,6 +143,7 @@ def pbShowBattleStats(pkmn)
   report.push(_INTL("Safeguard: {1} turns",pkmn.pbOwnSide.effects[PBEffects::Safeguard])) if pkmn.pbOwnSide.effects[PBEffects::Safeguard]>0
   report.push(_INTL("Lucky Chant: {1} turns",pkmn.pbOwnSide.effects[PBEffects::LuckyChant])) if pkmn.pbOwnSide.effects[PBEffects::LuckyChant]>0
   report.push(_INTL("Mist: {1} turns",pkmn.pbOwnSide.effects[PBEffects::Mist])) if pkmn.pbOwnSide.effects[PBEffects::Mist]>0 
+  report.push(_INTL("Battle Cry")) if pkmn.pbOwnSide.effects[PBEffects::BattleCry] % 2 == 1
   report.push(_INTL("Altered Field: {1} turns",@battle.field.effects[PBEffects::Terrain])) if @battle.field.effects[PBEffects::Terrain]>0
   report.push(_INTL("Messed up Field: {1} turns",@battle.field.effects[PBEffects::Splintered])) if @battle.field.effects[PBEffects::Splintered]>0  
   report.push(_INTL("Electric Terrain: {1} turns",@battle.field.effects[PBEffects::ElectricTerrain])) if @battle.field.effects[PBEffects::ElectricTerrain]>0  

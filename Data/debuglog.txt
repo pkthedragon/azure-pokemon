@@ -390,3 +390,148 @@ If this battle is not wild, something has gone wrong in scoring moves (no prefer
 [Drifblim lost 2 HP, now has 158 HP]
 [Drifblim lost 10 HP, now has 148 HP]
 ***Round 3***
+==============================
+Battle Start!
+Wild Battle
+==============================
+***Round 1***
+[The wild ????????: Detect=200, Zap Cannon=100, Leer=100, Wrap=100]
+If this battle is not wild, something has gone wrong in scoring moves (no preference chosen).
+[The wild ???????? lost 20 HP, now has 0 HP]
+==============================
+Battle Start!
+Wild Battle
+==============================
+***Round 1***
+[The wild Aegislash: Tackle=100, Fury Cutter=200, Shadow Sneak=100, Autotomize=100]
+If this battle is not wild, something has gone wrong in scoring moves (no preference chosen).
+[The wild Aegislash gained 0 HP, now has 35 HP]
+[Grovyle lost 5 HP, now has 78 HP]
+[The wild Aegislash lost 2 HP, now has 33 HP]
+***Round 2***
+[The wild Aegislash: Tackle=100, Fury Cutter=200, Shadow Sneak=100, Autotomize=100]
+If this battle is not wild, something has gone wrong in scoring moves (no preference chosen).
+[The wild Aegislash lost 25 HP, now has 8 HP]
+[Grovyle lost 1 HP, now has 77 HP]
+[Grovyle lost 5 HP, now has 72 HP]
+[The wild Aegislash lost 2 HP, now has 6 HP]
+***Round 3***
+[The wild Aegislash: Tackle=100, Fury Cutter=200, Shadow Sneak=100, Autotomize=100]
+If this battle is not wild, something has gone wrong in scoring moves (no preference chosen).
+[The wild Aegislash lost 6 HP, now has 0 HP]
+==============================
+Battle Start!
+Wild Battle
+==============================
+***Round 1***
+[The wild Aegislash: Tackle=200, Fury Cutter=100, Shadow Sneak=100, Autotomize=100]
+If this battle is not wild, something has gone wrong in scoring moves (no preference chosen).
+[The wild Aegislash gained 0 HP, now has 22 HP]
+[Grovyle lost 2 HP, now has 81 HP]
+[Grovyle lost 5 HP, now has 76 HP]
+[The wild Aegislash lost 1 HP, now has 21 HP]
+***Round 2***
+[The wild Aegislash: Tackle=200, Fury Cutter=100, Shadow Sneak=100, Autotomize=100]
+If this battle is not wild, something has gone wrong in scoring moves (no preference chosen).
+[The wild Aegislash gained 0 HP, now has 21 HP]
+[Grovyle lost 5 HP, now has 71 HP]
+[The wild Aegislash lost 1 HP, now has 20 HP]
+***Round 3***
+[The wild Aegislash: Tackle=200, Fury Cutter=100, Shadow Sneak=100, Autotomize=100]
+If this battle is not wild, something has gone wrong in scoring moves (no preference chosen).
+[The wild Aegislash lost 20 HP, now has 0 HP]
+==============================
+Battle Start!
+Wild Battle
+==============================
+***Round 1***
+[The wild Aegislash: Tackle=200, Fury Cutter=100, Shadow Sneak=100, Autotomize=100]
+If this battle is not wild, something has gone wrong in scoring moves (no preference chosen).
+[The wild Aegislash gained 0 HP, now has 21 HP]
+[Grovyle lost 2 HP, now has 81 HP]
+[Grovyle lost 5 HP, now has 76 HP]
+[The wild Aegislash lost 1 HP, now has 20 HP]
+***Round 2***
+[The wild Aegislash: Tackle=200, Fury Cutter=100, Shadow Sneak=100, Autotomize=100]
+If this battle is not wild, something has gone wrong in scoring moves (no preference chosen).
+[Grovyle gained 7 HP, now has 83 HP]
+[ pk #3 lost 6 HP, now has 104 HP]
+[The wild Aegislash lost 1 HP, now has 19 HP]
+***Round 3***
+[The wild Aegislash: Tackle=200, Fury Cutter=100, Shadow Sneak=100, Autotomize=100]
+If this battle is not wild, something has gone wrong in scoring moves (no preference chosen).
+[Grovyle lost 4 HP, now has 79 HP]
+[The wild Aegislash lost 1 HP, now has 18 HP]
+[Grovyle lost 5 HP, now has 74 HP]
+***Round 4***
+[The wild Aegislash: Tackle=200, Fury Cutter=100, Shadow Sneak=100, Autotomize=100]
+If this battle is not wild, something has gone wrong in scoring moves (no preference chosen).
+[The wild Aegislash gained 0 HP, now has 18 HP]
+[Grovyle lost 2 HP, now has 72 HP]
+[Grovyle lost 5 HP, now has 67 HP]
+[The wild Aegislash lost 1 HP, now has 17 HP]
+***Round 5***
+[The wild Aegislash: Tackle=100, Fury Cutter=200, Shadow Sneak=100, Autotomize=100]
+If this battle is not wild, something has gone wrong in scoring moves (no preference chosen).
+[The wild Aegislash gained 0 HP, now has 17 HP]
+[Grovyle lost 1 HP, now has 66 HP]
+[Grovyle lost 5 HP, now has 61 HP]
+[The wild Aegislash lost 1 HP, now has 16 HP]
+***Round 6***
+[The wild Aegislash: Tackle=200, Fury Cutter=100, Shadow Sneak=100, Autotomize=100]
+If this battle is not wild, something has gone wrong in scoring moves (no preference chosen).
+[Grovyle gained 22 HP, now has 83 HP]
+[Drifblim lost 1 HP, now has 159 HP]
+[Drifblim lost 10 HP, now has 149 HP]
+[The wild Aegislash lost 1 HP, now has 15 HP]
+***Round 7***
+[The wild Aegislash: Tackle=200, Fury Cutter=100, Shadow Sneak=100, Autotomize=100]
+If this battle is not wild, something has gone wrong in scoring moves (no preference chosen).
+[Drifblim lost 9 HP, now has 140 HP]
+[The wild Aegislash lost 15 HP, now has 0 HP]
+==============================
+Battle Start!
+Wild Battle
+==============================
+***Round 1***
+[The wild Aegislash: Tackle=200, Fury Cutter=100, Shadow Sneak=100, Autotomize=100]
+If this battle is not wild, something has gone wrong in scoring moves (no preference chosen).
+[The wild Aegislash: Tackle=100, Fury Cutter=200, Shadow Sneak=100, Autotomize=100]
+If this battle is not wild, something has gone wrong in scoring moves (no preference chosen).
+[Grovyle lost 4 HP, now has 79 HP]
+[The wild Aegislash gained 0 HP, now has 18 HP]
+[The wild Aegislash gained 0 HP, now has 21 HP]
+[Grovyle lost 1 HP, now has 78 HP]
+[The wild Aegislash lost 1 HP, now has 20 HP]
+[Grovyle lost 5 HP, now has 73 HP]
+[ pk #3 lost 6 HP, now has 98 HP]
+[The wild Aegislash lost 1 HP, now has 17 HP]
+***Round 2***
+[The wild Aegislash: Tackle=200, Fury Cutter=100, Shadow Sneak=100, Autotomize=100]
+If this battle is not wild, something has gone wrong in scoring moves (no preference chosen).
+[The wild Aegislash: Tackle=100, Fury Cutter=200, Shadow Sneak=100, Autotomize=100]
+If this battle is not wild, something has gone wrong in scoring moves (no preference chosen).
+[The wild Aegislash lost 17 HP, now has 0 HP]
+[The wild Aegislash gained 0 HP, now has 20 HP]
+[ pk #3 lost 1 HP, now has 97 HP]
+[Grovyle lost 5 HP, now has 68 HP]
+[ pk #3 lost 6 HP, now has 91 HP]
+[The wild Aegislash lost 1 HP, now has 19 HP]
+***Round 3***
+[The wild Aegislash: Tackle=200, Fury Cutter=100, Shadow Sneak=100, Autotomize=100]
+If this battle is not wild, something has gone wrong in scoring moves (no preference chosen).
+[Grovyle lost 4 HP, now has 64 HP]
+[The wild Aegislash gained 0 HP, now has 19 HP]
+[The wild Aegislash gained 0 HP, now has 19 HP]
+[The wild Aegislash lost 1 HP, now has 18 HP]
+[Grovyle lost 5 HP, now has 59 HP]
+[ pk #3 lost 6 HP, now has 85 HP]
+***Round 4***
+[The wild Aegislash: Tackle=200, Fury Cutter=100, Shadow Sneak=100, Autotomize=100]
+If this battle is not wild, something has gone wrong in scoring moves (no preference chosen).
+[Grovyle gained 24 HP, now has 83 HP]
+[Drifblim lost 9 HP, now has 131 HP]
+[The wild Aegislash lost 1 HP, now has 17 HP]
+[Xatu lost 6 HP, now has 93 HP]
+[Drifblim lost 10 HP, now has 121 HP]
+***Round 5***

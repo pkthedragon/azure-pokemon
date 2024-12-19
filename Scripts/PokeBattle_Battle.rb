@@ -566,7 +566,7 @@ class PokeBattle_Battle
             pbDisplay(_INTL("{1}'s Elemental Seed boosted its Defense!",
               battler.pbThis))
           end
-          battler.effects[PBEffects::Charge]=2
+          battler.effects[PBEffects::Charge] = true
           pbAnimation(81,battler,nil) # Charge Animation
           pbDisplay(_INTL("{1} began charging power!",battler.pbThis))
           battler.pokemon.itemRecycle=battler.item
@@ -7235,6 +7235,16 @@ def pbStartBattle(canlose=false)
         end
       end
     end
+    # Battle Cry
+    for i in 0...2
+      if sides[i].effects[PBEffects::BattleCry] > 0
+        sides[i].effects[PBEffects::BattleCry] = (sides[i].effects[PBEffects::BattleCry]/2).floor
+        if sides[i].effects[PBEffects::BattleCry] == 0
+          pbDisplay(_INTL("The effects of your team's Battle Cry faded!")) if i==0
+          pbDisplay(_INTL("The effects of the opposing team's Battle Cry faded!")) if i==1
+        end
+      end
+    end
     # Mud Sport
     if @field.effects[PBEffects::MudSport]>0
       @field.effects[PBEffects::MudSport]-=1
@@ -8065,7 +8075,6 @@ def pbStartBattle(canlose=false)
 #### KUROTSUNE - 024 - START
       @battlers[i].effects[PBEffects::Electrify]=false
 #### KUROTSUNE - 024 - END
-      @battlers[i].effects[PBEffects::Charge]-=1 if @battlers[i].effects[PBEffects::Charge]>0
       @battlers[i].lastHPLost=0
       @battlers[i].lastAttacker=-1
       @battlers[i].effects[PBEffects::Counter]=-1

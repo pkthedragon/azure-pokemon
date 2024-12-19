@@ -2621,7 +2621,7 @@ class PokeBattle_Battle
           end
         end
       end
-      if elecmove==true && attacker.effects[PBEffects::Charge]==0
+      if elecmove==true && !attacker.effects[PBEffects::Charge]
         miniscore*=1.5
       end
       if move.basedamage>0
@@ -21964,7 +21964,7 @@ class PokeBattle_Battle
     # Me First
     # Charge
     if skill>=PBTrainerAI.mediumSkill
-      if attacker.effects[PBEffects::Charge]>0 && isConst?(type,PBTypes,:ELECTRIC)
+      if attacker.effects[PBEffects::Charge] && isConst?(type,PBTypes,:ELECTRIC)
         basedamage=(basedamage*2.0).round
       end
     end
@@ -21996,6 +21996,12 @@ class PokeBattle_Battle
         if @field.effects[PBEffects::MudSport]>0
           basedamage=(basedamage*0.33).round
         end
+      end
+    end
+    # Battle Cry
+    if skill>=PBTrainerAI.mediumSkill
+      if attacker.pbOwnSide.effects[PBEffects::BattleCry] % 2 == 1
+        basedamage=(basedamage*1.3).round
       end
     end
     # Aerilate

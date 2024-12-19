@@ -1159,7 +1159,7 @@ class PokeBattle_Move_021 < PokeBattle_Move
     ret=attacker.pbIncreaseStat(PBStats::SPDEF,1,false)
     end
     if ret
-      attacker.effects[PBEffects::Charge]=2
+      attacker.effects[PBEffects::Charge] = true
       @battle.pbDisplay(_INTL("{1} began charging power!",attacker.pbThis))
     end
     return ret ? 0 : -1
@@ -12814,7 +12814,20 @@ class PokeBattle_Move_21B < PokeBattle_Move
 end
 
 ################################################################################
-#  ()
+# Raises the power of user and ally's damage by 1.3x next turn (Battle Cry)
 ################################################################################
 class PokeBattle_Move_21C < PokeBattle_Move
+  def pbEffect(attacker,opponent,hitnum=0,alltargets=nil,showanimation=true)
+    ret=super(attacker,opponent,hitnum,alltargets,showanimation)
+    if attacker.pbOwnSide.effects[PBEffects::BattleCry] < 2
+      # 0=off,1=thisturn,2=nextturn,3=thisandnext
+      attacker.pbOwnSide.effects[PBEffects::BattleCry] += 2
+      if !@battle.pbIsOpposing?(attacker.index)
+        @battle.pbDisplay(_INTL("{1} invigorated your team!",attacker.pbThis))
+      else
+        @battle.pbDisplay(_INTL("{1} invigorated the opposing team!",attacker.pbThis))
+      end
+    end
+    return ret
+  end
 end

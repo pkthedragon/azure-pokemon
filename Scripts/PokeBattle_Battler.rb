@@ -946,7 +946,7 @@ class PokeBattle_Battler
     @effects[PBEffects::Bide]             = 0
     @effects[PBEffects::BideDamage]       = 0
     @effects[PBEffects::BideTarget]       = -1
-    @effects[PBEffects::Charge]           = 0
+    @effects[PBEffects::Charge]           = false
     @effects[PBEffects::WillMega]         = false
     @effects[PBEffects::ChoiceBand]       = -1
     @effects[PBEffects::Counter]          = -1
@@ -6137,6 +6137,7 @@ class PokeBattle_Battler
         user.effects[PBEffects::EchoedVoice]+=1 if thismove.function==0x92 # Echoed Voice        
         user.effects[PBEffects::EchoedVoice]=0 if thismove.function!=0x92 # Not Echoed Voice
         user.effects[PBEffects::Stockpile]=0 if thismove.function==0x113 # Spit Up
+        user.effects[PBEffects::Charge]=false if user.effects[PBEffects::Charge] && thismove.type==PBTypes::ELECTRIC && thismove.basedamage>0 # Charge wearing off [Gen 9]
         return 0
       end
       # Add to counters for moves which increase them when used in succession
@@ -8193,6 +8194,7 @@ class PokeBattle_Battler
     if user.effects[PBEffects::LaserFocus]>0
       user.effects[PBEffects::LaserFocus]-=1
     end
+    user.effects[PBEffects::Charge]=false if user.effects[PBEffects::Charge] && thismove.type==PBTypes::ELECTRIC && thismove.basedamage>0 # Charge wearing off [Gen 9]
     @battle.pbGainEXP
     # Battle Arena only - update skills
     for i in 0...4
