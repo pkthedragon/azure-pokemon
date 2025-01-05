@@ -442,9 +442,13 @@ class PokeBattle_Move
       mod1=0 if isConst?(otype1,PBTypes,:GHOST) && isConst?(atype,PBTypes,(:FAIRY || :DARK || :STEEL))
       mod2=0 if isConst?(otype2,PBTypes,:GHOST) && isConst?(atype,PBTypes,(:FAIRY || :DARK || :STEEL))
     end
-    if (opponent.effects[PBEffects::Ingrain] || opponent.effects[PBEffects::SmackDown] || (@battle.field.effects[PBEffects::Gravity]>0 rescue nil)) 
+    if (opponent.effects[PBEffects::Ingrain] || opponent.effects[PBEffects::SmackDown]) 
       mod1=2 if isConst?(otype1,PBTypes,:FLYING) && isConst?(atype,PBTypes,:GROUND)
       mod2=2 if isConst?(otype2,PBTypes,:FLYING) && isConst?(atype,PBTypes,:GROUND)
+    elsif (@battle.field.effects[PBEffects::Gravity]>0 rescue nil)
+      gravmod = opponent.hasWorkingItem(:ANTIGRAVITYCORE) ? 0 : 2
+      mod1=gravmod if isConst?(otype1,PBTypes,:FLYING) && isConst?(atype,PBTypes,:GROUND)
+      mod2=gravmod if isConst?(otype2,PBTypes,:FLYING) && isConst?(atype,PBTypes,:GROUND)
     end
     if opponent.effects[PBEffects::MiracleEye]
       mod1=2 if isConst?(otype1,PBTypes,:DARK) && isConst?(atype,PBTypes,:PSYCHIC)
@@ -511,8 +515,9 @@ class PokeBattle_Move
       mod2=0 if isConst?(otype2,PBTypes,:GHOST) && isConst?(atype,PBTypes,(:FAIRY || :DARK || :STEEL))
     end   
     if @battle.field.effects[PBEffects::Gravity]>0
-      mod1=2 if isConst?(otype1,PBTypes,:FLYING) && isConst?(atype,PBTypes,:GROUND)
-      mod2=2 if isConst?(otype2,PBTypes,:FLYING) && isConst?(atype,PBTypes,:GROUND)
+      gravmod = isConst?(opponent.item,PBItems,:ANTIGRAVITYCORE) ? 0 : 2
+      mod1=gravmod if isConst?(otype1,PBTypes,:FLYING) && isConst?(atype,PBTypes,:GROUND)
+      mod2=gravmod if isConst?(otype2,PBTypes,:FLYING) && isConst?(atype,PBTypes,:GROUND)
     end
     return mod1*mod2
   end
@@ -1432,7 +1437,6 @@ class PokeBattle_Move
     accstage=0 if (opponent.hasWorkingAbility(:UNAWARE) || @battle.SilvallyCheck(opponent,PBTypes::FAIRY)) && !(opponent.moldbroken)
     accuracy=(accstage>=0) ? (accstage+3)*100.0/3 : 300.0/(3-accstage)
     evastage=opponent.stages[PBStats::EVASION]
-    evastage-=2 if @battle.field.effects[PBEffects::Gravity]>0
     evastage=-6 if evastage<-6
     evastage=0 if opponent.effects[PBEffects::Foresight] ||
                   opponent.effects[PBEffects::MiracleEye] ||
@@ -1469,6 +1473,9 @@ class PokeBattle_Move
     end
     if attacker.hasWorkingItem(:ZOOMLENS) && attacker.speed < opponent.speed
       accuracy*=1.2
+    end
+    if @battle.field.effects[PBEffects::Gravity]>0
+      accuracy*=(5/3)
     end
     if attacker.hasWorkingAbility(:HUSTLE) && @basedamage>0 &&
        pbIsPhysical?(pbType(@type,attacker,opponent))
@@ -3378,10 +3385,10 @@ class PokeBattle_Move
       isConst?(type,PBTypes,:FIRE))  
       atkmult=(atkmult*1.5).round
     end
-    # Execution
-    if attacker.hasWorkingAbility(:EXECUTION)
+    # Executioner
+    if attacker.hasWorkingAbility(:EXECUTIONER)
       if opponent.hp <= (opponent.totalhp/2).floor
-        atkmult=(atkmult*2).round
+        atkmult=(atkmult*1.5).round
       end
     end
     if attacker.hasWorkingAbility(:GUTS) &&

@@ -346,7 +346,6 @@ class PokeBattle_Battle
 #### SARDINES - Dragon's Den - START
   attr_accessor(:basefield)
 #### SARDINES - Dragon's Den - END
-  attr_accessor(:shieldCount)
   attr_accessor(:maybestatusing)
   attr_accessor(:statustarget)
   attr_accessor(:raidbattle)      # stores fight is raid den battle or not
@@ -500,7 +499,6 @@ class PokeBattle_Battle
 #### SARDINES - Eruption - END
     @basefield       = 0
     @sosbattle       = 2
-    @shieldCount     = -1
     @maybestatusing  = false
     @statustarget    = nil
     @raidbattle      = $game_switches[1499]
@@ -3625,13 +3623,6 @@ class PokeBattle_Battle
     @battlers[index].hasmegad=true
     #@battlers[index].wonderroom=false
 #### KUROTSUNE - 006 - END
-    # if !pbBelongsToPlayer?(index) && @bossfight &&
-    #  isBossPokemonInRiftForm?(@battlers[index]) && 
-    #   !(@shieldCount>=0)
-    #     @battlers[index].isbossmon
-    #     @shieldCount = $game_variables[704]
-    #     @scene.pbUpdateShield(@shieldCount, index)
-    # end
 end
 
 
@@ -6729,6 +6720,17 @@ def pbStartBattle(canlose=false)
           end
         end
       end
+      if i.hasWorkingAbility(:CARETAKER)
+        partner=i.pbPartner
+        if partner && partner.hp > 0 && partner.hp < partner.totalhp
+          if partner.effects[PBEffects::HealBlock]==0
+            hpgain=(partner.totalhp/8).floor
+            hpgain=(hpgain*1.3).floor if isConst?(partner.item,PBItems,:BIGROOT) || isConst?(partner.species,PBSpecies,:TANGROWTH) && partner.hasWorkingItem(:TANGROWTHCREST)
+            hpgain=partner.pbRecoverHP(hpgain,true)
+            pbDisplay(_INTL("{1}'s Caretaker healed {2}!",i.pbThis,partner.pbThis(true))) if hpgain>0
+          end
+        end
+      end
     end
     # Held berries/Leftovers/Black Sludge
     for i in priority
@@ -8085,8 +8087,6 @@ def pbStartBattle(canlose=false)
     # invalidate stored priority
     @usepriority=false
     @eruption=false
-    # Boss Shield's Can Be Setup Again cause set to -1
-    @shieldCount = -1 if @shieldCount == 0
   end
 
 ################################################################################

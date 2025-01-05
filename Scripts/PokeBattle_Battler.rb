@@ -1308,7 +1308,8 @@ class PokeBattle_Battler
     return false if @effects[PBEffects::Ingrain]
     return false if @effects[PBEffects::DesertsMark]
     return false if @effects[PBEffects::SmackDown]
-    return false if @battle.field.effects[PBEffects::Gravity]>0
+    return true if @battle.field.effects[PBEffects::Gravity]!=0 && self.hasWorkingItem(:ANTIGRAVITYCORE)
+    return false if @battle.field.effects[PBEffects::Gravity]!=0
     return true if self.pbHasType?(:FLYING) && @effects[PBEffects::Roost]==false
     return true if self.hasWorkingAbility(:LEVITATE)
     return true if (self.hasWorkingAbility(:SOLARIDOL) || self.hasWorkingAbility(:LUNARIDOL))
@@ -1643,7 +1644,6 @@ class PokeBattle_Battler
   
   def pbCalcEva()
     evastage=self.stages[PBStats::EVASION]
-    evastage-=2 if @battle.field.effects[PBEffects::Gravity]>0
     evastage=-6 if evastage<-6
     evastage=6 if evastage>6  #>>DemICE
     evastage=0 if self.effects[PBEffects::Foresight] ||
@@ -2898,6 +2898,34 @@ class PokeBattle_Battler
     if self.hasWorkingItem(:AIRBALLOON) && onactive && !megad
       @battle.pbDisplay(_INTL("{1} is floating on its balloon!",pbThis))
     end
+    # Event Horizon
+    if self.hasWorkingAbility(:EVENTHORIZON) && @battle.field.effects[PBEffects::Gravity] != 0 && onactive
+      if $fefieldeffect == 38
+        rnd=@battle.pbRandom(6)
+        @battle.field.effects[PBEffects::Gravity]=3+rnd
+      else
+        @battle.field.effects[PBEffects::Gravity] = self.hasWorkingItem(:AMPLIFIELDROCK) || $fefieldeffect == 37 ? 8 : 5
+      end
+      for i in 0...4
+        poke=@battle.battlers[i]
+        next if !poke
+        if PBMoveData.new(poke.effects[PBEffects::TwoTurnAttack]).function==0xC9 || # Fly
+           PBMoveData.new(poke.effects[PBEffects::TwoTurnAttack]).function==0xCC || # Bounce
+           PBMoveData.new(poke.effects[PBEffects::TwoTurnAttack]).function==0xCE    # Sky Drop
+          poke.effects[PBEffects::TwoTurnAttack]=0
+        end
+        if poke.effects[PBEffects::SkyDrop]
+          poke.effects[PBEffects::SkyDrop]=false
+        end
+        if poke.effects[PBEffects::MagnetRise]>0
+          poke.effects[PBEffects::MagnetRise]=0
+        end
+        if poke.effects[PBEffects::Telekinesis]>0
+          poke.effects[PBEffects::Telekinesis]=0
+        end
+      end
+      @battle.pbDisplay(_INTL("{1} intensifies gravity!",pbThis))
+    end
     # Trace
     if self.hasWorkingAbility(:TRACE) || (self.hasWorkingAbility(:ADAPTABILITY) &&
         $fefieldeffect == 34)
@@ -3936,6 +3964,12 @@ class PokeBattle_Battler
           user.pbIncreaseStatBasic(PBStats::ATTACK,1)
           @battle.pbDisplay(_INTL("{1}'s Moxie raised its Attack!",user.pbThis))
         end
+      end
+      if user.hasWorkingAbility(:SCAVENGER) && 
+        user.hp>0 && target.hp<=0
+        hpgain=(user.totalhp / 4).floor
+        hpgain=user.pbRecoverHP(hpgain,true)
+        @battle.pbDisplay(_INTL("{1}'s Scavenger healed some of its wounds!",user.pbThis))
       end
       if user.hasWorkingAbility(:EXECUTION) && 
         user.hp>0 && target.hp<=0
@@ -8130,6 +8164,13 @@ class PokeBattle_Battler
           end
         end
         user.pbFaint if user.isFainted? # no return
+      end
+      # Bloodthirsty
+      if user.hasWorkingAbility(:BLOODTHIRSTY) && turneffects[PBEffects::TotalDamage]>0 && @effects[PBEffects::HealBlock]==0 && thismove.isContactMove?
+        hpgain=user.pbRecoverHP([(turneffects[PBEffects::TotalDamage]/4).floor,1].max,true)
+        if hpgain>0
+          @battle.pbDisplay(_INTL("{1}'s Bloodthirsty drained the foes' energy!",user.pbThis))
+        end
       end
       unless !thismove
         pbDancerMoveCheck(thismove.id) unless danced

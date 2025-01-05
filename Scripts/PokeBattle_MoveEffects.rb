@@ -1844,8 +1844,7 @@ class PokeBattle_Move_037 < PokeBattle_Move
       return -1
     end
     array=[]
-    for i in [PBStats::ATTACK,PBStats::DEFENSE,PBStats::SPEED,
-              PBStats::SPATK,PBStats::SPDEF,PBStats::ACCURACY,PBStats::EVASION]
+    for i in [PBStats::ATTACK,PBStats::DEFENSE,PBStats::SPEED,PBStats::SPATK,PBStats::SPDEF,PBStats::ACCURACY,PBStats::EVASION]
       array.push(i) if opponent.pbCanIncreaseStatStage?(i)
     end
     if array.length==0
@@ -9065,8 +9064,6 @@ class PokeBattle_Move_10B < PokeBattle_Move
   end
 end
 
-
-
 ################################################################################
 # User turns 1/4 of max HP into a substitute.
 ################################################################################
@@ -12829,5 +12826,21 @@ class PokeBattle_Move_21C < PokeBattle_Move
       end
     end
     return ret
+  end
+end
+
+################################################################################
+# Chance to lower all of the target's stats (Bellow)
+################################################################################
+class PokeBattle_Move_21D < PokeBattle_Move
+  def pbAdditionalEffect(attacker,opponent)
+    showanim=true
+    for i in [PBStats::ATTACK,PBStats::DEFENSE,PBStats::SPEED,PBStats::SPATK,PBStats::SPDEF]
+      if opponent.pbCanReduceStatStage?(i,false)
+        opponent.pbReduceStat(i,1,false,nil,nil,showanim)
+        showanim=false
+      end
+    end
+    return true
   end
 end

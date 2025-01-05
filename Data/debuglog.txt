@@ -535,3 +535,1189 @@ If this battle is not wild, something has gone wrong in scoring moves (no prefer
 [Xatu lost 6 HP, now has 93 HP]
 [Drifblim lost 10 HP, now has 121 HP]
 ***Round 5***
+==============================
+Battle Start!
+Wild Battle
+==============================
+***Round 1***
+[The wild Aegislash: Tackle=200, Fury Cutter=100, Shadow Sneak=100, Autotomize=100]
+If this battle is not wild, something has gone wrong in scoring moves (no preference chosen).
+[The wild Aegislash lost 13 HP, now has 30 HP]
+[Togetic lost 6 HP, now has 81 HP]
+[Togetic lost 5 HP, now has 76 HP]
+[The wild Aegislash lost 2 HP, now has 28 HP]
+***Round 2***
+[The wild Aegislash: Tackle=100, Fury Cutter=200, Shadow Sneak=100, Autotomize=100]
+If this battle is not wild, something has gone wrong in scoring moves (no preference chosen).
+[The wild Aegislash lost 28 HP, now has 0 HP]
+==============================
+Battle Start!
+Wild Battle
+==============================
+***Round 1***
+[The wild Aegislash: Tackle=100, Fury Cutter=200, Shadow Sneak=100, Autotomize=100]
+If this battle is not wild, something has gone wrong in scoring moves (no preference chosen).
+[The wild Aegislash lost 10 HP, now has 53 HP]
+[Togetic lost 3 HP, now has 73 HP]
+[Togetic lost 5 HP, now has 68 HP]
+[The wild Aegislash lost 3 HP, now has 50 HP]
+***Round 2***
+[The wild Aegislash: Tackle=100, Fury Cutter=200, Shadow Sneak=100, Autotomize=100]
+If this battle is not wild, something has gone wrong in scoring moves (no preference chosen).
+[Togetic lost 16 HP, now has 52 HP]
+[The wild Aegislash lost 25 HP, now has 25 HP]
+[The wild Aegislash lost 3 HP, now has 22 HP]
+[Togetic lost 5 HP, now has 47 HP]
+***Round 3***
+[The wild Aegislash: Tackle=100, Fury Cutter=200, Shadow Sneak=100, Autotomize=100]
+If this battle is not wild, something has gone wrong in scoring moves (no preference chosen).
+[The wild Aegislash lost 22 HP, now has 0 HP]
+==============================
+Battle Start!
+Wild Battle
+==============================
+***Round 1***
+[The wild Aegislash: Tackle=200, Fury Cutter=100, Shadow Sneak=100, Autotomize=100]
+If this battle is not wild, something has gone wrong in scoring moves (no preference chosen).
+[Togetic lost 18 HP, now has 29 HP]
+[The wild Aegislash lost 18 HP, now has 51 HP]
+[The wild Aegislash lost 4 HP, now has 47 HP]
+[Togetic lost 5 HP, now has 24 HP]
+***Round 2***
+==============================
+Battle Start!
+Wild Battle
+==============================
+***Round 1***
+[The wild Aegislash: Tackle=100, Fury Cutter=200, Shadow Sneak=100, Autotomize=100]
+If this battle is not wild, something has gone wrong in scoring moves (no preference chosen).
+[The wild Aegislash: Tackle=200, Fury Cutter=100, Shadow Sneak=100, Autotomize=100]
+If this battle is not wild, something has gone wrong in scoring moves (no preference chosen).
+[Togetic lost 18 HP, now has 69 HP]
+[The wild Aegislash lost 9 HP, now has 56 HP]
+[Togetic lost 8 HP, now has 61 HP]
+[The wild Aegislash lost 4 HP, now has 65 HP]
+[ pk #3 lost 6 HP, now has 104 HP]
+[Togetic lost 5 HP, now has 56 HP]
+[The wild Aegislash lost 4 HP, now has 52 HP]
+***Round 2***
+[The wild Aegislash: Tackle=100, Fury Cutter=200, Shadow Sneak=100, Autotomize=100]
+If this battle is not wild, something has gone wrong in scoring moves (no preference chosen).
+[The wild Aegislash: Tackle=100, Fury Cutter=200, Shadow Sneak=100, Autotomize=100]
+If this battle is not wild, something has gone wrong in scoring moves (no preference chosen).
+[The wild Aegislash lost 22 HP, now has 30 HP]
+[Togetic lost 5 HP, now has 51 HP]
+[The wild Aegislash lost 4 HP, now has 61 HP]
+[ pk #3 lost 6 HP, now has 98 HP]
+[Togetic lost 5 HP, now has 46 HP]
+[The wild Aegislash lost 4 HP, now has 26 HP]
+***Round 3***
+[The wild Aegislash: Tackle=100, Fury Cutter=200, Shadow Sneak=100, Autotomize=100]
+If this battle is not wild, something has gone wrong in scoring moves (no preference chosen).
+[The wild Aegislash: Tackle=100, Fury Cutter=200, Shadow Sneak=100, Autotomize=100]
+If this battle is not wild, something has gone wrong in scoring moves (no preference chosen).
+[ pk #3 lost 11 HP, now has 87 HP]
+[ pk #3 lost 8 HP, now has 79 HP]
+[The wild Aegislash lost 61 HP, now has 0 HP]
+[The wild Aegislash lost 26 HP, now has 0 HP]
+==============================
+Battle Start!
+Wild Battle
+==============================
+***Round 1***
+[The wild Absol: Scratch=100, Feint=200, Leer=100, Quick Attack=100]
+If this battle is not wild, something has gone wrong in scoring moves (no preference chosen).
+[The wild Abomasnow: Leafage=200, Leer=100, Razor Leaf=100, Icy Wind=100]
+If this battle is not wild, something has gone wrong in scoring moves (no preference chosen).
+[ pk #3 lost 1 HP, now has 78 HP]
+[The wild Absol gained 0 HP, now has 22 HP]
+[The wild Absol lost 1 HP, now has 21 HP]
+[ pk #3 lost 6 HP, now has 72 HP]
+[Togetic lost 5 HP, now has 41 HP]
+***Round 2***
+==============================
+Battle Start!
+Wild Battle
+==============================
+***Round 1***
+[The wild Alcremie: Tackle=200, Aromatic Mist=100, Sweet Kiss=100, Sweet Scent=100]
+If this battle is not wild, something has gone wrong in scoring moves (no preference chosen).
+[The wild Alcremie lost 22 HP, now has 0 HP]
+==============================
+Battle Start!
+179 - Kara
+205 - Alex
+==============================
+***Round 1***
+Player Pokemon Grovyle is faster than Buneary.
+Player Pokemon  pk #3 is faster than Buneary.
+ 
+ 
+Pound: initial score: 4
+Pound: final score: 4
+ 
+Pound: initial score: 3
+Pound: final score: 3
+ 
+Pound: Final Score after Doubles-Target Adjustment: 4
+Pound: Final Score after Doubles-Target Adjustment: 3
+
+Fake Out: initial score: 4
+Priority Check Begin
+Player Pokemon is faster.
+Expected damage taken: 170
+Expected damage taken from partner: 219
+**Exception: undefined method `>' for nil:NilClass
+["PokeBattle_AI:253:in `pbGetMoveScore'", "PokeBattle_AI:29296:in `block in pbBuildMoveScores'", "PokeBattle_AI:29294:in `each'", "PokeBattle_AI:29294:in `pbBuildMoveScores'", "PokeBattle_AI:35670:in `pbDefaultChooseEnemyCommand'", "PokeBattle_ActualScene:4393:in `pbChooseEnemyCommand'", "PokeBattle_Battle:5250:in `block in pbCommandPhase'", "PokeBattle_Battle:5225:in `each'", "PokeBattle_Battle:5225:in `pbCommandPhase'", "PokeBattle_Battle:5145:in `block (2 levels) in pbStartBattleCore'", "PBDebug:4:in `logonerr'", "PokeBattle_Battle:5144:in `block in pbStartBattleCore'", "PokeBattle_Battle:5136:in `loop'", "PokeBattle_Battle:5136:in `pbStartBattleCore'", "PokeBattle_Battle:4725:in `pbStartBattle'", "PokemonTrainers:396:in `block (2 levels) in pbDoubleTrainerBattle'", "PokemonField:696:in `pbSceneStandby'", "PokemonTrainers:395:in `block in pbDoubleTrainerBattle'", "PokemonField:998:in `pbBattleAnimation'", "PokemonTrainers:394:in `pbDoubleTrainerBattle'", "PokemonDebug:788:in `block in pbDebugMenu'", "PokemonDebug:301:in `loop'", "PokemonDebug:301:in `pbDebugMenu'", "PokemonPauseMenu:259:in `block (2 levels) in pbStartPokemonMenu'", "SpriteWindow:1353:in `pbFadeOutIn'", "PokemonPauseMenu:258:in `block in pbStartPokemonMenu'", "PokemonPauseMenu:145:in `loop'", "PokemonPauseMenu:145:in `pbStartPokemonMenu'", "Scene_Map:209:in `call_menu'", "Autosave:149:in `update'", "Scene_Map:72:in `block in main'", "Scene_Map:69:in `loop'", "Scene_Map:69:in `main'", "Main:79:in `mainFunctionDebug'", "Main:53:in `block in mainFunction'", "Compiler:38:in `pbCriticalCode'", "Main:53:in `mainFunction'", "Main:89:in `block (2 levels) in <main>'", "Main:88:in `loop'", "Main:88:in `block in <main>'", "000:Export/Import Scripts:336:in `eval'", "000:Export/Import Scripts:336:in `block in <main>'", "000:Export/Import Scripts:333:in `each'", "000:Export/Import Scripts:333:in `each_with_index'", "000:Export/Import Scripts:333:in `<main>'", "-e:in `eval'"]
+==============================
+Battle Start!
+179 - Kara
+205 - Alex
+==============================
+***Round 1***
+Player Pokemon Grovyle is faster than Buneary.
+Player Pokemon  pk #3 is faster than Buneary.
+ 
+ 
+Pound: initial score: 4
+Pound: final score: 4
+ 
+Pound: initial score: 3
+Pound: final score: 3
+ 
+Pound: Final Score after Doubles-Target Adjustment: 4
+Pound: Final Score after Doubles-Target Adjustment: 3
+
+Fake Out: initial score: 4
+Priority Check Begin
+Player Pokemon is faster.
+Expected damage taken: 160
+Expected damage taken from partner: 253
+Priority Check End
+Fake Out: final score: 140
+ 
+Fake Out: initial score: 3
+Priority Check Begin
+Player Pokemon is faster.
+Expected damage taken: 253
+Expected damage taken from partner: 160
+Priority Check End
+Fake Out: final score: 140
+ 
+Fake Out: Final Score after Doubles-Target Adjustment: 140
+Fake Out: Final Score after Doubles-Target Adjustment: 140
+
+Defense Curl: initial score: 10
+Defense Curl: final score: 0
+ 
+Defense Curl: initial score: 10
+Defense Curl: final score: 0
+ 
+Defense Curl: Final Score after Status-Target Adjustment: 0
+Defense Curl: Final Score after Status-Target Adjustment: 0
+
+Foresight: initial score: 5
+Foresight: final score: 5
+ 
+Foresight: initial score: 5
+Foresight: final score: 5
+ 
+Foresight: Final Score after Status-Target Adjustment: 5
+Foresight: Final Score after Status-Target Adjustment: 5
+
+Foresight: Final Score after Doubles-Target Adjustment: 5
+Foresight: Final Score after Doubles-Target Adjustment: 5
+
+Pinch Ability Disrupt
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (0)
+**Exception: uninitialized constant PBMonRoles::BINDINGWORD
+["PokeBattle_AI:31261:in `pbShouldSwitch?'", "PokeBattle_AI:35671:in `pbDefaultChooseEnemyCommand'", "PokeBattle_ActualScene:4393:in `pbChooseEnemyCommand'", "PokeBattle_Battle:5241:in `block in pbCommandPhase'", "PokeBattle_Battle:5216:in `each'", "PokeBattle_Battle:5216:in `pbCommandPhase'", "PokeBattle_Battle:5136:in `block (2 levels) in pbStartBattleCore'", "PBDebug:4:in `logonerr'", "PokeBattle_Battle:5135:in `block in pbStartBattleCore'", "PokeBattle_Battle:5127:in `loop'", "PokeBattle_Battle:5127:in `pbStartBattleCore'", "PokeBattle_Battle:4716:in `pbStartBattle'", "PokemonTrainers:396:in `block (2 levels) in pbDoubleTrainerBattle'", "PokemonField:696:in `pbSceneStandby'", "PokemonTrainers:395:in `block in pbDoubleTrainerBattle'", "PokemonField:998:in `pbBattleAnimation'", "PokemonTrainers:394:in `pbDoubleTrainerBattle'", "PokemonDebug:788:in `block in pbDebugMenu'", "PokemonDebug:301:in `loop'", "PokemonDebug:301:in `pbDebugMenu'", "PokemonPauseMenu:259:in `block (2 levels) in pbStartPokemonMenu'", "SpriteWindow:1353:in `pbFadeOutIn'", "PokemonPauseMenu:258:in `block in pbStartPokemonMenu'", "PokemonPauseMenu:145:in `loop'", "PokemonPauseMenu:145:in `pbStartPokemonMenu'", "Scene_Map:209:in `call_menu'", "Autosave:149:in `update'", "Scene_Map:72:in `block in main'", "Scene_Map:69:in `loop'", "Scene_Map:69:in `main'", "Main:79:in `mainFunctionDebug'", "Main:53:in `block in mainFunction'", "Compiler:38:in `pbCriticalCode'", "Main:53:in `mainFunction'", "Main:89:in `block (2 levels) in <main>'", "Main:88:in `loop'", "Main:88:in `block in <main>'", "000:Export/Import Scripts:336:in `eval'", "000:Export/Import Scripts:336:in `block in <main>'", "000:Export/Import Scripts:333:in `each'", "000:Export/Import Scripts:333:in `each_with_index'", "000:Export/Import Scripts:333:in `<main>'", "-e:in `eval'"]
+==============================
+Battle Start!
+179 - Kara
+==============================
+***Round 1***
+Player Pokemon Grovyle is faster than Buneary.
+Pound: initial score: 4
+Pound: final score: 4
+ 
+Fake Out: initial score: 4
+Priority Check Begin
+Player Pokemon is faster.
+Expected damage taken: 212
+Priority Check End
+Fake Out: final score: 693
+ 
+Defense Curl: initial score: 10
+Defense Curl: final score: 0
+ 
+Foresight: initial score: 5
+Foresight: final score: 5
+ 
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (0)
+Initial switchscore building: Healing (0)
+Initial switchscore building: fsteak (0)
+Initial switchscore building: Specific Switches (0)
+Initial switchscore building: AI Safe Switches (0)
+Initial switchscore building: worthsaving not activated
+Initial switchscore building: Typing (0)
+Buneary: initial switchscore: 0
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+Buneary: initial noswitchscore: 66
+ 
+{
+ 
+}
+ 
+Buneary: highest move score: 693
+Buneary: final switching score: -66
+693 > -66, will not switch
+ 
+Beginning AI Item use check.
+ 
+Highest item score: -10000
+Highest move score: 693
+Item use turned off.
+[The foe Buneary: Pound=4, Fake Out=693, Defense Curl=0, Foresight=5]
+[Prefer Fake Out]
+[No Z-Move.]
+[Grovyle lost 4 HP, now has 79 HP]
+[The foe Buneary lost 1 HP, now has 29 HP]
+[Grovyle lost 5 HP, now has 74 HP]
+***Round 2***
+Player Pokemon Grovyle is faster than Buneary.
+Pound: initial score: 5
+Pound: final score: 5
+ 
+Fake Out: initial score: 5
+Priority Check Begin
+Player Pokemon is faster.
+Expected damage taken: 212
+Priority Check End
+Fake Out: final score: 0
+ 
+Defense Curl: initial score: 10
+Defense Curl: final score: 0
+ 
+Foresight: initial score: 5
+Foresight: final score: 5
+ 
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (0)
+Initial switchscore building: Healing (0)
+Initial switchscore building: fsteak (0)
+Initial switchscore building: Specific Switches (0)
+Initial switchscore building: AI Safe Switches (0)
+Initial switchscore building: worthsaving not activated
+Initial switchscore building: Typing (0)
+Buneary: initial switchscore: 0
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+Buneary: initial noswitchscore: 50
+ 
+{
+ 
+}
+ 
+Buneary: highest move score: 5
+Buneary: final switching score: -50
+5 > -50, will not switch
+ 
+Beginning AI Item use check.
+ 
+Highest item score: -10000
+Highest move score: 5
+Item use turned off.
+[The foe Buneary: Pound=5, Fake Out=0, Defense Curl=0, Foresight=5]
+[Prefer Pound]
+[No Z-Move.]
+[The foe Buneary lost 29 HP, now has 0 HP]
+[Grovyle lost 5 HP, now has 69 HP]
+Scoring for Buneary switching to: Buneary
+Score: -10000000
+Not switching to self.
+Scoring for Buneary switching to: Treecko
+Offensive: 3
+Defensive: -197
+Roles: -197
+Weather: -197
+Moves: -197
+Abilities: -197
+Items: -197
+Fields: -197
+Score: -197
+ 
+***Round 3***
+Player Pokemon Grovyle is faster than Treecko.
+Tail Whip: initial score: 10
+Tail Whip: final score: 5
+ 
+Gust: initial score: 5
+Gust: final score: 5
+ 
+Pound: initial score: 1
+Pound: final score: 1
+ 
+Quick Attack: initial score: 1
+Priority Check Begin
+Player Pokemon is faster.
+Expected damage taken: 129
+Priority Check End
+Quick Attack: final score: 151
+ 
+Beginning AI Item use check.
+ 
+Highest item score: -10000
+Highest move score: 151
+Item use turned off.
+[The foe Treecko: Tail Whip=5, Gust=5, Pound=1, Quick Attack=151]
+[Prefer Quick Attack]
+[No Z-Move.]
+[Grovyle lost 1 HP, now has 68 HP]
+[The foe Treecko lost 27 HP, now has 0 HP]
+==============================
+Battle Start!
+179 - Kara
+179 - Kara
+==============================
+***Round 1***
+Player Pokemon Grovyle is faster than Buneary.
+Player Pokemon  pk #3 is faster than Buneary.
+Pound: initial score: 5
+Pound: final score: 5
+ 
+Pound: initial score: 3
+Pound: final score: 3
+ 
+Pound: Final Score after Doubles-Target Adjustment: 5
+Pound: Final Score after Doubles-Target Adjustment: 3
+
+Fake Out: initial score: 5
+Priority Check Begin
+Player Pokemon is faster.
+Expected damage taken: 160
+Expected damage taken from partner: 219
+Priority Check End
+Fake Out: final score: 140
+ 
+Fake Out: initial score: 3
+Priority Check Begin
+Player Pokemon is faster.
+Expected damage taken: 219
+Expected damage taken from partner: 160
+Priority Check End
+Fake Out: final score: 140
+ 
+Fake Out: Final Score after Doubles-Target Adjustment: 140
+Fake Out: Final Score after Doubles-Target Adjustment: 140
+
+Defense Curl: initial score: 10
+Defense Curl: final score: 0
+ 
+Defense Curl: initial score: 10
+Defense Curl: final score: 0
+ 
+Defense Curl: Final Score after Status-Target Adjustment: 0
+Defense Curl: Final Score after Status-Target Adjustment: 0
+
+Foresight: initial score: 5
+Foresight: final score: 5
+ 
+Foresight: initial score: 5
+Foresight: final score: 5
+ 
+Foresight: Final Score after Status-Target Adjustment: 5
+Foresight: Final Score after Status-Target Adjustment: 5
+
+Foresight: Final Score after Doubles-Target Adjustment: 5
+Foresight: Final Score after Doubles-Target Adjustment: 5
+
+Pinch Ability Disrupt
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (0)
+Initial switchscore building: Healing (0)
+Initial switchscore building: fsteak (0)
+Initial switchscore building: Specific Switches (0)
+Initial switchscore building: worthsaving not activated
+Initial switchscore building: Typing (0)
+Buneary: initial switchscore: 0
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+Buneary: initial noswitchscore: 116
+ 
+{
+ 
+}
+ 
+Buneary: highest move score: 141
+Buneary: final switching score: -116
+141 > -116, will not switch
+ 
+Beginning AI Item use check.
+ 
+Highest item score: -10000
+Highest move score: 141
+Item use turned off.
+[The foe Buneary: Pound=5, Fake Out=141, Defense Curl=0, Foresight=5]
+[Prefer Fake Out]
+[No Z-Move.]
+Player Pokemon  pk #3 is faster than Rockruff.
+Player Pokemon Grovyle is faster than Rockruff.
+Rock Throw: initial score: 22
+Rock Throw: final score: 22
+ 
+Rock Throw: initial score: 36
+Rock Throw: final score: 36
+ 
+Fire Fang: initial score: 18
+Fire Fang: final score: 25
+ 
+Fire Fang: initial score: 14
+Fire Fang: final score: 14
+ 
+Ice Fang: initial score: 36
+Ice Fang: final score: 36
+ 
+Ice Fang: initial score: 29
+Ice Fang: final score: 29
+ 
+Thunder Fang: initial score: 9
+Thunder Fang: final score: 10
+ 
+Thunder Fang: initial score: 29
+Thunder Fang: final score: 35
+ 
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (0)
+Initial switchscore building: Healing (0)
+Initial switchscore building: fsteak (0)
+Initial switchscore building: Specific Switches (0)
+Initial switchscore building: worthsaving not activated
+Initial switchscore building: Typing (0)
+Rockruff: initial switchscore: -10
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+Rockruff: initial noswitchscore: 116
+ 
+{
+ 
+}
+ 
+Rockruff: highest move score: 36
+Rockruff: final switching score: -126
+36 > -126, will not switch
+ 
+Beginning AI Item use check.
+ 
+Highest item score: -10000
+Highest move score: 36
+Item use turned off.
+[The foe Rockruff: Rock Throw=36, Fire Fang=25, Ice Fang=36, Thunder Fang=35]
+[Prefer Ice Fang]
+[No Z-Move.]
+[ pk #3 lost 4 HP, now has 106 HP]
+[The foe Buneary lost 30 HP, now has 0 HP]
+[The foe Rockruff lost 52 HP, now has 0 HP]
+[Grovyle lost 5 HP, now has 63 HP]
+[ pk #3 lost 6 HP, now has 100 HP]
+Scoring for Buneary switching to: Buneary
+Score: -10000000
+Not switching to self.
+Scoring for Buneary switching to: Treecko
+Offensive: 6
+Defensive: -193
+Roles: -193
+Weather: -193
+Moves: -193
+Abilities: -193
+Items: -193
+Fields: -193
+Score: -193
+ 
+Scoring for Buneary switching to: Rockruff
+Score: -10000000
+ 
+Scoring for Buneary switching to: Bayleef
+Score: -10000000
+ 
+Scoring for Buneary switching to: Minccino
+Score: -10000000
+ 
+Scoring for Buneary switching to: Buneary
+Score: -10000000
+ 
+Scoring for Buneary switching to: Marshtomp
+Score: -10000000
+ 
+Scoring for Rockruff switching to: Buneary
+Score: -10000000
+ 
+Scoring for Rockruff switching to: Treecko
+Score: -10000000
+ 
+Scoring for Rockruff switching to: Rockruff
+Score: -10000000
+Not switching to self.
+Scoring for Rockruff switching to: Bayleef
+Offensive: 14
+Defensive: -285
+Roles: -285
+Weather: -285
+Moves: -285
+Abilities: -285
+Items: -285
+Fields: -260
+Score: -260
+ 
+Scoring for Rockruff switching to: Minccino
+Offensive: 15
+Defensive: -284
+Roles: -284
+Weather: -284
+Moves: -284
+Abilities: -284
+Items: -284
+Fields: -284
+Score: -284
+ 
+Scoring for Rockruff switching to: Buneary
+Offensive: 35
+Defensive: -164
+Roles: -164
+Weather: -164
+Moves: -139
+Abilities: -139
+Items: -139
+Fields: -139
+Score: -139
+ 
+Scoring for Rockruff switching to: Marshtomp
+Offensive: 15
+Defensive: -284
+Roles: -284
+Weather: -284
+Moves: -284
+Abilities: -284
+Items: -284
+Fields: -284
+Score: -284
+ 
+***Round 2***
+Player Pokemon Grovyle is faster than Treecko.
+Player Pokemon  pk #3 is faster than Treecko.
+Tail Whip: initial score: 10
+Tail Whip: final score: 10
+ 
+Tail Whip: initial score: 10
+Tail Whip: final score: 10
+ 
+Tail Whip: Final Score after Multi-Target Adjustment: 20
+
+Tail Whip: Final Score after Status-Target Adjustment: 20
+Tail Whip: Final Score after Status-Target Adjustment: 20
+
+Tail Whip: Final Score after Doubles-Target Adjustment: 20
+Tail Whip: Final Score after Doubles-Target Adjustment: 20
+
+Gust: initial score: 6
+Gust: final score: 6
+ 
+Gust: initial score: 9
+Gust: final score: 9
+ 
+Gust: Final Score after Doubles-Target Adjustment: 6
+Gust: Final Score after Doubles-Target Adjustment: 9
+
+Pound: initial score: 1
+Pound: final score: 1
+ 
+Pound: initial score: 1
+Pound: final score: 1
+ 
+Pound: Final Score after Doubles-Target Adjustment: 1
+Pound: Final Score after Doubles-Target Adjustment: 1
+
+Pinch Ability Disrupt
+Quick Attack: initial score: 1
+Priority Check Begin
+Player Pokemon is faster.
+Expected damage taken: 101
+Expected damage taken from partner: 132
+Priority Check End
+Quick Attack: final score: 76
+ 
+Quick Attack: initial score: 1
+Priority Check Begin
+Player Pokemon is faster.
+Expected damage taken: 132
+Expected damage taken from partner: 101
+Priority Check End
+Quick Attack: final score: 76
+ 
+Quick Attack: Final Score after Doubles-Target Adjustment: 76
+Quick Attack: Final Score after Doubles-Target Adjustment: 76
+
+Pinch Ability Disrupt
+Beginning AI Item use check.
+ 
+Highest item score: -10000
+Highest move score: 77
+Item use turned off.
+[The foe Treecko: Tail Whip=5, Gust=5, Pound=2, Quick Attack=77]
+[Prefer Quick Attack]
+[No Z-Move.]
+Player Pokemon  pk #3 is faster than Buneary.
+Player Pokemon Grovyle is faster than Buneary.
+Double Hit: initial score: 19
+Double Hit: final score: 19
+ 
+Double Hit: initial score: 30
+Double Hit: final score: 30
+ 
+Fake Out: initial score: 12
+Priority Check Begin
+Speed tie. Speeds are equal.
+Expected damage taken: 109
+Expected damage taken from partner: 82
+Priority Check End
+Fake Out: final score: 140
+ 
+Fake Out: initial score: 19
+Priority Check Begin
+Player Pokemon is faster.
+Expected damage taken: 82
+Expected damage taken from partner: 109
+Priority Check End
+Fake Out: final score: 140
+ 
+Ice Punch: initial score: 47
+Ice Punch: final score: 47
+ 
+Ice Punch: initial score: 36
+Ice Punch: final score: 36
+ 
+Work Up: initial score: 20
+Work Up: final score: 0
+ 
+Work Up: initial score: 20
+Work Up: final score: 0
+ 
+Work Up: Final Score after Status-Target Adjustment: 0
+Work Up: Final Score after Status-Target Adjustment: 0
+
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (0)
+Initial switchscore building: Healing (0)
+Initial switchscore building: fsteak (0)
+Initial switchscore building: Specific Switches (0)
+Initial switchscore building: worthsaving not activated
+Initial switchscore building: Typing (10)
+Buneary: initial switchscore: 10
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+Buneary: initial noswitchscore: 116
+ 
+{
+ 
+}
+ 
+Buneary: highest move score: 141
+Buneary: final switching score: -106
+141 > -106, will not switch
+ 
+Beginning AI Item use check.
+ 
+Highest item score: -10000
+Highest move score: 141
+Item use turned off.
+[The foe Buneary: Double Hit=5, Fake Out=141, Ice Punch=5, Work Up=0]
+[Prefer Fake Out]
+[No Z-Move.]
+[ pk #3 lost 12 HP, now has 88 HP]
+[ pk #3 lost 1 HP, now has 87 HP]
+[The foe Treecko lost 27 HP, now has 0 HP]
+[The foe Buneary lost 59 HP, now has 0 HP]
+[Grovyle lost 5 HP, now has 58 HP]
+[ pk #3 lost 6 HP, now has 81 HP]
+Scoring for Buneary switching to: Buneary
+Score: -10000000
+ 
+Scoring for Buneary switching to: Treecko
+Score: -10000000
+ 
+Scoring for Buneary switching to: Rockruff
+Score: -10000000
+ 
+Scoring for Buneary switching to: Bayleef
+Offensive: 14
+Defensive: -285
+Roles: -285
+Weather: -285
+Moves: -285
+Abilities: -285
+Items: -285
+Fields: -260
+Score: -260
+ 
+Scoring for Buneary switching to: Minccino
+Offensive: 15
+Defensive: -284
+Roles: -284
+Weather: -284
+Moves: -284
+Abilities: -284
+Items: -284
+Fields: -284
+Score: -284
+ 
+Scoring for Buneary switching to: Buneary
+Score: -10000000
+Not switching to self.
+Scoring for Buneary switching to: Marshtomp
+Offensive: 15
+Defensive: -284
+Roles: -284
+Weather: -284
+Moves: -284
+Abilities: -284
+Items: -284
+Fields: -284
+Score: -284
+ 
+***Round 3***
+==============================
+Battle Start!
+179 - Kara
+135 - Bryant
+==============================
+***Round 1***
+Player Pokemon Grovyle is faster than Buneary.
+Player Pokemon  pk #3 is faster than Buneary.
+Pound: initial score: 4
+Pound: final score: 4
+ 
+Pound: initial score: 3
+Pound: final score: 3
+ 
+Pound: Final Score after Doubles-Target Adjustment: 4
+Pound: Final Score after Doubles-Target Adjustment: 3
+
+Fake Out: initial score: 4
+Priority Check Begin
+Player Pokemon is faster.
+Expected damage taken: 160
+Expected damage taken from partner: 253
+Priority Check End
+Fake Out: final score: 140
+ 
+Fake Out: initial score: 3
+Priority Check Begin
+Player Pokemon is faster.
+Expected damage taken: 253
+Expected damage taken from partner: 160
+Priority Check End
+Fake Out: final score: 140
+ 
+Fake Out: Final Score after Doubles-Target Adjustment: 140
+Fake Out: Final Score after Doubles-Target Adjustment: 140
+
+Defense Curl: initial score: 10
+Defense Curl: final score: 0
+ 
+Defense Curl: initial score: 10
+Defense Curl: final score: 0
+ 
+Defense Curl: Final Score after Status-Target Adjustment: 0
+Defense Curl: Final Score after Status-Target Adjustment: 0
+
+Foresight: initial score: 5
+Foresight: final score: 5
+ 
+Foresight: initial score: 5
+Foresight: final score: 5
+ 
+Foresight: Final Score after Status-Target Adjustment: 5
+Foresight: Final Score after Status-Target Adjustment: 5
+
+Foresight: Final Score after Doubles-Target Adjustment: 5
+Foresight: Final Score after Doubles-Target Adjustment: 5
+
+Pinch Ability Disrupt
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (0)
+Initial switchscore building: Healing (0)
+Initial switchscore building: fsteak (0)
+Initial switchscore building: Specific Switches (0)
+Initial switchscore building: worthsaving not activated
+Initial switchscore building: Typing (0)
+Buneary: initial switchscore: 0
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+Buneary: initial noswitchscore: 116
+ 
+{
+ 
+}
+ 
+Buneary: highest move score: 141
+Buneary: final switching score: -116
+141 > -116, will not switch
+ 
+Beginning AI Item use check.
+ 
+Highest item score: -10000
+Highest move score: 141
+Item use turned off.
+[The foe Buneary: Pound=4, Fake Out=141, Defense Curl=0, Foresight=5]
+[Prefer Fake Out]
+[No Z-Move.]
+Player Pokemon  pk #3 is faster than Sobble.
+Player Pokemon Grovyle is faster than Sobble.
+Water Pulse: initial score: 2
+Water Pulse: final score: 2
+ 
+Water Pulse: initial score: 8
+Water Pulse: final score: 8
+ 
+Ice Shard: initial score: 10
+Priority Check Begin
+Player Pokemon is faster.
+Expected damage taken: 163
+Expected damage taken from partner: 213
+Priority Check End
+Ice Shard: final score: 160
+ 
+Ice Shard: initial score: 6
+Priority Check Begin
+Player Pokemon is faster.
+Expected damage taken: 213
+Expected damage taken from partner: 163
+Priority Check End
+Ice Shard: final score: 81
+ 
+Mud Shot: initial score: 1
+Mud Shot: final score: 0
+ 
+Mud Shot: initial score: 1
+Mud Shot: final score: 0
+ 
+Pinch Ability Disrupt
+Work Up: initial score: 20
+Work Up: final score: 0
+ 
+Work Up: initial score: 20
+Work Up: final score: 0
+ 
+Work Up: Final Score after Status-Target Adjustment: 0
+Work Up: Final Score after Status-Target Adjustment: 0
+
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (0)
+Initial switchscore building: Healing (0)
+Initial switchscore building: fsteak (0)
+Initial switchscore building: Specific Switches (0)
+Initial switchscore building: Typing (0)
+Sobble: initial switchscore: 10
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+Sobble: initial noswitchscore: 116
+ 
+{
+ 
+}
+ 
+Sobble: highest move score: 160
+Sobble: final switching score: -106
+160 > -106, will not switch
+ 
+Beginning AI Item use check.
+ 
+Highest item score: -10000
+Highest move score: 160
+Item use turned off.
+[The foe Sobble: Water Pulse=8, Ice Shard=160, Mud Shot=1, Work Up=0]
+[Prefer Ice Shard]
+[No Z-Move.]
+[ pk #3 lost 4 HP, now has 106 HP]
+[ pk #3 lost 11 HP, now has 95 HP]
+[The foe Buneary lost 30 HP, now has 0 HP]
+[The foe Sobble lost 38 HP, now has 0 HP]
+[Grovyle lost 5 HP, now has 78 HP]
+[ pk #3 lost 6 HP, now has 89 HP]
+Scoring for Buneary switching to: Buneary
+Score: -10000000
+Not switching to self.
+Scoring for Buneary switching to: Treecko
+Offensive: 6
+Defensive: -193
+Roles: -193
+Weather: -193
+Moves: -193
+Abilities: -193
+Items: -193
+Fields: -193
+Score: -193
+ 
+Scoring for Buneary switching to: Sobble
+Score: -10000000
+ 
+Scoring for Buneary switching to: Scorbunny
+Score: -10000000
+ 
+Scoring for Buneary switching to: Grookey
+Score: -10000000
+ 
+Scoring for Sobble switching to: Buneary
+Score: -10000000
+ 
+Scoring for Sobble switching to: Treecko
+Score: -10000000
+ 
+Scoring for Sobble switching to: Sobble
+Score: -10000000
+Not switching to self.
+Scoring for Sobble switching to: Scorbunny
+Offensive: 6
+Defensive: -193
+Roles: -193
+Weather: -193
+Moves: -193
+Abilities: -193
+Items: -193
+Fields: -193
+Score: -193
+ 
+Scoring for Sobble switching to: Grookey
+Offensive: 2
+Defensive: -197
+Roles: -197
+Weather: -197
+Moves: -172
+Abilities: -172
+Items: -172
+Fields: -172
+Score: -172
+ 
+***Round 2***
+==============================
+Battle Start!
+179 - Kara
+205 - Alex
+==============================
+***Round 1***
+Player Pokemon Grovyle is faster than Buneary.
+Player Pokemon  pk #3 is faster than Buneary.
+ 
+ 
+Pound: initial score: 4
+Pound: final score: 4
+ 
+Pound: initial score: 3
+Pound: final score: 3
+ 
+Pound: Final Score after Doubles-Target Adjustment: 4
+Pound: Final Score after Doubles-Target Adjustment: 3
+
+Fake Out: initial score: 4
+Priority Check Begin
+Player Pokemon is faster.
+Expected damage taken: 170
+Expected damage taken from partner: 253
+Priority Check End
+Fake Out: final score: 140
+ 
+Fake Out: initial score: 3
+Priority Check Begin
+Player Pokemon is faster.
+Expected damage taken: 253
+Expected damage taken from partner: 170
+Priority Check End
+Fake Out: final score: 140
+ 
+Fake Out: Final Score after Doubles-Target Adjustment: 140
+Fake Out: Final Score after Doubles-Target Adjustment: 140
+
+Defense Curl: initial score: 10
+Defense Curl: final score: 0
+ 
+Defense Curl: initial score: 10
+Defense Curl: final score: 0
+ 
+Defense Curl: Final Score after Status-Target Adjustment: 0
+Defense Curl: Final Score after Status-Target Adjustment: 0
+
+Foresight: initial score: 5
+Foresight: final score: 5
+ 
+Foresight: initial score: 5
+Foresight: final score: 5
+ 
+Foresight: Final Score after Status-Target Adjustment: 5
+Foresight: Final Score after Status-Target Adjustment: 5
+
+Foresight: Final Score after Doubles-Target Adjustment: 5
+Foresight: Final Score after Doubles-Target Adjustment: 5
+
+Pinch Ability Disrupt
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (0)
+Initial switchscore building: Healing (0)
+Initial switchscore building: fsteak (0)
+Initial switchscore building: Specific Switches (0)
+Initial switchscore building: worthsaving not activated
+Initial switchscore building: Typing (0)
+Buneary: initial switchscore: 0
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+Buneary: initial noswitchscore: 116
+ 
+{
+ 
+}
+ 
+Buneary: highest move score: 141
+Buneary: final switching score: -116
+141 > -116, will not switch
+ 
+Beginning AI Item use check.
+ 
+Highest item score: -10000
+Highest move score: 141
+Item use turned off.
+[The foe Buneary: Pound=4, Fake Out=141, Defense Curl=0, Foresight=5]
+[Prefer Fake Out]
+[No Z-Move.]
+Player Pokemon  pk #3 is faster than Mime Jr..
+Player Pokemon Grovyle is faster than Mime Jr..
+Confusion: initial score: 4
+Confusion: final score: 4
+ 
+Confusion: initial score: 6
+Confusion: final score: 6
+ 
+Copycat: initial score: 20
+Copycat: final score: 0
+ 
+Copycat: initial score: 20
+Copycat: final score: 0
+ 
+Copycat: Final Score after Status-Target Adjustment: 0
+Copycat: Final Score after Status-Target Adjustment: 0
+
+Meditate: initial score: 15
+Meditate: final score: 0
+ 
+Meditate: initial score: 15
+Meditate: final score: 0
+ 
+Meditate: Final Score after Status-Target Adjustment: 0
+Meditate: Final Score after Status-Target Adjustment: 0
+
+Double Slap: initial score: 1
+Double Slap: final score: 1
+ 
+Double Slap: initial score: 2
+Double Slap: final score: 2
+ 
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (0)
+Initial switchscore building: Healing (0)
+Initial switchscore building: fsteak (0)
+Initial switchscore building: Specific Switches (0)
+Initial switchscore building: worthsaving not activated
+Initial switchscore building: Typing (0)
+Mime Jr.: initial switchscore: 0
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+Mime Jr.: initial noswitchscore: 116
+ 
+{
+ 
+}
+ 
+Mime Jr.: highest move score: 6
+Mime Jr.: final switching score: -116
+6 > -116, will not switch
+ 
+Beginning AI Item use check.
+ 
+Highest item score: -10000
+Highest move score: 6
+Item use turned off.
+[The foe Mime Jr.: Confusion=6, Copycat=0, Meditate=0, Double Slap=2]
+[Prefer Confusion]
+[No Z-Move.]
+[ pk #3 lost 4 HP, now has 106 HP]
+[The foe Buneary lost 30 HP, now has 0 HP]
+[The foe Mime Jr. lost 30 HP, now has 0 HP]
+[Grovyle lost 5 HP, now has 78 HP]
+[ pk #3 lost 6 HP, now has 100 HP]
+Scoring for Buneary switching to: Buneary
+Score: -10000000
+Not switching to self.
+Scoring for Buneary switching to: Treecko
+Offensive: 6
+Defensive: -193
+Roles: -193
+Weather: -193
+Moves: -193
+Abilities: -193
+Items: -193
+Fields: -193
+Score: -193
+ 
+Scoring for Buneary switching to: Mime Jr.
+Score: -10000000
+ 
+Scoring for Buneary switching to: Espurr
+Score: -10000000
+ 
+Scoring for Buneary switching to: Rattata
+Score: -10000000
+ 
+Scoring for Mime Jr. switching to: Buneary
+Score: -10000000
+ 
+Scoring for Mime Jr. switching to: Treecko
+Score: -10000000
+ 
+Scoring for Mime Jr. switching to: Mime Jr.
+Score: -10000000
+Not switching to self.
+Scoring for Mime Jr. switching to: Espurr
+Score: -10000000
+ 
+Scoring for Mime Jr. switching to: Rattata
+Score: -10000000
+ 
+***Round 2***
