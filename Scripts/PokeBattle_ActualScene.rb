@@ -1739,6 +1739,14 @@ class PokeBattle_Scene
     end
   end
 
+
+  # to update @battle.shieldCount in case mon enters as rift form
+  # no shield due to transformation
+  def pbUpdateBattleShield(index)
+    @battle.shieldCount = @sprites["battlebox#{index}"].shieldCount
+  end
+  
+  
   # to update @battle.shieldCount in case mon enters as rift form
   # no shield due to transformation
   def pbUpdateBattleShield(index)
@@ -4371,7 +4379,7 @@ end
     pbInputUpdate    
   end
   def pbUnVanishSprite(pkmn,fade=true)
-    pkmn.vanished =false
+    pkmn.vanished = false
     @battle.pbCommonAnimation("Fade in",pkmn,nil) if fade
     pkmnsprite=@sprites["pokemon#{pkmn.index}"]
     pkmnsprite.opacity+=1000

@@ -202,7 +202,7 @@ class PokeBattle_Move
     if opp1.pbHasType?(:FAIRY) 
       return [opp2]
     end
-    invulmoves = [0xC9,0xCA,0xCB,0xCC,0xCD,0xCE]
+    invulmoves = [0xC9,0xCA,0xCB,0xCC,0xCD,0xCE,0x23C]
     if invulmoves.include?(opp2.effects[PBEffects::TwoTurnAttack])
       return [opp1]
     end
@@ -216,11 +216,11 @@ class PokeBattle_Move
       return [opp2]
     end
     if opp2.effects[PBEffects::Protect] || opp2.effects[PBEffects::SpikyShield] || opp2.effects[PBEffects::BanefulBunker] ||
-       opp2.effects[PBEffects::KingsShield] || opp2.effects[PBEffects::Obstruct]
+       opp2.effects[PBEffects::KingsShield] || opp2.effects[PBEffects::Obstruct] || opp2.effects[PBEffects::Stormhold]
       return [opp1]
     end
     if opp1.effects[PBEffects::Protect] || opp1.effects[PBEffects::SpikyShield] || opp1.effects[PBEffects::BanefulBunker] ||
-       opp1.effects[PBEffects::KingsShield] || opp1.effects[PBEffects::Obstruct]
+       opp1.effects[PBEffects::KingsShield] || opp1.effects[PBEffects::Obstruct] || opp1.effects[PBEffects::Stormhold]
       return [opp2]
     end
     if opp2.effects[PBEffects::Substitute]>0 || opp2.effects[PBEffects::Disguise] ||
@@ -791,8 +791,11 @@ class PokeBattle_Move
     if id == PBMoves::FREEZEDRY && opponent.pbHasType?(PBTypes::WATER)
       typemod *= 4
     end
+    if id == PBMoves::NATURESCALL && (opponent.pbHasType?(PBTypes::STEEL))
+      typemod*= 4
+    end
     if id == PBMoves::PERMAFROST && opponent.pbHasType?(PBTypes::ROCK)
-      typemod *= 4
+      typemod *= 2
     end
     if id == PBMoves::PERMAFROST && opponent.pbHasType?(PBTypes::STEEL)
       typemod *= 4
@@ -920,6 +923,13 @@ class PokeBattle_Move
       else        
         @battle.pbDisplay(_INTL("It doesn't affect {1}...",opponent.pbThis(true)))
       end      
+    end
+    # Horizon Focus
+    if id == PBMoves::HORIZONFOCUS && (pbWeather==PBWeather::SUNNYDAY) && typemod <= 4 && typemod > 0 && type == PBTypes::FLYING
+      firemod = pbTypeModNoMessages(PBTypes::FIRE,attacker,opponent,self,100)
+      if firemod >= 8
+        typemod = 8
+      end
     end
     return typemod
   end
@@ -1547,6 +1557,7 @@ class PokeBattle_Move
       return true
     end    
     return true if @function==0xA0 # Frost Breath
+    return true if @function==0x26D # Lucky Star
     return true if @function==0x202 && attacker.hp<=((attacker.totalhp)*0.5).floor
     return true if attacker.hasWorkingAbility(:MERCILESS) && (opponent.status == PBStatuses::POISON || 
     $fefieldeffect==10 || $fefieldeffect==11 || $fefieldeffect==19 || $fefieldeffect==26)
@@ -1665,30 +1676,18 @@ class PokeBattle_Move
       end
     end
     if (isConst?(attacker.ability,PBAbilities,:STRONGJAW) || @battle.SilvallyCheck(attacker,PBTypes::DARK))
-      if (id == PBMoves::BITE || id == PBMoves::CRUNCH ||
-       id == PBMoves::THUNDERFANG || id == PBMoves::FIREFANG ||
-       id == PBMoves::ICEFANG || id == PBMoves::POISONFANG ||
-       id == PBMoves::HYPERFANG || id == PBMoves::PSYCHICFANGS ||
-       id == PBMoves::JAWLOCK || id == PBMoves::FISHIOUSREND)
+      if (PBStuff::BITEMOVE).include?(id)
         damagemult=(damagemult*1.5).round
       end
     end
     if isConst?(attacker.species,PBSpecies,:FERALIGATR) && attacker.hasWorkingItem(:FERACREST)
-      if (id == PBMoves::BITE || id == PBMoves::CRUNCH ||
-       id == PBMoves::THUNDERFANG || id == PBMoves::FIREFANG ||
-       id == PBMoves::ICEFANG || id == PBMoves::POISONFANG ||
-       id == PBMoves::HYPERFANG || id == PBMoves::PSYCHICFANGS ||
-       id == PBMoves::JAWLOCK || id == PBMoves::FISHIOUSREND)
+      if (PBStuff::BITEMOVE).include?(id)
         damagemult=(damagemult*1.5).round
       end
     end
     if isConst?(attacker.species,PBSpecies,:BOLTUND) && attacker.hasWorkingItem(:BOLTCREST)
       if !opponent.hasMovedThisRound? || @battle.switchedOut[opponent.index]
-        if (id == PBMoves::BITE || id == PBMoves::CRUNCH ||
-       id == PBMoves::THUNDERFANG || id == PBMoves::FIREFANG ||
-       id == PBMoves::ICEFANG || id == PBMoves::POISONFANG ||
-       id == PBMoves::HYPERFANG || id == PBMoves::PSYCHICFANGS ||
-       id == PBMoves::JAWLOCK || id == PBMoves::FISHIOUSREND)
+        if (PBStuff::BITEMOVE).include?(id)
           damagemult=(damagemult*1.5).round
         end
       end
@@ -1895,8 +1894,10 @@ class PokeBattle_Move
       damagemult=(damagemult*1.5).round
     end
     if attacker.pbOwnSide.effects[PBEffects::BattleCry] % 2 == 1
-      puts "Battle Cry damage adjustment" if $INTERNAL
       damagemult=(damagemult*1.3).round
+    end
+    if attacker.effects[PBEffects::Fertilize] && isConst?(type,PBTypes,:GRASS)
+      damagemult=(damagemult*1.5).round
     end
     if isConst?(type,PBTypes,:FIRE)
       if @battle.field.effects[PBEffects::WaterSport]>0
@@ -4881,8 +4882,8 @@ class PokeBattle_Move
 
   def pbReduceHPDamage(damage,attacker,opponent,hitnum=0)
     endure=false
-    if (@id == 740 || @id == 741)
-      if attacker.effects[PBEffects::LaserFocus] ==0
+    if [PBMoves::FUTUREDUMMY, PBMoves::DOOMDUMMY, PBMoves::FOREBODEDUMMY].include?(@id)
+      if attacker.effects[PBEffects::LaserFocus] == 0
         damage=pbCalcDamage(attacker,opponent,PokeBattle_Move::NOCRITICAL)
       else
         damage=pbCalcDamage(attacker,opponent)
@@ -5112,8 +5113,7 @@ class PokeBattle_Move
     if opponent.damagestate.typemod!=0 
       pbShowAnimation(@id,attacker,opponent,hitnum,alltargets,showanimation) if @id < 10000
       pbShowAnimation(@name,attacker,opponent,hitnum,alltargets,showanimation) if @id > 10000
-      if self.function==0xC9 || self.function==0xCA || self.function==0xCB ||
-        self.function==0xCC || self.function==0xCD || self.function==0xCE #Sprites for two turn moves            
+      if [0xC9, 0xCC, 0xCA, 0xCB, 0xCD, 0xCE].include?(self.function) #Sprites for two turn moves            
         @battle.scene.pbUnVanishSprite(attacker,false)
         if self.function==0xCE
           @battle.scene.pbUnVanishSprite(opponent,false)
@@ -5199,7 +5199,15 @@ class PokeBattle_Move
 
   def pbShowAnimation(id,attacker,opponent,hitnum=0,alltargets=nil,showanimation=true)
     return if !showanimation
+    if id == PBMoves::PYROCLASM
+      id = PBMoves::EMBER
+      if @battle.field.effects[PBEffects::PyroPreTarget] > -1
+        attacker = @battle.battlers[@battle.field.effects[PBEffects::PyroPreTarget]]
+        attacker.effects[PBEffects::AnimationImpactMove] = :PYROCLASM if attacker.isFainted?
+      end
+    end
     @battle.pbAnimation(id,attacker,opponent,hitnum)
+    attacker.effects[PBEffects::AnimationImpactMove] = nil
   end
 
   def pbOnDamageLost(damage,attacker,opponent)

@@ -745,7 +745,7 @@ class PokeBattle_Battler
   ################################################################################
   # Creating a battler
   ################################################################################
-  def initialize(btl,index)
+  def initialize(btl,index,fakebattler=false)
     @battle       = btl
     @index        = index
     @hp           = 0
@@ -774,7 +774,7 @@ class PokeBattle_Battler
     @hasmegad     = false
     @capturable   = false
     pbInitBlank
-    pbInitEffects(false,true,true)
+    pbInitEffects(false,true,true,fakebattler)
     pbInitPermanentEffects
   end
   
@@ -857,9 +857,9 @@ class PokeBattle_Battler
   def pbInitPermanentEffects
     # These effects are always retained even if a Pokémon is replaced
     @effects[PBEffects::FutureSight]       = 0
-    @effects[PBEffects::FutureSightDamage] = 0
     @effects[PBEffects::FutureSightMove]   = 0
     @effects[PBEffects::FutureSightUser]   = -1
+    @effects[PBEffects::Forebode]          = [false,-1,-1] # Active, user idx, party idx
     @effects[PBEffects::HealingWish]       = false
     @effects[PBEffects::LunarDance]        = false    
     @effects[PBEffects::Wish]              = 0
@@ -871,7 +871,7 @@ class PokeBattle_Battler
     @effects[PBEffects::RampCrestUsage]    = false
   end
   
-  def pbInitEffects(batonpass,illusion=true,effectnegate=false)
+  def pbInitEffects(batonpass,illusion=true,effectnegate=false,fakebattler=false)
     if !batonpass
       # These effects are retained if Baton Pass is used
       @stages[PBStats::ATTACK]   = 0
@@ -891,11 +891,21 @@ class PokeBattle_Battler
       @effects[PBEffects::GastroAcid]  = false
       @effects[PBEffects::HealBlock]   = 0
       @effects[PBEffects::Ingrain]     = false
+      @effects[PBEffects::JawLock]     = false 
+      @effects[PBEffects::JawLockUser] = -1
+      for i in 0...4
+        next if !@battle.battlers[i]
+        if @battle.battlers[i].effects[PBEffects::JawLockUser]==@index &&
+            @battle.battlers[i].effects[PBEffects::JawLock]
+          @battle.battlers[i].effects[PBEffects::JawLock]=false
+          @battle.battlers[i].effects[PBEffects::JawLockUser]=-1
+        end
+      end
       @effects[PBEffects::LeechSeed]   = -1
       @effects[PBEffects::Petrification]   = -1
       @effects[PBEffects::LockOn]      = 0
       @effects[PBEffects::LockOnPos]   = -1
-      if !effectnegate
+      if !effectnegate || fakebattler
         for i in 0...4
           next if !@battle.battlers[i]
           next if @battle.battlers[i].effects[PBEffects::LockOn]!=0
@@ -935,7 +945,7 @@ class PokeBattle_Battler
     @movesUsed      = []
     @turncount      = 0
     @effects[PBEffects::Attract]          = -1
-    if !effectnegate
+    if !effectnegate || fakebattler
       for i in 0...4
         next if !@battle.battlers[i]
         if @battle.battlers[i].effects[PBEffects::Attract]==@index
@@ -948,6 +958,7 @@ class PokeBattle_Battler
     @effects[PBEffects::BideTarget]       = -1
     @effects[PBEffects::Charge]           = false
     @effects[PBEffects::WillMega]         = false
+    @effects[PBEffects::CellSplitter]     = 0
     @effects[PBEffects::ChoiceBand]       = -1
     @effects[PBEffects::Counter]          = -1
     @effects[PBEffects::CounterTarget]    = -1
@@ -965,10 +976,13 @@ class PokeBattle_Battler
     @effects[PBEffects::IceFace]          = true if self.species==875 && self.form==0 # Eiscue
     @effects[PBEffects::Endure]           = false
     @effects[PBEffects::FairyLockRate]    = false
+    @effects[PBEffects::Fertilize]        = false
     @effects[PBEffects::FlashFire]        = false
+    @effects[PBEffects::FlameWreath]      = false
     @effects[PBEffects::Flinch]           = false
     @effects[PBEffects::FollowMe]         = false
     @effects[PBEffects::RagePowder]       = false    
+    @effects[PBEffects::Rebuild]          = false
     @effects[PBEffects::Foresight]        = false
     @effects[PBEffects::FuryCutter]       = 0
     @effects[PBEffects::Grudge]           = false
@@ -980,9 +994,10 @@ class PokeBattle_Battler
     @effects[PBEffects::MeanLook]         = -1
     if !effectnegate
       for i in 0...4
-        next if !@battle.battlers[i]
+        next if !@battle.battlers[i] || fakebattler
         if @battle.battlers[i].effects[PBEffects::MeanLook]==@index
           @battle.battlers[i].effects[PBEffects::MeanLook]=-1
+          @battle.battlers[i].effects[PBEffects::Octolock] = false
         end
       end
     end
@@ -997,7 +1012,7 @@ class PokeBattle_Battler
     @effects[PBEffects::MultiTurnUser]    = -1
     if !effectnegate
       for i in 0...4
-        next if !@battle.battlers[i]
+        next if !@battle.battlers[i] || fakebattler
         #next if @battle.battlers[i].effects[PBEffects::MultiTurn]!=0 #&& @battle.battlers[i].effects[PBEffects::MultiTurnUser]==@index
         if @battle.battlers[i].effects[PBEffects::MultiTurnUser]==@index
           @battle.battlers[i].effects[PBEffects::MultiTurn]=0
@@ -1014,7 +1029,6 @@ class PokeBattle_Battler
     end
     @effects[PBEffects::Nightmare]        = false
     @effects[PBEffects::Outrage]          = 0
-    @effects[PBEffects::Octolock]         = false
     @effects[PBEffects::Pinch]            = false
     @effects[PBEffects::Protect]          = false
     @effects[PBEffects::KingsShield]      = false # add this line
@@ -1022,6 +1036,7 @@ class PokeBattle_Battler
     @effects[PBEffects::WideGuardCheck]   = false 
     @effects[PBEffects::WideGuardUser]    = false    
     @effects[PBEffects::BanefulBunker]    = false
+    @effects[PBEffects::Stormhold]        = false
     @effects[PBEffects::ProtectNegation]  = false
     @effects[PBEffects::ProtectRate]      = 1
     @effects[PBEffects::DestinyRate]      = 1
@@ -1033,6 +1048,8 @@ class PokeBattle_Battler
     @effects[PBEffects::SkyDrop]          = false
     @effects[PBEffects::SmackDown]        = false
     @effects[PBEffects::Snatch]           = false
+    @effects[PBEffects::Spritz]           = 0
+    @effects[PBEffects::Stench]           = false
     @effects[PBEffects::Stockpile]        = 0
     @effects[PBEffects::StockpileDef]     = 0
     @effects[PBEffects::StockpileSpDef]   = 0
@@ -1050,7 +1067,7 @@ class PokeBattle_Battler
     @effects[PBEffects::Attacking]        = false
     @effects[PBEffects::AttackingTarget]  = []
     @effects[PBEffects::FeverPitch]       = false    
-    @effects[PBEffects::UsingSubstituteRightNow] = false
+    @effects[PBEffects::AnimationImpactMove] = nil
     #   @effects[PBEffects::WaterSport]       = false
     @effects[PBEffects::WeightMultiplier] = 1.0
     @effects[PBEffects::Yawn]             = 0
@@ -1139,7 +1156,7 @@ class PokeBattle_Battler
     # Cure status of previous Pokemon with Natural Cure
     if self.hasWorkingAbility(:NATURALCURE) || (self.hasWorkingAbility(:TRACE) &&
         self.effects[PBEffects::TracedAbility]==30) && @pokemon
-      self.status=0
+      self.status=0 unless self.effects[PBEffects::Spritz] == 1
     end
     if self.hasWorkingAbility(:REGENERATOR) || @battle.SilvallyCheck(self, "poison") || 
       (self.hasWorkingAbility(:TRACE) && self.effects[PBEffects::TracedAbility]==144) && 
@@ -2188,29 +2205,6 @@ class PokeBattle_Battler
         end
       end
     end
-    # Shift
-    if @battle.shieldCount==0
-      if isConst?(self.species,PBSpecies,:FERROTHORN) && !self.isFainted?
-        if self.hasWorkingAbility(:SHIFT)
-          if self.form!=2
-            self.form=2; transformed=true
-            pbBGMPlay("Battle - Pseudo Contribution",110)
-            @battle.pbDisplay(_INTL("{1}'s form shifted!",pbThis)) 
-          end 
-        end
-      end
-    end
-    # Temporal Shift
-    if isConst?(self.species,PBSpecies,:FROSLASS) && !self.isFainted?
-      if self.hasWorkingAbility(:TEMPORALSHIFT)
-        if @battle.shieldCount==0
-          if self.form!=2
-            self.form=2; transformed=true
-            @battle.pbDisplay(_INTL("{1}'s form shifted!",pbThis)) 
-          end 
-        end
-      end
-    end
     # Keldeo
     if isConst?(self.species,PBSpecies,:KELDEO) && !self.isFainted?
       if self.form!=@pokemon.form
@@ -3124,8 +3118,12 @@ class PokeBattle_Battler
       if self.pbPartner.status == PBStatuses::POISON
         pbDisplay(_INTL("{1}'s Pastel Veil cured its partner's poison problem!",i.pbThis))
       end
-      self.pbPartner.status=0
-      self.pbPartner.statusCount=0
+      if self.pbPartner.effects[PBEffects::Spritz] == 1
+        @battle.pbDisplay(_INTL("{1}'s spritz prevented status cure!",pbThis))
+      else
+        self.pbPartner.status=0
+        self.pbPartner.statusCount=0
+      end
     end
     # Intimidate
     if self.hasWorkingAbility(:INTIMIDATE) && onactive
@@ -3639,7 +3637,8 @@ class PokeBattle_Battler
         0xCB,    # Dive
         0xCC,    # Bounce
         0xCD,    # Shadow Force
-        0xCE     # Sky Drop
+        0xCE,    # Sky Drop
+        0x23C    # Swan Dive
       ]
       if choice.effects[PBEffects::Substitute]>0 ||
         choice.effects[PBEffects::Transform] ||
@@ -3796,6 +3795,10 @@ class PokeBattle_Battler
             @battle.pbDisplay(_INTL("{1}'s {2} paralyzed {3}!  It may be unable to move!",
                 target.pbThis,PBAbilities.getName(target.ability),user.pbThis(true)))
           end
+        end
+        if target.effects[PBEffects::FlameWreath] && user.pbCanBurn?(false)
+          user.pbBurn(target)
+          @battle.pbDisplay(_INTL("{1} was burned by {2}!",user.pbThis,target.pbThis(true)))
         end
         if target.hasWorkingAbility(:FLAMEBODY,true) && $fefieldeffect!=39 &&
           @battle.pbRandom(10)<3 && user.pbCanBurn?(false)
@@ -4487,7 +4490,7 @@ class PokeBattle_Battler
   
   def pbAbilityCureCheck
     return if self.isFainted?
-    if self.hasWorkingAbility(:LIMBER) && self.status==PBStatuses::PARALYSIS
+    if self.hasWorkingAbility(:LIMBER) && self.status==PBStatuses::PARALYSIS && self.effects[PBEffects::Spritz] != 1
       @battle.pbDisplay(_INTL("{1}'s Limber cured its paralysis problem!",pbThis))
       self.status=0
     end
@@ -4495,19 +4498,19 @@ class PokeBattle_Battler
       @battle.pbDisplay(_INTL("{1}'s Oblivious cured its love problem!",pbThis))
       @effects[PBEffects::Attract]=-1
     end
-    if self.hasWorkingAbility(:VITALSPIRIT) && self.status==PBStatuses::SLEEP
+    if self.hasWorkingAbility(:VITALSPIRIT) && self.status==PBStatuses::SLEEP && self.effects[PBEffects::Spritz] != 1
       @battle.pbDisplay(_INTL("{1}'s Vital Spirit cured its sleep problem!",pbThis))
       self.status=0
     end
-    if self.hasWorkingAbility(:INSOMNIA) && self.status==PBStatuses::SLEEP
+    if self.hasWorkingAbility(:INSOMNIA) && self.status==PBStatuses::SLEEP && self.effects[PBEffects::Spritz] != 1
       @battle.pbDisplay(_INTL("{1}'s Insomnia cured its sleep problem!",pbThis))
       self.status=0
     end
-    if self.hasWorkingAbility(:PASTELVEIL) && self.status==PBStatuses::POISON
+    if self.hasWorkingAbility(:PASTELVEIL) && self.status==PBStatuses::POISON && self.effects[PBEffects::Spritz] != 1
       @battle.pbDisplay(_INTL("{1}'s Pastel Veil cured its poison problem!",pbThis))
       self.status=0
     end
-    if self.hasWorkingAbility(:IMMUNITY) && self.status==PBStatuses::POISON
+    if self.hasWorkingAbility(:IMMUNITY) && self.status==PBStatuses::POISON && self.effects[PBEffects::Spritz] != 1
       @battle.pbDisplay(_INTL("{1}'s Immunity cured its poison problem!",pbThis))
       self.status=0
     end
@@ -4515,11 +4518,11 @@ class PokeBattle_Battler
       @battle.pbDisplay(_INTL("{1}'s Own Tempo cured its confusion problem!",pbThis))
       @effects[PBEffects::Confusion]=0
     end
-    if self.hasWorkingAbility(:MAGMAARMOR) && self.status==PBStatuses::FROZEN && $fefieldeffect!=39
+    if self.hasWorkingAbility(:MAGMAARMOR) && self.status==PBStatuses::FROZEN && $fefieldeffect!=39 && self.effects[PBEffects::Spritz] != 1
       @battle.pbDisplay(_INTL("{1}'s Magma Armor cured its ice problem!",pbThis))
       self.status=0
     end
-    if self.hasWorkingAbility(:WATERVEIL) && self.status==PBStatuses::BURN
+    if self.hasWorkingAbility(:WATERVEIL) && self.status==PBStatuses::BURN && self.effects[PBEffects::Spritz] != 1
       @battle.pbDisplay(_INTL("{1}'s Water Veil cured its burn problem!",pbThis))
       self.status=0
     end
@@ -4633,8 +4636,12 @@ class PokeBattle_Battler
       #### JERICHO - 014 - END        
       if self.hasWorkingItem(:CHERIBERRY) && self.status==PBStatuses::PARALYSIS
         berryconsumed = true
-        self.status=0
-        @battle.pbDisplay(_INTL("{1}'s {2} cured its paralysis problem!",pbThis,itemname))
+        if self.effects[PBEffects::Spritz] == 1
+          @battle.pbDisplay(_INTL("{1}'s spritz prevented status cure!",pbThis))
+        else
+          self.status=0
+          @battle.pbDisplay(_INTL("{1}'s {2} cured its paralysis problem!",pbThis,itemname))
+        end
         @pokemon.itemRecycle=self.item
         $belch=true
         @pokemon.itemInitial=0 if @pokemon.itemInitial==self.item
@@ -4642,8 +4649,12 @@ class PokeBattle_Battler
       end
       if self.hasWorkingItem(:CHESTOBERRY) && self.status==PBStatuses::SLEEP
         berryconsumed = true
-        self.status=0
-        @battle.pbDisplay(_INTL("{1}'s {2} cured its sleep problem!",pbThis,itemname))
+        if self.effects[PBEffects::Spritz] == 1
+          @battle.pbDisplay(_INTL("{1}'s spritz prevented status cure!",pbThis))
+        else
+          self.status=0
+          @battle.pbDisplay(_INTL("{1}'s {2} cured its sleep problem!",pbThis,itemname))
+        end
         @pokemon.itemRecycle=self.item
         $belch=true
         @pokemon.itemInitial=0 if @pokemon.itemInitial==self.item
@@ -4651,8 +4662,12 @@ class PokeBattle_Battler
       end
       if self.hasWorkingItem(:PECHABERRY) && self.status==PBStatuses::POISON
         berryconsumed = true
-        self.status=0
-        @battle.pbDisplay(_INTL("{1}'s {2} cured its poison problem!",pbThis,itemname))
+        if self.effects[PBEffects::Spritz] == 1
+          @battle.pbDisplay(_INTL("{1}'s spritz prevented status cure!",pbThis))
+        else
+          self.status=0
+          @battle.pbDisplay(_INTL("{1}'s {2} cured its poison problem!",pbThis,itemname))
+        end
         @pokemon.itemRecycle=self.item
         $belch=true
         @pokemon.itemInitial=0 if @pokemon.itemInitial==self.item
@@ -4660,8 +4675,12 @@ class PokeBattle_Battler
       end
       if self.hasWorkingItem(:RAWSTBERRY) && self.status==PBStatuses::BURN
         berryconsumed = true
-        self.status=0
-        @battle.pbDisplay(_INTL("{1}'s {2} cured its burn problem!",pbThis,itemname))
+        if self.effects[PBEffects::Spritz] == 1
+          @battle.pbDisplay(_INTL("{1}'s spritz prevented status cure!",pbThis))
+        else
+          self.status=0
+          @battle.pbDisplay(_INTL("{1}'s {2} cured its burn problem!",pbThis,itemname))
+        end
         @pokemon.itemRecycle=self.item
         $belch=true
         @pokemon.itemInitial=0 if @pokemon.itemInitial==self.item
@@ -4669,8 +4688,12 @@ class PokeBattle_Battler
       end
       if self.hasWorkingItem(:ASPEARBERRY) && self.status==PBStatuses::FROZEN
         berryconsumed = true
-        self.status=0
-        @battle.pbDisplay(_INTL("{1}'s {2} cured its ice problem!",pbThis,itemname))
+        if self.effects[PBEffects::Spritz] == 1
+          @battle.pbDisplay(_INTL("{1}'s spritz prevented status cure!",pbThis))
+        else
+          self.status=0
+          @battle.pbDisplay(_INTL("{1}'s {2} cured its ice problem!",pbThis,itemname))
+        end
         @pokemon.itemRecycle=self.item
         $belch=true
         @pokemon.itemInitial=0 if @pokemon.itemInitial==self.item
@@ -4868,41 +4891,65 @@ class PokeBattle_Battler
       pbFaint if self.isFainted?
     end
   end
-  
   def pbSpecialBerryUse(berry)
     if berry == 398
       berryconsumed=true
       pbItemRestoreHP(self,self.totalhp/4)
       @battle.pbDisplay(_INTL("{1} restored its HP!",pbThis))
     elsif berry == 397 && self.status!=0
-      self.status=0
-      self.statusCount=0
-      @battle.pbDisplay(_INTL("{1} became healthy.",pbThis))      
+      berryconsumed=true
+      if self.effects[PBEffects::Spritz] == 1
+        @battle.pbDisplay(_INTL("{1}'s spritz prevented status cure!",pbThis))
+      else
+        self.status=0
+        self.statusCount=0
+        @battle.pbDisplay(_INTL("{1} became healthy.",pbThis))      
+      end
     elsif berry == 389 && self.status!=PBStatuses::PARALYSIS
       berryconsumed=true
-      self.status=0
-      self.statusCount=0
-      @battle.pbDisplay(_INTL("{1} was cured of paralysis.",pbThis))
+      if self.effects[PBEffects::Spritz] == 1
+        @battle.pbDisplay(_INTL("{1}'s spritz prevented status cure!",pbThis))
+      else
+        self.status=0
+        self.statusCount=0
+        @battle.pbDisplay(_INTL("{1} was cured of paralysis.",pbThis))
+      end
     elsif berry == 390 && self.status!=PBStatuses::SLEEP
       berryconsumed=true
-      self.status=0
-      self.statusCount=0
-      @battle.pbDisplay(_INTL("{1} woke up.",pbThis)) 
+      if self.effects[PBEffects::Spritz] == 1
+        @battle.pbDisplay(_INTL("{1}'s spritz prevented status cure!",pbThis))
+      else
+        self.status=0
+        self.statusCount=0
+        @battle.pbDisplay(_INTL("{1} woke up.",pbThis)) 
+      end
     elsif berry == 391 && self.status!=PBStatuses::POISON  
       berryconsumed=true
-      self.status=0
-      self.statusCount=0
-      @battle.pbDisplay(_INTL("{1} was cured of its poisoning.",pbThis))  
+      if self.effects[PBEffects::Spritz] == 1
+        @battle.pbDisplay(_INTL("{1}'s spritz prevented status cure!",pbThis))
+      else
+        self.status=0
+        self.statusCount=0
+        @battle.pbDisplay(_INTL("{1} was cured of its poisoning.",pbThis))  
+      end
     elsif berry == 392 && self.status!=PBStatuses::BURN   
       berryconsumed=true
-      self.status=0
-      self.statusCount=0
-      @battle.pbDisplay(_INTL("{1}'s burn was healed.",pbThis))      
+      if self.effects[PBEffects::Spritz] == 1
+        @battle.pbDisplay(_INTL("{1}'s spritz prevented status cure!",pbThis))
+      else
+        self.status=0
+        self.statusCount=0
+        @battle.pbDisplay(_INTL("{1}'s burn was healed.",pbThis))    
+      end  
     elsif berry == 393 && self.status!=PBStatuses::FROZEN 
       berryconsumed=true
-      self.status=0
-      self.statusCount=0
-      @battle.pbDisplay(_INTL("{1} was thawed out.",pbThis)) 
+      if self.effects[PBEffects::Spritz] == 1
+        @battle.pbDisplay(_INTL("{1}'s spritz prevented status cure!",pbThis))
+      else
+        self.status=0
+        self.statusCount=0
+        @battle.pbDisplay(_INTL("{1} was thawed out.",pbThis)) 
+      end
     elsif berry == 395
       berryconsumed=true
       pbItemRestoreHP(self,10)
@@ -5139,6 +5186,39 @@ class PokeBattle_Battler
     end
     return user
   end
+
+  def pbPyroclasmTargeting(user,targetBattler,specialusage)
+    targetBattler = @battle.battlers[targetBattler] if targetBattler.is_a?(Integer)
+    if targetBattler.index && specialusage # Bounce
+      if targetBattler.hp > 0
+        return [targetBattler]
+      else
+        return [user] # Shouldn't reach here ever, just in case
+      end
+    else # Normal targeting
+      if targetBattler.index >= 0
+        if !targetBattler.isFainted?
+          return [targetBattler]
+        else
+          if targetBattler.pbPartner.index == user.index
+            return [user] # Tried to hit fainted partner; target self
+          else
+            if !targetBattler.pbPartner.isFainted?
+              return [targetBattler.pbPartner]
+            else # Tried to hit opponent(s), none there
+              if !user.pbPartner.isFainted?
+                return [user.pbPartner]
+              else
+                return [user] # Tried to hit fainted partner; target self
+              end
+            end
+          end
+        end
+      else # If no target; target self
+        return [user]
+      end
+    end
+  end
   
   def pbChangeUser(thismove,user)
     priority=@battle.pbPriority
@@ -5337,6 +5417,79 @@ class PokeBattle_Battler
       targets[0]=target
     end
     return true
+  end
+
+  def pbFutureSightUserPlusMove()
+    moveuser=nil
+    disabled_items = {}
+    #check if battler on the field
+    for indexx in [@effects[PBEffects::FutureSightUser],@effects[PBEffects::FutureSightUser]^2]
+      moveuser=@battle.battlers[indexx] if @battle.battlers[indexx].pokemonIndex == @effects[PBEffects::FutureSightPkmnIdx]
+    end
+    #if battler not on the field, make a fake one
+    if moveuser.nil?
+      moveuser=PokeBattle_Battler.new(@battle,@effects[PBEffects::FutureSightUser],true)
+      begin
+        moveuser.pbInitPokemon(@battle.pbParty(@effects[PBEffects::FutureSightUser])[@effects[PBEffects::FutureSightPkmnIdx]],@effects[PBEffects::FutureSightUser])
+      rescue
+        moveuser.pbInitPokemon(@battle.pbParty(@effects[PBEffects::FutureSightUser]^1)[@effects[PBEffects::FutureSightPkmnIdx]],@effects[PBEffects::FutureSightUser])
+      end
+      disabled_items = {:item => moveuser.item.clone, :ability => moveuser.ability.clone}
+      moveuser.item=0
+      moveuser.ability=0
+    end
+    if @effects[PBEffects::FutureSightMove] == PBMoves::DOOMDESIRE
+      move=PokeBattle_Move.pbFromPBMove(@battle,PBMove.new(PBMoves::DOOMDUMMY),moveuser)
+    elsif @effects[PBEffects::FutureSightMove] == PBMoves::FUTURESIGHT
+      move=PokeBattle_Move.pbFromPBMove(@battle,PBMove.new(PBMoves::FUTUREDUMMY),moveuser)
+    elsif @effects[PBEffects::FutureSightMove] == PBMoves::HEX
+      move=PokeBattle_Move.pbFromPBMove(@battle,PBMove.new(PBMoves::HEXDUMMY),moveuser)
+    end
+    return move, moveuser, disabled_items
+  end
+
+  def pbTriggerForebode()
+    self.effects[PBEffects::Forebode][0] = false
+    moveuser = nil
+    disabled_items = {}
+    #check if battler on the field
+    for index in [@effects[PBEffects::Forebode][1],@effects[PBEffects::Forebode][1]^2]
+      moveuser = @battle.battlers[index] if @battle.battlers[index].pokemonIndex == @effects[PBEffects::Forebode][2]
+    end
+    #if battler not on the field, make a fake one
+    if moveuser.nil?
+      moveuser=PokeBattle_Battler.new(@battle,@effects[PBEffects::Forebode][1],true)
+      begin
+        moveuser.pbInitPokemon(@battle.pbParty(@effects[PBEffects::Forebode][1])[@effects[PBEffects::Forebode][2]],@effects[PBEffects::Forebode][1])
+      rescue
+        moveuser.pbInitPokemon(@battle.pbParty(@effects[PBEffects::Forebode][1]^1)[@effects[PBEffects::Forebode][2]],@effects[PBEffects::Forebode][1])
+      end
+      disabled_items = {:item => moveuser.item.clone, :ability => moveuser.ability.clone}
+      moveuser.item = 0
+      moveuser.ability = 0
+    end
+    move = PokeBattle_Move.pbFromPBMove(@battle,PBMove.new(PBMoves::FOREBODEDUMMY),moveuser)
+    @battle.pbDisplay(_INTL("{1} took the forboded attack!",pbThis))
+    twoturninvul = PBStuff::TWOTURNMOVE.include?(effects[PBEffects::TwoTurnAttack])
+    if (isFainted? || move.pbAccuracyCheck(moveuser,self) && !(hasWorkingAbility(:WONDERGUARD) && typemod<=4)) && !twoturninvul
+      self.damagestate.reset
+      # Forebode Animation goes here
+      moveuser.hp != 0 ? @battle.pbAnimation(PBMoves::FUTUREDUMMY,moveuser,self) : @battle.pbAnimation(PBMoves::FUTUREDUMMY,self,self) if !(pbHasType?(:DARK))
+      move.pbReduceHPDamage(nil,moveuser,self)
+      move.pbEffectMessages(moveuser,self)
+      @effects[PBEffects::Flinch] = true if !self.damagestate.substitute && self.damagestate.hplost > 0 && !hasWorkingAbility(:INNERFOCUS) && 
+                                            self.status!=PBStatuses::SLEEP && self.status!=PBStatuses::FROZEN
+    elsif hasWorkingAbility(:WONDERGUARD) && typemod<=4 && !twoturninvul
+      @battle.pbDisplay(_INTL("{1} avoided damage with Wonder Guard!",pbThis))
+    else
+      @battle.pbDisplay(_INTL("But it failed!"))
+    end
+    @effects[PBEffects::Forebode] = [false,-1,-1]
+    if !disabled_items.empty?
+      moveuser.item = disabled_items[:item]
+      moveuser.ability = disabled_items[:ability]
+    end
+    pbFaint if isFainted?
   end
   
   ################################################################################
@@ -5554,9 +5707,8 @@ class PokeBattle_Battler
         @battle.pbDisplay(_INTL("{1} wasn't affected!",target.pbThis))
         return false
       else
-        healfunctions = [0xD5,0xD6,0xD7,0xD8,0xD9,0xDD,0xDE,0xDF,0xE3,0xE4,0x114,0x139,0x158,0x162,0x169,0x16C,0x172]
         if user.hasWorkingAbility(:TRIAGE)
-          for j in healfunctions
+          for j in PBStuff::HEALFUNCTIONS
             if thismove.function == j && (thismove.priority==0 || thismove.priority==-1 || thismove.priority==-2)
               if ((target.hasWorkingAbility(:DAZZLING) || 
                     target.hasWorkingAbility(:QUEENLYMAJESTY)) && !target.moldbroken) ||
@@ -5700,6 +5852,19 @@ class PokeBattle_Battler
         end
         return false
       end
+      # Stormhold
+      if target.effects[PBEffects::Stormhold] && ((thismove.basedamage > 0)) && 
+        !target.effects[PBEffects::ProtectNegation] && thismove.canProtectAgainst? && thismove.function!=0x116
+        @battle.pbDisplay(_INTL("{1} protected itself!", target.pbThis))
+        @battle.successStates[user.index].protected=true
+        # physical contact
+        if thismove.hasFlags?('a') && user.pbCanParalyze?(false) && !user.hasWorkingAbility(:LONGREACH)
+          #@scene.pbDamageAnimation(user,0) TODO: Fix animation
+          user.pbParalyze(target)
+          @battle.pbDisplay(_INTL("{1}'s Stormhold paralyzed {2}!",target.pbThis,user.pbThis(true)))
+        end
+        return false
+      end
     end
     # TODO: Mind Reader/Lock-On
     # --Sketch/FutureSight/PsychUp work even on Fly/Bounce/Dive/Dig
@@ -5744,6 +5909,10 @@ class PokeBattle_Battler
         thismove.function==0x11B || # Sky Uppercut
         thismove.function==0x11C ||   # Smack Down
         thismove.id      ==630   
+      when 0x23C # Swan Dive
+        (invulmiss=true)                 unless thismove.function==0x75 || # Surf
+        thismove.function==0xD0 || # Whirlpool
+        (thismove.function==0x10D && !user.pbHasType?(:GHOST)) # Curse
       end
       if target.effects[PBEffects::SkyDrop]
         (invulmiss=true)                 unless thismove.function==0x08 ||  # Thunder
@@ -5783,7 +5952,7 @@ class PokeBattle_Battler
       return false
     end      
     if thismove.basedamage>0 && thismove.function!=0x02 && # Struggle
-      thismove.function!=0x111 # Future Sight
+        thismove.function!=0x111 # Future Sight
       type=thismove.pbType(thismove.type,user,target)
       typemod=thismove.pbTypeModifier(type,user,target)
       typemod=thismove.FieldTypeChange(user,target,typemod)
@@ -5945,6 +6114,7 @@ class PokeBattle_Battler
     if self.status==PBStatuses::SLEEP && !@simplemove
       self.statusCount-=1
       self.statusCount-=1 if self.hasWorkingAbility(:EARLYBIRD)
+      self.statusCount = 1 if self.statusCount == 0 && @effects[PBEffects::Spritz]!=1
       if self.statusCount<=0
         self.pbCureStatus
       else
@@ -5955,14 +6125,14 @@ class PokeBattle_Battler
       end
     end
     if self.status==PBStatuses::FROZEN
-      if thismove.canThawUser?
+      if thismove.canThawUser? && @effects[PBEffects::Spritz]!=1
         self.pbCureStatus(false)
         @battle.pbDisplay(_INTL("{1} was defrosted by {2}!",pbThis,thismove.name))
         pbCheckForm
-      elsif @battle.pbRandom(10)<2
+      elsif @battle.pbRandom(10)<2 && @effects[PBEffects::Spritz]!=1
         self.pbCureStatus
         pbCheckForm
-      elsif !thismove.canThawUser? 
+      else
         self.pbContinueStatus
         return false
       end
@@ -6111,8 +6281,7 @@ class PokeBattle_Battler
         return if bosscheck == 0
       end      
       # Check success (accuracy/evasion calculation)
-      if !nocheck &&
-        !pbSuccessCheck(thismove,user,target,i==0 || thismove.function==0xBF) # Triple Kick
+      if !nocheck && !pbSuccessCheck(thismove,user,target,i==0 || thismove.function==0xBF) # Triple Kick
         if thismove.function==0xBF && realnumhits>0   # Triple Kick
           break   # Considered a success if Triple Kick hits at least once
         elsif thismove.function==0x10B   # Hi Jump Kick, Jump Kick
@@ -6124,8 +6293,7 @@ class PokeBattle_Battler
             user.pbReduceHP(damage)
           end
           user.pbFaint if user.isFainted?
-        elsif thismove.function==0xC9 || thismove.function==0xCA || thismove.function==0xCB ||
-          thismove.function==0xCC || thismove.function==0xCD || thismove.function==0xCE #Sprites for two turn moves
+        elsif [0xC9, 0xCC, 0xCA, 0xCB, 0xCD, 0xCE, 0x23C].include?(thismove.function) #Sprites for two turn moves
           @battle.scene.pbUnVanishSprite(user)
           if thismove.function==0xCE
             @battle.scene.pbUnVanishSprite(target)
@@ -6172,6 +6340,7 @@ class PokeBattle_Battler
         user.effects[PBEffects::EchoedVoice]=0 if thismove.function!=0x92 # Not Echoed Voice
         user.effects[PBEffects::Stockpile]=0 if thismove.function==0x113 # Spit Up
         user.effects[PBEffects::Charge]=false if user.effects[PBEffects::Charge] && thismove.type==PBTypes::ELECTRIC && thismove.basedamage>0 # Charge wearing off [Gen 9]
+        user.effects[PBEffects::Fertilize]=false if user.effects[PBEffects::Fertilize] && thismove.type==PBTypes::GRASS && thismove.basedamage>0 # Fertilize
         return 0
       end
       # Add to counters for moves which increase them when used in succession
@@ -6193,6 +6362,11 @@ class PokeBattle_Battler
       else
         user.effects[PBEffects::EchoedVoice]=0
       end
+      if thismove.function==0x247 # Cell Splitter
+        user.effects[PBEffects::CellSplitter]+=1
+      else
+        user.effects[PBEffects::CellSplitter]=0
+      end
       if $fefieldeffect == 5  
         if thismove.function==0x171 || thismove.id==53 || thismove.id==268  
           user.effects[PBEffects::SusCrit] = true  
@@ -6202,8 +6376,7 @@ class PokeBattle_Battler
       realnumhits+=1
       # Damage calculation and/or main effect
       revanish=false
-      if target.vanished && !((thismove.function==0xC9 || thismove.function==0xCA || thismove.function==0xCB ||
-            thismove.function==0xCC || thismove.function==0xCD) && !user.vanished)
+      if target.vanished && !([0xC9, 0xCC, 0xCA, 0xCB, 0xCD, 0xCE, 0x23C].include?(thismove.function) && !user.vanished)
         revanish=true 
         revanish=false if thismove.function==0xCE
         revanish=false if thismove.function==0x11C
@@ -6451,11 +6624,10 @@ class PokeBattle_Battler
       end
       if target.damagestate.calcdamage>0 && !target.isFainted?
         # Defrost
-        if isConst?(thismove.pbType(thismove.type,user,target),PBTypes,:FIRE) &&
-          target.status==PBStatuses::FROZEN
-          target.pbCureStatus
+        if isConst?(thismove.pbType(thismove.type,user,target),PBTypes,:FIRE) && target.status==PBStatuses::FROZEN
+          target.pbCureStatus unless target.effects[PBEffects::Spritz] == 1
         elsif thismove.name=="Scald" && target.status==PBStatuses::FROZEN
-          target.pbCureStatus
+          target.pbCureStatus unless target.effects[PBEffects::Spritz] == 1
         end
         # Rage
         if target.effects[PBEffects::Rage] && target.pbIsOpposing?(user.index)
@@ -6613,6 +6785,7 @@ class PokeBattle_Battler
   def pbUseMove(choice,specialusage=false,danced=false,moveid=choice[2].id)
     # TODO: lastMoveUsed is not to be updated on nested calls
     turneffects=[]
+    turneffects[PBEffects::SpecialUsage]=nil
     turneffects[PBEffects::SpecialUsage]=specialusage
     turneffects[PBEffects::PassedTrying]=false
     turneffects[PBEffects::TotalDamage]=0
@@ -6713,7 +6886,7 @@ class PokeBattle_Battler
       @effects[PBEffects::SkyDroppee] = nil
     end
     # "X used Y!" message
-    case thismove.pbDisplayUseMessage(self)
+    case !(thismove.id == PBMoves::PYROCLASM && specialusage) ? thismove.pbDisplayUseMessage(self) : thismove.pbDisplayUseMessage(self,choice[3])
     when 2   # Continuing Bide
       if !turneffects[PBEffects::SpecialUsage]
         self.lastRoundMoved=@battle.turncount
@@ -6747,8 +6920,13 @@ class PokeBattle_Battler
       return
     end
     # Find the user and target(s)
-    targets=[]
-    user=pbFindUser(choice,targets,moveid)
+    unless moveid == PBMoves::PYROCLASM
+      targets=[]
+      user=pbFindUser(choice,targets,moveid)
+    else
+      user=self
+      targets = pbPyroclasmTargeting(user,choice[3],specialusage)
+    end
     if user.hasWorkingAbility(:MOLDBREAKER) ||       
       user.hasWorkingAbility(:TERAVOLT)   ||
       user.hasWorkingAbility(:TURBOBLAZE) ||
@@ -6798,7 +6976,6 @@ class PokeBattle_Battler
     if @battle.pbOwnedByPlayer?(user.index)
       $game_variables[530] += 1
     end
-    user.lastMoveUsed=thismove.id
     if !turneffects[PBEffects::SpecialUsage]
       user.lastMoveUsedSketch=thismove.id
       user.lastRegularMoveUsed=thismove.id
@@ -6819,14 +6996,15 @@ class PokeBattle_Battler
         thismove.target==PBTargets::SingleOpposing ||
         thismove.target==PBTargets::OppositeOpposing    
         @battle.pbDisplay(_INTL("But there was no target..."))
-        if thismove.function==0xC9 || thismove.function==0xCA || thismove.function==0xCB ||
-          thismove.function==0xCC || thismove.function==0xCD || thismove.function==0xCE #Sprites for two turn moves            
+        user.lastMoveUsed=thismove.id
+        if [0xC9, 0xCC, 0xCA, 0xCB, 0xCD, 0xCE, 0x23C].include?(thismove.function) #Sprites for two turn moves          
           @battle.scene.pbUnVanishSprite(user)
         end            
       else
         PBDebug.logonerr{
           thismove.pbEffect(user,nil)
         }
+        user.lastMoveUsed=thismove.id
       end
       flashed=false
       # Misc Field Effects 1
@@ -7003,6 +7181,7 @@ class PokeBattle_Battler
       if @effects[PBEffects::TwoTurnAttack]>0 && targets.length==0
         numhits=thismove.pbNumHits(user)
         pbProcessMoveAgainstTarget(thismove,user,nil,numhits,turneffects,false,alltargets,showanimation)
+        user.lastMoveUsed=thismove.id
       end           
       for i in 0...targets.length
         alltargets.push(targets[i].index)
@@ -7096,10 +7275,11 @@ class PokeBattle_Battler
         # Use move against the current target
         hitcheck = pbProcessMoveAgainstTarget(thismove,user,target,numhits,turneffects,false,alltargets,showanimation)
         showanimation=false unless (hitcheck==0 && (thismove.pbIsSpecial?(thismove.type) || thismove.pbIsPhysical?(thismove.type)))
+        user.lastMoveUsed=thismove.id
         if thismove.function==0x15E && hitcheck>0
           @battle.pbDisplay(_INTL("{1} was burnt out!",self.pbThis))
         end
-       # Probopass Crest
+        # Probopass Crest
         if isConst?(user.species,PBSpecies,:PROBOPASS) && user.hasWorkingItem(:PROBOCREST)
           if thismove.basedamage > 0 && thismove.id != PBMoves::PROBOPOG
             move=getConst(PBMoves,:PROBOPOG) || 0
@@ -7112,6 +7292,27 @@ class PokeBattle_Battler
             end
             user.pbUseMoveSimple(move,-1,movetarget)
           end
+        end
+        # Pyroclasm
+        if thismove.id == PBMoves::PYROCLASM && ((target == user.pbPartner && hitcheck == 0) || (hitcheck > 0))
+          failsafe = 0
+          # Bounce if move was successful and not targeting user
+          bounceindex = target.index
+          newindex = -1
+          loop do
+            newindex = [3, 2, 0, 1][bounceindex]
+            bounceindex = newindex
+            break if newindex != target.index && @battle.battlers[newindex].hp > 0
+          end
+          bouncedtarget = @battle.battlers[newindex]
+          moveindex = -1
+          for i in 0...4
+            next if !user.moves[i] || user.moves[i].id != PBMoves::PYROCLASM
+            moveindex = i
+            break
+          end
+          @battle.field.effects[PBEffects::PyroPreTarget] = target.index
+          user.pbUseMoveSimple(PBMoves::PYROCLASM,moveindex,bouncedtarget)
         end
         i+=1
       end
@@ -7138,15 +7339,11 @@ class PokeBattle_Battler
             for i in 0...4
               combust = @battle.battlers[i].hp
               next if combust==0
-              invulcheck=PBMoveData.new(@battle.battlers[i].effects[PBEffects::TwoTurnAttack]).function
-              case invulcheck
-              when 0xC9, 0xCC, 0xCA, 0xCB, 0xCD, 0xCE
-                combust = 0
-              end
+              combust = 0 if [0xC9, 0xCC, 0xCA, 0xCB, 0xCD, 0xCE, 0x23C].include?(PBMoveData.new(@battle.battlers[i].effects[PBEffects::TwoTurnAttack]).function)
               combust =0 if @battle.battlers[i].effects[PBEffects::SkyDrop]
               combust-=1 if @battle.battlers[i].hasWorkingAbility(:STURDY)
               combust =0 if @battle.battlers[i].hasWorkingAbility(:FLASHFIRE)
-              if @battle.battlers[i].isbossmon && @battle.shieldCount>0
+              if @battle.battlers[i].isbossmon && !@battle.battlers[i].immunities[:fieldEffectDamage].include?($fefieldeffect)
                 combust =0 
               end
               combust =0 if @battle.battlers[i].effects[PBEffects::Protect] == true
@@ -7157,6 +7354,10 @@ class PokeBattle_Battler
               combust =0 if @battle.battlers[i].effects[PBEffects::MatBlock] == true
               @battle.battlers[i].pbReduceHP(combust) if combust != 0
               @battle.battlers[i].pbFaint if @battle.battlers[i].isFainted?
+              if @battle.battlers[i].hp > 0 && @battle.battlers[i].isbossmon
+                pbDisplay(_INTL("{1} grew resistant to the combustion!",@battle.battlers[i].pbThis))
+                @battle.battlers[i].immunities[:fieldEffectDamage].push($fefieldeffect)
+              end
             end
           else
             @battle.pbDisplay(_INTL("A Pokemon's Damp ability prevented a complete explosion!"))
@@ -7168,14 +7369,10 @@ class PokeBattle_Battler
             thismove.id == PBMoves::SPARKLINGARIA || thismove.id == PBMoves::HYDROPUMP)
           @battle.pbDisplay(_INTL("Steam shot up from the field!"))
           for i in 0...4
-            canthit = 0
-            invulcheck=PBMoveData.new(@battle.battlers[i].effects[PBEffects::TwoTurnAttack]).function
-            case invulcheck
-            when 0xC9, 0xCC, 0xCA, 0xCB, 0xCD, 0xCE
-              canthit = 1
-            end
-            canthit =1 if @battle.battlers[i].effects[PBEffects::SkyDrop]
-            if canthit = 0 && @battle.battlers[i].pbCanReduceStatStage?(PBStats::ACCURACY)
+            canthit = false
+            canthit = true if [0xC9, 0xCC, 0xCA, 0xCB, 0xCD, 0xCE, 0x23C].include?(PBMoveData.new(@battle.battlers[i].effects[PBEffects::TwoTurnAttack]).function)
+            canthit = true if @battle.battlers[i].effects[PBEffects::SkyDrop]
+            if !canthit && @battle.battlers[i].pbCanReduceStatStage?(PBStats::ACCURACY)
               @battle.battlers[i].pbReduceStatBasic(PBStats::ACCURACY,1)
               @battle.pbCommonAnimation("StatDown",@battle.battlers[i],nil)
               @battle.pbDisplay(_INTL("{1}'s accuracy fell!",@battle.battlers[i].pbThis))
@@ -7189,14 +7386,10 @@ class PokeBattle_Battler
             thismove.id == PBMoves::WHIRLPOOL)
           @battle.pbDisplay(_INTL("The attack stirred up the ash on the ground!"))
           for i in 0...4
-            canthit = 0
-            invulcheck=PBMoveData.new(@battle.battlers[i].effects[PBEffects::TwoTurnAttack]).function
-            case invulcheck
-            when 0xC9, 0xCC, 0xCA, 0xCB, 0xCD, 0xCE
-              canthit = 1
-            end
-            canthit =1 if @battle.battlers[i].effects[PBEffects::SkyDrop]
-            if canthit = 0 && @battle.battlers[i].pbCanReduceStatStage?(PBStats::ACCURACY)
+            canthit = false
+            canthit = true if [0xC9, 0xCC, 0xCA, 0xCB, 0xCD, 0xCE, 0x23C].include?(PBMoveData.new(@battle.battlers[i].effects[PBEffects::TwoTurnAttack]).function)
+            canthit = true if @battle.battlers[i].effects[PBEffects::SkyDrop]
+            if !canthit && @battle.battlers[i].pbCanReduceStatStage?(PBStats::ACCURACY)
               @battle.battlers[i].pbReduceStatBasic(PBStats::ACCURACY,1)
               @battle.pbCommonAnimation("StatDown",@battle.battlers[i],nil)
               @battle.pbDisplay(_INTL("{1}'s accuracy fell!",@battle.battlers[i].pbThis))
@@ -7214,11 +7407,7 @@ class PokeBattle_Battler
             for i in 0...4
               quakedrop = @battle.battlers[i].hp
               next if quakedrop==0
-              invulcheck=PBMoveData.new(@battle.battlers[i].effects[PBEffects::TwoTurnAttack]).function
-              case invulcheck
-              when 0xC9, 0xCC, 0xCA, 0xCB, 0xCD, 0xCE
-                quakedrop = 0
-              end
+              quakedrop =0 if [0xC9, 0xCC, 0xCA, 0xCB, 0xCD, 0xCE, 0x23C].include?(PBMoveData.new(@battle.battlers[i].effects[PBEffects::TwoTurnAttack]).function)
               quakedrop =0 if @battle.battlers[i].effects[PBEffects::SkyDrop]
               quakedrop-=1 if @battle.battlers[i].hasWorkingAbility(:STURDY)                 
               quakedrop/=3 if (@battle.battlers[i].hasWorkingAbility(:SOLIDROCK) || @battle.SilvallyCheck(@battle.battlers[i],PBTypes::ROCK))
@@ -7255,11 +7444,7 @@ class PokeBattle_Battler
             shatter = @battle.battlers[i].totalhp
             next if shatter==0
             shatter/=2
-            invulcheck=PBMoveData.new(@battle.battlers[i].effects[PBEffects::TwoTurnAttack]).function
-            case invulcheck
-            when 0xC9, 0xCC, 0xCA, 0xCB, 0xCD, 0xCE
-              shatter = 0
-            end
+            shatter =0 if [0xC9, 0xCC, 0xCA, 0xCB, 0xCD, 0xCE, 0x23C].include?(PBMoveData.new(@battle.battlers[i].effects[PBEffects::TwoTurnAttack]).function)
             shatter =0 if @battle.battlers[i].effects[PBEffects::SkyDrop]
             shatter =0 if @battle.battlers[i].hasWorkingAbility(:SHELLARMOR)
             shatter =0 if @battle.battlers[i].hasWorkingAbility(:BATTLEARMOR)
@@ -7304,27 +7489,23 @@ class PokeBattle_Battler
             for i in 0...4
               combust = (@battle.battlers[i].totalhp)/2
               next if combust==0
-              invulcheck=PBMoveData.new(@battle.battlers[i].effects[PBEffects::TwoTurnAttack]).function
-              case invulcheck
-              when 0xC9, 0xCC, 0xCA, 0xCB, 0xCD, 0xCE
-                combust = 0
-              end
+              combust =0 if [0xC9, 0xCC, 0xCA, 0xCB, 0xCD, 0xCE, 0x23C].include?(PBMoveData.new(@battle.battlers[i].effects[PBEffects::TwoTurnAttack]).function)
               combust =0 if @battle.battlers[i].effects[PBEffects::SkyDrop]
-              #combust-=1 if @battle.battlers[i].hasWorkingAbility(:STURDY)
               combust =0 if @battle.battlers[i].hasWorkingAbility(:FLASHFIRE)
-              if (@battle.battlers[i].isbossmon && @battle.shieldCount>0)
+              combust =0 if @battle.battlers[i].effects[PBEffects::Protect] 
+              combust =0 if @battle.battlers[i].effects[PBEffects::WideGuard] 
+              combust =0 if @battle.battlers[i].effects[PBEffects::KingsShield]
+              combust =0 if @battle.battlers[i].effects[PBEffects::SpikyShield] 
+              combust =0 if @battle.battlers[i].effects[PBEffects::MatBlock] 
+              if @battle.battlers[i].isbossmon && !@battle.battlers[i].immunities[:fieldEffectDamage].include?($fefieldeffect)
                 combust =0 
-              elsif (@battle.battlers[i].isbossmon && @battle.shieldCount==0)
-                combust = 0.5
               end
-              combust =0 if @battle.battlers[i].effects[PBEffects::Protect] == true
-              combust =0 if @battle.battlers[i].effects[PBEffects::WideGuard] == true
-              #combust-=1 if @battle.battlers[i].effects[PBEffects::Endure] == true
-              combust =0 if @battle.battlers[i].effects[PBEffects::KingsShield] == true
-              combust =0 if @battle.battlers[i].effects[PBEffects::SpikyShield] == true
-              combust =0 if @battle.battlers[i].effects[PBEffects::MatBlock] == true
               @battle.battlers[i].pbReduceHP(combust) if combust != 0
               @battle.battlers[i].pbFaint if @battle.battlers[i].isFainted?
+              if @battle.battlers[i].hp > 0 && @battle.battlers[i].isbossmon
+                pbDisplay(_INTL("{1} grew resistant to the combustion!",@battle.battlers[i].pbThis))
+                @battle.battlers[i].immunities[:fieldEffectDamage].push($fefieldeffect)
+              end
             end
           else
             @battle.pbDisplay(_INTL("A Pokemon's Damp ability prevented a complete explosion!"))
@@ -7490,6 +7671,11 @@ class PokeBattle_Battler
                   user.pbOpposingSide.effects[PBEffects::StickyWeb] = false
                   hazardsExist = true
                 end
+                if user.pbOwnSide.effects[PBEffects::MysticTree]>0 || user.pbOpposingSide.effects[PBEffects::MysticTree]>0
+                  user.pbOwnSide.effects[PBEffects::MysticTree] = 0
+                  user.pbOpposingSide.effects[PBEffects::MysticTree] = 0
+                  hazardsExist = true
+                end
                 if hazardsExist
                   @battle.pbDisplay(_INTL("Removed all hazards from the field!"))
                 end
@@ -7536,6 +7722,11 @@ class PokeBattle_Battler
               user.pbOpposingSide.effects[PBEffects::StickyWeb] = false
               hazardsExist = true
             end
+            if user.pbOwnSide.effects[PBEffects::MysticTree]>0 || user.pbOpposingSide.effects[PBEffects::MysticTree]>0
+              user.pbOwnSide.effects[PBEffects::MysticTree] = 0
+              user.pbOpposingSide.effects[PBEffects::MysticTree] = 0
+              hazardsExist = true
+            end
             if hazardsExist
               @battle.pbDisplay(_INTL("Removed all hazards from the field!"))
             end
@@ -7580,6 +7771,11 @@ class PokeBattle_Battler
                   user.pbOpposingSide.effects[PBEffects::StickyWeb] = false
                   hazardsExist = true
                 end
+                if user.pbOwnSide.effects[PBEffects::MysticTree]>0 || user.pbOpposingSide.effects[PBEffects::MysticTree]>0
+                  user.pbOwnSide.effects[PBEffects::MysticTree] = 0
+                  user.pbOpposingSide.effects[PBEffects::MysticTree] = 0
+                  hazardsExist = true
+                end
                 if hazardsExist
                   @battle.pbDisplay(_INTL("Removed all hazards from the field!"))
                 end
@@ -7612,6 +7808,11 @@ class PokeBattle_Battler
                 if user.pbOwnSide.effects[PBEffects::StickyWeb] || user.pbOpposingSide.effects[PBEffects::StickyWeb]
                   user.pbOwnSide.effects[PBEffects::StickyWeb] = false
                   user.pbOpposingSide.effects[PBEffects::StickyWeb] = false
+                  hazardsExist = true
+                end
+                if user.pbOwnSide.effects[PBEffects::MysticTree]>0 || user.pbOpposingSide.effects[PBEffects::MysticTree]>0
+                  user.pbOwnSide.effects[PBEffects::MysticTree] = 0
+                  user.pbOpposingSide.effects[PBEffects::MysticTree] = 0
                   hazardsExist = true
                 end
                 if hazardsExist
@@ -7740,6 +7941,11 @@ class PokeBattle_Battler
             user.pbOpposingSide.effects[PBEffects::StickyWeb] = false
             hazardsExist = true
           end
+          if user.pbOwnSide.effects[PBEffects::MysticTree]>0 || user.pbOpposingSide.effects[PBEffects::MysticTree]>0
+            user.pbOwnSide.effects[PBEffects::MysticTree] = 0
+            user.pbOpposingSide.effects[PBEffects::MysticTree] = 0
+            hazardsExist = true
+          end
           if hazardsExist
             @battle.pbDisplay(_INTL("Removed all hazards from field!"))
           end
@@ -7860,6 +8066,11 @@ class PokeBattle_Battler
           if user.pbOwnSide.effects[PBEffects::StickyWeb] || user.pbOpposingSide.effects[PBEffects::StickyWeb]
             user.pbOwnSide.effects[PBEffects::StickyWeb] = false
             user.pbOpposingSide.effects[PBEffects::StickyWeb] = false
+            hazardsExist = true
+          end
+          if user.pbOwnSide.effects[PBEffects::MysticTree]>0 || user.pbOpposingSide.effects[PBEffects::MysticTree]>0
+            user.pbOwnSide.effects[PBEffects::MysticTree] = 0
+            user.pbOpposingSide.effects[PBEffects::MysticTree] = 0
             hazardsExist = true
           end
           if hazardsExist
@@ -8236,6 +8447,7 @@ class PokeBattle_Battler
       user.effects[PBEffects::LaserFocus]-=1
     end
     user.effects[PBEffects::Charge]=false if user.effects[PBEffects::Charge] && thismove.type==PBTypes::ELECTRIC && thismove.basedamage>0 # Charge wearing off [Gen 9]
+    user.effects[PBEffects::Fertilize]=false if user.effects[PBEffects::Fertilize] && thismove.type==PBTypes::GRASS && thismove.basedamage>0 # Fertilize
     @battle.pbGainEXP
     # Battle Arena only - update skills
     for i in 0...4
@@ -8294,6 +8506,7 @@ class PokeBattle_Battler
     # Cancel some lingering effects which only apply until the user next moves
     @effects[PBEffects::DestinyBond]=false
     @effects[PBEffects::Grudge]=false
+    @effects[PBEffects::FlameWreath]=false
     # Encore's effect ends if the encored move is no longer available
     if @effects[PBEffects::Encore]>0 &&
       @moves[@effects[PBEffects::EncoreIndex]].id!=@effects[PBEffects::EncoreMove]
@@ -8303,9 +8516,9 @@ class PokeBattle_Battler
       @effects[PBEffects::EncoreMove]=0
     end      
     # Wake up in an uproar
-    if self.status==PBStatuses::SLEEP && !self.hasWorkingAbility(:SOUNDPROOF)
+    if self.status==PBStatuses::SLEEP && !self.hasWorkingAbility(:SOUNDPROOF) && @effects[PBEffects::Spritz]!=1
       for i in 0...4
-        if @battle.battlers[i].effects[PBEffects::Uproar]>0 || @battle.battlers[i].effects[PBEffects::FeverPitch]==true
+        if (@battle.battlers[i].effects[PBEffects::Uproar]>0 || @battle.battlers[i].effects[PBEffects::FeverPitch])
           pbCureStatus(false)
           @battle.pbDisplay(_INTL("{1} woke up in the uproar!",pbThis))
         end
@@ -8325,6 +8538,7 @@ class PokeBattle_Battler
         self.hasWorkingAbility(:GORILLATACTICS))
       @effects[PBEffects::ChoiceBand]=@lastMoveUsed
     end
+    @battle.field.effects[PBEffects::PyroPreTarget] = -1
     @battle.synchronize[0]=-1
     @battle.synchronize[1]=-1
     @battle.synchronize[2]=0

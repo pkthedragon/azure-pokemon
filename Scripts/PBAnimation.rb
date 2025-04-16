@@ -127,7 +127,7 @@ end
 
 
 
-def pbSpriteSetAnimFrame(sprite,frame,user=nil,target=nil,ineditor=false)
+def pbSpriteSetAnimFrame(sprite,frame,user=nil,target=nil,ineditor=false,deaduser=false)
   return if !sprite
   if !frame
     sprite.visible=false
@@ -138,11 +138,11 @@ def pbSpriteSetAnimFrame(sprite,frame,user=nil,target=nil,ineditor=false)
   sprite.angle=frame[AnimFrame::ANGLE]
   sprite.mirror=(frame[AnimFrame::MIRROR]>0)
   sprite.opacity=frame[AnimFrame::OPACITY]
-  sprite.visible=true
+  sprite.visible=true unless deaduser && user == sprite
   if !frame[AnimFrame::VISIBLE]==1 && ineditor
     sprite.opacity/=2
   else
-    sprite.visible=(frame[AnimFrame::VISIBLE]==1)
+    sprite.visible=(frame[AnimFrame::VISIBLE]==1) unless deaduser && user == sprite
   end
   pattern=frame[AnimFrame::PATTERN]
   if pattern>=0
@@ -826,7 +826,7 @@ class PBAnimationPlayerX
       if @frame<0
         unless (@user).nil?
           unless defined?(@user.effects).nil?
-            if @user.effects[PBEffects::UsingSubstituteRightNow]==true
+            if @user.effects[PBEffects::AnimationImpactMove]==true
               @scene.pbSubstituteSprite(@user,@user.pbIsOpposing?(1))
             end
           end        
@@ -835,6 +835,9 @@ class PBAnimationPlayerX
         @animbitmap=nil
         return
       end
+    end
+    if @user&.effects && @user.effects[PBEffects::AnimationImpactMove] == :PYROCLASM
+      deaduser = true
     end
     if !@animbitmap || @animbitmap.disposed?
       @animbitmap=AnimatedBitmap.new("Graphics/Animations/"+@animation.graphic,
@@ -868,7 +871,7 @@ class PBAnimationPlayerX
           sprite.bitmap=@animbitmap
         end
         # Apply settings to the cel sprite
-        pbSpriteSetAnimFrame(sprite,cel,@usersprite,@targetsprite)
+        pbSpriteSetAnimFrame(sprite,cel,@usersprite,@targetsprite,false,deaduser)
         case cel[AnimFrame::FOCUS]
           when 1   # Focused on target
             sprite.x=cel[AnimFrame::X]+@targetOrig[0]-PokeBattle_SceneConstants::FOCUSTARGET_X

@@ -1256,7 +1256,7 @@ def pbListScreen(title,lister)
       lister.refresh(list.index)
       selectedmap=list.index
     end
-    if Input.trigger?(Input::C) || (list.doubleclick? rescue false)
+    if Input.trigger?(Input::C) #|| (list.doubleclick? rescue false)
       break
     elsif Input.trigger?(Input::B)
       selectedmap=-1
@@ -1310,7 +1310,7 @@ def pbListScreenBlock(title,lister)
         list.index=list.commands.length
       end
       lister.refresh(list.index)
-    elsif Input.trigger?(Input::C) || (list.doubleclick? rescue false)
+    elsif Input.trigger?(Input::C) #|| (list.doubleclick? rescue false)
       yield(Input::C, lister.value(selectedmap))
       list.commands=lister.commands
       if list.index==list.commands.length
@@ -2108,7 +2108,7 @@ def pbPropertyList(title,data,properties,saveprompt=false)
           commands.push(sprintf("%s=%s",properties[i][0],propobj.format(data[i])))
         end
         list.commands=commands
-      elsif Input.trigger?(Input::C) || (list.doubleclick? rescue false)
+      elsif Input.trigger?(Input::C) #|| (list.doubleclick? rescue false)
         propobj=properties[selectedmap][1]
         oldsetting=data[selectedmap]
         newsetting=propobj.set(properties[selectedmap][0],oldsetting)
@@ -2203,7 +2203,7 @@ def pbEncounterEditorTypes(enc,enccmd)
       command=-1
       break
     end
-    if Input.trigger?(Input::C) || (enccmd.doubleclick? rescue false)
+    if Input.trigger?(Input::C) #|| (enccmd.doubleclick? rescue false)
       command=enccmd.index
       break
     end

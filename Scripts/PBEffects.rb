@@ -29,7 +29,7 @@ begin
     Foresight         = 25
     FuryCutter        = 26
     FutureSight       = 27
-    FutureSightDamage = 28
+    FutureSightPkmnIdx= 28
     FutureSightMove   = 29
     FutureSightUser   = 30
     GastroAcid        = 31
@@ -109,7 +109,7 @@ begin
     RagePowder        = 115
     MagicBounced      = 116
     TracedAbility     = 117
-    UsingSubstituteRightNow = 118
+    AnimationImpactMove = 118
     SkyDroppee        = 119
     DestinyRate       = 120
     BanefulBunker     = 121
@@ -138,7 +138,6 @@ begin
     SusCrit           = 144  
     Obstruct          = 145
     Octolock          = 146
-    StallEntry        = 705
     # -1 = no stance, 0 = defense stance, 1 = attack stance
     DesertsMark       = 147
     WillMega          = 148  
@@ -154,6 +153,17 @@ begin
     CritCount       = 158
     UsingItem        = 159
     StatChangeHolder = 160
+    JawLockUser   = 161
+    JawLock       = 162
+    CellSplitter      = 163
+    Rebuild           = 164
+    Stormhold         = 165
+    Spritz            = 166
+    Forebode          = 167
+    Fertilize         = 168
+    FlameWreath       = 169
+    Stench            = 200
+    StallEntry        = 705
     # These effects apply to a side - starts from 300
     LightScreen   = 300
     LuckyChant    = 301
@@ -172,6 +182,7 @@ begin
     AuroraVeil    = 314
     DuneDefense   = 315
     BattleCry     = 316
+    MysticTree    = 317
     # These effects apply to the battle (i.e. both sides) - starts from 400
     Gravity       = 400
     MagicRoom     = 401
@@ -186,6 +197,7 @@ begin
     MudSport      = 409
     WaterSport    = 410
     SosBuffer     = 411
+    PyroPreTarget = 412   
     # V13 + Overlay Terrains - Grassy/Electric/Misty/Psychic
     GrassyTerrain = 501
     MistyTerrain = 502

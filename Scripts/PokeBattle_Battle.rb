@@ -2543,6 +2543,11 @@ class PokeBattle_Battle
       pbDisplayPaused(_INTL("{1} can't be switched out!",thispkmn.pbThis)) if showMessages
       return false
     end
+    # Jaw Lock
+    if thispkmn.effects[PBEffects::JawLock]
+      pbDisplayPaused(_INTL("{1} can't be switched out!",thispkmn.pbThis)) if showMessages
+      return false
+    end
     opp1=thispkmn.pbOpposing1
     opp2=thispkmn.pbOpposing2
     opp=nil
@@ -3348,7 +3353,11 @@ class PokeBattle_Battle
     elsif isConst?(item,PBItems,:FULLRESTORE)
       fullhp=(battler.hp==battler.totalhp)
       battler.pbRecoverHP(battler.totalhp-battler.hp,true)
-      battler.status=0; battler.statusCount=0
+      unless battler.effects[PBEffects::Spritz] == 1
+        battler.status=0; battler.statusCount=0 
+      else
+        pbDisplay(_INTL("{1}'s spritz prevented status cure!",battler.pbThis))
+      end
       battler.effects[PBEffects::Confusion]=0
       if fullhp
         pbDisplay(_INTL("{1} became healthy!",battler.pbThis))
@@ -3356,7 +3365,11 @@ class PokeBattle_Battle
         pbDisplay(_INTL("{1}'s HP was restored.",battler.pbThis))
       end
     elsif isConst?(item,PBItems,:FULLHEAL)
-      battler.status=0; battler.statusCount=0
+      unless battler.effects[PBEffects::Spritz] == 1
+        battler.status=0; battler.statusCount=0 
+      else
+        pbDisplay(_INTL("{1}'s spritz prevented status cure!",battler.pbThis))
+      end
       battler.effects[PBEffects::Confusion]=0
       pbDisplay(_INTL("{1} became healthy!",battler.pbThis))
     elsif isConst?(item,PBItems,:XATTACK)
@@ -4194,6 +4207,37 @@ end
         end
       end
       pkmn.pbFaint if pkmn.hp<=0
+      # Mystical Tree
+      if pkmn.pbOwnSide.effects[PBEffects::MysticTree]>0
+        if !pkmn.hasWorkingAbility(:MAGICGUARD) && !(pkmn.hasWorkingAbility(:WONDERGUARD) && $fefieldeffect == 44) && !pkmn.hasWorkingItem(:HEAVYDUTYBOOTS)
+          atype=getConst(PBTypes,:GRASS) || 0
+          eff=PBTypes.getCombinedEffectiveness(atype,pkmn.type1,pkmn.type2)
+          if $fefieldeffect == 36
+            tempeff = 16 if eff == 0 
+            tempeff = 16 if eff == 1
+            tempeff = 8 if eff == 2
+            tempeff = 4 if eff == 4
+            tempeff = 2 if eff == 8
+            tempeff= 1 if eff == 16
+            eff = tempeff
+          end
+          if eff>0
+            eff *= pkmn.pbOwnSide.effects[PBEffects::MysticTree] # No. of layers
+            @scene.pbDamageAnimation(pkmn,0)
+            pkmn.pbReduceHP([(pkmn.totalhp*eff/48).floor,1].max)
+            pbDisplay(_INTL("{1} was hurt by the mystical trees!",pkmn.pbThis))
+          end
+        end
+      end
+      pkmn.pbFaint if pkmn.isFainted?
+      if pkmn.pbOpposingSide.effects[PBEffects::MysticTree]>0 && pkmn.pbHasType?(:GRASS) && pkmn.hp != pkmn.totalhp
+        if pkmn.effects[PBEffects::HealBlock]==0
+          hpgain=(pkmn.totalhp/12).floor
+          hpgain *= pkmn.pbOpposingSide.effects[PBEffects::MysticTree]
+          hpgain=pkmn.pbRecoverHP(hpgain,true)
+          pbDisplay(_INTL("{1} was healed by the mystical trees!",pkmn.pbThis)) if hpgain>0
+        end
+      end
       # Sticky Web
       if pkmn.pbOwnSide.effects[PBEffects::StickyWeb]
         if !pkmn.isAirborne? && !pkmn.hasWorkingItem(:HEAVYDUTYBOOTS)
@@ -4363,99 +4407,99 @@ end
     if !($febackgroundstore.is_a?(String)) && !($febackgroundstore.nil?)
         #    $fefieldeffect = $feoverride
       if $febackgroundstore == 1
-        backdrop="Electric"
+        backdrop= "Electric"
       elsif $febackgroundstore == 2
-        backdrop="Grassy"
+        backdrop= "Grassy"
       elsif $febackgroundstore == 3
-        backdrop="Misty"
+        backdrop= "Misty"
       elsif $febackgroundstore == 4
-        backdrop="DarkCrystalCavern"
+        backdrop= "DarkCrystalCavern"
       elsif $febackgroundstore == 5
-        backdrop="Chess"
+        backdrop= "Chess"
       elsif $febackgroundstore == 6
-        backdrop="BigTop"
+        backdrop= "BigTop"
       elsif $febackgroundstore == 7
-        backdrop="Burning"
+        backdrop= "Burning"
       elsif $febackgroundstore == 8
-        backdrop="Swamp"
+        backdrop= "Swamp"
       elsif $febackgroundstore == 9
-        backdrop="Rainbow"
+        backdrop= "Rainbow"
       elsif $febackgroundstore == 10
-        backdrop="Corrosive"
+        backdrop= "Corrosive"
       elsif $febackgroundstore == 11
-        backdrop="CorrosiveMist"
+        backdrop= "CorrosiveMist"
       elsif $febackgroundstore == 12
-        backdrop="Desert"
+        backdrop= "Desert"
       elsif $febackgroundstore == 13
-        backdrop="Icy"
+        backdrop= "Icy"
       elsif $febackgroundstore == 14
-        backdrop="Rocky"
+        backdrop= "Rocky"
       elsif $febackgroundstore == 15
-        backdrop="Forest"
+        backdrop= "Forest"
       elsif $febackgroundstore == 16
-        backdrop="Superheated"
+        backdrop= "Superheated"
       elsif $febackgroundstore == 17
-        backdrop="Factory"
+        backdrop= "Factory"
       elsif $febackgroundstore == 18
-        backdrop="Shortcircuit"
+        backdrop= "Shortcircuit"
       elsif $febackgroundstore == 19
-        backdrop="Wasteland"
+        backdrop= "Wasteland"
       elsif $febackgroundstore == 20
-        backdrop="AshenBeach"
+        backdrop= "AshenBeach"
       elsif $febackgroundstore == 21
-        backdrop="Water"
+        backdrop= "Water"
       elsif $febackgroundstore == 22
-        backdrop="Underwater"
+        backdrop= "Underwater"
       elsif $febackgroundstore == 23
-        backdrop="Cave"
+        backdrop= "Cave"
       elsif $febackgroundstore == 24
-        backdrop="Glitch"
+        backdrop= "Glitch"
       elsif $febackgroundstore == 25
-        backdrop="CrystalCavern"
+        backdrop= "CrystalCavern"
       elsif $febackgroundstore == 26
         if $game_map.map_id==415
-          backdrop="Water2"
+          backdrop= "Water2"
         else 
           backdrop = "MurkwaterSurface"
         end
       elsif $febackgroundstore == 27
-        backdrop="Mountain"
+        backdrop= "Mountain"
       elsif $febackgroundstore == 28
-        backdrop="SnowyMountain"
+        backdrop= "SnowyMountain"
       elsif $febackgroundstore == 29
-        backdrop="Holy"
+        backdrop= "Holy"
       elsif $febackgroundstore == 30
-        backdrop="Mirror"
+        backdrop= "Mirror"
       elsif $febackgroundstore == 31
-        backdrop="FairyTale"
+        backdrop= "FairyTale"
       elsif $febackgroundstore == 32
-        backdrop="DragonsDen"
+        backdrop= "DragonsDen"
       elsif $febackgroundstore == 33
-        backdrop="FlowerGarden0"
+        backdrop= "FlowerGarden0"
       elsif $febackgroundstore == 34
-        backdrop="Starlight1"
+        backdrop= "Starlight1"
       elsif $febackgroundstore == 35
-        backdrop="NewWorld"
+        backdrop= "NewWorld"
       elsif $febackgroundstore == 36
-        backdrop="Inverse"
+        backdrop= "Inverse"
       elsif $febackgroundstore == 37
-        backdrop="Psychic" 
+        backdrop= "Psychic" 
       elsif $febackgroundstore == 38
-        backdrop="Dimensional"                 
+        backdrop= "Dimensional"                 
       elsif $febackgroundstore == 39
-        backdrop="Angie"
+        backdrop= "Angie"
       elsif $febackgroundstore == 40
-        backdrop="Haunted"
+        backdrop= "Haunted"
       elsif $febackgroundstore == 41
-        backdrop="Corrupted"
+        backdrop= "Corrupted"
       elsif $febackgroundstore == 42
-        backdrop="Darchlight"
+        backdrop= "Darchlight"
       elsif $febackgroundstore == 43
-        backdrop="GoldenArena"
+        backdrop= "GoldenArena"
       elsif $febackgroundstore == 44
-        backdrop="ColosseumFieldPlaceholder"
+        backdrop= "ColosseumFieldPlaceholder"
       elsif $febackgroundstore == 45
-        backdrop="InfernalFieldPlaceholder"
+        backdrop= "InfernalFieldPlaceholder"
       end  
       backdrop3 = backdrop
       $febackgroundstore = backdrop3
@@ -4467,29 +4511,29 @@ end
         return pbChangeBGSprite
       end
     end
-    base=""
-    trialname=""
+    base= ""
+    trialname= ""
     environ=environment
     if environ==PBEnvironment::Grass || environ==PBEnvironment::TallGrass
-      trialname="Grass"
+      trialname= "Grass"
     elsif environ==PBEnvironment::Sand
-      trialname="Sand"
+      trialname= "Sand"
 #    elsif $PokemonGlobal.surfing
 #      trialname="Water"
     elsif $PokemonGlobal.lavasurfing
-      trialname="Volcano"
+      trialname= "Volcano"
     end
     if pbResolveBitmap(sprintf("Graphics/Battlebacks/playerbase"+backdrop+trialname))
       base=trialname
     end
     # Choose time of day
-    time=""
-    trialname=""
+    time= ""
+    trialname= ""
     timenow=pbGetTimeNow
     if PBDayNight.isNight?(timenow)
-      trialname="Night"
+      trialname= "Night"
     elsif PBDayNight.isEvening?(timenow)
-      trialname="Eve"
+      trialname= "Eve"
     end
     if pbResolveBitmap(sprintf("Graphics/Battlebacks/battlebg"+backdrop+trialname))
       time=trialname
@@ -5394,6 +5438,7 @@ def pbStartBattle(canlose=false)
       if @choices[i][0]!=1 && @choices[i][0]!=2
         @battlers[i].effects[PBEffects::DestinyBond]=false
         @battlers[i].effects[PBEffects::Grudge]=false
+        @battlers[i].effects[PBEffects::FlameWreath]=false
       end
       @battlers[i].turncount+=1 if !@battlers[i].isFainted?
       @battlers[i].effects[PBEffects::Rage]=false if !pbChoseMove?(i,:RAGE)
@@ -5480,9 +5525,9 @@ def pbStartBattle(canlose=false)
     @switching=false
     @partnerswitch.clear
     for i in 0...4
-       if !switched.include?(i)
-         @battlers[i].pbCustapBerry
-       end
+      if !switched.include?(i)
+        @battlers[i].pbCustapBerry
+      end
     end
     # Use items
     for i in priority
@@ -5536,6 +5581,12 @@ def pbStartBattle(canlose=false)
         i.attack = i.spatk
       end
     end
+# Forebode
+    for i in priority
+      if i.effects[PBEffects::Forebode][0]
+        i.pbTriggerForebode
+      end
+    end
 # Use Attacks
     for i in priority
       if pbChoseMoveFunctionCode?(i.index,0x115) # Focus Punch
@@ -5556,7 +5607,7 @@ def pbStartBattle(canlose=false)
         i.effects[PBEffects::ShellTrap]=true
         pbDisplay(_INTL("{1} set a shell trap!",i.pbThis))
       end
-    end     
+    end
     for i in priority
       i.pbProcessTurn(@choices[i.index])
       if i.effects[PBEffects::Round]
@@ -5581,24 +5632,24 @@ def pbStartBattle(canlose=false)
   
   # Checks if anyone is eligible to receive an item through symbiosis
   def pbSymbiosisCheck(battlers)
-      result = Array.new
-      count  = 0
-      for i in battlers
-        next if (i.pokemon.nil? || i.pbPartner.pokemon.nil?)
-        if i.item != 0 && i.pokemon.itemInitial != 0 && 
-          i.pbPartner.item != 0 && i.pbPartner.pokemon.itemInitial != 0 && 
-          i.pbPartner.hasWorkingAbility(:SYMBIOSIS)
-            result[count] = i
-            count += 1
-        end
-      end
-      if result.any?
-        return result
-      else
-        return false
+    result = Array.new
+    count  = 0
+    for i in battlers
+      next if (i.pokemon.nil? || i.pbPartner.pokemon.nil?)
+      if i.item != 0 && i.pokemon.itemInitial != 0 && 
+        i.pbPartner.item != 0 && i.pbPartner.pokemon.itemInitial != 0 && 
+        i.pbPartner.hasWorkingAbility(:SYMBIOSIS)
+          result[count] = i
+          count += 1
       end
     end
- 
+    if result.any?
+      return result
+    else
+      return false
+    end
+  end
+
 ################################################################################
 # End of round.
 ################################################################################
@@ -5614,6 +5665,7 @@ def pbStartBattle(canlose=false)
       @battlers[i].effects[PBEffects::SpikyShield]=false
       @battlers[i].effects[PBEffects::BanefulBunker]=false
       @battlers[i].effects[PBEffects::Obstruct]=false
+      @battlers[i].effects[PBEffects::Stormhold]=false
       @battlers[i].effects[PBEffects::BeakBlast]=false
       @battlers[i].effects[PBEffects::ClangedScales]=false
       @battlers[i].effects[PBEffects::ShellTrap]=false
@@ -5623,9 +5675,8 @@ def pbStartBattle(canlose=false)
 #### KUROTSUNE - 023 - END
 #### KUROTSUNE - 032 - START
       @battlers[i].effects[PBEffects::MeFirst] = false
-      if @battlers[i].effects[PBEffects::ThroatChop]>0
-        @battlers[i].effects[PBEffects::ThroatChop]-=1
-      end      
+      @battlers[i].effects[PBEffects::ThroatChop]-=1 if @battlers[i].effects[PBEffects::ThroatChop]>0
+      @battlers[i].effects[PBEffects::Spritz]+=1 if @battlers[i].effects[PBEffects::Spritz] == 1     
 #### KUROTSUNE - 032 - END      
       @battlers[i].itemUsed                    = false
       @battlers[i].pbCheckFormRoundEnd  
@@ -5677,7 +5728,7 @@ def pbStartBattle(canlose=false)
              !SilvallyCheck(i,PBTypes::STEEL) &&
              !isConst?(i.ability,PBAbilities,:MAGMAARMOR) && 
              !isConst?(i.ability,PBAbilities,:FLAMEBODY) &&
-             ![0xCA,0xCB].include?(PBMoveData.new(i.effects[PBEffects::TwoTurnAttack]).function) && # Dig, Dive
+             ![0xCA,0xCB,0x23C].include?(PBMoveData.new(i.effects[PBEffects::TwoTurnAttack]).function) && # Dig, Dive, Swan Dive
              (i.isbossmon && !i.immunities[:fieldEffectDamage].include?($fefieldeffect))
               atype=getConst(PBTypes,:FIRE) || 0
               eff=PBTypes.getCombinedEffectiveness(atype,i.type1,i.type2)
@@ -5813,7 +5864,7 @@ def pbStartBattle(canlose=false)
                 i.pbThis,PBAbilities.getName(i.ability)))
               end
             end
-            if i.status==PBStatuses::SLEEP && !isConst?(i.ability,PBAbilities,:SOUNDPROOF)
+            if i.status==PBStatuses::SLEEP && !isConst?(i.ability,PBAbilities,:SOUNDPROOF) && i.effects[PBEffects::Spritz]!=1
               i.pbCureStatus
               pbDisplay(_INTL("{1} woke up due to the eruption!",i.pbThis))
             end
@@ -5890,7 +5941,7 @@ def pbStartBattle(canlose=false)
              i.hasWorkingAbility(:WATERABSORB)
               eff = eff*2
             end
-            if PBMoveData.new(i.effects[PBEffects::TwoTurnAttack]).function==0xCB && !(i.pbHasType?(:STEEL) || i.pbHasType?(:POISON))# Dive
+            if [0xCB,0x23C].include?(PBMoveData.new(i.effects[PBEffects::TwoTurnAttack]).function) && !(i.pbHasType?(:STEEL) || i.pbHasType?(:POISON))# Dive, Swan Dive
               @scene.pbDamageAnimation(i,0)
               i.pbReduceHP([(i.totalhp*eff/8).floor,1].max)
               pbDisplay(_INTL("{1} suffocated underneath the toxic water!",i.pbThis))
@@ -5984,9 +6035,8 @@ def pbStartBattle(canlose=false)
               hpgain=i.pbRecoverHP(hpgain,true)
             end
           end
-          if i.hasWorkingAbility(:NATURALCURE) || (i.hasWorkingAbility(:TRACE) &&
-            i.effects[PBEffects::TracedAbility]==30)
-            i.status=0
+          if i.hasWorkingAbility(:NATURALCURE) || (i.hasWorkingAbility(:TRACE) && i.effects[PBEffects::TracedAbility]==30)
+            i.status=0 unless i.effects[PBEffects::Spritz] == 1
           end
         when 45 # Infernal Field  
           next if i.hp<=0  
@@ -6061,6 +6111,11 @@ def pbStartBattle(canlose=false)
           end
           if i.pbOwnSide.effects[PBEffects::StickyWeb]
             i.pbOwnSide.effects[PBEffects::StickyWeb]=false
+            hazardsOnSide = true
+          end
+          if i.pbOwnSide.effects[PBEffects::MysticTree]>0 || i.pbOpposingSide.effects[PBEffects::MysticTree]>0
+            i.pbOwnSide.effects[PBEffects::MysticTree]=0
+            i.pbOpposingSide.effects[PBEffects::MysticTree]=0
             hazardsOnSide = true
           end
         end
@@ -6301,7 +6356,7 @@ def pbStartBattle(canlose=false)
                !(i.hasWorkingAbility(:WONDERGUARD) && $fefieldeffect == 44) &&
                !isConst?(i.item,PBItems,:SAFETYGOGGLES) &&
                !i.hasWorkingAbility(:OVERCOAT) &&
-               ![0xCA,0xCB].include?(PBMoveData.new(i.effects[PBEffects::TwoTurnAttack]).function)) || i.effects[PBEffects::DesertsMark]
+               ![0xCA,0xCB,0x23C].include?(PBMoveData.new(i.effects[PBEffects::TwoTurnAttack]).function)) || i.effects[PBEffects::DesertsMark]
                 pbDisplay(_INTL("The Pokemon were buffeted by the sandstorm!",i.pbThis)) if endmessage==false
                 endmessage=true
                 @scene.pbDamageAnimation(i,0)
@@ -6405,7 +6460,7 @@ def pbStartBattle(canlose=false)
                  !isConst?(i.item,PBItems,:SAFETYGOGGLES) &&
                  !i.hasWorkingAbility(:OVERCOAT) &&
                  !(isConst?(i.species,PBSpecies,:EMPOLEON) && i.hasWorkingItem(:EMPCREST)) &&
-                 ![0xCA,0xCB].include?(PBMoveData.new(i.effects[PBEffects::TwoTurnAttack]).function) # Dig, Dive
+                 ![0xCA,0xCB,0x23C].include?(PBMoveData.new(i.effects[PBEffects::TwoTurnAttack]).function) # Dig, Dive, Swan Dive
                 pbDisplay(_INTL("The Pokemon were buffeted by the hail!",i.pbThis)) if endmessage==false
                 endmessage=true
                 @scene.pbDamageAnimation(i,0)
@@ -6488,7 +6543,6 @@ def pbStartBattle(canlose=false)
         i.effects[PBEffects::FutureSight]-=1
         if i.effects[PBEffects::FutureSight]==0
           i.effects[PBEffects::FutureSightMove]=0
-          i.effects[PBEffects::FutureSightDamage]=0
           i.effects[PBEffects::FutureSightUser]=-1
         end
       end
@@ -6496,19 +6550,11 @@ def pbStartBattle(canlose=false)
       if i.effects[PBEffects::FutureSight]>0
         i.effects[PBEffects::FutureSight]-=1
         if i.effects[PBEffects::FutureSight]==0
-          moveuser=@battlers[i.effects[PBEffects::FutureSightUser]]
-          if i.effects[PBEffects::FutureSightMove] == 516 #DoomDesire
-            move=PokeBattle_Move.pbFromPBMove(self,PBMove.new(741),moveuser) #DoomDummy
-            type=getConst(PBTypes,:STEEL)
-          elsif i.effects[PBEffects::FutureSightMove] == 450 #FutureSight
-            move=PokeBattle_Move.pbFromPBMove(self,PBMove.new(740),moveuser) #FutureDummy
-            type=getConst(PBTypes,:PSYCHIC)
-          elsif i.effects[PBEffects::FutureSightMove] == 179 #FutureSight
-            move=PokeBattle_Move.pbFromPBMove(self,PBMove.new(754),moveuser) #HexDummy
-            type=getConst(PBTypes,:GHOST)
-          end
+          moveuser=nil
+          move, moveuser, disabled_items = i.pbFutureSightUserPlusMove
+          type = move.type
           pbDisplay(_INTL("{1} took the {2} attack!",i.pbThis,move.name))
-          typemod = move.pbTypeModifierNonBattler(type,moveuser,i) # added
+          typemod = move.pbTypeModifier(type,moveuser,i)
           if i.isFainted? || move.pbAccuracyCheck(moveuser,i) && 
            !(i.hasWorkingAbility(:WONDERGUARD) && typemod<=4)
             i.damagestate.reset
@@ -6529,8 +6575,11 @@ def pbStartBattle(canlose=false)
           end
           i.effects[PBEffects::FutureSight]=0
           i.effects[PBEffects::FutureSightMove]=0
-          i.effects[PBEffects::FutureSightDamage]=0
           i.effects[PBEffects::FutureSightUser]=-1
+          if !disabled_items.empty?
+            moveuser.item = disabled_items[:item]
+            moveuser.ability = disabled_items[:ability]
+          end
           if i.isFainted?
             return if !i.pbFaint
             next
@@ -6629,11 +6678,39 @@ def pbStartBattle(canlose=false)
         end
       end
     end
+    # Rebuild
+    for i in priority
+      next if i.isFainted?
+      if i.effects[PBEffects::Rebuild]
+        i.effects[PBEffects::Rebuild] = false
+        mult=0
+        for j in [PBStats::ATTACK,PBStats::DEFENSE,PBStats::SPEED,PBStats::SPATK,PBStats::SPDEF,PBStats::ACCURACY,PBStats::EVASION]
+          mult+=i.stages[j] if i.stages[j]>0
+        end
+        if mult>0
+          hpgain=i.pbRecoverHP((0.2 * i.totalhp * mult),true)
+          if i.effects[PBEffects::MultiTurnAttack] == PBMoves::BINDINGWORD # Stats suppressed by binding word
+            for j in [PBStats::ATTACK,PBStats::DEFENSE,PBStats::SPEED,PBStats::SPATK,PBStats::SPDEF,PBStats::ACCURACY,PBStats::EVASION]
+              i.effects[PBEffects::StatChangeHolder][j] = 0
+            end
+          else
+            for j in [PBStats::ATTACK,PBStats::DEFENSE,PBStats::SPEED,PBStats::SPATK,PBStats::SPDEF,PBStats::ACCURACY,PBStats::EVASION]
+              i.stages[j] = 0
+            end
+          end
+          if hpgain>0
+            pbDisplay(_INTL("{1}'s stat boosts were removed to rebuild itself!",i.pbThis))
+          else
+            pbDisplay(_INTL("{1}'s stat boosts were removed!",i.pbThis))
+          end
+        end
+      end
+    end
     # Fire Pledge + Grass Pledge combination damage - should go here
     for i in priority
       next if i.isFainted?
       # Shed Skin
-      if i.hasWorkingAbility(:SHEDSKIN)
+      if i.hasWorkingAbility(:SHEDSKIN) && i.effects[PBEffects::Spritz] != 1
         if (pbRandom(10)<3 && i.status>0) || $fefieldeffect==32
           case i.status
             when PBStatuses::SLEEP
@@ -6654,7 +6731,7 @@ def pbStartBattle(canlose=false)
       # Hydration
       if i.hasWorkingAbility(:HYDRATION) && ((pbWeather==PBWeather::RAINDANCE && !i.hasWorkingItem(:UTILITYUMBRELLA)) ||
         $fefieldeffect == 21 || $fefieldeffect == 22 || $fefieldeffect == 46)
-        if i.status>0
+        if i.status>0 && i.effects[PBEffects::Spritz] != 1
           case i.status
             when PBStatuses::SLEEP
               pbDisplay(_INTL("{1}'s Hydration cured its sleep problem!",i.pbThis))
@@ -6692,7 +6769,7 @@ def pbStartBattle(canlose=false)
       end
       if i.hasWorkingAbility(:WATERVEIL) && ($fefieldeffect == 21 || 
         $fefieldeffect == 22)
-        if i.status>0
+        if i.status>0 && i.effects[PBEffects::Spritz] != 1
               pbDisplay(_INTL("{1}'s Water Veil cured its status problem!",i.pbThis))
           i.status=0
           i.statusCount=0
@@ -6702,7 +6779,7 @@ def pbStartBattle(canlose=false)
       if i.hasWorkingAbility(:HEALER)
         partner=i.pbPartner
         if partner
-          if pbRandom(10)<3 && partner.status>0
+          if pbRandom(10)<3 && partner.status>0 && partner.effects[PBEffects::Spritz] != 1
             case partner.status
               when PBStatuses::SLEEP
                 pbDisplay(_INTL("{1}'s Healer cured its partner's sleep problem!",i.pbThis))
@@ -6725,7 +6802,6 @@ def pbStartBattle(canlose=false)
         if partner && partner.hp > 0 && partner.hp < partner.totalhp
           if partner.effects[PBEffects::HealBlock]==0
             hpgain=(partner.totalhp/8).floor
-            hpgain=(hpgain*1.3).floor if isConst?(partner.item,PBItems,:BIGROOT) || isConst?(partner.species,PBSpecies,:TANGROWTH) && partner.hasWorkingItem(:TANGROWTHCREST)
             hpgain=partner.pbRecoverHP(hpgain,true)
             pbDisplay(_INTL("{1}'s Caretaker healed {2}!",i.pbThis,partner.pbThis(true))) if hpgain>0
           end
@@ -7382,7 +7458,7 @@ def pbStartBattle(canlose=false)
       next if i.isFainted?
       if i.effects[PBEffects::Uproar]>0
         for j in priority
-          if !j.isFainted? && j.status==PBStatuses::SLEEP && !j.hasWorkingAbility(:SOUNDPROOF)
+          if !j.isFainted? && j.status==PBStatuses::SLEEP && !j.hasWorkingAbility(:SOUNDPROOF) && j.effects[PBEffects::Spritz] != 1
             j.effects[PBEffects::Nightmare]=false
             j.status=0
             j.statusCount=0
@@ -7402,7 +7478,7 @@ def pbStartBattle(canlose=false)
       next if i.isFainted?
       if i.effects[PBEffects::FeverPitch]==true
         for j in priority
-          if !j.isFainted? && j.status==PBStatuses::SLEEP && !j.hasWorkingAbility(:SOUNDPROOF)
+          if !j.isFainted? && j.status==PBStatuses::SLEEP && !j.hasWorkingAbility(:SOUNDPROOF) && j.effects[PBEffects::Spritz] != 1
             j.effects[PBEffects::Nightmare]=false
             j.status=0
             j.statusCount=0
@@ -7506,9 +7582,39 @@ def pbStartBattle(canlose=false)
             end 
           end        
         end
+        # Mystic Harvest Damage
+        if i.pbOwnSide.effects[PBEffects::MysticTree]>0
+          pbDisplay(_INTL("The waste swallowed up the trees!"))
+          i.pbOwnSide.effects[PBEffects::MysticTree]=0
+          pbDisplay(_INTL("...Leaves and branches spewed out from the ground!"))
+          atype=getConst(PBTypes,:GRASS) || 0
+          if !i.isFainted?
+            eff=PBTypes.getCombinedEffectiveness(atype,i.type1,i.type2)
+            if eff>0
+              @scene.pbDamageAnimation(i,0)
+              i.pbReduceHP([(i.totalhp*eff/24).floor,1].max)
+            end
+          end
+          partner=i.pbPartner
+          if partner && !partner.isFainted?
+            eff=PBTypes.getCombinedEffectiveness(atype,partner.type1,partner.type2)
+            if eff>0
+              @scene.pbDamageAnimation(partner,0)
+              partner.pbReduceHP([(partner.totalhp*eff/24).floor,1].max)
+            end
+          end
+        end
         if i.hp<=0
           return if !i.pbFaint
           next
+        end
+        # Mystic Harvest Healing
+        if i.pbOpposingSide.effects[PBEffects::MysticTree]>0 && i.pbHasType?(:GRASS) && i.hp != i.totalhp
+          if i.effects[PBEffects::HealBlock]==0
+            hpgain = (i.totalhp/6).floor
+            hpgain *= i.pbOpposingSide.effects[PBEffects::MysticTree]  
+            hpgain = i.pbRecoverHP(hpgain,true) if hpgain > 0
+          end
         end
       end
     end
@@ -8044,6 +8150,19 @@ def pbStartBattle(canlose=false)
     else
       opponent.pbOwnSide.effects[PBEffects::Retaliate] = false
     end
+    for i in priority
+      next if i.isFainted?
+      next if i.nil?
+      next if @party2[0].nil?
+      if @field.effects[PBEffects::SosBuffer] == 0 && (@doublebattle && i.isbossmon && i.pbPartner.issossmon)
+        @field.effects[PBEffects::SosBuffer] = battler.sosDetails[:sosBuffer] ? battler.sosDetails[:sosBuffer] : 3
+      end
+    end
+    # sosBuffer
+    if @field.effects[PBEffects::SosBuffer]>0
+      @field.effects[PBEffects::SosBuffer]-=1
+    end
+    pbBossSOS(priority) if @field.effects[PBEffects::SosBuffer] == 0    
 ##### KUROTSUNE - 009 - END
     @faintswitch = true
     pbSwitch

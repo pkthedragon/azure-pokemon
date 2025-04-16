@@ -425,7 +425,7 @@ class PokeBattle_Battle
               end
               if onBreakdata[:playerEffects][i] == (PBEffects::FutureSightMove)
                 battler.pbOpposing1.effects[PBEffects::FutureSightUser] = battler.index
-                battler.pbOpposing1.effects[PBEffects::FutureSightPokemonIndex] = battler.pokemonIndex
+                battler.pbOpposing1.effects[PBEffects::FutureSightPkmnIdx] = battler.pokemonIndex
               end
               pbAnimation(onBreakdata[:playerEffectsAnimation[i]],battler.pbOpposing1,nil) if onBreakdata[:playerEffectsAnimation][i]
             end
@@ -436,7 +436,7 @@ class PokeBattle_Battle
               end
               if onBreakdata[:playerEffects][i] == (PBEffects::FutureSightMove)
                 battler.pbOpposing2.effects[PBEffects::FutureSightUser] = battler.index
-                battler.pbOpposing2.effects[PBEffects::FutureSightPokemonIndex] = battler.pokemonIndex
+                battler.pbOpposing2.effects[PBEffects::FutureSightPkmnIdx] = battler.pokemonIndex
               end
               pbAnimation(onBreakdata[:playerEffectsAnimation][i],battler.pbOpposing2,nil) if onBreakdata[:playerEffectsAnimation][i]
             end

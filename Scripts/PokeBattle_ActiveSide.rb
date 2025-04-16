@@ -28,6 +28,7 @@ begin
       @effects[PBEffects::AuroraVeil]  = 0
       @effects[PBEffects::DuneDefense] = 0
       @effects[PBEffects::BattleCry]   = 0 
+      @effects[PBEffects::MysticTree]  = 0
       $belch=false
       $fepledgefield=0
       $feconversionuse=0      
@@ -61,6 +62,7 @@ begin
       @effects[PBEffects::MudSport]     = 0
       @effects[PBEffects::WaterSport]   = 0
       @effects[PBEffects::SosBuffer]    = 0
+      @effects[PBEffects::PyroPreTarget]= -1
 #### KUROTSUNE - 001 - START
       @effects[PBEffects::HeavyRain]     = false
       @effects[PBEffects::HarshSunlight] = false
