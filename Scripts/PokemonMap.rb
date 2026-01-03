@@ -99,6 +99,7 @@ class PokemonGlobalMetadata
   attr_accessor :bicycle
   attr_accessor :riding
   attr_accessor :surfing
+  attr_accessor :swimming
   attr_accessor :lavasurfing
   attr_accessor :diving
   attr_accessor :sliding
@@ -153,6 +154,7 @@ class PokemonGlobalMetadata
     @riding = false
     @bicycle              = false
     @surfing              = false
+    @swimming            = false
     @diving               = false
     @lavasurfing          = false
     @sliding              = false

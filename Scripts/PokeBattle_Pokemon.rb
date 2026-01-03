@@ -427,7 +427,7 @@ class PokeBattle_Pokemon
 # Returns the list of this pokemon's possible eggmoves
   def getEggMoveList
     movelist=[]
-    $pkmn_egg = load_data("Data/eggEmerald.rxdata") if !$pkmn_egg
+    $pkmn_egg = load_data("Data/eggEmerald.dat") if !$pkmn_egg
     moves = $pkmn_egg[pbGetBabySpecies(@species)]
     for i in moves
       movelist.push(i)

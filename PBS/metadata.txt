@@ -1,4 +1,4 @@
-[000]
+﻿[000]
 Home=3,5,7,0
 WildBattleBGM=Battle! Wild
 TrainerBattleBGM=Battle! Trainer
@@ -6,15 +6,15 @@ WildVictoryME=Victory! Wild
 TrainerVictoryME=Victory! Trainer
 SurfBGM=Surf.ogg
 BicycleBGM=Bicycle.mid
-PlayerA=POKEMONTRAINER_TroyLight,trchar250,boy_bike,boy_surf,boy_run,boy_surf,boy_fish_offset,xxx
-PlayerB=POKEMONTRAINER_TroyMed,trchar251,boy_bike,boy_surf,boy_run,boy_surf,boy_fish_offset,xxx
-PlayerC=POKEMONTRAINER_TroyDark,trchar252,boy_bike,boy_surf,boy_run,boy_surf,boy_fish_offset,xxx
-PlayerD=POKEMONTRAINER_EllisLight,trchar253,girl_bike,girl_surf,girl_run,girl_surf,girl_fish_offset,xxx
-PlayerE=POKEMONTRAINER_EllisMed,trchar254,girl_bike,girl_surf,girl_run,girl_surf,girl_fish_offset,xxx
-PlayerF=POKEMONTRAINER_EllisDark,trchar255,girl_bike,girl_surf,girl_run,girl_surf,girl_fish_offset,xxx
-PlayerG=POKEMONTRAINER_KeyLight,trchar256,nb_bike,nb_surf,nb_run,nb_surf,nb_fish_offset,xxx
-PlayerH=POKEMONTRAINER_KeyMed,trchar257,nb_bike,nb_surf,nb_run,nb_surf,nb_fish_offset,xxx
-PlayerI=POKEMONTRAINER_KeyDark,trchar258,nb_bike,nb_surf,nb_run,nb_surf,nb_fish_offset,xxx
+PlayerA=POKEMONTRAINER_Troy,trchar250,troy_bike,troy_surf,troy_run,troy_surf,troy_fish_offset,xxx
+PlayerB=POKEMONTRAINER_Calian,trchar251,calian_bike,calian_surf,calian_run,calian_surf,calian_fish_offset,xxx
+PlayerC=POKEMONTRAINER_NullOne,trchar252,nullone_bike,nullone_surf,nullone_run,nullone_surf,nullone_fish_offset,xxx
+PlayerD=POKEMONTRAINER_Ellis,trchar253,ellis_bike,ellis_surf,ellis_run,ellis_surf,ellis_fish_offset,xxx
+PlayerE=POKEMONTRAINER_Ophelia,trchar254,ophelia_bike,ophelia_surf,ophelia_run,ophelia_surf,ophelia_fish_offset,xxx
+PlayerF=POKEMONTRAINER_NullTwo,trchar255,nulltwo_bike,nulltwo_surf,nulltwo_run,nulltwo_surf,nulltwo_fish_offset,xxx
+PlayerG=POKEMONTRAINER_Key,trchar256,key_bike,key_surf,key_run,key_surf,key_fish_offset,xxx
+PlayerH=POKEMONTRAINER_Nira,trchar257,nira_bike,nira_surf,nira_run,nira_surf,nira_fish_offset,xxx
+PlayerI=POKEMONTRAINER_NullThree,trchar258,nullthree_bike,nullthree_surf,nullthree_run,nullthree_surf,nullthree_fish_offset,xxx
 PlayerJ=MYRON,Myron,Myron,Myron,Myron,Myron,Myron,xxx
 [001]
 # Logium Town A
@@ -265,7 +265,7 @@ ShowArea=false
 MapPosition=0,18,3
 BattleBack=AshenBeach
 [056]
-# Jailhouse
+# Deja Vu
 Outdoor=false
 MapPosition=0,6,16
 BattleBack=Icy2
@@ -366,24 +366,6 @@ ShowArea=false
 MapPosition=0,6,16
 BattleBack=Haunted3
 [109]
-# Koneli City Ruins
-Outdoor=true
-ShowArea=true
-MapPosition=0,6,16
-BattleBack=Darchlight
-[112]
-# Koneli Manor
-Outdoor=false
-ShowArea=false
-MapPosition=0,6,16
-BattleBack=Haunted3
-[126]
-# Koneli Manor
-Outdoor=false
-ShowArea=false
-MapPosition=0,6,16
-BattleBack=Haunted3
-[109]
 # Koneli City
 Outdoor=true
 ShowArea=true
@@ -400,6 +382,18 @@ BattleBack=Icy2
 Outdoor=false
 MapPosition=0,6,16
 BattleBack=Darchlight
+[112]
+# Koneli Manor
+Outdoor=false
+ShowArea=false
+MapPosition=0,6,16
+BattleBack=Haunted3
+[113]
+# Spooky Temple
+Outdoor=false
+ShowArea=false
+MapPosition=0,6,16
+BattleBack=DarkCrystalCavern
 [114]
 # Koneli Grove
 BattleBack=Darchlight
@@ -453,6 +447,36 @@ BattleBack=Cave
 # Tent of Mystery
 Outdoor=false
 MapPosition=0,6,16
+[126]
+# Koneli Manor
+Outdoor=false
+ShowArea=false
+MapPosition=0,6,16
+BattleBack=Haunted3
+[127]
+# Koneli Manor Ruins
+Outdoor=false
+ShowArea=true
+MapPosition=0,6,16
+BattleBack=Haunted3
+[128]
+# Koneli Manor Ruins
+Outdoor=false
+ShowArea=false
+MapPosition=0,6,16
+BattleBack=Haunted3
+[129]
+# Koneli Manor Ruins
+Outdoor=false
+ShowArea=false
+MapPosition=0,6,16
+BattleBack=Haunted3
+[130]
+# Spooky Temple
+Outdoor=false
+ShowArea=true
+MapPosition=0,6,16
+BattleBack=DarkCrystalCavern
 [132]
 # Koneli Laboratory
 Outdoor=false
@@ -464,33 +488,3 @@ BattleBack=ShortCircuit
 Outdoor=false
 MapPosition=0,6,16
 BattleBack=ShortCircuit
-[127]
-# Koneli Manor
-Outdoor=false
-ShowArea=true
-MapPosition=0,6,16
-BattleBack=Haunted3
-[128]
-# Koneli Manor
-Outdoor=false
-ShowArea=false
-MapPosition=0,6,16
-BattleBack=Haunted3
-[129]
-# Koneli Manor
-Outdoor=false
-ShowArea=false
-MapPosition=0,6,16
-BattleBack=Haunted3
-[130]
-# Spooky Temple
-Outdoor=false
-ShowArea=true
-MapPosition=0,6,16
-BattleBack=DarkCrystalCavern
-[113]
-# Spooky Temple
-Outdoor=false
-ShowArea=false
-MapPosition=0,6,16
-BattleBack=DarkCrystalCavern

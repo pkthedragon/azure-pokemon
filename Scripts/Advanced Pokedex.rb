@@ -368,7 +368,7 @@ class AdvancedPokedexScene
     ret=[]
     eggMoveSpecies = @species
     eggMoveSpecies = pbGetBabySpecies(eggMoveSpecies) if EGGMOVESFISTSTAGE
-    $pkmn_egg = load_data("Data/eggEmerald.rxdata") if !$pkmn_egg
+    $pkmn_egg = load_data("Data/eggEmerald.dat") if !$pkmn_egg
     for moves in [$pkmn_egg[pbGetBabySpecies(@species)],$pkmn_egg[pbGetLessBabySpecies(@species)],moves = $pkmn_egg[@species]]
       if moves
         for i in moves

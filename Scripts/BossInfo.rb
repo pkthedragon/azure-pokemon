@@ -114,7 +114,8 @@ BOSSINFOHASH = {
                 },
                 :playerSideStatChanges => { # any statchanges applied to the players side
                     PBStats::SPATK => -1,
-                }
+                },
+                :soscontinuous => true  # make SOS continuous from this shield onwards.
             },
         }
     },

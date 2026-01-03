@@ -173,6 +173,42 @@ ItemHandlers::UseFromBag.add(:EXPALLOFF,proc{|item|
    next 1
 })
 
+ItemHandlers::UseFromBag.add(:NULLTRIBUTE, proc { |item|
+  current_sym = :NULLTRIBUTE
+  names, items = pbBuildUnlockedTributeLists(current_sym)
+  current_index = items.index(current_sym) || 0
+  cmd = pbShowCommands(
+    _INTL("Change the Tribute's attunement?"),
+    names,
+    current_index
+  )
+  if cmd < 0 || cmd >= items.length
+    Kernel.pbMessage(_INTL("You decided not to change the Tribute."))
+    next 0
+  end
+  new_sym = items[cmd]
+  new_id  = getID(PBItems, new_sym)
+  old_id  = getID(PBItems, current_sym)
+  if new_id == old_id
+    Kernel.pbMessage(_INTL("The Tribute's attunement remains the same."))
+    next 1
+  end
+  $PokemonBag.pbChangeItem(old_id, new_id)
+  Kernel.pbMessage(_INTL("The Tribute's attunement shifted.", PBItems.getName(new_id)))
+
+  next 1
+})
+
+ItemHandlers::UseFromBag.copy(
+  :NULLTRIBUTE,
+  :MEADOWTRIBUTE,
+  :SPLASHTRIBUTE,
+  :FLAMETRIBUTE,
+  :BLANKTRIBUTE,
+  :FISTTRIBUTE,
+  :MINDTRIBUTE
+)
+
 ItemHandlers::UseFromBag.add(:GOLDENWINGS,proc{|item|
   next 0 if !pbCheckHiddenMoveBadge(BADGEFORFLY,true)
   next 0 if !$PokemonBag.pbHasItem?(:HM02)
@@ -252,11 +288,11 @@ ItemHandlers::UseOnPokemon.add(:FIRESTONE,proc{|item,pokemon,scene|
    end
 })
 
-ItemHandlers::UseOnPokemon.copy(:FIRESTONE,
-   :THUNDERSTONE,:WATERSTONE,:LEAFSTONE,:MOONSTONE, :SUNSTONE,
-   :DUSKSTONE,:DAWNSTONE,:SHINYSTONE,:LINKHEART, :APOPHYLLPAN,
-   :ICESTONE, :SWEETAPPLE, :TARTAPPLE, :CHIPPEDPOT, :CRACKEDPOT,:XENWASTE,
-   :NIGHTMAREFUEL)
+ItemHandlers::UseOnPokemon.copy(:FIRESTONE, :MALICIOUSARMOR,
+   :THUNDERSTONE,:WATERSTONE,:LEAFSTONE,:MOONSTONE, :SUNSTONE,:GALARICAWREATH,:GALARICACUFF,
+   :DUSKSTONE,:DAWNSTONE,:SHINYSTONE,:LINKHEART, :APOPHYLLPAN,:BLACKAUGURITE, :AUSPICIOUSARMOR,
+   :ICESTONE, :SWEETAPPLE, :TARTAPPLE, :CHIPPEDPOT, :CRACKEDPOT, :XENWASTE, :MASTERPIECETEACUP,
+   :NIGHTMAREFUEL, :SYRUPYAPPLE, :PEATBLOCK, :METALALLOY, :UNREMARKABLETEACUP)
    
 ItemHandlers::UseOnPokemon.add(:POTION,proc{|item,pokemon,scene|
    next pbHPItem(pokemon,20,scene)

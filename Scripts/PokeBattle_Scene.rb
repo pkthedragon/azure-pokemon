@@ -25,20 +25,20 @@ end
 #>>>>DemICE entered the chat
 def pbShowBattleStats(pkmn)
   friend=@battle.battlers[0]
-  atksbl="+"  
-  atksbl=" " if pkmn.stages[PBStats::ATTACK]<0
-  defsbl="+"  
-  defsbl=" " if pkmn.stages[PBStats::DEFENSE]<0
-  spasbl="+"
-  spasbl=" " if pkmn.stages[PBStats::SPATK]<0
-  spdsbl="+"
-  spdsbl=" " if pkmn.stages[PBStats::SPDEF]<0
-  spesbl="+"
-  spesbl=" " if pkmn.stages[PBStats::SPEED]<0
-  accsbl="+"
-  accsbl=" " if pkmn.stages[PBStats::ACCURACY]<0
-  evasbl="+"
-  evasbl=" " if pkmn.stages[PBStats::EVASION]<0
+  atksbl= "+"  
+  atksbl= " " if pkmn.stages[PBStats::ATTACK]<0
+  defsbl= "+"  
+  defsbl= " " if pkmn.stages[PBStats::DEFENSE]<0
+  spasbl= "+"
+  spasbl= " " if pkmn.stages[PBStats::SPATK]<0
+  spdsbl= "+"
+  spdsbl= " " if pkmn.stages[PBStats::SPDEF]<0
+  spesbl= "+"
+  spesbl= " " if pkmn.stages[PBStats::SPEED]<0
+  accsbl= "+"
+  accsbl= " " if pkmn.stages[PBStats::ACCURACY]<0
+  evasbl= "+"
+  evasbl= " " if pkmn.stages[PBStats::EVASION]<0
   c=pkmn.pbCalcCrit()
   if c==0
     crit=4
@@ -76,9 +76,9 @@ def pbShowBattleStats(pkmn)
                 _INTL("Crit. Rate:  {1}%  +{2}",crit,c))
   end
   dur=@battle.weatherduration
-  dur="Permanent" if @battle.weatherduration<0
-  turns="turns"
-  turns="" if @battle.weatherduration<0
+  dur= "Permanent" if @battle.weatherduration<0
+  turns= "turns"
+  turns= "" if @battle.weatherduration<0
   if @battle.weather==PBWeather::RAINDANCE
     weatherreport=_INTL("Weather: Rain, {1} {2}",dur,turns)
     weatherreport=_INTL("Weather: Torrential Rain, {1} {2}",dur,turns) if @battle.field.effects[PBEffects::HeavyRain]
@@ -106,11 +106,17 @@ def pbShowBattleStats(pkmn)
   report.push(_INTL("Toxic: {1} turns",pkmn.effects[PBEffects::Toxic])) if pkmn.effects[PBEffects::Toxic]!=0
   report.push(_INTL("Torment")) if pkmn.effects[PBEffects::Torment]
   report.push(_INTL("Miracle Eye")) if pkmn.effects[PBEffects::MiracleEye]
+  report.push(_INTL("Charge")) if pkmn.effects[PBEffects::Charge]
+  report.push(_INTL("Rebuild")) if pkmn.effects[PBEffects::Rebuild]
+  report.push(_INTL("Spritzed")) if pkmn.effects[PBEffects::Spritz]!=0
+  report.push(_INTL("Fertilize")) if pkmn.effects[PBEffects::Fertilize]
   report.push(_INTL("Minimized")) if pkmn.effects[PBEffects::Minimize]
   report.push(_INTL("Recharging")) if pkmn.effects[PBEffects::HyperBeam]!=0
   report.push(_INTL("Fury Cutter: +{1}",pkmn.effects[PBEffects::FuryCutter])) if pkmn.effects[PBEffects::FuryCutter]!=0
   report.push(_INTL("Echoed Voice: +{1}",pkmn.effects[PBEffects::EchoedVoice])) if pkmn.effects[PBEffects::EchoedVoice]!=0
+  report.push(_INTL("Cell Splitter: +{1}",pkmn.effects[PBEffects::EchoedVoice])) if pkmn.effects[PBEffects::CellSplitter]!=0
   report.push(_INTL("Mean Look")) if pkmn.effects[PBEffects::MeanLook]>-1
+  report.push(_INTL("Jaw Lock")) if pkmn.effects[PBEffects::JawLock]
   report.push(_INTL("Foresight")) if pkmn.effects[PBEffects::Foresight]
   report.push(_INTL("Flash Fire")) if pkmn.effects[PBEffects::FlashFire]
   report.push(_INTL("Substitute")) if pkmn.effects[PBEffects::Substitute]!=0
@@ -142,6 +148,7 @@ def pbShowBattleStats(pkmn)
   report.push(_INTL("Safeguard: {1} turns",pkmn.pbOwnSide.effects[PBEffects::Safeguard])) if pkmn.pbOwnSide.effects[PBEffects::Safeguard]>0
   report.push(_INTL("Lucky Chant: {1} turns",pkmn.pbOwnSide.effects[PBEffects::LuckyChant])) if pkmn.pbOwnSide.effects[PBEffects::LuckyChant]>0
   report.push(_INTL("Mist: {1} turns",pkmn.pbOwnSide.effects[PBEffects::Mist])) if pkmn.pbOwnSide.effects[PBEffects::Mist]>0 
+  report.push(_INTL("Battle Cry")) if pkmn.pbOwnSide.effects[PBEffects::BattleCry] % 2 == 1
   report.push(_INTL("Altered Field: {1} turns",@battle.field.effects[PBEffects::Terrain])) if @battle.field.effects[PBEffects::Terrain]>0
   report.push(_INTL("Messed up Field: {1} turns",@battle.field.effects[PBEffects::Splintered])) if @battle.field.effects[PBEffects::Splintered]>0  
   report.push(_INTL("Electric Terrain: {1} turns",@battle.field.effects[PBEffects::ElectricTerrain])) if @battle.field.effects[PBEffects::ElectricTerrain]>0  
@@ -154,6 +161,7 @@ def pbShowBattleStats(pkmn)
   report.push(_INTL("Water Sport: {1} turns",@battle.field.effects[PBEffects::WaterSport])) if @battle.field.effects[PBEffects::WaterSport]>0
   report.push(_INTL("Mud Sport: {1} turns",@battle.field.effects[PBEffects::MudSport])) if @battle.field.effects[PBEffects::MudSport]>0
   report.push(_INTL("Spikes: {1} layers",pkmn.pbOwnSide.effects[PBEffects::Spikes])) if pkmn.pbOwnSide.effects[PBEffects::Spikes]>0
+  report.push(_INTL("Mystical Tree: {1} planted",pkmn.pbOwnSide.effects[PBEffects::MysticTree])) if pkmn.pbOwnSide.effects[PBEffects::MysticTree]>0
   report.push(_INTL("Toxic Spikes active")) if pkmn.pbOwnSide.effects[PBEffects::ToxicSpikes]
   report.push(_INTL("Stealth Rock active")) if pkmn.pbOwnSide.effects[PBEffects::StealthRock]
   report.push(_INTL("Sticky Web active")) if pkmn.pbOwnSide.effects[PBEffects::StickyWeb]

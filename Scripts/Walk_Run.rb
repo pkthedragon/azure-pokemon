@@ -75,7 +75,7 @@ class Game_Player
         @move_speed = $RPGVX ? 8 : 5.5
       elsif $game_switches[999]
         @move_speed = $RPGVX ? 6.5 : 5.2
-      elsif pbCanRun? || $PokemonGlobal.surfing || $PokemonGlobal.lavasurfing
+      elsif pbCanRun? || $PokemonGlobal.surfing || $PokemonGlobal.lavasurfing || ($PokemonGlobal.respond_to?(:swimming) && $PokemonGlobal.swimming)
         @move_speed = $RPGVX ? 6.5 : 4.8
       else
         @move_speed = $RPGVX ? 4.5 : 4.0
@@ -85,7 +85,7 @@ class Game_Player
   end
 
   def update_pattern
-    if $PokemonGlobal.surfing || $PokemonGlobal.diving
+    if $PokemonGlobal.surfing || $PokemonGlobal.diving || ($PokemonGlobal.respond_to?(:swimming) && $PokemonGlobal.swimming)
       i = ((Graphics.frame_count%60)*@@bobframespeed).floor
       @pattern = i if !@lock_pattern
       @pattern_surf = i

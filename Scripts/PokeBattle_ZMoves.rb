@@ -633,7 +633,7 @@ class PokeBattle_ZMoves < PokeBattle_Move
   def pbModifyDamage(damagemult,attacker,opponent)
     if !opponent.effects[PBEffects::ProtectNegation] && (opponent.pbOwnSide.effects[PBEffects::MatBlock] ||
         opponent.effects[PBEffects::Protect] || opponent.effects[PBEffects::KingsShield] ||  opponent.effects[PBEffects::Obstruct] ||
-        opponent.effects[PBEffects::SpikyShield] || opponent.effects[PBEffects::BanefulBunker])
+        opponent.effects[PBEffects::SpikyShield] || opponent.effects[PBEffects::BanefulBunker] || opponent.effects[PBEffects::Stormhold])
       @battle.pbDisplay(_INTL("{1} couldn't fully protect itself!",opponent.pbThis))
       return (damagemult/4.0).floor
     else
@@ -707,6 +707,11 @@ class PokeBattle_ZMoves < PokeBattle_Move
               user.pbOpposingSide.effects[PBEffects::StickyWeb] = false
               hazardsExist = true
             end
+            if user.pbOwnSide.effects[PBEffects::MysticTree]>0 || user.pbOpposingSide.effects[PBEffects::MysticTree]>0
+              user.pbOwnSide.effects[PBEffects::MysticTree] = 0
+              user.pbOpposingSide.effects[PBEffects::MysticTree] = 0
+              hazardsExist = true
+            end
             if hazardsExist
               @battle.pbDisplay(_INTL("Removed all hazards from field!"))
             end
@@ -731,11 +736,7 @@ class PokeBattle_ZMoves < PokeBattle_Move
           for i in 0...4
             quakedrop = @battle.battlers[i].hp
             next if quakedrop==0
-            invulcheck=$pkmn_move[@battle.battlers[i].effects[PBEffects::TwoTurnAttack]][0]
-            case invulcheck
-            when 0xC9, 0xCC, 0xCA, 0xCB, 0xCD, 0xCE
-              quakedrop = 0
-            end
+            quakedrop =0 if [0xC9, 0xCC, 0xCA, 0xCB, 0xCD, 0xCE, 0x23C].include?($pkmn_move[@battle.battlers[i].effects[PBEffects::TwoTurnAttack]][0])
             quakedrop =0 if @battle.battlers[i].effects[PBEffects::SkyDrop]
             quakedrop-=1 if (!@battle.battlers[i].abilitynulled && @battle.battlers[i].ability == PBAbilities::STURDY)                 
             quakedrop/=3 if (!@battle.battlers[i].abilitynulled && @battle.battlers[i].ability == PBAbilities::SOLIDROCK)
@@ -766,11 +767,7 @@ class PokeBattle_ZMoves < PokeBattle_Move
           shatter = @battle.battlers[i].totalhp
           next if shatter==0
           shatter/=2
-          invulcheck=$pkmn_move[@battle.battlers[i].effects[PBEffects::TwoTurnAttack]][0]
-          case invulcheck
-          when 0xC9, 0xCC, 0xCA, 0xCB, 0xCD, 0xCE
-            shatter = 0
-          end
+          shatter =0 if [0xC9, 0xCC, 0xCA, 0xCB, 0xCD, 0xCE, 0x23C].include?($pkmn_move[@battle.battlers[i].effects[PBEffects::TwoTurnAttack]][0])
           shatter =0 if @battle.battlers[i].effects[PBEffects::SkyDrop]
           shatter =0 if (!@battle.battlers[i].abilitynulled && @battle.battlers[i].ability == PBAbilities::SHELLARMOR)
           shatter =0 if (!@battle.battlers[i].abilitynulled && @battle.battlers[i].ability == PBAbilities::BATTLEARMOR)
@@ -903,11 +900,7 @@ class PokeBattle_ZMoves < PokeBattle_Move
           for i in 0...4
             combust = @battle.battlers[i].hp
             next if combust==0
-            invulcheck=$pkmn_move[@battle.battlers[i].effects[PBEffects::TwoTurnAttack]][0]
-            case invulcheck
-            when 0xC9, 0xCC, 0xCA, 0xCB, 0xCD, 0xCE
-              combust = 0
-            end
+            combust =0 if [0xC9, 0xCC, 0xCA, 0xCB, 0xCD, 0xCE, 0x23C].include?($pkmn_move[@battle.battlers[i].effects[PBEffects::TwoTurnAttack]][0])
             combust =0 if @battle.battlers[i].effects[PBEffects::SkyDrop]
             combust-=1 if (!@battle.battlers[i].abilitynulled && @battle.battlers[i].ability == PBAbilities::STURDY)
             combust =0 if (!@battle.battlers[i].abilitynulled && @battle.battlers[i].ability == PBAbilities::FLASHFIRE)
@@ -972,11 +965,7 @@ class PokeBattle_ZMoves < PokeBattle_Move
           for i in 0...4
             quakedrop = @battle.battlers[i].hp
             next if quakedrop==0
-            invulcheck=$pkmn_move[@battle.battlers[i].effects[PBEffects::TwoTurnAttack]][0]
-            case invulcheck
-            when 0xC9, 0xCC, 0xCA, 0xCB, 0xCD, 0xCE
-              quakedrop = 0
-            end
+            quakedrop =0 if [0xC9, 0xCC, 0xCA, 0xCB, 0xCD, 0xCE, 0x23C].include?($pkmn_move[@battle.battlers[i].effects[PBEffects::TwoTurnAttack]][0])
             quakedrop =0 if @battle.battlers[i].effects[PBEffects::SkyDrop]
             quakedrop-=1 if (!@battle.battlers[i].abilitynulled && @battle.battlers[i].ability == PBAbilities::STURDY)                 
             quakedrop/=3 if (!@battle.battlers[i].abilitynulled && @battle.battlers[i].ability == PBAbilities::SOLIDROCK)
@@ -1044,14 +1033,10 @@ class PokeBattle_ZMoves < PokeBattle_Move
       elsif $fefieldeffect == 16 # Volcanic Top Field
         @battle.pbDisplay(_INTL("Steam shot up from the field!"))
         for i in 0...4
-          canthit = 0
-          invulcheck=$pkmn_move[@battle.battlers[i].effects[PBEffects::TwoTurnAttack]][0]
-          case invulcheck
-          when 0xC9, 0xCC, 0xCA, 0xCB, 0xCD, 0xCE
-            canthit = 1
-          end
-          canthit =1 if @battle.battlers[i].effects[PBEffects::SkyDrop]
-          if canthit = 0 && @battle.battlers[i].pbCanReduceStatStage?(PBStats::ACCURACY)
+          canthit = false
+          canthit = true if [0xC9, 0xCC, 0xCA, 0xCB, 0xCD, 0xCE, 0x23C].include?($pkmn_move[@battle.battlers[i].effects[PBEffects::TwoTurnAttack]][0])
+          canthit = true if @battle.battlers[i].effects[PBEffects::SkyDrop]
+          if !canthit && @battle.battlers[i].pbCanReduceStatStage?(PBStats::ACCURACY)
             @battle.battlers[i].pbReduceStatBasic(PBStats::ACCURACY,1)
             @battle.pbCommonAnimation("StatDown",@battle.battlers[i],nil)
             @battle.pbDisplay(_INTL("{1}'s Accuracy fell!",@battle.battlers[i].pbThis))
@@ -1086,14 +1071,10 @@ class PokeBattle_ZMoves < PokeBattle_Move
       elsif $fefieldeffect == 16 # Volcanic Top Field
         @battle.pbDisplay(_INTL("Steam shot up from the field!"))
         for i in 0...4
-          canthit = 0
-          invulcheck=$pkmn_move[@battle.battlers[i].effects[PBEffects::TwoTurnAttack]][0]
-          case invulcheck
-          when 0xC9, 0xCC, 0xCA, 0xCB, 0xCD, 0xCE
-            canthit = 1
-          end
-          canthit =1 if @battle.battlers[i].effects[PBEffects::SkyDrop]
-          if canthit = 0 && @battle.battlers[i].pbCanReduceStatStage?(PBStats::ACCURACY)
+          canthit = false
+          canthit = true if [0xC9, 0xCC, 0xCA, 0xCB, 0xCD, 0xCE, 0x23C].include?($pkmn_move[@battle.battlers[i].effects[PBEffects::TwoTurnAttack]][0])
+          canthit = true if @battle.battlers[i].effects[PBEffects::SkyDrop]
+          if !canthit && @battle.battlers[i].pbCanReduceStatStage?(PBStats::ACCURACY)
             @battle.battlers[i].pbReduceStatBasic(PBStats::ACCURACY,1)
             @battle.pbCommonAnimation("StatDown",@battle.battlers[i],nil)
             @battle.pbDisplay(_INTL("{1}'s Accuracy fell!",@battle.battlers[i].pbThis))
@@ -1208,7 +1189,7 @@ def pbZStatus(move,attacker)
   stat2  = []
   stat3  = []
   crit1  = [PBMoves::ACUPRESSURE,PBMoves::FORESIGHT,PBMoves::HEARTSWAP,PBMoves::SLEEPTALK,PBMoves::TAILWIND]
-  reset  = [PBMoves::ACIDARMOR,PBMoves::AGILITY,PBMoves::AMNESIA,PBMoves::ENCHANT,PBMoves::AUTOTOMIZE,PBMoves::BARRIER,PBMoves::BATONPASS,PBMoves::CALMMIND,PBMoves::CLANGOROUSSOUL,PBMoves::COIL,PBMoves::COTTONGUARD,PBMoves::COTTONSPORE,PBMoves::COURTCHANGE,PBMoves::DARKVOID,PBMoves::DISABLE,PBMoves::DOUBLETEAM,PBMoves::DRAGONDANCE,PBMoves::ENDURE,PBMoves::FLORALHEALING,PBMoves::FOLLOWME,PBMoves::HEALORDER,PBMoves::HEALPULSE,PBMoves::HELPINGHAND,PBMoves::IRONDEFENSE,PBMoves::KINGSSHIELD,PBMoves::LEECHSEED,PBMoves::MILKDRINK,PBMoves::MINIMIZE,PBMoves::MOONLIGHT,PBMoves::MORNINGSUN,PBMoves::NASTYPLOT,PBMoves::NORETREAT,PBMoves::OBSTRUCT,PBMoves::PERISHSONG,PBMoves::PROTECT,PBMoves::QUIVERDANCE,PBMoves::RAGEPOWDER,PBMoves::RECOVER,PBMoves::REST,PBMoves::ROCKPOLISH,PBMoves::ROOST,PBMoves::SHELLSMASH,PBMoves::SHIFTGEAR,PBMoves::SHOREUP,PBMoves::SHELLSMASH,PBMoves::SHIFTGEAR,PBMoves::SHOREUP,PBMoves::SLACKOFF,PBMoves::SOFTBOILED,PBMoves::SPORE,PBMoves::SUBSTITUTE,PBMoves::SWAGGER,PBMoves::SWALLOW,PBMoves::SWORDSDANCE,PBMoves::SYNTHESIS,PBMoves::TAILGLOW]
+  reset  = [PBMoves::ACIDARMOR,PBMoves::AGILITY,PBMoves::AMNESIA,PBMoves::ENCHANT,PBMoves::AUTOTOMIZE,PBMoves::BARRIER,PBMoves::BATONPASS,PBMoves::CALMMIND,PBMoves::CLANGOROUSSOUL,PBMoves::COIL,PBMoves::COTTONGUARD,PBMoves::COTTONSPORE,PBMoves::COURTCHANGE,PBMoves::DARKVOID,PBMoves::DISABLE,PBMoves::DOUBLETEAM,PBMoves::DRAGONDANCE,PBMoves::ENDURE,PBMoves::FLORALHEALING,PBMoves::FOLLOWME,PBMoves::HEALORDER,PBMoves::HEALPULSE,PBMoves::HELPINGHAND,PBMoves::IRONDEFENSE,PBMoves::KINGSSHIELD,PBMoves::LEECHSEED,PBMoves::MILKDRINK,PBMoves::MINIMIZE,PBMoves::MOONLIGHT,PBMoves::MORNINGSUN,PBMoves::NASTYPLOT,PBMoves::NORETREAT,PBMoves::OBSTRUCT,PBMoves::PERISHSONG,PBMoves::PROTECT,PBMoves::QUIVERDANCE,PBMoves::RAGEPOWDER,PBMoves::RECOVER,PBMoves::REST,PBMoves::ROCKPOLISH,PBMoves::ROOST,PBMoves::SHELLSMASH,PBMoves::SHIFTGEAR,PBMoves::SHOREUP,PBMoves::SLACKOFF,PBMoves::SOFTBOILED,PBMoves::SPORE,PBMoves::SUBSTITUTE,PBMoves::SWAGGER,PBMoves::SWALLOW,PBMoves::SWORDSDANCE,PBMoves::SYNTHESIS,PBMoves::TAILGLOW]
   heal   = [PBMoves::AROMATHERAPY,PBMoves::BELLYDRUM,PBMoves::CONVERSION2,PBMoves::DECORATE,PBMoves::HAZE,PBMoves::HEALBELL,PBMoves::LIFEDEW,PBMoves::MIST,PBMoves::PSYCHUP,PBMoves::REFRESH,PBMoves::SPITE,PBMoves::STOCKPILE,PBMoves::TELEPORT,PBMoves::TRANSFORM]
   heal2  = [PBMoves::MEMENTO,PBMoves::PARTINGSHOT]
   centre = [PBMoves::DESTINYBOND,PBMoves::GRUDGE]
@@ -1226,6 +1207,12 @@ def pbZStatus(move,attacker)
     end    
     #@battle.scene.pbSubstituteSprite(attacker,attacker.pbIsOpposing?(1))
     attacker.effects[PBEffects::MultiTurn]=0
+    if attacker.effects[PBEffects::MultiTurnAttack] == PBMoves::BINDINGWORD
+      for i in [PBStats::ATTACK,PBStats::DEFENSE,PBStats::SPEED,PBStats::SPATK,PBStats::SPDEF,PBStats::ACCURACY,PBStats::EVASION]
+        attacker.stages[i] = attacker.effects[PBEffects::StatChangeHolder][i]
+        attacker.effects[PBEffects::StatChangeHolder][i] = 0
+      end
+    end
     attacker.effects[PBEffects::MultiTurnAttack]=0
     attacker.effects[PBEffects::Substitute]=sublife
     @battle.pbDisplayBrief(_INTL("{1} put in a substitute!",attacker.pbThis))
@@ -1399,9 +1386,8 @@ def pbZStatus(move,attacker)
     for i in [PBStats::ATTACK,PBStats::DEFENSE,
         PBStats::SPEED,PBStats::SPATK,PBStats::SPDEF,
         PBStats::EVASION,PBStats::ACCURACY]
-      if attacker.stages[i]<0
-        attacker.stages[i]=0
-      end
+      attacker.stages[i]=0 if attacker.stages[i]<0
+      attacker.effects[PBEffects::StatChangeHolder][i]=0 if attacker.effects[PBEffects::StatChangeHolder][i]<0
     end
     @battle.pbDisplayBrief(_INTL("{1}'s Z-Power returned its decreased stats to normal!",attacker.pbThis))
   elsif heal.include?(move)

@@ -1739,6 +1739,14 @@ class PokeBattle_Scene
     end
   end
 
+
+  # to update @battle.shieldCount in case mon enters as rift form
+  # no shield due to transformation
+  def pbUpdateBattleShield(index)
+    @battle.shieldCount = @sprites["battlebox#{index}"].shieldCount
+  end
+  
+  
   # to update @battle.shieldCount in case mon enters as rift form
   # no shield due to transformation
   def pbUpdateBattleShield(index)
@@ -3676,7 +3684,7 @@ end
           battler = i
         end
       end
-    if battler && battler.effects[PBEffects::Embargo]>0
+    if battler && (battler.effects[PBEffects::Embargo]>0 || battler.effects[PBEffects::MultiTurnAttack]==PBMoves::BINDINGWORD)
       return false
     end       
     if  pokemon.hp < pokemon.totalhp && pokemon.hp>0 &&
@@ -4371,7 +4379,7 @@ end
     pbInputUpdate    
   end
   def pbUnVanishSprite(pkmn,fade=true)
-    pkmn.vanished =false
+    pkmn.vanished = false
     @battle.pbCommonAnimation("Fade in",pkmn,nil) if fade
     pkmnsprite=@sprites["pokemon#{pkmn.index}"]
     pkmnsprite.opacity+=1000

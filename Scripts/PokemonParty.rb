@@ -1956,6 +1956,9 @@ class PokemonScreen
       cmdDebug=-1
       cmdMail=-1
       cmdRename=-1
+      cmdNature=-1
+      cmdAbility=-1
+      cmdRemind=-1
       # Build the commands
       commands[cmdSummary=commands.length]=_INTL("Summary")
       if $DEBUG || $game_switches[1495] == true
@@ -1981,6 +1984,11 @@ class PokemonScreen
         else
           commands[cmdItem=commands.length]=_INTL("Item")
         end
+
+        commands[cmdNature  = commands.length] = _INTL("Change Nature")
+        commands[cmdAbility = commands.length] = _INTL("Change Ability")
+        commands[cmdRemind  = commands.length] = _INTL("Move Reminder")
+
         commands[cmdRename = commands.length] = _INTL("Rename")
       end
       commands[commands.length]=_INTL("Cancel")
@@ -2078,6 +2086,12 @@ class PokemonScreen
         end
       elsif cmdItem>=0 && command==cmdItem && (($game_switches[1235] && !$game_switches[1408])  || $game_variables[646]>=38 &&  $game_variables[646]<41) 
         @scene.pbDisplay(_INTL("You cannot give/take an item."))
+      elsif cmdNature>=0 && command==cmdNature
+        pbPartyChangeNature(pkmn,pkmnid)
+      elsif cmdAbility>=0 && command==cmdAbility
+        pbPartyChangeAbility(pkmn,pkmnid)
+      elsif cmdRemind>=0 && command==cmdRemind
+        pbPartyMoveReminder(pkmn,pkmnid)
       elsif cmdRename>=0 && command==cmdRename
         species=PBSpecies.getName(pkmn.species)
         $game_variables[5]=Kernel.pbMessageFreeText("#{species}'s nickname?",_INTL(" "),false,12)
@@ -2092,4 +2106,92 @@ class PokemonScreen
     @scene.pbEndScene
     return nil
   end  
+
+
+  # ===========================
+  # Change Nature from party
+  # ===========================
+  def pbPartyChangeNature(pkmn,pkmnid)
+    return if !pkmn || pkmn.isEgg?
+    commands = []
+    max_val = (PBNatures.respond_to?(:maxValue)) ? PBNatures.maxValue : PBNatures.getCount
+    for i in 0...max_val
+      commands.push(PBNatures.getName(i))
+    end
+    commands.push(_INTL("Cancel"))
+    current = pkmn.nature || 0
+    cmd = @scene.pbShowCommands(
+      _INTL("Choose a nature for {1}.",pkmn.name),
+      commands,
+      current
+    )
+    return if cmd < 0 || cmd >= max_val
+    if cmd == pkmn.nature
+      pbDisplay(_INTL("{1} already has that nature.",pkmn.name))
+      return
+    end
+    pkmn.setNature(cmd)
+    pbDisplay(_INTL("{1}'s nature became {2}.",
+       pkmn.name, PBNatures.getName(pkmn.nature)))
+    pbRefreshSingle(pkmnid)
+  end
+
+  # ===========================
+  # Change Ability from party
+  # ===========================
+  def pbPartyChangeAbility(pkmn,pkmnid)
+    return if !pkmn || pkmn.isEgg?
+    abils = pkmn.getAbilityList
+    if !abils || abils[0].length <= 1
+      pbDisplay(_INTL("{1} only has one ability.",pkmn.name))
+      return
+    end
+    commands = []
+    current  = 0
+    for i in 0...abils[0].length
+      commands.push(PBAbilities.getName(abils[0][i]))
+      current = i if abils[0][i] == pkmn.ability
+    end
+    commands.push(_INTL("Cancel"))
+    cmd = @scene.pbShowCommands(
+      _INTL("Choose an ability for {1}.",pkmn.name),
+      commands,
+      current
+    )
+    return if cmd < 0 || cmd >= abils[0].length
+    if abils[0][cmd] == pkmn.ability
+      pbDisplay(_INTL("{1} already has that ability.",pkmn.name))
+      return
+    end
+    # abils[1][i] is the ability slot index (0/1/2) used by setAbility
+    pkmn.setAbility(abils[1][cmd])
+    pbDisplay(_INTL("{1}'s ability became {2}.",
+       pkmn.name, PBAbilities.getName(pkmn.ability)))
+    pbRefreshSingle(pkmnid)
+  end
+
+  # ===========================
+  # Move Reminder from party
+  # ===========================
+  def pbPartyMoveReminder(pkmn,pkmnid)
+    return if !pkmn || pkmn.isEgg?
+    if defined?(pbGetRelearnableMoves)
+      moves = pbGetRelearnableMoves(pkmn, true)   # true = exclude level 1 moves
+      if moves.length==0
+        pbDisplay(_INTL("{1} has no moves to remember.",pkmn.name))
+        return
+      end
+    else
+      pbDisplay(_INTL("Move Reminder is not set up."))
+      return
+    end
+    if defined?(pbRelearnMoveScreen)
+      if pbRelearnMoveScreen(pkmn, moves)
+        pbRefreshSingle(pkmnid)
+      end
+    else
+      pbDisplay(_INTL("Move Reminder is not set up."))
+    end
+  end
+
 end
