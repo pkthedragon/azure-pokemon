@@ -1682,7 +1682,7 @@ class Scene_FieldNotes_Info
                 when 1
                   Kernel.pbMessage(_INTL("All Special Flying attacks, Fire Spin, Leaf Tornado, Razor Wind, Twister, and Whirlpool stir up ash, lowering all active Pokemon's Accuracy."))
                 when 3
-                  Kernel.pbMessage(_INTL("...when the target does not have Unnerve, and one of these abilities is active: Own Tempo, Pure Power, Sand Veil, Steadfast"))
+                  Kernel.pbMessage(_INTL("...when the target does not have Unnerve, and one of these abilities is active: Pure Power, Sand Veil, Steadfast"))
                 when 4
                   Kernel.pbMessage(_INTL("Sand Force, Sand Rush, Sand Veil"))
                 when 5

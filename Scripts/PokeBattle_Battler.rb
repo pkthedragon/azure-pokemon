@@ -3182,6 +3182,18 @@ class PokeBattle_Battler
         end
       end
     end
+    # Keen Eye - applies Lock-On/Laser Focus on entry
+    if self.hasWorkingAbility(:KEENEYE) && onactive
+      @effects[PBEffects::LaserFocus]=2
+      for i in 0...4
+        next if !pbIsOpposing?(i)
+        target=@battle.battlers[i]
+        next if target.isFainted?
+        target.effects[PBEffects::LockOn]=2
+        target.effects[PBEffects::LockOnPos]=@index
+        @battle.pbDisplay(_INTL("{1} took aim at {2}!",pbThis,target.pbThis(true)))
+      end
+    end
     # Intimidate
     if self.hasWorkingAbility(:INTIMIDATE2) && onactive
       for i in 0...4
@@ -4577,10 +4589,6 @@ class PokeBattle_Battler
       @battle.pbDisplay(_INTL("{1}'s Immunity cured its poison problem!",pbThis))
       self.status=0
     end
-    if self.hasWorkingAbility(:OWNTEMPO) && @effects[PBEffects::Confusion]>0
-      @battle.pbDisplay(_INTL("{1}'s Own Tempo cured its confusion problem!",pbThis))
-      @effects[PBEffects::Confusion]=0
-    end
     if self.hasWorkingAbility(:MAGMAARMOR) && self.status==PBStatuses::FROZEN && $fefieldeffect!=39 && self.effects[PBEffects::Spritz] != 1
       @battle.pbDisplay(_INTL("{1}'s Magma Armor cured its ice problem!",pbThis))
       self.status=0
@@ -4605,7 +4613,7 @@ class PokeBattle_Battler
       @battle.pbDisplay(message1)
       if (self.nature%5) == flavor && (self.nature/5).floor != (self.nature%5)
         @battle.pbDisplay(message2)
-        if @effects[PBEffects::Confusion]==0 && !self.hasWorkingAbility(:OWNTEMPO)
+        if @effects[PBEffects::Confusion]==0
           @effects[PBEffects::Confusion]=2+@battle.pbRandom(4)
           @battle.pbCommonAnimation("Confusion",self,nil)
           @battle.pbDisplay(_INTL("{1} became confused!",pbThis))
@@ -6396,7 +6404,7 @@ class PokeBattle_Battler
         return 0
       end
       # Add to counters for moves which increase them when used in succession
-      if thismove.id == user.movesUsed[-2] && user.hasWorkingItem(:METRONOME)
+      if thismove.id == user.movesUsed[-2]
         user.effects[PBEffects::Metronome]+=1
       else
         user.effects[PBEffects::Metronome]=0
@@ -8821,4 +8829,3 @@ class PokeBattle_Battler
   end
 
 end
-

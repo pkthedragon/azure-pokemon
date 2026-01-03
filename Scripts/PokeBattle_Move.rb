@@ -1558,8 +1558,7 @@ class PokeBattle_Move
     # be counter-intuitive to keen-eye.
     evasion = 100 if attacker.hasWorkingAbility(:KEENEYE)
     evasion = 100 if $fefieldeffect == 20 &&
-    (attacker.hasWorkingAbility(:OWNTEMPO) ||
-    attacker.hasWorkingAbility(:INNERFOCUS) ||
+    (attacker.hasWorkingAbility(:INNERFOCUS) ||
     attacker.hasWorkingAbility(:PUREPOWER) ||
     attacker.hasWorkingAbility(:STEADFAST)) &&
     !opponent.hasWorkingAbility(:UNNERVE)
@@ -4957,6 +4956,11 @@ class PokeBattle_Move
     if attacker.hasWorkingAbility(:STAKEOUT) && @battle.switchedOut[opponent.index]
       finaldamagemult=(finaldamagemult*2.0).round
     end    
+    if attacker.hasWorkingAbility(:OWNTEMPO) && attacker.effects[PBEffects::Metronome]>0
+      met=1.0+(attacker.effects[PBEffects::Metronome]*0.1)
+      met=2.0 if met>2.0
+      finaldamagemult=(finaldamagemult*met).round
+    end
     if attacker.hasWorkingItem(:METRONOME)
       if attacker.effects[PBEffects::Metronome]>4
         finaldamagemult=(finaldamagemult*2.0).round

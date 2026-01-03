@@ -563,10 +563,6 @@ end
       @battle.pbDisplay(_INTL("But it failed!")) if showMessages
       return false
     end
-    if hasWorkingAbility(:OWNTEMPO) && !(self.moldbroken) 
-      @battle.pbDisplay(_INTL("{1}'s {2} prevents confusion!",pbThis,PBAbilities.getName(self.ability))) if showMessages
-      return false
-    end
     if $fefieldeffect == 20 && pbHasType?(:FIGHTING)
       @battle.pbDisplay(_INTL("{1} broke through the confusion!",pbThis)) if showMessages
       return false
@@ -581,10 +577,6 @@ end
       @battle.pbDisplay(_INTL("{1} is already confused!",pbThis)) if showMessages
       return false
     end
-    if hasWorkingAbility(:OWNTEMPO)
-      @battle.pbDisplay(_INTL("{1}'s {2} prevents confusion!",pbThis,PBAbilities.getName(self.ability))) if showMessages
-      return false
-    end
     if $fefieldeffect == 20 && pbHasType?(:FIGHTING)
       @battle.pbDisplay(_INTL("{1} broke through the confusion!",pbThis)) if showMessages
       return false
@@ -593,7 +585,7 @@ end
   end
 
   def pbConfuseSelf
-    if @effects[PBEffects::Confusion]==0 && !hasWorkingAbility(:OWNTEMPO)
+    if @effects[PBEffects::Confusion]==0
       @effects[PBEffects::Confusion]=2+@battle.pbRandom(4)
       @battle.pbCommonAnimation("Confusion",self,nil)
       @battle.pbDisplay(_INTL("{1} became confused!",pbThis))
@@ -969,7 +961,7 @@ end
     if hasWorkingAbility(:CLEARBODY) || hasWorkingAbility(:WHITESMOKE) ||
        hasWorkingAbility(:HYPERCUTTER) || hasWorkingAbility(:FULLMETALBODY) ||
        hasWorkingAbility(:TEMPORALSHIFT) || hasWorkingAbility(:INNERFOCUS) ||
-       hasWorkingAbility(:OBLIVIOUS) || hasWorkingAbility(:OWNTEMPO) || hasWorkingAbility(:EXECUTION)
+       hasWorkingAbility(:OBLIVIOUS) || hasWorkingAbility(:EXECUTION)
        hasWorkingAbility(:SCRAPPY)
       abilityname=PBAbilities.getName(self.ability)
       oppabilityname=PBAbilities.getName(opponent.ability)

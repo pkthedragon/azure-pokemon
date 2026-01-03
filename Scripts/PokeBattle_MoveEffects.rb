@@ -6519,14 +6519,18 @@ class PokeBattle_Move_0C3 < PokeBattle_Move
     if $fefieldeffect == 43 && !@immediate
       @immediate=true
     end
-    if !@immediate && attacker.hasWorkingItem(:POWERHERB)
-      @immediate=true
-      if !checking
-        itemname=PBItems.getName(attacker.item)
-        attacker.pokemon.itemRecycle=attacker.item
-        attacker.pokemon.itemInitial=0 if attacker.pokemon.itemInitial==attacker.item
-        attacker.item=0
-        @battle.pbDisplay(_INTL("{1} consumed its {2}!",attacker.pbThis,itemname))
+    if !@immediate
+      if attacker.hasWorkingAbility(:INSOMNIA)
+        @immediate=true
+      elsif attacker.hasWorkingItem(:POWERHERB)
+        @immediate=true
+        if !checking
+          itemname=PBItems.getName(attacker.item)
+          attacker.pokemon.itemRecycle=attacker.item
+          attacker.pokemon.itemInitial=0 if attacker.pokemon.itemInitial==attacker.item
+          attacker.item=0
+          @battle.pbDisplay(_INTL("{1} consumed its {2}!",attacker.pbThis,itemname))
+        end
       end
     end
     
@@ -6560,14 +6564,18 @@ class PokeBattle_Move_0C4 < PokeBattle_Move
      isConst?(@id,PBMoves,:SOLARBEAM) && !@immediate
       @immediate=true
     end
-    if !@immediate && attacker.hasWorkingItem(:POWERHERB)
-      @immediate=true
-      if !checking
-        itemname=PBItems.getName(attacker.item)
-        attacker.pokemon.itemRecycle=attacker.item
-        attacker.pokemon.itemInitial=0 if attacker.pokemon.itemInitial==attacker.item
-        attacker.item=0
-        @battle.pbDisplay(_INTL("{1} consumed its {2}!",attacker.pbThis,itemname))
+    if !@immediate
+      if attacker.hasWorkingAbility(:INSOMNIA)
+        @immediate=true
+      elsif attacker.hasWorkingItem(:POWERHERB)
+        @immediate=true
+        if !checking
+          itemname=PBItems.getName(attacker.item)
+          attacker.pokemon.itemRecycle=attacker.item
+          attacker.pokemon.itemInitial=0 if attacker.pokemon.itemInitial==attacker.item
+          attacker.item=0
+          @battle.pbDisplay(_INTL("{1} consumed its {2}!",attacker.pbThis,itemname))
+        end
       end
     end
     return false if @immediate
@@ -6610,14 +6618,18 @@ class PokeBattle_Move_0C5 < PokeBattle_Move
     if $fefieldeffect == 39 && !@immediate
       @immediate=true 
     end
-    if !@immediate && attacker.hasWorkingItem(:POWERHERB)
-      @immediate=true
-      if !checking
-        itemname=PBItems.getName(attacker.item)
-        attacker.pokemon.itemRecycle=attacker.item
-        attacker.pokemon.itemInitial=0 if attacker.pokemon.itemInitial==attacker.item
-        attacker.item=0
-        @battle.pbDisplay(_INTL("{1} consumed its {2}!",attacker.pbThis,itemname))
+    if !@immediate
+      if attacker.hasWorkingAbility(:INSOMNIA)
+        @immediate=true
+      elsif attacker.hasWorkingItem(:POWERHERB)
+        @immediate=true
+        if !checking
+          itemname=PBItems.getName(attacker.item)
+          attacker.pokemon.itemRecycle=attacker.item
+          attacker.pokemon.itemInitial=0 if attacker.pokemon.itemInitial==attacker.item
+          attacker.item=0
+          @battle.pbDisplay(_INTL("{1} consumed its {2}!",attacker.pbThis,itemname))
+        end
       end
     end
     return false if @immediate
@@ -6653,14 +6665,18 @@ class PokeBattle_Move_0C6 < PokeBattle_Move
     if $fefieldeffect == 39 && !@immediate
       @immediate=true 
     end
-    if !@immediate && attacker.hasWorkingItem(:POWERHERB)
-      @immediate=true
-      if !checking
-        itemname=PBItems.getName(attacker.item)
-        attacker.pokemon.itemRecycle=attacker.item
-        attacker.pokemon.itemInitial=0 if attacker.pokemon.itemInitial==attacker.item
-        attacker.item=0
-        @battle.pbDisplay(_INTL("{1} consumed its {2}!",attacker.pbThis,itemname))
+    if !@immediate
+      if attacker.hasWorkingAbility(:INSOMNIA)
+        @immediate=true
+      elsif attacker.hasWorkingItem(:POWERHERB)
+        @immediate=true
+        if !checking
+          itemname=PBItems.getName(attacker.item)
+          attacker.pokemon.itemRecycle=attacker.item
+          attacker.pokemon.itemInitial=0 if attacker.pokemon.itemInitial==attacker.item
+          attacker.item=0
+          @battle.pbDisplay(_INTL("{1} consumed its {2}!",attacker.pbThis,itemname))
+        end
       end
     end
     return false if @immediate
@@ -6696,14 +6712,18 @@ class PokeBattle_Move_0C7 < PokeBattle_Move
     if $fefieldeffect == 43 && !@immediate
       @immediate=true 
     end
-    if !@immediate && attacker.hasWorkingItem(:POWERHERB)
-      @immediate=true
-      if !checking
-        itemname=PBItems.getName(attacker.item)
-        attacker.pokemon.itemRecycle=attacker.item
-        attacker.pokemon.itemInitial=0 if attacker.pokemon.itemInitial==attacker.item
-        attacker.item=0
-        @battle.pbDisplay(_INTL("{1} consumed its {2}!",attacker.pbThis,itemname))
+    if !@immediate
+      if attacker.hasWorkingAbility(:INSOMNIA)
+        @immediate=true
+      elsif attacker.hasWorkingItem(:POWERHERB)
+        @immediate=true
+        if !checking
+          itemname=PBItems.getName(attacker.item)
+          attacker.pokemon.itemRecycle=attacker.item
+          attacker.pokemon.itemInitial=0 if attacker.pokemon.itemInitial==attacker.item
+          attacker.item=0
+          @battle.pbDisplay(_INTL("{1} consumed its {2}!",attacker.pbThis,itemname))
+        end
       end
     end
     return false if @immediate
@@ -6737,14 +6757,18 @@ end
 class PokeBattle_Move_0C8 < PokeBattle_Move
   def pbTwoTurnAttack(attacker,checking=false)
     @immediate=false
-    if !@immediate && attacker.hasWorkingItem(:POWERHERB)
-      @immediate=true
-      if !checking
-        itemname=PBItems.getName(attacker.item)
-        attacker.pokemon.itemRecycle=attacker.item
-        attacker.pokemon.itemInitial=0 if attacker.pokemon.itemInitial==attacker.item
-        attacker.item=0
-        @battle.pbDisplay(_INTL("{1} consumed its {2}!",attacker.pbThis,itemname))
+    if !@immediate
+      if attacker.hasWorkingAbility(:INSOMNIA)
+        @immediate=true
+      elsif attacker.hasWorkingItem(:POWERHERB)
+        @immediate=true
+        if !checking
+          itemname=PBItems.getName(attacker.item)
+          attacker.pokemon.itemRecycle=attacker.item
+          attacker.pokemon.itemInitial=0 if attacker.pokemon.itemInitial==attacker.item
+          attacker.item=0
+          @battle.pbDisplay(_INTL("{1} consumed its {2}!",attacker.pbThis,itemname))
+        end
       end
     end
     return false if @immediate
@@ -6781,14 +6805,18 @@ class PokeBattle_Move_0C9 < PokeBattle_Move
      !@immediate
       @immediate=true
     end
-    if !@immediate && attacker.hasWorkingItem(:POWERHERB)
-      @immediate=true
-      if !checking
-        itemname=PBItems.getName(attacker.item)
-        attacker.pokemon.itemRecycle=attacker.item
-        attacker.pokemon.itemInitial=0 if attacker.pokemon.itemInitial==attacker.item
-        attacker.item=0
-        @battle.pbDisplay(_INTL("{1} consumed its {2}!",attacker.pbThis,itemname))
+    if !@immediate
+      if attacker.hasWorkingAbility(:INSOMNIA)
+        @immediate=true
+      elsif attacker.hasWorkingItem(:POWERHERB)
+        @immediate=true
+        if !checking
+          itemname=PBItems.getName(attacker.item)
+          attacker.pokemon.itemRecycle=attacker.item
+          attacker.pokemon.itemInitial=0 if attacker.pokemon.itemInitial==attacker.item
+          attacker.item=0
+          @battle.pbDisplay(_INTL("{1} consumed its {2}!",attacker.pbThis,itemname))
+        end
       end
     end
     return false if @immediate
@@ -6823,14 +6851,18 @@ class PokeBattle_Move_0CA < PokeBattle_Move
     if $fefieldeffect == 12 && !@immediate
       @immediate=true
     end
-    if !@immediate && attacker.hasWorkingItem(:POWERHERB)
-      @immediate=true
-      if !checking
-        itemname=PBItems.getName(attacker.item)
-        attacker.pokemon.itemRecycle=attacker.item
-        attacker.pokemon.itemInitial=0 if attacker.pokemon.itemInitial==attacker.item
-        attacker.item=0
-        @battle.pbDisplay(_INTL("{1} consumed its {2}!",attacker.pbThis,itemname))
+    if !@immediate
+      if attacker.hasWorkingAbility(:INSOMNIA)
+        @immediate=true
+      elsif attacker.hasWorkingItem(:POWERHERB)
+        @immediate=true
+        if !checking
+          itemname=PBItems.getName(attacker.item)
+          attacker.pokemon.itemRecycle=attacker.item
+          attacker.pokemon.itemInitial=0 if attacker.pokemon.itemInitial==attacker.item
+          attacker.item=0
+          @battle.pbDisplay(_INTL("{1} consumed its {2}!",attacker.pbThis,itemname))
+        end
       end
     end
     return false if @immediate
@@ -6861,14 +6893,18 @@ class PokeBattle_Move_0CB < PokeBattle_Move
     if ($fefieldeffect == 21 || $fefieldeffect == 22) && !@immediate
       @immediate=true
     end
-    if !@immediate && attacker.hasWorkingItem(:POWERHERB)
-      @immediate=true
-      if !checking
-        itemname=PBItems.getName(attacker.item)
-        attacker.pokemon.itemRecycle=attacker.item
-        attacker.pokemon.itemInitial=0 if attacker.pokemon.itemInitial==attacker.item
-        attacker.item=0
-        @battle.pbDisplay(_INTL("{1} consumed its {2}!",attacker.pbThis,itemname))
+    if !@immediate
+      if attacker.hasWorkingAbility(:INSOMNIA)
+        @immediate=true
+      elsif attacker.hasWorkingItem(:POWERHERB)
+        @immediate=true
+        if !checking
+          itemname=PBItems.getName(attacker.item)
+          attacker.pokemon.itemRecycle=attacker.item
+          attacker.pokemon.itemInitial=0 if attacker.pokemon.itemInitial==attacker.item
+          attacker.item=0
+          @battle.pbDisplay(_INTL("{1} consumed its {2}!",attacker.pbThis,itemname))
+        end
       end
     end
     return false if @immediate
@@ -6914,14 +6950,18 @@ class PokeBattle_Move_0CC < PokeBattle_Move
      !@immediate
       @immediate=true
     end
-    if !@immediate && attacker.hasWorkingItem(:POWERHERB)
-      @immediate=true
-      if !checking
-        itemname=PBItems.getName(attacker.item)
-        attacker.pokemon.itemRecycle=attacker.item
-        attacker.pokemon.itemInitial=0 if attacker.pokemon.itemInitial==attacker.item
-        attacker.item=0
-        @battle.pbDisplay(_INTL("{1} consumed its {2}!",attacker.pbThis,itemname))
+    if !@immediate
+      if attacker.hasWorkingAbility(:INSOMNIA)
+        @immediate=true
+      elsif attacker.hasWorkingItem(:POWERHERB)
+        @immediate=true
+        if !checking
+          itemname=PBItems.getName(attacker.item)
+          attacker.pokemon.itemRecycle=attacker.item
+          attacker.pokemon.itemInitial=0 if attacker.pokemon.itemInitial==attacker.item
+          attacker.item=0
+          @battle.pbDisplay(_INTL("{1} consumed its {2}!",attacker.pbThis,itemname))
+        end
       end
     end
     return false if @immediate
@@ -6964,14 +7004,18 @@ class PokeBattle_Move_0CD < PokeBattle_Move
     if ($fefieldeffect == 18 || $fefieldeffect == 40) && !@immediate # Boss Giratina had instant SForce here
       @immediate=true
     end
-    if !@immediate && attacker.hasWorkingItem(:POWERHERB)
-      @immediate=true
-      if !checking
-        itemname=PBItems.getName(attacker.item)
-        attacker.pokemon.itemRecycle=attacker.item
-        attacker.pokemon.itemInitial=0 if attacker.pokemon.itemInitial==attacker.item
-        attacker.item=0
-        @battle.pbDisplay(_INTL("{1} consumed its {2}!",attacker.pbThis,itemname))
+    if !@immediate
+      if attacker.hasWorkingAbility(:INSOMNIA)
+        @immediate=true
+      elsif attacker.hasWorkingItem(:POWERHERB)
+        @immediate=true
+        if !checking
+          itemname=PBItems.getName(attacker.item)
+          attacker.pokemon.itemRecycle=attacker.item
+          attacker.pokemon.itemInitial=0 if attacker.pokemon.itemInitial==attacker.item
+          attacker.item=0
+          @battle.pbDisplay(_INTL("{1} consumed its {2}!",attacker.pbThis,itemname))
+        end
       end
     end
     return false if @immediate
@@ -10398,7 +10442,7 @@ end
 class PokeBattle_Move_13E < PokeBattle_Move
   def pbTwoTurnAttack(attacker)
     @immediate=false
-    if !@immediate && isConst?(attacker.item,PBItems,:POWERHERB)
+    if !@immediate && (isConst?(attacker.item,PBItems,:POWERHERB) || attacker.hasWorkingAbility(:INSOMNIA))
       itemname=PBItems.getName(attacker.item)
       @immediate=true
       attacker.pokemon.itemRecycle=attacker.item
@@ -12986,7 +13030,7 @@ class PokeBattle_Move_237 < PokeBattle_Move
         @immediate=true if @battle.pbWeather == PBWeather::HAIL
       end
     end
-    if !@immediate && attacker.hasWorkingItem(:POWERHERB)
+    if !@immediate && ((attacker.hasWorkingItem(:POWERHERB) || attacker.hasWorkingAbility(:INSOMNIA)) || attacker.hasWorkingAbility(:INSOMNIA))
       @immediate=true
       if !checking
         itemname=PBItems.getName(attacker.item)
@@ -13057,14 +13101,18 @@ class PokeBattle_Move_23C < PokeBattle_Move
     # if ($fefieldeffect == 21 || $fefieldeffect == 22) && !@immediate
     #   @immediate=true
     # end
-    if !@immediate && attacker.hasWorkingItem(:POWERHERB)
-      @immediate=true
-      if !checking
-        itemname=PBItems.getName(attacker.item)
-        attacker.pokemon.itemRecycle=attacker.item
-        attacker.pokemon.itemInitial=0 if attacker.pokemon.itemInitial==attacker.item
-        attacker.item=0
-        @battle.pbDisplay(_INTL("{1} consumed its {2}!",attacker.pbThis,itemname))
+    if !@immediate
+      if attacker.hasWorkingAbility(:INSOMNIA)
+        @immediate=true
+      elsif attacker.hasWorkingItem(:POWERHERB)
+        @immediate=true
+        if !checking
+          itemname=PBItems.getName(attacker.item)
+          attacker.pokemon.itemRecycle=attacker.item
+          attacker.pokemon.itemInitial=0 if attacker.pokemon.itemInitial==attacker.item
+          attacker.item=0
+          @battle.pbDisplay(_INTL("{1} consumed its {2}!",attacker.pbThis,itemname))
+        end
       end
     end
     return false if @immediate
@@ -14447,7 +14495,7 @@ class PokeBattle_Move_29H < PokeBattle_Move
     if $fefieldeffect == 43 && !@immediate
       @immediate = true
     end
-    if !@immediate && attacker.hasWorkingItem(:POWERHERB)
+    if !@immediate && ((attacker.hasWorkingItem(:POWERHERB) || attacker.hasWorkingAbility(:INSOMNIA)) || attacker.hasWorkingAbility(:INSOMNIA))
       @immediate = true
       if !checking
         itemname = PBItems.getName(attacker.item)
