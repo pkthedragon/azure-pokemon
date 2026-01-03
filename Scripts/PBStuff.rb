@@ -12,7 +12,7 @@ class PBStuff
    #Blacklisted abilities USUALLY can't be copied.
    #Fixed abilities USUALLY can't be changed.
   ANTIINTIMIDATEABILITIES = [PBAbilities::CONTRARY,PBAbilities::COMPETITIVE,PBAbilities::DEFIANT,
-                             PBAbilities::RATTLED,PBAbilities::OWNTEMPO,PBAbilities::OBLIVIOUS,
+                             PBAbilities::RATTLED,PBAbilities::OBLIVIOUS,
                              PBAbilities::SCRAPPY]
   #List of Abilities that either prevent or co-opt Intimidate
   TRACEABILITIES = [PBAbilities::PROTEAN,PBAbilities::CONTRARY,PBAbilities::INTIMIDATE,
