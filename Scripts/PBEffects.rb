@@ -167,14 +167,21 @@ begin
   Aftershock     = 172
   AftershockMove = 173
   AftershockUser = 174 
-    Stench            = 200
-    StallEntry        = 705
+  EarlyBirdBoost = 175
+  Stench            = 200
+  StallEntry        = 705
   MudBath         = 201
   NaturalOrder    = 202
   FeverPitchBoost = 203
   MirrorCoat = 204
   CounterStance = 205
   NightmareAura = 206
+  DamagingMoveThisTurn = 207
+  StalwartMove       = 208
+  StalwartStacks     = 209
+  FriskLock          = 210
+  ForewarnDisable    = 211
+  ForewarnDisableMove = 212
     # These effects apply to a side - starts from 300
     LightScreen   = 300
     LuckyChant    = 301
@@ -201,6 +208,8 @@ begin
 	Presents	  = 322
 	ManaBond	  = 323
 	ReverbEcho	  = 324
+    PlusSignal    = 325
+    MinusSignal   = 326
     # These effects apply to the battle (i.e. both sides) - starts from 400
     Gravity       = 400
     MagicRoom     = 401

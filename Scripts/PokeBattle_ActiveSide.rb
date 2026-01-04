@@ -30,6 +30,8 @@ begin
       @effects[PBEffects::BattleCry]   = 0 
       @effects[PBEffects::MysticTree]  = 0
       @effects[PBEffects::Presents]  = 0	  
+      @effects[PBEffects::PlusSignal]  = 0
+      @effects[PBEffects::MinusSignal] = 0
       $belch=false
       $fepledgefield=0
       $feconversionuse=0      

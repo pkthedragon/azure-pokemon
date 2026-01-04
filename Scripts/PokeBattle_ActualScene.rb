@@ -2372,6 +2372,8 @@ class PokeBattle_Scene
       fieldbd = 45
     elsif backdrop=="Beach"
       fieldbd = 46
+    elsif backdrop=="Library"
+      fieldbd = 50
     else
       fieldbd = 0
     end
@@ -2485,6 +2487,8 @@ class PokeBattle_Scene
           backdrop="InfernalFieldPlaceholder"
         elsif fieldbd == 46
           backdrop="Beach"
+        elsif fieldbd == 50
+          backdrop="Library"
         end 
         backdrop3 = backdrop
         $febackgroundstore = backdrop3
