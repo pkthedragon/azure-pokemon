@@ -3150,6 +3150,14 @@ class PokeBattle_Battle
     return pbOnActiveOne(@battlers[index])
   end
 
+  def pbBlink(battler)
+    return false if !battler || battler.isFainted?
+    party_index=battler.pokemonIndex
+    return false if party_index<0
+    pbRecallAndReplace(battler.index,party_index,false)
+    return true
+  end
+
   def pbMessagesOnReplace(index,newpoke)
     party=pbParty(index)
     if pbOwnedByPlayer?(index)
@@ -4100,6 +4108,7 @@ end
 
   def pbOnActiveOne(pkmn,onlyabilities=false)
     return false if pkmn.isFainted?
+    pkmn.effects[PBEffects::BlinkEntryTurn]=@turncount if !onlyabilities
     if !onlyabilities
       for i in 0...4 # Currently unfainted participants will earn EXP even if they faint afterwards
         @battlers[i].pbUpdateParticipants if pbIsOpposing?(i)
@@ -4282,6 +4291,39 @@ end
           hpgain=pkmn.pbRecoverHP(hpgain,true)
           pbDisplay(_INTL("{1} was healed by the mystical trees!",pkmn.pbThis)) if hpgain>0
         end
+      end
+      if pkmn.hasWorkingItem(:HEARTLOCKET) && !pkmn.effects[PBEffects::HeartLocketUsed]
+        shieldhp=[(pkmn.totalhp/8).floor,1].max
+        if pkmn.pbApplyTempShield(shieldhp,_INTL("{1}'s Heart Locket formed a shield!",pkmn.pbThis))
+          pkmn.effects[PBEffects::HeartLocketUsed]=true
+        end
+      end
+      if pkmn.hasWorkingItem(:VENGEANTDIADEM)
+        party=pbParty(pkmn.index)
+        alive=party.find_all{|mon| mon && !mon.egg? && mon.hp>0}.length
+        stats={PBStats::ATTACK=>pkmn.attack,PBStats::DEFENSE=>pkmn.defense,
+               PBStats::SPATK=>pkmn.spatk,PBStats::SPDEF=>pkmn.spdef,
+               PBStats::SPEED=>pkmn.speed}
+        targetstat = (alive==1) ? stats.key(stats.values.max) : stats.key(stats.values.min)
+        if targetstat && pkmn.pbCanIncreaseStatStage?(targetstat,false)
+          pkmn.pbIncreaseStatWithCause(targetstat,1,pkmn,PBItems.getName(pkmn.item))
+        end
+      end
+      if pkmn.hasWorkingItem(:CRACKEDMIRROR) && !pkmn.effects[PBEffects::TrickRoomOnEntry]
+        if @trickroom==0
+          @trickroom=1
+          pbAnimation(499,pkmn,nil)
+          pbDisplay(_INTL("{1}'s {2} twisted space for a moment!",pkmn.pbThis,PBItems.getName(pkmn.item)))
+        end
+        pkmn.effects[PBEffects::TrickRoomOnEntry]=true
+      end
+      if pkmn.hasWorkingItem(:NOXIOUSDRAUGHT)
+        for target in @battlers
+          next if !target || target.isFainted? || target.index==pkmn.index
+          damage=[(target.totalhp/8).floor,1].max
+          target.pbReduceHP(damage)
+        end
+        pbDisplay(_INTL("{1}'s {2} filled the field with toxic fumes!",pkmn.pbThis,PBItems.getName(pkmn.item)))
       end
       # Sticky Web
       if pkmn.pbOwnSide.effects[PBEffects::StickyWeb]
@@ -6864,6 +6906,12 @@ def pbStartBattle(canlose=false)
             pbDisplay(_INTL("{1}'s Caretaker healed {2}!",i.pbThis,partner.pbThis(true))) if hpgain>0
           end
         end
+      end
+      if i.hasWorkingItem(:FAERIERING) &&
+         i.effects[PBEffects::BlinkEntryTurn]!=@turncount &&
+         !i.effects[PBEffects::ActedThisTurn]
+        pbDisplay(_INTL("{1} vanished in a faerie blink!",i.pbThis))
+        pbBlink(i)
       end
     end
     # Held berries/Leftovers/Black Sludge

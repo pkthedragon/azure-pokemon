@@ -182,6 +182,13 @@ begin
   FriskLock          = 210
   ForewarnDisable    = 211
   ForewarnDisableMove = 212
+  TempShieldHP       = 213
+  TempShieldTurns    = 214
+  KingsRockGuardUsed = 215
+  HeartLocketUsed    = 216
+  TrickRoomOnEntry   = 217
+  BlinkEntryTurn     = 218
+  ActedThisTurn      = 219
     # These effects apply to a side - starts from 300
     LightScreen   = 300
     LuckyChant    = 301

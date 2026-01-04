@@ -1136,6 +1136,13 @@ class PokeBattle_Battler
     @effects[PBEffects::CritCount]        = 0  
     @effects[PBEffects::SusCrit]          = false  
     @effects[PBEffects::Obstruct]         = false
+    @effects[PBEffects::TempShieldHP]     = 0
+    @effects[PBEffects::TempShieldTurns]  = 0
+    @effects[PBEffects::KingsRockGuardUsed] = false
+    @effects[PBEffects::HeartLocketUsed]  = false
+    @effects[PBEffects::TrickRoomOnEntry] = false
+    @effects[PBEffects::BlinkEntryTurn]   = -1
+    @effects[PBEffects::ActedThisTurn]    = false
     @effects[PBEffects::DesertsMark]      = false
     @effects[PBEffects::UsingItem]        = []
     @effects[PBEffects::WorldOfNightmares]= 0
@@ -2043,6 +2050,17 @@ class PokeBattle_Battler
   # Change HP
   ################################################################################
   def pbReduceHP(amt,anim=false)
+    if amt>0 && @effects[PBEffects::TempShieldHP].to_i>0
+      absorbed=[amt,@effects[PBEffects::TempShieldHP]].min
+      @effects[PBEffects::TempShieldHP]-=absorbed
+      @effects[PBEffects::TempShieldTurns]=0 if @effects[PBEffects::TempShieldHP]<=0
+      amt-=absorbed
+      if @battle.battlescene && @battle.scene
+        sprite=@battle.scene.sprites["battlebox#{self.index}"] rescue nil
+        sprite.refresh if sprite
+      end
+      return 0 if amt<=0
+    end
     if amt>=self.hp
       amt=self.hp
     elsif amt<=0 && !self.isFainted?
@@ -2101,6 +2119,19 @@ class PokeBattle_Battler
       end
     end
     return amt
+  end
+  
+  def pbApplyTempShield(shieldhp,msg=nil)
+    shieldhp=shieldhp.to_i
+    return false if shieldhp<=0
+    @effects[PBEffects::TempShieldHP]=shieldhp
+    @effects[PBEffects::TempShieldTurns]=1
+    @battle.pbDisplay(msg) if msg
+    if @battle.battlescene && @battle.scene
+      sprite=@battle.scene.sprites["battlebox#{self.index}"] rescue nil
+      sprite.refresh if sprite
+    end
+    return true
   end
   
   def pbRecoverHP(amt,anim=false)
@@ -5099,6 +5130,19 @@ class PokeBattle_Battler
         @pokemon.itemInitial=0 if @pokemon.itemInitial==self.item
         self.item=0
       end
+      if self.hasWorkingItem(:LEVIABERRY) && self.status==PBStatuses::PETRIFIED
+        berryconsumed = true
+        if self.effects[PBEffects::Spritz] == 1
+          @battle.pbDisplay(_INTL("{1}'s spritz prevented status cure!",pbThis))
+        else
+          self.status=0
+          @battle.pbDisplay(_INTL("{1}'s {2} uncrushed it!",pbThis,itemname))
+        end
+        @pokemon.itemRecycle=self.item
+        $belch=true
+        @pokemon.itemInitial=0 if @pokemon.itemInitial==self.item
+        self.item=0
+      end
       if self.hasWorkingItem(:LEPPABERRY)
         berryconsumed = true
         for i in 0...@pokemon.moves.length
@@ -5180,6 +5224,20 @@ class PokeBattle_Battler
         _INTL("Using its {1}, the Special Attack of {2} rose!",itemname,pbThis(true)))
       pbStatIncreasingBerry(:APICOTBERRY,PBStats::SPDEF,
         _INTL("Using its {1}, the Special Defense of {2} rose!",itemname,pbThis(true)))
+      if self.hasWorkingItem(:COCONBERRY)
+        pinch = (self.hasWorkingAbility(:GLUTTONY) && self.hp<=(self.totalhp/2).floor) ||
+                (self.hp<=(self.totalhp/4).floor)
+        if pinch || hpcure
+          shieldhp=(self.totalhp/3).floor
+          if pbApplyTempShield(shieldhp,_INTL("{1} shielded itself with its {2}!",pbThis,itemname))
+            berryconsumed = true
+            @pokemon.itemRecycle=self.item
+            $belch=true
+            @pokemon.itemInitial=0 if @pokemon.itemInitial==self.item
+            self.item=0
+          end
+        end
+      end
       if self.hasWorkingItem(:LANSATBERRY) && @effects[PBEffects::FocusEnergy]==0
         berryconsumed = true
         if (self.hasWorkingAbility(:GLUTTONY) && self.hp<=(self.totalhp/2).floor) ||
@@ -5904,6 +5962,20 @@ class PokeBattle_Battler
     end
   end
 
+  def pbRestoreAllMovesPP(amount)
+    return 0 if !@pokemon
+    amount=amount.to_i
+    return 0 if amount<=0
+    restored=0
+    for i in 0...@pokemon.moves.length
+      restored+=pbBattleRestorePP(@pokemon,self,i,amount)
+    end
+    return restored
+  end
+
+  def pbApplyPressurePP(move,user)
+    return if !move
+    return if user && user.hasWorkingItem(:PRESSURESUIT)
   def pbApplyPressurePP(move,user)
     return if !move
     totalcost=(@battle.field.effects[PBEffects::Gravity]>0 || (user && user.status==PBStatuses::PETRIFIED)) ? 3 : 2
@@ -7013,6 +7085,7 @@ class PokeBattle_Battler
              target.status!=PBStatuses::SLEEP && target.status!=PBStatuses::FROZEN
             user.effects[PBEffects::Stench]=true
             target.effects[PBEffects::Flinch]=true
+          elsif user.hasWorkingItem(:RAZORFANG) &&
           elsif (user.hasWorkingItem(:KINGSROCK) || user.hasWorkingItem(:RAZORFANG)) &&
             thismove.canKingsRock? && target.status!=PBStatuses::SLEEP && target.status!=PBStatuses::FROZEN
             if @battle.pbRandom(10)==0
@@ -7292,6 +7365,9 @@ class PokeBattle_Battler
     if thismove.function!=0x91 # Fury Cutter
       self.effects[PBEffects::FuryCutter]=0
     end
+    if hasWorkingItem(:KINGSROCK) && !@effects[PBEffects::KingsRockGuardUsed]
+      @effects[PBEffects::KingsRockGuardUsed]=true
+    end
     user.moveHistory.push(move.id) if move.id != getID(PBMoves,:FIERYIMPULSE)
 	if thismove.pbIsSpecial?(thismove.type)
 	  target.effects[PBEffects::ManaBond] = true
@@ -7340,6 +7416,7 @@ class PokeBattle_Battler
         self.lastRegularMoveUsed=thismove.id
         self.movesUsed.push(thismove.id)   # For Last Resort
         self.lastRoundMoved=@battle.turncount
+        self.effects[PBEffects::ActedThisTurn]=true
       end
       @battle.lastMoveUsed=thismove.id
       @battle.lastMoveUser=self.index
@@ -7390,6 +7467,7 @@ class PokeBattle_Battler
         user.lastRegularMoveUsed=thismove.id
         user.movesUsed.push(thismove.id)   # For Last Resort
         user.lastRoundMoved=@battle.turncount
+        user.effects[PBEffects::ActedThisTurn]=true
       end
       @battle.lastMoveUsed=thismove.id
       @battle.lastMoveUser=user.index
@@ -7409,6 +7487,7 @@ class PokeBattle_Battler
       user.lastRegularMoveUsed=thismove.id
       user.movesUsed.push(thismove.id)   # For Last Resort
       user.lastRoundMoved=@battle.turncount
+      user.effects[PBEffects::ActedThisTurn]=true
     end
     @battle.lastMoveUsed=thismove.id
     @battle.lastMoveUser=user.index
@@ -8961,6 +9040,7 @@ class PokeBattle_Battler
     @effects[PBEffects::Grudge]=false
     @effects[PBEffects::FlameWreath]=false
     @effects[PBEffects::DamagingMoveThisTurn]=false
+    @effects[PBEffects::ActedThisTurn]=false
     # Encore's effect ends if the encored move is no longer available
     if @effects[PBEffects::Encore]>0 &&
       @moves[@effects[PBEffects::EncoreIndex]].id!=@effects[PBEffects::EncoreMove]
@@ -9089,6 +9169,19 @@ class PokeBattle_Battler
       PBDebug.logonerr{
         pbUseMove(choice,choice[2]==@battle.struggle)
       }
+      for foe in [pbOpposing1,pbOpposing2]
+        next if !foe || foe.isFainted?
+        if foe.effects[PBEffects::TempShieldTurns]>0
+          foe.effects[PBEffects::TempShieldTurns]-=1
+          if foe.effects[PBEffects::TempShieldTurns]<=0
+            foe.effects[PBEffects::TempShieldHP]=0
+            if @battle.battlescene && @battle.scene
+              sprite=@battle.scene.sprites["battlebox#{foe.index}"] rescue nil
+              sprite.refresh if sprite
+            end
+          end
+        end
+      end
       if (self.index==0 || self.index==2) && !@battle.isOnline? # Move memory system for AI
         if @battle.aiMoveMemory[0].length==0 && choice[2].basedamage!=0
           @battle.aiMoveMemory[0].push(choice[2])

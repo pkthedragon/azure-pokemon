@@ -1705,6 +1705,32 @@ class PokeBattle_Move
   end
 
   def pbModifyDamage(damagemult,attacker,opponent)
+    if attacker
+      if attacker.hasWorkingItem(:HEAVYMACE) && PBStuff::BLUDGEONINGMOVE.include?(self.id)
+        mult=(@battle.field.effects[PBEffects::Gravity]>0) ? 1.5 : 1.2
+        damagemult=(damagemult*(mult*0x1000).round/0x1000)
+      end
+      if attacker.hasWorkingItem(:STEELWHIP) && PBStuff::WHIPMOVE.include?(self.id)
+        damagemult=(damagemult*(1.3*0x1000).round/0x1000)
+      end
+      if attacker.hasWorkingItem(:LODESTONE) && PBStuff::DISPLACEMENTMOVE.include?(self.id)
+        damagemult=(damagemult*(1.3*0x1000).round/0x1000)
+        rockmod=pbTypeModifier(PBTypes::ROCK,attacker,opponent)
+        if rockmod>0
+          rockmult=(rockmod/4.0)
+          damagemult=(damagemult*(rockmult*0x1000).round/0x1000)
+        end
+      end
+      if attacker.hasWorkingItem(:THORNMAIL)
+        boosts=[attacker.stages[PBStats::DEFENSE],attacker.stages[PBStats::SPDEF]].map{|s| [s,0].max}.sum
+        if boosts>0
+          boosts.times { damagemult=(damagemult*(1.1*0x1000).round/0x1000) }
+        end
+      end
+      if attacker.hasWorkingItem(:IGNITIONKEY) && PBStuff::STATBOOSTINGATTACKMOVE.include?(self.id)
+        damagemult=(damagemult*(1.2*0x1000).round/0x1000)
+      end
+    end
     return damagemult
   end
   
@@ -5159,6 +5185,35 @@ class PokeBattle_Move
       multiplier += 1.0
       finaldamagemult=(finaldamagemult*multiplier).round
     end
+    if (options&IGNOREPKMNTYPES)==0
+      berry_reducers = {
+        :CORNNBERRY => [:WATER,:GRASS],
+        :MAGOSTBERRY => [:NORMAL,:PSYCHIC],
+        :RABUTABERRY => [:STEEL,:ELECTRIC],
+        :NOMELBERRY => [:FLYING,:ICE],
+        :SPELONBERRY => [:DRAGON,:FIRE],
+        :PAMTREBERRY => [:POISON,:GROUND],
+        :WATMELBERRY => [:BUG,:FAIRY],
+        :DURINBERRY => [:FIGHTING,:ROCK],
+        :BELUEBERRY => [:DARK,:GHOST]
+      }
+      for berry in berry_reducers.keys
+        next if !opponent.hasWorkingItem(berry)
+        types = berry_reducers[berry]
+        next if !types || !types.any? { |t| isConst?(type,PBTypes,t) }
+        mult = opponent.hasWorkingAbility(:RIPEN) ? 0.5 : 0.75
+        finaldamagemult=(finaldamagemult*mult).round
+        opponent.pokemon.itemRecycle=opponent.item
+        opponent.pokemon.itemInitial=0 if opponent.pokemon.itemInitial==opponent.item
+        opponent.item=0
+        if !@battle.pbIsOpposing?(attacker.index)
+          @battle.pbDisplay(_INTL("{2}'s {1} softened the blow!",PBItems.getName(opponent.pokemon.itemRecycle),opponent.pbThis))
+        else
+          @battle.pbDisplay(_INTL("The {1} softened the damage to {2}!",PBItems.getName(opponent.pokemon.itemRecycle),opponent.pbThis))
+        end
+        break
+      end
+    end
     # Glancing Blow
     if opponent.damagestate.partialhit
       finaldamagemult = (finaldamagemult*0.5).round
@@ -5211,21 +5266,48 @@ class PokeBattle_Move
       opponent.pbReduceHP([(opponent.totalhp/8).floor,1].max)
       opponent.effects[PBEffects::Disguise]=false
       damage=0
-    elsif opponent.effects[PBEffects::IceFace] && ($fefieldeffect==39 || ( pbIsPhysical?(type) && (!attacker || attacker.index!=opponent.index) && 
-     opponent.effects[PBEffects::Substitute]<=0 && opponent.damagestate.typemod!=0 && 
-     !attacker.hasWorkingAbility(:MOLDBREAKER) && !attacker.hasWorkingAbility(:TERAVOLT) && !attacker.hasWorkingAbility(:TURBOLAZE) ) )
-      @battle.scene.pbDamageAnimation(opponent,0)
-      opponent.pbBreakDisguise
-      @battle.pbDisplayPaused(_INTL("{1} transformed!",opponent.name))
-      opponent.effects[PBEffects::IceFace]=false
-      damage=0
-    else
-      opponent.damagestate.substitute=false
-      if damage>=opponent.hp
-        damage=opponent.hp
-        if @function==0xE9 # False Swipe
-          damage=damage-1
-        elsif opponent.effects[PBEffects::Endure]
+	    elsif opponent.effects[PBEffects::IceFace] && ($fefieldeffect==39 || ( pbIsPhysical?(type) && (!attacker || attacker.index!=opponent.index) && 
+	     opponent.effects[PBEffects::Substitute]<=0 && opponent.damagestate.typemod!=0 && 
+	     !attacker.hasWorkingAbility(:MOLDBREAKER) && !attacker.hasWorkingAbility(:TERAVOLT) && !attacker.hasWorkingAbility(:TURBOLAZE) ) )
+	      @battle.scene.pbDamageAnimation(opponent,0)
+	      opponent.pbBreakDisguise
+	      @battle.pbDisplayPaused(_INTL("{1} transformed!",opponent.name))
+	      opponent.effects[PBEffects::IceFace]=false
+	      damage=0
+	    else
+	      opponent.damagestate.substitute=false
+	      if damage>0 && priority>0 && opponent.hasWorkingItem(:FURRABERRY)
+	        unnerver=(opponent.pbOpposing1.hasWorkingAbility(:UNNERVE) ||
+	                  opponent.pbOpposing2.hasWorkingAbility(:UNNERVE))
+	        if !unnerver
+	          itemname=PBItems.getName(opponent.item)
+	          @battle.pbDisplay(_INTL("{1}'s {2} blocked the priority attack!",opponent.pbThis,itemname))
+	          opponent.pokemon.itemRecycle=opponent.item
+	          $belch=true
+	          opponent.pokemon.itemInitial=0 if opponent.pokemon.itemInitial==opponent.item
+	          opponent.item=0
+	          opponent.damagestate.calcdamage=0
+	          damage=0
+	        end
+	      end
+	      if damage>0 && attacker && attacker.hasWorkingItem(:STEELWHIP) &&
+	         PBStuff::WHIPMOVE.include?(self.id) && !opponent.damagestate.substitute
+	        if opponent.pbCanPetrify?(false)
+	          opponent.pbPetrify(attacker)
+	          @battle.pbDisplay(_INTL("{1} was crushed by the steel whip!",opponent.pbThis))
+	        end
+	      end
+	      if damage>0 && attacker && pbTargetsAll?(attacker) &&
+	         opponent.hasWorkingItem(:KINGSROCK) && !opponent.effects[PBEffects::KingsRockGuardUsed]
+	        @battle.pbDisplay(_INTL("{1} was shielded from the spread move by the King's Rock!",opponent.pbThis))
+	        opponent.damagestate.calcdamage=0
+	        damage=0
+	      end
+	      if damage>=opponent.hp
+	        damage=opponent.hp
+	        if @function==0xE9 # False Swipe
+	          damage=damage-1
+	        elsif opponent.effects[PBEffects::Endure]
           damage=damage-1
           opponent.damagestate.endured=true
         elsif opponent.hasWorkingAbility(:STURDY) && damage==opponent.totalhp && !(opponent.moldbroken)

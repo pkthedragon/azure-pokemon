@@ -448,6 +448,10 @@ class PokeBattle_Battler
 #===============================================================================
 def pbCanPetrify?(showMessages=true)
   return false if isFainted?
+  if hasWorkingItem(:PRESSURESUIT)
+    @battle.pbDisplay(_INTL("{1}'s suit prevented crushing!",pbThis)) if showMessages
+    return false
+  end
   if status==PBStatuses::PETRIFIED
     @battle.pbDisplay(_INTL("{1} is already crushed!",pbThis)) if showMessages
     return false

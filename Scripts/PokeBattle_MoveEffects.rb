@@ -110,6 +110,21 @@ class PokeBattle_Struggle < PokeBattle_Move
   end
 
   def pbEffect(attacker,opponent,hitnum=0,alltargets=nil,showanimation=false)
+    if attacker.hasWorkingItem(:HOPOBERRY)
+      unnerver=(attacker.pbOpposing1.hasWorkingAbility(:UNNERVE) ||
+                attacker.pbOpposing2.hasWorkingAbility(:UNNERVE))
+      if !unnerver
+        restored=attacker.pbRestoreAllMovesPP(2)
+        if restored>0
+          itemname=PBItems.getName(attacker.item)
+          @battle.pbDisplay(_INTL("{1}'s {2} restored its PP!",attacker.pbThis,itemname))
+          attacker.pokemon.itemRecycle=attacker.item
+          $belch=true
+          attacker.pokemon.itemInitial=0 if attacker.pokemon.itemInitial==attacker.item
+          attacker.item=0
+        end
+      end
+    end
     pbShowAnimation(@id,attacker,nil,hitnum,alltargets,showanimation)
     ret=super(attacker,opponent,hitnum,alltargets,showanimation=false)    
     if opponent.damagestate.calcdamage>0
@@ -8396,8 +8411,7 @@ class PokeBattle_Move_0F7 < PokeBattle_Move
           opponent.pbBurn(attacker)
           @battle.pbDisplay(_INTL("{1} was burned!",opponent.pbThis))
         end
-      elsif attacker.hasWorkingItem(:KINGSROCK) ||
-            attacker.hasWorkingItem(:RAZORFANG)
+      elsif attacker.hasWorkingItem(:RAZORFANG)
         if !opponent.hasWorkingAbility(:INNERFOCUS) &&
            opponent.effects[PBEffects::Substitute]==0 &&
            opponent.status!=PBStatuses::SLEEP && opponent.status!=PBStatuses::FROZEN
