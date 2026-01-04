@@ -1135,6 +1135,15 @@ class PokeBattle_Battle
           battler.pokemon.itemRecycle=battler.item  
           battler.pokemon.itemInitial=0 if battler.pokemon.itemInitial==battler.item  
           battler.item=0
+        when 50 # Library Field
+          if battler.effects[PBEffects::FocusEnergy] < 3
+            battler.effects[PBEffects::FocusEnergy]=3
+            pbCommonAnimation("StatUp",battler,nil)
+            pbDisplay(_INTL("{1}'s Synthetic Seed sharpened its focus!",battler.pbThis))
+          end
+          battler.pokemon.itemRecycle=battler.item
+          battler.pokemon.itemInitial=0 if battler.pokemon.itemInitial==battler.item
+          battler.item=0
         end        
       elsif isConst?(battler.item, PBItems, :TELLURICSEED)
         case $fefieldeffect
@@ -4543,6 +4552,10 @@ end
         backdrop= "ColosseumFieldPlaceholder"
       elsif $febackgroundstore == 45
         backdrop= "InfernalFieldPlaceholder"
+      elsif $febackgroundstore == 46
+        backdrop= "Beach"
+      elsif $febackgroundstore == 50
+        backdrop= "Library"
       end  
       backdrop3 = backdrop
       $febackgroundstore = backdrop3

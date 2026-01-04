@@ -1316,6 +1316,7 @@ class PokeBattle_Battler
       when 46 then return PBTypes::ELECTRIC
       when 47 then return PBTypes::BUG
       when 48 then return PBTypes::FLYING
+      when 50 then return PBTypes::NORMAL
       end
     end
     # Terrain overrides first
@@ -1980,8 +1981,11 @@ class PokeBattle_Battler
     end   
     if self.hasWorkingAbility(:TELEPATHY) && ($fefieldeffect==37)
       speed=speed*2  
-    end    
+    end
     if $fefieldeffect == 35 && !self.isAirborne?
+      speed=(speed*0.5).floor
+    end
+    if $fefieldeffect == 50 && self.effects[PBEffects::ThroatChop]>0
       speed=(speed*0.5).floor
     end
     if self.hasWorkingAbility(:CHLOROPHYLL) && 
@@ -2689,6 +2693,30 @@ class PokeBattle_Battler
         self.type2=newtype
         typename=PBTypes.getName(newtype)
         @battle.pbDisplay(_INTL("{1} blended into the surroundings as a {2}-type!",pbThis,typename))
+      end
+    end
+    if onactive && $fefieldeffect == 50
+      if (self.hasWorkingAbility(:DEFEATIST) || self.hasWorkingAbility(:SIMPLE) || self.hasWorkingAbility(:KLUTZ)) && pbCanConfuseSelf?(false)
+        pbConfuseSelf
+        @battle.pbDisplay(_INTL("{1} became confused by the swirling words!",pbThis))
+      end
+      if self.hasWorkingAbility(:KEENEYE) && pbCanIncreaseStatStage?(PBStats::ACCURACY,false)
+        pbIncreaseStatBasic(PBStats::ACCURACY,1)
+        @battle.pbCommonAnimation("StatUp",self,nil)
+        @battle.pbDisplay(_INTL("{1} focused sharply!",pbThis))
+      end
+      if self.hasWorkingAbility(:SCHOOLING)
+        stats=[PBStats::ATTACK,PBStats::DEFENSE,PBStats::SPATK,PBStats::SPDEF,PBStats::SPEED]
+        raised=false
+        for s in stats
+          next unless pbCanIncreaseStatStage?(s,false)
+          pbIncreaseStatBasic(s,1)
+          raised=true
+        end
+        if raised
+          @battle.pbCommonAnimation("StatUp",self,nil)
+          @battle.pbDisplay(_INTL("{1} absorbed knowledge from the library!",pbThis))
+        end
       end
     end
     if onactive && self.hasWorkingAbility(:BADDREAMS)
@@ -5623,6 +5651,9 @@ class PokeBattle_Battler
     if move.function==0x10D && pbHasType?(:GHOST) # Curse
       target=PBTargets::SingleNonUser
     end
+    if $fefieldeffect == 50 && (move.id == PBMoves::FIRESPIN || move.id == PBMoves::WHIRLPOOL)
+      target=PBTargets::AllOpposing
+    end
     side=(pbIsOpposing?(self.index)) ? 1 : 0
     owner=@battle.pbGetOwnerIndex(self.index)
     if @battle.zMove[side][owner]==self.index && self.item == PBItems::KOMMONIUMZ2
@@ -7094,6 +7125,10 @@ class PokeBattle_Battler
       @battle.battlers[j].pbBerryCureCheck
     end
     target.pbUpdateTargetedMove(thismove,user)
+    if $fefieldeffect == 50 && thismove.isSoundBased? && user.effects[PBEffects::ThroatChop]==0 && !user.isFainted?
+      user.effects[PBEffects::ThroatChop]=3
+      @battle.pbDisplay(_INTL("{1} was silenced!",user.pbThis))
+    end
     if realnumhits != numhits && (thismove.name=="Thunder Raid")
       @battle.pbCommonAnimation("Failsafe",self,nil)
       @battle.scene.pbUnVanishSprite(self)

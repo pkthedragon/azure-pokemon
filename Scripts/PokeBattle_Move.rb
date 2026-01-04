@@ -1407,6 +1407,7 @@ class PokeBattle_Move
       return true
     end
     return true if opponent.effects[PBEffects::Telekinesis]>0
+    return true if $fefieldeffect == 50 && id == PBMoves::FOCUSBLAST
     return true if @function==0x0D && @battle.pbWeather==PBWeather::HAIL # Blizzard
     return true if (@function==0x08 || @function==0x15) && # Thunder, Hurricane
                    @battle.pbWeather==PBWeather::RAINDANCE
@@ -1744,11 +1745,36 @@ class PokeBattle_Move
 		damagemult = (damagemult * 0.5).round
 	  end
 	end
+    if $fefieldeffect == 50
+      if opponent.effects[PBEffects::Confusion]>0
+        damagemult=(damagemult*2.0).round
+      end
+      if isConst?(type,PBTypes,:FIRE)
+        damagemult=(damagemult*1.3).round
+      end
+      if isConst?(type,PBTypes,:PSYCHIC) && pbIsSpecial?(type)
+        damagemult=(damagemult*1.3).round
+      end
+      if PBStuff::SLASHINGMOVE.include?(id) || PBStuff::WINDMOVE.include?(id)
+        damagemult=(damagemult*1.3).round
+      end
+      if [PBMoves::FOCUSPUNCH,PBMoves::FOCUSBLAST,PBMoves::RETURN,PBMoves::FRUSTRATION,PBMoves::PERFORATE].include?(id)
+        damagemult=(damagemult*1.3).round
+      end
+      if [PBMoves::SMARTSTRIKE,PBMoves::ANCIENTPOWER,PBMoves::BARRAGE,PBMoves::HEADBUTT,PBMoves::ZENHEADBUTT,PBMoves::IRONHEAD,
+           PBMoves::HEADSMASH,PBMoves::HEADCHARGE,PBMoves::SKULLBASH,PBMoves::MINDBLOWN].include?(id)
+        damagemult=(damagemult*1.5).round
+      end
+      if id == PBMoves::FIRESPIN || id == PBMoves::WHIRLPOOL
+        damagemult=(damagemult*1.5).round
+      end
+    end
 	if attacker.species == PBSpecies::CINCCINO && attacker.hasWorkingItem(:CINCCREST) && !pbIsMultiHit
       basedmg=(basedmg*0.3).round
       puts(basedmg)
     end
-    if (isConst?(attacker.ability,PBAbilities,:TECHNICIAN) && (basedmg<=60))
+    tech_limit = ($fefieldeffect == 50) ? 80 : 60
+    if (isConst?(attacker.ability,PBAbilities,:TECHNICIAN) && (basedmg<=tech_limit))
       damagemult=(damagemult*1.5).round
     elsif ($fefieldeffect == 17) && ((isConst?(attacker.ability,PBAbilities,:TECHNICIAN) || isConst?(attacker.species,PBSpecies,:DUSKNOIR) && isConst?(attacker.item,PBItems,:DUSKCREST)) && basedmg<=80) 
       damagemult=(damagemult*1.5).round
@@ -1871,7 +1897,8 @@ class PokeBattle_Move
     end
 #### KUROTSUNE - 003 START
     if attacker.hasWorkingAbility(:ANALYTIC) && opponent.hasMovedThisRound?
-      damagemult = (damagemult*1.3).round
+      mult = ($fefieldeffect == 50) ? 1.5 : 1.3
+      damagemult = (damagemult*mult).round
     end
     if attacker.hasWorkingAbility(:ASSASSINATE) && opponent.effects[PBEffects::Assassinate]
       damagemult = (damagemult*1.3).round
@@ -1999,7 +2026,8 @@ class PokeBattle_Move
       damagemult=(damagemult*2.0).round
     end
     if attacker.effects[PBEffects::HelpingHand] && (options&SELFCONFUSE)==0
-      damagemult=(damagemult*1.5).round
+      helpmult = ($fefieldeffect == 50) ? 2.0 : 1.5
+      damagemult=(damagemult*helpmult).round
     end
     if attacker.pbOwnSide.effects[PBEffects::BattleCry] % 2 == 1
       damagemult=(damagemult*1.3).round
