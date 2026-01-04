@@ -5976,6 +5976,8 @@ class PokeBattle_Battler
   def pbApplyPressurePP(move,user)
     return if !move
     return if user && user.hasWorkingItem(:PRESSURESUIT)
+  def pbApplyPressurePP(move,user)
+    return if !move
     totalcost=(@battle.field.effects[PBEffects::Gravity]>0 || (user && user.status==PBStatuses::PETRIFIED)) ? 3 : 2
     extra=totalcost-1
     extra.times do
@@ -7084,6 +7086,7 @@ class PokeBattle_Battler
             user.effects[PBEffects::Stench]=true
             target.effects[PBEffects::Flinch]=true
           elsif user.hasWorkingItem(:RAZORFANG) &&
+          elsif (user.hasWorkingItem(:KINGSROCK) || user.hasWorkingItem(:RAZORFANG)) &&
             thismove.canKingsRock? && target.status!=PBStatuses::SLEEP && target.status!=PBStatuses::FROZEN
             if @battle.pbRandom(10)==0
               target.effects[PBEffects::Flinch]=true
