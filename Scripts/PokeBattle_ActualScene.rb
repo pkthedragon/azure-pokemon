@@ -1042,6 +1042,13 @@ class PokemonDataBox < SpriteWrapper
     hpzone=0
     hpzone=1 if self.hp<=(@battler.totalhp/2).floor
     hpzone=2 if self.hp<=(@battler.totalhp/4).floor
+    shieldhp=@battler.effects[PBEffects::TempShieldHP] rescue 0
+    shieldgauge=0
+    if shieldhp && @battler.totalhp>0
+      shieldgauge=shieldhp*hpGaugeSize/@battler.totalhp
+      spaceleft=hpGaugeSize-hpgauge
+      shieldgauge=spaceleft if shieldgauge>spaceleft
+    end
     hpcolors=[
        PokeBattle_SceneConstants::HPCOLORGREENDARK,
        PokeBattle_SceneConstants::HPCOLORGREEN,
@@ -1063,6 +1070,12 @@ class PokemonDataBox < SpriteWrapper
     # fill with HP color
     self.bitmap.fill_rect(@spritebaseX+hpGaugeX,hpGaugeY,hpgauge,2,hpcolors[hpzone*2])
     self.bitmap.fill_rect(@spritebaseX+hpGaugeX,hpGaugeY+2,hpgauge,4,hpcolors[hpzone*2+1])
+    if shieldgauge>0
+      shieldcolor1=Color.new(120,120,120)
+      shieldcolor2=Color.new(80,80,80)
+      self.bitmap.fill_rect(@spritebaseX+hpGaugeX+hpgauge,hpGaugeY,shieldgauge,2,shieldcolor1)
+      self.bitmap.fill_rect(@spritebaseX+hpGaugeX+hpgauge,hpGaugeY+2,shieldgauge,4,shieldcolor2)
+    end
     if @showexp
       # fill with EXP color
       expGaugeX=PokeBattle_SceneConstants::EXPGAUGE_X
@@ -2372,6 +2385,8 @@ class PokeBattle_Scene
       fieldbd = 45
     elsif backdrop=="Beach"
       fieldbd = 46
+    elsif backdrop=="Library"
+      fieldbd = 50
     else
       fieldbd = 0
     end
@@ -2485,6 +2500,8 @@ class PokeBattle_Scene
           backdrop="InfernalFieldPlaceholder"
         elsif fieldbd == 46
           backdrop="Beach"
+        elsif fieldbd == 50
+          backdrop="Library"
         end 
         backdrop3 = backdrop
         $febackgroundstore = backdrop3

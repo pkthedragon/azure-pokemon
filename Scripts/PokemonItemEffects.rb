@@ -450,6 +450,24 @@ ItemHandlers::UseOnPokemon.add(:SITRUSBERRY,proc{|item,pokemon,scene|
    next pbHPItem(pokemon,(pokemon.totalhp/4).floor,scene)
 })
 
+ItemHandlers::UseOnPokemon.add(:LEVIABERRY,proc{|item,pokemon,scene|
+   if pokemon.hp<=0 || pokemon.status!=PBStatuses::PETRIFIED
+     scene.pbDisplay(_INTL("It won't have any effect."))
+     next false
+   else
+     pokemon.status=0
+     pokemon.statusCount=0
+     scene.pbRefresh
+     scene.pbDisplay(_INTL("{1} was uncrushed.",pokemon.name))
+     next true
+   end
+})
+
+ItemHandlers::UseOnPokemon.add(:COCONBERRY,proc{|item,pokemon,scene|
+   scene.pbDisplay(_INTL("It won't have any effect."))
+   next false
+})
+
 ItemHandlers::UseOnPokemon.add(:AWAKENING,proc{|item,pokemon,scene|
    if pokemon.hp<=0 || pokemon.status!=PBStatuses::SLEEP
      scene.pbDisplay(_INTL("It won't have any effect."))
@@ -925,6 +943,20 @@ ItemHandlers::UseOnPokemon.add(:MAXELIXIR,proc{|item,pokemon,scene|
      next false
    else
      scene.pbDisplay(_INTL("PP was restored."))
+     next true
+   end
+})
+
+ItemHandlers::UseOnPokemon.add(:HOPOBERRY,proc{|item,pokemon,scene|
+   pprestored=0
+   for i in 0...pokemon.moves.length
+     pprestored+=pbRestorePP(pokemon,i,2)
+   end
+   if pprestored==0
+     scene.pbDisplay(_INTL("It won't have any effect."))
+     next false
+   else
+     scene.pbDisplay(_INTL("PP was restored a little."))
      next true
    end
 })
@@ -3633,6 +3665,46 @@ ItemHandlers::BattleUseOnPokemon.add(:ORANBERRY,proc{|item,pokemon,battler,scene
 
 ItemHandlers::BattleUseOnPokemon.add(:SITRUSBERRY,proc{|item,pokemon,battler,scene|
    next pbBattleHPItem(pokemon,battler,(pokemon.totalhp/4).floor,scene)
+})
+
+ItemHandlers::BattleUseOnPokemon.add(:HOPOBERRY,proc{|item,pokemon,battler,scene|
+   pprestored=0
+   for i in 0...pokemon.moves.length
+     pprestored+=pbBattleRestorePP(pokemon,battler,i,2)
+   end
+   if pprestored==0
+     scene.pbDisplay(_INTL("But it had no effect!"))
+     next false
+   end
+   scene.pbDisplay(_INTL("PP was restored a little."))
+   next true
+})
+
+ItemHandlers::BattleUseOnPokemon.add(:LEVIABERRY,proc{|item,pokemon,battler,scene|
+   if pokemon.hp<=0 || pokemon.status!=PBStatuses::PETRIFIED
+     scene.pbDisplay(_INTL("But it had no effect!"))
+     next false
+   end
+   pokemon.status=0
+   pokemon.statusCount=0
+   battler.status=0 if battler
+   scene.pbRefresh
+   scene.pbDisplay(_INTL("{1} was uncrushed.",pokemon.name))
+   next true
+})
+
+ItemHandlers::BattleUseOnPokemon.add(:COCONBERRY,proc{|item,pokemon,battler,scene|
+   itemname=PBItems.getName(item)
+   if !battler || battler.isFainted?
+     scene.pbDisplay(_INTL("But it had no effect!"))
+     next false
+   end
+   shieldhp=(battler.totalhp/3).floor
+   if battler.pbApplyTempShield(shieldhp,_INTL("{1} shielded itself with the {2}!",battler.pbThis,itemname))
+     next true
+   end
+   scene.pbDisplay(_INTL("But it had no effect!"))
+   next false
 })
 
 ItemHandlers::BattleUseOnPokemon.add(:AWAKENING,proc{|item,pokemon,battler,scene|

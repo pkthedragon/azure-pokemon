@@ -2095,6 +2095,38 @@ Flying Press		Darkest Lariat		All-Out Pummeling
 Malicious Moonsault
 *	The following moves have amplified stat changes: 
 Leer			Growl			Double Team
+
+#----------------- 50. Library Field [LF] --------------------#
+"Pages flutter around!"
+(Passive effects by the field.):
+*	Silenced Pokemon have their Speed reduced to x0.5
+*	Confused Pokemon take x2 damage
+(The following moves are affected by this field.):
+*	Fire-type moves increase in base power x1.3
+*	Special Psychic-type moves increase in base power x1.3
+*	Slashing and Wind moves increase in base power x1.3
+*	Sound-based moves silence the user
+*	These moves are boosted in power x1.3:
+		Focus Punch		Focus Blast		Return
+		Frustration		Perforate
+*	The following moves are boosted in power x1.5:
+		Smart Strike		Ancient Power		Barrage
+		Headbutt		Zen Headbutt		Iron Head
+		Head Smash		Head Charge		Skull Bash
+		Mind Blown
+*	The following moves are boosted in power x1.5 and become spread moves:
+		Fire Spin		Whirlpool
+*	The stat-changing effect of these moves is amplified:
+		Calm Mind		Amnesia
+*	Whirlwind and Telekinesis damage the target for 1/6th max HP
+*	Focus Blast cannot miss
+*	Focus Punch cannot be interrupted
+*	Focus Energy increases critical hit rate by three stages
+*	Helping Hand boost is increased to x2
+*	Doodle copies positive stat stages
+*	Nature Power becomes Calm Mind
+*	Camouflage changes the user's type to Normal
+*	Secret Power may silence
 Defense Curl		Agility
 *	Mirror Move raises the users speed by one stage when used
 *	Obstruct lowers speed in addition to its normal effect
