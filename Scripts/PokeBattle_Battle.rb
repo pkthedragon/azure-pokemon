@@ -209,7 +209,9 @@ module PokeBattle_BattleCommon
           end
         end
         if $PokemonBag.pbHasItem?(:CATCHINGCHARM)
-          c=(c*2.0).floor # 2.0 is a placeholder value, adjust later
+          # Catching Charm provides a modest boost to critical capture odds (10% in
+          # modern titles). Round down to match the rest of the capture math.
+          c=(c*1.1).floor
         end
         shakes=0; critical=false; critsuccess=false
         if x>255 || BallHandlers.isUnconditional?(ball,self,battler)
@@ -2346,6 +2348,9 @@ class PokeBattle_Battle
         if (!@battlers[i].abilitynulled && (@battlers[i].ability == PBAbilities::TRIAGE))
           pri+=3 if (PBStuff::HEALFUNCTIONS).include?(@choices[i][2].function)
         end
+        if @battlers[i].hasWorkingAbility(:QUICKDRAW) && @battlers[i].turncount==0
+          pri+=1
+        end
         if $fefieldeffect==38 && @choices[i][2].function==0x11E
           pri+=1
         end
@@ -2513,6 +2518,9 @@ class PokeBattle_Battle
     # UPDATE 11/16/2013
     # Ghost type can now escape from anything
     if thispkmn.pbHasType?(:GHOST) && ($fefieldeffect!=38 || !(thispkmn.pbOpposing1.hasWorkingAbility(:SHADOWTAG) || thispkmn.pbOpposing2.hasWorkingAbility(:SHADOWTAG)) )
+      return true
+    end
+    if thispkmn.hasWorkingAbility(:RUNAWAY)
       return true
     end
     isOpposing=pbIsOpposing?(idxPokemon)
@@ -5533,6 +5541,7 @@ def pbStartBattle(canlose=false)
     end
         for j in priority
           next if !i.pbIsOpposing?(j.index)
+          next if i.hasWorkingAbility(:RUNAWAY)
           # if Pursuit and this target ("i") was chosen
           if pbChoseMoveFunctionCode?(j.index,0x88) &&
              !j.effects[PBEffects::Pursuit] &&
@@ -5697,7 +5706,7 @@ def pbStartBattle(canlose=false)
 ################################################################################
 # End of round.
 ################################################################################
-  def pbEndOfRoundPhase
+    def pbEndOfRoundPhase
     for i in 0...4
       @battlers[i].forcedSwitchEarlier = false
       @battlers[i].effects[PBEffects::Roost]=false
@@ -5764,7 +5773,6 @@ def pbStartBattle(canlose=false)
             if !i.pbHasType?(:FIRE) && !i.effects[PBEffects::AquaRing] &&
              !isConst?(i.ability,PBAbilities,:FLAREBOOST) &&
              !isConst?(i.ability,PBAbilities,:MAGICGUARD) &&
-             !isConst?(i.ability,PBAbilities,:WATERVEIL) &&
              !isConst?(i.ability,PBAbilities,:FLASHFIRE) &&
              !isConst?(i.ability,PBAbilities,:HEATPROOF) &&
              !SilvallyCheck(i,PBTypes::STEEL) &&
@@ -6401,7 +6409,6 @@ def pbStartBattle(canlose=false)
             for i in priority
               next if i.isFainted?
               if (!i.pbHasType?(:GROUND) && !i.pbHasType?(:ROCK) && !i.pbHasType?(:STEEL) &&
-               !i.hasWorkingAbility(:SANDVEIL) &&
                !i.hasWorkingAbility(:SANDRUSH) &&
                !i.hasWorkingAbility(:SANDFORCE) &&
                !i.hasWorkingAbility(:TEMPEST) &&
@@ -6506,7 +6513,6 @@ def pbStartBattle(canlose=false)
               next if i.isFainted?
               if !i.pbHasType?(:ICE) &&
                  !i.hasWorkingAbility(:ICEBODY) &&
-                 !i.hasWorkingAbility(:SNOWCLOAK) &&
                  !i.hasWorkingAbility(:TEMPEST) &&
                  !i.hasWorkingAbility(:MAGICGUARD) &&
                  !(i.hasWorkingAbility(:WONDERGUARD) && $fefieldeffect == 44) &&
@@ -6834,38 +6840,6 @@ def pbStartBattle(canlose=false)
           i.pbReduceStatBasic(PBStats::SPEED,1)
           pbCommonAnimation("StatDown",i,nil)
           pbDisplay(_INTL("{1}'s Wandering Spirit lowered its Speed!",i.pbThis))
-        end
-      end
-      if i.hasWorkingAbility(:WATERVEIL) && ($fefieldeffect == 21 || 
-        $fefieldeffect == 22)
-        if i.status>0 && i.effects[PBEffects::Spritz] != 1
-              pbDisplay(_INTL("{1}'s Water Veil cured its status problem!",i.pbThis))
-          i.status=0
-          i.statusCount=0
-        end
-      end
-      # Healer
-      if i.hasWorkingAbility(:HEALER)
-        partner=i.pbPartner
-        if partner
-          if pbRandom(10)<3 && partner.status>0 && partner.effects[PBEffects::Spritz] != 1
-            case partner.status
-              when PBStatuses::SLEEP
-                pbDisplay(_INTL("{1}'s Healer cured its partner's status!",i.pbThis))
-              when PBStatuses::FROZEN
-                pbDisplay(_INTL("{1}'s Healer cured its partner's status!",i.pbThis))
-              when PBStatuses::BURN
-                pbDisplay(_INTL("{1}'s Healer cured its partner's status!",i.pbThis))
-              when PBStatuses::POISON
-                pbDisplay(_INTL("{1}'s Healer cured its partner's status!",i.pbThis))
-              when PBStatuses::PARALYSIS
-                pbDisplay(_INTL("{1}'s Healer cured its partner's status!",i.pbThis))
-        when PBStatuses::PETRIFIED
-                pbDisplay(_INTL("{1}'s Healer cured its partner's status!",i.pbThis))
-            end
-            partner.status=0
-            partner.statusCount=0
-          end
         end
       end
       if i.hasWorkingAbility(:CARETAKER)
@@ -7428,6 +7402,23 @@ def pbStartBattle(canlose=false)
         if sides[i].effects[PBEffects::Tailwind]==0
           pbDisplay(_INTL("Your team's tailwind stopped blowing!")) if i==0
           pbDisplay(_INTL("The opposing team's tailwind stopped blowing!")) if i==1
+        end
+      end
+    end
+    # Plus/Minus signals
+    for i in 0...2
+      if sides[i].effects[PBEffects::PlusSignal]>0
+        sides[i].effects[PBEffects::PlusSignal]-=1
+        if sides[i].effects[PBEffects::PlusSignal]==0
+          pbDisplay(_INTL("Plus energy faded for that side!")) if i==0
+          pbDisplay(_INTL("Plus energy faded for the opposing side!")) if i==1
+        end
+      end
+      if sides[i].effects[PBEffects::MinusSignal]>0
+        sides[i].effects[PBEffects::MinusSignal]-=1
+        if sides[i].effects[PBEffects::MinusSignal]==0
+          pbDisplay(_INTL("Minus energy faded for that side!")) if i==0
+          pbDisplay(_INTL("Minus energy faded for the opposing side!")) if i==1
         end
       end
     end
@@ -8194,6 +8185,12 @@ def pbStartBattle(canlose=false)
       pbDisplay(_INTL("{1} fetched a {2}!",i.pbThis,PBItems.getName(ball)))
       i.pbPartner.effects[PBEffects::BallFetch]=0 if i.pbPartner.hasWorkingAbility(:BALLFETCH)
     end
+    if i.hasWorkingAbility(:HONEYGATHER) && !i.isFainted?
+      if !i.effects[PBEffects::DamagingMoveThisTurn] && i.effects[PBEffects::HealBlock]==0 && i.hp<i.totalhp
+        hpgain=i.pbRecoverHP((i.totalhp/8).floor,true)
+        pbDisplay(_INTL("{1} healed itself with gathered honey!",i.pbThis)) if hpgain>0
+      end
+    end
   end
 #    # Harvest 
 #    if i.hasWorkingAbility(:HARVEST) && i.item<=0 && i.pokemon.itemRecycle>0 #if an item was recycled, check
@@ -8260,12 +8257,15 @@ def pbStartBattle(canlose=false)
     # Hunger Switch
     for i in priority
       next if i.isFainted?
-      if i.hasWorkingAbility(:HUNGERSWITCH) && isConst?(i.species,PBSpecies,:MORPEKO) && $fefieldeffect != 39
-          i.form=(i.form==0) ? 1 : 0
-          i.pbUpdate(true)
-          scene.pbChangePokemon(i,i.pokemon)
-          pbDisplay(_INTL("{1} transformed!",i.pbThis))
+      next if !i.hasWorkingAbility(:HUNGERSWITCH) || !isConst?(i.species,PBSpecies,:MORPEKO)
+      if i.form==0 && i.hp>0
+        healed=i.pbRecoverHP((i.totalhp/8).floor,true)
+        pbDisplay(_INTL("{1}'s {2} restored its health!",i.pbThis,PBAbilities.getName(i.ability))) if healed>0
       end
+      i.form=(i.form==0) ? 1 : 0
+      i.pbUpdate(true)
+      scene.pbChangePokemon(i,i.pokemon)
+      pbDisplay(_INTL("{1} transformed!",i.pbThis))
     end
 #### SAVAGERY - START
 #### SAVAGERY - END
@@ -8355,7 +8355,7 @@ def pbStartBattle(canlose=false)
 ################################################################################
 # End of battle.
 ################################################################################
-  def pbEndOfBattle(canlose=false)
+def pbEndOfBattle(canlose=false)
     case @decision
     ##### WIN #####
     when 1
@@ -8500,4 +8500,5 @@ def pbStartBattle(canlose=false)
     end
     return @decision
   end
+end
 end

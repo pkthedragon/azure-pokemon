@@ -742,7 +742,6 @@ class PokeBattle_ZMoves < PokeBattle_Move
             quakedrop/=3 if (!@battle.battlers[i].abilitynulled && @battle.battlers[i].ability == PBAbilities::SOLIDROCK)
             quakedrop/=2 if (!@battle.battlers[i].abilitynulled && @battle.battlers[i].ability == PBAbilities::SHELLARMOR)
             quakedrop/=2 if (!@battle.battlers[i].abilitynulled && @battle.battlers[i].ability == PBAbilities::BATTLEARMOR)
-            quakedrop =0 if (!@battle.battlers[i].abilitynulled && @battle.battlers[i].ability == PBAbilities::BULLETPROOF)
             quakedrop =0 if (!@battle.battlers[i].abilitynulled && @battle.battlers[i].ability == PBAbilities::ROCKHEAD)
             quakedrop/=3 if (!@battle.battlers[i].abilitynulled && @battle.battlers[i].ability == PBAbilities::PRISMARMOR)
             quakedrop =0 if @battle.battlers[i].effects[PBEffects::Protect] == true
@@ -971,7 +970,6 @@ class PokeBattle_ZMoves < PokeBattle_Move
             quakedrop/=3 if (!@battle.battlers[i].abilitynulled && @battle.battlers[i].ability == PBAbilities::SOLIDROCK)
             quakedrop/=2 if (!@battle.battlers[i].abilitynulled && @battle.battlers[i].ability == PBAbilities::SHELLARMOR)
             quakedrop/=2 if (!@battle.battlers[i].abilitynulled && @battle.battlers[i].ability == PBAbilities::BATTLEARMOR)
-            quakedrop =0 if (!@battle.battlers[i].abilitynulled && @battle.battlers[i].ability == PBAbilities::BULLETPROOF)
             quakedrop =0 if (!@battle.battlers[i].abilitynulled && @battle.battlers[i].ability == PBAbilities::ROCKHEAD)
             quakedrop/=3 if (!@battle.battlers[i].abilitynulled && @battle.battlers[i].ability == PBAbilities::PRISMARMOR)
             quakedrop =0 if @battle.battlers[i].effects[PBEffects::Protect] == true

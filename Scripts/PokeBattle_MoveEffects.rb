@@ -488,20 +488,6 @@ end
 ################################################################################
 class PokeBattle_Move_00A < PokeBattle_Move
   def pbOnStartUse(attacker)
-    if $fefieldeffect == 11
-      if isConst?(@id,PBMoves,:LAVAPLUME) || isConst?(@id,PBMoves,:HEATWAVE) ||
-        isConst?(@id,PBMoves,:SEARINGSHOT)
-        bearer=@battle.pbCheckGlobalAbility(:DAMP)
-        if bearer && $fefieldeffect == 11 #Corrosive Mist Field
-          @battle.pbDisplay(_INTL("{1}'s {2} prevents {3} from using {4}!",
-          bearer.pbThis,PBAbilities.getName(bearer.ability),attacker.pbThis(true),@name))
-          return false
-        end
-        for i in 0...4
-          @battle.battlers[i].pbReduceHP(@battle.battlers[i].hp)
-        end
-      end
-    end
     return true
   end
 
@@ -4055,17 +4041,6 @@ end
 ################################################################################
 class PokeBattle_Move_074 < PokeBattle_Move
   def pbOnStartUse(attacker)
-    if $fefieldeffect == 11
-      bearer=@battle.pbCheckGlobalAbility(:DAMP)
-      if bearer && $fefieldeffect == 11 #Corrosive Mist Field
-        @battle.pbDisplay(_INTL("{1}'s {2} prevents {3} from using {4}!",
-        bearer.pbThis,PBAbilities.getName(bearer.ability),attacker.pbThis(true),@name))
-        return false
-      end
-      for i in 0...4
-        @battle.battlers[i].pbReduceHP(@battle.battlers[i].hp)
-      end
-    end
     return true
   end
   
@@ -4490,19 +4465,6 @@ end
 ################################################################################
 class PokeBattle_Move_08B < PokeBattle_Move
   def pbOnStartUse(attacker)
-    if $fefieldeffect == 11
-      if isConst?(@id,PBMoves,:ERUPTION)
-        bearer=@battle.pbCheckGlobalAbility(:DAMP)
-        if bearer && $fefieldeffect == 11 #Corrosive Mist Field
-          @battle.pbDisplay(_INTL("{1}'s {2} prevents {3} from using {4}!",
-          bearer.pbThis,PBAbilities.getName(bearer.ability),attacker.pbThis(true),@name))
-          return false
-        end
-        for i in 0...4
-          @battle.battlers[i].pbReduceHP(@battle.battlers[i].hp)
-        end
-      end
-    end
     return true
   end
  
@@ -7639,15 +7601,6 @@ end
 ################################################################################
 class PokeBattle_Move_0E0 < PokeBattle_Move
   def pbOnStartUse(attacker)
-    bearer=@battle.pbCheckGlobalAbility(:DAMP)
-    if $fefieldeffect == 3 ||  $fefieldeffect == 8
-      @battle.pbDisplay(_INTL("The dampness prevents the {1}!",@name))
-      return false
-    elsif bearer && !(bearer.moldbroken)
-      @battle.pbDisplay(_INTL("{1}'s {2} prevents {3} from using {4}!",
-         bearer.pbThis,PBAbilities.getName(bearer.ability),attacker.pbThis(true),@name))
-      return false
-    end
     @battle.pbAnimation(@id,attacker,nil)
     pbShowAnimation(@id,attacker,nil)
     attacker.pbReduceHP(attacker.hp)
@@ -9020,17 +8973,6 @@ end
 class PokeBattle_Move_107 < PokeBattle_Move
   # THIS ONE IS FIRE PLEDGE
   def pbOnStartUse(attacker)
-    if $fefieldeffect == 11
-      bearer=@battle.pbCheckGlobalAbility(:DAMP)
-      if bearer && $fefieldeffect == 11 #Corrosive Mist Field
-        @battle.pbDisplay(_INTL("{1}'s {2} prevents {3} from using {4}!",
-        bearer.pbThis,PBAbilities.getName(bearer.ability),attacker.pbThis(true),@name))
-        return false
-      end
-      for i in 0...4
-        @battle.battlers[i].pbReduceHP(@battle.battlers[i].hp)
-      end
-    end
     return true
   end
  
@@ -9479,9 +9421,16 @@ end
 # and restores 75% max HP instead. Consumes one stockpile and removes one stage
 # of the Stockpile Def/SpDef boosts.
 ################################################################################
-class PokeBattle_Move_114 < PokeBattle_Move
-  def pbEffect(attacker,opponent,hitnum=0,alltargets=nil,showanimation=true)
-    has_stockpile = (attacker.effects[PBEffects::Stockpile] > 0)
+  class PokeBattle_Move_114 < PokeBattle_Move
+    def pbEffect(attacker,opponent,hitnum=0,alltargets=nil,showanimation=true)
+      unnerve = false
+      unnerve = true if attacker.pbOpposing1 && attacker.pbOpposing1.hasWorkingAbility(:UNNERVE)
+      unnerve = true if attacker.pbOpposing2 && attacker.pbOpposing2.hasWorkingAbility(:UNNERVE)
+      if unnerve
+        @battle.pbDisplay(_INTL("But it failed!"))
+        return -1
+      end
+      has_stockpile = (attacker.effects[PBEffects::Stockpile] > 0)
 
     # Base heal: 50% max HP
     hpgain = (attacker.totalhp/2).floor
@@ -11412,14 +11361,9 @@ class PokeBattle_Move_167 < PokeBattle_Move
 	    hpgain==(hpgain*1.5).floor
 	  end
       pbShowAnimation(@id,attacker,opponent,hitnum,alltargets,showanimation)
-      if !(opponent.ability == PBAbilities::BULLETPROOF)
-        opponent.pbRecoverHP(hpgain,true)
-        @battle.pbDisplay(_INTL("{1}'s HP was restored.",opponent.pbThis))
-        return 0
-      else
-        @battle.pbDisplay(_INTL("But it failed!",opponent.pbThis))
-        return -1
-      end 
+      opponent.pbRecoverHP(hpgain,true)
+      @battle.pbDisplay(_INTL("{1}'s HP was restored.",opponent.pbThis))
+      return 0
     else      
       return super(attacker,opponent,hitnum,alltargets,showanimation)
     end
