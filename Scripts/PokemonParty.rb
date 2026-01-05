@@ -1004,10 +1004,86 @@ class PokemonScreen
         pkmn.mail=nil
       end
     else
+      if pouch_manageable?(pkmn)
+        if !pbReturnPouchContentsToBag(pkmn)
+          return
+        end
+      end
       $PokemonBag.pbStoreItem(pkmn.item)
       itemname=PBItems.getName(pkmn.item)
       pbDisplay(_INTL("Received the {1} from {2}.",itemname,pkmn.name))
       pkmn.setItem(0)
+    end
+  end
+
+  def pouch_manageable?(pkmn)
+    return false if !pkmn
+    return (isConst?(pkmn.item,PBItems,:BERRYPOUCH) && isConst?(pkmn.species,PBSpecies,:TROPIUS)) ||
+           (isConst?(pkmn.item,PBItems,:GEMPOUCH)   && isConst?(pkmn.species,PBSpecies,:PERSIAN))
+  end
+
+  def pbReturnPouchContentsToBag(pkmn)
+    contents = pkmn.pouch_items_for_held
+    return true if contents.empty?
+    contents.dup.each do |itm|
+      if $PokemonBag.pbStoreItem(itm)
+        contents.delete_at(contents.index(itm))
+      else
+        pbDisplay(_INTL("The Bag is full.  The pouch couldn't be emptied."))
+        return false
+      end
+    end
+    return true
+  end
+
+  def pbManageHeldPouch(pkmn,pkmnid)
+    contents = pkmn.pouch_items_for_held
+    pouch_name = PBItems.getName(pkmn.item)
+    pouch_type = pkmn.pouch_type_for_held
+    loop do
+      summary = contents.empty? ? _INTL("Empty") : contents.map { |itm| PBItems.getName(itm) }.join(", ")
+      cmd = @scene.pbShowCommands(_INTL("{1} contents: {2}",pouch_name,summary),[_INTL("Add"),_INTL("Remove"),_INTL("Cancel")])
+      case cmd
+      when 0 # Add
+        if contents.length>=3
+          pbDisplay(_INTL("There isn't any space left inside."))
+          next
+        end
+        item=@scene.pbChooseItem($PokemonBag)
+        next if item<=0
+        if pouch_type==:berry && !pbIsBerry?(item)
+          pbDisplay(_INTL("Only Berries can go inside."))
+          next
+        elsif pouch_type==:gem && !pbIsTypeGem?(item)
+          pbDisplay(_INTL("Only Gems can go inside."))
+          next
+        end
+        if $PokemonBag.pbDeleteItem(item)
+          contents.push(item)
+          pbDisplay(_INTL("{1} was placed in the {2}.",PBItems.getName(item),pouch_name))
+          pbRefreshSingle(pkmnid)
+        else
+          pbDisplay(_INTL("You don't have that item."))
+        end
+      when 1 # Remove
+        if contents.empty?
+          pbDisplay(_INTL("There's nothing to take out."))
+          next
+        end
+        options = contents.map { |itm| PBItems.getName(itm) }
+        chosen = @scene.pbShowCommands(_INTL("Take out which item?"),options+[_INTL("Cancel")])
+        next if chosen<0 || chosen>=contents.length
+        take_item = contents[chosen]
+        if $PokemonBag.pbStoreItem(take_item)
+          contents.delete_at(chosen)
+          pbDisplay(_INTL("You took the {1} out.",PBItems.getName(take_item)))
+          pbRefreshSingle(pkmnid)
+        else
+          pbDisplay(_INTL("The Bag is full."))
+        end
+      else
+        break
+      end
     end
   end
 
@@ -2066,21 +2142,34 @@ class PokemonScreen
             pbRefreshSingle(pkmnid)
         end
       elsif cmdItem>=0 && command==cmdItem && (!($game_switches[1235] && !($game_switches[1408]))  ||  ($game_variables[646]>=38 &&  $game_variables[646]<41))
-        command=@scene.pbShowCommands(_INTL("Do what with an item?"),[_INTL("Use"),_INTL("Give"),_INTL("Take"),_INTL("Cancel")])
-        case command
+        item_commands=[_INTL("Use")]
+        pouchcmd = -1
+        if pouch_manageable?(pkmn)
+          pouchcmd=item_commands.length
+          item_commands.push(_INTL("Manage"))
+        end
+        givecmd=item_commands.length
+        item_commands.push(_INTL("Give"))
+        takecmd=item_commands.length
+        item_commands.push(_INTL("Take"))
+        item_commands.push(_INTL("Cancel"))
+        subcmd=@scene.pbShowCommands(_INTL("Do what with an item?"),item_commands)
+        case subcmd
           when 0 # Use
-          item=@scene.pbChooseItem($PokemonBag)
-          if item>0
-            pbUseItemOnPokemon(item,pkmn,self)
-            pbRefreshSingle(pkmnid)
-          end            
-          when 1 # Give
+            item=@scene.pbChooseItem($PokemonBag)
+            if item>0
+              pbUseItemOnPokemon(item,pkmn,self)
+              pbRefreshSingle(pkmnid)
+            end            
+          when pouchcmd
+            pbManageHeldPouch(pkmn,pkmnid)
+          when givecmd
             item=@scene.pbChooseItem($PokemonBag)
             if item>0
               pbGiveMail(item,pkmn,pkmnid)
               pbRefreshSingle(pkmnid)
             end
-          when 2 # Take
+          when takecmd
             pbTakeMail(pkmn)
             pbRefreshSingle(pkmnid)
         end

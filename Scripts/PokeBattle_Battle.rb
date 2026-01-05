@@ -2372,7 +2372,7 @@ class PokeBattle_Battle
       priorityarray[i][0]=pri
       #Item/stall priority (all items overwrite stall priority)
       priorityarray[i][1] = -1 if !@battlers[i].abilitynulled && @battlers[i].ability == PBAbilities::STALL 
-      priorityarray[i][1] = 1 if @battlers[i].custap || (@battlers[i].itemWorks? && @battlers[i].item == PBItems::QUICKCLAW && (pbRandom(100)<20))
+      priorityarray[i][1] = 1 if @battlers[i].custap
       priorityarray[i][1] = -2 if (@battlers[i].itemWorks? && (@battlers[i].item == PBItems::LAGGINGTAIL || @battlers[i].item == PBItems::FULLINCENSE))
       #speed priority
       priorityarray[i][2]    = @battlers[i].pbSpeed if @trickroom==0
@@ -4324,6 +4324,87 @@ end
           target.pbReduceHP(damage)
         end
         pbDisplay(_INTL("{1}'s {2} filled the field with toxic fumes!",pkmn.pbThis,PBItems.getName(pkmn.item)))
+      end
+      if pkmn.hasWorkingItem(:RAINSTICK)
+        unless @field.effects[PBEffects::HeavyRain] && @weatherduration==-1
+          @field.effects[PBEffects::HeavyRain]=true
+          @weather=PBWeather::RAINDANCE
+          @weatherduration=[2,@weatherduration].max
+          pbCommonAnimation("Rain",nil,nil)
+          pbDisplay(_INTL("{1}'s {2} brought heavy rain!",pkmn.pbThis,PBItems.getName(pkmn.item)))
+        end
+      end
+      if pkmn.hasWorkingItem(:SUNDIAL)
+        unless @field.effects[PBEffects::HarshSunlight] && @weatherduration==-1
+          @field.effects[PBEffects::HarshSunlight]=true
+          @weather=PBWeather::SUNNYDAY
+          @weatherduration=[2,@weatherduration].max
+          pbCommonAnimation("Sunny",nil,nil)
+          pbDisplay(_INTL("{1}'s {2} made the sunlight harsh!",pkmn.pbThis,PBItems.getName(pkmn.item)))
+        end
+      end
+      if pkmn.hasWorkingItem(:SANDSTONE)
+        @weather=PBWeather::SANDSTORM
+        @weatherduration=[2,@weatherduration].max
+        pbCommonAnimation("Sandstorm",nil,nil)
+        pbDisplay(_INTL("{1}'s {2} whipped up a sandstorm!",pkmn.pbThis,PBItems.getName(pkmn.item)))
+      end
+      if pkmn.hasWorkingItem(:SNOWGLOBE)
+        @weather=PBWeather::HAIL
+        @weatherduration=[2,@weatherduration].max
+        pbCommonAnimation("Hail",nil,nil)
+        pbDisplay(_INTL("{1}'s {2} made hail fall!",pkmn.pbThis,PBItems.getName(pkmn.item)))
+      end
+      if pkmn.hasWorkingItem(:POCKETSTAR) && $fefieldeffect!=39
+        @field.effects[PBEffects::Gravity]=[2,@field.effects[PBEffects::Gravity]].max
+        pbDisplay(_INTL("{1}'s {2} intensified gravity!",pkmn.pbThis,PBItems.getName(pkmn.item)))
+      end
+      if pkmn.hasWorkingItem(:BULUTOTEM)
+        @field.effects[PBEffects::GrassyTerrain]=2
+        @field.effects[PBEffects::Terrain]=[2,@field.effects[PBEffects::Terrain]].max
+        pbDisplay(_INTL("{1}'s {2} made grass flourish!",pkmn.pbThis,PBItems.getName(pkmn.item)))
+      end
+      if pkmn.hasWorkingItem(:KOKOTOTEM)
+        @field.effects[PBEffects::ElectricTerrain]=2
+        @field.effects[PBEffects::Terrain]=[2,@field.effects[PBEffects::Terrain]].max
+        pbDisplay(_INTL("{1}'s {2} electrified the terrain!",pkmn.pbThis,PBItems.getName(pkmn.item)))
+      end
+      if pkmn.hasWorkingItem(:FINITOTEM)
+        @field.effects[PBEffects::MistyTerrain]=2
+        @field.effects[PBEffects::Terrain]=[2,@field.effects[PBEffects::Terrain]].max
+        pbDisplay(_INTL("{1}'s {2} spread mist across the field!",pkmn.pbThis,PBItems.getName(pkmn.item)))
+      end
+      if pkmn.hasWorkingItem(:LELETOTEM)
+        @field.effects[PBEffects::PsychicTerrain]=2
+        @field.effects[PBEffects::Terrain]=[2,@field.effects[PBEffects::Terrain]].max
+        pbDisplay(_INTL("{1}'s {2} warped the battlefield's mind!",pkmn.pbThis,PBItems.getName(pkmn.item)))
+      end
+      if pkmn.hasWorkingItem(:THINKINGCAP) && @field.effects[PBEffects::WonderRoom]==0 && $fefieldeffect!=39
+        @field.effects[PBEffects::WonderRoom]=5
+        for i in @battlers
+          i.pbSwapDefenses
+        end
+        pbDisplay(_INTL("{1}'s {2} twisted space into a Wonder Room!",pkmn.pbThis,PBItems.getName(pkmn.item)))
+      end
+      if pkmn.hasWorkingItem(:SHEERVEIL) && isConst?(pkmn.species,PBSpecies,:VIVILLON)
+        for target in @battlers
+          next if !target || target.isFainted? || !target.pbIsOpposing?(pkmn.index)
+          if !target.effects[PBEffects::Powder] &&
+             (!isConst?(target.ability,PBAbilities,:OVERCOAT) || pkmn.moldbroken) &&
+             !target.pbHasType?(:GRASS) &&
+             !target.hasWorkingItem(:SAFETYGOGGLES)
+            target.effects[PBEffects::Powder]=true
+            pbDisplay(_INTL("{1}'s {2} covered {3} in powder!",pkmn.pbThis,PBItems.getName(pkmn.item),target.pbThis(true)))
+          end
+          if target.effects[PBEffects::Substitute]==0 &&
+             !isConst?(target.ability,PBAbilities,:MULTITYPE) &&
+             !isConst?(target.ability,PBAbilities,:RKSSYSTEM)
+            target.type1=getConst(PBTypes,:PSYCHIC)
+            target.type2=getConst(PBTypes,:PSYCHIC)
+            typename=PBTypes.getName(getConst(PBTypes,:PSYCHIC))
+            pbDisplay(_INTL("{1}'s {2} transformed {3} into the {4} type!",pkmn.pbThis,PBItems.getName(pkmn.item),target.pbThis(true),typename))
+          end
+        end
       end
       # Sticky Web
       if pkmn.pbOwnSide.effects[PBEffects::StickyWeb]
@@ -6288,6 +6369,7 @@ def pbStartBattle(canlose=false)
       when PBWeather::SUNNYDAY
         @weatherduration=@weatherduration-1 if @weatherduration>0
         if @weatherduration==0
+          @field.effects[PBEffects::HarshSunlight]=false
           pbDisplay(_INTL("The sunlight faded."))
           @weather=0
           #### DemICE - persistentweather - START
@@ -6344,6 +6426,7 @@ def pbStartBattle(canlose=false)
       when PBWeather::RAINDANCE
         @weatherduration=@weatherduration-1 if @weatherduration>0
         if @weatherduration==0
+          @field.effects[PBEffects::HeavyRain]=false
           pbDisplay(_INTL("The rain stopped."))
           @weather=0
           #### DemICE  - persistentweather - START
@@ -8294,6 +8377,26 @@ def pbStartBattle(canlose=false)
         i.statusCount=0
         pbCommonAnimation("Burn",i,nil)
         pbDisplay(_INTL("{1} was burned by its {2}!",i.pbThis,PBItems.getName(i.item)))
+      end
+      # Shock Orb
+      if i.hasWorkingItem(:SHOCKORB) && i.status==0 && i.pbCanParalyze?(false)
+        i.pbParalyze(i)
+        pbDisplay(_INTL("{1} was paralyzed by its {2}!",i.pbThis,PBItems.getName(i.item)))
+      end
+      # Frost Orb
+      if i.hasWorkingItem(:FROSTORB) && i.status==0 && i.pbCanFreeze?(false)
+        i.pbFreeze
+        pbDisplay(_INTL("{1} was frozen by its {2}!",i.pbThis,PBItems.getName(i.item)))
+      end
+      # Drowsy Orb
+      if i.hasWorkingItem(:DROWSYORB) && i.status==0 && i.pbCanSleep?(false,true)
+        i.pbSleep
+        pbDisplay(_INTL("{1} fell asleep because of its {2}!",i.pbThis,PBItems.getName(i.item)))
+      end
+      # Pressure Orb
+      if i.hasWorkingItem(:PRESSUREORB) && i.status==0 && i.pbCanPetrify?(false)
+        i.pbPetrify(i)
+        pbDisplay(_INTL("{1} was crushed by its {2}!",i.pbThis,PBItems.getName(i.item)))
       end
       # Sticky Barb
       if i.hasWorkingItem(:STICKYBARB) && !i.hasWorkingAbility(:MAGICGUARD) &&  

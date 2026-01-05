@@ -65,7 +65,7 @@ class Game_Player
     return @character_name
   end
 
-  alias update_old update
+  alias update_walkrun_base update if method_defined?(:update)
 
   def update
      if pbGetTerrainTag==PBTerrain::Ice
@@ -81,7 +81,11 @@ class Game_Player
         @move_speed = $RPGVX ? 4.5 : 4.0
       end
     end
-    update_old
+    if defined?(update_walkrun_base)
+      update_walkrun_base
+    else
+      super
+    end
   end
 
   def update_pattern

@@ -156,6 +156,11 @@ ItemHandlers::UseFromBag.add(:COINCASE,proc{|item|
    next 1 # Continue
 })
 
+ItemHandlers::UseFromBag.add(:ITEMBELTCONTROLLER,proc{|item|
+   pbManageItemBelt
+   next 1 # Continue
+})
+
 ItemHandlers::UseFromBag.add(:ACHIEVEMENTCARD,proc{|item|
    Kernel.pbMessage(_INTL("AP: {1}",pbCommaNumber($game_variables[526])))
    next 1 # Continue
@@ -3402,6 +3407,11 @@ ItemHandlers::UseInField.add(:BICYCLE,proc{|item|
        Kernel.pbMountBike 
      end
    end
+})
+
+ItemHandlers::UseInField.add(:ITEMBELTCONTROLLER,proc{|item|
+   pbManageItemBelt
+   next 1
 })
 
 ItemHandlers::UseInField.copy(:BICYCLE,:MACHBIKE,:ACROBIKE)

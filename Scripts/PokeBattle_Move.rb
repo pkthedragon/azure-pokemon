@@ -410,6 +410,11 @@ class PokeBattle_Move
       mod1=2 if isConst?(otype1,PBTypes,:FLYING) && isConst?(atype,PBTypes,:GROUND)
       mod2=2 if isConst?(otype2,PBTypes,:FLYING) && isConst?(atype,PBTypes,:GROUND)
     end
+    if attacker && attacker.hasWorkingItem(:GIANTSBONE) &&
+       (id==PBMoves::BONECLUB || id==PBMoves::BONERUSH || id==PBMoves::BONEMERANG)
+      mod1=2 if mod1==0 && isConst?(atype,PBTypes,:GROUND)
+      mod2=2 if mod2==0 && isConst?(atype,PBTypes,:GROUND)
+    end
     if opponent.hasWorkingItem(:RINGTARGET)
       mod1=2 if mod1==0
       mod2=2 if mod2==0
@@ -1679,6 +1684,9 @@ class PokeBattle_Move
     end
     c+=1 if attacker.hasWorkingItem(:RAZORCLAW)
     c+=1 if attacker.hasWorkingItem(:SCOPELENS)
+    if attacker.hasWorkingItem(:RUBBERDUCKY) && isConst?(attacker.species,PBSpecies,:GOLDUCK)
+      c+=2
+    end
     c+=1 if attacker.speed > opponent.speed && $fefieldeffect == 24
     if $fefieldeffect == 30
       c += $buffs if $buffs > 0
@@ -1729,6 +1737,35 @@ class PokeBattle_Move
       end
       if attacker.hasWorkingItem(:IGNITIONKEY) && PBStuff::STATBOOSTINGATTACKMOVE.include?(self.id)
         damagemult=(damagemult*(1.2*0x1000).round/0x1000)
+      end
+      if attacker.hasWorkingItem(:GIANTSBONE) &&
+         (self.id==PBMoves::BONECLUB || self.id==PBMoves::BONERUSH || self.id==PBMoves::BONEMERANG)
+        damagemult=(damagemult*(1.5*0x1000).round/0x1000)
+      end
+      if attacker.hasWorkingItem(:SHARPTALONS) &&
+         (PBStuff::KICKINGMOVE.include?(self.id) || PBStuff::CLAWMOVE.include?(self.id))
+        damagemult=(damagemult*(1.2*0x1000).round/0x1000)
+      end
+      if attacker.hasWorkingItem(:GOLDENHELIX) && self.pbIsMultiHit && self.pbNumHits(attacker)==2
+        damagemult=(damagemult*(1.5*0x1000).round/0x1000)
+      end
+      if attacker.hasWorkingItem(:MIXTAPE) && @basedamage>0
+        prev_id=attacker.previousMove || -1
+        if prev_id>0
+          prev_data=PBMoveData.new(prev_id)
+          prev_cat=prev_data.category
+          curr_cat=@category
+          if (prev_cat==0 && curr_cat==1) || (prev_cat==1 && curr_cat==0)
+            damagemult=(damagemult*(1.5*0x1000).round/0x1000)
+          end
+        end
+      end
+      if attacker.hasWorkingItem(:FLOATIES) && isConst?(self.pbType(attacker),PBTypes,:FLYING) &&
+         isConst?(attacker.species,PBSpecies,:FLOATZEL)
+        damagemult=(damagemult*(1.5*0x1000).round/0x1000)
+      end
+      if attacker.hasWorkingItem(:QUICKCLAW) && self.priority>0
+        damagemult=(damagemult*(1.3*0x1000).round/0x1000)
       end
     end
     return damagemult
@@ -5184,6 +5221,12 @@ class PokeBattle_Move
       multiplier = 0.5*(opponent.pokemon.hp*1.0)/(opponent.pokemon.totalhp*1.0)
       multiplier += 1.0
       finaldamagemult=(finaldamagemult*multiplier).round
+    end
+    if opponent.hasWorkingItem(:AURAGUARD)
+      hp_type=pbHiddenPower(opponent.iv)[0] rescue nil
+      if hp_type && isConst?(type,PBTypes,hp_type)
+        finaldamagemult=(finaldamagemult*0.5).round
+      end
     end
     if (options&IGNOREPKMNTYPES)==0
       berry_reducers = {
