@@ -9341,8 +9341,6 @@ class PokeBattle_Battler
     #   @battle.pbDisplayPaused("After: [#{@lastMoveUsedSketch},#{@lastMoveUsed}]")
   end
 
-  end
-  # Close out the surrounding block before additional helper methods.
   #### KUROTSUNE - 014 - START
   def pbSwapDefenses
     aux = @spdef
@@ -9431,4 +9429,7 @@ class PokeBattle_Battler
     @battle.cantescape=true if !@canrun
   end
 
+end
+
+end
 end
