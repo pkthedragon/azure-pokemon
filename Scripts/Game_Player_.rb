@@ -56,10 +56,10 @@ class Game_Player < Game_Character
   end
 
   def pbHasDependentEvents?
-    return $PokemonGlobal.dependentEvents.length>0   
+    return $PokemonGlobal.dependentEvents.length>0
   end
 
-def move_down(turn_enabled = true)
+  def move_down(turn_enabled = true)
     if turn_enabled
       turn_down
     end

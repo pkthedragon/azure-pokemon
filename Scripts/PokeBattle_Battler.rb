@@ -8457,4 +8457,3 @@ class PokeBattle_Battler
   end
 
 end
-
