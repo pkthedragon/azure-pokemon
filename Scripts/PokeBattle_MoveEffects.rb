@@ -7360,13 +7360,13 @@ class PokeBattle_Move_0D5 < PokeBattle_Move
     if $fefieldeffect == 15 && isConst?(@id,PBMoves,:HEALORDER)
     hpgain=((attacker.totalhp+1) * 0.66).floor
     if tribute_has?(attacker, :MEADOWTRIBUTE)
-        hpgain = (hpgain*1.5).floor
+        hpgain = (hpgain*1.3).floor
       end
       attacker.pbRecoverHP(hpgain,true)     
     else
     hpgain=((attacker.totalhp+1)/2).floor
     if tribute_has?(attacker, :MEADOWTRIBUTE)
-        hpgain = (hpgain*1.5).floor
+        hpgain = (hpgain*1.3).floor
       end
       attacker.pbRecoverHP(hpgain,true)
     end
@@ -7390,7 +7390,7 @@ class PokeBattle_Move_0D6 < PokeBattle_Move
     pbShowAnimation(@id,attacker,nil,hitnum,alltargets,showanimation)
     hpgain=((attacker.totalhp+1)/2).floor
     if tribute_has?(attacker, :MEADOWTRIBUTE)
-        hpgain = (hpgain*1.5).floor
+        hpgain = (hpgain*1.3).floor
       end
       attacker.pbRecoverHP(hpgain,true)
     attacker.effects[PBEffects::Roost]=true
@@ -7451,7 +7451,7 @@ class PokeBattle_Move_0D8 < PokeBattle_Move
       end
     end
   if tribute_has?(attacker, :MEADOWTRIBUTE)
-      hpgain = (hpgain*1.5).floor
+      hpgain = (hpgain*1.3).floor
     end
     pbShowAnimation(@id,attacker,nil,hitnum,alltargets,showanimation)
     attacker.pbRecoverHP(hpgain,true)
@@ -7556,7 +7556,7 @@ class PokeBattle_Move_0DD < PokeBattle_Move
     if opponent.damagestate.calcdamage>0
       hpgain=((opponent.damagestate.hplost+1)/2).floor
       if tribute_has?(attacker, :MEADOWTRIBUTE)
-        hpgain = (hpgain*1.5).floor
+        hpgain = (hpgain*1.3).floor
       end
       if opponent.hasWorkingAbility(:LIQUIDOOZE,true)
         hpgain*=2 if ($fefieldeffect == 19 || $fefieldeffect == 26 || $fefieldeffect == 41)
@@ -7584,7 +7584,7 @@ class PokeBattle_Move_0DE < PokeBattle_Move
     if opponent.damagestate.calcdamage>0 && hitnum==0
       hpgain=((opponent.damagestate.hplost+1)/2).floor
       if tribute_has?(attacker, :MEADOWTRIBUTE)
-        hpgain = (hpgain*1.5).floor
+        hpgain = (hpgain*1.3).floor
       end
       hpgain=(hpgain*1.3).floor if attacker.hasWorkingItem(:BIGROOT) || (attacker.hasWorkingItem(:TANGROWTHCREST) && isConst?(attacker.species,PBSpecies,:TANGROWTH))
       attacker.pbRecoverHP(hpgain,true)
@@ -10244,7 +10244,7 @@ class PokeBattle_Move_139 < PokeBattle_Move
       else
         hpgain=(hpgain*1.3).floor if isConst?(attacker.item,PBItems,:BIGROOT) || (attacker.hasWorkingItem(:TANGROWTHCREST) && isConst?(attacker.species,PBSpecies,:TANGROWTH))
         if tribute_has?(attacker, :MEADOWTRIBUTE)
-          hpgain = (hpgain*1.5).floor
+          hpgain = (hpgain*1.3).floor
         end        
     attacker.pbRecoverHP(hpgain,true)
         @battle.pbDisplay(_INTL("{1} had its energy drained!",opponent.pbThis))
@@ -11044,7 +11044,7 @@ class PokeBattle_Move_158 < PokeBattle_Move
       else
         hpgain=(hpgain*1.3).floor if attacker.hasWorkingItem(:BIGROOT)
     if tribute_has?(attacker, :MEADOWTRIBUTE)
-          hpgain = (hpgain*1.5).floor
+          hpgain = (hpgain*1.3).floor
         end
         attacker.pbRecoverHP(hpgain,true)
         @battle.pbDisplay(_INTL("{1} had its energy drained!",opponent.pbThis))
@@ -11519,7 +11519,7 @@ class PokeBattle_Move_16C < PokeBattle_Move
       hpgain=(attacker.totalhp/2).floor
     end
   if tribute_has?(attacker, :MEADOWTRIBUTE)
-      hpgain = (hpgain*1.5).floor
+      hpgain = (hpgain*1.3).floor
     end
     pbShowAnimation(@id,attacker,nil,hitnum,alltargets,showanimation)
     attacker.pbRecoverHP(hpgain,true)
@@ -11711,7 +11711,7 @@ class PokeBattle_Move_172 < PokeBattle_Move
     hpgain=(hpgain*1.3).floor if $fefieldeffect == 8 # Swamp Field
     hpgain=(hpgain*1.3).floor if $fefieldeffect == 15 # Forest Field
   if tribute_has?(attacker, :MEADOWTRIBUTE)
-      hpgain = (hpgain*1.5).floor
+      hpgain = (hpgain*1.3).floor
     end
     pbShowAnimation(@id,attacker,opponent,hitnum,alltargets,showanimation)
     opponent.pbReduceStat(PBStats::ATTACK,1,false)
@@ -12202,7 +12202,7 @@ class PokeBattle_Move_187 < PokeBattle_Move
     end
     if attacker.hp != attacker.totalhp
     if tribute_has?(attacker, :MEADOWTRIBUTE)
-        hpgain1 = (hpgain1*1.5).floor
+        hpgain1 = (hpgain1*1.3).floor
       end
       attacker.pbRecoverHP(hpgain1,true)
       @battle.pbDisplay(_INTL("{1}'s HP was restored.",attacker.pbThis)) 
@@ -12210,7 +12210,7 @@ class PokeBattle_Move_187 < PokeBattle_Move
     if !attacker.pbPartner.isFainted?
       if attacker.pbPartner.hp != attacker.pbPartner.totalhp
       if tribute_has?(attacker, :MEADOWTRIBUTE)
-          hpgain2 = (hpgain2*1.5).floor
+          hpgain2 = (hpgain2*1.3).floor
         end
         attacker.pbPartner.pbRecoverHP(hpgain2,true)
         @battle.pbDisplay(_INTL("{1}'s HP was restored.",attacker.pbPartner.pbThis))
@@ -12523,7 +12523,7 @@ class PokeBattle_Move_211 < PokeBattle_Move
       else
         hpgain=(hpgain*1.3).floor if attacker.hasWorkingItem(:BIGROOT)
         if tribute_has?(attacker, :MEADOWTRIBUTE)
-          hpgain = (hpgain*1.5).floor
+          hpgain = (hpgain*1.3).floor
         end
     attacker.pbRecoverHP(hpgain,true)
         @battle.pbDisplay(_INTL("{1} had its energy drained!",opponent.pbThis))
@@ -12959,7 +12959,7 @@ class PokeBattle_Move_22A < PokeBattle_Move
       end
       hpgain=((opponent.totalhp)/4).floor
     if tribute_has?(attacker, :MEADOWTRIBUTE)
-        hpgain = (hpgain*1.5).floor
+        hpgain = (hpgain*1.3).floor
       end
       pbShowAnimation(@id,attacker,opponent,hitnum,alltargets,showanimation)
       opponent.pbRecoverHP(hpgain,true)
@@ -12972,7 +12972,7 @@ class PokeBattle_Move_22A < PokeBattle_Move
       end
       hpgain=((attacker.totalhp)/4).floor
     if tribute_has?(attacker, :MEADOWTRIBUTE)
-        hpgain = (hpgain*1.5).floor
+        hpgain = (hpgain*1.3).floor
       end
       pbShowAnimation(@id,attacker,opponent,hitnum,alltargets,showanimation)
       attacker.pbRecoverHP(hpgain,true)
@@ -13220,7 +13220,7 @@ class PokeBattle_Move_248 < PokeBattle_Move
       else
         hpgain=(hpgain*1.3).floor if isConst?(attacker.item,PBItems,:BIGROOT) || (attacker.hasWorkingItem(:TANGROWTHCREST) && isConst?(attacker.species,PBSpecies,:TANGROWTH))
         if tribute_has?(attacker, :MEADOWTRIBUTE)
-          hpgain = (hpgain*1.5).floor
+          hpgain = (hpgain*1.3).floor
         end
     attacker.pbRecoverHP(hpgain,true)
         @battle.pbDisplay(_INTL("{1} had its energy drained!",opponent.pbThis))
@@ -13253,12 +13253,12 @@ class PokeBattle_Move_24C < PokeBattle_Move
     hpgain=0
     if ($fefieldeffect == 1 || $fefieldeffect == 18) # Electric Terrain / Short-Circuit
       if tribute_has?(attacker, :MEADOWTRIBUTE)
-        hpgain = (hpgain*1.5).floor
+        hpgain = (hpgain*1.3).floor
       end      
     hpgain=(attacker.totalhp*0.66).floor
     else
     if tribute_has?(attacker, :MEADOWTRIBUTE)
-        hpgain = (hpgain*1.5).floor
+        hpgain = (hpgain*1.3).floor
       end
       hpgain=(attacker.totalhp/2).floor
     end
@@ -13446,12 +13446,12 @@ class PokeBattle_Move_26E < PokeBattle_Move
     hpgain=0
     if @battle.pbWeather==PBWeather::RAINDANCE && !attacker.hasWorkingItem(:UTILITYUMBRELLA)
       if tribute_has?(attacker, :MEADOWTRIBUTE)
-        hpgain = (hpgain*1.5).floor
+        hpgain = (hpgain*1.3).floor
       end      
     hpgain=(attacker.totalhp*2/3).floor
     else
     if tribute_has?(attacker, :MEADOWTRIBUTE)
-        hpgain = (hpgain*1.5).floor
+        hpgain = (hpgain*1.3).floor
       end
       hpgain=(attacker.totalhp/2).floor
     end
@@ -13594,7 +13594,7 @@ class PokeBattle_Move_291 < PokeBattle_Move
       else
         hpgain=(hpgain*1.3).floor if isConst?(attacker.item,PBItems,:BIGROOT) || (attacker.hasWorkingItem(:TANGROWTHCREST) && isConst?(attacker.species,PBSpecies,:TANGROWTH))
         if tribute_has?(attacker, :MEADOWTRIBUTE)
-          hpgain = (hpgain*1.5).floor
+          hpgain = (hpgain*1.3).floor
         end
     attacker.pbRecoverHP(hpgain,true)
         @battle.pbDisplay(_INTL("{1} had its energy drained!",opponent.pbThis))
@@ -14156,8 +14156,8 @@ class PokeBattle_Move_298 < PokeBattle_Move
     hpgain = missing if hpgain > missing
 
     if hpgain > 0
-      # Tribute hook – Meadow Tribute boosts healing by 1.5x
-      hpgain = (hpgain * 1.5).floor if defined?(tribute_has?) && tribute_has?(attacker, :MEADOWTRIBUTE)
+      # Tribute hook – Meadow Tribute boosts healing by 1.3x
+      hpgain = (hpgain * 1.3).floor if defined?(tribute_has?) && tribute_has?(attacker, :MEADOWTRIBUTE)
       hpgain = [hpgain, missing].min
       attacker.pbRecoverHP(hpgain,true)
       @battle.pbDisplay(_INTL("{1}'s HP was restored.",attacker.pbThis))
@@ -14444,7 +14444,7 @@ class PokeBattle_Move_29G < PokeBattle_Move
 
     # Keep your Meadow Tribute synergy
     if defined?(tribute_has?) && tribute_has?(attacker, :MEADOWTRIBUTE)
-      hpgain = (hpgain*1.5).floor
+      hpgain = (hpgain*1.3).floor
     end
 
     # Optional: preserve your old “Forest field” Heal Order buff:

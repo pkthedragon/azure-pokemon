@@ -283,6 +283,10 @@ class PokeBattle_Battler
       return false
     end        
 #### KUROTSUNE - 028 - END  #### JERICHO - 002 - END
+    if hasWorkingItem(:THERMOSUIT)
+      @battle.pbDisplay(_INTL("{1}'s {2} prevents burns!",pbThis,PBItems.getName(self.item))) if showMessages
+      return false
+    end
     if self.status==PBStatuses::BURN
       @battle.pbDisplay(_INTL("{1} already has a burn.",pbThis)) if showMessages
       return false
@@ -314,6 +318,10 @@ class PokeBattle_Battler
       return false
     end       
 #### KUROTSUNE - 028 - END  #### JERICHO - 002 - END  
+    if hasWorkingItem(:THERMOSUIT)
+      @battle.pbDisplay(_INTL("{1}'s {2} prevents burns!",pbThis,PBItems.getName(self.item))) if showMessages
+      return false
+    end
     if self.status==PBStatuses::BURN
       @battle.pbDisplay(_INTL("{1} already has a burn.",pbThis)) if showMessages
       return false
@@ -508,6 +516,7 @@ end
       (hasWorkingAbility(:LEAFGUARD) && $fefieldeffect == 15 || 
       ($fefieldeffect == 33 && $fecounter>0)) ||
        (hasWorkingAbility(:MAGMAARMOR) && $fefieldeffect!=39) ||
+       hasWorkingItem(:THERMOSUIT) ||
        (pbOwnSide.effects[PBEffects::Safeguard]>0 && !(@battle.battlers[@battle.lastMoveUser]).hasWorkingAbility(:INFILTRATOR) && !(PBMoveData.new(@battle.lastMoveUsed).function==0x21B && @battle.battlers[@battle.lastMoveUser].hp < (0.5 * @battle.battlers[@battle.lastMoveUser].totalhp).floor)) ||
        damagestate.substitute || (effects[PBEffects::Substitute]>0 && !PBMoveData.new(@battle.lastMoveUsed).isSoundBased?) || $fefieldeffect == 7 ||
       (pbHasType?(:ICE) && !hasWorkingItem(:RINGTARGET)) && !(self.moldbroken) || pbShieldsUp?
@@ -723,6 +732,11 @@ end
 # Added an extra parameter to determine if this was called from reduce stat
 # changed from: def pbIncreaseStat(stat,increment,showMessages,moveid=nil,attacker=nil,upanim=true)
   def pbIncreaseStat(stat,increment,showMessages1,moveid=nil,attacker=nil,upanim=true, cont_call=false, showMessages2=true)
+    if moveid && attacker && attacker.hasWorkingItem(:ZAPTRIBUTE) &&
+       attacker.moves && attacker.moves[0] && attacker.moves[0].id==moveid &&
+       attacker.moves[0].basedamage>0
+      increment += 1
+    end
     # here we call reduce instead
     if hasWorkingAbility(:CONTRARY) && !cont_call && !(self.moldbroken)
       ret=pbReduceStat(stat,increment,showMessages1,moveid,attacker,upanim,false,true,showMessages2)
@@ -894,6 +908,10 @@ end
 # Added another parameter to determine if we called from within increase
 # changed from: def pbReduceStat(stat,increment,showMessages,moveid=nil,attacker=nil,downanim=true,selfreduce=false)
   def pbReduceStat(stat,increment,showMessages1=true,moveid=nil,attacker=nil,downanim=true,selfreduce=false, cont_call=false, showMessages2=true, mirrored=false)
+    if moveid && attacker && attacker.hasWorkingItem(:DREADTRIBUTE) &&
+       attacker.moves && attacker.moves[0] && attacker.moves[0].id==moveid
+      increment += 1
+    end
     # no, we don't want to say reduce 5 times - Thunder Raid
     if moveid == 207
       showMessages2 = false

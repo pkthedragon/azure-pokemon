@@ -5,7 +5,11 @@ TRIBUTE_ITEMS = [
   :FLAMETRIBUTE,  # 3
   :BLANKTRIBUTE,  # 4
   :FISTTRIBUTE,   # 5
-  :MINDTRIBUTE    # 6
+  :MINDTRIBUTE,   # 6
+  :ZAPTRIBUTE,    # 7
+  :ICICLETRIBUTE, # 8
+  :DREADTRIBUTE,  # 9
+  :PIXITRIBUTE    # 10
 ]
 
 TRIBUTE_NAMES = [
@@ -15,7 +19,11 @@ TRIBUTE_NAMES = [
   _INTL("Flame Tribute"),
   _INTL("Blank Tribute"),
   _INTL("Fist Tribute"),
-  _INTL("Mind Tribute")
+  _INTL("Mind Tribute"),
+  _INTL("Zap Tribute"),
+  _INTL("Icicle Tribute"),
+  _INTL("Dread Tribute"),
+  _INTL("Pixie Tribute")
 ]
 
 TRIBUTE_UNLOCK_SWITCH = {
@@ -25,7 +33,11 @@ TRIBUTE_UNLOCK_SWITCH = {
   :FLAMETRIBUTE  => 1003,
   :BLANKTRIBUTE  => 1004,
   :FISTTRIBUTE   => 1005,
-  :MINDTRIBUTE   => 1006
+  :MINDTRIBUTE   => 1006,
+  :ZAPTRIBUTE    => 1007,
+  :ICICLETRIBUTE => 1008,
+  :DREADTRIBUTE  => 1009,
+  :PIXITRIBUTE   => 1010
 }
 
 def pbTributeItemIDs
