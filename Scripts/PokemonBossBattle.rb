@@ -551,7 +551,7 @@ class PokeBattle_Battle
       battler.spatk = battler.pokemon.spatk
       battler.defense = battler.pokemon.defense
       battler.spdef = battler.pokemon.spdef
-      pbAnimation(PBMoves::HEALBELL,battler,nil) if animplay = true
+      pbAnimation(PBMoves::HEALBELL,battler,nil) if animplay == true
       pbDisplayBrief(_INTL("{1} cleared itself of negative effects!",battler.pbThis))
     end
     if onBreakdata[:statDropCure]

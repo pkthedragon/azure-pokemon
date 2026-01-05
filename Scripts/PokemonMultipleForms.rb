@@ -2237,10 +2237,6 @@ MultipleForms.register(:VULPIX,{
       next if pokemon.form==0      # Normal
       next "In hot weather, this Pokémon makes ice shards with its six tails and sprays them around to cool itself off."     # Alola
     },
-    "type2"=>proc{|pokemon|
-      next if pokemon.form==0      # Normal
-      next getID(PBTypes,:ICE)     # Alola
-    },
     "type1"=>proc{|pokemon|
       next if pokemon.form==0      # Normal
       next getID(PBTypes,:ICE)     # Alola
@@ -3957,15 +3953,6 @@ MultipleForms.register(:STUNFISK,{
     "dexEntry"=>proc{|pokemon|
       next if pokemon.form==0      # Normal
       next "Its conspicuous lips lure prey in as it lies in wait in the mud. When prey gets close, Stunfisk clamps its jagged steel fins down on them."     # Galarian
-    },
-    "getFormOnCreation"=>proc{|pokemon|
-      maps=[]  
-      # Map IDs for Galariann form
-      if $game_map && maps.include?($game_map.map_id)
-        next 1
-      else
-        next 0
-      end
     },
     "weight"=>proc{|pokemon|
       next if pokemon.form==0      # Normal

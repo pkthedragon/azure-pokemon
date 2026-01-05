@@ -536,7 +536,7 @@ end
 end # !Object.const_defined?(:Socket)
 
 
-#############################
+#############################
 #
 # HTTP utility functions
 #

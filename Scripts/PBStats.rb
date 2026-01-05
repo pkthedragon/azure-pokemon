@@ -7,7 +7,8 @@ begin
     SPATK    = 4
     SPDEF    = 5
     ACCURACY = 6
-    EVASION  = 7  end
+    EVASION  = 7
+  end
 rescue Exception
   if $!.is_a?(SystemExit) || "#{$!.class}"=="Reset"
     raise $!

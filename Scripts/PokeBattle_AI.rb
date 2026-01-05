@@ -6567,7 +6567,7 @@ class PokeBattle_Battle
         0xB6    # Metronome
       ]
       miniscore = $pkmn_move[opponent.lastMoveUsed][1]
-      if miniscore=0
+      if miniscore==0
         miniscore=40
       end
       miniscore+=100
@@ -6593,7 +6593,7 @@ class PokeBattle_Battle
         0x5D,   # Sketch
       ]
       miniscore = $pkmn_move[opponent.lastMoveUsedSketch][1]
-      if miniscore=0
+      if miniscore==0
         miniscore=40
       end
       miniscore+=100
@@ -22482,7 +22482,7 @@ class PokeBattle_Battle
         if (move.id == PBMoves::CUT) && $fecounter > 0
           basedamage=(basedamage*1.5).round
         end
-        if (move.id == PBMoves::PETALBLIZZARD || move.id == PBMoves::PETALDANCE || move.id == PBMoves::FLEURCANNON) && $fecounter = 2
+        if (move.id == PBMoves::PETALBLIZZARD || move.id == PBMoves::PETALDANCE || move.id == PBMoves::FLEURCANNON) && $fecounter == 2
           basedamage=(basedamage*1.2).round
         end
         if (move.id == PBMoves::PETALBLIZZARD || move.id == PBMoves::PETALDANCE || move.id == PBMoves::FLEURCANNON) && $fecounter > 2

@@ -3522,7 +3522,7 @@ class PokeBattle_Battler
           power=120 if movedata.function==0x71 || # Counter
           movedata.function==0x72 || # Mirror Coat
           movedata.function==0x73 || # Metal Burst
-          power=80 if movedata.function==0x6A ||  # SonicBoom
+          power==80 if movedata.function==0x6A ||  # SonicBoom
           movedata.function==0x6B ||  # Dragon Rage
           movedata.function==0x6D ||  # Night Shade
           movedata.function==0x6E ||  # Endeavor
