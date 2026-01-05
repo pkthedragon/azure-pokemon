@@ -1,6 +1,223 @@
 ################################################################################
 # The Bag.
 ################################################################################
+def pbEnsureItemBelt
+  $PokemonGlobal.itemBelt ||= [nil,nil,nil,nil] if $PokemonGlobal
+  return $PokemonGlobal ? $PokemonGlobal.itemBelt : [nil,nil,nil,nil]
+end
+
+def pbBeltAssignableItem?(item)
+  item=getID(PBItems,item) if item.is_a?(Symbol) || item.is_a?(String)
+  return false if !item || item<=0
+  return false if pbIsImportantItem?(item)
+  return $ItemData[item] && $ItemData[item][ITEMBATTLEUSE]!=0
+end
+
+def pbCleanupItemBelt
+  return false if !$PokemonGlobal
+  belt=pbEnsureItemBelt
+  changed=false
+  belt.map! do |belt_item|
+    next nil if !belt_item
+    if !$PokemonBag || $PokemonBag.pbQuantity(belt_item)<=0 || !pbBeltAssignableItem?(belt_item)
+      changed=true
+      nil
+    else
+      belt_item
+    end
+  end
+  return changed
+end
+
+def pbBeltSlotLabel(item)
+  return _INTL("Empty") if !item
+  qty=$PokemonBag ? $PokemonBag.pbQuantity(item) : 0
+  return _INTL("{1} (x{2})",PBItems.getName(item),qty)
+end
+
+def pbChooseBeltCandidate(scene=nil)
+  return 0 if !$PokemonBag || !scene
+  candidates=[]
+  seen={}
+  for pocket in $PokemonBag.pockets
+    next if !pocket
+    for slot in pocket
+      next if !slot
+      itm=slot[0]
+      next if seen[itm]
+      next if !$ItemData[itm] || slot[1]<=0
+      next if !pbBeltAssignableItem?(itm)
+      candidates.push(itm)
+      seen[itm]=true
+    end
+  end
+  if candidates.empty?
+    scene.pbDisplay(_INTL("No battle-usable items are in the Bag."))
+    return 0
+  end
+  cmdlist=candidates.map { |itm| _INTL("{1} (x{2})",PBItems.getName(itm),$PokemonBag.pbQuantity(itm)) }
+  cmdlist.push(_INTL("Cancel"))
+  cmd=scene.pbShowCommands(_INTL("Choose an item for the belt."),cmdlist,cmdlist.length-1)
+  return 0 if cmd<0 || cmd>=candidates.length
+  return candidates[cmd]
+end
+
+def pbAssignItemToBeltFromBag(item,scene)
+  return false if !$PokemonGlobal
+  item=getID(PBItems,item) if item.is_a?(Symbol) || item.is_a?(String)
+  if !pbBeltAssignableItem?(item)
+    scene.pbDisplay(_INTL("Only items usable in battle can be placed on the belt."))
+    return false
+  end
+  if $PokemonBag.pbQuantity(item)<=0
+    scene.pbDisplay(_INTL("You don't have any {1}.",PBItems.getName(item)))
+    return false
+  end
+  belt=pbEnsureItemBelt
+  if belt.include?(item)
+    scene.pbDisplay(_INTL("{1} is already on the belt.",PBItems.getName(item)))
+    return true
+  end
+  commands=[]
+  for i in 0...belt.length
+    commands.push(_INTL("Slot {1}: {2}",i+1,pbBeltSlotLabel(belt[i])))
+  end
+  commands.push(_INTL("Cancel"))
+  choice=scene.pbShowCommands(_INTL("Assign {1} to which slot?",PBItems.getName(item)),commands,commands.length-1)
+  if choice>=0 && choice<belt.length
+    belt[choice]=item
+    scene.pbDisplay(_INTL("{1} was placed in slot {2}.",PBItems.getName(item),choice+1))
+    pbCleanupItemBelt
+    return true
+  end
+  return false
+end
+
+def pbItemBeltCommand(msg,commands,default_index)
+  cmdwindow=Window_CommandPokemon.new(commands)
+  cmdwindow.index=0
+  cmdwindow.z=99999
+  msgwindow=Window_AdvancedTextPokemon.new("")
+  msgwindow.z=99999
+  msgwindow.text=msg
+  ret=default_index
+  loop do
+    Graphics.update
+    Input.update
+    cmdwindow.update
+    msgwindow.update
+    if Input.trigger?(Input::B)
+      ret=default_index
+      break
+    elsif Input.trigger?(Input::C)
+      ret=cmdwindow.index
+      break
+    end
+  end
+  msgwindow.dispose
+  cmdwindow.dispose
+  return ret
+end
+
+def pbChooseBeltItemFromBag
+  return 0 if !$PokemonBag
+  candidates=[]
+  seen={}
+  for pocket in $PokemonBag.pockets
+    next if !pocket
+    for slot in pocket
+      next if !slot
+      itm=slot[0]
+      next if seen[itm]
+      next if slot[1]<=0
+      next if !pbBeltAssignableItem?(itm)
+      candidates.push(itm)
+      seen[itm]=true
+    end
+  end
+  if candidates.empty?
+    Kernel.pbMessage(_INTL("No battle-usable items are in the Bag."))
+    return 0
+  end
+  commands=candidates.map { |itm| _INTL("{1} (x{2})",PBItems.getName(itm),$PokemonBag.pbQuantity(itm)) }
+  commands.push(_INTL("Cancel"))
+  cmd=pbItemBeltCommand(_INTL("Choose an item for the belt."),commands,commands.length-1)
+  return 0 if cmd<0 || cmd>=candidates.length
+  return candidates[cmd]
+end
+
+def pbBattleBeltItems
+  return [] if !$PokemonGlobal || !$PokemonBag
+  pbCleanupItemBelt
+  belt=pbEnsureItemBelt.compact
+  belt.select! { |itm| $PokemonBag.pbQuantity(itm)>0 && $ItemData[itm] && $ItemData[itm][ITEMBATTLEUSE]!=0 }
+  return belt
+end
+
+def pbManageItemBelt
+  pbEnsureItemBelt
+  loop do
+    belt=pbEnsureItemBelt
+    commands=[]
+    belt.each_with_index do |itm,idx|
+      commands << _INTL("Slot {1}: {2}",idx+1,pbBeltSlotLabel(itm))
+    end
+    commands += [_INTL("Assign Item"),_INTL("Clear All"),_INTL("Cancel")]
+    choice=pbItemBeltCommand(_INTL("Manage the four battle items on your belt."),commands,commands.length-1)
+    case choice
+    when 0,1,2,3
+      slot_item=belt[choice]
+      slot_commands=[_INTL("Assign"),_INTL("Remove"),_INTL("Cancel")]
+      slot_commands.delete_at(1) if !slot_item
+      slot_choice=pbItemBeltCommand(_INTL("Slot {1}: {2}",choice+1,pbBeltSlotLabel(slot_item)),slot_commands,slot_commands.length-1)
+      if slot_choice==0
+        newitem=pbChooseBeltItemFromBag
+        next if newitem==0
+        if belt.include?(newitem) && belt[choice]!=newitem
+          Kernel.pbMessage(_INTL("{1} is already on the belt.",PBItems.getName(newitem)))
+          next
+        end
+        belt[choice]=newitem
+        Kernel.pbMessage(_INTL("{1} was placed in slot {2}.",PBItems.getName(newitem),choice+1))
+      elsif slot_choice==1 && slot_item
+        belt[choice]=nil
+        Kernel.pbMessage(_INTL("Slot {1} was cleared.",choice+1))
+      end
+    when 4 # Assign Item (general)
+      newitem=pbChooseBeltItemFromBag
+      next if newitem==0
+      if belt.include?(newitem)
+        Kernel.pbMessage(_INTL("{1} is already on the belt.",PBItems.getName(newitem)))
+        next
+      end
+      empty_index=belt.index(nil)
+      if empty_index
+        belt[empty_index]=newitem
+        Kernel.pbMessage(_INTL("{1} was placed in slot {2}.",PBItems.getName(newitem),empty_index+1))
+      else
+        slot_choices=belt.each_with_index.map { |itm,idx| _INTL("Slot {1}: {2}",idx+1,pbBeltSlotLabel(itm)) }
+        slot_choices << _INTL("Cancel")
+        replace_index=pbItemBeltCommand(_INTL("Choose a slot to replace."),slot_choices,slot_choices.length-1)
+        if replace_index>=0 && replace_index<4
+          belt[replace_index]=newitem
+          Kernel.pbMessage(_INTL("{1} was placed in slot {2}.",PBItems.getName(newitem),replace_index+1))
+        end
+      end
+    when 5 # Clear all
+      if Kernel.pbConfirmMessage(_INTL("Clear all belt slots?"))
+        for i in 0...belt.length
+          belt[i]=nil
+        end
+        Kernel.pbMessage(_INTL("The belt was emptied."))
+      end
+    else
+      pbCleanupItemBelt
+      break
+    end
+    pbCleanupItemBelt
+  end
+end
+
 class Window_PokemonBag < Window_DrawableCommand
   attr_reader :pocket
   attr_reader :sortIndex
@@ -519,6 +736,9 @@ end
   end
 
   def pockets
+    pbEnsureItemBelt
+    enforceItemCap
+    pbCleanupItemBelt
     rearrange()
     return @pockets
   end
@@ -536,6 +756,25 @@ end
         end
       end
       @pockets=newpockets
+    end
+  end
+
+  def enforceItemCap
+    return if !@pockets
+    max_per_slot=BAGMAXPERSLOT
+    return if max_per_slot<=0
+    for pocket in @pockets
+      next if !pocket
+      for slot in pocket
+        next if !slot
+        next if slot[1]<=max_per_slot
+        overflow=slot[1]-max_per_slot
+        slot[1]=max_per_slot
+        if overflow>0 && $PokemonGlobal
+          $PokemonGlobal.pcItemStorage=PCItemStorage.new if !$PokemonGlobal.pcItemStorage
+          $PokemonGlobal.pcItemStorage.pbStoreItem(slot[0],overflow)
+        end
+      end
     end
   end
 
@@ -632,6 +871,7 @@ end
     if ret
       index = registeredItem.index(item)
       registeredItem[index]=nil if index && !pbHasItem?(item)
+      pbCleanupItemBelt
     end
     return ret
   end
@@ -914,6 +1154,7 @@ class PokemonBagScreen
       break if item==0
       cmdUse=-1
       cmdRegister=-1
+      cmdBelt=-1
       cmdGive=-1
       cmdToss=-1
       cmdRead=-1
@@ -922,6 +1163,7 @@ class PokemonBagScreen
       # Generate command list
       commands[cmdRead=commands.length]=_INTL("Read") if pbIsMail?(item)
       commands[cmdUse=commands.length]=_INTL("Use") if ItemHandlers.hasOutHandler(item) || (pbIsMachine?(item) && $Trainer.party.length>0)
+      commands[cmdBelt=commands.length]=_INTL("Assign to Belt") if pbBeltAssignableItem?(item)
       commands[cmdGive=commands.length]=_INTL("Give") if $Trainer.party.length>0 && !pbIsImportantItem?(item)
       commands[cmdToss=commands.length]=_INTL("Toss") if (!pbIsImportantItem?(item) && !pbIsCrest?(item)) || $DEBUG
       commands[cmdRegister=commands.length]=_INTL("Register") if pbIsKeyItem?(item) && ItemHandlers.hasKeyItemHandler(item)
@@ -934,6 +1176,10 @@ class PokemonBagScreen
         ret=pbUseItem(@bag,item,@scene)
         # 0=Item wasn't used; 1=Item used; 2=Close Bag to use in field
         break if ret==2 # End screen
+        @scene.pbRefresh
+        next
+      elsif cmdBelt>=0 && command==cmdBelt
+        pbAssignItemToBeltFromBag(item,@scene)
         @scene.pbRefresh
         next
       elsif cmdRead>=0 && command==cmdRead # Read mail
@@ -1209,6 +1455,10 @@ class PCItemStorage
     if hasConst?(PBItems,:POTION)
       ItemStorageHelper.pbStoreItem(
          @items,MAXSIZE,MAXPERSLOT,getConst(PBItems,:POTION),1)
+    end
+    if hasConst?(PBItems,:ITEMBELTCONTROLLER)
+      ItemStorageHelper.pbStoreItem(
+         @items,MAXSIZE,MAXPERSLOT,getConst(PBItems,:ITEMBELTCONTROLLER),1)
     end
   end
 

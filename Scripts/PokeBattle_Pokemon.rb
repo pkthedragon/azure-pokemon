@@ -60,9 +60,32 @@ class PokeBattle_Pokemon
   attr_accessor(:obspe)  
   attr_accessor(:obspa)  
   attr_accessor(:obspd) 
+  attr_accessor(:berry_pouch_items)
+  attr_accessor(:gem_pouch_items)
 ################################################################################
 # Ownership, obtained information
 ################################################################################
+
+  def berry_pouch_items
+    @berry_pouch_items ||= []
+  end
+
+  def gem_pouch_items
+    @gem_pouch_items ||= []
+  end
+
+  def pouch_type_for_held
+    return :berry if isConst?(@item,PBItems,:BERRYPOUCH) && isConst?(@species,PBSpecies,:TROPIUS)
+    return :gem   if isConst?(@item,PBItems,:GEMPOUCH)   && isConst?(@species,PBSpecies,:PERSIAN)
+    return nil
+  end
+
+  def pouch_items_for_held
+    return berry_pouch_items if pouch_type_for_held==:berry
+    return gem_pouch_items   if pouch_type_for_held==:gem
+    return []
+  end
+
 # Returns the gender of this Pokémon's original trainer (2=unknown).
   def otgender
     @otgender=2 if !@otgender
@@ -927,6 +950,8 @@ class PokeBattle_Pokemon
     @hp=1
     @totalhp=1
     @ev=[0,0,0,0,0,0]
+    @berry_pouch_items=[]
+    @gem_pouch_items=[]
     @obhp=0
     @obatk=0
     @obdef=0    

@@ -25,7 +25,7 @@ module PBHollow
   #
   # chance is a weight (usually sum to 100 but doesn't *have* to).
   HOLLOW_DATA = {
-    [001, 1] => {
+    [1, 1] => {
       :day => [
         [:pokemon, :WIGLETT, 5, 75, :MEMENTO],
         [:pokemon, :CLOBBOPUS, 5, 25, :SOAK]
@@ -36,34 +36,34 @@ module PBHollow
       ]
     },
 
-    [018, 1] => {
+    [18, 1] => {
       :any => [
         [:pokemon, :YUNGOOS, 9, 75, :FIREFANG],
         [:pokemon, :DIGLETT, 9, 25, :HEADBUTT]
       ]
     },
 
-    [032, 1] => {
+    [32, 1] => {
       :any => [
         [:pokemon, :CASCOON, 15, 75, :LOCKON],
         [:pokemon, :NOIBAT, 15, 25, :SNATCH]
       ]
     },
 
-    [034, 1] => {
+    [34, 1] => {
       :any => [
         [:pokemon, :CASCOON, 15, 75, :ELECTROWEB],
         [:pokemon, :CROAGUNK, 15, 25, :SNATCH]
       ]
     },
 	
-	[035, 1] => {
+	[35, 1] => {
       :any => [
         [:pokemon, :EKANS, 18, 100, :POISONFANG]
       ]
     },
 	
-	[019, 1] => {
+	[19, 1] => {
       :any => [
         [:pokemon, :HOOTHOOT, 12, 75, :SUPERSONIC],
         [:pokemon, :VENONAT, 12, 25, :MORNINGSUN]

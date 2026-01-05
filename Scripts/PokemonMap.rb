@@ -142,6 +142,7 @@ class PokemonGlobalMetadata
   attr_accessor :nextBattleBack
   attr_accessor :safariState
   attr_accessor :bugContestState
+  attr_accessor :itemBelt
   attr_accessor :partner
   attr_accessor :challenge
   attr_accessor :lastbattle
@@ -203,6 +204,7 @@ class PokemonGlobalMetadata
     @nextBattleBack       = nil
     @safariState          = nil
     @bugContestState      = nil
+    @itemBelt             = [nil,nil,nil,nil]
     @partner              = nil
     @challenge            = nil
     @lastbattle           = nil

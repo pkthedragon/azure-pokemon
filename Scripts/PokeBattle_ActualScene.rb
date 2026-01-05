@@ -3612,80 +3612,78 @@ def pbItemMenu(index)
   ret=0
   retindex=-1
   pkmnid=-1
-  endscene=true
   oldsprites=pbFadeOutAndHide(@sprites)
-  itemscene=PokemonBag_Scene.new
-  itemscene.pbStartScene($PokemonBag)
+  belt_items=pbBattleBeltItems
+  if belt_items.empty?
+    pbDisplayMessage(_INTL("No belt items are available!"))
+    pbFadeInAndShow(@sprites,oldsprites)
+    return [ret,retindex]
+  end
   loop do
-    item=itemscene.pbChooseItem
-    break if item==0
-    usetype=$ItemData[item][ITEMBATTLEUSE]
-    cmdUse=-1
-    commands=[]
-    if usetype==0
-      commands[commands.length]=_INTL("Cancel")
-    else
-      commands[cmdUse=commands.length]=_INTL("Use")
-      commands[commands.length]=_INTL("Cancel")
+    belt_items=pbBattleBeltItems
+    if belt_items.empty?
+      pbDisplayMessage(_INTL("No belt items are available!"))
+      break
     end
-    itemname=PBItems.getName(item)
-    command=itemscene.pbShowCommands(_INTL("{1} is selected.",itemname),commands)
-    if cmdUse>=0 && command==cmdUse
-      if (usetype==1 || usetype==3) 
-        if (($game_variables[:Difficulty_Mode]==2) && @battle.opponent) && $game_switches[1493]
-          itemscene.pbDisplay(_INTL("Use of items in Trainer battles is not allowed on Intense mode."))
-        elsif ($game_variables[:Difficulty_Mode]==2) && @battle.isBossBattle? && $game_switches[1493]
-          itemscene.pbDisplay(_INTL("Use of items in Boss battles is not allowed on Intense mode."))
-        else
-          modparty=[]
-          for i in 0...6
-            modparty.push(@battle.party1[@battle.partyorder[i]])
-          end
-          pkmnlist=PokemonScreen_Scene.new
-          pkmnscreen=PokemonScreen.new(pkmnlist,modparty)
-          itemscene.pbEndScene
-          pkmnscreen.pbStartScene(_INTL("Use on which Pokémon?"),@battle.doublebattle)
-          activecmd=pkmnscreen.pbChoosePokemon
-          pkmnid=@battle.partyorder[activecmd]
-          if activecmd!=-1 && !pbCanUseBattleItem(pkmnid, item)
-            pkmnscreen.pbDisplay(_INTL("It won't have any effect."))
-          else
-            if activecmd>=0 && pkmnid>=0 && ItemHandlers.hasBattleUseOnPokemon(item)
-              pkmnlist.pbEndScene
-              ret=item
-              retindex=pkmnid
-              endscene=false
-              break
-            end
-          end
-          pkmnlist.pbEndScene
-          itemscene.pbStartScene($PokemonBag)
+    commands=belt_items.map { |itm| _INTL("{1} (x{2})",PBItems.getName(itm),$PokemonBag.pbQuantity(itm)) }
+    commands.push(_INTL("Cancel"))
+    choice=pbShowCommands(_INTL("Choose an item."),commands,commands.length-1)
+    break if choice<0 || choice>=belt_items.length
+    item=belt_items[choice]
+    next if $PokemonBag.pbQuantity(item)<=0
+    usetype=$ItemData[item][ITEMBATTLEUSE]
+    next if usetype==0
+    if (usetype==1 || usetype==3)
+      if (($game_variables[:Difficulty_Mode]==2) && @battle.opponent) && $game_switches[1493]
+        pbDisplayMessage(_INTL("Use of items in Trainer battles is not allowed on Intense mode."))
+      elsif ($game_variables[:Difficulty_Mode]==2) && @battle.isBossBattle? && $game_switches[1493]
+        pbDisplayMessage(_INTL("Use of items in Boss battles is not allowed on Intense mode."))
+      else
+        modparty=[]
+        for i in 0...6
+          modparty.push(@battle.party1[@battle.partyorder[i]])
         end
-      elsif (usetype==2 || usetype==4) 
-        if ($game_variables[:Difficulty_Mode]==2 && $game_switches[1493]) && (@battle.opponent || @battle.isBossBattle?)
-          if pbIsPokeBall?(item)
-            if ItemHandlers.hasBattleUseOnBattler(item)
-              ret=item
-              retindex=index
-              break
-            end
-          else
-            itemscene.pbDisplay(_INTL("Use of items in trainer battles is not allowed on Intense mode."))
-          end
+        pkmnlist=PokemonScreen_Scene.new
+        pkmnscreen=PokemonScreen.new(pkmnlist,modparty)
+        pkmnscreen.pbStartScene(_INTL("Use on which Pokémon?"),@battle.doublebattle)
+        activecmd=pkmnscreen.pbChoosePokemon
+        pkmnid=@battle.partyorder[activecmd] if activecmd && activecmd>=0
+        if activecmd!=-1 && !pbCanUseBattleItem(pkmnid, item)
+          pkmnscreen.pbDisplay(_INTL("It won't have any effect."))
         else
+          if activecmd && activecmd>=0 && pkmnid && ItemHandlers.hasBattleUseOnPokemon(item)
+            pkmnlist.pbEndScene
+            ret=item
+            retindex=pkmnid
+            break
+          end
+        end
+        pkmnlist.pbEndScene
+      end
+    elsif (usetype==2 || usetype==4)
+      if ($game_variables[:Difficulty_Mode]==2 && $game_switches[1493]) && (@battle.opponent || @battle.isBossBattle?)
+        if pbIsPokeBall?(item)
           if ItemHandlers.hasBattleUseOnBattler(item)
             ret=item
             retindex=index
             break
           end
+        else
+          pbDisplayMessage(_INTL("Use of items in trainer battles is not allowed on Intense mode."))
+        end
+      else
+        if ItemHandlers.hasBattleUseOnBattler(item)
+          ret=item
+          retindex=index
+          break
         end
       end
     end
   end
   if ret > 0
     pbConsumeItemInBattle($PokemonBag,ret) 
+    pbCleanupItemBelt
   end
-  itemscene.pbEndScene if endscene
   pbFadeInAndShow(@sprites,oldsprites)
   return [ret,retindex]
 end

@@ -283,6 +283,10 @@ class PokeBattle_Battler
       return false
     end        
 #### KUROTSUNE - 028 - END  #### JERICHO - 002 - END
+    if hasWorkingItem(:THERMOSUIT)
+      @battle.pbDisplay(_INTL("{1}'s {2} prevents burns!",pbThis,PBItems.getName(self.item))) if showMessages
+      return false
+    end
     if self.status==PBStatuses::BURN
       @battle.pbDisplay(_INTL("{1} already has a burn.",pbThis)) if showMessages
       return false
@@ -314,6 +318,10 @@ class PokeBattle_Battler
       return false
     end       
 #### KUROTSUNE - 028 - END  #### JERICHO - 002 - END  
+    if hasWorkingItem(:THERMOSUIT)
+      @battle.pbDisplay(_INTL("{1}'s {2} prevents burns!",pbThis,PBItems.getName(self.item))) if showMessages
+      return false
+    end
     if self.status==PBStatuses::BURN
       @battle.pbDisplay(_INTL("{1} already has a burn.",pbThis)) if showMessages
       return false
@@ -508,6 +516,7 @@ end
       (hasWorkingAbility(:LEAFGUARD) && $fefieldeffect == 15 || 
       ($fefieldeffect == 33 && $fecounter>0)) ||
        (hasWorkingAbility(:MAGMAARMOR) && $fefieldeffect!=39) ||
+       hasWorkingItem(:THERMOSUIT) ||
        (pbOwnSide.effects[PBEffects::Safeguard]>0 && !(@battle.battlers[@battle.lastMoveUser]).hasWorkingAbility(:INFILTRATOR) && !(PBMoveData.new(@battle.lastMoveUsed).function==0x21B && @battle.battlers[@battle.lastMoveUser].hp < (0.5 * @battle.battlers[@battle.lastMoveUser].totalhp).floor)) ||
        damagestate.substitute || (effects[PBEffects::Substitute]>0 && !PBMoveData.new(@battle.lastMoveUsed).isSoundBased?) || $fefieldeffect == 7 ||
       (pbHasType?(:ICE) && !hasWorkingItem(:RINGTARGET)) && !(self.moldbroken) || pbShieldsUp?
