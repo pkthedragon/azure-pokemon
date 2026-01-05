@@ -121,6 +121,46 @@ end
 
 
 
+
+class Window_AbilityDesc < Window_DrawableCommand
+  def initialize(viewport=nil)
+    super(0, 0, 314, 64, viewport)  # width gives ~282px inner text area
+    self.baseColor   = Color.new(64, 64, 64)
+    self.shadowColor = Color.new(176, 176, 176)
+    self.opacity     = 0
+    self.contents_opacity = 255
+    @text = ""
+    refresh
+  end
+
+  def setText(text)
+    text = "" if !text
+    return if @text == text
+    @text = text
+    refresh
+  end
+
+  def refresh
+    self.contents.dispose if self.contents
+    self.contents = Bitmap.new(self.width - 32, self.height - 32)
+    self.contents.clear
+    drawFormattedTextEx(self.contents, 0, 0, self.contents.width, @text)
+    self.oy = 0
+  end
+
+  def update
+    return if !self.visible
+    super
+    # Scroll with L/R (shoulder) buttons to avoid conflicting with party navigation
+    if Input.repeat?(Input::L)
+      self.oy = [self.oy - 16, 0].max
+    elsif Input.repeat?(Input::R)
+      max_scroll = [self.contents.height - (self.height - 32), 0].max
+      self.oy = [self.oy + 16, max_scroll].min
+    end
+  end
+end
+
 class PokemonSummaryScene
   def pbPokerus(pkmn)
     return pkmn.pokerusStage
@@ -228,6 +268,9 @@ class PokemonSummaryScene
     end
     overlay=@sprites["overlay"].bitmap
     overlay.clear
+    if @sprites["abilitydesc"]
+      @sprites["abilitydesc"].visible = false
+    end
     @sprites["background"].setBitmap("Graphics/Pictures/Summary/summary1")
     imagepos=[]
     if pbPokerus(pokemon)==1 || pokemon.hp==0 || @pokemon.status>0
@@ -327,6 +370,9 @@ class PokemonSummaryScene
   def drawPageOneEgg(pokemon)
     overlay=@sprites["overlay"].bitmap
     overlay.clear
+    if @sprites["abilitydesc"]
+      @sprites["abilitydesc"].visible = false
+    end
     @sprites["background"].setBitmap("Graphics/Pictures/Summary/summaryEgg")
     imagepos=[]
     ballused=@pokemon.ballused ? @pokemon.ballused : 0
@@ -372,6 +418,9 @@ class PokemonSummaryScene
   def drawPageTwo(pokemon)
     overlay=@sprites["overlay"].bitmap
     overlay.clear
+    if @sprites["abilitydesc"]
+      @sprites["abilitydesc"].visible = false
+    end
     @sprites["background"].setBitmap("Graphics/Pictures/Summary/summary2")
     imagepos=[]
     if pbPokerus(pokemon)==1 || pokemon.hp==0 || @pokemon.status>0
@@ -571,7 +620,15 @@ class PokemonSummaryScene
       textpos.push([_INTL("♀"),178,62,0,Color.new(248,56,32),Color.new(224,152,144)])
     end
     pbDrawTextPositions(overlay,textpos)
-    drawTextEx(overlay,224,316,282,2,abilitydesc,Color.new(64,64,64),Color.new(176,176,176))
+    # Ability description scrollable window
+    if !@sprites["abilitydesc"]
+      @sprites["abilitydesc"] = Window_AbilityDesc.new(@viewport)
+      @sprites["abilitydesc"].x = 224
+      @sprites["abilitydesc"].y = 316
+      @sprites["abilitydesc"].visible = true
+    end
+    @sprites["abilitydesc"].visible = true
+    @sprites["abilitydesc"].setText(abilitydesc)
     drawMarkings(overlay,15,291,72,20,pokemon.markings)
     if pokemon.hp>0
       hpcolors=[
@@ -590,6 +647,9 @@ class PokemonSummaryScene
   def drawPageFour(pokemon)
     overlay=@sprites["overlay"].bitmap
     overlay.clear
+    if @sprites["abilitydesc"]
+      @sprites["abilitydesc"].visible = false
+    end
     @sprites["background"].setBitmap("Graphics/Pictures/Summary/summary4")
     imagepos=[]
     if pbPokerus(pokemon)==1 || pokemon.hp==0 || @pokemon.status>0
@@ -866,6 +926,9 @@ class PokemonSummaryScene
   def drawPageFive(pokemon)
     overlay=@sprites["overlay"].bitmap
     overlay.clear
+    if @sprites["abilitydesc"]
+      @sprites["abilitydesc"].visible = false
+    end
     @sprites["background"].setBitmap("Graphics/Pictures/Summary/summary5")
     @sprites["pokemon"].visible=true
     @sprites["pokeicon"].visible=false
@@ -1189,7 +1252,32 @@ class PokemonSummaryScene
     end
   end
 
-  def pbScene
+  
+
+  # Change nature from the Trainer Memo page (page 1) by pressing a button.
+  # Opens a simple list of all natures and applies the chosen one.
+  def pbChangeNature
+    return false if !@pokemon || @pokemon.isEgg?
+    commands = []
+    for i in 0...PBNatures.getCount
+      commands.push(PBNatures.getName(i))
+    end
+    current = @pokemon.nature
+    cmd = Kernel.pbShowCommands(_INTL("Change {1}'s nature to which?", @pokemon.name), commands, current)
+    return false if cmd < 0 || cmd == current
+    @pokemon.setNature(cmd)
+    pbPlayDecisionSE()
+    # Redraw relevant pages if currently showing
+    case @page
+    when 1
+      drawPageTwo(@pokemon)
+    when 2
+      drawPageThree(@pokemon)
+    end
+    return true
+  end
+
+def pbScene
     pbPlayCry(@pokemon)
     loop do
       Graphics.update
@@ -1211,6 +1299,10 @@ class PokemonSummaryScene
           dorefresh=true
           drawPageFive(@pokemon)
         end
+      end
+      # Change nature from Trainer Memo page (page 1) with the X button
+      if Input.trigger?(Input::X) && @page==1 && !@pokemon.isEgg?
+        dorefresh = pbChangeNature || dorefresh
       end
       if Input.trigger?(Input::UP) # && @partyindex>0
         pbGoToPrevious

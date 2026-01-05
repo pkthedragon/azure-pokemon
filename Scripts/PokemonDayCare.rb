@@ -296,20 +296,14 @@ def pbDayCareGenerateEgg
       moves.push(atk) if mother.knowsMove?(atk)
     end
   else  
-  pbRgssOpen("Data/eggEmerald.dat","rb"){|f|
-     f.pos=(babyspecies-1)*8
-     offset=f.fgetdw
-     length=f.fgetdw
-     if length>0
-       f.pos=offset
-       i=0; loop do break unless i<length
-         atk=f.fgetw
-         moves.push(atk) if father.knowsMove?(atk)
-         moves.push(atk) if mother.knowsMove?(atk)
-         i+=1
-       end
-     end
-  }
+    movelist = $pkmn_egg[babyspecies]
+    if movelist
+      for i in movelist
+        atk = getID(PBMoves,i)
+        moves.push(atk) if father.knowsMove?(atk)
+        moves.push(atk) if mother.knowsMove?(atk)
+      end
+    end
   end
   # Volt Tackle
   lightball=false

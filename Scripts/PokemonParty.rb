@@ -1004,10 +1004,86 @@ class PokemonScreen
         pkmn.mail=nil
       end
     else
+      if pouch_manageable?(pkmn)
+        if !pbReturnPouchContentsToBag(pkmn)
+          return
+        end
+      end
       $PokemonBag.pbStoreItem(pkmn.item)
       itemname=PBItems.getName(pkmn.item)
       pbDisplay(_INTL("Received the {1} from {2}.",itemname,pkmn.name))
       pkmn.setItem(0)
+    end
+  end
+
+  def pouch_manageable?(pkmn)
+    return false if !pkmn
+    return (isConst?(pkmn.item,PBItems,:BERRYPOUCH) && isConst?(pkmn.species,PBSpecies,:TROPIUS)) ||
+           (isConst?(pkmn.item,PBItems,:GEMPOUCH)   && isConst?(pkmn.species,PBSpecies,:PERSIAN))
+  end
+
+  def pbReturnPouchContentsToBag(pkmn)
+    contents = pkmn.pouch_items_for_held
+    return true if contents.empty?
+    contents.dup.each do |itm|
+      if $PokemonBag.pbStoreItem(itm)
+        contents.delete_at(contents.index(itm))
+      else
+        pbDisplay(_INTL("The Bag is full.  The pouch couldn't be emptied."))
+        return false
+      end
+    end
+    return true
+  end
+
+  def pbManageHeldPouch(pkmn,pkmnid)
+    contents = pkmn.pouch_items_for_held
+    pouch_name = PBItems.getName(pkmn.item)
+    pouch_type = pkmn.pouch_type_for_held
+    loop do
+      summary = contents.empty? ? _INTL("Empty") : contents.map { |itm| PBItems.getName(itm) }.join(", ")
+      cmd = @scene.pbShowCommands(_INTL("{1} contents: {2}",pouch_name,summary),[_INTL("Add"),_INTL("Remove"),_INTL("Cancel")])
+      case cmd
+      when 0 # Add
+        if contents.length>=3
+          pbDisplay(_INTL("There isn't any space left inside."))
+          next
+        end
+        item=@scene.pbChooseItem($PokemonBag)
+        next if item<=0
+        if pouch_type==:berry && !pbIsBerry?(item)
+          pbDisplay(_INTL("Only Berries can go inside."))
+          next
+        elsif pouch_type==:gem && !pbIsTypeGem?(item)
+          pbDisplay(_INTL("Only Gems can go inside."))
+          next
+        end
+        if $PokemonBag.pbDeleteItem(item)
+          contents.push(item)
+          pbDisplay(_INTL("{1} was placed in the {2}.",PBItems.getName(item),pouch_name))
+          pbRefreshSingle(pkmnid)
+        else
+          pbDisplay(_INTL("You don't have that item."))
+        end
+      when 1 # Remove
+        if contents.empty?
+          pbDisplay(_INTL("There's nothing to take out."))
+          next
+        end
+        options = contents.map { |itm| PBItems.getName(itm) }
+        chosen = @scene.pbShowCommands(_INTL("Take out which item?"),options+[_INTL("Cancel")])
+        next if chosen<0 || chosen>=contents.length
+        take_item = contents[chosen]
+        if $PokemonBag.pbStoreItem(take_item)
+          contents.delete_at(chosen)
+          pbDisplay(_INTL("You took the {1} out.",PBItems.getName(take_item)))
+          pbRefreshSingle(pkmnid)
+        else
+          pbDisplay(_INTL("The Bag is full."))
+        end
+      else
+        break
+      end
     end
   end
 
@@ -1956,6 +2032,9 @@ class PokemonScreen
       cmdDebug=-1
       cmdMail=-1
       cmdRename=-1
+      cmdNature=-1
+      cmdAbility=-1
+      cmdRemind=-1
       # Build the commands
       commands[cmdSummary=commands.length]=_INTL("Summary")
       if $DEBUG || $game_switches[1495] == true
@@ -1981,6 +2060,11 @@ class PokemonScreen
         else
           commands[cmdItem=commands.length]=_INTL("Item")
         end
+
+        commands[cmdNature  = commands.length] = _INTL("Change Nature")
+        commands[cmdAbility = commands.length] = _INTL("Change Ability")
+        commands[cmdRemind  = commands.length] = _INTL("Move Reminder")
+
         commands[cmdRename = commands.length] = _INTL("Rename")
       end
       commands[commands.length]=_INTL("Cancel")
@@ -2058,26 +2142,45 @@ class PokemonScreen
             pbRefreshSingle(pkmnid)
         end
       elsif cmdItem>=0 && command==cmdItem && (!($game_switches[1235] && !($game_switches[1408]))  ||  ($game_variables[646]>=38 &&  $game_variables[646]<41))
-        command=@scene.pbShowCommands(_INTL("Do what with an item?"),[_INTL("Use"),_INTL("Give"),_INTL("Take"),_INTL("Cancel")])
-        case command
+        item_commands=[_INTL("Use")]
+        pouchcmd = -1
+        if pouch_manageable?(pkmn)
+          pouchcmd=item_commands.length
+          item_commands.push(_INTL("Manage"))
+        end
+        givecmd=item_commands.length
+        item_commands.push(_INTL("Give"))
+        takecmd=item_commands.length
+        item_commands.push(_INTL("Take"))
+        item_commands.push(_INTL("Cancel"))
+        subcmd=@scene.pbShowCommands(_INTL("Do what with an item?"),item_commands)
+        case subcmd
           when 0 # Use
-          item=@scene.pbChooseItem($PokemonBag)
-          if item>0
-            pbUseItemOnPokemon(item,pkmn,self)
-            pbRefreshSingle(pkmnid)
-          end            
-          when 1 # Give
+            item=@scene.pbChooseItem($PokemonBag)
+            if item>0
+              pbUseItemOnPokemon(item,pkmn,self)
+              pbRefreshSingle(pkmnid)
+            end            
+          when pouchcmd
+            pbManageHeldPouch(pkmn,pkmnid)
+          when givecmd
             item=@scene.pbChooseItem($PokemonBag)
             if item>0
               pbGiveMail(item,pkmn,pkmnid)
               pbRefreshSingle(pkmnid)
             end
-          when 2 # Take
+          when takecmd
             pbTakeMail(pkmn)
             pbRefreshSingle(pkmnid)
         end
       elsif cmdItem>=0 && command==cmdItem && (($game_switches[1235] && !$game_switches[1408])  || $game_variables[646]>=38 &&  $game_variables[646]<41) 
         @scene.pbDisplay(_INTL("You cannot give/take an item."))
+      elsif cmdNature>=0 && command==cmdNature
+        pbPartyChangeNature(pkmn,pkmnid)
+      elsif cmdAbility>=0 && command==cmdAbility
+        pbPartyChangeAbility(pkmn,pkmnid)
+      elsif cmdRemind>=0 && command==cmdRemind
+        pbPartyMoveReminder(pkmn,pkmnid)
       elsif cmdRename>=0 && command==cmdRename
         species=PBSpecies.getName(pkmn.species)
         $game_variables[5]=Kernel.pbMessageFreeText("#{species}'s nickname?",_INTL(" "),false,12)
@@ -2092,4 +2195,92 @@ class PokemonScreen
     @scene.pbEndScene
     return nil
   end  
+
+
+  # ===========================
+  # Change Nature from party
+  # ===========================
+  def pbPartyChangeNature(pkmn,pkmnid)
+    return if !pkmn || pkmn.isEgg?
+    commands = []
+    max_val = (PBNatures.respond_to?(:maxValue)) ? PBNatures.maxValue : PBNatures.getCount
+    for i in 0...max_val
+      commands.push(PBNatures.getName(i))
+    end
+    commands.push(_INTL("Cancel"))
+    current = pkmn.nature || 0
+    cmd = @scene.pbShowCommands(
+      _INTL("Choose a nature for {1}.",pkmn.name),
+      commands,
+      current
+    )
+    return if cmd < 0 || cmd >= max_val
+    if cmd == pkmn.nature
+      pbDisplay(_INTL("{1} already has that nature.",pkmn.name))
+      return
+    end
+    pkmn.setNature(cmd)
+    pbDisplay(_INTL("{1}'s nature became {2}.",
+       pkmn.name, PBNatures.getName(pkmn.nature)))
+    pbRefreshSingle(pkmnid)
+  end
+
+  # ===========================
+  # Change Ability from party
+  # ===========================
+  def pbPartyChangeAbility(pkmn,pkmnid)
+    return if !pkmn || pkmn.isEgg?
+    abils = pkmn.getAbilityList
+    if !abils || abils[0].length <= 1
+      pbDisplay(_INTL("{1} only has one ability.",pkmn.name))
+      return
+    end
+    commands = []
+    current  = 0
+    for i in 0...abils[0].length
+      commands.push(PBAbilities.getName(abils[0][i]))
+      current = i if abils[0][i] == pkmn.ability
+    end
+    commands.push(_INTL("Cancel"))
+    cmd = @scene.pbShowCommands(
+      _INTL("Choose an ability for {1}.",pkmn.name),
+      commands,
+      current
+    )
+    return if cmd < 0 || cmd >= abils[0].length
+    if abils[0][cmd] == pkmn.ability
+      pbDisplay(_INTL("{1} already has that ability.",pkmn.name))
+      return
+    end
+    # abils[1][i] is the ability slot index (0/1/2) used by setAbility
+    pkmn.setAbility(abils[1][cmd])
+    pbDisplay(_INTL("{1}'s ability became {2}.",
+       pkmn.name, PBAbilities.getName(pkmn.ability)))
+    pbRefreshSingle(pkmnid)
+  end
+
+  # ===========================
+  # Move Reminder from party
+  # ===========================
+  def pbPartyMoveReminder(pkmn,pkmnid)
+    return if !pkmn || pkmn.isEgg?
+    if defined?(pbGetRelearnableMoves)
+      moves = pbGetRelearnableMoves(pkmn, true)   # true = exclude level 1 moves
+      if moves.length==0
+        pbDisplay(_INTL("{1} has no moves to remember.",pkmn.name))
+        return
+      end
+    else
+      pbDisplay(_INTL("Move Reminder is not set up."))
+      return
+    end
+    if defined?(pbRelearnMoveScreen)
+      if pbRelearnMoveScreen(pkmn, moves)
+        pbRefreshSingle(pkmnid)
+      end
+    else
+      pbDisplay(_INTL("Move Reminder is not set up."))
+    end
+  end
+
 end

@@ -4193,3811 +4193,8506 @@ MultipleForms.register(:ZOROARK,{
 }
 })
 
-# Mystic Forms
-
-MultipleForms.register(:TREECKO,{
-"type1"=>proc{|pokemon|
-   next if pokemon.form==0      # Normal
-   next getID(PBTypes,:FLYING)    # Mystic
-},
-"type2"=>proc{|pokemon|
-   next if pokemon.form==0      # Normal
-   next getID(PBTypes,:FLYING)    # Mystic
-},
-"getBaseStats"=>proc{|pokemon|
-   next if pokemon.form==0      # Normal
-   next [40,35,45,65,70,55]   # Mystic
-},
-"getMoveList"=>proc{|pokemon|
-   next if pokemon.form==0      # Normal
-   movelist=[]
-   case pokemon.form            # Mystic
-     when 1 ; movelist=[[1,:LEER],[1,:POUND],[7,:GUST],[10,:QUICKATTACK],
-                        [13,:FAIRYWIND],[17,:SWIFT],[21,:AIRCUTTER],
-                        [25,:DRANINGKISS],[29,:SWEETKISS],[33,:DETECT],[36,:MISTYSTEP],
-                        [39,:EXTRASENSORY],[42,:AIRSLASH],[45,:AGILITY],[48,:MOONBLAST],
-                        [51,:NASTYPLOT]]
-   end
-   for i in movelist
-     i[1]=getConst(PBMoves,i[1])
-   end
-   next movelist
-},
-"getMoveCompatibility"=>proc{|pokemon|
-  next if pokemon.form==0
-  movelist=[]
-  case pokemon.form
-  when 1; movelist=[
-      :CUT,:FLY,:WORKUP,:PSYSHOCK,:CALMMIND,:HAIL,
-      :HIDDENPOWER,:SUNNYDAY,:TAUNT,:ICEBEAM,:BLIZZARD,
-      :LIGHTSCREEN,:PROTECT,:SECRETPOWER,:SAFEGUARD,:SMACKDOWN,
-      :RETURN,:FRUSTRATION,:DOUBLETEAM,:REFLECT,:AERIALACE,
-      :TORMENT,:FACADE,:REST,:ENCHANT,:THIEF,:LOWSWEEP,
-      :ROUND,:ECHOEDVOICE,:STEELWING,:ENEGRYBALL,:FALSESWIPE,
-      :SCALD,:SKYDROP,:ACROBATICS,:ROOST,:FLASH,
-      :FROSTBREATH,:DREAMEATER,:SLEEPTALK,:UTURN,:SUBSTITUTE,
-      :TRICKROOM,:NATUREPOWER,:DAZZLINGGLEAM,:ROCKCLIMB,:PLAYROUGH,
-      :SCREECH,:SCARYFACE,:CHARM,:WEATHERBALL,:FAKETEARS,
-      :TOUGHLOVE,:TAILSLAP,:DRAININGKISS,:MISTYTERRAIN,:AIRSLASH,
-      :METRONOME,:SUCKERPUNCH,:SCRUTINIZE]
-      end
-      for i in 0...movelist.length
-        movelist[i]=getConst(PBMoves,movelist[i])
-      end
-      next movelist
-},
-"ability"=>proc{|pokemon|
-   next if pokemon.form==0 # Normal
-   if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0) # Mystic
-     next getID(PBAbilities,:LIMBER)
-   elsif pokemon.abilityIndex==1 || (pokemon.abilityflag && pokemon.abilityflag==1)
-     next getID(PBAbilities,:KEENEYE)       
-   end
-},
-"getFormOnCreation"=>proc{|pokemon|
-   maps=[]   # Map IDs for second form
-   if $game_map && maps.include?($game_map.map_id)
-     next 1
-   else
-     next 0
-   end
-},
-"onSetForm"=>proc{|pokemon,form|
-   pbSeenForm(pokemon)
-}
-})
-
-MultipleForms.register(:GROVYLE,{
-"type1"=>proc{|pokemon|
-   next if pokemon.form==0      # Normal
-   next getID(PBTypes,:FLYING)    # Mystic
-},
-"type2"=>proc{|pokemon|
-   next if pokemon.form==0      # Normal
-   next getID(PBTypes,:FAIRY)    # Mystic
-},
-"getBaseStats"=>proc{|pokemon|
-   next if pokemon.form==0      # Normal
-   next [50,45,75,85,95,75]   # Mystic
-},
-"getMoveList"=>proc{|pokemon|
-   next if pokemon.form==0      # Normal
-   movelist=[]
-   case pokemon.form            # Mystic
-     when 1 ; movelist=[[1,:LEER],[1,:POUND],[7,:GUST],[10,:QUICKATTACK],
-                        [13,:FAIRYWIND],[18,:SWIFT],[22,:AIRCUTTER],
-                        [26,:DRAININGKISS],[29,:SWEETKISS],[33,:DETECT],[36,:MISTYSTEP],
-                        [41,:EXTRASENSORY],[45,:AIRSLASH],[48,:AGILITY],[51,:MOONBLAST],
-                        [54,:NASTYPLOT]]
-   end
-   for i in movelist
-     i[1]=getConst(PBMoves,i[1])
-   end
-   next movelist
-},
-"getMoveCompatibility"=>proc{|pokemon|
-  next if pokemon.form==0
-  movelist=[]
-  case pokemon.form
-  when 1; movelist=[
-      :CUT,:FLY,:WORKUP,:PSYSHOCK,:CALMMIND,:HAIL,
-      :HIDDENPOWER,:SUNNYDAY,:TAUNT,:ICEBEAM,:BLIZZARD,
-      :LIGHTSCREEN,:PROTECT,:SECRETPOWER,:SAFEGUARD,:SMACKDOWN,
-      :RETURN,:FRUSTRATION,:DOUBLETEAM,:REFLECT,:AERIALACE,
-      :TORMENT,:FACADE,:REST,:ENCHANT,:THIEF,:LOWSWEEP,
-      :ROUND,:ECHOEDVOICE,:STEELWING,:ENEGRYBALL,:FALSESWIPE,
-      :SCALD,:SKYDROP,:ACROBATICS,:ROOST,:FLASH,
-      :FROSTBREATH,:DREAMEATER,:SLEEPTALK,:UTURN,:SUBSTITUTE,
-      :TRICKROOM,:NATUREPOWER,:DAZZLINGGLEAM,:ROCKCLIMB,:PLAYROUGH,
-      :SCREECH,:SCARYFACE,:CHARM,:WEATHERBALL,:FAKETEARS,
-      :TOUGHLOVE,:TAILSLAP,:DRAININGKISS,:MISTYTERRAIN,:AIRSLASH,
-      :METRONOME,:SUCKERPUNCH,:SCRUTINIZE]
-      end
-      for i in 0...movelist.length
-        movelist[i]=getConst(PBMoves,movelist[i])
-      end
-      next movelist
-},
-"ability"=>proc{|pokemon|
-   next if pokemon.form==0 # Normal
-   if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0) # Mystic
-     next getID(PBAbilities,:LIMBER)
-   elsif pokemon.abilityIndex==1 || (pokemon.abilityflag && pokemon.abilityflag==1)
-     next getID(PBAbilities,:REGENERATOR)       
-   end
-},
-"getFormOnCreation"=>proc{|pokemon|
-   maps=[]   # Map IDs for second form
-   if $game_map && maps.include?($game_map.map_id)
-     next 1
-   else
-     next 0
-   end
-},
-"onSetForm"=>proc{|pokemon,form|
-   pbSeenForm(pokemon)
-}
-})
-
-MultipleForms.register(:SCEPTILE,{
-"type1"=>proc{|pokemon|
-   next if pokemon.form==0      # Normal
-   next getID(PBTypes,:FLYING)    # Mystic
-},
-"type2"=>proc{|pokemon|
-   next if pokemon.form==0      # Normal
-   next getID(PBTypes,:FAIRY)    # Mystic
-},
-"getBaseStats"=>proc{|pokemon|
-   next if pokemon.form==0      # Normal
-   next [70,65,85,105,120,85]   # Mystic
-},
-"getMoveList"=>proc{|pokemon|
-   next if pokemon.form==0      # Normal
-   movelist=[]
-   case pokemon.form            # Mystic
-     when 1 ; movelist=[[1,:LEER],[1,:POUND],[1,:AURASPHERE],[7,:GUST],[10,:QUICKATTACK],
-                        [13,:FAIRYWIND],[18,:SWIFT],[22,:AIRCUTTER],
-                        [26,:DRAININGKISS],[29,:SWEETKISS],[33,:DETECT],[36,:MISTYSTEP],
-                        [41,:EXTRASENSORY],[45,:AMNESIA],[48,:AIRSLASH],[51,:AGILITY],[54,:MOONBLAST],
-                        [57,:HYPERVOICE],[60,:CALMMIND]]
-   end
-   for i in movelist
-     i[1]=getConst(PBMoves,i[1])
-   end
-   next movelist
-},
-"getMoveCompatibility"=>proc{|pokemon|
-  next if pokemon.form==0
-  movelist=[]
-  case pokemon.form
-  when 1; movelist=[
-      :CUT,:FLY,:WORKUP,:PSYSHOCK,:CALMMIND,:HAIL,
-      :HIDDENPOWER,:SUNNYDAY,:TAUNT,:ICEBEAM,:BLIZZARD,
-      :LIGHTSCREEN,:PROTECT,:SECRETPOWER,:SAFEGUARD,:SMACKDOWN,
-      :RETURN,:FRUSTRATION,:DOUBLETEAM,:REFLECT,:AERIALACE,
-      :TORMENT,:FACADE,:REST,:ENCHANT,:THIEF,:LOWSWEEP,
-      :ROUND,:ECHOEDVOICE,:STEELWING,:ENEGRYBALL,:FALSESWIPE,
-      :SCALD,:SKYDROP,:ACROBATICS,:ROOST,:FLASH,
-      :FROSTBREATH,:DREAMEATER,:SLEEPTALK,:UTURN,:SUBSTITUTE,
-      :TRICKROOM,:NATUREPOWER,:DAZZLINGGLEAM,:ROCKCLIMB,:PLAYROUGH,
-      :SCREECH,:SCARYFACE,:CHARM,:WEATHERBALL,:FAKETEARS,
-      :TOUGHLOVE,:TAILSLAP,:DRAININGKISS,:MISTYTERRAIN,:AIRSLASH,
-      :METRONOME,:SUCKERPUNCH,:SCRUTINIZE]
-      end
-      for i in 0...movelist.length
-        movelist[i]=getConst(PBMoves,movelist[i])
-      end
-      next movelist
-},
-"ability"=>proc{|pokemon|
-   next if pokemon.form==0 # Normal
-   if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0) # Mystic
-     next getID(PBAbilities,:LIMBER)
-   elsif pokemon.abilityIndex==1 || (pokemon.abilityflag && pokemon.abilityflag==1)
-     next getID(PBAbilities,:REGENERATOR)       
-   end
-},
-"getFormOnCreation"=>proc{|pokemon|
-   maps=[]   # Map IDs for second form
-   if $game_map && maps.include?($game_map.map_id)
-     next 1
-   else
-     next 0
-   end
-},
-"onSetForm"=>proc{|pokemon,form|
-   pbSeenForm(pokemon)
-}
-})
+# Mystic Forms (fully regenerated from Mystic Forms + Mystic Learnsets_TMs)
 
 MultipleForms.register(:TORCHIC,{
-"type1"=>proc{|pokemon|
-   next if pokemon.form==0      # Normal
-   next getID(PBTypes,:ROCK)    # Mystic
-},
-"type2"=>proc{|pokemon|
-   next if pokemon.form==0      # Normal
-   next getID(PBTypes,:ROCK)    # Mystic
-},
-"getBaseStats"=>proc{|pokemon|
-   next if pokemon.form==0      # Normal
-   next [45,40,70,45,50,60]   # Mystic
-},
-"getMoveList"=>proc{|pokemon|
-   next if pokemon.form==0      # Normal
-   movelist=[]
-   case pokemon.form            # Mystic
-     when 1 ; movelist=[[1,:GROWL],[1,:SCRATCH],[7,:ROCKTHROW],[10,:POISONGAS],
-                        [13,:SLUDGE],[17,:METALCLAW],[21,:ROCKTOMB],
-                        [25,:VENOSHOCK],[29,:ROCKSLIDE],[33,:FOCUSENERGY],[36,:MERCYJAB],
-                        [39,:BULLETPUNCH],[42,:SLASH],[45,:MIRRORMOVE],[48,:GUNKSHOT],
-                        [51,:SWORDSDANCE]]
-   end
-   for i in movelist
-     i[1]=getConst(PBMoves,i[1])
-   end
-   next movelist
-},
-"getMoveCompatibility"=>proc{|pokemon|
-  next if pokemon.form==0
-  movelist=[]
-  case pokemon.form
-  when 1; movelist=[
-      :CUT,:STRENGTH,:DRAGONCLAW,:ROAR,:TOXIC,:BULKUP,:VENOSHOCK,
-      :HIDDENPOWER,:TAUNT,:PROTECT,:SECRETPOWER,:SAFEGUARD,:EARTHQUAKE,
-      :SMACKDOWN,:RETURN,:FRUSTRATION,:DIG,:BRICKBREAK,:DOUBLETEAM,
-      :SLUDGEWAVE,:SLUDGEBOMB,:SANDSTORM,:AERIALACE,:TORMENT,
-      :FACADE,:REST,:ENCHANT,:THIEF,:LOWSWEEP,:FALSESWIPE,
-      :FLING,:QUASH,:ACROBATICS,:EMBARGO,:SHADOWCLAW,:SCREECH,
-      :PAYBACK,:ROOST,:GIGAIMPACT,:ROCKPOLISH,:STONEEDGE,:GYROBALL,
-      :SWORDSDANCE,:BULLDOZE,:ROCKSLIDE,:DRAGONTAIL,:POISONJAB,
-      :SWAGGER,:SLEEPTALK,:UTURN,:SUBSTITUTE,:WILDCHARGE,:ROCKSMASH,
-      :NATUREPOWER,:POWERUPPUNCH,:ROCKCLIMB,:POISONSWEEP,:STACKINGSHOT,
-      :DUNEDEFENSE,:SLASHANDBURN,:BRUTALSWING,:PINMISSILE,:SELFDESTRUCT,
-      :SCARYFACE,:BEATUP,:FAKETEARS,:SANDTOMB,:MUDSHOT,:ROCKBLAST,
-      :ASSURANCE,:CROSSPOISON,:TAILSLAP,:BREAKINGSWIPE,:HONECLAWS,
-      :SUCKERPUNCH,:RETALIATE,:VACUUMWAVE]
-      end
-      for i in 0...movelist.length
-        movelist[i]=getConst(PBMoves,movelist[i])
-      end
-      next movelist
-},
-"ability"=>proc{|pokemon|
-   next if pokemon.form==0 # Normal
-   if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0) # Mystic
-     next getID(PBAbilities,:INSOMNIA)
-   elsif pokemon.abilityIndex==1 || (pokemon.abilityflag && pokemon.abilityflag==1)
-     next getID(PBAbilities,:BATTLEARMOR)       
-   end
-},
-"getFormOnCreation"=>proc{|pokemon|
-   maps=[]   # Map IDs for second form
-   if $game_map && maps.include?($game_map.map_id)
-     next 1
-   else
-     next 0
-   end
-},
-"onSetForm"=>proc{|pokemon,form|
-   pbSeenForm(pokemon)
-}
+  "type1"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:ROCK)    # Mystic
+  },
+  "type2"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:ROCK)    # Mystic
+  },
+  "getBaseStats"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next [50, 60, 70, 45, 40, 45]   # Mystic
+  },
+  "ability"=>proc{|pokemon|
+    next if pokemon.form!=1 # Only Mystic form
+    if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0)
+      next getID(PBAbilities,:STURDY)
+    end
+    if pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)
+      next getID(PBAbilities,:MERCILESS)
+    end
+  },
+  "getMoveList"=>proc{|pokemon|
+    movelist=[]
+    case pokemon.form            # Mystic
+    when 1 ; movelist=[[1,:SCRATCH],[1,:GROWL],[5,:ROCKTHROW],[9,:PECK],
+                      [10,:POISONGAS],[14,:METALCLAW],[18,:FURYATTACK],[19,:ROCKTOMB],
+                      [23,:QUICKATTACK],[24,:SPIKECANNON],[28,:POWERGEM],[30,:BULKUP],
+                      [32,:FOCUSENERGY],[33,:IRONDEFENSE],[37,:SMARTSTRIKE],[39,:LITHOFORM],
+                      [41,:STEALTHROCK],[46,:STONEEDGE]]
+    end
+    for i in movelist
+      i[1]=getConst(PBMoves,i[1])
+    end
+    next movelist
+  },
+  "onSetForm"=>proc{|pokemon,form|
+    if form==1
+      pbSeenForm(pokemon)
+    end
+  }
 })
 
 MultipleForms.register(:COMBUSKEN,{
-"type1"=>proc{|pokemon|
-   next if pokemon.form==0      # Normal
-   next getID(PBTypes,:ROCK)    # Mystic
-},
-"type2"=>proc{|pokemon|
-   next if pokemon.form==0      # Normal
-   next getID(PBTypes,:POISON)    # Mystic
-},
-"getBaseStats"=>proc{|pokemon|
-   next if pokemon.form==0      # Normal
-   next [60,85,85,55,60,60]   # Mystic
-},
-"getMoveList"=>proc{|pokemon|
-   next if pokemon.form==0      # Normal
-   movelist=[]
-   case pokemon.form            # Mystic
-     when 1 ; movelist=[[1,:GROWL],[1,:SCRATCH],[7,:ROCKTHROW],[10,:POISONGAS],
-                        [13,:SLUDGE],[18,:METALCLAW],[22,:ROCKTOMB],
-                        [26,:VENOSHOCK],[29,:ROCKSLIDE],[33,:FOCUSENERGY],[36,:MERCYJAB],
-                        [41,:BULLETPUNCH],[44,:SLASH],[47,:MIRRORMOVE],[50,:GUNKSHOT],
-                        [54,:SWORDSDANCE]]
-   end
-   for i in movelist
-     i[1]=getConst(PBMoves,i[1])
-   end
-   next movelist
-},
-"getMoveCompatibility"=>proc{|pokemon|
-  next if pokemon.form==0
-  movelist=[]
-  case pokemon.form
-  when 1; movelist=[
-      :CUT,:STRENGTH,:DRAGONCLAW,:ROAR,:TOXIC,:BULKUP,:VENOSHOCK,
-      :HIDDENPOWER,:TAUNT,:PROTECT,:SECRETPOWER,:SAFEGUARD,:EARTHQUAKE,
-      :SMACKDOWN,:RETURN,:FRUSTRATION,:DIG,:BRICKBREAK,:DOUBLETEAM,
-      :SLUDGEWAVE,:SLUDGEBOMB,:SANDSTORM,:AERIALACE,:TORMENT,
-      :FACADE,:REST,:ENCHANT,:THIEF,:LOWSWEEP,:FALSESWIPE,
-      :FLING,:QUASH,:ACROBATICS,:EMBARGO,:SHADOWCLAW,:SCREECH,
-      :PAYBACK,:ROOST,:GIGAIMPACT,:ROCKPOLISH,:STONEEDGE,:GYROBALL,
-      :SWORDSDANCE,:BULLDOZE,:ROCKSLIDE,:DRAGONTAIL,:POISONJAB,
-      :SWAGGER,:SLEEPTALK,:UTURN,:SUBSTITUTE,:WILDCHARGE,:ROCKSMASH,
-      :NATUREPOWER,:POWERUPPUNCH,:ROCKCLIMB,:POISONSWEEP,:STACKINGSHOT,
-      :DUNEDEFENSE,:SLASHANDBURN,:BRUTALSWING,:PINMISSILE,:SELFDESTRUCT,
-      :SCARYFACE,:BEATUP,:FAKETEARS,:SANDTOMB,:MUDSHOT,:ROCKBLAST,
-      :ASSURANCE,:CROSSPOISON,:TAILSLAP,:BREAKINGSWIPE,:HONECLAWS,
-      :SUCKERPUNCH,:RETALIATE,:VACUUMWAVE]
-      end
-      for i in 0...movelist.length
-        movelist[i]=getConst(PBMoves,movelist[i])
-      end
-      next movelist
-},
-"ability"=>proc{|pokemon|
-   next if pokemon.form==0 # Normal
-   if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0) # Mystic
-     next getID(PBAbilities,:INSOMNIA)
-   elsif pokemon.abilityIndex==1 || (pokemon.abilityflag && pokemon.abilityflag==1)
-     next getID(PBAbilities,:MERCILESS)       
-   end
-},
-"getFormOnCreation"=>proc{|pokemon|
-   maps=[]   # Map IDs for second form
-   if $game_map && maps.include?($game_map.map_id)
-     next 1
-   else
-     next 0
-   end
-},
-"onSetForm"=>proc{|pokemon,form|
-   pbSeenForm(pokemon)
-}
+  "type1"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:ROCK)    # Mystic
+  },
+  "type2"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:POISON)    # Mystic
+  },
+  "getBaseStats"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next [60, 85, 85, 60, 55, 60]   # Mystic
+  },
+  "ability"=>proc{|pokemon|
+    next if pokemon.form!=1 # Only Mystic form
+    if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0)
+      next getID(PBAbilities,:STURDY)
+    end
+    if pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)
+      next getID(PBAbilities,:MERCILESS)
+    end
+  },
+  "getMoveList"=>proc{|pokemon|
+    movelist=[]
+    case pokemon.form            # Mystic
+    when 1 ; movelist=[[0,:POISONSWEEP],[1,:SCRATCH],[1,:GROWL],[1,:LITHOFORM],
+                      [1,:IRONDEFENSE],[1,:ROCKTHROW],[1,:POISONGAS],[5,:ROCKTHROW],
+                      [10,:PECK],[12,:POISONGAS],[14,:METALCLAW],[20,:FURYATTACK],
+                      [25,:ROCKTOMB],[30,:BANEFULBUNKER],[31,:BULKUP],[36,:FOCUSENERGY],
+                      [42,:ROCKSLIDE],[47,:SMARTSTRIKE],[50,:STEALTHROCK],[53,:POISONJAB],
+                      [58,:STONEEDGE]]
+    end
+    for i in movelist
+      i[1]=getConst(PBMoves,i[1])
+    end
+    next movelist
+  },
+  "onSetForm"=>proc{|pokemon,form|
+    if form==1
+      pbSeenForm(pokemon)
+    end
+  }
 })
 
 MultipleForms.register(:BLAZIKEN,{
-"type1"=>proc{|pokemon|
-   next if pokemon.form==0      # Normal
-   next getID(PBTypes,:ROCK)    # Mystic
-},
-"type2"=>proc{|pokemon|
-   next if pokemon.form==0      # Normal
-   next getID(PBTypes,:POISON)    # Mystic
-},
-"getBaseStats"=>proc{|pokemon|
-   next if pokemon.form==0      # Normal
-   next [80,110,120,70,80,70]   # Mystic
-},
-"getMoveList"=>proc{|pokemon|
-   next if pokemon.form==0      # Normal
-   movelist=[]
-   case pokemon.form            # Mystic
-     when 1 ; movelist=[[1,:GROWL],[1,:SCRATCH],[1,:METEORMASH],[1,:ACCELEROCK],[7,:ROCKTHROW],
-                        [10,:POISONGAS],[13,:SLUDGE],[18,:METALCLAW],[22,:ROCKTOMB],
-                        [26,:VENOSHOCK],[29,:ROCKSLIDE],[33,:FOCUSENERGY],[36,:MERCYJAB],
-                        [41,:BULLETPUNCH],[44,:SLASH],[47,:STEALTHROCK],[50,:MIRRORMOVE],
-                        [53,:GUNKSHOT],[56,:NIGHTSLASH],[60,:SWORDSDANCE]]
-   end
-   for i in movelist
-     i[1]=getConst(PBMoves,i[1])
-   end
-   next movelist
-},
-"getMoveCompatibility"=>proc{|pokemon|
-  next if pokemon.form==0
-  movelist=[]
-  case pokemon.form
-  when 1; movelist=[
-      :CUT,:STRENGTH,:DRAGONCLAW,:ROAR,:TOXIC,:BULKUP,:VENOSHOCK,
-      :HIDDENPOWER,:TAUNT,:PROTECT,:SECRETPOWER,:SAFEGUARD,:EARTHQUAKE,
-      :SMACKDOWN,:RETURN,:FRUSTRATION,:DIG,:BRICKBREAK,:DOUBLETEAM,
-      :SLUDGEWAVE,:SLUDGEBOMB,:SANDSTORM,:AERIALACE,:TORMENT,
-      :FACADE,:REST,:ENCHANT,:THIEF,:LOWSWEEP,:FALSESWIPE,
-      :FLING,:QUASH,:ACROBATICS,:EMBARGO,:SHADOWCLAW,:SCREECH,
-      :PAYBACK,:ROOST,:GIGAIMPACT,:ROCKPOLISH,:STONEEDGE,:GYROBALL,
-      :SWORDSDANCE,:BULLDOZE,:ROCKSLIDE,:DRAGONTAIL,:POISONJAB,
-      :SWAGGER,:SLEEPTALK,:UTURN,:SUBSTITUTE,:WILDCHARGE,:ROCKSMASH,
-      :NATUREPOWER,:POWERUPPUNCH,:ROCKCLIMB,:POISONSWEEP,:STACKINGSHOT,
-      :DUNEDEFENSE,:SLASHANDBURN,:BRUTALSWING,:PINMISSILE,:SELFDESTRUCT,
-      :SCARYFACE,:BEATUP,:FAKETEARS,:SANDTOMB,:MUDSHOT,:ROCKBLAST,
-      :ASSURANCE,:CROSSPOISON,:TAILSLAP,:BREAKINGSWIPE,:HONECLAWS,
-      :SUCKERPUNCH,:RETALIATE,:VACUUMWAVE]
-      end
-      for i in 0...movelist.length
-        movelist[i]=getConst(PBMoves,movelist[i])
-      end
-      next movelist
-},
-"ability"=>proc{|pokemon|
-   next if pokemon.form==0 # Normal
-   if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0) # Mystic
-     next getID(PBAbilities,:INSOMNIA)
-   elsif pokemon.abilityIndex==1 || (pokemon.abilityflag && pokemon.abilityflag==1)
-     next getID(PBAbilities,:MERCILESS)       
-   end
-},
-"getFormOnCreation"=>proc{|pokemon|
-   maps=[]   # Map IDs for second form
-   if $game_map && maps.include?($game_map.map_id)
-     next 1
-   else
-     next 0
-   end
-},
-"onSetForm"=>proc{|pokemon,form|
-   pbSeenForm(pokemon)
-}
+  "type1"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:ROCK)    # Mystic
+  },
+  "type2"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:POISON)    # Mystic
+  },
+  "getBaseStats"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next [80, 110, 120, 80, 70, 70]   # Mystic
+  },
+  "ability"=>proc{|pokemon|
+    next if pokemon.form!=1 # Only Mystic form
+    if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0)
+      next getID(PBAbilities,:STURDY)
+    end
+    if pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)
+      next getID(PBAbilities,:MERCILESS)
+    end
+  },
+  "getMoveList"=>proc{|pokemon|
+    movelist=[]
+    case pokemon.form            # Mystic
+    when 1 ; movelist=[[0,:VILETOUCH],[1,:POISONSWEEP],[1,:PINMISSILE],[1,:SPIKECANNON],
+                      [1,:DISFIGURE],[1,:LITHOFORM],[1,:IRONDEFENSE],[1,:ACCELEROCK],
+                      [1,:SCRATCH],[1,:GROWL],[1,:ROCKTHROW],[1,:SANDATTACK],
+                      [5,:ROCKTHROW],[10,:SANDATTACK],[14,:METALCLAW],[20,:FURYATTACK],
+                      [25,:ROCKTOMB],[30,:BANEFULBUNKER],[31,:BULKUP],[37,:FOCUSENERGY],
+                      [44,:ROCKSLIDE],[50,:SMARTSTRIKE],[56,:STEALTHROCK],[57,:POISONJAB],
+                      [63,:STONEEDGE]]
+    end
+    for i in movelist
+      i[1]=getConst(PBMoves,i[1])
+    end
+    next movelist
+  },
+  "onSetForm"=>proc{|pokemon,form|
+    if form==1
+      pbSeenForm(pokemon)
+    end
+  }
 })
 
 MultipleForms.register(:MUDKIP,{
-"type1"=>proc{|pokemon|
-   next if pokemon.form==0      # Normal
-   next getID(PBTypes,:FIGHTING)    # Mystic
-},
-"type2"=>proc{|pokemon|
-   next if pokemon.form==0      # Normal
-   next getID(PBTypes,:FIGHTING)    # Mystic
-},
-"getBaseStats"=>proc{|pokemon|
-   next if pokemon.form==0      # Normal
-   next [50,70,50,50,40,50]   # Mystic
-},
-"getMoveList"=>proc{|pokemon|
-   next if pokemon.form==0      # Normal
-   movelist=[]
-   case pokemon.form            # Mystic
-     when 1 ; movelist=[[1,:GROWL],[1,:TACKLE],[7,:KARATECHOP],[10,:FORESIGHT],
-                        [13,:TWISTER],[17,:BITE],[21,:BRICKBREAK],
-                        [25,:DUALCHOP],[29,:BULKUP],[33,:PROTECT],[36,:DRAGONJAUNT],
-                        [39,:CRUNCH],[42,:DRAGONCLUB],[45,:ENDEAVOR],[48,:HAMMERARM],
-                        [51,:DRAGONDANCE]]
-   end
-   for i in movelist
-     i[1]=getConst(PBMoves,i[1])
-   end
-   next movelist
-},
-"getMoveCompatibility"=>proc{|pokemon|
-  next if pokemon.form==0
-  movelist=[]
-  case pokemon.form
-  when 1; movelist=[
-      :CUT,:WORKUP,:STRENGTH,:DRAGONCLAW,:ROAR,:TOXIC,:BULKUP,:RAINDANCE,
-      :HIDDENPOWER,:TAUNT,:PROTECT,:SECRETPOWER,:SAFEGUARD,:EARTHQUAKE,
-      :SMACKDOWN,:RETURN,:FRUSTRATION,:DIG,:BRICKBREAK,:REFLECT,
-      :FLAMETHROWER,:FIREBLAST,:TORMENT,:FACADE,:REST,:ENCHANT,:THIEF,
-      :LOWSWEEP,:FALSESWIPE,:OVERHEAT,:FLING,:SKYDROP,:INCINERATE,
-      :FOCUSBLAST,:SHADOWCLAW,:SCREECH,:SMARTSTRIKE,
-      :PAYBACK,:GIGAIMPACT,:SWORDSDANCE,:BULLDOZE,:DRAGONTAIL,
-      :SWAGGER,:SLEEPTALK,:SUBSTITUTE,:ROCKSMASH,
-      :NATUREPOWER,:POWERUPPUNCH,:ROCKCLIMB,:STACKINGSHOT,
-      :SLASHANDBURN,:BRUTALSWING,:POWERSWAP,:GUARDSWAP,
-      :SCARYFACE,:BEATUP,:FAKETEARS,:SANDTOMB,:MUDSHOT,:SPEEDSWAP,
-      :ASSURANCE,:TAILSLAP,:BREAKINGSWIPE,:DYNAMICPUNCH,
-      :SUCKERPUNCH,:RETALIATE,:VACUUMWAVE,:DUALCHOP]
-      end
-      for i in 0...movelist.length
-        movelist[i]=getConst(PBMoves,movelist[i])
-      end
-      next movelist
-},
-"ability"=>proc{|pokemon|
-   next if pokemon.form==0 # Normal
-   if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0) # Mystic
-     next getID(PBAbilities,:IMMUNITY)
-   elsif pokemon.abilityIndex==1 || (pokemon.abilityflag && pokemon.abilityflag==1)
-     next getID(PBAbilities,:INNERFOCUS)
-   end
-},
-"getFormOnCreation"=>proc{|pokemon|
-   maps=[]   # Map IDs for second form
-   if $game_map && maps.include?($game_map.map_id)
-     next 1
-   else
-     next 0
-   end
-},
-"onSetForm"=>proc{|pokemon,form|
-   pbSeenForm(pokemon)
-}
+  "type1"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:FIGHTING)    # Mystic
+  },
+  "type2"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:FIGHTING)    # Mystic
+  },
+  "getBaseStats"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next [50, 70, 50, 50, 50, 40]   # Mystic
+  },
+  "ability"=>proc{|pokemon|
+    next if pokemon.form!=1 # Only Mystic form
+    if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0)
+      next getID(PBAbilities,:SCRAPPY)
+    end
+    if pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)
+      next getID(PBAbilities,:THICKFAT)
+    end
+  },
+  "getMoveList"=>proc{|pokemon|
+    movelist=[]
+    case pokemon.form            # Mystic
+    when 1 ; movelist=[[1,:TACKLE],[1,:GROWL],[4,:KARATECHOP],[6,:FORESIGHT],
+                      [9,:MUDSLAP],[9,:ROCKTHROW],[12,:FOCUSENERGY],[15,:BIDE],
+                      [17,:BITE],[18,:VACUUMWAVE],[20,:ENDURE],[21,:ROCKSLIDE],
+                      [27,:BULKUP],[28,:PROTECT],[30,:BRICKBREAK],[33,:CRUNCH],
+                      [33,:SCREECH],[36,:SLAM],[41,:HAMMERARM],[44,:DRAGONDANCE]]
+    end
+    for i in movelist
+      i[1]=getConst(PBMoves,i[1])
+    end
+    next movelist
+  },
+  "onSetForm"=>proc{|pokemon,form|
+    if form==1
+      pbSeenForm(pokemon)
+    end
+  }
 })
 
 MultipleForms.register(:MARSHTOMP,{
-"type1"=>proc{|pokemon|
-   next if pokemon.form==0      # Normal
-   next getID(PBTypes,:FIGHTING)    # Mystic
-},
-"type2"=>proc{|pokemon|
-   next if pokemon.form==0      # Normal
-   next getID(PBTypes,:DRAGON)    # Mystic
-},
-"getBaseStats"=>proc{|pokemon|
-   next if pokemon.form==0      # Normal
-   next [70,85,70,60,50,70]   # Mystic
-},
-"getMoveList"=>proc{|pokemon|
-   next if pokemon.form==0      # Normal
-   movelist=[]
-   case pokemon.form            # Mystic
-     when 1 ; movelist=[[1,:GROWL],[1,:TACKLE],[7,:KARATECHOP],[10,:FORESIGHT],
-                        [13,:TWISTER],[18,:BITE],[22,:BRICKBREAK],
-                        [26,:DUALCHOP],[30,:BULKUP],[33,:PROTECT],[36,:DRAGONJAUNT],
-                        [41,:CRUNCH],[44,:DRAGONCLUB],[48,:ENDEAVOR],[51,:HAMMERARM],
-                        [54,:DRAGONDANCE]]
-   end
-   for i in movelist
-     i[1]=getConst(PBMoves,i[1])
-   end
-   next movelist
-},
-"getMoveCompatibility"=>proc{|pokemon|
-  next if pokemon.form==0
-  movelist=[]
-  case pokemon.form
-  when 1; movelist=[
-      :CUT,:WORKUP,:STRENGTH,:DRAGONCLAW,:ROAR,:TOXIC,:BULKUP,:RAINDANCE,
-      :HIDDENPOWER,:TAUNT,:PROTECT,:SECRETPOWER,:SAFEGUARD,:EARTHQUAKE,
-      :SMACKDOWN,:RETURN,:FRUSTRATION,:DIG,:BRICKBREAK,:REFLECT,
-      :FLAMETHROWER,:FIREBLAST,:TORMENT,:FACADE,:REST,:ENCHANT,:THIEF,
-      :LOWSWEEP,:FALSESWIPE,:OVERHEAT,:FLING,:SKYDROP,:INCINERATE,
-      :FOCUSBLAST,:SHADOWCLAW,:SCREECH,:SMARTSTRIKE,
-      :PAYBACK,:GIGAIMPACT,:SWORDSDANCE,:BULLDOZE,:DRAGONTAIL,
-      :SWAGGER,:SLEEPTALK,:SUBSTITUTE,:ROCKSMASH,
-      :NATUREPOWER,:POWERUPPUNCH,:ROCKCLIMB,:STACKINGSHOT,
-      :SLASHANDBURN,:BRUTALSWING,:POWERSWAP,:GUARDSWAP,
-      :SCARYFACE,:BEATUP,:FAKETEARS,:SANDTOMB,:MUDSHOT,:SPEEDSWAP,
-      :ASSURANCE,:TAILSLAP,:BREAKINGSWIPE,:DYNAMICPUNCH,
-      :SUCKERPUNCH,:RETALIATE,:VACUUMWAVE,:DUALCHOP]
-      end
-      for i in 0...movelist.length
-        movelist[i]=getConst(PBMoves,movelist[i])
-      end
-      next movelist
-},
-"ability"=>proc{|pokemon|
-   next if pokemon.form==0 # Normal
-   if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0) # Mystic
-     next getID(PBAbilities,:IMMUNITY)
-   elsif pokemon.abilityIndex==1 || (pokemon.abilityflag && pokemon.abilityflag==1)
-     next getID(PBAbilities,:THICKFAT)       
-   end
-},
-"getFormOnCreation"=>proc{|pokemon|
-   maps=[]   # Map IDs for second form
-   if $game_map && maps.include?($game_map.map_id)
-     next 1
-   else
-     next 0
-   end
-},
-"onSetForm"=>proc{|pokemon,form|
-   pbSeenForm(pokemon)
-}
+  "type1"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:FIGHTING)    # Mystic
+  },
+  "type2"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:DRAGON)    # Mystic
+  },
+  "getBaseStats"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next [70, 85, 70, 60, 70, 50]   # Mystic
+  },
+  "ability"=>proc{|pokemon|
+    next if pokemon.form!=1 # Only Mystic form
+    if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0)
+      next getID(PBAbilities,:SCRAPPY)
+    end
+    if pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)
+      next getID(PBAbilities,:THICKFAT)
+    end
+  },
+  "getMoveList"=>proc{|pokemon|
+    movelist=[]
+    case pokemon.form            # Mystic
+    when 1 ; movelist=[[0,:BELLOW],[1,:DUALCHOP],[1,:SURF],[1,:TACKLE],
+                      [1,:GROWL],[1,:KARATECHOP],[1,:MUDSLAP],[1,:FORESIGHT],
+                      [4,:KARATECHOP],[9,:MUDSLAP],[12,:FOCUSENERGY],[18,:BITE],
+                      [22,:RANCOR],[28,:ROCKSLIDE],[32,:PROTECT],[35,:BULKUP],
+                      [38,:BRICKBREAK],[42,:SLAM],[45,:SCREECH],[48,:DUALCHOP],
+                      [52,:DRAGONDANCE]]
+    end
+    for i in movelist
+      i[1]=getConst(PBMoves,i[1])
+    end
+    next movelist
+  },
+  "onSetForm"=>proc{|pokemon,form|
+    if form==1
+      pbSeenForm(pokemon)
+    end
+  }
 })
 
 MultipleForms.register(:SWAMPERT,{
-"type1"=>proc{|pokemon|
-   next if pokemon.form==0      # Normal
-   next getID(PBTypes,:FIGHTING)    # Mystic
-},
-"type2"=>proc{|pokemon|
-   next if pokemon.form==0      # Normal
-   next getID(PBTypes,:DRAGON)    # Mystic
-},
-"getBaseStats"=>proc{|pokemon|
-   next if pokemon.form==0      # Normal
-   next [100,110,90,90,60,80]   # Mystic
-},
-"getMoveList"=>proc{|pokemon|
-   next if pokemon.form==0      # Normal
-   movelist=[]
-   case pokemon.form            # Mystic
-     when 1 ; movelist=[[1,:GROWL],[1,:TACKLE],[7,:KARATECHOP],[10,:FORESIGHT],
-                        [13,:TWISTER],[18,:BITE],[22,:BRICKBREAK],
-                        [26,:DUALCHOP],[30,:BULKUP],[33,:PROTECT],[36,:DRAGONJAUNT],
-                        [41,:CRUNCH],[44,:ENDEAVOR],[47,:CLOSECOMBAT],[50,:DRAGONCLUB],
-                        [54,:CRUSHCLAW],[57,:QUICKGUARD],[60,:DRAGONDANCE]]
-   end
-   for i in movelist
-     i[1]=getConst(PBMoves,i[1])
-   end
-   next movelist
-},
-"getMoveCompatibility"=>proc{|pokemon|
-  next if pokemon.form==0
-  movelist=[]
-  case pokemon.form
-  when 1; movelist=[
-      :CUT,:WORKUP,:STRENGTH,:DRAGONCLAW,:ROAR,:TOXIC,:BULKUP,:RAINDANCE,
-      :HIDDENPOWER,:TAUNT,:PROTECT,:SECRETPOWER,:SAFEGUARD,:EARTHQUAKE,
-      :SMACKDOWN,:RETURN,:FRUSTRATION,:DIG,:BRICKBREAK,:REFLECT,
-      :FLAMETHROWER,:FIREBLAST,:TORMENT,:FACADE,:REST,:ENCHANT,:THIEF,
-      :LOWSWEEP,:FALSESWIPE,:OVERHEAT,:FLING,:SKYDROP,:INCINERATE,
-      :FOCUSBLAST,:SHADOWCLAW,:SCREECH,:SMARTSTRIKE,
-      :PAYBACK,:GIGAIMPACT,:SWORDSDANCE,:BULLDOZE,:DRAGONTAIL,
-      :SWAGGER,:SLEEPTALK,:SUBSTITUTE,:ROCKSMASH,
-      :NATUREPOWER,:POWERUPPUNCH,:ROCKCLIMB,:STACKINGSHOT,
-      :SLASHANDBURN,:BRUTALSWING,:POWERSWAP,:GUARDSWAP,
-      :SCARYFACE,:BEATUP,:FAKETEARS,:SANDTOMB,:MUDSHOT,:SPEEDSWAP,
-      :ASSURANCE,:TAILSLAP,:BREAKINGSWIPE,:DYNAMICPUNCH,
-      :SUCKERPUNCH,:RETALIATE,:VACUUMWAVE,:DUALCHOP]
-      end
-      for i in 0...movelist.length
-        movelist[i]=getConst(PBMoves,movelist[i])
-      end
-      next movelist
-},
-"ability"=>proc{|pokemon|
-   next if pokemon.form==0 # Normal
-   if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0) # Mystic
-     next getID(PBAbilities,:IMMUNITY)
-   elsif pokemon.abilityIndex==1 || (pokemon.abilityflag && pokemon.abilityflag==1)
-     next getID(PBAbilities,:THICKFAT)       
-   end
-},
-"getFormOnCreation"=>proc{|pokemon|
-   maps=[]   # Map IDs for second form
-   if $game_map && maps.include?($game_map.map_id)
-     next 1
-   else
-     next 0
-   end
-},
-"onSetForm"=>proc{|pokemon,form|
-   pbSeenForm(pokemon)
-}
+  "type1"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:FIGHTING)    # Mystic
+  },
+  "type2"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:DRAGON)    # Mystic
+  },
+  "getBaseStats"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next [90, 110, 80, 90, 100, 60]   # Mystic
+  },
+  "ability"=>proc{|pokemon|
+    next if pokemon.form!=1 # Only Mystic form
+    if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0)
+      next getID(PBAbilities,:SCRAPPY)
+    end
+    if pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)
+      next getID(PBAbilities,:THICKFAT)
+    end
+  },
+  "getMoveList"=>proc{|pokemon|
+    movelist=[]
+    case pokemon.form            # Mystic
+    when 1 ; movelist=[[0,:DRAGONJAUNT],[1,:BELLOW],[1,:AURASPHERE],[1,:HAMMERARM],
+                      [1,:CRUNCH],[1,:DUALCHOP],[1,:FORESIGHT],[1,:ROCKTHROW],
+                      [1,:TACKLE],[1,:GROWL],[1,:KARATECHOP],[1,:MUDSLAP],
+                      [4,:KARATECHOP],[9,:MUDSLAP],[12,:FOCUSENERGY],[18,:BIDE],
+                      [22,:RANCOR],[28,:ROCKSLIDE],[32,:PROTECT],[39,:BRICKBREAK],
+                      [44,:SLAM],[49,:SCREECH],[51,:DUALCHOP],[56,:ENDEAVOR],
+                      [63,:CLOSECOMBAT]]
+    end
+    for i in movelist
+      i[1]=getConst(PBMoves,i[1])
+    end
+    next movelist
+  },
+  "onSetForm"=>proc{|pokemon,form|
+    if form==1
+      pbSeenForm(pokemon)
+    end
+  }
 })
 
-MultipleForms.register(:SOLOSIS,{
-"type1"=>proc{|pokemon|
-   next if pokemon.form==0      # Normal
-   next getID(PBTypes,:WATER)    # Mystic
-},
-"type2"=>proc{|pokemon|
-   next if pokemon.form==0      # Normal
-   next getID(PBTypes,:GHOST)    # Mystic
-},
-"getBaseStats"=>proc{|pokemon|
-   next if pokemon.form==0      # Normal
-   next [50,20,45,30,105,40]   # Mystic
-},
-"getMoveList"=>proc{|pokemon|
-   next if pokemon.form==0      # Normal
-   movelist=[]
-   case pokemon.form            # Mystic
-     when 1 ; movelist=[[1,:BUBBLE],[3,:SPITE],[7,:ASTONISH],[10,:ABSORB],
-                        [14,:BUBBLEBEAM],[16,:THUNDERWAVE],[19,:OMINOUSWIND],
-                        [24,:RECOVER],[25,:BRINE],[28,:PARABOLICCHARGE],[31,:HEX],
-                        [33,:PAINSPLIT],[37,:HYDROPUMP],[40,:CURSE],[46,:MIRRORCOAT],
-                        [48,:TOPSYTURVY]]
-   end
-   for i in movelist
-     i[1]=getConst(PBMoves,i[1])
-   end
-   next movelist
-},
-"ability"=>proc{|pokemon|
-   next if pokemon.form==0 # Normal
-   if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0) # Mystic
-     next getID(PBAbilities,:FILTER)
-   elsif pokemon.abilityIndex==1 || (pokemon.abilityflag && pokemon.abilityflag==1) # Mystic
-     next getID(PBAbilities,:STATIC)
-   elsif pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)
-     next getID(PBAbilities,:WATERABSORB)       
-   end
-},
-"getFormOnCreation"=>proc{|pokemon|
-   maps=[]   # Map IDs for second form
-   if $game_map && maps.include?($game_map.map_id)
-     next 1
-   else
-     next 0
-   end
-},
-"onSetForm"=>proc{|pokemon,form|
-   pbSeenForm(pokemon)
-}
+MultipleForms.register(:TREECKO,{
+  "type1"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:FLYING)    # Mystic
+  },
+  "type2"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:FLYING)    # Mystic
+  },
+  "getBaseStats"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next [40, 55, 45, 65, 70, 35]   # Mystic
+  },
+  "ability"=>proc{|pokemon|
+    next if pokemon.form!=1 # Only Mystic form
+    if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0)
+      next getID(PBAbilities,:CLOUDNINE)
+    end
+    if pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)
+      next getID(PBAbilities,:REGENERATOR)
+    end
+  },
+  "getMoveList"=>proc{|pokemon|
+    movelist=[]
+    case pokemon.form            # Mystic
+    when 1 ; movelist=[[1,:POUND],[1,:LEER],[3,:GUST],[6,:MIST],
+                      [9,:QUICKATTACK],[13,:FAIRYWIND],[17,:CONFUSION],[21,:AIRCUTTER],
+                      [25,:AGILITY],[27,:COTTONGUARD],[29,:HALLUCINATE],[33,:MIRRORMOVE],
+                      [37,:AIRSLASH],[41,:QUICKGUARD],[45,:EXTRASENSORY],[49,:CALMMIND]]
+    end
+    for i in movelist
+      i[1]=getConst(PBMoves,i[1])
+    end
+    next movelist
+  },
+  "onSetForm"=>proc{|pokemon,form|
+    if form==1
+      pbSeenForm(pokemon)
+    end
+  }
 })
 
-MultipleForms.register(:DUOSION,{
-"type1"=>proc{|pokemon|
-   next if pokemon.form==0      # Normal
-   next getID(PBTypes,:WATER)    # Mystic
-},
-"type2"=>proc{|pokemon|
-   next if pokemon.form==0      # Normal
-   next getID(PBTypes,:GHOST)    # Mystic
-},
-"getBaseStats"=>proc{|pokemon|
-   next if pokemon.form==0      # Normal
-   next [65,30,60,40,125,50]   # Mystic
-},
-"getMoveList"=>proc{|pokemon|
-   next if pokemon.form==0      # Normal
-   movelist=[]
-   case pokemon.form            # Mystic
-     when 1 ; movelist=[[1,:BUBBLE],[3,:SPITE],[7,:ASTONISH],[10,:ABSORB],
-                        [14,:BUBBLEBEAM],[16,:THUNDERWAVE],[19,:OMINOUSWIND],
-                        [24,:RECOVER],[25,:BRINE],[28,:PARABOLICCHARGE],[31,:HEX],
-                        [34,:PAINSPLIT],[39,:HYDROPUMP],[43,:CURSE],[50,:MIRRORCOAT],
-                        [53,:TOPSYTURVY]]
-   end
-   for i in movelist
-     i[1]=getConst(PBMoves,i[1])
-   end
-   next movelist
-},
-"ability"=>proc{|pokemon|
-   next if pokemon.form==0 # Normal
-   if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0) # Mystic
-     next getID(PBAbilities,:FILTER)
-   elsif pokemon.abilityIndex==1 || (pokemon.abilityflag && pokemon.abilityflag==1) # Mystic
-     next getID(PBAbilities,:STATIC)
-   elsif pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)
-     next getID(PBAbilities,:WATERABSORB)       
-   end
-},
-"getFormOnCreation"=>proc{|pokemon|
-   maps=[]   # Map IDs for second form
-   if $game_map && maps.include?($game_map.map_id)
-     next 1
-   else
-     next 0
-   end
-},
-"onSetForm"=>proc{|pokemon,form|
-   pbSeenForm(pokemon)
-}
+MultipleForms.register(:GROVYLE,{
+  "type1"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:FLYING)    # Mystic
+  },
+  "type2"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:FAIRY)    # Mystic
+  },
+  "getBaseStats"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next [50, 65, 65, 85, 95, 45]   # Mystic
+  },
+  "ability"=>proc{|pokemon|
+    next if pokemon.form!=1 # Only Mystic form
+    if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0)
+      next getID(PBAbilities,:CLOUDNINE)
+    end
+    if pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)
+      next getID(PBAbilities,:REGENERATOR)
+    end
+  },
+  "getMoveList"=>proc{|pokemon|
+    movelist=[]
+    case pokemon.form            # Mystic
+    when 1 ; movelist=[[0,:MIMIC],[1,:POUND],[1,:LEER],[1,:MIST],
+                      [1,:EXTRASENSORY],[1,:GUST],[1,:AIRSLASH],[1,:QUICKATTACK],
+                      [6,:MIST],[9,:QUICKATTACK],[13,:FAIRYWIND],[18,:CONFUSION],
+                      [20,:DRAININGKISS],[23,:WINDVORTEX],[25,:AIRCUTTER],[28,:AGILITY],
+                      [33,:HALLUCINATE],[38,:MIRRORMOVE],[43,:EXTRASENSORY],[48,:AIRSLASH],
+                      [53,:QUICKGUARD],[58,:MOONBLAST],[63,:CALMMIND]]
+    end
+    for i in movelist
+      i[1]=getConst(PBMoves,i[1])
+    end
+    next movelist
+  },
+  "onSetForm"=>proc{|pokemon,form|
+    if form==1
+      pbSeenForm(pokemon)
+    end
+  }
 })
 
-MultipleForms.register(:REUNICLUS,{
-"type1"=>proc{|pokemon|
-   next if pokemon.form==0      # Normal
-   next getID(PBTypes,:WATER)    # Mystic
-},
-"type2"=>proc{|pokemon|
-   next if pokemon.form==0      # Normal
-   next getID(PBTypes,:GHOST)    # Mystic
-},
-"getBaseStats"=>proc{|pokemon|
-   next if pokemon.form==0      # Normal
-   next [110,30,85,65,125,75]   # Mystic
-},
-"getMoveList"=>proc{|pokemon|
-   next if pokemon.form==0      # Normal
-   movelist=[]
-   case pokemon.form            # Mystic
-     when 1 ; movelist=[[1,:BUBBLE],[3,:SPITE],[7,:ASTONISH],[10,:ABSORB],
-                        [14,:BUBBLEBEAM],[16,:THUNDERWAVE],[19,:OMINOUSWIND],
-                        [24,:RECOVER],[25,:BRINE],[28,:PARABOLICCHARGE],[31,:HEX],
-                        [33,:PAINSPLIT],[39,:HYDROPUMP],[41,:SOULSIPHON],[45,:CURSE],[54,:MIRRORCOAT],
-                        [59,:TOPSYTURVY]]
-   end
-   for i in movelist
-     i[1]=getConst(PBMoves,i[1])
-   end
-   next movelist
-},
-"ability"=>proc{|pokemon|
-   next if pokemon.form==0 # Normal
-   if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0) # Mystic
-     next getID(PBAbilities,:FILTER)
-   elsif pokemon.abilityIndex==1 || (pokemon.abilityflag && pokemon.abilityflag==1) # Mystic
-     next getID(PBAbilities,:STATIC)
-   elsif pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)
-     next getID(PBAbilities,:WATERABSORB)       
-   end
-},
-"getFormOnCreation"=>proc{|pokemon|
-   maps=[]   # Map IDs for second form
-   if $game_map && maps.include?($game_map.map_id)
-     next 1
-   else
-     next 0
-   end
-},
-"onSetForm"=>proc{|pokemon,form|
-   pbSeenForm(pokemon)
-}
+MultipleForms.register(:SCEPTILE,{
+  "type1"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:FLYING)    # Mystic
+  },
+  "type2"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:FAIRY)    # Mystic
+  },
+  "getBaseStats"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next [70, 85, 85, 105, 120, 65]   # Mystic
+  },
+  "ability"=>proc{|pokemon|
+    next if pokemon.form!=1 # Only Mystic form
+    if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0)
+      next getID(PBAbilities,:CLOUDNINE)
+    end
+    if pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)
+      next getID(PBAbilities,:REGENERATOR)
+    end
+  },
+  "getMoveList"=>proc{|pokemon|
+    movelist=[]
+    case pokemon.form            # Mystic
+    when 1 ; movelist=[[0,:MISTYSTEP],[1,:MIMIC],[1,:TAILWIND],[1,:AURASPHERE],
+                      [1,:POUND],[1,:GUST],[1,:EXTRASENSORY],[1,:LEER],
+                      [1,:MIST],[1,:QUICKATTACK],[6,:MIST],[9,:QUICKATTACK],
+                      [13,:FAIRYWIND],[18,:CONFUSION],[20,:DRAININGKISS],[23,:WINDVORTEX],
+                      [25,:AIRCUTTER],[28,:AGILITY],[33,:HALLUCINATE],[39,:MIRRORMOVE],
+                      [45,:EXTRASENSORY],[51,:AIRSLASH],[57,:QUICKGUARD],[63,:MOONBLAST],
+                      [69,:CALMMIND]]
+    end
+    for i in movelist
+      i[1]=getConst(PBMoves,i[1])
+    end
+    next movelist
+  },
+  "onSetForm"=>proc{|pokemon,form|
+    if form==1
+      pbSeenForm(pokemon)
+    end
+  }
 })
 
-MultipleForms.register(:STUFFUL,{
-"dexEntry"=>proc{|pokemon|
-   next if pokemon.form==0      # Normal
-   next "Stufful loves humans, and becomes incredibly upset when not in physical contact with its trainer."     # Mystic
-},
-"type1"=>proc{|pokemon|
-   next if pokemon.form==0      # Normal
-   next getID(PBTypes,:NORMAL)    # Mystic
-},
-"type2"=>proc{|pokemon|
-   next if pokemon.form==0      # Normal
-   next getID(PBTypes,:GHOST)    # Mystic
-},
-"getBaseStats"=>proc{|pokemon|
-   next if pokemon.form==0      # Normal
-   next [75,70,50,45,50,50]   # Mystic
-},
-"getMoveList"=>proc{|pokemon|
-   next if pokemon.form==0      # Normal
-   movelist=[]
-   case pokemon.form            # Mystic
-     when 1 ; movelist=[[1,:LEER],[1,:TACKLE],[4,:CONFUSERAY],[8,:LICK],
-                        [10,:ASTONISH],[14,:MEANLOOK],[19,:DOUBLEHIT],[23,:SHADOWPUNCH],
-                        [28,:FLAIL],[32,:BRUTALSWING],[37,:ENDURE],[41,:PAINSPLIT],
-                        [46,:DOUBLEEDGE],[50,:PHANTOMFORCE]]
-   end
-   for i in movelist
-     i[1]=getConst(PBMoves,i[1])
-   end
-   next movelist
-},
-"getMoveCompatibility"=>proc{|pokemon|
-  next if pokemon.form==0
-  movelist=[]
-  case pokemon.form
-  when 1; movelist=[
-      :CUT,:WORKUP,:STRENGTH,:DRAGONCLAW,:ROAR,:TOXIC,:BULKUP,
-      :HIDDENPOWER,:TAUNT,:HYPERBEAM,:PROTECT,:SECRETPOWER,
-      :SAFEGUARD,:FRUSTRATION,:RETURN,:SHADOWBALL,:BRICKBREAK,
-      :REFLECT,:TORMENT,:FACADE,:REST,:ENCHANT,:THIEF,:ECHOEDVOICE,
-      :FALSESWIPE,:WILLOWISP,:EMBARGO,:SHADOWCLAW,:PAYBACK,
-      :SWORDSDANCE,:POISONJAB,:DREAMEATER,:SWAGGER,:SLEEPTALK,
-      :SUBSTITUTE,:ROCKSMASH,:SNARL,:DARKPULSE,:CONFIDE,:PLAYROUGH,
-      :BRUTALSWING,:LEECHLIFE,:HEX,:SCREECH,:SCARYFACE,:ASSURANCE,
-      :PHANTOMFORCE,:DRAININGKISS,:HONECLAWS,:METRONOME,:SUCKERPUNCH,
-      :RETALIATE]
-      end
-      for i in 0...movelist.length
-        movelist[i]=getConst(PBMoves,movelist[i])
-      end
-      next movelist
-},
-"ability"=>proc{|pokemon|
-   next if pokemon.form==0 # Normal
-   if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0) # Mystic
-     next getID(PBAbilities,:FLUFFY)
-   elsif pokemon.abilityIndex==1 || (pokemon.abilityflag && pokemon.abilityflag==1) # Mystic
-     next getID(PBAbilities,:UNAWARE)
-   elsif pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)
-     next getID(PBAbilities,:CUTECHARM)       
-   end
-},
-"getFormOnCreation"=>proc{|pokemon|
-   maps=[]   # Map IDs for second form
-   if $game_map && maps.include?($game_map.map_id)
-     next 1
-   else
-     next 0
-   end
-},
-"onSetForm"=>proc{|pokemon,form|
-   pbSeenForm(pokemon)
-}
+MultipleForms.register(:FENNEKIN,{
+  "type1"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:WATER)    # Mystic
+  },
+  "type2"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:WATER)    # Mystic
+  },
+  "getBaseStats"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next [62, 40, 45, 40, 60, 60]   # Mystic
+  },
+  "ability"=>proc{|pokemon|
+    next if pokemon.form!=1 # Only Mystic form
+    if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0)
+      next getID(PBAbilities,:POWEROFALCHEMY)
+    end
+    if pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)
+      next getID(PBAbilities,:HEALER)
+    end
+  },
+  "getMoveList"=>proc{|pokemon|
+    movelist=[]
+    case pokemon.form            # Mystic
+    when 1 ; movelist=[[1,:SCRATCH],[1,:TAILWHIP],[5,:BUBBLE],[11,:PLAYNICE],
+                      [14,:ESSENCEFEED],[17,:LIFEDEW],[20,:BUBBLEBEAM],[25,:HELPINGHAND],
+                      [27,:HEX],[31,:HEALPULSE],[35,:SCALD],[38,:HEALINGWISH],
+                      [41,:SHADOWBALL],[43,:FOLLOWME],[46,:WISH],[48,:WATERSPOUT]]
+    end
+    for i in movelist
+      i[1]=getConst(PBMoves,i[1])
+    end
+    next movelist
+  },
+  "onSetForm"=>proc{|pokemon,form|
+    if form==1
+      pbSeenForm(pokemon)
+    end
+  }
 })
 
-MultipleForms.register(:BEWEAR,{
-"dexEntry"=>proc{|pokemon|
-   next if pokemon.form==0      # Normal
-   next "Stufful loves humans, and becomes incredibly upset when not in physical contact with its trainer."     # Mystic
-},
-"type1"=>proc{|pokemon|
-   next if pokemon.form==0      # Normal
-   next getID(PBTypes,:GHOST)    # Mystic
-},
-"type2"=>proc{|pokemon|
-   next if pokemon.form==0      # Normal
-   next getID(PBTypes,:NORMAL)    # Mystic
-},
-"getBaseStats"=>proc{|pokemon|
-   next if pokemon.form==0      # Normal
-   next [125,120,60,55,60,80]   # Mystic
-},
-"getMoveList"=>proc{|pokemon|
-   next if pokemon.form==0      # Normal
-   movelist=[]
-   case pokemon.form            # Mystic
-     when 1 ; movelist=[[1,:SUPERPOWER],[1,:LEER],[1,:TACKLE],[4,:CONFUSERAY],[8,:LICK],
-                        [10,:ASTONISH],[14,:MEANLOOK],[19,:DOUBLEHIT],[23,:SHADOWPUNCH],
-                        [30,:FLAIL],[36,:BRUTALSWING],[43,:ENDURE],[49,:PAINSPLIT],
-                        [56,:DOUBLEEDGE],[62,:PHANTOMFORCE]]
-   end
-   for i in movelist
-     i[1]=getConst(PBMoves,i[1])
-   end
-   next movelist
-},
-"getMoveCompatibility"=>proc{|pokemon|
-  next if pokemon.form==0
-  movelist=[]
-  case pokemon.form
-  when 1; movelist=[
-      :CUT,:WORKUP,:STRENGTH,:DRAGONCLAW,:ROAR,:TOXIC,:BULKUP,
-      :HIDDENPOWER,:TAUNT,:HYPERBEAM,:PROTECT,:SECRETPOWER,
-      :SAFEGUARD,:FRUSTRATION,:RETURN,:SHADOWBALL,:BRICKBREAK,
-      :REFLECT,:TORMENT,:FACADE,:REST,:ENCHANT,:THIEF,:ECHOEDVOICE,
-      :FALSESWIPE,:WILLOWISP,:EMBARGO,:SHADOWCLAW,:PAYBACK,
-      :SWORDSDANCE,:POISONJAB,:DREAMEATER,:SWAGGER,:SLEEPTALK,
-      :SUBSTITUTE,:ROCKSMASH,:SNARL,:DARKPULSE,:CONFIDE,:PLAYROUGH,
-      :BRUTALSWING,:LEECHLIFE,:HEX,:SCREECH,:SCARYFACE,:ASSURANCE,
-      :PHANTOMFORCE,:DRAININGKISS,:HONECLAWS,:METRONOME,:SUCKERPUNCH,
-      :RETALIATE,:DUALCHOP]
-      end
-      for i in 0...movelist.length
-        movelist[i]=getConst(PBMoves,movelist[i])
-      end
-      next movelist
-},
-"ability"=>proc{|pokemon|
-   next if pokemon.form==0 # Normal
-   if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0) # Mystic
-     next getID(PBAbilities,:CURSEDBODY)
-   elsif pokemon.abilityIndex==1 || (pokemon.abilityflag && pokemon.abilityflag==1) # Mystic
-     next getID(PBAbilities,:UNAWARE)
-   elsif pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)
-     next getID(PBAbilities,:UNNERVE)       
-   end
-},
-"getFormOnCreation"=>proc{|pokemon|
-   maps=[]   # Map IDs for second form
-   if $game_map && maps.include?($game_map.map_id)
-     next 1
-   else
-     next 0
-   end
-},
-"onSetForm"=>proc{|pokemon,form|
-   pbSeenForm(pokemon)
-}
+MultipleForms.register(:BRAIXEN,{
+  "type1"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:WATER)    # Mystic
+  },
+  "type2"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:FIRE)    # Mystic
+  },
+  "getBaseStats"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next [90, 58, 59, 59, 73, 70]   # Mystic
+  },
+  "ability"=>proc{|pokemon|
+    next if pokemon.form!=1 # Only Mystic form
+    if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0)
+      next getID(PBAbilities,:POWEROFALCHEMY)
+    end
+    if pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)
+      next getID(PBAbilities,:HEALER)
+    end
+  },
+  "getMoveList"=>proc{|pokemon|
+    movelist=[]
+    case pokemon.form            # Mystic
+    when 1 ; movelist=[[0,:INCINERATE],[1,:SCRATCH],[1,:TAILWHIP],[1,:BUBBLE],
+                      [5,:BUBBLE],[11,:PLAYNICE],[14,:ESSENCEFEED],[18,:LIFEDEW],
+                      [22,:BUBBLEBEAM],[28,:BONFIRE],[31,:HEX],[36,:HEALPULSE],
+                      [41,:SCALD],[45,:HEALINGWISH],[49,:SHADOWBALL],[52,:HEATWAVE],
+                      [56,:WISH],[59,:WATERSPOUT]]
+    end
+    for i in movelist
+      i[1]=getConst(PBMoves,i[1])
+    end
+    next movelist
+  },
+  "onSetForm"=>proc{|pokemon,form|
+    if form==1
+      pbSeenForm(pokemon)
+    end
+  }
 })
 
-MultipleForms.register(:ELDEGOSS,{
-"dexEntry"=>proc{|pokemon|
-   next if pokemon.form==0      # Normal
-   next "Vengeant and lost."     # Mystic
-},
-"type1"=>proc{|pokemon|
-   next if pokemon.form==0      # Normal
-   next getID(PBTypes,:GRASS)    # Mystic
-},
-"type2"=>proc{|pokemon|
-   next if pokemon.form==0      # Normal
-   next getID(PBTypes,:GHOST)    # Mystic
-},
-"getBaseStats"=>proc{|pokemon|
-   next if pokemon.form==0      # Normal
-   next [60,90,50,80,120,60]   # Mystic
-},
-"getMoveList"=>proc{|pokemon|
-   next if pokemon.form==0      # Normal
-   movelist=[]
-   case pokemon.form            # Mystic
-     when 1 ; movelist=[[0,:OMINOUSWIND],[1,:COTTONSPORE],[1,:LEAFAGE],[1,:SING],[1,:SWEETSCENT],
-                        [1,:RAPIDSPIN],[12,:RAZORLEAF],[16,:ROUND],[23,:LEAFTORNADO],[28,:LEECHSEED],
-                        [34,:HEX],[40,:CURSE],[46,:LEAFSTORM],[52,:SHADOWBALL]]
-   end
-   for i in movelist
-     i[1]=getConst(PBMoves,i[1])
-   end
-   next movelist
-},
-"getMoveCompatibility"=>proc{|pokemon|
-  next if pokemon.form==0
-  movelist=[]
-  case pokemon.form
-  when 1; movelist=[
-      :CUT,:WORKUP,:TOXIC,:HIDDENPOWER,:RAINDANCE,:LIGHTSCREEN,:REFLECT,:PROTECT,
-      :SECRETPOWER,:NATUREPOWER,:FRUSTRATION,:SOLARBEAM,:SHADOWBALL,:DOUBLETEAM,
-      :TORMENT,:THIEF,:ENCHANT,:ROUND,:ECHOEDVOICE,:FLING,:QUASH,:EMBARGO,
-      :PSYCHUP,:INFESTATION,:DREAMEATER,:UTURN,:SUBSTITUTE,:SNARL,:DARKPULSE,
-      :CONFIDE,:IRRITATION,:SLASHANDBURN,:HEX,:SOLARBLADE,:BRUTALSWING,
-      :SCREECH,:SCARYFACE,:BEATUP,:ASSURANCE,:PHANTOMFORCE,:GRASSYTERRAIN,
-      :AIRSLASH,:SUCKERPUNCH,:VACUUMWAVE,:SCRUTINIZE,:CONDESCEND]
-      end
-      for i in 0...movelist.length
-        movelist[i]=getConst(PBMoves,movelist[i])
-      end
-      next movelist
-},
-"ability"=>proc{|pokemon|
-   next if pokemon.form==0 # Normal
-   if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0) # Mystic
-     next getID(PBAbilities,:COTTONMOLT)
-   elsif pokemon.abilityIndex==1 || (pokemon.abilityflag && pokemon.abilityflag==1) # Mystic
-     next getID(PBAbilities,:BERSERK)
-   elsif pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)
-     next getID(PBAbilities,:SHEDSKIN)       
-   end
-},
-"getFormOnCreation"=>proc{|pokemon|
-   maps=[]   # Map IDs for second form
-   if $game_map && maps.include?($game_map.map_id)
-     next 1
-   else
-     next 0
-   end
-},
-"onSetForm"=>proc{|pokemon,form|
-   pbSeenForm(pokemon)
-}
+MultipleForms.register(:DELPHOX,{
+  "type1"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:WATER)    # Mystic
+  },
+  "type2"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:FIRE)    # Mystic
+  },
+  "getBaseStats"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next [114, 69, 75, 72, 104, 100]   # Mystic
+  },
+  "ability"=>proc{|pokemon|
+    next if pokemon.form!=1 # Only Mystic form
+    if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0)
+      next getID(PBAbilities,:POWEROFALCHEMY)
+    end
+    if pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)
+      next getID(PBAbilities,:HEALER)
+    end
+  },
+  "getMoveList"=>proc{|pokemon|
+    movelist=[]
+    case pokemon.form            # Mystic
+    when 1 ; movelist=[[0,:PYROCLASM],[1,:INCINERATE],[1,:RECOVER],[1,:FOLLOWME],
+                      [1,:HELPINGHAND],[1,:MYSTICALFIRE],[1,:SCRATCH],[1,:TAILWHIP],
+                      [1,:BUBBLE],[1,:PLAYNICE],[5,:BUBBLE],[11,:PLAYNICE],
+                      [14,:ESSENCEFEED],[18,:LIFEDEW],[22,:BUBBLEBEAM],[28,:BONFIRE],
+                      [31,:HEX],[38,:HEALPULSE],[45,:SCALD],[51,:HEALINGWISH],
+                      [57,:SHADOWBALL],[62,:HEATWAVE],[68,:WISH],[74,:WATERSPOUT],
+                      [80,:INFERNO]]
+    end
+    for i in movelist
+      i[1]=getConst(PBMoves,i[1])
+    end
+    next movelist
+  },
+  "onSetForm"=>proc{|pokemon,form|
+    if form==1
+      pbSeenForm(pokemon)
+    end
+  }
 })
 
-MultipleForms.register(:VOLTORB,{
-"dexEntry"=>proc{|pokemon|
-   next if pokemon.form==0      # Normal
-   next "Voltorb's glass frame encases a volatile conductive substance. When Voltorb is threatened, it will ignite the substance, causing a large explosion."     # Mystic
-},
-"type1"=>proc{|pokemon|
-   next if pokemon.form==0      # Normal
-   next getID(PBTypes,:PSYCHIC)    # Mystic
-},
-"type2"=>proc{|pokemon|
-   next if pokemon.form==0      # Normal
-   next getID(PBTypes,:PSYCHIC)    # Mystic
-},
-"getBaseStats"=>proc{|pokemon|
-   next if pokemon.form==0      # Normal
-   next [40,30,50,55,55,100]   # Mystic
-},
-"getMoveList"=>proc{|pokemon|
-   next if pokemon.form==0      # Normal
-   movelist=[]
-   case pokemon.form            # Mystic
-     when 1 ; movelist=[[1,:MIRACLEEYE],[1,:TACKLE],[4,:SONICBOOM],[6,:AMNESIA],
-                        [9,:CONFUSION],[11,:ROLLOUT],[13,:HYPNOSIS],[16,:PSYWAVE],
-                        [20,:SWIFT],[22,:PSYBEAM],[26,:SELFDESTRUCT],[29,:LIGHTSCREEN],
-                        [34,:AGILITY],[37,:PSYCHIC],[41,:EXPLOSION],[46,:GYROBALL],
-                        [48,:MIRRORCOAT]]
-   end
-   for i in movelist
-     i[1]=getConst(PBMoves,i[1])
-   end
-   next movelist
-},
-"getMoveCompatibility"=>proc{|pokemon|
-  next if pokemon.form==0
-  movelist=[]
-  case pokemon.form
-  when 1; movelist=[
-      :WORKUP,:PSYSHOCK,:CALMMIND,:HIDDENPOWER,:HYPERBEAM,:LIGHTSCREEEN,
-      :PROTECT,:SECRETPOWER,:SAFEGUARD,:FRUSTRATION,:THUNDERBOLT,
-      :THUNDER,:RETURN,:PSYCHIC,:SHADOWBALL,:DOUBLETEAM,:REFLECT,
-      :FLAMECHARGE,:REST,:ENCHANT,:ECHOEDVOICE,:FOCUSBLAST,:ENERGYBALL,
-      :EXPLOSION,:FLASH,:THUNDERWAVE,:PSYCHUP,:DREAMEATER,:SUBSTITUTE,
-      :FLASHCANNON,:TRICKROOM,:DAZZLINGGLEAM,:COSMICPOWER,:HEX,:SCREECH,
-      :SCARYFACE,:POWERSWAP,:GUARDSWAP,:SPEEDSWAP,:PSYCHICTERRAIN,
-      :EERIEIMPULSE,:METRONOME,:TRIATTACK,:SCRUTINIZE]
-      end
-      for i in 0...movelist.length
-        movelist[i]=getConst(PBMoves,movelist[i])
-      end
-      next movelist
-},
-"ability"=>proc{|pokemon|
-   next if pokemon.form==0 # Normal
-   if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0) # Mystic
-     next getID(PBAbilities,:TELEPATHY)
-   elsif pokemon.abilityIndex==1 || (pokemon.abilityflag && pokemon.abilityflag==1) # Mystic
-     next getID(PBAbilities,:ANTICIPATION)
-   elsif pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)
-     next getID(PBAbilities,:SYNCHRONIZE)       
-   end
-},
-"getFormOnCreation"=>proc{|pokemon|
-   maps=[]   # Map IDs for second form
-   if $game_map && maps.include?($game_map.map_id)
-     next 1
-   else
-     next 0
-   end
-},
-"onSetForm"=>proc{|pokemon,form|
-   pbSeenForm(pokemon)
-}
+MultipleForms.register(:FROAKIE,{
+  "type1"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:NORMAL)    # Mystic
+  },
+  "type2"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:NORMAL)    # Mystic
+  },
+  "getBaseStats"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next [40, 44, 41, 71, 62, 56]   # Mystic
+  },
+  "ability"=>proc{|pokemon|
+    next if pokemon.form!=1 # Only Mystic form
+    if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0)
+      next getID(PBAbilities,:AMPLIFY)
+    end
+    if pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)
+      next getID(PBAbilities,:OBLIVIOUS)
+    end
+  },
+  "getMoveList"=>proc{|pokemon|
+    movelist=[]
+    case pokemon.form            # Mystic
+    when 1 ; movelist=[[1,:POUND],[1,:GROWL],[5,:HELPINGHAND],[8,:DISARMINGVOICE],
+                      [10,:COTTONSPORE],[14,:ROUND],[18,:SUPERSONIC],[21,:BATTLECRY],
+                      [25,:SING],[29,:FRACTURE],[35,:UPROAR],[39,:SONICSCREAM],
+                      [43,:COTTONGUARD],[48,:HYPERVOICE]]
+    end
+    for i in movelist
+      i[1]=getConst(PBMoves,i[1])
+    end
+    next movelist
+  },
+  "onSetForm"=>proc{|pokemon,form|
+    if form==1
+      pbSeenForm(pokemon)
+    end
+  }
 })
 
-MultipleForms.register(:ELECTRODE,{
-"dexEntry"=>proc{|pokemon|
-   next if pokemon.form==0      # Normal
-   next "BOOM!!!"     # Mystic
-},
-"type1"=>proc{|pokemon|
-   next if pokemon.form==0      # Normal
-   next getID(PBTypes,:PSYCHIC)    # Mystic
-},
-"type2"=>proc{|pokemon|
-   next if pokemon.form==0      # Normal
-   next getID(PBTypes,:PSYCHIC)    # Mystic
-},
-"getBaseStats"=>proc{|pokemon|
-   next if pokemon.form==0      # Normal
-   next [60,50,70,80,80,150]   # Mystic
-},
-"getMoveList"=>proc{|pokemon|
-   next if pokemon.form==0      # Normal
-   movelist=[]
-   case pokemon.form            # Mystic
-     when 1 ; movelist=[[1,:TELEPORT],[1,:ZAPCANNON],[1,:MIRACLEEYE],[1,:TACKLE],[4,:SONICBOOM],[6,:AMNESIA],
-                        [9,:CONFUSION],[11,:ROLLOUT],[13,:HYPNOSIS],[16,:PSYWAVE],
-                        [20,:SWIFT],[22,:PSYBEAM],[26,:SELFDESTRUCT],[29,:LIGHTSCREEN],
-                        [36,:AGILITY],[41,:PSYCHIC],[47,:EXPLOSION],[54,:GYROBALL],
-                        [58,:MIRRORCOAT]]
-   end
-   for i in movelist
-     i[1]=getConst(PBMoves,i[1])
-   end
-   next movelist
-},
-"getMoveCompatibility"=>proc{|pokemon|
-  next if pokemon.form==0
-  movelist=[]
-  case pokemon.form
-  when 1; movelist=[
-      :WORKUP,:PSYSHOCK,:CALMMIND,:HIDDENPOWER,:HYPERBEAM,:LIGHTSCREEEN,
-      :PROTECT,:SECRETPOWER,:SAFEGUARD,:FRUSTRATION,:THUNDERBOLT,
-      :THUNDER,:RETURN,:PSYCHIC,:SHADOWBALL,:DOUBLETEAM,:REFLECT,
-      :FLAMECHARGE,:REST,:ENCHANT,:ECHOEDVOICE,:FOCUSBLAST,:ENERGYBALL,
-      :EXPLOSION,:FLASH,:THUNDERWAVE,:PSYCHUP,:DREAMEATER,:SUBSTITUTE,
-      :FLASHCANNON,:TRICKROOM,:DAZZLINGGLEAM,:COSMICPOWER,:HEX,:SCREECH,
-      :SCARYFACE,:POWERSWAP,:GUARDSWAP,:SPEEDSWAP,:PSYCHICTERRAIN,
-      :EERIEIMPULSE,:METRONOME,:TRIATTACK,:SCRUTINIZE]
-      end
-      for i in 0...movelist.length
-        movelist[i]=getConst(PBMoves,movelist[i])
-      end
-      next movelist
-},
-"ability"=>proc{|pokemon|
-   next if pokemon.form==0 # Normal
-   if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0) # Mystic
-     next getID(PBAbilities,:TELEPATHY)
-   elsif pokemon.abilityIndex==1 || (pokemon.abilityflag && pokemon.abilityflag==1) # Mystic
-     next getID(PBAbilities,:ANTICIPATION)
-   elsif pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)
-     next getID(PBAbilities,:SYNCHRONIZE)       
-   end
-},
-"getFormOnCreation"=>proc{|pokemon|
-   maps=[]   # Map IDs for second form
-   if $game_map && maps.include?($game_map.map_id)
-     next 1
-   else
-     next 0
-   end
-},
-"onSetForm"=>proc{|pokemon,form|
-   pbSeenForm(pokemon)
-}
+MultipleForms.register(:FROGADIER,{
+  "type1"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:NORMAL)    # Mystic
+  },
+  "type2"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:GRASS)    # Mystic
+  },
+  "getBaseStats"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next [52, 56, 54, 97, 83, 63]   # Mystic
+  },
+  "ability"=>proc{|pokemon|
+    next if pokemon.form!=1 # Only Mystic form
+    if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0)
+      next getID(PBAbilities,:AMPLIFY)
+    end
+    if pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)
+      next getID(PBAbilities,:OBLIVIOUS)
+    end
+  },
+  "getMoveList"=>proc{|pokemon|
+    movelist=[]
+    case pokemon.form            # Mystic
+    when 1 ; movelist=[[0,:MEGADRAIN],[1,:POUND],[1,:GROWL],[1,:HELPINGHAND],
+                      [5,:HELPINGHAND],[8,:DISARMINGVOICE],[10,:COTTONSPORE],[14,:ROUND],
+                      [19,:GRASSWHISTLE],[23,:BATTLECRY],[28,:GIGADRAIN],[33,:FRACTURE],
+                      [40,:UPROAR],[45,:SONICSCREAM],[50,:COTTONGUARD],[56,:HYPERVOICE]]
+    end
+    for i in movelist
+      i[1]=getConst(PBMoves,i[1])
+    end
+    next movelist
+  },
+  "onSetForm"=>proc{|pokemon,form|
+    if form==1
+      pbSeenForm(pokemon)
+    end
+  }
+})
+
+MultipleForms.register(:GRENINJA,{
+  "type1"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:NORMAL)    # Mystic
+  },
+  "type2"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:GRASS)    # Mystic
+  },
+  "getBaseStats"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next [67, 72, 71, 122, 95, 103]   # Mystic
+  },
+  "ability"=>proc{|pokemon|
+    next if pokemon.form!=1 # Only Mystic form
+    if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0)
+      next getID(PBAbilities,:AMPLIFY)
+    end
+    if pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)
+      next getID(PBAbilities,:OBLIVIOUS)
+    end
+  },
+  "getMoveList"=>proc{|pokemon|
+    movelist=[]
+    case pokemon.form            # Mystic
+    when 1 ; movelist=[[0,:NATURALORDER],[1,:MEGADRAIN],[1,:PETALDANCE],[1,:SNARL],
+                      [1,:ROLEPLAY],[1,:NOBLEROAR],[1,:POUND],[1,:GROWL],
+                      [1,:HELPINGHAND],[1,:DISARMINGVOICE],[5,:HELPINGHAND],[8,:DISARMINGVOICE],
+                      [10,:COTTONSPORE],[14,:ROUND],[19,:GRASSWHISTLE],[23,:BATTLECRY],
+                      [28,:GIGADRAIN],[33,:FRACTURE],[42,:UPROAR],[49,:SONICSCREAM],
+                      [56,:COTTONGUARD],[68,:HYPERVOICE],[70,:PETALDANCE],[77,:BOOMBURST]]
+    end
+    for i in movelist
+      i[1]=getConst(PBMoves,i[1])
+    end
+    next movelist
+  },
+  "onSetForm"=>proc{|pokemon,form|
+    if form==1
+      pbSeenForm(pokemon)
+    end
+  }
+})
+
+MultipleForms.register(:CHESPIN,{
+  "type1"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:BUG)    # Mystic
+  },
+  "type2"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:BUG)    # Mystic
+  },
+  "getBaseStats"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next [56, 65, 61, 48, 38, 45]   # Mystic
+  },
+  "ability"=>proc{|pokemon|
+    next if pokemon.form!=1 # Only Mystic form
+    if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0)
+      next getID(PBAbilities,:STATIC)
+    end
+    if pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)
+      next getID(PBAbilities,:ELECTRICSURGE)
+    end
+  },
+  "getMoveList"=>proc{|pokemon|
+    movelist=[]
+    case pokemon.form            # Mystic
+    when 1 ; movelist=[[1,:GROWL],[1,:TACKLE],[5,:PESTER],[8,:ROLLOUT],
+                      [11,:SANDTOMB],[15,:DEFENSECURL],[18,:BUGBITE],[27,:TAKEDOWN],
+                      [32,:PINMISSILE],[35,:DIG],[39,:CURSE],[42,:BODYSLAM],
+                      [45,:PAINSPLIT],[48,:MEGAHORN]]
+    end
+    for i in movelist
+      i[1]=getConst(PBMoves,i[1])
+    end
+    next movelist
+  },
+  "onSetForm"=>proc{|pokemon,form|
+    if form==1
+      pbSeenForm(pokemon)
+    end
+  }
+})
+
+MultipleForms.register(:QUILLADIN,{
+  "type1"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:BUG)    # Mystic
+  },
+  "type2"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:ELECTRIC)    # Mystic
+  },
+  "getBaseStats"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next [61, 95, 78, 57, 56, 58]   # Mystic
+  },
+  "ability"=>proc{|pokemon|
+    next if pokemon.form!=1 # Only Mystic form
+    if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0)
+      next getID(PBAbilities,:STATIC)
+    end
+    if pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)
+      next getID(PBAbilities,:ELECTRICSURGE)
+    end
+  },
+  "getMoveList"=>proc{|pokemon|
+    movelist=[]
+    case pokemon.form            # Mystic
+    when 1 ; movelist=[[0,:SPARK],[1,:GROWL],[1,:TACKLE],[5,:PESTER],
+                      [8,:ROLLOUT],[11,:SANDTOMB],[15,:DEFENSECURL],[19,:BUGBITE],
+                      [29,:ZINGZAP],[35,:PINMISSILE],[39,:DIG],[44,:CURSE],
+                      [48,:WILDCHARGE],[52,:PAINSPLIT],[56,:MEGAHORN]]
+    end
+    for i in movelist
+      i[1]=getConst(PBMoves,i[1])
+    end
+    next movelist
+  },
+  "onSetForm"=>proc{|pokemon,form|
+    if form==1
+      pbSeenForm(pokemon)
+    end
+  }
+})
+
+MultipleForms.register(:CHESNAUGHT,{
+  "type1"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:BUG)    # Mystic
+  },
+  "type2"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:ELECTRIC)    # Mystic
+  },
+  "getBaseStats"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next [88, 122, 107, 74, 64, 75]   # Mystic
+  },
+  "ability"=>proc{|pokemon|
+    next if pokemon.form!=1 # Only Mystic form
+    if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0)
+      next getID(PBAbilities,:STATIC)
+    end
+    if pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)
+      next getID(PBAbilities,:ELECTRICSURGE)
+    end
+  },
+  "getMoveList"=>proc{|pokemon|
+    movelist=[]
+    case pokemon.form            # Mystic
+    when 1 ; movelist=[[0,:STORMHOLD],[1,:SPARK],[1,:GYROBALL],[1,:SPIKECANNON],
+                      [1,:BELLYDRUM],[1,:TACKLE],[1,:GROWL],[1,:PESTER],
+                      [1,:ROLLOUT],[5,:PESTER],[8,:ROLLOUT],[11,:SANDTOMB],
+                      [15,:DEFENSECURL],[19,:BUGBITE],[29,:ZINGZAP],[35,:PINMISSILE],
+                      [41,:DIG],[48,:CURSE],[54,:WILDCHARGE],[60,:PAINSPLIT],
+                      [66,:MEGAHORN],[72,:GYROBALL],[78,:AFTERSHOCK]]
+    end
+    for i in movelist
+      i[1]=getConst(PBMoves,i[1])
+    end
+    next movelist
+  },
+  "onSetForm"=>proc{|pokemon,form|
+    if form==1
+      pbSeenForm(pokemon)
+    end
+  }
+})
+
+MultipleForms.register(:FUECOCO,{
+  "type1"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:GROUND)    # Mystic
+  },
+  "type2"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:GROUND)    # Mystic
+  },
+  "getBaseStats"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next [59, 36, 63, 45, 67, 40]   # Mystic
+  },
+  "ability"=>proc{|pokemon|
+    next if pokemon.form!=1 # Only Mystic form
+    if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0)
+      next getID(PBAbilities,:STALKER)
+    end
+    if pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)
+      next getID(PBAbilities,:REVERB)
+    end
+  },
+  "getMoveList"=>proc{|pokemon|
+    movelist=[]
+    case pokemon.form            # Mystic
+    when 1 ; movelist=[[1,:TACKLE],[1,:LEER],[5,:SANDTOMB],[7,:ASTONISH],
+                      [12,:ROUND],[15,:MUDSHOT],[17,:CONFIDE],[21,:SNARL],
+                      [25,:TORMENT],[28,:FRACTURE],[32,:HYPERVOICE],[36,:SCORCHINGSANDS]]
+    end
+    for i in movelist
+      i[1]=getConst(PBMoves,i[1])
+    end
+    next movelist
+  },
+  "onSetForm"=>proc{|pokemon,form|
+    if form==1
+      pbSeenForm(pokemon)
+    end
+  }
+})
+
+MultipleForms.register(:CROCALOR,{
+  "type1"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:GROUND)    # Mystic
+  },
+  "type2"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:DARK)    # Mystic
+  },
+  "getBaseStats"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next [78, 49, 81, 58, 90, 55]   # Mystic
+  },
+  "ability"=>proc{|pokemon|
+    next if pokemon.form!=1 # Only Mystic form
+    if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0)
+      next getID(PBAbilities,:STALKER)
+    end
+    if pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)
+      next getID(PBAbilities,:REVERB)
+    end
+  },
+  "getMoveList"=>proc{|pokemon|
+    movelist=[]
+    case pokemon.form            # Mystic
+    when 1 ; movelist=[[0,:PURSUIT],[1,:TACKLE],[1,:LEER],[5,:SANDTOMB],
+                      [7,:ASTONISH],[10,:BELLOW],[12,:ROUND],[15,:MUDSHOT],
+                      [17,:CONFIDE],[24,:SNARL],[28,:TORMENT],[32,:FRACTURE],
+                      [38,:HYPERVOICE],[42,:DARKPULSE],[47,:SCORCHINGSANDS]]
+    end
+    for i in movelist
+      i[1]=getConst(PBMoves,i[1])
+    end
+    next movelist
+  },
+  "onSetForm"=>proc{|pokemon,form|
+    if form==1
+      pbSeenForm(pokemon)
+    end
+  }
+})
+
+MultipleForms.register(:SKELEDIRGE,{
+  "type1"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:GROUND)    # Mystic
+  },
+  "type2"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:DARK)    # Mystic
+  },
+  "getBaseStats"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next [100, 66, 104, 75, 110, 75]   # Mystic
+  },
+  "ability"=>proc{|pokemon|
+    next if pokemon.form!=1 # Only Mystic form
+    if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0)
+      next getID(PBAbilities,:STALKER)
+    end
+    if pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)
+      next getID(PBAbilities,:REVERB)
+    end
+  },
+  "getMoveList"=>proc{|pokemon|
+    movelist=[]
+    case pokemon.form            # Mystic
+    when 1 ; movelist=[[0,:PHANTOMCALL],[1,:PURSUIT],[1,:SING],[1,:PAINSPLIT],
+                      [1,:ALLURINGVOICE],[1,:TACKLE],[1,:LEER],[5,:SANDTOMB],
+                      [7,:ASTONISH],[10,:BELLOW],[12,:ROUND],[15,:MUDSHOT],
+                      [17,:CONFIDE],[24,:SNARL],[28,:TORMENT],[32,:FRACTURE],
+                      [38,:DARKPULSE],[42,:HYPERVOICE],[47,:SCORCHINGSANDS],[47,:NASTYPLOT],
+                      [58,:EARTHPOWER],[64,:SNUFFOUT]]
+    end
+    for i in movelist
+      i[1]=getConst(PBMoves,i[1])
+    end
+    next movelist
+  },
+  "onSetForm"=>proc{|pokemon,form|
+    if form==1
+      pbSeenForm(pokemon)
+    end
+  }
+})
+
+MultipleForms.register(:QUAXLY,{
+  "type1"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:ICE)    # Mystic
+  },
+  "type2"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:ICE)    # Mystic
+  },
+  "getBaseStats"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next [45, 55, 45, 65, 50, 50]   # Mystic
+  },
+  "ability"=>proc{|pokemon|
+    next if pokemon.form!=1 # Only Mystic form
+    if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0)
+      next getID(PBAbilities,:OWNTEMPO)
+    end
+    if pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)
+      next getID(PBAbilities,:HALCYON)
+    end
+  },
+  "getMoveList"=>proc{|pokemon|
+    movelist=[]
+    case pokemon.form            # Mystic
+    when 1 ; movelist=[[1,:GROWL],[1,:POUND],[5,:POWDERSNOW],[7,:FEATHERDANCE],
+                      [10,:GUST],[13,:ICEBALL],[17,:DOUBLEHIT],[21,:ICYWIND],
+                      [24,:DUALWINGBEAT],[28,:MIRRORMOVE],[31,:AIRSLASH],[35,:TRIPLEAXEL]]
+    end
+    for i in movelist
+      i[1]=getConst(PBMoves,i[1])
+    end
+    next movelist
+  },
+  "onSetForm"=>proc{|pokemon,form|
+    if form==1
+      pbSeenForm(pokemon)
+    end
+  }
+})
+
+MultipleForms.register(:QUAXWELL,{
+  "type1"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:ICE)    # Mystic
+  },
+  "type2"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:PSYCHIC)    # Mystic
+  },
+  "getBaseStats"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next [65, 70, 60, 85, 65, 65]   # Mystic
+  },
+  "ability"=>proc{|pokemon|
+    next if pokemon.form!=1 # Only Mystic form
+    if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0)
+      next getID(PBAbilities,:OWNTEMPO)
+    end
+    if pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)
+      next getID(PBAbilities,:HALCYON)
+    end
+  },
+  "getMoveList"=>proc{|pokemon|
+    movelist=[]
+    case pokemon.form            # Mystic
+    when 1 ; movelist=[[0,:HEARTSTAMP],[1,:GROWL],[1,:POUND],[5,:POWDERSNOW],
+                      [7,:FEATHDERDANCE],[10,:GUST],[13,:ICEBALL],[17,:TEETERDANCE],
+                      [19,:ICYWIND],[23,:PSYBEAM],[27,:DUALWINGBEAT],[32,:MIRRORMOVE],
+                      [38,:AIRSLASH],[43,:PSYCHIC],[48,:TRIPLEAXEL]]
+    end
+    for i in movelist
+      i[1]=getConst(PBMoves,i[1])
+    end
+    next movelist
+  },
+  "onSetForm"=>proc{|pokemon,form|
+    if form==1
+      pbSeenForm(pokemon)
+    end
+  }
+})
+
+MultipleForms.register(:QUAQUAVAL,{
+  "type1"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:ICE)    # Mystic
+  },
+  "type2"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:PSYCHIC)    # Mystic
+  },
+  "getBaseStats"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next [85, 85, 75, 120, 85, 80]   # Mystic
+  },
+  "ability"=>proc{|pokemon|
+    next if pokemon.form!=1 # Only Mystic form
+    if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0)
+      next getID(PBAbilities,:OWNTEMPO)
+    end
+    if pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)
+      next getID(PBAbilities,:HALCYON)
+    end
+  },
+  "getMoveList"=>proc{|pokemon|
+    movelist=[]
+    case pokemon.form            # Mystic
+    when 1 ; movelist=[[0,:SWANDIVE],[1,:HEARTSTAMP],[1,:STOREDPOWER],[1,:EARTHPOWER],
+                      [1,:GROWL],[1,:POUND],[5,:POWDERSNOW],[7,:FEATHERDANCE],
+                      [10,:GUST],[13,:ICEBALL],[17,:TEETERDANCE],[21,:ICYWIND],
+                      [27,:DUALWINGBEAT],[32,:MIRRORMOVE],[38,:ZENHEADBUTT],[43,:AIRSLASH],
+                      [47,:PSYCHIC],[52,:ROOST],[58,:TRIPLEAXEL],[64,:BLIZZARD]]
+    end
+    for i in movelist
+      i[1]=getConst(PBMoves,i[1])
+    end
+    next movelist
+  },
+  "onSetForm"=>proc{|pokemon,form|
+    if form==1
+      pbSeenForm(pokemon)
+    end
+  }
+})
+
+MultipleForms.register(:SPRIGATITO,{
+  "type1"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:STEEL)    # Mystic
+  },
+  "type2"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:STEEL)    # Mystic
+  },
+  "getBaseStats"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next [45, 65, 45, 54, 40, 61]   # Mystic
+  },
+  "ability"=>proc{|pokemon|
+    next if pokemon.form!=1 # Only Mystic form
+    if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0)
+      next getID(PBAbilities,:PINPOINT)
+    end
+    if pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)
+      next getID(PBAbilities,:SKILLLINK)
+    end
+  },
+  "getMoveList"=>proc{|pokemon|
+    movelist=[]
+    case pokemon.form            # Mystic
+    when 1 ; movelist=[[1,:SCRATCH],[1,:TAILWHIP],[5,:METALCLAW],[7,:FURYSWIPES],
+                      [10,:SHARPEN],[13,:TWINEEDLE],[15,:SPIKES],[17,:SPIKECANNON],
+                      [21,:PINMISSILE],[25,:LOCKON],[28,:FLING],[32,:SMARTSTRIKE],
+                      [36,:LASTRESORT]]
+    end
+    for i in movelist
+      i[1]=getConst(PBMoves,i[1])
+    end
+    next movelist
+  },
+  "onSetForm"=>proc{|pokemon,form|
+    if form==1
+      pbSeenForm(pokemon)
+    end
+  }
+})
+
+MultipleForms.register(:FLORAGATO,{
+  "type1"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:STEEL)    # Mystic
+  },
+  "type2"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:GHOST)    # Mystic
+  },
+  "getBaseStats"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next [63, 83, 61, 63, 60, 80]   # Mystic
+  },
+  "ability"=>proc{|pokemon|
+    next if pokemon.form!=1 # Only Mystic form
+    if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0)
+      next getID(PBAbilities,:PINPOINT)
+    end
+    if pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)
+      next getID(PBAbilities,:SKILLLINK)
+    end
+  },
+  "getMoveList"=>proc{|pokemon|
+    movelist=[]
+    case pokemon.form            # Mystic
+    when 1 ; movelist=[[0,:SHADOWSNEAK],[1,:SCRATCH],[1,:TAILWHIP],[5,:METALCLAW],
+                      [7,:FURYSWIPES],[10,:SHARPEN],[13,:TWINEEDLE],[15,:SPIKES],
+                      [20,:SPIKECANNON],[24,:PINMISSILE],[28,:LOCKON],[33,:SHADOWCLAW],
+                      [38,:SMARTSTRIKE],[42,:LASTRESORT],[46,:PERFORATE]]
+    end
+    for i in movelist
+      i[1]=getConst(PBMoves,i[1])
+    end
+    next movelist
+  },
+  "onSetForm"=>proc{|pokemon,form|
+    if form==1
+      pbSeenForm(pokemon)
+    end
+  }
+})
+
+MultipleForms.register(:MEOWSCARADA,{
+  "type1"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:STEEL)    # Mystic
+  },
+  "type2"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:GHOST)    # Mystic
+  },
+  "getBaseStats"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next [76, 123, 70, 81, 70, 110]   # Mystic
+  },
+  "ability"=>proc{|pokemon|
+    next if pokemon.form!=1 # Only Mystic form
+    if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0)
+      next getID(PBAbilities,:PINPOINT)
+    end
+    if pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)
+      next getID(PBAbilities,:SKILLLINK)
+    end
+  },
+  "getMoveList"=>proc{|pokemon|
+    movelist=[]
+    case pokemon.form            # Mystic
+    when 1 ; movelist=[[0,:CURTAINCALL],[1,:SHADOWSNEAK],[1,:NEEDLEARM],[1,:SPIRITSHACKLE],
+                      [1,:FLING],[1,:SCRATCH],[1,:TAILWHIP],[5,:METALCLAW],
+                      [7,:FURYSWIPES],[10,:SHARPEN],[13,:TWINEEDLE],[15,:SPIKES],
+                      [20,:SPIKECANNON],[24,:PINMISSILE],[29,:LOCKON],[33,:SHADOWCLAW],
+                      [38,:FELLSTINGER],[42,:SMARTSTRIKE],[47,:LASTRESORT],[52,:PERFORATE],
+                      [58,:ENCORE],[64,:GUILLOTINE]]
+    end
+    for i in movelist
+      i[1]=getConst(PBMoves,i[1])
+    end
+    next movelist
+  },
+  "onSetForm"=>proc{|pokemon,form|
+    if form==1
+      pbSeenForm(pokemon)
+    end
+  }
 })
 
 MultipleForms.register(:POOCHYENA,{
-"dexEntry"=>proc{|pokemon|
-   next if pokemon.form==0      # Normal
-   next "filler"     # Mystic
-},
-"type1"=>proc{|pokemon|
-   next if pokemon.form==0      # Normal
-   next getID(PBTypes,:FIRE)    # Mystic
-},
-"type2"=>proc{|pokemon|
-   next if pokemon.form==0      # Normal
-   next getID(PBTypes,:GHOST)    # Mystic
-},
-"getBaseStats"=>proc{|pokemon|
-   next if pokemon.form==0      # Normal
-   next [35,30,35,55,30,35]   # Mystic
-},
-"getMoveList"=>proc{|pokemon|
-   next if pokemon.form==0      # Normal
-   movelist=[]
-   case pokemon.form            # Mystic
-     when 1 ; movelist=[[1,:TACKLE],[1,:LEER],[7,:GLARE],[10,:LICK],
-                        [13,:EMBER],[16,:CONFUSERAY],[19,:SWAGGER],[22,:INCINERATE],
-                        [25,:WILLOWISP],[28,:SHADOWSNEAK],[31,:TAUNT],[34,:FIREFANG],
-                        [37,:YAWN],[40,:SHADOWBALL],[43,:SUCKERPUNCH],[46,:FLAMETHROWER]]
-   end
-   for i in movelist
-     i[1]=getConst(PBMoves,i[1])
-   end
-   next movelist
-},
-"getMoveCompatibility"=>proc{|pokemon|
-  next if pokemon.form==0
-  movelist=[]
-  case pokemon.form
-  when 1; movelist=[
-      :WORKUP,:CALMMIND,:ROAR,:HIDDENPOWER,:SUNNYDAY,:PROTECT,:SECRETPOWER,
-      :RETURN,:DIG,:SHADOWBALL,:DOUBLETEAM,:FLAMETHROWER,:SHADOWBALL,
-      :DOUBLETEAM,:FLAMETHROWER,:SLUDGEBOMB,:FIREBLAST,:TORMENT,:FACADE,
-      :FLAMECHARGE,:REST,:ENCHANT,:THIEF,:OVERHEAT,:INCINERATE,:WILLOWISP,
-      :EMBARGO,:EXPLOSION,:SHADOWCLAW,:PAYBACK,:FLASH,:DREAMEATER,:SWAGGER,
-      :SLEEPTALK,:WILDCHARGE,:SNARL,:DARKPULSE,:MAGMADRIFT,:HEX,:FIRESPIN,
-      :SCREECH,:SELFDESTRUCT,:SCARYFACE,:ICEFANG,:FIREFANG,:THUNDERFANG,
-      :TAILSLAP,:PHANTOMFORCE,:MYSTICALFIRE,:HONECLAWS,:RETALIATE]
-      end
-      for i in 0...movelist.length
-        movelist[i]=getConst(PBMoves,movelist[i])
-      end
-      next movelist
-},
-"ability"=>proc{|pokemon|
-   next if pokemon.form==0 # Normal
-   if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0) # Mystic
-     next getID(PBAbilities,:INTIMIDATE)
-   elsif pokemon.abilityIndex==1 || (pokemon.abilityflag && pokemon.abilityflag==1) # Mystic
-     next getID(PBAbilities,:SHADOWTAG)
-   elsif pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2) # Mystic
-     next getID(PBAbilities,:ADAPTABILITY)       
-   end
-},
-"getFormOnCreation"=>proc{|pokemon|
-   maps=[]   # Map IDs for second form
-   if $game_map && maps.include?($game_map.map_id)
-     next 1
-   else
-     next 0
-   end
-},
-"onSetForm"=>proc{|pokemon,form|
-   pbSeenForm(pokemon)
-}
+  "type1"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:FIRE)    # Mystic
+  },
+  "type2"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:GHOST)    # Mystic
+  },
+  "getBaseStats"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next [35, 30, 35, 55, 30, 35]   # Mystic
+  },
+  "ability"=>proc{|pokemon|
+    next if pokemon.form!=1 # Only Mystic form
+    if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0)
+      next getID(PBAbilities,:INTIMIDATE)
+    end
+    if pokemon.abilityIndex==1 || (pokemon.abilityflag && pokemon.abilityflag==1)
+      next getID(PBAbilities,:SHADOWTAG)
+    end
+    if pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)
+      next getID(PBAbilities,:MERCILESS)
+    end
+  },
+  "getMoveList"=>proc{|pokemon|
+    movelist=[]
+    case pokemon.form            # Mystic
+    when 1 ; movelist=[[1,:TACKLE],[4,:GROWL],[7,:EMBER],[10,:ESSENCEFEED],
+                      [13,:SCARYFACE],[13,:INCINERATE],[16,:ROAR],[19,:CONFUSERAY],
+                      [22,:OMINOUSWIND],[25,:WILLOWISP],[28,:SHADOWSNEAK],[28,:GRUDGE],
+                      [31,:TORMENT],[34,:MYSTICALFIRE],[37,:CURSE],[40,:SHADOWBALL],
+                      [43,:FIREBLAST],[46,:SNUFFOUT]]
+    end
+    for i in movelist
+      i[1]=getConst(PBMoves,i[1])
+    end
+    next movelist
+  },
+  "onSetForm"=>proc{|pokemon,form|
+    if form==1
+      pbSeenForm(pokemon)
+    end
+  }
 })
 
 MultipleForms.register(:MIGHTYENA,{
-"dexEntry"=>proc{|pokemon|
-   next if pokemon.form==0      # Normal
-   next "filler"     # Mystic
-},
-"type1"=>proc{|pokemon|
-   next if pokemon.form==0      # Normal
-   next getID(PBTypes,:FIRE)    # Mystic
-},
-"type2"=>proc{|pokemon|
-   next if pokemon.form==0      # Normal
-   next getID(PBTypes,:GHOST)    # Mystic
-},
-"getBaseStats"=>proc{|pokemon|
-   next if pokemon.form==0      # Normal
-   next [70,60,70,70,90,60]   # Mystic
-},
-"getMoveList"=>proc{|pokemon|
-   next if pokemon.form==0      # Normal
-   movelist=[]
-   case pokemon.form            # Mystic
-     when 1 ; movelist=[[1,:DARKPULSE],[1,:FLAMETHROWER],[1,:SHADOWBALL],[1,:MYSTICALFIRE],
-                        [1,:TACKLE],[1,:LEER],[7,:GLARE],[10,:LICK],[13,:EMBER],[16,:CONFUSERAY],
-                        [20,:SWAGGER],[24,:INCINERATE],[28,:WILLOWISP],[32,:SHADOWSNEAK],[36,:TAUNT],
-                        [40,:FIREFANG],[44,:YAWN],[48,:SHADOWBALL],[52,:SUCKERPUNCH],[56,:FLAMETHROWER],[60,:DARKPULSE]]
-   end
-   for i in movelist
-     i[1]=getConst(PBMoves,i[1])
-   end
-   next movelist
-},
-"getMoveCompatibility"=>proc{|pokemon|
-  next if pokemon.form==0
-  movelist=[]
-  case pokemon.form
-  when 1; movelist=[
-      :WORKUP,:CALMMIND,:ROAR,:HIDDENPOWER,:SUNNYDAY,:PROTECT,:SECRETPOWER,
-      :RETURN,:DIG,:SHADOWBALL,:DOUBLETEAM,:FLAMETHROWER,:SHADOWBALL,
-      :DOUBLETEAM,:FLAMETHROWER,:SLUDGEBOMB,:FIREBLAST,:TORMENT,:FACADE,
-      :FLAMECHARGE,:REST,:ENCHANT,:THIEF,:OVERHEAT,:INCINERATE,:WILLOWISP,
-      :EMBARGO,:EXPLOSION,:SHADOWCLAW,:PAYBACK,:FLASH,:DREAMEATER,:SWAGGER,
-      :SLEEPTALK,:WILDCHARGE,:SNARL,:DARKPULSE,:MAGMADRIFT,:HEX,:FIRESPIN,
-      :SCREECH,:SELFDESTRUCT,:SCARYFACE,:ICEFANG,:FIREFANG,:THUNDERFANG,
-      :TAILSLAP,:PHANTOMFORCE,:MYSTICALFIRE,:HONECLAWS,:RETALIATE]
-      end
-      for i in 0...movelist.length
-        movelist[i]=getConst(PBMoves,movelist[i])
-      end
-      next movelist
-},
-"ability"=>proc{|pokemon|
-   next if pokemon.form==0 # Normal
-   if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0) # Mystic
-     next getID(PBAbilities,:INTIMIDATE)
-   elsif pokemon.abilityIndex==1 || (pokemon.abilityflag && pokemon.abilityflag==1) # Mystic
-     next getID(PBAbilities,:SHADOWTAG)
-   elsif pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)
-     next getID(PBAbilities,:ADAPTABILITY)       
-   end
-},
-"getFormOnCreation"=>proc{|pokemon|
-   maps=[]   # Map IDs for second form
-   if $game_map && maps.include?($game_map.map_id)
-     next 1
-   else
-     next 0
-   end
-},
-"onSetForm"=>proc{|pokemon,form|
-   pbSeenForm(pokemon)
-}
+  "type1"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:FIRE)    # Mystic
+  },
+  "type2"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:GHOST)    # Mystic
+  },
+  "getBaseStats"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next [70, 60, 70, 70, 90, 60]   # Mystic
+  },
+  "ability"=>proc{|pokemon|
+    next if pokemon.form!=1 # Only Mystic form
+    if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0)
+      next getID(PBAbilities,:INTIMIDATE)
+    end
+    if pokemon.abilityIndex==1 || (pokemon.abilityflag && pokemon.abilityflag==1)
+      next getID(PBAbilities,:SHADOWTAG)
+    end
+    if pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)
+      next getID(PBAbilities,:MERCILESS)
+    end
+  },
+  "getMoveList"=>proc{|pokemon|
+    movelist=[]
+    case pokemon.form            # Mystic
+    when 1 ; movelist=[[0,:SMOG],[1,:GLARE],[1,:INFERNO],[1,:DARKPULSE],
+                      [1,:MYSTICALFIRE],[1,:IMPRISON],[1,:TACKLE],[1,:GROWL],
+                      [1,:EMBER],[1,:ESSENCEFEED],[4,:GROWL],[7,:EMBER],
+                      [10,:ESSENCEFEED],[13,:INCINERATE],[16,:ROAR],[20,:CONFUSERAY],
+                      [24,:OMINOUSWIND],[28,:WILLOWISP],[32,:SHADOWSNEAK],[32,:GRUDGE],
+                      [36,:TORMENT],[40,:MYSTICALFIRE],[44,:CURSE],[48,:SHADOWBALL],
+                      [52,:FIREBLAST],[56,:SNUFFOUT]]
+    end
+    for i in movelist
+      i[1]=getConst(PBMoves,i[1])
+    end
+    next movelist
+  },
+  "onSetForm"=>proc{|pokemon,form|
+    if form==1
+      pbSeenForm(pokemon)
+    end
+  }
 })
 
-MultipleForms.register(:SKORUPI,{
-"dexEntry"=>proc{|pokemon|
-   next if pokemon.form==0      # Normal
-   next "Skorupi gather in hordes, sweeping through farms for food and places to breed."     # Mystic
-},
-"type1"=>proc{|pokemon|
-   next if pokemon.form==0      # Normal
-   next getID(PBTypes,:DRAGON)    # Mystic
-},
-"type2"=>proc{|pokemon|
-   next if pokemon.form==0      # Normal
-   next getID(PBTypes,:DRAGON)    # Mystic
-},
-"getBaseStats"=>proc{|pokemon|
-   next if pokemon.form==0      # Normal
-   next [65,50,90,30,40,55]   # Mystic
-},
-"getMoveList"=>proc{|pokemon|
-   next if pokemon.form==0      # Normal
-   movelist=[]
-   case pokemon.form            # Mystic
-     when 1 ; movelist=[[1,:LEER],[1,:SCRATCH],[3,:HONECLAWS],[6,:BITE],
-                        [9,:PURSUIT],[12,:DRAGONRAGE],[15,:HOWL],[18,:BRUTALSWING],
-                        [21,:DUALCHOP],[24,:KNOCKOFF],[27,:SCARYFACE],[30,:REVENGE],
-                        [33,:NIGHTSLASH],[36,:DRAGONTAIL],[39,:FALSESWIPE],
-                        [42,:DRAGONCLAW],[45,:ACUPRESSURE],[48,:SUPERPOWER]]
-   end
-   for i in movelist
-     i[1]=getConst(PBMoves,i[1])
-   end
-   next movelist
-},
-"getMoveCompatibility"=>proc{|pokemon|
-  next if pokemon.form==0
-  movelist=[]
-  case pokemon.form
-  when 1; movelist=[
-      :STRENGTH,:WORKUP,:DRAGONCLAW,:ROAR,:BULKUP,:TAUNT,:PROTECT,:FRUSTRATION,:SMACKDOWN,
-  :EARTHQUAKE,:RETURN,:DIG,:BRICKBREAK,:TORMENT,:REST,:THIEF,:LOWSWEEP,:FALSESWIPE,:QUASH,
-  :EMBARGO,:SHADOWCLAW,:PAYBACK,:GIGAIMPACT,:STONEEDGE,:SWORDSDANCE,:BULLDOZE,:ROCKSLIDE,
-  :XSCISSOR,:DRAGONTAIL,:POISONJAB,:INFESTATION,:SWAGGER,:SLEEPTALK,:ROCKSMASH,
-  :POWERUPPUNCH,:ROCKCLIMB,:POISONSWEEP,:STACKINGSHOT,:SLASHANDBURN,:IRRITATION,
-  :BRUTALSWING,:LEECHLIFE,:SCREECH,:SCARYFACE,:CROSSPOISON,:RAZORSHELL,
-  :BREAKINGSWIPE,:HONECLAWS,:SUCKERPUNCH,:RETALIATE,:CONDESCEND,:PINCERGRIP,
-  :FOCUSBLAST,:FLAMETHROWER,:SLUDGEWAVE,:SLUDGEBOMB,:DARKPULSE,:HYPERBEAM,:HIDDENPOWER,
-  :VENOSHOCK,:FIREBLAST,:INCINERATE,:ASSURANCE,:SNARL,:ICEFANG,:FIREFANG,:THUNDERFANG,:DUALCHOP]
-      end
-      for i in 0...movelist.length
-        movelist[i]=getConst(PBMoves,movelist[i])
-      end
-      next movelist
-},
-"ability"=>proc{|pokemon|
-   next if pokemon.form==0 # Normal
-   if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0) # Mystic
-     next getID(PBAbilities,:BATTLEARMOR)
-   elsif pokemon.abilityIndex==1 || (pokemon.abilityflag && pokemon.abilityflag==1) # Mystic
-     next getID(PBAbilities,:MOLDBREAKER)
-   elsif pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)
-     next getID(PBAbilities,:CONTRARY)       
-   end
-},
-"getFormOnCreation"=>proc{|pokemon|
-   maps=[]   # Map IDs for second form
-   if $game_map && maps.include?($game_map.map_id)
-     next 1
-   else
-     next 0
-   end
-},
-"onSetForm"=>proc{|pokemon,form|
-   pbSeenForm(pokemon)
-}
-})
-
-MultipleForms.register(:DRAPION,{
-"dexEntry"=>proc{|pokemon|
-   next if pokemon.form==0      # Normal
-   next "Drapion lead hordes of Skorupi to pillage villages and farms."     # Mystic
-},
-"type1"=>proc{|pokemon|
-   next if pokemon.form==0      # Normal
-   next getID(PBTypes,:DRAGON)    # Mystic
-},
-"type2"=>proc{|pokemon|
-   next if pokemon.form==0      # Normal
-   next getID(PBTypes,:DRAGON)    # Mystic
-},
-"getBaseStats"=>proc{|pokemon|
-   next if pokemon.form==0      # Normal
-   next [95,90,110,60,70,75]   # Mystic
-},
-"getMoveList"=>proc{|pokemon|
-   next if pokemon.form==0      # Normal
-   movelist=[]
-   case pokemon.form            # Mystic
-     when 1 ; movelist=[[0,:DRAGONCLAW],[1,:LEER],[1,:SCRATCH],[1,:GLARE],[1,:DRAGONRUSH],
-                        [3,:HONECLAWS],[6,:BITE],[9,:PURSUIT],[12,:DRAGONRAGE],[15,:HOWL],
-                        [18,:BRUTALSWING],[21,:DUALCHOP],[24,:KNOCKOFF],[27,:SCARYFACE],
-                        [30,:REVENGE],[33,:NIGHTSLASH],[36,:DRAGONTAIL],[39,:FALSESWIPE],
-                        [44,:FLAMETHROWER],[49,:ACUPRESSURE],[54,:SUPERPOWER]]
-   end
-   for i in movelist
-     i[1]=getConst(PBMoves,i[1])
-   end
-   next movelist
-},
-"getMoveCompatibility"=>proc{|pokemon|
-  next if pokemon.form==0
-  movelist=[]
-  case pokemon.form
-  when 1; movelist=[
-      :STRENGTH,:WORKUP,:DRAGONCLAW,:ROAR,:BULKUP,:TAUNT,:PROTECT,:FRUSTRATION,:SMACKDOWN,
-  :EARTHQUAKE,:RETURN,:DIG,:BRICKBREAK,:TORMENT,:REST,:THIEF,:LOWSWEEP,:FALSESWIPE,:QUASH,
-  :EMBARGO,:SHADOWCLAW,:PAYBACK,:GIGAIMPACT,:STONEEDGE,:SWORDSDANCE,:BULLDOZE,:ROCKSLIDE,
-  :XSCISSOR,:DRAGONTAIL,:POISONJAB,:INFESTATION,:SWAGGER,:SLEEPTALK,:ROCKSMASH,
-  :POWERUPPUNCH,:ROCKCLIMB,:POISONSWEEP,:STACKINGSHOT,:SLASHANDBURN,:IRRITATION,
-  :BRUTALSWING,:LEECHLIFE,:SCREECH,:SCARYFACE,:CROSSPOISON,:RAZORSHELL,
-  :BREAKINGSWIPE,:HONECLAWS,:SUCKERPUNCH,:RETALIATE,:CONDESCEND,:PINCERGRIP,
-  :FOCUSBLAST,:FLAMETHROWER,:SLUDGEWAVE,:SLUDGEBOMB,:DARKPULSE,:HYPERBEAM,:HIDDENPOWER,
-  :VENOSHOCK,:FIREBLAST,:INCINERATE,:ASSURANCE,:SNARL,:ICEFANG,:FIREFANG,:THUNDERFANG]
-      end
-      for i in 0...movelist.length
-        movelist[i]=getConst(PBMoves,movelist[i])
-      end
-      next movelist
-},
-"ability"=>proc{|pokemon|
-   next if pokemon.form==0 # Normal
-   if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0) # Mystic
-     next getID(PBAbilities,:BATTLEARMOR)
-   elsif pokemon.abilityIndex==1 || (pokemon.abilityflag && pokemon.abilityflag==1) # Mystic
-     next getID(PBAbilities,:MOLDBREAKER)
-   elsif pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)
-     next getID(PBAbilities,:CONTRARY)       
-   end
-},
-"getFormOnCreation"=>proc{|pokemon|
-   maps=[]   # Map IDs for second form
-   if $game_map && maps.include?($game_map.map_id)
-     next 1
-   else
-     next 0
-   end
-},
-"onSetForm"=>proc{|pokemon,form|
-   pbSeenForm(pokemon)
-}
-})
-
-
-MultipleForms.register(:LARVITAR,{
-"type1"=>proc{|pokemon|
-   next if pokemon.form==0      # Normal
-   next getID(PBTypes,:BUG)    # Mystic
-},
-"type2"=>proc{|pokemon|
-   next if pokemon.form==0      # Normal
-   next getID(PBTypes,:DARK)    # Mystic
-},
-"getBaseStats"=>proc{|pokemon|
-   next if pokemon.form==0      # Normal
-   next [50,64,50,45,41,50]   # Mystic
-},
-"getMoveList"=>proc{|pokemon|
-   next if pokemon.form==0      # Normal
-   movelist=[]
-   case pokemon.form            # Mystic
-     when 1 ; movelist=[[1,:BITE],[1,:LEER],[5,:WITHDRAW],[10,:SCREECH],
-                        [14,:FURYATTACK],[19,:BUGBITE],[23,:SCARYFACE],
-                        [28,:CHIPAWAY],[32,:LUNGE],[37,:PAYBACK],[41,:CRUNCH],
-                        [46,:CLOSECOMBAT],[50,:MEGAHORN],[55,:GIGAIMPACT]]
-   end
-   for i in movelist
-     i[1]=getConst(PBMoves,i[1])
-   end
-   next movelist
-},
-"ability"=>proc{|pokemon|
-   next if pokemon.form==0 # Normal
-   if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0) # Mystic
-     next getID(PBAbilities,:SWARM)
-   elsif pokemon.abilityIndex==1 || (pokemon.abilityflag && pokemon.abilityflag==1) # Mystic
-     next getID(PBAbilities,:SWARM)
-   elsif pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)
-     next getID(PBAbilities,:SNIPER)       
-   end
-},
-"getFormOnCreation"=>proc{|pokemon|
-   maps=[]   # Map IDs for second form
-   if $game_map && maps.include?($game_map.map_id)
-     next 1
-   else
-     next 0
-   end
-},
-"onSetForm"=>proc{|pokemon,form|
-   pbSeenForm(pokemon)
-}
+MultipleForms.register(:RIOLU,{
+  "type1"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:FAIRY)    # Mystic
+  },
+  "type2"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:FAIRY)    # Mystic
+  },
+  "getBaseStats"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next [70, 40, 40, 35, 60, 40]   # Mystic
+  },
+  "ability"=>proc{|pokemon|
+    next if pokemon.form!=1 # Only Mystic form
+    if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0)
+      next getID(PBAbilities,:OBLIVIOUS)
+    end
+    if pokemon.abilityIndex==1 || (pokemon.abilityflag && pokemon.abilityflag==1)
+      next getID(PBAbilities,:INNERFOCUS)
+    end
+    if pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)
+      next getID(PBAbilities,:STEELWORKER)
+    end
+  },
+  "getMoveList"=>proc{|pokemon|
+    movelist=[]
+    # TODO: Fill Mystic Riolu movelist as [level,:MOVE] entries
+    for i in movelist
+      i[1]=getConst(PBMoves,i[1])
+    end
+    next movelist
+  },
+  "onSetForm"=>proc{|pokemon,form|
+    if form==1
+      pbSeenForm(pokemon)
+    end
+  }
 })
 
 MultipleForms.register(:LUCARIO,{
-"type1"=>proc{|pokemon|
-   next if pokemon.form==0      # Normal
-   next getID(PBTypes,:GROUND)    # Mystic
-},
-"type2"=>proc{|pokemon|
-   next if pokemon.form==0      # Normal
-   next getID(PBTypes,:FAIRY)    # Mystic
-},
-"getBaseStats"=>proc{|pokemon|
-   next if pokemon.form==0      # Normal
-   next [115,90,70,70,110,70]   # Mystic
-},
-"getMoveList"=>proc{|pokemon|
-   next if pokemon.form==0      # Normal
-   movelist=[]
-   case pokemon.form            # Mystic
-     when 1 ; movelist=[[1,:BITE],[1,:LEER],[5,:WITHDRAW],[10,:SCREECH],
-                        [14,:FURYATTACK],[19,:BUGBITE],[23,:SCARYFACE],
-                        [28,:CHIPAWAY],[32,:LUNGE],[37,:PAYBACK],[41,:CRUNCH],
-                        [46,:CLOSECOMBAT],[50,:MEGAHORN],[55,:GIGAIMPACT]]
-   end
-   for i in movelist
-     i[1]=getConst(PBMoves,i[1])
-   end
-   next movelist
-},
-"ability"=>proc{|pokemon|
-   next if pokemon.form==0 # Normal
-   if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0) # Mystic
-     next getID(PBAbilities,:REGENERATOR)
-   elsif pokemon.abilityIndex==1 || (pokemon.abilityflag && pokemon.abilityflag==1) # Mystic
-     next getID(PBAbilities,:REGENERATOR)
-   elsif pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)
-     next getID(PBAbilities,:STEELWORKER)       
-   end
-},
-"getFormOnCreation"=>proc{|pokemon|
-   maps=[]   # Map IDs for second form
-   if $game_map && maps.include?($game_map.map_id)
-     next 1
-   else
-     next 0
-   end
-},
-"onSetForm"=>proc{|pokemon,form|
-   pbSeenForm(pokemon)
-}
+  "type1"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:FAIRY)    # Mystic
+  },
+  "type2"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:GROUND)    # Mystic
+  },
+  "getBaseStats"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next [115, 90, 70, 70, 110, 70]   # Mystic
+  },
+  "ability"=>proc{|pokemon|
+    next if pokemon.form!=1 # Only Mystic form
+    if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0)
+      next getID(PBAbilities,:REGENERATOR)
+    end
+    if pokemon.abilityIndex==1 || (pokemon.abilityflag && pokemon.abilityflag==1)
+      next getID(PBAbilities,:INNERFOCUS)
+    end
+    if pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)
+      next getID(PBAbilities,:STEELWORKER)
+    end
+  },
+  "getMoveList"=>proc{|pokemon|
+    movelist=[]
+    # TODO: Fill Mystic Lucario movelist as [level,:MOVE] entries
+    for i in movelist
+      i[1]=getConst(PBMoves,i[1])
+    end
+    next movelist
+  },
+  "onSetForm"=>proc{|pokemon,form|
+    if form==1
+      pbSeenForm(pokemon)
+    end
+  }
 })
 
-
-## End of Regional Variants ##
-
-#### KUROTSUNE - 001 - START
-MultipleForms.register(:KYOGRE,{
-    "getMegaName"=>proc{|pokemon|
-      next _INTL("Primal Kyogre") if pokemon.form==1
-      next
-    },
-    "getBaseStats"=>proc{|pokemon|
-      next if pokemon.form==0     
-      next [100,150,90,90,180,160] # Primal
-    },
-    "ability"=>proc{|pokemon|
-      next if pokemon.form==0               
-      next getID(PBAbilities,:PRIMORDIALSEA) # Primal
-    },
-    "height"=>proc{|pokemon|
-      next 98 if pokemon.form==1
-      next
-    },
-    "weight"=>proc{|pokemon|
-      next 4300 if pokemon.form==1
-      next
-    },
-    "onSetForm"=>proc{|pokemon,form|
+MultipleForms.register(:GASTLY,{
+  "type1"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:FAIRY)    # Mystic
+  },
+  "type2"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:GHOST)    # Mystic
+  },
+  "getBaseStats"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next [80, 100, 30, 35, 35, 30]   # Mystic
+  },
+  "ability"=>proc{|pokemon|
+    next if pokemon.form!=1 # Only Mystic form
+    if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0)
+      next getID(PBAbilities,:ILLUSION)
+    end
+    if pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)
+      next getID(PBAbilities,:INFILTRATOR)
+    end
+  },
+  "getMoveList"=>proc{|pokemon|
+    movelist=[]
+    # TODO: Fill Mystic Gastly movelist as [level,:MOVE] entries
+    for i in movelist
+      i[1]=getConst(PBMoves,i[1])
+    end
+    next movelist
+  },
+  "onSetForm"=>proc{|pokemon,form|
+    if form==1
       pbSeenForm(pokemon)
-    }
-  })
+    end
+  }
+})
 
-
-MultipleForms.register(:GROUDON,{
-    "getMegaName"=>proc{|pokemon|
-      next _INTL("Primal Groudon") if pokemon.form==1
-      next
-    },
-    "getBaseStats"=>proc{|pokemon|
-      next if pokemon.form==0     
-      next [100,180,160,90,150,90] # Primal
-    },
-    "type2"=>proc{|pokemon|
-      next if pokemon.form==0     
-      next getID(PBTypes,:FIRE)  # Primal
-    },   
-    "ability"=>proc{|pokemon|
-      next if pokemon.form==0               
-      next getID(PBAbilities,:DESOLATELAND) # Primal
-    },
-    "height"=>proc{|pokemon|
-      next 50 if pokemon.form==1
-      next
-    },
-    "weight"=>proc{|pokemon|
-      next 9997 if pokemon.form==1
-      next
-    },
-    "onSetForm"=>proc{|pokemon,form|
+MultipleForms.register(:HAUNTER,{
+  "type1"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:FAIRY)    # Mystic
+  },
+  "type2"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:GHOST)    # Mystic
+  },
+  "getBaseStats"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next [95, 115, 45, 55, 50, 45]   # Mystic
+  },
+  "ability"=>proc{|pokemon|
+    next if pokemon.form!=1 # Only Mystic form
+    if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0)
+      next getID(PBAbilities,:ILLUSION)
+    end
+    if pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)
+      next getID(PBAbilities,:INFILTRATOR)
+    end
+  },
+  "getMoveList"=>proc{|pokemon|
+    movelist=[]
+    # TODO: Fill Mystic Haunter movelist as [level,:MOVE] entries
+    for i in movelist
+      i[1]=getConst(PBMoves,i[1])
+    end
+    next movelist
+  },
+  "onSetForm"=>proc{|pokemon,form|
+    if form==1
       pbSeenForm(pokemon)
-    }
-  })
-
-
-
-#### KUROTSUNE - 001 - END
-##### Mega Evolution forms #####################################################
-
-
-MultipleForms.register(:VENUSAUR,{
-    "getMegaForm"=>proc{|pokemon|
-      next 1 if (isConst?(pokemon.item,PBItems,:VENUSAURITE) || pokemon.isPreMega?)
-      next
-    },
-    "getUnmegaForm"=>proc{|pokemon|
-      next 0
-    },
-    "getMegaName"=>proc{|pokemon|
-      next _INTL("Mega Venusaur") if pokemon.form==1
-      next
-    },
-    "getBaseStats"=>proc{|pokemon|
-      next [80,100,123,80,122,120] if pokemon.form==1
-      next
-    },
-    "ability"=>proc{|pokemon|
-      next getID(PBAbilities,:THICKFAT) if pokemon.form==1
-      next
-    },
-    "height"=>proc{|pokemon|
-      next 24 if pokemon.form==1
-      next
-    },
-    "weight"=>proc{|pokemon|
-      next 1555 if pokemon.form==1
-      next
-    },
-    "onSetForm"=>proc{|pokemon,form|
-      pbSeenForm(pokemon)
-    }
-  })
-
-
-MultipleForms.register(:CHARIZARD,{
-    "getMegaForm"=>proc{|pokemon|
-      next 1 if (isConst?(pokemon.item,PBItems,:CHARIZARDITEX) || pokemon.isPreMega?)
-      next 2 if (isConst?(pokemon.item,PBItems,:CHARIZARDITEY) || pokemon.isPreMega?)
-      next 3 if (isConst?(pokemon.item,PBItems,:CHARIZARDITEG) || pokemon.isPreMega?)
-    },
-    "getUnmegaForm"=>proc{|pokemon|
-      next 0
-    },
-    "getMegaName"=>proc{|pokemon|
-      next _INTL("Mega Charizard X") if pokemon.form==1
-      next _INTL("Mega Charizard Y") if pokemon.form==2
-      next _INTL("Mega Charizard G") if pokemon.form==3
-    },
-    "getBaseStats"=>proc{|pokemon|
-      next [78,130,111,100,130,85] if pokemon.form==1
-      next [78,104,78,100,159,115] if pokemon.form==2
-      next [78,119,98,105,134,105] if pokemon.form==3
-    },
-    "type2"=>proc{|pokemon|
-      next getID(PBTypes,:DRAGON) if pokemon.form==1
-      next
-    },
-    "ability"=>proc{|pokemon|
-      next getID(PBAbilities,:TOUGHCLAWS) if pokemon.form==1
-      next getID(PBAbilities,:DROUGHT) if pokemon.form==2
-      next getID(PBAbilities,:SOLARPOWER) if pokemon.form==3
-    },
-    "weight"=>proc{|pokemon|
-      next 1105 if pokemon.form==1
-      next 1005 if pokemon.form==2
-      next 2216 if pokemon.form==3
-    },
-    "onSetForm"=>proc{|pokemon,form|
-      pbSeenForm(pokemon)
-    }
-  })
-
-MultipleForms.register(:BLASTOISE,{
-    "getMegaForm"=>proc{|pokemon|
-      next 1 if (isConst?(pokemon.item,PBItems,:BLASTOISINITE) || pokemon.isPreMega?)
-      next
-    },
-    "getUnmegaForm"=>proc{|pokemon|
-      next 0
-    },
-    "getMegaName"=>proc{|pokemon|
-      next _INTL("Mega Blastoise") if pokemon.form==1
-      next
-    },
-    "getBaseStats"=>proc{|pokemon|
-      next [79,103,120,78,135,115] if pokemon.form==1
-      next
-    },
-    "ability"=>proc{|pokemon|
-      next getID(PBAbilities,:MEGALAUNCHER) if pokemon.form==1
-      next
-    },
-    "weight"=>proc{|pokemon|
-      next 1011 if pokemon.form==1
-      next
-    },
-    "onSetForm"=>proc{|pokemon,form|
-      pbSeenForm(pokemon)
-    }
-  })
-
-MultipleForms.register(:ALAKAZAM,{
-    "getMegaForm"=>proc{|pokemon|
-      next 1 if (isConst?(pokemon.item,PBItems,:ALAKAZITE)|| pokemon.isPreMega?)
-      next
-    },
-    "getUnmegaForm"=>proc{|pokemon|
-      next 0
-    },
-    "getMegaName"=>proc{|pokemon|
-      next _INTL("Mega Alakazam") if pokemon.form==1
-      next
-    },
-    "getBaseStats"=>proc{|pokemon|
-      next [55,50,65,150,175,105] if pokemon.form==1
-      next
-    },
-    "ability"=>proc{|pokemon|
-      next getID(PBAbilities,:TRACE) if pokemon.form==1
-      next
-    },
-    "weight"=>proc{|pokemon|
-      next 480 if pokemon.form==1
-      next
-    },
-    "onSetForm"=>proc{|pokemon,form|
-      pbSeenForm(pokemon)
-    }
-  })
+    end
+  }
+})
 
 MultipleForms.register(:GENGAR,{
-    "getMegaForm"=>proc{|pokemon|
-      next 1 if (isConst?(pokemon.item,PBItems,:GENGARITE) || pokemon.isPreMega?)
-      next 2 if isConst?(pokemon.item,PBItems,:GENGARITEG)
-    },
-    "getUnmegaForm"=>proc{|pokemon|
-      next 0
-    },
-    "getMegaName"=>proc{|pokemon|
-      next _INTL("Mega Gengar") if pokemon.form==1
-      next _INTL("Mega Gengar G") if pokemon.form==2
-    },
-    "getBaseStats"=>proc{|pokemon|
-      next [60,65,80,130,170,95] if pokemon.form==1
-      next [90,150,100,110,65,115] if pokemon.form==2
-    },
-    "ability"=>proc{|pokemon|
-      next getID(PBAbilities,:SHADOWTAG) if pokemon.form==1
-      next getID(PBAbilities,:CURSEDBODY) if pokemon.form==2
-    },
-    "height"=>proc{|pokemon|
-    next 611 if pokemon.form==1
-    next
-    },
-    "weight"=>proc{|pokemon|
-      next 405 if pokemon.form==1
-      next 611 if pokemon.form==2
-    },
-    "onSetForm"=>proc{|pokemon,form|
+  "type1"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:FAIRY)    # Mystic
+  },
+  "type2"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:GHOST)    # Mystic
+  },
+  "getBaseStats"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next [110, 130, 60, 75, 65, 60]   # Mystic
+  },
+  "ability"=>proc{|pokemon|
+    next if pokemon.form!=1 # Only Mystic form
+    if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0)
+      next getID(PBAbilities,:ILLUSION)
+    end
+    if pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)
+      next getID(PBAbilities,:MAJESTY)
+    end
+  },
+  "getMoveList"=>proc{|pokemon|
+    movelist=[]
+    # TODO: Fill Mystic Gengar movelist as [level,:MOVE] entries
+    for i in movelist
+      i[1]=getConst(PBMoves,i[1])
+    end
+    next movelist
+  },
+  "onSetForm"=>proc{|pokemon,form|
+    if form==1
       pbSeenForm(pokemon)
-    }
-  })
+    end
+  }
+})
 
-MultipleForms.register(:KANGASKHAN,{
-    "getMegaForm"=>proc{|pokemon|
-      next 1 if (isConst?(pokemon.item,PBItems,:KANGASKHANITE) || pokemon.isPreMega?)
-      next
-    },
-    "getUnmegaForm"=>proc{|pokemon|
-      next 0
-    },
-    "getMegaName"=>proc{|pokemon|
-      next _INTL("Mega Kangaskhan") if pokemon.form==1
-      next
-    },
-    "getBaseStats"=>proc{|pokemon|
-      next [105,125,100,100,60,100] if pokemon.form==1
-      next
-    },
-    "ability"=>proc{|pokemon|
-      #### KUROTSUNE - 004 - START
-      next getID(PBAbilities,:PARENTALBOND) if pokemon.form==1
-      #### KUROTSUNE - 004 - END
-      next
-    },
-    "weight"=>proc{|pokemon|
-      next 1000 if pokemon.form==1
-      next
-    },
-    "onSetForm"=>proc{|pokemon,form|
+MultipleForms.register(:ABRA,{
+  "type1"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:POISON)    # Mystic
+  },
+  "type2"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:FAIRY)    # Mystic
+  },
+  "getBaseStats"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next [25, 15, 90, 20, 55, 105]   # Mystic
+  },
+  "ability"=>proc{|pokemon|
+    next if pokemon.form!=1 # Only Mystic form
+    if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0)
+      next getID(PBAbilities,:SHIELDDUST)
+    end
+    if pokemon.abilityIndex==1 || (pokemon.abilityflag && pokemon.abilityflag==1)
+      next getID(PBAbilities,:WONDERSKIN)
+    end
+    if pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)
+      next getID(PBAbilities,:POWEROFALCHEMY)
+    end
+  },
+  "getMoveList"=>proc{|pokemon|
+    movelist=[]
+    # TODO: Fill Mystic Abra movelist as [level,:MOVE] entries
+    for i in movelist
+      i[1]=getConst(PBMoves,i[1])
+    end
+    next movelist
+  },
+  "onSetForm"=>proc{|pokemon,form|
+    if form==1
       pbSeenForm(pokemon)
-    }
-  })
+    end
+  }
+})
 
-MultipleForms.register(:PINSIR,{
-    "getMegaForm"=>proc{|pokemon|
-      next 1 if (isConst?(pokemon.item,PBItems,:PINSIRITE) || pokemon.isPreMega?)
-      next
-    },
-    "getUnmegaForm"=>proc{|pokemon|
-      next 0
-    },
-    "getMegaName"=>proc{|pokemon|
-      next _INTL("Mega Pinsir") if pokemon.form==1
-      next
-    },
-    "getBaseStats"=>proc{|pokemon|
-      next [65,155,120,105,65,90] if pokemon.form==1
-      next
-    },
-    "type2"=>proc{|pokemon|
-      next getID(PBTypes,:FLYING) if pokemon.form==1
-      next
-    },
-    "ability"=>proc{|pokemon|
-      next getID(PBAbilities,:AERILATE) if pokemon.form==1
-      next
-    },
-    "weight"=>proc{|pokemon|
-      next 590 if pokemon.form==1
-      next
-    },
-    "onSetForm"=>proc{|pokemon,form|
+MultipleForms.register(:KADABRA,{
+  "type1"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:POISON)    # Mystic
+  },
+  "type2"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:FAIRY)    # Mystic
+  },
+  "getBaseStats"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next [40, 30, 105, 35, 70, 120]   # Mystic
+  },
+  "ability"=>proc{|pokemon|
+    next if pokemon.form!=1 # Only Mystic form
+    if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0)
+      next getID(PBAbilities,:SHIELDDUST)
+    end
+    if pokemon.abilityIndex==1 || (pokemon.abilityflag && pokemon.abilityflag==1)
+      next getID(PBAbilities,:WONDERSKIN)
+    end
+    if pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)
+      next getID(PBAbilities,:POWEROFALCHEMY)
+    end
+  },
+  "getMoveList"=>proc{|pokemon|
+    movelist=[]
+    # TODO: Fill Mystic Kadabra movelist as [level,:MOVE] entries
+    for i in movelist
+      i[1]=getConst(PBMoves,i[1])
+    end
+    next movelist
+  },
+  "onSetForm"=>proc{|pokemon,form|
+    if form==1
       pbSeenForm(pokemon)
-    }
-  })
+    end
+  }
+})
 
-MultipleForms.register(:GYARADOS,{
-    "getMegaForm"=>proc{|pokemon|
-      next 1 if (isConst?(pokemon.item,PBItems,:GYARADOSITE) || pokemon.isPreMega?)
-      next 2 if ((pokemon.item == PBItems::DEMONSTONE) && pokemon.form==0)
-      next 3 if ((pokemon.item == PBItems::DEMONSTONE) && pokemon.form==3)
-      next
-    },
-    "getUnmegaForm"=>proc{|pokemon|
-      next 0
-      next 3 if pokemon.form==3
-      next
-    },
-    "getMegaName"=>proc{|pokemon|
-      next _INTL("Mega Gyarados") if pokemon.form==1
-      next _INTL("Rift Gyarados") if pokemon.form==2
-      next
-    },
-    "getBaseStats"=>proc{|pokemon|
-      next [95,155,109,81,70,130] if pokemon.form==1
-      next [70,110,100,100,90,78] if pokemon.form==2
-      next [300,110,150,51,100,150] if pokemon.form==3
-      next
-    },
-    "type2"=>proc{|pokemon|
-      next getID(PBTypes,:DARK) if pokemon.form==1
-      next getID(PBTypes,:GHOST) if pokemon.form==2
-      next getID(PBTypes,:STEEL) if pokemon.form==3
-      next
-    },
-    "ability"=>proc{|pokemon|
-      next getID(PBAbilities,:MOLDBREAKER) if pokemon.form==1
-      next getID(PBAbilities,:INTIMIDATE2) if pokemon.form==2
-      next getID(PBAbilities,:LIQUIDVOICE) if pokemon.form==3
-      next
-    },
-    "weight"=>proc{|pokemon|
-      next 3050 if pokemon.form==1
-      next 3060 if pokemon.form==2
-      next 9060 if pokemon.form==3
-    },
-    "onSetForm"=>proc{|pokemon,form|
+MultipleForms.register(:ALAKAZAM,{
+  "type1"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:POISON)    # Mystic
+  },
+  "type2"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:FAIRY)    # Mystic
+  },
+  "getBaseStats"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next [55, 45, 120, 50, 95, 135]   # Mystic
+  },
+  "ability"=>proc{|pokemon|
+    next if pokemon.form!=1 # Only Mystic form
+    if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0)
+      next getID(PBAbilities,:SHIELDDUST)
+    end
+    if pokemon.abilityIndex==1 || (pokemon.abilityflag && pokemon.abilityflag==1)
+      next getID(PBAbilities,:WONDERSKIN)
+    end
+    if pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)
+      next getID(PBAbilities,:POWEROFALCHEMY)
+    end
+  },
+  "getMoveList"=>proc{|pokemon|
+    movelist=[]
+    # TODO: Fill Mystic Alakazam movelist as [level,:MOVE] entries
+    for i in movelist
+      i[1]=getConst(PBMoves,i[1])
+    end
+    next movelist
+  },
+  "onSetForm"=>proc{|pokemon,form|
+    if form==1
       pbSeenForm(pokemon)
-    }
-  })
+    end
+  }
+})
 
-MultipleForms.register(:AERODACTYL,{
-    "getMegaForm"=>proc{|pokemon|
-      next 1 if (isConst?(pokemon.item,PBItems,:AERODACTYLITE) || pokemon.isPreMega?)
-      next
-    },
-    "getUnmegaForm"=>proc{|pokemon|
-      next 0
-    },
-    "getMegaName"=>proc{|pokemon|
-      next _INTL("Mega Aerodactyl") if pokemon.form==1
-      next
-    },
-    "getBaseStats"=>proc{|pokemon|
-      next [80,135,85,150,70,95] if pokemon.form==1
-      next
-    },
-    "ability"=>proc{|pokemon|
-      next getID(PBAbilities,:TOUGHCLAWS) if pokemon.form==1
-      next
-    },
-    "weight"=>proc{|pokemon|
-      next 790 if pokemon.form==1
-      next
-    },
-    "onSetForm"=>proc{|pokemon,form|
+MultipleForms.register(:MACHOP,{
+  "type1"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:DARK)    # Mystic
+  },
+  "type2"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:STEEL)    # Mystic
+  },
+  "getBaseStats"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next [35, 70, 35, 80, 50, 35]   # Mystic
+  },
+  "ability"=>proc{|pokemon|
+    next if pokemon.form!=1 # Only Mystic form
+    if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0)
+      next getID(PBAbilities,:PRESSURE)
+    end
+    if pokemon.abilityIndex==1 || (pokemon.abilityflag && pokemon.abilityflag==1)
+      next getID(PBAbilities,:NOGUARD)
+    end
+    if pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)
+      next getID(PBAbilities,:STALKER)
+    end
+  },
+  "getMoveList"=>proc{|pokemon|
+    movelist=[]
+    # TODO: Fill Mystic Machop movelist as [level,:MOVE] entries
+    for i in movelist
+      i[1]=getConst(PBMoves,i[1])
+    end
+    next movelist
+  },
+  "onSetForm"=>proc{|pokemon,form|
+    if form==1
       pbSeenForm(pokemon)
-    }
-  })
+    end
+  }
+})
 
-MultipleForms.register(:MEWTWO,{
-    "getMegaForm"=>proc{|pokemon|
-      next 1 if (isConst?(pokemon.item,PBItems,:MEWTWONITEX) || pokemon.isPreMega?)
-      next 2 if (isConst?(pokemon.item,PBItems,:MEWTWONITEY) || pokemon.isPreMega?)
-      next
-    },
-    "getUnmegaForm"=>proc{|pokemon|
-      next 0
-    },
-    "getMegaName"=>proc{|pokemon|
-      next _INTL("Mega Mewtwo X") if pokemon.form==1
-      next _INTL("Mega Mewtwo Y") if pokemon.form==2
-      next
-    },
-    "getBaseStats"=>proc{|pokemon|
-      next [106,190,100,130,154,100] if pokemon.form==1
-      next [106,150,70,140,194,120] if pokemon.form==2
-      next
-    },
-    "type2"=>proc{|pokemon|
-      next getID(PBTypes,:FIGHTING) if pokemon.form==1
-      next
-    },
-    "ability"=>proc{|pokemon|
-      next getID(PBAbilities,:STEADFAST) if pokemon.form==1
-      next getID(PBAbilities,:INSOMNIA) if pokemon.form==2
-      next
-    },
-    "weight"=>proc{|pokemon|
-      next 1270 if pokemon.form==1
-      next 330 if pokemon.form==2
-      next
-    },
-    "onSetForm"=>proc{|pokemon,form|
+MultipleForms.register(:MACHOKE,{
+  "type1"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:DARK)    # Mystic
+  },
+  "type2"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:STEEL)    # Mystic
+  },
+  "getBaseStats"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next [50, 80, 60, 100, 70, 45]   # Mystic
+  },
+  "ability"=>proc{|pokemon|
+    next if pokemon.form!=1 # Only Mystic form
+    if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0)
+      next getID(PBAbilities,:PRESSURE)
+    end
+    if pokemon.abilityIndex==1 || (pokemon.abilityflag && pokemon.abilityflag==1)
+      next getID(PBAbilities,:NOGUARD)
+    end
+    if pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)
+      next getID(PBAbilities,:STALKER)
+    end
+  },
+  "getMoveList"=>proc{|pokemon|
+    movelist=[]
+    # TODO: Fill Mystic Machoke movelist as [level,:MOVE] entries
+    for i in movelist
+      i[1]=getConst(PBMoves,i[1])
+    end
+    next movelist
+  },
+  "onSetForm"=>proc{|pokemon,form|
+    if form==1
       pbSeenForm(pokemon)
-    }
-  })
-
-MultipleForms.register(:AMPHAROS,{
-    "getMegaForm"=>proc{|pokemon|
-      next 1 if (isConst?(pokemon.item,PBItems,:AMPHAROSITE) || pokemon.isPreMega?)
-    },
-    "getUnmegaForm"=>proc{|pokemon|
-      next 0 if pokemon.form==1
-      next 2 if pokemon.form==2
-    },
-    "getMegaName"=>proc{|pokemon|
-      next _INTL("Mega Ampharos") if pokemon.form==1
-    },
-    "dexEntry"=>proc{|pokemon|
-      next "Its tail and horns glow bright enough to be clearly visible in even the harshest of snowstorms, making it invaluable for rescue missions during extreme weather." if pokemon.form==2 # Aevian
-      next 
-    },
-    
-    "getBaseStats"=>proc{|pokemon|
-      case pokemon.form
-      when 0 # Normal
-        next
-      when 1 # Mega
-        next [90,95,105,45,165,110]
-      when 2 # Aevian
-        next [90,75,90,55,115,85]    
-      end
-    },
-    "type1"=>proc{|pokemon|
-      case pokemon.form
-      when 0  # Normal
-        next
-      when 1  # Mega
-        next
-      when 2  # Aevian
-        next getID(PBTypes,:ICE)
-      end
-    },
-    "type2"=>proc{|pokemon|
-      case pokemon.form
-      when 0  # Normal
-        next
-      when 1  # Mega
-        next getID(PBTypes,:DRAGON)
-      when 2  # Aevian
-        next getID(PBTypes,:ELECTRIC)
-      end
-    },
-    "getMoveList"=>proc{|pokemon|
-      next if pokemon.form==0 || pokemon.form==1     # Normal
-      movelist=[]
-      case pokemon.form            # Aevian
-      when 2 ; movelist=[[1,:THUNDERPUNCH],[1,:ZAPCANNON],[1,:HAZE],[1,:BLIZZARD],[1,:ICEPUNCH],[1,:TACKLE],[1,:HAIL],[1,:THUNDERWAVE],[1,:THUNDERSHOCK],[0,:THUNDERPUNCH],[4,:THUNDERWAVE],[8,:THUNDERSHOCK],[11,:COTTONSPORE],[16,:ICYWIND],[20,:TAKEDOWN],[25,:ICEBALL],[29,:CONFUSERAY],[35,:POWERGEM],[40,:DISCHARGE],[46,:COTTONGUARD],[51,:REST],[57,:REFLECT],[62,:THUNDER],[65,:BLIZZARD]]
-      end
-      for i in movelist
-        i[1]=getConst(PBMoves,i[1])
-      end
-      next movelist
-    },
-    "getMoveCompatibility"=>proc{|pokemon|
-      next if pokemon.form==0 || pokemon.form==1
-      movelist=[]
-      case pokemon.form
-      when 2; movelist=[# TMs
-          :TOXIC,:HAIL,:HIDDENPOWER,:TAUNT,:ICEBEAM,:BLIZZARD,:HYPERBEAM,:PROTECT,:RAINDANCE,:SECRETPOWER,:SAFEGUARD,:FRUSTRATION,:THUNDERBOLT,:THUNDER,:RETURN,:SHADOWBALL,:DOUBLETEAM,:REFLECT,:FACADE,:REST,:ROUND,:ECHOEDVOICE,:FLING,:CHARGEBEAM,:PAYBACK,:GIGAIMPACT,:FLASH,:VOLTSWITCH,:THUNDERWAVE,:GYROBALL,:FROSTBREATH,:SWAGGER,:SLEEPTALK,:SUBSTITUTE,:FLASHCANNON,:WILDCHARGE,:ROCKSMASH,:CONFIDE,:ROCKCLIMB,:AURORAVEIL,:BRUTALSWING,:MEGAPUNCH,:MEGAKICK,:PAYDAY,:BEATUP,:WEATHERBALL,:FAKETEARS,:ICICLESPEAR,:GUARDSWAP,:TAILSLAP,:ELECTRICTERRAIN,:EERIEIMPULSE,:BREAKINGSWIPE,:AVALANCHE,:ZAPCANNON,:METRONOME,:DYNAMICPUNCH,:STRENGTH,
-          # Move Tutors
-          :SNORE,:HEALBELL,:ELECTROWEB,:SHOCKWAVE,:SNATCH,:RECYCLE,:IRONTAIL,:AFTERYOU,:SIGNALBEAM,:MAGNETRISE,:ROLEPLAY,:WATERPULSE,:ICEPUNCH,:THUNDERPUNCH,:ENDEAVOR,:FOCUSPUNCH,:ICYWIND,:LASERFOCUS,:MAGICCOAT,:OUTRAGE,:SKILLSWAP,:DRAGONPULSE,:BODYSLAM,:AGILITY,:ENDURE,:DRAGONDANCE,:POWERGEM,:ELECTROBALL,:PLAYROUGH,:BODYPRESS]
-      end
-      for i in 0...movelist.length
-        movelist[i]=getConst(PBMoves,movelist[i])
-      end
-      next movelist
-    },
-    "ability"=>proc{|pokemon|
-      case pokemon.form
-      when 0 # Normal
-        next
-      when 1
-        next getID(PBAbilities,:MOLDBREAKER)
-      when 2 # Aevian
-        if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0)
-          next getID(PBAbilities,:FILTER)
-        elsif pokemon.abilityIndex!=0 || (pokemon.abilityflag && pokemon.abilityflag==1)
-          next getID(PBAbilities,:COTTONDOWN)
-        end
-      end  
-    },
-    "weight"=>proc{|pokemon|
-      next 615 if pokemon.form==1
-      next
-    },
-    "onSetForm"=>proc{|pokemon,form|
-      pbSeenForm(pokemon)
-    }
-  })
-
-MultipleForms.register(:SCIZOR,{
-    "getMegaForm"=>proc{|pokemon|
-      next 1 if (isConst?(pokemon.item,PBItems,:SCIZORITE) || pokemon.isPreMega?)
-      next
-    },
-    "getUnmegaForm"=>proc{|pokemon|
-      next 0
-    },
-    "getMegaName"=>proc{|pokemon|
-      next _INTL("Mega Scizor") if pokemon.form==1
-      next
-    },
-    "getBaseStats"=>proc{|pokemon|
-      next [70,150,140,75,65,100] if pokemon.form==1
-      next
-    },
-    "ability"=>proc{|pokemon|
-      next getID(PBAbilities,:TECHNICIAN) if pokemon.form==1
-      next
-    },
-    "weight"=>proc{|pokemon|
-      next 1250 if pokemon.form==1
-      next
-    },
-    "onSetForm"=>proc{|pokemon,form|
-      pbSeenForm(pokemon)
-    }
-  })
-
-MultipleForms.register(:HERACROSS,{
-    "getMegaForm"=>proc{|pokemon|
-      next 1 if (isConst?(pokemon.item,PBItems,:HERACRONITE) || pokemon.isPreMega?)
-      next
-    },
-    "getUnmegaForm"=>proc{|pokemon|
-      next 0
-    },
-    "getMegaName"=>proc{|pokemon|
-      next _INTL("Mega Heracross") if pokemon.form==1
-      next
-    },
-    "getBaseStats"=>proc{|pokemon|
-      next [80,185,115,75,40,105] if pokemon.form==1
-      next
-    },
-    "ability"=>proc{|pokemon|
-      next getID(PBAbilities,:SKILLLINK) if pokemon.form==1
-      next
-    },
-    "weight"=>proc{|pokemon|
-      next 625 if pokemon.form==1
-      next
-    },
-    "onSetForm"=>proc{|pokemon,form|
-      pbSeenForm(pokemon)
-    }
-  })
-
-MultipleForms.register(:HOUNDOOM,{
-    "getMegaForm"=>proc{|pokemon|
-      next 1 if isConst?(pokemon.item,PBItems,:HOUNDOOMINITE) || pokemon.isPreMega?
-      next
-    },
-    "getUnmegaForm"=>proc{|pokemon|
-      next 0
-    },
-    "getMegaName"=>proc{|pokemon|
-      next _INTL("Mega Houndoom") if pokemon.form==1
-      next
-    },
-    "getBaseStats"=>proc{|pokemon|
-      next [75,90,90,115,140,90] if pokemon.form==1
-      next
-    },
-    "ability"=>proc{|pokemon|
-      next getID(PBAbilities,:SOLARPOWER) if pokemon.form==1
-      next
-    },
-    "weight"=>proc{|pokemon|
-      next 495 if pokemon.form==1
-      next
-    },
-    "onSetForm"=>proc{|pokemon,form|
-      pbSeenForm(pokemon)
-    }
-  })
-
-MultipleForms.register(:TYRANITAR,{
-    "getMegaForm"=>proc{|pokemon|
-      next 1 if (isConst?(pokemon.item,PBItems,:TYRANITARITE) || pokemon.isPreMega?)
-      next
-    },
-    "getUnmegaForm"=>proc{|pokemon|
-      next 0
-    },
-    "getMegaName"=>proc{|pokemon|
-      next _INTL("Mega Tyranitar") if pokemon.form==1
-      next
-    },
-    "getBaseStats"=>proc{|pokemon|
-      next [100,164,150,71,95,120] if pokemon.form==1
-      next
-    },
-    "ability"=>proc{|pokemon|
-      next getID(PBAbilities,:SANDSTREAM) if pokemon.form==1
-      next
-    },
-    "weight"=>proc{|pokemon|
-      next 2550 if pokemon.form==1
-      next
-    },
-    "onSetForm"=>proc{|pokemon,form|
-      pbSeenForm(pokemon)
-    }
-  })
-
-MultipleForms.register(:GARDEVOIR,{
-    "getMegaForm"=>proc{|pokemon|
-      next 1 if isConst?(pokemon.item,PBItems,:GARDEVOIRITE) || pokemon.isPreMega?
-      next 2 if isConst?(pokemon.item,PBItems,:DEMONSTONE)
-      next
-    },
-    "getUnmegaForm"=>proc{|pokemon|
-      next 0
-    },
-    "getMegaName"=>proc{|pokemon|
-      next _INTL("Mega Gardevoir") if pokemon.form==1
-      next _INTL("Rift Gardevoir") if pokemon.form==2
-      next
-    },
-    "getBaseStats"=>proc{|pokemon|
-      next [68,85,65,100,165,135] if pokemon.form==1
-      next [150,200,150,135,180,200] if pokemon.form==2
-      next [100,130,100,240,100,100] if pokemon.form==3
-      next [88,65,135,100,165,135] if pokemon.form==4
-      next
-    },
-    "ability"=>proc{|pokemon|
-      next getID(PBAbilities,:PIXILATE) if pokemon.form==1
-      next getID(PBAbilities,:EXECUTION) if pokemon.form==2
-      next getID(PBAbilities,:EXECUTION) if pokemon.form==3
-      next getID(PBAbilities,:PIXILATE) if pokemon.form==4
-      next
-    },
-    "type1"=>proc{|pokemon|
-      next getID(PBTypes,:FAIRY) if pokemon.form==2
-      next getID(PBTypes,:FAIRY) if pokemon.form==3
-      next getID(PBTypes,:FAIRY) if pokemon.form==4
-      next
-    },
-    "type2"=>proc{|pokemon|
-      next getID(PBTypes,:DARK) if pokemon.form==2
-      next getID(PBTypes,:DARK) if pokemon.form==3
-      next getID(PBTypes,:DARK) if pokemon.form==4
-      next
-    },
-    "weight"=>proc{|pokemon|
-      next 484 if pokemon.form==1
-      next 110 if pokemon.form==2
-      next 80 if pokemon.form==3
-      next
-    },
-    "onSetForm"=>proc{|pokemon,form|
-      pbSeenForm(pokemon)
-    }
-  })
-
-MultipleForms.register(:MAWILE,{
-    "getMegaForm"=>proc{|pokemon|
-      next 1 if (isConst?(pokemon.item,PBItems,:MAWILITE) || pokemon.isPreMega?)
-      next
-    },
-    "getUnmegaForm"=>proc{|pokemon|
-      next 0
-    },
-    "getMegaName"=>proc{|pokemon|
-      next _INTL("Mega Mawile") if pokemon.form==1
-      next
-    },
-    "getBaseStats"=>proc{|pokemon|
-      next [50,105,125,50,55,95] if pokemon.form==1
-      next
-    },
-    "ability"=>proc{|pokemon|
-      next getID(PBAbilities,:HUGEPOWER) if pokemon.form==1
-      next
-    },
-    "weight"=>proc{|pokemon|
-      next 235 if pokemon.form==1
-      next
-    },
-    "onSetForm"=>proc{|pokemon,form|
-      pbSeenForm(pokemon)
-    }
-  })
-
-MultipleForms.register(:AGGRON,{
-    "getMegaForm"=>proc{|pokemon|
-      next 1 if (isConst?(pokemon.item,PBItems,:AGGRONITE) || pokemon.isPreMega?)
-    },
-    "getUnmegaForm"=>proc{|pokemon|
-      next 0
-    },
-    "getMegaName"=>proc{|pokemon|
-      next _INTL("Mega Aggron") if pokemon.form==1
-      next
-    },
-    "getBaseStats"=>proc{|pokemon|
-      next [70,140,230,50,60,80] if pokemon.form==1
-      next
-    },
-    "type2"=>proc{|pokemon|
-      next getID(PBTypes,:STEEL) if pokemon.form==1
-      next
-    },
-    "ability"=>proc{|pokemon|
-      next getID(PBAbilities,:FILTER) if pokemon.form==1
-      next
-    },
-    "weight"=>proc{|pokemon|
-      next 3950 if pokemon.form==1
-      next
-    },
-    "onSetForm"=>proc{|pokemon,form|
-      pbSeenForm(pokemon)
-    }
-  })
-
-MultipleForms.register(:MEDICHAM,{
-    "getMegaForm"=>proc{|pokemon|
-      next 1 if (isConst?(pokemon.item,PBItems,:MEDICHAMITE) || pokemon.isPreMega?)
-      next
-    },
-    "getUnmegaForm"=>proc{|pokemon|
-      next 0
-    },
-    "getMegaName"=>proc{|pokemon|
-      next _INTL("Mega Medicham") if pokemon.form==1
-      next
-    },
-    "getBaseStats"=>proc{|pokemon|
-      next [60,100,85,100,80,85] if pokemon.form==1
-      next
-    },
-    "ability"=>proc{|pokemon|
-      next getID(PBAbilities,:PUREPOWER) if pokemon.form==1
-      next
-    },
-    "weight"=>proc{|pokemon|
-      next 315 if pokemon.form==1
-      next
-    },
-    "onSetForm"=>proc{|pokemon,form|
-      pbSeenForm(pokemon)
-    }
-  })
-
-MultipleForms.register(:MANECTRIC,{
-    "getMegaForm"=>proc{|pokemon|
-      next 1 if (isConst?(pokemon.item,PBItems,:MANECTITE) || pokemon.isPreMega?)
-      next
-    },
-    "getUnmegaForm"=>proc{|pokemon|
-      next 0
-    },
-    "getMegaName"=>proc{|pokemon|
-      next _INTL("Mega Manectric") if pokemon.form==1
-      next
-    },
-    "getBaseStats"=>proc{|pokemon|
-      next [70,75,80,135,135,80] if pokemon.form==1
-      next
-    },
-    "ability"=>proc{|pokemon|
-      next getID(PBAbilities,:INTIMIDATE) if pokemon.form==1
-      next
-    },
-    "weight"=>proc{|pokemon|
-      next 440 if pokemon.form==1
-      next
-    },
-    "onSetForm"=>proc{|pokemon,form|
-      pbSeenForm(pokemon)
-    }
-  })
-
-MultipleForms.register(:BANETTE,{
-    "getMegaForm"=>proc{|pokemon|
-      next 1 if (isConst?(pokemon.item,PBItems,:BANETTITE) || pokemon.isPreMega?)
-      next
-    },
-    "getUnmegaForm"=>proc{|pokemon|
-      next 0
-    },
-    "getMegaName"=>proc{|pokemon|
-      next _INTL("Mega Banette") if pokemon.form==1
-      next
-    },
-    "getBaseStats"=>proc{|pokemon|
-      next [64,165,75,75,93,83] if pokemon.form==1
-      next
-    },
-    "ability"=>proc{|pokemon|
-      next getID(PBAbilities,:PRANKSTER) if pokemon.form==1
-      next
-    },
-    "weight"=>proc{|pokemon|
-      next 130 if pokemon.form==1
-      next
-    },
-    "onSetForm"=>proc{|pokemon,form|
-      pbSeenForm(pokemon)
-    }
-  })
-
-MultipleForms.register(:ABSOL,{
-    "getMegaForm"=>proc{|pokemon|
-      next 1 if (isConst?(pokemon.item,PBItems,:ABSOLITE) || pokemon.isPreMega?)
-      next
-    },
-    "getUnmegaForm"=>proc{|pokemon|
-      next 0
-    },
-    "getMegaName"=>proc{|pokemon|
-      next _INTL("Mega Absol") if pokemon.form==1
-      next
-    },
-    "getBaseStats"=>proc{|pokemon|
-      next [65,150,60,115,115,60] if pokemon.form==1
-      next
-    },
-    "ability"=>proc{|pokemon|
-      next getID(PBAbilities,:MAGICBOUNCE) if pokemon.form==1
-      next
-    },
-    "weight"=>proc{|pokemon|
-      next 490 if pokemon.form==1
-      next
-    },
-    "onSetForm"=>proc{|pokemon,form|
-      pbSeenForm(pokemon)
-    }
-  })
-
-MultipleForms.register(:GARCHOMP,{
-    "getMegaForm"=>proc{|pokemon|
-      next 1 if (isConst?(pokemon.item,PBItems,:GARCHOMPITE) || pokemon.isPreMega?)
-      next
-    },
-    "getUnmegaForm"=>proc{|pokemon|
-      next 0
-    },
-    "getMegaName"=>proc{|pokemon|
-      next _INTL("Mega Garchomp") if pokemon.form==1
-      next
-    },
-    "getBaseStats"=>proc{|pokemon|
-      next [108,170,115,92,120,95] if pokemon.form==1
-      next
-    },
-    "ability"=>proc{|pokemon|
-      next getID(PBAbilities,:SANDFORCE) if pokemon.form==1
-      next
-    },
-    "weight"=>proc{|pokemon|
-      next 950 if pokemon.form==1
-      next
-    },
-    "onSetForm"=>proc{|pokemon,form|
-      pbSeenForm(pokemon)
-    }
-  })
-
-MultipleForms.register(:ABOMASNOW,{
-    "getMegaForm"=>proc{|pokemon|
-      next 1 if (isConst?(pokemon.item,PBItems,:ABOMASITE) || pokemon.isPreMega?)
-      next
-    },
-    "getUnmegaForm"=>proc{|pokemon|
-      next 0
-    },
-    "getMegaName"=>proc{|pokemon|
-      next _INTL("Mega Abomasnow") if pokemon.form==1
-      next
-    },
-    "getBaseStats"=>proc{|pokemon|
-      next [90,132,105,30,132,105] if pokemon.form==1
-      next
-    },
-    "ability"=>proc{|pokemon|
-      next getID(PBAbilities,:SNOWWARNING) if pokemon.form==1
-      next
-    },
-    "weight"=>proc{|pokemon|
-      next 1850 if pokemon.form==1
-      next
-    },
-    "onSetForm"=>proc{|pokemon,form|
-      pbSeenForm(pokemon)
-    }
-  })
-
-MultipleForms.register(:BEEDRILL,{
-    "getMegaForm"=>proc{|pokemon|
-      next 1 if (isConst?(pokemon.item,PBItems,:BEEDRILLITE) || pokemon.isPreMega?)
-      next
-    },
-    "getUnmegaForm"=>proc{|pokemon|
-      next 0
-    },
-    "getMegaName"=>proc{|pokemon|
-      next _INTL("Mega Beedrill") if pokemon.form==1
-      next
-    },
-    "getBaseStats"=>proc{|pokemon|
-      next [65,150,40,145,15,80] if pokemon.form==1
-      next
-    },
-    "ability"=>proc{|pokemon|
-      next getID(PBAbilities,:ADAPTABILITY) if pokemon.form==1
-      next
-    },
-    "height"=>proc{|pokemon|
-      next 14 if pokemon.form==1
-      next
-    },
-    "weight"=>proc{|pokemon|
-      next 405 if pokemon.form==1
-      next
-    },
-    "onSetForm"=>proc{|pokemon,form|
-      pbSeenForm(pokemon)
-    }
-  })
-
-MultipleForms.register(:PIDGEOT,{
-    "getMegaForm"=>proc{|pokemon|
-      next 1 if (isConst?(pokemon.item,PBItems,:PIDGEOTITE) || pokemon.isPreMega?)
-      next
-    },
-    "getUnmegaForm"=>proc{|pokemon|
-      next 0
-    },
-    "getMegaName"=>proc{|pokemon|
-      next _INTL("Mega Pidgeot") if pokemon.form==1
-      next
-    },
-    "getBaseStats"=>proc{|pokemon|
-      next [83,80,80,121,135,80] if pokemon.form==1
-      next
-    },
-    "ability"=>proc{|pokemon|
-      next getID(PBAbilities,:NOGUARD) if pokemon.form==1
-      next
-    },
-    "height"=>proc{|pokemon|
-      next 22 if pokemon.form==1
-      next
-    },
-    "weight"=>proc{|pokemon|
-      next 505 if pokemon.form==1
-      next
-    },
-    "onSetForm"=>proc{|pokemon,form|
-      pbSeenForm(pokemon)
-    }
-  })
-
-MultipleForms.register(:SLOWBRO,{
-    "getMegaForm"=>proc{|pokemon|
-      next 1 if (isConst?(pokemon.item,PBItems,:SLOWBRONITE) || pokemon.isPreMega?)
-      next
-    },
-    "getUnmegaForm"=>proc{|pokemon|
-      next 0
-    },
-    "getMegaName"=>proc{|pokemon|
-      next _INTL("Mega Slowbro") if pokemon.form==1
-      next
-    },
-    "getBaseStats"=>proc{|pokemon|
-      next [95,75,180,30,130,80] if pokemon.form==1
-      next
-    },
-    "ability"=>proc{|pokemon|
-      next getID(PBAbilities,:SHELLARMOR) if pokemon.form==1
-      next
-    },
-    "height"=>proc{|pokemon|
-      next 20 if pokemon.form==1
-      next
-    },
-    "weight"=>proc{|pokemon|
-      next 1200 if pokemon.form==1
-      next
-    },
-    "onSetForm"=>proc{|pokemon,form|
-      pbSeenForm(pokemon)
-    }
-  })
-
-MultipleForms.register(:STEELIX,{
-    "getMegaForm"=>proc{|pokemon|
-      next 1 if (isConst?(pokemon.item,PBItems,:STEELIXITE) || pokemon.isPreMega?)
-      next
-    },
-    "getUnmegaForm"=>proc{|pokemon|
-      next 0
-    },
-    "getMegaName"=>proc{|pokemon|
-      next _INTL("Mega Steelix") if pokemon.form==1
-      next
-    },
-    "getBaseStats"=>proc{|pokemon|
-      next [75,125,230,30,55,95] if pokemon.form==1
-      next
-    },
-    "ability"=>proc{|pokemon|
-      next getID(PBAbilities,:SANDFORCE) if pokemon.form==1
-      next
-    },
-    "height"=>proc{|pokemon|
-      next 105 if pokemon.form==1
-      next
-    },
-    "weight"=>proc{|pokemon|
-      next 7400 if pokemon.form==1
-      next
-    },
-    "onSetForm"=>proc{|pokemon,form|
-      pbSeenForm(pokemon)
-    }
-  })
-
-MultipleForms.register(:SABLEYE,{
-    "getMegaForm"=>proc{|pokemon|
-      next 1 if isConst?(pokemon.item,PBItems,:SABLENITE) || pokemon.isPreMega?
-      next
-    },
-    "getUnmegaForm"=>proc{|pokemon|
-      next 0
-    },
-    "getMegaName"=>proc{|pokemon|
-      next _INTL("Mega Sableye") if pokemon.form==1
-      next
-    },
-    "getBaseStats"=>proc{|pokemon|
-      next [50,85,125,20,85,115] if pokemon.form==1
-      next
-    },
-    "ability"=>proc{|pokemon|
-      next getID(PBAbilities,:MAGICBOUNCE) if pokemon.form==1
-      next
-    },
-    "height"=>proc{|pokemon|
-      next 5 if pokemon.form==1
-      next
-    },
-    "weight"=>proc{|pokemon|
-      next 1610 if pokemon.form==1
-      next
-    },
-    "onSetForm"=>proc{|pokemon,form|
-      pbSeenForm(pokemon)
-    }
-  })
-
-MultipleForms.register(:SHARPEDO,{
-    "getMegaForm"=>proc{|pokemon|
-      next 1 if isConst?(pokemon.item,PBItems,:SHARPEDONITE) || pokemon.isPreMega?
-      next
-    },
-    "getUnmegaForm"=>proc{|pokemon|
-      next 0
-    },
-    "getMegaName"=>proc{|pokemon|
-      next _INTL("Mega Sharpedo") if pokemon.form==1
-      next
-    },
-    "getBaseStats"=>proc{|pokemon|
-      next [70,140,70,105,110,65] if pokemon.form==1
-      next
-    },
-    "ability"=>proc{|pokemon|
-      next getID(PBAbilities,:STRONGJAW) if pokemon.form==1
-      next
-    },
-    "height"=>proc{|pokemon|
-      next 25 if pokemon.form==1
-      next
-    },
-    "weight"=>proc{|pokemon|
-      next 1303 if pokemon.form==1
-      next
-    },
-    "onSetForm"=>proc{|pokemon,form|
-      pbSeenForm(pokemon)
-    }
-  })
-
-MultipleForms.register(:CAMERUPT,{
-    "getMegaForm"=>proc{|pokemon|
-      next 1 if isConst?(pokemon.item,PBItems,:CAMERUPTITE) || pokemon.isPreMega?
-      next
-    },
-    "getUnmegaForm"=>proc{|pokemon|
-      next 0
-    },
-    "getMegaName"=>proc{|pokemon|
-      next _INTL("Mega Camerupt") if pokemon.form==1
-      next
-    },
-    "getBaseStats"=>proc{|pokemon|
-      next [70,120,100,20,145,105] if pokemon.form==1
-      next
-    },
-    "ability"=>proc{|pokemon|
-      next getID(PBAbilities,:SHEERFORCE) if pokemon.form==1
-      next
-    },
-    "height"=>proc{|pokemon|
-      next 25 if pokemon.form==1
-      next
-    },
-    "weight"=>proc{|pokemon|
-      next 3205 if pokemon.form==1
-      next
-    },
-    "onSetForm"=>proc{|pokemon,form|
-      pbSeenForm(pokemon)
-    }
-  })
-
-MultipleForms.register(:ALTARIA,{
-    "getMegaForm"=>proc{|pokemon|
-      next 1 if isConst?(pokemon.item,PBItems,:ALTARIANITE) || pokemon.isPreMega?
-      next
-    },
-    "getUnmegaForm"=>proc{|pokemon|
-      next 0
-    },
-    "getMegaName"=>proc{|pokemon|
-      next _INTL("Mega Altaria") if pokemon.form==1
-      next
-    },
-    "getBaseStats"=>proc{|pokemon|
-      next [75,110,110,80,110,105] if pokemon.form==1
-      next
-    },
-    "type2"=>proc{|pokemon|
-      next getID(PBTypes,:FAIRY) if pokemon.form==1
-      next
-    },
-    "ability"=>proc{|pokemon|
-      next getID(PBAbilities,:PIXILATE) if pokemon.form==1
-      next
-    },
-    "height"=>proc{|pokemon|
-      next 15 if pokemon.form==1
-      next
-    },
-    "weight"=>proc{|pokemon|
-      next 206 if pokemon.form==1
-      next
-    },
-    "onSetForm"=>proc{|pokemon,form|
-      pbSeenForm(pokemon)
-    }
-  })
-
-MultipleForms.register(:GLALIE,{
-    "getMegaForm"=>proc{|pokemon|
-      next 1 if isConst?(pokemon.item,PBItems,:GLALITITE) || pokemon.isPreMega?
-      next
-    },
-    "getUnmegaForm"=>proc{|pokemon|
-      next 0
-    },
-    "getMegaName"=>proc{|pokemon|
-      next _INTL("Mega Glalie") if pokemon.form==1
-      next
-    },
-    "getBaseStats"=>proc{|pokemon|
-      next [80,120,80,100,120,80] if pokemon.form==1
-      next
-    },
-    "ability"=>proc{|pokemon|
-      next getID(PBAbilities,:REFRIGERATE) if pokemon.form==1
-      next
-    },
-    "height"=>proc{|pokemon|
-      next 21 if pokemon.form==1
-      next
-    },
-    "weight"=>proc{|pokemon|
-      next 3502 if pokemon.form==1
-      next
-    },
-    "onSetForm"=>proc{|pokemon,form|
-      pbSeenForm(pokemon)
-    }
-  })
-
-MultipleForms.register(:SALAMENCE,{
-    "getMegaForm"=>proc{|pokemon|
-      next 1 if isConst?(pokemon.item,PBItems,:SALAMENCITE) || pokemon.isPreMega?
-      next
-    },
-    "getUnmegaForm"=>proc{|pokemon|
-      next 0
-    },
-    "getMegaName"=>proc{|pokemon|
-      next _INTL("Mega Salamence") if pokemon.form==1
-      next
-    },
-    "getBaseStats"=>proc{|pokemon|
-      next [95,145,130,120,120,90] if pokemon.form==1
-      next
-    },
-    "ability"=>proc{|pokemon|
-      next getID(PBAbilities,:AERILATE) if pokemon.form==1
-      next
-    },
-    "height"=>proc{|pokemon|
-      next 18 if pokemon.form==1
-      next
-    },
-    "weight"=>proc{|pokemon|
-      next 1126 if pokemon.form==1
-      next
-    },
-    "onSetForm"=>proc{|pokemon,form|
-      pbSeenForm(pokemon)
-    }
-  })
-
-MultipleForms.register(:METAGROSS,{
-    "getMegaForm"=>proc{|pokemon|
-      next 1 if isConst?(pokemon.item,PBItems,:METAGROSSITE) || pokemon.isPreMega?
-      next 1 if pokemon.isPreMega?
-    },
-    "getUnmegaForm"=>proc{|pokemon|
-      next 0
-    },
-    "getMegaName"=>proc{|pokemon|
-      next _INTL("Mega Metagross") if pokemon.form==1
-      next
-    },
-    "getBaseStats"=>proc{|pokemon|
-      next [80,145,150,110,105,110] if pokemon.form==1
-      next
-    },
-    "ability"=>proc{|pokemon|
-      next getID(PBAbilities,:TOUGHCLAWS) if pokemon.form==1
-      next
-    },
-    "height"=>proc{|pokemon|
-      next 25 if pokemon.form==1
-      next
-    },
-    "weight"=>proc{|pokemon|
-      next 9429 if pokemon.form==1
-      next
-    },
-    "onSetForm"=>proc{|pokemon,form|
-      pbSeenForm(pokemon)
-    }
-  })
-
-MultipleForms.register(:LATIAS,{
-    "getMegaForm"=>proc{|pokemon|
-      next 1 if isConst?(pokemon.item,PBItems,:LATIASITE)
-      next
-    },
-    "getUnmegaForm"=>proc{|pokemon|
-      next 0
-    },
-    "getMegaName"=>proc{|pokemon|
-      next _INTL("Mega Latias") if pokemon.form==1
-      next
-    },
-    "getBaseStats"=>proc{|pokemon|
-      next [80,100,120,110,140,150] if pokemon.form==1
-      next
-    },
-    "ability"=>proc{|pokemon|
-      next getID(PBAbilities,:LEVITATE) if pokemon.form==1
-      next
-    },
-    "height"=>proc{|pokemon|
-      next 18 if pokemon.form==1
-      next
-    },
-    "weight"=>proc{|pokemon|
-      next 520 if pokemon.form==1
-      next
-    },
-    "onSetForm"=>proc{|pokemon,form|
-      pbSeenForm(pokemon)
-    }
-  })
-
-MultipleForms.register(:LATIOS,{
-    "getMegaForm"=>proc{|pokemon|
-      next 1 if isConst?(pokemon.item,PBItems,:LATIOSITE)
-      next
-    },
-    "getUnmegaForm"=>proc{|pokemon|
-      next 0
-    },
-    "getMegaName"=>proc{|pokemon|
-      next _INTL("Mega Latios") if pokemon.form==1
-      next
-    },
-    "getBaseStats"=>proc{|pokemon|
-      next [80,130,100,110,160,120] if pokemon.form==1
-      next
-    },
-    "ability"=>proc{|pokemon|
-      next getID(PBAbilities,:LEVITATE) if pokemon.form==1
-      next
-    },
-    "height"=>proc{|pokemon|
-      next 23 if pokemon.form==1
-      next
-    },
-    "weight"=>proc{|pokemon|
-      next 700 if pokemon.form==1
-      next
-    },
-    "onSetForm"=>proc{|pokemon,form|
-      pbSeenForm(pokemon)
-    }
-  })
-
-MultipleForms.register(:RAYQUAZA,{
-    "getMegaForm"=>proc{|pokemon|
-      next 1 if pokemon.knowsMove?(:DRAGONASCENT)
-      next
-    },
-    "getUnmegaForm"=>proc{|pokemon|
-      next 0
-    },
-    "getMegaName"=>proc{|pokemon|
-      next _INTL("Mega Rayquaza") if pokemon.form==1
-      next
-    },
-    "getBaseStats"=>proc{|pokemon|
-      next [105,180,100,115,180,100] if pokemon.form==1
-      next
-    },
-    "ability"=>proc{|pokemon|
-      next getID(PBAbilities,:DELTASTREAM) if pokemon.form==1
-      next
-    },
-    "height"=>proc{|pokemon|
-      next 108 if pokemon.form==1
-      next
-    },
-    "weight"=>proc{|pokemon|
-      next 3920 if pokemon.form==1
-      next
-    },
-    "onSetForm"=>proc{|pokemon,form|
-      pbSeenForm(pokemon)
-    }
-  })
-
-MultipleForms.register(:LOPUNNY,{
-    "getMegaForm"=>proc{|pokemon|
-      next 1 if isConst?(pokemon.item,PBItems,:LOPUNNITE)
-      next
-    },
-    "getUnmegaForm"=>proc{|pokemon|
-      next 0
-    },
-    "getMegaName"=>proc{|pokemon|
-      next _INTL("Mega Lopunny") if pokemon.form==1
-      next
-    },
-    "getBaseStats"=>proc{|pokemon|
-      next [65,136,94,135,54,96] if pokemon.form==1
-      next
-    },
-    "type2"=>proc{|pokemon|
-      next getID(PBTypes,:FIGHTING) if pokemon.form==1
-      next
-    },
-    "ability"=>proc{|pokemon|
-      next getID(PBAbilities,:SCRAPPY) if pokemon.form==1
-      next
-    },
-    "height"=>proc{|pokemon|
-      next 13 if pokemon.form==1
-      next
-    },
-    "weight"=>proc{|pokemon|
-      next 283 if pokemon.form==1
-      next
-    },
-    "onSetForm"=>proc{|pokemon,form|
-      pbSeenForm(pokemon)
-    }
-  })
-
-MultipleForms.register(:GALLADE,{
-    "getMegaForm"=>proc{|pokemon|
-      next 1 if isConst?(pokemon.item,PBItems,:GALLADITE)
-      next
-    },
-    "getUnmegaForm"=>proc{|pokemon|
-      next 0
-    },
-    "getMegaName"=>proc{|pokemon|
-      next _INTL("Mega Gallade") if pokemon.form==1
-      next
-    },
-    "getBaseStats"=>proc{|pokemon|
-      next [68,165,95,110,65,115] if pokemon.form==1
-      next
-    },
-    "ability"=>proc{|pokemon|
-      next getID(PBAbilities,:INNERFOCUS) if pokemon.form==1
-      next
-    },
-    "height"=>proc{|pokemon|
-      next 16 if pokemon.form==1
-      next
-    },
-    "weight"=>proc{|pokemon|
-      next 564 if pokemon.form==1
-      next
-    },
-    "onSetForm"=>proc{|pokemon,form|
-      pbSeenForm(pokemon)
-    }
-  })
-
-MultipleForms.register(:AUDINO,{
-    "getMegaForm"=>proc{|pokemon|
-      next 1 if isConst?(pokemon.item,PBItems,:AUDINITE)
-      next
-    },
-    "getUnmegaForm"=>proc{|pokemon|
-      next 0
-    },
-    "getMegaName"=>proc{|pokemon|
-      next _INTL("Mega Audino") if pokemon.form==1
-      next
-    },
-    "getBaseStats"=>proc{|pokemon|
-      next [103,60,126,50,80,126] if pokemon.form==1
-      next
-    },
-    "type2"=>proc{|pokemon|
-      next getID(PBTypes,:FAIRY) if pokemon.form==1
-      next
-    },
-    "ability"=>proc{|pokemon|
-      next getID(PBAbilities,:HEALER) if pokemon.form==1
-      next
-    },
-    "height"=>proc{|pokemon|
-      next 15 if pokemon.form==1
-      next
-    },
-    "weight"=>proc{|pokemon|
-      next 320 if pokemon.form==1
-      next
-    },
-    "onSetForm"=>proc{|pokemon,form|
-      pbSeenForm(pokemon)
-    }
-  })
-
-MultipleForms.register(:DIANCIE,{
-    "getMegaForm"=>proc{|pokemon|
-      next 1 if isConst?(pokemon.item,PBItems,:DIANCITE)
-      next
-    },
-    "getUnmegaForm"=>proc{|pokemon|
-      next 0
-    },
-    "getMegaName"=>proc{|pokemon|
-      next _INTL("Mega Diancie") if pokemon.form==1
-      next
-    },
-    "getBaseStats"=>proc{|pokemon|
-      next [50,160,110,110,160,110] if pokemon.form==1
-      next
-    },
-    "ability"=>proc{|pokemon|
-      next getID(PBAbilities,:MAGICBOUNCE) if pokemon.form==1
-      next
-    },
-    "height"=>proc{|pokemon|
-      next 11 if pokemon.form==1
-      next
-    },
-    "weight"=>proc{|pokemon|
-      next 278 if pokemon.form==1
-      next
-    },
-    "onSetForm"=>proc{|pokemon,form|
-      pbSeenForm(pokemon)
-    }
-  })
-#######################GIGANTAMAX MEGAS##############################
-MultipleForms.register(:BUTTERFREE,{
-    "getMegaForm"=>proc{|pokemon|
-      next 1 if isConst?(pokemon.item,PBItems,:BUTTERFREENITE)
-      next
-    },
-    "getUnmegaForm"=>proc{|pokemon|
-      next 0
-    },
-    "getMegaName"=>proc{|pokemon|
-      next _INTL("Mega Butterfree") if pokemon.form==1
-      next
-    },
-    "getBaseStats"=>proc{|pokemon|
-      next [60,45,50,120,140,80] if pokemon.form==1
-      next
-    },
-    "ability"=>proc{|pokemon|
-      next getID(PBAbilities,:TINTEDLENS) if pokemon.form==1
-      next
-    },
-    "height"=>proc{|pokemon|
-      next 307 if pokemon.form==1
-      next
-    },
-    "weight"=>proc{|pokemon|
-      next 705 if pokemon.form==1
-      next
-    },
-    "onSetForm"=>proc{|pokemon,form|
-      pbSeenForm(pokemon)
-    }
-  })
+    end
+  }
+})
 
 MultipleForms.register(:MACHAMP,{
-    "getMegaForm"=>proc{|pokemon|
-      next 1 if isConst?(pokemon.item,PBItems,:MACHAMPITE)
-      next
-    },
-    "getUnmegaForm"=>proc{|pokemon|
-      next 0
-    },
-    "getMegaName"=>proc{|pokemon|
-      next _INTL("Mega Machamp") if pokemon.form==1
-      next
-    },
-    "getBaseStats"=>proc{|pokemon|
-      next [90,160,115,65,65,110] if pokemon.form==1
-      next
-    },
-    "type2"=>proc{|pokemon|
-      next getID(PBTypes,:GROUND) if pokemon.form==1
-      next
-    },
-    "ability"=>proc{|pokemon|
-      next getID(PBAbilities,:ANALYTIC) if pokemon.form==1
-      next
-    },
-    "height"=>proc{|pokemon|
-      next 503 if pokemon.form==1
-      next
-    },
-    "weight"=>proc{|pokemon|
-      next 2866 if pokemon.form==1
-      next
-    },
-    "onSetForm"=>proc{|pokemon,form|
+  "type1"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:DARK)    # Mystic
+  },
+  "type2"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:STEEL)    # Mystic
+  },
+  "getBaseStats"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next [55, 90, 80, 130, 85, 65]   # Mystic
+  },
+  "ability"=>proc{|pokemon|
+    next if pokemon.form!=1 # Only Mystic form
+    if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0)
+      next getID(PBAbilities,:PRESSURE)
+    end
+    if pokemon.abilityIndex==1 || (pokemon.abilityflag && pokemon.abilityflag==1)
+      next getID(PBAbilities,:NOGUARD)
+    end
+    if pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)
+      next getID(PBAbilities,:STALKER)
+    end
+  },
+  "getMoveList"=>proc{|pokemon|
+    movelist=[]
+    # TODO: Fill Mystic Machamp movelist as [level,:MOVE] entries
+    for i in movelist
+      i[1]=getConst(PBMoves,i[1])
+    end
+    next movelist
+  },
+  "onSetForm"=>proc{|pokemon,form|
+    if form==1
       pbSeenForm(pokemon)
-    }
-  })
+    end
+  }
+})
 
-MultipleForms.register(:KINGLER,{
-    "getMegaForm"=>proc{|pokemon|
-      next 1 if (isConst?(pokemon.item,PBItems,:KINGLERITE) || pokemon.isPreMega?)
-      next
-    },
-    "getUnmegaForm"=>proc{|pokemon|
-      next 0
-    },
-    "getMegaName"=>proc{|pokemon|
-      next _INTL("Mega Kingler") if pokemon.form==1
-      next
-    },
-    "getBaseStats"=>proc{|pokemon|
-      next [55,169,135,96,60,60] if pokemon.form==1
-      next
-    },
-    "ability"=>proc{|pokemon|
-      next getID(PBAbilities,:SHEERFORCE) if pokemon.form==1
-      next
-    },
-    "height"=>proc{|pokemon|
-      next 403 if pokemon.form==1
-      next
-    },
-    "weight"=>proc{|pokemon|
-      next 1332 if pokemon.form==1
-      next
-    },
-    "onSetForm"=>proc{|pokemon,form|
+MultipleForms.register(:STUFFUL,{
+  "type1"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:NORMAL)    # Mystic
+  },
+  "type2"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:GHOST)    # Mystic
+  },
+  "getBaseStats"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next [75, 70, 50, 45, 50, 50]   # Mystic
+  },
+  "ability"=>proc{|pokemon|
+    next if pokemon.form!=1 # Only Mystic form
+    if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0)
+      next getID(PBAbilities,:CURSEDBODY)
+    end
+    if pokemon.abilityIndex==1 || (pokemon.abilityflag && pokemon.abilityflag==1)
+      next getID(PBAbilities,:UNAWARE)
+    end
+    if pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)
+      next getID(PBAbilities,:CUTEINFATUATE)
+    end
+  },
+  "getMoveList"=>proc{|pokemon|
+    movelist=[]
+    # TODO: Fill Mystic Stufful movelist as [level,:MOVE] entries
+    for i in movelist
+      i[1]=getConst(PBMoves,i[1])
+    end
+    next movelist
+  },
+  "onSetForm"=>proc{|pokemon,form|
+    if form==1
       pbSeenForm(pokemon)
-    }
-  })
+    end
+  }
+})
 
-MultipleForms.register(:SNORLAX,{
-    "getMegaForm"=>proc{|pokemon|
-      next 1 if (isConst?(pokemon.item,PBItems,:SNORLAXITE) || pokemon.isPreMega?)
-    },
-    "getUnmegaForm"=>proc{|pokemon|
-      next 0
-    },
-    "getMegaName"=>proc{|pokemon|
-      next _INTL("Mega Snorlax") if pokemon.form==1
-      next
-    },
-    "getBaseStats"=>proc{|pokemon|
-      next [160,140,95,20,75,150] if pokemon.form==1
-      next
-    },
-    "ability"=>proc{|pokemon|
-      next getID(PBAbilities,:FURCOAT) if pokemon.form==1
-      next
-    },
-    "height"=>proc{|pokemon|
-      next 7111 if pokemon.form==1
-      next
-    },
-    "weight"=>proc{|pokemon|
-      next 100141 if pokemon.form==1
-      next
-    },
-    "onSetForm"=>proc{|pokemon,form|
+MultipleForms.register(:BEWEAR,{
+  "type1"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:NORMAL)    # Mystic
+  },
+  "type2"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:GHOST)    # Mystic
+  },
+  "getBaseStats"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next [125, 120, 60, 55, 60, 80]   # Mystic
+  },
+  "ability"=>proc{|pokemon|
+    next if pokemon.form!=1 # Only Mystic form
+    if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0)
+      next getID(PBAbilities,:CURSEDBODY)
+    end
+    if pokemon.abilityIndex==1 || (pokemon.abilityflag && pokemon.abilityflag==1)
+      next getID(PBAbilities,:UNAWARE)
+    end
+    if pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)
+      next getID(PBAbilities,:UNNERVE)
+    end
+  },
+  "getMoveList"=>proc{|pokemon|
+    movelist=[]
+    # TODO: Fill Mystic Bewear movelist as [level,:MOVE] entries
+    for i in movelist
+      i[1]=getConst(PBMoves,i[1])
+    end
+    next movelist
+  },
+  "onSetForm"=>proc{|pokemon,form|
+    if form==1
       pbSeenForm(pokemon)
-    }
-  })
+    end
+  }
+})
 
-MultipleForms.register(:GARBODOR,{
-    "getMegaForm"=>proc{|pokemon|
-      next 2 if (isConst?(pokemon.item,PBItems,:GARBODORITE) || pokemon.isPreMega?)
-      next
-    },
-    "getUnmegaForm"=>proc{|pokemon|
-      next 0
-    },
-    "getMegaName"=>proc{|pokemon|
-      next _INTL("Mega Garbodor") if pokemon.form==2
-      next
-    },
-    "getBaseStats"=>proc{|pokemon|
-      next [80,135,107,85,60,107] if pokemon.form==2
-      next
-    },
-    "ability"=>proc{|pokemon|
-      next getID(PBAbilities,:NEUTRALIZINGGAS) if pokemon.form==2
-      next
-    },
-    "height"=>proc{|pokemon|
-      next 6033 if pokemon.form==2
-      next
-    },
-    "weight"=>proc{|pokemon|
-      next 2366 if pokemon.form==2
-      next
-    },
-    "onSetForm"=>proc{|pokemon,form|
+MultipleForms.register(:VOLTORB,{
+  "type1"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:PSYCHIC)    # Mystic
+  },
+  "type2"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:POISON)    # Mystic
+  },
+  "getBaseStats"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next [50, 30, 40, 55, 55, 100]   # Mystic
+  },
+  "ability"=>proc{|pokemon|
+    next if pokemon.form!=1 # Only Mystic form
+    if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0)
+      next getID(PBAbilities,:TELEPATHY)
+    end
+    if pokemon.abilityIndex==1 || (pokemon.abilityflag && pokemon.abilityflag==1)
+      next getID(PBAbilities,:SYNCHRONIZE)
+    end
+    if pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)
+      next getID(PBAbilities,:LEVITATE)
+    end
+  },
+  "getMoveList"=>proc{|pokemon|
+    movelist=[]
+    case pokemon.form            # Mystic
+    when 1 ; movelist=[[1,:MIRACLEEYE],[1,:PSYWAVE],[4,:CONFUSION],[6,:POISONGAS],
+                      [9,:CLEARSMOG],[11,:ROLLOUT],[13,:MIST],[16,:PSYBEAM],
+                      [20,:HEX],[22,:SYNCHRONOISE],[26,:MEMENTO],[29,:SLUDGEBOMB],
+                      [34,:REFLECT],[34,:LIGHTSCREEN],[41,:CORROSIVEGAS],[46,:GYROBALL],
+                      [50,:DESTINYBOND]]
+    end
+    for i in movelist
+      i[1]=getConst(PBMoves,i[1])
+    end
+    next movelist
+  },
+  "onSetForm"=>proc{|pokemon,form|
+    if form==1
       pbSeenForm(pokemon)
-    }
-  })
+    end
+  }
+})
 
-MultipleForms.register(:MELMETAL,{
-    "getMegaForm"=>proc{|pokemon|
-      next 1 if (isConst?(pokemon.item,PBItems,:MELMETALITE) || pokemon.isPreMega?)
-      next
-    },
-    "getUnmegaForm"=>proc{|pokemon|
-      next 0
-    },
-    "getMegaName"=>proc{|pokemon|
-      next _INTL("Mega Melmetal") if pokemon.form==1
-      next
-    },
-    "getBaseStats"=>proc{|pokemon|
-      next [135,183,163,45,85,85] if pokemon.form==1
-      next
-    },
-    "ability"=>proc{|pokemon|
-      next getID(PBAbilities,:IRONFIST) if pokemon.form==1
-      next
-    },
-    "height"=>proc{|pokemon|
-      next 802 if pokemon.form==1
-      next
-    },
-    "weight"=>proc{|pokemon|
-      next 17637 if pokemon.form==1
-      next
-    },
-    "onSetForm"=>proc{|pokemon,form|
+MultipleForms.register(:ELECTRODE,{
+  "type1"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:PSYCHIC)    # Mystic
+  },
+  "type2"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:POISON)    # Mystic
+  },
+  "getBaseStats"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next [70, 50, 60, 80, 80, 150]   # Mystic
+  },
+  "ability"=>proc{|pokemon|
+    next if pokemon.form!=1 # Only Mystic form
+    if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0)
+      next getID(PBAbilities,:TELEPATHY)
+    end
+    if pokemon.abilityIndex==1 || (pokemon.abilityflag && pokemon.abilityflag==1)
+      next getID(PBAbilities,:SYNCHRONIZE)
+    end
+    if pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)
+      next getID(PBAbilities,:LEVITATE)
+    end
+  },
+  "getMoveList"=>proc{|pokemon|
+    movelist=[]
+    case pokemon.form            # Mystic
+    when 1 ; movelist=[[0,:MISTBALL],[1,:MIRACLEEYE],[1,:PSYWAVE],[4,:CONFUSION],
+                      [6,:POISONGAS],[9,:CLEARSMOG],[11,:ROLLOUT],[13,:MIST],
+                      [16,:PSYBEAM],[20,:HEX],[22,:SYNCHRONOISE],[26,:MEMENTO],
+                      [29,:SLUDGEBOMB],[34,:REFLECT],[34,:LIGHTSCREEN],[41,:CORROSIVEGAS],
+                      [46,:GYROBALL],[50,:DESTINYBOND]]
+    end
+    for i in movelist
+      i[1]=getConst(PBMoves,i[1])
+    end
+    next movelist
+  },
+  "onSetForm"=>proc{|pokemon,form|
+    if form==1
       pbSeenForm(pokemon)
-    }
-  })
+    end
+  }
+})
 
-MultipleForms.register(:CORVIKNIGHT,{
-    "getMegaForm"=>proc{|pokemon|
-      next 1 if (isConst?(pokemon.item,PBItems,:CORVIKNITE) || pokemon.isPreMega?)
-      next
-    },
-    "getUnmegaForm"=>proc{|pokemon|
-      next 0
-    },
-    "getMegaName"=>proc{|pokemon|
-      next _INTL("Mega Corviknight") if pokemon.form==1
-      next
-    },
-    "getBaseStats"=>proc{|pokemon|
-      next [98,107,155,87,58,90] if pokemon.form==1
-      next
-    },
-    "ability"=>proc{|pokemon|
-      next getID(PBAbilities,:HEATPROOF) if pokemon.form==1
-      next
-    },
-    "height"=>proc{|pokemon|
-      next 703 if pokemon.form==1
-      next
-    },
-    "weight"=>proc{|pokemon|
-      next 1653 if pokemon.form==1
-      next
-    },
-    "onSetForm"=>proc{|pokemon,form|
+MultipleForms.register(:SOLOSIS,{
+  "type1"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:WATER)    # Mystic
+  },
+  "type2"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:GHOST)    # Mystic
+  },
+  "getBaseStats"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next [50, 20, 45, 30, 105, 40]   # Mystic
+  },
+  "ability"=>proc{|pokemon|
+    next if pokemon.form!=1 # Only Mystic form
+    if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0)
+      next getID(PBAbilities,:FILTER)
+    end
+    if pokemon.abilityIndex==1 || (pokemon.abilityflag && pokemon.abilityflag==1)
+      next getID(PBAbilities,:STATIC)
+    end
+    if pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)
+      next getID(PBAbilities,:WATERABSORB)
+    end
+  },
+  "getMoveList"=>proc{|pokemon|
+    movelist=[]
+    # TODO: Fill Mystic Solosis movelist as [level,:MOVE] entries
+    for i in movelist
+      i[1]=getConst(PBMoves,i[1])
+    end
+    next movelist
+  },
+  "onSetForm"=>proc{|pokemon,form|
+    if form==1
       pbSeenForm(pokemon)
-    }
-  })
+    end
+  }
+})
 
-MultipleForms.register(:ORBEETLE,{
-    "getMegaForm"=>proc{|pokemon|
-      next 1 if (isConst?(pokemon.item,PBItems,:ORBEETLENITE) || pokemon.isPreMega?)
-      next
-    },
-    "getUnmegaForm"=>proc{|pokemon|
-      next 0
-    },
-    "getMegaName"=>proc{|pokemon|
-      next _INTL("Mega Orbeetle") if pokemon.form==1
-      next
-    },
-    "getBaseStats"=>proc{|pokemon|
-      next [60,45,120,85,165,130] if pokemon.form==1
-      next
-    },
-    "ability"=>proc{|pokemon|
-      next getID(PBAbilities,:ARENATRAP) if pokemon.form==1
-      next
-    },
-    "height"=>proc{|pokemon|
-      next 1011 if pokemon.form==1
-      next
-    },
-    "weight"=>proc{|pokemon|
-      next 899 if pokemon.form==1
-      next
-    },
-    "onSetForm"=>proc{|pokemon,form|
+MultipleForms.register(:DUOSION,{
+  "type1"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:WATER)    # Mystic
+  },
+  "type2"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:GHOST)    # Mystic
+  },
+  "getBaseStats"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next [65, 30, 60, 40, 125, 50]   # Mystic
+  },
+  "ability"=>proc{|pokemon|
+    next if pokemon.form!=1 # Only Mystic form
+    if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0)
+      next getID(PBAbilities,:FILTER)
+    end
+    if pokemon.abilityIndex==1 || (pokemon.abilityflag && pokemon.abilityflag==1)
+      next getID(PBAbilities,:STATIC)
+    end
+    if pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)
+      next getID(PBAbilities,:WATERABSORB)
+    end
+  },
+  "getMoveList"=>proc{|pokemon|
+    movelist=[]
+    # TODO: Fill Mystic Duosion movelist as [level,:MOVE] entries
+    for i in movelist
+      i[1]=getConst(PBMoves,i[1])
+    end
+    next movelist
+  },
+  "onSetForm"=>proc{|pokemon,form|
+    if form==1
       pbSeenForm(pokemon)
-    }
-  })
+    end
+  }
+})
 
-MultipleForms.register(:DREDNAW,{
-    "getMegaForm"=>proc{|pokemon|
-      next 1 if (isConst?(pokemon.item,PBItems,:DREDNAWTITE) || pokemon.isPreMega?)
-      next
-    },
-    "getUnmegaForm"=>proc{|pokemon|
-      next 0
-    },
-    "getMegaName"=>proc{|pokemon|
-      next _INTL("Mega Drednaw") if pokemon.form==1
-      next
-    },
-    "getBaseStats"=>proc{|pokemon|
-      next [90,155,110,94,48,88] if pokemon.form==1
-      next
-    },
-    "ability"=>proc{|pokemon|
-      next getID(PBAbilities,:STRONGJAW) if pokemon.form==1
-      next
-    },
-    "height"=>proc{|pokemon|
-      next 303 if pokemon.form==1
-      next
-    },
-    "weight"=>proc{|pokemon|
-      next 2456 if pokemon.form==1
-      next
-    },
-    "onSetForm"=>proc{|pokemon,form|
+MultipleForms.register(:REUNICLUS,{
+  "type1"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:WATER)    # Mystic
+  },
+  "type2"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:GHOST)    # Mystic
+  },
+  "getBaseStats"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next [110, 30, 85, 65, 125, 75]   # Mystic
+  },
+  "ability"=>proc{|pokemon|
+    next if pokemon.form!=1 # Only Mystic form
+    if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0)
+      next getID(PBAbilities,:FILTER)
+    end
+    if pokemon.abilityIndex==1 || (pokemon.abilityflag && pokemon.abilityflag==1)
+      next getID(PBAbilities,:STATIC)
+    end
+    if pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)
+      next getID(PBAbilities,:WATERABSORB)
+    end
+  },
+  "getMoveList"=>proc{|pokemon|
+    movelist=[]
+    # TODO: Fill Mystic Reuniclus movelist as [level,:MOVE] entries
+    for i in movelist
+      i[1]=getConst(PBMoves,i[1])
+    end
+    next movelist
+  },
+  "onSetForm"=>proc{|pokemon,form|
+    if form==1
       pbSeenForm(pokemon)
-    }
-  })
+    end
+  }
+})
 
-MultipleForms.register(:COALOSSAL,{
-    "getMegaForm"=>proc{|pokemon|
-      next 1 if (isConst?(pokemon.item,PBItems,:COALOSSALITE) || pokemon.isPreMega?)
-      next
-    },
-    "getUnmegaForm"=>proc{|pokemon|
-      next 0
-    },
-    "getMegaName"=>proc{|pokemon|
-      next _INTL("Mega Coalossal") if pokemon.form==1
-      next
-    },
-    "getBaseStats"=>proc{|pokemon|
-      next [110,135,150,35,80,100] if pokemon.form==1
-      next
-    },
-    "ability"=>proc{|pokemon|
-      next getID(PBAbilities,:STEAMENGINE) if pokemon.form==1
-      next
-    },
-    "height"=>proc{|pokemon|
-      next 13710 if pokemon.form==1
-      next
-    },
-    "weight"=>proc{|pokemon|
-      next 8845 if pokemon.form==1
-      next
-    },
-    "onSetForm"=>proc{|pokemon,form|
+MultipleForms.register(:GOTHITA,{
+  "type1"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:FIRE)    # Mystic
+  },
+  "type2"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:GRASS)    # Mystic
+  },
+  "getBaseStats"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next [45, 30, 50, 65, 55, 45]   # Mystic
+  },
+  "ability"=>proc{|pokemon|
+    next if pokemon.form!=1 # Only Mystic form
+    if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0)
+      next getID(PBAbilities,:CHLOROPHYLL)
+    end
+    if pokemon.abilityIndex==1 || (pokemon.abilityflag && pokemon.abilityflag==1)
+      next getID(PBAbilities,:GRASSPELT)
+    end
+    if pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)
+      next getID(PBAbilities,:DANCER)
+    end
+  },
+  "getMoveList"=>proc{|pokemon|
+    movelist=[]
+    # TODO: Fill Mystic Gothita movelist as [level,:MOVE] entries
+    for i in movelist
+      i[1]=getConst(PBMoves,i[1])
+    end
+    next movelist
+  },
+  "onSetForm"=>proc{|pokemon,form|
+    if form==1
       pbSeenForm(pokemon)
-    }
-  })
+    end
+  }
+})
 
-MultipleForms.register(:FLAPPLE,{
-    "getMegaForm"=>proc{|pokemon|
-      next 1 if (isConst?(pokemon.item,PBItems,:FLAPPLETITE) || pokemon.isPreMega?)
-      next
-    },
-    "getUnmegaForm"=>proc{|pokemon|
-      next 0
-    },
-    "getMegaName"=>proc{|pokemon|
-      next _INTL("Mega Flapple") if pokemon.form==1
-      next
-    },
-    "getBaseStats"=>proc{|pokemon|
-      next [70,130,105,90,110,80] if pokemon.form==1
-      next
-    },
-    "ability"=>proc{|pokemon|
-      next getID(PBAbilities,:OWNTEMPO) if pokemon.form==1
-      next
-    },
-    "height"=>proc{|pokemon|
-      next 303 if pokemon.form==1
-      next
-    },
-    "weight"=>proc{|pokemon|
-      next 2456 if pokemon.form==1
-      next
-    },
-    "onSetForm"=>proc{|pokemon,form|
+MultipleForms.register(:GOTHORITA,{
+  "type1"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:FIRE)    # Mystic
+  },
+  "type2"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:GRASS)    # Mystic
+  },
+  "getBaseStats"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next [60, 45, 70, 85, 75, 55]   # Mystic
+  },
+  "ability"=>proc{|pokemon|
+    next if pokemon.form!=1 # Only Mystic form
+    if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0)
+      next getID(PBAbilities,:CHLOROPHYLL)
+    end
+    if pokemon.abilityIndex==1 || (pokemon.abilityflag && pokemon.abilityflag==1)
+      next getID(PBAbilities,:GRASSPELT)
+    end
+    if pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)
+      next getID(PBAbilities,:DANCER)
+    end
+  },
+  "getMoveList"=>proc{|pokemon|
+    movelist=[]
+    # TODO: Fill Mystic Gothorita movelist as [level,:MOVE] entries
+    for i in movelist
+      i[1]=getConst(PBMoves,i[1])
+    end
+    next movelist
+  },
+  "onSetForm"=>proc{|pokemon,form|
+    if form==1
       pbSeenForm(pokemon)
-    }
-  })
+    end
+  }
+})
 
-MultipleForms.register(:APPLETUN,{
-    "getMegaForm"=>proc{|pokemon|
-      next 1 if (isConst?(pokemon.item,PBItems,:APPLETUNITE) || pokemon.isPreMega?)
-      next
-    },
-    "getUnmegaForm"=>proc{|pokemon|
-      next 0
-    },
-    "getMegaName"=>proc{|pokemon|
-      next _INTL("Mega Appletun") if pokemon.form==1
-      next
-    },
-    "getBaseStats"=>proc{|pokemon|
-      next [110,95,110,20,140,110] if pokemon.form==1
-      next
-    },
-    "ability"=>proc{|pokemon|
-      next getID(PBAbilities,:THICKFAT) if pokemon.form==1
-      next
-    },
-    "height"=>proc{|pokemon|
-      next 303 if pokemon.form==1
-      next
-    },
-    "weight"=>proc{|pokemon|
-      next 2456 if pokemon.form==1
-      next
-    },
-    "onSetForm"=>proc{|pokemon,form|
+MultipleForms.register(:GOTHITELLE,{
+  "type1"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:FIRE)    # Mystic
+  },
+  "type2"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:GRASS)    # Mystic
+  },
+  "getBaseStats"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next [70, 55, 95, 110, 95, 65]   # Mystic
+  },
+  "ability"=>proc{|pokemon|
+    next if pokemon.form!=1 # Only Mystic form
+    if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0)
+      next getID(PBAbilities,:CHLOROPHYLL)
+    end
+    if pokemon.abilityIndex==1 || (pokemon.abilityflag && pokemon.abilityflag==1)
+      next getID(PBAbilities,:GRASSPELT)
+    end
+    if pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)
+      next getID(PBAbilities,:DANCER)
+    end
+  },
+  "getMoveList"=>proc{|pokemon|
+    movelist=[]
+    # TODO: Fill Mystic Gothitelle movelist as [level,:MOVE] entries
+    for i in movelist
+      i[1]=getConst(PBMoves,i[1])
+    end
+    next movelist
+  },
+  "onSetForm"=>proc{|pokemon,form|
+    if form==1
       pbSeenForm(pokemon)
-    }
-  })
+    end
+  }
+})
 
-MultipleForms.register(:SANDACONDA,{
-    "getMegaForm"=>proc{|pokemon|
-      next 1 if (isConst?(pokemon.item,PBItems,:SANDACONDITE) || pokemon.isPreMega?)
-      next
-    },
-    "getUnmegaForm"=>proc{|pokemon|
-      next 0
-    },
-    "getMegaName"=>proc{|pokemon|
-      next _INTL("Mega Sandaconda") if pokemon.form==1
-      next
-    },
-    "getBaseStats"=>proc{|pokemon|
-      next [72,147,145,91,65,90] if pokemon.form==1
-      next
-    },
-    "ability"=>proc{|pokemon|
-      next getID(PBAbilities,:SANDRUSH) if pokemon.form==1
-      next
-    },
-    "height"=>proc{|pokemon|
-      next 303 if pokemon.form==1
-      next
-    },
-    "weight"=>proc{|pokemon|
-      next 2456 if pokemon.form==1
-      next
-    },
-    "onSetForm"=>proc{|pokemon,form|
+MultipleForms.register(:SKORUPI,{
+  "type1"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:DRAGON)    # Mystic
+  },
+  "type2"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:DRAGON)    # Mystic
+  },
+  "getBaseStats"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next [65, 50, 90, 30, 40, 55]   # Mystic
+  },
+  "ability"=>proc{|pokemon|
+    next if pokemon.form!=1 # Only Mystic form
+    if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0)
+      next getID(PBAbilities,:BATTLEARMOR)
+    end
+    if pokemon.abilityIndex==1 || (pokemon.abilityflag && pokemon.abilityflag==1)
+      next getID(PBAbilities,:MOLDBREAKER)
+    end
+    if pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)
+      next getID(PBAbilities,:CONTRARY)
+    end
+  },
+  "getMoveList"=>proc{|pokemon|
+    movelist=[]
+    case pokemon.form            # Mystic
+    when 1 ; movelist=[[1,:RANCOR],[1,:POISONSTING],[1,:GROWL],[5,:BELLOW],
+                      [9,:BEATUP],[13,:ROAR],[16,:PINMISSILE],[20,:BREAKINGSWIPE],
+                      [23,:POISONFANG],[27,:INCINERATE],[30,:SCREECH],[34,:TOXICSPIKES],
+                      [38,:DRAGONCLAW],[41,:FELLSTINGER],[45,:SLUDGEBOMB],[47,:DRAGONDARTS],
+                      [49,:SUPERPOWER]]
+    end
+    for i in movelist
+      i[1]=getConst(PBMoves,i[1])
+    end
+    next movelist
+  },
+  "onSetForm"=>proc{|pokemon,form|
+    if form==1
       pbSeenForm(pokemon)
-    }
-  })
+    end
+  }
+})
 
-
-
-MultipleForms.register(:CENTISKORCH,{
-    "getMegaForm"=>proc{|pokemon|
-      next 1 if (isConst?(pokemon.item,PBItems,:CENTISKORCHITE) || pokemon.isPreMega?)
-      next
-    },
-    "getUnmegaForm"=>proc{|pokemon|
-      next 0
-    },
-    "getMegaName"=>proc{|pokemon|
-      next _INTL("Mega Centiskorch") if pokemon.form==1
-      next
-    },
-    "getBaseStats"=>proc{|pokemon|
-      next [100,140,75,110,90,110] if pokemon.form==1
-      next
-    },
-    "type1"=>proc{|pokemon|
-      next getID(PBTypes,:BUG) if pokemon.form==1
-      next
-    },
-    "ability"=>proc{|pokemon|
-      next getID(PBAbilities,:FIRESOUL) if pokemon.form==1
-      next
-    },
-    "height"=>proc{|pokemon|
-      next 303 if pokemon.form==1
-      next
-    },
-    "weight"=>proc{|pokemon|
-      next 2456 if pokemon.form==1
-      next
-    },
-    "onSetForm"=>proc{|pokemon,form|
+MultipleForms.register(:DRAPION,{
+  "type1"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:DRAGON)    # Mystic
+  },
+  "type2"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:DRAGON)    # Mystic
+  },
+  "getBaseStats"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next [95, 90, 110, 60, 70, 75]   # Mystic
+  },
+  "ability"=>proc{|pokemon|
+    next if pokemon.form!=1 # Only Mystic form
+    if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0)
+      next getID(PBAbilities,:BATTLEARMOR)
+    end
+    if pokemon.abilityIndex==1 || (pokemon.abilityflag && pokemon.abilityflag==1)
+      next getID(PBAbilities,:MOLDBREAKER)
+    end
+    if pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)
+      next getID(PBAbilities,:CONTRARY)
+    end
+  },
+  "getMoveList"=>proc{|pokemon|
+    movelist=[]
+    case pokemon.form            # Mystic
+    when 1 ; movelist=[[0,:CRUNCH],[1,:CRUNCH],[1,:FLAMETHROWER],[1,:OUTRAGE],
+                      [1,:HAMMERARM],[1,:ICEFANG],[1,:FIREFANG],[1,:THUNDERFANG],
+                      [1,:RANCOR],[1,:POISONSTING],[1,:GROWL],[1,:BELLOW],
+                      [5,:BELLOW],[9,:BEATUP],[13,:ROAR],[16,:PINMISSILE],
+                      [20,:BREAKINGSWIPE],[23,:POISONFANG],[27,:INCINERATE],[30,:SCREECH],
+                      [34,:TOXICSPIKES],[38,:DRAGONCLAW],[43,:FELLSTINGER],[49,:SLUDGEBOMB],
+                      [53,:DRAGONDARTS],[57,:SUPERPOWER]]
+    end
+    for i in movelist
+      i[1]=getConst(PBMoves,i[1])
+    end
+    next movelist
+  },
+  "onSetForm"=>proc{|pokemon,form|
+    if form==1
       pbSeenForm(pokemon)
-    }
-  })
+    end
+  }
+})
 
-MultipleForms.register(:HATTERENE,{
-    "getMegaForm"=>proc{|pokemon|
-      next 1 if (isConst?(pokemon.item,PBItems,:HATTERENITE) || pokemon.isPreMega?)
-      next
-    },
-    "getUnmegaForm"=>proc{|pokemon|
-      next 0
-    },
-    "getMegaName"=>proc{|pokemon|
-      next _INTL("Mega Hatterene") if pokemon.form==1
-      next
-    },
-    "getBaseStats"=>proc{|pokemon|
-      next [57,90,110,50,150,153] if pokemon.form==1
-      next
-    },
-    "ability"=>proc{|pokemon|
-      next getID(PBAbilities,:CURSEDBODY) if pokemon.form==1
-      next
-    },
-    "height"=>proc{|pokemon|
-      next 303 if pokemon.form==1
-      next
-    },
-    "weight"=>proc{|pokemon|
-      next 2456 if pokemon.form==1
-      next
-    },
-    "onSetForm"=>proc{|pokemon,form|
+MultipleForms.register(:CLAMPERL,{
+  "type1"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:ICE)    # Mystic
+  },
+  "type2"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:ICE)    # Mystic
+  },
+  "getBaseStats"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next [85, 55, 35, 32, 74, 64]   # Mystic
+  },
+  "ability"=>proc{|pokemon|
+    next if pokemon.form!=1 # Only Mystic form
+    if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0)
+      next getID(PBAbilities,:PRISMARMOR)
+    end
+    if pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)
+      next getID(PBAbilities,:SHELLARMOR)
+    end
+  },
+  "getMoveList"=>proc{|pokemon|
+    movelist=[]
+    # TODO: Fill Mystic Clamperl movelist as [level,:MOVE] entries
+    for i in movelist
+      i[1]=getConst(PBMoves,i[1])
+    end
+    next movelist
+  },
+  "onSetForm"=>proc{|pokemon,form|
+    if form==1
       pbSeenForm(pokemon)
-    }
-  })
+    end
+  }
+})
 
-MultipleForms.register(:GRIMMSNARL,{
-    "getMegaForm"=>proc{|pokemon|
-      next 1 if (isConst?(pokemon.item,PBItems,:GRIMMSNARLITE) || pokemon.isPreMega?)
-      next
-    },
-    "getUnmegaForm"=>proc{|pokemon|
-      next 0
-    },
-    "getMegaName"=>proc{|pokemon|
-      next _INTL("Mega Grimmsnarl") if pokemon.form==1
-      next
-    },
-    "getBaseStats"=>proc{|pokemon|
-      next [95,130,100,120,75,90] if pokemon.form==1
-      next
-    },
-    "ability"=>proc{|pokemon|
-      next getID(PBAbilities,:FURCOAT) if pokemon.form==1
-      next
-    },
-    "height"=>proc{|pokemon|
-      next 303 if pokemon.form==1
-      next
-    },
-    "weight"=>proc{|pokemon|
-      next 2456 if pokemon.form==1
-      next
-    },
-    "onSetForm"=>proc{|pokemon,form|
+MultipleForms.register(:HUNTAIL,{
+  "type1"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:ICE)    # Mystic
+  },
+  "type2"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:FIRE)    # Mystic
+  },
+  "getBaseStats"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next [75, 105, 52, 94, 104, 55]   # Mystic
+  },
+  "ability"=>proc{|pokemon|
+    next if pokemon.form!=1 # Only Mystic form
+    if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0)
+      next getID(PBAbilities,:PRISMARMOR)
+    end
+    if pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)
+      next getID(PBAbilities,:SHEERFORCE)
+    end
+  },
+  "getMoveList"=>proc{|pokemon|
+    movelist=[]
+    # TODO: Fill Mystic Huntail movelist as [level,:MOVE] entries
+    for i in movelist
+      i[1]=getConst(PBMoves,i[1])
+    end
+    next movelist
+  },
+  "onSetForm"=>proc{|pokemon,form|
+    if form==1
       pbSeenForm(pokemon)
-    }
-  })
+    end
+  }
+})
 
-
-MultipleForms.register(:ALCREMIE,{
-    "getMegaForm"=>proc{|pokemon|
-      next 8 if (isConst?(pokemon.item,PBItems,:ALCREMITE) || pokemon.isPreMega?)
-      next
-    },
-    "getUnmegaForm"=>proc{|pokemon|
-      next 0
-    },
-    "getMegaName"=>proc{|pokemon|
-      next _INTL("Mega Alcremie") if pokemon.form==8
-      next
-    },
-    "getBaseStats"=>proc{|pokemon|
-      next [65,80,105,74,130,141] if pokemon.form==8
-      next
-    },
-    "ability"=>proc{|pokemon|
-      next getID(PBAbilities,:AROMAVEIL) if pokemon.form==8
-      next
-    },
-    "height"=>proc{|pokemon|
-      next 303 if pokemon.form==8
-      next
-    },
-    "weight"=>proc{|pokemon|
-      next 2456 if pokemon.form==8
-      next
-    },
-    "onSetForm"=>proc{|pokemon,form|
+MultipleForms.register(:GOREBYSS,{
+  "type1"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:ICE)    # Mystic
+  },
+  "type2"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:FAIRY)    # Mystic
+  },
+  "getBaseStats"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next [55, 52, 84, 114, 75, 105]   # Mystic
+  },
+  "ability"=>proc{|pokemon|
+    next if pokemon.form!=1 # Only Mystic form
+    if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0)
+      next getID(PBAbilities,:PRISMARMOR)
+    end
+    if pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)
+      next getID(PBAbilities,:DAZZLING)
+    end
+  },
+  "getMoveList"=>proc{|pokemon|
+    movelist=[]
+    # TODO: Fill Mystic Gorebyss movelist as [level,:MOVE] entries
+    for i in movelist
+      i[1]=getConst(PBMoves,i[1])
+    end
+    next movelist
+  },
+  "onSetForm"=>proc{|pokemon,form|
+    if form==1
       pbSeenForm(pokemon)
-    }
-  })
+    end
+  }
+})
+
+MultipleForms.register(:LITWICK,{
+  "type1"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:FIRE)    # Mystic
+  },
+  "type2"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:FAIRY)    # Mystic
+  },
+  "getBaseStats"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next [20, 30, 55, 50, 65, 55]   # Mystic
+  },
+  "ability"=>proc{|pokemon|
+    next if pokemon.form!=1 # Only Mystic form
+    if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0)
+      next getID(PBAbilities,:FLAMEBODY)
+    end
+    if pokemon.abilityIndex==1 || (pokemon.abilityflag && pokemon.abilityflag==1)
+      next getID(PBAbilities,:ILLUMINATE)
+    end
+    if pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)
+      next getID(PBAbilities,:MAGICGUARD)
+    end
+  },
+  "getMoveList"=>proc{|pokemon|
+    movelist=[]
+    # TODO: Fill Mystic Litwick movelist as [level,:MOVE] entries
+    for i in movelist
+      i[1]=getConst(PBMoves,i[1])
+    end
+    next movelist
+  },
+  "onSetForm"=>proc{|pokemon,form|
+    if form==1
+      pbSeenForm(pokemon)
+    end
+  }
+})
+
+MultipleForms.register(:LAMPENT,{
+  "type1"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:FIRE)    # Mystic
+  },
+  "type2"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:FAIRY)    # Mystic
+  },
+  "getBaseStats"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next [55, 40, 60, 60, 95, 60]   # Mystic
+  },
+  "ability"=>proc{|pokemon|
+    next if pokemon.form!=1 # Only Mystic form
+    if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0)
+      next getID(PBAbilities,:FLAMEBODY)
+    end
+    if pokemon.abilityIndex==1 || (pokemon.abilityflag && pokemon.abilityflag==1)
+      next getID(PBAbilities,:ILLUMINATE)
+    end
+    if pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)
+      next getID(PBAbilities,:MAGICGUARD)
+    end
+  },
+  "getMoveList"=>proc{|pokemon|
+    movelist=[]
+    # TODO: Fill Mystic Lampent movelist as [level,:MOVE] entries
+    for i in movelist
+      i[1]=getConst(PBMoves,i[1])
+    end
+    next movelist
+  },
+  "onSetForm"=>proc{|pokemon,form|
+    if form==1
+      pbSeenForm(pokemon)
+    end
+  }
+})
+
+MultipleForms.register(:CHANDELURE,{
+  "type1"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:FIRE)    # Mystic
+  },
+  "type2"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:FAIRY)    # Mystic
+  },
+  "getBaseStats"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next [80, 55, 90, 60, 145, 90]   # Mystic
+  },
+  "ability"=>proc{|pokemon|
+    next if pokemon.form!=1 # Only Mystic form
+    if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0)
+      next getID(PBAbilities,:FLAMEBODY)
+    end
+    if pokemon.abilityIndex==1 || (pokemon.abilityflag && pokemon.abilityflag==1)
+      next getID(PBAbilities,:ILLUMINATE)
+    end
+    if pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)
+      next getID(PBAbilities,:MAGICGUARD)
+    end
+  },
+  "getMoveList"=>proc{|pokemon|
+    movelist=[]
+    # TODO: Fill Mystic Chandelure movelist as [level,:MOVE] entries
+    for i in movelist
+      i[1]=getConst(PBMoves,i[1])
+    end
+    next movelist
+  },
+  "onSetForm"=>proc{|pokemon,form|
+    if form==1
+      pbSeenForm(pokemon)
+    end
+  }
+})
+
+MultipleForms.register(:AXEW,{
+  "type1"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:GROUND)    # Mystic
+  },
+  "type2"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:FIGHTING)    # Mystic
+  },
+  "getBaseStats"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next [46, 40, 57, 30, 87, 60]   # Mystic
+  },
+  "ability"=>proc{|pokemon|
+    next if pokemon.form!=1 # Only Mystic form
+    if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0)
+      next getID(PBAbilities,:MOLDBREAKER)
+    end
+    if pokemon.abilityIndex==1 || (pokemon.abilityflag && pokemon.abilityflag==1)
+      next getID(PBAbilities,:SANDFORCE)
+    end
+    if pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)
+      next getID(PBAbilities,:GRENADIER)
+    end
+  },
+  "getMoveList"=>proc{|pokemon|
+    movelist=[]
+    # TODO: Fill Mystic Axew movelist as [level,:MOVE] entries
+    for i in movelist
+      i[1]=getConst(PBMoves,i[1])
+    end
+    next movelist
+  },
+  "onSetForm"=>proc{|pokemon,form|
+    if form==1
+      pbSeenForm(pokemon)
+    end
+  }
+})
+
+MultipleForms.register(:FRAXURE,{
+  "type1"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:GROUND)    # Mystic
+  },
+  "type2"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:FIGHTING)    # Mystic
+  },
+  "getBaseStats"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next [66, 50, 67, 40, 117, 70]   # Mystic
+  },
+  "ability"=>proc{|pokemon|
+    next if pokemon.form!=1 # Only Mystic form
+    if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0)
+      next getID(PBAbilities,:MOLDBREAKER)
+    end
+    if pokemon.abilityIndex==1 || (pokemon.abilityflag && pokemon.abilityflag==1)
+      next getID(PBAbilities,:SANDFORCE)
+    end
+    if pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)
+      next getID(PBAbilities,:GRENADIER)
+    end
+  },
+  "getMoveList"=>proc{|pokemon|
+    movelist=[]
+    # TODO: Fill Mystic Fraxure movelist as [level,:MOVE] entries
+    for i in movelist
+      i[1]=getConst(PBMoves,i[1])
+    end
+    next movelist
+  },
+  "onSetForm"=>proc{|pokemon,form|
+    if form==1
+      pbSeenForm(pokemon)
+    end
+  }
+})
+
+MultipleForms.register(:HAXORUS,{
+  "type1"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:GROUND)    # Mystic
+  },
+  "type2"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:FIGHTING)    # Mystic
+  },
+  "getBaseStats"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next [76, 70, 90, 60, 147, 97]   # Mystic
+  },
+  "ability"=>proc{|pokemon|
+    next if pokemon.form!=1 # Only Mystic form
+    if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0)
+      next getID(PBAbilities,:MOLDBREAKER)
+    end
+    if pokemon.abilityIndex==1 || (pokemon.abilityflag && pokemon.abilityflag==1)
+      next getID(PBAbilities,:SANDFORCE)
+    end
+    if pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)
+      next getID(PBAbilities,:GRENADIER)
+    end
+  },
+  "getMoveList"=>proc{|pokemon|
+    movelist=[]
+    # TODO: Fill Mystic Haxorus movelist as [level,:MOVE] entries
+    for i in movelist
+      i[1]=getConst(PBMoves,i[1])
+    end
+    next movelist
+  },
+  "onSetForm"=>proc{|pokemon,form|
+    if form==1
+      pbSeenForm(pokemon)
+    end
+  }
+})
+
+MultipleForms.register(:MIMEJR,{
+  "type1"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:NORMAL)    # Mystic
+  },
+  "type2"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:NORMAL)    # Mystic
+  },
+  "getBaseStats"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next [45, 60, 20, 90, 70, 25]   # Mystic
+  },
+  "ability"=>proc{|pokemon|
+    next if pokemon.form!=1 # Only Mystic form
+    if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0)
+      next getID(PBAbilities,:PRANKSTER)
+    end
+    if pokemon.abilityIndex==1 || (pokemon.abilityflag && pokemon.abilityflag==1)
+      next getID(PBAbilities,:ELDRITCH)
+    end
+    if pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)
+      next getID(PBAbilities,:TECHNICIAN)
+    end
+  },
+  "getMoveList"=>proc{|pokemon|
+    movelist=[]
+    # TODO: Fill Mystic Mime Jr. movelist as [level,:MOVE] entries
+    for i in movelist
+      i[1]=getConst(PBMoves,i[1])
+    end
+    next movelist
+  },
+  "onSetForm"=>proc{|pokemon,form|
+    if form==1
+      pbSeenForm(pokemon)
+    end
+  }
+})
+
+MultipleForms.register(:PARAS,{
+  "type1"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:BUG)    # Mystic
+  },
+  "type2"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:BUG)    # Mystic
+  },
+  "getBaseStats"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next [35, 70, 55, 55, 45, 25]   # Mystic
+  },
+  "ability"=>proc{|pokemon|
+    next if pokemon.form!=1 # Only Mystic form
+    if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0)
+      next getID(PBAbilities,:RUNAWAY)
+    end
+    if pokemon.abilityIndex==1 || (pokemon.abilityflag && pokemon.abilityflag==1)
+      next getID(PBAbilities,:ANGERPOINT)
+    end
+    if pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)
+      next getID(PBAbilities,:MOLDBREAKER)
+    end
+  },
+  "getMoveList"=>proc{|pokemon|
+    movelist=[]
+    # TODO: Fill Mystic Paras movelist as [level,:MOVE] entries
+    for i in movelist
+      i[1]=getConst(PBMoves,i[1])
+    end
+    next movelist
+  },
+  "onSetForm"=>proc{|pokemon,form|
+    if form==1
+      pbSeenForm(pokemon)
+    end
+  }
+})
+
+MultipleForms.register(:HONEDGE,{
+  "type1"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:STEEL)    # Mystic
+  },
+  "type2"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:STEEL)    # Mystic
+  },
+  "getBaseStats"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next [28, 100, 45, 37, 35, 80]   # Mystic
+  },
+  "ability"=>proc{|pokemon|
+    next if pokemon.form!=1 # Only Mystic form
+    if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0)
+      next getID(PBAbilities,:LEVITATE)
+    end
+  },
+  "getMoveList"=>proc{|pokemon|
+    movelist=[]
+    # TODO: Fill Mystic Honedge movelist as [level,:MOVE] entries
+    for i in movelist
+      i[1]=getConst(PBMoves,i[1])
+    end
+    next movelist
+  },
+  "onSetForm"=>proc{|pokemon,form|
+    if form==1
+      pbSeenForm(pokemon)
+    end
+  }
+})
+
+MultipleForms.register(:CHINGLING,{
+  "type1"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:FLYING)    # Mystic
+  },
+  "type2"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:FLYING)    # Mystic
+  },
+  "getBaseStats"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next [45, 30, 45, 50, 65, 50]   # Mystic
+  },
+  "ability"=>proc{|pokemon|
+    next if pokemon.form!=1 # Only Mystic form
+    if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0)
+      next getID(PBAbilities,:SOUNDPROOF)
+    end
+    if pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)
+      next getID(PBAbilities,:PURIFYING)
+    end
+  },
+  "getMoveList"=>proc{|pokemon|
+    movelist=[]
+    # TODO: Fill Mystic Chingling movelist as [level,:MOVE] entries
+    for i in movelist
+      i[1]=getConst(PBMoves,i[1])
+    end
+    next movelist
+  },
+  "onSetForm"=>proc{|pokemon,form|
+    if form==1
+      pbSeenForm(pokemon)
+    end
+  }
+})
+
+MultipleForms.register(:CHIMECHO,{
+  "type1"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:FLYING)    # Mystic
+  },
+  "type2"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:GHOST)    # Mystic
+  },
+  "getBaseStats"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next [75, 50, 65, 90, 95, 80]   # Mystic
+  },
+  "ability"=>proc{|pokemon|
+    next if pokemon.form!=1 # Only Mystic form
+    if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0)
+      next getID(PBAbilities,:SOUNDPROOF)
+    end
+    if pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)
+      next getID(PBAbilities,:PURIFYING)
+    end
+  },
+  "getMoveList"=>proc{|pokemon|
+    movelist=[]
+    # TODO: Fill Mystic Chimecho movelist as [level,:MOVE] entries
+    for i in movelist
+      i[1]=getConst(PBMoves,i[1])
+    end
+    next movelist
+  },
+  "onSetForm"=>proc{|pokemon,form|
+    if form==1
+      pbSeenForm(pokemon)
+    end
+  }
+})
+
+MultipleForms.register(:RELLOR,{
+  "type1"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:NORMAL)    # Mystic
+  },
+  "type2"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:NORMAL)    # Mystic
+  },
+  "getBaseStats"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next [30, 58, 41, 60, 31, 50]   # Mystic
+  },
+  "ability"=>proc{|pokemon|
+    next if pokemon.form!=1 # Only Mystic form
+    if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0)
+      next getID(PBAbilities,:STURDY)
+    end
+    if pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)
+      next getID(PBAbilities,:STALL)
+    end
+  },
+  "getMoveList"=>proc{|pokemon|
+    movelist=[]
+    # TODO: Fill Mystic Rellor movelist as [level,:MOVE] entries
+    for i in movelist
+      i[1]=getConst(PBMoves,i[1])
+    end
+    next movelist
+  },
+  "onSetForm"=>proc{|pokemon,form|
+    if form==1
+      pbSeenForm(pokemon)
+    end
+  }
+})
+
+MultipleForms.register(:RAPIDASH,{
+  "type1"=>proc{|pokemon|
+    next if pokemon.form!=2
+    next getID(PBTypes,:FIRE)    # Mystic
+  },
+  "type2"=>proc{|pokemon|
+    next if pokemon.form!=2
+    next getID(PBTypes,:GROUND)    # Mystic
+  },
+  "getBaseStats"=>proc{|pokemon|
+    next if pokemon.form!=2
+    next [105, 100, 80, 65, 70, 80]   # Mystic
+  },
+  "ability"=>proc{|pokemon|
+    next if pokemon.form!=2 # Only Mystic form
+    if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0)
+      next getID(PBAbilities,:THICKFAT)
+    end
+    if pokemon.abilityIndex==1 || (pokemon.abilityflag && pokemon.abilityflag==1)
+      next getID(PBAbilities,:STAMINA)
+    end
+    if pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)
+      next getID(PBAbilities,:STALWART)
+    end
+  },
+  "getMoveList"=>proc{|pokemon|
+    movelist=[]
+    # TODO: Fill Mystic Rapidash movelist as [level,:MOVE] entries
+    for i in movelist
+      i[1]=getConst(PBMoves,i[1])
+    end
+    next movelist
+  },
+  "onSetForm"=>proc{|pokemon,form|
+    if form==2
+      pbSeenForm(pokemon)
+    end
+  }
+})
+
+MultipleForms.register(:MUDSDALE,{
+  "type1"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:GROUND)    # Mystic
+  },
+  "type2"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:FLYING)    # Mystic
+  },
+  "getBaseStats"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next [85, 100, 55, 125, 100, 35]   # Mystic
+  },
+  "ability"=>proc{|pokemon|
+    next if pokemon.form!=1 # Only Mystic form
+    if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0)
+      next getID(PBAbilities,:WINDRIDER)
+    end
+    if pokemon.abilityIndex==1 || (pokemon.abilityflag && pokemon.abilityflag==1)
+      next getID(PBAbilities,:RUNAWAY)
+    end
+    if pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)
+      next getID(PBAbilities,:DEFIANT)
+    end
+  },
+  "getMoveList"=>proc{|pokemon|
+    movelist=[]
+    # TODO: Fill Mystic Mudsdale movelist as [level,:MOVE] entries
+    for i in movelist
+      i[1]=getConst(PBMoves,i[1])
+    end
+    next movelist
+  },
+  "onSetForm"=>proc{|pokemon,form|
+    if form==1
+      pbSeenForm(pokemon)
+    end
+  }
+})
+
+MultipleForms.register(:ELDEGOSS,{
+  "type1"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:GRASS)    # Mystic
+  },
+  "type2"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:GHOST)    # Mystic
+  },
+  "getBaseStats"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next [60, 80, 50, 120, 90, 60]   # Mystic
+  },
+  "ability"=>proc{|pokemon|
+    next if pokemon.form!=1 # Only Mystic form
+    if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0)
+      next getID(PBAbilities,:COTTONMOLT)
+    end
+    if pokemon.abilityIndex==1 || (pokemon.abilityflag && pokemon.abilityflag==1)
+      next getID(PBAbilities,:NOGUARD)
+    end
+    if pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)
+      next getID(PBAbilities,:SHEDSKIN)
+    end
+  },
+  "getMoveList"=>proc{|pokemon|
+    movelist=[]
+    case pokemon.form            # Mystic
+    when 1 ; movelist=[[0,:OMINOUSWIND],[1,:OMINOUSWIND],[1,:LEAFAGE],[1,:STUNSPORE],
+                      [4,:RAPIDSPIN],[8,:SPITE],[12,:RAZORLEAF],[16,:ESSENCEFEED],
+                      [23,:LEAFTORNADO],[28,:PAINSPLIT],[34,:SHADOWBALL],[40,:CURSE],
+                      [46,:LEAFSTORM],[52,:SING]]
+    end
+    for i in movelist
+      i[1]=getConst(PBMoves,i[1])
+    end
+    next movelist
+  },
+  "onSetForm"=>proc{|pokemon,form|
+    if form==1
+      pbSeenForm(pokemon)
+    end
+  }
+})
+
+MultipleForms.register(:MUK,{
+  "type1"=>proc{|pokemon|
+    next if pokemon.form!=3
+    next getID(PBTypes,:POISON)    # Mystic
+  },
+  "type2"=>proc{|pokemon|
+    next if pokemon.form!=3
+    next getID(PBTypes,:GROUND)    # Mystic
+  },
+  "getBaseStats"=>proc{|pokemon|
+    next if pokemon.form!=3
+    next [105, 65, 105, 50, 100, 75]   # Mystic
+  },
+  "ability"=>proc{|pokemon|
+    next if pokemon.form!=3 # Only Mystic form
+    if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0)
+      next getID(PBAbilities,:CURSEDBODY)
+    end
+    if pokemon.abilityIndex==1 || (pokemon.abilityflag && pokemon.abilityflag==1)
+      next getID(PBAbilities,:SOLIDROCK)
+    end
+    if pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)
+      next getID(PBAbilities,:WANDERINGSPIRIT)
+    end
+  },
+  "getMoveList"=>proc{|pokemon|
+    movelist=[]
+    # TODO: Fill Mystic Muk movelist as [level,:MOVE] entries
+    for i in movelist
+      i[1]=getConst(PBMoves,i[1])
+    end
+    next movelist
+  },
+  "onSetForm"=>proc{|pokemon,form|
+    if form==3
+      pbSeenForm(pokemon)
+    end
+  }
+})
+
+MultipleForms.register(:LIEPARD,{
+  "type1"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:DARK)    # Mystic
+  },
+  "type2"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:ROCK)    # Mystic
+  },
+  "getBaseStats"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next [64, 106, 88, 88, 50, 50]   # Mystic
+  },
+  "ability"=>proc{|pokemon|
+    next if pokemon.form!=1 # Only Mystic form
+    if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0)
+      next getID(PBAbilities,:STRONGJAW)
+    end
+    if pokemon.abilityIndex==1 || (pokemon.abilityflag && pokemon.abilityflag==1)
+      next getID(PBAbilities,:UNBURDEN)
+    end
+    if pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)
+      next getID(PBAbilities,:PITCHBLACK)
+    end
+  },
+  "getMoveList"=>proc{|pokemon|
+    movelist=[]
+    case pokemon.form            # Mystic
+    when 1 ; movelist=[[0,:ROCKTOMB],[1,:ROCKTOMB],[1,:THUNDERFANG],[1,:FIREFANG],
+                      [1,:ICEFANG],[1,:SCRATCH],[1,:GROWL],[1,:ASSIST],
+                      [1,:SANDATTACK],[3,:GROWL],[6,:ASSIST],[10,:SANDATTACK],
+                      [12,:FURYSWIPES],[15,:PURSUIT],[19,:TORMENT],[22,:BITE],
+                      [26,:IRONDEFENSE],[31,:ROCKSLIDE],[34,:CRUNCH],[38,:SHARPEN],
+                      [43,:SUCKERPUNCH],[47,:STEALTHROCK],[50,:ROCKPOLISH],[55,:PSYCHICFANGS],
+                      [58,:STONEEDGE]]
+    end
+    for i in movelist
+      i[1]=getConst(PBMoves,i[1])
+    end
+    next movelist
+  },
+  "onSetForm"=>proc{|pokemon,form|
+    if form==1
+      pbSeenForm(pokemon)
+    end
+  }
+})
+
+MultipleForms.register(:ROCKRUFF,{
+  "type1"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:ICE)    # Mystic
+  },
+  "type2"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:NORMAL)    # Mystic
+  },
+  "getBaseStats"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next [45, 65, 40, 60, 30, 60]   # Mystic
+  },
+  "ability"=>proc{|pokemon|
+    next if pokemon.form!=1 # Only Mystic form
+    if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0)
+      next getID(PBAbilities,:SPIRITED)
+    end
+    if pokemon.abilityIndex==1 || (pokemon.abilityflag && pokemon.abilityflag==1)
+      next getID(PBAbilities,:OWNTEMPO)
+    end
+    if pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)
+      next getID(PBAbilities,:SLUSHRUSH)
+    end
+  },
+  "getMoveList"=>proc{|pokemon|
+    movelist=[]
+    # TODO: Fill Mystic Rockruff movelist as [level,:MOVE] entries
+    for i in movelist
+      i[1]=getConst(PBMoves,i[1])
+    end
+    next movelist
+  },
+  "onSetForm"=>proc{|pokemon,form|
+    if form==1
+      pbSeenForm(pokemon)
+    end
+  }
+})
+
+MultipleForms.register(:LYCANROCMIDDAY,{
+  "type1"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:ICE)    # Mystic
+  },
+  "type2"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:FIGHTING)    # Mystic
+  },
+  "getBaseStats"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next [75, 55, 65, 112, 115, 65]   # Mystic
+  },
+  "ability"=>proc{|pokemon|
+    next if pokemon.form!=1 # Only Mystic form
+    if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0)
+      next getID(PBAbilities,:SPIRITED)
+    end
+    if pokemon.abilityIndex==1 || (pokemon.abilityflag && pokemon.abilityflag==1)
+      next getID(PBAbilities,:NOGUARD)
+    end
+    if pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)
+      next getID(PBAbilities,:SCRAPPY)
+    end
+  },
+  "getMoveList"=>proc{|pokemon|
+    movelist=[]
+    # TODO: Fill Mystic Lycanroc-Midday movelist as [level,:MOVE] entries
+    for i in movelist
+      i[1]=getConst(PBMoves,i[1])
+    end
+    next movelist
+  },
+  "onSetForm"=>proc{|pokemon,form|
+    if form==1
+      pbSeenForm(pokemon)
+    end
+  }
+})
+
+MultipleForms.register(:LYCANROCMIDNIGHT,{
+  "type1"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:ICE)    # Mystic
+  },
+  "type2"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:DARK)    # Mystic
+  },
+  "getBaseStats"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next [75, 115, 85, 82, 55, 75]   # Mystic
+  },
+  "ability"=>proc{|pokemon|
+    next if pokemon.form!=1 # Only Mystic form
+    if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0)
+      next getID(PBAbilities,:STRONGJAW)
+    end
+    if pokemon.abilityIndex==1 || (pokemon.abilityflag && pokemon.abilityflag==1)
+      next getID(PBAbilities,:LIMBER)
+    end
+    if pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)
+      next getID(PBAbilities,:SLUSHRUSH)
+    end
+  },
+  "getMoveList"=>proc{|pokemon|
+    movelist=[]
+    # TODO: Fill Mystic Lycanroc-Midnight movelist as [level,:MOVE] entries
+    for i in movelist
+      i[1]=getConst(PBMoves,i[1])
+    end
+    next movelist
+  },
+  "onSetForm"=>proc{|pokemon,form|
+    if form==1
+      pbSeenForm(pokemon)
+    end
+  }
+})
+
+MultipleForms.register(:LYCANROCDUSK,{
+  "type1"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:ICE)    # Mystic
+  },
+  "type2"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:GHOST)    # Mystic
+  },
+  "getBaseStats"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next [110, 117, 65, 75, 55, 65]   # Mystic
+  },
+  "ability"=>proc{|pokemon|
+    next if pokemon.form!=1 # Only Mystic form
+    if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0)
+      next getID(PBAbilities,:STEADFAST)
+    end
+    if pokemon.abilityIndex==1 || (pokemon.abilityflag && pokemon.abilityflag==1)
+      next getID(PBAbilities,:OWNTEMPO)
+    end
+    if pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)
+      next getID(PBAbilities,:FURCOAT)
+    end
+  },
+  "getMoveList"=>proc{|pokemon|
+    movelist=[]
+    # TODO: Fill Mystic Lycanroc-Dusk movelist as [level,:MOVE] entries
+    for i in movelist
+      i[1]=getConst(PBMoves,i[1])
+    end
+    next movelist
+  },
+  "onSetForm"=>proc{|pokemon,form|
+    if form==1
+      pbSeenForm(pokemon)
+    end
+  }
+})
+
+MultipleForms.register(:CHARCADET,{
+  "type1"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:ROCK)    # Mystic
+  },
+  "type2"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:ROCK)    # Mystic
+  },
+  "getBaseStats"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next [35, 50, 40, 40, 50, 40]   # Mystic
+  },
+  "ability"=>proc{|pokemon|
+    next if pokemon.form!=1 # Only Mystic form
+    if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0)
+      next getID(PBAbilities,:STURDY)
+    end
+    if pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)
+      next getID(PBAbilities,:BATTLEARMOR)
+    end
+  },
+  "getMoveList"=>proc{|pokemon|
+    movelist=[]
+    # TODO: Fill Mystic Charcadet movelist as [level,:MOVE] entries
+    for i in movelist
+      i[1]=getConst(PBMoves,i[1])
+    end
+    next movelist
+  },
+  "onSetForm"=>proc{|pokemon,form|
+    if form==1
+      pbSeenForm(pokemon)
+    end
+  }
+})
+
+MultipleForms.register(:CERULEDGE,{
+  "type1"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:ROCK)    # Mystic
+  },
+  "type2"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:FLYING)    # Mystic
+  },
+  "getBaseStats"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next [80, 60, 75, 85, 125, 100]   # Mystic
+  },
+  "ability"=>proc{|pokemon|
+    next if pokemon.form!=1 # Only Mystic form
+    if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0)
+      next getID(PBAbilities,:STURDY)
+    end
+    if pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)
+      next getID(PBAbilities,:NOGUARD)
+    end
+  },
+  "getMoveList"=>proc{|pokemon|
+    movelist=[]
+    # TODO: Fill Mystic Ceruledge movelist as [level,:MOVE] entries
+    for i in movelist
+      i[1]=getConst(PBMoves,i[1])
+    end
+    next movelist
+  },
+  "onSetForm"=>proc{|pokemon,form|
+    if form==1
+      pbSeenForm(pokemon)
+    end
+  }
+})
+
+MultipleForms.register(:ARMAROUGE,{
+  "type1"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:ROCK)    # Mystic
+  },
+  "type2"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:WATER)    # Mystic
+  },
+  "getBaseStats"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next [80, 125, 100, 75, 60, 85]   # Mystic
+  },
+  "ability"=>proc{|pokemon|
+    next if pokemon.form!=1 # Only Mystic form
+    if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0)
+      next getID(PBAbilities,:STURDY)
+    end
+    if pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)
+      next getID(PBAbilities,:ROCKHEAD)
+    end
+  },
+  "getMoveList"=>proc{|pokemon|
+    movelist=[]
+    # TODO: Fill Mystic Armarouge movelist as [level,:MOVE] entries
+    for i in movelist
+      i[1]=getConst(PBMoves,i[1])
+    end
+    next movelist
+  },
+  "onSetForm"=>proc{|pokemon,form|
+    if form==1
+      pbSeenForm(pokemon)
+    end
+  }
+})
+
+MultipleForms.register(:GIMMIGHOUL,{
+  "type1"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:STEEL)    # Mystic
+  },
+  "type2"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:STEEL)    # Mystic
+  },
+  "getBaseStats"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next [75, 45, 70, 10, 30, 70]   # Mystic
+  },
+  "ability"=>proc{|pokemon|
+    next if pokemon.form!=1 # Only Mystic form
+    if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0)
+      next getID(PBAbilities,:MAGNETPULL)
+    end
+    if pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)
+      next getID(PBAbilities,:FRIENDGUARD)
+    end
+  },
+  "getMoveList"=>proc{|pokemon|
+    movelist=[]
+    case pokemon.form            # Mystic
+    when 1 ; movelist=[[1,:MAGNETBOMB],[1,:MAGNETRISE]]
+    end
+    for i in movelist
+      i[1]=getConst(PBMoves,i[1])
+    end
+    next movelist
+  },
+  "onSetForm"=>proc{|pokemon,form|
+    if form==1
+      pbSeenForm(pokemon)
+    end
+  }
+})
+
+MultipleForms.register(:GHOLDENGO,{
+  "type1"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:STEEL)    # Mystic
+  },
+  "type2"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:PSYCHIC)    # Mystic
+  },
+  "getBaseStats"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next [133, 84, 91, 87, 60, 95]   # Mystic
+  },
+  "ability"=>proc{|pokemon|
+    next if pokemon.form!=1 # Only Mystic form
+    if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0)
+      next getID(PBAbilities,:ESOTERIC)
+    end
+  },
+  "getMoveList"=>proc{|pokemon|
+    movelist=[]
+    case pokemon.form            # Mystic
+    when 1 ; movelist=[[1,:MAGNETBOMB],[1,:MAGNETRISE],[7,:PSYWAVE],[14,:GRAVITY],
+                      [21,:PROTECT],[28,:CALMMIND],[35,:PSYCHIC],[42,:RECOVER],
+                      [49,:METEORBEAM],[56,:REDSUNSZENITH],[63,:STARFALL],[70,:STARDESTROYER]]
+    end
+    for i in movelist
+      i[1]=getConst(PBMoves,i[1])
+    end
+    next movelist
+  },
+  "onSetForm"=>proc{|pokemon,form|
+    if form==1
+      pbSeenForm(pokemon)
+    end
+  }
+})
+
+MultipleForms.register(:AMAURA,{
+  "type1"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:DRAGON)    # Mystic
+  },
+  "type2"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:ELECTRIC)    # Mystic
+  },
+  "getBaseStats"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next [67, 59, 63, 50, 77, 46]   # Mystic
+  },
+  "ability"=>proc{|pokemon|
+    next if pokemon.form!=1 # Only Mystic form
+    if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0)
+      next getID(PBAbilities,:MOTORDRIVE)
+    end
+    if pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)
+      next getID(PBAbilities,:SPEEDBOOST)
+    end
+  },
+  "getMoveList"=>proc{|pokemon|
+    movelist=[]
+    # TODO: Fill Mystic Amaura movelist as [level,:MOVE] entries
+    for i in movelist
+      i[1]=getConst(PBMoves,i[1])
+    end
+    next movelist
+  },
+  "onSetForm"=>proc{|pokemon,form|
+    if form==1
+      pbSeenForm(pokemon)
+    end
+  }
+})
+
+MultipleForms.register(:AURORUS,{
+  "type1"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:DRAGON)    # Mystic
+  },
+  "type2"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:ELECTRIC)    # Mystic
+  },
+  "getBaseStats"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next [99, 77, 92, 72, 123, 58]   # Mystic
+  },
+  "ability"=>proc{|pokemon|
+    next if pokemon.form!=1 # Only Mystic form
+    if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0)
+      next getID(PBAbilities,:MOTORDRIVE)
+    end
+    if pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)
+      next getID(PBAbilities,:SPEEDBOOST)
+    end
+  },
+  "getMoveList"=>proc{|pokemon|
+    movelist=[]
+    # TODO: Fill Mystic Aurorus movelist as [level,:MOVE] entries
+    for i in movelist
+      i[1]=getConst(PBMoves,i[1])
+    end
+    next movelist
+  },
+  "onSetForm"=>proc{|pokemon,form|
+    if form==1
+      pbSeenForm(pokemon)
+    end
+  }
+})
+
+MultipleForms.register(:TYRUNT,{
+  "type1"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:ICE)    # Mystic
+  },
+  "type2"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:POISON)    # Mystic
+  },
+  "getBaseStats"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next [89, 77, 45, 58, 45, 48]   # Mystic
+  },
+  "ability"=>proc{|pokemon|
+    next if pokemon.form!=1 # Only Mystic form
+    if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0)
+      next getID(PBAbilities,:CORROSION)
+    end
+    if pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)
+      next getID(PBAbilities,:UNBURDEN)
+    end
+  },
+  "getMoveList"=>proc{|pokemon|
+    movelist=[]
+    # TODO: Fill Mystic Tyrunt movelist as [level,:MOVE] entries
+    for i in movelist
+      i[1]=getConst(PBMoves,i[1])
+    end
+    next movelist
+  },
+  "onSetForm"=>proc{|pokemon,form|
+    if form==1
+      pbSeenForm(pokemon)
+    end
+  }
+})
+
+MultipleForms.register(:TYRANTRUM,{
+  "type1"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:ICE)    # Mystic
+  },
+  "type2"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:POISON)    # Mystic
+  },
+  "getBaseStats"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next [121, 119, 69, 82, 59, 71]   # Mystic
+  },
+  "ability"=>proc{|pokemon|
+    next if pokemon.form!=1 # Only Mystic form
+    if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0)
+      next getID(PBAbilities,:CORROSION)
+    end
+    if pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)
+      next getID(PBAbilities,:UNBURDEN)
+    end
+  },
+  "getMoveList"=>proc{|pokemon|
+    movelist=[]
+    # TODO: Fill Mystic Tyrantrum movelist as [level,:MOVE] entries
+    for i in movelist
+      i[1]=getConst(PBMoves,i[1])
+    end
+    next movelist
+  },
+  "onSetForm"=>proc{|pokemon,form|
+    if form==1
+      pbSeenForm(pokemon)
+    end
+  }
+})
+
+MultipleForms.register(:CUFANT,{
+  "type1"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:FIGHTING)    # Mystic
+  },
+  "type2"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:FIGHTING)    # Mystic
+  },
+  "getBaseStats"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next [49, 49, 72, 40, 40, 80]   # Mystic
+  },
+  "ability"=>proc{|pokemon|
+    next if pokemon.form!=1 # Only Mystic form
+    if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0)
+      next getID(PBAbilities,:SPIRITED)
+    end
+    if pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)
+      next getID(PBAbilities,:WATERABSORB)
+    end
+  },
+  "getMoveList"=>proc{|pokemon|
+    movelist=[]
+    # TODO: Fill Mystic Cufant movelist as [level,:MOVE] entries
+    for i in movelist
+      i[1]=getConst(PBMoves,i[1])
+    end
+    next movelist
+  },
+  "onSetForm"=>proc{|pokemon,form|
+    if form==1
+      pbSeenForm(pokemon)
+    end
+  }
+})
 
 MultipleForms.register(:COPPERAJAH,{
-    "getMegaForm"=>proc{|pokemon|
-      next 1 if (isConst?(pokemon.item,PBItems,:COPPERAJITE) || pokemon.isPreMega?)
-      next
-    },
-    "getUnmegaForm"=>proc{|pokemon|
-      next 0
-    },
-    "getMegaName"=>proc{|pokemon|
-      next _INTL("Mega Copperajah") if pokemon.form==1
-      next
-    },
-    "getBaseStats"=>proc{|pokemon|
-      next [122,155,84,40,94,105] if pokemon.form==1
-      next
-    },
-    "ability"=>proc{|pokemon|
-      next getID(PBAbilities,:SHEERFORCE) if pokemon.form==1
-      next
-    },
-    "height"=>proc{|pokemon|
-      next 303 if pokemon.form==1
-      next
-    },
-    "weight"=>proc{|pokemon|
-      next 2456 if pokemon.form==1
-      next
-    },
-    "onSetForm"=>proc{|pokemon,form|
+  "type1"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:FIGHTING)    # Mystic
+  },
+  "type2"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:FIGHTING)    # Mystic
+  },
+  "getBaseStats"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next [80, 80, 122, 69, 30, 130]   # Mystic
+  },
+  "ability"=>proc{|pokemon|
+    next if pokemon.form!=1 # Only Mystic form
+    if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0)
+      next getID(PBAbilities,:SPIRITED)
+    end
+    if pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)
+      next getID(PBAbilities,:WATERABSORB)
+    end
+  },
+  "getMoveList"=>proc{|pokemon|
+    movelist=[]
+    # TODO: Fill Mystic Copperajah movelist as [level,:MOVE] entries
+    for i in movelist
+      i[1]=getConst(PBMoves,i[1])
+    end
+    next movelist
+  },
+  "onSetForm"=>proc{|pokemon,form|
+    if form==1
       pbSeenForm(pokemon)
-    }
-  })
+    end
+  }
+})
 
-MultipleForms.register(:DURALUDON,{
-    "getMegaForm"=>proc{|pokemon|
-      next 1 if (isConst?(pokemon.item,PBItems,:DURALUDONITE) || pokemon.isPreMega?)
-      next
-    },
-    "getUnmegaForm"=>proc{|pokemon|
-      next 0
-    },
-    "getMegaName"=>proc{|pokemon|
-      next _INTL("Mega Duraludon") if pokemon.form==1
-      next
-    },
-    "getBaseStats"=>proc{|pokemon|
-      next [70,95,130,110,150,80] if pokemon.form==1
-      next
-    },
-    "ability"=>proc{|pokemon|
-      next getID(PBAbilities,:LIGHTNINGROD) if pokemon.form==1
-      next
-    },
-    "height"=>proc{|pokemon|
-      next 303 if pokemon.form==1
-      next
-    },
-    "weight"=>proc{|pokemon|
-      next 2456 if pokemon.form==1
-      next
-    },
-    "onSetForm"=>proc{|pokemon,form|
+MultipleForms.register(:FALINKS,{
+  "type1"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:GRASS)    # Mystic
+  },
+  "type2"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:ELECTRIC)    # Mystic
+  },
+  "getBaseStats"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next [70, 65, 100, 60, 75, 100]   # Mystic
+  },
+  "ability"=>proc{|pokemon|
+    next if pokemon.form!=1 # Only Mystic form
+    if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0)
+      next getID(PBAbilities,:DRIZZLE)
+    end
+    if pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)
+      next getID(PBAbilities,:STORMDRAIN)
+    end
+  },
+  "getMoveList"=>proc{|pokemon|
+    movelist=[]
+    # TODO: Fill Mystic Falinks movelist as [level,:MOVE] entries
+    for i in movelist
+      i[1]=getConst(PBMoves,i[1])
+    end
+    next movelist
+  },
+  "onSetForm"=>proc{|pokemon,form|
+    if form==1
       pbSeenForm(pokemon)
-    }
-  })
+    end
+  }
+})
 
-#######################MISC FORMS##############################
-
-MultipleForms.register(:SOLROCK,{
-    "getBaseStats"=>proc{|pokemon|
-      case pokemon.form
-      when 1; next [90,110,90,44,75,90] # Solrock Dominant
-      when 2; next [90,44,90,75,110,90] # Lunatone Dominant
-      else;   next                          
-      end
-    },
-    "ability"=>proc{|pokemon|
-      case pokemon.form
-      when 1; next getID(PBAbilities,:SOLARIDOL)
-      when 2; next getID(PBAbilities,:LUNARIDOL)
-      else;   next                                
-      end
-    },
-    "evYield"=>proc{|pokemon|
-      case pokemon.form
-      when 1; next [0,3,0,0,0,0] # Solrock dom
-      when 2; next [0,0,0,0,3,0] # Solrock dom
-      else;   next               # Kyurem
-      end
-    },
-    "getMoveList"=>proc{|pokemon|
-      next if pokemon.form==0
-      movelist=[]
-      case pokemon.form
-      when 1; movelist=[[1,:FIRESPIN],[1,:ROCKTOMB],[8,:IMPRISON],
-          [15,:COSMICPOWER],[22,:SMACKDOWN],[29,:ROCKPOLISH],
-          [32,:STONEEDGE],[37,:TAKEDOWN],[43,:BULLDOZE],
-          [46,:PSYCHIC],[50,:ZENHEADBUTT],[58,:FLAREBLITZ],
-          [68,:SOLARBEAM],[80,:SOLARFLARE]]
-      end
-      for i in movelist
-        i[1]=getConst(PBMoves,i[1])
-      end
-      next movelist
-    }
-  })
-
-MultipleForms.register(:PIKACHU,{
-    "getBaseStats"=>proc{|pokemon|
-      next if pokemon.form==0             # Normal
-      case pokemon.form
-      when 2; next [55,80,50,120,75,60] # Tazer/Partner Forme
-      end
-    },
-    "onSetForm"=>proc{|pokemon,form|
+MultipleForms.register(:ARROKUDA,{
+  "type1"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:GRASS)    # Mystic
+  },
+  "type2"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:ROCK)    # Mystic
+  },
+  "getBaseStats"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next [40, 66, 41, 63, 30, 40]   # Mystic
+  },
+  "ability"=>proc{|pokemon|
+    next if pokemon.form!=1 # Only Mystic form
+    if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0)
+      next getID(PBAbilities,:NOGUARD)
+    end
+    if pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)
+      next getID(PBAbilities,:SNIPER)
+    end
+  },
+  "getMoveList"=>proc{|pokemon|
+    movelist=[]
+    # TODO: Fill Mystic Arrokuda movelist as [level,:MOVE] entries
+    for i in movelist
+      i[1]=getConst(PBMoves,i[1])
+    end
+    next movelist
+  },
+  "onSetForm"=>proc{|pokemon,form|
+    if form==1
       pbSeenForm(pokemon)
-    }
-  })
+    end
+  }
+})
 
-MultipleForms.register(:EEVEE,{
-    "getBaseStats"=>proc{|pokemon|
-      next if pokemon.form==0             # Normal
-      case pokemon.form
-      when 2; next [65,75,70,75,65,85] # Tazer/Partner Forme
-      end
-    },
-    "onSetForm"=>proc{|pokemon,form|
+MultipleForms.register(:BARRASKEWDA,{
+  "type1"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:GRASS)    # Mystic
+  },
+  "type2"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:STEEL)    # Mystic
+  },
+  "getBaseStats"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next [60, 136, 61, 123, 50, 60]   # Mystic
+  },
+  "ability"=>proc{|pokemon|
+    next if pokemon.form!=1 # Only Mystic form
+    if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0)
+      next getID(PBAbilities,:LACERATE)
+    end
+    if pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)
+      next getID(PBAbilities,:SNIPER)
+    end
+  },
+  "getMoveList"=>proc{|pokemon|
+    movelist=[]
+    # TODO: Fill Mystic Barraskewda movelist as [level,:MOVE] entries
+    for i in movelist
+      i[1]=getConst(PBMoves,i[1])
+    end
+    next movelist
+  },
+  "onSetForm"=>proc{|pokemon,form|
+    if form==1
       pbSeenForm(pokemon)
-    }
-  })
+    end
+  }
+})
 
-MultipleForms.register(:MELTAN,{
-    "getBaseStats"=>proc{|pokemon|
-      next if pokemon.form==0               # Standard Mode
-      next [5,5,5,5,5,5] if pokemon.form==1 # HP
-      next [5,5,5,5,5,5] if pokemon.form==2 # ATTACK
-      next [5,5,5,5,5,5] if pokemon.form==3 # DEFENSE
-      next [5,5,5,5,5,5] if pokemon.form==4 # SPEED
-      next [5,5,5,5,5,5] if pokemon.form==5 # SP. DEF
-      next [5,5,5,5,5,5] if pokemon.form==6 # SP ATT
-    },
-    "evYield"=>proc{|pokemon|
-      next if pokemon.form==0 # Standard Mode
-      next [12,0,0,0,0,0] if pokemon.form==1 # HP
-      next [0,12,0,0,0,0] if pokemon.form==2 # ATT
-      next [0,0,12,0,0,0] if pokemon.form==3 # DEF
-      next [0,0,0,12,0,0] if pokemon.form==4 # SPEED
-      next [0,0,0,0,12,0] if pokemon.form==5 # SP DEF
-      next [0,0,0,0,0,12] if pokemon.form==6 # SP ATT
-    }
-  })
+MultipleForms.register(:TOXEL,{
+  "type1"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:ELECTRIC)    # Mystic
+  },
+  "type2"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:PSYCHIC)    # Mystic
+  },
+  "getBaseStats"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next [40, 35, 35, 40, 54, 38]   # Mystic
+  },
+  "ability"=>proc{|pokemon|
+    next if pokemon.form!=1 # Only Mystic form
+    if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0)
+      next getID(PBAbilities,:BATTLEARMOR)
+    end
+    if pokemon.abilityIndex==1 || (pokemon.abilityflag && pokemon.abilityflag==1)
+      next getID(PBAbilities,:SOUNDPROOF)
+    end
+    if pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)
+      next getID(PBAbilities,:INSOMNIA)
+    end
+  },
+  "getMoveList"=>proc{|pokemon|
+    movelist=[]
+    # TODO: Fill Mystic Toxel movelist as [level,:MOVE] entries
+    for i in movelist
+      i[1]=getConst(PBMoves,i[1])
+    end
+    next movelist
+  },
+  "onSetForm"=>proc{|pokemon,form|
+    if form==1
+      pbSeenForm(pokemon)
+    end
+  }
+})
+
+MultipleForms.register(:TOXTRICITYTRANCE,{
+  "type1"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:ELECTRIC)    # Mystic
+  },
+  "type2"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:PSYCHIC)    # Mystic
+  },
+  "getBaseStats"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next [75, 70, 75, 70, 114, 98]   # Mystic
+  },
+  "ability"=>proc{|pokemon|
+    next if pokemon.form!=1 # Only Mystic form
+    if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0)
+      next getID(PBAbilities,:SEGUE)
+    end
+  },
+  "getMoveList"=>proc{|pokemon|
+    movelist=[]
+    # TODO: Fill Mystic Toxtricity-Trance movelist as [level,:MOVE] entries
+    for i in movelist
+      i[1]=getConst(PBMoves,i[1])
+    end
+    next movelist
+  },
+  "onSetForm"=>proc{|pokemon,form|
+    if form==1
+      pbSeenForm(pokemon)
+    end
+  }
+})
+
+MultipleForms.register(:TOXTRICITYDUBSTEP,{
+  "type1"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:ELECTRIC)    # Mystic
+  },
+  "type2"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:PSYCHIC)    # Mystic
+  },
+  "getBaseStats"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next [75, 70, 70, 114, 98, 75]   # Mystic
+  },
+  "ability"=>proc{|pokemon|
+    next if pokemon.form!=1 # Only Mystic form
+    if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0)
+      next getID(PBAbilities,:SEGUE)
+    end
+  },
+  "getMoveList"=>proc{|pokemon|
+    movelist=[]
+    # TODO: Fill Mystic Toxtricity-Dubstep movelist as [level,:MOVE] entries
+    for i in movelist
+      i[1]=getConst(PBMoves,i[1])
+    end
+    next movelist
+  },
+  "onSetForm"=>proc{|pokemon,form|
+    if form==1
+      pbSeenForm(pokemon)
+    end
+  }
+})
+
+MultipleForms.register(:SHIELDON,{
+  "type1"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:GRASS)    # Mystic
+  },
+  "type2"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:GRASS)    # Mystic
+  },
+  "getBaseStats"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next [30, 118, 42, 30, 88, 42]   # Mystic
+  },
+  "ability"=>proc{|pokemon|
+    next if pokemon.form!=1 # Only Mystic form
+    if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0)
+      next getID(PBAbilities,:DISGUISE)
+    end
+    if pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)
+      next getID(PBAbilities,:SAPSIPPER)
+    end
+  },
+  "getMoveList"=>proc{|pokemon|
+    movelist=[]
+    # TODO: Fill Mystic Shieldon movelist as [level,:MOVE] entries
+    for i in movelist
+      i[1]=getConst(PBMoves,i[1])
+    end
+    next movelist
+  },
+  "onSetForm"=>proc{|pokemon,form|
+    if form==1
+      pbSeenForm(pokemon)
+    end
+  }
+})
+
+MultipleForms.register(:BASTIODON,{
+  "type1"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:GRASS)    # Mystic
+  },
+  "type2"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:GROUND)    # Mystic
+  },
+  "getBaseStats"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next [60, 168, 52, 30, 138, 47]   # Mystic
+  },
+  "ability"=>proc{|pokemon|
+    next if pokemon.form!=1 # Only Mystic form
+    if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0)
+      next getID(PBAbilities,:DISGUISE)
+    end
+    if pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)
+      next getID(PBAbilities,:SAPSIPPER)
+    end
+  },
+  "getMoveList"=>proc{|pokemon|
+    movelist=[]
+    # TODO: Fill Mystic Bastiodon movelist as [level,:MOVE] entries
+    for i in movelist
+      i[1]=getConst(PBMoves,i[1])
+    end
+    next movelist
+  },
+  "onSetForm"=>proc{|pokemon,form|
+    if form==1
+      pbSeenForm(pokemon)
+    end
+  }
+})
+
+MultipleForms.register(:CRANIDOS,{
+  "type1"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:BUG)    # Mystic
+  },
+  "type2"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:BUG)    # Mystic
+  },
+  "getBaseStats"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next [67, 58, 30, 125, 30, 40]   # Mystic
+  },
+  "ability"=>proc{|pokemon|
+    next if pokemon.form!=1 # Only Mystic form
+    if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0)
+      next getID(PBAbilities,:ARENATRAP)
+    end
+    if pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)
+      next getID(PBAbilities,:STALL)
+    end
+  },
+  "getMoveList"=>proc{|pokemon|
+    movelist=[]
+    # TODO: Fill Mystic Cranidos movelist as [level,:MOVE] entries
+    for i in movelist
+      i[1]=getConst(PBMoves,i[1])
+    end
+    next movelist
+  },
+  "onSetForm"=>proc{|pokemon,form|
+    if form==1
+      pbSeenForm(pokemon)
+    end
+  }
+})
+
+MultipleForms.register(:RAMPARDOS,{
+  "type1"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:BUG)    # Mystic
+  },
+  "type2"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:GROUND)    # Mystic
+  },
+  "getBaseStats"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next [97, 65, 58, 165, 50, 60]   # Mystic
+  },
+  "ability"=>proc{|pokemon|
+    next if pokemon.form!=1 # Only Mystic form
+    if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0)
+      next getID(PBAbilities,:ARENATRAP)
+    end
+    if pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)
+      next getID(PBAbilities,:STALL)
+    end
+  },
+  "getMoveList"=>proc{|pokemon|
+    movelist=[]
+    # TODO: Fill Mystic Rampardos movelist as [level,:MOVE] entries
+    for i in movelist
+      i[1]=getConst(PBMoves,i[1])
+    end
+    next movelist
+  },
+  "onSetForm"=>proc{|pokemon,form|
+    if form==1
+      pbSeenForm(pokemon)
+    end
+  }
+})
+
+MultipleForms.register(:TINKATINK,{
+  "type1"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:WATER)    # Mystic
+  },
+  "type2"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:STEEL)    # Mystic
+  },
+  "getBaseStats"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next [45, 35, 64, 50, 58, 45]   # Mystic
+  },
+  "ability"=>proc{|pokemon|
+    next if pokemon.form!=1 # Only Mystic form
+    if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0)
+      next getID(PBAbilities,:SNIPER)
+    end
+    if pokemon.abilityIndex==1 || (pokemon.abilityflag && pokemon.abilityflag==1)
+      next getID(PBAbilities,:MOLDBREAKER)
+    end
+    if pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)
+      next getID(PBAbilities,:MEGALAUNCHER)
+    end
+  },
+  "getMoveList"=>proc{|pokemon|
+    movelist=[]
+    # TODO: Fill Mystic Tinkatink movelist as [level,:MOVE] entries
+    for i in movelist
+      i[1]=getConst(PBMoves,i[1])
+    end
+    next movelist
+  },
+  "onSetForm"=>proc{|pokemon,form|
+    if form==1
+      pbSeenForm(pokemon)
+    end
+  }
+})
+
+MultipleForms.register(:TINKATUFF,{
+  "type1"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:WATER)    # Mystic
+  },
+  "type2"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:STEEL)    # Mystic
+  },
+  "getBaseStats"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next [55, 45, 82, 65, 78, 55]   # Mystic
+  },
+  "ability"=>proc{|pokemon|
+    next if pokemon.form!=1 # Only Mystic form
+    if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0)
+      next getID(PBAbilities,:SNIPER)
+    end
+    if pokemon.abilityIndex==1 || (pokemon.abilityflag && pokemon.abilityflag==1)
+      next getID(PBAbilities,:MOLDBREAKER)
+    end
+    if pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)
+      next getID(PBAbilities,:MEGALAUNCHER)
+    end
+  },
+  "getMoveList"=>proc{|pokemon|
+    movelist=[]
+    # TODO: Fill Mystic Tinkatuff movelist as [level,:MOVE] entries
+    for i in movelist
+      i[1]=getConst(PBMoves,i[1])
+    end
+    next movelist
+  },
+  "onSetForm"=>proc{|pokemon,form|
+    if form==1
+      pbSeenForm(pokemon)
+    end
+  }
+})
+
+MultipleForms.register(:TINKATON,{
+  "type1"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:WATER)    # Mystic
+  },
+  "type2"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:STEEL)    # Mystic
+  },
+  "getBaseStats"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next [75, 70, 105, 85, 94, 77]   # Mystic
+  },
+  "ability"=>proc{|pokemon|
+    next if pokemon.form!=1 # Only Mystic form
+    if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0)
+      next getID(PBAbilities,:SNIPER)
+    end
+    if pokemon.abilityIndex==1 || (pokemon.abilityflag && pokemon.abilityflag==1)
+      next getID(PBAbilities,:MOLDBREAKER)
+    end
+    if pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)
+      next getID(PBAbilities,:MEGALAUNCHER)
+    end
+  },
+  "getMoveList"=>proc{|pokemon|
+    movelist=[]
+    # TODO: Fill Mystic Tinkaton movelist as [level,:MOVE] entries
+    for i in movelist
+      i[1]=getConst(PBMoves,i[1])
+    end
+    next movelist
+  },
+  "onSetForm"=>proc{|pokemon,form|
+    if form==1
+      pbSeenForm(pokemon)
+    end
+  }
+})
+
+MultipleForms.register(:TOGEPI,{
+  "type1"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:DRAGON)    # Mystic
+  },
+  "type2"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:DRAGON)    # Mystic
+  },
+  "getBaseStats"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next [35, 65, 65, 20, 20, 40]   # Mystic
+  },
+  "ability"=>proc{|pokemon|
+    next if pokemon.form!=1 # Only Mystic form
+    if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0)
+      next getID(PBAbilities,:SHEDSKIN)
+    end
+    if pokemon.abilityIndex==1 || (pokemon.abilityflag && pokemon.abilityflag==1)
+      next getID(PBAbilities,:WONDERSKIN)
+    end
+    if pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)
+      next getID(PBAbilities,:CLEARBODY)
+    end
+  },
+  "getMoveList"=>proc{|pokemon|
+    movelist=[]
+    # TODO: Fill Mystic Togepi movelist as [level,:MOVE] entries
+    for i in movelist
+      i[1]=getConst(PBMoves,i[1])
+    end
+    next movelist
+  },
+  "onSetForm"=>proc{|pokemon,form|
+    if form==1
+      pbSeenForm(pokemon)
+    end
+  }
+})
+
+MultipleForms.register(:TOGETIC,{
+  "type1"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:DRAGON)    # Mystic
+  },
+  "type2"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:PSYCHIC)    # Mystic
+  },
+  "getBaseStats"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next [55, 105, 40, 85, 40, 85]   # Mystic
+  },
+  "ability"=>proc{|pokemon|
+    next if pokemon.form!=1 # Only Mystic form
+    if pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)
+      next getID(PBAbilities,:PIXILATE)
+    end
+  },
+  "getMoveList"=>proc{|pokemon|
+    movelist=[]
+    # TODO: Fill Mystic Togetic movelist as [level,:MOVE] entries
+    for i in movelist
+      i[1]=getConst(PBMoves,i[1])
+    end
+    next movelist
+  },
+  "onSetForm"=>proc{|pokemon,form|
+    if form==1
+      pbSeenForm(pokemon)
+    end
+  }
+})
+
+MultipleForms.register(:TOGEKISS,{
+  "type1"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:DRAGON)    # Mystic
+  },
+  "type2"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:PSYCHIC)    # Mystic
+  },
+  "getBaseStats"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next [85, 120, 80, 115, 50, 95]   # Mystic
+  },
+  "ability"=>proc{|pokemon|
+    next if pokemon.form!=1 # Only Mystic form
+    if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0)
+      next getID(PBAbilities,:PERPETUAL)
+    end
+    if pokemon.abilityIndex==1 || (pokemon.abilityflag && pokemon.abilityflag==1)
+      next getID(PBAbilities,:DAZZLING)
+    end
+    if pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)
+      next getID(PBAbilities,:PIXILATE)
+    end
+  },
+  "getMoveList"=>proc{|pokemon|
+    movelist=[]
+    # TODO: Fill Mystic Togekiss movelist as [level,:MOVE] entries
+    for i in movelist
+      i[1]=getConst(PBMoves,i[1])
+    end
+    next movelist
+  },
+  "onSetForm"=>proc{|pokemon,form|
+    if form==1
+      pbSeenForm(pokemon)
+    end
+  }
+})
+
+MultipleForms.register(:MIMIKYU,{
+  "type1"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:WATER)    # Mystic
+  },
+  "type2"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:GROUND)    # Mystic
+  },
+  "getBaseStats"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next [96, 50, 80, 90, 105, 55]   # Mystic
+  },
+  "ability"=>proc{|pokemon|
+    next if pokemon.form!=1 # Only Mystic form
+    if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0)
+      next getID(PBAbilities,:DISGUISE)
+    end
+    if pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)
+      next getID(PBAbilities,:SANDVEIL)
+    end
+  },
+  "getMoveList"=>proc{|pokemon|
+    movelist=[]
+    # TODO: Fill Mystic Mimikyu movelist as [level,:MOVE] entries
+    for i in movelist
+      i[1]=getConst(PBMoves,i[1])
+    end
+    next movelist
+  },
+  "onSetForm"=>proc{|pokemon,form|
+    if form==1
+      pbSeenForm(pokemon)
+    end
+  }
+})
+
+MultipleForms.register(:CARBINKSHELL,{
+  "type1"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:ELECTRIC)    # Mystic
+  },
+  "type2"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:STEEL)    # Mystic
+  },
+  "getBaseStats"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next [50, 50, 150, 50, 50, 150]   # Mystic
+  },
+  "ability"=>proc{|pokemon|
+    next if pokemon.form!=1 # Only Mystic form
+    if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0)
+      next getID(PBAbilities,:SHIELDSDOWN)
+    end
+  },
+  "getMoveList"=>proc{|pokemon|
+    movelist=[]
+    # TODO: Fill Mystic Carbink-Shell movelist as [level,:MOVE] entries
+    for i in movelist
+      i[1]=getConst(PBMoves,i[1])
+    end
+    next movelist
+  },
+  "onSetForm"=>proc{|pokemon,form|
+    if form==1
+      pbSeenForm(pokemon)
+    end
+  }
+})
+
+MultipleForms.register(:CARBINKCORE,{
+  "type1"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:ELECTRIC)    # Mystic
+  },
+  "type2"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:STEEL)    # Mystic
+  },
+  "getBaseStats"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next [50, 100, 50, 150, 100, 50]   # Mystic
+  },
+  "ability"=>proc{|pokemon|
+    next if pokemon.form!=1 # Only Mystic form
+    if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0)
+      next getID(PBAbilities,:SHIELDSDOWN)
+    end
+  },
+  "getMoveList"=>proc{|pokemon|
+    movelist=[]
+    # TODO: Fill Mystic Carbink-Core movelist as [level,:MOVE] entries
+    for i in movelist
+      i[1]=getConst(PBMoves,i[1])
+    end
+    next movelist
+  },
+  "onSetForm"=>proc{|pokemon,form|
+    if form==1
+      pbSeenForm(pokemon)
+    end
+  }
+})
+
+MultipleForms.register(:TANDEMAUS,{
+  "type1"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:PSYCHIC)    # Mystic
+  },
+  "type2"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:PSYCHIC)    # Mystic
+  },
+  "getBaseStats"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next [50, 40, 45, 50, 75, 45]   # Mystic
+  },
+  "ability"=>proc{|pokemon|
+    next if pokemon.form!=1 # Only Mystic form
+    if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0)
+      next getID(PBAbilities,:COMPOUNDEYES)
+    end
+    if pokemon.abilityIndex==1 || (pokemon.abilityflag && pokemon.abilityflag==1)
+      next getID(PBAbilities,:SYMBIOSIS)
+    end
+    if pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)
+      next getID(PBAbilities,:REGENERATOR)
+    end
+  },
+  "getMoveList"=>proc{|pokemon|
+    movelist=[]
+    case pokemon.form            # Mystic
+    when 1 ; movelist=[[1,:DOUBLEHIT],[1,:BABYDOLLEYES],[5,:CONFUSION],[8,:ALLYSWITCH],
+                      [11,:HIDDENPOWER],[14,:CELLSPLITTER],[18,:SWITCHEROO],[22,:PAINSPLIT],
+                      [26,:VACUUMWAVE],[30,:PSYSHOCK],[33,:SKILLSWAP],[37,:AURASPHERE],
+                      [41,:RECOVER],[46,:PSYCHIC]]
+    end
+    for i in movelist
+      i[1]=getConst(PBMoves,i[1])
+    end
+    next movelist
+  },
+  "onSetForm"=>proc{|pokemon,form|
+    if form==1
+      pbSeenForm(pokemon)
+    end
+  }
+})
+
+MultipleForms.register(:MAUSHOLD,{
+  "type1"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:PSYCHIC)    # Mystic
+  },
+  "type2"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:PSYCHIC)    # Mystic
+  },
+  "getBaseStats"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next [75, 65, 70, 75, 111, 74]   # Mystic
+  },
+  "ability"=>proc{|pokemon|
+    next if pokemon.form!=1 # Only Mystic form
+    if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0)
+      next getID(PBAbilities,:COMPOUNDEYES)
+    end
+    if pokemon.abilityIndex==1 || (pokemon.abilityflag && pokemon.abilityflag==1)
+      next getID(PBAbilities,:SYMBIOSIS)
+    end
+    if pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)
+      next getID(PBAbilities,:REGENERATOR)
+    end
+  },
+  "getMoveList"=>proc{|pokemon|
+    movelist=[]
+    case pokemon.form            # Mystic
+    when 1 ; movelist=[[1,:FOLLOWME],[1,:CALMMIND],[1,:DOUBLEHIT],[1,:BABYDOLLEYES],
+                      [5,:CONFUSION],[8,:ALLYSWITCH],[11,:HIDDENPOWER],[14,:CELLSPLITTER],
+                      [18,:SWITCHEROO],[22,:PAINSPLIT],[29,:VACUUMWAVE],[33,:PSYSHOCK],
+                      [37,:SKILLSWAP],[41,:AURASPHERE],[46,:RECOVER],[53,:PSYCHIC]]
+    end
+    for i in movelist
+      i[1]=getConst(PBMoves,i[1])
+    end
+    next movelist
+  },
+  "onSetForm"=>proc{|pokemon,form|
+    if form==1
+      pbSeenForm(pokemon)
+    end
+  }
+})
+
+MultipleForms.register(:HELIOPTILE,{
+  "type1"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:DARK)    # Mystic
+  },
+  "type2"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:FAIRY)    # Mystic
+  },
+  "getBaseStats"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next [44, 61, 38, 70, 33, 43]   # Mystic
+  },
+  "ability"=>proc{|pokemon|
+    next if pokemon.form!=1 # Only Mystic form
+    if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0)
+      next getID(PBAbilities,:STAKEOUT)
+    end
+    if pokemon.abilityIndex==1 || (pokemon.abilityflag && pokemon.abilityflag==1)
+      next getID(PBAbilities,:INSOMNIA)
+    end
+    if pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)
+      next getID(PBAbilities,:SCAVENGER)
+    end
+  },
+  "getMoveList"=>proc{|pokemon|
+    movelist=[]
+    # TODO: Fill Mystic Helioptile movelist as [level,:MOVE] entries
+    for i in movelist
+      i[1]=getConst(PBMoves,i[1])
+    end
+    next movelist
+  },
+  "onSetForm"=>proc{|pokemon,form|
+    if form==1
+      pbSeenForm(pokemon)
+    end
+  }
+})
+
+MultipleForms.register(:HELIOLISK,{
+  "type1"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:DARK)    # Mystic
+  },
+  "type2"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:FAIRY)    # Mystic
+  },
+  "getBaseStats"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next [62, 109, 55, 109, 52, 94]   # Mystic
+  },
+  "ability"=>proc{|pokemon|
+    next if pokemon.form!=1 # Only Mystic form
+    if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0)
+      next getID(PBAbilities,:STAKEOUT)
+    end
+    if pokemon.abilityIndex==1 || (pokemon.abilityflag && pokemon.abilityflag==1)
+      next getID(PBAbilities,:INSOMNIA)
+    end
+    if pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)
+      next getID(PBAbilities,:SCAVENGER)
+    end
+  },
+  "getMoveList"=>proc{|pokemon|
+    movelist=[]
+    # TODO: Fill Mystic Heliolisk movelist as [level,:MOVE] entries
+    for i in movelist
+      i[1]=getConst(PBMoves,i[1])
+    end
+    next movelist
+  },
+  "onSetForm"=>proc{|pokemon,form|
+    if form==1
+      pbSeenForm(pokemon)
+    end
+  }
+})
+
+MultipleForms.register(:BOUNSWEET,{
+  "type1"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:POISON)    # Mystic
+  },
+  "type2"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:POISON)    # Mystic
+  },
+  "getBaseStats"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next [32, 30, 38, 42, 30, 38]   # Mystic
+  },
+  "ability"=>proc{|pokemon|
+    next if pokemon.form!=1 # Only Mystic form
+    if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0)
+      next getID(PBAbilities,:POISONPOINT)
+    end
+    if pokemon.abilityIndex==1 || (pokemon.abilityflag && pokemon.abilityflag==1)
+      next getID(PBAbilities,:MAJESTY)
+    end
+    if pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)
+      next getID(PBAbilities,:LIQUIDOOZE)
+    end
+  },
+  "getMoveList"=>proc{|pokemon|
+    movelist=[]
+    # TODO: Fill Mystic Bounsweet movelist as [level,:MOVE] entries
+    for i in movelist
+      i[1]=getConst(PBMoves,i[1])
+    end
+    next movelist
+  },
+  "onSetForm"=>proc{|pokemon,form|
+    if form==1
+      pbSeenForm(pokemon)
+    end
+  }
+})
+
+MultipleForms.register(:STEENEE,{
+  "type1"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:POISON)    # Mystic
+  },
+  "type2"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:POISON)    # Mystic
+  },
+  "getBaseStats"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next [62, 40, 48, 52, 40, 48]   # Mystic
+  },
+  "ability"=>proc{|pokemon|
+    next if pokemon.form!=1 # Only Mystic form
+    if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0)
+      next getID(PBAbilities,:POISONPOINT)
+    end
+    if pokemon.abilityIndex==1 || (pokemon.abilityflag && pokemon.abilityflag==1)
+      next getID(PBAbilities,:MAJESTY)
+    end
+    if pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)
+      next getID(PBAbilities,:LIQUIDOOZE)
+    end
+  },
+  "getMoveList"=>proc{|pokemon|
+    movelist=[]
+    # TODO: Fill Mystic Steenee movelist as [level,:MOVE] entries
+    for i in movelist
+      i[1]=getConst(PBMoves,i[1])
+    end
+    next movelist
+  },
+  "onSetForm"=>proc{|pokemon,form|
+    if form==1
+      pbSeenForm(pokemon)
+    end
+  }
+})
+
+MultipleForms.register(:TSAREENA,{
+  "type1"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:POISON)    # Mystic
+  },
+  "type2"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:POISON)    # Mystic
+  },
+  "getBaseStats"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next [72, 50, 98, 72, 120, 98]   # Mystic
+  },
+  "ability"=>proc{|pokemon|
+    next if pokemon.form!=1 # Only Mystic form
+    if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0)
+      next getID(PBAbilities,:POISONPOINT)
+    end
+    if pokemon.abilityIndex==1 || (pokemon.abilityflag && pokemon.abilityflag==1)
+      next getID(PBAbilities,:MAJESTY)
+    end
+    if pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)
+      next getID(PBAbilities,:LIQUIDOOZE)
+    end
+  },
+  "getMoveList"=>proc{|pokemon|
+    movelist=[]
+    # TODO: Fill Mystic Tsareena movelist as [level,:MOVE] entries
+    for i in movelist
+      i[1]=getConst(PBMoves,i[1])
+    end
+    next movelist
+  },
+  "onSetForm"=>proc{|pokemon,form|
+    if form==1
+      pbSeenForm(pokemon)
+    end
+  }
+})
+
+MultipleForms.register(:NACLI,{
+  "type1"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:WATER)    # Mystic
+  },
+  "type2"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:PSYCHIC)    # Mystic
+  },
+  "getBaseStats"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next [25, 55, 35, 55, 35, 75]   # Mystic
+  },
+  "ability"=>proc{|pokemon|
+    next if pokemon.form!=1 # Only Mystic form
+    if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0)
+      next getID(PBAbilities,:PURIFYING)
+    end
+    if pokemon.abilityIndex==1 || (pokemon.abilityflag && pokemon.abilityflag==1)
+      next getID(PBAbilities,:RAINDISH)
+    end
+    if pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)
+      next getID(PBAbilities,:CONTRARY)
+    end
+  },
+  "getMoveList"=>proc{|pokemon|
+    movelist=[]
+    # TODO: Fill Mystic Nacli movelist as [level,:MOVE] entries
+    for i in movelist
+      i[1]=getConst(PBMoves,i[1])
+    end
+    next movelist
+  },
+  "onSetForm"=>proc{|pokemon,form|
+    if form==1
+      pbSeenForm(pokemon)
+    end
+  }
+})
+
+MultipleForms.register(:NACLSTACK,{
+  "type1"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:WATER)    # Mystic
+  },
+  "type2"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:PSYCHIC)    # Mystic
+  },
+  "getBaseStats"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next [60, 65, 35, 60, 35, 100]   # Mystic
+  },
+  "ability"=>proc{|pokemon|
+    next if pokemon.form!=1 # Only Mystic form
+    if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0)
+      next getID(PBAbilities,:PURIFYING)
+    end
+    if pokemon.abilityIndex==1 || (pokemon.abilityflag && pokemon.abilityflag==1)
+      next getID(PBAbilities,:RAINDISH)
+    end
+    if pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)
+      next getID(PBAbilities,:CONTRARY)
+    end
+  },
+  "getMoveList"=>proc{|pokemon|
+    movelist=[]
+    # TODO: Fill Mystic Naclstack movelist as [level,:MOVE] entries
+    for i in movelist
+      i[1]=getConst(PBMoves,i[1])
+    end
+    next movelist
+  },
+  "onSetForm"=>proc{|pokemon,form|
+    if form==1
+      pbSeenForm(pokemon)
+    end
+  }
+})
+
+MultipleForms.register(:GARGANACL,{
+  "type1"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:WATER)    # Mystic
+  },
+  "type2"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:PSYCHIC)    # Mystic
+  },
+  "getBaseStats"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next [90, 100, 45, 100, 35, 130]   # Mystic
+  },
+  "ability"=>proc{|pokemon|
+    next if pokemon.form!=1 # Only Mystic form
+    if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0)
+      next getID(PBAbilities,:PURIFYING)
+    end
+    if pokemon.abilityIndex==1 || (pokemon.abilityflag && pokemon.abilityflag==1)
+      next getID(PBAbilities,:RAINDISH)
+    end
+    if pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)
+      next getID(PBAbilities,:CONTRARY)
+    end
+  },
+  "getMoveList"=>proc{|pokemon|
+    movelist=[]
+    # TODO: Fill Mystic Garganacl movelist as [level,:MOVE] entries
+    for i in movelist
+      i[1]=getConst(PBMoves,i[1])
+    end
+    next movelist
+  },
+  "onSetForm"=>proc{|pokemon,form|
+    if form==1
+      pbSeenForm(pokemon)
+    end
+  }
+})
+
+MultipleForms.register(:SKIDDO,{
+  "type1"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:ELECTRIC)    # Mystic
+  },
+  "type2"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:ELECTRIC)    # Mystic
+  },
+  "getBaseStats"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next [65, 62, 52, 66, 48, 57]   # Mystic
+  },
+  "ability"=>proc{|pokemon|
+    next if pokemon.form!=1 # Only Mystic form
+    if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0)
+      next getID(PBAbilities,:STATIC)
+    end
+    if pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)
+      next getID(PBAbilities,:INNERFOCUS)
+    end
+  },
+  "getMoveList"=>proc{|pokemon|
+    movelist=[]
+    case pokemon.form            # Mystic
+    when 1 ; movelist=[[1,:TACKLE],[1,:CHARGE],[7,:NUZZLE],[9,:TAILWHIP],
+                      [12,:ELECTRIFY],[13,:SPARK],[16,:STEALTHROCK],[20,:SPIKYSHIELD],
+                      [22,:TRAILBLAZE],[26,:ROCKTOMB],[30,:ZINGZAP],[34,:CURSE],
+                      [38,:ROCKSLIDE],[42,:WILDCHARGE],[45,:HORNLEECH],[50,:ELECTRICTERRAIN]]
+    end
+    for i in movelist
+      i[1]=getConst(PBMoves,i[1])
+    end
+    next movelist
+  },
+  "onSetForm"=>proc{|pokemon,form|
+    if form==1
+      pbSeenForm(pokemon)
+    end
+  }
+})
+
+MultipleForms.register(:GOGOAT,{
+  "type1"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:ELECTRIC)    # Mystic
+  },
+  "type2"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:ELECTRIC)    # Mystic
+  },
+  "getBaseStats"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next [100, 97, 68, 123, 62, 81]   # Mystic
+  },
+  "ability"=>proc{|pokemon|
+    next if pokemon.form!=1 # Only Mystic form
+    if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0)
+      next getID(PBAbilities,:STATIC)
+    end
+    if pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)
+      next getID(PBAbilities,:ELECTROMORPHOSIS)
+    end
+  },
+  "getMoveList"=>proc{|pokemon|
+    movelist=[]
+    case pokemon.form            # Mystic
+    when 1 ; movelist=[[0,:ENDURE],[1,:HEADSMASH],[1,:TACKLE],[1,:CHARGE],
+                      [1,:NUZZLE],[1,:TAILWHIP],[7,:NUZZLE],[9,:TAILWHIP],
+                      [12,:ELECTRIFY],[13,:SPARK],[16,:STEALTHROCK],[20,:SPIKYSHIELD],
+                      [22,:TRAILBLAZE],[26,:ROCKTOMB],[30,:ZINGZAP],[34,:CURSE],
+                      [40,:ROCKSLIDE],[47,:WILDCHARGE],[55,:HORNLEECH],[58,:ELECTRICTERRAIN]]
+    end
+    for i in movelist
+      i[1]=getConst(PBMoves,i[1])
+    end
+    next movelist
+  },
+  "onSetForm"=>proc{|pokemon,form|
+    if form==1
+      pbSeenForm(pokemon)
+    end
+  }
+})
+
+MultipleForms.register(:SKRELP,{
+  "type1"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:DARK)    # Mystic
+  },
+  "type2"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:ELECTRIC)    # Mystic
+  },
+  "getBaseStats"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next [30, 60, 60, 60, 60, 50]   # Mystic
+  },
+  "ability"=>proc{|pokemon|
+    next if pokemon.form!=1 # Only Mystic form
+    if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0)
+      next getID(PBAbilities,:ILLUMINATE)
+    end
+    if pokemon.abilityIndex==1 || (pokemon.abilityflag && pokemon.abilityflag==1)
+      next getID(PBAbilities,:PRESSURE)
+    end
+    if pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)
+      next getID(PBAbilities,:ABYSSAL)
+    end
+  },
+  "getMoveList"=>proc{|pokemon|
+    movelist=[]
+    # TODO: Fill Mystic Skrelp movelist as [level,:MOVE] entries
+    for i in movelist
+      i[1]=getConst(PBMoves,i[1])
+    end
+    next movelist
+  },
+  "onSetForm"=>proc{|pokemon,form|
+    if form==1
+      pbSeenForm(pokemon)
+    end
+  }
+})
+
+MultipleForms.register(:DRAGALGE,{
+  "type1"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:DARK)    # Mystic
+  },
+  "type2"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:ELECTRIC)    # Mystic
+  },
+  "getBaseStats"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next [44, 75, 97, 90, 123, 65]   # Mystic
+  },
+  "ability"=>proc{|pokemon|
+    next if pokemon.form!=1 # Only Mystic form
+    if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0)
+      next getID(PBAbilities,:ILLUMINATE)
+    end
+    if pokemon.abilityIndex==1 || (pokemon.abilityflag && pokemon.abilityflag==1)
+      next getID(PBAbilities,:PRESSURE)
+    end
+    if pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)
+      next getID(PBAbilities,:ABYSSAL)
+    end
+  },
+  "getMoveList"=>proc{|pokemon|
+    movelist=[]
+    # TODO: Fill Mystic Dragalge movelist as [level,:MOVE] entries
+    for i in movelist
+      i[1]=getConst(PBMoves,i[1])
+    end
+    next movelist
+  },
+  "onSetForm"=>proc{|pokemon,form|
+    if form==1
+      pbSeenForm(pokemon)
+    end
+  }
+})
+
+MultipleForms.register(:DEDENNE,{
+  "type1"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:ELECTRIC)    # Mystic
+  },
+  "type2"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:ICE)    # Mystic
+  },
+  "getBaseStats"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next [67, 81, 67, 101, 58, 57]   # Mystic
+  },
+  "ability"=>proc{|pokemon|
+    next if pokemon.form!=1 # Only Mystic form
+    if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0)
+      next getID(PBAbilities,:CHEEKPOUCH)
+    end
+    if pokemon.abilityIndex==1 || (pokemon.abilityflag && pokemon.abilityflag==1)
+      next getID(PBAbilities,:FLUFFY)
+    end
+    if pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)
+      next getID(PBAbilities,:SNOWWARNING)
+    end
+  },
+  "getMoveList"=>proc{|pokemon|
+    movelist=[]
+    # TODO: Fill Mystic Dedenne movelist as [level,:MOVE] entries
+    for i in movelist
+      i[1]=getConst(PBMoves,i[1])
+    end
+    next movelist
+  },
+  "onSetForm"=>proc{|pokemon,form|
+    if form==1
+      pbSeenForm(pokemon)
+    end
+  }
+})
+
+MultipleForms.register(:CRAMORANT,{
+  "type1"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:FIRE)    # Mystic
+  },
+  "type2"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:ELECTRIC)    # Mystic
+  },
+  "getBaseStats"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next [55, 85, 70, 95, 85, 85]   # Mystic
+  },
+  "ability"=>proc{|pokemon|
+    next if pokemon.form!=1 # Only Mystic form
+    if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0)
+      next getID(PBAbilities,:AFTERLIFE)
+    end
+    if pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)
+      next getID(PBAbilities,:RECKLESS)
+    end
+  },
+  "getMoveList"=>proc{|pokemon|
+    movelist=[]
+    # TODO: Fill Mystic Cramorant movelist as [level,:MOVE] entries
+    for i in movelist
+      i[1]=getConst(PBMoves,i[1])
+    end
+    next movelist
+  },
+  "onSetForm"=>proc{|pokemon,form|
+    if form==1
+      pbSeenForm(pokemon)
+    end
+  }
+})
+
+MultipleForms.register(:FEEBAS,{
+  "type1"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:FAIRY)    # Mystic
+  },
+  "type2"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:FAIRY)    # Mystic
+  },
+  "getBaseStats"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next [80, 20, 10, 55, 20, 15]   # Mystic
+  },
+  "ability"=>proc{|pokemon|
+    next if pokemon.form!=1 # Only Mystic form
+    if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0)
+      next getID(PBAbilities,:OBLIVIOUS)
+    end
+    if pokemon.abilityIndex==1 || (pokemon.abilityflag && pokemon.abilityflag==1)
+      next getID(PBAbilities,:NOGUARD)
+    end
+    if pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)
+      next getID(PBAbilities,:RUNAWAY)
+    end
+  },
+  "getMoveList"=>proc{|pokemon|
+    movelist=[]
+    # TODO: Fill Mystic Feebas movelist as [level,:MOVE] entries
+    for i in movelist
+      i[1]=getConst(PBMoves,i[1])
+    end
+    next movelist
+  },
+  "onSetForm"=>proc{|pokemon,form|
+    if form==1
+      pbSeenForm(pokemon)
+    end
+  }
+})
+
+MultipleForms.register(:MILOTIC,{
+  "type1"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:FAIRY)    # Mystic
+  },
+  "type2"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:DRAGON)    # Mystic
+  },
+  "getBaseStats"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next [125, 95, 79, 60, 100, 81]   # Mystic
+  },
+  "ability"=>proc{|pokemon|
+    next if pokemon.form!=1 # Only Mystic form
+    if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0)
+      next getID(PBAbilities,:OBLIVIOUS)
+    end
+    if pokemon.abilityIndex==1 || (pokemon.abilityflag && pokemon.abilityflag==1)
+      next getID(PBAbilities,:NOGUARD)
+    end
+    if pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)
+      next getID(PBAbilities,:SERENEGRACE)
+    end
+  },
+  "getMoveList"=>proc{|pokemon|
+    movelist=[]
+    # TODO: Fill Mystic Milotic movelist as [level,:MOVE] entries
+    for i in movelist
+      i[1]=getConst(PBMoves,i[1])
+    end
+    next movelist
+  },
+  "onSetForm"=>proc{|pokemon,form|
+    if form==1
+      pbSeenForm(pokemon)
+    end
+  }
+})
+
+MultipleForms.register(:BURMY,{
+  "type1"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:BUG)    # Mystic
+  },
+  "type2"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:NORMAL)    # Mystic
+  },
+  "getBaseStats"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next [36, 29, 45, 40, 29, 45]   # Mystic
+  },
+  "ability"=>proc{|pokemon|
+    next if pokemon.form!=1 # Only Mystic form
+    if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0)
+      next getID(PBAbilities,:OVERCOAT)
+    end
+    if pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)
+      next getID(PBAbilities,:FURCOAT)
+    end
+  },
+  "getMoveList"=>proc{|pokemon|
+    movelist=[]
+    case pokemon.form            # Mystic
+    when 1 ; movelist=[[1,:DEFENSECURL],[10,:ROLLOUT],[15,:SILVERWIND],[20,:HEADBUTT]]
+    end
+    for i in movelist
+      i[1]=getConst(PBMoves,i[1])
+    end
+    next movelist
+  },
+  "onSetForm"=>proc{|pokemon,form|
+    if form==1
+      pbSeenForm(pokemon)
+    end
+  }
+})
+
+MultipleForms.register(:WORMADAM,{
+  "type1"=>proc{|pokemon|
+    next if pokemon.form!=3
+    next getID(PBTypes,:BUG)    # Mystic
+  },
+  "type2"=>proc{|pokemon|
+    next if pokemon.form!=3
+    next getID(PBTypes,:NORMAL)    # Mystic
+  },
+  "getBaseStats"=>proc{|pokemon|
+    next if pokemon.form!=3
+    next [85, 59, 60, 36, 79, 105]   # Mystic
+  },
+  "ability"=>proc{|pokemon|
+    next if pokemon.form!=3 # Only Mystic form
+    if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0)
+      next getID(PBAbilities,:OVERCOAT)
+    end
+    if pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)
+      next getID(PBAbilities,:FURCOAT)
+    end
+  },
+  "getMoveList"=>proc{|pokemon|
+    movelist=[]
+    case pokemon.form            # Mystic
+    when 3 ; movelist=[[0,:BEAUTIFY],[1,:SUCKERPUNCH],[1,:DEFENSECURL],[1,:ROLLOUT],
+                      [1,:SILVERWIND],[10,:ROLLOUT],[15,:SILVERWIND],[20,:HEADBUTT],
+                      [23,:LIFEDEW],[26,:STRUGGLEBUG],[29,:ROUND],[32,:PSYBEAM],
+                      [35,:ROOST],[38,:PROTECT],[41,:COTTONGUARD],[44,:PSYCHIC],
+                      [47,:HYPERVOICE],[50,:HEALINGWISH]]
+    end
+    for i in movelist
+      i[1]=getConst(PBMoves,i[1])
+    end
+    next movelist
+  },
+  "onSetForm"=>proc{|pokemon,form|
+    if form==3
+      pbSeenForm(pokemon)
+    end
+  }
+})
+
+MultipleForms.register(:MOTHIM,{
+  "type1"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:BUG)    # Mystic
+  },
+  "type2"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:NORMAL)    # Mystic
+  },
+  "getBaseStats"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next [70, 94, 66, 94, 50, 50]   # Mystic
+  },
+  "ability"=>proc{|pokemon|
+    next if pokemon.form!=1 # Only Mystic form
+    if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0)
+      next getID(PBAbilities,:OVERCOAT)
+    end
+    if pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)
+      next getID(PBAbilities,:FURCOAT)
+    end
+  },
+  "getMoveList"=>proc{|pokemon|
+    movelist=[]
+    case pokemon.form            # Mystic
+    when 1 ; movelist=[[0,:BEAUTIFY],[1,:SUCKERPUNCH],[1,:DEFENSECURL],[1,:ROLLOUT],
+                      [1,:SILVERWIND],[10,:ROLLOUT],[15,:SILVERWIND],[20,:HEADBUTT],
+                      [23,:ENDURE],[26,:SKITTERSMACK],[29,:FACADE],[32,:HEARTSTAMP],
+                      [35,:AGILITY],[38,:QUICKATTACK],[41,:AMNESIA],[44,:ZENHEADBUTT],
+                      [47,:BODYSLAM],[50,:FLAIL]]
+    end
+    for i in movelist
+      i[1]=getConst(PBMoves,i[1])
+    end
+    next movelist
+  },
+  "onSetForm"=>proc{|pokemon,form|
+    if form==1
+      pbSeenForm(pokemon)
+    end
+  }
+})
+
+MultipleForms.register(:DRILBUR,{
+  "type1"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:ICE)    # Mystic
+  },
+  "type2"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:ICE)    # Mystic
+  },
+  "getBaseStats"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next [85, 68, 45, 60, 30, 40]   # Mystic
+  },
+  "ability"=>proc{|pokemon|
+    next if pokemon.form!=1 # Only Mystic form
+    if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0)
+      next getID(PBAbilities,:HYPERCUTTER)
+    end
+    if pokemon.abilityIndex==1 || (pokemon.abilityflag && pokemon.abilityflag==1)
+      next getID(PBAbilities,:TOUGHCLAWS)
+    end
+    if pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)
+      next getID(PBAbilities,:DRYSKIN)
+    end
+  },
+  "getMoveList"=>proc{|pokemon|
+    movelist=[]
+    # TODO: Fill Mystic Drilbur movelist as [level,:MOVE] entries
+    for i in movelist
+      i[1]=getConst(PBMoves,i[1])
+    end
+    next movelist
+  },
+  "onSetForm"=>proc{|pokemon,form|
+    if form==1
+      pbSeenForm(pokemon)
+    end
+  }
+})
+
+MultipleForms.register(:EXCADRILL,{
+  "type1"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:ICE)    # Mystic
+  },
+  "type2"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:WATER)    # Mystic
+  },
+  "getBaseStats"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next [135, 110, 65, 88, 50, 60]   # Mystic
+  },
+  "ability"=>proc{|pokemon|
+    next if pokemon.form!=1 # Only Mystic form
+    if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0)
+      next getID(PBAbilities,:HYPERCUTTER)
+    end
+    if pokemon.abilityIndex==1 || (pokemon.abilityflag && pokemon.abilityflag==1)
+      next getID(PBAbilities,:TOUGHCLAWS)
+    end
+    if pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)
+      next getID(PBAbilities,:SWIFTSWIM)
+    end
+  },
+  "getMoveList"=>proc{|pokemon|
+    movelist=[]
+    # TODO: Fill Mystic Excadrill movelist as [level,:MOVE] entries
+    for i in movelist
+      i[1]=getConst(PBMoves,i[1])
+    end
+    next movelist
+  },
+  "onSetForm"=>proc{|pokemon,form|
+    if form==1
+      pbSeenForm(pokemon)
+    end
+  }
+})
+
+MultipleForms.register(:VAPOREON,{
+  "type1"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:FLYING)    # Mystic
+  },
+  "type2"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:FLYING)    # Mystic
+  },
+  "getBaseStats"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next [95, 65, 60, 130, 65, 110]   # Mystic
+  },
+  "ability"=>proc{|pokemon|
+    next if pokemon.form!=1 # Only Mystic form
+    if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0)
+      next getID(PBAbilities,:CLOUDNINE)
+    end
+    if pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)
+      next getID(PBAbilities,:UNAWARE)
+    end
+  },
+  "getMoveList"=>proc{|pokemon|
+    movelist=[]
+    # TODO: Fill Mystic Vaporeon movelist as [level,:MOVE] entries
+    for i in movelist
+      i[1]=getConst(PBMoves,i[1])
+    end
+    next movelist
+  },
+  "onSetForm"=>proc{|pokemon,form|
+    if form==1
+      pbSeenForm(pokemon)
+    end
+  }
+})
+
+MultipleForms.register(:JOLTEON,{
+  "type1"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:STEEL)    # Mystic
+  },
+  "type2"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:STEEL)    # Mystic
+  },
+  "getBaseStats"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next [65, 65, 130, 60, 95, 110]   # Mystic
+  },
+  "ability"=>proc{|pokemon|
+    next if pokemon.form!=1 # Only Mystic form
+    if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0)
+      next getID(PBAbilities,:HEAVYMETAL)
+    end
+    if pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)
+      next getID(PBAbilities,:SPIRITED)
+    end
+  },
+  "getMoveList"=>proc{|pokemon|
+    movelist=[]
+    # TODO: Fill Mystic Jolteon movelist as [level,:MOVE] entries
+    for i in movelist
+      i[1]=getConst(PBMoves,i[1])
+    end
+    next movelist
+  },
+  "onSetForm"=>proc{|pokemon,form|
+    if form==1
+      pbSeenForm(pokemon)
+    end
+  }
+})
+
+MultipleForms.register(:FLAREON,{
+  "type1"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:ROCK)    # Mystic
+  },
+  "type2"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:ROCK)    # Mystic
+  },
+  "getBaseStats"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next [130, 95, 110, 65, 60, 65]   # Mystic
+  },
+  "ability"=>proc{|pokemon|
+    next if pokemon.form!=1 # Only Mystic form
+    if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0)
+      next getID(PBAbilities,:STURDY)
+    end
+    if pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)
+      next getID(PBAbilities,:GUTS)
+    end
+  },
+  "getMoveList"=>proc{|pokemon|
+    movelist=[]
+    # TODO: Fill Mystic Flareon movelist as [level,:MOVE] entries
+    for i in movelist
+      i[1]=getConst(PBMoves,i[1])
+    end
+    next movelist
+  },
+  "onSetForm"=>proc{|pokemon,form|
+    if form==1
+      pbSeenForm(pokemon)
+    end
+  }
+})
+
+MultipleForms.register(:ESPEON,{
+  "type1"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:BUG)    # Mystic
+  },
+  "type2"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:BUG)    # Mystic
+  },
+  "getBaseStats"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next [110, 60, 130, 65, 95, 65]   # Mystic
+  },
+  "ability"=>proc{|pokemon|
+    next if pokemon.form!=1 # Only Mystic form
+    if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0)
+      next getID(PBAbilities,:MAGICGUARD)
+    end
+    if pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)
+      next getID(PBAbilities,:DAZZLING)
+    end
+  },
+  "getMoveList"=>proc{|pokemon|
+    movelist=[]
+    # TODO: Fill Mystic Espeon movelist as [level,:MOVE] entries
+    for i in movelist
+      i[1]=getConst(PBMoves,i[1])
+    end
+    next movelist
+  },
+  "onSetForm"=>proc{|pokemon,form|
+    if form==1
+      pbSeenForm(pokemon)
+    end
+  }
+})
+
+MultipleForms.register(:UMBREON,{
+  "type1"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:POISON)    # Mystic
+  },
+  "type2"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:POISON)    # Mystic
+  },
+  "getBaseStats"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next [110, 95, 65, 130, 60, 65]   # Mystic
+  },
+  "ability"=>proc{|pokemon|
+    next if pokemon.form!=1 # Only Mystic form
+    if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0)
+      next getID(PBAbilities,:TINTEDLENS)
+    end
+    if pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)
+      next getID(PBAbilities,:POISONPOINT)
+    end
+  },
+  "getMoveList"=>proc{|pokemon|
+    movelist=[]
+    # TODO: Fill Mystic Umbreon movelist as [level,:MOVE] entries
+    for i in movelist
+      i[1]=getConst(PBMoves,i[1])
+    end
+    next movelist
+  },
+  "onSetForm"=>proc{|pokemon,form|
+    if form==1
+      pbSeenForm(pokemon)
+    end
+  }
+})
+
+MultipleForms.register(:LEAFEON,{
+  "type1"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:GROUND)    # Mystic
+  },
+  "type2"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:GROUND)    # Mystic
+  },
+  "getBaseStats"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next [65, 65, 95, 110, 60, 130]   # Mystic
+  },
+  "ability"=>proc{|pokemon|
+    next if pokemon.form!=1 # Only Mystic form
+    if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0)
+      next getID(PBAbilities,:SAPSIPPER)
+    end
+    if pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)
+      next getID(PBAbilities,:SANDVEIL)
+    end
+  },
+  "getMoveList"=>proc{|pokemon|
+    movelist=[]
+    # TODO: Fill Mystic Leafeon movelist as [level,:MOVE] entries
+    for i in movelist
+      i[1]=getConst(PBMoves,i[1])
+    end
+    next movelist
+  },
+  "onSetForm"=>proc{|pokemon,form|
+    if form==1
+      pbSeenForm(pokemon)
+    end
+  }
+})
+
+MultipleForms.register(:GLACEON,{
+  "type1"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:GHOST)    # Mystic
+  },
+  "type2"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:GHOST)    # Mystic
+  },
+  "getBaseStats"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next [130, 110, 60, 95, 65, 65]   # Mystic
+  },
+  "ability"=>proc{|pokemon|
+    next if pokemon.form!=1 # Only Mystic form
+    if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0)
+      next getID(PBAbilities,:ELDRITCH)
+    end
+    if pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)
+      next getID(PBAbilities,:FROSTPOINT)
+    end
+  },
+  "getMoveList"=>proc{|pokemon|
+    movelist=[]
+    # TODO: Fill Mystic Glaceon movelist as [level,:MOVE] entries
+    for i in movelist
+      i[1]=getConst(PBMoves,i[1])
+    end
+    next movelist
+  },
+  "onSetForm"=>proc{|pokemon,form|
+    if form==1
+      pbSeenForm(pokemon)
+    end
+  }
+})
+
+MultipleForms.register(:SYLVEON,{
+  "type1"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:FIGHTING)    # Mystic
+  },
+  "type2"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:FIGHTING)    # Mystic
+  },
+  "getBaseStats"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next [60, 130, 65, 110, 65, 95]   # Mystic
+  },
+  "ability"=>proc{|pokemon|
+    next if pokemon.form!=1 # Only Mystic form
+    if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0)
+      next getID(PBAbilities,:SCRAPPY)
+    end
+    if pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)
+      next getID(PBAbilities,:LIMBER)
+    end
+  },
+  "getMoveList"=>proc{|pokemon|
+    movelist=[]
+    # TODO: Fill Mystic Sylveon movelist as [level,:MOVE] entries
+    for i in movelist
+      i[1]=getConst(PBMoves,i[1])
+    end
+    next movelist
+  },
+  "onSetForm"=>proc{|pokemon,form|
+    if form==1
+      pbSeenForm(pokemon)
+    end
+  }
+})
+
+MultipleForms.register(:WYVEON,{
+  "type1"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:NORMAL)    # Mystic
+  },
+  "type2"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:NORMAL)    # Mystic
+  },
+  "getBaseStats"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next [65, 130, 95, 65, 110, 60]   # Mystic
+  },
+  "ability"=>proc{|pokemon|
+    next if pokemon.form!=1 # Only Mystic form
+    if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0)
+      next getID(PBAbilities,:ANTICIPATION)
+    end
+    if pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)
+      next getID(PBAbilities,:FLUFFY)
+    end
+  },
+  "getMoveList"=>proc{|pokemon|
+    movelist=[]
+    # TODO: Fill Mystic Wyveon movelist as [level,:MOVE] entries
+    for i in movelist
+      i[1]=getConst(PBMoves,i[1])
+    end
+    next movelist
+  },
+  "onSetForm"=>proc{|pokemon,form|
+    if form==1
+      pbSeenForm(pokemon)
+    end
+  }
+})
+
+MultipleForms.register(:SILICOBRA,{
+  "type1"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:ROCK)    # Mystic
+  },
+  "type2"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:GRASS)    # Mystic
+  },
+  "getBaseStats"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next [46, 35, 50, 52, 75, 57]   # Mystic
+  },
+  "ability"=>proc{|pokemon|
+    next if pokemon.form!=1 # Only Mystic form
+    if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0)
+      next getID(PBAbilities,:BEACON)
+    end
+    if pokemon.abilityIndex==1 || (pokemon.abilityflag && pokemon.abilityflag==1)
+      next getID(PBAbilities,:FLOWERVEIL)
+    end
+    if pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)
+      next getID(PBAbilities,:MANAECHOES)
+    end
+  },
+  "getMoveList"=>proc{|pokemon|
+    movelist=[]
+    # TODO: Fill Mystic Silicobra movelist as [level,:MOVE] entries
+    for i in movelist
+      i[1]=getConst(PBMoves,i[1])
+    end
+    next movelist
+  },
+  "onSetForm"=>proc{|pokemon,form|
+    if form==1
+      pbSeenForm(pokemon)
+    end
+  }
+})
+
+MultipleForms.register(:SANDACONDA,{
+  "type1"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:ROCK)    # Mystic
+  },
+  "type2"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:GRASS)    # Mystic
+  },
+  "getBaseStats"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next [70, 65, 71, 72, 125, 107]   # Mystic
+  },
+  "ability"=>proc{|pokemon|
+    next if pokemon.form!=1 # Only Mystic form
+    if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0)
+      next getID(PBAbilities,:BEACON)
+    end
+    if pokemon.abilityIndex==1 || (pokemon.abilityflag && pokemon.abilityflag==1)
+      next getID(PBAbilities,:FLOWERVEIL)
+    end
+    if pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)
+      next getID(PBAbilities,:MANAECHOES)
+    end
+  },
+  "getMoveList"=>proc{|pokemon|
+    movelist=[]
+    # TODO: Fill Mystic Sandaconda movelist as [level,:MOVE] entries
+    for i in movelist
+      i[1]=getConst(PBMoves,i[1])
+    end
+    next movelist
+  },
+  "onSetForm"=>proc{|pokemon,form|
+    if form==1
+      pbSeenForm(pokemon)
+    end
+  }
+})
+
+MultipleForms.register(:LICKITUNG,{
+  "type1"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:GROUND)    # Mystic
+  },
+  "type2"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:GROUND)    # Mystic
+  },
+  "getBaseStats"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next [75, 75, 90, 30, 55, 60]   # Mystic
+  },
+  "ability"=>proc{|pokemon|
+    next if pokemon.form!=1 # Only Mystic form
+    if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0)
+      next getID(PBAbilities,:UNNERVE)
+    end
+    if pokemon.abilityIndex==1 || (pokemon.abilityflag && pokemon.abilityflag==1)
+      next getID(PBAbilities,:STALWART)
+    end
+    if pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)
+      next getID(PBAbilities,:WELLBAKEDBODY)
+    end
+  },
+  "getMoveList"=>proc{|pokemon|
+    movelist=[]
+    # TODO: Fill Mystic Lickitung movelist as [level,:MOVE] entries
+    for i in movelist
+      i[1]=getConst(PBMoves,i[1])
+    end
+    next movelist
+  },
+  "onSetForm"=>proc{|pokemon,form|
+    if form==1
+      pbSeenForm(pokemon)
+    end
+  }
+})
+
+MultipleForms.register(:LICKILICKY,{
+  "type1"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:GROUND)    # Mystic
+  },
+  "type2"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:GROUND)    # Mystic
+  },
+  "getBaseStats"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next [95, 95, 110, 50, 80, 85]   # Mystic
+  },
+  "ability"=>proc{|pokemon|
+    next if pokemon.form!=1 # Only Mystic form
+    if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0)
+      next getID(PBAbilities,:UNNERVE)
+    end
+    if pokemon.abilityIndex==1 || (pokemon.abilityflag && pokemon.abilityflag==1)
+      next getID(PBAbilities,:STALWART)
+    end
+    if pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)
+      next getID(PBAbilities,:WELLBAKEDBODY)
+    end
+  },
+  "getMoveList"=>proc{|pokemon|
+    movelist=[]
+    # TODO: Fill Mystic Lickilicky movelist as [level,:MOVE] entries
+    for i in movelist
+      i[1]=getConst(PBMoves,i[1])
+    end
+    next movelist
+  },
+  "onSetForm"=>proc{|pokemon,form|
+    if form==1
+      pbSeenForm(pokemon)
+    end
+  }
+})
+
+MultipleForms.register(:LEDYBA,{
+  "type1"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:BUG)    # Mystic
+  },
+  "type2"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:GHOST)    # Mystic
+  },
+  "getBaseStats"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next [40, 80, 30, 55, 20, 40]   # Mystic
+  },
+  "ability"=>proc{|pokemon|
+    next if pokemon.form!=1 # Only Mystic form
+    if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0)
+      next getID(PBAbilities,:JUSTIFIED)
+    end
+    if pokemon.abilityIndex==1 || (pokemon.abilityflag && pokemon.abilityflag==1)
+      next getID(PBAbilities,:SUPERLUCK)
+    end
+    if pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)
+      next getID(PBAbilities,:IRONFIST)
+    end
+  },
+  "getMoveList"=>proc{|pokemon|
+    movelist=[]
+    # TODO: Fill Mystic Ledyba movelist as [level,:MOVE] entries
+    for i in movelist
+      i[1]=getConst(PBMoves,i[1])
+    end
+    next movelist
+  },
+  "onSetForm"=>proc{|pokemon,form|
+    if form==1
+      pbSeenForm(pokemon)
+    end
+  }
+})
+
+MultipleForms.register(:LEDIAN,{
+  "type1"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:BUG)    # Mystic
+  },
+  "type2"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:GHOST)    # Mystic
+  },
+  "getBaseStats"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next [55, 110, 50, 85, 35, 55]   # Mystic
+  },
+  "ability"=>proc{|pokemon|
+    next if pokemon.form!=1 # Only Mystic form
+    if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0)
+      next getID(PBAbilities,:JUSTIFIED)
+    end
+    if pokemon.abilityIndex==1 || (pokemon.abilityflag && pokemon.abilityflag==1)
+      next getID(PBAbilities,:SUPERLUCK)
+    end
+    if pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)
+      next getID(PBAbilities,:IRONFIST)
+    end
+  },
+  "getMoveList"=>proc{|pokemon|
+    movelist=[]
+    # TODO: Fill Mystic Ledian movelist as [level,:MOVE] entries
+    for i in movelist
+      i[1]=getConst(PBMoves,i[1])
+    end
+    next movelist
+  },
+  "onSetForm"=>proc{|pokemon,form|
+    if form==1
+      pbSeenForm(pokemon)
+    end
+  }
+})
+
+MultipleForms.register(:GLIGAR,{
+  "type1"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:DARK)    # Mystic
+  },
+  "type2"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:FIRE)    # Mystic
+  },
+  "getBaseStats"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next [65, 105, 65, 75, 85, 35]   # Mystic
+  },
+  "ability"=>proc{|pokemon|
+    next if pokemon.form!=1 # Only Mystic form
+    if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0)
+      next getID(PBAbilities,:BLOODTHIRSTY)
+    end
+    if pokemon.abilityIndex==1 || (pokemon.abilityflag && pokemon.abilityflag==1)
+      next getID(PBAbilities,:SPIRITED)
+    end
+    if pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)
+      next getID(PBAbilities,:IMMOLATE)
+    end
+  },
+  "getMoveList"=>proc{|pokemon|
+    movelist=[]
+    # TODO: Fill Mystic Gligar movelist as [level,:MOVE] entries
+    for i in movelist
+      i[1]=getConst(PBMoves,i[1])
+    end
+    next movelist
+  },
+  "onSetForm"=>proc{|pokemon,form|
+    if form==1
+      pbSeenForm(pokemon)
+    end
+  }
+})
+
+MultipleForms.register(:GLISCOR,{
+  "type1"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:DARK)    # Mystic
+  },
+  "type2"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:FIRE)    # Mystic
+  },
+  "getBaseStats"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next [75, 125, 75, 95, 95, 45]   # Mystic
+  },
+  "ability"=>proc{|pokemon|
+    next if pokemon.form!=1 # Only Mystic form
+    if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0)
+      next getID(PBAbilities,:BLOODTHIRSTY)
+    end
+    if pokemon.abilityIndex==1 || (pokemon.abilityflag && pokemon.abilityflag==1)
+      next getID(PBAbilities,:SPIRITED)
+    end
+    if pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)
+      next getID(PBAbilities,:IMMOLATE)
+    end
+  },
+  "getMoveList"=>proc{|pokemon|
+    movelist=[]
+    # TODO: Fill Mystic Gliscor movelist as [level,:MOVE] entries
+    for i in movelist
+      i[1]=getConst(PBMoves,i[1])
+    end
+    next movelist
+  },
+  "onSetForm"=>proc{|pokemon,form|
+    if form==1
+      pbSeenForm(pokemon)
+    end
+  }
+})
+
+MultipleForms.register(:PINECO,{
+  "type1"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:ROCK)    # Mystic
+  },
+  "type2"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:ROCK)    # Mystic
+  },
+  "getBaseStats"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next [35, 65, 90, 35, 15, 50]   # Mystic
+  },
+  "ability"=>proc{|pokemon|
+    next if pokemon.form!=1 # Only Mystic form
+    if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0)
+      next getID(PBAbilities,:STURDY)
+    end
+    if pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)
+      next getID(PBAbilities,:WEAKARMOR)
+    end
+  },
+  "getMoveList"=>proc{|pokemon|
+    movelist=[]
+    # TODO: Fill Mystic Pineco movelist as [level,:MOVE] entries
+    for i in movelist
+      i[1]=getConst(PBMoves,i[1])
+    end
+    next movelist
+  },
+  "onSetForm"=>proc{|pokemon,form|
+    if form==1
+      pbSeenForm(pokemon)
+    end
+  }
+})
+
+MultipleForms.register(:FORRETRESS,{
+  "type1"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:ROCK)    # Mystic
+  },
+  "type2"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:FIGHTING)    # Mystic
+  },
+  "getBaseStats"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next [60, 90, 140, 60, 40, 75]   # Mystic
+  },
+  "ability"=>proc{|pokemon|
+    next if pokemon.form!=1 # Only Mystic form
+    if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0)
+      next getID(PBAbilities,:SKILLLINK)
+    end
+    if pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)
+      next getID(PBAbilities,:BATTLEARMOR)
+    end
+  },
+  "getMoveList"=>proc{|pokemon|
+    movelist=[]
+    # TODO: Fill Mystic Forretress movelist as [level,:MOVE] entries
+    for i in movelist
+      i[1]=getConst(PBMoves,i[1])
+    end
+    next movelist
+  },
+  "onSetForm"=>proc{|pokemon,form|
+    if form==1
+      pbSeenForm(pokemon)
+    end
+  }
+})
+
+MultipleForms.register(:SEEDOT,{
+  "type1"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:FLYING)    # Mystic
+  },
+  "type2"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:FLYING)    # Mystic
+  },
+  "getBaseStats"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next [30, 40, 30, 50, 40, 30]   # Mystic
+  },
+  "ability"=>proc{|pokemon|
+    next if pokemon.form!=1 # Only Mystic form
+    if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0)
+      next getID(PBAbilities,:EARLYBIRD)
+    end
+    if pokemon.abilityIndex==1 || (pokemon.abilityflag && pokemon.abilityflag==1)
+      next getID(PBAbilities,:WINDRIDER)
+    end
+    if pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)
+      next getID(PBAbilities,:MOODY)
+    end
+  },
+  "getMoveList"=>proc{|pokemon|
+    movelist=[]
+    # TODO: Fill Mystic Seedot movelist as [level,:MOVE] entries
+    for i in movelist
+      i[1]=getConst(PBMoves,i[1])
+    end
+    next movelist
+  },
+  "onSetForm"=>proc{|pokemon,form|
+    if form==1
+      pbSeenForm(pokemon)
+    end
+  }
+})
+
+MultipleForms.register(:NUZLEAF,{
+  "type1"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:FLYING)    # Mystic
+  },
+  "type2"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:WATER)    # Mystic
+  },
+  "getBaseStats"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next [60, 60, 40, 70, 70, 40]   # Mystic
+  },
+  "ability"=>proc{|pokemon|
+    next if pokemon.form!=1 # Only Mystic form
+    if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0)
+      next getID(PBAbilities,:EARLYBIRD)
+    end
+    if pokemon.abilityIndex==1 || (pokemon.abilityflag && pokemon.abilityflag==1)
+      next getID(PBAbilities,:WINDRIDER)
+    end
+    if pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)
+      next getID(PBAbilities,:MOODY)
+    end
+  },
+  "getMoveList"=>proc{|pokemon|
+    movelist=[]
+    # TODO: Fill Mystic Nuzleaf movelist as [level,:MOVE] entries
+    for i in movelist
+      i[1]=getConst(PBMoves,i[1])
+    end
+    next movelist
+  },
+  "onSetForm"=>proc{|pokemon,form|
+    if form==1
+      pbSeenForm(pokemon)
+    end
+  }
+})
+
+MultipleForms.register(:SHIFTRY,{
+  "type1"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:FLYING)    # Mystic
+  },
+  "type2"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:WATER)    # Mystic
+  },
+  "getBaseStats"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next [90, 80, 60, 100, 90, 60]   # Mystic
+  },
+  "ability"=>proc{|pokemon|
+    next if pokemon.form!=1 # Only Mystic form
+    if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0)
+      next getID(PBAbilities,:EARLYBIRD)
+    end
+    if pokemon.abilityIndex==1 || (pokemon.abilityflag && pokemon.abilityflag==1)
+      next getID(PBAbilities,:WINDRIDER)
+    end
+    if pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)
+      next getID(PBAbilities,:MOODY)
+    end
+  },
+  "getMoveList"=>proc{|pokemon|
+    movelist=[]
+    # TODO: Fill Mystic Shiftry movelist as [level,:MOVE] entries
+    for i in movelist
+      i[1]=getConst(PBMoves,i[1])
+    end
+    next movelist
+  },
+  "onSetForm"=>proc{|pokemon,form|
+    if form==1
+      pbSeenForm(pokemon)
+    end
+  }
+})
+
+MultipleForms.register(:FINNEON,{
+  "type1"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:FIRE)    # Mystic
+  },
+  "type2"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:FIRE)    # Mystic
+  },
+  "getBaseStats"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next [56, 49, 49, 66, 61, 49]   # Mystic
+  },
+  "ability"=>proc{|pokemon|
+    next if pokemon.form!=1 # Only Mystic form
+    if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0)
+      next getID(PBAbilities,:FLASHFIRE)
+    end
+    if pokemon.abilityIndex==1 || (pokemon.abilityflag && pokemon.abilityflag==1)
+      next getID(PBAbilities,:ILLUMINATE)
+    end
+    if pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)
+      next getID(PBAbilities,:MAGMAARMOR)
+    end
+  },
+  "getMoveList"=>proc{|pokemon|
+    movelist=[]
+    # TODO: Fill Mystic Finneon movelist as [level,:MOVE] entries
+    for i in movelist
+      i[1]=getConst(PBMoves,i[1])
+    end
+    next movelist
+  },
+  "onSetForm"=>proc{|pokemon,form|
+    if form==1
+      pbSeenForm(pokemon)
+    end
+  }
+})
+
+MultipleForms.register(:LUMINEON,{
+  "type1"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:FIRE)    # Mystic
+  },
+  "type2"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:FIRE)    # Mystic
+  },
+  "getBaseStats"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next [76, 69, 69, 91, 86, 69]   # Mystic
+  },
+  "ability"=>proc{|pokemon|
+    next if pokemon.form!=1 # Only Mystic form
+    if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0)
+      next getID(PBAbilities,:FLASHFIRE)
+    end
+    if pokemon.abilityIndex==1 || (pokemon.abilityflag && pokemon.abilityflag==1)
+      next getID(PBAbilities,:ILLUMINATE)
+    end
+    if pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)
+      next getID(PBAbilities,:MAGMAARMOR)
+    end
+  },
+  "getMoveList"=>proc{|pokemon|
+    movelist=[]
+    # TODO: Fill Mystic Lumineon movelist as [level,:MOVE] entries
+    for i in movelist
+      i[1]=getConst(PBMoves,i[1])
+    end
+    next movelist
+  },
+  "onSetForm"=>proc{|pokemon,form|
+    if form==1
+      pbSeenForm(pokemon)
+    end
+  }
+})
+
+MultipleForms.register(:TYMPOLE,{
+  "type1"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:GRASS)    # Mystic
+  },
+  "type2"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:GRASS)    # Mystic
+  },
+  "getBaseStats"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next [50, 50, 40, 64, 50, 40]   # Mystic
+  },
+  "ability"=>proc{|pokemon|
+    next if pokemon.form!=1 # Only Mystic form
+    if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0)
+      next getID(PBAbilities,:SWIFTSWIM)
+    end
+    if pokemon.abilityIndex==1 || (pokemon.abilityflag && pokemon.abilityflag==1)
+      next getID(PBAbilities,:WATERABSORB)
+    end
+    if pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)
+      next getID(PBAbilities,:HYDRATION)
+    end
+  },
+  "getMoveList"=>proc{|pokemon|
+    movelist=[]
+    case pokemon.form            # Mystic
+    when 1 ; movelist=[[1,:ABSORB],[1,:TAILWHIP],[4,:WATERSPORT],[5,:LEECHSEED],
+                      [9,:WATERGUN],[12,:MEGADRAIN],[16,:SLUDGE],[20,:AQUARING],
+                      [23,:WATERPULSE],[27,:GIGADRAIN],[31,:RAINDANCE],[34,:POISONJAB],
+                      [38,:MUDDYWATER],[42,:LEAFSTORM],[45,:SLUDGEBOMB]]
+    end
+    for i in movelist
+      i[1]=getConst(PBMoves,i[1])
+    end
+    next movelist
+  },
+  "onSetForm"=>proc{|pokemon,form|
+    if form==1
+      pbSeenForm(pokemon)
+    end
+  }
+})
+
+MultipleForms.register(:PALPITOAD,{
+  "type1"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:GRASS)    # Mystic
+  },
+  "type2"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:POISON)    # Mystic
+  },
+  "getBaseStats"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next [69, 65, 55, 75, 65, 55]   # Mystic
+  },
+  "ability"=>proc{|pokemon|
+    next if pokemon.form!=1 # Only Mystic form
+    if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0)
+      next getID(PBAbilities,:SWIFTSWIM)
+    end
+    if pokemon.abilityIndex==1 || (pokemon.abilityflag && pokemon.abilityflag==1)
+      next getID(PBAbilities,:WATERABSORB)
+    end
+    if pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)
+      next getID(PBAbilities,:NATURALCURE)
+    end
+  },
+  "getMoveList"=>proc{|pokemon|
+    movelist=[]
+    case pokemon.form            # Mystic
+    when 1 ; movelist=[[1,:ABSORB],[1,:TAILWHIP],[1,:WATERSPORT],[1,:LEECHSEED],
+                      [1,:WATERGUN],[5,:LEECHSEED],[9,:WATERGUN],[12,:MEGADRAIN],
+                      [16,:SLUDGE],[20,:AQUARING],[23,:WATERPULSE],[28,:GIGADRAIN],
+                      [33,:RAINDANCE],[37,:POISONJAB],[42,:MUDDYWATER],[47,:LEAFSTORM],
+                      [51,:SLUDGEBOMB]]
+    end
+    for i in movelist
+      i[1]=getConst(PBMoves,i[1])
+    end
+    next movelist
+  },
+  "onSetForm"=>proc{|pokemon,form|
+    if form==1
+      pbSeenForm(pokemon)
+    end
+  }
+})
+
+MultipleForms.register(:SEISMITOAD,{
+  "type1"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:GRASS)    # Mystic
+  },
+  "type2"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:POISON)    # Mystic
+  },
+  "getBaseStats"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next [74, 85, 75, 105, 95, 75]   # Mystic
+  },
+  "ability"=>proc{|pokemon|
+    next if pokemon.form!=1 # Only Mystic form
+    if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0)
+      next getID(PBAbilities,:SWIFTSWIM)
+    end
+    if pokemon.abilityIndex==1 || (pokemon.abilityflag && pokemon.abilityflag==1)
+      next getID(PBAbilities,:WATERABSORB)
+    end
+    if pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)
+      next getID(PBAbilities,:NATURALCURE)
+    end
+  },
+  "getMoveList"=>proc{|pokemon|
+    movelist=[]
+    case pokemon.form            # Mystic
+    when 1 ; movelist=[[0,:LIQUIDATION],[1,:ABSORB],[1,:TAILWHIP],[1,:WATERSPORT],
+                      [1,:GASTROACID],[1,:LEECHSEED],[1,:WATERGUN],[5,:LEECHSEED],
+                      [9,:WATERGUN],[12,:MEGADRAIN],[16,:SLUDGE],[20,:AQUARING],
+                      [23,:WATERPULSE],[28,:GIGADRAIN],[33,:RAINDANCE],[39,:POISONJAB],
+                      [44,:LIQUIDATION],[49,:MUDDYWATER],[53,:LEAFSTORM],[59,:SLUDGEBOMB]]
+    end
+    for i in movelist
+      i[1]=getConst(PBMoves,i[1])
+    end
+    next movelist
+  },
+  "onSetForm"=>proc{|pokemon,form|
+    if form==1
+      pbSeenForm(pokemon)
+    end
+  }
+})
+
+MultipleForms.register(:PIDOVE,{
+  "type1"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:STEEL)    # Mystic
+  },
+  "type2"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:FIGHTING)    # Mystic
+  },
+  "getBaseStats"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next [50, 55, 50, 36, 30, 43]   # Mystic
+  },
+  "ability"=>proc{|pokemon|
+    next if pokemon.form!=1 # Only Mystic form
+    if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0)
+      next getID(PBAbilities,:HYPERCUTTER)
+    end
+    if pokemon.abilityIndex==1 || (pokemon.abilityflag && pokemon.abilityflag==1)
+      next getID(PBAbilities,:HEAVYMETAL)
+    end
+    if pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)
+      next getID(PBAbilities,:WEAKARMOR)
+    end
+  },
+  "getMoveList"=>proc{|pokemon|
+    movelist=[]
+    # TODO: Fill Mystic Pidove movelist as [level,:MOVE] entries
+    for i in movelist
+      i[1]=getConst(PBMoves,i[1])
+    end
+    next movelist
+  },
+  "onSetForm"=>proc{|pokemon,form|
+    if form==1
+      pbSeenForm(pokemon)
+    end
+  }
+})
+
+MultipleForms.register(:TRANQUILL,{
+  "type1"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:STEEL)    # Mystic
+  },
+  "type2"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:FIGHTING)    # Mystic
+  },
+  "getBaseStats"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next [62, 77, 65, 50, 42, 62]   # Mystic
+  },
+  "ability"=>proc{|pokemon|
+    next if pokemon.form!=1 # Only Mystic form
+    if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0)
+      next getID(PBAbilities,:HYPERCUTTER)
+    end
+    if pokemon.abilityIndex==1 || (pokemon.abilityflag && pokemon.abilityflag==1)
+      next getID(PBAbilities,:HEAVYMETAL)
+    end
+    if pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)
+      next getID(PBAbilities,:WEAKARMOR)
+    end
+  },
+  "getMoveList"=>proc{|pokemon|
+    movelist=[]
+    # TODO: Fill Mystic Tranquill movelist as [level,:MOVE] entries
+    for i in movelist
+      i[1]=getConst(PBMoves,i[1])
+    end
+    next movelist
+  },
+  "onSetForm"=>proc{|pokemon,form|
+    if form==1
+      pbSeenForm(pokemon)
+    end
+  }
+})
+
+MultipleForms.register(:UNFEZANT,{
+  "type1"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:STEEL)    # Mystic
+  },
+  "type2"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:FIGHTING)    # Mystic
+  },
+  "getBaseStats"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next [80, 115, 93, 65, 55, 80]   # Mystic
+  },
+  "ability"=>proc{|pokemon|
+    next if pokemon.form!=1 # Only Mystic form
+    if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0)
+      next getID(PBAbilities,:HYPERCUTTER)
+    end
+    if pokemon.abilityIndex==1 || (pokemon.abilityflag && pokemon.abilityflag==1)
+      next getID(PBAbilities,:HEAVYMETAL)
+    end
+    if pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)
+      next getID(PBAbilities,:WEAKARMOR)
+    end
+  },
+  "getMoveList"=>proc{|pokemon|
+    movelist=[]
+    # TODO: Fill Mystic Unfezant movelist as [level,:MOVE] entries
+    for i in movelist
+      i[1]=getConst(PBMoves,i[1])
+    end
+    next movelist
+  },
+  "onSetForm"=>proc{|pokemon,form|
+    if form==1
+      pbSeenForm(pokemon)
+    end
+  }
+})
+
+MultipleForms.register(:KLEFKI,{
+  "type1"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:NORMAL)    # Mystic
+  },
+  "type2"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:PSYCHIC)    # Mystic
+  },
+  "getBaseStats"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next [75, 57, 80, 87, 91, 80]   # Mystic
+  },
+  "ability"=>proc{|pokemon|
+    next if pokemon.form!=1 # Only Mystic form
+    if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0)
+      next getID(PBAbilities,:POWERSPOT)
+    end
+    if pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)
+      next getID(PBAbilities,:PROTEAN)
+    end
+  },
+  "getMoveList"=>proc{|pokemon|
+    movelist=[]
+    # TODO: Fill Mystic Klefki movelist as [level,:MOVE] entries
+    for i in movelist
+      i[1]=getConst(PBMoves,i[1])
+    end
+    next movelist
+  },
+  "onSetForm"=>proc{|pokemon,form|
+    if form==1
+      pbSeenForm(pokemon)
+    end
+  }
+})
+
+MultipleForms.register(:BLIPBUG,{
+  "type1"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:FAIRY)    # Mystic
+  },
+  "type2"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:FAIRY)    # Mystic
+  },
+  "getBaseStats"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next [20, 45, 25, 45, 20, 25]   # Mystic
+  },
+  "ability"=>proc{|pokemon|
+    next if pokemon.form!=1 # Only Mystic form
+    if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0)
+      next getID(PBAbilities,:HALCYON)
+    end
+    if pokemon.abilityIndex==1 || (pokemon.abilityflag && pokemon.abilityflag==1)
+      next getID(PBAbilities,:RUNAWAY)
+    end
+    if pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)
+      next getID(PBAbilities,:CUTEINFATUATE)
+    end
+  },
+  "getMoveList"=>proc{|pokemon|
+    movelist=[]
+    # TODO: Fill Mystic Blipbug movelist as [level,:MOVE] entries
+    for i in movelist
+      i[1]=getConst(PBMoves,i[1])
+    end
+    next movelist
+  },
+  "onSetForm"=>proc{|pokemon,form|
+    if form==1
+      pbSeenForm(pokemon)
+    end
+  }
+})
+
+MultipleForms.register(:DOTTLER,{
+  "type1"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:FAIRY)    # Mystic
+  },
+  "type2"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:FIGHTING)    # Mystic
+  },
+  "getBaseStats"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next [30, 50, 90, 50, 35, 80]   # Mystic
+  },
+  "ability"=>proc{|pokemon|
+    next if pokemon.form!=1 # Only Mystic form
+    if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0)
+      next getID(PBAbilities,:HALCYON)
+    end
+    if pokemon.abilityIndex==1 || (pokemon.abilityflag && pokemon.abilityflag==1)
+      next getID(PBAbilities,:STALWART)
+    end
+    if pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)
+      next getID(PBAbilities,:BATTLEARMOR)
+    end
+  },
+  "getMoveList"=>proc{|pokemon|
+    movelist=[]
+    # TODO: Fill Mystic Dottler movelist as [level,:MOVE] entries
+    for i in movelist
+      i[1]=getConst(PBMoves,i[1])
+    end
+    next movelist
+  },
+  "onSetForm"=>proc{|pokemon,form|
+    if form==1
+      pbSeenForm(pokemon)
+    end
+  }
+})
+
+MultipleForms.register(:ORBEETLE,{
+  "type1"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:FAIRY)    # Mystic
+  },
+  "type2"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:FIGHTING)    # Mystic
+  },
+  "getBaseStats"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next [45, 90, 120, 80, 60, 110]   # Mystic
+  },
+  "ability"=>proc{|pokemon|
+    next if pokemon.form!=1 # Only Mystic form
+    if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0)
+      next getID(PBAbilities,:HALCYON)
+    end
+    if pokemon.abilityIndex==1 || (pokemon.abilityflag && pokemon.abilityflag==1)
+      next getID(PBAbilities,:STALWART)
+    end
+    if pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)
+      next getID(PBAbilities,:BATTLEARMOR)
+    end
+  },
+  "getMoveList"=>proc{|pokemon|
+    movelist=[]
+    # TODO: Fill Mystic Orbeetle movelist as [level,:MOVE] entries
+    for i in movelist
+      i[1]=getConst(PBMoves,i[1])
+    end
+    next movelist
+  },
+  "onSetForm"=>proc{|pokemon,form|
+    if form==1
+      pbSeenForm(pokemon)
+    end
+  }
+})
+
+MultipleForms.register(:SPOINK,{
+  "type1"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:ROCK)    # Mystic
+  },
+  "type2"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:ROCK)    # Mystic
+  },
+  "getBaseStats"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next [60, 80, 70, 60, 25, 35]   # Mystic
+  },
+  "ability"=>proc{|pokemon|
+    next if pokemon.form!=1 # Only Mystic form
+    if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0)
+      next getID(PBAbilities,:ROCKHEAD)
+    end
+    if pokemon.abilityIndex==1 || (pokemon.abilityflag && pokemon.abilityflag==1)
+      next getID(PBAbilities,:STURDY)
+    end
+    if pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)
+      next getID(PBAbilities,:WEAKARMOR)
+    end
+  },
+  "getMoveList"=>proc{|pokemon|
+    movelist=[]
+    # TODO: Fill Mystic Spoink movelist as [level,:MOVE] entries
+    for i in movelist
+      i[1]=getConst(PBMoves,i[1])
+    end
+    next movelist
+  },
+  "onSetForm"=>proc{|pokemon,form|
+    if form==1
+      pbSeenForm(pokemon)
+    end
+  }
+})
+
+MultipleForms.register(:GRUMPIG,{
+  "type1"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:ROCK)    # Mystic
+  },
+  "type2"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:FAIRY)    # Mystic
+  },
+  "getBaseStats"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next [80, 110, 90, 80, 45, 65]   # Mystic
+  },
+  "ability"=>proc{|pokemon|
+    next if pokemon.form!=1 # Only Mystic form
+    if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0)
+      next getID(PBAbilities,:ILLUMINATE)
+    end
+    if pokemon.abilityIndex==1 || (pokemon.abilityflag && pokemon.abilityflag==1)
+      next getID(PBAbilities,:STURDY)
+    end
+    if pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)
+      next getID(PBAbilities,:PRESSURE)
+    end
+  },
+  "getMoveList"=>proc{|pokemon|
+    movelist=[]
+    # TODO: Fill Mystic Grumpig movelist as [level,:MOVE] entries
+    for i in movelist
+      i[1]=getConst(PBMoves,i[1])
+    end
+    next movelist
+  },
+  "onSetForm"=>proc{|pokemon,form|
+    if form==1
+      pbSeenForm(pokemon)
+    end
+  }
+})
+
+MultipleForms.register(:SCATTERBUG,{
+  "type1"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:BUG)    # Mystic
+  },
+  "type2"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:BUG)    # Mystic
+  },
+  "getBaseStats"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next [27, 35, 35, 40, 38, 25]   # Mystic
+  },
+  "ability"=>proc{|pokemon|
+    next if pokemon.form!=1 # Only Mystic form
+    if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0)
+      next getID(PBAbilities,:SWARM)
+    end
+    if pokemon.abilityIndex==1 || (pokemon.abilityflag && pokemon.abilityflag==1)
+      next getID(PBAbilities,:NATURALCURE)
+    end
+    if pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)
+      next getID(PBAbilities,:SHEDSKIN)
+    end
+  },
+  "getMoveList"=>proc{|pokemon|
+    movelist=[]
+    case pokemon.form            # Mystic
+    when 1 ; movelist=[[1,:TACKLE],[1,:SCARYFACE],[6,:GLARE],[15,:POUNCE]]
+    end
+    for i in movelist
+      i[1]=getConst(PBMoves,i[1])
+    end
+    next movelist
+  },
+  "onSetForm"=>proc{|pokemon,form|
+    if form==1
+      pbSeenForm(pokemon)
+    end
+  }
+})
+
+MultipleForms.register(:SPEWPA,{
+  "type1"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:BUG)    # Mystic
+  },
+  "type2"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:BUG)    # Mystic
+  },
+  "getBaseStats"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next [27, 29, 60, 22, 30, 45]   # Mystic
+  },
+  "ability"=>proc{|pokemon|
+    next if pokemon.form!=1 # Only Mystic form
+    if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0)
+      next getID(PBAbilities,:OVERCOAT)
+    end
+    if pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)
+      next getID(PBAbilities,:SHEDSKIN)
+    end
+  },
+  "getMoveList"=>proc{|pokemon|
+    movelist=[]
+    case pokemon.form            # Mystic
+    when 1 ; movelist=[[0,:PROTECT],[1,:RAGE]]
+    end
+    for i in movelist
+      i[1]=getConst(PBMoves,i[1])
+    end
+    next movelist
+  },
+  "onSetForm"=>proc{|pokemon,form|
+    if form==1
+      pbSeenForm(pokemon)
+    end
+  }
+})
+
+MultipleForms.register(:VIVILLON,{
+  "type1"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:BUG)    # Mystic
+  },
+  "type2"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:DRAGON)    # Mystic
+  },
+  "getBaseStats"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next [52, 80, 50, 90, 89, 50]   # Mystic
+  },
+  "ability"=>proc{|pokemon|
+    next if pokemon.form!=1 # Only Mystic form
+    if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0)
+      next getID(PBAbilities,:SWARM)
+    end
+    if pokemon.abilityIndex==1 || (pokemon.abilityflag && pokemon.abilityflag==1)
+      next getID(PBAbilities,:NATURALCURE)
+    end
+    if pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)
+      next getID(PBAbilities,:MULTISCALE)
+    end
+  },
+  "getMoveList"=>proc{|pokemon|
+    movelist=[]
+    case pokemon.form            # Mystic
+    when 1 ; movelist=[[0,:TWISTER],[1,:DRAGONRUSH],[1,:HURRICANE],[1,:IRRITATION],
+                      [1,:EXTREMESPEED],[1,:GLARE],[12,:WINDVORTEX],[17,:ANCIENTPOWER],
+                      [21,:AGILITY],[25,:BREAKINGSWIPE],[31,:BLUESHIFT],[35,:XSCISSOR],
+                      [41,:ROOST],[45,:DRAGONDANCE],[50,:DRAGONPULSE],[55,:PESTILENTWAVE]]
+    end
+    for i in movelist
+      i[1]=getConst(PBMoves,i[1])
+    end
+    next movelist
+  },
+  "onSetForm"=>proc{|pokemon,form|
+    if form==1
+      pbSeenForm(pokemon)
+    end
+  }
+})
+
+MultipleForms.register(:SALANDIT,{
+  "type1"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:FLYING)    # Mystic
+  },
+  "type2"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:FLYING)    # Mystic
+  },
+  "getBaseStats"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next [40, 71, 48, 77, 40, 44]   # Mystic
+  },
+  "ability"=>proc{|pokemon|
+    next if pokemon.form!=1 # Only Mystic form
+    if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0)
+      next getID(PBAbilities,:SAPSIPPER)
+    end
+    if pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)
+      next getID(PBAbilities,:AERILATE)
+    end
+  },
+  "getMoveList"=>proc{|pokemon|
+    movelist=[]
+    # TODO: Fill Mystic Salandit movelist as [level,:MOVE] entries
+    for i in movelist
+      i[1]=getConst(PBMoves,i[1])
+    end
+    next movelist
+  },
+  "onSetForm"=>proc{|pokemon,form|
+    if form==1
+      pbSeenForm(pokemon)
+    end
+  }
+})
+
+MultipleForms.register(:SALANDITPRIMORDIAL,{
+  "type1"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:FLYING)    # Mystic
+  },
+  "type2"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:POISON)    # Mystic
+  },
+  "getBaseStats"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next [40, 71, 48, 77, 40, 44]   # Mystic
+  },
+  "ability"=>proc{|pokemon|
+    next if pokemon.form!=1 # Only Mystic form
+    if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0)
+      next getID(PBAbilities,:SAPSIPPER)
+    end
+    if pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)
+      next getID(PBAbilities,:AERILATE)
+    end
+  },
+  "getMoveList"=>proc{|pokemon|
+    movelist=[]
+    # TODO: Fill Mystic Salandit-Primordial movelist as [level,:MOVE] entries
+    for i in movelist
+      i[1]=getConst(PBMoves,i[1])
+    end
+    next movelist
+  },
+  "onSetForm"=>proc{|pokemon,form|
+    if form==1
+      pbSeenForm(pokemon)
+    end
+  }
+})
+
+MultipleForms.register(:SALAZZLE,{
+  "type1"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:FLYING)    # Mystic
+  },
+  "type2"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:FLYING)    # Mystic
+  },
+  "getBaseStats"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next [60, 111, 68, 117, 60, 64]   # Mystic
+  },
+  "ability"=>proc{|pokemon|
+    next if pokemon.form!=1 # Only Mystic form
+    if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0)
+      next getID(PBAbilities,:SAPSIPPER)
+    end
+    if pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)
+      next getID(PBAbilities,:AERILATE)
+    end
+  },
+  "getMoveList"=>proc{|pokemon|
+    movelist=[]
+    # TODO: Fill Mystic Salazzle movelist as [level,:MOVE] entries
+    for i in movelist
+      i[1]=getConst(PBMoves,i[1])
+    end
+    next movelist
+  },
+  "onSetForm"=>proc{|pokemon,form|
+    if form==1
+      pbSeenForm(pokemon)
+    end
+  }
+})
+
+MultipleForms.register(:SALAZZLEPRIMORDIAL,{
+  "type1"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:FLYING)    # Mystic
+  },
+  "type2"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:POISON)    # Mystic
+  },
+  "getBaseStats"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next [60, 111, 68, 117, 60, 64]   # Mystic
+  },
+  "ability"=>proc{|pokemon|
+    next if pokemon.form!=1 # Only Mystic form
+    if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0)
+      next getID(PBAbilities,:SAPSIPPER)
+    end
+    if pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)
+      next getID(PBAbilities,:AERILATE)
+    end
+  },
+  "getMoveList"=>proc{|pokemon|
+    movelist=[]
+    # TODO: Fill Mystic Salazzle-Primordial movelist as [level,:MOVE] entries
+    for i in movelist
+      i[1]=getConst(PBMoves,i[1])
+    end
+    next movelist
+  },
+  "onSetForm"=>proc{|pokemon,form|
+    if form==1
+      pbSeenForm(pokemon)
+    end
+  }
+})
+
+MultipleForms.register(:SLUGMA,{
+  "type1"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:POISON)    # Mystic
+  },
+  "type2"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:POISON)    # Mystic
+  },
+  "getBaseStats"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next [40, 20, 40, 40, 70, 40]   # Mystic
+  },
+  "ability"=>proc{|pokemon|
+    next if pokemon.form!=1 # Only Mystic form
+    if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0)
+      next getID(PBAbilities,:CORROSION)
+    end
+    if pokemon.abilityIndex==1 || (pokemon.abilityflag && pokemon.abilityflag==1)
+      next getID(PBAbilities,:AFTERMATH)
+    end
+    if pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)
+      next getID(PBAbilities,:LIQUIDOOZE)
+    end
+  },
+  "getMoveList"=>proc{|pokemon|
+    movelist=[]
+    case pokemon.form            # Mystic
+    when 1 ; movelist=[[1,:CHARGE],[1,:SMOG],[6,:FIRESPIN],[8,:CHARGEBEAM],
+                      [13,:MINIMIZE],[15,:SLUDGE],[20,:INCINERATE],[22,:SHOCKWAVE],
+                      [27,:VENOSHOCK],[29,:PARABOLICCHARGE],[34,:VOLTSWITCH],[36,:ACIDARMOR],
+                      [41,:SLUDGEWAVE],[43,:EXPLOSION],[48,:DISCHARGE],[50,:SHELLSMASH]]
+    end
+    for i in movelist
+      i[1]=getConst(PBMoves,i[1])
+    end
+    next movelist
+  },
+  "onSetForm"=>proc{|pokemon,form|
+    if form==1
+      pbSeenForm(pokemon)
+    end
+  }
+})
+
+MultipleForms.register(:MAGCARGO,{
+  "type1"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:POISON)    # Mystic
+  },
+  "type2"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:ELECTRIC)    # Mystic
+  },
+  "getBaseStats"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next [80, 30, 50, 50, 120, 80]   # Mystic
+  },
+  "ability"=>proc{|pokemon|
+    next if pokemon.form!=1 # Only Mystic form
+    if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0)
+      next getID(PBAbilities,:CORROSION)
+    end
+    if pokemon.abilityIndex==1 || (pokemon.abilityflag && pokemon.abilityflag==1)
+      next getID(PBAbilities,:BATTERY)
+    end
+    if pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)
+      next getID(PBAbilities,:REGENERATOR)
+    end
+  },
+  "getMoveList"=>proc{|pokemon|
+    movelist=[]
+    case pokemon.form            # Mystic
+    when 1 ; movelist=[[0,:IONDELUGE],[1,:IONDELUGE],[1,:HEATWAVE],[1,:ENERGYBALL],
+                      [1,:CHARGE],[1,:SMOG],[1,:FIRESPIN],[1,:CHARGEBEAM],
+                      [6,:FIRESPIN],[8,:CHARGEBEAM],[13,:AUTOTOMIZE],[15,:SLUDGE],
+                      [20,:FLAMEWHEEL],[22,:SHOCKWAVE],[27,:VENOSHOCK],[29,:PARABOLICCHARGE],
+                      [34,:VOLTSWITCH],[36,:ACIDARMOR],[43,:SLUDGEWAVE],[47,:EXPLOSION],
+                      [54,:DISCHARGE],[58,:SHELLSMASH]]
+    end
+    for i in movelist
+      i[1]=getConst(PBMoves,i[1])
+    end
+    next movelist
+  },
+  "onSetForm"=>proc{|pokemon,form|
+    if form==1
+      pbSeenForm(pokemon)
+    end
+  }
+})
+
+MultipleForms.register(:GIBLE,{
+  "type1"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:ELECTRIC)    # Mystic
+  },
+  "type2"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:FLYING)    # Mystic
+  },
+  "getBaseStats"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next [45, 70, 40, 45, 58, 42]   # Mystic
+  },
+  "ability"=>proc{|pokemon|
+    next if pokemon.form!=1 # Only Mystic form
+    if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0)
+      next getID(PBAbilities,:AIRLOCK)
+    end
+    if pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)
+      next getID(PBAbilities,:INFILTRATOR)
+    end
+  },
+  "getMoveList"=>proc{|pokemon|
+    movelist=[]
+    # TODO: Fill Mystic Gible movelist as [level,:MOVE] entries
+    for i in movelist
+      i[1]=getConst(PBMoves,i[1])
+    end
+    next movelist
+  },
+  "onSetForm"=>proc{|pokemon,form|
+    if form==1
+      pbSeenForm(pokemon)
+    end
+  }
+})
+
+MultipleForms.register(:GABITE,{
+  "type1"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:ELECTRIC)    # Mystic
+  },
+  "type2"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:FLYING)    # Mystic
+  },
+  "getBaseStats"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next [65, 90, 50, 82, 68, 55]   # Mystic
+  },
+  "ability"=>proc{|pokemon|
+    next if pokemon.form!=1 # Only Mystic form
+    if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0)
+      next getID(PBAbilities,:AIRLOCK)
+    end
+    if pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)
+      next getID(PBAbilities,:INFILTRATOR)
+    end
+  },
+  "getMoveList"=>proc{|pokemon|
+    movelist=[]
+    # TODO: Fill Mystic Gabite movelist as [level,:MOVE] entries
+    for i in movelist
+      i[1]=getConst(PBMoves,i[1])
+    end
+    next movelist
+  },
+  "onSetForm"=>proc{|pokemon,form|
+    if form==1
+      pbSeenForm(pokemon)
+    end
+  }
+})
+
+MultipleForms.register(:GARCHOMP,{
+  "type1"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:ELECTRIC)    # Mystic
+  },
+  "type2"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:FLYING)    # Mystic
+  },
+  "getBaseStats"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next [95, 130, 80, 102, 108, 85]   # Mystic
+  },
+  "ability"=>proc{|pokemon|
+    next if pokemon.form!=1 # Only Mystic form
+    if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0)
+      next getID(PBAbilities,:AIRLOCK)
+    end
+    if pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)
+      next getID(PBAbilities,:INFILTRATOR)
+    end
+  },
+  "getMoveList"=>proc{|pokemon|
+    movelist=[]
+    # TODO: Fill Mystic Garchomp movelist as [level,:MOVE] entries
+    for i in movelist
+      i[1]=getConst(PBMoves,i[1])
+    end
+    next movelist
+  },
+  "onSetForm"=>proc{|pokemon,form|
+    if form==1
+      pbSeenForm(pokemon)
+    end
+  }
+})
+
+MultipleForms.register(:LARVITAR,{
+  "type1"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:BUG)    # Mystic
+  },
+  "type2"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:DARK)    # Mystic
+  },
+  "getBaseStats"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next [50, 64, 50, 45, 41, 50]   # Mystic
+  },
+  "ability"=>proc{|pokemon|
+    next if pokemon.form!=1 # Only Mystic form
+    if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0)
+      next getID(PBAbilities,:SWARM)
+    end
+    if pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)
+      next getID(PBAbilities,:SNIPER)
+    end
+  },
+  "getMoveList"=>proc{|pokemon|
+    movelist=[]
+    # TODO: Fill Mystic Larvitar movelist as [level,:MOVE] entries
+    for i in movelist
+      i[1]=getConst(PBMoves,i[1])
+    end
+    next movelist
+  },
+  "onSetForm"=>proc{|pokemon,form|
+    if form==1
+      pbSeenForm(pokemon)
+    end
+  }
+})
+
+MultipleForms.register(:PUPITAR,{
+  "type1"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:BUG)    # Mystic
+  },
+  "type2"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:DARK)    # Mystic
+  },
+  "getBaseStats"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next [70, 84, 70, 65, 51, 70]   # Mystic
+  },
+  "ability"=>proc{|pokemon|
+    next if pokemon.form!=1 # Only Mystic form
+    if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0)
+      next getID(PBAbilities,:SWARM)
+    end
+    if pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)
+      next getID(PBAbilities,:SNIPER)
+    end
+  },
+  "getMoveList"=>proc{|pokemon|
+    movelist=[]
+    # TODO: Fill Mystic Pupitar movelist as [level,:MOVE] entries
+    for i in movelist
+      i[1]=getConst(PBMoves,i[1])
+    end
+    next movelist
+  },
+  "onSetForm"=>proc{|pokemon,form|
+    if form==1
+      pbSeenForm(pokemon)
+    end
+  }
+})
+
+MultipleForms.register(:TYRANITAR,{
+  "type1"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:BUG)    # Mystic
+  },
+  "type2"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:DARK)    # Mystic
+  },
+  "getBaseStats"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next [100, 134, 110, 95, 61, 100]   # Mystic
+  },
+  "ability"=>proc{|pokemon|
+    next if pokemon.form!=1 # Only Mystic form
+    if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0)
+      next getID(PBAbilities,:ADAPTABILITY)
+    end
+    if pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)
+      next getID(PBAbilities,:SNIPER)
+    end
+  },
+  "getMoveList"=>proc{|pokemon|
+    movelist=[]
+    # TODO: Fill Mystic Tyranitar movelist as [level,:MOVE] entries
+    for i in movelist
+      i[1]=getConst(PBMoves,i[1])
+    end
+    next movelist
+  },
+  "onSetForm"=>proc{|pokemon,form|
+    if form==1
+      pbSeenForm(pokemon)
+    end
+  }
+})
+
+MultipleForms.register(:DEINO,{
+  "type1"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:ROCK)    # Mystic
+  },
+  "type2"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:GHOST)    # Mystic
+  },
+  "getBaseStats"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next [65, 50, 52, 38, 45, 50]   # Mystic
+  },
+  "ability"=>proc{|pokemon|
+    next if pokemon.form!=1 # Only Mystic form
+    if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0)
+      next getID(PBAbilities,:EARTHEATER)
+    end
+    if pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)
+      next getID(PBAbilities,:ABYSSAL)
+    end
+  },
+  "getMoveList"=>proc{|pokemon|
+    movelist=[]
+    # TODO: Fill Mystic Deino movelist as [level,:MOVE] entries
+    for i in movelist
+      i[1]=getConst(PBMoves,i[1])
+    end
+    next movelist
+  },
+  "onSetForm"=>proc{|pokemon,form|
+    if form==1
+      pbSeenForm(pokemon)
+    end
+  }
+})
+
+MultipleForms.register(:ZWEILOUS,{
+  "type1"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:ROCK)    # Mystic
+  },
+  "type2"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:GHOST)    # Mystic
+  },
+  "getBaseStats"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next [85, 70, 72, 58, 65, 70]   # Mystic
+  },
+  "ability"=>proc{|pokemon|
+    next if pokemon.form!=1 # Only Mystic form
+    if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0)
+      next getID(PBAbilities,:EARTHEATER)
+    end
+    if pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)
+      next getID(PBAbilities,:ABYSSAL)
+    end
+  },
+  "getMoveList"=>proc{|pokemon|
+    movelist=[]
+    # TODO: Fill Mystic Zweilous movelist as [level,:MOVE] entries
+    for i in movelist
+      i[1]=getConst(PBMoves,i[1])
+    end
+    next movelist
+  },
+  "onSetForm"=>proc{|pokemon,form|
+    if form==1
+      pbSeenForm(pokemon)
+    end
+  }
+})
+
+MultipleForms.register(:HYDREIGON,{
+  "type1"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:ROCK)    # Mystic
+  },
+  "type2"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:GHOST)    # Mystic
+  },
+  "getBaseStats"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next [125, 98, 105, 90, 90, 92]   # Mystic
+  },
+  "ability"=>proc{|pokemon|
+    next if pokemon.form!=1 # Only Mystic form
+    if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0)
+      next getID(PBAbilities,:EARTHEATER)
+    end
+    if pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)
+      next getID(PBAbilities,:ABYSSAL)
+    end
+  },
+  "getMoveList"=>proc{|pokemon|
+    movelist=[]
+    # TODO: Fill Mystic Hydreigon movelist as [level,:MOVE] entries
+    for i in movelist
+      i[1]=getConst(PBMoves,i[1])
+    end
+    next movelist
+  },
+  "onSetForm"=>proc{|pokemon,form|
+    if form==1
+      pbSeenForm(pokemon)
+    end
+  }
+})
+
+MultipleForms.register(:DREEPY,{
+  "type1"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:STEEL)    # Mystic
+  },
+  "type2"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:ICE)    # Mystic
+  },
+  "getBaseStats"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next [28, 30, 40, 82, 60, 30]   # Mystic
+  },
+  "ability"=>proc{|pokemon|
+    next if pokemon.form!=1 # Only Mystic form
+    if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0)
+      next getID(PBAbilities,:KEENEYE)
+    end
+    if pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)
+      next getID(PBAbilities,:SNOWVEIL)
+    end
+  },
+  "getMoveList"=>proc{|pokemon|
+    movelist=[]
+    # TODO: Fill Mystic Dreepy movelist as [level,:MOVE] entries
+    for i in movelist
+      i[1]=getConst(PBMoves,i[1])
+    end
+    next movelist
+  },
+  "onSetForm"=>proc{|pokemon,form|
+    if form==1
+      pbSeenForm(pokemon)
+    end
+  }
+})
+
+MultipleForms.register(:DRAKLOAK,{
+  "type1"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:STEEL)    # Mystic
+  },
+  "type2"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:ICE)    # Mystic
+  },
+  "getBaseStats"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next [68, 50, 60, 102, 80, 50]   # Mystic
+  },
+  "ability"=>proc{|pokemon|
+    next if pokemon.form!=1 # Only Mystic form
+    if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0)
+      next getID(PBAbilities,:KEENEYE)
+    end
+    if pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)
+      next getID(PBAbilities,:SNOWVEIL)
+    end
+  },
+  "getMoveList"=>proc{|pokemon|
+    movelist=[]
+    # TODO: Fill Mystic Drakloak movelist as [level,:MOVE] entries
+    for i in movelist
+      i[1]=getConst(PBMoves,i[1])
+    end
+    next movelist
+  },
+  "onSetForm"=>proc{|pokemon,form|
+    if form==1
+      pbSeenForm(pokemon)
+    end
+  }
+})
+
+MultipleForms.register(:DRAGAPULT,{
+  "type1"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:STEEL)    # Mystic
+  },
+  "type2"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:ICE)    # Mystic
+  },
+  "getBaseStats"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next [88, 75, 100, 142, 120, 75]   # Mystic
+  },
+  "ability"=>proc{|pokemon|
+    next if pokemon.form!=1 # Only Mystic form
+    if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0)
+      next getID(PBAbilities,:BEACON)
+    end
+    if pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)
+      next getID(PBAbilities,:SNOWVEIL)
+    end
+  },
+  "getMoveList"=>proc{|pokemon|
+    movelist=[]
+    # TODO: Fill Mystic Dragapult movelist as [level,:MOVE] entries
+    for i in movelist
+      i[1]=getConst(PBMoves,i[1])
+    end
+    next movelist
+  },
+  "onSetForm"=>proc{|pokemon,form|
+    if form==1
+      pbSeenForm(pokemon)
+    end
+  }
+})
+
+MultipleForms.register(:DRATINI,{
+  "type1"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:FAIRY)    # Mystic
+  },
+  "type2"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:FAIRY)    # Mystic
+  },
+  "getBaseStats"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next [50, 64, 45, 50, 50, 41]   # Mystic
+  },
+  "ability"=>proc{|pokemon|
+    next if pokemon.form!=1 # Only Mystic form
+    if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0)
+      next getID(PBAbilities,:SHEDSKIN)
+    end
+    if pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)
+      next getID(PBAbilities,:SYNCHRONIZE)
+    end
+  },
+  "getMoveList"=>proc{|pokemon|
+    movelist=[]
+    # TODO: Fill Mystic Dratini movelist as [level,:MOVE] entries
+    for i in movelist
+      i[1]=getConst(PBMoves,i[1])
+    end
+    next movelist
+  },
+  "onSetForm"=>proc{|pokemon,form|
+    if form==1
+      pbSeenForm(pokemon)
+    end
+  }
+})
+
+MultipleForms.register(:DRAGONAIR,{
+  "type1"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:FAIRY)    # Mystic
+  },
+  "type2"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:FAIRY)    # Mystic
+  },
+  "getBaseStats"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next [70, 84, 65, 70, 70, 61]   # Mystic
+  },
+  "ability"=>proc{|pokemon|
+    next if pokemon.form!=1 # Only Mystic form
+    if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0)
+      next getID(PBAbilities,:SHEDSKIN)
+    end
+    if pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)
+      next getID(PBAbilities,:SYNCHRONIZE)
+    end
+  },
+  "getMoveList"=>proc{|pokemon|
+    movelist=[]
+    # TODO: Fill Mystic Dragonair movelist as [level,:MOVE] entries
+    for i in movelist
+      i[1]=getConst(PBMoves,i[1])
+    end
+    next movelist
+  },
+  "onSetForm"=>proc{|pokemon,form|
+    if form==1
+      pbSeenForm(pokemon)
+    end
+  }
+})
+
+MultipleForms.register(:DRAGONITE,{
+  "type1"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:FAIRY)    # Mystic
+  },
+  "type2"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:NORMAL)    # Mystic
+  },
+  "getBaseStats"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next [100, 134, 100, 80, 95, 91]   # Mystic
+  },
+  "ability"=>proc{|pokemon|
+    next if pokemon.form!=1 # Only Mystic form
+    if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0)
+      next getID(PBAbilities,:FRIENDGUARD)
+    end
+    if pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)
+      next getID(PBAbilities,:MULTISCALE)
+    end
+  },
+  "getMoveList"=>proc{|pokemon|
+    movelist=[]
+    # TODO: Fill Mystic Dragonite movelist as [level,:MOVE] entries
+    for i in movelist
+      i[1]=getConst(PBMoves,i[1])
+    end
+    next movelist
+  },
+  "onSetForm"=>proc{|pokemon,form|
+    if form==1
+      pbSeenForm(pokemon)
+    end
+  }
+})
+
+MultipleForms.register(:BAGON,{
+  "type1"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:POISON)    # Mystic
+  },
+  "type2"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:POISON)    # Mystic
+  },
+  "getBaseStats"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next [30, 75, 45, 60, 50, 40]   # Mystic
+  },
+  "ability"=>proc{|pokemon|
+    next if pokemon.form!=1 # Only Mystic form
+    if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0)
+      next getID(PBAbilities,:SHEDSKIN)
+    end
+    if pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)
+      next getID(PBAbilities,:STRONGJAW)
+    end
+  },
+  "getMoveList"=>proc{|pokemon|
+    movelist=[]
+    # TODO: Fill Mystic Bagon movelist as [level,:MOVE] entries
+    for i in movelist
+      i[1]=getConst(PBMoves,i[1])
+    end
+    next movelist
+  },
+  "onSetForm"=>proc{|pokemon,form|
+    if form==1
+      pbSeenForm(pokemon)
+    end
+  }
+})
+
+MultipleForms.register(:SHELGON,{
+  "type1"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:POISON)    # Mystic
+  },
+  "type2"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:POISON)    # Mystic
+  },
+  "getBaseStats"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next [50, 100, 95, 60, 50, 50]   # Mystic
+  },
+  "ability"=>proc{|pokemon|
+    next if pokemon.form!=1 # Only Mystic form
+    if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0)
+      next getID(PBAbilities,:SHEDSKIN)
+    end
+    if pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)
+      next getID(PBAbilities,:BATTLEARMOR)
+    end
+  },
+  "getMoveList"=>proc{|pokemon|
+    movelist=[]
+    # TODO: Fill Mystic Shelgon movelist as [level,:MOVE] entries
+    for i in movelist
+      i[1]=getConst(PBMoves,i[1])
+    end
+    next movelist
+  },
+  "onSetForm"=>proc{|pokemon,form|
+    if form==1
+      pbSeenForm(pokemon)
+    end
+  }
+})
+
+MultipleForms.register(:SALAMENCE,{
+  "type1"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:POISON)    # Mystic
+  },
+  "type2"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:PSYCHIC)    # Mystic
+  },
+  "getBaseStats"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next [80, 135, 80, 110, 95, 100]   # Mystic
+  },
+  "ability"=>proc{|pokemon|
+    next if pokemon.form!=1 # Only Mystic form
+    if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0)
+      next getID(PBAbilities,:ARENATRAP)
+    end
+    if pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)
+      next getID(PBAbilities,:STRONGJAW)
+    end
+  },
+  "getMoveList"=>proc{|pokemon|
+    movelist=[]
+    # TODO: Fill Mystic Salamence movelist as [level,:MOVE] entries
+    for i in movelist
+      i[1]=getConst(PBMoves,i[1])
+    end
+    next movelist
+  },
+  "onSetForm"=>proc{|pokemon,form|
+    if form==1
+      pbSeenForm(pokemon)
+    end
+  }
+})
+
+MultipleForms.register(:BELDUM,{
+  "type1"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:GRASS)    # Mystic
+  },
+  "type2"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:FIGHTING)    # Mystic
+  },
+  "getBaseStats"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next [40, 30, 55, 35, 60, 80]   # Mystic
+  },
+  "ability"=>proc{|pokemon|
+    next if pokemon.form!=1 # Only Mystic form
+    if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0)
+      next getID(PBAbilities,:LEVITATE)
+    end
+    if pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)
+      next getID(PBAbilities,:SPIRITED)
+    end
+  },
+  "getMoveList"=>proc{|pokemon|
+    movelist=[]
+    # TODO: Fill Mystic Beldum movelist as [level,:MOVE] entries
+    for i in movelist
+      i[1]=getConst(PBMoves,i[1])
+    end
+    next movelist
+  },
+  "onSetForm"=>proc{|pokemon,form|
+    if form==1
+      pbSeenForm(pokemon)
+    end
+  }
+})
+
+MultipleForms.register(:METANG,{
+  "type1"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:GRASS)    # Mystic
+  },
+  "type2"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:FIGHTING)    # Mystic
+  },
+  "getBaseStats"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next [60, 50, 75, 55, 100, 80]   # Mystic
+  },
+  "ability"=>proc{|pokemon|
+    next if pokemon.form!=1 # Only Mystic form
+    if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0)
+      next getID(PBAbilities,:LEVITATE)
+    end
+    if pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)
+      next getID(PBAbilities,:SPIRITED)
+    end
+  },
+  "getMoveList"=>proc{|pokemon|
+    movelist=[]
+    # TODO: Fill Mystic Metang movelist as [level,:MOVE] entries
+    for i in movelist
+      i[1]=getConst(PBMoves,i[1])
+    end
+    next movelist
+  },
+  "onSetForm"=>proc{|pokemon,form|
+    if form==1
+      pbSeenForm(pokemon)
+    end
+  }
+})
+
+MultipleForms.register(:METAGROSS,{
+  "type1"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:GRASS)    # Mystic
+  },
+  "type2"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:FIGHTING)    # Mystic
+  },
+  "getBaseStats"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next [90, 70, 95, 80, 135, 130]   # Mystic
+  },
+  "ability"=>proc{|pokemon|
+    next if pokemon.form!=1 # Only Mystic form
+    if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0)
+      next getID(PBAbilities,:LEVITATE)
+    end
+    if pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)
+      next getID(PBAbilities,:SPIRITED)
+    end
+  },
+  "getMoveList"=>proc{|pokemon|
+    movelist=[]
+    # TODO: Fill Mystic Metagross movelist as [level,:MOVE] entries
+    for i in movelist
+      i[1]=getConst(PBMoves,i[1])
+    end
+    next movelist
+  },
+  "onSetForm"=>proc{|pokemon,form|
+    if form==1
+      pbSeenForm(pokemon)
+    end
+  }
+})
+
+MultipleForms.register(:GOOMY,{
+  "type1"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:FIRE)    # Mystic
+  },
+  "type2"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:FIRE)    # Mystic
+  },
+  "getBaseStats"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next [35, 55, 50, 45, 40, 75]   # Mystic
+  },
+  "ability"=>proc{|pokemon|
+    next if pokemon.form!=1 # Only Mystic form
+    if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0)
+      next getID(PBAbilities,:MAGMAARMOR)
+    end
+    if pokemon.abilityIndex==1 || (pokemon.abilityflag && pokemon.abilityflag==1)
+      next getID(PBAbilities,:ROCKYPAYLOAD)
+    end
+    if pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)
+      next getID(PBAbilities,:GOOEY)
+    end
+  },
+  "getMoveList"=>proc{|pokemon|
+    movelist=[]
+    # TODO: Fill Mystic Goomy movelist as [level,:MOVE] entries
+    for i in movelist
+      i[1]=getConst(PBMoves,i[1])
+    end
+    next movelist
+  },
+  "onSetForm"=>proc{|pokemon,form|
+    if form==1
+      pbSeenForm(pokemon)
+    end
+  }
+})
+
+MultipleForms.register(:SLIGGOO,{
+  "type1"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:FIRE)    # Mystic
+  },
+  "type2"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:FIRE)    # Mystic
+  },
+  "getBaseStats"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next [40, 83, 83, 75, 58, 113]   # Mystic
+  },
+  "ability"=>proc{|pokemon|
+    next if pokemon.form!=1 # Only Mystic form
+    if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0)
+      next getID(PBAbilities,:MAGMAARMOR)
+    end
+    if pokemon.abilityIndex==1 || (pokemon.abilityflag && pokemon.abilityflag==1)
+      next getID(PBAbilities,:ROCKYPAYLOAD)
+    end
+    if pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)
+      next getID(PBAbilities,:GOOEY)
+    end
+  },
+  "getMoveList"=>proc{|pokemon|
+    movelist=[]
+    # TODO: Fill Mystic Sliggoo movelist as [level,:MOVE] entries
+    for i in movelist
+      i[1]=getConst(PBMoves,i[1])
+    end
+    next movelist
+  },
+  "onSetForm"=>proc{|pokemon,form|
+    if form==1
+      pbSeenForm(pokemon)
+    end
+  }
+})
+
+MultipleForms.register(:GOODRA,{
+  "type1"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:FIRE)    # Mystic
+  },
+  "type2"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:FIRE)    # Mystic
+  },
+  "getBaseStats"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next [70, 110, 100, 90, 80, 150]   # Mystic
+  },
+  "ability"=>proc{|pokemon|
+    next if pokemon.form!=1 # Only Mystic form
+    if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0)
+      next getID(PBAbilities,:MAGMAARMOR)
+    end
+    if pokemon.abilityIndex==1 || (pokemon.abilityflag && pokemon.abilityflag==1)
+      next getID(PBAbilities,:ROCKYPAYLOAD)
+    end
+    if pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)
+      next getID(PBAbilities,:GOOEY)
+    end
+  },
+  "getMoveList"=>proc{|pokemon|
+    movelist=[]
+    # TODO: Fill Mystic Goodra movelist as [level,:MOVE] entries
+    for i in movelist
+      i[1]=getConst(PBMoves,i[1])
+    end
+    next movelist
+  },
+  "onSetForm"=>proc{|pokemon,form|
+    if form==1
+      pbSeenForm(pokemon)
+    end
+  }
+})
+
+MultipleForms.register(:JANGMOO,{
+  "type1"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:GRASS)    # Mystic
+  },
+  "type2"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:GRASS)    # Mystic
+  },
+  "getBaseStats"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next [65, 45, 45, 45, 55, 45]   # Mystic
+  },
+  "ability"=>proc{|pokemon|
+    next if pokemon.form!=1 # Only Mystic form
+    if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0)
+      next getID(PBAbilities,:INNERFOCUS)
+    end
+    if pokemon.abilityIndex==1 || (pokemon.abilityflag && pokemon.abilityflag==1)
+      next getID(PBAbilities,:HYDRATION)
+    end
+    if pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)
+      next getID(PBAbilities,:SERENEGRACE)
+    end
+  },
+  "getMoveList"=>proc{|pokemon|
+    movelist=[]
+    # TODO: Fill Mystic Jangmo-o movelist as [level,:MOVE] entries
+    for i in movelist
+      i[1]=getConst(PBMoves,i[1])
+    end
+    next movelist
+  },
+  "onSetForm"=>proc{|pokemon,form|
+    if form==1
+      pbSeenForm(pokemon)
+    end
+  }
+})
+
+MultipleForms.register(:HAKAMOO,{
+  "type1"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:GRASS)    # Mystic
+  },
+  "type2"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:WATER)    # Mystic
+  },
+  "getBaseStats"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next [90, 75, 55, 65, 70, 65]   # Mystic
+  },
+  "ability"=>proc{|pokemon|
+    next if pokemon.form!=1 # Only Mystic form
+    if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0)
+      next getID(PBAbilities,:INNERFOCUS)
+    end
+    if pokemon.abilityIndex==1 || (pokemon.abilityflag && pokemon.abilityflag==1)
+      next getID(PBAbilities,:HYDRATION)
+    end
+    if pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)
+      next getID(PBAbilities,:SERENEGRACE)
+    end
+  },
+  "getMoveList"=>proc{|pokemon|
+    movelist=[]
+    # TODO: Fill Mystic Hakamo-o movelist as [level,:MOVE] entries
+    for i in movelist
+      i[1]=getConst(PBMoves,i[1])
+    end
+    next movelist
+  },
+  "onSetForm"=>proc{|pokemon,form|
+    if form==1
+      pbSeenForm(pokemon)
+    end
+  }
+})
+
+MultipleForms.register(:KOMMOO,{
+  "type1"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:GRASS)    # Mystic
+  },
+  "type2"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:WATER)    # Mystic
+  },
+  "getBaseStats"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next [125, 105, 75, 100, 110, 85]   # Mystic
+  },
+  "ability"=>proc{|pokemon|
+    next if pokemon.form!=1 # Only Mystic form
+    if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0)
+      next getID(PBAbilities,:INNERFOCUS)
+    end
+    if pokemon.abilityIndex==1 || (pokemon.abilityflag && pokemon.abilityflag==1)
+      next getID(PBAbilities,:HYDRATION)
+    end
+    if pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)
+      next getID(PBAbilities,:SERENEGRACE)
+    end
+  },
+  "getMoveList"=>proc{|pokemon|
+    movelist=[]
+    # TODO: Fill Mystic Kommo-o movelist as [level,:MOVE] entries
+    for i in movelist
+      i[1]=getConst(PBMoves,i[1])
+    end
+    next movelist
+  },
+  "onSetForm"=>proc{|pokemon,form|
+    if form==1
+      pbSeenForm(pokemon)
+    end
+  }
+})
+
+MultipleForms.register(:FRIGIBAX,{
+  "type1"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:GROUND)    # Mystic
+  },
+  "type2"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:FIRE)    # Mystic
+  },
+  "getBaseStats"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next [65, 75, 35, 55, 45, 45]   # Mystic
+  },
+  "ability"=>proc{|pokemon|
+    next if pokemon.form!=1 # Only Mystic form
+    if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0)
+      next getID(PBAbilities,:MARVELSCALE)
+    end
+    if pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)
+      next getID(PBAbilities,:SUNBATHE)
+    end
+  },
+  "getMoveList"=>proc{|pokemon|
+    movelist=[]
+    # TODO: Fill Mystic Frigibax movelist as [level,:MOVE] entries
+    for i in movelist
+      i[1]=getConst(PBMoves,i[1])
+    end
+    next movelist
+  },
+  "onSetForm"=>proc{|pokemon,form|
+    if form==1
+      pbSeenForm(pokemon)
+    end
+  }
+})
+
+MultipleForms.register(:ARCTIBAX,{
+  "type1"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:GROUND)    # Mystic
+  },
+  "type2"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:FIRE)    # Mystic
+  },
+  "getBaseStats"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next [90, 95, 45, 66, 62, 65]   # Mystic
+  },
+  "ability"=>proc{|pokemon|
+    next if pokemon.form!=1 # Only Mystic form
+    if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0)
+      next getID(PBAbilities,:MARVELSCALE)
+    end
+    if pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)
+      next getID(PBAbilities,:SUNBATHE)
+    end
+  },
+  "getMoveList"=>proc{|pokemon|
+    movelist=[]
+    # TODO: Fill Mystic Arctibax movelist as [level,:MOVE] entries
+    for i in movelist
+      i[1]=getConst(PBMoves,i[1])
+    end
+    next movelist
+  },
+  "onSetForm"=>proc{|pokemon,form|
+    if form==1
+      pbSeenForm(pokemon)
+    end
+  }
+})
+
+MultipleForms.register(:BAXCALIBUR,{
+  "type1"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:GROUND)    # Mystic
+  },
+  "type2"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:FIRE)    # Mystic
+  },
+  "getBaseStats"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next [115, 145, 75, 92, 86, 87]   # Mystic
+  },
+  "ability"=>proc{|pokemon|
+    next if pokemon.form!=1 # Only Mystic form
+    if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0)
+      next getID(PBAbilities,:MARVELSCALE)
+    end
+    if pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)
+      next getID(PBAbilities,:HEATSINK)
+    end
+  },
+  "getMoveList"=>proc{|pokemon|
+    movelist=[]
+    # TODO: Fill Mystic Baxcalibur movelist as [level,:MOVE] entries
+    for i in movelist
+      i[1]=getConst(PBMoves,i[1])
+    end
+    next movelist
+  },
+  "onSetForm"=>proc{|pokemon,form|
+    if form==1
+      pbSeenForm(pokemon)
+    end
+  }
+})
+
+MultipleForms.register(:YANMA,{
+  "type1"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:DRAGON)    # Mystic
+  },
+  "type2"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:ROCK)    # Mystic
+  },
+  "getBaseStats"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next [75, 65, 45, 95, 65, 45]   # Mystic
+  },
+  "ability"=>proc{|pokemon|
+    next if pokemon.form!=1 # Only Mystic form
+    if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0)
+      next getID(PBAbilities,:ARENATRAP)
+    end
+    if pokemon.abilityIndex==1 || (pokemon.abilityflag && pokemon.abilityflag==1)
+      next getID(PBAbilities,:SCAVENGER)
+    end
+    if pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)
+      next getID(PBAbilities,:OWNTEMPO)
+    end
+  },
+  "getMoveList"=>proc{|pokemon|
+    movelist=[]
+    # TODO: Fill Mystic Yanma movelist as [level,:MOVE] entries
+    for i in movelist
+      i[1]=getConst(PBMoves,i[1])
+    end
+    next movelist
+  },
+  "onSetForm"=>proc{|pokemon,form|
+    if form==1
+      pbSeenForm(pokemon)
+    end
+  }
+})
+
+MultipleForms.register(:YANMEGA,{
+  "type1"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:DRAGON)    # Mystic
+  },
+  "type2"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:ROCK)    # Mystic
+  },
+  "getBaseStats"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next [86, 56, 86, 116, 95, 76]   # Mystic
+  },
+  "ability"=>proc{|pokemon|
+    next if pokemon.form!=1 # Only Mystic form
+    if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0)
+      next getID(PBAbilities,:ARENATRAP)
+    end
+    if pokemon.abilityIndex==1 || (pokemon.abilityflag && pokemon.abilityflag==1)
+      next getID(PBAbilities,:SCAVENGER)
+    end
+    if pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)
+      next getID(PBAbilities,:OWNTEMPO)
+    end
+  },
+  "getMoveList"=>proc{|pokemon|
+    movelist=[]
+    # TODO: Fill Mystic Yanmega movelist as [level,:MOVE] entries
+    for i in movelist
+      i[1]=getConst(PBMoves,i[1])
+    end
+    next movelist
+  },
+  "onSetForm"=>proc{|pokemon,form|
+    if form==1
+      pbSeenForm(pokemon)
+    end
+  }
+})
+
+MultipleForms.register(:POIPOLE,{
+  "type1"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:DRAGON)    # Mystic
+  },
+  "type2"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:DRAGON)    # Mystic
+  },
+  "getBaseStats"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next [67, 73, 67, 73, 73, 67]   # Mystic
+  },
+  "ability"=>proc{|pokemon|
+    next if pokemon.form!=1 # Only Mystic form
+    if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0)
+      next getID(PBAbilities,:CLEARBODY)
+    end
+    if pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)
+      next getID(PBAbilities,:MOLDBREAKER)
+    end
+  },
+  "getMoveList"=>proc{|pokemon|
+    movelist=[]
+    # TODO: Fill Mystic Poipole movelist as [level,:MOVE] entries
+    for i in movelist
+      i[1]=getConst(PBMoves,i[1])
+    end
+    next movelist
+  },
+  "onSetForm"=>proc{|pokemon,form|
+    if form==1
+      pbSeenForm(pokemon)
+    end
+  }
+})
+
+MultipleForms.register(:NAGANADEL,{
+  "type1"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:DRAGON)    # Mystic
+  },
+  "type2"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:FIRE)    # Mystic
+  },
+  "getBaseStats"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next [73, 121, 73, 127, 73, 73]   # Mystic
+  },
+  "ability"=>proc{|pokemon|
+    next if pokemon.form!=1 # Only Mystic form
+    if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0)
+      next getID(PBAbilities,:FLAMEEATER)
+    end
+    if pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)
+      next getID(PBAbilities,:TURBOBLAZE)
+    end
+  },
+  "getMoveList"=>proc{|pokemon|
+    movelist=[]
+    # TODO: Fill Mystic Naganadel movelist as [level,:MOVE] entries
+    for i in movelist
+      i[1]=getConst(PBMoves,i[1])
+    end
+    next movelist
+  },
+  "onSetForm"=>proc{|pokemon,form|
+    if form==1
+      pbSeenForm(pokemon)
+    end
+  }
+})
+
+MultipleForms.register(:ZERAORA,{
+  "type1"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:ICE)    # Mystic
+  },
+  "type2"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:ICE)    # Mystic
+  },
+  "getBaseStats"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next [88, 143, 102, 75, 80, 112]   # Mystic
+  },
+  "ability"=>proc{|pokemon|
+    next if pokemon.form!=1 # Only Mystic form
+    if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0)
+      next getID(PBAbilities,:DEEPFREEZE)
+    end
+  },
+  "getMoveList"=>proc{|pokemon|
+    movelist=[]
+    # TODO: Fill Mystic Zeraora movelist as [level,:MOVE] entries
+    for i in movelist
+      i[1]=getConst(PBMoves,i[1])
+    end
+    next movelist
+  },
+  "onSetForm"=>proc{|pokemon,form|
+    if form==1
+      pbSeenForm(pokemon)
+    end
+  }
+})
+
+MultipleForms.register(:MESPRIT,{
+  "type1"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:GHOST)    # Mystic
+  },
+  "type2"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:GHOST)    # Mystic
+  },
+  "getBaseStats"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next [105, 105, 80, 105, 105, 80]   # Mystic
+  },
+  "ability"=>proc{|pokemon|
+    next if pokemon.form!=1 # Only Mystic form
+    if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0)
+      next getID(PBAbilities,:KEYHOLDER)
+    end
+  },
+  "getMoveList"=>proc{|pokemon|
+    movelist=[]
+    # TODO: Fill Mystic Mesprit movelist as [level,:MOVE] entries
+    for i in movelist
+      i[1]=getConst(PBMoves,i[1])
+    end
+    next movelist
+  },
+  "onSetForm"=>proc{|pokemon,form|
+    if form==1
+      pbSeenForm(pokemon)
+    end
+  }
+})
+
+MultipleForms.register(:UXIE,{
+  "type1"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:STEEL)    # Mystic
+  },
+  "type2"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:STEEL)    # Mystic
+  },
+  "getBaseStats"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next [75, 75, 75, 95, 130, 130]   # Mystic
+  },
+  "ability"=>proc{|pokemon|
+    next if pokemon.form!=1 # Only Mystic form
+    if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0)
+      next getID(PBAbilities,:KEYHOLDER)
+    end
+  },
+  "getMoveList"=>proc{|pokemon|
+    movelist=[]
+    # TODO: Fill Mystic Uxie movelist as [level,:MOVE] entries
+    for i in movelist
+      i[1]=getConst(PBMoves,i[1])
+    end
+    next movelist
+  },
+  "onSetForm"=>proc{|pokemon,form|
+    if form==1
+      pbSeenForm(pokemon)
+    end
+  }
+})
+
+MultipleForms.register(:AZELF,{
+  "type1"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:WATER)    # Mystic
+  },
+  "type2"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:WATER)    # Mystic
+  },
+  "getBaseStats"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next [115, 125, 125, 75, 70, 70]   # Mystic
+  },
+  "ability"=>proc{|pokemon|
+    next if pokemon.form!=1 # Only Mystic form
+    if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0)
+      next getID(PBAbilities,:KEYHOLDER)
+    end
+  },
+  "getMoveList"=>proc{|pokemon|
+    movelist=[]
+    # TODO: Fill Mystic Azelf movelist as [level,:MOVE] entries
+    for i in movelist
+      i[1]=getConst(PBMoves,i[1])
+    end
+    next movelist
+  },
+  "onSetForm"=>proc{|pokemon,form|
+    if form==1
+      pbSeenForm(pokemon)
+    end
+  }
+})
+
+MultipleForms.register(:HOOH,{
+  "type1"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:GRASS)    # Mystic
+  },
+  "type2"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:DRAGON)    # Mystic
+  },
+  "getBaseStats"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next [106, 130, 154, 110, 90, 90]   # Mystic
+  },
+  "ability"=>proc{|pokemon|
+    next if pokemon.form!=1 # Only Mystic form
+    if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0)
+      next getID(PBAbilities,:HARVESTMOON)
+    end
+  },
+  "getMoveList"=>proc{|pokemon|
+    movelist=[]
+    # TODO: Fill Mystic Ho-Oh movelist as [level,:MOVE] entries
+    for i in movelist
+      i[1]=getConst(PBMoves,i[1])
+    end
+    next movelist
+  },
+  "onSetForm"=>proc{|pokemon,form|
+    if form==1
+      pbSeenForm(pokemon)
+    end
+  }
+})
+
+MultipleForms.register(:LUGIA,{
+  "type1"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:GROUND)    # Mystic
+  },
+  "type2"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:DRAGON)    # Mystic
+  },
+  "getBaseStats"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next [106, 90, 110, 90, 130, 154]   # Mystic
+  },
+  "ability"=>proc{|pokemon|
+    next if pokemon.form!=1 # Only Mystic form
+    if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0)
+      next getID(PBAbilities,:DUSTDEVIL)
+    end
+  },
+  "getMoveList"=>proc{|pokemon|
+    movelist=[]
+    # TODO: Fill Mystic Lugia movelist as [level,:MOVE] entries
+    for i in movelist
+      i[1]=getConst(PBMoves,i[1])
+    end
+    next movelist
+  },
+  "onSetForm"=>proc{|pokemon,form|
+    if form==1
+      pbSeenForm(pokemon)
+    end
+  }
+})
+
+MultipleForms.register(:DEOXYS,{
+  "type1"=>proc{|pokemon|
+    next if pokemon.form!=4
+    next getID(PBTypes,:NORMAL)    # Mystic
+  },
+  "type2"=>proc{|pokemon|
+    next if pokemon.form!=4
+    next getID(PBTypes,:NORMAL)    # Mystic
+  },
+  "getBaseStats"=>proc{|pokemon|
+    next if pokemon.form!=4
+    next [100, 100, 100, 100, 100, 100]   # Mystic
+  },
+  "ability"=>proc{|pokemon|
+    next if pokemon.form!=4 # Only Mystic form
+    if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0)
+      next getID(PBAbilities,:MOODY)
+    end
+  },
+  "getMoveList"=>proc{|pokemon|
+    movelist=[]
+    # TODO: Fill Mystic Deoxys movelist as [level,:MOVE] entries
+    for i in movelist
+      i[1]=getConst(PBMoves,i[1])
+    end
+    next movelist
+  },
+  "onSetForm"=>proc{|pokemon,form|
+    if form==4
+      pbSeenForm(pokemon)
+    end
+  }
+})

@@ -99,6 +99,7 @@ class PokemonGlobalMetadata
   attr_accessor :bicycle
   attr_accessor :riding
   attr_accessor :surfing
+  attr_accessor :swimming
   attr_accessor :lavasurfing
   attr_accessor :diving
   attr_accessor :sliding
@@ -141,6 +142,7 @@ class PokemonGlobalMetadata
   attr_accessor :nextBattleBack
   attr_accessor :safariState
   attr_accessor :bugContestState
+  attr_accessor :itemBelt
   attr_accessor :partner
   attr_accessor :challenge
   attr_accessor :lastbattle
@@ -153,6 +155,7 @@ class PokemonGlobalMetadata
     @riding = false
     @bicycle              = false
     @surfing              = false
+    @swimming            = false
     @diving               = false
     @lavasurfing          = false
     @sliding              = false
@@ -201,6 +204,7 @@ class PokemonGlobalMetadata
     @nextBattleBack       = nil
     @safariState          = nil
     @bugContestState      = nil
+    @itemBelt             = [nil,nil,nil,nil]
     @partner              = nil
     @challenge            = nil
     @lastbattle           = nil

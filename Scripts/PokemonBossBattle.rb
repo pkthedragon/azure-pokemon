@@ -340,12 +340,18 @@ class PokeBattle_Battle
       fieldmessage = (onBreakdata[:fieldChangeMessage] && onBreakdata[:fieldChangeMessage] != "") ? onBreakdata[:fieldChangeMessage] : "The field was changed!"
       pbDisplay(_INTL("{1}",fieldmessage))
     end
-    multiturnsymbols = [:CLAMP,:FIRESPIN,:SANDTOMB,:DESERTSMARK,:WRAP,:MAGMASTORM,:INFESTATION,:BIND,:WHIRLPOOL]
+    multiturnsymbols = [:CLAMP,:FIRESPIN,:SANDTOMB,:DESERTSMARK,:WRAP,:MAGMASTORM,:INFESTATION,:BIND,:WHIRLPOOL,:BINDINGWORD]
     if onBreakdata[:bossEffect]
       if onBreakdata[:bossEffect].is_a?(Array)
         for i in 0...onBreakdata[:bossEffect].length
           if multiturnsymbols.include?(onBreakdata[:bossEffect][i])
             battler.effects[:MultiTurnAttack] = getConst(PBMoves,onBreakdata[:bossEffect][i])
+            if battler.effects[:MultiTurnAttack] == PBMoves::BINDINGWORD
+              for i in [PBStats::ATTACK,PBStats::DEFENSE,PBStats::SPEED,PBStats::SPATK,PBStats::SPDEF,PBStats::ACCURACY,PBStats::EVASION]
+                battler.effects[PBEffects::StatChangeHolder][i] = battler.stages[i]
+                battler.stages[i] = 0
+              end
+            end
             battler.effects[:MultiTurn] = onBreakdata[:bossEffectduration] ? onBreakdata[:bossEffectduration][i] : 5
             pbCommonAnimation(onBreakdata[:bossEffectanimation][i].to_s,battler,nil) if onBreakdata[:bossEffectanimation]
           else
@@ -356,6 +362,12 @@ class PokeBattle_Battle
       else
         if multiturnsymbols.include?(onBreakdata[:bossEffect])
           battler.effects[:MultiTurnAttack] = onBreakdata[:bossEffect]
+          if battler.effects[:MultiTurnAttack] == PBMoves::BINDINGWORD
+            for i in [PBStats::ATTACK,PBStats::DEFENSE,PBStats::SPEED,PBStats::SPATK,PBStats::SPDEF,PBStats::ACCURACY,PBStats::EVASION]
+              battler.effects[PBEffects::StatChangeHolder][i] = battler.stages[i]
+              battler.stages[i] = 0
+            end
+          end
           battler.effects[:MultiTurn] = onBreakdata[:bossEffectduration] ? onBreakdata[:bossEffectduration] : 5
           pbCommonAnimation(onBreakdata[:bossEffectanimation].to_s,battler,nil) if onBreakdata[:bossEffectanimation]
         else
@@ -385,11 +397,23 @@ class PokeBattle_Battle
           if multiturnsymbols.include?(onBreakdata[:playerEffects][i])
             if !battler.pbOpposing1.isFainted?  && !battler.pbOpposing1.issossmon
               battler.pbOpposing1.effects[:MultiTurnAttack] = getConst(PBMoves,onBreakdata[:playerEffects][i])
+              if battler.pbOpposing1.effects[:MultiTurnAttack] == PBMoves::BINDINGWORD
+                for i in [PBStats::ATTACK,PBStats::DEFENSE,PBStats::SPEED,PBStats::SPATK,PBStats::SPDEF,PBStats::ACCURACY,PBStats::EVASION]
+                  battler.pbOpposing1.effects[PBEffects::StatChangeHolder][i] = battler.pbOpposing1.stages[i]
+                  battler.pbOpposing1.stages[i] = 0
+                end
+              end
               battler.pbOpposing1.effects[:MultiTurn] = onBreakdata[:playerEffectsduration] ?  onBreakdata[:playerEffectsduration][i] : 5
               pbCommonAnimation(onBreakdata[:playerEffectsAnimation[i].to_s],battler.pbOpposing1,nil) if onBreakdata[:playerEffectsAnimation][i]
             end
             if !battler.pbOpposing2.isFainted?  && !battler.pbOpposing2.issossmon
               battler.pbOpposing2.effects[:MultiTurnAttack] = getConst(PBMoves,onBreakdata[:playerEffects][i])
+              if battler.pbOpposing2.effects[:MultiTurnAttack] == PBMoves::BINDINGWORD
+                for i in [PBStats::ATTACK,PBStats::DEFENSE,PBStats::SPEED,PBStats::SPATK,PBStats::SPDEF,PBStats::ACCURACY,PBStats::EVASION]
+                  battler.pbOpposing2.effects[PBEffects::StatChangeHolder][i] = battler.pbOpposing2.stages[i]
+                  battler.pbOpposing2.stages[i] = 0
+                end
+              end
               battler.pbOpposing2.effects[:MultiTurn] = onBreakdata[:playerEffectsduration] ?  onBreakdata[:playerEffectsduration][i] : 5
               pbCommonAnimation(onBreakdata[:playerEffectsAnimation[i].to_s],battler.pbOpposing2,nil) if onBreakdata[:playerEffectsAnimation][i]
             end
@@ -401,7 +425,7 @@ class PokeBattle_Battle
               end
               if onBreakdata[:playerEffects][i] == (PBEffects::FutureSightMove)
                 battler.pbOpposing1.effects[PBEffects::FutureSightUser] = battler.index
-                battler.pbOpposing1.effects[PBEffects::FutureSightPokemonIndex] = battler.pokemonIndex
+                battler.pbOpposing1.effects[PBEffects::FutureSightPkmnIdx] = battler.pokemonIndex
               end
               pbAnimation(onBreakdata[:playerEffectsAnimation[i]],battler.pbOpposing1,nil) if onBreakdata[:playerEffectsAnimation][i]
             end
@@ -412,7 +436,7 @@ class PokeBattle_Battle
               end
               if onBreakdata[:playerEffects][i] == (PBEffects::FutureSightMove)
                 battler.pbOpposing2.effects[PBEffects::FutureSightUser] = battler.index
-                battler.pbOpposing2.effects[PBEffects::FutureSightPokemonIndex] = battler.pokemonIndex
+                battler.pbOpposing2.effects[PBEffects::FutureSightPkmnIdx] = battler.pokemonIndex
               end
               pbAnimation(onBreakdata[:playerEffectsAnimation][i],battler.pbOpposing2,nil) if onBreakdata[:playerEffectsAnimation][i]
             end
@@ -422,11 +446,23 @@ class PokeBattle_Battle
         if multiturnsymbols.include?(onBreakdata[:playerEffects])
           if !battler.pbOpposing1.isFainted? && !battler.pbOpposing1.issossmon
             battler.pbOpposing1.effects[:MultiTurnAttack] = getConst(PBMoves,onBreakdata[:playerEffects][i])
+            if battler.pbOpposing1.effects[:MultiTurnAttack] == PBMoves::BINDINGWORD
+              for i in [PBStats::ATTACK,PBStats::DEFENSE,PBStats::SPEED,PBStats::SPATK,PBStats::SPDEF,PBStats::ACCURACY,PBStats::EVASION]
+                battler.pbOpposing1.effects[PBEffects::StatChangeHolder][i] = battler.pbOpposing1.stages[i]
+                battler.pbOpposing1.stages[i] = 0
+              end
+            end
             battler.pbOpposing1.effects[:MultiTurn] = onBreakdata[:playerEffectsduration] ?  onBreakdata[:playerEffectsduration] : 5
             pbCommonAnimation(onBreakdata[:playerEffectsAnimation].to_s,battler.pbOpposing1,nil) if onBreakdata[:playerEffectsAnimation]
           end
           if !battler.pbOpposing2.isFainted?  && !battler.pbOpposing2.issossmon
             battler.pbOpposing2.effects[:MultiTurnAttack] = getConst(PBMoves,onBreakdata[:playerEffects][i])
+            if battler.pbOpposing2.effects[:MultiTurnAttack] == PBMoves::BINDINGWORD
+              for i in [PBStats::ATTACK,PBStats::DEFENSE,PBStats::SPEED,PBStats::SPATK,PBStats::SPDEF,PBStats::ACCURACY,PBStats::EVASION]
+                battler.pbOpposing2.effects[PBEffects::StatChangeHolder][i] = battler.pbOpposing2.stages[i]
+                battler.pbOpposing2.stages[i] = 0
+              end
+            end
             battler.pbOpposing2.effects[:MultiTurn] = onBreakdata[:playerEffectsduration] ?  onBreakdata[:playerEffectsduration] : 5
             pbCommonAnimation(onBreakdata[:playerEffectsAnimation].to_s,battler.pbOpposing2,nil) if onBreakdata[:playerEffectsAnimation]
           end
@@ -519,7 +555,7 @@ class PokeBattle_Battle
     end
     animplay = false
     negativeEffects = [PBEffects::Curse,PBEffects::GastroAcid,PBEffects::Imprison,PBEffects::Nightmare,PBEffects::TarShot,PBEffects::SmackDown,PBEffects::Encore,PBEffects::ThroatChop,
-    PBEffects::HealBlock,PBEffects::Octolock,PBEffects::MultiTurn,PBEffects::LeechSeed,PBEffects::Petrification,PBEffects::Attract,PBEffects::Torment,PBEffects::Taunt,PBEffects::Confusion]
+    PBEffects::HealBlock,PBEffects::Octolock,PBEffects::MultiTurn,PBEffects::LeechSeed,PBEffects::Petrification,PBEffects::Attract,PBEffects::MultiTurnUser,PBEffects::Torment,PBEffects::Taunt,PBEffects::Confusion]
     if onBreakdata[:effectClear]
       for i in negativeEffects
         if [PBEffects::Curse,PBEffects::GastroAcid,PBEffects::Imprison,PBEffects::Nightmare,PBEffects::TarShot,PBEffects::SmackDown,PBEffects::Octolock,PBEffects::Torment].include?(i)
@@ -531,10 +567,16 @@ class PokeBattle_Battle
         if [PBEffects::Encore,PBEffects::HealBlock,PBEffects::MultiTurn,PBEffects::Taunt,PBEffects::ThroatChop,PBEffects::Confusion].include?(i)
           if battler.effects[i] != 0
             battler.effects[i] = 0
+            if i == PBEffects::MultiTurn && battler.effects[PBEffects::MultiTurnAttack] == PBMoves::BINDINGWORD
+              for j in [PBStats::ATTACK,PBStats::DEFENSE,PBStats::SPEED,PBStats::SPATK,PBStats::SPDEF,PBStats::ACCURACY,PBStats::EVASION]
+                battler.stages[j] = battler.effects[PBEffects::StatChangeHolder][j]
+                battler.effects[PBEffects::StatChangeHolder][j] = 0
+              end
+            end
             animplay = true
           end
         end
-        if [PBEffects::LeechSeed,PBEffects::Petrification,PBEffects::Attract].include?(i)
+        if [PBEffects::LeechSeed,PBEffects::Petrification,PBEffects::Attract,PBEffects::MultiTurnUser].include?(i)
           if battler.effects[i] != -1          
             battler.effects[i] = -1
             animplay = true
@@ -557,12 +599,14 @@ class PokeBattle_Battle
     if onBreakdata[:statDropCure]
       for s in [PBStats::ATTACK,PBStats::DEFENSE,PBStats::SPEED, PBStats::SPATK,PBStats::SPDEF,PBStats::ACCURACY,PBStats::EVASION]
         battler.stages[s] = 0 if battler.stages[s]<0
+        battler.effects[PBEffects::StatChangeHolder][s] = 0 if battler.effects[PBEffects::StatChangeHolder][s] < 0
       end
       pbDisplayBrief(_INTL("{1} cleared itself of stat drops!",battler.pbThis))
     end
     if onBreakdata[:statDropRefresh]
       for s in [PBStats::ATTACK,PBStats::DEFENSE,PBStats::SPEED, PBStats::SPATK,PBStats::SPDEF,PBStats::ACCURACY,PBStats::EVASION]
         battler.stages[s] = 0 if battler.stages[s]!=0
+        battler.effects[PBEffects::StatChangeHolder][s] = 0 if battler.effects[PBEffects::StatChangeHolder][s] != 0
       end
       pbDisplayBrief(_INTL("{1} cleared itself of stat changes!",battler.pbThis))
     end
@@ -583,7 +627,7 @@ class PokeBattle_Battle
           when PBStatuses::POISON
             canstatus = @battlers[i].pbCanPoison?(false)
             statusname="poison"
-          when PBStatuses::FREEZE
+          when PBStatuses::FROZEN
             canstatus = @battlers[i].pbCanFreeze?(false)
             statusname="freeze"
           end
@@ -612,7 +656,7 @@ class PokeBattle_Battle
           when PBStatuses::POISON
             canstatus = @battlers[i].pbCanPoison?(false)
             statusname="poison"
-          when PBStatuses::FREEZE
+          when PBStatuses::FROZEN
             canstatus = @battlers[i].pbCanFreeze?(false)
             statusname="freeze"
           end
