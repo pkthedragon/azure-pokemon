@@ -1142,5 +1142,10 @@ end
 
 def PBItems.maxValue
 return 1173
+return 1155
+end
+
+def PBItems.maxValue
+return 1154
 end
 end
