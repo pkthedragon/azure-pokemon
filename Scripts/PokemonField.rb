@@ -2718,6 +2718,15 @@ def Kernel.pbReceiveItem(item,quantity=1,plural=nil,silent=false)
     end
     return true
   else   # Can't add the item
+    if Kernel.pbConfirmMessage(_INTL("The Bag is full. Send the item to the PC instead?"))
+      $PokemonGlobal.pcItemStorage=PCItemStorage.new if !$PokemonGlobal.pcItemStorage
+      if $PokemonGlobal.pcItemStorage.pbStoreItem(item,quantity)
+        Kernel.pbMessage(_INTL("{1} sent the {2} to the PC storage.",$Trainer.name,itemname))
+        return true
+      else
+        Kernel.pbMessage(_INTL("There's no space left in the PC for that item."))
+      end
+    end
     return false
   end
 end
