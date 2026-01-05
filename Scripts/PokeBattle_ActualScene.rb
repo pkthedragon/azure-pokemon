@@ -1042,6 +1042,13 @@ class PokemonDataBox < SpriteWrapper
     hpzone=0
     hpzone=1 if self.hp<=(@battler.totalhp/2).floor
     hpzone=2 if self.hp<=(@battler.totalhp/4).floor
+    shieldhp=@battler.effects[PBEffects::TempShieldHP] rescue 0
+    shieldgauge=0
+    if shieldhp && @battler.totalhp>0
+      shieldgauge=shieldhp*hpGaugeSize/@battler.totalhp
+      spaceleft=hpGaugeSize-hpgauge
+      shieldgauge=spaceleft if shieldgauge>spaceleft
+    end
     hpcolors=[
        PokeBattle_SceneConstants::HPCOLORGREENDARK,
        PokeBattle_SceneConstants::HPCOLORGREEN,
@@ -1063,6 +1070,12 @@ class PokemonDataBox < SpriteWrapper
     # fill with HP color
     self.bitmap.fill_rect(@spritebaseX+hpGaugeX,hpGaugeY,hpgauge,2,hpcolors[hpzone*2])
     self.bitmap.fill_rect(@spritebaseX+hpGaugeX,hpGaugeY+2,hpgauge,4,hpcolors[hpzone*2+1])
+    if shieldgauge>0
+      shieldcolor1=Color.new(120,120,120)
+      shieldcolor2=Color.new(80,80,80)
+      self.bitmap.fill_rect(@spritebaseX+hpGaugeX+hpgauge,hpGaugeY,shieldgauge,2,shieldcolor1)
+      self.bitmap.fill_rect(@spritebaseX+hpGaugeX+hpgauge,hpGaugeY+2,shieldgauge,4,shieldcolor2)
+    end
     if @showexp
       # fill with EXP color
       expGaugeX=PokeBattle_SceneConstants::EXPGAUGE_X
@@ -1739,6 +1752,14 @@ class PokeBattle_Scene
     end
   end
 
+
+  # to update @battle.shieldCount in case mon enters as rift form
+  # no shield due to transformation
+  def pbUpdateBattleShield(index)
+    @battle.shieldCount = @sprites["battlebox#{index}"].shieldCount
+  end
+  
+  
   # to update @battle.shieldCount in case mon enters as rift form
   # no shield due to transformation
   def pbUpdateBattleShield(index)
@@ -2364,6 +2385,8 @@ class PokeBattle_Scene
       fieldbd = 45
     elsif backdrop=="Beach"
       fieldbd = 46
+    elsif backdrop=="Library"
+      fieldbd = 50
     else
       fieldbd = 0
     end
@@ -2477,6 +2500,8 @@ class PokeBattle_Scene
           backdrop="InfernalFieldPlaceholder"
         elsif fieldbd == 46
           backdrop="Beach"
+        elsif fieldbd == 50
+          backdrop="Library"
         end 
         backdrop3 = backdrop
         $febackgroundstore = backdrop3
@@ -3587,80 +3612,78 @@ def pbItemMenu(index)
   ret=0
   retindex=-1
   pkmnid=-1
-  endscene=true
   oldsprites=pbFadeOutAndHide(@sprites)
-  itemscene=PokemonBag_Scene.new
-  itemscene.pbStartScene($PokemonBag)
+  belt_items=pbBattleBeltItems
+  if belt_items.empty?
+    pbDisplayMessage(_INTL("No belt items are available!"))
+    pbFadeInAndShow(@sprites,oldsprites)
+    return [ret,retindex]
+  end
   loop do
-    item=itemscene.pbChooseItem
-    break if item==0
-    usetype=$ItemData[item][ITEMBATTLEUSE]
-    cmdUse=-1
-    commands=[]
-    if usetype==0
-      commands[commands.length]=_INTL("Cancel")
-    else
-      commands[cmdUse=commands.length]=_INTL("Use")
-      commands[commands.length]=_INTL("Cancel")
+    belt_items=pbBattleBeltItems
+    if belt_items.empty?
+      pbDisplayMessage(_INTL("No belt items are available!"))
+      break
     end
-    itemname=PBItems.getName(item)
-    command=itemscene.pbShowCommands(_INTL("{1} is selected.",itemname),commands)
-    if cmdUse>=0 && command==cmdUse
-      if (usetype==1 || usetype==3) 
-        if (($game_variables[:Difficulty_Mode]==2) && @battle.opponent) && $game_switches[1493]
-          itemscene.pbDisplay(_INTL("Use of items in Trainer battles is not allowed on Intense mode."))
-        elsif ($game_variables[:Difficulty_Mode]==2) && @battle.isBossBattle? && $game_switches[1493]
-          itemscene.pbDisplay(_INTL("Use of items in Boss battles is not allowed on Intense mode."))
-        else
-          modparty=[]
-          for i in 0...6
-            modparty.push(@battle.party1[@battle.partyorder[i]])
-          end
-          pkmnlist=PokemonScreen_Scene.new
-          pkmnscreen=PokemonScreen.new(pkmnlist,modparty)
-          itemscene.pbEndScene
-          pkmnscreen.pbStartScene(_INTL("Use on which Pokémon?"),@battle.doublebattle)
-          activecmd=pkmnscreen.pbChoosePokemon
-          pkmnid=@battle.partyorder[activecmd]
-          if activecmd!=-1 && !pbCanUseBattleItem(pkmnid, item)
-            pkmnscreen.pbDisplay(_INTL("It won't have any effect."))
-          else
-            if activecmd>=0 && pkmnid>=0 && ItemHandlers.hasBattleUseOnPokemon(item)
-              pkmnlist.pbEndScene
-              ret=item
-              retindex=pkmnid
-              endscene=false
-              break
-            end
-          end
-          pkmnlist.pbEndScene
-          itemscene.pbStartScene($PokemonBag)
+    commands=belt_items.map { |itm| _INTL("{1} (x{2})",PBItems.getName(itm),$PokemonBag.pbQuantity(itm)) }
+    commands.push(_INTL("Cancel"))
+    choice=pbShowCommands(_INTL("Choose an item."),commands,commands.length-1)
+    break if choice<0 || choice>=belt_items.length
+    item=belt_items[choice]
+    next if $PokemonBag.pbQuantity(item)<=0
+    usetype=$ItemData[item][ITEMBATTLEUSE]
+    next if usetype==0
+    if (usetype==1 || usetype==3)
+      if (($game_variables[:Difficulty_Mode]==2) && @battle.opponent) && $game_switches[1493]
+        pbDisplayMessage(_INTL("Use of items in Trainer battles is not allowed on Intense mode."))
+      elsif ($game_variables[:Difficulty_Mode]==2) && @battle.isBossBattle? && $game_switches[1493]
+        pbDisplayMessage(_INTL("Use of items in Boss battles is not allowed on Intense mode."))
+      else
+        modparty=[]
+        for i in 0...6
+          modparty.push(@battle.party1[@battle.partyorder[i]])
         end
-      elsif (usetype==2 || usetype==4) 
-        if ($game_variables[:Difficulty_Mode]==2 && $game_switches[1493]) && (@battle.opponent || @battle.isBossBattle?)
-          if pbIsPokeBall?(item)
-            if ItemHandlers.hasBattleUseOnBattler(item)
-              ret=item
-              retindex=index
-              break
-            end
-          else
-            itemscene.pbDisplay(_INTL("Use of items in trainer battles is not allowed on Intense mode."))
-          end
+        pkmnlist=PokemonScreen_Scene.new
+        pkmnscreen=PokemonScreen.new(pkmnlist,modparty)
+        pkmnscreen.pbStartScene(_INTL("Use on which Pokémon?"),@battle.doublebattle)
+        activecmd=pkmnscreen.pbChoosePokemon
+        pkmnid=@battle.partyorder[activecmd] if activecmd && activecmd>=0
+        if activecmd!=-1 && !pbCanUseBattleItem(pkmnid, item)
+          pkmnscreen.pbDisplay(_INTL("It won't have any effect."))
         else
+          if activecmd && activecmd>=0 && pkmnid && ItemHandlers.hasBattleUseOnPokemon(item)
+            pkmnlist.pbEndScene
+            ret=item
+            retindex=pkmnid
+            break
+          end
+        end
+        pkmnlist.pbEndScene
+      end
+    elsif (usetype==2 || usetype==4)
+      if ($game_variables[:Difficulty_Mode]==2 && $game_switches[1493]) && (@battle.opponent || @battle.isBossBattle?)
+        if pbIsPokeBall?(item)
           if ItemHandlers.hasBattleUseOnBattler(item)
             ret=item
             retindex=index
             break
           end
+        else
+          pbDisplayMessage(_INTL("Use of items in trainer battles is not allowed on Intense mode."))
+        end
+      else
+        if ItemHandlers.hasBattleUseOnBattler(item)
+          ret=item
+          retindex=index
+          break
         end
       end
     end
   end
   if ret > 0
     pbConsumeItemInBattle($PokemonBag,ret) 
+    pbCleanupItemBelt
   end
-  itemscene.pbEndScene if endscene
   pbFadeInAndShow(@sprites,oldsprites)
   return [ret,retindex]
 end
@@ -3676,7 +3699,7 @@ end
           battler = i
         end
       end
-    if battler && battler.effects[PBEffects::Embargo]>0
+    if battler && (battler.effects[PBEffects::Embargo]>0 || battler.effects[PBEffects::MultiTurnAttack]==PBMoves::BINDINGWORD)
       return false
     end       
     if  pokemon.hp < pokemon.totalhp && pokemon.hp>0 &&
@@ -4371,7 +4394,7 @@ end
     pbInputUpdate    
   end
   def pbUnVanishSprite(pkmn,fade=true)
-    pkmn.vanished =false
+    pkmn.vanished = false
     @battle.pbCommonAnimation("Fade in",pkmn,nil) if fade
     pkmnsprite=@sprites["pokemon#{pkmn.index}"]
     pkmnsprite.opacity+=1000

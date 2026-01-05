@@ -57,7 +57,6 @@ class PokeBattle_Battler
     alias __clauses__pbCanSleep? pbCanSleep?
     alias __clauses__pbCanSleepYawn? pbCanSleepYawn?
     alias __clauses__pbCanFreeze? pbCanFreeze?
-    alias __clauses__pbUseMove pbUseMove
     @__clauses__aliased=true
   end
 

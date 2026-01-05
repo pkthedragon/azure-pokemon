@@ -14,24 +14,17 @@ def pbGetBabyMoves(pokemon, babyspecies)
   formcheck = MultipleForms.call("getEggMoves",egg)
   if formcheck!=nil
     for move in formcheck
-    atk = getID(PBMoves,move)
+      atk = getID(PBMoves,move)
       emoves.push(atk) if !pokemon.knowsMove?(atk)
     end
   else
-  pbRgssOpen("Data/eggEmerald.dat","rb"){|f|
-     f.pos=(babyspecies-1)*8
-     offset=f.fgetdw
-     length=f.fgetdw
-     if length>0
-       f.pos=offset
-       i=0; loop do break unless i<length
-       atk = f.fgetw
-       emoves.push(atk) if !pokemon.knowsMove?(atk)
-
-       i+=1
-       end
-     end
-  }
+    movelist = $pkmn_egg[babyspecies]
+    if movelist
+      for i in movelist
+        atk = getID(PBMoves,i)
+        emoves.push(atk) if !pokemon.knowsMove?(atk)
+      end
+    end
   end
   # Volt Tackle
   if isConst?(pokemon.species,PBSpecies,:PICHU) || isConst?(pokemon.species,PBSpecies,:PIKACHU) || isConst?(pokemon.species,PBSpecies,:RAICHU)
@@ -52,24 +45,17 @@ def pbGetBabyCompatibleMoves(pokemon, babyspecies)
   formcheck = MultipleForms.call("getEggMoves",egg)
   if formcheck!=nil
     for move in formcheck
-    atk = getID(PBMoves,move)
+      atk = getID(PBMoves,move)
       emoves.push(atk) #if !pokemon.knowsMove?(atk)
     end
   else
-  pbRgssOpen("Data/eggEmerald.dat","rb"){|f|
-     f.pos=(babyspecies-1)*8
-     offset=f.fgetdw
-     length=f.fgetdw
-     if length>0
-       f.pos=offset
-       i=0; loop do break unless i<length
-       atk = f.fgetw
-       emoves.push(atk) #if !pokemon.knowsMove?(atk)
-
-       i+=1
-       end
-     end
-  }
+    movelist = $pkmn_egg[babyspecies]
+    if movelist
+      for i in movelist
+        atk = getID(PBMoves,i)
+        emoves.push(atk)
+      end
+    end
   end
   # Volt Tackle
   if isConst?(pokemon.species,PBSpecies,:PICHU) || isConst?(pokemon.species,PBSpecies,:PIKACHU) || isConst?(pokemon.species,PBSpecies,:RAICHU)
@@ -85,12 +71,13 @@ def pbHasRelearnableMove?(pokemon)
   return pbGetRelearnableMoves(pokemon).length>0
 end
 
-def pbGetRelearnableMoves(pokemon)
+def pbGetRelearnableMoves(pokemon, exclude_level1=false)
   return [] if !pokemon || pokemon.isEgg? || (pokemon.isShadow? rescue false)
   moves=[]
 
   pbEachNaturalMove(pokemon){|move,level|
      if level<=pokemon.level && !pokemon.knowsMove?(move)
+       next if exclude_level1 && level<=1
        moves.push(move) if !moves.include?(move)
      end
   }
@@ -333,8 +320,8 @@ class MoveRelearnerScreen
     @scene = scene
   end
 
-  def pbStartScreen(pokemon)
-    moves=pbGetRelearnableMoves(pokemon)
+  def pbStartScreen(pokemon, moves=nil)
+    moves = pbGetRelearnableMoves(pokemon) if !moves
     @scene.pbStartScene(pokemon,moves)
     loop do
       move=@scene.pbChooseMove
@@ -358,12 +345,13 @@ end
 
 
 
-def pbRelearnMoveScreen(pokemon)
+def pbRelearnMoveScreen(pokemon, moves=nil)
   retval=true
   pbFadeOutIn(99999){
      scene=MoveRelearnerScene.new
      screen=MoveRelearnerScreen.new(scene)
-     retval=screen.pbStartScreen(pokemon)
+     retval=screen.pbStartScreen(pokemon, moves)
   }
   return retval
 end
+

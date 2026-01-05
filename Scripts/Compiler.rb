@@ -941,51 +941,6 @@ def pbFindScript(a,name)
   return nil
 end
 
-=begin
-def pbAddScript(script,sectionname)
-  filename = "Scripts/" + sectionname + ".rb"
-  File.open(filename,"w"){|f| f.write script}
-  begin
-    scripts=load_data("Data/Constants.rxdata")
-    scripts=[] if !scripts
-  rescue
-    scripts=[]
-  end
-  s=pbFindScript(scripts,sectionname)
-  if s
-    s[2]=Zlib::Deflate.deflate("#{script}\n")
-  else
-    scripts.push([rand(10000),sectionname,Zlib::Deflate.deflate("#{script}\n")])
-  end
-  save_data(scripts,"Data/Constants.rxdata")
-end
-
-def pbCombineScripts
-  #this is silly but maybe shoving everything into scripts at once will be what makes this work.
-  begin
-    constants=load_data("Data/Constants.rxdata")
-    return if !constants
-  rescue
-    return
-  end
-  begin
-    scripts=load_data("Data/Scripts.rxdata")
-    return if !scripts
-  rescue
-    return
-  end
-  for i in constants
-    sectionname = i[1]
-    s = pbFindScript(scripts,sectionname)
-    if s
-      s[2] = i[2]
-    end
-  end
-  save_data(scripts,"Data/Scripts.rxdata")
-end
-=end
-
-
 def pbAddScript(script,sectionname)
   filename = "Scripts/" + sectionname + ".rb"
   File.open(filename,"w"){|f| f.write script}
@@ -1125,39 +1080,6 @@ def pbCheckSignedByte(x,valuename)
   end
 end
 
-
-=begin
-why is this still even here
-
-class PBMoveDataOld
-  attr_reader :function,:basedamage,:type,:accuracy
-  attr_reader :totalpp,:addlEffect,:target,:priority
-  attr_reader :flags
-  attr_reader :contestType,:category
-
-  def initialize(moveid)
-    movedata=pbRgssOpen("Data/rsattacks.dat")
-    movedata.pos=moveid*9
-    @function=movedata.fgetb
-    @basedamage=movedata.fgetb
-    @type=movedata.fgetb
-    @accuracy=movedata.fgetb
-    @totalpp=movedata.fgetb
-    @addlEffect=movedata.fgetb
-    @target=movedata.fgetb
-    @priority=movedata.fgetsb
-    @flags=movedata.fgetb
-    movedata.close
-  end
-
-  def category
-    return 2 if @basedamage==0
-    return @type<10 ? 0 : 1
-  end
-end
-=end
-
-
 def pbCompileMoves
   records=[]
   movenames=[]
@@ -1222,7 +1144,8 @@ def pbCompileMoves
       records.push(record)
   }
   #defaultdata=[0,0,0,0,0,0,0,0,0,0].pack("vCCCCCCvCv")
-  File.open("Data/moves.rxdata","wb"){|file|
+  $pkmn_move = movedata
+  File.open("Data/moves.dat","wb"){|file|
      Marshal.dump(movedata,file)
   }
   MessageTypes.setMessages(MessageTypes::Moves,movenames)
@@ -1503,12 +1426,12 @@ end
 
 def pbCompileBosses
   $bosscache = nil
-	bossdata = {}
-	File.open("Scripts/BossInfo.rb"){|f| eval(f.read)}
-	BOSSINFOHASH.each {|boss, data|
-		bossdata[boss] = BossData.new(boss,data)
-	}
-	save_data(bossdata,"Data/bossdata.dat")
+  bossdata = {}
+  File.open("Scripts/BossInfo.rb"){|f| eval(f.read)}
+  BOSSINFOHASH.each {|boss, data|
+    bossdata[boss] = BossData.new(boss,data)
+  }
+  save_data(bossdata,"Data/bossdata.dat")
   $bosscache = load_data("Data/bossdata.dat")
 end
 
@@ -1529,11 +1452,11 @@ def setConstantName(mod,value,name)
   mod.const_set(name,value)
 end
 
-def getConstantName(mod,value)
+def getConstantName(mod,value) 
   for c in mod.constants
     return c if mod.const_get(c.to_sym)==value
   end
-  raise _INTL("Value {1} not defined by a constant in {2}",value,mod.name)
+  raise _INTL("Value {1} not defined by a constant in {2}",value,mod.name) unless caller_locations[0].label == "pbPokemonBitmapFile"
 end
 
 def pbTMRS
@@ -2508,7 +2431,7 @@ def pbCompilePokemonData
   metrics[1].fillNils(dexdatas.length,0) # enemy Y
   metrics[2].fillNils(dexdatas.length,0) # altitude
   save_data(metrics,"Data/metrics.dat")
-  File.open("Data/regionals.rxdata","wb"){|f|
+  File.open("Data/regionals.dat","wb"){|f|
     Marshal.dump(regionals,f)
   }
   File.open("Data/evolutions.dat","wb"){|f|
@@ -2528,16 +2451,19 @@ def pbCompilePokemonData
        end
      end
   }
-  File.open("Data/dexdata.rxdata","wb"){|f|
+  $pkmn_dex = dexdatas
+  File.open("Data/dexdata.dat","wb"){|f|
     Marshal.dump(dexdatas,f)
   }
-  File.open("Data/eggEmerald.rxdata","wb"){|f|
+  $pkmn_egg = eggmoves
+  File.open("Data/eggEmerald.dat","wb"){|f|
     Marshal.dump(eggmoves,f)
   }
   MessageTypes.setMessages(MessageTypes::Species,speciesnames)
   MessageTypes.setMessages(MessageTypes::Kinds,kinds)
   MessageTypes.setMessages(MessageTypes::Entries,entries)
   MessageTypes.setMessages(MessageTypes::FormNames,formnames)
+  $pkmn_moves = moves
   File.open("Data/attacksRS.rxdata","wb"){|f|
     Marshal.dump(moves,f)
   }
@@ -2552,10 +2478,10 @@ datafiles=[
    "townmap.dat",
    "trainers.dat",
    "attacksRS.rxdata",
-   "dexdata.rxdata",
-   "eggEmerald.rxdata",
+   "dexdata.dat",
+   "eggEmerald.dat",
    "evolutions.dat",
-   "regionals.rxdata",
+   "regionals.dat",
    "types.dat",
    "tm.dat",
    "phone.dat",
@@ -3943,7 +3869,7 @@ def pbCompileAllData(mustcompile,notrainers=false)
     pbCompileMachines
     # Depends on PBSpecies, PBItems, PBMoves
     yield(_INTL("Compiling Trainer data"))
-    pbCompileTrainers
+    #pbCompileTrainers
     # Depends on PBTrainers
     yield(_INTL("Compiling phone data"))
     pbCompilePhoneData
@@ -3952,7 +3878,7 @@ def pbCompileAllData(mustcompile,notrainers=false)
     pbCompileMetadata
     # Depends on PBTrainers
     yield(_INTL("Compiling battle Trainer data"))
-    pbCompileTrainerLists
+    #pbCompileTrainerLists
     # Depends on PBSpecies
     yield(_INTL("Compiling encounter data"))
     pbCompileEncounters

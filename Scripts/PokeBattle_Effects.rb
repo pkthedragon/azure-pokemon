@@ -16,24 +16,44 @@ class PokeBattle_Battler
     end    
   end
   # End of Minior streamlining
+
+#===============================================================================
+# Status
+#===============================================================================
+  def pbCanStatus?(showMessages=true,selfsleep=false,ignorespritz=false)
+    if !selfsleep && pbOwnSide.effects[PBEffects::Safeguard]>0 && !(@battle.battlers[@battle.lastMoveUser]).hasWorkingAbility(:INFILTRATOR) && !(PBMoveData.new(@battle.lastMoveUsed).function==0x21B && @battle.battlers[@battle.lastMoveUser].hp < (0.5 * @battle.battlers[@battle.lastMoveUser].totalhp).floor)
+      @battle.pbDisplay(_INTL("{1}'s team is protected by Safeguard!",pbThis)) if showMessages
+      return false
+    end
+    if ($fefieldeffect == 3 || @battle.field.effects[PBEffects::MistyTerrain]>0  && !$fefieldeffect==40) && !isAirborne? # Misty Field
+      @battle.pbDisplay(_INTL("Misty Terrain prevents {1} from being inflicted by status!",pbThis(true))) if showMessages
+      return false
+    end
+    if $fefieldeffect == 32 && hasWorkingItem(:AMULETCOIN) # Dragon's Den
+      @battle.pbDisplay(_INTL("Amulet Coin prevents {1} from being inflicted by status on Dragon's Den!",pbThis(true))) if showMessages
+      return false
+    end
+    if $fefieldeffect == 38 && effects[PBEffects::Obstruct] # Dimensional Field
+      @battle.pbDisplay(_INTL("Dimensional Field obstructs {1} from being inflicted by status!",pbThis(true))) if showMessages
+      return false
+    end
+    if effects[PBEffects::Spritz] == 1 && !ignorespritz
+      @battle.pbDisplay(_INTL("{1}'s spritz prevents it from being inflicted by status!",pbThis)) if showMessages
+      return false
+    end
+    return true
+  end
+  
 #===============================================================================
 # Sleep
 #===============================================================================
   def pbCanSleep?(showMessages=true,selfsleep=false,ignorestatus=false)
     return false if isFainted?
+    return false if !pbCanStatus?(showMessages,selfsleep)
     if isConst?(ability,PBAbilities,:EARLYBIRD) && $fefieldeffect == 43
       @battle.pbDisplay(_INTL("{1} can't fall asleep in the open skies!",pbThis)) if showMessages
       return false
     end
-#### KUROTSUNE - 028 - START  #### JERICHO - 002 - START    
-    if ((isConst?(ability,PBAbilities,:FLOWERVEIL) ||
-       isConst?(pbPartner.ability,PBAbilities,:FLOWERVEIL) || 
-       @battle.SilvallyCheck(self,PBTypes::GRASS) || @battle.SilvallyCheck(self.pbPartner,PBTypes::GRASS)) &&
-       (pbHasType?(:GRASS) || $fefieldeffect==42)) && !(self.moldbroken)
-       @battle.pbDisplay(_INTL("{1} is protected by Flower Veil!",pbThis)) if showMessages
-      return false
-    end 
-#### KUROTSUNE - 028 - END  #### JERICHO - 002 - END      
     if (!ignorestatus && status==PBStatuses::SLEEP) || (isConst?(ability,PBAbilities,:COMATOSE) && $fefieldeffect!=1)
       @battle.pbDisplay(_INTL("{1} is already asleep!",pbThis)) if showMessages
       return false
@@ -70,33 +90,18 @@ class PokeBattle_Battler
       @battle.pbDisplay(_INTL("{1} stayed awake using its partner's {2}!",pbThis,abilityname)) if showMessages
       return false
     end 
-    if !selfsleep && pbOwnSide.effects[PBEffects::Safeguard]>0
-      @battle.pbDisplay(_INTL("{1}'s team is protected by Safeguard!",pbThis)) if showMessages
-      return false
-    end
     if $fefieldeffect == 1 || @battle.field.effects[PBEffects::ElectricTerrain]>0
       if !isAirborne?
         @battle.pbDisplay(_INTL("The electricity jolted {1} awake!",pbThis)) if showMessages
         return false
       end
     end
-    if ($fefieldeffect == 3 || @battle.field.effects[PBEffects::MistyTerrain]>0 && !$fefieldeffect==40) && !isAirborne?  # Misty Field
-      @battle.pbDisplay(_INTL("Misty Terrain prevents {1} from being inflicted by status!",pbThis)) if showMessages
-      return false
-    end
-    if $fefieldeffect == 32 && hasWorkingItem(:AMULETCOIN) # Dragon's Den
-      @battle.pbDisplay(_INTL("Amulet Coin prevents {1} from being inflicted by status on Dragon's Den!",pbThis)) if showMessages
-      return false
-    end
-    if $fefieldeffect == 38 && effects[PBEffects::Obstruct]==true # Dimensional Field
-      @battle.pbDisplay(_INTL("Dimensional Field obstructs {1} from being inflicted by status!",pbThis)) if showMessages
-      return false
-    end
     return true
   end
 
   def pbCanSleepYawn?
     return false if status!=0 || (isConst?(ability,PBAbilities,:COMATOSE) && $fefieldeffect!=1)
+    return false if !pbCanStatus?()
     if !isConst?(ability,PBAbilities,:SOUNDPROOF)
       for i in 0...4
         return false if @battle.battlers[i].effects[PBEffects::Uproar]>0
@@ -105,6 +110,7 @@ class PokeBattle_Battler
     end
     if isConst?(ability,PBAbilities,:VITALSPIRIT) ||
       isConst?(ability,PBAbilities,:INSOMNIA) ||
+      isConst?(ability,PBAbilities,:SWEETVEIL) ||
      (isConst?(ability,PBAbilities,:LEAFGUARD) &&
      ((@battle.pbWeather==PBWeather::SUNNYDAY && !hasWorkingItem(:UTILITYUMBRELLA)) ||
       $fefieldeffect == 15 || ($fefieldeffect == 33 &&
@@ -112,33 +118,16 @@ class PokeBattle_Battler
        pbShieldsUp?
       return false
     end
-    if isConst?(pbPartner.ability,PBAbilities,:SWEETVEIL) || 
-#### KUROTSUNE - 028 - START  #### JERICHO - 002 - START    
-       ((isConst?(ability,PBAbilities,:FLOWERVEIL)                ||
-       isConst?(pbPartner.ability,PBAbilities,:FLOWERVEIL)        ||
-       @battle.SilvallyCheck(self, "grass") || @battle.SilvallyCheck(self.pbPartner, "grass")) &&
-       (pbHasType?(:GRASS) || $fefieldeffect==42)) && !(self.moldbroken)
-       @battle.pbDisplay(_INTL("{1} is protected by Flower Veil!",pbThis)) #if showMessages
+    if isConst?(pbPartner.ability,PBAbilities,:SWEETVEIL) && !(self.moldbroken)
+      abilityname=PBAbilities.getName(pbPartner.ability)
+      @battle.pbDisplay(_INTL("{1} stayed awake using its partner's {2}!",pbThis,abilityname))
       return false
     end 
-#### KUROTSUNE - 028 - END   #### JERICHO - 002 - END
     if $fefieldeffect == 1 || @battle.field.effects[PBEffects::ElectricTerrain]>0
       if !isAirborne?
         @battle.pbDisplay(_INTL("The electricity jolted {1} awake!",pbThis)) #if showMessages
         return false
       end
-    end
-    if ($fefieldeffect == 3 || @battle.field.effects[PBEffects::MistyTerrain]>0 && !$fefieldeffect==40) && !isAirborne?  # Misty Field
-      @battle.pbDisplay(_INTL("Misty Terrain prevents {1} from being inflicted by status!",pbThis)) #if showMessages
-      return false
-    end
-    if $fefieldeffect == 32 && hasWorkingItem(:AMULETCOIN) # Dragon's Den
-      @battle.pbDisplay(_INTL("Amulet Coin prevents {1} from being inflicted by status on Dragon's Den!",pbThis)) if showMessages
-      return false
-    end
-    if $fefieldeffect == 38 && effects[PBEffects::Obstruct]==true # Dimensional Field
-      @battle.pbDisplay(_INTL("Dimensional Field obstructs {1} from being inflicted by status!",pbThis)) if showMessages
-      return false
     end
     return true
   end
@@ -155,6 +144,18 @@ class PokeBattle_Battler
     end
     pbCancelMoves
     @battle.pbCommonAnimation("Sleep",self,nil)
+    if isConst?(self.species,PBSpecies,:DARMANITAN) && self.hasWorkingAbility(:ZENMODE)
+      oldform=self.form
+      if self.form==0
+        self.form=1
+      elsif self.form==2
+        self.form=3
+      end
+      if oldform!=self.form
+        pbCureStatus(false)
+        @battle.pbDisplay(_INTL("{1}'s Zen Mode roused it!",pbThis))
+      end
+    end
   end
 
   def pbSleepSelf(duration=-1)
@@ -166,6 +167,18 @@ class PokeBattle_Battler
     end
     pbCancelMoves
     @battle.pbCommonAnimation("Sleep",self,nil)
+    if isConst?(self.species,PBSpecies,:DARMANITAN) && self.hasWorkingAbility(:ZENMODE)
+      oldform=self.form
+      if self.form==0
+        self.form=1
+      elsif self.form==2
+        self.form=3
+      end
+      if oldform!=self.form
+        pbCureStatus(false)
+        @battle.pbDisplay(_INTL("{1}'s Zen Mode roused it!",pbThis))
+      end
+    end
   end
 
 #===============================================================================
@@ -173,20 +186,12 @@ class PokeBattle_Battler
 #===============================================================================
   def pbCanPoison?(showMessages=true,toxicorb=false)
     return false if isFainted?
-#### KUROTSUNE - 028 - START  #### JERICHO - 002 - START    
-    if ((isConst?(ability,PBAbilities,:FLOWERVEIL)                ||
-       isConst?(pbPartner.ability,PBAbilities,:FLOWERVEIL)        ||
-       @battle.SilvallyCheck(self,PBTypes::GRASS) || @battle.SilvallyCheck(self.pbPartner,PBTypes::GRASS)) &&
-       (pbHasType?(:GRASS) || $fefieldeffect==42)) && !(self.moldbroken)
-       @battle.pbDisplay(_INTL("{1} is protected by Flower Veil!",pbThis)) if showMessages
-      return false
-    end 
-#### KUROTSUNE - 028 - END  #### JERICHO - 002 - END
+    return false if !pbCanStatus?(showMessages)
     if status==PBStatuses::POISON
       @battle.pbDisplay(_INTL("{1} is already poisoned.",pbThis)) if showMessages
       return false
     end
-    if self.status!=0 || damagestate.substitute && toxicorb==false || (effects[PBEffects::Substitute]>0  && toxicorb==false && !PBMoveData.new(@battle.lastMoveUsed).isSoundBased?) || (isConst?(ability,PBAbilities,:COMATOSE) && $fefieldeffect!=1) || pbShieldsUp?
+    if self.status!=0 || damagestate.substitute && toxicorb==false || (effects[PBEffects::Substitute]>0 && toxicorb==false && !PBMoveData.new(@battle.lastMoveUsed).isSoundBased?) || (isConst?(ability,PBAbilities,:COMATOSE) && $fefieldeffect!=1) || pbShieldsUp?
       @battle.pbDisplay(_INTL("But it failed!")) if showMessages
       return false
     end
@@ -208,36 +213,12 @@ class PokeBattle_Battler
       @battle.pbDisplay(_INTL("{1} stayed healthy using its partner's {2}!",pbThis,abilityname)) if showMessages
       return false
     end
-    if pbOwnSide.effects[PBEffects::Safeguard]>0 && !(@battle.battlers[@battle.lastMoveUser]).hasWorkingAbility(:INFILTRATOR)    
-      @battle.pbDisplay(_INTL("{1}'s team is protected by Safeguard!",pbThis)) if showMessages
-      return false
-    end
-    if ($fefieldeffect == 3 || @battle.field.effects[PBEffects::MistyTerrain]>0 && !($fefieldeffect==11 || $fefieldeffect==40)) && !isAirborne? # Misty Field
-      @battle.pbDisplay(_INTL("Misty Terrain prevents {1} from being inflicted by status!",pbThis)) if showMessages
-      return false
-    end
-    if $fefieldeffect == 32 && hasWorkingItem(:AMULETCOIN) # Dragon's Den
-      @battle.pbDisplay(_INTL("Amulet Coin prevents {1} from being inflicted by status on Dragon's Den!",pbThis)) if showMessages
-      return false
-    end
-    if $fefieldeffect == 38 && effects[PBEffects::Obstruct]==true # Dimensional Field
-      @battle.pbDisplay(_INTL("Dimensional Field obstructs {1} from being inflicted by status!",pbThis)) if showMessages
-      return false
-    end
     return true
   end
 
   def pbCanPoisonSynchronize?(opponent)
     return false if isFainted?
-#### KUROTSUNE - 028 - START  #### JERICHO - 002 - START    
-    if ((isConst?(ability,PBAbilities,:FLOWERVEIL)                ||
-       isConst?(pbPartner.ability,PBAbilities,:FLOWERVEIL)        ||
-       @battle.SilvallyCheck(self,PBTypes::GRASS) || @battle.SilvallyCheck(self.pbPartner,PBTypes::GRASS)) &&
-       (pbHasType?(:GRASS) || $fefieldeffect==42))
-       @battle.pbDisplay(_INTL("{1} is protected by Flower Veil!",pbThis)) if showMessages
-      return false
-    end 
-#### KUROTSUNE - 028 - END  #### JERICHO - 002 - END          
+    return false if !pbCanStatus?()     
     if (pbHasType?(:POISON) || pbHasType?(:STEEL)) && !hasWorkingItem(:RINGTARGET)
       @battle.pbDisplay(_INTL("{1}'s {2} had no effect on {3}!",
          opponent.pbThis,PBAbilities.getName(opponent.ability),pbThis(true)))
@@ -253,18 +234,6 @@ class PokeBattle_Battler
           @battle.pbDisplay(_INTL("{1}'s {2} prevents {3}'s {4} from working!",
           pbThis,PBAbilities.getName(self.ability),
           opponent.pbThis(true),PBAbilities.getName(opponent.ability)))
-          return false
-    end
-    if ($fefieldeffect == 3 || @battle.field.effects[PBEffects::MistyTerrain]>0  && !$fefieldeffect==40) && !isAirborne?  # Misty Field
-      @battle.pbDisplay(_INTL("Misty Terrain prevents {1} from being inflicted by status!",pbThis)) if showMessages
-      return false
-    end
-    if $fefieldeffect == 32 && hasWorkingItem(:AMULETCOIN) # Dragon's Den
-      @battle.pbDisplay(_INTL("Amulet Coin prevents {1} from being inflicted by status on Dragon's Den!",pbThis)) if showMessages
-      return false
-    end
-    if $fefieldeffect == 38 && effects[PBEffects::Obstruct]==true # Dimensional Field
-      @battle.pbDisplay(_INTL("Dimensional Field obstructs {1} from being inflicted by status!",pbThis)) if showMessages
       return false
     end
     return true
@@ -283,14 +252,6 @@ class PokeBattle_Battler
                     $fecounter>0))
     return false if pbOwnSide.effects[PBEffects::Safeguard]>0 && !(@battle.battlers[@battle.lastMoveUser]).hasWorkingAbility(:INFILTRATOR)    
     return false if ($fefieldeffect == 3 || @battle.field.effects[PBEffects::MistyTerrain]>0)
-#### KUROTSUNE - 028 - START  #### JERICHO - 002 - START    
-    if ((isConst?(ability,PBAbilities,:FLOWERVEIL)                ||
-       isConst?(pbPartner.ability,PBAbilities,:FLOWERVEIL)        ||
-       @battle.SilvallyCheck(self,PBTypes::GRASS) || @battle.SilvallyCheck(self.pbPartner,PBTypes::GRASS)) &&
-       (pbHasType?(:GRASS) || $fefieldeffect==42))
-      return false
-    end 
-#### KUROTSUNE - 028 - END  #### JERICHO - 002 - END              
     return true
   end
 
@@ -315,19 +276,17 @@ class PokeBattle_Battler
 #===============================================================================
   def pbCanBurn?(showMessages=true)
     return false if isFainted?
+    return false if !pbCanStatus?(showMessages)
 #### KUROTSUNE - 028 - START  #### JERICHO - 002 - START    
-    if ((isConst?(ability,PBAbilities,:FLOWERVEIL)                ||
-       isConst?(pbPartner.ability,PBAbilities,:FLOWERVEIL)        ||
-       @battle.SilvallyCheck(self,PBTypes::GRASS) || @battle.SilvallyCheck(self.pbPartner,PBTypes::GRASS)) &&
-       (pbHasType?(:GRASS) || $fefieldeffect==42)) && !(self.moldbroken)
-       @battle.pbDisplay(_INTL("{1} is protected by Flower Veil!",pbThis)) if showMessages
-      return false
-    end 
     if isConst?(ability,PBAbilities,:WATERBUBBLE) && !(self.moldbroken)
       @battle.pbDisplay(_INTL("{1} is protected by it's Water Bubble!",pbThis)) if showMessages
       return false
     end        
 #### KUROTSUNE - 028 - END  #### JERICHO - 002 - END
+    if hasWorkingItem(:THERMOSUIT)
+      @battle.pbDisplay(_INTL("{1}'s {2} prevents burns!",pbThis,PBItems.getName(self.item))) if showMessages
+      return false
+    end
     if self.status==PBStatuses::BURN
       @battle.pbDisplay(_INTL("{1} already has a burn.",pbThis)) if showMessages
       return false
@@ -340,26 +299,11 @@ class PokeBattle_Battler
        @battle.pbDisplay(_INTL("It doesn't affect {1}...",pbThis(true))) if showMessages
        return false
     end
-    if hasWorkingAbility(:WATERVEIL) || (hasWorkingAbility(:LEAFGUARD) && ((@battle.pbWeather==PBWeather::SUNNYDAY && !hasWorkingItem(:UTILITYUMBRELLA)) ||
+    if (hasWorkingAbility(:HEATPROOF) ||
+      (hasWorkingAbility(:LEAFGUARD) && ((@battle.pbWeather==PBWeather::SUNNYDAY && !hasWorkingItem(:UTILITYUMBRELLA)) ||
        $fefieldeffect == 15 || ($fefieldeffect == 33 &&
-       $fecounter>0))) && !(self.moldbroken)
+       $fecounter>0)))) && !(self.moldbroken)
       @battle.pbDisplay(_INTL("{1}'s {2} prevents burns!",pbThis,PBAbilities.getName(self.ability))) if showMessages
-      return false
-    end
-    if pbOwnSide.effects[PBEffects::Safeguard]>0 && !(@battle.battlers[@battle.lastMoveUser]).hasWorkingAbility(:INFILTRATOR)    
-      @battle.pbDisplay(_INTL("{1}'s team is protected by Safeguard!",pbThis)) if showMessages
-      return false
-    end
-    if ($fefieldeffect == 3 || @battle.field.effects[PBEffects::MistyTerrain]>0 && !($fefieldeffect==11 || $fefieldeffect==40)) && !isAirborne? # Misty Field
-      @battle.pbDisplay(_INTL("Misty Terrain prevents {1} from being inflicted by status!",pbThis)) if showMessages
-      return false
-    end
-    if $fefieldeffect == 32 && hasWorkingItem(:AMULETCOIN) # Dragon's Den
-      @battle.pbDisplay(_INTL("Amulet Coin prevents {1} from being inflicted by status on Dragon's Den!",pbThis)) if showMessages
-      return false
-    end
-    if $fefieldeffect == 38 && effects[PBEffects::Obstruct]==true # Dimensional Field
-      @battle.pbDisplay(_INTL("Dimensional Field obstructs {1} from being inflicted by status!",pbThis)) if showMessages
       return false
     end
     return true
@@ -367,19 +311,17 @@ class PokeBattle_Battler
 
   def pbCanBurnFromFireMove?(move,showMessages=true) # Use for status moves only
     return false if isFainted?
+    return false if !pbCanStatus?(showMessages)
 #### KUROTSUNE - 028 - START  #### JERICHO - 002 - START    
-    if ((isConst?(ability,PBAbilities,:FLOWERVEIL)                ||
-       isConst?(pbPartner.ability,PBAbilities,:FLOWERVEIL)        ||
-       @battle.SilvallyCheck(self,PBTypes::GRASS) || @battle.SilvallyCheck(self.pbPartner,PBTypes::GRASS)) &&
-       (pbHasType?(:GRASS) || $fefieldeffect==42)) && !(self.moldbroken)
-       @battle.pbDisplay(_INTL("{1} is protected by Flower Veil!",pbThis)) if showMessages
-      return false
-    end 
     if isConst?(ability,PBAbilities,:WATERBUBBLE) && !(self.moldbroken)
       @battle.pbDisplay(_INTL("{1} is protected by it's Water Bubble!",pbThis)) if showMessages
       return false
     end       
 #### KUROTSUNE - 028 - END  #### JERICHO - 002 - END  
+    if hasWorkingItem(:THERMOSUIT)
+      @battle.pbDisplay(_INTL("{1}'s {2} prevents burns!",pbThis,PBItems.getName(self.item))) if showMessages
+      return false
+    end
     if self.status==PBStatuses::BURN
       @battle.pbDisplay(_INTL("{1} already has a burn.",pbThis)) if showMessages
       return false
@@ -401,26 +343,10 @@ class PokeBattle_Battler
       @battle.pbDisplay(_INTL("It doesn't affect {1}...",pbThis(true))) if showMessages
       return false
     end
-    if hasWorkingAbility(:WATERVEIL) || (hasWorkingAbility(:LEAFGUARD) && ((@battle.pbWeather==PBWeather::SUNNYDAY && !hasWorkingItem(:UTILITYUMBRELLA)) ||
-      $fefieldeffect == 15 || ($fefieldeffect == 33 &&
-      $fecounter>0))) && !(self.moldbroken)
-     @battle.pbDisplay(_INTL("{1}'s {2} prevents burns!",pbThis,PBAbilities.getName(self.ability))) if showMessages
-     return false
-   end
-    if pbOwnSide.effects[PBEffects::Safeguard]>0 && !(@battle.battlers[@battle.lastMoveUser]).hasWorkingAbility(:INFILTRATOR)    
-      @battle.pbDisplay(_INTL("{1}'s team is protected by Safeguard!",pbThis)) if showMessages
-      return false
-    end
-    if ($fefieldeffect == 3 || @battle.field.effects[PBEffects::MistyTerrain]>0  && !$fefieldeffect==40) && !isAirborne? # Misty Field
-      @battle.pbDisplay(_INTL("Misty Terrain prevents {1} from being inflicted by status!",pbThis)) if showMessages
-      return false
-    end
-    if $fefieldeffect == 32 && hasWorkingItem(:AMULETCOIN) # Dragon's Den
-      @battle.pbDisplay(_INTL("Amulet Coin prevents {1} from being inflicted by status on Dragon's Den!",pbThis)) if showMessages
-      return false
-    end
-    if $fefieldeffect == 38 && effects[PBEffects::Obstruct]==true # Dimensional Field
-      @battle.pbDisplay(_INTL("Dimensional Field obstructs {1} from being inflicted by status!",pbThis)) if showMessages
+    if (hasWorkingAbility(:HEATPROOF) ||
+        (hasWorkingAbility(:LEAFGUARD) && ((@battle.pbWeather==PBWeather::SUNNYDAY && !hasWorkingItem(:UTILITYUMBRELLA)) ||
+        $fefieldeffect == 15 || ($fefieldeffect == 33 && $fecounter>0)))) && !(self.moldbroken)
+      @battle.pbDisplay(_INTL("{1}'s {2} prevents burns!",pbThis,PBAbilities.getName(self.ability))) if showMessages
       return false
     end
     return true
@@ -430,14 +356,8 @@ class PokeBattle_Battler
     return false if isFainted?
     return false if self.status!=0 || (isConst?(ability,PBAbilities,:COMATOSE) && $fefieldeffect!=1)
     return false if pbShieldsUp?
+    return false if !pbCanStatus?()
 #### KUROTSUNE - 028 - START  #### JERICHO - 002 - START    
-    if ((isConst?(ability,PBAbilities,:FLOWERVEIL)                ||
-       isConst?(pbPartner.ability,PBAbilities,:FLOWERVEIL)        ||
-       @battle.SilvallyCheck(self,PBTypes::GRASS) || @battle.SilvallyCheck(self.pbPartner,PBTypes::GRASS)) &&
-       (pbHasType?(:GRASS) || $fefieldeffect==42)) && !(self.moldbroken)
-       @battle.pbDisplay(_INTL("{1} is protected by Flower Veil!",pbThis)) if showMessages
-      return false
-    end 
     if isConst?(ability,PBAbilities,:WATERBUBBLE) && !(self.moldbroken)
       @battle.pbDisplay(_INTL("{1} is protected by it's Water Bubble!",pbThis)) if showMessages
       return false
@@ -448,25 +368,12 @@ class PokeBattle_Battler
           opponent.pbThis,PBAbilities.getName(opponent.ability),pbThis(true)))
        return false
     end   
-    if hasWorkingAbility(:WATERVEIL) ||(hasWorkingAbility(:LEAFGUARD) && ((@battle.pbWeather==PBWeather::SUNNYDAY && !hasWorkingItem(:UTILITYUMBRELLA)) ||
+    if (hasWorkingAbility(:LEAFGUARD) && ((@battle.pbWeather==PBWeather::SUNNYDAY && !hasWorkingItem(:UTILITYUMBRELLA)) ||
        $fefieldeffect == 15 || ($fefieldeffect == 33 &&
        $fecounter>0)))
       @battle.pbDisplay(_INTL("{1}'s {2} prevents {3}'s {4} from working!",
       pbThis,PBAbilities.getName(self.ability),
       opponent.pbThis(true),PBAbilities.getName(opponent.ability)))
-      return false
-    end
-    if ($fefieldeffect == 3 || @battle.field.effects[PBEffects::MistyTerrain]>0  && !$fefieldeffect==40) && !isAirborne? # Misty Field
-      @battle.pbDisplay(_INTL("Misty Terrain prevents {1} from being inflicted by status!",pbThis)) if showMessages
-      return false
-    end
-    if $fefieldeffect == 32 && hasWorkingItem(:AMULETCOIN) # Dragon's Den
-      @battle.pbDisplay(_INTL("Amulet Coin prevents {1} from being inflicted by status on Dragon's Den!",pbThis)) if showMessages
-      return false
-    end
-    return true
-    if $fefieldeffect == 38 && effects[PBEffects::Obstruct]==true # Dimensional Field
-      @battle.pbDisplay(_INTL("Dimensional Field obstructs {1} from being inflicted by status!",pbThis)) if showMessages
       return false
     end
   end
@@ -487,15 +394,7 @@ class PokeBattle_Battler
 #===============================================================================
   def pbCanParalyze?(showMessages=true)
     return false if isFainted?
-#### KUROTSUNE - 028 - START  #### JERICHO - 002 - START    
-    if ((isConst?(ability,PBAbilities,:FLOWERVEIL)                ||
-       isConst?(pbPartner.ability,PBAbilities,:FLOWERVEIL)        ||
-       @battle.SilvallyCheck(self,PBTypes::GRASS) || @battle.SilvallyCheck(self.pbPartner,PBTypes::GRASS)) &&
-       (pbHasType?(:GRASS) || $fefieldeffect==42)) && !(self.moldbroken)
-       @battle.pbDisplay(_INTL("{1} is protected by Flower Veil!",pbThis)) if showMessages
-      return false
-    end 
-#### KUROTSUNE - 028 - END  #### JERICHO - 002 - END                  
+    return false if !pbCanStatus?(showMessages)            
     if pbHasType?(:ELECTRIC)
       @battle.pbDisplay(_INTL("But it failed!")) if showMessages
       return false
@@ -509,6 +408,7 @@ class PokeBattle_Battler
       return false
     end
     if hasWorkingAbility(:LIMBER) ||
+      (hasWorkingAbility(:IMMUNITY) && !(self.moldbroken)) ||
       (hasWorkingAbility(:LEAFGUARD) &&
       ((@battle.pbWeather==PBWeather::SUNNYDAY && !hasWorkingItem(:UTILITYUMBRELLA)) ||
        $fefieldeffect == 15 || ($fefieldeffect == 33 &&
@@ -516,41 +416,18 @@ class PokeBattle_Battler
         @battle.pbDisplay(_INTL("{1}'s {2} prevents paralysis!",pbThis,PBAbilities.getName(self.ability))) if showMessages
         return false
     end
-    if pbOwnSide.effects[PBEffects::Safeguard]>0 && !(@battle.battlers[@battle.lastMoveUser]).hasWorkingAbility(:INFILTRATOR)    
-      @battle.pbDisplay(_INTL("{1}'s team is protected by Safeguard!",pbThis)) if showMessages
-      return false
-    end
-    if ($fefieldeffect == 3 || @battle.field.effects[PBEffects::MistyTerrain]>0 && !$fefieldeffect==40) && !isAirborne? # Misty Field
-      @battle.pbDisplay(_INTL("Misty Terrain prevents {1} from being inflicted by status!",pbThis)) if showMessages
-      return false
-    end
-    if $fefieldeffect == 32 && hasWorkingItem(:AMULETCOIN) # Dragon's Den
-      @battle.pbDisplay(_INTL("Amulet Coin prevents {1} from being inflicted by status on Dragon's Den!",pbThis)) if showMessages
-      return false
-    end
-    if $fefieldeffect == 38 && effects[PBEffects::Obstruct]==true # Dimensional Field
-      @battle.pbDisplay(_INTL("Dimensional Field obstructs {1} from being inflicted by status!",pbThis)) if showMessages
-      return false
-    end
     return true
   end
 
   def pbCanParalyzeSynchronize?(opponent)
     return false if self.status!=0 || (isConst?(ability,PBAbilities,:COMATOSE) && $fefieldeffect!=1)
     return false if pbShieldsUp?
-#### KUROTSUNE - 028 - START #### JERICHO - 002 - START     
-    if ((isConst?(ability,PBAbilities,:FLOWERVEIL)                ||
-       isConst?(pbPartner.ability,PBAbilities,:FLOWERVEIL)        ||
-       @battle.SilvallyCheck(self,PBTypes::GRASS) || @battle.SilvallyCheck(self.pbPartner,PBTypes::GRASS)) &&
-       (pbHasType?(:GRASS) || $fefieldeffect==42))
-       @battle.pbDisplay(_INTL("{1} is protected by Flower Veil!",pbThis)) if showMessages
-      return false
-    end 
-#### KUROTSUNE - 028 - END  #### JERICHO - 002 - END                    
+    return false if !pbCanStatus?()                   
     if pbHasType?(:ELECTRIC)
       return false
     end
     if hasWorkingAbility(:LIMBER) ||
+     (hasWorkingAbility(:IMMUNITY) && !(self.moldbroken)) ||
      (hasWorkingAbility(:LEAFGUARD) &&
      ((@battle.pbWeather==PBWeather::SUNNYDAY && !hasWorkingItem(:UTILITYUMBRELLA)) ||
      $fefieldeffect == 15 || ($fefieldeffect == 33 &&
@@ -558,18 +435,6 @@ class PokeBattle_Battler
       @battle.pbDisplay(_INTL("{1}'s {2} prevents {3}'s {4} from working!",
       pbThis,PBAbilities.getName(self.ability),
       opponent.pbThis(true),PBAbilities.getName(opponent.ability)))
-      return false
-    end
-    if ($fefieldeffect == 3 || @battle.field.effects[PBEffects::MistyTerrain]>0 && !$fefieldeffect==40) && !isAirborne? # Misty Field
-      @battle.pbDisplay(_INTL("Misty Terrain prevents {1} from being inflicted by status!",pbThis)) if showMessages
-      return false
-    end
-    if $fefieldeffect == 32 && hasWorkingItem(:AMULETCOIN) # Dragon's Den
-      @battle.pbDisplay(_INTL("Amulet Coin prevents {1} from being inflicted by status on Dragon's Den!",pbThis)) if showMessages
-      return false
-    end
-    if $fefieldeffect == 38 && effects[PBEffects::Obstruct]==true # Dimensional Field
-      @battle.pbDisplay(_INTL("Dimensional Field obstructs {1} from being inflicted by status!",pbThis)) if showMessages
       return false
     end
     return true
@@ -587,23 +452,27 @@ class PokeBattle_Battler
   end
 
 #===============================================================================
-# Petrify
+# Crushing
 #===============================================================================
 def pbCanPetrify?(showMessages=true)
-  return false if isFainted?           
-  if pbHasType?(:ROCK)
-    @battle.pbDisplay(_INTL("But it failed!")) if showMessages
+  return false if isFainted?
+  if hasWorkingItem(:PRESSURESUIT)
+    @battle.pbDisplay(_INTL("{1}'s suit prevented crushing!",pbThis)) if showMessages
     return false
   end
   if status==PBStatuses::PETRIFIED
-    @battle.pbDisplay(_INTL("{1} is already petrified!",pbThis)) if showMessages
+    @battle.pbDisplay(_INTL("{1} is already crushed!",pbThis)) if showMessages
     return false
   end
   if self.status!=0 || damagestate.substitute || (effects[PBEffects::Substitute]>0 && !PBMoveData.new(@battle.lastMoveUsed).isSoundBased?) || (isConst?(ability,PBAbilities,:COMATOSE) && $fefieldeffect!=1) || pbShieldsUp?
     @battle.pbDisplay(_INTL("But it failed!")) if showMessages
     return false
   end
-  if pbOwnSide.effects[PBEffects::Safeguard]>0 && !(@battle.battlers[@battle.lastMoveUser]).hasWorkingAbility(:INFILTRATOR)    
+  if hasWorkingAbility(:ABYSSAL) && !(self.moldbroken)
+    @battle.pbDisplay(_INTL("{1}'s {2} prevents crushing!",pbThis,PBAbilities.getName(self.ability))) if showMessages
+    return false
+  end
+  if pbOwnSide.effects[PBEffects::Safeguard]>0 && !(@battle.battlers[@battle.lastMoveUser]).hasWorkingAbility(:INFILTRATOR) && !(PBMoveData.new(@battle.lastMoveUsed).function==0x21B && @battle.battlers[@battle.lastMoveUser].hp < (0.5 * @battle.battlers[@battle.lastMoveUser].totalhp).floor)
     @battle.pbDisplay(_INTL("{1}'s team is protected by Safeguard!",pbThis)) if showMessages
     return false
   end
@@ -642,36 +511,16 @@ end
 #===============================================================================
   def pbCanFreeze?(showMessages=true)
     return false if isFainted?
-#### KUROTSUNE - 028 - START  #### JERICHO - 002 - START    
-    if ((isConst?(ability,PBAbilities,:FLOWERVEIL)                ||
-       isConst?(pbPartner.ability,PBAbilities,:FLOWERVEIL)        ||
-       @battle.SilvallyCheck(self,PBTypes::GRASS) || @battle.SilvallyCheck(self.pbPartner,PBTypes::GRASS)) &&
-       (pbHasType?(:GRASS) || $fefieldeffect==42)) && !(self.moldbroken)
-       @battle.pbDisplay(_INTL("{1} is protected by Flower Veil!",pbThis)) if showMessages
-      return false
-    end 
-#### KUROTSUNE - 028 - END  #### JERICHO - 002 - END                    
+    return false if !pbCanStatus?(showMessages)                   
     if (@battle.pbWeather==PBWeather::SUNNYDAY && !hasWorkingItem(:UTILITYUMBRELLA)) || self.status!=0 || (isConst?(ability,PBAbilities,:COMATOSE) && $fefieldeffect!=1) ||
       (hasWorkingAbility(:LEAFGUARD) && $fefieldeffect == 15 || 
       ($fefieldeffect == 33 && $fecounter>0)) ||
        (hasWorkingAbility(:MAGMAARMOR) && $fefieldeffect!=39) ||
-       pbOwnSide.effects[PBEffects::Safeguard]>0 ||
-       (pbOwnSide.effects[PBEffects::Safeguard]>0 && !(@battle.battlers[@battle.lastMoveUser]).hasWorkingAbility(:INFILTRATOR)) ||
+       hasWorkingItem(:THERMOSUIT) ||
+       (pbOwnSide.effects[PBEffects::Safeguard]>0 && !(@battle.battlers[@battle.lastMoveUser]).hasWorkingAbility(:INFILTRATOR) && !(PBMoveData.new(@battle.lastMoveUsed).function==0x21B && @battle.battlers[@battle.lastMoveUser].hp < (0.5 * @battle.battlers[@battle.lastMoveUser].totalhp).floor)) ||
        damagestate.substitute || (effects[PBEffects::Substitute]>0 && !PBMoveData.new(@battle.lastMoveUsed).isSoundBased?) || $fefieldeffect == 7 ||
       (pbHasType?(:ICE) && !hasWorkingItem(:RINGTARGET)) && !(self.moldbroken) || pbShieldsUp?
         return false
-    end
-    if ($fefieldeffect == 3 || @battle.field.effects[PBEffects::MistyTerrain]>0  && !$fefieldeffect==40) && !isAirborne? # Misty Field
-      @battle.pbDisplay(_INTL("Misty Terrain prevents {1} from being inflicted by status!",pbThis)) if showMessages
-      return false
-    end
-    if $fefieldeffect == 32 && hasWorkingItem(:AMULETCOIN) # Dragon's Den
-      @battle.pbDisplay(_INTL("Amulet Coin prevents {1} from being inflicted by status on Dragon's Den!",pbThis)) if showMessages
-      return false
-    end
-    if $fefieldeffect == 38 && effects[PBEffects::Obstruct]==true # Dimensional Field
-      @battle.pbDisplay(_INTL("Dimensional Field obstructs {1} from being inflicted by status!",pbThis)) if showMessages
-      return false
     end
     return true
   end
@@ -699,7 +548,7 @@ end
         @battle.pbDisplay(_INTL("{1} is hurt by its burn!",pbThis))
       when PBStatuses::PARALYSIS
         @battle.pbCommonAnimation("Paralysis",self,nil)
-        @battle.pbDisplay(_INTL("{1} is paralyzed!  It can't move!",pbThis)) 
+        @battle.pbDisplay(_INTL("{1} is paralyzed!",pbThis)) 
       when PBStatuses::FROZEN
         @battle.pbCommonAnimation("Frozen",self,nil)
         @battle.pbDisplay(_INTL("{1} is frozen solid!",pbThis))
@@ -713,6 +562,9 @@ end
     end
     self.status=0
     self.statusCount=0
+    if oldstatus==PBStatuses::SLEEP && self.hasWorkingAbility(:EARLYBIRD)
+      @effects[PBEffects::EarlyBirdBoost]=2
+    end
     if showMessages
       case oldstatus
         when PBStatuses::SLEEP
@@ -731,6 +583,7 @@ end
 #===============================================================================
   def pbCanConfuse?(showMessages=true)
     return false if isFainted?
+    return false if !pbCanStatus?(showMessages,false,true)
     if effects[PBEffects::Confusion]>0
       @battle.pbDisplay(_INTL("{1} is already confused!",pbThis)) if showMessages
       return false
@@ -739,28 +592,8 @@ end
       @battle.pbDisplay(_INTL("But it failed!")) if showMessages
       return false
     end
-    if hasWorkingAbility(:OWNTEMPO) && !(self.moldbroken) 
-      @battle.pbDisplay(_INTL("{1}'s {2} prevents confusion!",pbThis,PBAbilities.getName(self.ability))) if showMessages
-      return false
-    end
-    if pbOwnSide.effects[PBEffects::Safeguard]>0 && !(@battle.battlers[@battle.lastMoveUser]).hasWorkingAbility(:INFILTRATOR)    
-      @battle.pbDisplay(_INTL("{1}'s team is protected by Safeguard!",pbThis)) if showMessages
-      return false
-    end
     if $fefieldeffect == 20 && pbHasType?(:FIGHTING)
       @battle.pbDisplay(_INTL("{1} broke through the confusion!",pbThis)) if showMessages
-      return false
-    end
-    if ($fefieldeffect == 3 || @battle.field.effects[PBEffects::MistyTerrain]>0 && !$fefieldeffect==40) && !isAirborne? # Misty Field
-      @battle.pbDisplay(_INTL("Misty Terrain prevents {1} from being inflicted by status!",pbThis)) if showMessages
-      return false
-    end    
-    if $fefieldeffect == 32 && hasWorkingItem(:AMULETCOIN) # Dragon's Den
-      @battle.pbDisplay(_INTL("Amulet Coin prevents {1} from being inflicted by status on Dragon's Den!",pbThis)) if showMessages
-      return false
-    end
-    if $fefieldeffect == 38 && effects[PBEffects::Obstruct]==true # Dimensional Field
-      @battle.pbDisplay(_INTL("Dimensional Field obstructs {1} from being inflicted by status!",pbThis)) if showMessages
       return false
     end
     return true
@@ -768,35 +601,20 @@ end
 
   def pbCanConfuseSelf?(showMessages=true)
     return false if isFainted?
+    return false if !pbCanStatus?(showMessages,true,true)
     if effects[PBEffects::Confusion]>0
       @battle.pbDisplay(_INTL("{1} is already confused!",pbThis)) if showMessages
-      return false
-    end
-    if hasWorkingAbility(:OWNTEMPO)
-      @battle.pbDisplay(_INTL("{1}'s {2} prevents confusion!",pbThis,PBAbilities.getName(self.ability))) if showMessages
       return false
     end
     if $fefieldeffect == 20 && pbHasType?(:FIGHTING)
       @battle.pbDisplay(_INTL("{1} broke through the confusion!",pbThis)) if showMessages
       return false
     end
-    if ($fefieldeffect == 3 || @battle.field.effects[PBEffects::MistyTerrain]>0  && !$fefieldeffect==40) && !isAirborne? # Misty Field
-      @battle.pbDisplay(_INTL("Misty Terrain prevents {1} from being inflicted by status!",pbThis)) if showMessages
-      return false
-    end    
-    if $fefieldeffect == 32 && hasWorkingItem(:AMULETCOIN) # Dragon's Den
-      @battle.pbDisplay(_INTL("Amulet Coin prevents {1} from being inflicted by status on Dragon's Den!",pbThis)) if showMessages
-      return false
-    end
-    if $fefieldeffect == 38 && effects[PBEffects::Obstruct]==true # Dimensional Field
-      @battle.pbDisplay(_INTL("Dimensional Field obstructs {1} from being inflicted by status!",pbThis)) if showMessages
-      return false
-    end
     return true
   end
 
   def pbConfuseSelf
-    if @effects[PBEffects::Confusion]==0 && !hasWorkingAbility(:OWNTEMPO)
+    if @effects[PBEffects::Confusion]==0
       @effects[PBEffects::Confusion]=2+@battle.pbRandom(4)
       @battle.pbCommonAnimation("Confusion",self,nil)
       @battle.pbDisplay(_INTL("{1} became confused!",pbThis))
@@ -823,14 +641,8 @@ end
       @battle.pbDisplay(_INTL("But it failed!")) if showMessages
       return false
     end
-    agender=attacker.gender
-    ogender=self.gender
-    if agender==2 || ogender==2 || agender==ogender
-      @battle.pbDisplay(_INTL("But it failed!")) if showMessages
-      return false
-    end
     if hasWorkingAbility(:OBLIVIOUS) && !(self.moldbroken) 
-      @battle.pbDisplay(_INTL("{1}'s {2} prevents romance!",pbThis,
+      @battle.pbDisplay(_INTL("{1}'s {2} prevents obsession!",pbThis,
          PBAbilities.getName(self.ability))) if showMessages
       return false
     end
@@ -839,7 +651,7 @@ end
 
   def pbAnnounceAttract(seducer)
     @battle.pbCommonAnimation("Attract",self,nil)
-    @battle.pbDisplayBrief(_INTL("{1} is in love with {2}!",
+    @battle.pbDisplayBrief(_INTL("{1} is enchanted by {2}!",
        pbThis,seducer.pbThis(true)))
   end
 
@@ -848,14 +660,44 @@ end
   end
 
 #===============================================================================
+# Blind
+#===============================================================================
+  def pbCanBlind?(showMessages=true)
+    return false if isFainted?
+    if effects[PBEffects::Blinded]>0
+      @battle.pbDisplay(_INTL("{1} is already blinded!",pbThis)) if showMessages
+      return false
+    end
+    if damagestate.substitute || (effects[PBEffects::Substitute]>0 && !PBMoveData.new(@battle.lastMoveUsed).isSoundBased?)
+      @battle.pbDisplay(_INTL("But it failed!")) if showMessages
+      return false
+    end
+    if (hasWorkingAbility(:ILLUMINATE) || hasWorkingAbility(:DAZZLING)) && !(self.moldbroken) 
+      @battle.pbDisplay(_INTL("{1}'s {2} prevents blinding!",pbThis,PBAbilities.getName(self.ability))) if showMessages
+      return false
+    end
+    return true
+  end
+
+#===============================================================================
 # Increase stat stages
 #===============================================================================
   def pbTooHigh?(stat)
-    return @stages[stat]>=6
+    if @effects[PBEffects::MultiTurnAttack] == PBMoves::BINDINGWORD # Stats suppressed by binding word
+      return @effects[PBEffects::StatChangeHolder][stat]>=8
+    else
+      return @stages[stat]>=8
+    end
   end
 
   def pbCanIncreaseStatStage?(stat,showMessages=false)
     return false if isFainted?
+    cn=@battle.pbCheckGlobalAbility(:CLOUDNINE)
+    if cn
+      abilityname=PBAbilities.getName(cn.ability)
+      @battle.pbDisplay(_INTL("{1}'s {2} prevents stat boosts!",cn.pbThis,abilityname)) if showMessages
+      return false
+    end
     if pbTooHigh?(stat)
       if showMessages
         @battle.pbDisplay(_INTL("{1}'s Attack won't go any higher!",pbThis)) if stat==PBStats::ATTACK
@@ -875,8 +717,13 @@ end
     if !(self.moldbroken) && (hasWorkingAbility(:SIMPLE))
       increment*=2
     end
-    @stages[stat]+=increment
-    @stages[stat]=6 if @stages[stat]>6
+    if @effects[PBEffects::MultiTurnAttack] == PBMoves::BINDINGWORD # Stats suppressed by binding word
+      @effects[PBEffects::StatChangeHolder][stat]+=increment
+      @effects[PBEffects::StatChangeHolder][stat]=8 if @effects[PBEffects::StatChangeHolder][stat]>8
+    else
+      @stages[stat]+=increment
+      @stages[stat]=8 if @stages[stat]>8
+    end
   end
 
 # UPDATE 11/29/2013
@@ -885,6 +732,11 @@ end
 # Added an extra parameter to determine if this was called from reduce stat
 # changed from: def pbIncreaseStat(stat,increment,showMessages,moveid=nil,attacker=nil,upanim=true)
   def pbIncreaseStat(stat,increment,showMessages1,moveid=nil,attacker=nil,upanim=true, cont_call=false, showMessages2=true)
+    if moveid && attacker && attacker.hasWorkingItem(:ZAPTRIBUTE) &&
+       attacker.moves && attacker.moves[0] && attacker.moves[0].id==moveid &&
+       attacker.moves[0].basedamage>0
+      increment += 1
+    end
     # here we call reduce instead
     if hasWorkingAbility(:CONTRARY) && !cont_call && !(self.moldbroken)
       ret=pbReduceStat(stat,increment,showMessages1,moveid,attacker,upanim,false,true,showMessages2)
@@ -936,6 +788,18 @@ end
     end
     if pbCanIncreaseStatStage?(stat,showMessages1)
       pbIncreaseStatBasic(stat,increment)
+      # Big Pecks: foes gain Defense when an enemy raises its stats
+      if attacker && attacker.pbIsOpposing?(self.index)
+        for foe in [pbOpposing1,pbOpposing2]
+          next if foe.nil? || foe.isFainted?
+          next if foe.moldbroken
+          if foe.hasWorkingAbility(:BIGPECKS) && !foe.pbTooHigh?(PBStats::DEFENSE)
+            foe.pbIncreaseStatBasic(PBStats::DEFENSE,1)
+            @battle.pbCommonAnimation("StatUp",foe,nil)
+            @battle.pbDisplay(_INTL("{1}'s {2} raised its Defense!",foe.pbThis,PBAbilities.getName(foe.ability)))
+          end
+        end
+      end
       @battle.pbCommonAnimation("StatUp",self,nil) if upanim
 #### JERICHO - 004 - START
       if !(self.moldbroken) && (hasWorkingAbility(:SIMPLE))
@@ -960,7 +824,11 @@ end
 # Decrease stat stages
 #===============================================================================
   def pbTooLow?(stat)
-    return @stages[stat]<=-6
+    if @effects[PBEffects::MultiTurnAttack] == PBMoves::BINDINGWORD # Stats suppressed by binding word
+      return @effects[PBEffects::StatChangeHolder][stat]<=-8
+    else
+      return @stages[stat]<=-8
+    end
   end
 
   # Tickle (04A) and Memento (0E2) can't use this, but replicate it instead.
@@ -973,7 +841,7 @@ end
         @battle.pbDisplay(_INTL("But it failed!")) if showMessages
         return false
       end
-      if pbOwnSide.effects[PBEffects::Mist]>0 && !(@battle.battlers[@battle.lastMoveUser]).hasWorkingAbility(:INFILTRATOR)    
+      if pbOwnSide.effects[PBEffects::Mist]>0 && !(@battle.battlers[@battle.lastMoveUser]).hasWorkingAbility(:INFILTRATOR) && !(PBMoveData.new(@battle.lastMoveUsed).function==0x21B && @battle.battlers[@battle.lastMoveUser].hp < (0.5 * @battle.battlers[@battle.lastMoveUser].totalhp).floor)
         @battle.pbDisplay(_INTL("{1} is protected by Mist!",pbThis)) if showMessages
         return false
       end
@@ -982,7 +850,7 @@ end
         @battle.pbDisplay(_INTL("{1}'s {2} prevents stat loss!",pbThis,abilityname)) if showMessages
         return false
       end
-      if stat==PBStats::ATTACK && hasWorkingAbility(:HYPERCUTTER) && hasWorkingAbility(:EXECUTION) && !(self.moldbroken)
+      if stat==PBStats::ATTACK && hasWorkingAbility(:HYPERCUTTER) && !(self.moldbroken)
         abilityname=PBAbilities.getName(self.ability)
         @battle.pbDisplay(_INTL("{1}'s {2} prevents Attack loss!",pbThis,abilityname)) if showMessages
         return false
@@ -1003,13 +871,6 @@ end
         return false
       end
       #
-      if ((isConst?(ability,PBAbilities,:FLOWERVEIL)                ||
-       isConst?(pbPartner.ability,PBAbilities,:FLOWERVEIL)          ||
-       @battle.SilvallyCheck(self,PBTypes::GRASS) || @battle.SilvallyCheck(self.pbPartner,PBTypes::GRASS)) &&
-       (pbHasType?(:GRASS) || $fefieldeffect==42)) && !(self.moldbroken)
-       @battle.pbDisplay(_INTL("{1} is protected by Flower Veil!",pbThis)) if showMessages
-      return false
-    end
     #
     end
     if pbTooLow?(stat)
@@ -1031,8 +892,13 @@ end
     if !(self.moldbroken) && (hasWorkingAbility(:SIMPLE))
       increment*=2
     end
-    @stages[stat]-=increment
-    @stages[stat]=-6 if @stages[stat]<-6
+    if @effects[PBEffects::MultiTurnAttack] == PBMoves::BINDINGWORD # Stats suppressed by binding word
+      @effects[PBEffects::StatChangeHolder][stat]-=increment
+      @effects[PBEffects::StatChangeHolder][stat]=-8 if @effects[PBEffects::StatChangeHolder][stat]<-8
+    else
+      @stages[stat]-=increment
+      @stages[stat]=-8 if @stages[stat]<-8
+    end
     self.statLowered = true
   end
 
@@ -1042,6 +908,10 @@ end
 # Added another parameter to determine if we called from within increase
 # changed from: def pbReduceStat(stat,increment,showMessages,moveid=nil,attacker=nil,downanim=true,selfreduce=false)
   def pbReduceStat(stat,increment,showMessages1=true,moveid=nil,attacker=nil,downanim=true,selfreduce=false, cont_call=false, showMessages2=true, mirrored=false)
+    if moveid && attacker && attacker.hasWorkingItem(:DREADTRIBUTE) &&
+       attacker.moves && attacker.moves[0] && attacker.moves[0].id==moveid
+      increment += 1
+    end
     # no, we don't want to say reduce 5 times - Thunder Raid
     if moveid == 207
       showMessages2 = false
@@ -1140,7 +1010,7 @@ end
     if hasWorkingAbility(:CLEARBODY) || hasWorkingAbility(:WHITESMOKE) ||
        hasWorkingAbility(:HYPERCUTTER) || hasWorkingAbility(:FULLMETALBODY) ||
        hasWorkingAbility(:TEMPORALSHIFT) || hasWorkingAbility(:INNERFOCUS) ||
-       hasWorkingAbility(:OBLIVIOUS) || hasWorkingAbility(:OWNTEMPO) || hasWorkingAbility(:EXECUTION)
+       hasWorkingAbility(:OBLIVIOUS) || hasWorkingAbility(:EXECUTION)
        hasWorkingAbility(:SCRAPPY)
       abilityname=PBAbilities.getName(self.ability)
       oppabilityname=PBAbilities.getName(opponent.ability)
@@ -1148,7 +1018,7 @@ end
          pbThis,abilityname,opponent.pbThis(true),oppabilityname))
       return false
     end
-    if pbOwnSide.effects[PBEffects::Mist]>0 && !(@battle.battlers[@battle.lastMoveUser]).hasWorkingAbility(:INFILTRATOR)    
+    if pbOwnSide.effects[PBEffects::Mist]>0
       @battle.pbDisplay(_INTL("{1} is protected by Mist!",pbThis))
       return false
     end
@@ -1178,11 +1048,12 @@ end
       end
       if hasWorkingItem(:WHITEHERB)
         reducedstats=false
-        for i in [PBStats::ATTACK,PBStats::DEFENSE,
-                  PBStats::SPEED,PBStats::SPATK,PBStats::SPDEF,
-                  PBStats::EVASION,PBStats::ACCURACY]
-         if self.stages[i]<0
-           self.stages[i]=0; reducedstats=true
+        for i in [PBStats::ATTACK,PBStats::DEFENSE,PBStats::SPEED,PBStats::SPATK,PBStats::SPDEF,PBStats::EVASION,PBStats::ACCURACY]
+          if self.stages[i]<0
+            self.stages[i]=0; reducedstats=true
+          end
+          if self.effects[PBEffects::StatChangeHolder][i] < 0
+            self.effects[PBEffects::StatChangeHolder][i] = 0 ; reducedstats=true
           end
         end
         if reducedstats
@@ -1209,7 +1080,7 @@ end
          pbThis,abilityname,opponent.pbThis(true),oppabilityname))
       return false
     end
-    if pbOwnSide.effects[PBEffects::Mist]>0 && !(@battle.battlers[@battle.lastMoveUser]).hasWorkingAbility(:INFILTRATOR)    
+    if pbOwnSide.effects[PBEffects::Mist]>0 
       @battle.pbDisplay(_INTL("{1} is protected by Mist!",pbThis))
       return false
     end

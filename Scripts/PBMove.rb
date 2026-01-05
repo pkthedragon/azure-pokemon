@@ -1,100 +1,53 @@
-class PokemonTemp
-  attr_accessor :pokemonMoveData
-
-  def pbOpenMoveData
-    if !self.pokemonMoveData
-      pbRgssOpen("Data/moves.dat","rb"){|f|
-         self.pokemonMoveData=f.read
-      }
-    end
-    if block_given?
-      StringInput.open(self.pokemonMoveData) {|f| yield f }
-    else
-      return StringInput.open(self.pokemonMoveData)
-    end
-  end
-end
-
-
-
 class PBMoveData
   attr_reader :function,:basedamage,:type,:accuracy
   attr_reader :totalpp,:addlEffect,:target,:priority
   attr_reader :flags
   attr_reader :contestType,:category
 
-  def initializeOld(moveid)
-    movedata=pbRgssOpen("Data/rsattacks.dat")
-    movedata.pos=moveid*9
-    @function   = movedata.fgetb
-    @basedamage = movedata.fgetb
-    @type       = movedata.fgetb
-    @accuracy   = movedata.fgetb
-    @totalpp    = movedata.fgetb
-    @addlEffect = movedata.fgetb
-    @target     = movedata.fgetb
-    @priority   = movedata.fgetsb
-    @flags      = movedata.fgetb
-    movedata.close
-  end
-
   def initialize(moveid)
-    movedata=nil
-    if $PokemonTemp
-      movedata=$PokemonTemp.pbOpenMoveData
-    else
-      movedata=pbRgssOpen("Data/moves.dat")
-    end
-    movedata.pos=moveid*14
-    @function    = movedata.fgetw
-    @basedamage  = movedata.fgetb
-    @type        = movedata.fgetb
-    @category    = movedata.fgetb
-    @accuracy    = movedata.fgetb
-    @totalpp     = movedata.fgetb
-    @addlEffect  = movedata.fgetb
-    @target      = movedata.fgetw
-    @priority    = movedata.fgetsb
-    @flags       = movedata.fgetw
-    @contestType = movedata.fgetb
-    movedata.close
+    @function    = $pkmn_move[moveid][0]
+    @basedamage  = $pkmn_move[moveid][1]
+    @type        = $pkmn_move[moveid][2]
+    @category    = $pkmn_move[moveid][3]
+    @accuracy    = $pkmn_move[moveid][4]
+    @totalpp     = $pkmn_move[moveid][5]
+    @addlEffect  = $pkmn_move[moveid][6]
+    @target      = $pkmn_move[moveid][7]
+    @priority    = $pkmn_move[moveid][8]
+    @flags       = $pkmn_move[moveid][9]
   end
   def isSoundBased?
     return (@flags&0x400)!=0 # Sound Flag ("k") needed checkable for substitute
   end 
 end
 
-
-
 class PBMove
   attr_reader(:id)       # Gets this move's ID.
   attr_accessor(:pp)     # Gets the number of PP remaining for this move.
   attr_accessor(:ppup)   # Gets the number of PP Ups used for this move.
+  attr_accessor(:totalpp)# Gets the total number of PP this move can have.
 
 # Gets this move's type.
   def type
-    movedata=PBMoveData.new(@id)
-    return movedata.type
+    return $pkmn_move[@id][2]
   end
 
 # Gets the maximum PP for this move.
   def totalpp
-    movedata=PBMoveData.new(@id)
-    tpp=movedata.totalpp
+    return @totalpp if defined?(@totalpp)
+    tpp=$pkmn_move[@id][5]
     return tpp+(tpp*@ppup/5).floor
   end
 
 # Gets basedamage for this move
   def basedamage
-    movedata=PBMoveData.new(@id)
-    return movedata.basedamage
+    return $pkmn_move[@id][1]
   end
   
 # Initializes this object to the specified move ID.
   def initialize(moveid)
-    movedata=PBMoveData.new(moveid)
-    @pp=movedata.totalpp
     @id=moveid
     @ppup=0
+    @pp=totalpp
   end
 end

@@ -29,7 +29,7 @@ begin
     Foresight         = 25
     FuryCutter        = 26
     FutureSight       = 27
-    FutureSightDamage = 28
+    FutureSightPkmnIdx= 28
     FutureSightMove   = 29
     FutureSightUser   = 30
     GastroAcid        = 31
@@ -109,7 +109,7 @@ begin
     RagePowder        = 115
     MagicBounced      = 116
     TracedAbility     = 117
-    UsingSubstituteRightNow = 118
+    AnimationImpactMove = 118
     SkyDroppee        = 119
     DestinyRate       = 120
     BanefulBunker     = 121
@@ -138,7 +138,6 @@ begin
     SusCrit           = 144  
     Obstruct          = 145
     Octolock          = 146
-    StallEntry        = 705
     # -1 = no stance, 0 = defense stance, 1 = attack stance
     DesertsMark       = 147
     WillMega          = 148  
@@ -153,6 +152,44 @@ begin
     Switched        = 157
     CritCount       = 158
     UsingItem        = 159
+    StatChangeHolder = 160
+    JawLockUser   = 161
+    JawLock       = 162
+    CellSplitter      = 163
+    Rebuild           = 164
+    Stormhold         = 165
+    Spritz            = 166
+    Forebode          = 167
+    Fertilize         = 168
+    FlameWreath       = 169
+  Blinded        = 170
+  Wounded        = 171
+  Aftershock     = 172
+  AftershockMove = 173
+  AftershockUser = 174 
+  EarlyBirdBoost = 175
+  Stench            = 200
+  StallEntry        = 705
+  MudBath         = 201
+  NaturalOrder    = 202
+  FeverPitchBoost = 203
+  MirrorCoat = 204
+  CounterStance = 205
+  NightmareAura = 206
+  DamagingMoveThisTurn = 207
+  StalwartMove       = 208
+  StalwartStacks     = 209
+  FriskLock          = 210
+  ForewarnDisable    = 211
+  ForewarnDisableMove = 212
+  TempShieldHP       = 213
+  TempShieldTurns    = 214
+  KingsRockGuardUsed = 215
+  HeartLocketUsed    = 216
+  TrickRoomOnEntry   = 217
+  BlinkEntryTurn     = 218
+  ActedThisTurn      = 219
+  SpookyTribute      = 220
     # These effects apply to a side - starts from 300
     LightScreen   = 300
     LuckyChant    = 301
@@ -170,6 +207,17 @@ begin
     MatBlock      = 313
     AuroraVeil    = 314
     DuneDefense   = 315
+    BattleCry     = 316
+    MysticTree    = 317
+    Bonfire       = 318
+    Caltrops      = 319
+    PressurePlate = 320
+    Undertow      = 321
+	Presents	  = 322
+	ManaBond	  = 323
+	ReverbEcho	  = 324
+    PlusSignal    = 325
+    MinusSignal   = 326
     # These effects apply to the battle (i.e. both sides) - starts from 400
     Gravity       = 400
     MagicRoom     = 401
@@ -184,6 +232,7 @@ begin
     MudSport      = 409
     WaterSport    = 410
     SosBuffer     = 411
+    PyroPreTarget = 412   
     # V13 + Overlay Terrains - Grassy/Electric/Misty/Psychic
     GrassyTerrain = 501
     MistyTerrain = 502
@@ -191,6 +240,8 @@ begin
     PsychicTerrain = 504
     Splintered = 505
     Rainbow = 506
+	DampTerrain  = 410
+	MuddyTerrain = 411
     # These effects apply to the usage of a move
     SpecialUsage = 701
     PassedTrying = 702

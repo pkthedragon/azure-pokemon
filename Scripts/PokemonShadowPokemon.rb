@@ -522,33 +522,32 @@ end
 
 
 class PokeBattle_Battler
-  alias __shadow_pbInitPokemon pbInitPokemon
-
-  def pbInitPokemon(*arg)
-    if self.pokemonIndex>0 && self.inHyperMode? && !isFainted?
-      # Called out of hypermode
-      self.pokemon.hypermode=false
-      self.pokemon.adjustHeart(-50)
-    end
-    __shadow_pbInitPokemon(*arg)
-    # Called into battle
-    if self.isShadow?
-      if hasConst?(PBTypes,:SHADOW)
-        self.type1=getID(PBTypes,:SHADOW)
-        self.type2=getID(PBTypes,:SHADOW)
+  # PATCH: Use Module#prepend instead of aliasing pbInitPokemon/pbEndTurn at load-time.
+  module ShadowPokemon_BattlerPatch
+    def pbInitPokemon(*arg)
+      if self.pokemonIndex>0 && self.inHyperMode? && !isFainted?
+        # Called out of hypermode
+        self.pokemon.hypermode=false
+        self.pokemon.adjustHeart(-50)
       end
-      self.pokemon.adjustHeart(-30) if @battle.pbOwnedByPlayer?(@index)
+      super(*arg)
+      # Called into battle
+      if self.isShadow?
+        if hasConst?(PBTypes,:SHADOW)
+          self.type1=getID(PBTypes,:SHADOW)
+          self.type2=getID(PBTypes,:SHADOW)
+        end
+        self.pokemon.adjustHeart(-30) if @battle.pbOwnedByPlayer?(@index)
+      end
     end
-  end
 
-  alias __shadow_pbEndTurn pbEndTurn
-
-  def pbEndTurn(*arg)
-    __shadow_pbEndTurn(*arg)
-    if self.inHyperMode? && !self.battle.pbAllFainted?(self.battle.party1) && 
-       !self.battle.pbAllFainted?(self.battle.party2)
-      self.battle.pbDisplay(_INTL("Its hyper mode attack hurt {1}!",self.pbThis(true))) 
-      pbConfusionDamage
+    def pbEndTurn(*arg)
+      super(*arg)
+      if self.inHyperMode? && !self.battle.pbAllFainted?(self.battle.party1) &&
+         !self.battle.pbAllFainted?(self.battle.party2)
+        self.battle.pbDisplay(_INTL("Its hyper mode attack hurt {1}!",self.pbThis(true)))
+        pbConfusionDamage
+      end
     end
   end
 

@@ -156,6 +156,11 @@ ItemHandlers::UseFromBag.add(:COINCASE,proc{|item|
    next 1 # Continue
 })
 
+ItemHandlers::UseFromBag.add(:ITEMBELTCONTROLLER,proc{|item|
+   pbManageItemBelt
+   next 1 # Continue
+})
+
 ItemHandlers::UseFromBag.add(:ACHIEVEMENTCARD,proc{|item|
    Kernel.pbMessage(_INTL("AP: {1}",pbCommaNumber($game_variables[526])))
    next 1 # Continue
@@ -172,6 +177,46 @@ ItemHandlers::UseFromBag.add(:EXPALLOFF,proc{|item|
    Kernel.pbMessage(_INTL("The Exp Share All was turned on."))
    next 1
 })
+
+ItemHandlers::UseFromBag.add(:NULLTRIBUTE, proc { |item|
+  current_sym = :NULLTRIBUTE
+  names, items = pbBuildUnlockedTributeLists(current_sym)
+  current_index = items.index(current_sym) || 0
+  cmd = pbShowCommands(
+    _INTL("Change the Tribute's attunement?"),
+    names,
+    current_index
+  )
+  if cmd < 0 || cmd >= items.length
+    Kernel.pbMessage(_INTL("You decided not to change the Tribute."))
+    next 0
+  end
+  new_sym = items[cmd]
+  new_id  = getID(PBItems, new_sym)
+  old_id  = getID(PBItems, current_sym)
+  if new_id == old_id
+    Kernel.pbMessage(_INTL("The Tribute's attunement remains the same."))
+    next 1
+  end
+  $PokemonBag.pbChangeItem(old_id, new_id)
+  Kernel.pbMessage(_INTL("The Tribute's attunement shifted.", PBItems.getName(new_id)))
+
+  next 1
+})
+
+ItemHandlers::UseFromBag.copy(
+  :NULLTRIBUTE,
+  :MEADOWTRIBUTE,
+  :SPLASHTRIBUTE,
+  :FLAMETRIBUTE,
+  :BLANKTRIBUTE,
+  :FISTTRIBUTE,
+  :MINDTRIBUTE,
+  :ZAPTRIBUTE,
+  :ICICLETRIBUTE,
+  :DREADTRIBUTE,
+  :PIXITRIBUTE
+)
 
 ItemHandlers::UseFromBag.add(:GOLDENWINGS,proc{|item|
   next 0 if !pbCheckHiddenMoveBadge(BADGEFORFLY,true)
@@ -252,11 +297,11 @@ ItemHandlers::UseOnPokemon.add(:FIRESTONE,proc{|item,pokemon,scene|
    end
 })
 
-ItemHandlers::UseOnPokemon.copy(:FIRESTONE,
-   :THUNDERSTONE,:WATERSTONE,:LEAFSTONE,:MOONSTONE, :SUNSTONE,
-   :DUSKSTONE,:DAWNSTONE,:SHINYSTONE,:LINKHEART, :APOPHYLLPAN,
-   :ICESTONE, :SWEETAPPLE, :TARTAPPLE, :CHIPPEDPOT, :CRACKEDPOT,:XENWASTE,
-   :NIGHTMAREFUEL)
+ItemHandlers::UseOnPokemon.copy(:FIRESTONE, :MALICIOUSARMOR,
+   :THUNDERSTONE,:WATERSTONE,:LEAFSTONE,:MOONSTONE, :SUNSTONE,:GALARICAWREATH,:GALARICACUFF,
+   :DUSKSTONE,:DAWNSTONE,:SHINYSTONE,:LINKHEART, :APOPHYLLPAN,:BLACKAUGURITE, :AUSPICIOUSARMOR,
+   :ICESTONE, :SWEETAPPLE, :TARTAPPLE, :CHIPPEDPOT, :CRACKEDPOT, :XENWASTE, :MASTERPIECETEACUP,
+   :NIGHTMAREFUEL, :SYRUPYAPPLE, :PEATBLOCK, :METALALLOY, :UNREMARKABLETEACUP)
    
 ItemHandlers::UseOnPokemon.add(:POTION,proc{|item,pokemon,scene|
    next pbHPItem(pokemon,20,scene)
@@ -412,6 +457,26 @@ ItemHandlers::UseOnPokemon.add(:ORANBERRY,proc{|item,pokemon,scene|
 
 ItemHandlers::UseOnPokemon.add(:SITRUSBERRY,proc{|item,pokemon,scene|
    next pbHPItem(pokemon,(pokemon.totalhp/4).floor,scene)
+})
+
+ItemHandlers::UseOnPokemon.add(:LEVIABERRY,proc{|item,pokemon,scene|
+   if pokemon.hp<=0 || pokemon.status!=PBStatuses::PETRIFIED
+     scene.pbDisplay(_INTL("It won't have any effect."))
+     next false
+   else
+     pokemon.status=0
+     pokemon.statusCount=0
+     scene.pbRefresh
+     scene.pbDisplay(_INTL("{1} was uncrushed.",pokemon.name))
+     next true
+   end
+})
+
+ItemHandlers::UseOnPokemon.copy(:LEVIABERRY,:DECOMPRESSOR)
+
+ItemHandlers::UseOnPokemon.add(:COCONBERRY,proc{|item,pokemon,scene|
+   scene.pbDisplay(_INTL("It won't have any effect."))
+   next false
 })
 
 ItemHandlers::UseOnPokemon.add(:AWAKENING,proc{|item,pokemon,scene|
@@ -889,6 +954,20 @@ ItemHandlers::UseOnPokemon.add(:MAXELIXIR,proc{|item,pokemon,scene|
      next false
    else
      scene.pbDisplay(_INTL("PP was restored."))
+     next true
+   end
+})
+
+ItemHandlers::UseOnPokemon.add(:HOPOBERRY,proc{|item,pokemon,scene|
+   pprestored=0
+   for i in 0...pokemon.moves.length
+     pprestored+=pbRestorePP(pokemon,i,2)
+   end
+   if pprestored==0
+     scene.pbDisplay(_INTL("It won't have any effect."))
+     next false
+   else
+     scene.pbDisplay(_INTL("PP was restored a little."))
      next true
    end
 })
@@ -2944,53 +3023,43 @@ def pbResetEVStat(pokemon,scene,ev,messages)
   end
 end
 
+def pbPrimeStatusItemCheck(battler)
+  return if !battler || !battler.battle
+  battler.battle.lastMoveUser=battler.index
+  if !battler.battle.lastMoveUsed || battler.battle.lastMoveUsed<0
+    battler.battle.lastMoveUsed=PBMoves::STRUGGLE
+  end
+end
+
 
 ItemHandlers::UseOnPokemon.add(:POMEGBERRY,proc{|item,pokemon,scene|
-   next pbRaiseHappinessAndLowerEV(pokemon,scene,0,[
-      _INTL("{1} adores you!\nThe base HP fell!",pokemon.name),
-      _INTL("{1} turned friendly.\nThe base HP can't fall!",pokemon.name),
-      _INTL("{1} turned friendly.\nThe base HP fell!",pokemon.name)
-   ])
+   scene.pbDisplay(_INTL("This can only be used in battle."))
+   next false
 })
 
 ItemHandlers::UseOnPokemon.add(:KELPSYBERRY,proc{|item,pokemon,scene|
-   next pbRaiseHappinessAndLowerEV(pokemon,scene,1,[
-      _INTL("{1} adores you!\nThe base Attack fell!",pokemon.name),
-      _INTL("{1} turned friendly.\nThe base Attack can't fall!",pokemon.name),
-      _INTL("{1} turned friendly.\nThe base Attack fell!",pokemon.name)
-   ])
+   scene.pbDisplay(_INTL("This can only be used in battle."))
+   next false
 })
 
 ItemHandlers::UseOnPokemon.add(:QUALOTBERRY,proc{|item,pokemon,scene|
-   next pbRaiseHappinessAndLowerEV(pokemon,scene,2,[
-      _INTL("{1} adores you!\nThe base Defense fell!",pokemon.name),
-      _INTL("{1} turned friendly.\nThe base Defense can't fall!",pokemon.name),
-      _INTL("{1} turned friendly.\nThe base Defense fell!",pokemon.name)
-   ])
+   scene.pbDisplay(_INTL("This can only be used in battle."))
+   next false
 })
 
 ItemHandlers::UseOnPokemon.add(:HONDEWBERRY,proc{|item,pokemon,scene|
-   next pbRaiseHappinessAndLowerEV(pokemon,scene,4,[
-      _INTL("{1} adores you!\nThe base Special Attack fell!",pokemon.name),
-      _INTL("{1} turned friendly.\nThe base Special Attack can't fall!",pokemon.name),
-      _INTL("{1} turned friendly.\nThe base Special Attack fell!",pokemon.name)
-   ])
+   scene.pbDisplay(_INTL("This can only be used in battle."))
+   next false
 })
 
 ItemHandlers::UseOnPokemon.add(:GREPABERRY,proc{|item,pokemon,scene|
-   next pbRaiseHappinessAndLowerEV(pokemon,scene,5,[
-      _INTL("{1} adores you!\nThe base Special Defense fell!",pokemon.name),
-      _INTL("{1} turned friendly.\nThe base Special Defense can't fall!",pokemon.name),
-      _INTL("{1} turned friendly.\nThe base Special Defense fell!",pokemon.name)
-   ])
+   scene.pbDisplay(_INTL("This can only be used in battle."))
+   next false
 })
 
 ItemHandlers::UseOnPokemon.add(:TAMATOBERRY,proc{|item,pokemon,scene|
-   next pbRaiseHappinessAndLowerEV(pokemon,scene,3,[
-      _INTL("{1} adores you!\nThe base Speed fell!",pokemon.name),
-      _INTL("{1} turned friendly.\nThe base Speed can't fall!",pokemon.name),
-      _INTL("{1} turned friendly.\nThe base Speed fell!",pokemon.name)
-   ])
+   scene.pbDisplay(_INTL("This can only be used in battle."))
+   next false
 })
 
 ItemHandlers::UseOnPokemon.add(:HPRESETBAG,proc{|item,pokemon,scene|
@@ -3336,6 +3405,11 @@ ItemHandlers::UseInField.add(:BICYCLE,proc{|item|
    end
 })
 
+ItemHandlers::UseInField.add(:ITEMBELTCONTROLLER,proc{|item|
+   pbManageItemBelt
+   next 1
+})
+
 ItemHandlers::UseInField.copy(:BICYCLE,:MACHBIKE,:ACROBIKE)
 
 ItemHandlers::UseInField.add(:OLDROD,proc{|item|
@@ -3423,6 +3497,13 @@ ItemHandlers::UseInField.copy(:ITEMFINDER,:DOWSINGMCHN)
 
 ItemHandlers::UseInField.add(:TOWNMAP,proc{|item|
    pbShowMap(-1,false)
+})
+
+# Temporal Sage: key item that preserves herbs/powders after battle
+ItemHandlers::UseInField.add(:TEMPORALSAGE,proc{|item|
+   Kernel.pbMessage(_INTL("Your herbs and powders will be preserved after battles."))
+   $PokemonGlobal.temporalSage=true if $PokemonGlobal
+   next 1
 })
 
 ItemHandlers::UseInField.add(:COINCASE,proc{|item|
@@ -3597,6 +3678,46 @@ ItemHandlers::BattleUseOnPokemon.add(:ORANBERRY,proc{|item,pokemon,battler,scene
 
 ItemHandlers::BattleUseOnPokemon.add(:SITRUSBERRY,proc{|item,pokemon,battler,scene|
    next pbBattleHPItem(pokemon,battler,(pokemon.totalhp/4).floor,scene)
+})
+
+ItemHandlers::BattleUseOnPokemon.add(:HOPOBERRY,proc{|item,pokemon,battler,scene|
+   pprestored=0
+   for i in 0...pokemon.moves.length
+     pprestored+=pbBattleRestorePP(pokemon,battler,i,2)
+   end
+   if pprestored==0
+     scene.pbDisplay(_INTL("But it had no effect!"))
+     next false
+   end
+   scene.pbDisplay(_INTL("PP was restored a little."))
+   next true
+})
+
+ItemHandlers::BattleUseOnPokemon.add(:LEVIABERRY,proc{|item,pokemon,battler,scene|
+   if pokemon.hp<=0 || pokemon.status!=PBStatuses::PETRIFIED
+     scene.pbDisplay(_INTL("But it had no effect!"))
+     next false
+   end
+   pokemon.status=0
+   pokemon.statusCount=0
+   battler.status=0 if battler
+   scene.pbRefresh
+   scene.pbDisplay(_INTL("{1} was uncrushed.",pokemon.name))
+   next true
+})
+
+ItemHandlers::BattleUseOnPokemon.add(:COCONBERRY,proc{|item,pokemon,battler,scene|
+   itemname=PBItems.getName(item)
+   if !battler || battler.isFainted?
+     scene.pbDisplay(_INTL("But it had no effect!"))
+     next false
+   end
+   shieldhp=(battler.totalhp/3).floor
+   if battler.pbApplyTempShield(shieldhp,_INTL("{1} shielded itself with the {2}!",battler.pbThis,itemname))
+     next true
+   end
+   scene.pbDisplay(_INTL("But it had no effect!"))
+   next false
 })
 
 ItemHandlers::BattleUseOnPokemon.add(:AWAKENING,proc{|item,pokemon,battler,scene|
@@ -3954,6 +4075,164 @@ ItemHandlers::BattleUseOnPokemon.copy(:YELLOWFLUTE,:PERSIMBERRY)
 #===============================================================================
 # BattleUseOnBattler handlers
 #===============================================================================
+
+ItemHandlers::BattleUseOnBattler.add(:POMEGBERRY,proc{|item,battler,scene|
+   if !battler || battler.isFainted?
+     scene.pbDisplay(_INTL("But it had no effect!"))
+     next false
+   end
+   pbPrimeStatusItemCheck(battler)
+   if !battler.pbCanBurn?
+     next false
+   end
+   battler.pbBurn(battler)
+   battler.pbAbilityCureCheck
+   scene.pbRefresh
+   scene.pbDisplay(_INTL("{1} burned itself with the {2}!",battler.pbThis,PBItems.getName(item)))
+   next true
+})
+
+ItemHandlers::BattleUseOnBattler.add(:KELPSYBERRY,proc{|item,battler,scene|
+   if !battler || battler.isFainted?
+     scene.pbDisplay(_INTL("But it had no effect!"))
+     next false
+   end
+   pbPrimeStatusItemCheck(battler)
+   if !battler.pbCanFreeze?
+     next false
+   end
+   battler.pbFreeze
+   battler.pbAbilityCureCheck
+   scene.pbRefresh
+   scene.pbDisplay(_INTL("{1} froze itself with the {2}!",battler.pbThis,PBItems.getName(item)))
+   next true
+})
+
+ItemHandlers::BattleUseOnBattler.add(:GREPABERRY,proc{|item,battler,scene|
+   if !battler || battler.isFainted?
+     scene.pbDisplay(_INTL("But it had no effect!"))
+     next false
+   end
+   pbPrimeStatusItemCheck(battler)
+   if !battler.pbCanParalyze?
+     next false
+   end
+   battler.pbParalyze(battler)
+   battler.pbAbilityCureCheck
+   scene.pbRefresh
+   scene.pbDisplay(_INTL("{1} was paralyzed by the {2}!",battler.pbThis,PBItems.getName(item)))
+   next true
+})
+
+ItemHandlers::BattleUseOnBattler.add(:QUALOTBERRY,proc{|item,battler,scene|
+   if !battler || battler.isFainted?
+     scene.pbDisplay(_INTL("But it had no effect!"))
+     next false
+   end
+   pbPrimeStatusItemCheck(battler)
+   if !battler.pbCanSleep?(true,true)
+     next false
+   end
+   battler.pbSleepSelf
+   battler.pbAbilityCureCheck
+   scene.pbRefresh
+   scene.pbDisplay(_INTL("{1} fell asleep using the {2}!",battler.pbThis,PBItems.getName(item)))
+   next true
+})
+
+ItemHandlers::BattleUseOnBattler.add(:HONDEWBERRY,proc{|item,battler,scene|
+   if !battler || battler.isFainted?
+     scene.pbDisplay(_INTL("But it had no effect!"))
+     next false
+   end
+   pbPrimeStatusItemCheck(battler)
+   if !battler.pbCanPetrify?
+     next false
+   end
+   battler.pbPetrify(battler)
+   battler.pbAbilityCureCheck
+   scene.pbRefresh
+   scene.pbDisplay(_INTL("{1} was crushed by the {2}!",battler.pbThis,PBItems.getName(item)))
+   next true
+})
+
+ItemHandlers::BattleUseOnBattler.add(:TAMATOBERRY,proc{|item,battler,scene|
+   if !battler || battler.isFainted?
+     scene.pbDisplay(_INTL("But it had no effect!"))
+     next false
+   end
+   pbPrimeStatusItemCheck(battler)
+   if !battler.pbCanPoison?(true,false)
+     next false
+   end
+   battler.pbPoison(battler,false)
+   battler.pbAbilityCureCheck
+   scene.pbRefresh
+   scene.pbDisplay(_INTL("{1} was poisoned by the {2}!",battler.pbThis,PBItems.getName(item)))
+   next true
+})
+
+ItemHandlers::BattleUseOnBattler.add(:DECOMPRESSOR,proc{|item,battler,scene|
+   if !battler || battler.isFainted? || battler.status!=PBStatuses::PETRIFIED
+     scene.pbDisplay(_INTL("But it had no effect!"))
+     next false
+   end
+   battler.status=0
+   battler.statusCount=0
+   battler.pokemon.status=0 if battler.pokemon
+   scene.pbRefresh
+   scene.pbDisplay(_INTL("{1} was uncrushed by the {2}!",battler.pbThis,PBItems.getName(item)))
+   next true
+})
+
+ItemHandlers::BattleUseOnBattler.add(:SNARE,proc{|item,battler,scene|
+   if !battler || battler.isFainted?
+     scene.pbDisplay(_INTL("But it had no effect!"))
+     next false
+   end
+   opponents=[]
+   opponents << battler.pbOpposing1 if battler.pbOpposing1 && !battler.pbOpposing1.isFainted?
+   opponents << battler.pbOpposing2 if battler.pbOpposing2 && !battler.pbOpposing2.isFainted?
+   opponents.compact!
+   opponents.uniq!
+   applied=false
+   for foe in opponents
+     next if foe.effects[PBEffects::MeanLook]>=0 || foe.effects[PBEffects::Substitute]>0
+     foe.effects[PBEffects::MeanLook]=battler.index
+     battler.battle.pbDisplay(_INTL("{1} can't escape now!",foe.pbThis))
+     applied=true
+   end
+   if !applied
+     scene.pbDisplay(_INTL("But it had no effect!"))
+     next false
+   end
+   next true
+})
+
+ItemHandlers::BattleUseOnBattler.add(:MAGNETWAND,proc{|item,battler,scene|
+   if !battler || battler.isFainted?
+     scene.pbDisplay(_INTL("But it had no effect!"))
+     next false
+   end
+   if battler.pbOwnSide.effects[PBEffects::Gravity]>0 ||
+      battler.pbOpposingSide.effects[PBEffects::Gravity]>0
+     scene.pbDisplay(_INTL("But it failed!"))
+     next false
+   end
+   if battler.effects[PBEffects::Ingrain] ||
+      battler.effects[PBEffects::SmackDown] ||
+      battler.effects[PBEffects::MagnetRise]>0
+     scene.pbDisplay(_INTL("But it failed!"))
+     next false
+   end
+   battler.effects[PBEffects::MagnetRise]=5
+   if $fefieldeffect == 1 || $fefieldeffect == 17 || $fefieldeffect == 18
+     battler.effects[PBEffects::MagnetRise]=8
+   end
+   scene.pbRefresh
+   battler.battle.pbDisplay(_INTL("{1} levitated with electromagnetism!",battler.pbThis))
+   next true
+})
 
 ItemHandlers::BattleUseOnBattler.add(:XATTACK,lambda{|item,battler,scene|
    playername=battler.battle.pbPlayer.name
