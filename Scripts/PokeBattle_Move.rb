@@ -282,6 +282,16 @@ class PokeBattle_Move
   end
 
   def pbTwoTurnAttack(attacker,checking=false)
+    if tribute_has?(attacker, :SPOOKYTRIBUTE) && tribute_inscribed?(attacker)
+      if attacker.effects[PBEffects::SpookyTribute]==0
+        attacker.effects[PBEffects::SpookyTribute]=2 # charging/invulnerable
+        attacker.effects[PBEffects::TwoTurnAttack]=@id
+        return true
+      elsif attacker.effects[PBEffects::SpookyTribute]==2
+        attacker.effects[PBEffects::SpookyTribute]=3 # striking turn
+        return false
+      end
+    end
     return false
   end
 
@@ -3496,6 +3506,9 @@ class PokeBattle_Move
         atk      = attacker.spatk
         atkstage = attacker.stages[PBStats::SPATK]+8
         damagemult = (damagemult*1.2).round
+      end
+      if attacker.hasWorkingItem(:SPOOKYTRIBUTE) && attacker.effects[PBEffects::SpookyTribute]==3
+        damagemult = (damagemult*1.5).round
       end
     end
     if attacker.hasWorkingAbility(:VISIONARY) && pbIsPhysical?(type)

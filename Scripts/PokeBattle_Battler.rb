@@ -1143,6 +1143,7 @@ class PokeBattle_Battler
     @effects[PBEffects::TrickRoomOnEntry] = false
     @effects[PBEffects::BlinkEntryTurn]   = -1
     @effects[PBEffects::ActedThisTurn]    = false
+    @effects[PBEffects::SpookyTribute]    = 0
     @effects[PBEffects::DesertsMark]      = false
     @effects[PBEffects::UsingItem]        = []
     @effects[PBEffects::WorldOfNightmares]= 0
@@ -5868,12 +5869,13 @@ class PokeBattle_Battler
         end
       end
     end
+    icicle_inscribed = thismove && thismove.basedamage==0 && thismove.tribute_has?(user, :ICICLETRIBUTE)
     # Change target to user of Follow Me (overrides Magic Coat
     # because check for Magic Coat below uses this target)
-    if thismove.target==PBTargets::SingleNonUser ||
+    if !icicle_inscribed && (thismove.target==PBTargets::SingleNonUser ||
       thismove.target==PBTargets::SingleOpposing ||
       thismove.target==PBTargets::RandomOpposing ||
-      thismove.target==PBTargets::OppositeOpposing
+      thismove.target==PBTargets::OppositeOpposing)
       for i in priority # use Pokémon latest in priority
         next if !pbIsOpposing?(i.index)
         if i.effects[PBEffects::FollowMe]==true || i.effects[PBEffects::RagePowder]==true
@@ -6184,6 +6186,7 @@ class PokeBattle_Battler
   
   
   def pbSuccessCheck(thismove,user,target,accuracy=true)
+    icicle_inscribed = thismove && thismove.basedamage==0 && thismove.tribute_has?(user, :ICICLETRIBUTE)
     if $fefieldeffect == 4
       if thismove.function==0xC4
         if @effects[PBEffects::TwoTurnAttack]>0
@@ -6231,6 +6234,10 @@ class PokeBattle_Battler
         @battle.pbDisplay(_INTL("But it failed...",target.pbThis))
         return false
       end
+    end
+    if target && target.effects[PBEffects::SpookyTribute]==2
+      @battle.pbDisplay(_INTL("{1} avoided the attack!",target.pbThis))
+      return false
     end
     if $fefieldeffect == 44  
       if thismove.fucnction==0xED || thismove.function==0xBC  
@@ -6303,15 +6310,15 @@ class PokeBattle_Battler
       return true
     end
     # TODO: "Before Protect" applies to Counter/Mirror Coat
-    if thismove.function==0xDE && ((target.status!=PBStatuses::SLEEP && (!target.hasWorkingAbility(:COMATOSE) && $fefieldeffect!=1) && (!user.hasWorkingAbility(:WORLDOFNIGHTMARES))) || !(user.effects[PBEffects::HealBlock]==0))  # Dream Eater
+    if !icicle_inscribed && thismove.function==0xDE && ((target.status!=PBStatuses::SLEEP && (!target.hasWorkingAbility(:COMATOSE) && $fefieldeffect!=1) && (!user.hasWorkingAbility(:WORLDOFNIGHTMARES))) || !(user.effects[PBEffects::HealBlock]==0))  # Dream Eater
       @battle.pbDisplay(_INTL("{1} wasn't affected!",target.pbThis))
       return false
     end
-    if (thismove.function==0xDD || thismove.function==0x139 || thismove.function==0x158) && !(user.effects[PBEffects::HealBlock]==0) # Absorbtion Moves
+    if !icicle_inscribed && (thismove.function==0xDD || thismove.function==0x139 || thismove.function==0x158) && !(user.effects[PBEffects::HealBlock]==0) # Absorbtion Moves
       @battle.pbDisplay(_INTL("{1} wasn't affected!",target.pbThis))
       return false
     end   
-    if thismove.function==0x113 && user.effects[PBEffects::Stockpile]==0 # Spit Up
+    if !icicle_inscribed && thismove.function==0x113 && user.effects[PBEffects::Stockpile]==0 # Spit Up
       @battle.pbDisplay(_INTL("But it failed to spit up a thing!"))
       return false
     end
@@ -6323,21 +6330,21 @@ class PokeBattle_Battler
         @battle.pbDisplay(_INTL("The Mat Block was broken!"))
       end
       
-      if target.pbOwnSide.effects[PBEffects::MatBlock] && (thismove.pbIsPhysical?(thismove.type) || thismove.pbIsSpecial?(thismove.type)) &&
+      if !icicle_inscribed && target.pbOwnSide.effects[PBEffects::MatBlock] && (thismove.pbIsPhysical?(thismove.type) || thismove.pbIsSpecial?(thismove.type)) &&
         thismove.canProtectAgainst? && !target.effects[PBEffects::ProtectNegation]
         @battle.pbDisplay(_INTL("{1} protected itself!",target.pbThis))
         @battle.successStates[user.index].protected=true
         return false
       end
       #### KUROTSUNE - 025 - END
-      if target.effects[PBEffects::Protect] && thismove.canProtectAgainst? && thismove.function!=0x116 &&
+      if !icicle_inscribed && target.effects[PBEffects::Protect] && thismove.canProtectAgainst? && thismove.function!=0x116 &&
         !target.effects[PBEffects::ProtectNegation]
         @battle.pbDisplay(_INTL("{1} protected itself!",target.pbThis))
         @battle.successStates[user.index].protected=true
         return false
       end
       #### KUROTSUNE - 016 - START
-      if target.pbOwnSide.effects[PBEffects::CraftyShield] && thismove.basedamage == 0 && !target.effects[PBEffects::ProtectNegation]
+      if !icicle_inscribed && target.pbOwnSide.effects[PBEffects::CraftyShield] && thismove.basedamage == 0 && !target.effects[PBEffects::ProtectNegation]
         @battle.pbDisplay(_INTL("{1}'s Crafty Shield activated!",target.pbThis))
         user.pbCancelMoves
         @battle.successStates[user.index].protected=true
@@ -6372,7 +6379,7 @@ class PokeBattle_Battler
 #      end
       # UPDATE 1/19/2014
       # King's Shield
-      if target.effects[PBEffects::KingsShield] && ((thismove.basedamage > 0) || $fefieldeffect == 5 || $fefieldeffect == 31) && (!target.effects[PBEffects::ProtectNegation]) && (thismove.function!=0x116) && thismove.hasFlags?('b')
+      if !icicle_inscribed && target.effects[PBEffects::KingsShield] && ((thismove.basedamage > 0) || $fefieldeffect == 5 || $fefieldeffect == 31) && (!target.effects[PBEffects::ProtectNegation]) && (thismove.function!=0x116) && thismove.hasFlags?('b')
         @battle.pbDisplay(_INTL("{1} protected itself!", target.pbThis))
         @battle.successStates[user.index].protected=true
         # physical contact
@@ -6387,7 +6394,7 @@ class PokeBattle_Battler
         return false
       end # end of update
       # Spiky Shield
-      if target.effects[PBEffects::SpikyShield] && 
+      if !icicle_inscribed && target.effects[PBEffects::SpikyShield] && 
         !target.effects[PBEffects::ProtectNegation] && thismove.canProtectAgainst? && thismove.function!=0x116
         @battle.pbDisplay(_INTL("{1} protected itself!", target.pbThis))
         @battle.successStates[user.index].protected=true
@@ -6403,7 +6410,7 @@ class PokeBattle_Battler
         return false
       end
       # Obstruct
-      if target.effects[PBEffects::Obstruct] && !target.effects[PBEffects::ProtectNegation] && thismove.canProtectAgainst?  && thismove.function!=0x116 && ((thismove.basedamage > 0) || $fefieldeffect == 5 || $fefieldeffect == 38)
+      if !icicle_inscribed && target.effects[PBEffects::Obstruct] && !target.effects[PBEffects::ProtectNegation] && thismove.canProtectAgainst?  && thismove.function!=0x116 && ((thismove.basedamage > 0) || $fefieldeffect == 5 || $fefieldeffect == 38)
         @battle.pbDisplay(_INTL("{1} protected itself!", target.pbThis))
         @battle.successStates[user.index].protected=true
         # physical contact
@@ -6413,7 +6420,7 @@ class PokeBattle_Battler
         return false
       end
       # Baneful Bunker
-      if target.effects[PBEffects::BanefulBunker] && 
+      if !icicle_inscribed && target.effects[PBEffects::BanefulBunker] && 
         ((thismove.basedamage > 0)) && 
         !target.effects[PBEffects::ProtectNegation] && thismove.canProtectAgainst? && thismove.function!=0x116
         @battle.pbDisplay(_INTL("{1} protected itself!", target.pbThis))
@@ -6427,7 +6434,7 @@ class PokeBattle_Battler
         return false
       end
       # Stormhold
-      if target.effects[PBEffects::Stormhold] && ((thismove.basedamage > 0)) && 
+      if !icicle_inscribed && target.effects[PBEffects::Stormhold] && ((thismove.basedamage > 0)) && 
         !target.effects[PBEffects::ProtectNegation] && thismove.canProtectAgainst? && thismove.function!=0x116
         @battle.pbDisplay(_INTL("{1} protected itself!", target.pbThis))
         @battle.successStates[user.index].protected=true
@@ -6525,6 +6532,10 @@ class PokeBattle_Battler
     if thismove.id==83  && thismove.pbTypeModMessages(thismove.type,user,target)==0
       return false
     end      
+    if icicle_inscribed
+      self.missed = false
+      return true
+    end
     if thismove.basedamage>0 && thismove.function!=0x02 && # Struggle
         thismove.function!=0x111 # Future Sight
       type=thismove.pbType(thismove.type,user,target)
@@ -6630,25 +6641,26 @@ class PokeBattle_Battler
     # end of update
     # TODO: If being Sky Dropped, return false
     # TODO: Gravity prevents airborne-based moves here
-    if self.hasWorkingAbility(:ANGERPOINT) && thismove.basedamage==0
+    if !icicle_inscribed && self.hasWorkingAbility(:ANGERPOINT) && thismove.basedamage==0
       @battle.pbDisplay(_INTL("{1} can't use status moves because of its {2}!",
           pbThis,PBAbilities.getName(self.ability)))
       return false
     end
-    if @effects[PBEffects::Taunt]>0 && thismove.basedamage==0
+    if !icicle_inscribed && @effects[PBEffects::Taunt]>0 && thismove.basedamage==0
       @battle.pbDisplay(_INTL("{1} can't use {2} after the taunt!",
           pbThis,thismove.name))
       return false
     end
-    if @effects[PBEffects::HealBlock]>0 && thismove.isHealingMove?
+    if !icicle_inscribed && @effects[PBEffects::HealBlock]>0 && thismove.isHealingMove?
       @battle.pbDisplay(_INTL("{1} can't use {2} after the Heal Block!",
           pbThis,thismove.name))
       return false
     end
-    if thismove.isSoundBased? && self.effects[PBEffects::ThroatChop]>0
+    if !icicle_inscribed && thismove.isSoundBased? && self.effects[PBEffects::ThroatChop]>0
       @battle.pbDisplay(_INTL("{1} can't use sound-based moves because of it's throat damage!",pbThis))
       return false    
     end    
+    if !icicle_inscribed && (@effects[PBEffects::Torment] || self.hasWorkingItem(:CURSEDPLATE)) && thismove.id==@lastMoveUsed &&
     if (@effects[PBEffects::Torment] || self.hasWorkingItem(:CURSEDPLATE)) && thismove.id==@lastMoveUsed &&
       thismove.id!=@battle.struggle.id
       if @effects[PBEffects::Torment]
@@ -6690,7 +6702,7 @@ class PokeBattle_Battler
       @battle.pbDisplay(_INTL("{1} can't use {2} after being warned!",pbThis,thismove.name))
       return false
     end
-    if self.hasWorkingAbility(:TRUANT) && @effects[PBEffects::Truant]
+    if !icicle_inscribed && self.hasWorkingAbility(:TRUANT) && @effects[PBEffects::Truant]
       @battle.pbDisplay(_INTL("{1} is loafing around!",pbThis))
       pbRecoverHP((self.totalhp/3).floor,true)
       return false
@@ -6699,7 +6711,7 @@ class PokeBattle_Battler
       @battle.pbDisplay(_INTL("{1} appears incapable of using its power!",pbThis))
       return false
     end
-    if @effects[PBEffects::HyperBeam]>0
+    if !icicle_inscribed && @effects[PBEffects::HyperBeam]>0
       @battle.pbDisplay(_INTL("{1} must recharge!",pbThis))
       return false
     end
@@ -6723,7 +6735,7 @@ class PokeBattle_Battler
         pbCheckForm
       end
     end
-    if @effects[PBEffects::Confusion]>0 && !@simplemove
+    if !icicle_inscribed && @effects[PBEffects::Confusion]>0 && !@simplemove
       @effects[PBEffects::Confusion]-=1
       if @effects[PBEffects::Confusion]<=0
         pbCureConfusion
@@ -6734,7 +6746,7 @@ class PokeBattle_Battler
       end
     end
     #### AME - 004 - START
-    if @effects[PBEffects::Flinch]
+    if !icicle_inscribed && @effects[PBEffects::Flinch]
       @effects[PBEffects::Flinch]=false
       if self.hasWorkingAbility(:INNERFOCUS)
         @battle.pbDisplay(_INTL("{1} won't flinch because of its {2}!",

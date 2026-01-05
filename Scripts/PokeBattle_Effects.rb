@@ -732,6 +732,11 @@ end
 # Added an extra parameter to determine if this was called from reduce stat
 # changed from: def pbIncreaseStat(stat,increment,showMessages,moveid=nil,attacker=nil,upanim=true)
   def pbIncreaseStat(stat,increment,showMessages1,moveid=nil,attacker=nil,upanim=true, cont_call=false, showMessages2=true)
+    if moveid && attacker && attacker.hasWorkingItem(:ZAPTRIBUTE) &&
+       attacker.moves && attacker.moves[0] && attacker.moves[0].id==moveid &&
+       attacker.moves[0].basedamage>0
+      increment += 1
+    end
     # here we call reduce instead
     if hasWorkingAbility(:CONTRARY) && !cont_call && !(self.moldbroken)
       ret=pbReduceStat(stat,increment,showMessages1,moveid,attacker,upanim,false,true,showMessages2)
@@ -903,6 +908,10 @@ end
 # Added another parameter to determine if we called from within increase
 # changed from: def pbReduceStat(stat,increment,showMessages,moveid=nil,attacker=nil,downanim=true,selfreduce=false)
   def pbReduceStat(stat,increment,showMessages1=true,moveid=nil,attacker=nil,downanim=true,selfreduce=false, cont_call=false, showMessages2=true, mirrored=false)
+    if moveid && attacker && attacker.hasWorkingItem(:DREADTRIBUTE) &&
+       attacker.moves && attacker.moves[0] && attacker.moves[0].id==moveid
+      increment += 1
+    end
     # no, we don't want to say reduce 5 times - Thunder Raid
     if moveid == 207
       showMessages2 = false

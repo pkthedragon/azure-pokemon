@@ -189,6 +189,7 @@ begin
   TrickRoomOnEntry   = 217
   BlinkEntryTurn     = 218
   ActedThisTurn      = 219
+  SpookyTribute      = 220
     # These effects apply to a side - starts from 300
     LightScreen   = 300
     LuckyChant    = 301

@@ -211,7 +211,11 @@ ItemHandlers::UseFromBag.copy(
   :FLAMETRIBUTE,
   :BLANKTRIBUTE,
   :FISTTRIBUTE,
-  :MINDTRIBUTE
+  :MINDTRIBUTE,
+  :ZAPTRIBUTE,
+  :ICICLETRIBUTE,
+  :DREADTRIBUTE,
+  :PIXITRIBUTE
 )
 
 ItemHandlers::UseFromBag.add(:GOLDENWINGS,proc{|item|
