@@ -51,34 +51,6 @@ Events.onTrainerPartyLoad+=proc {|sender,e|
         i.hp=1
       end
     end
-    if trainer.trainertype==PBTrainers::MYRON2 && trainer.name=="Myron"
-      for i in party
-        if (i.species==PBSpecies::MISMAGIUS)
-          case $game_variables[:Difficulty_Mode]
-          when 0
-            $game_variables[704]=2
-          when 1
-            $game_variables[704]=1
-          when 2
-            $game_variables[704]=3
-          end
-        end  
-      end
-    end
-    if trainer.trainertype==PBTrainers::GHOSTMAN && trainer.name=="Myron"
-      for i in party
-        if (i.species==PBSpecies::GENESECT)
-          case $game_variables[:Difficulty_Mode]
-          when 0
-            $game_variables[704]=2
-          when 1
-            $game_variables[704]=1
-          when 2
-            $game_variables[704]=3
-          end
-        end  
-      end
-    end
   end
 }
 
@@ -298,5 +270,15 @@ Events.onWildPokemonCreate+=proc {|sender,e|
     when 49 # Totodile
       pokemon.pbLearnMove(:ICEPUNCH) 
       pokemon.pbLearnMove(:AQUAJET) 
+    end	
+}
+
+Events.onWildPokemonCreate += proc {|sender, e|
+  pokemon = e[0]
+  if defined?($hollowEggMove) && $hollowEggMove
+    move_id = getID(PBMoves, $hollowEggMove)
+    if move_id && move_id > 0
+      pokemon.pbLearnMove(move_id)
     end
+  end
 }

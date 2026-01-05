@@ -13,6 +13,7 @@ class PokeBattle_DamageState
   attr_accessor :rampcrest     # Rampardos Crest possible
   attr_accessor :rampcrestused # Rampardos Crest used
   attr_accessor :stalwart      # Stalwart
+  attr_accessor :partialhit    # Graze
 
   def reset
     @hplost        = 0
@@ -28,6 +29,7 @@ class PokeBattle_DamageState
     @endured       = false
     @rampcrest     = false
     @rampcrestused = false
+    @partialhit = false
   end
 
   def initialize

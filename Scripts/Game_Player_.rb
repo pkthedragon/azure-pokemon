@@ -236,17 +236,56 @@ class Game_Player < Game_Character
       # Impassable
       return false
     end
+
+    # Terrain tags
+    dest_tag = $game_map.terrain_tag(new_x, new_y)
+    here_tag = $game_map.terrain_tag(x, y) rescue nil
+
+    # If we were swimming and are stepping onto non-water, turn swim off
+    if $PokemonGlobal && $PokemonGlobal.respond_to?(:swimming) &&
+       $PokemonGlobal.swimming && !pbIsWaterTag?(dest_tag)
+      $PokemonGlobal.swimming = false
+      Kernel.pbUpdateVehicle
+    end
+
+    # Rough water: must be surfing already
+    if pbIsRoughWaterTag?(dest_tag)
+      return false unless $PokemonGlobal && $PokemonGlobal.surfing
+      if !$game_map.valid?(new_x, new_y)
+        return false if !$MapFactory
+        return $MapFactory.isPassableFromEdge?(new_x, new_y)
+      end
+      return true if $DEBUG and Input.press?(Input::CTRL)
+      return super
+    end
+
+    # Calm water: freely swimmable
+    if pbIsCalmWaterTag?(dest_tag)
+      if $PokemonGlobal && !$PokemonGlobal.surfing && !$PokemonGlobal.diving && !$PokemonGlobal.lavasurfing
+        if $PokemonGlobal.respond_to?(:swimming)
+          $PokemonGlobal.swimming = true
+          Kernel.pbUpdateVehicle
+        end
+      end
+      if !$game_map.valid?(new_x, new_y)
+        return false if !$MapFactory
+        return $MapFactory.isPassableFromEdge?(new_x, new_y)
+      end
+      return true if $DEBUG and Input.press?(Input::CTRL)
+      return true
+    end
+
+    # Land and everything else: original behaviour
     if !$game_map.valid?(new_x, new_y)
       return false if !$MapFactory
       return $MapFactory.isPassableFromEdge?(new_x, new_y)
     end
-    # If debug mode is ON and ctrl key was pressed
     if $DEBUG and Input.press?(Input::CTRL)
-      # Passable
       return true
     end
     super
   end
+
   #-----------------------------------------------------------------------------
   # * Set Map Display Position to Center of Screen
   #-----------------------------------------------------------------------------

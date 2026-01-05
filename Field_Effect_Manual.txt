@@ -767,8 +767,8 @@ Razor Wind		Defog			Sand Tomb		Water Sport	Water Pledge		Hurricane	    	Water Sp
 (Passive effects by the field.):
 *	Fighting types are immune to confusion
 *	Pokemon with the following abilities ignore accuracy and evasion changes when attacking, unless an opponent has Unnerve:
-		Own Tempo		Inner Focus		Pure Power
-Steadfast
+		Inner Focus		Pure Power
+		Steadfast
  
 (The following moves are affected by this field.):
 *	These moves stir up ash, lowering all active Pokemons' accuracy:
@@ -1728,7 +1728,7 @@ Lava Plume 		Inferno Overdrive
 
 
 #---------------- 42. Bewitched Woods [BW] ----------------#
-"Double, double toil and trouble…"
+"Double, double toil and troubleÂ…"
  
 (Passive effects by the field.):
 *	Pokemon sleeping in the fairy rings take damage equal to 1/16th of max HP.
@@ -1746,10 +1746,10 @@ Lava Plume 		Inferno Overdrive
 		Dream Eater		Night Slash
 *	The following moves gain a 1.5x boost in power:
 		Hex             Mystical Fire	Spirit Break
-*	The following moves’ accuracy has been increased to 80:
+*	The following movesÂ’ accuracy has been increased to 80:
 		Sleep Powder		Grass Whistle
 		Hypnosis
-*	The following moves’ accuracy has been increased to 90:
+*	The following movesÂ’ accuracy has been increased to 90:
 		Poison Powder	Stun Spore
 		Will-O-Wisp
 *	Magic Powder puts the target to sleep
@@ -1763,7 +1763,7 @@ Lava Plume 		Inferno Overdrive
 *	Secret Power may randomly inflict Sleep, Poison, or Paralysis.
  
 (The following abilities are affected by this field):
-*	Prankster affects Dark-type Pokémon
+*	Prankster affects Dark-type PokÃ©mon
 *	Effect Spore has a doubled activation rate
 *	Natural Cure heals status at the end of the turn
 *	Pastel Veil and Aroma Veil remove the user's Fairy-type weaknesses
@@ -1879,7 +1879,7 @@ Magma Armor		Flame Body		Desolate Land
 
 
 #--------------- 45. Beach Field [BF] ---------------#
-“The waves lap at the shore.”
+Â“The waves lap at the shore.Â”
 
 (Passive effects by the field.):
 *	Sun lasts for 8 turns
@@ -1998,7 +1998,7 @@ Growth			Defend Order		Stockpile
 *	Swallow heals all status conditions
 *	Sticky Web's stat changes are amplified and affect airborne targets
 *	Strength Sap heals 30% more HP
-*	Sweet Scent makes all active non Bug-type Pokémon drowsy
+*	Sweet Scent makes all active non Bug-type PokÃ©mon drowsy
 *	Attract prevents the target from switching out
 *	Bug-type Pokemon are not affected by Stealth Rocks
 *	Nature Power becomes Infestation
@@ -2030,7 +2030,7 @@ Growth			Defend Order		Stockpile
 *	Flying-type moves increase in power x1.3
 *	Grass- and Water-type moves increase in power x1.2
 *	The following moves increase in power 1.5x and raise the Speed of all Pokemon on
-the field unless there are Strong Winds:
+*	Keen Eye Pokemon lock on upon entry and ignore Accuracy checks; Long Reach Pokemon ignore Accuracy checks
 Icy Wind		Ominous Wind	Silver Wind		Razor Wind	Fairy Wind		Aeroblast		Hurricane     		Twister        	Heat Wave		Clear Smog		Blizzard
 *	The following moves increase in power 1.3x:
 Thundershock    	Thunderbolt		Thunder
@@ -2066,7 +2066,7 @@ Steam Eruption
 *	Telluric Seed boosts Speed and makes the holder airborne
 
 #--------------- 49. Boxing Ring [BR] ---------------#
-“Fight to the faint!”
+Â“Fight to the faint!Â”
 
 (Passive effects by the field.):
 *	Pokemon can score points during the match (if a multiple conditions are triggered, the points stack), every 10 points, their attack becomes a combo and hits an additional time:
@@ -2095,8 +2095,40 @@ Flying Press		Darkest Lariat		All-Out Pummeling
 Malicious Moonsault
 *	The following moves have amplified stat changes: 
 Leer			Growl			Double Team
+
+#----------------- 50. Library Field [LF] --------------------#
+"Pages flutter around!"
+(Passive effects by the field.):
+*	Silenced Pokemon have their Speed reduced to x0.5
+*	Confused Pokemon take x2 damage
+(The following moves are affected by this field.):
+*	Fire-type moves increase in base power x1.3
+*	Special Psychic-type moves increase in base power x1.3
+*	Slashing and Wind moves increase in base power x1.3
+*	Sound-based moves silence the user
+*	These moves are boosted in power x1.3:
+		Focus Punch		Focus Blast		Return
+		Frustration		Perforate
+*	The following moves are boosted in power x1.5:
+		Smart Strike		Ancient Power		Barrage
+		Headbutt		Zen Headbutt		Iron Head
+		Head Smash		Head Charge		Skull Bash
+		Mind Blown
+*	The following moves are boosted in power x1.5 and become spread moves:
+		Fire Spin		Whirlpool
+*	The stat-changing effect of these moves is amplified:
+		Calm Mind		Amnesia
+*	Whirlwind and Telekinesis damage the target for 1/6th max HP
+*	Focus Blast cannot miss
+*	Focus Punch cannot be interrupted
+*	Focus Energy increases critical hit rate by three stages
+*	Helping Hand boost is increased to x2
+*	Doodle copies positive stat stages
+*	Nature Power becomes Calm Mind
+*	Camouflage changes the user's type to Normal
+*	Secret Power may silence
 Defense Curl		Agility
-*	Mirror Move raises the user’s speed by one stage when used
+*	Mirror Move raises the userÂ’s speed by one stage when used
 *	Obstruct lowers speed in addition to its normal effect
 *	Substitute blocks critical hits
 *	Camouflage makes the user a Fighting-type
@@ -2106,13 +2138,13 @@ Defense Curl		Agility
 (The following abilities are affected by this field): 
 *	Pressure and Moxie's effects are doubled
 *	Intimidate also lowers Special Attack
-*	Arena Trap affects non-grounded and Ghost-type pokémon 
+*	Arena Trap affects non-grounded and Ghost-type pokÃ©mon 
 *	Defiant boosts Defense by two stages upon activation
 *	Competitive boosts Special Defense by two stages upon activation
 *	Justified raises Special Attack upon activation
 *	Anger Point activates whenever hit by a super-effective move
 *	Rattled is triggered by all contact moves
-*	Rivalry’s boost is increased to x1.5 and activated regardless of gender
+*	RivalryÂ’s boost is increased to x1.5 and activated regardless of gender
 *	Guts decreases damage taken by x0.2
 *	Iron Fist boosts affected moves by x1.5 instead
 *	No Guard raises Speed and critical hit rate but lowers Defense and Special Defense

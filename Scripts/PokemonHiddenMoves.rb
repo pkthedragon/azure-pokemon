@@ -499,6 +499,7 @@ end
 def pbStartSurfing()
   Kernel.pbCancelVehicles
   $PokemonEncounters.clearStepCount
+  $PokemonGlobal.swimming = false if $PokemonGlobal.respond_to?(:swimming)
   $PokemonGlobal.surfing = true
   $PokemonTemp.surfJump = $MapFactory.getFacingCoords($game_player.x,$game_player.y,$game_player.direction)
   Kernel.pbUpdateVehicle
@@ -507,6 +508,7 @@ def pbStartSurfing()
   Kernel.pbUpdateVehicle
   $game_player.check_event_trigger_here([1,2])
 end
+
 
 def pbEndSurf(xOffset,yOffset)
   return false if !$PokemonGlobal.surfing
@@ -546,11 +548,10 @@ end
 Events.onAction+=lambda{|sender,e|
   return if $PokemonGlobal.surfing
   return if pbGetMetadata($game_map.map_id,MetadataBicycleAlways)
-  return if !pbIsWaterTag?(Kernel.pbFacingTerrainTag)
+  return if !pbIsRoughWaterTag?(Kernel.pbFacingTerrainTag)
   return if !$game_map.passable?($game_player.x,$game_player.y,$game_player.direction)
   Kernel.pbSurf
 }
-
 HiddenMoveHandlers::CanUseMove.add(:SURF,lambda{|move,pkmn,showmsg|
   return false if !pbCheckHiddenMoveBadge(BADGEFORSURF,showmsg)
   if $PokemonGlobal.surfing
@@ -565,7 +566,7 @@ HiddenMoveHandlers::CanUseMove.add(:SURF,lambda{|move,pkmn,showmsg|
     Kernel.pbMessage(_INTL("Let's enjoy cycling!")) if showmsg
     return false
   end
-  if !pbIsWaterTag?(Kernel.pbFacingTerrainTag) ||
+  if !pbIsRoughWaterTag?(Kernel.pbFacingTerrainTag) ||
      !$game_map.passable?($game_player.x,$game_player.y,$game_player.direction)
     Kernel.pbMessage(_INTL("No surfing here!")) if showmsg
     return false

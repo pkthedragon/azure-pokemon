@@ -611,6 +611,16 @@ def pbIsWaterTag?(tag)
          tag==PBTerrain::Waterfall
 end
 
+def pbIsCalmWaterTag?(tag)
+  return tag==PBTerrain::Water ||
+         tag==PBTerrain::StillWater
+end
+
+def pbIsRoughWaterTag?(tag)
+  return tag==PBTerrain::DeepWater
+end
+
+
 def pbIsGrimeTag?(tag)
   return tag==PBTerrain::Grime
 end
@@ -1929,6 +1939,8 @@ def Kernel.pbUpdateVehicle
       $game_player.character_name=pbGetPlayerCharset(meta,5) # Diving graphic
     elsif $PokemonGlobal.surfing
       $game_player.character_name=pbGetPlayerCharset(meta,3) # Surfing graphic
+    elsif $PokemonGlobal.respond_to?(:swimming) && $PokemonGlobal.swimming
+      $game_player.character_name=pbGetPlayerCharset(meta,6) # Swimming graphic
     elsif $PokemonGlobal.bicycle
       $game_player.character_name=pbGetPlayerCharset(meta,2) # Bicycle graphic
     elsif $PokemonGlobal.lavasurfing
@@ -1939,8 +1951,10 @@ def Kernel.pbUpdateVehicle
   end
 end
 
+
 def Kernel.pbCancelVehicles(destination=nil)
   $PokemonGlobal.surfing=false
+  $PokemonGlobal.swimming=false if $PokemonGlobal.respond_to?(:swimming)
   $game_switches[999]=false
   $PokemonGlobal.lavasurfing=false
   $PokemonGlobal.diving=false
@@ -1949,6 +1963,7 @@ def Kernel.pbCancelVehicles(destination=nil)
   end
   Kernel.pbUpdateVehicle
 end
+
 
 def pbCanUseBike?(mapid)
   return true if pbGetMetadata(mapid,MetadataBicycleAlways)
@@ -2703,6 +2718,15 @@ def Kernel.pbReceiveItem(item,quantity=1,plural=nil,silent=false)
     end
     return true
   else   # Can't add the item
+    if Kernel.pbConfirmMessage(_INTL("The Bag is full. Send the item to the PC instead?"))
+      $PokemonGlobal.pcItemStorage=PCItemStorage.new if !$PokemonGlobal.pcItemStorage
+      if $PokemonGlobal.pcItemStorage.pbStoreItem(item,quantity)
+        Kernel.pbMessage(_INTL("{1} sent the {2} to the PC storage.",$Trainer.name,itemname))
+        return true
+      else
+        Kernel.pbMessage(_INTL("There's no space left in the PC for that item."))
+      end
+    end
     return false
   end
 end

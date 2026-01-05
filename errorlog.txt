@@ -1,0 +1,81 @@
+Exception: SyntaxError
+Message: Game_Player_:290: Invalid return in class/module body
+      return false if !$MapFactory
+      ^~~~~~
+Game_Player_:291: Invalid return in class/module body
+      return $MapFactory.isPassableFromEd...
+      ^~~~~~
+Game_Player_:296: Invalid return in class/module body
+      return true
+      ^~~~~~
+Game_Player_:551: syntax error, unexpected `end', expecting end-of-input
+Export/Import Scripts:336:in `eval'
+Export/Import Scripts:336:in `block in <main>'
+Export/Import Scripts:333:in `each'
+Export/Import Scripts:333:in `each_with_index'
+Export/Import Scripts:333:in `<main>'
+-e:in `eval'
+Exception: NameError
+Message: undefined method `update' for class `Game_Player'
+Walk_Run:68:in `<class:Game_Player>'
+Walk_Run:1:in `block in <main>'
+Export/Import Scripts:336:in `eval'
+Export/Import Scripts:336:in `block in <main>'
+Export/Import Scripts:333:in `each'
+Export/Import Scripts:333:in `each_with_index'
+Export/Import Scripts:333:in `<main>'
+-e:in `eval'
+Exception: SyntaxError
+Message: Game_Player_:290: Invalid return in class/module body
+      return false if !$MapFactory
+      ^~~~~~
+Game_Player_:291: Invalid return in class/module body
+      return $MapFactory.isPassableFromEd...
+      ^~~~~~
+Game_Player_:296: Invalid return in class/module body
+      return true
+      ^~~~~~
+Game_Player_:551: syntax error, unexpected `end', expecting end-of-input
+Export/Import Scripts:336:in `eval'
+Export/Import Scripts:336:in `block in <main>'
+Export/Import Scripts:333:in `each'
+Export/Import Scripts:333:in `each_with_index'
+Export/Import Scripts:333:in `<main>'
+-e:in `eval'
+Exception: NameError
+Message: undefined method `update' for class `Game_Player'
+Walk_Run:68:in `<class:Game_Player>'
+Walk_Run:1:in `block in <main>'
+Export/Import Scripts:336:in `eval'
+Export/Import Scripts:336:in `block in <main>'
+Export/Import Scripts:333:in `each'
+Export/Import Scripts:333:in `each_with_index'
+Export/Import Scripts:333:in `<main>'
+-e:in `eval'
+Exception: SyntaxError
+Message: Game_Player_:290: Invalid return in class/module body
+      return false if !$MapFactory
+      ^~~~~~
+Game_Player_:291: Invalid return in class/module body
+      return $MapFactory.isPassableFromEd...
+      ^~~~~~
+Game_Player_:296: Invalid return in class/module body
+      return true
+      ^~~~~~
+Game_Player_:551: syntax error, unexpected `end', expecting end-of-input
+Export/Import Scripts:336:in `eval'
+Export/Import Scripts:336:in `block in <main>'
+Export/Import Scripts:333:in `each'
+Export/Import Scripts:333:in `each_with_index'
+Export/Import Scripts:333:in `<main>'
+-e:in `eval'
+Exception: NameError
+Message: undefined method `update' for class `Game_Player'
+Walk_Run:68:in `<class:Game_Player>'
+Walk_Run:1:in `block in <main>'
+Export/Import Scripts:336:in `eval'
+Export/Import Scripts:336:in `block in <main>'
+Export/Import Scripts:333:in `each'
+Export/Import Scripts:333:in `each_with_index'
+Export/Import Scripts:333:in `<main>'
+-e:in `eval'

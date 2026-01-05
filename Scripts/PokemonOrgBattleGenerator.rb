@@ -100,19 +100,13 @@ def pbGetLegalMoves2(species,maxlevel)
     end
   end
   babyspecies=babySpecies(species)
-  pbRgssOpen("Data/eggEmerald.dat","rb"){|f|
-     f.pos=(babyspecies-1)*8
-     offset=f.fgetdw
-     length=f.fgetdw
-     if length>0
-       f.pos=offset
-       i=0; loop do break unless i<length
-         atk=f.fgetw
-         addMove(moves,atk,2)
-         i+=1
-       end
-     end
-  }
+  movelist = $pkmn_egg[babyspecies]
+  if movelist
+    for i in movelist
+      atk = getID(PBMoves,i)
+      addMove(moves,atk,2)
+    end
+  end
   movedatas=[]
   for move in moves
     movedatas.push([move,moveData(move)])
