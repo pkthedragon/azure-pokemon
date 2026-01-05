@@ -6661,6 +6661,7 @@ class PokeBattle_Battler
       return false    
     end    
     if !icicle_inscribed && (@effects[PBEffects::Torment] || self.hasWorkingItem(:CURSEDPLATE)) && thismove.id==@lastMoveUsed &&
+    if (@effects[PBEffects::Torment] || self.hasWorkingItem(:CURSEDPLATE)) && thismove.id==@lastMoveUsed &&
       thismove.id!=@battle.struggle.id
       if @effects[PBEffects::Torment]
         @battle.pbDisplay(_INTL("{1} can't use the same move in a row due to the torment!",
