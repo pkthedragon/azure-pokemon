@@ -185,6 +185,7 @@ module PokeBattle_BattleCommon
         end         
         a=battler.totalhp
         b=battler.hp
+        guaranteed=pbGuaranteedCatch?(ball,battler)
         rareness=BallHandlers.modifyCatchRate(ball,rareness,self,battler)
         x=(((a*3-b*2)*rareness)/(a*3)).floor
         if battler.status==PBStatuses::SLEEP || battler.status==PBStatuses::FROZEN ||
@@ -193,66 +194,21 @@ module PokeBattle_BattleCommon
         elsif battler.status!=0
           x=(x*1.5).floor
         end
-        #Critical Capture chances based on caught species'
-        c=0
-        if $Trainer
-          if $Trainer.pokedexOwned>600
-            c=(x*2.5/6).floor
-          elsif $Trainer.pokedexOwned>450
-            c=(x*2/6).floor
-          elsif $Trainer.pokedexOwned>300
-            c=(x*1.5/6).floor
-          elsif $Trainer.pokedexOwned>150
-            c=(x*1/6).floor
-          elsif $Trainer.pokedexOwned>30
-            c=(x*0.5/6).floor
-          end
-        end
-        if $PokemonBag.pbHasItem?(:CATCHINGCHARM)
-          # Catching Charm provides a modest boost to critical capture odds (10% in
-          # modern titles). Round down to match the rest of the capture math.
-          c=(c*1.1).floor
-        end
         shakes=0; critical=false; critsuccess=false
-        if x>255 || BallHandlers.isUnconditional?(ball,self,battler)
+        if guaranteed
           shakes=4
         else
-          x=1 if x<1
-          y = (65536/((255.0/x)**0.1875) ).floor
-          if pbRandom(256)<c
-            critical=true
-            if pbRandom(65536)<y 
-              critsuccess=true
-              shakes=4 
-            end            
-          else          
-            shakes+=1 if pbRandom(65536)<y
-            shakes+=1 if pbRandom(65536)<y
-            shakes+=1 if pbRandom(65536)<y
-            shakes+=1 if pbRandom(65536)<y 
-          end        
+          shakes=1
         end
       end
-      @scene.pbThrow(ball,(critical) ? 1 : shakes,critical,critsuccess,battler.index,showplayer)
+      display_shakes = guaranteed ? 3 : 1
+      @scene.pbThrow(ball,(critical) ? 1 : display_shakes,critical,critsuccess,battler.index,showplayer)
       
-      case shakes
-      when 0
+      if !guaranteed
         pbDisplay(_INTL("Oh no! The Pokémon broke free!"))
         BallHandlers.onFailCatch(ball,self,pokemon)
         pbBallFetch(ball)
-      when 1
-        pbDisplay(_INTL("Aww... It appeared to be caught!"))
-        BallHandlers.onFailCatch(ball,self,pokemon)
-        pbBallFetch(ball)
-      when 2
-        pbDisplay(_INTL("Aargh! Almost had it!"))
-        BallHandlers.onFailCatch(ball,self,pokemon)
-        pbBallFetch(ball)
-      when 3
-        pbDisplay(_INTL("Shoot! It was so close, too!"))
-        BallHandlers.onFailCatch(ball,self,pokemon)
-        pbBallFetch(ball)
-      when 4
+      else
         pbDisplayBrief(_INTL("Gotcha! {1} was caught!",pokemon.name))
 #        @scene.pbThrowSuccess
         if pbIsSnagBall?(ball) && @opponent
@@ -286,6 +242,23 @@ module PokeBattle_BattleCommon
       end
     end
   end
+end
+
+def pbIsTrappedForCatch?(battler)
+  return false if !battler
+  return true if battler.effects[PBEffects::MeanLook]>=0
+  return true if battler.effects[PBEffects::MultiTurn]>0
+  return true if battler.effects[PBEffects::Ingrain]
+  return false
+end
+
+def pbGuaranteedCatch?(ball,battler)
+  return false if !battler
+  return true if BallHandlers.isUnconditional?(ball,self,battler)
+  return false if @opponent # Don't auto-capture in trainer battles
+  return true if battler.status!=0
+  return true if pbIsTrappedForCatch?(battler)
+  return false
 end
 
 
