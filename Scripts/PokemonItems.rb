@@ -177,6 +177,8 @@ module ItemHandlers
   BattleUseOnBattler=ItemHandlerHash.new
   BattleUseOnPokemon=ItemHandlerHash.new
   UseInBattle=ItemHandlerHash.new
+  DamageCalcUserAlly=ItemHandlerHash.new
+  DamageCalcUserTarget=ItemHandlerHash.new
 
   def self.addUseFromBag(item,proc)
     UseFromBag.add(item,proc)
