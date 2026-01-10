@@ -1317,6 +1317,107 @@ def pbMessageWaitForInput(msgwindow,frames,showPause=false)
   end
 end
 
+OFFSET_NAMEWINDOW_X=0
+OFFSET_NAMEWINDOW_Y=0
+DEFAULT_ALIGNMENT=1
+MIN_WIDTH=200
+DEFAULT_FONT="Power Green Narrow"
+DEFAULT_FONT_SIZE=nil
+DEFAULT_WINDOWSKIN=nil
+
+def pbDisplayNameWindow(params)
+  name=params[1].to_s
+  isDark=params[2] ? true : false
+  colorBase=colorToRgb32(MessageConfig::DARKTEXTBASE)
+  colorBase=colorToRgb32(MessageConfig::LIGHTTEXTBASE) if isDark==true
+  colorBase=params[3] if params[3] && params[3]!=""
+  colorShadow=colorToRgb32(MessageConfig::DARKTEXTSHADOW)
+  colorShadow=colorToRgb32(MessageConfig::LIGHTTEXTSHADOW) if isDark==true
+  colorShadow=params[4] if params[4] && params[4]!=""
+  font=params[5] if params[5] && params[5]!=""
+  font=DEFAULT_FONT if !font || font=="" || font=="0"
+  fontSize=DEFAULT_FONT_SIZE
+  fontSize=params[6] if params[6] && params[6]!=""
+  position=params[7] if params[7] && params[7]!=""
+  newX=params[8] if params[8] && params[8]!=""
+  newY=params[9] if params[9] && params[9]!=""
+  newSkin=params[10] if params[10] && params[10]!=""
+  newSkin=DEFAULT_WINDOWSKIN if !newSkin || newSkin=="" || newSkin=="0" || newSkin=="nil"
+  msgwindow=params[0]
+  fullName=(params[1].split(","))[0]
+  align=""
+  alignEnd=""
+  case DEFAULT_ALIGNMENT
+  when 0
+    align="<al>"
+    alignEnd="</al>"
+  when 1
+    align="<ac>"
+    alignEnd="</ac>"
+  when 2
+    align="<ar>"
+    alignEnd="</ar>"
+  end
+  if !position.nil? && position!="nil"
+    case position
+    when "0"
+      align="<al>"
+      alignEnd="</al>"
+    when "1", "", nil
+      align="<ac>"
+      alignEnd="</ac>"
+    when "2"
+      align="<ar>"
+      alignEnd="</ar>"
+    end
+  end
+  fullName.insert(0,align)
+  fullName+=alignEnd
+  if !colorBase || colorBase.empty?
+    colorBase=colorToRgb32(MessageConfig::DARKTEXTBASE)
+    colorBase=colorToRgb32(MessageConfig::LIGHTTEXTBASE) if isDark==true
+  end
+  if !colorShadow || colorShadow.empty?
+    colorShadow=colorToRgb32(MessageConfig::DARKTEXTSHADOW)
+    colorShadow=colorToRgb32(MessageConfig::LIGHTTEXTSHADOW) if isDark==true
+  end
+  fullColor="<c3="+colorBase+","+colorShadow+">"
+  fullName.insert(0,fullColor) unless fullColor=="<c3=0,0>"
+  if font && !font.empty?
+    fullFont="<fn="+font+">"
+    fullName.insert(0,fullFont)
+    fullName+="</fn>"
+  end
+  if fontSize && ((fontSize.is_a?(Numeric) && fontSize!=0) ||
+     (fontSize.is_a?(String) && !fontSize.empty? && fontSize!="0"))
+    fullFontSize="<fs="+fontSize.to_s+">"
+    fullName.insert(0,fullFontSize)
+    fullName+="</fs>"
+  end
+  namewindow=Window_AdvancedTextPokemon.new(_INTL(fullName.to_s))
+  if newSkin
+    namewindow.setSkin("Graphics/Windowskins/#{newSkin}")
+  elsif msgwindow
+    namewindow.send(:__setWindowskin, msgwindow.windowskin)
+  end
+  namewindow.resizeToFit(namewindow.text,Graphics.width)
+  namewindow.width=MIN_WIDTH if namewindow.width<=MIN_WIDTH
+  namewindow.y=msgwindow.y-namewindow.height if msgwindow
+  if newX && newX!="0"
+    namewindow.x=newX.to_i
+  else
+    namewindow.x+=OFFSET_NAMEWINDOW_X
+  end
+  if newY && newY!="0"
+    namewindow.y=newY.to_i
+  else
+    namewindow.y+=OFFSET_NAMEWINDOW_Y
+  end
+  namewindow.viewport=msgwindow.viewport if msgwindow
+  namewindow.z=msgwindow.z if msgwindow
+  return namewindow
+end
+
 def Kernel.pbMessageDisplay(msgwindow,message,letterbyletter=true,commandProc=nil)
   return if !msgwindow
   oldletterbyletter=msgwindow.letterbyletter
@@ -1328,6 +1429,7 @@ def Kernel.pbMessageDisplay(msgwindow,message,letterbyletter=true,commandProc=ni
   goldwindow=nil
   coinwindow=nil
   apwindow=nil
+  namewindow=nil
   cmdvariable=0
   cmdIfCancel=0
   msgwindow.waitcount=0
@@ -1387,7 +1489,7 @@ def Kernel.pbMessageDisplay(msgwindow,message,letterbyletter=true,commandProc=ni
   ### Controls
   textchunks=[]
   controls=[]
-  while text[/(?:\\([WwFf]|[Ff][Ff]|[Tt][Ss]|[Cc][Ll]|[Mm][Ee]|[Ss][Ee]|[Ww][Tt]|[Ww][Tt][Nn][Pp]|[Cc][Hh])\[([^\]]*)\]|\\([Gg]|[Cc][Nn]|[Aa][Pp]|[Ww][Dd]|[Ww][Mm]|[Oo][Pp]|[Ss][Hh]|[Cc][Ll]|[Ww][Uu]|[\.]|[\|]|[\!]|[\x5E])())/i]
+  while text[/(?:\\([WwFf]|[Ff][Ff]|[Tt][Ss]|[Cc][Ll]|[Mm][Ee]|[Ss][Ee]|[Ww][Tt]|[Ww][Tt][Nn][Pp]|[Cc][Hh]|[Xx][Nn]|[Dd][Xx][Nn]|[Xx][Nn][Aa]|[Xx][Nn][Bb]|[Xx][Nn][Cc])\[([^\]]*)\]|\\([Gg]|[Cc][Nn]|[Aa][Pp]|[Ww][Dd]|[Ww][Mm]|[Oo][Pp]|[Ss][Hh]|[Cc][Ll]|[Ww][Uu]|[\.]|[\|]|[\!]|[\x5E])())/i]
     textchunks.push($~.pre_match)
     if $~[1]
       controls.push([$~[1].downcase,$~[2],-1])
@@ -1521,6 +1623,43 @@ def Kernel.pbMessageDisplay(msgwindow,message,letterbyletter=true,commandProc=ni
         elsif control=="ap" # Display AP window
           apwindow.dispose if apwindow
           apwindow=pbDisplayAPWindow(msgwindow,goldwindow)
+        elsif control=="xn" || control=="dxn"
+          string=controls[i][1]
+          extra=string.split(",")
+          extra[1]="" if !extra[1]
+          extra[2]="" if !extra[2]
+          extra[3]="0" if !extra[3] || extra[3]==""
+          extra[4]="0" if !extra[4] || extra[4]==""
+          extra[5]="nil" if !extra[5] || extra[5]==""
+          extra[6]="0" if !extra[6] || extra[6]==""
+          extra[7]="0" if !extra[7] || extra[7]==""
+          extra[8]="0" if !extra[8] || extra[8]==""
+          colorBase=extra[1]
+          colorShadow=extra[2]
+          font=extra[3]
+          fontSize=extra[4]
+          alignment=extra[5]
+          forcedX=extra[6]
+          forcedY=extra[7]
+          newSkin=extra[8]
+          namewindow.dispose if namewindow
+          namewindow=pbDisplayNameWindow([msgwindow,string,control=="dxn",
+             colorBase,colorShadow,font,fontSize,alignment,forcedX,forcedY,newSkin])
+        elsif control=="xna"
+          string=controls[i][1]
+          namewindow.dispose if namewindow
+          namewindow=pbDisplayNameWindow([msgwindow,string,false,"ef2110","ffadbd",
+             "0","0",nil,"0","0","0"])
+        elsif control=="xnb"
+          string=controls[i][1]
+          namewindow.dispose if namewindow
+          namewindow=pbDisplayNameWindow([msgwindow,string,false,"0073ff","7bbdef",
+             "0","0",nil,"0","0","0"])
+        elsif control=="xnc"
+          string=controls[i][1]
+          namewindow.dispose if namewindow
+          namewindow=pbDisplayNameWindow([msgwindow,string,false,"0","0",
+             "Power Clear","0",nil,"96","96","speech frlg"])
         elsif control=="wu"
           msgwindow.y=0
           atTop=true
@@ -1614,6 +1753,7 @@ def Kernel.pbMessageDisplay(msgwindow,message,letterbyletter=true,commandProc=ni
   coinwindow.dispose if coinwindow
   apwindow.dispose if apwindow
   facewindow.dispose if facewindow
+  namewindow.dispose if namewindow
   if haveSpecialClose
     pbSEPlay(pbStringToAudioFile(specialCloseSE))
     atTop=(msgwindow.y==0)
