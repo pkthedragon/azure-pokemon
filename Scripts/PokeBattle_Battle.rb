@@ -8633,3 +8633,93 @@ def pbEndOfBattle(canlose=false)
   end
 end
 end
+
+class PokeBattle_Battler
+  unless method_defined?(:pbProcessTurn)
+    def pbProcessTurn(choice)
+      # Can't use a move if fainted
+      return if self.isFainted?
+      # Wild roaming Pokémon always flee if possible
+      if !@battle.opponent && @battle.pbIsOpposing?(self.index) &&
+        @battle.rules["alwaysflee"] && @battle.pbCanRun?(self.index)
+        pbBeginTurn(choice)
+        @battle.pbDisplay(_INTL("{1} fled!",self.pbThis))
+        @battle.decision=3
+        pbEndTurn(choice)
+        return
+      end
+      # If this battler's action for this round wasn't "use a move"
+      if choice[0]!=1
+        # Clean up effects that end at battler's turn
+        pbBeginTurn(choice)
+        pbEndTurn(choice)
+        return
+      end
+      # Turn is skipped if Pursuit was used during switch
+      if @effects[PBEffects::Pursuit]
+        @effects[PBEffects::Pursuit]=false
+        pbCancelMoves
+        pbEndTurn(choice)
+        @battle.pbJudgeSwitch
+        return
+      end
+      # Use the move
+      if choice[2].zmove && !@effects[PBEffects::Flinch] && @status!=PBStatuses::SLEEP && @status!=PBStatuses::FROZEN
+        choice[2].zmove=false
+        @battle.pbUseZMove(self.index,choice[2],self.item,choice[1])
+      else
+        choice[2].zmove=false if choice[2].zmove # For flinches
+        #    @battle.pbDisplayPaused("Before: [#{@lastMoveUsedSketch},#{@lastMoveUsed}]")
+        @battle.previousMove = @battle.lastMoveUsed
+        @previousMove = @lastMoveUsed
+        PBDebug.logonerr{
+          pbUseMove(choice,choice[2]==@battle.struggle)
+        }
+        for foe in [pbOpposing1,pbOpposing2]
+          next if !foe || foe.isFainted?
+          if foe.effects[PBEffects::TempShieldTurns]>0
+            foe.effects[PBEffects::TempShieldTurns]-=1
+            if foe.effects[PBEffects::TempShieldTurns]<=0
+              foe.effects[PBEffects::TempShieldHP]=0
+              if @battle.battlescene && @battle.scene
+                sprite=@battle.scene.sprites["battlebox#{foe.index}"] rescue nil
+                sprite.refresh if sprite
+              end
+            end
+          end
+        end
+        if (self.index==0 || self.index==2) && !@battle.isOnline? # Move memory system for AI
+          if @battle.aiMoveMemory[0].length==0 && choice[2].basedamage!=0
+            @battle.aiMoveMemory[0].push(choice[2])
+          elsif @battle.aiMoveMemory[0].length!=0 && choice[2].basedamage!=0          
+            dam1=@battle.pbRoughDamage(choice[2],self,@battle.battlers[1],255,choice[2].basedamage)
+            dam2=@battle.pbRoughDamage(@battle.aiMoveMemory[0][0],self,@battle.battlers[1],255,@battle.aiMoveMemory[0][0].basedamage)
+            if dam1>dam2
+              @battle.aiMoveMemory[0].clear
+              @battle.aiMoveMemory[0].push(choice[2])
+            end          
+          end                    
+          if @battle.aiMoveMemory[1].length==0 
+            @battle.aiMoveMemory[1].push(choice[2])        
+          else
+            dupecheck=0
+            for i in @battle.aiMoveMemory[1]
+              dupecheck+=1 if i.id == choice[2].id
+            end
+            @battle.aiMoveMemory[1].push(choice[2]) if dupecheck==0
+          end 
+          if @battle.aiMoveMemory[2][self.pokemonIndex].length==0 
+            @battle.aiMoveMemory[2][self.pokemonIndex].push(choice[2])        
+          else
+            dupecheck=0
+            for i in @battle.aiMoveMemory[2][self.pokemonIndex]
+              dupecheck+=1 if i.id == choice[2].id
+            end
+            @battle.aiMoveMemory[2][self.pokemonIndex].push(choice[2]) if dupecheck==0
+          end         
+        end
+      end    
+      #   @battle.pbDisplayPaused("After: [#{@lastMoveUsedSketch},#{@lastMoveUsed}]")
+    end
+  end
+end
