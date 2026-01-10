@@ -1547,14 +1547,17 @@ class PokeBattle_Move
     end
     accstage=attacker.stages[PBStats::ACCURACY]
     accstage=0 if (opponent.hasWorkingAbility(:UNAWARE) || @battle.SilvallyCheck(opponent,PBTypes::FAIRY)) && !(opponent.moldbroken)
-    accuracy=(accstage>=0) ? (accstage+3)*100.0/3 : 300.0/(3-accstage)
+    stagemul=[2.0,1.0,2.0,1.0,3.0,2.0,5.0]
+    stagediv=[5.0,2.0,3.0,1.0,2.0,1.0,2.0]
+    accuracy=(100.0*stagemul[accstage+3]/stagediv[accstage+3])
     evastage=opponent.stages[PBStats::EVASION]
-    evastage=-8 if evastage<-8
+    evastage=-3 if evastage<-3
+    evastage=3 if evastage>3
     evastage=0 if opponent.effects[PBEffects::Foresight] ||
                   opponent.effects[PBEffects::MiracleEye] ||
                   @function==0xA9 || # Chip Away
                   (attacker.hasWorkingAbility(:UNAWARE) || @battle.SilvallyCheck(attacker,PBTypes::FAIRY)) && !(opponent.moldbroken)
-    evasion=(evastage>=0) ? (evastage+3)*100.0/3 : 300.0/(3-evastage)
+    evasion=(100.0*stagemul[evastage+3]/stagediv[evastage+3])
     if attacker.hasWorkingAbility(:COMPOUNDEYES)
       accuracy*=1.3
     end
@@ -1791,8 +1794,8 @@ class PokeBattle_Move
     if (options&NOCRITICAL)==0
       opponent.damagestate.critical=pbIsCritical?(attacker,opponent)
     end
-    stagemul=[10,10,10,10,10,10,10,10,10,12.5,15,17.5,20,22.5,25,27.5,30]
-    stagediv=[30,27.5,25,22.5,20,17.5,15,12.5,10,10,10,10,10,10,10,10,10]
+    stagemul=[2.0,1.0,2.0,1.0,3.0,2.0,5.0]
+    stagediv=[5.0,2.0,3.0,1.0,2.0,1.0,2.0]
     if (options&NOTYPE)==0
       type=pbType(@type,attacker,opponent)
     else
@@ -3401,53 +3404,53 @@ class PokeBattle_Move
     basedmg=(basedmg*damagemult*1.0/0x1000).round
     ##### Calculate attacker's attack stat #####
     atk=attacker.attack
-    atkstage=attacker.stages[PBStats::ATTACK]+8
+    atkstage=attacker.stages[PBStats::ATTACK]+3
     if attacker.effects[PBEffects::PowerTrick]
       atk=attacker.defense
-      atkstage=attacker.stages[PBStats::DEFENSE]+8
+      atkstage=attacker.stages[PBStats::DEFENSE]+3
     end
     if @function==0x121 # Foul Play
       atk=opponent.attack
-      atkstage=opponent.stages[PBStats::ATTACK]+8
+      atkstage=opponent.stages[PBStats::ATTACK]+3
       if opponent.effects[PBEffects::PowerTrick]
         atk=opponent.defense
-        atkstage=opponent.stages[PBStats::DEFENSE]+8
+        atkstage=opponent.stages[PBStats::DEFENSE]+3
       end         
     end
     if @function==0x184 # Body Press
       atk=attacker.defense 
-      atkstage=attacker.stages[PBStats::DEFENSE]+8
+      atkstage=attacker.stages[PBStats::DEFENSE]+3
       if attacker.effects[PBEffects::PowerTrick]
         atk=attacker.attack
-        atkstage=attacker.stages[PBStats::ATTACK]+8
+        atkstage=attacker.stages[PBStats::ATTACK]+3
       end         
     end
     if @function==0x209
       atk=attacker.spdef
-      atkstage=attacker.stages[PBStats::SPDEF]+8
+      atkstage=attacker.stages[PBStats::SPDEF]+3
     end
     if @function==0x175 || @function==0x25E || @function==0x0F6 # Photon Geyser 
       atk=attacker.spatk
-      atkstage=attacker.stages[PBStats::SPATK]+8  
+      atkstage=attacker.stages[PBStats::SPATK]+3  
       if attacker.attack > attacker.spatk
         atk=attacker.attack
-        atkstage=attacker.stages[PBStats::ATTACK]+8
+        atkstage=attacker.stages[PBStats::ATTACK]+3
       end
     end
     if type>=0 && (pbIsSpecial?(type) || (isConst?(attacker.species,PBSpecies,:CRYOGONAL) && attacker.hasWorkingItem(:CRYCREST)))
       atk=attacker.spatk
-      atkstage=attacker.stages[PBStats::SPATK]+8
+      atkstage=attacker.stages[PBStats::SPATK]+3
 #      if @function==0x121 # Foul Play
 #        atk=opponent.spatk
-#        atkstage=opponent.stages[PBStats::SPATK]+8
+#        atkstage=opponent.stages[PBStats::SPATK]+3
 #      end
       if @function==0x273   # Faerie Fib
         atk      = opponent.spatk
-        atkstage = opponent.stages[PBStats::SPATK]+8
+        atkstage = opponent.stages[PBStats::SPATK]+3
 	  end
       if @function==0x27A   # Hallucinate
         atk      = attacker.spdef
-        atkstage = attacker.stages[PBStats::SPDEF]+8
+        atkstage = attacker.stages[PBStats::SPDEF]+3
       end	  
       if $fefieldeffect == 24
         gl1 = 0
@@ -3486,25 +3489,25 @@ class PokeBattle_Move
         batteryBoost = 1.3 if attacker.pbPartner.hasWorkingAbility(:BATTERY)
         gl1 = attacker.spatk
         gl2 = attacker.spdef
-        gl3 = attacker.stages[PBStats::SPDEF]+8
-        gl4 = attacker.stages[PBStats::SPATK]+8
+        gl3 = attacker.stages[PBStats::SPDEF]+3
+        gl4 = attacker.stages[PBStats::SPATK]+3
         gl2=(gl2*1.0*avBoost*evioBoost*dssBoost*fgBoost*stagemul[gl3]/stagediv[gl3]).floor
         gl1=(gl1*1.0*specsBoost*dstBoost*lbBoost*fbBoost*minusBoost*plusBoost*solarBoost*hydroBoost*batteryBoost*stagemul[gl4]/stagediv[gl4]).floor
         if gl1 < gl2
           atk=attacker.spdef
-          atkstage=attacker.stages[PBStats::SPDEF]+8
+          atkstage=attacker.stages[PBStats::SPDEF]+3
         end
       end
     end
     if tribute_inscribed?(attacker)
       if attacker.hasWorkingItem(:FISTTRIBUTE)
         atk      = attacker.attack
-        atkstage = attacker.stages[PBStats::ATTACK]+8
+        atkstage = attacker.stages[PBStats::ATTACK]+3
         damagemult = (damagemult*1.2).round
       end
       if attacker.hasWorkingItem(:MINDTRIBUTE)
         atk      = attacker.spatk
-        atkstage = attacker.stages[PBStats::SPATK]+8
+        atkstage = attacker.stages[PBStats::SPATK]+3
         damagemult = (damagemult*1.2).round
       end
       if attacker.hasWorkingItem(:SPOOKYTRIBUTE) && attacker.effects[PBEffects::SpookyTribute]==3
@@ -3513,21 +3516,21 @@ class PokeBattle_Move
     end
     if attacker.hasWorkingAbility(:VISIONARY) && pbIsPhysical?(type)
       atk=attacker.spatk
-      atkstage=attacker.stages[PBStats::SPATK]+8
+      atkstage=attacker.stages[PBStats::SPATK]+3
     end
     if @function==0x208 # Super UMD  
       atk=attacker.spdef
-      atkstage=attacker.stages[PBStats::SPDEF]+8
+      atkstage=attacker.stages[PBStats::SPDEF]+3
     end
     if attacker.hasWorkingItem(:CLAYCREST) && isConst?(attacker.species,PBSpecies,:CLAYDOL) # Claydol Crest
         atk=attacker.defense
     end  
     if attacker.hasWorkingItem(:TYPHCREST) && isConst?(attacker.species,PBSpecies,:TYPHLOSION) # Typhlosion Crest
         atk=attacker.spatk
-        atkstage=attacker.stages[PBStats::SPATK]+8
+        atkstage=attacker.stages[PBStats::SPATK]+3
     end 
     if (!(opponent.hasWorkingAbility(:UNAWARE) || @battle.SilvallyCheck(opponent, PBTypes::FAIRY)) || (options&SELFCONFUSE)!=0 || opponent.moldbroken)
-      atkstage=8 if opponent.damagestate.critical && atkstage<8
+      atkstage=3 if opponent.damagestate.critical && atkstage<3
       atk=(atk*1.0*stagemul[atkstage]/stagediv[atkstage]).floor
     end
     if attacker.hasWorkingAbility(:HUSTLE) && pbIsPhysical?(type)
@@ -3824,14 +3827,14 @@ class PokeBattle_Move
     atk=(atk*atkmult*1.0/0x1000).round
     ##### Calculate opponent's defense stat #####
     defense=opponent.defense
-    defstage=opponent.stages[PBStats::DEFENSE]+8
+    defstage=opponent.stages[PBStats::DEFENSE]+3
     if @function==0x205 # Matrix Shot
       defense=opponent.spdef
-      defstage=opponent.stages[PBStats::SPDEF]+8
+      defstage=opponent.stages[PBStats::SPDEF]+3
     end
     if opponent.effects[PBEffects::PowerTrick]
       defense=opponent.attack
-      defstage=opponent.stages[PBStats::ATTACK]+8
+      defstage=opponent.stages[PBStats::ATTACK]+3
     end    
     # TODO: Wonder Room should apply around here
     applysandstorm=false
@@ -3841,7 +3844,7 @@ class PokeBattle_Move
     gl4 = 0  
     if type>=0 && pbIsSpecial?(type) && @function!=0x122 # Psyshock
       defense=opponent.spdef
-      defstage=opponent.stages[PBStats::SPDEF]+8
+      defstage=opponent.stages[PBStats::SPDEF]+3
       if $fefieldeffect == 24      
         avBoost = 1
         iceScalesBoost = 1
@@ -3876,13 +3879,13 @@ class PokeBattle_Move
         batteryBoost = 1.3 if attacker.pbPartner.hasWorkingAbility(:BATTERY)
         gl1 = opponent.spatk
         gl2 = opponent.spdef
-        gl3 = opponent.stages[PBStats::SPDEF]+8
-        gl4 = opponent.stages[PBStats::SPATK]+8
+        gl3 = opponent.stages[PBStats::SPDEF]+3
+        gl4 = opponent.stages[PBStats::SPATK]+3
         gl2=(gl2*1.0*avBoost*evioBoost*dssBoost*fgBoost*stagemul[gl3]/stagediv[gl3]).floor
         gl1=(gl1*1.0*specsBoost*dstBoost*lbBoost*fbBoost*minusBoost*plusBoost*solarBoost*hydroBoost*batteryBoost*stagemul[gl4]/stagediv[gl4]).floor
         if gl1 > gl2
           defense=opponent.spatk
-          defstage=opponent.stages[PBStats::SPATK]+8
+          defstage=opponent.stages[PBStats::SPATK]+3
         end
       end
       applysandstorm=true
@@ -3890,13 +3893,13 @@ class PokeBattle_Move
     if @function==0x208
       if opponent.defense > opponent.spdef
         defense=opponent.spdef
-        defstage=opponent.stages[PBStats::SPDEF]+8
+        defstage=opponent.stages[PBStats::SPDEF]+3
       end
     end
     if !(attacker.hasWorkingAbility(:UNAWARE) || @battle.SilvallyCheck(attacker,PBTypes::FAIRY)) || (options&SELFCONFUSE)!=0
     #if !attacker.hasWorkingAbility(:UNAWARE)
-      defstage=8 if @function==0xA9  # Chip Away 
-      defstage=8 if (opponent.damagestate.critical || @function==0x208) && defstage>8
+      defstage=3 if @function==0xA9  # Chip Away 
+      defstage=3 if (opponent.damagestate.critical || @function==0x208) && defstage>3
       defense=(defense*1.0*stagemul[defstage]/stagediv[defstage]).floor
     end
     if @battle.pbWeather==PBWeather::SANDSTORM &&

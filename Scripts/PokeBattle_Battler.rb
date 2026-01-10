@@ -1477,15 +1477,13 @@ class PokeBattle_Battler
   
   #>>>>DemICE entered the chat
   def pbCalcAttack()
-    stagemul=[10,10,10,10,10,10,10,10,10,12.5,15,17.5,20,22.5,25,27.5,30]
-    stagediv=[30,27.5,25,22.5,20,17.5,15,12.5,10,10,10,10,10,10,10,10,10]
-   # stagemul=[2,2,2,2,2,2,2,3,4,5,6,7,8]
-   # stagediv=[8,7,6,5,4,3,2,2,2,2,2,2,2] 
+    stagemul=[2.0,1.0,2.0,1.0,3.0,2.0,5.0]
+    stagediv=[5.0,2.0,3.0,1.0,2.0,1.0,2.0]
     atk=@attack
-    atkstage=@stages[PBStats::ATTACK]+8
+    atkstage=@stages[PBStats::ATTACK]+3
     if @effects[PBEffects::PowerTrick]
       atk=@defense
-      atkstage=@stages[PBStats::DEFENSE]+8
+      atkstage=@stages[PBStats::DEFENSE]+3
     end    
     if @stages[PBStats::ATTACK] >= 0
       stagemulp=1+0.5*@stages[PBStats::ATTACK]
@@ -1570,12 +1568,10 @@ class PokeBattle_Battler
   end
   
   def pbCalcSpAtk()
-    stagemul=[10,10,10,10,10,10,10,10,10,12.5,15,17.5,20,22.5,25,27.5,30]
-    stagediv=[30,27.5,25,22.5,20,17.5,15,12.5,10,10,10,10,10,10,10,10,10]
-   # stagemul=[2,2,2,2,2,2,2,3,4,5,6,7,8]
-   # stagediv=[8,7,6,5,4,3,2,2,2,2,2,2,2]    
+    stagemul=[2.0,1.0,2.0,1.0,3.0,2.0,5.0]
+    stagediv=[5.0,2.0,3.0,1.0,2.0,1.0,2.0]
     atk=@spatk
-    atkstage=@stages[PBStats::SPATK]+8
+    atkstage=@stages[PBStats::SPATK]+3
     if @stages[PBStats::SPATK] >= 0
       stagemulp=1+0.5*@stages[PBStats::SPATK]
       atk=(atk*1.0*stagemulp).floor  
@@ -1643,17 +1639,15 @@ class PokeBattle_Battler
   end  
   
   def pbCalcDefense()
-    stagemul=[10,10,10,10,10,10,10,10,10,12.5,15,17.5,20,22.5,25,27.5,30]
-    stagediv=[30,27.5,25,22.5,20,17.5,15,12.5,10,10,10,10,10,10,10,10,10]
-   # stagemul=[2,2,2,2,2,2,2,3,4,5,6,7,8]
-   # stagediv=[8,7,6,5,4,3,2,2,2,2,2,2,2]
+    stagemul=[2.0,1.0,2.0,1.0,3.0,2.0,5.0]
+    stagediv=[5.0,2.0,3.0,1.0,2.0,1.0,2.0]
     applyhail=false
     defense=@defense
-    defstage=@stages[PBStats::DEFENSE]+8
+    defstage=@stages[PBStats::DEFENSE]+3
     applyhail=true
     if @effects[PBEffects::PowerTrick]
       defense=@attack
-      defstage=@stages[PBStats::DEFENSE]+8
+      defstage=@stages[PBStats::DEFENSE]+3
     end       
     # TODO: Wonder Room should apply around here
     if @stages[PBStats::DEFENSE] >= 0
@@ -1760,13 +1754,11 @@ class PokeBattle_Battler
   end    
   
   def pbCalcSpDef()
-    stagemul=[10,10,10,10,10,10,10,10,10,12.5,15,17.5,20,22.5,25,27.5,30]
-    stagediv=[30,27.5,25,22.5,20,17.5,15,12.5,10,10,10,10,10,10,10,10,10]
-   # stagemul=[2,2,2,2,2,2,2,3,4,5,6,7,8]
-   # stagediv=[8,7,6,5,4,3,2,2,2,2,2,2,2]    
+    stagemul=[2.0,1.0,2.0,1.0,3.0,2.0,5.0]
+    stagediv=[5.0,2.0,3.0,1.0,2.0,1.0,2.0]
     applysandstorm=false
     defense=@spdef
-    defstage=@stages[PBStats::SPDEF]+8
+    defstage=@stages[PBStats::SPDEF]+3
     applysandstorm=true
     if !self.hasWorkingAbility(:UNAWARE)
       if @stages[PBStats::SPDEF] >= 0
@@ -1895,7 +1887,9 @@ class PokeBattle_Battler
   
   def pbCalcAcc()
     accstage=self.stages[PBStats::ACCURACY]
-    accuracy=(accstage>=0) ? (accstage+3)*100/3 : 300/(3-accstage)
+    stagemul=[2.0,1.0,2.0,1.0,3.0,2.0,5.0]
+    stagediv=[5.0,2.0,3.0,1.0,2.0,1.0,2.0]
+    accuracy=(100.0*stagemul[accstage+3]/stagediv[accstage+3])
     if self.hasWorkingAbility(:COMPOUNDEYES)
       accuracy*=1.3
     end
@@ -1918,11 +1912,13 @@ class PokeBattle_Battler
   
   def pbCalcEva()
     evastage=self.stages[PBStats::EVASION]
-    evastage=-8 if evastage<-8
-    evastage=8 if evastage>8  #>>DemICE
+    evastage=-3 if evastage<-3
+    evastage=3 if evastage>3  #>>DemICE
     evastage=0 if self.effects[PBEffects::Foresight] ||
     self.effects[PBEffects::MiracleEye]
-    evasion=(evastage>=0) ? (evastage+3)*100/3 : 300/(3-evastage)
+    stagemul=[2.0,1.0,2.0,1.0,3.0,2.0,5.0]
+    stagediv=[5.0,2.0,3.0,1.0,2.0,1.0,2.0]
+    evasion=(100.0*stagemul[evastage+3]/stagediv[evastage+3])
     if self.hasWorkingAbility(:TANGLEDFEET) &&
       self.effects[PBEffects::Confusion]>0
       evasion*=1.2
@@ -1966,16 +1962,14 @@ class PokeBattle_Battler
   #DemICE left the chat>>>>
   
   def pbSpeed()
-    stagemul=[10,10,10,10,10,10,10,10,10,12.5,15,17.5,20,22.5,25,27.5,30]
-    stagediv=[30,27.5,25,22.5,20,17.5,15,12.5,10,10,10,10,10,10,10,10,10]
-   # stagemul=[2,2,2,2,2,2,2,3,4,5,6,7,8]
-   # stagediv=[8,7,6,5,4,3,2,2,2,2,2,2,2]
+    stagemul=[2.0,1.0,2.0,1.0,3.0,2.0,5.0]
+    stagediv=[5.0,2.0,3.0,1.0,2.0,1.0,2.0]
     if @effects[PBEffects::SpeedSwap] == 0
       speed=@speed
     else
       speed=@effects[PBEffects::SpeedSwap]
     end    
-    stage=@stages[PBStats::SPEED]+8
+    stage=@stages[PBStats::SPEED]+3
     speed=(speed*stagemul[stage]/stagediv[stage]).floor
     if isConst?(@ability, PBAbilities, :UNBURDEN) && @unburdened
       speed=speed*2

@@ -8237,10 +8237,10 @@ def pbStartBattle(canlose=false)
       if failsafe!=1000
         if i.effects[PBEffects::MultiTurnAttack] == PBMoves::BINDINGWORD # Stats suppressed by binding word     
           i.effects[PBEffects::StatChangeHolder][randoms[0]]+=1
-          i.effects[PBEffects::StatChangeHolder][randoms[0]]=8 if i.effects[PBEffects::StatChangeHolder][randoms[0]]>8
+          i.effects[PBEffects::StatChangeHolder][randoms[0]]=3 if i.effects[PBEffects::StatChangeHolder][randoms[0]]>3
         else
           i.stages[randoms[0]]+=1
-          i.stages[randoms[0]]=8 if i.stages[randoms[0]]>8
+          i.stages[randoms[0]]=3 if i.stages[randoms[0]]>3
         end
         pbCommonAnimation("StatUp",i,nil)
         pbDisplay(_INTL("{1}'s Cloud Nine raised its {2}!",i.pbThis,statnames[randoms[0]-1]))
