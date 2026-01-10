@@ -2337,9 +2337,9 @@ class PokeBattle_Battle
           pri+=1
         end
       end
-      for i in 0...4
-        if @battlers[i].ability == PBAbilities::HALCYON && pri>0
-			pri=0
+      for j in 0...4
+        if @battlers[j].ability == PBAbilities::HALCYON && pri>0
+          pri=0
         end
       end
       priorityarray[i][0]=pri

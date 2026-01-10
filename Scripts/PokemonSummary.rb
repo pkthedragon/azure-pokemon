@@ -124,12 +124,12 @@ end
 
 class Window_AbilityDesc < Window_DrawableCommand
   def initialize(viewport=nil)
+    @text = ""
     super(0, 0, 314, 64, viewport)  # width gives ~282px inner text area
     self.baseColor   = Color.new(64, 64, 64)
     self.shadowColor = Color.new(176, 176, 176)
     self.opacity     = 0
     self.contents_opacity = 255
-    @text = ""
     refresh
   end
 
@@ -144,7 +144,12 @@ class Window_AbilityDesc < Window_DrawableCommand
     self.contents.dispose if self.contents
     self.contents = Bitmap.new(self.width - 32, self.height - 32)
     self.contents.clear
-    drawFormattedTextEx(self.contents, 0, 0, self.contents.width, @text)
+    pbSetSmallFont(self.contents)
+    base = self.baseColor ? self.baseColor.clone : Color.new(12 * 8, 12 * 8, 12 * 8)
+    shadow = self.shadowColor ? self.shadowColor.clone : Color.new(26 * 8, 26 * 8, 25 * 8)
+    formatted = "<c2=" + colorToRgb16(base) + colorToRgb16(shadow) + ">" + @text.to_s
+    chars = getFormattedText(self.contents, 0, 0, self.contents.width, -1, formatted, 26)
+    drawFormattedChars(self.contents, chars)
     self.oy = 0
   end
 
@@ -613,7 +618,8 @@ class PokemonSummaryScene
        [sprintf("%d",pokemon.iv[2]),484,152,1,Color.new(64,64,64),Color.new(176,176,176)],
        [sprintf("%d",pokemon.iv[4]),484,184,1,Color.new(64,64,64),Color.new(176,176,176)],
        [sprintf("%d",pokemon.iv[5]),484,216,1,Color.new(64,64,64),Color.new(176,176,176)],
-       [sprintf("%d",pokemon.iv[3]),484,248,1,Color.new(64,64,64),Color.new(176,176,176)],  
+       [sprintf("%d",pokemon.iv[3]),484,248,1,Color.new(64,64,64),Color.new(176,176,176)],
+       [_INTL("L/R: Scroll"),224,300,0,Color.new(64,64,64),Color.new(176,176,176)],
     ]
     if pokemon.isMale?
       textpos.push([_INTL("♂"),178,62,0,Color.new(24,112,216),Color.new(136,168,208)])

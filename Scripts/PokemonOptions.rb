@@ -323,6 +323,7 @@ class PokemonSystem
   attr_accessor :volume
   attr_accessor :sevolume
   attr_accessor :battlescene
+  attr_accessor :battlestyle
   attr_accessor :frame
   attr_accessor :textskin
   attr_accessor :font
@@ -348,6 +349,14 @@ class PokemonSystem
 
   def border
     return (!@border) ? 0 : @border
+  end
+
+  def battlestyle
+    return 1
+  end
+
+  def battlestyle=(value)
+    @battlestyle = 1
   end
 
   def difficulty
@@ -410,6 +419,7 @@ class PokemonSystem
     @volume      = 100.00 # Volume (0 - 100 )
     @sevolume    = 100.00 # Volume (0 - 100 )
     @battlescene = 0   # Battle scene (animations) (0=on, 1=off)
+    @battlestyle = 1   # Battle style (0=shift, 1=set)
     @expall      = true   # EXP All (default ON)
     @frame       = 0   # Default window frame (see also $TextFrames)
     @textskin    = 0   # Speech frame
