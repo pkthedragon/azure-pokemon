@@ -535,8 +535,8 @@ end
 
 end # !Object.const_defined?(:Socket)
 
-
-#############################
+#############################
+#############################
 #
 # HTTP utility functions
 #
@@ -677,7 +677,7 @@ def pbDownloadToString(url)
   end 
 end
 
-def pbDownloadToFile(url, file)
+end
   begin
     pbDownloadData(url,file)
     rescue
