@@ -27,6 +27,7 @@ begin
       @effects[PBEffects::StickyWeb]   = false
       @effects[PBEffects::AuroraVeil]  = 0
       @effects[PBEffects::DuneDefense] = 0
+      @effects[PBEffects::Bonfire]     = 0
       @effects[PBEffects::BattleCry]   = 0 
       @effects[PBEffects::MysticTree]  = 0
       @effects[PBEffects::Presents]  = 0	  
