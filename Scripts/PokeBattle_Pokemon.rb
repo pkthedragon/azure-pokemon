@@ -893,8 +893,13 @@ class PokeBattle_Pokemon
     nd5=(nature/5).floor
     nm5=(nature%5).floor
     if nd5!=nm5
-      pvalues[nd5]=110
-      pvalues[nm5]=90
+	  if isConst?(self.ability,PBAbilities,:MOODY)
+	    pvalues[nd5]=130
+        pvalues[nm5]=70
+	  else
+        pvalues[nd5]=110
+        pvalues[nm5]=90
+	  end
     end
     level=self.level
     bs=self.baseStats

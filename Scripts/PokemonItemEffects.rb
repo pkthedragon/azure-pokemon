@@ -215,7 +215,7 @@ ItemHandlers::UseFromBag.copy(
   :ZAPTRIBUTE,
   :ICICLETRIBUTE,
   :DREADTRIBUTE,
-  :PIXITRIBUTE
+  :SPOOKYTRIBUTE
 )
 
 ItemHandlers::UseFromBag.add(:GOLDENWINGS,proc{|item|

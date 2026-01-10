@@ -8244,51 +8244,6 @@ def pbStartBattle(canlose=false)
         pbDisplay(_INTL("{1}'s Cloud Nine raised its {2}!",i.pbThis,statnames[randoms[0]-1]))
       end     
     end
-    if i.hasWorkingAbility(:MOODY)
-      randomup=[]
-      randomdown=[]
-      failsafe1=0
-      failsafe2=0
-      loop do
-        failsafe1+=1
-        break if failsafe1==1000
-        rand=1+self.pbRandom(5)
-        if !i.pbTooHigh?(rand)
-          randomup.push(rand)
-          break
-        end
-      end
-      loop do
-        failsafe2+=1
-        break if failsafe2==1000
-        rand=1+self.pbRandom(5)
-        if !i.pbTooLow?(rand) && rand!=randomup[0]
-          randomdown.push(rand)
-          break
-        end
-      end
-      statnames=[_INTL("Attack"),_INTL("Defense"),_INTL("Speed"),_INTL("Special Attack"),_INTL("Special Defense")]
-      if failsafe1!=1000   
-        if i.effects[PBEffects::MultiTurnAttack] == PBMoves::BINDINGWORD # Stats suppressed by binding word          
-          i.effects[PBEffects::StatChangeHolder][randomup[0]]+=2
-          i.effects[PBEffects::StatChangeHolder][randomup[0]]=8 if i.effects[PBEffects::StatChangeHolder][randomup[0]]>8
-        else
-          i.stages[randomup[0]]+=2
-          i.stages[randomup[0]]=8 if i.stages[randomup[0]]>8
-        end
-        pbCommonAnimation("StatUp",i,nil)
-        pbDisplay(_INTL("{1}'s Moody sharply raised its {2}!",i.pbThis,statnames[randomup[0]-1]))
-      end
-      if failsafe2!=1000
-        if i.effects[PBEffects::MultiTurnAttack] == PBMoves::BINDINGWORD # Stats suppressed by binding word 
-          i.effects[PBEffects::StatChangeHolder][randomdown[0]]-=1
-        else
-          i.stages[randomdown[0]]-=1
-        end
-        pbCommonAnimation("StatDown",i,nil)
-        pbDisplay(_INTL("{1}'s Moody lowered its {2}!",i.pbThis,statnames[randomdown[0]-1]))
-      end
-    end
     if !i.hasWorkingItem(:LEFTOVERS) && !i.hasWorkingItem(:BLACKSLUDGE) && 
        !i.hasWorkingItem(:SPIRITCREST)  && !i.hasWorkingItem(:INFCREST)
       i.pbBerryCureCheck(true)

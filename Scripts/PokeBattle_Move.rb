@@ -1786,7 +1786,7 @@ class PokeBattle_Move
     opponent.damagestate.typemod=0
     opponent.damagestate.calcdamage=0
     opponent.damagestate.hplost=0
-  opponent.damagestate.partialhit = false
+    opponent.damagestate.partialhit = false
     return 0 if @basedamage==0
     if (options&NOCRITICAL)==0
       opponent.damagestate.critical=pbIsCritical?(attacker,opponent)

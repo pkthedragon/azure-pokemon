@@ -42,6 +42,13 @@ module PBHollow
         [:pokemon, :DIGLETT, 9, 25, :HEADBUTT]
       ]
     },
+	
+	[26, 1] => {
+      :any => [
+        [:pokemon, :RATTATA, 12, 75, :FLAMEWHEEL],
+        [:pokemon, :ZIGZAGOON, 12, 25, :PURSUIT]
+      ]
+    },
 
     [32, 1] => {
       :any => [

@@ -1512,17 +1512,6 @@ class PokeBattle_Battler
       self.hp<=(self.totalhp/2).floor
       atkmult=(atkmult*0.5).round
     end
-    if self.hasWorkingAbility(:MOODY)
-      nat=self.pokemon ? self.pokemon.nature : nil
-      if nat
-        up=(nat/5).floor
-        down=(nat%5).floor
-        if up!=down
-          atkmult=(atkmult*(13.0/11.0)).round if up==0
-          atkmult=(atkmult*(7.0/9.0)).round if down==0
-        end
-      end
-    end
     if self.hasWorkingAbility(:PLUS) && self.pbOwnSide.effects[PBEffects::MinusSignal]>0
       atkmult=(atkmult*1.3).round
     end
@@ -1606,17 +1595,6 @@ class PokeBattle_Battler
     if self.hasWorkingAbility(:DEFEATIST) &&
       self.hp<=(self.totalhp/2).floor
       atkmult=(atkmult*0.5).round
-    end
-    if self.hasWorkingAbility(:MOODY)
-      nat=self.pokemon ? self.pokemon.nature : nil
-      if nat
-        up=(nat/5).floor
-        down=(nat%5).floor
-        if up!=down
-          atkmult=(atkmult*(13.0/11.0)).round if up==3
-          atkmult=(atkmult*(7.0/9.0)).round if down==3
-        end
-      end
     end
     if self.hasWorkingAbility(:PUREPOWER) && $fefieldeffect==37
       atkmult=(atkmult*2.0).round
@@ -1727,17 +1705,6 @@ class PokeBattle_Battler
     end
     if (self.hasWorkingAbility(:HUSTLE) || self.hasWorkingAbility(:TANGLEDFEET))
       defmult=(defmult*0.5).round
-    end
-    if self.hasWorkingAbility(:MOODY)
-      nat=self.pokemon ? self.pokemon.nature : nil
-      if nat
-        up=(nat/5).floor
-        down=(nat%5).floor
-        if up!=down
-          defmult=(defmult*(13.0/11.0)).round if up==1
-          defmult=(defmult*(7.0/9.0)).round if down==1
-        end
-      end
     end
     if self.hasWorkingAbility(:HEAVYMETAL) && !self.moldbroken &&
       @battle.field.effects[PBEffects::Gravity]>0
@@ -1861,17 +1828,6 @@ class PokeBattle_Battler
     end
     if (self.hasWorkingAbility(:HUSTLE) || self.hasWorkingAbility(:TANGLEDFEET))
       defmult=(defmult*0.5).round
-    end
-    if self.hasWorkingAbility(:MOODY)
-      nat=self.pokemon ? self.pokemon.nature : nil
-      if nat
-        up=(nat/5).floor
-        down=(nat%5).floor
-        if up!=down
-          defmult=(defmult*(13.0/11.0)).round if up==4
-          defmult=(defmult*(7.0/9.0)).round if down==4
-        end
-      end
     end
     if self.hasWorkingAbility(:HEAVYMETAL) && !self.moldbroken &&
       @battle.field.effects[PBEffects::Gravity]>0
@@ -2036,17 +1992,6 @@ class PokeBattle_Battler
     end
     if self.hasWorkingAbility(:TANGLEDFEET)
       speed=(speed*1.5).round
-    end
-    if self.hasWorkingAbility(:MOODY)
-      nat=self.pokemon ? self.pokemon.nature : nil
-      if nat
-        up=(nat/5).floor
-        down=(nat%5).floor
-        if up!=down
-          speed=(speed*(13.0/11.0)).round if up==2
-          speed=(speed*(7.0/9.0)).round if down==2
-        end
-      end
     end
     if self.hasWorkingAbility(:SWIFTSWIM) && @battle.pbWeather==PBWeather::RAINDANCE && 
       !self.hasWorkingItem(:UTILITYUMBRELLA)

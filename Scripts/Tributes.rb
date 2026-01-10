@@ -9,7 +9,7 @@ TRIBUTE_ITEMS = [
   :ZAPTRIBUTE,    # 7
   :ICICLETRIBUTE, # 8
   :DREADTRIBUTE,  # 9
-  :PIXITRIBUTE    # 10
+  :SPOOKYTRIBUTE    # 10
 ]
 
 TRIBUTE_NAMES = [
@@ -23,7 +23,7 @@ TRIBUTE_NAMES = [
   _INTL("Zap Tribute"),
   _INTL("Icicle Tribute"),
   _INTL("Dread Tribute"),
-  _INTL("Pixie Tribute")
+  _INTL("Spooky Tribute")
 ]
 
 TRIBUTE_UNLOCK_SWITCH = {
@@ -37,7 +37,7 @@ TRIBUTE_UNLOCK_SWITCH = {
   :ZAPTRIBUTE    => 1007,
   :ICICLETRIBUTE => 1008,
   :DREADTRIBUTE  => 1009,
-  :PIXITRIBUTE   => 1010
+  :SPOOKYTRIBUTE   => 1010
 }
 
 def pbTributeItemIDs
