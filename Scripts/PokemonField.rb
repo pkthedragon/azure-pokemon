@@ -2293,6 +2293,12 @@ def Kernel.pbStartOver(gameover=false)
   pbEraseEscapePoint
 end
 
+def Kernel.pbReturnToLastPokemonCenter
+  pbBGMFade(1.0)
+  pbBGSFade(1.0)
+  pbFadeOutIn(99999) { Kernel.pbStartOver(true) }
+end
+
 def pbCaveEntranceEx(exiting)
   sprite=BitmapSprite.new(Graphics.width,Graphics.height)
   sprite.z=100000
@@ -3336,9 +3342,7 @@ module InterpreterFieldMixin
   end
 
   def command_353
-    pbBGMFade(1.0)
-    pbBGSFade(1.0)
-    pbFadeOutIn(99999){ Kernel.pbStartOver(true) }
+    Kernel.pbReturnToLastPokemonCenter
   end
 
   def command_314
