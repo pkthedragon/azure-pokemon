@@ -352,11 +352,11 @@ class PokemonSystem
   end
 
   def battlestyle
-    return 1
+    return 0
   end
 
   def battlestyle=(value)
-    @battlestyle = 1
+    @battlestyle = 0
   end
 
   def difficulty
