@@ -1,4 +1,4 @@
-﻿[000]
+[000]
 Home=3,5,7,0
 WildBattleBGM=Battle! Wild
 TrainerBattleBGM=Battle! Trainer
@@ -6,16 +6,16 @@ WildVictoryME=Victory! Wild
 TrainerVictoryME=Victory! Trainer
 SurfBGM=Surf.ogg
 BicycleBGM=Bicycle.mid
-0,PlayerA=POKEMONTRAINER_Troy,trchar250,troy_bike,troy_surf,troy_run,troy_surf,troy_fish_offset,xxx
-1,PlayerB=POKEMONTRAINER_Calian,trchar251,calian_bike,calian_surf,calian_run,calian_surf,calian_fish_offset,xxx
-2,PlayerC=POKEMONTRAINER_NullOne,trchar252,nullone_bike,nullone_surf,nullone_run,nullone_surf,nullone_fish_offset,xxx
-3,PlayerD=POKEMONTRAINER_Ellis,trchar253,ellis_bike,ellis_surf,ellis_run,ellis_surf,ellis_fish_offset,xxx
-4,PlayerE=POKEMONTRAINER_Ophelia,trchar254,ophelia_bike,ophelia_surf,ophelia_run,ophelia_surf,ophelia_fish_offset,xxx
-5,PlayerF=POKEMONTRAINER_NullTwo,trchar255,nulltwo_bike,nulltwo_surf,nulltwo_run,nulltwo_surf,nulltwo_fish_offset,xxx
-6,PlayerG=POKEMONTRAINER_Key,trchar256,key_bike,key_surf,key_run,key_surf,key_fish_offset,xxx
-7,PlayerH=POKEMONTRAINER_Nira,trchar257,nira_bike,nira_surf,nira_run,nira_surf,nira_fish_offset,xxx
-8,PlayerI=POKEMONTRAINER_NullThree,trchar258,nullthree_bike,nullthree_surf,nullthree_run,nullthree_surf,nullthree_fish_offset,xxx
-9,PlayerJ=MYRON,Myron,Myron,Myron,Myron,Myron,Myron,xxx
+PlayerA=POKEMONTRAINER_Troy,trchar250,troy_bike,troy_surf,troy_run,troy_surf,troy_fish_offset,xxx
+PlayerB=POKEMONTRAINER_Calian,trchar251,calian_bike,calian_surf,calian_run,calian_surf,calian_fish_offset,xxx
+PlayerC=POKEMONTRAINER_NullOne,trchar252,nullone_bike,nullone_surf,nullone_run,nullone_surf,nullone_fish_offset,xxx
+PlayerD=POKEMONTRAINER_Ellis,trchar253,ellis_bike,ellis_surf,ellis_run,ellis_surf,ellis_fish_offset,xxx
+PlayerE=POKEMONTRAINER_Ophelia,trchar254,ophelia_bike,ophelia_surf,ophelia_run,ophelia_surf,ophelia_fish_offset,xxx
+PlayerF=POKEMONTRAINER_NullTwo,trchar255,nulltwo_bike,nulltwo_surf,nulltwo_run,nulltwo_surf,nulltwo_fish_offset,xxx
+PlayerG=POKEMONTRAINER_Key,trchar256,key_bike,key_surf,key_run,key_surf,key_fish_offset,xxx
+PlayerH=POKEMONTRAINER_Nira,trchar257,nira_bike,nira_surf,nira_run,nira_surf,nira_fish_offset,xxx
+PlayerI=POKEMONTRAINER_NullThree,trchar258,nullthree_bike,nullthree_surf,nullthree_run,nullthree_surf,nullthree_fish_offset,xxx
+PlayerJ=MYRON,Myron,Myron,Myron,Myron,Myron,Myron,xxx
 [001]
 # Logium Town A
 Outdoor=true

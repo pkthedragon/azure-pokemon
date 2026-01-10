@@ -14077,7 +14077,7 @@ end
 # Tragic Slip
 # Power increases the taller the target is.
 ################################################################################
-class PokeBattle_Move_293 < PokeBattle_Move
+class PokeBattle_Move_393 < PokeBattle_Move
   def pbBaseDamage(basedmg,attacker,opponent)
     h = 10.0
     # adjust height accessor to match your fork
