@@ -3204,6 +3204,18 @@ class PokeBattle_Battle
     end
   end
 
+  def pbDefaultChooseNewEnemy(index,party)
+    return -1 if party.nil?
+    for i in 0...party.length
+      next if !party[i]
+      next if party[i].isEgg?
+      next if party[i].hp<=0
+      next if !pbCanSwitch?(index,i,false)
+      return i
+    end
+    return -1
+  end
+
 ################################################################################
 # Using an item.
 ################################################################################
@@ -5374,6 +5386,29 @@ def pbStartBattle(canlose=false)
     return false
   end
 
+  def pbDefaultChooseEnemyCommand(index)
+    battler=@battlers[index]
+    return if battler.nil? || battler.isFainted?
+    if !pbCanShowCommands?(index)
+      pbAutoChooseMove(index,false)
+      return
+    end
+    if pbCanShowFightMenu?(index)
+      available=[]
+      for i in 0...battler.moves.length
+        available << i if pbCanChooseMove?(index,i,false)
+      end
+      if available.length>0
+        choice=available[pbAIRandom(available.length)]
+        pbRegisterMove(index,choice,false)
+      else
+        pbAutoChooseMove(index,false)
+      end
+    else
+      pbAutoChooseMove(index,false)
+    end
+  end
+
   def pbCommandPhase
     @scene.pbBeginCommandPhase
 #### SARDINES - v17 - START
@@ -7470,13 +7505,15 @@ def pbStartBattle(canlose=false)
         end
       end
     end
-    # Mirror Coat
-    if i.effects[PBEffects::MirrorCoat] > 0
-      i.effects[PBEffects::MirrorCoat] -= 1
-    end
-    # Counter Stance
-    if i.effects[PBEffects::CounterStance] > 0
-      i.effects[PBEffects::CounterStance] -= 1
+    # Mirror Coat / Counter Stance
+    for battler in @battlers
+      next if battler.nil?
+      if battler.effects[PBEffects::MirrorCoat] > 0
+        battler.effects[PBEffects::MirrorCoat] -= 1
+      end
+      if battler.effects[PBEffects::CounterStance] > 0
+        battler.effects[PBEffects::CounterStance] -= 1
+      end
     end
     # Bonfire
     for i in 0...2
