@@ -1940,7 +1940,7 @@ def Kernel.pbUpdateVehicle
     elsif $PokemonGlobal.surfing
       $game_player.character_name=pbGetPlayerCharset(meta,3) # Surfing graphic
     elsif $PokemonGlobal.respond_to?(:swimming) && $PokemonGlobal.swimming
-      $game_player.character_name=pbGetPlayerCharset(meta,6) # Swimming graphic
+      $game_player.character_name=pbGetPlayerCharset(meta,3) # Swimming graphic
     elsif $PokemonGlobal.bicycle
       $game_player.character_name=pbGetPlayerCharset(meta,2) # Bicycle graphic
     elsif $PokemonGlobal.lavasurfing
