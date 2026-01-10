@@ -323,14 +323,12 @@ class PokemonSystem
   attr_accessor :volume
   attr_accessor :sevolume
   attr_accessor :battlescene
+  attr_accessor :battlestyle
   attr_accessor :frame
   attr_accessor :textskin
   attr_accessor :font
   attr_accessor :screensize
   attr_accessor :language
-  attr_accessor :difficulty
-  attr_accessor :expall
-  attr_accessor :photosensitivity
   attr_accessor :border
   attr_accessor :backup
   attr_accessor :maxBackup
@@ -348,60 +346,7 @@ class PokemonSystem
 
   def border
     return (!@border) ? 0 : @border
-  end
-
-  def difficulty
-    v = @difficulty
-    if v.nil? && defined?($game_variables) && $game_variables
-      v = $game_variables[200]
-    end
-    v = 1 if v.nil?
-    v = 0 if v < 0
-    v = 2 if v > 2
-    return v
-  end
-
-  def difficulty=(value)
-    value = value.to_i
-    value = 0 if value < 0
-    value = 2 if value > 2
-    @difficulty = value
-    $game_variables[200] = value if defined?($game_variables) && $game_variables
-  end
-
-  def expall
-    v = @expall
-    if v.nil? && defined?($game_switches) && $game_switches
-      v = $game_switches[1501]
-    end
-
-    return true if v.nil?
-    return v ? true : false
-  end
-
-  def expall=(value)
-    v = (value ? true : false)
-    @expall = v
-    $game_switches[1501] = v if defined?($game_switches) && $game_switches
-  end
-
-  def photosensitivity
-    v = @photosensitivity
-    if v.nil? && defined?($game_switches) && $game_switches
-      v = $game_switches[1425]
-    end
-    # Default OFF if unset (intro prompt may set it)
-    return false if v.nil?
-    return v ? true : false
-  end
-
-  def photosensitivity=(value)
-    v = (value ? true : false)
-    @photosensitivity = v
-    $game_switches[1425] = v if defined?($game_switches) && $game_switches
-  end
-
-  
+  end  
   
   def tilemap; return MAPVIEWMODE; end
 
@@ -410,7 +355,7 @@ class PokemonSystem
     @volume      = 100.00 # Volume (0 - 100 )
     @sevolume    = 100.00 # Volume (0 - 100 )
     @battlescene = 0   # Battle scene (animations) (0=on, 1=off)
-    @expall      = true   # EXP All (default ON)
+    @battlestyle = 0   # Battle style (0=shift, 1=set)
     @frame       = 0   # Default window frame (see also $TextFrames)
     @textskin    = 0   # Speech frame
     @font        = 0   # Font (see also $VersionStyles)
@@ -458,22 +403,6 @@ class PokemonOptionScene
              MessageConfig.pbSetTextSpeed(pbSettingToTextSpeed(value)) 
           }
        ),
-
-       #---------------------------------------------------------------------------
-       # Gameplay / Accessibility
-       #---------------------------------------------------------------------------
-       EnumOption.new(_INTL("Difficulty"),[_INTL("Easy"),_INTL("Normal"),_INTL("Intense")],
-          proc { $PokemonSystem.difficulty },
-          proc {|value| $PokemonSystem.difficulty = value }
-       ),
-       EnumOption.new(_INTL("EXP All"),[_INTL("On"),_INTL("Off")],
-          proc { $PokemonSystem.expall ? 0 : 1 },
-          proc {|value| $PokemonSystem.expall = (value == 0) }
-       ),
-       EnumOption.new(_INTL("Photosensitivity"),[_INTL("Off"),_INTL("On")],
-          proc { $PokemonSystem.photosensitivity ? 1 : 0 },
-          proc {|value| $PokemonSystem.photosensitivity = (value == 1) }
-       ),
        NumberOption.new(_INTL("BGM Volume"),_INTL("Type %d"),0,100,
           proc { $PokemonSystem.volume },
           proc {|value|  $PokemonSystem.volume=value
@@ -493,6 +422,10 @@ class PokemonOptionScene
        EnumOption.new(_INTL("Battle Scene"),[_INTL("On"),_INTL("Off")],
           proc { $PokemonSystem.battlescene },
           proc {|value|  $PokemonSystem.battlescene=value }
+       ),
+       EnumOption.new(_INTL("Battle Style"),[_INTL("Set"),_INTL("Shift")],
+          proc { $PokemonSystem.battlestyle },
+          proc {|value|  $PokemonSystem.battlestyle=value }
        ),
        NumberOption.new(_INTL("Speech Frame"),_INTL("Type %d"),1,$SpeechFrames.length,
           proc { $PokemonSystem.textskin },
