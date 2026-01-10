@@ -56,4 +56,3 @@ class Game_Map
    self.display_y-=distance
   end
 end
-end

@@ -9,8 +9,7 @@ begin
     ACCURACY = 6
     EVASION  = 7
   end
-  end
-end
+rescue Exception
   if $!.is_a?(SystemExit) || "#{$!.class}"=="Reset"
     raise $!
   else
