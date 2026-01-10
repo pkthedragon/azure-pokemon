@@ -866,6 +866,23 @@ class PokeBattle_Pokemon
     end
   end
 
+  def happinessText
+    case @happiness
+      when 0...50
+        return _INTL("It doesn't seem to like you much.")
+      when 50...100
+        return _INTL("It's not used to you yet.")
+      when 100...150
+        return _INTL("It's beginning to trust you.")
+      when 150...200
+        return _INTL("It's quite friendly.")
+      when 200...255
+        return _INTL("It seems to be very happy.")
+      else
+        return _INTL("It looks very happy. It must love you a lot.")
+    end
+  end
+
 ################################################################################
 # Stat calculations, Pokémon creation
 ################################################################################
