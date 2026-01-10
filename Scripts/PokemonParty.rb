@@ -2143,7 +2143,7 @@ class PokemonScreen
         end
       elsif cmdItem>=0 && command==cmdItem && (!($game_switches[1235] && !($game_switches[1408]))  ||  ($game_variables[646]>=38 &&  $game_variables[646]<41))
         item_commands=[_INTL("Use")]
-        pouchcmd = -1
+        pouchcmd = nil
         if pouch_manageable?(pkmn)
           pouchcmd=item_commands.length
           item_commands.push(_INTL("Manage"))
