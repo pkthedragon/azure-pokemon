@@ -124,12 +124,12 @@ end
 
 class Window_AbilityDesc < Window_DrawableCommand
   def initialize(viewport=nil)
+    @text = ""
     super(0, 0, 314, 64, viewport)  # width gives ~282px inner text area
     self.baseColor   = Color.new(64, 64, 64)
     self.shadowColor = Color.new(176, 176, 176)
     self.opacity     = 0
     self.contents_opacity = 255
-    @text = ""
     refresh
   end
 
@@ -144,7 +144,7 @@ class Window_AbilityDesc < Window_DrawableCommand
     self.contents.dispose if self.contents
     self.contents = Bitmap.new(self.width - 32, self.height - 32)
     self.contents.clear
-    drawFormattedTextEx(self.contents, 0, 0, self.contents.width, @text)
+    drawFormattedTextEx(self.contents, 0, 0, self.contents.width, @text.to_s)
     self.oy = 0
   end
 
