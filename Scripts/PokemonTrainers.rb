@@ -323,6 +323,142 @@ def pbMissingTrainer(trainerid, trainername, trainerparty)
   end
 end
 
+BOSS_TRAINER_REMATCHES = [
+  # Example:
+  # pbTrainerRematchKey(:LEADER_Brock,"Brock",0,"single")
+]
+
+BOSS_TRAINER_FIELDS = {
+  # Example:
+  # pbTrainerRematchKey(:LEADER_Brock,"Brock",0,"single") => 12
+}
+
+def pbTrainerRematchKey(trainerid, trainername, trainerparty, battlekind,
+                        trainerid2=nil, trainername2=nil, trainerparty2=nil)
+  if trainerid.is_a?(String) || trainerid.is_a?(Symbol)
+    trainerid=getID(PBTrainers,trainerid)
+  end
+  if trainerid2 && (trainerid2.is_a?(String) || trainerid2.is_a?(Symbol))
+    trainerid2=getID(PBTrainers,trainerid2)
+  end
+  return [trainerid,trainername,trainerparty,battlekind,
+          trainerid2,trainername2,trainerparty2]
+end
+
+def pbTrainerRematchBoss?(rematch)
+  return BOSS_TRAINER_REMATCHES.include?(rematch)
+end
+
+def pbTrainerRematchField(rematch)
+  return BOSS_TRAINER_FIELDS[rematch]
+end
+
+def pbRegisterTrainerRematch(trainerid, trainername, trainerparty, battlekind,
+                             trainerid2=nil, trainername2=nil, trainerparty2=nil)
+  return if !$PokemonGlobal
+  $PokemonGlobal.trainerRematches ||= []
+  key=pbTrainerRematchKey(trainerid,trainername,trainerparty,battlekind,
+                          trainerid2,trainername2,trainerparty2)
+  $PokemonGlobal.trainerRematches.push(key) if !$PokemonGlobal.trainerRematches.include?(key)
+end
+
+def pbTrainerRematchDisplayName(rematch)
+  trainer_type=PBTrainers.getName(rematch[0])
+  trainer_name=pbGetMessageFromHash(MessageTypes::TrainerNames,rematch[1])
+  if rematch[3]=="double" && rematch[4]
+    trainer2_type=PBTrainers.getName(rematch[4])
+    trainer2_name=pbGetMessageFromHash(MessageTypes::TrainerNames,rematch[5])
+    return _INTL("{1} {2} & {3} {4}",trainer_type,trainer_name,trainer2_type,trainer2_name)
+  end
+  return _INTL("{1} {2}",trainer_type,trainer_name)
+end
+
+def pbStartTrainerRematch(rematch)
+  endspeech=_INTL("...")
+  field=pbTrainerRematchField(rematch)
+  $game_variables[708]=field if field
+  if rematch[3]=="double" && rematch[4]
+    pbDoubleTrainerBattle(rematch[0],rematch[1],rematch[2],endspeech,
+                          rematch[4],rematch[5],rematch[6],endspeech)
+  else
+    pbTrainerBattle(rematch[0],rematch[1],endspeech,false,rematch[2])
+  end
+end
+
+def pbTrainerRematchListMenu(rematches, title)
+  if rematches.empty?
+    Kernel.pbMessage(_INTL("There are no {1} available for rematches.",title))
+    return
+  end
+  commands=[]
+  for rematch in rematches
+    commands.push(pbTrainerRematchDisplayName(rematch))
+  end
+  using(cmdwindow=Window_CommandPokemon.new(commands)) {
+    cmdwindow.height=Graphics.height if cmdwindow.height>Graphics.height
+    cmdwindow.width=Graphics.width if cmdwindow.width>Graphics.width
+    cmdwindow.x=(Graphics.width-cmdwindow.width)/2
+    cmdwindow.y=(Graphics.height-cmdwindow.height)/2
+    loop do
+      Graphics.update
+      Input.update
+      cmdwindow.update
+      if Input.trigger?(Input::B)
+        pbPlayCancelSE()
+        break
+      elsif Input.trigger?(Input::C)
+        pbPlayDecisionSE()
+        selection=cmdwindow.index
+        pbStartTrainerRematch(rematches[selection]) if selection && selection>=0
+        break
+      end
+    end
+  }
+end
+
+def pbTrainerRematchMenu
+  rematches=($PokemonGlobal) ? $PokemonGlobal.trainerRematches : nil
+  rematches=[] if !rematches
+  if rematches.empty?
+    Kernel.pbMessage(_INTL("There are no trainers available for rematches."))
+    return
+  end
+  boss_rematches=[]
+  standard_rematches=[]
+  for rematch in rematches
+    if pbTrainerRematchBoss?(rematch)
+      boss_rematches.push(rematch)
+    else
+      standard_rematches.push(rematch)
+    end
+  end
+  commands=[_INTL("Trainer Rematches"),_INTL("Boss Rematches")]
+  using(cmdwindow=Window_CommandPokemon.new(commands)) {
+    cmdwindow.height=Graphics.height if cmdwindow.height>Graphics.height
+    cmdwindow.width=Graphics.width if cmdwindow.width>Graphics.width
+    cmdwindow.x=(Graphics.width-cmdwindow.width)/2
+    cmdwindow.y=(Graphics.height-cmdwindow.height)/2
+    loop do
+      Graphics.update
+      Input.update
+      cmdwindow.update
+      if Input.trigger?(Input::B)
+        pbPlayCancelSE()
+        break
+      elsif Input.trigger?(Input::C)
+        pbPlayDecisionSE()
+        selection=cmdwindow.index
+        if selection==0
+          pbTrainerRematchListMenu(standard_rematches,_INTL("trainers"))
+        elsif selection==1
+          pbTrainerRematchListMenu(boss_rematches,_INTL("boss trainers"))
+        end
+        break
+      end
+    end
+  }
+end
+
 def pbDoubleTrainerBattle(trainerid1, trainername1, trainerparty1, endspeech1,
                           trainerid2, trainername2, trainerparty2, endspeech2, 
                           canlose=false,variable=nil)
@@ -453,6 +589,10 @@ def pbDoubleTrainerBattle(trainerid1, trainername1, trainerparty1, endspeech1,
   $game_variables[702]=0
   $game_variables[298]=0
   $game_variables[708]=0
+  if decision==1
+    pbRegisterTrainerRematch(trainerid1,trainername1,trainerparty1,"double",
+                             trainerid2,trainername2,trainerparty2)
+  end
   return (decision==1)
 end
 
@@ -479,7 +619,8 @@ def pbTrainerBattle(trainerid,trainername,endspeech,
         return false
       end
       if trainer[2].length<=6 # 3
-        $PokemonTemp.waitingTrainer=[trainer,thisEvent.id,endspeech]
+        $PokemonTemp.waitingTrainer=[trainer,thisEvent.id,endspeech,
+                                     trainerid,trainername,trainerparty]
         return false
       end
     end
@@ -649,6 +790,17 @@ def pbTrainerBattle(trainerid,trainername,endspeech,
   $game_switches[1121]=false
   Input.update
   pbSet(variable,decision)
+  if decision==1
+    if $PokemonTemp.waitingTrainer
+      pbRegisterTrainerRematch($PokemonTemp.waitingTrainer[3],
+                               $PokemonTemp.waitingTrainer[4],
+                               $PokemonTemp.waitingTrainer[5],
+                               "double",
+                               trainerid,trainername,trainerparty)
+    else
+      pbRegisterTrainerRematch(trainerid,trainername,trainerparty,"single")
+    end
+  end
   $PokemonTemp.waitingTrainer=nil
   Achievements.incrementProgress("TRAINER_BATTLES",1)
   return (decision==1)

@@ -149,6 +149,7 @@ class PokemonGlobalMetadata
   attr_accessor :phoneNumbers
   attr_accessor :phoneTime
   attr_accessor :eventvars
+  attr_accessor :trainerRematches
   attr_accessor :safesave
 
   def initialize
@@ -211,6 +212,7 @@ class PokemonGlobalMetadata
     @phoneNumbers         = []
     @phoneTime            = 0
     @eventvars            = {}
+    @trainerRematches     = []
     @safesave             = false
   end
 end
