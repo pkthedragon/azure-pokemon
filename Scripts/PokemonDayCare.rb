@@ -490,6 +490,21 @@ Events.onStepTaken+=proc {|sender,e|
        if hasConst?(PBItems,:OVALCHARM) && $PokemonBag.pbQuantity(PBItems::OVALCHARM)>0
          compatval=[0,40,80,88][pbDayCareGetCompat]
        end
+       parent0=$PokemonGlobal.daycare[0][0]
+       parent1=$PokemonGlobal.daycare[1][0]
+       if parent0 && parent1
+         if parent0.happiness==255 && parent1.happiness==255
+           compatval=100
+         elsif parent0.happiness==0 && parent1.happiness==0
+           compatval=0
+         else
+           parent0_multiplier=[(parent0.happiness/100.0),0.5].max
+           parent1_multiplier=[(parent1.happiness/100.0),0.5].max
+           compatval=(compatval*parent0_multiplier).floor
+           compatval=(compatval*parent1_multiplier).floor
+           compatval=[compatval,100].min
+         end
+       end
        rnd=rand(100)
        if rnd<compatval
          # Egg is generated

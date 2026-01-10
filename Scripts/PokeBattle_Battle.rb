@@ -3896,6 +3896,8 @@ end
     end
     exp=(exp*3/2).floor if isConst?(thispoke.item,PBItems,:LUCKYEGG) ||
                            isConst?(thispoke.itemInitial,PBItems,:LUCKYEGG)
+    friendship_multiplier=[(thispoke.happiness/100.0),0.5].max
+    exp=(exp*friendship_multiplier).floor
     growthrate=thispoke.growthrate
 #### SARDINES - LevelLimiter - START
     result = LevelLimitExpGain(thispoke, exp)

@@ -462,6 +462,7 @@ class PokemonSummaryScene
     shownature=(!(pokemon.isShadow? rescue false)) || pokemon.heartStage<=3
     if shownature
       memo+=_INTL("<c3=F83820,E09890>{1}<c3=404040,B0B0B0> nature.\n",naturename)
+      memo+=_INTL("<c3=404040,B0B0B0>{1}\n",pokemon.happinessText) if !pokemon.egg?
     end
     if pokemon.timeReceived
       month=pbGetAbbrevMonthName(pokemon.timeReceived.mon)
