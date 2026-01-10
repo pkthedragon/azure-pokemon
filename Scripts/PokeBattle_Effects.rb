@@ -684,9 +684,9 @@ end
 #===============================================================================
   def pbTooHigh?(stat)
     if @effects[PBEffects::MultiTurnAttack] == PBMoves::BINDINGWORD # Stats suppressed by binding word
-      return @effects[PBEffects::StatChangeHolder][stat]>=8
+      return @effects[PBEffects::StatChangeHolder][stat]>=3
     else
-      return @stages[stat]>=8
+      return @stages[stat]>=3
     end
   end
 
@@ -719,10 +719,10 @@ end
     end
     if @effects[PBEffects::MultiTurnAttack] == PBMoves::BINDINGWORD # Stats suppressed by binding word
       @effects[PBEffects::StatChangeHolder][stat]+=increment
-      @effects[PBEffects::StatChangeHolder][stat]=8 if @effects[PBEffects::StatChangeHolder][stat]>8
+      @effects[PBEffects::StatChangeHolder][stat]=3 if @effects[PBEffects::StatChangeHolder][stat]>3
     else
       @stages[stat]+=increment
-      @stages[stat]=8 if @stages[stat]>8
+      @stages[stat]=3 if @stages[stat]>3
     end
   end
 
@@ -825,9 +825,9 @@ end
 #===============================================================================
   def pbTooLow?(stat)
     if @effects[PBEffects::MultiTurnAttack] == PBMoves::BINDINGWORD # Stats suppressed by binding word
-      return @effects[PBEffects::StatChangeHolder][stat]<=-8
+      return @effects[PBEffects::StatChangeHolder][stat]<=-3
     else
-      return @stages[stat]<=-8
+      return @stages[stat]<=-3
     end
   end
 
@@ -894,10 +894,10 @@ end
     end
     if @effects[PBEffects::MultiTurnAttack] == PBMoves::BINDINGWORD # Stats suppressed by binding word
       @effects[PBEffects::StatChangeHolder][stat]-=increment
-      @effects[PBEffects::StatChangeHolder][stat]=-8 if @effects[PBEffects::StatChangeHolder][stat]<-8
+      @effects[PBEffects::StatChangeHolder][stat]=-3 if @effects[PBEffects::StatChangeHolder][stat]<-3
     else
       @stages[stat]-=increment
-      @stages[stat]=-8 if @stages[stat]<-8
+      @stages[stat]=-3 if @stages[stat]<-3
     end
     self.statLowered = true
   end

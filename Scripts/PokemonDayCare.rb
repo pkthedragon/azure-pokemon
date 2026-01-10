@@ -494,7 +494,7 @@ Events.onStepTaken+=proc {|sender,e|
        parent1=$PokemonGlobal.daycare[1][0]
        if parent0 && parent1
          if parent0.happiness==255 && parent1.happiness==255
-           compatval=100
+           compatval=100 if pbDayCareGetCompat>0
          elsif parent0.happiness==0 && parent1.happiness==0
            compatval=0
          else

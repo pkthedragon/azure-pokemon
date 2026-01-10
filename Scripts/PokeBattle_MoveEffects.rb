@@ -1988,9 +1988,9 @@ class PokeBattle_Move_03A < PokeBattle_Move
     pbShowAnimation(@id,attacker,nil,hitnum,alltargets,showanimation)
     attacker.pbReduceHP((attacker.totalhp/2).floor)
     if attacker.effects[PBEffects::MultiTurnAttack] == PBMoves::BINDINGWORD # Stats suppressed by binding word
-      attacker.effects[PBEffects::StatChangeHolder][PBStats::ATTACK] = 6
+      attacker.effects[PBEffects::StatChangeHolder][PBStats::ATTACK] = 3
     else
-      attacker.stages[PBStats::ATTACK] = 6
+      attacker.stages[PBStats::ATTACK] = 3
     end
     @battle.pbCommonAnimation("StatUp",attacker,nil)
     @battle.pbDisplay(_INTL("{1} cut its own HP and maximized its Attack!",attacker.pbThis))
@@ -11564,10 +11564,10 @@ class PokeBattle_Move_16E < PokeBattle_Move
           oppboost *= 2 if attacker.ability == PBAbilities::SIMPLE
           if attacker.effects[PBEffects::MultiTurnAttack] == PBMoves::BINDINGWORD # Stats suppressed by binding word
             attacker.effects[PBEffects::StatChangeHolder][i] += oppboost
-            attacker.effects[PBEffects::StatChangeHolder][i] = attacker.effects[PBEffects::StatChangeHolder][i].clamp(-8, 8)
+            attacker.effects[PBEffects::StatChangeHolder][i] = attacker.effects[PBEffects::StatChangeHolder][i].clamp(-3, 3)
           else
             attacker.stages[i] += oppboost
-            attacker.stages[i] = attacker.stages[i].clamp(-8, 8)
+            attacker.stages[i] = attacker.stages[i].clamp(-3, 3)
           end
           totalboost += oppboost
           opponent.effects[PBEffects::StatChangeHolder][i] = 0
@@ -11579,10 +11579,10 @@ class PokeBattle_Move_16E < PokeBattle_Move
           oppboost *= 2 if attacker.ability == PBAbilities::SIMPLE
           if attacker.effects[PBEffects::MultiTurnAttack] == PBMoves::BINDINGWORD # Stats suppressed by binding word
             attacker.effects[PBEffects::StatChangeHolder][i] += oppboost
-            attacker.effects[PBEffects::StatChangeHolder][i] = attacker.effects[PBEffects::StatChangeHolder][i].clamp(-8, 8)
+            attacker.effects[PBEffects::StatChangeHolder][i] = attacker.effects[PBEffects::StatChangeHolder][i].clamp(-3, 3)
           else
             attacker.stages[i] += oppboost
-            attacker.stages[i] = attacker.stages[i].clamp(-8, 8)
+            attacker.stages[i] = attacker.stages[i].clamp(-3, 3)
           end
           totalboost += oppboost
           opponent.stages[i] = 0
@@ -11677,11 +11677,9 @@ end
 ################################################################################
 class PokeBattle_Move_172 < PokeBattle_Move
   def pbRoughStat(battler,stat)
-    stagemul=[10,10,10,10,10,10,10,10,10,12.5,15,17.5,20,22.5,25,27.5,30]
-    stagediv=[30,27.5,25,22.5,20,17.5,15,12.5,10,10,10,10,10,10,10,10,10]
-   # stagemul=[2,2,2,2,2,2,2,3,4,5,6,7,8]
-   # stagediv=[8,7,6,5,4,3,2,2,2,2,2,2,2]
-    stage=battler.stages[stat]+8
+    stagemul=[2.0,1.0,2.0,1.0,3.0,2.0,5.0]
+    stagediv=[5.0,2.0,3.0,1.0,2.0,1.0,2.0]
+    stage=battler.stages[stat]+3
     value=0
     value=battler.attack if stat==PBStats::ATTACK
     value=battler.defense if stat==PBStats::DEFENSE
