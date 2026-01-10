@@ -677,7 +677,7 @@ def pbDownloadToString(url)
   end 
 end
 
-end
+def pbDownloadToFile(url, file)
   begin
     pbDownloadData(url,file)
     rescue
