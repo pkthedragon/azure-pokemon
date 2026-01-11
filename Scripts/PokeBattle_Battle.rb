@@ -2648,7 +2648,7 @@ class PokeBattle_Battle
       pbDisplayPaused(_INTL("{1} prevents escaping with {2}!", opp.pbThis, abilityname)) if !showMessages && pkmnidxTo == -1
       return false
     end
-    if thispkmn.effects[PBEffects::MudBath] > 0
+    if (thispkmn.effects[PBEffects::MudBath] || 0) > 0
       @scene.pbDisplay(_INTL("{1} is stuck in the mud and can't be switched out!",thispkmn.pbThis))
       return false
     end
