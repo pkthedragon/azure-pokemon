@@ -41,6 +41,10 @@ class PokeBattle_Battler
       @battle.pbDisplay(_INTL("{1}'s spritz prevents it from being inflicted by status!",pbThis)) if showMessages
       return false
     end
+    if !selfsleep && hasWorkingAbility(:PURIFYINGSALT)
+      @battle.pbDisplay(_INTL("{1}'s {2} prevents status conditions!",pbThis,PBAbilities.getName(self.ability))) if showMessages
+      return false
+    end
     return true
   end
   

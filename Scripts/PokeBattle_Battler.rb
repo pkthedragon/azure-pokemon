@@ -2461,6 +2461,46 @@ class PokeBattle_Battler
     end
     
     self.pbCheckFormRoundEnd     
+    if isConst?(ability,PBAbilities,:COSTAR) && onactive
+      partner=pbPartner
+      if partner && !partner.isFainted?
+        for i in 0...8
+          self.stages[i]=partner.stages[i]
+        end
+        @battle.pbDisplay(_INTL("{1}'s {2} copied {3}'s stat changes!",pbThis,
+            PBAbilities.getName(ability),partner.pbThis(true)))
+      end
+    end
+    if isConst?(ability,PBAbilities,:EVENTHORIZON) && onactive
+      if @battle.field.effects[PBEffects::Gravity]==0 && $fefieldeffect != 39
+        @battle.field.effects[PBEffects::Gravity]=5
+        @battle.field.effects[PBEffects::Gravity]=8 if $fefieldeffect == 37
+        if $fefieldeffect == 38
+          rnd=@battle.pbRandom(6)
+          @battle.field.effects[PBEffects::Gravity]=3+rnd
+        end
+        for i in 0...4
+          poke=@battle.battlers[i]
+          next if !poke
+          if PBMoveData.new(poke.effects[PBEffects::TwoTurnAttack]).function==0xC9 || # Fly
+             PBMoveData.new(poke.effects[PBEffects::TwoTurnAttack]).function==0xCC || # Bounce
+             PBMoveData.new(poke.effects[PBEffects::TwoTurnAttack]).function==0xCE    # Sky Drop
+            poke.effects[PBEffects::TwoTurnAttack]=0
+          end
+          if poke.effects[PBEffects::SkyDrop]
+            poke.effects[PBEffects::SkyDrop]=false
+          end
+          if poke.effects[PBEffects::MagnetRise]>0
+            poke.effects[PBEffects::MagnetRise]=0
+          end
+          if poke.effects[PBEffects::Telekinesis]>0
+            poke.effects[PBEffects::Telekinesis]=0
+          end
+        end
+        @battle.pbDisplay(_INTL("{1}'s {2} intensified gravity!",pbThis,
+            PBAbilities.getName(ability)))
+      end
+    end
     #### START OF WEATHER ABILITIES
     
     if isConst?(ability,PBAbilities,:PRIMORDIALSEA) && onactive && 
@@ -3899,6 +3939,13 @@ class PokeBattle_Battler
           user.pbParalyze(target)
           @battle.pbDisplay(_INTL("{1}'s {2} paralyzed {3}!  It may be unable to move!",
               target.pbThis,PBAbilities.getName(target.ability),user.pbThis(true)))
+        end
+        if target.hasWorkingAbility(:ERRATIC) &&
+          @battle.pbRandom(10) < 3 && user.pbCanConfuse?(false)
+          user.effects[PBEffects::Confusion]=3
+          @battle.pbCommonAnimation("Confusion",user,nil)
+          @battle.pbDisplay(_INTL("{1}'s {2} confused {3}!",target.pbThis,
+              PBAbilities.getName(target.ability),user.pbThis(true)))
         end
         if target.hasWorkingAbility(:PICKPOCKET) &&
           !target.hasWorkingAbility(:OBLIVIOUS) &&
