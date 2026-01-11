@@ -6775,7 +6775,7 @@ class PokeBattle_Battler
       @effects[PBEffects::HyperBeam]>0 ||
       @effects[PBEffects::Outrage]>0 ||
       @effects[PBEffects::Rollout]>0 ||
-      @effects[PBEffects::SkyDroppee]
+      (@effects[PBEffects::SkyDroppee] && @effects[PBEffects::SkyDroppee] != -1) ||
       @effects[PBEffects::Uproar]>0 ||
       @effects[PBEffects::Bide]>0
       PBDebug.log("[Continuing move]") if $INTERNAL
@@ -8550,7 +8550,7 @@ class PokeBattle_Battler
       PBDebug.logonerr{
         pbUseMove(choice,choice[2]==@battle.struggle)
       }
-      if (self.index==0 || self.index==2) && !@battle.isOnline? # Move memory system for AI
+      if choice[2] && (self.index==0 || self.index==2) && !@battle.isOnline? # Move memory system for AI
         if @battle.aiMoveMemory[0].length==0 && choice[2].basedamage!=0
           @battle.aiMoveMemory[0].push(choice[2])
         elsif @battle.aiMoveMemory[0].length!=0 && choice[2].basedamage!=0          
