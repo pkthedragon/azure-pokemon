@@ -796,6 +796,7 @@ class PokeBattle_Battler
     @speed        = pkmn.speed
     @spatk        = pkmn.spatk
     @spdef        = pkmn.spdef
+	@shieldCount = $game_variables[704]
     if wonderroom
       aux=pkmn.spdef
       @spdef=pkmn.defense
@@ -1076,7 +1077,7 @@ class PokeBattle_Battler
     @effects[PBEffects::Transform]        = false
     @effects[PBEffects::Truant]           = false
     @effects[PBEffects::TwoTurnAttack]    = 0
-    @effects[PBEffects::SkyDroppee]       = nil
+    @effects[PBEffects::SkyDroppee]       = -1
     @effects[PBEffects::Uproar]           = 0
     @effects[PBEffects::Attacking]        = false
     @effects[PBEffects::AttackingTarget]  = []
@@ -1614,7 +1615,7 @@ class PokeBattle_Battler
         $fefieldeffect == 31 || $fefieldeffect == 32 || $fefieldeffect == 34)
       defmult=(defmult*1.5).round
     end
-    if isConst?(self.ability,PBAbilities,:GRASSPELT) && 
+    if isConst?(self.ability,PBAbilities,:NATURALSHROUD) && 
       ($fefieldeffect == 2 || $fefieldeffect == 15) # Grassy Field
       defmult=(defmult*1.5).round
     end
@@ -4061,7 +4062,7 @@ class PokeBattle_Battler
           end
         end
       end
-      if (user.hasWorkingAbility(:POISONTOUCH,true) || user.hasWorkingAbility(:POISONPOINT,true)) && target.pbCanPoison?(false) &&
+      if (user.hasWorkingAbility(:POISONPOINT,true) || user.hasWorkingAbility(:POISONPOINT,true)) && target.pbCanPoison?(false) &&
         (@battle.pbRandom(10)<3 || (@battle.pbRandom(10)<6 && $fefieldeffect==41))
         target.pbPoison(user)
         @battle.pbDisplay(_INTL("{1}'s {2} poisoned {3}!",user.pbThis,
@@ -8524,6 +8525,11 @@ class PokeBattle_Battler
       pbEndTurn(choice)
       return
     end
+	if choice[2].nil?
+	  pbBeginTurn(choice)
+	  pbEndTurn(choice)
+	  return
+	end
     # Turn is skipped if Pursuit was used during switch
     if @effects[PBEffects::Pursuit]
       @effects[PBEffects::Pursuit]=false

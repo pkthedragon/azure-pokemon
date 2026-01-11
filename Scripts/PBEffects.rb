@@ -35,7 +35,6 @@ begin
     GastroAcid        = 31
     Grudge            = 32
     HealBlock         = 33
-    Grievous          = HealBlock
     HealingWish       = 34
     HelpingHand       = 35
     HyperBeam         = 36

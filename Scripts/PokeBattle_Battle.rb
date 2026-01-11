@@ -380,8 +380,12 @@ class PokeBattle_Battle
   attr_accessor(:statustarget)
   attr_accessor(:raidbattle)      # stores fight is raid den battle or not
   attr_accessor(:ultramegadeath)  # ussd for Ultra Mega Death
-  include PokeBattle_BattleCommon
+  attr_accessor(:bossfight)       # Stores fight is boss battle or not
+  attr_accessor(:shieldSetup)
+  attr_accessor(:shieldCount)
   attr_accessor(:sosbattle)       # Stores fight is an sos battle or not
+  
+  include PokeBattle_BattleCommon
   
   MAXPARTYSIZE = 6
 
@@ -430,6 +434,8 @@ class PokeBattle_Battle
     @battlescene     = true
     @debug           = false
     @debugupdate     = 0
+	@shieldCount = $game_variables[704]
+	@shieldSetup = -1
     if opponent && player.is_a?(Array) && player.length==0
       player = player[0]
     end
@@ -2297,12 +2303,21 @@ class PokeBattle_Battle
     if thispkmn.effects[PBEffects::Encore]>0 && 
        pbCanChooseMove?(idxPokemon,thispkmn.effects[PBEffects::EncoreIndex],false)
       PBDebug.log("[Auto choosing Encore move...]") if $INTERNAL
-      @choices[idxPokemon][0]=1    # "Use move"
-      @choices[idxPokemon][1]=thispkmn.effects[PBEffects::EncoreIndex] # Index of move
-      @choices[idxPokemon][2]=thispkmn.moves[thispkmn.effects[PBEffects::EncoreIndex]]
-      @choices[idxPokemon][3]=-1   # No target chosen yet
+	  enc_idx = thispkmn.effects[PBEffects::EncoreIndex]
+	  enc_move = thispkmn.moves[enc_idx]
+	  if enc_move.nil?
+		@choices[idxPokemon][0]=1
+		@choices[idxPokemon][1]=-1
+		@choices[idxPokemon][2]=@struggle
+		@choices[idxPokemon][3]=-1
+	  else
+		@choices[idxPokemon][0]=1
+		@choices[idxPokemon][1]=enc_idx
+		@choices[idxPokemon][2]=enc_move
+		@choices[idxPokemon][3]=-1
+	  end
       if @doublebattle
-        thismove=thispkmn.moves[thispkmn.effects[PBEffects::EncoreIndex]]
+        thismove=enc_move
         target=thispkmn.pbTarget(thismove)
         if target==PBTargets::SingleNonUser #&& ($fefieldeffect != 33 ||
           #$fecounter != 4 || (thismove.id != 192 || thismove.id != 214 ||
@@ -2328,18 +2343,25 @@ class PokeBattle_Battle
   end
 
   def pbRegisterMove(idxPokemon,idxMove,showMessages=true)
-    thispkmn=@battlers[idxPokemon]
-    thismove=thispkmn.moves[idxMove]
-#### KUROTSUNE - 010 - START
-    thispkmn.selectedMove = thismove.id
-#### KUROTSUNE - 010 - END
-    return false if !pbCanChooseMove?(idxPokemon,idxMove,showMessages)
-    @choices[idxPokemon][0]=1         # "Use move"
-    @choices[idxPokemon][1]=idxMove   # Index of move to be used
-    @choices[idxPokemon][2]=thismove  # PokeBattle_Move object of the move
-    @choices[idxPokemon][3]=-1        # No target chosen yet
-    return true
+	thispkmn=@battlers[idxPokemon]
+	thismove=thispkmn.moves[idxMove]
+
+	# --- FIX: never allow nil here ---
+	return false if thismove.nil?
+
+	# safe now
+	thispkmn.selectedMove = thismove.id
+
+	return false if !pbCanChooseMove?(idxPokemon,idxMove,showMessages)
+
+	@choices[idxPokemon][0]=1         # "Use move"
+	@choices[idxPokemon][1]=idxMove   # Index of move to be used
+	@choices[idxPokemon][2]=thismove  # PokeBattle_Move object of the move
+	@choices[idxPokemon][3]=-1        # No target chosen yet
+	return true
   end
+
+
 
   def pbChoseMove?(i,move)
     return false if @battlers[i].isFainted?
@@ -2378,9 +2400,13 @@ class PokeBattle_Battle
       priorityarray[i] =[0,0,0,i] #initializes the array and stores the battler index
       # Move priority
       pri=0
-      if @choices[i][0]==1 # Is a move
-        pri=@choices[i][2].priority if !@choices[i][2].zmove  #Base move priority
-        pri+=1 if (!@battlers[i].abilitynulled && (@battlers[i].ability == PBAbilities::PRANKSTER)) && @choices[i][2].basedamage==0 # Is status move
+	  if @choices[i][0]==1 # Is a move
+	    if @choices[i][2].nil?
+		  PBDebug.log("PRIORITY CHOICE NIL: i=#{i} choice=#{@choices[i].inspect}") if $INTERNAL
+		  next
+		end
+		pri=@choices[i][2].priority if !@choices[i][2].zmove  # Base move priority
+		pri+=1 if (!@battlers[i].abilitynulled && (@battlers[i].ability == PBAbilities::PRANKSTER)) && @choices[i][2].basedamage==0
         pri+=1 if (!@battlers[i].abilitynulled && (@battlers[i].ability == PBAbilities::GALEWINGS)) && @choices[i][2].type==2 && ((@battlers[i].hp == @battlers[i].totalhp) || (($fefieldeffect == 16  || $fefieldeffect == 27 || $fefieldeffect == 28) && @weather == PBWeather::STRONGWINDS)) || $fefieldeffect == 43
         if (!@battlers[i].abilitynulled && (@battlers[i].ability == PBAbilities::TRIAGE))
           pri+=3 if (PBStuff::HEALFUNCTIONS).include?(@choices[i][2].function)
@@ -5544,7 +5570,7 @@ def pbStartBattle(canlose=false)
       next if @choices[i][0]!=1
       side=(pbIsOpposing?(i)) ? 1 : 0
       owner=pbGetOwnerIndex(i)
-      if @zMove[side][owner]==i
+      if @zMove[side][owner]==i && @choices[i][0]==1 && @choices[i][2]
         @choices[i][2].zmove=true
       end
     end    
@@ -5920,7 +5946,7 @@ def pbStartBattle(canlose=false)
                 if isConst?(i.ability,PBAbilities,:LEAFGUARD) ||
                  isConst?(i.ability,PBAbilities,:ICEBODY) ||
                  isConst?(i.ability,PBAbilities,:FLUFFY) ||
-                 isConst?(i.ability,PBAbilities,:GRASSPELT)
+                 isConst?(i.ability,PBAbilities,:NATURALSHROUD)
                   eff = eff*2
                 end
                 pbDisplay(_INTL("The Pokemon were burned by the field!",i.pbThis)) if endmessage == false
@@ -5934,7 +5960,7 @@ def pbStartBattle(canlose=false)
           end
         when 10 # Corrosive Field
           next if i.hp<=0
-          if i.hasWorkingAbility(:GRASSPELT)        
+          if i.hasWorkingAbility(:NATURALSHROUD)        
             @scene.pbDamageAnimation(i,0)
             i.pbReduceHP((i.totalhp/8).floor)
             pbDisplay(_INTL("{1}'s Pelt was corroded!",i.pbThis)) if hpgain>0
@@ -6167,7 +6193,7 @@ def pbStartBattle(canlose=false)
           end
         when 41 # Corrupted Cave Field
           next if i.hp<=0
-          if i.hasWorkingAbility(:GRASSPELT) || i.hasWorkingAbility(:LEAFGUARD) ||
+          if i.hasWorkingAbility(:NATURALSHROUD) || i.hasWorkingAbility(:LEAFGUARD) ||
            i.hasWorkingAbility(:FLOWERVEIL) || SilvallyCheck(i,PBTypes::GRASS)
             @scene.pbDamageAnimation(i,0)
             i.pbReduceHP((i.totalhp/8).floor)
@@ -8599,7 +8625,7 @@ def pbStartBattle(canlose=false)
           end
         end
       end
-      elsif @party2[0].isbossmon
+      if @party2[0].isbossmon
         bossname = $bosscache[@party2[0].bossId].name
         # Boss win music goes here
         pbDisplayPaused(_INTL("{1} defeated\r\n{2}!",self.pbPlayer.name,bossname))

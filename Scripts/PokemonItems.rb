@@ -1771,7 +1771,7 @@ def pbSpeciesCompatible?(species,move,pokemon)
         end
       elsif pokemon.form==1
         if (move == PBMoves::AERIALACE) ||  (move == PBMoves::AMNESIA) ||
-          (move == PBMoves::ATTRACT) ||  (move == PBMoves::AVALANCHE) ||
+          (move == PBMoves::ENCHANT) ||  (move == PBMoves::AVALANCHE) ||
           (move == PBMoves::BIND) ||  (move == PBMoves::BLIZZARD) ||
           (move == PBMoves::BODYSLAM) ||  (move == PBMoves::BRICKBREAK) ||
           (move == PBMoves::BULLETSEED) ||  (move == PBMoves::CALMMIND) ||
@@ -1846,7 +1846,7 @@ def pbSpeciesCompatible?(species,move,pokemon)
         end
       elsif pokemon.form==1
         if (move == PBMoves::AERIALACE) ||  (move == PBMoves::AMNESIA) ||
-          (move == PBMoves::ATTRACT) ||  (move == PBMoves::AVALANCHE) ||
+          (move == PBMoves::ENCHANT) ||  (move == PBMoves::AVALANCHE) ||
           (move == PBMoves::BIND) ||  (move == PBMoves::BLIZZARD) ||
           (move == PBMoves::BODYSLAM) ||  (move == PBMoves::BRICKBREAK) ||
           (move == PBMoves::BULLETSEED) ||  (move == PBMoves::CALMMIND) ||
@@ -1921,7 +1921,7 @@ def pbSpeciesCompatible?(species,move,pokemon)
         end
       elsif pokemon.form==1
         if (move == PBMoves::AERIALACE) ||  (move == PBMoves::AMNESIA) ||
-          (move == PBMoves::ATTRACT) ||  (move == PBMoves::AVALANCHE) ||
+          (move == PBMoves::ENCHANT) ||  (move == PBMoves::AVALANCHE) ||
           (move == PBMoves::BIND) ||  (move == PBMoves::BLIZZARD) ||
           (move == PBMoves::BODYSLAM) ||  (move == PBMoves::BRICKBREAK) ||
           (move == PBMoves::BULLETSEED) ||  (move == PBMoves::CALMMIND) ||
@@ -2004,7 +2004,7 @@ def pbSpeciesCompatible?(species,move,pokemon)
           return false
         end
       elsif pokemon.form==1
-        if (move == PBMoves::ATTRACT) ||  (move == PBMoves::CAPTIVATE) ||
+        if (move == PBMoves::ENCHANT) ||  (move == PBMoves::CAPTIVATE) ||
           (move == PBMoves::CONFIDE) ||  (move == PBMoves::CUT) ||
           (move == PBMoves::DARKPULSE) ||  (move == PBMoves::EMBARGO) ||
           (move == PBMoves::ECHOEDVOICE) ||  (move == PBMoves::FALSESWIPE) ||
@@ -2017,7 +2017,7 @@ def pbSpeciesCompatible?(species,move,pokemon)
       end
     when 535 # Tympole
       if pokemon.form==0
-        if (move == PBMoves::ATTRACT) ||  (move == PBMoves::BODYSLAM) ||
+        if (move == PBMoves::ENCHANT) ||  (move == PBMoves::BODYSLAM) ||
           (move == PBMoves::BULLDOZE) ||  (move == PBMoves::CONFIDE) ||
           (move == PBMoves::CUT) ||  (move == PBMoves::EARTHQUAKE) ||
           (move == PBMoves::ECHOEDVOICE) ||  (move == PBMoves::FACADE) ||
@@ -2047,7 +2047,7 @@ def pbSpeciesCompatible?(species,move,pokemon)
       end
     when 536 # Palpitoad
       if pokemon.form==0
-        if (move == PBMoves::ATTRACT) ||  (move == PBMoves::BODYSLAM) ||
+        if (move == PBMoves::ENCHANT) ||  (move == PBMoves::BODYSLAM) ||
           (move == PBMoves::BULLDOZE) ||  (move == PBMoves::CONFIDE) ||
           (move == PBMoves::CUT) ||  (move == PBMoves::EARTHQUAKE) ||
           (move == PBMoves::ECHOEDVOICE) ||  (move == PBMoves::FACADE) ||
@@ -2077,7 +2077,7 @@ def pbSpeciesCompatible?(species,move,pokemon)
       end
     when 537 # Seismitoad
       if pokemon.form==0
-        if (move == PBMoves::ATTRACT) ||  (move == PBMoves::BODYSLAM) ||
+        if (move == PBMoves::ENCHANT) ||  (move == PBMoves::BODYSLAM) ||
           (move == PBMoves::BULLDOZE) ||  (move == PBMoves::CONFIDE) ||
           (move == PBMoves::CUT) ||  (move == PBMoves::EARTHQUAKE) ||
           (move == PBMoves::ECHOEDVOICE) ||  (move == PBMoves::FACADE) ||
@@ -2341,7 +2341,7 @@ def pbSpeciesCompatible?(species,move,pokemon)
       end
     when 656 # Froakie
       if pokemon.form==0
-        if (move == PBMoves::ATTRACT) ||  (move == PBMoves::BRICKBREAK) ||
+        if (move == PBMoves::ENCHANT) ||  (move == PBMoves::BRICKBREAK) ||
           (move == PBMoves::CALMMIND) ||  (move == PBMoves::CUT) ||
           (move == PBMoves::DARKPULSE) ||  (move == PBMoves::DIVE) ||
           (move == PBMoves::DOUBLETEAM) ||  (move == PBMoves::ECHOEDVOICE) ||
@@ -2370,7 +2370,7 @@ def pbSpeciesCompatible?(species,move,pokemon)
       end
     when 657 # Frogadier
       if pokemon.form==0
-        if (move == PBMoves::ATTRACT) ||  (move == PBMoves::BRICKBREAK) ||
+        if (move == PBMoves::ENCHANT) ||  (move == PBMoves::BRICKBREAK) ||
           (move == PBMoves::CALMMIND) ||  (move == PBMoves::CUT) ||
           (move == PBMoves::DARKPULSE) ||  (move == PBMoves::DIVE) ||
           (move == PBMoves::DOUBLETEAM) ||  (move == PBMoves::ECHOEDVOICE) ||
@@ -2399,7 +2399,7 @@ def pbSpeciesCompatible?(species,move,pokemon)
       end
     when 658 # Greninja
       if pokemon.form==0
-        if (move == PBMoves::ATTRACT) ||  (move == PBMoves::BRICKBREAK) ||
+        if (move == PBMoves::ENCHANT) ||  (move == PBMoves::BRICKBREAK) ||
           (move == PBMoves::CALMMIND) ||  (move == PBMoves::CUT) ||
           (move == PBMoves::DARKPULSE) ||  (move == PBMoves::DIVE) ||
           (move == PBMoves::DOUBLETEAM) ||  (move == PBMoves::ECHOEDVOICE) ||
@@ -2428,7 +2428,7 @@ def pbSpeciesCompatible?(species,move,pokemon)
       end
     when 664 # Scatterbug
       if pokemon.form==0
-        if (move == PBMoves::ATTRACT) ||  (move == PBMoves::CALMMIND) ||
+        if (move == PBMoves::ENCHANT) ||  (move == PBMoves::CALMMIND) ||
           (move == PBMoves::CONFIDE) ||  (move == PBMoves::CUT) ||
           (move == PBMoves::DOUBLETEAM) ||  (move == PBMoves::ENERGYBALL) ||
           (move == PBMoves::FACADE) ||  (move == PBMoves::FLASH) ||
@@ -2456,7 +2456,7 @@ def pbSpeciesCompatible?(species,move,pokemon)
       end
     when 665 # Spewpa
       if pokemon.form==0
-        if (move == PBMoves::ATTRACT) ||  (move == PBMoves::CALMMIND) ||
+        if (move == PBMoves::ENCHANT) ||  (move == PBMoves::CALMMIND) ||
           (move == PBMoves::CONFIDE) ||  (move == PBMoves::CUT) ||
           (move == PBMoves::DOUBLETEAM) ||  (move == PBMoves::ENERGYBALL) ||
           (move == PBMoves::FACADE) ||  (move == PBMoves::FLASH) ||
@@ -2484,7 +2484,7 @@ def pbSpeciesCompatible?(species,move,pokemon)
       end
     when 666 # Vivillon
       if pokemon.form==0
-        if (move == PBMoves::ATTRACT) ||  (move == PBMoves::CALMMIND) ||
+        if (move == PBMoves::ENCHANT) ||  (move == PBMoves::CALMMIND) ||
           (move == PBMoves::CONFIDE) ||  (move == PBMoves::CUT) ||
           (move == PBMoves::DOUBLETEAM) ||  (move == PBMoves::ENERGYBALL) ||
           (move == PBMoves::FACADE) ||  (move == PBMoves::FLASH) ||
@@ -2512,7 +2512,7 @@ def pbSpeciesCompatible?(species,move,pokemon)
       end
     when 672 # Skiddo
       if pokemon.form==0
-        if (move == PBMoves::ATTRACT) ||  (move == PBMoves::BODYSLAM) ||
+        if (move == PBMoves::ENCHANT) ||  (move == PBMoves::BODYSLAM) ||
           (move == PBMoves::BRICKBREAK) ||  (move == PBMoves::BULLDOZE) ||
           (move == PBMoves::CONFIDE) ||  (move == PBMoves::CUT) ||
           (move == PBMoves::EARTHQUAKE) ||  (move == PBMoves::FACADE) ||
@@ -2542,7 +2542,7 @@ def pbSpeciesCompatible?(species,move,pokemon)
       end
     when 673 # Gogoat
       if pokemon.form==0
-        if (move == PBMoves::ATTRACT) ||  (move == PBMoves::BODYSLAM) ||
+        if (move == PBMoves::ENCHANT) ||  (move == PBMoves::BODYSLAM) ||
           (move == PBMoves::BRICKBREAK) ||  (move == PBMoves::BULLDOZE) ||
           (move == PBMoves::CONFIDE) ||  (move == PBMoves::CUT) ||
           (move == PBMoves::EARTHQUAKE) ||  (move == PBMoves::FACADE) ||

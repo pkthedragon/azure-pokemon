@@ -146,3 +146,537 @@ Battle Start!
 **Exception: undefined method `pbProcessTurn' for #<PokeBattle_Battler:0x000002c9ddc669f8>
 ["PokeBattle_Battle:5812:in `block in pbAttackPhase'", "PokeBattle_Battle:5810:in `each'", "PokeBattle_Battle:5810:in `pbAttackPhase'", "PokeBattle_Battle:5354:in `block (2 levels) in pbStartBattleCore'", "PBDebug:4:in `logonerr'", "PokeBattle_Battle:5353:in `block in pbStartBattleCore'", "PokeBattle_Battle:5337:in `loop'", "PokeBattle_Battle:5337:in `pbStartBattleCore'", "PokeBattle_Battle:4926:in `pbStartBattle'", "PokemonTrainers:724:in `block (2 levels) in pbTrainerBattle'", "PokemonField:706:in `pbSceneStandby'", "PokemonTrainers:723:in `block in pbTrainerBattle'", "PokemonField:1008:in `pbBattleAnimation'", "PokemonTrainers:722:in `pbTrainerBattle'", "(eval):1:in `pbExecuteScript'", "Interpreter:243:in `eval'", "Interpreter:243:in `pbExecuteScript'", "Interpreter:799:in `command_111'", "Interpreter:320:in `execute_command'", "Interpreter:193:in `block in update'", "Interpreter:106:in `loop'", "Interpreter:106:in `update'", "Autosave:30:in `block in update'", "Autosave:28:in `loop'", "Autosave:28:in `update'", "Scene_Map:72:in `block in main'", "Scene_Map:69:in `loop'", "Scene_Map:69:in `main'", "Main:79:in `mainFunctionDebug'", "Main:53:in `block in mainFunction'", "Compiler:38:in `pbCriticalCode'", "Main:53:in `mainFunction'", "Main:89:in `block (2 levels) in <main>'", "Main:88:in `loop'", "Main:88:in `block in <main>'", "Section000:336:in `eval'", "Section000:336:in `block in <main>'", "Section000:333:in `each'", "Section000:333:in `each_with_index'", "Section000:333:in `<main>'", "-e:in `eval'"]
 ***Round 2***
+==============================
+Battle Start!
+179 - Kara
+==============================
+***Round 1***
+**Exception: uninitialized constant PBMoves::ARENITEWALL
+["PokeBattle_AI:24986:in `block in pbGetMonRole'", "PokeBattle_AI:24921:in `each'", "PokeBattle_AI:24921:in `pbGetMonRole'", "PokeBattle_AI:28487:in `pbBuildMoveScores'", "PokeBattle_AI:35289:in `pbDefaultChooseEnemyCommand'", "PokeBattle_ActualScene:4416:in `pbChooseEnemyCommand'", "PokeBattle_Battle:5374:in `block in pbCommandPhase'", "PokeBattle_Battle:5349:in `each'", "PokeBattle_Battle:5349:in `pbCommandPhase'", "PokeBattle_Battle:5269:in `block (2 levels) in pbStartBattleCore'", "PBDebug:4:in `logonerr'", "PokeBattle_Battle:5268:in `block in pbStartBattleCore'", "PokeBattle_Battle:5260:in `loop'", "PokeBattle_Battle:5260:in `pbStartBattleCore'", "PokeBattle_Battle:4866:in `pbStartBattle'", "PokemonTrainers:724:in `block (2 levels) in pbTrainerBattle'", "PokemonField:706:in `pbSceneStandby'", "PokemonTrainers:723:in `block in pbTrainerBattle'", "PokemonField:1008:in `pbBattleAnimation'", "PokemonTrainers:722:in `pbTrainerBattle'", "(eval):1:in `pbExecuteScript'", "Interpreter:243:in `eval'", "Interpreter:243:in `pbExecuteScript'", "Interpreter:799:in `command_111'", "Interpreter:320:in `execute_command'", "Interpreter:193:in `block in update'", "Interpreter:106:in `loop'", "Interpreter:106:in `update'", "Autosave:30:in `block in update'", "Autosave:28:in `loop'", "Autosave:28:in `update'", "Scene_Map:72:in `block in main'", "Scene_Map:69:in `loop'", "Scene_Map:69:in `main'", "Main:79:in `mainFunctionDebug'", "Main:53:in `block in mainFunction'", "Compiler:38:in `pbCriticalCode'", "Main:53:in `mainFunction'", "Main:89:in `block (2 levels) in <main>'", "Main:88:in `loop'", "Main:88:in `block in <main>'", "Section000:336:in `eval'", "Section000:336:in `block in <main>'", "Section000:333:in `each'", "Section000:333:in `each_with_index'", "Section000:333:in `<main>'", "-e:in `eval'"]
+**Exception: undefined method `>' for nil:NilClass
+["PokeBattle_Battle:5531:in `block in pbAttackPhase'", "PokeBattle_Battle:5525:in `each'", "PokeBattle_Battle:5525:in `pbAttackPhase'", "PokeBattle_Battle:5277:in `block (2 levels) in pbStartBattleCore'", "PBDebug:4:in `logonerr'", "PokeBattle_Battle:5276:in `block in pbStartBattleCore'", "PokeBattle_Battle:5260:in `loop'", "PokeBattle_Battle:5260:in `pbStartBattleCore'", "PokeBattle_Battle:4866:in `pbStartBattle'", "PokemonTrainers:724:in `block (2 levels) in pbTrainerBattle'", "PokemonField:706:in `pbSceneStandby'", "PokemonTrainers:723:in `block in pbTrainerBattle'", "PokemonField:1008:in `pbBattleAnimation'", "PokemonTrainers:722:in `pbTrainerBattle'", "(eval):1:in `pbExecuteScript'", "Interpreter:243:in `eval'", "Interpreter:243:in `pbExecuteScript'", "Interpreter:799:in `command_111'", "Interpreter:320:in `execute_command'", "Interpreter:193:in `block in update'", "Interpreter:106:in `loop'", "Interpreter:106:in `update'", "Autosave:30:in `block in update'", "Autosave:28:in `loop'", "Autosave:28:in `update'", "Scene_Map:72:in `block in main'", "Scene_Map:69:in `loop'", "Scene_Map:69:in `main'", "Main:79:in `mainFunctionDebug'", "Main:53:in `block in mainFunction'", "Compiler:38:in `pbCriticalCode'", "Main:53:in `mainFunction'", "Main:89:in `block (2 levels) in <main>'", "Main:88:in `loop'", "Main:88:in `block in <main>'", "Section000:336:in `eval'", "Section000:336:in `block in <main>'", "Section000:333:in `each'", "Section000:333:in `each_with_index'", "Section000:333:in `<main>'", "-e:in `eval'"]
+***Round 2***
+==============================
+Battle Start!
+179 - Kara
+==============================
+***Round 1***
+AI Pokemon Buneary is faster than Fuecoco.
+**Exception: uninitialized constant PBMoves::Grievous
+["PokeBattle_AI:21027:in `pbStatusDamage'", "PokeBattle_AI:29320:in `block in pbBuildMoveScores'", "PokeBattle_AI:29299:in `each'", "PokeBattle_AI:29299:in `pbBuildMoveScores'", "PokeBattle_AI:35289:in `pbDefaultChooseEnemyCommand'", "PokeBattle_ActualScene:4416:in `pbChooseEnemyCommand'", "PokeBattle_Battle:5374:in `block in pbCommandPhase'", "PokeBattle_Battle:5349:in `each'", "PokeBattle_Battle:5349:in `pbCommandPhase'", "PokeBattle_Battle:5269:in `block (2 levels) in pbStartBattleCore'", "PBDebug:4:in `logonerr'", "PokeBattle_Battle:5268:in `block in pbStartBattleCore'", "PokeBattle_Battle:5260:in `loop'", "PokeBattle_Battle:5260:in `pbStartBattleCore'", "PokeBattle_Battle:4866:in `pbStartBattle'", "PokemonTrainers:724:in `block (2 levels) in pbTrainerBattle'", "PokemonField:706:in `pbSceneStandby'", "PokemonTrainers:723:in `block in pbTrainerBattle'", "PokemonField:1008:in `pbBattleAnimation'", "PokemonTrainers:722:in `pbTrainerBattle'", "(eval):1:in `pbExecuteScript'", "Interpreter:243:in `eval'", "Interpreter:243:in `pbExecuteScript'", "Interpreter:799:in `command_111'", "Interpreter:320:in `execute_command'", "Interpreter:193:in `block in update'", "Interpreter:106:in `loop'", "Interpreter:106:in `update'", "Autosave:30:in `block in update'", "Autosave:28:in `loop'", "Autosave:28:in `update'", "Scene_Map:72:in `block in main'", "Scene_Map:69:in `loop'", "Scene_Map:69:in `main'", "Main:79:in `mainFunctionDebug'", "Main:53:in `block in mainFunction'", "Compiler:38:in `pbCriticalCode'", "Main:53:in `mainFunction'", "Main:89:in `block (2 levels) in <main>'", "Main:88:in `loop'", "Main:88:in `block in <main>'", "Section000:336:in `eval'", "Section000:336:in `block in <main>'", "Section000:333:in `each'", "Section000:333:in `each_with_index'", "Section000:333:in `<main>'", "-e:in `eval'"]
+**Exception: undefined method `>' for nil:NilClass
+["PokeBattle_Battle:5531:in `block in pbAttackPhase'", "PokeBattle_Battle:5525:in `each'", "PokeBattle_Battle:5525:in `pbAttackPhase'", "PokeBattle_Battle:5277:in `block (2 levels) in pbStartBattleCore'", "PBDebug:4:in `logonerr'", "PokeBattle_Battle:5276:in `block in pbStartBattleCore'", "PokeBattle_Battle:5260:in `loop'", "PokeBattle_Battle:5260:in `pbStartBattleCore'", "PokeBattle_Battle:4866:in `pbStartBattle'", "PokemonTrainers:724:in `block (2 levels) in pbTrainerBattle'", "PokemonField:706:in `pbSceneStandby'", "PokemonTrainers:723:in `block in pbTrainerBattle'", "PokemonField:1008:in `pbBattleAnimation'", "PokemonTrainers:722:in `pbTrainerBattle'", "(eval):1:in `pbExecuteScript'", "Interpreter:243:in `eval'", "Interpreter:243:in `pbExecuteScript'", "Interpreter:799:in `command_111'", "Interpreter:320:in `execute_command'", "Interpreter:193:in `block in update'", "Interpreter:106:in `loop'", "Interpreter:106:in `update'", "Autosave:30:in `block in update'", "Autosave:28:in `loop'", "Autosave:28:in `update'", "Scene_Map:72:in `block in main'", "Scene_Map:69:in `loop'", "Scene_Map:69:in `main'", "Main:79:in `mainFunctionDebug'", "Main:53:in `block in mainFunction'", "Compiler:38:in `pbCriticalCode'", "Main:53:in `mainFunction'", "Main:89:in `block (2 levels) in <main>'", "Main:88:in `loop'", "Main:88:in `block in <main>'", "Section000:336:in `eval'", "Section000:336:in `block in <main>'", "Section000:333:in `each'", "Section000:333:in `each_with_index'", "Section000:333:in `<main>'", "-e:in `eval'"]
+***Round 2***
+==============================
+Battle Start!
+179 - Kara
+==============================
+***Round 1***
+AI Pokemon Buneary is faster than Fuecoco.
+**Exception: uninitialized constant PBMoves::Wounded
+["PokeBattle_AI:21027:in `pbStatusDamage'", "PokeBattle_AI:29320:in `block in pbBuildMoveScores'", "PokeBattle_AI:29299:in `each'", "PokeBattle_AI:29299:in `pbBuildMoveScores'", "PokeBattle_AI:35289:in `pbDefaultChooseEnemyCommand'", "PokeBattle_ActualScene:4416:in `pbChooseEnemyCommand'", "PokeBattle_Battle:5374:in `block in pbCommandPhase'", "PokeBattle_Battle:5349:in `each'", "PokeBattle_Battle:5349:in `pbCommandPhase'", "PokeBattle_Battle:5269:in `block (2 levels) in pbStartBattleCore'", "PBDebug:4:in `logonerr'", "PokeBattle_Battle:5268:in `block in pbStartBattleCore'", "PokeBattle_Battle:5260:in `loop'", "PokeBattle_Battle:5260:in `pbStartBattleCore'", "PokeBattle_Battle:4866:in `pbStartBattle'", "PokemonTrainers:724:in `block (2 levels) in pbTrainerBattle'", "PokemonField:706:in `pbSceneStandby'", "PokemonTrainers:723:in `block in pbTrainerBattle'", "PokemonField:1008:in `pbBattleAnimation'", "PokemonTrainers:722:in `pbTrainerBattle'", "(eval):1:in `pbExecuteScript'", "Interpreter:243:in `eval'", "Interpreter:243:in `pbExecuteScript'", "Interpreter:799:in `command_111'", "Interpreter:320:in `execute_command'", "Interpreter:193:in `block in update'", "Interpreter:106:in `loop'", "Interpreter:106:in `update'", "Autosave:30:in `block in update'", "Autosave:28:in `loop'", "Autosave:28:in `update'", "Scene_Map:72:in `block in main'", "Scene_Map:69:in `loop'", "Scene_Map:69:in `main'", "Main:79:in `mainFunctionDebug'", "Main:53:in `block in mainFunction'", "Compiler:38:in `pbCriticalCode'", "Main:53:in `mainFunction'", "Main:89:in `block (2 levels) in <main>'", "Main:88:in `loop'", "Main:88:in `block in <main>'", "Section000:336:in `eval'", "Section000:336:in `block in <main>'", "Section000:333:in `each'", "Section000:333:in `each_with_index'", "Section000:333:in `<main>'", "-e:in `eval'"]
+**Exception: undefined method `>' for nil:NilClass
+["PokeBattle_Battle:5531:in `block in pbAttackPhase'", "PokeBattle_Battle:5525:in `each'", "PokeBattle_Battle:5525:in `pbAttackPhase'", "PokeBattle_Battle:5277:in `block (2 levels) in pbStartBattleCore'", "PBDebug:4:in `logonerr'", "PokeBattle_Battle:5276:in `block in pbStartBattleCore'", "PokeBattle_Battle:5260:in `loop'", "PokeBattle_Battle:5260:in `pbStartBattleCore'", "PokeBattle_Battle:4866:in `pbStartBattle'", "PokemonTrainers:724:in `block (2 levels) in pbTrainerBattle'", "PokemonField:706:in `pbSceneStandby'", "PokemonTrainers:723:in `block in pbTrainerBattle'", "PokemonField:1008:in `pbBattleAnimation'", "PokemonTrainers:722:in `pbTrainerBattle'", "(eval):1:in `pbExecuteScript'", "Interpreter:243:in `eval'", "Interpreter:243:in `pbExecuteScript'", "Interpreter:799:in `command_111'", "Interpreter:320:in `execute_command'", "Interpreter:193:in `block in update'", "Interpreter:106:in `loop'", "Interpreter:106:in `update'", "Autosave:30:in `block in update'", "Autosave:28:in `loop'", "Autosave:28:in `update'", "Scene_Map:72:in `block in main'", "Scene_Map:69:in `loop'", "Scene_Map:69:in `main'", "Main:79:in `mainFunctionDebug'", "Main:53:in `block in mainFunction'", "Compiler:38:in `pbCriticalCode'", "Main:53:in `mainFunction'", "Main:89:in `block (2 levels) in <main>'", "Main:88:in `loop'", "Main:88:in `block in <main>'", "Section000:336:in `eval'", "Section000:336:in `block in <main>'", "Section000:333:in `each'", "Section000:333:in `each_with_index'", "Section000:333:in `<main>'", "-e:in `eval'"]
+***Round 2***
+==============================
+Battle Start!
+179 - Kara
+==============================
+***Round 1***
+AI Pokemon Buneary is faster than Fuecoco.
+**Exception: undefined method `>' for false:FalseClass
+["PokeBattle_AI:21670:in `pbRoughDamage'", "PokeBattle_AI:29302:in `block in pbBuildMoveScores'", "PokeBattle_AI:29299:in `each'", "PokeBattle_AI:29299:in `pbBuildMoveScores'", "PokeBattle_AI:35289:in `pbDefaultChooseEnemyCommand'", "PokeBattle_ActualScene:4416:in `pbChooseEnemyCommand'", "PokeBattle_Battle:5374:in `block in pbCommandPhase'", "PokeBattle_Battle:5349:in `each'", "PokeBattle_Battle:5349:in `pbCommandPhase'", "PokeBattle_Battle:5269:in `block (2 levels) in pbStartBattleCore'", "PBDebug:4:in `logonerr'", "PokeBattle_Battle:5268:in `block in pbStartBattleCore'", "PokeBattle_Battle:5260:in `loop'", "PokeBattle_Battle:5260:in `pbStartBattleCore'", "PokeBattle_Battle:4866:in `pbStartBattle'", "PokemonTrainers:724:in `block (2 levels) in pbTrainerBattle'", "PokemonField:706:in `pbSceneStandby'", "PokemonTrainers:723:in `block in pbTrainerBattle'", "PokemonField:1008:in `pbBattleAnimation'", "PokemonTrainers:722:in `pbTrainerBattle'", "(eval):1:in `pbExecuteScript'", "Interpreter:243:in `eval'", "Interpreter:243:in `pbExecuteScript'", "Interpreter:799:in `command_111'", "Interpreter:320:in `execute_command'", "Interpreter:193:in `block in update'", "Interpreter:106:in `loop'", "Interpreter:106:in `update'", "Autosave:30:in `block in update'", "Autosave:28:in `loop'", "Autosave:28:in `update'", "Scene_Map:72:in `block in main'", "Scene_Map:69:in `loop'", "Scene_Map:69:in `main'", "Main:79:in `mainFunctionDebug'", "Main:53:in `block in mainFunction'", "Compiler:38:in `pbCriticalCode'", "Main:53:in `mainFunction'", "Main:89:in `block (2 levels) in <main>'", "Main:88:in `loop'", "Main:88:in `block in <main>'", "Section000:336:in `eval'", "Section000:336:in `block in <main>'", "Section000:333:in `each'", "Section000:333:in `each_with_index'", "Section000:333:in `<main>'", "-e:in `eval'"]
+**Exception: undefined method `>' for nil:NilClass
+["PokeBattle_Battle:5531:in `block in pbAttackPhase'", "PokeBattle_Battle:5525:in `each'", "PokeBattle_Battle:5525:in `pbAttackPhase'", "PokeBattle_Battle:5277:in `block (2 levels) in pbStartBattleCore'", "PBDebug:4:in `logonerr'", "PokeBattle_Battle:5276:in `block in pbStartBattleCore'", "PokeBattle_Battle:5260:in `loop'", "PokeBattle_Battle:5260:in `pbStartBattleCore'", "PokeBattle_Battle:4866:in `pbStartBattle'", "PokemonTrainers:724:in `block (2 levels) in pbTrainerBattle'", "PokemonField:706:in `pbSceneStandby'", "PokemonTrainers:723:in `block in pbTrainerBattle'", "PokemonField:1008:in `pbBattleAnimation'", "PokemonTrainers:722:in `pbTrainerBattle'", "(eval):1:in `pbExecuteScript'", "Interpreter:243:in `eval'", "Interpreter:243:in `pbExecuteScript'", "Interpreter:799:in `command_111'", "Interpreter:320:in `execute_command'", "Interpreter:193:in `block in update'", "Interpreter:106:in `loop'", "Interpreter:106:in `update'", "Autosave:30:in `block in update'", "Autosave:28:in `loop'", "Autosave:28:in `update'", "Scene_Map:72:in `block in main'", "Scene_Map:69:in `loop'", "Scene_Map:69:in `main'", "Main:79:in `mainFunctionDebug'", "Main:53:in `block in mainFunction'", "Compiler:38:in `pbCriticalCode'", "Main:53:in `mainFunction'", "Main:89:in `block (2 levels) in <main>'", "Main:88:in `loop'", "Main:88:in `block in <main>'", "Section000:336:in `eval'", "Section000:336:in `block in <main>'", "Section000:333:in `each'", "Section000:333:in `each_with_index'", "Section000:333:in `<main>'", "-e:in `eval'"]
+***Round 2***
+==============================
+Battle Start!
+179 - Kara
+==============================
+***Round 1***
+AI Pokemon Buneary is faster than Fuecoco.
+**Exception: undefined method `>' for false:FalseClass
+["PokeBattle_AI:21670:in `pbRoughDamage'", "PokeBattle_AI:29302:in `block in pbBuildMoveScores'", "PokeBattle_AI:29299:in `each'", "PokeBattle_AI:29299:in `pbBuildMoveScores'", "PokeBattle_AI:35289:in `pbDefaultChooseEnemyCommand'", "PokeBattle_ActualScene:4416:in `pbChooseEnemyCommand'", "PokeBattle_Battle:5374:in `block in pbCommandPhase'", "PokeBattle_Battle:5349:in `each'", "PokeBattle_Battle:5349:in `pbCommandPhase'", "PokeBattle_Battle:5269:in `block (2 levels) in pbStartBattleCore'", "PBDebug:4:in `logonerr'", "PokeBattle_Battle:5268:in `block in pbStartBattleCore'", "PokeBattle_Battle:5260:in `loop'", "PokeBattle_Battle:5260:in `pbStartBattleCore'", "PokeBattle_Battle:4866:in `pbStartBattle'", "PokemonTrainers:724:in `block (2 levels) in pbTrainerBattle'", "PokemonField:706:in `pbSceneStandby'", "PokemonTrainers:723:in `block in pbTrainerBattle'", "PokemonField:1008:in `pbBattleAnimation'", "PokemonTrainers:722:in `pbTrainerBattle'", "(eval):1:in `pbExecuteScript'", "Interpreter:243:in `eval'", "Interpreter:243:in `pbExecuteScript'", "Interpreter:799:in `command_111'", "Interpreter:320:in `execute_command'", "Interpreter:193:in `block in update'", "Interpreter:106:in `loop'", "Interpreter:106:in `update'", "Autosave:30:in `block in update'", "Autosave:28:in `loop'", "Autosave:28:in `update'", "Scene_Map:72:in `block in main'", "Scene_Map:69:in `loop'", "Scene_Map:69:in `main'", "Main:79:in `mainFunctionDebug'", "Main:53:in `block in mainFunction'", "Compiler:38:in `pbCriticalCode'", "Main:53:in `mainFunction'", "Main:89:in `block (2 levels) in <main>'", "Main:88:in `loop'", "Main:88:in `block in <main>'", "Section000:336:in `eval'", "Section000:336:in `block in <main>'", "Section000:333:in `each'", "Section000:333:in `each_with_index'", "Section000:333:in `<main>'", "-e:in `eval'"]
+**Exception: undefined method `>' for nil:NilClass
+["PokeBattle_Battle:5531:in `block in pbAttackPhase'", "PokeBattle_Battle:5525:in `each'", "PokeBattle_Battle:5525:in `pbAttackPhase'", "PokeBattle_Battle:5277:in `block (2 levels) in pbStartBattleCore'", "PBDebug:4:in `logonerr'", "PokeBattle_Battle:5276:in `block in pbStartBattleCore'", "PokeBattle_Battle:5260:in `loop'", "PokeBattle_Battle:5260:in `pbStartBattleCore'", "PokeBattle_Battle:4866:in `pbStartBattle'", "PokemonTrainers:724:in `block (2 levels) in pbTrainerBattle'", "PokemonField:706:in `pbSceneStandby'", "PokemonTrainers:723:in `block in pbTrainerBattle'", "PokemonField:1008:in `pbBattleAnimation'", "PokemonTrainers:722:in `pbTrainerBattle'", "(eval):1:in `pbExecuteScript'", "Interpreter:243:in `eval'", "Interpreter:243:in `pbExecuteScript'", "Interpreter:799:in `command_111'", "Interpreter:320:in `execute_command'", "Interpreter:193:in `block in update'", "Interpreter:106:in `loop'", "Interpreter:106:in `update'", "Autosave:30:in `block in update'", "Autosave:28:in `loop'", "Autosave:28:in `update'", "Scene_Map:72:in `block in main'", "Scene_Map:69:in `loop'", "Scene_Map:69:in `main'", "Main:79:in `mainFunctionDebug'", "Main:53:in `block in mainFunction'", "Compiler:38:in `pbCriticalCode'", "Main:53:in `mainFunction'", "Main:89:in `block (2 levels) in <main>'", "Main:88:in `loop'", "Main:88:in `block in <main>'", "Section000:336:in `eval'", "Section000:336:in `block in <main>'", "Section000:333:in `each'", "Section000:333:in `each_with_index'", "Section000:333:in `<main>'", "-e:in `eval'"]
+***Round 2***
+==============================
+Battle Start!
+179 - Kara
+==============================
+***Round 1***
+AI Pokemon Buneary is faster than Fuecoco.
+**Exception: uninitialized constant PBAbilities::PUNKROCK
+["PokeBattle_AI:23959:in `pbRoughDamage'", "PokeBattle_AI:29302:in `block in pbBuildMoveScores'", "PokeBattle_AI:29299:in `each'", "PokeBattle_AI:29299:in `pbBuildMoveScores'", "PokeBattle_AI:35289:in `pbDefaultChooseEnemyCommand'", "PokeBattle_ActualScene:4416:in `pbChooseEnemyCommand'", "PokeBattle_Battle:5374:in `block in pbCommandPhase'", "PokeBattle_Battle:5349:in `each'", "PokeBattle_Battle:5349:in `pbCommandPhase'", "PokeBattle_Battle:5269:in `block (2 levels) in pbStartBattleCore'", "PBDebug:4:in `logonerr'", "PokeBattle_Battle:5268:in `block in pbStartBattleCore'", "PokeBattle_Battle:5260:in `loop'", "PokeBattle_Battle:5260:in `pbStartBattleCore'", "PokeBattle_Battle:4866:in `pbStartBattle'", "PokemonTrainers:724:in `block (2 levels) in pbTrainerBattle'", "PokemonField:706:in `pbSceneStandby'", "PokemonTrainers:723:in `block in pbTrainerBattle'", "PokemonField:1008:in `pbBattleAnimation'", "PokemonTrainers:722:in `pbTrainerBattle'", "(eval):1:in `pbExecuteScript'", "Interpreter:243:in `eval'", "Interpreter:243:in `pbExecuteScript'", "Interpreter:799:in `command_111'", "Interpreter:320:in `execute_command'", "Interpreter:193:in `block in update'", "Interpreter:106:in `loop'", "Interpreter:106:in `update'", "Autosave:30:in `block in update'", "Autosave:28:in `loop'", "Autosave:28:in `update'", "Scene_Map:72:in `block in main'", "Scene_Map:69:in `loop'", "Scene_Map:69:in `main'", "Main:79:in `mainFunctionDebug'", "Main:53:in `block in mainFunction'", "Compiler:38:in `pbCriticalCode'", "Main:53:in `mainFunction'", "Main:89:in `block (2 levels) in <main>'", "Main:88:in `loop'", "Main:88:in `block in <main>'", "Section000:336:in `eval'", "Section000:336:in `block in <main>'", "Section000:333:in `each'", "Section000:333:in `each_with_index'", "Section000:333:in `<main>'", "-e:in `eval'"]
+**Exception: undefined method `>' for nil:NilClass
+["PokeBattle_Battle:5531:in `block in pbAttackPhase'", "PokeBattle_Battle:5525:in `each'", "PokeBattle_Battle:5525:in `pbAttackPhase'", "PokeBattle_Battle:5277:in `block (2 levels) in pbStartBattleCore'", "PBDebug:4:in `logonerr'", "PokeBattle_Battle:5276:in `block in pbStartBattleCore'", "PokeBattle_Battle:5260:in `loop'", "PokeBattle_Battle:5260:in `pbStartBattleCore'", "PokeBattle_Battle:4866:in `pbStartBattle'", "PokemonTrainers:724:in `block (2 levels) in pbTrainerBattle'", "PokemonField:706:in `pbSceneStandby'", "PokemonTrainers:723:in `block in pbTrainerBattle'", "PokemonField:1008:in `pbBattleAnimation'", "PokemonTrainers:722:in `pbTrainerBattle'", "(eval):1:in `pbExecuteScript'", "Interpreter:243:in `eval'", "Interpreter:243:in `pbExecuteScript'", "Interpreter:799:in `command_111'", "Interpreter:320:in `execute_command'", "Interpreter:193:in `block in update'", "Interpreter:106:in `loop'", "Interpreter:106:in `update'", "Autosave:30:in `block in update'", "Autosave:28:in `loop'", "Autosave:28:in `update'", "Scene_Map:72:in `block in main'", "Scene_Map:69:in `loop'", "Scene_Map:69:in `main'", "Main:79:in `mainFunctionDebug'", "Main:53:in `block in mainFunction'", "Compiler:38:in `pbCriticalCode'", "Main:53:in `mainFunction'", "Main:89:in `block (2 levels) in <main>'", "Main:88:in `loop'", "Main:88:in `block in <main>'", "Section000:336:in `eval'", "Section000:336:in `block in <main>'", "Section000:333:in `each'", "Section000:333:in `each_with_index'", "Section000:333:in `<main>'", "-e:in `eval'"]
+***Round 2***
+==============================
+Battle Start!
+179 - Kara
+==============================
+***Round 1***
+AI Pokemon Buneary is faster than Fuecoco.
+Defense Curl: initial score: 10
+[Not preferring status move]
+Defense Curl: final score: 2
+ 
+Splash: initial score: 1
+[Not preferring status move]
+Splash: final score: 0
+ 
+Pound: initial score: 33
+**Exception: uninitialized constant PBAbilities::POISONTOUCH
+["PokeBattle_AI:20079:in `pbGetMoveScore'", "PokeBattle_AI:29334:in `block in pbBuildMoveScores'", "PokeBattle_AI:29332:in `each'", "PokeBattle_AI:29332:in `pbBuildMoveScores'", "PokeBattle_AI:35289:in `pbDefaultChooseEnemyCommand'", "PokeBattle_ActualScene:4416:in `pbChooseEnemyCommand'", "PokeBattle_Battle:5374:in `block in pbCommandPhase'", "PokeBattle_Battle:5349:in `each'", "PokeBattle_Battle:5349:in `pbCommandPhase'", "PokeBattle_Battle:5269:in `block (2 levels) in pbStartBattleCore'", "PBDebug:4:in `logonerr'", "PokeBattle_Battle:5268:in `block in pbStartBattleCore'", "PokeBattle_Battle:5260:in `loop'", "PokeBattle_Battle:5260:in `pbStartBattleCore'", "PokeBattle_Battle:4866:in `pbStartBattle'", "PokemonTrainers:724:in `block (2 levels) in pbTrainerBattle'", "PokemonField:706:in `pbSceneStandby'", "PokemonTrainers:723:in `block in pbTrainerBattle'", "PokemonField:1008:in `pbBattleAnimation'", "PokemonTrainers:722:in `pbTrainerBattle'", "(eval):1:in `pbExecuteScript'", "Interpreter:243:in `eval'", "Interpreter:243:in `pbExecuteScript'", "Interpreter:799:in `command_111'", "Interpreter:320:in `execute_command'", "Interpreter:193:in `block in update'", "Interpreter:106:in `loop'", "Interpreter:106:in `update'", "Autosave:30:in `block in update'", "Autosave:28:in `loop'", "Autosave:28:in `update'", "Scene_Map:72:in `block in main'", "Scene_Map:69:in `loop'", "Scene_Map:69:in `main'", "Main:79:in `mainFunctionDebug'", "Main:53:in `block in mainFunction'", "Compiler:38:in `pbCriticalCode'", "Main:53:in `mainFunction'", "Main:89:in `block (2 levels) in <main>'", "Main:88:in `loop'", "Main:88:in `block in <main>'", "Section000:336:in `eval'", "Section000:336:in `block in <main>'", "Section000:333:in `each'", "Section000:333:in `each_with_index'", "Section000:333:in `<main>'", "-e:in `eval'"]
+**Exception: undefined method `>' for nil:NilClass
+["PokeBattle_Battle:5531:in `block in pbAttackPhase'", "PokeBattle_Battle:5525:in `each'", "PokeBattle_Battle:5525:in `pbAttackPhase'", "PokeBattle_Battle:5277:in `block (2 levels) in pbStartBattleCore'", "PBDebug:4:in `logonerr'", "PokeBattle_Battle:5276:in `block in pbStartBattleCore'", "PokeBattle_Battle:5260:in `loop'", "PokeBattle_Battle:5260:in `pbStartBattleCore'", "PokeBattle_Battle:4866:in `pbStartBattle'", "PokemonTrainers:724:in `block (2 levels) in pbTrainerBattle'", "PokemonField:706:in `pbSceneStandby'", "PokemonTrainers:723:in `block in pbTrainerBattle'", "PokemonField:1008:in `pbBattleAnimation'", "PokemonTrainers:722:in `pbTrainerBattle'", "(eval):1:in `pbExecuteScript'", "Interpreter:243:in `eval'", "Interpreter:243:in `pbExecuteScript'", "Interpreter:799:in `command_111'", "Interpreter:320:in `execute_command'", "Interpreter:193:in `block in update'", "Interpreter:106:in `loop'", "Interpreter:106:in `update'", "Autosave:30:in `block in update'", "Autosave:28:in `loop'", "Autosave:28:in `update'", "Scene_Map:72:in `block in main'", "Scene_Map:69:in `loop'", "Scene_Map:69:in `main'", "Main:79:in `mainFunctionDebug'", "Main:53:in `block in mainFunction'", "Compiler:38:in `pbCriticalCode'", "Main:53:in `mainFunction'", "Main:89:in `block (2 levels) in <main>'", "Main:88:in `loop'", "Main:88:in `block in <main>'", "Section000:336:in `eval'", "Section000:336:in `block in <main>'", "Section000:333:in `each'", "Section000:333:in `each_with_index'", "Section000:333:in `<main>'", "-e:in `eval'"]
+***Round 2***
+==============================
+Battle Start!
+179 - Kara
+==============================
+***Round 1***
+AI Pokemon Buneary is faster than Fuecoco.
+Defense Curl: initial score: 10
+[Not preferring status move]
+Defense Curl: final score: 1
+ 
+Splash: initial score: 1
+[Not preferring status move]
+Splash: final score: 0
+ 
+Pound: initial score: 33
+Pound: final score: 33
+ 
+Foresight: initial score: 5
+[Not preferring status move]
+Foresight: final score: 4
+ 
+Beginning AI Item use check.
+ 
+Highest item score: -10000
+Highest move score: 33
+Not using an item.
+ 
+[The foe Buneary: Defense Curl=1, Splash=0, Pound=33, Foresight=4]
+[Prefer Pound]
+[No Z-Move.]
+**Exception: undefined method `>' for nil:NilClass
+["PokeBattle_Battle:5531:in `block in pbAttackPhase'", "PokeBattle_Battle:5525:in `each'", "PokeBattle_Battle:5525:in `pbAttackPhase'", "PokeBattle_Battle:5277:in `block (2 levels) in pbStartBattleCore'", "PBDebug:4:in `logonerr'", "PokeBattle_Battle:5276:in `block in pbStartBattleCore'", "PokeBattle_Battle:5260:in `loop'", "PokeBattle_Battle:5260:in `pbStartBattleCore'", "PokeBattle_Battle:4866:in `pbStartBattle'", "PokemonTrainers:724:in `block (2 levels) in pbTrainerBattle'", "PokemonField:706:in `pbSceneStandby'", "PokemonTrainers:723:in `block in pbTrainerBattle'", "PokemonField:1008:in `pbBattleAnimation'", "PokemonTrainers:722:in `pbTrainerBattle'", "(eval):1:in `pbExecuteScript'", "Interpreter:243:in `eval'", "Interpreter:243:in `pbExecuteScript'", "Interpreter:799:in `command_111'", "Interpreter:320:in `execute_command'", "Interpreter:193:in `block in update'", "Interpreter:106:in `loop'", "Interpreter:106:in `update'", "Autosave:30:in `block in update'", "Autosave:28:in `loop'", "Autosave:28:in `update'", "Scene_Map:72:in `block in main'", "Scene_Map:69:in `loop'", "Scene_Map:69:in `main'", "Main:79:in `mainFunctionDebug'", "Main:53:in `block in mainFunction'", "Compiler:38:in `pbCriticalCode'", "Main:53:in `mainFunction'", "Main:89:in `block (2 levels) in <main>'", "Main:88:in `loop'", "Main:88:in `block in <main>'", "Section000:336:in `eval'", "Section000:336:in `block in <main>'", "Section000:333:in `each'", "Section000:333:in `each_with_index'", "Section000:333:in `<main>'", "-e:in `eval'"]
+***Round 2***
+==============================
+Battle Start!
+179 - Kara
+==============================
+***Round 1***
+AI Pokemon Buneary is faster than Fuecoco.
+Defense Curl: initial score: 10
+[Not preferring status move]
+Defense Curl: final score: 2
+ 
+Splash: initial score: 1
+[Not preferring status move]
+Splash: final score: 0
+ 
+Pound: initial score: 33
+Pound: final score: 33
+ 
+Foresight: initial score: 5
+[Not preferring status move]
+Foresight: final score: 4
+ 
+Beginning AI Item use check.
+ 
+Highest item score: -10000
+Highest move score: 33
+Not using an item.
+ 
+[The foe Buneary: Defense Curl=2, Splash=0, Pound=33, Foresight=4]
+[Prefer Pound]
+[No Z-Move.]
+**Exception: undefined method `>' for nil:NilClass
+["PokeBattle_Move:3752:in `pbCalcDamage'", "PokeBattle_Move:5557:in `pbEffect'", "PokeBattle_Battler:6388:in `block in pbProcessMoveAgainstTarget'", "PokeBattle_Battler:6271:in `each'", "PokeBattle_Battler:6271:in `pbProcessMoveAgainstTarget'", "PokeBattle_Battler:7251:in `block in pbUseMove'", "PokeBattle_Battler:7162:in `loop'", "PokeBattle_Battler:7162:in `pbUseMove'", "PokeBattle_Battler:8545:in `block in pbProcessTurn'", "PBDebug:4:in `logonerr'", "PokeBattle_Battler:8544:in `pbProcessTurn'", "PokeBattle_Battle:5717:in `block in pbAttackPhase'", "PokeBattle_Battle:5716:in `each'", "PokeBattle_Battle:5716:in `pbAttackPhase'", "PokeBattle_Battle:5279:in `block (2 levels) in pbStartBattleCore'", "PBDebug:4:in `logonerr'", "PokeBattle_Battle:5278:in `block in pbStartBattleCore'", "PokeBattle_Battle:5262:in `loop'", "PokeBattle_Battle:5262:in `pbStartBattleCore'", "PokeBattle_Battle:4868:in `pbStartBattle'", "PokemonTrainers:724:in `block (2 levels) in pbTrainerBattle'", "PokemonField:706:in `pbSceneStandby'", "PokemonTrainers:723:in `block in pbTrainerBattle'", "PokemonField:1008:in `pbBattleAnimation'", "PokemonTrainers:722:in `pbTrainerBattle'", "(eval):1:in `pbExecuteScript'", "Interpreter:243:in `eval'", "Interpreter:243:in `pbExecuteScript'", "Interpreter:799:in `command_111'", "Interpreter:320:in `execute_command'", "Interpreter:193:in `block in update'", "Interpreter:106:in `loop'", "Interpreter:106:in `update'", "Autosave:30:in `block in update'", "Autosave:28:in `loop'", "Autosave:28:in `update'", "Scene_Map:72:in `block in main'", "Scene_Map:69:in `loop'", "Scene_Map:69:in `main'", "Main:79:in `mainFunctionDebug'", "Main:53:in `block in mainFunction'", "Compiler:38:in `pbCriticalCode'", "Main:53:in `mainFunction'", "Main:89:in `block (2 levels) in <main>'", "Main:88:in `loop'", "Main:88:in `block in <main>'", "Section000:336:in `eval'", "Section000:336:in `block in <main>'", "Section000:333:in `each'", "Section000:333:in `each_with_index'", "Section000:333:in `<main>'", "-e:in `eval'"]
+**Exception: undefined method `>' for nil:NilClass
+["PokeBattle_Move:3752:in `pbCalcDamage'", "PokeBattle_Move:5557:in `pbEffect'", "PokeBattle_MoveEffects:7133:in `pbEffect'", "PokeBattle_Battler:6388:in `block in pbProcessMoveAgainstTarget'", "PokeBattle_Battler:6271:in `each'", "PokeBattle_Battler:6271:in `pbProcessMoveAgainstTarget'", "PokeBattle_Battler:7251:in `block in pbUseMove'", "PokeBattle_Battler:7162:in `loop'", "PokeBattle_Battler:7162:in `pbUseMove'", "PokeBattle_Battler:8545:in `block in pbProcessTurn'", "PBDebug:4:in `logonerr'", "PokeBattle_Battler:8544:in `pbProcessTurn'", "PokeBattle_Battle:5717:in `block in pbAttackPhase'", "PokeBattle_Battle:5716:in `each'", "PokeBattle_Battle:5716:in `pbAttackPhase'", "PokeBattle_Battle:5279:in `block (2 levels) in pbStartBattleCore'", "PBDebug:4:in `logonerr'", "PokeBattle_Battle:5278:in `block in pbStartBattleCore'", "PokeBattle_Battle:5262:in `loop'", "PokeBattle_Battle:5262:in `pbStartBattleCore'", "PokeBattle_Battle:4868:in `pbStartBattle'", "PokemonTrainers:724:in `block (2 levels) in pbTrainerBattle'", "PokemonField:706:in `pbSceneStandby'", "PokemonTrainers:723:in `block in pbTrainerBattle'", "PokemonField:1008:in `pbBattleAnimation'", "PokemonTrainers:722:in `pbTrainerBattle'", "(eval):1:in `pbExecuteScript'", "Interpreter:243:in `eval'", "Interpreter:243:in `pbExecuteScript'", "Interpreter:799:in `command_111'", "Interpreter:320:in `execute_command'", "Interpreter:193:in `block in update'", "Interpreter:106:in `loop'", "Interpreter:106:in `update'", "Autosave:30:in `block in update'", "Autosave:28:in `loop'", "Autosave:28:in `update'", "Scene_Map:72:in `block in main'", "Scene_Map:69:in `loop'", "Scene_Map:69:in `main'", "Main:79:in `mainFunctionDebug'", "Main:53:in `block in mainFunction'", "Compiler:38:in `pbCriticalCode'", "Main:53:in `mainFunction'", "Main:89:in `block (2 levels) in <main>'", "Main:88:in `loop'", "Main:88:in `block in <main>'", "Section000:336:in `eval'", "Section000:336:in `block in <main>'", "Section000:333:in `each'", "Section000:333:in `each_with_index'", "Section000:333:in `<main>'", "-e:in `eval'"]
+***Round 2***
+==============================
+Battle Start!
+179 - Kara
+==============================
+***Round 1***
+AI Pokemon Buneary is faster than Fuecoco.
+Defense Curl: initial score: 10
+[Not preferring status move]
+Defense Curl: final score: 2
+ 
+Splash: initial score: 1
+[Not preferring status move]
+Splash: final score: 0
+ 
+Pound: initial score: 33
+Pound: final score: 33
+ 
+Foresight: initial score: 5
+[Not preferring status move]
+Foresight: final score: 4
+ 
+Beginning AI Item use check.
+ 
+Highest item score: -10000
+Highest move score: 33
+Not using an item.
+ 
+[The foe Buneary: Defense Curl=2, Splash=0, Pound=33, Foresight=4]
+[Prefer Pound]
+[No Z-Move.]
+**Exception: undefined method `>' for nil:NilClass
+["PokeBattle_Move:3752:in `pbCalcDamage'", "PokeBattle_Move:5557:in `pbEffect'", "PokeBattle_Battler:6388:in `block in pbProcessMoveAgainstTarget'", "PokeBattle_Battler:6271:in `each'", "PokeBattle_Battler:6271:in `pbProcessMoveAgainstTarget'", "PokeBattle_Battler:7251:in `block in pbUseMove'", "PokeBattle_Battler:7162:in `loop'", "PokeBattle_Battler:7162:in `pbUseMove'", "PokeBattle_Battler:8545:in `block in pbProcessTurn'", "PBDebug:4:in `logonerr'", "PokeBattle_Battler:8544:in `pbProcessTurn'", "PokeBattle_Battle:5717:in `block in pbAttackPhase'", "PokeBattle_Battle:5716:in `each'", "PokeBattle_Battle:5716:in `pbAttackPhase'", "PokeBattle_Battle:5279:in `block (2 levels) in pbStartBattleCore'", "PBDebug:4:in `logonerr'", "PokeBattle_Battle:5278:in `block in pbStartBattleCore'", "PokeBattle_Battle:5262:in `loop'", "PokeBattle_Battle:5262:in `pbStartBattleCore'", "PokeBattle_Battle:4868:in `pbStartBattle'", "PokemonTrainers:724:in `block (2 levels) in pbTrainerBattle'", "PokemonField:706:in `pbSceneStandby'", "PokemonTrainers:723:in `block in pbTrainerBattle'", "PokemonField:1008:in `pbBattleAnimation'", "PokemonTrainers:722:in `pbTrainerBattle'", "(eval):1:in `pbExecuteScript'", "Interpreter:243:in `eval'", "Interpreter:243:in `pbExecuteScript'", "Interpreter:799:in `command_111'", "Interpreter:320:in `execute_command'", "Interpreter:193:in `block in update'", "Interpreter:106:in `loop'", "Interpreter:106:in `update'", "Autosave:30:in `block in update'", "Autosave:28:in `loop'", "Autosave:28:in `update'", "Scene_Map:72:in `block in main'", "Scene_Map:69:in `loop'", "Scene_Map:69:in `main'", "Main:79:in `mainFunctionDebug'", "Main:53:in `block in mainFunction'", "Compiler:38:in `pbCriticalCode'", "Main:53:in `mainFunction'", "Main:89:in `block (2 levels) in <main>'", "Main:88:in `loop'", "Main:88:in `block in <main>'", "Section000:336:in `eval'", "Section000:336:in `block in <main>'", "Section000:333:in `each'", "Section000:333:in `each_with_index'", "Section000:333:in `<main>'", "-e:in `eval'"]
+**Exception: undefined method `>' for nil:NilClass
+["PokeBattle_Move:3752:in `pbCalcDamage'", "PokeBattle_Move:5557:in `pbEffect'", "PokeBattle_MoveEffects:7133:in `pbEffect'", "PokeBattle_Battler:6388:in `block in pbProcessMoveAgainstTarget'", "PokeBattle_Battler:6271:in `each'", "PokeBattle_Battler:6271:in `pbProcessMoveAgainstTarget'", "PokeBattle_Battler:7251:in `block in pbUseMove'", "PokeBattle_Battler:7162:in `loop'", "PokeBattle_Battler:7162:in `pbUseMove'", "PokeBattle_Battler:8545:in `block in pbProcessTurn'", "PBDebug:4:in `logonerr'", "PokeBattle_Battler:8544:in `pbProcessTurn'", "PokeBattle_Battle:5717:in `block in pbAttackPhase'", "PokeBattle_Battle:5716:in `each'", "PokeBattle_Battle:5716:in `pbAttackPhase'", "PokeBattle_Battle:5279:in `block (2 levels) in pbStartBattleCore'", "PBDebug:4:in `logonerr'", "PokeBattle_Battle:5278:in `block in pbStartBattleCore'", "PokeBattle_Battle:5262:in `loop'", "PokeBattle_Battle:5262:in `pbStartBattleCore'", "PokeBattle_Battle:4868:in `pbStartBattle'", "PokemonTrainers:724:in `block (2 levels) in pbTrainerBattle'", "PokemonField:706:in `pbSceneStandby'", "PokemonTrainers:723:in `block in pbTrainerBattle'", "PokemonField:1008:in `pbBattleAnimation'", "PokemonTrainers:722:in `pbTrainerBattle'", "(eval):1:in `pbExecuteScript'", "Interpreter:243:in `eval'", "Interpreter:243:in `pbExecuteScript'", "Interpreter:799:in `command_111'", "Interpreter:320:in `execute_command'", "Interpreter:193:in `block in update'", "Interpreter:106:in `loop'", "Interpreter:106:in `update'", "Autosave:30:in `block in update'", "Autosave:28:in `loop'", "Autosave:28:in `update'", "Scene_Map:72:in `block in main'", "Scene_Map:69:in `loop'", "Scene_Map:69:in `main'", "Main:79:in `mainFunctionDebug'", "Main:53:in `block in mainFunction'", "Compiler:38:in `pbCriticalCode'", "Main:53:in `mainFunction'", "Main:89:in `block (2 levels) in <main>'", "Main:88:in `loop'", "Main:88:in `block in <main>'", "Section000:336:in `eval'", "Section000:336:in `block in <main>'", "Section000:333:in `each'", "Section000:333:in `each_with_index'", "Section000:333:in `<main>'", "-e:in `eval'"]
+***Round 2***
+==============================
+Battle Start!
+179 - Kara
+==============================
+***Round 1***
+AI Pokemon Buneary is faster than Fuecoco.
+Defense Curl: initial score: 10
+[Not preferring status move]
+Defense Curl: final score: 2
+ 
+Splash: initial score: 1
+[Not preferring status move]
+Splash: final score: 0
+ 
+Pound: initial score: 33
+Pound: final score: 33
+ 
+Foresight: initial score: 5
+[Not preferring status move]
+Foresight: final score: 4
+ 
+Beginning AI Item use check.
+ 
+Highest item score: -10000
+Highest move score: 33
+Not using an item.
+ 
+[The foe Buneary: Defense Curl=2, Splash=0, Pound=33, Foresight=4]
+[Prefer Pound]
+[No Z-Move.]
+[Continuing move]
+[Continuing move]
+**Exception: undefined method `basedamage' for nil:NilClass
+["PokeBattle_Battler:8549:in `pbProcessTurn'", "PokeBattle_Battle:5717:in `block in pbAttackPhase'", "PokeBattle_Battle:5716:in `each'", "PokeBattle_Battle:5716:in `pbAttackPhase'", "PokeBattle_Battle:5279:in `block (2 levels) in pbStartBattleCore'", "PBDebug:4:in `logonerr'", "PokeBattle_Battle:5278:in `block in pbStartBattleCore'", "PokeBattle_Battle:5262:in `loop'", "PokeBattle_Battle:5262:in `pbStartBattleCore'", "PokeBattle_Battle:4868:in `pbStartBattle'", "PokemonTrainers:724:in `block (2 levels) in pbTrainerBattle'", "PokemonField:706:in `pbSceneStandby'", "PokemonTrainers:723:in `block in pbTrainerBattle'", "PokemonField:1008:in `pbBattleAnimation'", "PokemonTrainers:722:in `pbTrainerBattle'", "(eval):1:in `pbExecuteScript'", "Interpreter:243:in `eval'", "Interpreter:243:in `pbExecuteScript'", "Interpreter:799:in `command_111'", "Interpreter:320:in `execute_command'", "Interpreter:193:in `block in update'", "Interpreter:106:in `loop'", "Interpreter:106:in `update'", "Autosave:30:in `block in update'", "Autosave:28:in `loop'", "Autosave:28:in `update'", "Scene_Map:72:in `block in main'", "Scene_Map:69:in `loop'", "Scene_Map:69:in `main'", "Main:79:in `mainFunctionDebug'", "Main:53:in `block in mainFunction'", "Compiler:38:in `pbCriticalCode'", "Main:53:in `mainFunction'", "Main:89:in `block (2 levels) in <main>'", "Main:88:in `loop'", "Main:88:in `block in <main>'", "Section000:336:in `eval'", "Section000:336:in `block in <main>'", "Section000:333:in `each'", "Section000:333:in `each_with_index'", "Section000:333:in `<main>'", "-e:in `eval'"]
+**Exception: undefined method `zmove' for nil:NilClass
+["PokeBattle_Battle:2388:in `block in pbPriority'", "PokeBattle_Battle:2383:in `each'", "PokeBattle_Battle:2383:in `pbPriority'", "PokeBattle_Battle:5861:in `pbEndOfRoundPhase'", "PokeBattle_Clauses:42:in `pbEndOfRoundPhase'", "PokeBattle_Battle:5283:in `block (2 levels) in pbStartBattleCore'", "PBDebug:4:in `logonerr'", "PokeBattle_Battle:5282:in `block in pbStartBattleCore'", "PokeBattle_Battle:5262:in `loop'", "PokeBattle_Battle:5262:in `pbStartBattleCore'", "PokeBattle_Battle:4868:in `pbStartBattle'", "PokemonTrainers:724:in `block (2 levels) in pbTrainerBattle'", "PokemonField:706:in `pbSceneStandby'", "PokemonTrainers:723:in `block in pbTrainerBattle'", "PokemonField:1008:in `pbBattleAnimation'", "PokemonTrainers:722:in `pbTrainerBattle'", "(eval):1:in `pbExecuteScript'", "Interpreter:243:in `eval'", "Interpreter:243:in `pbExecuteScript'", "Interpreter:799:in `command_111'", "Interpreter:320:in `execute_command'", "Interpreter:193:in `block in update'", "Interpreter:106:in `loop'", "Interpreter:106:in `update'", "Autosave:30:in `block in update'", "Autosave:28:in `loop'", "Autosave:28:in `update'", "Scene_Map:72:in `block in main'", "Scene_Map:69:in `loop'", "Scene_Map:69:in `main'", "Main:79:in `mainFunctionDebug'", "Main:53:in `block in mainFunction'", "Compiler:38:in `pbCriticalCode'", "Main:53:in `mainFunction'", "Main:89:in `block (2 levels) in <main>'", "Main:88:in `loop'", "Main:88:in `block in <main>'", "Section000:336:in `eval'", "Section000:336:in `block in <main>'", "Section000:333:in `each'", "Section000:333:in `each_with_index'", "Section000:333:in `<main>'", "-e:in `eval'"]
+***Round 2***
+==============================
+Battle Start!
+179 - Kara
+==============================
+***Round 1***
+AI Pokemon Buneary is faster than Fuecoco.
+Defense Curl: initial score: 10
+[Not preferring status move]
+Defense Curl: final score: 2
+ 
+Splash: initial score: 1
+[Not preferring status move]
+Splash: final score: 0
+ 
+Pound: initial score: 33
+Pound: final score: 33
+ 
+Foresight: initial score: 5
+[Not preferring status move]
+Foresight: final score: 4
+ 
+Beginning AI Item use check.
+ 
+Highest item score: -10000
+Highest move score: 33
+Not using an item.
+ 
+[The foe Buneary: Defense Curl=2, Splash=0, Pound=33, Foresight=4]
+[Prefer Pound]
+[No Z-Move.]
+[Continuing move]
+[Continuing move]
+**Exception: undefined method `basedamage' for nil:NilClass
+["PokeBattle_Battler:8549:in `pbProcessTurn'", "PokeBattle_Battle:5728:in `block in pbAttackPhase'", "PokeBattle_Battle:5727:in `each'", "PokeBattle_Battle:5727:in `pbAttackPhase'", "PokeBattle_Battle:5290:in `block (2 levels) in pbStartBattleCore'", "PBDebug:4:in `logonerr'", "PokeBattle_Battle:5289:in `block in pbStartBattleCore'", "PokeBattle_Battle:5273:in `loop'", "PokeBattle_Battle:5273:in `pbStartBattleCore'", "PokeBattle_Battle:4879:in `pbStartBattle'", "PokemonTrainers:724:in `block (2 levels) in pbTrainerBattle'", "PokemonField:706:in `pbSceneStandby'", "PokemonTrainers:723:in `block in pbTrainerBattle'", "PokemonField:1008:in `pbBattleAnimation'", "PokemonTrainers:722:in `pbTrainerBattle'", "(eval):1:in `pbExecuteScript'", "Interpreter:243:in `eval'", "Interpreter:243:in `pbExecuteScript'", "Interpreter:799:in `command_111'", "Interpreter:320:in `execute_command'", "Interpreter:193:in `block in update'", "Interpreter:106:in `loop'", "Interpreter:106:in `update'", "Autosave:30:in `block in update'", "Autosave:28:in `loop'", "Autosave:28:in `update'", "Scene_Map:72:in `block in main'", "Scene_Map:69:in `loop'", "Scene_Map:69:in `main'", "Main:79:in `mainFunctionDebug'", "Main:53:in `block in mainFunction'", "Compiler:38:in `pbCriticalCode'", "Main:53:in `mainFunction'", "Main:89:in `block (2 levels) in <main>'", "Main:88:in `loop'", "Main:88:in `block in <main>'", "Section000:336:in `eval'", "Section000:336:in `block in <main>'", "Section000:333:in `each'", "Section000:333:in `each_with_index'", "Section000:333:in `<main>'", "-e:in `eval'"]
+**Exception: undefined method `zmove' for nil:NilClass
+["PokeBattle_Battle:2399:in `block in pbPriority'", "PokeBattle_Battle:2394:in `each'", "PokeBattle_Battle:2394:in `pbPriority'", "PokeBattle_Battle:5872:in `pbEndOfRoundPhase'", "PokeBattle_Clauses:42:in `pbEndOfRoundPhase'", "PokeBattle_Battle:5294:in `block (2 levels) in pbStartBattleCore'", "PBDebug:4:in `logonerr'", "PokeBattle_Battle:5293:in `block in pbStartBattleCore'", "PokeBattle_Battle:5273:in `loop'", "PokeBattle_Battle:5273:in `pbStartBattleCore'", "PokeBattle_Battle:4879:in `pbStartBattle'", "PokemonTrainers:724:in `block (2 levels) in pbTrainerBattle'", "PokemonField:706:in `pbSceneStandby'", "PokemonTrainers:723:in `block in pbTrainerBattle'", "PokemonField:1008:in `pbBattleAnimation'", "PokemonTrainers:722:in `pbTrainerBattle'", "(eval):1:in `pbExecuteScript'", "Interpreter:243:in `eval'", "Interpreter:243:in `pbExecuteScript'", "Interpreter:799:in `command_111'", "Interpreter:320:in `execute_command'", "Interpreter:193:in `block in update'", "Interpreter:106:in `loop'", "Interpreter:106:in `update'", "Autosave:30:in `block in update'", "Autosave:28:in `loop'", "Autosave:28:in `update'", "Scene_Map:72:in `block in main'", "Scene_Map:69:in `loop'", "Scene_Map:69:in `main'", "Main:79:in `mainFunctionDebug'", "Main:53:in `block in mainFunction'", "Compiler:38:in `pbCriticalCode'", "Main:53:in `mainFunction'", "Main:89:in `block (2 levels) in <main>'", "Main:88:in `loop'", "Main:88:in `block in <main>'", "Section000:336:in `eval'", "Section000:336:in `block in <main>'", "Section000:333:in `each'", "Section000:333:in `each_with_index'", "Section000:333:in `<main>'", "-e:in `eval'"]
+***Round 2***
+AI Pokemon Buneary is faster than Fuecoco.
+Defense Curl: initial score: 10
+[Not preferring status move]
+Defense Curl: final score: 2
+ 
+Splash: initial score: 1
+[Not preferring status move]
+Splash: final score: 0
+ 
+Pound: initial score: 33
+Pound: final score: 33
+ 
+Foresight: initial score: 5
+[Not preferring status move]
+Foresight: final score: 4
+ 
+Beginning AI Item use check.
+ 
+Highest item score: -10000
+Highest move score: 33
+Not using an item.
+ 
+[The foe Buneary: Defense Curl=2, Splash=0, Pound=33, Foresight=4]
+[Prefer Pound]
+[No Z-Move.]
+[Continuing move]
+[Continuing move]
+**Exception: undefined method `basedamage' for nil:NilClass
+["PokeBattle_Battler:8549:in `pbProcessTurn'", "PokeBattle_Battle:5728:in `block in pbAttackPhase'", "PokeBattle_Battle:5727:in `each'", "PokeBattle_Battle:5727:in `pbAttackPhase'", "PokeBattle_Battle:5290:in `block (2 levels) in pbStartBattleCore'", "PBDebug:4:in `logonerr'", "PokeBattle_Battle:5289:in `block in pbStartBattleCore'", "PokeBattle_Battle:5273:in `loop'", "PokeBattle_Battle:5273:in `pbStartBattleCore'", "PokeBattle_Battle:4879:in `pbStartBattle'", "PokemonTrainers:724:in `block (2 levels) in pbTrainerBattle'", "PokemonField:706:in `pbSceneStandby'", "PokemonTrainers:723:in `block in pbTrainerBattle'", "PokemonField:1008:in `pbBattleAnimation'", "PokemonTrainers:722:in `pbTrainerBattle'", "(eval):1:in `pbExecuteScript'", "Interpreter:243:in `eval'", "Interpreter:243:in `pbExecuteScript'", "Interpreter:799:in `command_111'", "Interpreter:320:in `execute_command'", "Interpreter:193:in `block in update'", "Interpreter:106:in `loop'", "Interpreter:106:in `update'", "Autosave:30:in `block in update'", "Autosave:28:in `loop'", "Autosave:28:in `update'", "Scene_Map:72:in `block in main'", "Scene_Map:69:in `loop'", "Scene_Map:69:in `main'", "Main:79:in `mainFunctionDebug'", "Main:53:in `block in mainFunction'", "Compiler:38:in `pbCriticalCode'", "Main:53:in `mainFunction'", "Main:89:in `block (2 levels) in <main>'", "Main:88:in `loop'", "Main:88:in `block in <main>'", "Section000:336:in `eval'", "Section000:336:in `block in <main>'", "Section000:333:in `each'", "Section000:333:in `each_with_index'", "Section000:333:in `<main>'", "-e:in `eval'"]
+**Exception: undefined method `zmove' for nil:NilClass
+["PokeBattle_Battle:2399:in `block in pbPriority'", "PokeBattle_Battle:2394:in `each'", "PokeBattle_Battle:2394:in `pbPriority'", "PokeBattle_Battle:5872:in `pbEndOfRoundPhase'", "PokeBattle_Clauses:42:in `pbEndOfRoundPhase'", "PokeBattle_Battle:5294:in `block (2 levels) in pbStartBattleCore'", "PBDebug:4:in `logonerr'", "PokeBattle_Battle:5293:in `block in pbStartBattleCore'", "PokeBattle_Battle:5273:in `loop'", "PokeBattle_Battle:5273:in `pbStartBattleCore'", "PokeBattle_Battle:4879:in `pbStartBattle'", "PokemonTrainers:724:in `block (2 levels) in pbTrainerBattle'", "PokemonField:706:in `pbSceneStandby'", "PokemonTrainers:723:in `block in pbTrainerBattle'", "PokemonField:1008:in `pbBattleAnimation'", "PokemonTrainers:722:in `pbTrainerBattle'", "(eval):1:in `pbExecuteScript'", "Interpreter:243:in `eval'", "Interpreter:243:in `pbExecuteScript'", "Interpreter:799:in `command_111'", "Interpreter:320:in `execute_command'", "Interpreter:193:in `block in update'", "Interpreter:106:in `loop'", "Interpreter:106:in `update'", "Autosave:30:in `block in update'", "Autosave:28:in `loop'", "Autosave:28:in `update'", "Scene_Map:72:in `block in main'", "Scene_Map:69:in `loop'", "Scene_Map:69:in `main'", "Main:79:in `mainFunctionDebug'", "Main:53:in `block in mainFunction'", "Compiler:38:in `pbCriticalCode'", "Main:53:in `mainFunction'", "Main:89:in `block (2 levels) in <main>'", "Main:88:in `loop'", "Main:88:in `block in <main>'", "Section000:336:in `eval'", "Section000:336:in `block in <main>'", "Section000:333:in `each'", "Section000:333:in `each_with_index'", "Section000:333:in `<main>'", "-e:in `eval'"]
+***Round 3***
+==============================
+Battle Start!
+179 - Kara
+==============================
+***Round 1***
+AI Pokemon Buneary is faster than Fuecoco.
+Defense Curl: initial score: 10
+[Not preferring status move]
+Defense Curl: final score: 2
+ 
+Splash: initial score: 1
+[Not preferring status move]
+Splash: final score: 0
+ 
+Pound: initial score: 33
+Pound: final score: 33
+ 
+Foresight: initial score: 5
+[Not preferring status move]
+Foresight: final score: 4
+ 
+Beginning AI Item use check.
+ 
+Highest item score: -10000
+Highest move score: 33
+Not using an item.
+ 
+[The foe Buneary: Defense Curl=2, Splash=0, Pound=33, Foresight=4]
+[Prefer Pound]
+[No Z-Move.]
+[Continuing move]
+[Continuing move]
+**Exception: undefined method `basedamage' for nil:NilClass
+["PokeBattle_Battler:8554:in `pbProcessTurn'", "PokeBattle_Battle:5727:in `block in pbAttackPhase'", "PokeBattle_Battle:5726:in `each'", "PokeBattle_Battle:5726:in `pbAttackPhase'", "PokeBattle_Battle:5289:in `block (2 levels) in pbStartBattleCore'", "PBDebug:4:in `logonerr'", "PokeBattle_Battle:5288:in `block in pbStartBattleCore'", "PokeBattle_Battle:5272:in `loop'", "PokeBattle_Battle:5272:in `pbStartBattleCore'", "PokeBattle_Battle:4878:in `pbStartBattle'", "PokemonTrainers:724:in `block (2 levels) in pbTrainerBattle'", "PokemonField:706:in `pbSceneStandby'", "PokemonTrainers:723:in `block in pbTrainerBattle'", "PokemonField:1008:in `pbBattleAnimation'", "PokemonTrainers:722:in `pbTrainerBattle'", "(eval):1:in `pbExecuteScript'", "Interpreter:243:in `eval'", "Interpreter:243:in `pbExecuteScript'", "Interpreter:799:in `command_111'", "Interpreter:320:in `execute_command'", "Interpreter:193:in `block in update'", "Interpreter:106:in `loop'", "Interpreter:106:in `update'", "Autosave:30:in `block in update'", "Autosave:28:in `loop'", "Autosave:28:in `update'", "Scene_Map:72:in `block in main'", "Scene_Map:69:in `loop'", "Scene_Map:69:in `main'", "Main:79:in `mainFunctionDebug'", "Main:53:in `block in mainFunction'", "Compiler:38:in `pbCriticalCode'", "Main:53:in `mainFunction'", "Main:89:in `block (2 levels) in <main>'", "Main:88:in `loop'", "Main:88:in `block in <main>'", "Section000:336:in `eval'", "Section000:336:in `block in <main>'", "Section000:333:in `each'", "Section000:333:in `each_with_index'", "Section000:333:in `<main>'", "-e:in `eval'"]
+***Round 2***
+AI Pokemon Buneary is faster than Fuecoco.
+Defense Curl: initial score: 10
+[Not preferring status move]
+Defense Curl: final score: 2
+ 
+Splash: initial score: 1
+[Not preferring status move]
+Splash: final score: 0
+ 
+Pound: initial score: 33
+Pound: final score: 33
+ 
+Foresight: initial score: 5
+[Not preferring status move]
+Foresight: final score: 4
+ 
+Beginning AI Item use check.
+ 
+Highest item score: -10000
+Highest move score: 33
+Not using an item.
+ 
+[The foe Buneary: Defense Curl=2, Splash=0, Pound=33, Foresight=4]
+[Prefer Pound]
+[No Z-Move.]
+[Continuing move]
+[Continuing move]
+**Exception: undefined method `basedamage' for nil:NilClass
+["PokeBattle_Battler:8554:in `pbProcessTurn'", "PokeBattle_Battle:5727:in `block in pbAttackPhase'", "PokeBattle_Battle:5726:in `each'", "PokeBattle_Battle:5726:in `pbAttackPhase'", "PokeBattle_Battle:5289:in `block (2 levels) in pbStartBattleCore'", "PBDebug:4:in `logonerr'", "PokeBattle_Battle:5288:in `block in pbStartBattleCore'", "PokeBattle_Battle:5272:in `loop'", "PokeBattle_Battle:5272:in `pbStartBattleCore'", "PokeBattle_Battle:4878:in `pbStartBattle'", "PokemonTrainers:724:in `block (2 levels) in pbTrainerBattle'", "PokemonField:706:in `pbSceneStandby'", "PokemonTrainers:723:in `block in pbTrainerBattle'", "PokemonField:1008:in `pbBattleAnimation'", "PokemonTrainers:722:in `pbTrainerBattle'", "(eval):1:in `pbExecuteScript'", "Interpreter:243:in `eval'", "Interpreter:243:in `pbExecuteScript'", "Interpreter:799:in `command_111'", "Interpreter:320:in `execute_command'", "Interpreter:193:in `block in update'", "Interpreter:106:in `loop'", "Interpreter:106:in `update'", "Autosave:30:in `block in update'", "Autosave:28:in `loop'", "Autosave:28:in `update'", "Scene_Map:72:in `block in main'", "Scene_Map:69:in `loop'", "Scene_Map:69:in `main'", "Main:79:in `mainFunctionDebug'", "Main:53:in `block in mainFunction'", "Compiler:38:in `pbCriticalCode'", "Main:53:in `mainFunction'", "Main:89:in `block (2 levels) in <main>'", "Main:88:in `loop'", "Main:88:in `block in <main>'", "Section000:336:in `eval'", "Section000:336:in `block in <main>'", "Section000:333:in `each'", "Section000:333:in `each_with_index'", "Section000:333:in `<main>'", "-e:in `eval'"]
+***Round 3***
+==============================
+Battle Start!
+179 - Kara
+==============================
+***Round 1***
+AI Pokemon Buneary is faster than Fuecoco.
+Defense Curl: initial score: 10
+[Not preferring status move]
+Defense Curl: final score: 1
+ 
+Splash: initial score: 1
+[Not preferring status move]
+Splash: final score: 0
+ 
+Pound: initial score: 33
+Pound: final score: 33
+ 
+Foresight: initial score: 5
+[Not preferring status move]
+Foresight: final score: 4
+ 
+Beginning AI Item use check.
+ 
+Highest item score: -10000
+Highest move score: 33
+Not using an item.
+ 
+[The foe Buneary: Defense Curl=1, Splash=0, Pound=33, Foresight=4]
+[Prefer Pound]
+[No Z-Move.]
+[Continuing move]
+[Continuing move]
+**Exception: undefined method `basedamage' for nil:NilClass
+["PokeBattle_Battler:8554:in `pbProcessTurn'", "PokeBattle_Battle:5730:in `block in pbAttackPhase'", "PokeBattle_Battle:5729:in `each'", "PokeBattle_Battle:5729:in `pbAttackPhase'", "PokeBattle_Battle:5292:in `block (2 levels) in pbStartBattleCore'", "PBDebug:4:in `logonerr'", "PokeBattle_Battle:5291:in `block in pbStartBattleCore'", "PokeBattle_Battle:5275:in `loop'", "PokeBattle_Battle:5275:in `pbStartBattleCore'", "PokeBattle_Battle:4881:in `pbStartBattle'", "PokemonTrainers:724:in `block (2 levels) in pbTrainerBattle'", "PokemonField:706:in `pbSceneStandby'", "PokemonTrainers:723:in `block in pbTrainerBattle'", "PokemonField:1008:in `pbBattleAnimation'", "PokemonTrainers:722:in `pbTrainerBattle'", "(eval):1:in `pbExecuteScript'", "Interpreter:243:in `eval'", "Interpreter:243:in `pbExecuteScript'", "Interpreter:799:in `command_111'", "Interpreter:320:in `execute_command'", "Interpreter:193:in `block in update'", "Interpreter:106:in `loop'", "Interpreter:106:in `update'", "Autosave:30:in `block in update'", "Autosave:28:in `loop'", "Autosave:28:in `update'", "Scene_Map:72:in `block in main'", "Scene_Map:69:in `loop'", "Scene_Map:69:in `main'", "Main:79:in `mainFunctionDebug'", "Main:53:in `block in mainFunction'", "Compiler:38:in `pbCriticalCode'", "Main:53:in `mainFunction'", "Main:89:in `block (2 levels) in <main>'", "Main:88:in `loop'", "Main:88:in `block in <main>'", "Section000:336:in `eval'", "Section000:336:in `block in <main>'", "Section000:333:in `each'", "Section000:333:in `each_with_index'", "Section000:333:in `<main>'", "-e:in `eval'"]
+PRIORITY CHOICE NIL: i=0 choice=[1, 2, nil, -1]
+PRIORITY CHOICE NIL: i=1 choice=[1, 2, nil, -1]
+***Round 2***
+AI Pokemon Buneary is faster than Fuecoco.
+Defense Curl: initial score: 10
+[Not preferring status move]
+Defense Curl: final score: 1
+ 
+Splash: initial score: 1
+[Not preferring status move]
+Splash: final score: 0
+ 
+Pound: initial score: 33
+Pound: final score: 33
+ 
+Foresight: initial score: 5
+[Not preferring status move]
+Foresight: final score: 4
+ 
+Beginning AI Item use check.
+ 
+Highest item score: -10000
+Highest move score: 33
+Not using an item.
+ 
+[The foe Buneary: Defense Curl=1, Splash=0, Pound=33, Foresight=4]
+[Prefer Pound]
+[No Z-Move.]
+[Continuing move]
+[Continuing move]
+**Exception: undefined method `basedamage' for nil:NilClass
+["PokeBattle_Battler:8554:in `pbProcessTurn'", "PokeBattle_Battle:5730:in `block in pbAttackPhase'", "PokeBattle_Battle:5729:in `each'", "PokeBattle_Battle:5729:in `pbAttackPhase'", "PokeBattle_Battle:5292:in `block (2 levels) in pbStartBattleCore'", "PBDebug:4:in `logonerr'", "PokeBattle_Battle:5291:in `block in pbStartBattleCore'", "PokeBattle_Battle:5275:in `loop'", "PokeBattle_Battle:5275:in `pbStartBattleCore'", "PokeBattle_Battle:4881:in `pbStartBattle'", "PokemonTrainers:724:in `block (2 levels) in pbTrainerBattle'", "PokemonField:706:in `pbSceneStandby'", "PokemonTrainers:723:in `block in pbTrainerBattle'", "PokemonField:1008:in `pbBattleAnimation'", "PokemonTrainers:722:in `pbTrainerBattle'", "(eval):1:in `pbExecuteScript'", "Interpreter:243:in `eval'", "Interpreter:243:in `pbExecuteScript'", "Interpreter:799:in `command_111'", "Interpreter:320:in `execute_command'", "Interpreter:193:in `block in update'", "Interpreter:106:in `loop'", "Interpreter:106:in `update'", "Autosave:30:in `block in update'", "Autosave:28:in `loop'", "Autosave:28:in `update'", "Scene_Map:72:in `block in main'", "Scene_Map:69:in `loop'", "Scene_Map:69:in `main'", "Main:79:in `mainFunctionDebug'", "Main:53:in `block in mainFunction'", "Compiler:38:in `pbCriticalCode'", "Main:53:in `mainFunction'", "Main:89:in `block (2 levels) in <main>'", "Main:88:in `loop'", "Main:88:in `block in <main>'", "Section000:336:in `eval'", "Section000:336:in `block in <main>'", "Section000:333:in `each'", "Section000:333:in `each_with_index'", "Section000:333:in `<main>'", "-e:in `eval'"]
+PRIORITY CHOICE NIL: i=0 choice=[1, 2, nil, -1]
+PRIORITY CHOICE NIL: i=1 choice=[1, 2, nil, -1]
+***Round 3***
+==============================
+Battle Start!
+179 - Kara
+==============================
+***Round 1***
+AI Pokemon Buneary is faster than Fuecoco.
+Defense Curl: initial score: 10
+[Not preferring status move]
+Defense Curl: final score: 1
+ 
+Splash: initial score: 1
+[Not preferring status move]
+Splash: final score: 0
+ 
+Pound: initial score: 33
+Pound: final score: 33
+ 
+Foresight: initial score: 5
+[Not preferring status move]
+Foresight: final score: 4
+ 
+Beginning AI Item use check.
+ 
+Highest item score: -10000
+Highest move score: 33
+Not using an item.
+ 
+[The foe Buneary: Defense Curl=1, Splash=0, Pound=33, Foresight=4]
+[Prefer Pound]
+[No Z-Move.]
+[Continuing move]
+[Continuing move]
+**Exception: undefined method `basedamage' for nil:NilClass
+["PokeBattle_Battler:8554:in `pbProcessTurn'", "PokeBattle_Battle:5730:in `block in pbAttackPhase'", "PokeBattle_Battle:5729:in `each'", "PokeBattle_Battle:5729:in `pbAttackPhase'", "PokeBattle_Battle:5292:in `block (2 levels) in pbStartBattleCore'", "PBDebug:4:in `logonerr'", "PokeBattle_Battle:5291:in `block in pbStartBattleCore'", "PokeBattle_Battle:5275:in `loop'", "PokeBattle_Battle:5275:in `pbStartBattleCore'", "PokeBattle_Battle:4881:in `pbStartBattle'", "PokemonTrainers:724:in `block (2 levels) in pbTrainerBattle'", "PokemonField:706:in `pbSceneStandby'", "PokemonTrainers:723:in `block in pbTrainerBattle'", "PokemonField:1008:in `pbBattleAnimation'", "PokemonTrainers:722:in `pbTrainerBattle'", "(eval):1:in `pbExecuteScript'", "Interpreter:243:in `eval'", "Interpreter:243:in `pbExecuteScript'", "Interpreter:799:in `command_111'", "Interpreter:320:in `execute_command'", "Interpreter:193:in `block in update'", "Interpreter:106:in `loop'", "Interpreter:106:in `update'", "Autosave:30:in `block in update'", "Autosave:28:in `loop'", "Autosave:28:in `update'", "Scene_Map:72:in `block in main'", "Scene_Map:69:in `loop'", "Scene_Map:69:in `main'", "Main:79:in `mainFunctionDebug'", "Main:53:in `block in mainFunction'", "Compiler:38:in `pbCriticalCode'", "Main:53:in `mainFunction'", "Main:89:in `block (2 levels) in <main>'", "Main:88:in `loop'", "Main:88:in `block in <main>'", "Section000:336:in `eval'", "Section000:336:in `block in <main>'", "Section000:333:in `each'", "Section000:333:in `each_with_index'", "Section000:333:in `<main>'", "-e:in `eval'"]
+PRIORITY CHOICE NIL: i=0 choice=[1, 2, nil, -1]
+PRIORITY CHOICE NIL: i=1 choice=[1, 2, nil, -1]
+***Round 2***
+==============================
+Battle Start!
+179 - Kara
+==============================
+***Round 1***
+AI Pokemon Buneary is faster than Fuecoco.
+Defense Curl: initial score: 10
+[Not preferring status move]
+Defense Curl: final score: 2
+ 
+Splash: initial score: 1
+[Not preferring status move]
+Splash: final score: 0
+ 
+Pound: initial score: 33
+Pound: final score: 33
+ 
+Foresight: initial score: 5
+[Not preferring status move]
+Foresight: final score: 4
+ 
+Beginning AI Item use check.
+ 
+Highest item score: -10000
+Highest move score: 33
+Not using an item.
+ 
+[The foe Buneary: Defense Curl=2, Splash=0, Pound=33, Foresight=4]
+[Prefer Pound]
+[No Z-Move.]
+[Continuing move]
+[Continuing move]
+**Exception: undefined method `basedamage' for nil:NilClass
+["PokeBattle_Battler:8554:in `pbProcessTurn'", "PokeBattle_Battle:5738:in `block in pbAttackPhase'", "PokeBattle_Battle:5737:in `each'", "PokeBattle_Battle:5737:in `pbAttackPhase'", "PokeBattle_Battle:5300:in `block (2 levels) in pbStartBattleCore'", "PBDebug:4:in `logonerr'", "PokeBattle_Battle:5299:in `block in pbStartBattleCore'", "PokeBattle_Battle:5283:in `loop'", "PokeBattle_Battle:5283:in `pbStartBattleCore'", "PokeBattle_Battle:4889:in `pbStartBattle'", "PokemonTrainers:724:in `block (2 levels) in pbTrainerBattle'", "PokemonField:706:in `pbSceneStandby'", "PokemonTrainers:723:in `block in pbTrainerBattle'", "PokemonField:1008:in `pbBattleAnimation'", "PokemonTrainers:722:in `pbTrainerBattle'", "(eval):1:in `pbExecuteScript'", "Interpreter:243:in `eval'", "Interpreter:243:in `pbExecuteScript'", "Interpreter:799:in `command_111'", "Interpreter:320:in `execute_command'", "Interpreter:193:in `block in update'", "Interpreter:106:in `loop'", "Interpreter:106:in `update'", "Autosave:30:in `block in update'", "Autosave:28:in `loop'", "Autosave:28:in `update'", "Scene_Map:72:in `block in main'", "Scene_Map:69:in `loop'", "Scene_Map:69:in `main'", "Main:79:in `mainFunctionDebug'", "Main:53:in `block in mainFunction'", "Compiler:38:in `pbCriticalCode'", "Main:53:in `mainFunction'", "Main:89:in `block (2 levels) in <main>'", "Main:88:in `loop'", "Main:88:in `block in <main>'", "Section000:336:in `eval'", "Section000:336:in `block in <main>'", "Section000:333:in `each'", "Section000:333:in `each_with_index'", "Section000:333:in `<main>'", "-e:in `eval'"]
+PRIORITY CHOICE NIL: i=0 choice=[1, 2, nil, -1]
+PRIORITY CHOICE NIL: i=1 choice=[1, 2, nil, -1]
+***Round 2***
+AI Pokemon Buneary is faster than Fuecoco.
+Defense Curl: initial score: 10
+[Not preferring status move]
+Defense Curl: final score: 2
+ 
+Splash: initial score: 1
+[Not preferring status move]
+Splash: final score: 0
+ 
+Pound: initial score: 33
+Pound: final score: 33
+ 
+Foresight: initial score: 5
+[Not preferring status move]
+Foresight: final score: 4
+ 
+Beginning AI Item use check.
+ 
+Highest item score: -10000
+Highest move score: 33
+Not using an item.
+ 
+[The foe Buneary: Defense Curl=2, Splash=0, Pound=33, Foresight=4]
+[Prefer Pound]
+[No Z-Move.]
+[Continuing move]
+[Continuing move]
+**Exception: undefined method `basedamage' for nil:NilClass
+["PokeBattle_Battler:8554:in `pbProcessTurn'", "PokeBattle_Battle:5738:in `block in pbAttackPhase'", "PokeBattle_Battle:5737:in `each'", "PokeBattle_Battle:5737:in `pbAttackPhase'", "PokeBattle_Battle:5300:in `block (2 levels) in pbStartBattleCore'", "PBDebug:4:in `logonerr'", "PokeBattle_Battle:5299:in `block in pbStartBattleCore'", "PokeBattle_Battle:5283:in `loop'", "PokeBattle_Battle:5283:in `pbStartBattleCore'", "PokeBattle_Battle:4889:in `pbStartBattle'", "PokemonTrainers:724:in `block (2 levels) in pbTrainerBattle'", "PokemonField:706:in `pbSceneStandby'", "PokemonTrainers:723:in `block in pbTrainerBattle'", "PokemonField:1008:in `pbBattleAnimation'", "PokemonTrainers:722:in `pbTrainerBattle'", "(eval):1:in `pbExecuteScript'", "Interpreter:243:in `eval'", "Interpreter:243:in `pbExecuteScript'", "Interpreter:799:in `command_111'", "Interpreter:320:in `execute_command'", "Interpreter:193:in `block in update'", "Interpreter:106:in `loop'", "Interpreter:106:in `update'", "Autosave:30:in `block in update'", "Autosave:28:in `loop'", "Autosave:28:in `update'", "Scene_Map:72:in `block in main'", "Scene_Map:69:in `loop'", "Scene_Map:69:in `main'", "Main:79:in `mainFunctionDebug'", "Main:53:in `block in mainFunction'", "Compiler:38:in `pbCriticalCode'", "Main:53:in `mainFunction'", "Main:89:in `block (2 levels) in <main>'", "Main:88:in `loop'", "Main:88:in `block in <main>'", "Section000:336:in `eval'", "Section000:336:in `block in <main>'", "Section000:333:in `each'", "Section000:333:in `each_with_index'", "Section000:333:in `<main>'", "-e:in `eval'"]
+PRIORITY CHOICE NIL: i=0 choice=[1, 2, nil, -1]
+PRIORITY CHOICE NIL: i=1 choice=[1, 2, nil, -1]
+***Round 3***

@@ -6180,7 +6180,7 @@ MultipleForms.register(:GOTHITA,{
       next getID(PBAbilities,:CHLOROPHYLL)
     end
     if pokemon.abilityIndex==1 || (pokemon.abilityflag && pokemon.abilityflag==1)
-      next getID(PBAbilities,:GRASSPELT)
+      next getID(PBAbilities,:NATURALSHROUD)
     end
     if pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)
       next getID(PBAbilities,:DANCER)
@@ -6220,7 +6220,7 @@ MultipleForms.register(:GOTHORITA,{
       next getID(PBAbilities,:CHLOROPHYLL)
     end
     if pokemon.abilityIndex==1 || (pokemon.abilityflag && pokemon.abilityflag==1)
-      next getID(PBAbilities,:GRASSPELT)
+      next getID(PBAbilities,:NATURALSHROUD)
     end
     if pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)
       next getID(PBAbilities,:DANCER)
@@ -6260,7 +6260,7 @@ MultipleForms.register(:GOTHITELLE,{
       next getID(PBAbilities,:CHLOROPHYLL)
     end
     if pokemon.abilityIndex==1 || (pokemon.abilityflag && pokemon.abilityflag==1)
-      next getID(PBAbilities,:GRASSPELT)
+      next getID(PBAbilities,:NATURALSHROUD)
     end
     if pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)
       next getID(PBAbilities,:DANCER)
