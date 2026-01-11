@@ -3749,7 +3749,7 @@ class PokeBattle_Move
     if !(@battle.pbOwnedByPlayer?(attacker.index)) && @battle.pbPlayer.numbadges>=12 && $game_variables[:Difficulty_Mode]==2
       atkmult=(atkmult*1.1).round
     end
-    if attacker.effects[PBEffects::NaturalOrder] > 0 && opponent.pbHasType?(:GRASS)
+    if (attacker.effects[PBEffects::NaturalOrder] || 0) > 0 && opponent.pbHasType?(:GRASS)
       atkmult = (atkmult * 0.75).round
       attacker.effects[PBEffects::NaturalOrder] = 0
     end  
