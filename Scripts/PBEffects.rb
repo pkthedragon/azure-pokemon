@@ -190,6 +190,16 @@ begin
   BlinkEntryTurn     = 218
   ActedThisTurn      = 219
   SpookyTribute      = 220
+  UsingSubstituteRightNow = 221
+  VespiCrest = 222
+  TrickRoom = 223
+  Mimic = 224
+  StrengthSap = 225
+  SapSipper = 226
+  CounterpoiseSwap = 227
+  CounterpoiseDouble = 228
+  Resusitated = 229
+  FutureSightDamage = 230
     # These effects apply to a side - starts from 300
     LightScreen   = 300
     LuckyChant    = 301
