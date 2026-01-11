@@ -321,7 +321,7 @@
 363,PURIFYINGSALT,Purifying,"Prevents status and halves Ghost damage."
 364,ROCKYPAYLOAD,Rocky Payload,"Powers up Rock-type moves."
 365,SEEDSOWER,Seed Sower,"Starts Grassy Terrain when damaged."
-366,SHARPNESS,Sharpness,"Powers up slashing moves and allows them to ignore defenses."
+366,SHARPNESS,Sharpness,"Powers up slashing moves."
 367,SUPREMEOVERLORD,Supreme Overlord,"Raises Attack for each fallen team member."
 368,SWORDOFRUIN,Sword of Ruin,"Lowers Defense of all Pokemon but itself."
 369,TABLETSOFRUIN,Tablets of Ruin,"Lowers Attack of all Pokemon but itself."
