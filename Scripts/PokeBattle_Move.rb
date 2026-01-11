@@ -3593,6 +3593,13 @@ class PokeBattle_Move
        (isConst?(type,PBTypes,:ICE) || isConst?(type,PBTypes,:FIRE)) && !(opponent.moldbroken)
       atkmult=(atkmult*0.5).round
     end
+    if opponent.hasWorkingAbility(:INSULATED) &&
+       (isConst?(type,PBTypes,:ICE) || isConst?(type,PBTypes,:ELECTRIC)) && !(opponent.moldbroken)
+      atkmult=(atkmult*0.5).round
+    end
+    if opponent.hasWorkingAbility(:PURIFYINGSALT) && isConst?(type,PBTypes,:GHOST) && !(opponent.moldbroken)
+      atkmult=(atkmult*0.5).round
+    end
     if opponent.hasWorkingAbility(:STEELWORKER) && isConst?(type,PBTypes,:STEEL) && !(opponent.moldbroken)
       atkmult=(atkmult*0.5).round
     end
@@ -3618,6 +3625,14 @@ class PokeBattle_Move
       else
         atkmult=(atkmult*1.3).round
       end
+    end
+    if attacker.hasWorkingAbility(:SHARPNESS) && PBStuff::SLASHINGMOVE.include?(id)
+      atkmult=(atkmult*1.5).round
+    end
+    if attacker.hasWorkingAbility(:ICEBREAKER) &&
+       (@battle.pbWeather==PBWeather::HAIL || $fefieldeffect == 13 || $fefieldeffect == 39 || $fefieldeffect == 28) &&
+       isConst?(type,PBTypes,:ICE)
+      atkmult=(atkmult*1.5).round
     end
     if attacker.hp<=(attacker.totalhp/3).floor
       if (attacker.hasWorkingAbility(:OVERGROW) && isConst?(type,PBTypes,:GRASS)) ||
@@ -3900,6 +3915,7 @@ class PokeBattle_Move
     #if !attacker.hasWorkingAbility(:UNAWARE)
       defstage=3 if @function==0xA9  # Chip Away 
       defstage=3 if (opponent.damagestate.critical || @function==0x208) && defstage>3
+      defstage=3 if attacker.hasWorkingAbility(:SHARPNESS) && PBStuff::SLASHINGMOVE.include?(id)
       defense=(defense*1.0*stagemul[defstage]/stagediv[defstage]).floor
     end
     if @battle.pbWeather==PBWeather::SANDSTORM &&

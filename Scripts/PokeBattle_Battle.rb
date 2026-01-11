@@ -6789,6 +6789,14 @@ def pbStartBattle(canlose=false)
         hpgain=i.pbRecoverHP((i.totalhp/16).floor,true)
         pbDisplay(_INTL("{1}'s Rain Dish restored its HP a little!",i.pbThis)) if hpgain>0
       end
+      # Caretaker
+      if i.hasWorkingAbility(:CARETAKER)
+        partner=i.pbPartner
+        if partner && !partner.isFainted? && partner.effects[PBEffects::HealBlock]==0
+          hpgain=partner.pbRecoverHP((partner.totalhp/16).floor,true)
+          pbDisplay(_INTL("{1}'s Caretaker restored {2}'s HP!",i.pbThis,partner.pbThis(true))) if hpgain>0
+        end
+      end
       # Dry Skin
       if isConst?(i.ability,PBAbilities,:DRYSKIN)
         if pbWeather==PBWeather::RAINDANCE && !i.hasWorkingItem(:UTILITYUMBRELLA) && i.effects[PBEffects::HealBlock]==0 
