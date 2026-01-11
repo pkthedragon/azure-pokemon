@@ -3023,43 +3023,52 @@ def pbResetEVStat(pokemon,scene,ev,messages)
   end
 end
 
-def pbPrimeStatusItemCheck(battler)
-  return if !battler || !battler.battle
-  battler.battle.lastMoveUser=battler.index
-  if !battler.battle.lastMoveUsed || battler.battle.lastMoveUsed<0
-    battler.battle.lastMoveUsed=PBMoves::STRUGGLE
-  end
-end
-
-
 ItemHandlers::UseOnPokemon.add(:POMEGBERRY,proc{|item,pokemon,scene|
-   scene.pbDisplay(_INTL("This can only be used in battle."))
-   next false
+   next pbRaiseHappinessAndLowerEV(pokemon,scene,0,[
+      _INTL("{1} adores you!\nThe base HP fell!",pokemon.name),
+      _INTL("{1} turned friendly.\nThe base HP can't fall!",pokemon.name),
+      _INTL("{1} turned friendly.\nThe base HP fell!",pokemon.name)
+   ])
 })
 
 ItemHandlers::UseOnPokemon.add(:KELPSYBERRY,proc{|item,pokemon,scene|
-   scene.pbDisplay(_INTL("This can only be used in battle."))
-   next false
+   next pbRaiseHappinessAndLowerEV(pokemon,scene,1,[
+      _INTL("{1} adores you!\nThe base Attack fell!",pokemon.name),
+      _INTL("{1} turned friendly.\nThe base Attack can't fall!",pokemon.name),
+      _INTL("{1} turned friendly.\nThe base Attack fell!",pokemon.name)
+   ])
 })
 
 ItemHandlers::UseOnPokemon.add(:QUALOTBERRY,proc{|item,pokemon,scene|
-   scene.pbDisplay(_INTL("This can only be used in battle."))
-   next false
+   next pbRaiseHappinessAndLowerEV(pokemon,scene,2,[
+      _INTL("{1} adores you!\nThe base Defense fell!",pokemon.name),
+      _INTL("{1} turned friendly.\nThe base Defense can't fall!",pokemon.name),
+      _INTL("{1} turned friendly.\nThe base Defense fell!",pokemon.name)
+   ])
 })
 
 ItemHandlers::UseOnPokemon.add(:HONDEWBERRY,proc{|item,pokemon,scene|
-   scene.pbDisplay(_INTL("This can only be used in battle."))
-   next false
+   next pbRaiseHappinessAndLowerEV(pokemon,scene,4,[
+      _INTL("{1} adores you!\nThe base Special Attack fell!",pokemon.name),
+      _INTL("{1} turned friendly.\nThe base Special Attack can't fall!",pokemon.name),
+      _INTL("{1} turned friendly.\nThe base Special Attack fell!",pokemon.name)
+   ])
 })
 
 ItemHandlers::UseOnPokemon.add(:GREPABERRY,proc{|item,pokemon,scene|
-   scene.pbDisplay(_INTL("This can only be used in battle."))
-   next false
+   next pbRaiseHappinessAndLowerEV(pokemon,scene,5,[
+      _INTL("{1} adores you!\nThe base Special Defense fell!",pokemon.name),
+      _INTL("{1} turned friendly.\nThe base Special Defense can't fall!",pokemon.name),
+      _INTL("{1} turned friendly.\nThe base Special Defense fell!",pokemon.name)
+   ])
 })
 
 ItemHandlers::UseOnPokemon.add(:TAMATOBERRY,proc{|item,pokemon,scene|
-   scene.pbDisplay(_INTL("This can only be used in battle."))
-   next false
+   next pbRaiseHappinessAndLowerEV(pokemon,scene,3,[
+      _INTL("{1} adores you!\nThe base Speed fell!",pokemon.name),
+      _INTL("{1} turned friendly.\nThe base Speed can't fall!",pokemon.name),
+      _INTL("{1} turned friendly.\nThe base Speed fell!",pokemon.name)
+   ])
 })
 
 ItemHandlers::UseOnPokemon.add(:HPRESETBAG,proc{|item,pokemon,scene|
@@ -4075,102 +4084,6 @@ ItemHandlers::BattleUseOnPokemon.copy(:YELLOWFLUTE,:PERSIMBERRY)
 #===============================================================================
 # BattleUseOnBattler handlers
 #===============================================================================
-
-ItemHandlers::BattleUseOnBattler.add(:POMEGBERRY,proc{|item,battler,scene|
-   if !battler || battler.isFainted?
-     scene.pbDisplay(_INTL("But it had no effect!"))
-     next false
-   end
-   pbPrimeStatusItemCheck(battler)
-   if !battler.pbCanBurn?
-     next false
-   end
-   battler.pbBurn(battler)
-   battler.pbAbilityCureCheck
-   scene.pbRefresh
-   scene.pbDisplay(_INTL("{1} burned itself with the {2}!",battler.pbThis,PBItems.getName(item)))
-   next true
-})
-
-ItemHandlers::BattleUseOnBattler.add(:KELPSYBERRY,proc{|item,battler,scene|
-   if !battler || battler.isFainted?
-     scene.pbDisplay(_INTL("But it had no effect!"))
-     next false
-   end
-   pbPrimeStatusItemCheck(battler)
-   if !battler.pbCanFreeze?
-     next false
-   end
-   battler.pbFreeze
-   battler.pbAbilityCureCheck
-   scene.pbRefresh
-   scene.pbDisplay(_INTL("{1} froze itself with the {2}!",battler.pbThis,PBItems.getName(item)))
-   next true
-})
-
-ItemHandlers::BattleUseOnBattler.add(:GREPABERRY,proc{|item,battler,scene|
-   if !battler || battler.isFainted?
-     scene.pbDisplay(_INTL("But it had no effect!"))
-     next false
-   end
-   pbPrimeStatusItemCheck(battler)
-   if !battler.pbCanParalyze?
-     next false
-   end
-   battler.pbParalyze(battler)
-   battler.pbAbilityCureCheck
-   scene.pbRefresh
-   scene.pbDisplay(_INTL("{1} was paralyzed by the {2}!",battler.pbThis,PBItems.getName(item)))
-   next true
-})
-
-ItemHandlers::BattleUseOnBattler.add(:QUALOTBERRY,proc{|item,battler,scene|
-   if !battler || battler.isFainted?
-     scene.pbDisplay(_INTL("But it had no effect!"))
-     next false
-   end
-   pbPrimeStatusItemCheck(battler)
-   if !battler.pbCanSleep?(true,true)
-     next false
-   end
-   battler.pbSleepSelf
-   battler.pbAbilityCureCheck
-   scene.pbRefresh
-   scene.pbDisplay(_INTL("{1} fell asleep using the {2}!",battler.pbThis,PBItems.getName(item)))
-   next true
-})
-
-ItemHandlers::BattleUseOnBattler.add(:HONDEWBERRY,proc{|item,battler,scene|
-   if !battler || battler.isFainted?
-     scene.pbDisplay(_INTL("But it had no effect!"))
-     next false
-   end
-   pbPrimeStatusItemCheck(battler)
-   if !battler.pbCanPetrify?
-     next false
-   end
-   battler.pbPetrify(battler)
-   battler.pbAbilityCureCheck
-   scene.pbRefresh
-   scene.pbDisplay(_INTL("{1} was crushed by the {2}!",battler.pbThis,PBItems.getName(item)))
-   next true
-})
-
-ItemHandlers::BattleUseOnBattler.add(:TAMATOBERRY,proc{|item,battler,scene|
-   if !battler || battler.isFainted?
-     scene.pbDisplay(_INTL("But it had no effect!"))
-     next false
-   end
-   pbPrimeStatusItemCheck(battler)
-   if !battler.pbCanPoison?(true,false)
-     next false
-   end
-   battler.pbPoison(battler,false)
-   battler.pbAbilityCureCheck
-   scene.pbRefresh
-   scene.pbDisplay(_INTL("{1} was poisoned by the {2}!",battler.pbThis,PBItems.getName(item)))
-   next true
-})
 
 ItemHandlers::BattleUseOnBattler.add(:DECOMPRESSOR,proc{|item,battler,scene|
    if !battler || battler.isFainted? || battler.status!=PBStatuses::PETRIFIED
