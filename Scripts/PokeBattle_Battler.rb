@@ -1466,8 +1466,14 @@ class PokeBattle_Battler
       atkmult=(atkmult*2.0).round
     end  
     if self.hasWorkingAbility(:SLOWSTART) &&
-      self.turncount<5 
+      self.turncount<5
       atkmult=(atkmult*0.5).round
+    end
+    if self.hasWorkingAbility(:PLUS) && self.pbOwnSide.effects[PBEffects::MinusSignal]>0
+      atkmult=(atkmult*1.3).round
+    end
+    if self.hasWorkingAbility(:MINUS) && self.pbOwnSide.effects[PBEffects::PlusSignal]>0
+      atkmult=(atkmult*1.3).round
     end
     if (@battle.pbWeather==PBWeather::SUNNYDAY || $fefieldeffect == 33 || 
         (self.hasWorkingItem(:CHERCREST) && isConst?(self.species,PBSpecies,:CHERRIM)) || 
@@ -1521,13 +1527,11 @@ class PokeBattle_Battler
       atk=(atk*1.0*stagemul[atkstage]/stagediv[atkstage]).floor
     end  
     atkmult=0x1000
-    if (self.hasWorkingAbility(:PLUS) || self.hasWorkingAbility(:MINUS))
-      partner=self.pbPartner
-      if partner.hasWorkingAbility(:PLUS) || partner.hasWorkingAbility(:MINUS) 
-        atkmult=(atkmult*1.5).round
-      elsif $fefieldeffect == 18
-        atkmult=(atkmult*1.5).round
-      end
+    if self.hasWorkingAbility(:PLUS) && self.pbOwnSide.effects[PBEffects::MinusSignal]>0
+      atkmult=(atkmult*1.3).round
+    end
+    if self.hasWorkingAbility(:MINUS) && self.pbOwnSide.effects[PBEffects::PlusSignal]>0
+      atkmult=(atkmult*1.3).round
     end
     if (self.pbPartner).hasWorkingAbility(:BATTERY)
       atkmult=(atkmult*1.3).round
@@ -3675,6 +3679,14 @@ class PokeBattle_Battler
         break if found
       end
       @battle.pbDisplay(_INTL("{1} shuddered with anticipation!",pbThis)) if found
+    end
+    if self.hasWorkingAbility(:PLUS) && onactive
+      self.pbOwnSide.effects[PBEffects::PlusSignal]=3
+      @battle.pbDisplay(_INTL("{1} charged up Plus energy for its side!",pbThis))
+    end
+    if self.hasWorkingAbility(:MINUS) && onactive
+      self.pbOwnSide.effects[PBEffects::MinusSignal]=3
+      @battle.pbDisplay(_INTL("{1} charged up Minus energy for its side!",pbThis))
     end
     if self.hasWorkingAbility(:UNNERVE) && onactive
       if @battle.pbOwnedByPlayer?(@index)
