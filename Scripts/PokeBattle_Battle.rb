@@ -5808,6 +5808,7 @@ def pbStartBattle(canlose=false)
       end
     end
     for i in priority
+      load("Scripts/PokeBattle_Battler.rb") unless i.respond_to?(:pbProcessTurn)
       i.pbProcessTurn(@choices[i.index])
       if i.effects[PBEffects::Round]
         i.pbPartner.selectedMove = 297
