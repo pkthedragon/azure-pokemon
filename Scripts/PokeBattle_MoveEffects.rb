@@ -6169,6 +6169,10 @@ class PokeBattle_Move_0B7 < PokeBattle_Move
       @battle.pbDisplay(_INTL("But it failed!"))
       return -1
     end
+    if opponent.hasWorkingAbility(:OBLIVIOUS) && !opponent.moldbroken && @basedamage==0
+      @battle.pbDisplay(_INTL("It doesn't affect {1}...",opponent.pbThis(true)))
+      return -1
+    end
     if @battle.pbCheckSideAbility(:AROMAVEIL,opponent)!=nil && !(opponent.moldbroken) && @basedamage==0
       @battle.pbDisplay(_INTL("The Aroma Veil prevents #{opponent.pbThis} from torment!"))
       return -1
@@ -6182,6 +6186,7 @@ class PokeBattle_Move_0B7 < PokeBattle_Move
   
   def pbAdditionalEffect(attacker,opponent)
     if !opponent.effects[PBEffects::Torment] || (@battle.pbCheckSideAbility(:AROMAVEIL,opponent)!=nil && !(opponent.moldbroken))
+      return true if opponent.hasWorkingAbility(:OBLIVIOUS) && !opponent.moldbroken
       opponent.effects[PBEffects::Torment]=true
       @battle.pbDisplay(_INTL("{1} was subjected to torment!",opponent.pbThis))
     end
@@ -6215,6 +6220,10 @@ class PokeBattle_Move_0B9 < PokeBattle_Move
       @battle.pbDisplay(_INTL("But it failed!"))
       return -1
     end
+    if opponent.hasWorkingAbility(:OBLIVIOUS) && !opponent.moldbroken
+      @battle.pbDisplay(_INTL("It doesn't affect {1}...",opponent.pbThis(true)))
+      return -1
+    end
     if @battle.pbCheckSideAbility(:AROMAVEIL,opponent)!=nil && !(opponent.moldbroken)
       @battle.pbDisplay(_INTL("The Aroma Veil prevents #{opponent.pbThis} from disabling!"))
       return -1
@@ -6234,6 +6243,7 @@ class PokeBattle_Move_0B9 < PokeBattle_Move
 
   def pbAdditionalEffect(attacker,opponent,hitnum=0,alltargets=nil,showanimation=true)
     return false if opponent.effects[PBEffects::Disable]>0
+    return false if opponent.hasWorkingAbility(:OBLIVIOUS) && !opponent.moldbroken
     if @battle.pbCheckSideAbility(:AROMAVEIL,opponent)!=nil && !(opponent.moldbroken)
       @battle.pbDisplay(_INTL("The Aroma Veil prevents #{opponent.pbThis} from disabling!"))
       return false
@@ -6328,6 +6338,10 @@ class PokeBattle_Move_0BC < PokeBattle_Move
     ]
     if opponent.effects[PBEffects::Encore]>0
       @battle.pbDisplay(_INTL("But it failed!"))
+      return -1
+    end
+    if opponent.hasWorkingAbility(:OBLIVIOUS) && !opponent.moldbroken
+      @battle.pbDisplay(_INTL("It doesn't affect {1}...",opponent.pbThis(true)))
       return -1
     end
     if opponent.lastMoveUsed<=0 ||
@@ -7570,12 +7584,11 @@ class PokeBattle_Move_0DD < PokeBattle_Move
       if tribute_has?(attacker, :MEADOWTRIBUTE)
         hpgain = (hpgain*1.5).floor
       end
+      hpgain=(hpgain*1.3).floor if attacker.hasWorkingItem(:BIGROOT) || (attacker.hasWorkingItem(:TANGROWTHCREST) && isConst?(attacker.species,PBSpecies,:TANGROWTH))
       if opponent.hasWorkingAbility(:LIQUIDOOZE,true)
-        hpgain*=2 if ($fefieldeffect == 19 || $fefieldeffect == 26 || $fefieldeffect == 41)
         attacker.pbReduceHP(hpgain,true)
         @battle.pbDisplay(_INTL("{1} sucked up the liquid ooze!",attacker.pbThis))
       else
-        hpgain=(hpgain*1.3).floor if attacker.hasWorkingItem(:BIGROOT) || (attacker.hasWorkingItem(:TANGROWTHCREST) && isConst?(attacker.species,PBSpecies,:TANGROWTH))
         attacker.pbRecoverHP(hpgain,true)
         @battle.pbDisplay(_INTL("{1} had its energy drained!",opponent.pbThis))
       end
@@ -7599,8 +7612,13 @@ class PokeBattle_Move_0DE < PokeBattle_Move
         hpgain = (hpgain*1.5).floor
       end
       hpgain=(hpgain*1.3).floor if attacker.hasWorkingItem(:BIGROOT) || (attacker.hasWorkingItem(:TANGROWTHCREST) && isConst?(attacker.species,PBSpecies,:TANGROWTH))
-      attacker.pbRecoverHP(hpgain,true)
-      @battle.pbDisplay(_INTL("{1} had its energy drained!",opponent.pbThis))
+      if opponent.hasWorkingAbility(:LIQUIDOOZE,true)
+        attacker.pbReduceHP(hpgain,true)
+        @battle.pbDisplay(_INTL("{1} sucked up the liquid ooze!",attacker.pbThis))
+      else
+        attacker.pbRecoverHP(hpgain,true)
+        @battle.pbDisplay(_INTL("{1} had its energy drained!",opponent.pbThis))
+      end
     end
     return ret
   end
@@ -10249,16 +10267,15 @@ class PokeBattle_Move_139 < PokeBattle_Move
     ret=super(attacker,opponent,hitnum,alltargets,showanimation)
     if opponent.damagestate.calcdamage>0
       hpgain=((opponent.damagestate.hplost+1)*0.75).floor
+      hpgain=(hpgain*1.3).floor if isConst?(attacker.item,PBItems,:BIGROOT) || (attacker.hasWorkingItem(:TANGROWTHCREST) && isConst?(attacker.species,PBSpecies,:TANGROWTH))
+      if tribute_has?(attacker, :MEADOWTRIBUTE)
+        hpgain = (hpgain*1.5).floor
+      end        
       if isConst?(opponent.ability,PBAbilities,:LIQUIDOOZE)
-        hpgain*=2 if ($fefieldeffect == 19 || $fefieldeffect == 26 || $fefieldeffect == 41)
         attacker.pbReduceHP(hpgain,true)
         @battle.pbDisplay(_INTL("{1} sucked up the liquid ooze!",attacker.pbThis))
       else
-        hpgain=(hpgain*1.3).floor if isConst?(attacker.item,PBItems,:BIGROOT) || (attacker.hasWorkingItem(:TANGROWTHCREST) && isConst?(attacker.species,PBSpecies,:TANGROWTH))
-        if tribute_has?(attacker, :MEADOWTRIBUTE)
-          hpgain = (hpgain*1.5).floor
-        end        
-    attacker.pbRecoverHP(hpgain,true)
+        attacker.pbRecoverHP(hpgain,true)
         @battle.pbDisplay(_INTL("{1} had its energy drained!",opponent.pbThis))
       end   
     end
@@ -10442,13 +10459,17 @@ end
 class PokeBattle_Move_13E < PokeBattle_Move
   def pbTwoTurnAttack(attacker)
     @immediate=false
-    if !@immediate && (isConst?(attacker.item,PBItems,:POWERHERB) || attacker.hasWorkingAbility(:INSOMNIA))
-      itemname=PBItems.getName(attacker.item)
-      @immediate=true
-      attacker.pokemon.itemRecycle=attacker.item
-      attacker.pokemon.itemInitial=0 if attacker.pokemon.itemInitial==attacker.item
-      attacker.item=0
-      @battle.pbDisplay(_INTL("{1} consumed its {2}!",attacker.pbThis,itemname))
+    if !@immediate
+      if attacker.hasWorkingAbility(:INSOMNIA)
+        @immediate=true
+      elsif isConst?(attacker.item,PBItems,:POWERHERB)
+        itemname=PBItems.getName(attacker.item)
+        @immediate=true
+        attacker.pokemon.itemRecycle=attacker.item
+        attacker.pokemon.itemInitial=0 if attacker.pokemon.itemInitial==attacker.item
+        attacker.item=0
+        @battle.pbDisplay(_INTL("{1} consumed its {2}!",attacker.pbThis,itemname))
+      end
     end
     return false if @immediate
     return attacker.effects[PBEffects::TwoTurnAttack]==0
@@ -11049,15 +11070,14 @@ class PokeBattle_Move_158 < PokeBattle_Move
     ret=super(attacker,opponent,hitnum,alltargets,showanimation)
     if opponent.damagestate.calcdamage>0
       hpgain=((1.5*(opponent.damagestate.hplost+1))/2).floor
+      hpgain=(hpgain*1.3).floor if attacker.hasWorkingItem(:BIGROOT)
+      if tribute_has?(attacker, :MEADOWTRIBUTE)
+        hpgain = (hpgain*1.5).floor
+      end
       if opponent.hasWorkingAbility(:LIQUIDOOZE,true)
-        hpgain*=2 if ($fefieldeffect == 19 || $fefieldeffect == 26 || $fefieldeffect == 41)
         attacker.pbReduceHP(hpgain,true)
         @battle.pbDisplay(_INTL("{1} sucked up the liquid ooze!",attacker.pbThis))
       else
-        hpgain=(hpgain*1.3).floor if attacker.hasWorkingItem(:BIGROOT)
-    if tribute_has?(attacker, :MEADOWTRIBUTE)
-          hpgain = (hpgain*1.5).floor
-        end
         attacker.pbRecoverHP(hpgain,true)
         @battle.pbDisplay(_INTL("{1} had its energy drained!",opponent.pbThis))
       end     
@@ -12533,16 +12553,15 @@ class PokeBattle_Move_211 < PokeBattle_Move
     ret=super(attacker,opponent,hitnum,alltargets,showanimation)
     if opponent.damagestate.calcdamage>0
       hpgain=((opponent.damagestate.hplost+1)/2).floor
+      hpgain=(hpgain*1.3).floor if attacker.hasWorkingItem(:BIGROOT)
+      if tribute_has?(attacker, :MEADOWTRIBUTE)
+        hpgain = (hpgain*1.5).floor
+      end
       if opponent.hasWorkingAbility(:LIQUIDOOZE,true)
-        hpgain*=2 if ($fefieldeffect == 19 || $fefieldeffect == 26 || $fefieldeffect == 41)
         attacker.pbReduceHP(hpgain,true)
         @battle.pbDisplay(_INTL("{1} sucked up the liquid ooze!",attacker.pbThis))
       else
-        hpgain=(hpgain*1.3).floor if attacker.hasWorkingItem(:BIGROOT)
-        if tribute_has?(attacker, :MEADOWTRIBUTE)
-          hpgain = (hpgain*1.5).floor
-        end
-    attacker.pbRecoverHP(hpgain,true)
+        attacker.pbRecoverHP(hpgain,true)
         @battle.pbDisplay(_INTL("{1} had its energy drained!",opponent.pbThis))
       end
     end
@@ -13030,12 +13049,16 @@ class PokeBattle_Move_237 < PokeBattle_Move
         @immediate=true if @battle.pbWeather == PBWeather::HAIL
       end
     end
-    if !@immediate && ((attacker.hasWorkingItem(:POWERHERB) || attacker.hasWorkingAbility(:INSOMNIA)) || attacker.hasWorkingAbility(:INSOMNIA))
-      @immediate=true
-      if !checking
-        itemname=PBItems.getName(attacker.item)
-        attacker.pbDisposeItem(false)
-        @battle.pbDisplay(_INTL("{1} consumed its {2}!",attacker.pbThis,itemname))
+    if !@immediate
+      if attacker.hasWorkingAbility(:INSOMNIA)
+        @immediate=true
+      elsif attacker.hasWorkingItem(:POWERHERB)
+        @immediate=true
+        if !checking
+          itemname=PBItems.getName(attacker.item)
+          attacker.pbDisposeItem(false)
+          @battle.pbDisplay(_INTL("{1} consumed its {2}!",attacker.pbThis,itemname))
+        end
       end
     end
     return false if @immediate
@@ -13230,16 +13253,15 @@ class PokeBattle_Move_248 < PokeBattle_Move
     return ret if attacker.attack >= attacker.defense
     if opponent.damagestate.calcdamage>0
       hpgain=((opponent.damagestate.hplost+1)*0.75).floor
+      hpgain=(hpgain*1.3).floor if isConst?(attacker.item,PBItems,:BIGROOT) || (attacker.hasWorkingItem(:TANGROWTHCREST) && isConst?(attacker.species,PBSpecies,:TANGROWTH))
+      if tribute_has?(attacker, :MEADOWTRIBUTE)
+        hpgain = (hpgain*1.5).floor
+      end
       if isConst?(opponent.ability,PBAbilities,:LIQUIDOOZE)
-        hpgain*=2 if ($fefieldeffect == 19 || $fefieldeffect == 26 || $fefieldeffect == 41)
         attacker.pbReduceHP(hpgain,true)
         @battle.pbDisplay(_INTL("{1} sucked up the liquid ooze!",attacker.pbThis))
       else
-        hpgain=(hpgain*1.3).floor if isConst?(attacker.item,PBItems,:BIGROOT) || (attacker.hasWorkingItem(:TANGROWTHCREST) && isConst?(attacker.species,PBSpecies,:TANGROWTH))
-        if tribute_has?(attacker, :MEADOWTRIBUTE)
-          hpgain = (hpgain*1.5).floor
-        end
-    attacker.pbRecoverHP(hpgain,true)
+        attacker.pbRecoverHP(hpgain,true)
         @battle.pbDisplay(_INTL("{1} had its energy drained!",opponent.pbThis))
       end   
     end
@@ -13604,16 +13626,15 @@ class PokeBattle_Move_291 < PokeBattle_Move
     ret=super(attacker,opponent,hitnum,alltargets,showanimation)
     if opponent.damagestate.calcdamage>0
       hpgain=((opponent.damagestate.hplost+1)*0.75).floor
+      hpgain=(hpgain*1.3).floor if isConst?(attacker.item,PBItems,:BIGROOT) || (attacker.hasWorkingItem(:TANGROWTHCREST) && isConst?(attacker.species,PBSpecies,:TANGROWTH))
+      if tribute_has?(attacker, :MEADOWTRIBUTE)
+        hpgain = (hpgain*1.5).floor
+      end
       if isConst?(opponent.ability,PBAbilities,:LIQUIDOOZE)
-        hpgain*=2 if ($fefieldeffect == 19 || $fefieldeffect == 26 || $fefieldeffect == 41)
         attacker.pbReduceHP(hpgain,true)
         @battle.pbDisplay(_INTL("{1} sucked up the liquid ooze!",attacker.pbThis))
       else
-        hpgain=(hpgain*1.3).floor if isConst?(attacker.item,PBItems,:BIGROOT) || (attacker.hasWorkingItem(:TANGROWTHCREST) && isConst?(attacker.species,PBSpecies,:TANGROWTH))
-        if tribute_has?(attacker, :MEADOWTRIBUTE)
-          hpgain = (hpgain*1.5).floor
-        end
-    attacker.pbRecoverHP(hpgain,true)
+        attacker.pbRecoverHP(hpgain,true)
         @battle.pbDisplay(_INTL("{1} had its energy drained!",opponent.pbThis))
       end   
     end
@@ -14495,14 +14516,18 @@ class PokeBattle_Move_29H < PokeBattle_Move
     if $fefieldeffect == 43 && !@immediate
       @immediate = true
     end
-    if !@immediate && ((attacker.hasWorkingItem(:POWERHERB) || attacker.hasWorkingAbility(:INSOMNIA)) || attacker.hasWorkingAbility(:INSOMNIA))
-      @immediate = true
-      if !checking
-        itemname = PBItems.getName(attacker.item)
-        attacker.pokemon.itemRecycle = attacker.item
-        attacker.pokemon.itemInitial = 0 if attacker.pokemon.itemInitial==attacker.item
-        attacker.item = 0
-        @battle.pbDisplay(_INTL("{1} consumed its {2}!",attacker.pbThis,itemname))
+    if !@immediate
+      if attacker.hasWorkingAbility(:INSOMNIA)
+        @immediate = true
+      elsif attacker.hasWorkingItem(:POWERHERB)
+        @immediate = true
+        if !checking
+          itemname = PBItems.getName(attacker.item)
+          attacker.pokemon.itemRecycle = attacker.item
+          attacker.pokemon.itemInitial = 0 if attacker.pokemon.itemInitial==attacker.item
+          attacker.item = 0
+          @battle.pbDisplay(_INTL("{1} consumed its {2}!",attacker.pbThis,itemname))
+        end
       end
     end
 

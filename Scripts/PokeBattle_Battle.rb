@@ -4128,6 +4128,11 @@ end
         pbDisplayPaused(_INTL("The Z-Power healed {1}!",pkmn.pbThis(true)))
         pkmn.effects[PBEffects::ZHeal]=false
       end      
+      # Limber - prepare entry damage shield
+      if pkmn.hasWorkingAbility(:LIMBER)
+        pkmn.limberGuard = true
+        pkmn.limberGuardSkip = false
+      end
       # Spikes
       pkmn.pbOwnSide.effects[PBEffects::Spikes]=0 if $fefieldeffect == 21 ||
        $fefieldeffect == 26
@@ -4135,8 +4140,13 @@ end
         if !pkmn.isAirborne?
           if !pkmn.hasWorkingAbility(:MAGICGUARD) && !(pkmn.hasWorkingAbility(:WONDERGUARD) && $fefieldeffect == 44) && !pkmn.hasWorkingItem(:HEAVYDUTYBOOTS)
             spikesdiv=[8,8,6,4][pkmn.pbOwnSide.effects[PBEffects::Spikes]]
+            limber_half = pkmn.hasWorkingAbility(:LIMBER)
             @scene.pbDamageAnimation(pkmn,0)
-            pkmn.pbReduceHP([(pkmn.totalhp/spikesdiv).floor,1].max)
+            spikedmg=[(pkmn.totalhp/spikesdiv).floor,1].max
+            spikedmg=[(spikedmg*0.5).floor,1].max if limber_half
+            pkmn.limberGuardSkip = true if limber_half
+            pkmn.pbReduceHP(spikedmg)
+            pkmn.limberGuardSkip = false if limber_half
             pbDisplay(_INTL("{1} was hurt by spikes!",pkmn.pbThis))
           end
         end
@@ -4201,7 +4211,15 @@ end
               eff = eff*2
             end
             @scene.pbDamageAnimation(pkmn,0)
-            pkmn.pbReduceHP([(pkmn.totalhp*eff/32).floor,1].max)
+            rockdmg=[(pkmn.totalhp*eff/32).floor,1].max
+            if pkmn.hasWorkingAbility(:LIMBER)
+              rockdmg=[(rockdmg*0.5).floor,1].max
+              pkmn.limberGuardSkip = true
+              pkmn.pbReduceHP(rockdmg)
+              pkmn.limberGuardSkip = false
+            else
+              pkmn.pbReduceHP(rockdmg)
+            end
             if $fefieldeffect == 25
               pbDisplay(_INTL("{1} was hurt by the crystalized stealth rocks!",pkmn.pbThis))
             else
@@ -6940,39 +6958,20 @@ def pbStartBattle(canlose=false)
     end
     # Leech Seed
     for i in priority
-      if i.hasWorkingAbility(:LIQUIDOOZE,true) && i.effects[PBEffects::LeechSeed]>=0
-        recipient=@battlers[i.effects[PBEffects::LeechSeed]]
-        if recipient && !recipient.isFainted? 
-          hploss = (i.totalhp/8).floor
-#          hploss = hploss * 2 if ($fefieldeffect == 19 || $fefieldeffect == 26 || $fefieldeffect == 41)
-          pbCommonAnimation("LeechSeed",recipient,i)
-          i.pbReduceHP(hploss,true)
-          hploss = hploss * 2 if ($fefieldeffect == 19 || $fefieldeffect == 26 || $fefieldeffect == 41)
-          recipient.pbReduceHP(hploss,true)
-          pbDisplay(_INTL("{1} sucked up the liquid ooze!",recipient.pbThis))
-          if i.isFainted?
-            return if !i.pbFaint
-          end
-          if recipient.isFainted?
-            return if !recipient.pbFaint
-          end  
-          next          
-        end
-      end
       next if i.isFainted?
       if (i.effects[PBEffects::LeechSeed]>=0) 
         recipient=@battlers[i.effects[PBEffects::LeechSeed]]
         if recipient && !recipient.isFainted?  && !i.hasWorkingAbility(:MAGICGUARD) &&  !(i.hasWorkingAbility(:WONDERGUARD) && $fefieldeffect == 44) # if recipient exists
           pbCommonAnimation("LeechSeed",recipient,i)
-          hploss=i.pbReduceHP((i.totalhp/8).floor,true)
-          hploss= hploss * 2 if $fefieldeffect == 19
-          if i.hasWorkingAbility(:LIQUIDOOZE)
-            recipient.pbReduceHP(hploss,true)
+          drained=i.pbReduceHP((i.totalhp/8).floor,true)
+          drained= drained * 2 if $fefieldeffect == 19
+          heal_amount=drained
+          heal_amount=(heal_amount*1.3).floor if recipient.effects[PBEffects::HealBlock]==0 && (recipient.hasWorkingItem(:BIGROOT) || isConst?(i.species,PBSpecies,:TANGROWTH) && i.hasWorkingItem(:TANGROWTHCREST))
+          if i.hasWorkingAbility(:LIQUIDOOZE,true)
+            recipient.pbReduceHP(heal_amount,true)
             pbDisplay(_INTL("{1} sucked up the liquid ooze!",recipient.pbThis))
-            hploss= hploss / 2 if $fefieldeffect == 19 || $fefieldeffect == 26
           elsif recipient.effects[PBEffects::HealBlock]==0
-            hploss=(hploss*1.3).floor if recipient.hasWorkingItem(:BIGROOT) || isConst?(i.species,PBSpecies,:TANGROWTH) && i.hasWorkingItem(:TANGROWTHCREST)
-            recipient.pbRecoverHP(hploss,true)
+            recipient.pbRecoverHP(heal_amount,true)
             pbDisplay(_INTL("{1}'s health was sapped by Leech Seed!",i.pbThis))
           end
           if i.isFainted?          

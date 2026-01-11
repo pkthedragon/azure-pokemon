@@ -35,6 +35,8 @@ class PokeBattle_Battler
   attr_accessor :unburdened
   attr_accessor :previousMove
   attr_accessor :aiMoveMemory
+  attr_accessor :limberGuard
+  attr_accessor :limberGuardSkip
   #### KUROTSUNE - 010 - START
   attr_accessor :selectedMove
   #### KUROTSUNE - 010 - END
@@ -774,6 +776,8 @@ class PokeBattle_Battler
     @statLowered  = false
     @hasmegad     = false
     @capturable   = false
+    @limberGuard  = false
+    @limberGuardSkip = false
     pbInitBlank
     pbInitEffects(false,true,true,fakebattler)
     pbInitPermanentEffects
@@ -853,6 +857,8 @@ class PokeBattle_Battler
     @missed       = true
     @missAcc      = false
     @statLowered  = false
+    @limberGuard  = false
+    @limberGuardSkip = false
   end
   
   def pbInitPermanentEffects
@@ -874,6 +880,8 @@ class PokeBattle_Battler
   
   def pbInitEffects(batonpass,illusion=true,effectnegate=false,fakebattler=false)
     if !batonpass
+      @limberGuard     = false
+      @limberGuardSkip = false
       # These effects are retained if Baton Pass is used
       @stages[PBStats::ATTACK]   = 0
       @stages[PBStats::DEFENSE]  = 0
@@ -1854,6 +1862,12 @@ class PokeBattle_Battler
   # Change HP
   ################################################################################
   def pbReduceHP(amt,anim=false)
+    @limberGuard ||= false
+    @limberGuardSkip ||= false
+    if hasWorkingAbility(:LIMBER) && @limberGuard && !@limberGuardSkip && amt>0
+      amt=[(amt*0.5).floor,1].max
+      @limberGuard=false
+    end
     if amt>=self.hp
       amt=self.hp
     elsif amt<=0 && !self.isFainted?
@@ -3194,6 +3208,10 @@ class PokeBattle_Battler
         @battle.pbDisplay(_INTL("{1} took aim at {2}!",pbThis,target.pbThis(true)))
       end
     end
+    # Illuminate - boost accuracy on entry
+    if self.hasWorkingAbility(:ILLUMINATE) && onactive
+      pbIncreaseStat(PBStats::ACCURACY,1,false)
+    end
     # Intimidate
     if self.hasWorkingAbility(:INTIMIDATE2) && onactive
       for i in 0...4
@@ -3627,23 +3645,28 @@ class PokeBattle_Battler
           power=movedata.basedamage
           power=160 if movedata.function==0x70    # OHKO
           power=150 if movedata.function==0x8B    # Eruption
-          power=120 if movedata.function==0x71 || # Counter
-          movedata.function==0x72 || # Mirror Coat
-          movedata.function==0x73 || # Metal Burst
-          power=80 if movedata.function==0x6A ||  # SonicBoom
-          movedata.function==0x6B ||  # Dragon Rage
-          movedata.function==0x6D ||  # Night Shade
-          movedata.function==0x6E ||  # Endeavor
-          movedata.function==0x6F ||  # Psywave
-          movedata.function==0x89 ||  # Return
-          movedata.function==0x8A ||  # Frustration
-          movedata.function==0x8C ||  # Crush Grip
-          movedata.function==0x8D ||  # Gyro Ball
-          movedata.function==0x90 ||  # Hidden Power
-          movedata.function==0x96 ||  # Natural Gift
-          movedata.function==0x97 ||  # Trump Card
-          movedata.function==0x98 ||  # Flail
-          movedata.function==0x9A     # Grass Knot
+          if movedata.function==0x71 || movedata.function==0x72 || movedata.function==0x73   # Counter/Mirror Coat/Metal Burst
+            power=120
+          end
+          fixedpower_funcs = [
+            0x6A,  # SonicBoom
+            0x6B,  # Dragon Rage
+            0x6D,  # Night Shade
+            0x6E,  # Endeavor
+            0x6F,  # Psywave
+            0x89,  # Return
+            0x8A,  # Frustration
+            0x8C,  # Crush Grip
+            0x8D,  # Gyro Ball
+            0x90,  # Hidden Power
+            0x96,  # Natural Gift
+            0x97,  # Trump Card
+            0x98,  # Flail
+            0x9A   # Grass Knot
+          ]
+          if fixedpower_funcs.include?(movedata.function)
+            power=80
+          end
           if power>highpower
             moves=[j.id]; highpower=power
           elsif power==highpower
@@ -4572,10 +4595,6 @@ class PokeBattle_Battler
     if self.hasWorkingAbility(:OBLIVIOUS) && @effects[PBEffects::Attract]>0
       @battle.pbDisplay(_INTL("{1}'s Oblivious cured its love problem!",pbThis))
       @effects[PBEffects::Attract]=0
-    end
-    if self.hasWorkingAbility(:VITALSPIRIT) && self.status==PBStatuses::SLEEP && self.effects[PBEffects::Spritz] != 1
-      @battle.pbDisplay(_INTL("{1}'s Vital Spirit cured its sleep problem!",pbThis))
-      self.status=0
     end
     if self.hasWorkingAbility(:INSOMNIA) && self.status==PBStatuses::SLEEP && self.effects[PBEffects::Spritz] != 1
       @battle.pbDisplay(_INTL("{1}'s Insomnia cured its sleep problem!",pbThis))
@@ -6381,6 +6400,7 @@ class PokeBattle_Battler
           end 
           user.pbFaint if user.isFainted?
         end
+        user.pbSteadfastBlockedBoost(thismove)
         if user.hasWorkingItem(:BLUNDERPOLICY) && user.missAcc
           if user.pbCanIncreaseStatStage?(PBStats::SPEED)
             user.pbIncreaseStatBasic(PBStats::SPEED,1)
@@ -6461,10 +6481,26 @@ class PokeBattle_Battler
         user.effects[PBEffects::Tantrum]=false
       end
       totaldamage += target.damagestate.calcdamage unless damage <0
+      if target.damagestate.calcdamage<=0
+        user.pbSteadfastBlockedBoost(thismove)
+      end
       if target.isbossmon
         if thismove.function == 0x070 # OHKO moves
           target.immunities[:moves].push(thismove.id)
           @battle.pbDisplay(_INTL("{1} grew resistant to {2}!",target.pbThis,PBMoves.getName(thismove)))
+        end
+      end
+      # Wonder Skin recoil against special attacks
+      if target.damagestate.calcdamage>0
+        movetype=thismove.pbType(thismove.type,user,target)
+        if target.hasWorkingAbility(:WONDERSKIN,true) &&
+           thismove.pbIsSpecial?(movetype) &&
+           !user.isFainted? && !user.hasWorkingAbility(:MAGICGUARD) &&
+           !(user.hasWorkingAbility(:WONDERGUARD) && $fefieldeffect == 44)
+          @battle.scene.pbDamageAnimation(user,0)
+          user.pbReduceHP((user.totalhp/8).floor)
+          @battle.pbDisplay(_INTL("{1}'s {2} hurt {3}!",target.pbThis,
+              PBAbilities.getName(target.ability),user.pbThis(true)))
         end
       end
       if user.isFainted?
@@ -6784,6 +6820,14 @@ class PokeBattle_Battler
       @battle.scene.pbUnVanishSprite(self)
     end
     return damage
+  end
+
+  def pbSteadfastBlockedBoost(thismove)
+    return if !self.hasWorkingAbility(:STEADFAST)
+    return if thismove.basedamage<=0
+    return if !pbCanIncreaseStatStage?(PBStats::SPEED,false)
+    pbIncreaseStat(PBStats::SPEED,1,false)
+    @battle.pbDisplay(_INTL("{1}'s {2} raised its Speed!",pbThis,PBAbilities.getName(self.ability)))
   end
   
   def pbUseMoveSimple(moveid,index=-1,target=-1,danced=false)

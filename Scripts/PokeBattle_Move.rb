@@ -1340,42 +1340,86 @@ class PokeBattle_Move
 ################################################################################
   def pbAccuracyCheck(attacker,opponent)
     type=pbType(@type,attacker,opponent)
-    
+    @vitalSpiritCertainHit = false
     baseaccuracy=@accuracy
-    return true if baseaccuracy==0
-    return true if attacker.hasWorkingAbility(:NOGUARD) ||
-                   opponent.hasWorkingAbility(:NOGUARD)
-    return true if opponent.effects[PBEffects::Telekinesis]>0
-    return true if @function==0x0D && @battle.pbWeather==PBWeather::HAIL # Blizzard
-    return true if (@function==0x08 || @function==0x15) && # Thunder, Hurricane
-                   @battle.pbWeather==PBWeather::RAINDANCE
-    return true if @function==0x08 && # Thunder
-                   ($fefieldeffect == 16 || $fefieldeffect == 27 || $fefieldeffect == 28)
-    return true if attacker.pbHasType?(:POISON) && id == PBMoves::TOXIC
-    return true if (@function==0x10 || @function==0x9B || id==PBMoves::BODYSLAM || id==PBMoves::FLYINGPRESS) &&
-                    opponent.effects[PBEffects::Minimize] # Flying Press, Stomp, DRush
+    if baseaccuracy==0
+      @vitalSpiritCertainHit = true
+      return true
+    end
+    if attacker.hasWorkingAbility(:NOGUARD) ||
+       opponent.hasWorkingAbility(:NOGUARD)
+      @vitalSpiritCertainHit = true
+      return true
+    end
+    if attacker.effects[PBEffects::LockOn]>0 && attacker.effects[PBEffects::LockOnPos]==opponent.index
+      @vitalSpiritCertainHit = true
+      return true
+    end
+    if opponent.effects[PBEffects::LockOn]>0 && opponent.effects[PBEffects::LockOnPos]==attacker.index
+      @vitalSpiritCertainHit = true
+      return true
+    end
+    if opponent.effects[PBEffects::Telekinesis]>0
+      @vitalSpiritCertainHit = true
+      return true
+    end
+    if @function==0x0D && @battle.pbWeather==PBWeather::HAIL # Blizzard
+      @vitalSpiritCertainHit = true
+      return true
+    end
+    if (@function==0x08 || @function==0x15) && # Thunder, Hurricane
+       @battle.pbWeather==PBWeather::RAINDANCE
+      @vitalSpiritCertainHit = true
+      return true
+    end
+    if @function==0x08 && # Thunder
+       ($fefieldeffect == 16 || $fefieldeffect == 27 || $fefieldeffect == 28)
+      @vitalSpiritCertainHit = true
+      return true
+    end
+    if attacker.pbHasType?(:POISON) && id == PBMoves::TOXIC
+      @vitalSpiritCertainHit = true
+      return true
+    end
+    if (@function==0x10 || @function==0x9B || id==PBMoves::BODYSLAM || id==PBMoves::FLYINGPRESS) &&
+        opponent.effects[PBEffects::Minimize] # Flying Press, Stomp, DRush
+      @vitalSpiritCertainHit = true
+      return true
+    end
     
-    return true if opponent.hasWorkingAbility(:LIGHTNINGROD) && isConst?(type,PBTypes,:ELECTRIC)
-    return true if opponent.hasWorkingAbility(:STORMDRAIN) && isConst?(type,PBTypes,:WATER)
-    return true if (id == PBMoves::WILLOWISP || id == PBMoves::DARKVOID || id == PBMoves::INFERNO) &&  
-                    $fefieldeffect == 45
+    if opponent.hasWorkingAbility(:LIGHTNINGROD) && isConst?(type,PBTypes,:ELECTRIC)
+      @vitalSpiritCertainHit = true
+      return true
+    end
+    if opponent.hasWorkingAbility(:STORMDRAIN) && isConst?(type,PBTypes,:WATER)
+      @vitalSpiritCertainHit = true
+      return true
+    end
+    if (id == PBMoves::WILLOWISP || id == PBMoves::DARKVOID || id == PBMoves::INFERNO) &&  
+        $fefieldeffect == 45
+      @vitalSpiritCertainHit = true
+      return true
+    end
     if $fefieldeffect == 30
       if (id == PBMoves::AURORABEAM || id == PBMoves::SIGNALBEAM ||
          id == PBMoves::FLASHCANNON || id == PBMoves::LUSTERPURGE ||
          id == PBMoves::DAZZLINGGLEAM || id == PBMoves::TECHNOBLAST || 
          id == PBMoves::DOOMDUMMY || id == PBMoves::MIRRORSHOT ||
          id == PBMoves::PRISMATICLASER)
+        @vitalSpiritCertainHit = true
         return true 
       end
     end
     if $fefieldeffect == 38 # Dimensional Field
       if (id == PBMoves::DARKPULSE || id == PBMoves::DARKVOID ||
           id == PBMoves::NIGHTDAZE)
+        @vitalSpiritCertainHit = true
         return true
       end
     end
     if $fefieldeffect == 43 # Sky Field
       if (id == PBMoves::THUNDER || id == PBMoves::HURRICANE)
+        @vitalSpiritCertainHit = true
         return true
       end
     end
@@ -1812,13 +1856,13 @@ class PokeBattle_Move
     if (opponent.hasWorkingAbility(:HEATPROOF) || @battle.SilvallyCheck(opponent,PBTypes::STEEL)) && !(opponent.moldbroken) && isConst?(type,PBTypes,:FIRE)
       damagemult=(damagemult*0.5).round
     end
-    if (opponent.hasWorkingAbility(:ASCETIC) && !(opponent.moldbroken) && isConst?(type,PBTypes,:GRASS)
+    if (opponent.hasWorkingAbility(:ASCETIC) && !(opponent.moldbroken) && isConst?(type,PBTypes,:GRASS))
       damagemult=(damagemult*0.5).round
     end
-    if (opponent.hasWorkingAbility(:WATERLOGGED) && !(opponent.moldbroken) && isConst?(type,PBTypes,:WATER)
+    if (opponent.hasWorkingAbility(:WATERLOGGED) && !(opponent.moldbroken) && isConst?(type,PBTypes,:WATER))
       damagemult=(damagemult*0.5).round
     end
-    if (opponent.hasWorkingAbility(:INCENDIARY) && !(opponent.moldbroken) && isConst?(type,PBTypes,:FIRE)
+    if (opponent.hasWorkingAbility(:INCENDIARY) && !(opponent.moldbroken) && isConst?(type,PBTypes,:FIRE))
       damagemult=(damagemult*0.5).round
     end
 #### KUROTSUNE - 003 START
@@ -2103,6 +2147,9 @@ class PokeBattle_Move
        id == PBMoves::DARKPULSE || id == PBMoves::WATERPULSE
         damagemult=(damagemult*1.5).round
       end
+    end
+    if attacker.hasWorkingAbility(:VITALSPIRIT) && @vitalSpiritCertainHit
+      damagemult=(damagemult*1.5).round
     end
     if isConst?(attacker.ability,PBAbilities,:GRENADIER)
 	  if PBStuff::BALLMOVE.include?(id) || PBStuff::BOMBMOVE.include?(id) || PBStuff::EXPLOSIVEMOVE.include?(id)
@@ -2948,7 +2995,7 @@ class PokeBattle_Move
           @battle.pbDisplay(_INTL("{1} was cut down to size!",opponent.pbThis)) if $feshutup == 0
           $feshutup+=1
         end
-        if (id == PBMoves::PETALBLIZZARD || id == PBMoves::PETALDANCE || id == PBMoves::FLEURCANNON) && $fecounter = 2
+        if (id == PBMoves::PETALBLIZZARD || id == PBMoves::PETALDANCE || id == PBMoves::FLEURCANNON) && $fecounter == 2
           damagemult=(damagemult*1.2).round
           @battle.pbDisplay(_INTL("The fresh scent of flowers boosted the attack!",opponent.pbThis)) if $feshutup == 0
           $feshutup+=1
@@ -3333,7 +3380,7 @@ class PokeBattle_Move
         minusboost = 1.5 if attacker.hasWorkingAbility(:MINUS) && attacker.pbPartner.hasWorkingAbility(:PLUS)
         plusboost = 1.5 if attacker.hasWorkingAbility(:PLUS) && attacker.pbPartner.hasWorkingAbility(:MINUS)
         solarBoost = 1.5 if (attacker.hasWorkingAbility(:SOLARPOWER) || (isConst?(attacker.species,PBSpecies,:CASTFORM) && isConst?(attacker.item,PBItems,:CASTCREST) && attacker.form==1) ) && @battle.pbWeather==PBWeather::SUNNYDAY && !attacker.hasWorkingItem(:UTILITYUMBRELLA)
-        hydroBoost = 1.5 if opponent.hasWorkingAbility(:HYDROPLANE) || (isConst?(opponent.species,PBSpecies,:CASTFORM) && @battle.pbWeather==PBWeather::RAINDANCE && !opponent.hasWorkingItem(:UTILITYUMBRELLA)
+        hydroBoost = 1.5 if opponent.hasWorkingAbility(:HYDROPLANE) || (isConst?(opponent.species,PBSpecies,:CASTFORM) && @battle.pbWeather==PBWeather::RAINDANCE && !opponent.hasWorkingItem(:UTILITYUMBRELLA))
 		fgBoost = 1.5 if attacker.hasWorkingAbility(:FLOWERGIFT) && @battle.pbWeather==PBWeather::SUNNYDAY && !attacker.hasWorkingItem(:UTILITYUMBRELLA)
         batteryBoost = 1.3 if attacker.pbPartner.hasWorkingAbility(:BATTERY)
         gl1 = attacker.spatk
@@ -3710,7 +3757,7 @@ class PokeBattle_Move
         minusboost = 1.5 if opponent.hasWorkingAbility(:MINUS) && opponent.pbPartner.hasWorkingAbility(:PLUS)
         plusboost = 1.5 if opponent.hasWorkingAbility(:PLUS) && opponent.pbPartner.hasWorkingAbility(:MINUS)
         solarBoost = 1.5 if (opponent.hasWorkingAbility(:SOLARPOWER) || (isConst?(opponent.species,PBSpecies,:CASTFORM) && isConst?(opponent.item,PBItems,:CASTCREST) && opponent.form==1) ) && @battle.pbWeather==PBWeather::SUNNYDAY && !opponent.hasWorkingItem(:UTILITYUMBRELLA)
-        hydroBoost = 1.5 if opponent.hasWorkingAbility(:HYDROPLANE) || (isConst?(opponent.species,PBSpecies,:CASTFORM) && @battle.pbWeather==PBWeather::RAINDANCE && !opponent.hasWorkingItem(:UTILITYUMBRELLA)
+        hydroBoost = 1.5 if opponent.hasWorkingAbility(:HYDROPLANE) || (isConst?(opponent.species,PBSpecies,:CASTFORM) && @battle.pbWeather==PBWeather::RAINDANCE && !opponent.hasWorkingItem(:UTILITYUMBRELLA))
         fgBoost = 1.5 if opponent.hasWorkingAbility(:FLOWERGIFT) && @battle.pbWeather==PBWeather::SUNNYDAY && !opponent.hasWorkingItem(:UTILITYUMBRELLA)
         batteryBoost = 1.3 if attacker.pbPartner.hasWorkingAbility(:BATTERY)
         gl1 = opponent.spatk

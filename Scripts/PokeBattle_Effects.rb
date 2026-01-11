@@ -81,8 +81,7 @@ class PokeBattle_Battler
         end
       end 
     end
-    if hasWorkingAbility(:VITALSPIRIT) ||
-       hasWorkingAbility(:INSOMNIA) ||
+    if hasWorkingAbility(:INSOMNIA) ||
        hasWorkingAbility(:SWEETVEIL) ||
       (isConst?(self.ability,PBAbilities,:LEAFGUARD) &&
       ((@battle.pbWeather==PBWeather::SUNNYDAY && !hasWorkingItem(:UTILITYUMBRELLA)) ||
@@ -115,8 +114,7 @@ class PokeBattle_Battler
         return false if @battle.battlers[i].effects[PBEffects::FeverPitch]==true
       end
     end
-    if isConst?(ability,PBAbilities,:VITALSPIRIT) ||
-      isConst?(ability,PBAbilities,:INSOMNIA) ||
+    if isConst?(ability,PBAbilities,:INSOMNIA) ||
       isConst?(ability,PBAbilities,:SWEETVEIL) ||
      (isConst?(ability,PBAbilities,:LEAFGUARD) &&
      ((@battle.pbWeather==PBWeather::SUNNYDAY && !hasWorkingItem(:UTILITYUMBRELLA)) ||
@@ -559,6 +557,10 @@ end
       @battle.pbDisplay(_INTL("{1} is already confused!",pbThis)) if showMessages
       return false
     end
+    if hasWorkingAbility(:OBLIVIOUS) && !self.moldbroken
+      @battle.pbDisplay(_INTL("{1}'s {2} prevents confusion!",pbThis,PBAbilities.getName(self.ability))) if showMessages
+      return false
+    end
     if damagestate.substitute || (effects[PBEffects::Substitute]>0 && !PBMoveData.new(@battle.lastMoveUsed).isSoundBased?)
       @battle.pbDisplay(_INTL("But it failed!")) if showMessages
       return false
@@ -575,6 +577,10 @@ end
     return false if !pbCanStatus?(showMessages,true,true)
     if effects[PBEffects::Confusion]>0
       @battle.pbDisplay(_INTL("{1} is already confused!",pbThis)) if showMessages
+      return false
+    end
+    if hasWorkingAbility(:OBLIVIOUS) && !self.moldbroken
+      @battle.pbDisplay(_INTL("{1}'s {2} prevents confusion!",pbThis,PBAbilities.getName(self.ability))) if showMessages
       return false
     end
     if $fefieldeffect == 20 && pbHasType?(:FIGHTING)

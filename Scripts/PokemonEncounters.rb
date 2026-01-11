@@ -320,8 +320,7 @@ class PokemonEncounters
     if !$Trainer.party[0].egg?
       abl = $Trainer.party[0].ability
       if (isConst?(abl, PBAbilities, :PRESSURE) ||
-       isConst?(abl, PBAbilities, :HUSTLE) ||
-       isConst?(abl, PBAbilities, :VITALSPIRIT)) &&
+       isConst?(abl, PBAbilities, :HUSTLE)) &&
        rand(2) == 0
 # increase the lower bound to half way in-between lower and upper
         encounter[1] += (encounter[2] - encounter[1]) / 2
