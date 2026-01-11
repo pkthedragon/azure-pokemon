@@ -1270,8 +1270,82 @@ class PokeBattle_Battler
     else
       return (self.type1==type || self.type2==type)
     end
-  end  
-  
+  end
+
+  def pbCamouflageType
+    # Field effects override terrain/environment
+    if $fefieldeffect && $fefieldeffect>0
+      case $fefieldeffect
+      when 1  then return PBTypes::ELECTRIC
+      when 2  then return PBTypes::GRASS
+      when 3  then return PBTypes::FAIRY
+      when 4  then return PBTypes::DARK
+      when 5  then return PBTypes::PSYCHIC
+      when 6  then return PBTypes::NORMAL
+      when 7  then return PBTypes::FIRE
+      when 8  then return PBTypes::WATER
+      when 9  then return PBTypes::DRAGON
+      when 10 then return PBTypes::POISON
+      when 11 then return PBTypes::POISON
+      when 12 then return PBTypes::GROUND
+      when 13 then return PBTypes::ICE
+      when 14 then return PBTypes::ROCK
+      when 15 then return PBTypes::BUG
+      when 17 then return PBTypes::STEEL
+      when 18 then return PBTypes::ELECTRIC
+      when 19 then return PBTypes::POISON
+      when 20 then return PBTypes::GROUND
+      when 21 then return PBTypes::WATER
+      when 22 then return PBTypes::WATER
+      when 23 then return PBTypes::ROCK
+      when 24 then return PBTypes::FLYING
+      when 25 then return [PBTypes::FIRE,PBTypes::WATER,PBTypes::GRASS,PBTypes::PSYCHIC][@battle.pbRandom(4)]
+      when 26 then return PBTypes::POISON
+      when 27 then return PBTypes::ROCK
+      when 28 then return PBTypes::ICE
+      when 29 then return PBTypes::NORMAL
+      when 31 then return PBTypes::FAIRY
+      when 32 then return PBTypes::DRAGON
+      when 33 then return PBTypes::GRASS
+      when 34 then return PBTypes::DARK
+      when 35 then return @battle.pbRandom(PBTypes.maxValue+1)
+      when 36 then return PBTypes::NORMAL
+      when 40 then return PBTypes::GHOST
+      when 41 then return PBTypes::POISON
+      when 42 then return PBTypes::FAIRY
+      when 43 then return PBTypes::FLYING
+      when 44 then return PBTypes::FIRE
+      when 45 then return PBTypes::GROUND
+      when 46 then return PBTypes::ELECTRIC
+      when 47 then return PBTypes::BUG
+      when 48 then return PBTypes::FLYING
+      when 50 then return PBTypes::NORMAL
+      end
+    end
+    # Terrain overrides environment
+    if @battle.field.effects[PBEffects::ElectricTerrain]>0
+      return PBTypes::ELECTRIC
+    elsif @battle.field.effects[PBEffects::GrassyTerrain]>0
+      return PBTypes::GRASS
+    elsif @battle.field.effects[PBEffects::MistyTerrain]>0
+      return PBTypes::FAIRY
+    elsif @battle.field.effects[PBEffects::PsychicTerrain]>0
+      return PBTypes::PSYCHIC
+    end
+    case @battle.environment
+    when PBEnvironment::Grass, PBEnvironment::TallGrass
+      return PBTypes::GRASS
+    when PBEnvironment::MovingWater, PBEnvironment::StillWater, PBEnvironment::Underwater
+      return PBTypes::WATER
+    when PBEnvironment::Sand
+      return PBTypes::GROUND
+    when PBEnvironment::Rock, PBEnvironment::Cave
+      return PBTypes::ROCK
+    else
+      return PBTypes::NORMAL
+    end
+  end
+
   def pbHasMove?(id)
     if id.is_a?(String) || id.is_a?(Symbol)
       id=getID(PBMoves,id)
@@ -1303,34 +1377,38 @@ class PokeBattle_Battler
   def abilityWorks?(ignorefainted=false)
     return false if self.isFainted? if !ignorefainted
     return false if @effects[PBEffects::GastroAcid]
+    return false if @effects[PBEffects::MultiTurnAttack]==PBMoves::BINDINGWORD
     if @battle.pbCheckGlobalAbility(:NEUTRALIZINGGAS)
-      return false 
+      return false
     end
     return true
   end
-  
+
   def hasWorkingAbility(ability,ignorefainted=false)
     return false if self.isFainted? if !ignorefainted
     if !((ability == :NEUTRALIZINGGAS) || ability == :STANCECHANGE || ability == :SCHOOLING)
       if @battle.pbCheckGlobalAbility(:NEUTRALIZINGGAS)
-        return false 
+        return false
       end
     end
     return false if @effects[PBEffects::GastroAcid]
+    return false if @effects[PBEffects::MultiTurnAttack]==PBMoves::BINDINGWORD
     return isConst?(@ability,PBAbilities,ability)
   end
-  
+
   def itemWorks?(ignorefainted=false)
     return false if self.isFainted? if !ignorefainted
     return false if @effects[PBEffects::Embargo]>0
+    return false if @effects[PBEffects::MultiTurnAttack]==PBMoves::BINDINGWORD
     return false if @battle.field.effects[PBEffects::MagicRoom]>0
     return false if self.ability == PBAbilities::KLUTZ && !self.abilitynulled
     return true
   end
-  
+
   def hasWorkingItem(item,ignorefainted=false)
     return false if self.isFainted? if !ignorefainted
     return false if @effects[PBEffects::Embargo]>0
+    return false if @effects[PBEffects::MultiTurnAttack]==PBMoves::BINDINGWORD
     return false if @battle.field.effects[PBEffects::MagicRoom]>0
     return false if self.ability == PBAbilities::KLUTZ && !self.abilitynulled
     return isConst?(@item,PBItems,item)
@@ -1341,6 +1419,7 @@ class PokeBattle_Battler
     return false if @effects[PBEffects::Ingrain]
     return false if @effects[PBEffects::DesertsMark]
     return false if @effects[PBEffects::SmackDown]
+    return true if @battle.field.effects[PBEffects::Gravity]>0 && self.hasWorkingItem(:ANTIGRAVITYCORE)
     return false if @battle.field.effects[PBEffects::Gravity]>0
     return true if self.pbHasType?(:FLYING) && @effects[PBEffects::Roost]==false
     return true if self.hasWorkingAbility(:LEVITATE)
@@ -1387,8 +1466,14 @@ class PokeBattle_Battler
       atkmult=(atkmult*2.0).round
     end  
     if self.hasWorkingAbility(:SLOWSTART) &&
-      self.turncount<5 
+      self.turncount<5
       atkmult=(atkmult*0.5).round
+    end
+    if self.hasWorkingAbility(:PLUS) && self.pbOwnSide.effects[PBEffects::MinusSignal]>0
+      atkmult=(atkmult*1.3).round
+    end
+    if self.hasWorkingAbility(:MINUS) && self.pbOwnSide.effects[PBEffects::PlusSignal]>0
+      atkmult=(atkmult*1.3).round
     end
     if (@battle.pbWeather==PBWeather::SUNNYDAY || $fefieldeffect == 33 || 
         (self.hasWorkingItem(:CHERCREST) && isConst?(self.species,PBSpecies,:CHERRIM)) || 
@@ -1442,13 +1527,11 @@ class PokeBattle_Battler
       atk=(atk*1.0*stagemul[atkstage]/stagediv[atkstage]).floor
     end  
     atkmult=0x1000
-    if (self.hasWorkingAbility(:PLUS) || self.hasWorkingAbility(:MINUS))
-      partner=self.pbPartner
-      if partner.hasWorkingAbility(:PLUS) || partner.hasWorkingAbility(:MINUS) 
-        atkmult=(atkmult*1.5).round
-      elsif $fefieldeffect == 18
-        atkmult=(atkmult*1.5).round
-      end
+    if self.hasWorkingAbility(:PLUS) && self.pbOwnSide.effects[PBEffects::MinusSignal]>0
+      atkmult=(atkmult*1.3).round
+    end
+    if self.hasWorkingAbility(:MINUS) && self.pbOwnSide.effects[PBEffects::PlusSignal]>0
+      atkmult=(atkmult*1.3).round
     end
     if (self.pbPartner).hasWorkingAbility(:BATTERY)
       atkmult=(atkmult*1.3).round
@@ -3596,6 +3679,14 @@ class PokeBattle_Battler
         break if found
       end
       @battle.pbDisplay(_INTL("{1} shuddered with anticipation!",pbThis)) if found
+    end
+    if self.hasWorkingAbility(:PLUS) && onactive
+      self.pbOwnSide.effects[PBEffects::PlusSignal]=3
+      @battle.pbDisplay(_INTL("{1} charged up Plus energy for its side!",pbThis))
+    end
+    if self.hasWorkingAbility(:MINUS) && onactive
+      self.pbOwnSide.effects[PBEffects::MinusSignal]=3
+      @battle.pbDisplay(_INTL("{1} charged up Minus energy for its side!",pbThis))
     end
     if self.hasWorkingAbility(:UNNERVE) && onactive
       if @battle.pbOwnedByPlayer?(@index)
