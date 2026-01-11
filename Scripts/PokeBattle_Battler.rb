@@ -105,7 +105,7 @@ class PokeBattle_Battler
   def isbossmon
     return (@pokemon) ? @pokemon.isbossmon : false
   end  
-  
+
   def issossmon
     return (@pokemon) ? @pokemon.sosmon : false
   end
@@ -862,6 +862,7 @@ class PokeBattle_Battler
     @effects[PBEffects::FutureSightDamage] = 0
     @effects[PBEffects::FutureSightMove]   = 0
     @effects[PBEffects::FutureSightUser]   = -1
+    @effects[PBEffects::FutureSightPkmnIdx] = -1
     @effects[PBEffects::Forebode]          = [false,-1,-1] # Active, user idx, party idx
     @effects[PBEffects::HealingWish]       = false
     @effects[PBEffects::LunarDance]        = false    
@@ -954,7 +955,15 @@ class PokeBattle_Battler
     @itemUsed2      = false
     @movesUsed      = []
     @turncount      = 0
-    @effects[PBEffects::Attract]          = 0
+    @effects[PBEffects::Attract]          = -1
+    if !effectnegate
+      for i in 0...4
+        next if !@battle.battlers[i] || fakebattler
+        if @battle.battlers[i].effects[PBEffects::Attract]==@index
+          @battle.battlers[i].effects[PBEffects::Attract]=-1
+        end
+      end
+    end
     @effects[PBEffects::Bide]             = 0
     @effects[PBEffects::BideDamage]       = 0
     @effects[PBEffects::BideTarget]       = -1
@@ -995,8 +1004,8 @@ class PokeBattle_Battler
     @effects[PBEffects::MagicBounced]     = false
     @effects[PBEffects::MeanLook]         = -1
     @effects[PBEffects::Blinded]          = -1
-    @effects[PBEffects::Confusion]        = 0  
-    @effects[PBEffects::Wounded]          = 0  
+    @effects[PBEffects::Confusion]        = 0
+    @effects[PBEffects::Wounded]          = 0
     if !effectnegate
       for i in 0...4
         next if !@battle.battlers[i] || fakebattler
@@ -1083,6 +1092,7 @@ class PokeBattle_Battler
     @effects[PBEffects::SpeedSwap]        = 0
     @effects[PBEffects::Tantrum]          = false
     @effects[PBEffects::ThroatChop]      = 0
+    @effects[PBEffects::ShieldLife]      = 0
     @effects[PBEffects::StallEntry]     = false
     #### JERICHO - 001 - START
     if illusion==true
@@ -1170,7 +1180,12 @@ class PokeBattle_Battler
     end
     pbInitPokemon(pkmn,index)
     pbInitEffects(batonpass)
-    pbInitBoss(pkmn,index) if self.isbossmon
+    if self.isbossmon
+      pbInitBoss(pkmn,index)
+      @battle.shieldCount = pkmn.shieldCount ? pkmn.shieldCount : $game_variables[704]
+      shieldlife=[(self.totalhp/4).floor,1].max
+      self.effects[PBEffects::ShieldLife]=shieldlife
+    end
   end
   
   # Used only to erase the battler of a Shadow Pokémon that has been snagged.
@@ -1837,19 +1852,7 @@ class PokeBattle_Battler
     raise _INTL("HP less than 0") if self.hp<0
     raise _INTL("HP greater than total HP") if self.hp>@totalhp
     @battle.scene.pbHPChanged(self,oldhp,anim) if amt>0
-=begin      SOS  Not here yet.
-    if self.issossmon
-      if (self.hp - amt) == 0
-        for i in priority
-          bossmon = i if i.isbossmon
-        end
-        if bossmon
-          self.lastAttacker = bossmon.index
-        end
-      end
-    end
-=end
-    
+
     if shielddam == true
       self.pbRecoverHP(self.totalhp,true) if self.hp==0
       @battle.pbShieldEffects(self,onBreakdata) if onBreakdata
@@ -1860,15 +1863,13 @@ class PokeBattle_Battler
         @battle.pbBossSOS(@battle.battlers,shieldbreak=true)
       end
     end
-
-    # remove in future, RAIDS
+    
     if @battle.raidbattle && !@battle.pbBelongsToPlayer?(self.index)
       limit = self.totalhp * 0.25
       if self.hp > 0 && oldhp > limit && self.hp < limit
         @battle.pbDisplay(_INTL("{1} has dropped its guard!!",pbThis))
       end
     end
-    pbEmergencyExitCheck(oldhp) if emercheck
     return amt
   end
   
@@ -1892,6 +1893,7 @@ class PokeBattle_Battler
       return true
     end
     if @fainted
+      #      PBDebug.log("!!!***Can't faint if already fainted") if $INTERNAL
       return true
     end
     if self.isbossmon
@@ -3921,7 +3923,7 @@ class PokeBattle_Battler
           end
         end
       end
-      if user.hasWorkingAbility(:POISONPOINT,true) && target.pbCanPoison?(false) &&
+      if (user.hasWorkingAbility(:POISONTOUCH,true) || user.hasWorkingAbility(:POISONPOINT,true)) && target.pbCanPoison?(false) &&
         (@battle.pbRandom(10)<3 || (@battle.pbRandom(10)<6 && $fefieldeffect==41))
         target.pbPoison(user)
         @battle.pbDisplay(_INTL("{1}'s {2} poisoned {3}!",user.pbThis,
@@ -5670,10 +5672,15 @@ class PokeBattle_Battler
         # physical contact
         if thismove.hasFlags?('a') && !user.hasWorkingAbility(:LONGREACH)
           #@scene.pbDamageAnimation(user,0) TODO: Fix animation
-          if $fefieldeffect == 44  
-            user.pbReduceHP((user.totalhp/4).floor)  
-          else  
-            user.pbReduceHP((user.totalhp/8).floor)  
+          if user.effects[PBEffects::ShieldLife]>0
+            spikydamage=user.totalhp/8
+            @battle.pbShieldDamage(user,spikydamage)
+          else
+            if $fefieldeffect == 44  
+              user.pbReduceHP((user.totalhp/4).floor)  
+            else  
+              user.pbReduceHP((user.totalhp/8).floor)  
+            end
           end
         end
         return false
@@ -6136,11 +6143,11 @@ class PokeBattle_Battler
           user.effects[PBEffects::Tantrum]=false
         end       
         return
-      end    
-      if (target.isbossmon)
+      end
+      if target.isbossmon
         bosscheck = bossMoveCheck(basemove,user,target) 
         return if bosscheck == 0
-      end      
+      end
       # Check success (accuracy/evasion calculation)
       if !nocheck &&
         !pbSuccessCheck(thismove,user,target,i==0 || thismove.function==0xBF) # Triple Kick
@@ -7037,9 +7044,9 @@ class PokeBattle_Battler
         end
         numhits=thismove.pbNumHits(user)
         if (thismove.flags&0x04)==0 && numhits<2
-          # if user.isBoss && @battle.pbIsOpposing?(user.index)
-          #   numhits = [$game_variables[699],1].max
-          # end
+          if user.isbossmon && @battle.pbIsOpposing?(user.index)
+            numhits = [$game_variables[699],1].max
+          end
           if isConst?(user.species,PBSpecies,:LEDIAN) && user.hasWorkingItem(:LEDICREST) &&
             thismove.isPunchingMove?
             numhits = 4
@@ -8161,7 +8168,13 @@ class PokeBattle_Battler
         # Life Orb
         if user.hasWorkingItem(:LIFEORB) && turneffects[PBEffects::TotalDamage]>0 &&
           !user.hasWorkingAbility(:MAGICGUARD) && !(user.hasWorkingAbility(:WONDERGUARD) && $fefieldeffect == 44)
-          hploss=user.pbReduceHP([(user.totalhp/10).floor,1].max,true)
+          if user.effects[PBEffects::ShieldLife]>0
+            lifeorbdamage=(user.totalhp/10).floor
+            hploss=lifeorbdamage
+            @battle.pbShieldDamage(user,lifeorbdamage)
+          else
+            hploss=user.pbReduceHP([(user.totalhp/10).floor,1].max,true)
+          end
           if hploss>0
             @battle.pbDisplay(_INTL("{1} lost some of its HP!",user.pbThis))
           end
@@ -8507,5 +8520,4 @@ class PokeBattle_Battler
     @canrun = boss.canrun ? boss.canrun : false
     @battle.cantescape=true if !@canrun
   end
-
 end
