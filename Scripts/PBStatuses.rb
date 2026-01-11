@@ -6,6 +6,7 @@ begin
     BURN      = 3
     PARALYSIS = 4
     FROZEN    = 5
+	PETRIFIED = 6
   end
 
 rescue Exception

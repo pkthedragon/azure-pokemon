@@ -680,3 +680,211 @@ Not using an item.
 PRIORITY CHOICE NIL: i=0 choice=[1, 2, nil, -1]
 PRIORITY CHOICE NIL: i=1 choice=[1, 2, nil, -1]
 ***Round 3***
+==============================
+Battle Start!
+179 - Kara
+==============================
+***Round 1***
+AI Pokemon Buneary is faster than Fuecoco.
+Defense Curl: initial score: 10
+[Not preferring status move]
+Defense Curl: final score: 1
+ 
+Splash: initial score: 1
+[Not preferring status move]
+Splash: final score: 0
+ 
+Pound: initial score: 33
+Pound: final score: 33
+ 
+Foresight: initial score: 5
+[Not preferring status move]
+Foresight: final score: 4
+ 
+Beginning AI Item use check.
+ 
+Highest item score: -10000
+Highest move score: 33
+Not using an item.
+ 
+[The foe Buneary: Defense Curl=1, Splash=0, Pound=33, Foresight=4]
+[Prefer Pound]
+[No Z-Move.]
+**Exception: undefined method `>' for nil:NilClass
+["PokeBattle_Move:3752:in `pbCalcDamage'", "PokeBattle_Move:5557:in `pbEffect'", "PokeBattle_Battler:6389:in `block in pbProcessMoveAgainstTarget'", "PokeBattle_Battler:6272:in `each'", "PokeBattle_Battler:6272:in `pbProcessMoveAgainstTarget'", "PokeBattle_Battler:7252:in `block in pbUseMove'", "PokeBattle_Battler:7163:in `loop'", "PokeBattle_Battler:7163:in `pbUseMove'", "PokeBattle_Battler:8551:in `block in pbProcessTurn'", "PBDebug:4:in `logonerr'", "PokeBattle_Battler:8550:in `pbProcessTurn'", "PokeBattle_Battle:5737:in `block in pbAttackPhase'", "PokeBattle_Battle:5736:in `each'", "PokeBattle_Battle:5736:in `pbAttackPhase'", "PokeBattle_Battle:5299:in `block (2 levels) in pbStartBattleCore'", "PBDebug:4:in `logonerr'", "PokeBattle_Battle:5298:in `block in pbStartBattleCore'", "PokeBattle_Battle:5282:in `loop'", "PokeBattle_Battle:5282:in `pbStartBattleCore'", "PokeBattle_Battle:4888:in `pbStartBattle'", "PokemonTrainers:724:in `block (2 levels) in pbTrainerBattle'", "PokemonField:706:in `pbSceneStandby'", "PokemonTrainers:723:in `block in pbTrainerBattle'", "PokemonField:1008:in `pbBattleAnimation'", "PokemonTrainers:722:in `pbTrainerBattle'", "(eval):1:in `pbExecuteScript'", "Interpreter:243:in `eval'", "Interpreter:243:in `pbExecuteScript'", "Interpreter:799:in `command_111'", "Interpreter:320:in `execute_command'", "Interpreter:193:in `block in update'", "Interpreter:106:in `loop'", "Interpreter:106:in `update'", "Autosave:30:in `block in update'", "Autosave:28:in `loop'", "Autosave:28:in `update'", "Scene_Map:72:in `block in main'", "Scene_Map:69:in `loop'", "Scene_Map:69:in `main'", "Main:79:in `mainFunctionDebug'", "Main:53:in `block in mainFunction'", "Compiler:38:in `pbCriticalCode'", "Main:53:in `mainFunction'", "Main:89:in `block (2 levels) in <main>'", "Main:88:in `loop'", "Main:88:in `block in <main>'", "Section000:336:in `eval'", "Section000:336:in `block in <main>'", "Section000:333:in `each'", "Section000:333:in `each_with_index'", "Section000:333:in `<main>'", "-e:in `eval'"]
+**Exception: undefined method `>' for nil:NilClass
+["PokeBattle_Move:3752:in `pbCalcDamage'", "PokeBattle_Move:5557:in `pbEffect'", "PokeBattle_Battler:6389:in `block in pbProcessMoveAgainstTarget'", "PokeBattle_Battler:6272:in `each'", "PokeBattle_Battler:6272:in `pbProcessMoveAgainstTarget'", "PokeBattle_Battler:7252:in `block in pbUseMove'", "PokeBattle_Battler:7163:in `loop'", "PokeBattle_Battler:7163:in `pbUseMove'", "PokeBattle_Battler:8551:in `block in pbProcessTurn'", "PBDebug:4:in `logonerr'", "PokeBattle_Battler:8550:in `pbProcessTurn'", "PokeBattle_Battle:5737:in `block in pbAttackPhase'", "PokeBattle_Battle:5736:in `each'", "PokeBattle_Battle:5736:in `pbAttackPhase'", "PokeBattle_Battle:5299:in `block (2 levels) in pbStartBattleCore'", "PBDebug:4:in `logonerr'", "PokeBattle_Battle:5298:in `block in pbStartBattleCore'", "PokeBattle_Battle:5282:in `loop'", "PokeBattle_Battle:5282:in `pbStartBattleCore'", "PokeBattle_Battle:4888:in `pbStartBattle'", "PokemonTrainers:724:in `block (2 levels) in pbTrainerBattle'", "PokemonField:706:in `pbSceneStandby'", "PokemonTrainers:723:in `block in pbTrainerBattle'", "PokemonField:1008:in `pbBattleAnimation'", "PokemonTrainers:722:in `pbTrainerBattle'", "(eval):1:in `pbExecuteScript'", "Interpreter:243:in `eval'", "Interpreter:243:in `pbExecuteScript'", "Interpreter:799:in `command_111'", "Interpreter:320:in `execute_command'", "Interpreter:193:in `block in update'", "Interpreter:106:in `loop'", "Interpreter:106:in `update'", "Autosave:30:in `block in update'", "Autosave:28:in `loop'", "Autosave:28:in `update'", "Scene_Map:72:in `block in main'", "Scene_Map:69:in `loop'", "Scene_Map:69:in `main'", "Main:79:in `mainFunctionDebug'", "Main:53:in `block in mainFunction'", "Compiler:38:in `pbCriticalCode'", "Main:53:in `mainFunction'", "Main:89:in `block (2 levels) in <main>'", "Main:88:in `loop'", "Main:88:in `block in <main>'", "Section000:336:in `eval'", "Section000:336:in `block in <main>'", "Section000:333:in `each'", "Section000:333:in `each_with_index'", "Section000:333:in `<main>'", "-e:in `eval'"]
+***Round 2***
+==============================
+Battle Start!
+179 - Kara
+==============================
+***Round 1***
+AI Pokemon Buneary is faster than Fuecoco.
+Defense Curl: initial score: 10
+[Not preferring status move]
+Defense Curl: final score: 2
+ 
+Splash: initial score: 1
+[Not preferring status move]
+Splash: final score: 0
+ 
+Pound: initial score: 33
+Pound: final score: 33
+ 
+Foresight: initial score: 5
+[Not preferring status move]
+Foresight: final score: 4
+ 
+Beginning AI Item use check.
+ 
+Highest item score: -10000
+Highest move score: 33
+Not using an item.
+ 
+[The foe Buneary: Defense Curl=2, Splash=0, Pound=33, Foresight=4]
+[Prefer Pound]
+[No Z-Move.]
+**Exception: uninitialized constant PBStatuses::PETRIFIED
+["PokeBattle_Move:5056:in `pbCalcDamage'", "PokeBattle_Move:5557:in `pbEffect'", "PokeBattle_Battler:6389:in `block in pbProcessMoveAgainstTarget'", "PokeBattle_Battler:6272:in `each'", "PokeBattle_Battler:6272:in `pbProcessMoveAgainstTarget'", "PokeBattle_Battler:7252:in `block in pbUseMove'", "PokeBattle_Battler:7163:in `loop'", "PokeBattle_Battler:7163:in `pbUseMove'", "PokeBattle_Battler:8551:in `block in pbProcessTurn'", "PBDebug:4:in `logonerr'", "PokeBattle_Battler:8550:in `pbProcessTurn'", "PokeBattle_Battle:5737:in `block in pbAttackPhase'", "PokeBattle_Battle:5736:in `each'", "PokeBattle_Battle:5736:in `pbAttackPhase'", "PokeBattle_Battle:5299:in `block (2 levels) in pbStartBattleCore'", "PBDebug:4:in `logonerr'", "PokeBattle_Battle:5298:in `block in pbStartBattleCore'", "PokeBattle_Battle:5282:in `loop'", "PokeBattle_Battle:5282:in `pbStartBattleCore'", "PokeBattle_Battle:4888:in `pbStartBattle'", "PokemonTrainers:724:in `block (2 levels) in pbTrainerBattle'", "PokemonField:706:in `pbSceneStandby'", "PokemonTrainers:723:in `block in pbTrainerBattle'", "PokemonField:1008:in `pbBattleAnimation'", "PokemonTrainers:722:in `pbTrainerBattle'", "(eval):1:in `pbExecuteScript'", "Interpreter:243:in `eval'", "Interpreter:243:in `pbExecuteScript'", "Interpreter:799:in `command_111'", "Interpreter:320:in `execute_command'", "Interpreter:193:in `block in update'", "Interpreter:106:in `loop'", "Interpreter:106:in `update'", "Autosave:30:in `block in update'", "Autosave:28:in `loop'", "Autosave:28:in `update'", "Scene_Map:72:in `block in main'", "Scene_Map:69:in `loop'", "Scene_Map:69:in `main'", "Main:79:in `mainFunctionDebug'", "Main:53:in `block in mainFunction'", "Compiler:38:in `pbCriticalCode'", "Main:53:in `mainFunction'", "Main:89:in `block (2 levels) in <main>'", "Main:88:in `loop'", "Main:88:in `block in <main>'", "Section000:336:in `eval'", "Section000:336:in `block in <main>'", "Section000:333:in `each'", "Section000:333:in `each_with_index'", "Section000:333:in `<main>'", "-e:in `eval'"]
+**Exception: uninitialized constant PBStatuses::PETRIFIED
+["PokeBattle_Move:5056:in `pbCalcDamage'", "PokeBattle_Move:5557:in `pbEffect'", "PokeBattle_MoveEffects:7133:in `pbEffect'", "PokeBattle_Battler:6389:in `block in pbProcessMoveAgainstTarget'", "PokeBattle_Battler:6272:in `each'", "PokeBattle_Battler:6272:in `pbProcessMoveAgainstTarget'", "PokeBattle_Battler:7252:in `block in pbUseMove'", "PokeBattle_Battler:7163:in `loop'", "PokeBattle_Battler:7163:in `pbUseMove'", "PokeBattle_Battler:8551:in `block in pbProcessTurn'", "PBDebug:4:in `logonerr'", "PokeBattle_Battler:8550:in `pbProcessTurn'", "PokeBattle_Battle:5737:in `block in pbAttackPhase'", "PokeBattle_Battle:5736:in `each'", "PokeBattle_Battle:5736:in `pbAttackPhase'", "PokeBattle_Battle:5299:in `block (2 levels) in pbStartBattleCore'", "PBDebug:4:in `logonerr'", "PokeBattle_Battle:5298:in `block in pbStartBattleCore'", "PokeBattle_Battle:5282:in `loop'", "PokeBattle_Battle:5282:in `pbStartBattleCore'", "PokeBattle_Battle:4888:in `pbStartBattle'", "PokemonTrainers:724:in `block (2 levels) in pbTrainerBattle'", "PokemonField:706:in `pbSceneStandby'", "PokemonTrainers:723:in `block in pbTrainerBattle'", "PokemonField:1008:in `pbBattleAnimation'", "PokemonTrainers:722:in `pbTrainerBattle'", "(eval):1:in `pbExecuteScript'", "Interpreter:243:in `eval'", "Interpreter:243:in `pbExecuteScript'", "Interpreter:799:in `command_111'", "Interpreter:320:in `execute_command'", "Interpreter:193:in `block in update'", "Interpreter:106:in `loop'", "Interpreter:106:in `update'", "Autosave:30:in `block in update'", "Autosave:28:in `loop'", "Autosave:28:in `update'", "Scene_Map:72:in `block in main'", "Scene_Map:69:in `loop'", "Scene_Map:69:in `main'", "Main:79:in `mainFunctionDebug'", "Main:53:in `block in mainFunction'", "Compiler:38:in `pbCriticalCode'", "Main:53:in `mainFunction'", "Main:89:in `block (2 levels) in <main>'", "Main:88:in `loop'", "Main:88:in `block in <main>'", "Section000:336:in `eval'", "Section000:336:in `block in <main>'", "Section000:333:in `each'", "Section000:333:in `each_with_index'", "Section000:333:in `<main>'", "-e:in `eval'"]
+***Round 2***
+==============================
+Battle Start!
+179 - Kara
+==============================
+***Round 1***
+AI Pokemon Buneary is faster than Fuecoco.
+Defense Curl: initial score: 10
+[Not preferring status move]
+Defense Curl: final score: 2
+ 
+Splash: initial score: 1
+[Not preferring status move]
+Splash: final score: 0
+ 
+Pound: initial score: 23
+Pound: final score: 23
+ 
+Foresight: initial score: 5
+[Not preferring status move]
+Foresight: final score: 4
+ 
+Beginning AI Item use check.
+ 
+Highest item score: -10000
+Highest move score: 23
+Not using an item.
+ 
+[The foe Buneary: Defense Curl=2, Splash=0, Pound=23, Foresight=4]
+[Prefer Pound]
+[No Z-Move.]
+**Exception: uninitialized constant PBMoves::FOREBODEDUMMY
+["PokeBattle_Move:5303:in `pbReduceHPDamage'", "PokeBattle_Move:5581:in `pbEffect'", "PokeBattle_Battler:6389:in `block in pbProcessMoveAgainstTarget'", "PokeBattle_Battler:6272:in `each'", "PokeBattle_Battler:6272:in `pbProcessMoveAgainstTarget'", "PokeBattle_Battler:7252:in `block in pbUseMove'", "PokeBattle_Battler:7163:in `loop'", "PokeBattle_Battler:7163:in `pbUseMove'", "PokeBattle_Battler:8551:in `block in pbProcessTurn'", "PBDebug:4:in `logonerr'", "PokeBattle_Battler:8550:in `pbProcessTurn'", "PokeBattle_Battle:5737:in `block in pbAttackPhase'", "PokeBattle_Battle:5736:in `each'", "PokeBattle_Battle:5736:in `pbAttackPhase'", "PokeBattle_Battle:5299:in `block (2 levels) in pbStartBattleCore'", "PBDebug:4:in `logonerr'", "PokeBattle_Battle:5298:in `block in pbStartBattleCore'", "PokeBattle_Battle:5282:in `loop'", "PokeBattle_Battle:5282:in `pbStartBattleCore'", "PokeBattle_Battle:4888:in `pbStartBattle'", "PokemonTrainers:724:in `block (2 levels) in pbTrainerBattle'", "PokemonField:706:in `pbSceneStandby'", "PokemonTrainers:723:in `block in pbTrainerBattle'", "PokemonField:1008:in `pbBattleAnimation'", "PokemonTrainers:722:in `pbTrainerBattle'", "(eval):1:in `pbExecuteScript'", "Interpreter:243:in `eval'", "Interpreter:243:in `pbExecuteScript'", "Interpreter:799:in `command_111'", "Interpreter:320:in `execute_command'", "Interpreter:193:in `block in update'", "Interpreter:106:in `loop'", "Interpreter:106:in `update'", "Autosave:30:in `block in update'", "Autosave:28:in `loop'", "Autosave:28:in `update'", "Scene_Map:72:in `block in main'", "Scene_Map:69:in `loop'", "Scene_Map:69:in `main'", "Main:79:in `mainFunctionDebug'", "Main:53:in `block in mainFunction'", "Compiler:38:in `pbCriticalCode'", "Main:53:in `mainFunction'", "Main:89:in `block (2 levels) in <main>'", "Main:88:in `loop'", "Main:88:in `block in <main>'", "Section000:336:in `eval'", "Section000:336:in `block in <main>'", "Section000:333:in `each'", "Section000:333:in `each_with_index'", "Section000:333:in `<main>'", "-e:in `eval'"]
+**Exception: uninitialized constant PBMoves::FOREBODEDUMMY
+["PokeBattle_Move:5303:in `pbReduceHPDamage'", "PokeBattle_Move:5581:in `pbEffect'", "PokeBattle_MoveEffects:7133:in `pbEffect'", "PokeBattle_Battler:6389:in `block in pbProcessMoveAgainstTarget'", "PokeBattle_Battler:6272:in `each'", "PokeBattle_Battler:6272:in `pbProcessMoveAgainstTarget'", "PokeBattle_Battler:7252:in `block in pbUseMove'", "PokeBattle_Battler:7163:in `loop'", "PokeBattle_Battler:7163:in `pbUseMove'", "PokeBattle_Battler:8551:in `block in pbProcessTurn'", "PBDebug:4:in `logonerr'", "PokeBattle_Battler:8550:in `pbProcessTurn'", "PokeBattle_Battle:5737:in `block in pbAttackPhase'", "PokeBattle_Battle:5736:in `each'", "PokeBattle_Battle:5736:in `pbAttackPhase'", "PokeBattle_Battle:5299:in `block (2 levels) in pbStartBattleCore'", "PBDebug:4:in `logonerr'", "PokeBattle_Battle:5298:in `block in pbStartBattleCore'", "PokeBattle_Battle:5282:in `loop'", "PokeBattle_Battle:5282:in `pbStartBattleCore'", "PokeBattle_Battle:4888:in `pbStartBattle'", "PokemonTrainers:724:in `block (2 levels) in pbTrainerBattle'", "PokemonField:706:in `pbSceneStandby'", "PokemonTrainers:723:in `block in pbTrainerBattle'", "PokemonField:1008:in `pbBattleAnimation'", "PokemonTrainers:722:in `pbTrainerBattle'", "(eval):1:in `pbExecuteScript'", "Interpreter:243:in `eval'", "Interpreter:243:in `pbExecuteScript'", "Interpreter:799:in `command_111'", "Interpreter:320:in `execute_command'", "Interpreter:193:in `block in update'", "Interpreter:106:in `loop'", "Interpreter:106:in `update'", "Autosave:30:in `block in update'", "Autosave:28:in `loop'", "Autosave:28:in `update'", "Scene_Map:72:in `block in main'", "Scene_Map:69:in `loop'", "Scene_Map:69:in `main'", "Main:79:in `mainFunctionDebug'", "Main:53:in `block in mainFunction'", "Compiler:38:in `pbCriticalCode'", "Main:53:in `mainFunction'", "Main:89:in `block (2 levels) in <main>'", "Main:88:in `loop'", "Main:88:in `block in <main>'", "Section000:336:in `eval'", "Section000:336:in `block in <main>'", "Section000:333:in `each'", "Section000:333:in `each_with_index'", "Section000:333:in `<main>'", "-e:in `eval'"]
+***Round 2***
+==============================
+Battle Start!
+179 - Kara
+==============================
+***Round 1***
+AI Pokemon Buneary is faster than Fuecoco.
+Defense Curl: initial score: 10
+[Not preferring status move]
+Defense Curl: final score: 1
+ 
+Splash: initial score: 1
+[Not preferring status move]
+Splash: final score: 0
+ 
+Pound: initial score: 33
+Pound: final score: 33
+ 
+Foresight: initial score: 5
+[Not preferring status move]
+Foresight: final score: 4
+ 
+Beginning AI Item use check.
+ 
+Highest item score: -10000
+Highest move score: 33
+Not using an item.
+ 
+[The foe Buneary: Defense Curl=1, Splash=0, Pound=33, Foresight=4]
+[Prefer Pound]
+[No Z-Move.]
+**Exception: uninitialized constant PBMoves::FOREBODEDUMMY
+["PokeBattle_Move:5303:in `pbReduceHPDamage'", "PokeBattle_Move:5581:in `pbEffect'", "PokeBattle_Battler:6389:in `block in pbProcessMoveAgainstTarget'", "PokeBattle_Battler:6272:in `each'", "PokeBattle_Battler:6272:in `pbProcessMoveAgainstTarget'", "PokeBattle_Battler:7252:in `block in pbUseMove'", "PokeBattle_Battler:7163:in `loop'", "PokeBattle_Battler:7163:in `pbUseMove'", "PokeBattle_Battler:8551:in `block in pbProcessTurn'", "PBDebug:4:in `logonerr'", "PokeBattle_Battler:8550:in `pbProcessTurn'", "PokeBattle_Battle:5737:in `block in pbAttackPhase'", "PokeBattle_Battle:5736:in `each'", "PokeBattle_Battle:5736:in `pbAttackPhase'", "PokeBattle_Battle:5299:in `block (2 levels) in pbStartBattleCore'", "PBDebug:4:in `logonerr'", "PokeBattle_Battle:5298:in `block in pbStartBattleCore'", "PokeBattle_Battle:5282:in `loop'", "PokeBattle_Battle:5282:in `pbStartBattleCore'", "PokeBattle_Battle:4888:in `pbStartBattle'", "PokemonTrainers:724:in `block (2 levels) in pbTrainerBattle'", "PokemonField:706:in `pbSceneStandby'", "PokemonTrainers:723:in `block in pbTrainerBattle'", "PokemonField:1008:in `pbBattleAnimation'", "PokemonTrainers:722:in `pbTrainerBattle'", "(eval):1:in `pbExecuteScript'", "Interpreter:243:in `eval'", "Interpreter:243:in `pbExecuteScript'", "Interpreter:799:in `command_111'", "Interpreter:320:in `execute_command'", "Interpreter:193:in `block in update'", "Interpreter:106:in `loop'", "Interpreter:106:in `update'", "Autosave:30:in `block in update'", "Autosave:28:in `loop'", "Autosave:28:in `update'", "Scene_Map:72:in `block in main'", "Scene_Map:69:in `loop'", "Scene_Map:69:in `main'", "Main:79:in `mainFunctionDebug'", "Main:53:in `block in mainFunction'", "Compiler:38:in `pbCriticalCode'", "Main:53:in `mainFunction'", "Main:89:in `block (2 levels) in <main>'", "Main:88:in `loop'", "Main:88:in `block in <main>'", "Section000:336:in `eval'", "Section000:336:in `block in <main>'", "Section000:333:in `each'", "Section000:333:in `each_with_index'", "Section000:333:in `<main>'", "-e:in `eval'"]
+***Round 2***
+==============================
+Battle Start!
+179 - Kara
+==============================
+***Round 1***
+AI Pokemon Buneary is faster than Fuecoco.
+Defense Curl: initial score: 10
+[Not preferring status move]
+Defense Curl: final score: 2
+ 
+Splash: initial score: 1
+[Not preferring status move]
+Splash: final score: 0
+ 
+Pound: initial score: 33
+Pound: final score: 33
+ 
+Foresight: initial score: 5
+[Not preferring status move]
+Foresight: final score: 4
+ 
+Beginning AI Item use check.
+ 
+Highest item score: -10000
+Highest move score: 33
+Not using an item.
+ 
+[The foe Buneary: Defense Curl=2, Splash=0, Pound=33, Foresight=4]
+[Prefer Pound]
+[No Z-Move.]
+**Exception: uninitialized constant PBMoves::FOREBODEDUMMY
+["PokeBattle_Move:5303:in `pbReduceHPDamage'", "PokeBattle_Move:5581:in `pbEffect'", "PokeBattle_Battler:6389:in `block in pbProcessMoveAgainstTarget'", "PokeBattle_Battler:6272:in `each'", "PokeBattle_Battler:6272:in `pbProcessMoveAgainstTarget'", "PokeBattle_Battler:7252:in `block in pbUseMove'", "PokeBattle_Battler:7163:in `loop'", "PokeBattle_Battler:7163:in `pbUseMove'", "PokeBattle_Battler:8551:in `block in pbProcessTurn'", "PBDebug:4:in `logonerr'", "PokeBattle_Battler:8550:in `pbProcessTurn'", "PokeBattle_Battle:5737:in `block in pbAttackPhase'", "PokeBattle_Battle:5736:in `each'", "PokeBattle_Battle:5736:in `pbAttackPhase'", "PokeBattle_Battle:5299:in `block (2 levels) in pbStartBattleCore'", "PBDebug:4:in `logonerr'", "PokeBattle_Battle:5298:in `block in pbStartBattleCore'", "PokeBattle_Battle:5282:in `loop'", "PokeBattle_Battle:5282:in `pbStartBattleCore'", "PokeBattle_Battle:4888:in `pbStartBattle'", "PokemonTrainers:724:in `block (2 levels) in pbTrainerBattle'", "PokemonField:706:in `pbSceneStandby'", "PokemonTrainers:723:in `block in pbTrainerBattle'", "PokemonField:1008:in `pbBattleAnimation'", "PokemonTrainers:722:in `pbTrainerBattle'", "(eval):1:in `pbExecuteScript'", "Interpreter:243:in `eval'", "Interpreter:243:in `pbExecuteScript'", "Interpreter:799:in `command_111'", "Interpreter:320:in `execute_command'", "Interpreter:193:in `block in update'", "Interpreter:106:in `loop'", "Interpreter:106:in `update'", "Autosave:30:in `block in update'", "Autosave:28:in `loop'", "Autosave:28:in `update'", "Scene_Map:72:in `block in main'", "Scene_Map:69:in `loop'", "Scene_Map:69:in `main'", "Main:79:in `mainFunctionDebug'", "Main:53:in `block in mainFunction'", "Compiler:38:in `pbCriticalCode'", "Main:53:in `mainFunction'", "Main:89:in `block (2 levels) in <main>'", "Main:88:in `loop'", "Main:88:in `block in <main>'", "Section000:336:in `eval'", "Section000:336:in `block in <main>'", "Section000:333:in `each'", "Section000:333:in `each_with_index'", "Section000:333:in `<main>'", "-e:in `eval'"]
+**Exception: uninitialized constant PBMoves::FOREBODEDUMMY
+["PokeBattle_Move:5303:in `pbReduceHPDamage'", "PokeBattle_Move:5581:in `pbEffect'", "PokeBattle_MoveEffects:7133:in `pbEffect'", "PokeBattle_Battler:6389:in `block in pbProcessMoveAgainstTarget'", "PokeBattle_Battler:6272:in `each'", "PokeBattle_Battler:6272:in `pbProcessMoveAgainstTarget'", "PokeBattle_Battler:7252:in `block in pbUseMove'", "PokeBattle_Battler:7163:in `loop'", "PokeBattle_Battler:7163:in `pbUseMove'", "PokeBattle_Battler:8551:in `block in pbProcessTurn'", "PBDebug:4:in `logonerr'", "PokeBattle_Battler:8550:in `pbProcessTurn'", "PokeBattle_Battle:5737:in `block in pbAttackPhase'", "PokeBattle_Battle:5736:in `each'", "PokeBattle_Battle:5736:in `pbAttackPhase'", "PokeBattle_Battle:5299:in `block (2 levels) in pbStartBattleCore'", "PBDebug:4:in `logonerr'", "PokeBattle_Battle:5298:in `block in pbStartBattleCore'", "PokeBattle_Battle:5282:in `loop'", "PokeBattle_Battle:5282:in `pbStartBattleCore'", "PokeBattle_Battle:4888:in `pbStartBattle'", "PokemonTrainers:724:in `block (2 levels) in pbTrainerBattle'", "PokemonField:706:in `pbSceneStandby'", "PokemonTrainers:723:in `block in pbTrainerBattle'", "PokemonField:1008:in `pbBattleAnimation'", "PokemonTrainers:722:in `pbTrainerBattle'", "(eval):1:in `pbExecuteScript'", "Interpreter:243:in `eval'", "Interpreter:243:in `pbExecuteScript'", "Interpreter:799:in `command_111'", "Interpreter:320:in `execute_command'", "Interpreter:193:in `block in update'", "Interpreter:106:in `loop'", "Interpreter:106:in `update'", "Autosave:30:in `block in update'", "Autosave:28:in `loop'", "Autosave:28:in `update'", "Scene_Map:72:in `block in main'", "Scene_Map:69:in `loop'", "Scene_Map:69:in `main'", "Main:79:in `mainFunctionDebug'", "Main:53:in `block in mainFunction'", "Compiler:38:in `pbCriticalCode'", "Main:53:in `mainFunction'", "Main:89:in `block (2 levels) in <main>'", "Main:88:in `loop'", "Main:88:in `block in <main>'", "Section000:336:in `eval'", "Section000:336:in `block in <main>'", "Section000:333:in `each'", "Section000:333:in `each_with_index'", "Section000:333:in `<main>'", "-e:in `eval'"]
+***Round 2***
+==============================
+Battle Start!
+179 - Kara
+==============================
+***Round 1***
+AI Pokemon Buneary is faster than Fuecoco.
+Defense Curl: initial score: 10
+[Not preferring status move]
+Defense Curl: final score: 2
+ 
+Splash: initial score: 1
+[Not preferring status move]
+Splash: final score: 0
+ 
+Pound: initial score: 33
+Pound: final score: 33
+ 
+Foresight: initial score: 5
+[Not preferring status move]
+Foresight: final score: 4
+ 
+Beginning AI Item use check.
+ 
+Highest item score: -10000
+Highest move score: 33
+Not using an item.
+ 
+[The foe Buneary: Defense Curl=2, Splash=0, Pound=33, Foresight=4]
+[Prefer Pound]
+[No Z-Move.]
+**Exception: uninitialized constant PBMoves::FOREBODEDUMMY
+["PokeBattle_Move:5303:in `pbReduceHPDamage'", "PokeBattle_Move:5581:in `pbEffect'", "PokeBattle_Battler:6389:in `block in pbProcessMoveAgainstTarget'", "PokeBattle_Battler:6272:in `each'", "PokeBattle_Battler:6272:in `pbProcessMoveAgainstTarget'", "PokeBattle_Battler:7252:in `block in pbUseMove'", "PokeBattle_Battler:7163:in `loop'", "PokeBattle_Battler:7163:in `pbUseMove'", "PokeBattle_Battler:8551:in `block in pbProcessTurn'", "PBDebug:4:in `logonerr'", "PokeBattle_Battler:8550:in `pbProcessTurn'", "PokeBattle_Battle:5737:in `block in pbAttackPhase'", "PokeBattle_Battle:5736:in `each'", "PokeBattle_Battle:5736:in `pbAttackPhase'", "PokeBattle_Battle:5299:in `block (2 levels) in pbStartBattleCore'", "PBDebug:4:in `logonerr'", "PokeBattle_Battle:5298:in `block in pbStartBattleCore'", "PokeBattle_Battle:5282:in `loop'", "PokeBattle_Battle:5282:in `pbStartBattleCore'", "PokeBattle_Battle:4888:in `pbStartBattle'", "PokemonTrainers:724:in `block (2 levels) in pbTrainerBattle'", "PokemonField:706:in `pbSceneStandby'", "PokemonTrainers:723:in `block in pbTrainerBattle'", "PokemonField:1008:in `pbBattleAnimation'", "PokemonTrainers:722:in `pbTrainerBattle'", "(eval):1:in `pbExecuteScript'", "Interpreter:243:in `eval'", "Interpreter:243:in `pbExecuteScript'", "Interpreter:799:in `command_111'", "Interpreter:320:in `execute_command'", "Interpreter:193:in `block in update'", "Interpreter:106:in `loop'", "Interpreter:106:in `update'", "Autosave:30:in `block in update'", "Autosave:28:in `loop'", "Autosave:28:in `update'", "Scene_Map:72:in `block in main'", "Scene_Map:69:in `loop'", "Scene_Map:69:in `main'", "Main:79:in `mainFunctionDebug'", "Main:53:in `block in mainFunction'", "Compiler:38:in `pbCriticalCode'", "Main:53:in `mainFunction'", "Main:89:in `block (2 levels) in <main>'", "Main:88:in `loop'", "Main:88:in `block in <main>'", "Section000:336:in `eval'", "Section000:336:in `block in <main>'", "Section000:333:in `each'", "Section000:333:in `each_with_index'", "Section000:333:in `<main>'", "-e:in `eval'"]
+**Exception: uninitialized constant PBMoves::FOREBODEDUMMY
+["PokeBattle_Move:5303:in `pbReduceHPDamage'", "PokeBattle_Move:5581:in `pbEffect'", "PokeBattle_MoveEffects:7133:in `pbEffect'", "PokeBattle_Battler:6389:in `block in pbProcessMoveAgainstTarget'", "PokeBattle_Battler:6272:in `each'", "PokeBattle_Battler:6272:in `pbProcessMoveAgainstTarget'", "PokeBattle_Battler:7252:in `block in pbUseMove'", "PokeBattle_Battler:7163:in `loop'", "PokeBattle_Battler:7163:in `pbUseMove'", "PokeBattle_Battler:8551:in `block in pbProcessTurn'", "PBDebug:4:in `logonerr'", "PokeBattle_Battler:8550:in `pbProcessTurn'", "PokeBattle_Battle:5737:in `block in pbAttackPhase'", "PokeBattle_Battle:5736:in `each'", "PokeBattle_Battle:5736:in `pbAttackPhase'", "PokeBattle_Battle:5299:in `block (2 levels) in pbStartBattleCore'", "PBDebug:4:in `logonerr'", "PokeBattle_Battle:5298:in `block in pbStartBattleCore'", "PokeBattle_Battle:5282:in `loop'", "PokeBattle_Battle:5282:in `pbStartBattleCore'", "PokeBattle_Battle:4888:in `pbStartBattle'", "PokemonTrainers:724:in `block (2 levels) in pbTrainerBattle'", "PokemonField:706:in `pbSceneStandby'", "PokemonTrainers:723:in `block in pbTrainerBattle'", "PokemonField:1008:in `pbBattleAnimation'", "PokemonTrainers:722:in `pbTrainerBattle'", "(eval):1:in `pbExecuteScript'", "Interpreter:243:in `eval'", "Interpreter:243:in `pbExecuteScript'", "Interpreter:799:in `command_111'", "Interpreter:320:in `execute_command'", "Interpreter:193:in `block in update'", "Interpreter:106:in `loop'", "Interpreter:106:in `update'", "Autosave:30:in `block in update'", "Autosave:28:in `loop'", "Autosave:28:in `update'", "Scene_Map:72:in `block in main'", "Scene_Map:69:in `loop'", "Scene_Map:69:in `main'", "Main:79:in `mainFunctionDebug'", "Main:53:in `block in mainFunction'", "Compiler:38:in `pbCriticalCode'", "Main:53:in `mainFunction'", "Main:89:in `block (2 levels) in <main>'", "Main:88:in `loop'", "Main:88:in `block in <main>'", "Section000:336:in `eval'", "Section000:336:in `block in <main>'", "Section000:333:in `each'", "Section000:333:in `each_with_index'", "Section000:333:in `<main>'", "-e:in `eval'"]
+***Round 2***

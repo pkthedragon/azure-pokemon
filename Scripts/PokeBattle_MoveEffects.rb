@@ -13652,7 +13652,7 @@ class PokeBattle_Move_293 < PokeBattle_Move
     opponent.effects[PBEffects::Forebode][0]=true
     opponent.effects[PBEffects::Forebode][1]=attacker.index
     opponent.effects[PBEffects::Forebode][2]=attacker.pokemonIndex
-    @battle.pbDisplay(_INTL("{1} foreboded a grim fate!",attacker.pbThis))
+    @battle.pbDisplay(_INTL("{1} foresaw a grim fate!",attacker.pbThis))
     return 0
   end
 
