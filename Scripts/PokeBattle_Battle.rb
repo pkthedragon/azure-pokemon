@@ -8487,7 +8487,7 @@ def pbStartBattle(canlose=false)
 ################################################################################
 # End of battle.
 ################################################################################
-def pbEndOfBattle(canlose=false)
+  def pbEndOfBattle(canlose=false)
     case @decision
     ##### WIN #####
     when 1
@@ -8632,4 +8632,5 @@ def pbEndOfBattle(canlose=false)
     end
     return @decision
   end
+end
 end
