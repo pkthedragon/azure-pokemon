@@ -54,6 +54,7 @@ class PokeBattle_Battler
   attr_accessor :sleeptalkUsed
   attr_accessor :missed
   attr_accessor :missAcc
+  attr_accessor :grazed  # Track when attack misses accuracy but still deals partial damage
   attr_accessor :statLowered
   attr_accessor :hasmegad
   attr_accessor :abilitynulled 
@@ -772,6 +773,7 @@ class PokeBattle_Battler
     @sleeptalk    = false
     @missed       = true
     @missAcc      = false
+    @grazed       = false
     @statLowered  = false
     @hasmegad     = false
     @capturable   = false
@@ -823,6 +825,7 @@ class PokeBattle_Battler
     @item         = pkmn.item
     @missed       = true
     @missAcc      = false
+    @grazed       = false
     @statLowered  = false
     @startform = @form  
   end
@@ -854,6 +857,7 @@ class PokeBattle_Battler
     @weight       = nil
     @missed       = true
     @missAcc      = false
+    @grazed       = false
     @statLowered  = false
   end
   
@@ -914,7 +918,7 @@ class PokeBattle_Battler
         end
       end
       @effects[PBEffects::LeechSeed]   = -1
-      @effects[PBEffects::Petrification]   = -1
+      @effects[PBEffects::Crushing]   = -1
       @effects[PBEffects::LockOn]      = 0
       @effects[PBEffects::LockOnPos]   = -1
       if !effectnegate || fakebattler
@@ -1958,6 +1962,10 @@ class PokeBattle_Battler
   end
   
   def pbRecoverHP(amt,anim=false)
+    # Wounds halve healing
+    if @effects[PBEffects::Wounded]>0
+      amt = (amt/2).floor
+    end
     if self.hp+amt>@totalhp
       amt=@totalhp-self.hp
     elsif amt<=0 && self.hp!=@totalhp
@@ -5981,39 +5989,63 @@ class PokeBattle_Battler
         self.missed = false
         return true
       end
+      # Blinded attackers auto-miss attacking moves (full miss, not graze)
+      if user.effects[PBEffects::Blinded]>0 && thismove.basedamage > 0
+        @battle.pbDisplay(_INTL("{1} can't see through its blindness!",user.pbThis))
+        user.effects[PBEffects::Blinded] = -1  # Clear blindness after attempting to attack
+        user.missAcc = true
+        return false
+      end
       if !thismove.pbAccuracyCheck(user,target) # Includes Counter/Mirror Coat
-        if thismove.target==PBTargets::AllOpposing && 
-          (!user.pbOpposing1.isFainted? ? 1 : 0) + (!user.pbOpposing2.isFainted? ? 1 : 0) > 1
-          # All opposing Pokémon
-          @battle.pbDisplay(_INTL("{1} avoided the attack!",target.pbThis))          
-        elsif thismove.target==PBTargets::AllNonUsers && 
-          (!user.pbOpposing1.isFainted? ? 1 : 0) + (!user.pbOpposing2.isFainted? ? 1 : 0) + (!user.pbPartner.isFainted? ? 1 : 0) > 1
-          # All non-users
-          @battle.pbDisplay(_INTL("{1} avoided the attack!",target.pbThis))
-        elsif thismove.function==0xDC # Leech Seed
-          @battle.pbDisplay(_INTL("{1} evaded the attack!",target.pbThis))
-        elsif thismove.function==0x70 && (((target.hasWorkingAbility(:STURDY)) && !(target.moldbroken)) || (user.level<target.level))
-          @battle.pbDisplay(_INTL("{1} is unaffected!",target.pbThis))
-        elsif thismove.function==0x70 && !((target.hasWorkingAbility(:STURDY)) || (user.level<target.level))
-          @battle.pbDisplay(_INTL("{1} avoided the attack!",target.pbThis))
-        else
-          @battle.pbDisplay(_INTL("{1}'s attack missed!",user.pbThis))
+        # For damaging moves (not OHKO, not status), allow grazing blow with half damage and no secondary effects
+        if thismove.basedamage > 0 && thismove.function != 0x70 && thismove.function != 0xDC
+          # Handle Sky Drop release
           if user.effects[PBEffects::SkyDroppee]!=nil
             target.effects[PBEffects::SkyDrop]=false
             @battle.scene.pbUnVanishSprite(target)
             @battle.pbDisplay(_INTL("{1} is freed from the Sky Drop effect!",target.pbThis))
           end
-          if $fefieldeffect == 30 && thismove.basedamage>0 &&
-            (thismove.flags&0x01)==0 && thismove.pbIsSpecial?(type) &&
+          # Mirror Field reflection check
+          if $fefieldeffect == 30 && (thismove.flags&0x01)==0 && thismove.pbIsSpecial?(type) &&
             @battle.pbRandom(10)<5
             @battle.pbDisplay(_INTL("The attack was reflected by the mirror!",user.pbThis))
             $fecounter = 1
             self.missed = false
             return true
           end
+          # Grazing blow - half damage, no secondary effects
+          @battle.pbDisplay(_INTL("{1}'s attack grazed!",user.pbThis))
+          user.missAcc = true
+          user.grazed = true
+          self.missed = false
+          return true
+        else
+          # Non-damaging moves and OHKO moves still fully miss
+          if thismove.target==PBTargets::AllOpposing &&
+            (!user.pbOpposing1.isFainted? ? 1 : 0) + (!user.pbOpposing2.isFainted? ? 1 : 0) > 1
+            # All opposing Pokémon
+            @battle.pbDisplay(_INTL("{1} avoided the attack!",target.pbThis))
+          elsif thismove.target==PBTargets::AllNonUsers &&
+            (!user.pbOpposing1.isFainted? ? 1 : 0) + (!user.pbOpposing2.isFainted? ? 1 : 0) + (!user.pbPartner.isFainted? ? 1 : 0) > 1
+            # All non-users
+            @battle.pbDisplay(_INTL("{1} avoided the attack!",target.pbThis))
+          elsif thismove.function==0xDC # Leech Seed
+            @battle.pbDisplay(_INTL("{1} evaded the attack!",target.pbThis))
+          elsif thismove.function==0x70 && (((target.hasWorkingAbility(:STURDY)) && !(target.moldbroken)) || (user.level<target.level))
+            @battle.pbDisplay(_INTL("{1} is unaffected!",target.pbThis))
+          elsif thismove.function==0x70 && !((target.hasWorkingAbility(:STURDY)) || (user.level<target.level))
+            @battle.pbDisplay(_INTL("{1} avoided the attack!",target.pbThis))
+          else
+            @battle.pbDisplay(_INTL("{1}'s attack missed!",user.pbThis))
+            if user.effects[PBEffects::SkyDroppee]!=nil
+              target.effects[PBEffects::SkyDrop]=false
+              @battle.scene.pbUnVanishSprite(target)
+              @battle.pbDisplay(_INTL("{1} is freed from the Sky Drop effect!",target.pbThis))
+            end
+          end
+          user.missAcc = true
+          return false
         end
-        user.missAcc = true
-        return false
       end
     end
     self.missed = false
@@ -6132,17 +6164,13 @@ class PokeBattle_Battler
       end
     end
     if self.status==PBStatuses::FROZEN
+      # Fire moves and certain moves can still thaw the user
       if thismove.canThawUser?
         self.pbCureStatus(false)
         @battle.pbDisplay(_INTL("{1} was defrosted by {2}!",pbThis,thismove.name))
         pbCheckForm
-      elsif @battle.pbRandom(10)<2
-        self.pbCureStatus
-        pbCheckForm
-      elsif !thismove.canThawUser? 
-        self.pbContinueStatus
-        return false
       end
+      # Freeze no longer immobilizes - HP sap happens at end of turn instead
     end
     if @effects[PBEffects::Confusion]>0 && !@simplemove
       @effects[PBEffects::Confusion]-=1
@@ -6150,18 +6178,10 @@ class PokeBattle_Battler
         pbCureConfusion
       else
         pbContinueConfusion
-        if @battle.pbRandom(3)==0
-          @battle.pbDisplay(_INTL("It hurt itself from its confusion!")) 
-          pbConfusionDamage
-          #          if $fefieldeffect == 30
-          #            if self.pbCanReduceStatStage?(PBStats::EVASION)
-          #              self.pbReduceStatBasic(PBStats::EVASION,1)
-          #              @battle.pbCommonAnimation("StatDown",self,nil)
-          #              @battle.pbDisplay(_INTL("{1}'s evasion fell!",self.pbThis))
-          #            end
-          #          end
-          return false
-        end
+        # Confusion always causes self-hit but does not prevent the move from executing
+        @battle.pbDisplay(_INTL("It hurt itself from its confusion!"))
+        pbConfusionDamage
+        # Move continues to execute after self-hit (no return false)
       end
     end
     #### AME - 004 - START
@@ -6209,17 +6229,9 @@ class PokeBattle_Battler
     #### AME - 004 - END
     if @effects[PBEffects::Attract]>=0 && !@simplemove
       pbAnnounceAttract(@battle.battlers[@effects[PBEffects::Attract]])
-      if @battle.pbRandom(2)==0
-        pbContinueAttract
-        return false
-      end
+      # Infatuation no longer immobilizes - instead, attacks against infatuated Pokemon always crit
     end
-    if self.status==PBStatuses::PARALYSIS && !@simplemove
-      if @battle.pbRandom(4)==0 && !(!@battle.pbOwnedByPlayer?(@index) && isConst?(self.ability,PBAbilities,:QUICKFEET))
-        pbContinueStatus
-        return false
-      end
-    end
+    # Paralysis no longer immobilizes - HP sap happens at end of turn instead
     # UPDATE 2/13/2014
     # implementing Protean / Libero
     protype=thismove.type
@@ -6236,11 +6248,13 @@ class PokeBattle_Battler
         typename=PBTypes.getName(protype)
         @battle.pbDisplay(_INTL("{1} had its type changed to {3}!",pbThis,PBAbilities.getName(self.ability),typename))
       end
-    end # end of update 
+    end # end of update
+    # Clear blindness after successfully attempting to use any move
+    @effects[PBEffects::Blinded] = -1 if @effects[PBEffects::Blinded]>0
     turneffects[PBEffects::PassedTrying]=true
     return true
   end
-  
+
   def pbConfusionDamage
     self.damagestate.reset
     confmove=PokeBattle_Confusion.new(@battle,nil)
@@ -6259,9 +6273,10 @@ class PokeBattle_Battler
     totaldamage=0
     destinybond=false
     wimpcheck=false
-    if $fefieldeffect == 5  
-      user.effects[PBEffects::SusCrit] = false  
-      target.effects[PBEffects::SusCrit] = false  
+    user.grazed = false  # Reset graze flag for each target
+    if $fefieldeffect == 5
+      user.effects[PBEffects::SusCrit] = false
+      target.effects[PBEffects::SusCrit] = false
     end
     $feshutup=0
     $feshutup2=0
@@ -6413,8 +6428,8 @@ class PokeBattle_Battler
       end       
       return if numhits>1 && target.damagestate.calcdamage<=0
       @battle.pbJudgeCheckpoint(user,thismove)
-      # Additional effect
-      if target.damagestate.calcdamage>0 &&
+      # Additional effect - skip if attack grazed (missed accuracy but dealt partial damage)
+      if target.damagestate.calcdamage>0 && !user.grazed &&
         !(user.hasWorkingAbility(:SHEERFORCE) || @battle.SilvallyCheck(user,PBTypes::GROUND)) &&
         ((!target.hasWorkingAbility(:SHIELDDUST) || target.moldbroken) || thismove.hasFlags?("m"))
         addleffect=thismove.addlEffect
@@ -8503,9 +8518,10 @@ class PokeBattle_Battler
     @effects[PBEffects::ThunderRaidStat]=[0,0,0,0,0]
     self.missed = true
     self.missAcc = false
+    self.grazed = false
     self.statLowered = false
   end
-  
+
   def pbProcessTurn(choice)
     # Can't use a move if fainted
     return if self.isFainted?

@@ -460,7 +460,7 @@ ItemHandlers::UseOnPokemon.add(:SITRUSBERRY,proc{|item,pokemon,scene|
 })
 
 ItemHandlers::UseOnPokemon.add(:LEVIABERRY,proc{|item,pokemon,scene|
-   if pokemon.hp<=0 || pokemon.status!=PBStatuses::PETRIFIED
+   if pokemon.hp<=0 || pokemon.status!=PBStatuses::CRUSHED
      scene.pbDisplay(_INTL("It won't have any effect."))
      next false
    else
@@ -3703,7 +3703,7 @@ ItemHandlers::BattleUseOnPokemon.add(:HOPOBERRY,proc{|item,pokemon,battler,scene
 })
 
 ItemHandlers::BattleUseOnPokemon.add(:LEVIABERRY,proc{|item,pokemon,battler,scene|
-   if pokemon.hp<=0 || pokemon.status!=PBStatuses::PETRIFIED
+   if pokemon.hp<=0 || pokemon.status!=PBStatuses::CRUSHED
      scene.pbDisplay(_INTL("But it had no effect!"))
      next false
    end
@@ -4086,7 +4086,7 @@ ItemHandlers::BattleUseOnPokemon.copy(:YELLOWFLUTE,:PERSIMBERRY)
 #===============================================================================
 
 ItemHandlers::BattleUseOnBattler.add(:DECOMPRESSOR,proc{|item,battler,scene|
-   if !battler || battler.isFainted? || battler.status!=PBStatuses::PETRIFIED
+   if !battler || battler.isFainted? || battler.status!=PBStatuses::CRUSHED
      scene.pbDisplay(_INTL("But it had no effect!"))
      next false
    end

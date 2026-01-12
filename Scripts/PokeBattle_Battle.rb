@@ -3178,6 +3178,12 @@ class PokeBattle_Battle
   end
 
   def pbRecallAndReplace(index,newpoke,batonpass=false)
+    # Infatuated Pokemon take 1/6 HP damage when switching out
+    if @battlers[index].effects[PBEffects::Attract]>=0 && !@battlers[index].isFainted?
+      pbDisplay(_INTL("{1} is hurt by leaving its love behind!",@battlers[index].pbThis))
+      @battlers[index].pbReduceHP((@battlers[index].totalhp/6).floor)
+      @battlers[index].pbFaint if @battlers[index].isFainted?
+    end
     if @battlers[index].effects[PBEffects::Illusion]
       @battlers[index].effects[PBEffects::Illusion] = nil
     end
@@ -7109,10 +7115,10 @@ def pbStartBattle(canlose=false)
     end
     for i in priority
       next if i.isFainted?
-      if (i.effects[PBEffects::Petrification]>=0) 
-        recipient=@battlers[i.effects[PBEffects::Petrification]]
+      if (i.effects[PBEffects::Crushing]>=0) 
+        recipient=@battlers[i.effects[PBEffects::Crushing]]
         if recipient && !recipient.isFainted?  && !i.hasWorkingAbility(:MAGICGUARD) &&  !(i.hasWorkingAbility(:WONDERGUARD) && $fefieldeffect == 44) # if recipient exists
-          pbCommonAnimation("Petrification",recipient,i)
+          pbCommonAnimation("Crushing",recipient,i)
           if i.effects[PBEffects::ShieldLife]>0
             petridamage=i.totalhp/8
             pbShieldDamage(i,petridamage)
@@ -7181,11 +7187,43 @@ def pbStartBattle(canlose=false)
         if i.effects[PBEffects::ShieldLife]>0
           burndamage=i.totalhp/16
           pbShieldDamage(i,burndamage)
-        elsif i.hasWorkingAbility(:HEATPROOF) || SilvallyCheck(i,PBTypes::STEEL) || $fefieldeffect == 13 
+        elsif i.hasWorkingAbility(:HEATPROOF) || SilvallyCheck(i,PBTypes::STEEL) || $fefieldeffect == 13
           i.pbReduceHP((i.totalhp/32).floor)
         else
           i.pbReduceHP((i.totalhp/16).floor)
         end
+      end
+      # Paralysis - saps HP like burn
+      if i.status==PBStatuses::PARALYSIS && !i.hasWorkingAbility(:MAGICGUARD) && !(i.hasWorkingAbility(:WONDERGUARD) && $fefieldeffect == 44)
+        i.pbContinueStatus
+        if i.effects[PBEffects::ShieldLife]>0
+          paradamage=i.totalhp/16
+          pbShieldDamage(i,paradamage)
+        else
+          i.pbReduceHP((i.totalhp/16).floor)
+        end
+      end
+      # Freeze - saps HP like burn
+      if i.status==PBStatuses::FROZEN && !i.hasWorkingAbility(:MAGICGUARD) && !(i.hasWorkingAbility(:WONDERGUARD) && $fefieldeffect == 44)
+        i.pbContinueStatus
+        if i.effects[PBEffects::ShieldLife]>0
+          freezedamage=i.totalhp/16
+          pbShieldDamage(i,freezedamage)
+        else
+          i.pbReduceHP((i.totalhp/16).floor)
+        end
+      end
+      # Wounds - saps 1/12 HP each turn
+      if i.effects[PBEffects::Wounded]>0 && !i.hasWorkingAbility(:MAGICGUARD) && !(i.hasWorkingAbility(:WONDERGUARD) && $fefieldeffect == 44)
+        pbDisplay(_INTL("{1} is hurt by its wounds!",i.pbThis))
+        if i.effects[PBEffects::ShieldLife]>0
+          wounddamage=i.totalhp/12
+          pbShieldDamage(i,wounddamage)
+        else
+          i.pbReduceHP((i.totalhp/12).floor)
+        end
+        i.effects[PBEffects::Wounded]-=1
+        pbDisplay(_INTL("{1}'s wounds healed!",i.pbThis)) if i.effects[PBEffects::Wounded]<=0
       end
       # Nightmare
       if i.effects[PBEffects::Nightmare] && !i.hasWorkingAbility(:MAGICGUARD) &&  !(i.hasWorkingAbility(:WONDERGUARD) && $fefieldeffect == 44) &&
@@ -8439,8 +8477,8 @@ def pbStartBattle(canlose=false)
         pbDisplay(_INTL("{1} fell asleep because of its {2}!",i.pbThis,PBItems.getName(i.item)))
       end
       # Pressure Orb
-      if i.hasWorkingItem(:PRESSUREORB) && i.status==0 && i.pbCanPetrify?(false)
-        i.pbPetrify(i)
+      if i.hasWorkingItem(:PRESSUREORB) && i.status==0 && i.pbCanCrush?(false)
+        i.pbCrush(i)
         pbDisplay(_INTL("{1} was crushed by its {2}!",i.pbThis,PBItems.getName(i.item)))
       end
       # Sticky Barb
