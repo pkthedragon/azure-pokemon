@@ -2811,7 +2811,7 @@ class PokeBattle_Battle
           score*=0.2
         end
       end
-    when 0x23 # Focus Energy
+    when 0x23 # Focus Energy - also grants anti-flinch and anti-immobilize next turn
       if attacker.effects[PBEffects::FocusEnergy]!=2
         if (attacker.hp.to_f)/attacker.totalhp>0.75
           score*=1.2
@@ -2830,6 +2830,10 @@ class PokeBattle_Battle
         end
         if opponent.effects[PBEffects::Yawn]>0
           score*=1.7
+        end
+        # Value anti-flinch effect when facing flinch moves
+        if checkAImoves(PBStuff::FLINCHMOVE,aimem)
+          score*=1.3
         end
         score*=1.2 if (attacker.hp/4.0)>checkAIdamage(aimem,attacker,opponent,skill) 
         if attacker.turncount<2
@@ -14893,20 +14897,23 @@ class PokeBattle_Battle
       else
         score*=0
       end
-    when 0x11A # Telekinesis
-      if !(opponent.effects[PBEffects::Telekinesis]>0 || opponent.effects[PBEffects::Ingrain] ||
-          opponent.effects[PBEffects::SmackDown] || @field.effects[PBEffects::Gravity]>0 || 
-          (oppitemworks && opponent.item == PBItems::IRONBALL) || opponent.pokemon.species==50 ||
-          opponent.species==51 || opponent.species==769 || opponent.species==770 ||
-          (opponent.species==94 && opponent.form==1))
-        for i in attacker.moves
-          if i.accuracy<=70
-            score+=10
-            break
+    when 0x11A # Telekinesis - Blinks the target (re-triggers entry hazards)
+      if !opponent.effects[PBEffects::Ingrain]
+        # Value based on entry hazards on opponent's side
+        oppside = opponent.pbOwnSide
+        if oppside.effects[PBEffects::StealthRock] || oppside.effects[PBEffects::Spikes]>0 ||
+           oppside.effects[PBEffects::ToxicSpikes] || oppside.effects[PBEffects::StickyWeb]
+          score+=40
+          # More valuable if opponent is weak to the hazards
+          if opponent.pbHasType?(:FIRE) || opponent.pbHasType?(:ICE) ||
+             opponent.pbHasType?(:FLYING) || opponent.pbHasType?(:BUG)
+            score+=30 if oppside.effects[PBEffects::StealthRock]
           end
         end
-        if attacker.pbHasMove?((PBMoves::ZAPCANNON)) || attacker.pbHasMove?((PBMoves::INFERNO))
-          score*=2
+        # Value for resetting opponent's stat boosts
+        statboosts = statchangecounter(opponent,1,7,1)
+        if statboosts > 0
+          score += statboosts * 10
         end
         if $fefieldeffect==37
           if !(!opponent.abilitynulled && opponent.ability == PBAbilities::CLEARBODY) && !(!opponent.abilitynulled && opponent.ability == PBAbilities::WHITESMOKE)

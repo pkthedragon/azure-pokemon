@@ -1102,6 +1102,9 @@ class PokeBattle_Move_01D < PokeBattle_Move
     return -1 if !attacker.pbCanIncreaseStatStage?(PBStats::DEFENSE,true)
     pbShowAnimation(@id,attacker,opponent,hitnum,alltargets,showanimation)
     ret=attacker.pbIncreaseStat(PBStats::DEFENSE,1,false)
+    # User cannot be critically hit next turn (use SusCrit effect)
+    attacker.effects[PBEffects::SusCrit]=2
+    @battle.pbDisplay(_INTL("{1} hardened its defenses against critical hits!",attacker.pbThis))
     return ret ? 0 : -1
   end
 
@@ -1109,6 +1112,7 @@ class PokeBattle_Move_01D < PokeBattle_Move
     if attacker.pbCanIncreaseStatStage?(PBStats::DEFENSE,false)
       attacker.pbIncreaseStat(PBStats::DEFENSE,1,false)
     end
+    attacker.effects[PBEffects::SusCrit]=2
     return true
   end
 end
@@ -1247,7 +1251,7 @@ end
 
 
 ################################################################################
-# Increases the user's critical hit rate.
+# Increases the user's critical hit rate and prevents flinching/immobilization next turn.
 ################################################################################
 class PokeBattle_Move_023 < PokeBattle_Move
   def pbEffect(attacker,opponent,hitnum=0,alltargets=nil,showanimation=true)
@@ -1259,14 +1263,17 @@ class PokeBattle_Move_023 < PokeBattle_Move
     pbShowAnimation(@id,attacker,opponent,hitnum,alltargets,showanimation)
     attacker.effects[PBEffects::FocusEnergy]=($fefieldeffect == 50) ? 3 : 2
     attacker.effects[PBEffects::FocusEnergy]=2 if $fefieldeffect ==20
-    @battle.pbDisplay(_INTL("{1} is getting pumped!",attacker.pbThis))
+    # Add anti-flinch and anti-immobilize protection for next turn
+    attacker.effects[PBEffects::Endure]=true
+    @battle.pbDisplay(_INTL("{1} is getting pumped and braced!",attacker.pbThis))
     return 0
   end
- 
+
   def pbAdditionalEffect(attacker,opponent)
     if attacker.effects[PBEffects::FocusEnergy]<2
       attacker.effects[PBEffects::FocusEnergy]=($fefieldeffect == 50) ? 3 : 2
-      @battle.pbDisplay(_INTL("{1} is getting pumped!",attacker.pbThis))
+      attacker.effects[PBEffects::Endure]=true
+      @battle.pbDisplay(_INTL("{1} is getting pumped and braced!",attacker.pbThis))
     end
     return true
   end
@@ -2248,31 +2255,48 @@ end
 class PokeBattle_Move_043 < PokeBattle_Move
   def pbEffect(attacker,opponent,hitnum=0,alltargets=nil,showanimation=true)
     return super(attacker,opponent,hitnum,alltargets,showanimation) if @basedamage>0
-      if (isConst?(@id,PBMoves,:LEER) || isConst?(@id,PBMoves,:TAILWHIP))  && attacker.effects[PBEffects::MagicBounced] && (attacker.index == 0 || attacker.index == 1)
-        if attacker.pbPartner.pbCanReduceStatStage?(PBStats::DEFENSE,true)
-           pbShowAnimation(@id,opponent,attacker.pbPartner,hitnum,alltargets,showanimation)
-           attacker.pbPartner.pbReduceStat(PBStats::DEFENSE,1,false)        
-        end
-        @battle.pbDisplay(_INTL("{1} bounced the {2} back!",attacker.pbThis,PBMoves.getName(@id)))
-        attacker.effects[PBEffects::MagicBounced]=false 
-      end        
+    # Leer - lowers Speed and prevents eating for 3 turns
+    if isConst?(@id,PBMoves,:LEER)
+      return -1 if !opponent.pbCanReduceStatStage?(PBStats::SPEED,true)
+      pbShowAnimation(@id,attacker,opponent,hitnum,alltargets,showanimation)
+      opponent.pbReduceStat(PBStats::SPEED,1,false)
+      opponent.effects[PBEffects::Embargo]=3
+      @battle.pbDisplay(_INTL("{1} can't eat for three turns!",opponent.pbThis))
+      return 0
+    end
+    # Other Defense-lowering moves (Tail Whip, etc.)
+    if isConst?(@id,PBMoves,:TAILWHIP) && attacker.effects[PBEffects::MagicBounced] && (attacker.index == 0 || attacker.index == 1)
+      if attacker.pbPartner.pbCanReduceStatStage?(PBStats::DEFENSE,true)
+         pbShowAnimation(@id,opponent,attacker.pbPartner,hitnum,alltargets,showanimation)
+         attacker.pbPartner.pbReduceStat(PBStats::DEFENSE,1,false)
+      end
+      @battle.pbDisplay(_INTL("{1} bounced the {2} back!",attacker.pbThis,PBMoves.getName(@id)))
+      attacker.effects[PBEffects::MagicBounced]=false
+    end
     return -1 if !opponent.pbCanReduceStatStage?(PBStats::DEFENSE,true)
     pbShowAnimation(@id,attacker,opponent,hitnum,alltargets,showanimation)
-    if (isConst?(@id,PBMoves,:LEER) || isConst?(@id,PBMoves,:TAILWHIP)) && attacker.effects[PBEffects::MagicBounced] && opponent.pbPartner.pbCanReduceStatStage?(PBStats::DEFENSE,true) && (attacker.index == 2 || attacker.index == 3)
+    if isConst?(@id,PBMoves,:TAILWHIP) && attacker.effects[PBEffects::MagicBounced] && opponent.pbPartner.pbCanReduceStatStage?(PBStats::DEFENSE,true) && (attacker.index == 2 || attacker.index == 3)
       attacker.effects[PBEffects::MagicBounced]=false
       opponent.pbPartner.pbReduceStat(PBStats::DEFENSE,1,false)
-    end      
+    end
     ret=opponent.pbReduceStat(PBStats::DEFENSE,1,false)
     return ret ? 0 : -1
   end
 
   def pbAdditionalEffect(attacker,opponent)
-    if opponent.pbCanReduceStatStage?(PBStats::DEFENSE,false)
-      opponent.pbReduceStat(PBStats::DEFENSE,1,false)
+    if isConst?(@id,PBMoves,:LEER)
+      if opponent.pbCanReduceStatStage?(PBStats::SPEED,false)
+        opponent.pbReduceStat(PBStats::SPEED,1,false)
+      end
+      opponent.effects[PBEffects::Embargo]=3
+    else
+      if opponent.pbCanReduceStatStage?(PBStats::DEFENSE,false)
+        opponent.pbReduceStat(PBStats::DEFENSE,1,false)
+      end
     end
     return true
   end
-  
+
   def pbBaseDamage(basedmg,attacker,opponent)
     if isConst?(@id,PBMoves,:GRAVAPPLE) && $fefieldeffect == 15
       return 120
@@ -9701,7 +9725,7 @@ end
 
 
 ################################################################################
-# For 3 rounds, target becomes airborne and can always be hit.
+# Blinks the target (re-enters battle, re-triggering entry hazards and abilities)
 ################################################################################
 class PokeBattle_Move_11A < PokeBattle_Move
   def pbMoveFailed(attacker,opponent)
@@ -9709,9 +9733,7 @@ class PokeBattle_Move_11A < PokeBattle_Move
   end
 
   def pbEffect(attacker,opponent,hitnum=0,alltargets=nil,showanimation=true)
-    if opponent.effects[PBEffects::Ingrain] ||
-       opponent.effects[PBEffects::SmackDown] ||
-       opponent.effects[PBEffects::Telekinesis]>0
+    if opponent.effects[PBEffects::Ingrain]
       @battle.pbDisplay(_INTL("But it failed!"))
       return -1
     end
@@ -9723,15 +9745,16 @@ class PokeBattle_Move_11A < PokeBattle_Move
       end
       opponent.pbFaint if opponent.isFainted?
     end
-    opponent.effects[PBEffects::Telekinesis]=3
-    @battle.pbDisplay(_INTL("{1} was hurled into the air!",opponent.pbThis))
-    if $fefieldeffect == 5  
-      attacker.effects[PBEffects::KinesisBoost] = true  
+    # Blink the target - they re-enter battle
+    @battle.pbDisplay(_INTL("{1} was telekinetically blinked!",opponent.pbThis))
+    @battle.pbBlink(opponent)
+    if $fefieldeffect == 5
+      attacker.effects[PBEffects::KinesisBoost] = true
     end
     if $fefieldeffect == 37
       opponent.pbReduceStat(PBStats::DEFENSE,2,false) if opponent.pbCanReduceStatStage?(PBStats::DEFENSE,false)
-      opponent.pbReduceStat(PBStats::SPDEF,2,false) if opponent.pbCanReduceStatStage?(PBStats::SPDEF,false)         
-    end    
+      opponent.pbReduceStat(PBStats::SPDEF,2,false) if opponent.pbCanReduceStatStage?(PBStats::SPDEF,false)
+    end
     return 0
   end
 end

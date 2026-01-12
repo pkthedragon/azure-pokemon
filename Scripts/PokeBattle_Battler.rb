@@ -3913,45 +3913,31 @@ class PokeBattle_Battler
           end
           #### AME - 006 - END
         end     
-        if target.hasWorkingAbility(:CUTECHARM) && @battle.pbRandom(10)<3
-          if !user.hasWorkingAbility(:OBLIVIOUS) &&
-            ((user.gender==1 && target.gender==0) ||
-              (user.gender==0 && target.gender==1)) &&
-            user.effects[PBEffects::Attract]<0 && !user.isFainted?
-            user.effects[PBEffects::Attract]=target.index
-            @battle.pbDisplay(_INTL("{1}'s {2} infatuated {3}!",target.pbThis,
-                PBAbilities.getName(target.ability),user.pbThis(true)))
-            if user.hasWorkingItem(:DESTINYKNOT) &&
-              !target.hasWorkingAbility(:OBLIVIOUS) &&
-              target.effects[PBEffects::Attract]<0
-              target.effects[PBEffects::Attract]=user.index
-              @battle.pbDisplay(_INTL("{1}'s {2} infatuated {3}!",user.pbThis,
-                  PBItems.getName(user.item),target.pbThis(true)))
-            end
+        # Cute Charm - enemies damaging the user become infatuated (always triggers, no gender restriction)
+        if target.hasWorkingAbility(:CUTECHARM) && !user.isFainted? &&
+          !user.hasWorkingAbility(:OBLIVIOUS) && !user.hasWorkingAbility(:INNERFOCUS) &&
+          user.effects[PBEffects::Attract]<0
+          user.effects[PBEffects::Attract]=target.index
+          @battle.pbDisplay(_INTL("{1}'s {2} infatuated {3}!",target.pbThis,
+              PBAbilities.getName(target.ability),user.pbThis(true)))
+          if user.hasWorkingItem(:DESTINYKNOT) &&
+            !target.hasWorkingAbility(:OBLIVIOUS) &&
+            target.effects[PBEffects::Attract]<0
+            target.effects[PBEffects::Attract]=user.index
+            @battle.pbDisplay(_INTL("{1}'s {2} infatuated {3}!",user.pbThis,
+                PBItems.getName(user.item),target.pbThis(true)))
           end
         end
-        # UPDATE 11/16/2013
-        eschance = 3
-        eschance = 6 if ($fefieldeffect == 15 || $fefieldeffect == 19 || $fefieldeffect == 41 || $fefieldeffect == 42)
-        eschance.to_i 
-        if !user.pbHasType?(:GRASS) && !user.hasWorkingAbility(:OVERCOAT) && target.ability == PBAbilities::EFFECTSPORE && @battle.pbRandom(10) < eschance
-          rnd=@battle.pbRandom(3)
-          if rnd==0 && user.pbCanPoison?(false)
-            user.pbPoison(target)
-            @battle.pbDisplay(_INTL("{1}'s {2} poisoned {3}!",target.pbThis,
-                PBAbilities.getName(target.ability),user.pbThis(true)))
-          elsif rnd==1 && user.pbCanSleep?(false)
-            user.pbSleep
-            @battle.pbDisplay(_INTL("{1}'s {2} made {3} sleep!",target.pbThis,
-                PBAbilities.getName(target.ability),user.pbThis(true)))
-          elsif rnd==2 && user.pbCanParalyze?(false)
-            user.pbParalyze(target)
-            @battle.pbDisplay(_INTL("{1}'s {2} paralyzed {3}!  It may be unable to move!",
-                target.pbThis,PBAbilities.getName(target.ability),user.pbThis(true)))
-          end
+        # Effect Spore - when target faints from contact, attacker becomes drowsy
+        if target.ability == PBAbilities::EFFECTSPORE && !user.isFainted? &&
+          target.hp <= 0 && user.effects[PBEffects::Yawn] == 0
+          user.effects[PBEffects::Yawn] = 2
+          @battle.pbDisplay(_INTL("{1}'s {2} made {3} drowsy!",target.pbThis,
+              PBAbilities.getName(target.ability),user.pbThis(true)))
         end
+        # Flame Body - when target faints from contact, burn the attacker
         if target.hasWorkingAbility(:FLAMEBODY,true) && $fefieldeffect!=39 &&
-          @battle.pbRandom(10)<3 && user.pbCanBurn?(false)
+          target.hp <= 0 && !user.isFainted? && user.pbCanBurn?(false)
           user.pbBurn(target)
           @battle.pbDisplay(_INTL("{1}'s {2} burned {3}!",target.pbThis,
               PBAbilities.getName(target.ability),user.pbThis(true)))
@@ -4031,11 +4017,9 @@ class PokeBattle_Battler
           @battle.pbDisplay(_INTL("{1}'s {2} hurt {3}!",target.pbThis,
               PBAbilities.getName(target.ability),user.pbThis(true)))
         end
-        eschance = 3
-        eschance = 6 if $fefieldeffect == 18
-        eschance.to_i 
-        if target.hasWorkingAbility(:STATIC) && 
-          @battle.pbRandom(10) < eschance && user.pbCanParalyze?(false)
+        # Static - when target faints from contact, paralyze the attacker
+        if target.hasWorkingAbility(:STATIC) &&
+          target.hp <= 0 && !user.isFainted? && user.pbCanParalyze?(false)
           user.pbParalyze(target)
           @battle.pbDisplay(_INTL("{1}'s {2} paralyzed {3}!  It may be unable to move!",
               target.pbThis,PBAbilities.getName(target.ability),user.pbThis(true)))
@@ -5989,12 +5973,15 @@ class PokeBattle_Battler
         self.missed = false
         return true
       end
-      # Blinded attackers auto-miss attacking moves (full miss, not graze)
+      # Blinded attackers graze with attacking moves (half damage, no secondary effects)
       if user.effects[PBEffects::Blinded]>0 && thismove.basedamage > 0
         @battle.pbDisplay(_INTL("{1} can't see through its blindness!",user.pbThis))
         user.effects[PBEffects::Blinded] = -1  # Clear blindness after attempting to attack
+        @battle.pbDisplay(_INTL("{1}'s attack grazed!",user.pbThis))
         user.missAcc = true
-        return false
+        user.grazed = true
+        self.missed = false
+        return true
       end
       if !thismove.pbAccuracyCheck(user,target) # Includes Counter/Mirror Coat
         # For damaging moves (not OHKO, not status), allow grazing blow with half damage and no secondary effects
