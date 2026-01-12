@@ -917,7 +917,11 @@ class PokeBattle_Battle
         end
         if move.id==(PBMoves::TOXIC)
           if attacker.pbHasType?(:POISON)
-            miniscore*=1.1
+            # Poison-type user will badly poison target
+            miniscore*=1.3
+          else
+            # Non-Poison-type user will become Poison-type (different effect)
+            miniscore=0  # Don't use status scoring, handle separately below
           end
         end
         if (!opponent.abilitynulled && opponent.ability == PBAbilities::HYDRATION || (opponent.ability == PBAbilities::WATERVEIL && $fefieldeffect == 21 || $fefieldeffect == 22)) && (pbWeather==PBWeather::RAINDANCE || $fefieldeffect == 21 || $fefieldeffect == 22)
@@ -8039,9 +8043,22 @@ class PokeBattle_Battle
       else
         score*=0.7
       end
-    when 0xA1 # Lucky Chant
-      if attacker.pbOwnSide.effects[PBEffects::LuckyChant]==0  && !(!attacker.abilitynulled && attacker.ability == PBAbilities::BATTLEARMOR) || !(!attacker.abilitynulled && attacker.ability == PBAbilities::SHELLARMOR) && (opponent.effects[PBEffects::FocusEnergy]>1 || opponent.effects[PBEffects::LaserFocus])
+    when 0xA1 # Lucky Chant - also prevents secondary effects
+      if attacker.pbOwnSide.effects[PBEffects::LuckyChant]==0
         score+=20
+        # Bonus if opponent has high crit rate
+        if !(!attacker.abilitynulled && attacker.ability == PBAbilities::BATTLEARMOR) &&
+           !(!attacker.abilitynulled && attacker.ability == PBAbilities::SHELLARMOR) &&
+           (opponent.effects[PBEffects::FocusEnergy]>1 || opponent.effects[PBEffects::LaserFocus])
+          score+=30
+        end
+        # Bonus against opponents with high secondary effect moves
+        for m in aimem
+          if m.addlEffect && m.addlEffect >= 30
+            score+=15
+            break
+          end
+        end
       end
     when 0xA2 # Reflect
       if attacker.pbOwnSide.effects[PBEffects::Reflect]<=0
@@ -14877,6 +14894,20 @@ class PokeBattle_Battle
             if attacker.pbHasType?(:PSYCHIC) || attacker.pbHasType?(:FAIRY) || attacker.pbHasType?(:DARK)
               score*=2
             end
+          end
+        end
+        # Gravity boosts pinning and negative priority moves
+        for m in attacker.moves
+          if (PBStuff::PINNINGMOVE).include?(m.id) || m.priority < 0
+            score*=1.3
+            break
+          end
+        end
+        # Gravity weakens scaling and priority moves - penalize if we have them
+        for m in attacker.moves
+          if (PBStuff::SCALINGMOVE).include?(m.id) || m.priority >= 1
+            score*=0.8
+            break
           end
         end
       end

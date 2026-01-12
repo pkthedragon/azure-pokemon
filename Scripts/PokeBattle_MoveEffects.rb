@@ -373,14 +373,13 @@ end
 
 
 ################################################################################
-# Badly poisons the target.
+# Badly poisons the target if Poison-type, otherwise user becomes Poison-type.
 ################################################################################
 class PokeBattle_Move_006 < PokeBattle_Move
   def pbEffect(attacker,opponent,hitnum=0,alltargets=nil,showanimation=true)
-    poisoned_already = (opponent.status==PBStatuses::POISON &&
-                        !opponent.statusCount.nil? && opponent.statusCount==0)
     user_is_poison = attacker.pbHasType?(:POISON)
     if user_is_poison
+      # Poison-type user badly poisons the target
       if !opponent.pbCanPoison?(attacker,false,self) || opponent.status==PBStatuses::POISON
         @battle.pbDisplay(_INTL("But it failed!"))
         return -1
@@ -390,17 +389,14 @@ class PokeBattle_Move_006 < PokeBattle_Move
       @battle.pbDisplay(_INTL("{1} was badly poisoned!",opponent.pbThis))
       return 0
     else
-      if opponent.status!=PBStatuses::POISON
-        @battle.pbDisplay(_INTL("But it failed!"))
-        return -1
-      end
-      if opponent.statusCount>0
+      # Non-Poison-type user becomes Poison-type
+      if attacker.hasWorkingAbility(:MULTITYPE) || attacker.hasWorkingAbility(:RKSSYSTEM)
         @battle.pbDisplay(_INTL("But it failed!"))
         return -1
       end
       pbShowAnimation(@id,attacker,opponent,hitnum,alltargets,showanimation)
-      opponent.statusCount = 1
-      @battle.pbDisplay(_INTL("{1}'s poisoning worsened!",opponent.pbThis))
+      attacker.type2 = getConst(PBTypes,:POISON)
+      @battle.pbDisplay(_INTL("{1} transformed into the Poison type!",attacker.pbThis))
       return 0
     end
   end
@@ -5044,7 +5040,7 @@ class PokeBattle_Move_0A0 < PokeBattle_Move
 end
 
 ################################################################################
-# For 5 rounds, foes' attacks cannot become critical hits.
+# For 5 rounds, foes' attacks cannot become critical hits or have secondary effects.
 ################################################################################
 class PokeBattle_Move_0A1 < PokeBattle_Move
   def pbEffect(attacker,opponent,hitnum=0,alltargets=nil,showanimation=true)
@@ -5055,10 +5051,10 @@ class PokeBattle_Move_0A1 < PokeBattle_Move
     pbShowAnimation(@id,attacker,opponent,hitnum,alltargets,showanimation)
     attacker.pbOwnSide.effects[PBEffects::LuckyChant]=5
     if !@battle.pbIsOpposing?(attacker.index)
-      @battle.pbDisplay(_INTL("The Lucky Chant shielded your team from critical hits!"))
+      @battle.pbDisplay(_INTL("The Lucky Chant shielded your team from critical hits and secondary effects!"))
     else
-      @battle.pbDisplay(_INTL("The Lucky Chant shielded the foe's team from critical hits!"))
-    end  
+      @battle.pbDisplay(_INTL("The Lucky Chant shielded the foe's team from critical hits and secondary effects!"))
+    end
     return 0
   end
 end
@@ -9651,11 +9647,12 @@ end
 
 
 ################################################################################
-# For 5 rounds, increases gravity on the field.  Pokémon cannot become airborne.
+# For 4 rounds, increases gravity on the field. Pokémon cannot become airborne.
+# Scaling/priority moves deal 0.5x, pinning/negative priority deal 1.3-1.5x.
 ################################################################################
 class PokeBattle_Move_118 < PokeBattle_Move
   def pbEffect(attacker,opponent,hitnum=0,alltargets=nil,showanimation=true)
-    if @battle.field.effects[PBEffects::Gravity]>0 
+    if @battle.field.effects[PBEffects::Gravity]>0
       @battle.pbDisplay(_INTL("But it failed!"))
       return -1
     end
@@ -9664,9 +9661,9 @@ class PokeBattle_Move_118 < PokeBattle_Move
       return -1
     end
     pbShowAnimation(@id,attacker,opponent,hitnum,alltargets,showanimation)
-    @battle.field.effects[PBEffects::Gravity]=5
-    @battle.field.effects[PBEffects::Gravity]=8 if isConst?(attacker.item,PBItems,:AMPLIFIELDROCK)
-    @battle.field.effects[PBEffects::Gravity]=8 if $fefieldeffect == 37
+    @battle.field.effects[PBEffects::Gravity]=4
+    @battle.field.effects[PBEffects::Gravity]=7 if isConst?(attacker.item,PBItems,:AMPLIFIELDROCK)
+    @battle.field.effects[PBEffects::Gravity]=7 if $fefieldeffect == 37
     if $fefieldeffect == 38
       rnd=@battle.pbRandom(6)
       @battle.field.effects[PBEffects::Gravity]=3+rnd

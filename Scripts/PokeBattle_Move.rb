@@ -5119,7 +5119,24 @@ class PokeBattle_Move
     end
     if opponent.pbOwnSide.effects[PBEffects::WideGuard] > 0 &&  @target==PBTargets::AllOpposing && @basedamage > 0
       finaldamagemult=(finaldamagemult*0.5).round
-    end    
+    end
+    # Gravity damage modifiers
+    if @battle.field.effects[PBEffects::Gravity]>0
+      # Scaling and priority moves deal 0.5x damage
+      if (PBStuff::SCALINGMOVE).include?(@id) || @priority >= 1
+        finaldamagemult=(finaldamagemult*0.5).round
+      end
+      # Pinning and negative priority moves deal 1.3x or 1.5x if user is heavier
+      if (PBStuff::PINNINGMOVE).include?(@id) || @priority < 0
+        userweight = attacker.pbWeight
+        oppweight = opponent.pbWeight
+        if userweight > oppweight
+          finaldamagemult=(finaldamagemult*1.5).round
+        else
+          finaldamagemult=(finaldamagemult*1.3).round
+        end
+      end
+    end
 	if (( (opponent.hasWorkingAbility(:MULTISCALE) || @battle.SilvallyCheck(opponent,PBTypes::DRAGON)) &&
         !(opponent.moldbroken)) || opponent.hasWorkingAbility(:SHADOWSHIELD)) && opponent.hp==opponent.totalhp 
       finaldamagemult=(finaldamagemult*0.5).round

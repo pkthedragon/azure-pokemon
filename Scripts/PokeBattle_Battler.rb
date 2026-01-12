@@ -6475,6 +6475,8 @@ class PokeBattle_Battler
         addleffect=100 if thismove.id == 182 && $fefieldeffect == 40
         addleffect=100 if thismove.id == 784 && $fefieldeffect == 31
         addleffect=0 if (isConst?(user.species,PBSpecies,:LEDIAN) && user.hasWorkingItem(:LEDICREST) && i>1)
+        # Lucky Chant prevents secondary effects
+        addleffect=0 if target.pbOwnSide.effects[PBEffects::LuckyChant]>0
         if @battle.pbRandom(100)<addleffect
           thismove.pbAdditionalEffect(user,target)
         end
