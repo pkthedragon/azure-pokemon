@@ -1770,15 +1770,8 @@ class PokeBattle_Battler
     evastage=0 if self.effects[PBEffects::Foresight] ||
     self.effects[PBEffects::MiracleEye]
     evasion=(evastage>=0) ? (evastage+3)*100/3 : 300/(3-evastage)
-    if self.hasWorkingAbility(:TANGLEDFEET) &&
-      self.effects[PBEffects::Confusion]>0
-      evasion*=1.2
-    end
-    if self.hasWorkingAbility(:SANDVEIL) &&
-      (@battle.pbWeather==PBWeather::SANDSTORM ||
-        $fefieldeffect == 12 || $fefieldeffect == 20 || $fefieldeffect == 46)
-      evasion*=1.2
-    end
+    # Tangled Feet no longer gives evasion - now gives 1.5x speed, 0.5x defenses
+    # Sand Veil no longer gives evasion - now gives 1.5x defense in sandstorm
     if self.hasWorkingAbility(:SNOWCLOAK) &&
       (@battle.pbWeather==PBWeather::HAIL || $fefieldeffect == 13 ||
         $fefieldeffect == 28)
@@ -1879,6 +1872,10 @@ class PokeBattle_Battler
     end
     if self.hasWorkingAbility(:MAENADSFERVOR) && self.effects[PBEffects::Confusion]>0
       speed=(speed*2).floor
+    end
+    # Tangled Feet - 1.5x speed when confused
+    if self.hasWorkingAbility(:TANGLEDFEET) && self.effects[PBEffects::Confusion]>0
+      speed=(speed*1.5).floor
     end
     if self.hasWorkingItem(:MACHOBRACE) ||
       self.hasWorkingItem(:POWERWEIGHT) ||
@@ -2045,7 +2042,19 @@ class PokeBattle_Battler
           i.pbIncreaseStat(PBStats::SPDEF,1,true)
         end
       end
-    end    
+      # Pick Up - steal the fainted opponent's item
+      if i.hasWorkingAbility(:PICKUP) && i.item==0 && self.item!=0 &&
+         i.pbIsOpposing?(self.index) && !self.hasWorkingAbility(:STICKYHOLD)
+        stolenitem=self.item
+        self.item=0
+        self.pokemon.setItem(0) if self.pokemon
+        i.item=stolenitem
+        i.pokemon.setItem(stolenitem) if i.pokemon
+        @battle.pbDisplay(_INTL("{1}'s {2} picked up {3}'s {4}!",
+            i.pbThis,PBAbilities.getName(i.ability),
+            self.pbThis(true),PBItems.getName(stolenitem)))
+      end
+    end
     if self.ability == PBAbilities::NEUTRALIZINGGAS && !abilitynulled
       self.effects[PBEffects::GastroAcid]=true
       @battle.pbDisplayBrief(_INTL("The effects of the Neutralizing Gas wore off!"))  
@@ -3284,6 +3293,26 @@ class PokeBattle_Battler
         if pbIsOpposing?(i) && !@battle.battlers[i].isFainted?
           @battle.battlers[i].pbReduceAttackStatStageIntimidate(self)
         end
+      end
+    end
+    # Keen Eye - Uses Lock-On and Laser Focus on entry
+    if self.hasWorkingAbility(:KEENEYE) && onactive
+      # Apply Lock-On to all opponents (user always hits them)
+      for i in 0...4
+        if pbIsOpposing?(i) && !@battle.battlers[i].isFainted?
+          @battle.battlers[i].effects[PBEffects::LockOn]=2
+          @battle.battlers[i].effects[PBEffects::LockOnPos]=@index
+        end
+      end
+      # Apply Laser Focus to self (guaranteed critical hits)
+      @effects[PBEffects::LaserFocus]=2
+      @battle.pbDisplay(_INTL("{1}'s {2} locked on and focused!",pbThis,PBAbilities.getName(ability)))
+    end
+    # Illuminate - Raises accuracy on entry
+    if self.hasWorkingAbility(:ILLUMINATE) && onactive
+      if !pbTooHigh?(PBStats::ACCURACY)
+        pbIncreaseStatBasic(PBStats::ACCURACY,1)
+        @battle.pbDisplay(_INTL("{1}'s {2} boosted its Accuracy!",pbThis,PBAbilities.getName(ability)))
       end
     end
     # Download
@@ -5372,17 +5401,24 @@ class PokeBattle_Battler
       thismove.target==PBTargets::SingleOpposing ||
       thismove.target==PBTargets::RandomOpposing ||
       thismove.target==PBTargets::OppositeOpposing
-      for i in priority # use Pokémon latest in priority
-        next if !pbIsOpposing?(i.index)
-        if i.effects[PBEffects::FollowMe]==true || i.effects[PBEffects::RagePowder]==true
-          target=i unless (i.effects[PBEffects::RagePowder] && (self.hasWorkingAbility(:OVERCOAT) || self.pbHasType?(:GRASS) || self.hasWorkingItem(:SAFETYGOGGLES)))# change target to this
+      # Oblivious and Inner Focus are immune to redirection
+      unless self.hasWorkingAbility(:OBLIVIOUS) || self.hasWorkingAbility(:INNERFOCUS)
+        for i in priority # use Pokémon latest in priority
+          next if !pbIsOpposing?(i.index)
+          if i.effects[PBEffects::FollowMe]==true || i.effects[PBEffects::RagePowder]==true
+            target=i unless (i.effects[PBEffects::RagePowder] && (self.hasWorkingAbility(:OVERCOAT) || self.pbHasType?(:GRASS) || self.hasWorkingItem(:SAFETYGOGGLES)))# change target to this
+          end
         end
       end
     end
     # TODO: Pressure here is incorrect if Magic Coat redirects target
     if target.hasWorkingAbility(:PRESSURE)
       pbReducePP(thismove) # Reduce PP
-      if $fefieldeffect==38
+      # Pressure uses 3 PP during gravity or crush depth
+      if @battle.field.effects[PBEffects::Gravity]>0 || $fefieldeffect==35
+        pbReducePP(thismove)
+        pbReducePP(thismove)
+      elsif $fefieldeffect==38
         pbReducePP(thismove)
       end
     end  
@@ -6439,6 +6475,8 @@ class PokeBattle_Battler
         addleffect=100 if thismove.id == 182 && $fefieldeffect == 40
         addleffect=100 if thismove.id == 784 && $fefieldeffect == 31
         addleffect=0 if (isConst?(user.species,PBSpecies,:LEDIAN) && user.hasWorkingItem(:LEDICREST) && i>1)
+        # Lucky Chant prevents secondary effects
+        addleffect=0 if target.pbOwnSide.effects[PBEffects::LuckyChant]>0
         if @battle.pbRandom(100)<addleffect
           thismove.pbAdditionalEffect(user,target)
         end

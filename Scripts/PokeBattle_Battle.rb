@@ -6948,6 +6948,39 @@ def pbStartBattle(canlose=false)
           i.statusCount=0
         end
       end
+      # Leaf Guard - clears status and negative stats in Sun
+      if i.hasWorkingAbility(:LEAFGUARD) && ((pbWeather==PBWeather::SUNNYDAY && !i.hasWorkingItem(:UTILITYUMBRELLA)) ||
+        $fefieldeffect == 15 || ($fefieldeffect == 33 && $fecounter>0))
+        cleared = false
+        if i.status>0
+          case i.status
+            when PBStatuses::SLEEP
+              pbDisplay(_INTL("{1}'s Leaf Guard cured its sleep problem!",i.pbThis))
+            when PBStatuses::FROZEN
+              pbDisplay(_INTL("{1}'s Leaf Guard cured its ice problem!",i.pbThis))
+            when PBStatuses::BURN
+              pbDisplay(_INTL("{1}'s Leaf Guard cured its burn problem!",i.pbThis))
+            when PBStatuses::POISON
+              pbDisplay(_INTL("{1}'s Leaf Guard cured its poison problem!",i.pbThis))
+            when PBStatuses::PARALYSIS
+              pbDisplay(_INTL("{1}'s Leaf Guard cured its paralysis problem!",i.pbThis))
+          end
+          i.status=0
+          i.statusCount=0
+          cleared = true
+        end
+        # Clear negative stat stages
+        hasNegative = false
+        for stat in [PBStats::ATTACK,PBStats::DEFENSE,PBStats::SPEED,PBStats::SPATK,PBStats::SPDEF,PBStats::ACCURACY,PBStats::EVASION]
+          if i.stages[stat] < 0
+            i.stages[stat] = 0
+            hasNegative = true
+          end
+        end
+        if hasNegative
+          pbDisplay(_INTL("{1}'s Leaf Guard cleared its negative stat changes!",i.pbThis))
+        end
+      end
       # Steam Engine
       if i.hasWorkingAbility(:STEAMENGINE) && ($fefieldeffect == 7 || 
        $fefieldeffect == 16 || $fefieldeffect == 21 || $fefieldeffect == 22 ||  
