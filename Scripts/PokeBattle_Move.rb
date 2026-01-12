@@ -3612,10 +3612,11 @@ class PokeBattle_Move
       atkmult=(atkmult*0.5).round
       @battle.pbDisplay(_INTL("{1}'s {2} softened the blow!",opponent.pbThis,PBAbilities.getName(opponent.ability)))
     end
-    if opponent.hasWorkingAbility(:IMPERVIOUS) || !(opponent.moldbroken)
-	  if PBStuff::PUNCHINGMOVE.include?(id) || PBStuff::KICKINGMOVE.include?(id) || PBStuff::BITEMOVE.include?(id)
-        atkmult=(atkmult*0.5).round
-	  end
+    if opponent.hasWorkingAbility(:IMPERVIOUS) && !(opponent.moldbroken)
+      if PBStuff::PUNCHINGMOVE.include?(id) || PBStuff::KICKINGMOVE.include?(id) || PBStuff::BITEMOVE.include?(id)
+        atkmult=0
+        @battle.pbDisplay(_INTL("{1}'s {2} made it immune to the attack!",opponent.pbThis,PBAbilities.getName(opponent.ability)))
+      end
     end
     if (opponent.hasWorkingAbility(:PASTELVEIL) || opponent.pbPartner.hasWorkingAbility(:PASTELVEIL)) &&
        ($fefieldeffect==3 || $fefieldeffect==9) && isConst?(type,PBTypes,:POISON) && !(opponent.moldbroken)

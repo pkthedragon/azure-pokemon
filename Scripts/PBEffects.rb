@@ -225,7 +225,9 @@ begin
     Undertow      = 321
     Presents      = 322
     ManaBond      = 323
-    ReverbEcho    = 324
+    ReverbEcho    = 324 # Stores the move ID for Reverb ability
+    ReverbTarget  = 327 # Stores the target index for Reverb ability
+    ReverbUser    = 328 # Stores the user index for Reverb ability
     PlusSignal    = 325
     MinusSignal   = 326
     # These effects apply to the battle (i.e. both sides) - starts from 400

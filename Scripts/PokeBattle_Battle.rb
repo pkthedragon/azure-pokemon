@@ -5583,6 +5583,43 @@ def pbStartBattle(canlose=false)
     # Calculate priority at this time
     @usepriority=false
     priority=pbPriority
+    # Reverb Echo - Sound moves strike again at beginning of turn
+    for i in priority
+      next if i.isFainted?
+      if i.effects[PBEffects::ReverbEcho] > 0 && i.effects[PBEffects::ReverbTarget] >= 0
+        target = @battlers[i.effects[PBEffects::ReverbTarget]]
+        if target && !target.isFainted? && !i.isFainted?
+          move = PokeBattle_Move.pbFromPBMove(self, PBMove.new(i.effects[PBEffects::ReverbEcho]), i)
+          movename = PBMoves.getName(i.effects[PBEffects::ReverbEcho])
+          pbDisplay(_INTL("{1}'s {2} echoed back!",i.pbThis,movename))
+          # Store original power to restore later
+          originalBaseDamage = move.basedamage
+          # Apply 0.25x power
+          move.basedamage = (move.basedamage * 0.25).floor
+          move.basedamage = 1 if move.basedamage < 1
+          # Execute the move
+          target.damagestate.reset
+          damage = move.pbCalcDamage(i,target)
+          if damage > 0
+            move.pbReduceHPDamage(damage,i,target)
+            move.pbEffectMessages(i,target)
+            # Apply additional effects
+            addleffect = move.addlEffect
+            addleffect *= 2 if i.hasWorkingAbility(:SERENEGRACE)
+            if @pbRandom(100) < addleffect
+              move.pbAdditionalEffect(i,target)
+            end
+          end
+          target.pbFaint if target.isFainted?
+          # Restore original power
+          move.basedamage = originalBaseDamage
+        end
+        # Clear Reverb effect
+        i.effects[PBEffects::ReverbEcho] = 0
+        i.effects[PBEffects::ReverbTarget] = -1
+        i.effects[PBEffects::ReverbUser] = -1
+      end
+    end
 #    # Mega Evolution Moved to after switching + items
 #    for i in priority
 #      next if @choices[i.index][0]!=1
@@ -6882,10 +6919,16 @@ def pbStartBattle(canlose=false)
       # Ice Body
       if (pbWeather==PBWeather::HAIL || $fefieldeffect == 13 || $fefieldeffect == 39 ||
        $fefieldeffefct == 28) &&
-       (i.hasWorkingAbility(:ICEBODY)) && 
+       (i.hasWorkingAbility(:ICEBODY)) &&
        i.effects[PBEffects::HealBlock]==0
         hpgain=i.pbRecoverHP((i.totalhp/16).floor,true)
         pbDisplay(_INTL("{1}'s Ice Body restored its HP a little!",i.pbThis)) if hpgain>0
+      end
+      # Sunbathe - Restores 1/8th max HP each turn in Sun
+      if pbWeather==PBWeather::SUNNYDAY && !i.hasWorkingItem(:UTILITYUMBRELLA) &&
+       i.hasWorkingAbility(:SUNBATHE) && i.effects[PBEffects::HealBlock]==0
+        hpgain=i.pbRecoverHP((i.totalhp/8).floor,true)
+        pbDisplay(_INTL("{1}'s Sunbathe restored its HP!",i.pbThis)) if hpgain>0
       end
       if i.isFainted?
         return if !i.pbFaint

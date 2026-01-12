@@ -1144,6 +1144,10 @@ class PokeBattle_Battler
     @effects[PBEffects::DesertsMark]      = false
     @effects[PBEffects::UsingItem]      = []
     @effects[PBEffects::WorldOfNightmares]= 0
+    # Reverb ability effects
+    @effects[PBEffects::ReverbEcho]       = 0
+    @effects[PBEffects::ReverbTarget]     = -1
+    @effects[PBEffects::ReverbUser]       = -1
   end
   
   def pbUpdate(fullchange=false,wonderroom=false)
@@ -3293,6 +3297,23 @@ class PokeBattle_Battler
         if pbIsOpposing?(i) && !@battle.battlers[i].isFainted?
           @battle.battlers[i].pbReduceAttackStatStageIntimidate(self)
         end
+      end
+    end
+    # Eldritch - Blinds opponents on entry
+    if self.hasWorkingAbility(:ELDRITCH) && onactive
+      blinded_any = false
+      for i in 0...4
+        if pbIsOpposing?(i) && !@battle.battlers[i].isFainted?
+          target = @battle.battlers[i]
+          # Check if target can be blinded (not already blinded, doesn't have Illuminate)
+          if target.effects[PBEffects::Blinded] <= 0 && !target.hasWorkingAbility(:ILLUMINATE)
+            target.effects[PBEffects::Blinded] = 1
+            blinded_any = true
+          end
+        end
+      end
+      if blinded_any
+        @battle.pbDisplay(_INTL("{1}'s {2} blinded its opponents!",pbThis,PBAbilities.getName(ability)))
       end
     end
     # Keen Eye - Uses Lock-On and Laser Focus on entry
@@ -6525,6 +6546,27 @@ class PokeBattle_Battler
       end
       # Ability effects
       pbEffectsOnDealingDamage(thismove,user,target,damage,innardsOutHp)
+      # Mana Echoes - Special attacks deal an additional 1/8th of user's max HP damage
+      if user.hasWorkingAbility(:MANAECHOES) && target.damagestate.calcdamage>0 &&
+         !target.damagestate.substitute && !target.isFainted? &&
+         thismove.pbIsSpecial?(thismove.pbType(thismove.type,user,target))
+        echoesdamage = (user.totalhp/8).floor
+        echoesdamage = [echoesdamage, target.hp].min
+        if echoesdamage > 0
+          target.pbReduceHP(echoesdamage,true)
+          @battle.pbDisplay(_INTL("{1}'s Mana Echoes dealt additional damage!",user.pbThis))
+        end
+      end
+      # Abyssal - Attacks crush during intense gravity
+      if user.hasWorkingAbility(:ABYSSAL) && target.damagestate.calcdamage>0 &&
+         !target.damagestate.substitute && !target.isFainted? &&
+         @battle.field.effects[PBEffects::Gravity] > 0
+        if target.pbCanCrush?(false)
+          target.pbCrush(user)
+          @battle.pbDisplay(_INTL("{1} was crushed by the intense gravity!",target.pbThis))
+          target.effects[PBEffects::Crushing] = user.index
+        end
+      end
       # Berserk
       if !target.isFainted? && aboveHalfHp && target.hp<=(target.totalhp/2).floor
         if target.hasWorkingAbility(:BERSERK)
@@ -6603,6 +6645,14 @@ class PokeBattle_Battler
           user.pokemon.itemInitial=0 if user.pokemon.itemInitial==user.item
           user.item=0
         end
+      end
+      # Reverb - Sound moves strike again next turn at 0.25x power
+      if user.hasWorkingAbility(:REVERB) && thismove.isSoundBased? && thismove.basedamage > 0 &&
+         user.hp > 0 && !target.isFainted? && target.damagestate.calcdamage > 0
+        user.effects[PBEffects::ReverbEcho] = thismove.id
+        user.effects[PBEffects::ReverbTarget] = target.index
+        user.effects[PBEffects::ReverbUser] = user.index
+        @battle.pbDisplay(_INTL("{1}'s sound echoed!",user.pbThis))
       end
       if target.hasWorkingItem(:EJECTPACK) && target.statLowered
         if !target.isFainted? && @battle.pbCanChooseNonActive?(target.index) &&
