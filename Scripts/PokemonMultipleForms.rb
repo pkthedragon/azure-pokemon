@@ -4979,7 +4979,7 @@ MultipleForms.register(:FUECOCO,{
   "ability"=>proc{|pokemon|
     next if pokemon.form!=1 # Only Mystic form
     if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0)
-      next getID(PBAbilities,:STALKER)
+      next getID(PBAbilities,:UNNERVE)
     end
     if pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)
       next getID(PBAbilities,:REVERB)
@@ -4988,7 +4988,7 @@ MultipleForms.register(:FUECOCO,{
   "getMoveList"=>proc{|pokemon|
     movelist=[]
     case pokemon.form            # Mystic
-    when 1 ; movelist=[[1,:TACKLE],[1,:LEER],[5,:SANDTOMB],[7,:ASTONISH],
+    when 1 ; movelist=[[1,:TACKLE],[1,:LEER],[5,:MUDSLAP],[7,:ASTONISH],
                       [12,:ROUND],[15,:MUDSHOT],[17,:CONFIDE],[21,:SNARL],
                       [25,:TORMENT],[28,:FRACTURE],[32,:HYPERVOICE],[36,:SCORCHINGSANDS]]
     end
@@ -5020,7 +5020,7 @@ MultipleForms.register(:CROCALOR,{
   "ability"=>proc{|pokemon|
     next if pokemon.form!=1 # Only Mystic form
     if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0)
-      next getID(PBAbilities,:STALKER)
+      next getID(PBAbilities,:UNNERVE)
     end
     if pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)
       next getID(PBAbilities,:REVERB)
@@ -5029,7 +5029,7 @@ MultipleForms.register(:CROCALOR,{
   "getMoveList"=>proc{|pokemon|
     movelist=[]
     case pokemon.form            # Mystic
-    when 1 ; movelist=[[0,:PURSUIT],[1,:TACKLE],[1,:LEER],[5,:SANDTOMB],
+    when 1 ; movelist=[[0,:PURSUIT],[1,:TACKLE],[1,:LEER],[5,:MUDSLAP],
                       [7,:ASTONISH],[10,:BELLOW],[12,:ROUND],[15,:MUDSHOT],
                       [17,:CONFIDE],[24,:SNARL],[28,:TORMENT],[32,:FRACTURE],
                       [38,:HYPERVOICE],[42,:DARKPULSE],[47,:SCORCHINGSANDS]]
@@ -5062,7 +5062,7 @@ MultipleForms.register(:SKELEDIRGE,{
   "ability"=>proc{|pokemon|
     next if pokemon.form!=1 # Only Mystic form
     if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0)
-      next getID(PBAbilities,:STALKER)
+      next getID(PBAbilities,:UNNERVE)
     end
     if pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)
       next getID(PBAbilities,:REVERB)
@@ -5072,7 +5072,7 @@ MultipleForms.register(:SKELEDIRGE,{
     movelist=[]
     case pokemon.form            # Mystic
     when 1 ; movelist=[[0,:PHANTOMCALL],[1,:PURSUIT],[1,:SING],[1,:PAINSPLIT],
-                      [1,:ALLURINGVOICE],[1,:TACKLE],[1,:LEER],[5,:SANDTOMB],
+                      [1,:ALLURINGVOICE],[1,:TACKLE],[1,:LEER],[5,:MUDSLAP],
                       [7,:ASTONISH],[10,:BELLOW],[12,:ROUND],[15,:MUDSHOT],
                       [17,:CONFIDE],[24,:SNARL],[28,:TORMENT],[32,:FRACTURE],
                       [38,:DARKPULSE],[42,:HYPERVOICE],[47,:SCORCHINGSANDS],[47,:NASTYPLOT],

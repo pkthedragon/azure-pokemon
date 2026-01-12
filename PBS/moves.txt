@@ -231,7 +231,7 @@
 231,BONEMERANG,Bonemerang,0BD,50,GROUND,Physical,90,10,0,00,0,bef,"The user throws a bone. The bone loops to hit the target twice, coming and going."
 232,SANDTOMB,Sand Tomb,0CF,35,GROUND,Physical,85,15,0,00,0,bef,"The user traps the target inside a harshly raging sandstorm for four to five turns."
 233,BONERUSH,Bone Rush,0C0,25,GROUND,Physical,90,10,0,00,0,bef,"Hits 2-5 times. Bludgeoning."
-234,MUDSLAP,Mud-Slap,047,20,GROUND,Special,100,10,100,00,0,be,"The user hurls mud in the target's face to inflict damage and lower its accuracy."
+234,MUDSLAP,Mud-Slap,047,35,GROUND,Special,100,10,100,00,0,be,"The user hurls mud in the target's face to inflict damage and lower its accuracy."
 235,FISSURE,Fissure,294,100,GROUND,Physical,50,5,100,00,0,be,"The user opens up a fissure in the ground. The target instantly faints if it hits."
 236,MAGNITUDE,Magnitude,095,1,GROUND,Physical,100,15,0,08,0,bef,"The user looses a ground-shaking quake around the user. Its power varies."
 237,MUDSPORT,Mud Sport,09D,0,GROUND,Status,0,10,0,40,0,,"The user covers itself with mud. It weakens Electric-type moves in battle."

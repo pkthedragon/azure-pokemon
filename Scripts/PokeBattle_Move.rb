@@ -5300,7 +5300,7 @@ class PokeBattle_Move
 
   def pbReduceHPDamage(damage,attacker,opponent,hitnum=0)
     endure=false
-    if [PBMoves::FUTUREDUMMY, PBMoves::DOOMDUMMY, PBMoves::FOREBODEDUMMY].include?(@id)
+    if [PBMoves::FUTUREDUMMY, PBMoves::DOOMDUMMY].include?(@id)
       if attacker.effects[PBEffects::LaserFocus] == 0
         damage=pbCalcDamage(attacker,opponent,PokeBattle_Move::NOCRITICAL)
       else

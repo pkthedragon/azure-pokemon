@@ -888,3 +888,203 @@ Not using an item.
 **Exception: uninitialized constant PBMoves::FOREBODEDUMMY
 ["PokeBattle_Move:5303:in `pbReduceHPDamage'", "PokeBattle_Move:5581:in `pbEffect'", "PokeBattle_MoveEffects:7133:in `pbEffect'", "PokeBattle_Battler:6389:in `block in pbProcessMoveAgainstTarget'", "PokeBattle_Battler:6272:in `each'", "PokeBattle_Battler:6272:in `pbProcessMoveAgainstTarget'", "PokeBattle_Battler:7252:in `block in pbUseMove'", "PokeBattle_Battler:7163:in `loop'", "PokeBattle_Battler:7163:in `pbUseMove'", "PokeBattle_Battler:8551:in `block in pbProcessTurn'", "PBDebug:4:in `logonerr'", "PokeBattle_Battler:8550:in `pbProcessTurn'", "PokeBattle_Battle:5737:in `block in pbAttackPhase'", "PokeBattle_Battle:5736:in `each'", "PokeBattle_Battle:5736:in `pbAttackPhase'", "PokeBattle_Battle:5299:in `block (2 levels) in pbStartBattleCore'", "PBDebug:4:in `logonerr'", "PokeBattle_Battle:5298:in `block in pbStartBattleCore'", "PokeBattle_Battle:5282:in `loop'", "PokeBattle_Battle:5282:in `pbStartBattleCore'", "PokeBattle_Battle:4888:in `pbStartBattle'", "PokemonTrainers:724:in `block (2 levels) in pbTrainerBattle'", "PokemonField:706:in `pbSceneStandby'", "PokemonTrainers:723:in `block in pbTrainerBattle'", "PokemonField:1008:in `pbBattleAnimation'", "PokemonTrainers:722:in `pbTrainerBattle'", "(eval):1:in `pbExecuteScript'", "Interpreter:243:in `eval'", "Interpreter:243:in `pbExecuteScript'", "Interpreter:799:in `command_111'", "Interpreter:320:in `execute_command'", "Interpreter:193:in `block in update'", "Interpreter:106:in `loop'", "Interpreter:106:in `update'", "Autosave:30:in `block in update'", "Autosave:28:in `loop'", "Autosave:28:in `update'", "Scene_Map:72:in `block in main'", "Scene_Map:69:in `loop'", "Scene_Map:69:in `main'", "Main:79:in `mainFunctionDebug'", "Main:53:in `block in mainFunction'", "Compiler:38:in `pbCriticalCode'", "Main:53:in `mainFunction'", "Main:89:in `block (2 levels) in <main>'", "Main:88:in `loop'", "Main:88:in `block in <main>'", "Section000:336:in `eval'", "Section000:336:in `block in <main>'", "Section000:333:in `each'", "Section000:333:in `each_with_index'", "Section000:333:in `<main>'", "-e:in `eval'"]
 ***Round 2***
+==============================
+Battle Start!
+179 - Kara
+==============================
+***Round 1***
+AI Pokemon Buneary is faster than Fuecoco.
+Defense Curl: initial score: 10
+[Not preferring status move]
+Defense Curl: final score: 2
+ 
+Splash: initial score: 1
+[Not preferring status move]
+Splash: final score: 0
+ 
+Pound: initial score: 33
+Pound: final score: 33
+ 
+Foresight: initial score: 5
+[Not preferring status move]
+Foresight: final score: 4
+ 
+Beginning AI Item use check.
+ 
+Highest item score: -10000
+Highest move score: 33
+Not using an item.
+ 
+[The foe Buneary: Defense Curl=2, Splash=0, Pound=33, Foresight=4]
+[Prefer Pound]
+[No Z-Move.]
+[Fuecoco lost 7 HP, now has 14 HP]
+[The foe Buneary lost 4 HP, now has 17 HP]
+***Round 2***
+AI Pokemon Buneary is faster than Fuecoco.
+Defense Curl: initial score: 10
+[Not preferring status move]
+Defense Curl: final score: 2
+ 
+Splash: initial score: 1
+[Not preferring status move]
+Splash: final score: 0
+ 
+Pound: initial score: 50
+Pound: final score: 50
+ 
+Foresight: initial score: 5
+[Not preferring status move]
+Foresight: final score: 4
+ 
+Beginning AI Item use check.
+ 
+Highest item score: -10000
+Highest move score: 50
+Not using an item.
+ 
+[The foe Buneary: Defense Curl=2, Splash=0, Pound=50, Foresight=4]
+[Prefer Pound]
+[No Z-Move.]
+[Fuecoco lost 7 HP, now has 7 HP]
+[The foe Buneary lost 5 HP, now has 12 HP]
+[The foe Buneary lost 2 HP, now has 10 HP]
+***Round 3***
+AI Pokemon Buneary is faster than Fuecoco.
+Defense Curl: initial score: 10
+[Not preferring status move]
+Defense Curl: final score: 1
+ 
+Splash: initial score: 1
+[Not preferring status move]
+Splash: final score: 0
+ 
+Pound: initial score: 100
+[Preferring damaging move]
+Pound: final score: 110
+ 
+Foresight: initial score: 5
+[Not preferring status move]
+Foresight: final score: 4
+ 
+Beginning AI Item use check.
+ 
+Highest item score: -10000
+Highest move score: 110
+Not using an item.
+ 
+[The foe Buneary: Defense Curl=1, Splash=0, Pound=110, Foresight=4]
+[Prefer Pound]
+[No Z-Move.]
+[Fuecoco lost 7 HP, now has 0 HP]
+==============================
+Battle Start!
+205 - Haden
+==============================
+***Round 1***
+AI Pokemon Purrloin is faster than Fuecoco.
+Scratch: initial score: 14
+Scratch: final score: 14
+ 
+Growl: initial score: 10
+Growl: final score: 0
+ 
+Beginning AI Item use check.
+ 
+Highest item score: -10000
+Highest move score: 14
+Not using an item.
+ 
+[The foe Purrloin: Scratch=14, Growl=0]
+[Prefer Scratch]
+[No Z-Move.]
+[Fuecoco lost 3 HP, now has 18 HP]
+[The foe Purrloin lost 7 HP, now has 12 HP]
+[The foe Purrloin lost 2 HP, now has 10 HP]
+***Round 2***
+AI Pokemon Purrloin is faster than Fuecoco.
+Scratch: initial score: 16
+Scratch: final score: 16
+ 
+Growl: initial score: 10
+Growl: final score: 0
+ 
+Beginning AI Item use check.
+ 
+Highest item score: -10000
+Highest move score: 16
+Not using an item.
+ 
+[The foe Purrloin: Scratch=16, Growl=0]
+[Prefer Scratch]
+[No Z-Move.]
+[Fuecoco lost 3 HP, now has 15 HP]
+[The foe Purrloin lost 7 HP, now has 3 HP]
+[The foe Purrloin lost 2 HP, now has 1 HP]
+***Round 3***
+AI Pokemon Purrloin is faster than Fuecoco.
+Scratch: initial score: 20
+Scratch: final score: 20
+ 
+Growl: initial score: 10
+Growl: final score: 0
+ 
+Beginning AI Item use check.
+ 
+Highest item score: -10000
+Highest move score: 20
+Not using an item.
+ 
+[The foe Purrloin: Scratch=20, Growl=0]
+[Prefer Scratch]
+[No Z-Move.]
+[Fuecoco lost 3 HP, now has 12 HP]
+[The foe Purrloin lost 1 HP, now has 0 HP]
+==============================
+Battle Start!
+Wild Battle
+==============================
+***Round 1***
+==============================
+Battle Start!
+Wild Battle
+==============================
+***Round 1***
+==============================
+Battle Start!
+Wild Battle
+==============================
+***Round 1***
+==============================
+Battle Start!
+Wild Battle
+==============================
+***Round 1***
+==============================
+Battle Start!
+Wild Battle
+==============================
+***Round 1***
+[The wild Wiglett: Water Gun=200, Sand Attack=100, Mud-Slap=100, Memento=100]
+If this battle is not wild, something has gone wrong in scoring moves (no preference chosen).
+[Fuecoco lost 4 HP, now has 8 HP]
+***Round 2***
+[The wild Wiglett: Water Gun=200, Sand Attack=100, Mud-Slap=100, Memento=100]
+If this battle is not wild, something has gone wrong in scoring moves (no preference chosen).
+[Fuecoco lost 4 HP, now has 4 HP]
+***Round 3***
+==============================
+Battle Start!
+Wild Battle
+==============================
+***Round 1***
+==============================
+Battle Start!
+Wild Battle
+==============================
+***Round 1***
+==============================
+Battle Start!
+Wild Battle
+==============================
+***Round 1***

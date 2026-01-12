@@ -23175,6 +23175,7 @@ BattlerEnemyY =
 BattlerAltitude =
 Evolutions=QUAXWELL,Level,16
 #-------------------------------
+BattlerAltitude=0
 [913]
 Name=Quaxwell
 InternalName=QUAXWELL
@@ -23202,6 +23203,7 @@ BattlerEnemyY =
 BattlerAltitude =
 Evolutions=QUAQUAVAL,Level,36
 #-------------------------------
+BattlerAltitude=1
 [914]
 Name=Quaquaval
 InternalName=QUAQUAVAL
@@ -23427,6 +23429,7 @@ BattlerEnemyY =
 BattlerAltitude =
 Evolutions=PAWMO,Level,18
 #-------------------------------
+BattlerAltitude=0
 [922]
 Name=Pawmo
 InternalName=PAWMO
@@ -23455,6 +23458,7 @@ BattlerEnemyY =
 BattlerAltitude =
 Evolutions=PAWMOT,Item,THUNDERSTONE
 #-------------------------------
+BattlerAltitude=0
 [923]
 Name=Pawmot
 InternalName=PAWMOT
@@ -23483,6 +23487,7 @@ BattlerEnemyY =
 BattlerAltitude =
 Evolutions =
 #-------------------------------
+BattlerAltitude=0
 [924]
 Name=Tandemaus
 InternalName=TANDEMAUS
@@ -23511,6 +23516,7 @@ BattlerEnemyY =
 BattlerAltitude =
 Evolutions=MAUSHOLD,Level,25
 #-------------------------------
+BattlerAltitude=0
 [925]
 Name=Maushold
 InternalName=MAUSHOLD
@@ -23539,6 +23545,7 @@ BattlerEnemyY =
 BattlerAltitude =
 Evolutions =
 #-------------------------------
+BattlerAltitude=0
 [926]
 Name=Fidough
 InternalName=FIDOUGH
@@ -23567,6 +23574,7 @@ BattlerEnemyY =
 BattlerAltitude =
 Evolutions=DACHSBUN,Level,26
 #-------------------------------
+BattlerAltitude=0
 [927]
 Name=Dachsbun
 InternalName=DACHSBUN
@@ -23594,6 +23602,7 @@ BattlerEnemyY =
 BattlerAltitude =
 Evolutions =
 #-------------------------------
+BattlerAltitude=0
 [928]
 Name=Smoliv
 InternalName=SMOLIV
@@ -23623,6 +23632,7 @@ BattlerEnemyY =
 BattlerAltitude =
 Evolutions=DOLLIV,Level,25
 #-------------------------------
+BattlerAltitude=0
 [929]
 Name=Dolliv
 InternalName=DOLLIV
@@ -23679,6 +23689,7 @@ BattlerEnemyY =
 BattlerAltitude =
 Evolutions =
 #-------------------------------
+BattlerAltitude=0
 [931]
 Name=Squawkabilly
 InternalName=SQUAWKABILLY
@@ -23709,6 +23720,7 @@ BattlerEnemyY =
 BattlerAltitude =
 Evolutions=
 #-------------------------------
+BattlerAltitude=0
 [932]
 Name=Nacli
 InternalName=NACLI
@@ -23737,6 +23749,7 @@ BattlerEnemyY =
 BattlerAltitude =
 Evolutions=NACLSTACK,Level,24
 #-------------------------------
+BattlerAltitude=0
 [933]
 Name=Naclstack
 InternalName=NACLSTACK
@@ -23764,6 +23777,7 @@ BattlerEnemyY =
 BattlerAltitude =
 Evolutions=GARGANACL,Level,38
 #-------------------------------
+BattlerAltitude=0
 [934]
 Name=Garganacl
 InternalName=GARGANACL
@@ -23791,6 +23805,7 @@ BattlerEnemyY =
 BattlerAltitude =
 Evolutions =
 #-------------------------------
+BattlerAltitude=0
 [935]
 Name=Charcadet
 InternalName=CHARCADET
@@ -23819,6 +23834,7 @@ BattlerEnemyY =
 BattlerAltitude =
 Evolutions=ARMAROUGE,Item,AUSPICIOUSARMOR,CERULEDGE,Item,MALICIOUSARMOR
 #-------------------------------
+BattlerAltitude=0
 [936]
 Name=Armarouge
 InternalName=ARMAROUGE
@@ -23847,6 +23863,7 @@ BattlerEnemyY =
 BattlerAltitude =
 Evolutions =
 #-------------------------------
+BattlerAltitude=0
 [937]
 Name=Ceruledge
 InternalName=CERULEDGE
@@ -23875,6 +23892,7 @@ BattlerEnemyY =
 BattlerAltitude =
 Evolutions =
 #-------------------------------
+BattlerAltitude=0
 [938]
 Name=Tadbulb
 InternalName=TADBULB
@@ -23903,6 +23921,7 @@ BattlerEnemyY =
 BattlerAltitude =
 Evolutions=BELLIBOLT,Item,THUNDERSTONE
 #-------------------------------
+BattlerAltitude=0
 [939]
 Name=Bellibolt
 InternalName=BELLIBOLT
@@ -23930,6 +23949,7 @@ BattlerEnemyY =
 BattlerAltitude =
 Evolutions =
 #-------------------------------
+BattlerAltitude=0
 [940]
 Name=Wattrel
 InternalName=WATTREL
@@ -23959,6 +23979,7 @@ BattlerEnemyY =
 BattlerAltitude =
 Evolutions=KILOWATTREL,Level,25
 #-------------------------------
+BattlerAltitude=0
 [941]
 Name=Kilowattrel
 InternalName=KILOWATTREL
@@ -23987,6 +24008,7 @@ BattlerEnemyY =
 BattlerAltitude =
 Evolutions =
 #-------------------------------
+BattlerAltitude=0
 [942]
 Name=Maschiff
 InternalName=MASCHIFF
@@ -24015,6 +24037,7 @@ BattlerEnemyY =
 BattlerAltitude =
 Evolutions=MABOSSTIFF,Level,30
 #-------------------------------
+BattlerAltitude=0
 [943]
 Name=Mabosstiff
 InternalName=MABOSSTIFF
@@ -24042,6 +24065,7 @@ BattlerEnemyY =
 BattlerAltitude =
 Evolutions =
 #-------------------------------
+BattlerAltitude=0
 [944]
 Name=Shroodle
 InternalName=SHROODLE
@@ -24071,6 +24095,7 @@ BattlerEnemyY =
 BattlerAltitude =
 Evolutions=GRAFAIAI,Level,28
 #-------------------------------
+BattlerAltitude=0
 [945]
 Name=Grafaiai
 InternalName=GRAFAIAI
@@ -24099,6 +24124,7 @@ BattlerEnemyY =
 BattlerAltitude =
 Evolutions =
 #-------------------------------
+BattlerAltitude=0
 [946]
 Name=Bramblin
 InternalName=BRAMBLIN
@@ -24128,6 +24154,7 @@ BattlerEnemyY =
 BattlerAltitude =
 Evolutions=BRAMBLEGHAST,Level,35
 #-------------------------------
+BattlerAltitude=3
 [947]
 Name=Brambleghast
 InternalName=BRAMBLEGHAST
@@ -24156,6 +24183,7 @@ BattlerEnemyY =
 BattlerAltitude =
 Evolutions =
 #-------------------------------
+BattlerAltitude=0
 [948]
 Name=Toedscool
 InternalName=TOEDSCOOL
@@ -24185,6 +24213,7 @@ BattlerEnemyY =
 BattlerAltitude =
 Evolutions=TOEDSCRUEL,Level,30
 #-------------------------------
+BattlerAltitude=0
 [949]
 Name=Toedscruel
 InternalName=TOEDSCRUEL
@@ -24213,6 +24242,7 @@ BattlerEnemyY =
 BattlerAltitude =
 Evolutions =
 #-------------------------------
+BattlerAltitude=0
 [950]
 Name=Klawf
 InternalName=KLAWF
@@ -24241,6 +24271,7 @@ BattlerEnemyY =
 BattlerAltitude =
 Evolutions =
 #-------------------------------
+BattlerAltitude=0
 [951]
 Name=Capsakid
 InternalName=CAPSAKID
@@ -24269,6 +24300,7 @@ BattlerEnemyY =
 BattlerAltitude =
 Evolutions=SCOVILLAIN,Item,FIRESTONE
 #-------------------------------
+BattlerAltitude=0
 [952]
 Name=Scovillain
 InternalName=SCOVILLAIN
@@ -24297,6 +24329,7 @@ BattlerEnemyY =
 BattlerAltitude =
 Evolutions=
 #-------------------------------
+BattlerAltitude=0
 [953]
 Name=Rellor
 InternalName=RELLOR
@@ -24325,6 +24358,7 @@ BattlerEnemyY =
 BattlerAltitude =
 Evolutions=RABSCA,Level,25
 #-------------------------------
+BattlerAltitude=0
 [954]
 Name=Rabsca
 InternalName=RABSCA
@@ -24353,6 +24387,7 @@ BattlerEnemyY =
 BattlerAltitude =
 Evolutions=
 #-------------------------------
+BattlerAltitude=0
 [955]
 Name=Flittle
 InternalName=FLITTLE
@@ -24381,6 +24416,7 @@ BattlerEnemyY =
 BattlerAltitude =
 Evolutions=ESPATHRA,Level,35
 #-------------------------------
+BattlerAltitude=12
 [956]
 Name=Espathra
 InternalName=ESPATHRA
@@ -24408,6 +24444,7 @@ BattlerEnemyY =
 BattlerAltitude =
 Evolutions =
 #-------------------------------
+BattlerAltitude=0
 [957]
 Name=Tinkatink
 InternalName=TINKATINK
@@ -24437,6 +24474,7 @@ BattlerEnemyY =
 BattlerAltitude =
 Evolutions=TINKATUFF,Level,24
 #-------------------------------
+BattlerAltitude=0
 [958]
 Name=Tinkatuff
 InternalName=TINKATUFF
@@ -24465,6 +24503,7 @@ BattlerEnemyY =
 BattlerAltitude =
 Evolutions=TINKATON,Level,38
 #-------------------------------
+BattlerAltitude=0
 [959]
 Name=Tinkaton
 InternalName=TINKATON
@@ -24493,6 +24532,7 @@ BattlerEnemyY =
 BattlerAltitude =
 Evolutions =
 #-------------------------------
+BattlerAltitude=1
 [960]
 Name=Wiglett
 InternalName=WIGLETT
@@ -24521,6 +24561,7 @@ BattlerEnemyY =
 BattlerAltitude =
 Evolutions=WUGTRIO,Level,26
 #-------------------------------
+BattlerAltitude=11
 [961]
 Name=Wugtrio
 InternalName=WUGTRIO
@@ -24548,6 +24589,7 @@ BattlerEnemyY =
 BattlerAltitude =
 Evolutions =
 #-------------------------------
+BattlerAltitude=10
 [962]
 Name=Bombirdier
 InternalName=BOMBIRDIER
@@ -24577,6 +24619,7 @@ BattlerEnemyY =
 BattlerAltitude =
 Evolutions =
 #-------------------------------
+BattlerAltitude=0
 [963]
 Name=Finizen
 InternalName=FINIZEN
@@ -24605,6 +24648,7 @@ BattlerEnemyY =
 BattlerAltitude =
 Evolutions=PALAFIN,Trade,0
 #-------------------------------
+BattlerAltitude=0
 [964]
 Name=Palafin
 InternalName=PALAFIN
@@ -24632,6 +24676,7 @@ BattlerEnemyY =
 BattlerAltitude =
 Evolutions =
 #-------------------------------
+BattlerAltitude=0
 [965]
 Name=Varoom
 InternalName=VAROOM
@@ -24661,6 +24706,7 @@ BattlerEnemyY =
 BattlerAltitude =
 Evolutions=REVAVROOM,Level,40
 #-------------------------------
+BattlerAltitude=0
 [966]
 Name=Revavroom
 InternalName=REVAVROOM
@@ -24689,6 +24735,7 @@ BattlerEnemyY =
 BattlerAltitude =
 Evolutions =
 #-------------------------------
+BattlerAltitude=0
 [967]
 Name=Cyclizar
 InternalName=CYCLIZAR
@@ -24718,6 +24765,7 @@ BattlerEnemyY =
 BattlerAltitude =
 Evolutions =
 #-------------------------------
+BattlerAltitude=0
 [968]
 Name=Orthworm
 InternalName=ORTHWORM
@@ -24746,6 +24794,7 @@ BattlerEnemyY =
 BattlerAltitude =
 Evolutions =
 #-------------------------------
+BattlerAltitude=0
 [969]
 Name=Glimmet
 InternalName=GLIMMET
@@ -24775,6 +24824,7 @@ BattlerEnemyY =
 BattlerAltitude =
 Evolutions=GLIMMORA,Level,35
 #-------------------------------
+BattlerAltitude=0
 [970]
 Name=Glimmora
 InternalName=GLIMMORA
@@ -24803,6 +24853,7 @@ BattlerEnemyY =
 BattlerAltitude =
 Evolutions =
 #-------------------------------
+BattlerAltitude=0
 [971]
 Name=Greavard
 InternalName=GREAVARD
@@ -24831,6 +24882,7 @@ BattlerEnemyY =
 BattlerAltitude =
 Evolutions=HOUNDSTONE,LevelNight,30
 #-------------------------------
+BattlerAltitude=5
 [972]
 Name=Houndstone
 InternalName=HOUNDSTONE
@@ -24858,6 +24910,7 @@ BattlerEnemyY =
 BattlerAltitude =
 Evolutions =
 #-------------------------------
+BattlerAltitude=0
 [973]
 Name=Flamigo
 InternalName=FLAMIGO
@@ -24887,6 +24940,7 @@ BattlerEnemyY =
 BattlerAltitude =
 Evolutions =
 #-------------------------------
+BattlerAltitude=0
 [974]
 Name=Cetoddle
 InternalName=CETODDLE
@@ -24915,6 +24969,7 @@ BattlerEnemyY =
 BattlerAltitude =
 Evolutions=CETITAN,Item,ICESTONE
 #-------------------------------
+BattlerAltitude=2
 [975]
 Name=Cetitan
 InternalName=CETITAN
@@ -24942,6 +24997,7 @@ BattlerEnemyY =
 BattlerAltitude =
 Evolutions =
 #-------------------------------
+BattlerAltitude=0
 [976]
 Name=Veluza
 InternalName=VELUZA
@@ -24971,6 +25027,7 @@ BattlerEnemyY =
 BattlerAltitude =
 Evolutions =
 #-------------------------------
+BattlerAltitude=0
 [977]
 Name=Dondozo
 InternalName=DONDOZO
@@ -24999,6 +25056,7 @@ BattlerEnemyY =
 BattlerAltitude =
 Evolutions =
 #-------------------------------
+BattlerAltitude=2
 [978]
 Name=Tatsugiri
 InternalName=TATSUGIRI
@@ -25029,6 +25087,7 @@ BattlerEnemyY =
 BattlerAltitude =
 Evolutions =
 #-------------------------------
+BattlerAltitude=0
 [979]
 Name=Annihilape
 InternalName=ANNIHILAPE
@@ -25057,6 +25116,7 @@ BattlerEnemyY =
 BattlerAltitude =
 Evolutions =
 #-------------------------------
+BattlerAltitude=0
 [980]
 Name=Clodsire
 InternalName=CLODSIRE
@@ -25085,6 +25145,7 @@ BattlerEnemyY =
 BattlerAltitude =
 Evolutions =
 #-------------------------------
+BattlerAltitude=0
 [981]
 Name=Farigiraf
 InternalName=FARIGIRAF
@@ -25113,6 +25174,7 @@ BattlerEnemyY =
 BattlerAltitude =
 Evolutions =
 #-------------------------------
+BattlerAltitude=0
 [982]
 Name=Dudunsparce
 InternalName=DUDUNSPARCE
@@ -25141,6 +25203,7 @@ BattlerEnemyY =
 BattlerAltitude =
 Evolutions =
 #-------------------------------
+BattlerAltitude=0
 [983]
 Name=Kingambit
 InternalName=KINGAMBIT
@@ -25169,6 +25232,7 @@ BattlerEnemyY =
 BattlerAltitude =
 Evolutions =
 #-------------------------------
+BattlerAltitude=0
 [984]
 Name=Great Tusk
 InternalName=GREATTUSK
@@ -25197,6 +25261,7 @@ BattlerEnemyY =
 BattlerAltitude =
 Evolutions =
 #-------------------------------
+BattlerAltitude=0
 [985]
 Name=Scream Tail
 InternalName=SCREAMTAIL
@@ -25225,6 +25290,7 @@ BattlerEnemyY =
 BattlerAltitude =
 Evolutions =
 #-------------------------------
+BattlerAltitude=0
 [986]
 Name=Brute Bonnet
 InternalName=BRUTEBONNET
@@ -25253,6 +25319,7 @@ BattlerEnemyY =
 BattlerAltitude =
 Evolutions =
 #-------------------------------
+BattlerAltitude=0
 [987]
 Name=Flutter Mane
 InternalName=FLUTTERMANE
@@ -25281,6 +25348,7 @@ BattlerEnemyY =
 BattlerAltitude =
 Evolutions =
 #-------------------------------
+BattlerAltitude=2
 [988]
 Name=Slither Wing
 InternalName=SLITHERWING
@@ -25309,6 +25377,7 @@ BattlerEnemyY =
 BattlerAltitude =
 Evolutions =
 #-------------------------------
+BattlerAltitude=0
 [989]
 Name=Sandy Shocks
 InternalName=SANDYSHOCKS
@@ -25337,6 +25406,7 @@ BattlerEnemyY =
 BattlerAltitude =
 Evolutions =
 #-------------------------------
+BattlerAltitude=0
 [990]
 Name=Iron Treads
 InternalName=IRONTREADS
@@ -25365,6 +25435,7 @@ BattlerEnemyY =
 BattlerAltitude =
 Evolutions =
 #-------------------------------
+BattlerAltitude=0
 [991]
 Name=Iron Bundle
 InternalName=IRONBUNDLE
@@ -25393,6 +25464,7 @@ BattlerEnemyY =
 BattlerAltitude =
 Evolutions =
 #-------------------------------
+BattlerAltitude=0
 [992]
 Name=Iron Hands
 InternalName=IRONHANDS
@@ -25421,6 +25493,7 @@ BattlerEnemyY =
 BattlerAltitude =
 Evolutions =
 #-------------------------------
+BattlerAltitude=0
 [993]
 Name=Iron Jugulis
 InternalName=IRONJUGULIS
@@ -25449,6 +25522,7 @@ BattlerEnemyY =
 BattlerAltitude =
 Evolutions =
 #-------------------------------
+BattlerAltitude=0
 [994]
 Name=Iron Moth
 InternalName=IRONMOTH
@@ -25477,6 +25551,7 @@ BattlerEnemyY =
 BattlerAltitude =
 Evolutions =
 #-------------------------------
+BattlerAltitude=0
 [995]
 Name=Iron Thorns
 InternalName=IRONTHORNS
@@ -25505,6 +25580,7 @@ BattlerEnemyY =
 BattlerAltitude =
 Evolutions =
 #-------------------------------
+BattlerAltitude=0
 [996]
 Name=Frigibax
 InternalName=FRIGIBAX
@@ -25534,6 +25610,7 @@ BattlerEnemyY =
 BattlerAltitude =
 Evolutions=ARCTIBAX,Level,35
 #-------------------------------
+BattlerAltitude=0
 [997]
 Name=Arctibax
 InternalName=ARCTIBAX
@@ -25562,6 +25639,7 @@ BattlerEnemyY =
 BattlerAltitude =
 Evolutions=BAXCALIBUR,Level,54
 #-------------------------------
+BattlerAltitude=0
 [998]
 Name=Baxcalibur
 InternalName=BAXCALIBUR
@@ -25589,6 +25667,7 @@ BattlerPlayerY =
 BattlerEnemyY =
 BattlerAltitude =
 Evolutions =
+BattlerAltitude=0
 [999]
 Name=Gimmighoul
 InternalName=GIMMIGHOUL
@@ -25617,6 +25696,7 @@ BattlerEnemyY =
 BattlerAltitude =
 Evolutions=GHOLDENGO,GimmiCoin,999
 #-------------------------------
+BattlerAltitude=2
 [1000]
 Name=Gholdengo
 InternalName=GHOLDENGO
@@ -25644,6 +25724,7 @@ BattlerPlayerY =
 BattlerEnemyY =
 BattlerAltitude =
 Evolutions =
+BattlerAltitude=0
 [1001]
 Name=Wo-Chien
 InternalName=WOCHIEN

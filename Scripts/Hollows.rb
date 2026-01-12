@@ -116,12 +116,12 @@ end
 def pbConsumeGourmetTreatForHollow
   treat_id = getID(PBItems, PBHollow::GOURMET_TREAT)
   return false if !$PokemonBag.pbHasItem?(treat_id)
-  return false unless pbConfirmMessage(
+  return false unless Kernel.pbConfirmMessage(
     _INTL("Use a {1} to lure something out of the hollow?",
           PBItems.getName(treat_id))
   )
   $PokemonBag.pbDeleteItem(treat_id)
-  pbMessage(_INTL("\\me[Use item]{1} was used.", PBItems.getName(treat_id)))
+  Kernel.pbMessage(_INTL("\\me[Use item]{1} was used.", PBItems.getName(treat_id)))
   return true
 end
 
@@ -130,7 +130,7 @@ end
 def pbCanTriggerHollow?
   # Scent move takes priority and does NOT consume an item
   if pbHollowHasScentMove?
-    pbMessage(_INTL(
+    Kernel.pbMessage(_INTL(
       "A sweet scent from your party drifts into the hollow..."
     ))
     return true
@@ -138,14 +138,14 @@ def pbCanTriggerHollow?
 
   # Otherwise, see if we can use a Gourmet Treat
   if pbConsumeGourmetTreatForHollow
-    pbMessage(_INTL(
+    Kernel.pbMessage(_INTL(
       "You leave the treat by the hollow and wait..."
     ))
     return true
   end
 
-  pbMessage(_INTL(
-    "It feels like something is watching from inside...\n" \
+  Kernel.pbMessage(_INTL(
+    "It feels like something is watching from inside..." \
     "Maybe a special treat or a scented move would draw it out."
   ))
   return false
@@ -190,7 +190,7 @@ def pbStartHollow(hollow_id, map_id = nil)
 
   data = PBHollow.data_for(map_id, hollow_id)
   if !data
-    pbMessage(_INTL("This hollow seems empty..."))
+    Kernel.pbMessage(_INTL("This hollow seems empty..."))
     return false
   end
 
@@ -199,7 +199,7 @@ def pbStartHollow(hollow_id, map_id = nil)
 
   list = pbHollowEncounterListForTime(data)
   if !list || list.empty?
-    pbMessage(_INTL("Nothing answered your call..."))
+    Kernel.pbMessage(_INTL("Nothing answered your call..."))
     return false
   end
 
@@ -215,15 +215,15 @@ def pbStartHollow(hollow_id, map_id = nil)
     else
       $hollowEggMove = nil
     end
-    pbMessage(_INTL("Something bursts out of the hollow!"))
+    Kernel.pbMessage(_INTL("Something bursts out of the hollow!"))
     pbWildBattle(species_id, level)
     $hollowEggMove = nil
   when :item
     item_id = getID(PBItems, symbol)
-    pbMessage(_INTL("Something drops out of the hollow..."))
+    Kernel.pbMessage(_INTL("Something drops out of the hollow..."))
     pbReceiveItem(item_id)
   else
-    pbMessage(_INTL("The hollow rustles faintly, then goes quiet."))
+    Kernel.pbMessage(_INTL("The hollow rustles faintly, then goes quiet."))
   end
 
   return true
