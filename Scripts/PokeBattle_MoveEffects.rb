@@ -4459,10 +4459,12 @@ end
 ################################################################################
 # Power is doubled if a foe tries to switch out.
 # (Handled in Battle's pbAttackPhase): Makes this attack happen before switching.
+# Run Away is immune to the damage doubling.
 ################################################################################
 class PokeBattle_Move_088 < PokeBattle_Move
   def pbBaseDamage(basedmg,attacker,opponent)
-    if @battle.switching
+    # Run Away is immune to Pursuit's damage doubling
+    if @battle.switching && !opponent.hasWorkingAbility(:RUNAWAY)
       return basedmg*2
     end
     return basedmg

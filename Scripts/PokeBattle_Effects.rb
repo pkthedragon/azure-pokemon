@@ -596,6 +596,12 @@ end
       @battle.pbDisplay(_INTL("But it failed!")) if showMessages
       return false
     end
+    # Oblivious prevents confusion
+    if hasWorkingAbility(:OBLIVIOUS) && !(self.moldbroken)
+      @battle.pbDisplay(_INTL("{1}'s {2} prevents confusion!",pbThis,
+         PBAbilities.getName(self.ability))) if showMessages
+      return false
+    end
     if $fefieldeffect == 20 && pbHasType?(:FIGHTING)
       @battle.pbDisplay(_INTL("{1} broke through the confusion!",pbThis)) if showMessages
       return false
