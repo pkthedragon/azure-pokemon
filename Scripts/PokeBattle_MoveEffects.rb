@@ -988,7 +988,7 @@ class PokeBattle_Move_01B < PokeBattle_Move
       (attacker.status==PBStatuses::POISON && !opponent.pbCanPoison?(false)) ||
       (attacker.status==PBStatuses::BURN && !opponent.pbCanBurn?(false)) ||
       (attacker.status==PBStatuses::FROZEN && !opponent.pbCanFreeze?(false)) ||
-      (attacker.status==PBStatuses::PETRIFIED && !opponent.pbCanPetrify?(false))    
+      (attacker.status==PBStatuses::CRUSHED && !opponent.pbCanCrush?(false))    
       @battle.pbDisplay(_INTL("But it failed!"))
       return -1
     end
@@ -1042,11 +1042,11 @@ class PokeBattle_Move_01B < PokeBattle_Move
         @battle.synchronize=[-1,-1,0] if opponent.status!=PBStatuses::FROZEN
         attacker.status=0
         @battle.pbDisplay(_INTL("{1} was defrosted.",attacker.pbThis))
-      when PBStatuses::PETRIFIED
-        opponent.pbPetrify(attacker)
+      when PBStatuses::CRUSHED
+        opponent.pbCrush(attacker)
         @battle.pbDisplay(_INTL("{1} was crushed!",opponent.pbThis))
         opponent.pbAbilityCureCheck
-        @battle.synchronize=[-1,-1,0] if opponent.status!=PBStatuses::PETRIFIED
+        @battle.synchronize=[-1,-1,0] if opponent.status!=PBStatuses::CRUSHED
         attacker.status=0
         @battle.pbDisplay(_INTL("{1} was cured.",attacker.pbThis))    
     end
@@ -4509,8 +4509,8 @@ class PokeBattle_Move_08C < PokeBattle_Move
   end
   
    def pbAdditionalEffect(attacker,opponent)
-    return false if !opponent.pbCanPetrify?(false) || isConst?(@id,PBMoves,:WRINGOUT)
-    opponent.pbPetrify(attacker)
+    return false if !opponent.pbCanCrush?(false) || isConst?(@id,PBMoves,:WRINGOUT)
+    opponent.pbCrush(attacker)
     @battle.pbDisplay(_INTL("{1} was crushed!",opponent.pbThis))
     return true
   end 
@@ -8644,8 +8644,8 @@ class PokeBattle_Move_0FX < PokeBattle_Move
   end
 
   def pbAdditionalEffect(attacker,opponent)
-    return false if !opponent.pbCanPetrify?(false)
-    opponent.pbPetrify(attacker)
+    return false if !opponent.pbCanCrush?(false)
+    opponent.pbCrush(attacker)
     @battle.pbDisplay(_INTL("{1} was crushed!",opponent.pbThis))
     return true
   end
@@ -12267,19 +12267,19 @@ end
 class PokeBattle_Move_200 < PokeBattle_Move
   def pbEffect(attacker,opponent,hitnum=0,alltargets=nil,showanimation=true)
     return super(attacker,opponent,hitnum,alltargets,showanimation) if @basedamage>0
-    return -1 if !opponent.pbCanPetrify?(true)
+    return -1 if !opponent.pbCanCrush?(true)
     pbShowAnimation(@id,attacker,opponent,hitnum,alltargets,showanimation)
-    opponent.pbPetrify(attacker)
-    @battle.pbDisplay(_INTL("{1} is petrified!",opponent.pbThis))
-    opponent.effects[PBEffects::Petrification]=attacker.index
+    opponent.pbCrush(attacker)
+    @battle.pbDisplay(_INTL("{1} is crushed!",opponent.pbThis))
+    opponent.effects[PBEffects::Crushing]=attacker.index
     return 0
   end
   
   def pbAdditionalEffect(attacker,opponent)
-    return false if !opponent.pbCanPetrify?(false)
-    opponent.pbPetrify(attacker)
-    @battle.pbDisplay(_INTL("{1} was petrified!!",opponent.pbThis))
-    opponent.effects[PBEffects::Petrification]=attacker.index
+    return false if !opponent.pbCanCrush?(false)
+    opponent.pbCrush(attacker)
+    @battle.pbDisplay(_INTL("{1} was crushed!!",opponent.pbThis))
+    opponent.effects[PBEffects::Crushing]=attacker.index
     return true
   end
 end
@@ -13684,8 +13684,8 @@ class PokeBattle_Move_294 < PokeBattle_Move
     @battle.pbDisplay(_INTL("{1} was trapped!",opponent.pbThis))
     return trueF
   elsif isConst?(@id,PBMoves,:HORNDRILL)
-    if opponent.pbCanPetrify?(false)
-    opponent.pbPetrify
+    if opponent.pbCanCrush?(false)
+    opponent.pbCrush
     @battle.pbDisplay(_INTL("{1} was crushed!",opponent.pbThis))
     return true
     end
@@ -13726,16 +13726,16 @@ end
 class PokeBattle_Move_295 < PokeBattle_Move
   def pbEffect(attacker,opponent,hitnum=0,alltargets=nil,showanimation=true)
     return super(attacker,opponent,hitnum,alltargets,showanimation) if @basedamage>0
-    return -1 if !opponent.pbCanPetrify?(true)
+    return -1 if !opponent.pbCanCrush?(true)
     pbShowAnimation(@id,attacker,opponent,hitnum,alltargets,showanimation)
-    opponent.pbPetrify(attacker)
+    opponent.pbCrush(attacker)
     @battle.pbDisplay(_INTL("{1} is crushed!",opponent.pbThis))
     return 0
   end
   
   def pbAdditionalEffect(attacker,opponent)
-    return false if !opponent.pbCanPetrify?(false)
-    opponent.pbPetrify(attacker)
+    return false if !opponent.pbCanCrush?(false)
+    opponent.pbCrush(attacker)
     @battle.pbDisplay(_INTL("{1} was crushed!",opponent.pbThis))
     return true
   end
@@ -14117,8 +14117,8 @@ end
 class PokeBattle_Move_297 < PokeBattle_Move
   def pbAdditionalEffect(attacker,opponent)
     hadeffect=false
-    if @battle.pbRandom(10)==0 && opponent.pbCanPetrify?(true)
-      opponent.pbPetrify(attacker)
+    if @battle.pbRandom(10)==0 && opponent.pbCanCrush?(true)
+      opponent.pbCrush(attacker)
       @battle.pbDisplay(_INTL("{1} was crushed!",opponent.pbThis))
       hadeffect=true
     end
@@ -14334,8 +14334,8 @@ class PokeBattle_Move_28E < PokeBattle_Move
       opponent.pbBurn(attacker)
       @battle.pbDisplay(_INTL("{1} was burned!",opponent.pbThis))
     when 2   # Autumn – crush
-      return false if !opponent.pbCanPetrify?(attacker,false)
-      opponent.pbPetrify(attacker)
+      return false if !opponent.pbCanCrush?(attacker,false)
+      opponent.pbCrush(attacker)
       @battle.pbDisplay(_INTL("{1} was crushed!",opponent.pbThis))
     when 3   # Winter – freeze
       return false if !opponent.pbCanFreeze?(attacker,false)

@@ -458,13 +458,13 @@ class PokeBattle_Battler
 #===============================================================================
 # Crushing
 #===============================================================================
-def pbCanPetrify?(showMessages=true)
+def pbCanCrush?(showMessages=true)
   return false if isFainted?
   if hasWorkingItem(:PRESSURESUIT)
     @battle.pbDisplay(_INTL("{1}'s suit prevented crushing!",pbThis)) if showMessages
     return false
   end
-  if status==PBStatuses::PETRIFIED
+  if status==PBStatuses::CRUSHED
     @battle.pbDisplay(_INTL("{1} is already crushed!",pbThis)) if showMessages
     return false
   end
@@ -495,17 +495,17 @@ def pbCanPetrify?(showMessages=true)
   return true
 end
 
-def pbCanPetrifySynchronize?(opponent)
+def pbCanCrushSynchronize?(opponent)
   return false            
 end
 
-def pbPetrify(attacker)
-  self.status=PBStatuses::PETRIFIED
+def pbCrush(attacker)
+  self.status=PBStatuses::CRUSHED
   self.statusCount=0
   if self.index!=attacker.index
     @battle.synchronize[0]=self.index
     @battle.synchronize[1]=attacker.index
-    @battle.synchronize[2]=PBStatuses::PETRIFIED
+    @battle.synchronize[2]=PBStatuses::CRUSHED
   end
 end
 

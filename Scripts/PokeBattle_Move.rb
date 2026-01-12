@@ -1421,6 +1421,8 @@ class PokeBattle_Move
        opponent.hasWorkingAbility(:NOGUARD)
       return true
     end
+    # Blinded targets are always hit
+    return true if opponent.effects[PBEffects::Blinded]>0
     return true if opponent.effects[PBEffects::Telekinesis]>0
     return true if $fefieldeffect == 50 && id == PBMoves::FOCUSBLAST
     return true if @function==0x0D && @battle.pbWeather==PBWeather::HAIL # Blizzard
@@ -1653,7 +1655,8 @@ class PokeBattle_Move
       attacker.effects[PBEffects::LaserFocus]-=1
       return true
     end
-  return true if opponent.effects[PBEffects::Attract]>0
+    # Infatuated Pokemon are always critically hit
+    return true if opponent.effects[PBEffects::Attract]>=0
     return true if @function==0xA0 # Frost Breath
     return true if @function==0x26D # Lucky Star
     return true if @function==0x202 && attacker.hp<=((attacker.totalhp)*0.5).floor
@@ -1790,6 +1793,8 @@ class PokeBattle_Move
     opponent.damagestate.calcdamage=0
     opponent.damagestate.hplost=0
     opponent.damagestate.partialhit = false
+    # Grazing blow - half damage when accuracy check failed
+    opponent.damagestate.partialhit = true if attacker.grazed
     return 0 if @basedamage==0
     if (options&NOCRITICAL)==0
       opponent.damagestate.critical=pbIsCritical?(attacker,opponent)
@@ -5053,7 +5058,7 @@ class PokeBattle_Move
       damage=(damage*0.5).round
     end
   # Crush
-    if opponent.status==PBStatuses::PETRIFIED
+    if opponent.status==PBStatuses::CRUSHED
     if opponent.damagestate.critical
       damage=(damage*2).round
     else
@@ -5366,8 +5371,8 @@ class PokeBattle_Move
 	      end
 	      if damage>0 && attacker && attacker.hasWorkingItem(:STEELWHIP) &&
 	         PBStuff::WHIPMOVE.include?(self.id) && !opponent.damagestate.substitute
-	        if opponent.pbCanPetrify?(false)
-	          opponent.pbPetrify(attacker)
+	        if opponent.pbCanCrush?(false)
+	          opponent.pbCrush(attacker)
 	          @battle.pbDisplay(_INTL("{1} was crushed by the steel whip!",opponent.pbThis))
 	        end
 	      end

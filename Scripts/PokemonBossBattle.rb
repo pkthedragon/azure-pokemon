@@ -555,7 +555,7 @@ class PokeBattle_Battle
     end
     animplay = false
     negativeEffects = [PBEffects::Curse,PBEffects::GastroAcid,PBEffects::Imprison,PBEffects::Nightmare,PBEffects::TarShot,PBEffects::SmackDown,PBEffects::Encore,PBEffects::ThroatChop,
-    PBEffects::HealBlock,PBEffects::Octolock,PBEffects::MultiTurn,PBEffects::LeechSeed,PBEffects::Petrification,PBEffects::Attract,PBEffects::MultiTurnUser,PBEffects::Torment,PBEffects::Taunt,PBEffects::Confusion]
+    PBEffects::HealBlock,PBEffects::Octolock,PBEffects::MultiTurn,PBEffects::LeechSeed,PBEffects::Crushing,PBEffects::Attract,PBEffects::MultiTurnUser,PBEffects::Torment,PBEffects::Taunt,PBEffects::Confusion]
     if onBreakdata[:effectClear]
       for i in negativeEffects
         if [PBEffects::Curse,PBEffects::GastroAcid,PBEffects::Imprison,PBEffects::Nightmare,PBEffects::TarShot,PBEffects::SmackDown,PBEffects::Octolock,PBEffects::Torment].include?(i)
@@ -576,7 +576,7 @@ class PokeBattle_Battle
             animplay = true
           end
         end
-        if [PBEffects::LeechSeed,PBEffects::Petrification,PBEffects::Attract,PBEffects::MultiTurnUser].include?(i)
+        if [PBEffects::LeechSeed,PBEffects::Crushing,PBEffects::Attract,PBEffects::MultiTurnUser].include?(i)
           if battler.effects[i] != -1          
             battler.effects[i] = -1
             animplay = true

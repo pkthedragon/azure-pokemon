@@ -142,7 +142,7 @@ begin
     DesertsMark       = 147
     WillMega          = 148
     WorldOfNightmares = 149
-    Petrification     = 150
+    Crushing          = 150
     FeverPitch        = 151
     Attacking         = 152
     AttackingTarget   = 153
