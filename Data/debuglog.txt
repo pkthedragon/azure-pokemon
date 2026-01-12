@@ -1280,3 +1280,229 @@ Not using an item.
 [No Z-Move.]
 [Fuecoco lost 3 HP, now has 13 HP]
 [The foe Purrloin lost 3 HP, now has 0 HP]
+==============================
+Battle Start!
+179 - Kara
+==============================
+***Round 1***
+AI Pokemon Buneary is faster than Ozzie.
+Defense Curl: initial score: 10
+[Not preferring status move]
+Defense Curl: final score: 1
+ 
+Splash: initial score: 1
+[Not preferring status move]
+Splash: final score: 0
+ 
+Pound: initial score: 33
+Pound: final score: 33
+ 
+Foresight: initial score: 5
+[Not preferring status move]
+Foresight: final score: 4
+ 
+Beginning AI Item use check.
+ 
+Highest item score: -10000
+Highest move score: 33
+Not using an item.
+ 
+[The foe Buneary: Defense Curl=1, Splash=0, Pound=33, Foresight=4]
+[Prefer Pound]
+[No Z-Move.]
+[Ozzie lost 7 HP, now has 14 HP]
+[The foe Buneary lost 7 HP, now has 14 HP]
+***Round 2***
+AI Pokemon Buneary is faster than Ozzie.
+Defense Curl: initial score: 10
+[Not preferring status move]
+Defense Curl: final score: 1
+ 
+Splash: initial score: 1
+[Not preferring status move]
+Splash: final score: 0
+ 
+Pound: initial score: 50
+Pound: final score: 50
+ 
+Foresight: initial score: 5
+[Not preferring status move]
+Foresight: final score: 4
+ 
+Beginning AI Item use check.
+ 
+Highest item score: -10000
+Highest move score: 50
+Not using an item.
+ 
+[The foe Buneary: Defense Curl=1, Splash=0, Pound=50, Foresight=4]
+[Prefer Pound]
+[No Z-Move.]
+[Ozzie lost 7 HP, now has 7 HP]
+[The foe Buneary lost 7 HP, now has 7 HP]
+***Round 3***
+AI Pokemon Buneary is faster than Ozzie.
+Defense Curl: initial score: 10
+[Not preferring status move]
+Defense Curl: final score: 1
+ 
+Splash: initial score: 1
+[Not preferring status move]
+Splash: final score: 0
+ 
+Pound: initial score: 100
+[Preferring damaging move]
+Pound: final score: 72
+ 
+Foresight: initial score: 5
+[Not preferring status move]
+Foresight: final score: 4
+ 
+Beginning AI Item use check.
+ 
+Highest item score: -10000
+Highest move score: 72
+Not using an item.
+ 
+[The foe Buneary: Defense Curl=1, Splash=0, Pound=72, Foresight=4]
+[Prefer Pound]
+[No Z-Move.]
+[Ozzie lost 7 HP, now has 0 HP]
+==============================
+Battle Start!
+205 - Haden
+==============================
+***Round 1***
+AI Pokemon Purrloin is faster than Ozzie.
+Scratch: initial score: 14
+Scratch: final score: 14
+ 
+Growl: initial score: 10
+Priority Check End
+Growl: final score: 0
+ 
+Beginning AI Item use check.
+ 
+Highest item score: -10000
+Highest move score: 14
+Not using an item.
+ 
+[The foe Purrloin: Scratch=14, Growl=0]
+[Prefer Scratch]
+[No Z-Move.]
+[Ozzie lost 3 HP, now has 18 HP]
+[The foe Purrloin lost 8 HP, now has 11 HP]
+***Round 2***
+AI Pokemon Purrloin is faster than Ozzie.
+Scratch: initial score: 16
+Scratch: final score: 16
+ 
+Growl: initial score: 10
+Priority Check End
+Growl: final score: 0
+ 
+Beginning AI Item use check.
+ 
+Highest item score: -10000
+Highest move score: 16
+Not using an item.
+ 
+[The foe Purrloin: Scratch=16, Growl=0]
+[Prefer Scratch]
+[No Z-Move.]
+[Ozzie lost 3 HP, now has 15 HP]
+[The foe Purrloin lost 8 HP, now has 3 HP]
+***Round 3***
+AI Pokemon Purrloin is faster than Ozzie.
+Scratch: initial score: 20
+Scratch: final score: 13
+ 
+Growl: initial score: 10
+Priority Check End
+Growl: final score: 0
+ 
+Beginning AI Item use check.
+ 
+Highest item score: -10000
+Highest move score: 13
+Not using an item.
+ 
+[The foe Purrloin: Scratch=13, Growl=0]
+[Prefer Scratch]
+[No Z-Move.]
+[Ozzie lost 2 HP, now has 13 HP]
+[The foe Purrloin lost 3 HP, now has 0 HP]
+==============================
+Battle Start!
+Wild Battle
+==============================
+***Round 1***
+==============================
+Battle Start!
+Wild Battle
+==============================
+***Round 1***
+==============================
+Battle Start!
+205 - Haden
+==============================
+***Round 1***
+AI Pokemon Purrloin is faster than Ozzie.
+Scratch: initial score: 14
+Scratch: final score: 14
+ 
+Growl: initial score: 10
+Priority Check End
+Growl: final score: 0
+ 
+Beginning AI Item use check.
+ 
+Highest item score: -10000
+Highest move score: 14
+Not using an item.
+ 
+[The foe Purrloin: Scratch=14, Growl=0]
+[Prefer Scratch]
+[No Z-Move.]
+[Ozzie lost 3 HP, now has 18 HP]
+[The foe Purrloin lost 8 HP, now has 11 HP]
+***Round 2***
+AI Pokemon Purrloin is faster than Ozzie.
+Scratch: initial score: 16
+Scratch: final score: 16
+ 
+Growl: initial score: 10
+Priority Check End
+Growl: final score: 0
+ 
+Beginning AI Item use check.
+ 
+Highest item score: -10000
+Highest move score: 16
+Not using an item.
+ 
+[The foe Purrloin: Scratch=16, Growl=0]
+[Prefer Scratch]
+[No Z-Move.]
+[Ozzie lost 3 HP, now has 15 HP]
+[The foe Purrloin lost 8 HP, now has 3 HP]
+***Round 3***
+AI Pokemon Purrloin is faster than Ozzie.
+Scratch: initial score: 20
+Scratch: final score: 13
+ 
+Growl: initial score: 10
+Priority Check End
+Growl: final score: 0
+ 
+Beginning AI Item use check.
+ 
+Highest item score: -10000
+Highest move score: 13
+Not using an item.
+ 
+[The foe Purrloin: Scratch=13, Growl=0]
+[Prefer Scratch]
+[No Z-Move.]
+[Ozzie lost 2 HP, now has 13 HP]
+[The foe Purrloin lost 3 HP, now has 0 HP]

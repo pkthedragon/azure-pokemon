@@ -365,7 +365,7 @@ def self.getName(id)
 return pbGetMessage(MessageTypes::Abilities,id)
 end
 def self.getCount
-return 360
+return 361
 end
 
 def self.maxValue

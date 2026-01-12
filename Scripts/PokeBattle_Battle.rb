@@ -5606,7 +5606,7 @@ def pbStartBattle(canlose=false)
             # Apply additional effects
             addleffect = move.addlEffect
             addleffect *= 2 if i.hasWorkingAbility(:SERENEGRACE)
-            if @pbRandom(100) < addleffect
+            if pbRandom(100) < addleffect
               move.pbAdditionalEffect(i,target)
             end
           end
