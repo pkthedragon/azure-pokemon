@@ -41,11 +41,8 @@ module OverworldShadows
 
   NO_SHADOW_IF_EVENT_NAME_HAS = [
     # I like to use "extensions" like these. Up to you though.
-    ".shadowless",
-    ".noshadow",
-    ".sl",
-    "Door",
-    "Stairs"
+    "Shrine",
+	"Hollow",
   ].freeze
 
   # Events that have this in their event name will always receive a shadow.
@@ -204,7 +201,7 @@ class Sprite_Character
       page = OverworldShadows.active_event_page(@character)
       if @old_page != page
         dispose_shadow
-        if page && @character.character_name.to_s != "" &&
+        if page && !@character.character_name.to_s.empty? &&
            OverworldShadows.should_get_shadow?(@character)
           make_shadow
         end

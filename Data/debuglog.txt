@@ -1088,3 +1088,134 @@ Battle Start!
 Wild Battle
 ==============================
 ***Round 1***
+==============================
+Battle Start!
+Wild Battle
+==============================
+***Round 1***
+[The wild Wiglett: Water Gun=100, Sand Attack=200, Mud-Slap=100, Memento=100]
+If this battle is not wild, something has gone wrong in scoring moves (no preference chosen).
+[Fuecoco lost 16 HP, now has 5 HP]
+[The wild Wiglett lost 12 HP, now has 4 HP]
+[The wild Wiglett lost 2 HP, now has 2 HP]
+***Round 2***
+[The wild Wiglett: Water Gun=200, Sand Attack=100, Mud-Slap=100, Memento=100]
+If this battle is not wild, something has gone wrong in scoring moves (no preference chosen).
+[The wild Wiglett lost 2 HP, now has 0 HP]
+==============================
+Battle Start!
+Wild Battle
+==============================
+***Round 1***
+==============================
+Battle Start!
+Wild Battle
+==============================
+***Round 1***
+==============================
+Battle Start!
+Wild Battle
+==============================
+***Round 1***
+==============================
+Battle Start!
+Wild Battle
+==============================
+***Round 1***
+[The wild Clobbopus: Rock Smash=100, Leer=200, Feint=100, Soak=100]
+If this battle is not wild, something has gone wrong in scoring moves (no preference chosen).
+***Round 2***
+==============================
+Battle Start!
+Wild Battle
+==============================
+***Round 1***
+[The wild Clobbopus: Rock Smash=100, Leer=200, Feint=100, Soak=100]
+If this battle is not wild, something has gone wrong in scoring moves (no preference chosen).
+[Fuecoco lost 3 HP, now has 4 HP]
+***Round 2***
+==============================
+Battle Start!
+Wild Battle
+==============================
+***Round 1***
+[The wild Krabby: Clamp=100, Bubble=200, Vice Grip=100, Agility=100]
+If this battle is not wild, something has gone wrong in scoring moves (no preference chosen).
+[Fuecoco lost 7 HP, now has 0 HP]
+**Exception: undefined method `effects' for -1:Integer
+["PokeBattle_Battler:2092:in `pbFaint'", "PokeBattle_Battler:6683:in `pbProcessMoveAgainstTarget'", "PokeBattle_Battler:7267:in `block in pbUseMove'", "PokeBattle_Battler:7178:in `loop'", "PokeBattle_Battler:7178:in `pbUseMove'", "PokeBattle_Battler:8567:in `block in pbProcessTurn'", "PBDebug:4:in `logonerr'", "PokeBattle_Battler:8566:in `pbProcessTurn'", "PokeBattle_Battle:5743:in `block in pbAttackPhase'", "PokeBattle_Battle:5742:in `each'", "PokeBattle_Battle:5742:in `pbAttackPhase'", "PokeBattle_Battle:5305:in `block (2 levels) in pbStartBattleCore'", "PBDebug:4:in `logonerr'", "PokeBattle_Battle:5304:in `block in pbStartBattleCore'", "PokeBattle_Battle:5288:in `loop'", "PokeBattle_Battle:5288:in `pbStartBattleCore'", "PokeBattle_Battle:4894:in `pbStartBattle'", "PokemonField:1162:in `block (2 levels) in pbWildBattle'", "PokemonField:706:in `pbSceneStandby'", "PokemonField:1161:in `block in pbWildBattle'", "PokemonField:1008:in `pbBattleAnimation'", "PokemonField:1160:in `pbWildBattle'", "Hollows:219:in `pbStartHollow'", "(eval):1:in `pbExecuteScript'", "Interpreter:243:in `eval'", "Interpreter:243:in `pbExecuteScript'", "Interpreter:1611:in `command_355'", "Interpreter:499:in `execute_command'", "Interpreter:193:in `block in update'", "Interpreter:106:in `loop'", "Interpreter:106:in `update'", "Autosave:30:in `block in update'", "Autosave:28:in `loop'", "Autosave:28:in `update'", "Scene_Map:72:in `block in main'", "Scene_Map:69:in `loop'", "Scene_Map:69:in `main'", "Main:79:in `mainFunctionDebug'", "Main:53:in `block in mainFunction'", "Compiler:38:in `pbCriticalCode'", "Main:53:in `mainFunction'", "Main:89:in `block (2 levels) in <main>'", "Main:88:in `loop'", "Main:88:in `block in <main>'", "Section000:336:in `eval'", "Section000:336:in `block in <main>'", "Section000:333:in `each'", "Section000:333:in `each_with_index'", "Section000:333:in `<main>'", "-e:in `eval'"]
+==============================
+Battle Start!
+Wild Battle
+==============================
+***Round 1***
+[The wild Sandygast: Harden=200, Absorb=100]
+If this battle is not wild, something has gone wrong in scoring moves (no preference chosen).
+[The wild Sandygast lost 13 HP, now has 3 HP]
+***Round 2***
+[The wild Sandygast: Harden=100, Absorb=200]
+If this battle is not wild, something has gone wrong in scoring moves (no preference chosen).
+[The wild Sandygast lost 3 HP, now has 0 HP]
+==============================
+Battle Start!
+205 - Haden
+==============================
+***Round 1***
+Player Pokemon Fuecoco is faster than Purrloin.
+Scratch: initial score: 12
+Scratch: final score: 12
+ 
+Growl: initial score: 10
+Priority Check End
+Growl: final score: 0
+ 
+Beginning AI Item use check.
+ 
+Highest item score: -10000
+Highest move score: 12
+Not using an item.
+ 
+[The foe Purrloin: Scratch=12, Growl=0]
+[Prefer Scratch]
+[No Z-Move.]
+[The foe Purrloin lost 8 HP, now has 11 HP]
+[Fuecoco lost 3 HP, now has 21 HP]
+***Round 2***
+Player Pokemon Fuecoco is faster than Purrloin.
+Scratch: initial score: 14
+Scratch: final score: 14
+ 
+Growl: initial score: 10
+Priority Check End
+Growl: final score: 0
+ 
+Beginning AI Item use check.
+ 
+Highest item score: -10000
+Highest move score: 14
+Not using an item.
+ 
+[The foe Purrloin: Scratch=14, Growl=0]
+[Prefer Scratch]
+[No Z-Move.]
+[Fuecoco lost 2 HP, now has 19 HP]
+[The foe Purrloin lost 8 HP, now has 3 HP]
+***Round 3***
+Player Pokemon Fuecoco is faster than Purrloin.
+Scratch: initial score: 15
+Scratch: final score: 9
+ 
+Growl: initial score: 10
+Priority Check End
+Growl: final score: 0
+ 
+Beginning AI Item use check.
+ 
+Highest item score: -10000
+Highest move score: 9
+Not using an item.
+ 
+[The foe Purrloin: Scratch=9, Growl=0]
+[Prefer Scratch]
+[No Z-Move.]
+[The foe Purrloin lost 3 HP, now has 0 HP]

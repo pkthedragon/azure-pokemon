@@ -323,6 +323,8 @@ def pbMissingTrainer(trainerid, trainername, trainerparty)
   end
 end
 
+# Rematch code
+
 BOSS_TRAINER_REMATCHES = [
   # Example:
   # pbTrainerRematchKey(:LEADER_Brock,"Brock",0,"single")
@@ -387,7 +389,7 @@ end
 
 def pbTrainerRematchListMenu(rematches, title)
   if rematches.empty?
-    Kernel.pbMessage(_INTL("There are no {1} available for rematches.",title))
+    Kernel.pbMessage(_INTL("There are no {1} in your memory.",title))
     return
   end
   commands=[]
@@ -420,7 +422,7 @@ def pbTrainerRematchMenu
   rematches=($PokemonGlobal) ? $PokemonGlobal.trainerRematches : nil
   rematches=[] if !rematches
   if rematches.empty?
-    Kernel.pbMessage(_INTL("There are no trainers available for rematches."))
+    Kernel.pbMessage(_INTL("You can't seem to recall."))
     return
   end
   boss_rematches=[]

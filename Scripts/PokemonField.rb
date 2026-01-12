@@ -2249,9 +2249,9 @@ def Kernel.pbStartOver(gameover=false)
   $game_variables[708]=0
   if $PokemonGlobal.pokecenterMapId && $PokemonGlobal.pokecenterMapId>=0
     if gameover
-      Kernel.pbMessage(_INTL("\\w[]\\wm\\c[8]\\l[3]After the unfortunate defeat, {1} scurried to safety.",$Trainer.name))
+      Kernel.pbMessage(_INTL("\\w[]\\wm\\c[8]\\l[3]Not yet, {1}.",$Trainer.name))
     else
-      Kernel.pbMessage(_INTL("\\w[]\\wm\\c[8]\\l[3]{1} scurried to safety, protecting the exhausted and fainted Pokémon from further harm.",$Trainer.name))
+      Kernel.pbMessage(_INTL("\\w[]\\wm\\c[8]\\l[3]Not yet, {1}.",$Trainer.name))
     end
     Kernel.pbCancelVehicles
     pbRemoveDependencies()

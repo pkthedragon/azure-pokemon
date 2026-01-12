@@ -3612,22 +3612,60 @@ def pbItemMenu(index)
   ret=0
   retindex=-1
   pkmnid=-1
-  oldsprites=pbFadeOutAndHide(@sprites)
   belt_items=pbBattleBeltItems
-  if belt_items.empty?
-    pbDisplayMessage(_INTL("No belt items are available!"))
-    pbFadeInAndShow(@sprites,oldsprites)
-    return [ret,retindex]
+  pickBallFromBag = proc do
+    return 0 if !$PokemonBag
+    balls = []
+    # Scan all pockets for Poké Balls (simple + compatible with your bag structure)
+    for pocket in $PokemonBag.pockets
+      next if !pocket
+      for slot in pocket
+        next if !slot
+        itm = slot[0]
+        qty = slot[1]
+        next if !itm || qty.to_i <= 0
+        next if !pbIsPokeBall?(itm)
+        balls << itm
+      end
+    end
+    balls.uniq!
+    return 0 if balls.empty?
+    cmds = balls.map { |itm| _INTL("{1} (x{2})", PBItems.getName(itm), $PokemonBag.pbQuantity(itm)) }
+    cmds << _INTL("Cancel")
+    c = pbShowCommands(_INTL("Choose a Poké Ball."), cmds, cmds.length - 1)
+    return 0 if c < 0 || c >= balls.length
+    return balls[c]
   end
+#  if belt_items.empty?
+#    pbDisplayMessage(_INTL("No belt items are available!"))
+#    pbFadeInAndShow(@sprites,oldsprites)
+#    return [ret,retindex]
+#  end
   loop do
     belt_items=pbBattleBeltItems
-    if belt_items.empty?
-      pbDisplayMessage(_INTL("No belt items are available!"))
-      break
-    end
-    commands=belt_items.map { |itm| _INTL("{1} (x{2})",PBItems.getName(itm),$PokemonBag.pbQuantity(itm)) }
-    commands.push(_INTL("Cancel"))
-    choice=pbShowCommands(_INTL("Choose an item."),commands,commands.length-1)
+#    if belt_items.empty?
+#      pbDisplayMessage(_INTL("No belt items are available!"))
+#      break
+#    end
+	commands = belt_items.map { |itm| _INTL("{1} (x{2})", PBItems.getName(itm), $PokemonBag.pbQuantity(itm)) }
+	commands << _INTL("Poké Balls")
+	commands << _INTL("Cancel")
+	choice = pbShowCommands(_INTL("Choose an item."), commands, commands.length - 1)
+	# "Poké Balls" entry
+	if choice == belt_items.length
+		ball = pickBallFromBag.call
+		next if ball == 0
+		if $game_switches[1493] && (@battle.opponent || @battle.isBossBattle?)
+			pbDisplayMessage(_INTL("You can't use items."))
+			next
+		end
+		if ItemHandlers.hasBattleUseOnBattler(ball)
+			ret = ball
+			retindex = index
+			break
+		end
+		next
+	end	
     break if choice<0 || choice>=belt_items.length
     item=belt_items[choice]
     next if $PokemonBag.pbQuantity(item)<=0
@@ -3661,30 +3699,34 @@ def pbItemMenu(index)
         pkmnlist.pbEndScene
       end
     elsif (usetype==2 || usetype==4)
-      if ($game_variables[:Difficulty_Mode]==2 && $game_switches[1493]) && (@battle.opponent || @battle.isBossBattle?)
+      if $game_switches[1493] && (@battle.opponent || @battle.isBossBattle?)
         if pbIsPokeBall?(item)
-          if ItemHandlers.hasBattleUseOnBattler(item)
-            ret=item
-            retindex=index
-            break
-          end
-        else
-          pbDisplayMessage(_INTL("Use of items in trainer battles is not allowed on Intense mode."))
-        end
-      else
-        if ItemHandlers.hasBattleUseOnBattler(item)
-          ret=item
-          retindex=index
-          break
+          pbDisplayMessage(_INTL("You can't use items."))
+		  next
         end
       end
+	  if pbIsPokeBall?(item)
+		ret = item
+		retindex = index
+        break
+      end
+	  if ItemHandlers.hasBattleUseOnBattler(item)
+		ret = item
+		retindex = index
+		break
+	  end	  
     end
   end
   if ret > 0
-    pbConsumeItemInBattle($PokemonBag,ret) 
+    if !pbIsPokeBall?(ret)
+      pbConsumeItemInBattle($PokemonBag, ret)
+    end
     pbCleanupItemBelt
   end
-  pbFadeInAndShow(@sprites,oldsprites)
+  pbShowWindow(BLANK)
+  pbSetMessageMode(false)
+  pbShowWindow(BLANK)
+  pbSetMessageMode(false)
   return [ret,retindex]
 end
 

@@ -2,14 +2,15 @@
 # The Bag.
 ################################################################################
 def pbEnsureItemBelt
-  $PokemonGlobal.itemBelt ||= [nil,nil,nil,nil] if $PokemonGlobal
-  return $PokemonGlobal ? $PokemonGlobal.itemBelt : [nil,nil,nil,nil]
+  $PokemonGlobal.itemBelt ||= [nil,nil,nil] if $PokemonGlobal
+  return $PokemonGlobal ? $PokemonGlobal.itemBelt : [nil,nil,nil]
 end
 
 def pbBeltAssignableItem?(item)
   item=getID(PBItems,item) if item.is_a?(Symbol) || item.is_a?(String)
   return false if !item || item<=0
   return false if pbIsImportantItem?(item)
+  return false if pbIsPokeBall?(item)
   return $ItemData[item] && $ItemData[item][ITEMBATTLEUSE]!=0
 end
 
@@ -163,9 +164,9 @@ def pbManageItemBelt
       commands << _INTL("Slot {1}: {2}",idx+1,pbBeltSlotLabel(itm))
     end
     commands += [_INTL("Assign Item"),_INTL("Clear All"),_INTL("Cancel")]
-    choice=pbItemBeltCommand(_INTL("Manage the four battle items on your belt."),commands,commands.length-1)
+    choice=pbItemBeltCommand(_INTL("Manage the three battle items on your belt."),commands,commands.length-1)
     case choice
-    when 0,1,2,3
+    when 0,1,2
       slot_item=belt[choice]
       slot_commands=[_INTL("Assign"),_INTL("Remove"),_INTL("Cancel")]
       slot_commands.delete_at(1) if !slot_item
@@ -198,7 +199,7 @@ def pbManageItemBelt
         slot_choices=belt.each_with_index.map { |itm,idx| _INTL("Slot {1}: {2}",idx+1,pbBeltSlotLabel(itm)) }
         slot_choices << _INTL("Cancel")
         replace_index=pbItemBeltCommand(_INTL("Choose a slot to replace."),slot_choices,slot_choices.length-1)
-        if replace_index>=0 && replace_index<4
+        if replace_index>=0 && replace_index<belt.length
           belt[replace_index]=newitem
           Kernel.pbMessage(_INTL("{1} was placed in slot {2}.",PBItems.getName(newitem),replace_index+1))
         end
@@ -435,9 +436,9 @@ class PokemonBag_Scene
     UIHelper.pbConfirm(@sprites["msgwindow"],msg) { update }
   end
 
-  def pbShowCommands(helptext,commands)
+  def pbShowCommands(helptext,commands,defaultIndex = -1)
     return UIHelper.pbShowCommands(
-       @sprites["helpwindow"],helptext,commands) { update }
+       @sprites["helpwindow"],helptext,commands,defaultIndex) { update }
   end
 
   def pbRefresh
@@ -1421,9 +1422,9 @@ class ItemStorageScene
     UIHelper.pbConfirm(@sprites["msgwindow"],msg) { update }
   end
 
-  def pbShowCommands(helptext,commands)
+  def pbShowCommands(helptext,commands,defaultIndex = -1)
     return UIHelper.pbShowCommands(
-       @sprites["helpwindow"],helptext,commands) { update }
+       @sprites["helpwindow"],helptext,commands,defaultIndex) { update }
   end
 end
 

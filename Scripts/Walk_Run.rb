@@ -52,6 +52,7 @@ class Game_Player
          !$PokemonGlobal.diving && 
          !$PokemonGlobal.surfing && 
          !$PokemonGlobal.lavasurfing &&
+		 !($PokemonGlobal.respond_to?(:swimming) && $PokemonGlobal.swimming) &&
          !$PokemonGlobal.rock
         if meta[4] && meta[4]!="" && Input.dir4!=0 && passable?(@x,@y,Input.dir4) && pbCanRun?
           # Display running character sprite
@@ -86,6 +87,22 @@ class Game_Player
     else
       super
     end
+	if $PokemonGlobal && $PokemonGlobal.respond_to?(:swimming)
+    terrain = pbGetTerrainTag
+    on_water = (terrain == PBTerrain::Water || terrain == PBTerrain::DeepWater)  # adjust tags to your project
+
+    # Don't fight with Surf/Dive/Lava states
+      if !$PokemonGlobal.surfing && !$PokemonGlobal.diving && !$PokemonGlobal.lavasurfing
+        if $PokemonGlobal.swimming && !on_water
+          $PokemonGlobal.swimming = false
+          @lock_pattern = false if defined?(@lock_pattern)
+          refresh if respond_to?(:refresh)   # harmless if not defined
+        elsif !$PokemonGlobal.swimming && on_water
+          $PokemonGlobal.swimming = true
+          refresh if respond_to?(:refresh)
+        end
+      end
+    end
   end
 
   def update_pattern
@@ -93,7 +110,7 @@ class Game_Player
       i = ((Graphics.frame_count%60)*@@bobframespeed).floor
       @pattern = i if !@lock_pattern
       @pattern_surf = i
-      @bob_height = (i>=2) ? 2 : 0
+      @bob_height = (i>=2) ? 1 : 0
     else
       super
     end
