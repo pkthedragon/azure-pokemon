@@ -359,6 +359,7 @@ TERASHIFT=399
 TERASHELL=400
 TERAFORMZERO=401
 POISONPUPPETEER=402
+ABYSSAL=403
 
 def self.getName(id)
 return pbGetMessage(MessageTypes::Abilities,id)
@@ -368,6 +369,6 @@ return 360
 end
 
 def self.maxValue
-return 402
+return 403
 end
 end

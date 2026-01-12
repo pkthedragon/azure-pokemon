@@ -961,6 +961,7 @@ class PokeBattle_Move_01A < PokeBattle_Move
       return -1
     end
     attacker.pbOwnSide.effects[PBEffects::Safeguard]=5
+    attacker.pbOwnSide.effects[PBEffects::Safeguard]=7 if attacker.hasWorkingAbility(:PERPETUAL)
     pbShowAnimation(@id,attacker,nil,hitnum,alltargets,showanimation)
     if !@battle.pbIsOpposing?(attacker.index)
       @battle.pbDisplay(_INTL("Your team became cloaked in a mystical veil!"))
@@ -3028,13 +3029,14 @@ class PokeBattle_Move_056 < PokeBattle_Move
     end
     pbShowAnimation(@id,attacker,opponent,hitnum,alltargets,showanimation)
     attacker.pbOwnSide.effects[PBEffects::Mist]=5
+    attacker.pbOwnSide.effects[PBEffects::Mist]=7 if attacker.hasWorkingAbility(:PERPETUAL)
     if !@battle.pbIsOpposing?(attacker.index)
       @battle.pbDisplay(_INTL("Your team became shrouded in mist!"))
     else
       @battle.pbDisplay(_INTL("The foe's team became shrouded in mist!"))
     end
       return 0
-    end  
+    end
 end
 
 
@@ -3139,6 +3141,7 @@ class PokeBattle_Move_05B < PokeBattle_Move
     end
     pbShowAnimation(@id,attacker,nil,hitnum,alltargets,showanimation)
     attacker.pbOwnSide.effects[PBEffects::Tailwind]=4
+    attacker.pbOwnSide.effects[PBEffects::Tailwind]=7 if attacker.hasWorkingAbility(:PERPETUAL)
     attacker.pbOwnSide.effects[PBEffects::Tailwind]=6 if ($fefieldeffect == 16 || $fefieldeffect == 27 ||
      $fefieldeffect == 28)
     attacker.pbOwnSide.effects[PBEffects::Tailwind]=8 if $fefieldeffect == 43
@@ -5050,6 +5053,7 @@ class PokeBattle_Move_0A1 < PokeBattle_Move
     end
     pbShowAnimation(@id,attacker,opponent,hitnum,alltargets,showanimation)
     attacker.pbOwnSide.effects[PBEffects::LuckyChant]=5
+    attacker.pbOwnSide.effects[PBEffects::LuckyChant]=7 if attacker.hasWorkingAbility(:PERPETUAL)
     if !@battle.pbIsOpposing?(attacker.index)
       @battle.pbDisplay(_INTL("The Lucky Chant shielded your team from critical hits and secondary effects!"))
     else
@@ -5072,6 +5076,7 @@ class PokeBattle_Move_0A2 < PokeBattle_Move
     end
     pbShowAnimation(@id,attacker,opponent,hitnum,alltargets,showanimation)
     attacker.pbOwnSide.effects[PBEffects::Reflect]=5
+    attacker.pbOwnSide.effects[PBEffects::Reflect]=7 if attacker.hasWorkingAbility(:PERPETUAL)
     attacker.pbOwnSide.effects[PBEffects::Reflect]=8 if attacker.hasWorkingItem(:LIGHTCLAY)
     attacker.pbOwnSide.effects[PBEffects::Reflect]=8 if $fefieldeffect == 30
     if !@battle.pbIsOpposing?(attacker.index)
@@ -5101,6 +5106,7 @@ class PokeBattle_Move_0A3 < PokeBattle_Move
     end
     pbShowAnimation(@id,attacker,opponent,hitnum,alltargets,showanimation)
     attacker.pbOwnSide.effects[PBEffects::LightScreen]=5
+    attacker.pbOwnSide.effects[PBEffects::LightScreen]=7 if attacker.hasWorkingAbility(:PERPETUAL)
     attacker.pbOwnSide.effects[PBEffects::LightScreen]=8 if attacker.hasWorkingItem(:LIGHTCLAY)
     attacker.pbOwnSide.effects[PBEffects::LightScreen]=8 if $fefieldeffect == 30
     if !@battle.pbIsOpposing?(attacker.index)
@@ -8710,6 +8716,7 @@ class PokeBattle_Move_0FF < PokeBattle_Move
     end
     @battle.weather=PBWeather::SUNNYDAY
     @battle.weatherduration=5
+    @battle.weatherduration=7 if attacker.hasWorkingAbility(:PERPETUAL)
     @battle.weatherduration=8 if (isConst?(attacker.item,PBItems,:HEATROCK) ||
      $fefieldeffect == 12 || $fefieldeffect == 27 || $fefieldeffect == 28 ||
      $fefieldeffect == 43 || $fefieldeffect == 46)
@@ -8772,6 +8779,7 @@ class PokeBattle_Move_100 < PokeBattle_Move
     end
     @battle.weather=PBWeather::RAINDANCE
     @battle.weatherduration=5
+    @battle.weatherduration=7 if attacker.hasWorkingAbility(:PERPETUAL)
     @battle.weatherduration=8 if (isConst?(attacker.item,PBItems,:DAMPROCK) ||
      $fefieldeffect == 6 || $fefieldeffect == 43)
     @battle.pbCommonAnimation("Rain",nil,nil)
@@ -8825,7 +8833,8 @@ class PokeBattle_Move_101 < PokeBattle_Move
     pbShowAnimation(@id,attacker,opponent,hitnum,alltargets,showanimation)
     @battle.weather=PBWeather::SANDSTORM
     @battle.weatherduration=5
-    @battle.weatherduration=8 if (isConst?(attacker.item,PBItems,:SMOOTHROCK) || 
+    @battle.weatherduration=7 if attacker.hasWorkingAbility(:PERPETUAL)
+    @battle.weatherduration=8 if (isConst?(attacker.item,PBItems,:SMOOTHROCK) ||
      $fefieldeffect == 12 || $fefieldeffect == 20 || $fefieldeffect == 43)
     @battle.pbCommonAnimation("Sandstorm",nil,nil)
     @battle.pbDisplay(_INTL("A sandstorm brewed!"))
@@ -8866,6 +8875,7 @@ class PokeBattle_Move_102 < PokeBattle_Move
     pbShowAnimation(@id,attacker,opponent,hitnum,alltargets,showanimation)
     @battle.weather=PBWeather::HAIL
     @battle.weatherduration=5
+    @battle.weatherduration=7 if attacker.hasWorkingAbility(:PERPETUAL)
     @battle.weatherduration=8 if (isConst?(attacker.item,PBItems,:ICYROCK) ||
      $fefieldeffect == 13 || $fefieldeffect  == 28 || $fefieldeffect == 39 ||
      $fefieldeffect == 43)
@@ -9662,6 +9672,7 @@ class PokeBattle_Move_118 < PokeBattle_Move
     end
     pbShowAnimation(@id,attacker,opponent,hitnum,alltargets,showanimation)
     @battle.field.effects[PBEffects::Gravity]=4
+    @battle.field.effects[PBEffects::Gravity]=7 if attacker.hasWorkingAbility(:PERPETUAL)
     @battle.field.effects[PBEffects::Gravity]=7 if isConst?(attacker.item,PBItems,:AMPLIFIELDROCK)
     @battle.field.effects[PBEffects::Gravity]=7 if $fefieldeffect == 37
     if $fefieldeffect == 38
@@ -11133,6 +11144,7 @@ class PokeBattle_Move_15B < PokeBattle_Move
     pbShowAnimation(@id,attacker,opponent,hitnum,alltargets,showanimation)
     if $fefieldeffect!=30
       attacker.pbOwnSide.effects[PBEffects::AuroraVeil]=5
+      attacker.pbOwnSide.effects[PBEffects::AuroraVeil]=7 if attacker.hasWorkingAbility(:PERPETUAL)
       attacker.pbOwnSide.effects[PBEffects::AuroraVeil]=8 if (attacker.hasWorkingItem(:LIGHTCLAY) || $fefieldeffect==34)
       if !@battle.pbIsOpposing?(attacker.index)
         @battle.pbDisplay(_INTL("An Aurora is protecting your team!"))
