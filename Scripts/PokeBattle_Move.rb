@@ -1594,10 +1594,7 @@ class PokeBattle_Move
     if @battle.field.effects[PBEffects::Gravity]>0
       accuracy*=(5/3)
     end
-    if attacker.hasWorkingAbility(:HUSTLE) && @basedamage>0 &&
-       pbIsPhysical?(pbType(@type,attacker,opponent))
-      accuracy*=0.8
-    end  
+    # Hustle no longer lowers accuracy - now gives 0.5x defenses instead
     if (opponent.hasWorkingAbility(:WONDERSKIN) && @basedamage==0 &&
      attacker.pbIsOpposing?(opponent.index) && !(opponent.moldbroken))
       if ($fefieldeffect == 9 || @battle.field.effects[PBEffects::Rainbow]>0)
@@ -4018,6 +4015,19 @@ class PokeBattle_Move
     if opponent.hasWorkingAbility(:FURCOAT) && pbIsPhysical?(type) && !(opponent.moldbroken)
       defmult=(defmult*2).round
     end
+    # Sand Veil - 1.5x defense in sandstorm
+    if opponent.hasWorkingAbility(:SANDVEIL) && !(opponent.moldbroken) &&
+       (@battle.pbWeather==PBWeather::SANDSTORM || $fefieldeffect == 12 || $fefieldeffect == 20 || $fefieldeffect == 46)
+      defmult=(defmult*1.5).round
+    end
+    # Hustle - 0.5x defenses
+    if opponent.hasWorkingAbility(:HUSTLE) && !(opponent.moldbroken)
+      defmult=(defmult*0.5).round
+    end
+    # Tangled Feet - 0.5x defenses when confused
+    if opponent.hasWorkingAbility(:TANGLEDFEET) && opponent.effects[PBEffects::Confusion]>0 && !(opponent.moldbroken)
+      defmult=(defmult*0.5).round
+    end
     if opponent.hasWorkingAbility(:STALWART) && pbIsPhysical?(type) && !(opponent.moldbroken)
       if ((PBStuff::SYNTHETICFIELDS).include?($fefieldeffect))
         defmult=(defmult*2).round
@@ -5109,7 +5119,24 @@ class PokeBattle_Move
     end
     if opponent.pbOwnSide.effects[PBEffects::WideGuard] > 0 &&  @target==PBTargets::AllOpposing && @basedamage > 0
       finaldamagemult=(finaldamagemult*0.5).round
-    end    
+    end
+    # Gravity damage modifiers
+    if @battle.field.effects[PBEffects::Gravity]>0
+      # Scaling and priority moves deal 0.5x damage
+      if (PBStuff::SCALINGMOVE).include?(@id) || @priority >= 1
+        finaldamagemult=(finaldamagemult*0.5).round
+      end
+      # Pinning and negative priority moves deal 1.3x or 1.5x if user is heavier
+      if (PBStuff::PINNINGMOVE).include?(@id) || @priority < 0
+        userweight = attacker.pbWeight
+        oppweight = opponent.pbWeight
+        if userweight > oppweight
+          finaldamagemult=(finaldamagemult*1.5).round
+        else
+          finaldamagemult=(finaldamagemult*1.3).round
+        end
+      end
+    end
 	if (( (opponent.hasWorkingAbility(:MULTISCALE) || @battle.SilvallyCheck(opponent,PBTypes::DRAGON)) &&
         !(opponent.moldbroken)) || opponent.hasWorkingAbility(:SHADOWSHIELD)) && opponent.hp==opponent.totalhp 
       finaldamagemult=(finaldamagemult*0.5).round
