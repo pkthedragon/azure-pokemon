@@ -1770,15 +1770,8 @@ class PokeBattle_Battler
     evastage=0 if self.effects[PBEffects::Foresight] ||
     self.effects[PBEffects::MiracleEye]
     evasion=(evastage>=0) ? (evastage+3)*100/3 : 300/(3-evastage)
-    if self.hasWorkingAbility(:TANGLEDFEET) &&
-      self.effects[PBEffects::Confusion]>0
-      evasion*=1.2
-    end
-    if self.hasWorkingAbility(:SANDVEIL) &&
-      (@battle.pbWeather==PBWeather::SANDSTORM ||
-        $fefieldeffect == 12 || $fefieldeffect == 20 || $fefieldeffect == 46)
-      evasion*=1.2
-    end
+    # Tangled Feet no longer gives evasion - now gives 1.5x speed, 0.5x defenses
+    # Sand Veil no longer gives evasion - now gives 1.5x defense in sandstorm
     if self.hasWorkingAbility(:SNOWCLOAK) &&
       (@battle.pbWeather==PBWeather::HAIL || $fefieldeffect == 13 ||
         $fefieldeffect == 28)
@@ -1879,6 +1872,10 @@ class PokeBattle_Battler
     end
     if self.hasWorkingAbility(:MAENADSFERVOR) && self.effects[PBEffects::Confusion]>0
       speed=(speed*2).floor
+    end
+    # Tangled Feet - 1.5x speed when confused
+    if self.hasWorkingAbility(:TANGLEDFEET) && self.effects[PBEffects::Confusion]>0
+      speed=(speed*1.5).floor
     end
     if self.hasWorkingItem(:MACHOBRACE) ||
       self.hasWorkingItem(:POWERWEIGHT) ||
@@ -5417,7 +5414,11 @@ class PokeBattle_Battler
     # TODO: Pressure here is incorrect if Magic Coat redirects target
     if target.hasWorkingAbility(:PRESSURE)
       pbReducePP(thismove) # Reduce PP
-      if $fefieldeffect==38
+      # Pressure uses 3 PP during gravity or crush depth
+      if @battle.field.effects[PBEffects::Gravity]>0 || $fefieldeffect==35
+        pbReducePP(thismove)
+        pbReducePP(thismove)
+      elsif $fefieldeffect==38
         pbReducePP(thismove)
       end
     end  
