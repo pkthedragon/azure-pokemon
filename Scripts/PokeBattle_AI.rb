@@ -331,7 +331,6 @@ class PokeBattle_Battle
           if move.id==getID(PBMoves,:DAZZLINGGLEAM)
             if (attacker.stages[PBStats::ACCURACY] < 0 || opponent.stages[PBStats::EVASION] > 0 ||
                 opponent.hasWorkingItem(:BRIGHTPOWDER) || opponent.hasWorkingItem(:LAXINCENSE) ||
-                ((!opponent.abilitynulled && opponent.ability == PBAbilities::SANDVEIL) && pbWeather==PBWeather::SANDSTORM) ||
                 ((!opponent.abilitynulled && opponent.ability == PBAbilities::SNOWCLOAK) && pbWeather==PBWeather::HAIL) ||
                 opponent.vanished) && !(!opponent.abilitynulled && opponent.ability == PBAbilities::NOGUARD) && !(!attacker.abilitynulled && attacker.ability == PBAbilities::NOGUARD)
               score*=2
@@ -1809,8 +1808,10 @@ class PokeBattle_Battle
         if opponent.effects[PBEffects::Yawn]>0 || opponent.status==PBStatuses::SLEEP
           miniscore*=0.4
         end
+        # Tangled Feet now gives 1.5x speed and 0.5x defenses when confused
+        # Defense reduction makes confusion beneficial against Tangled Feet
         if (!opponent.abilitynulled && opponent.ability == PBAbilities::TANGLEDFEET)
-          miniscore*=0.7
+          miniscore*=1.2
         end
         if attacker.pbHasMove?(getID(PBMoves,:SUBSTITUTE))
           miniscore*=1.2
@@ -1823,7 +1824,6 @@ class PokeBattle_Battle
             if $fefieldeffect==30 # Mirror Arena
               if (attacker.stages[PBStats::ACCURACY] < 0 || opponent.stages[PBStats::EVASION] > 0 ||
                   opponent.hasWorkingItem(:BRIGHTPOWDER) || opponent.hasWorkingItem(:LAXINCENSE) ||
-                  ((!opponent.abilitynulled && opponent.ability == PBAbilities::SANDVEIL) && pbWeather==PBWeather::SANDSTORM) ||
                   ((!opponent.abilitynulled && opponent.ability == PBAbilities::SNOWCLOAK) && pbWeather==PBWeather::HAIL) ||
                   opponent.vanished) && !(!opponent.abilitynulled && opponent.ability == PBAbilities::NOGUARD) && !(!attacker.abilitynulled && attacker.ability == PBAbilities::NOGUARD)
                 miniscore*=2
@@ -1883,8 +1883,10 @@ class PokeBattle_Battle
         if opponent.effects[PBEffects::Yawn]>0 || opponent.status==PBStatuses::SLEEP
           miniscore*=0.4
         end
+        # Tangled Feet now gives 1.5x speed and 0.5x defenses when confused
+        # Defense reduction makes confusion beneficial against Tangled Feet
         if (!opponent.abilitynulled && opponent.ability == PBAbilities::TANGLEDFEET)
-          miniscore*=0.7
+          miniscore*=1.2
         end
         if attacker.pbHasMove?(getID(PBMoves,:SUBSTITUTE))
           miniscore*=1.2
@@ -1897,7 +1899,6 @@ class PokeBattle_Battle
             if $fefieldeffect==30 # Mirror Arena
               if (attacker.stages[PBStats::ACCURACY] < 0 || opponent.stages[PBStats::EVASION] > 0 ||
                   opponent.hasWorkingItem(:BRIGHTPOWDER) || opponent.hasWorkingItem(:LAXINCENSE) ||
-                  ((!opponent.abilitynulled && opponent.ability == PBAbilities::SANDVEIL) && pbWeather==PBWeather::SANDSTORM) ||
                   ((!opponent.abilitynulled && opponent.ability == PBAbilities::SNOWCLOAK) && pbWeather==PBWeather::HAIL) ||
                   opponent.vanished) && !(!opponent.abilitynulled && opponent.ability == PBAbilities::NOGUARD) && !(!attacker.abilitynulled && attacker.ability == PBAbilities::NOGUARD)
                 miniscore*=2
@@ -1957,8 +1958,10 @@ class PokeBattle_Battle
         if opponent.effects[PBEffects::Yawn]>0 || opponent.status==PBStatuses::SLEEP
           miniscore*=0.4
         end
+        # Tangled Feet now gives 1.5x speed and 0.5x defenses when confused
+        # Defense reduction makes confusion beneficial against Tangled Feet
         if (!opponent.abilitynulled && opponent.ability == PBAbilities::TANGLEDFEET)
-          miniscore*=0.7
+          miniscore*=1.2
         end
         if attacker.pbHasMove?((PBMoves::SUBSTITUTE))
           miniscore*=1.2
@@ -2767,7 +2770,6 @@ class PokeBattle_Battle
         miniscore*=0.2
       end
       if (attitemworks && attacker.item == PBItems::BRIGHTPOWDER) || (attitemworks && attacker.item == PBItems::LAXINCENSE) ||
-        ((!attacker.abilitynulled && attacker.ability == PBAbilities::SANDVEIL) && pbWeather==PBWeather::SANDSTORM) ||
         ((!attacker.abilitynulled && attacker.ability == PBAbilities::SNOWCLOAK) && pbWeather==PBWeather::HAIL)
         miniscore*=1.3
       end
@@ -2873,7 +2875,8 @@ class PokeBattle_Battle
         if (attitemworks && attacker.item == PBItems::LANSATBERRY)
           score*=1.3
         end
-        if !opponent.abilitynulled && (opponent.ability == PBAbilities::ANGERPOINT || opponent.ability == PBAbilities::SHELLARMOR || opponent.ability == PBAbilities::BATTLEARMOR)
+        # Shell Armor prevents crits, Battle Armor no longer does (now reduces damage when moving last)
+        if !opponent.abilitynulled && (opponent.ability == PBAbilities::ANGERPOINT || opponent.ability == PBAbilities::SHELLARMOR)
           score*=0.2
         end
         if attacker.pbHasMove?((PBMoves::LASERFOCUS)) || attacker.pbHasMove?((PBMoves::FROSTBREATH)) || attacker.pbHasMove?((PBMoves::STORMTHROW))
@@ -3126,7 +3129,6 @@ class PokeBattle_Battle
         miniscore*=minimini
       end
       if (oppitemworks && opponent.item == PBItems::BRIGHTPOWDER) || (oppitemworks && opponent.item == PBItems::LAXINCENSE) ||
-        ((!opponent.abilitynulled && opponent.ability == PBAbilities::SANDVEIL) && pbWeather==PBWeather::SANDSTORM) ||
         ((!opponent.abilitynulled && opponent.ability == PBAbilities::SNOWCLOAK) && pbWeather==PBWeather::HAIL)
         miniscore*=1.1
       end
@@ -3482,7 +3484,6 @@ class PokeBattle_Battle
         miniscore*=minimini
       end
       if (oppitemworks && opponent.item == PBItems::BRIGHTPOWDER) || (oppitemworks && opponent.item == PBItems::LAXINCENSE) ||
-        ((!opponent.abilitynulled && opponent.ability == PBAbilities::SANDVEIL) && pbWeather==PBWeather::SANDSTORM) ||
         ((!opponent.abilitynulled && opponent.ability == PBAbilities::SNOWCLOAK) && pbWeather==PBWeather::HAIL)
         miniscore*=1.3
       end
@@ -4443,7 +4444,6 @@ class PokeBattle_Battle
         miniscore*=0.2
       end
       if (attitemworks && (attacker.item == PBItems::BRIGHTPOWDER || attacker.item == PBItems::LAXINCENSE)) ||
-        ((!attacker.abilitynulled && attacker.ability == PBAbilities::SANDVEIL) && pbWeather==PBWeather::SANDSTORM) ||
         ((!attacker.abilitynulled && attacker.ability == PBAbilities::SNOWCLOAK) && pbWeather==PBWeather::HAIL)
         miniscore*=1.3
       end
@@ -4664,7 +4664,6 @@ class PokeBattle_Battle
         miniscore*=0.2
       end
       if (attitemworks && attacker.item == PBItems::BRIGHTPOWDER) || (attitemworks && attacker.item == PBItems::LAXINCENSE) ||
-        ((!attacker.abilitynulled && attacker.ability == PBAbilities::SANDVEIL) && pbWeather==PBWeather::SANDSTORM) ||
         ((!attacker.abilitynulled && attacker.ability == PBAbilities::SNOWCLOAK) && pbWeather==PBWeather::HAIL)
         miniscore*=1.3
       end
@@ -5420,7 +5419,6 @@ class PokeBattle_Battle
             if $fefieldeffect==30 # Mirror Field
               if (attacker.stages[PBStats::ACCURACY] < 0 || opponent.stages[PBStats::EVASION] > 0 ||
                   (oppitemworks && opponent.item == PBItems::BRIGHTPOWDER) || (oppitemworks && opponent.item == PBItems::LAXINCENSE) ||
-                  ((!opponent.abilitynulled && opponent.ability == PBAbilities::SANDVEIL) && pbWeather==PBWeather::SANDSTORM) ||
                   ((!opponent.abilitynulled && opponent.ability == PBAbilities::SNOWCLOAK) && pbWeather==PBWeather::HAIL) ||
                   opponent.vanished) && !(!opponent.abilitynulled && opponent.ability == PBAbilities::NOGUARD) && !(!attacker.abilitynulled && attacker.ability == PBAbilities::NOGUARD)
                 miniscore*=2
@@ -5659,7 +5657,6 @@ class PokeBattle_Battle
             if $fefieldeffect==30 # Mirror Arena
               if opponent.stages[PBStats::EVASION] > 0 ||
                 (oppitemworks && opponent.item == PBItems::BRIGHTPOWDER) || (oppitemworks && opponent.item == PBItems::LAXINCENSE) ||
-                ((!opponent.abilitynulled && opponent.ability == PBAbilities::SANDVEIL) && pbWeather==PBWeather::SANDSTORM) ||
                 ((!opponent.abilitynulled && opponent.ability == PBAbilities::SNOWCLOAK) && pbWeather==PBWeather::HAIL)
                 miniscore*=1.3
               else
@@ -5715,7 +5712,6 @@ class PokeBattle_Battle
             if $fefieldeffect==30 # Mirror Arena
               if (attacker.stages[PBStats::ACCURACY] < 0 || opponent.stages[PBStats::EVASION] > 0 ||
                   (oppitemworks && opponent.item == PBItems::BRIGHTPOWDER) || (oppitemworks && opponent.item == PBItems::LAXINCENSE) ||
-                  ((!opponent.abilitynulled && opponent.ability == PBAbilities::SANDVEIL) && pbWeather==PBWeather::SANDSTORM) ||
                   ((!opponent.abilitynulled && opponent.ability == PBAbilities::SNOWCLOAK) && pbWeather==PBWeather::HAIL) ||
                   opponent.vanished) && !(!opponent.abilitynulled && opponent.ability == PBAbilities::NOGUARD) && !(!attacker.abilitynulled && attacker.ability == PBAbilities::NOGUARD)
                 miniscore*=2
@@ -5758,7 +5754,6 @@ class PokeBattle_Battle
             if $fefieldeffect==30 # Mirror Arena
               if (attacker.stages[PBStats::ACCURACY] < 0 || opponent.stages[PBStats::EVASION] > 0 ||
                   (oppitemworks && opponent.item == PBItems::BRIGHTPOWDER) || (oppitemworks && opponent.item == PBItems::LAXINCENSE) ||
-                  ((!opponent.abilitynulled && opponent.ability == PBAbilities::SANDVEIL) && pbWeather==PBWeather::SANDSTORM) ||
                   ((!opponent.abilitynulled && opponent.ability == PBAbilities::SNOWCLOAK) && pbWeather==PBWeather::HAIL) ||
                   opponent.vanished) && !(!opponent.abilitynulled && opponent.ability == PBAbilities::NOGUARD) && !(!attacker.abilitynulled && attacker.ability == PBAbilities::NOGUARD)
                 miniscore*=2
@@ -7420,7 +7415,7 @@ class PokeBattle_Battle
       end
       if $fefieldeffect==30
         if (opponent.stages[PBStats::EVASION] > 0 || opponent.hasWorkingItem(:BRIGHTPOWDER) || opponent.hasWorkingItem(:LAXINCENSE) ||
-            ((!opponent.abilitynulled && opponent.ability == PBAbilities::SANDVEIL) && pbWeather==PBWeather::SANDSTORM) || ((!opponent.abilitynulled && opponent.ability == PBAbilities::SNOWCLOAK) && pbWeather==PBWeather::HAIL))
+            ((!opponent.abilitynulled && opponent.ability == PBAbilities::SNOWCLOAK) && pbWeather==PBWeather::HAIL))
           score*=1.3
         else
           score*=0.5
@@ -7850,7 +7845,7 @@ class PokeBattle_Battle
       end
       if $fefieldeffect==30
         if (opponent.stages[PBStats::EVASION] > 0 || opponent.hasWorkingItem(:BRIGHTPOWDER) || opponent.hasWorkingItem(:LAXINCENSE) ||
-            ((!opponent.abilitynulled && opponent.ability == PBAbilities::SANDVEIL) && pbWeather==PBWeather::SANDSTORM) || ((!opponent.abilitynulled && opponent.ability == PBAbilities::SNOWCLOAK) && pbWeather==PBWeather::HAIL))
+            ((!opponent.abilitynulled && opponent.ability == PBAbilities::SNOWCLOAK) && pbWeather==PBWeather::HAIL))
           score*=1.3
         else
           score*=0.5
@@ -7996,7 +7991,8 @@ class PokeBattle_Battle
       move.type = move.pbType(move.type,attacker,opponent)
     when 0xA0 # Frost Breath
       thisinitial = score
-      if !(!opponent.abilitynulled && opponent.ability == PBAbilities::BATTLEARMOR) && !(!opponent.abilitynulled && opponent.ability == PBAbilities::SHELLARMOR) && attacker.effects[PBEffects::LaserFocus]==0
+      # Only Shell Armor prevents crits now, Battle Armor reduces damage when moving last
+      if !(!opponent.abilitynulled && opponent.ability == PBAbilities::SHELLARMOR) && attacker.effects[PBEffects::LaserFocus]==0
         miniscore = 100
         ministat = 0
         ministat += opponent.stages[PBStats::DEFENSE] if opponent.stages[PBStats::DEFENSE]>0
@@ -8047,8 +8043,8 @@ class PokeBattle_Battle
       if attacker.pbOwnSide.effects[PBEffects::LuckyChant]==0
         score+=20
         # Bonus if opponent has high crit rate
-        if !(!attacker.abilitynulled && attacker.ability == PBAbilities::BATTLEARMOR) &&
-           !(!attacker.abilitynulled && attacker.ability == PBAbilities::SHELLARMOR) &&
+        # Only Shell Armor prevents crits now
+        if !(!attacker.abilitynulled && attacker.ability == PBAbilities::SHELLARMOR) &&
            (opponent.effects[PBEffects::FocusEnergy]>1 || opponent.effects[PBEffects::LaserFocus])
           score+=30
         end
@@ -8288,7 +8284,7 @@ class PokeBattle_Battle
         if opponent.hasWorkingItem(:LAXINCENSE) || opponent.hasWorkingItem(:BRIGHTPOWDER)
           score*=1.2
         end
-        if ((!opponent.abilitynulled && opponent.ability == PBAbilities::SANDVEIL) && pbWeather==PBWeather::SANDSTORM) || ((!opponent.abilitynulled && opponent.ability == PBAbilities::SNOWCLOAK) && pbWeather==PBWeather::HAIL)
+        if ((!opponent.abilitynulled && opponent.ability == PBAbilities::SNOWCLOAK) && pbWeather==PBWeather::HAIL)
           score*=1.3
         end
         if opponent.vanished && ((attacker.pbSpeed>pbRoughStat(opponent,PBStats::SPEED,skill)) ^ (@trickroom!=0))
@@ -10516,7 +10512,7 @@ class PokeBattle_Battle
           if (oppitemworks && opponent.item == PBItems::LAXINCENSE) || (oppitemworks && opponent.item == PBItems::BRIGHTPOWDER)
             score*=1.2
           end
-          if ((!opponent.abilitynulled && opponent.ability == PBAbilities::SANDVEIL) && pbWeather==PBWeather::SANDSTORM) || ((!opponent.abilitynulled && opponent.ability == PBAbilities::SNOWCLOAK) && pbWeather==PBWeather::HAIL)
+          if ((!opponent.abilitynulled && opponent.ability == PBAbilities::SNOWCLOAK) && pbWeather==PBWeather::HAIL)
             score*=1.3
           end
           if opponent.vanished && ((attacker.pbSpeed>pbRoughStat(opponent,PBStats::SPEED,skill)) ^ (@trickroom!=0))
@@ -10885,7 +10881,7 @@ class PokeBattle_Battle
       if (oppitemworks && opponent.item == PBItems::LAXINCENSE) || (oppitemworks && opponent.item == PBItems::BRIGHTPOWDER)
         score*=0.8
       end
-      if ((!opponent.abilitynulled && opponent.ability == PBAbilities::SANDVEIL) && pbWeather==PBWeather::SANDSTORM) || ((!opponent.abilitynulled && opponent.ability == PBAbilities::SNOWCLOAK) && pbWeather==PBWeather::HAIL)
+      if ((!opponent.abilitynulled && opponent.ability == PBAbilities::SNOWCLOAK) && pbWeather==PBWeather::HAIL)
         score*=0.8
       end
       if attacker.status==PBStatuses::PARALYSIS
@@ -13969,7 +13965,7 @@ class PokeBattle_Battle
       ministat+=100
       ministat/=100.0
       score*=ministat
-      if ((!opponent.abilitynulled && opponent.ability == PBAbilities::SANDVEIL) && pbWeather==PBWeather::SANDSTORM) || ((!opponent.abilitynulled && opponent.ability == PBAbilities::SNOWCLOAK) && pbWeather==PBWeather::HAIL)
+      if ((!opponent.abilitynulled && opponent.ability == PBAbilities::SNOWCLOAK) && pbWeather==PBWeather::HAIL)
         score*=0.7
       end
       if (oppitemworks && opponent.item == PBItems::LAXINCENSE) || (oppitemworks && opponent.item == PBItems::BRIGHTPOWDER)
@@ -17134,7 +17130,7 @@ class PokeBattle_Battle
         if (oppitemworks && opponent.item == PBItems::LAXINCENSE) || (oppitemworks && opponent.item == PBItems::BRIGHTPOWDER)
           score*=1.2
         end
-        if ((!opponent.abilitynulled && opponent.ability == PBAbilities::SANDVEIL) && pbWeather==PBWeather::SANDSTORM) || ((!opponent.abilitynulled && opponent.ability == PBAbilities::SNOWCLOAK) && pbWeather==PBWeather::HAIL)
+        if ((!opponent.abilitynulled && opponent.ability == PBAbilities::SNOWCLOAK) && pbWeather==PBWeather::HAIL)
           score*=1.3
         end
         if opponent.vanished && ((attacker.pbSpeed>pbRoughStat(opponent,PBStats::SPEED,skill)) ^ (@trickroom!=0))
@@ -17196,7 +17192,7 @@ class PokeBattle_Battle
           if (oppitemworks && opponent.item == PBItems::LAXINCENSE) || (oppitemworks && opponent.item == PBItems::BRIGHTPOWDER)
             score*=1.2
           end
-          if ((!opponent.abilitynulled && opponent.ability == PBAbilities::SANDVEIL) && pbWeather==PBWeather::SANDSTORM) || ((!opponent.abilitynulled && opponent.ability == PBAbilities::SNOWCLOAK) && pbWeather==PBWeather::HAIL)
+          if ((!opponent.abilitynulled && opponent.ability == PBAbilities::SNOWCLOAK) && pbWeather==PBWeather::HAIL)
             score*=1.3
           end
           if opponent.vanished && (attacker.pbSpeed>pbRoughStat(opponent,PBStats::SPEED,skill)) ^ (@trickroom!=0)
@@ -17758,7 +17754,8 @@ class PokeBattle_Battle
         end
       end
     when 0x165 # Laser Focus
-      if !(!opponent.abilitynulled && opponent.ability == PBAbilities::BATTLEARMOR) && !(!opponent.abilitynulled && opponent.ability == PBAbilities::SHELLARMOR) && attacker.effects[PBEffects::LaserFocus]==0
+      # Only Shell Armor prevents crits now, Battle Armor reduces damage when moving last
+      if !(!opponent.abilitynulled && opponent.ability == PBAbilities::SHELLARMOR) && attacker.effects[PBEffects::LaserFocus]==0
         miniscore = 100
         ministat=0
         ministat+=opponent.stages[PBStats::DEFENSE]
@@ -17798,11 +17795,8 @@ class PokeBattle_Battle
         end
       end
       if !opponent.moldbroken && !opponent.abilitynulled
-        if opponent.ability == PBAbilities::SANDVEIL
-          if pbWeather!=PBWeather::SANDSTORM
-            score*=1.1
-          end
-        elsif opponent.ability == PBAbilities::VOLTABSORB || opponent.ability == PBAbilities::LIGHTNINGROD
+        # Sand Veil no longer gives evasion boost - removed scoring
+        if opponent.ability == PBAbilities::VOLTABSORB || opponent.ability == PBAbilities::LIGHTNINGROD
           if move.type==(PBTypes::ELECTRIC)
             if damcount==1
               score*=3
@@ -18446,11 +18440,8 @@ class PokeBattle_Battle
         end
       end
       if !opponent.moldbroken && !opponent.abilitynulled
-        if opponent.ability == PBAbilities::SANDVEIL
-          if pbWeather!=PBWeather::SANDSTORM
-            score*=1.1
-          end
-        elsif opponent.ability == PBAbilities::VOLTABSORB || opponent.ability == PBAbilities::LIGHTNINGROD
+        # Sand Veil no longer gives evasion boost - removed scoring
+        if opponent.ability == PBAbilities::VOLTABSORB || opponent.ability == PBAbilities::LIGHTNINGROD
           if move.type==(PBTypes::ELECTRIC)
             if damcount==1
               score*=3
@@ -18579,7 +18570,7 @@ class PokeBattle_Battle
           if (oppitemworks && opponent.item == PBItems::LAXINCENSE) || (oppitemworks && opponent.item == PBItems::BRIGHTPOWDER)
             score*=0.7
           end
-          if ((!opponent.abilitynulled && opponent.ability == PBAbilities::SANDVEIL) && pbWeather==PBWeather::SANDSTORM) || ((!opponent.abilitynulled && opponent.ability == PBAbilities::SNOWCLOAK) && pbWeather==PBWeather::HAIL)
+          if ((!opponent.abilitynulled && opponent.ability == PBAbilities::SNOWCLOAK) && pbWeather==PBWeather::HAIL)
             score*=0.7
           end
         else
@@ -20010,8 +20001,9 @@ class PokeBattle_Battle
         score*=1.5
       end
     end
-    if move.flags&0x80!=0 && !move.id==152 # Boosted crit moves 
-      if !((!opponent.abilitynulled && opponent.ability == PBAbilities::SHELLARMOR) || (!opponent.abilitynulled && opponent.ability == PBAbilities::BATTLEARMOR) || attacker.effects[PBEffects::LaserFocus]>0)
+    if move.flags&0x80!=0 && !move.id==152 # Boosted crit moves
+      # Only Shell Armor prevents crits now
+      if !((!opponent.abilitynulled && opponent.ability == PBAbilities::SHELLARMOR) || attacker.effects[PBEffects::LaserFocus]>0)
         boostercount = 1
         if move.pbIsPhysical?(move.type)
           boostercount += opponent.stages[PBStats::DEFENSE] if opponent.stages[PBStats::DEFENSE]>0
@@ -21541,13 +21533,12 @@ class PokeBattle_Battle
         basedamage = (basedamage*1.3).round
       end
     end
-    # Rivalry
+    # Rivalry - now reduces damage taken from same-gender opponents
     if skill>=PBTrainerAI.mediumSkill
-      if (!attacker.abilitynulled && attacker.ability == PBAbilities::RIVALRY) &&
+      if (!opponent.abilitynulled && opponent.ability == PBAbilities::RIVALRY) &&
         attacker.gender!=2 && opponent.gender!=2
         if attacker.gender==opponent.gender
-          basedamage=(basedamage*1.25).round
-        else
+          # Opponent with Rivalry takes reduced damage from same gender
           basedamage=(basedamage*0.75).round
         end
       end
@@ -24276,12 +24267,25 @@ class PokeBattle_Battle
       multiplier += 1.0
       damage=(damage*multiplier).round
     end
+    # Battle Armor - reduces damage when moving last
+    if skill>=PBTrainerAI.mediumSkill
+      if (!opponent.abilitynulled && opponent.ability == PBAbilities::BATTLEARMOR) && !(opponent.moldbroken)
+        attackerspeed = pbRoughStat(attacker,PBStats::SPEED,skill)
+        opponentspeed = pbRoughStat(opponent,PBStats::SPEED,skill)
+        # Check if opponent would move last (considering trick room)
+        opponentMovesLast = (@trickroom>0) ? (opponentspeed > attackerspeed) : (opponentspeed < attackerspeed)
+        if opponentMovesLast
+          damage=(damage*0.66).round
+        end
+      end
+    end
     # pbModifyDamage - TODO
     # "AI-specific calculations below"
     # Increased critical hit rates
     if skill>=PBTrainerAI.mediumSkill
       critrate = pbAICritRate(attacker,opponent,move)
-      if !(opponent.ability == PBAbilities::SHELLARMOR || opponent.ability == PBAbilities::BATTLEARMOR)
+      # Only Shell Armor prevents crits now, Battle Armor reduces damage when moving last
+      if !(opponent.ability == PBAbilities::SHELLARMOR)
         if critrate<2
           if (isConst?(attacker.species,PBSpecies,:FEAROW) && attacker.hasWorkingItem(:FEARCREST) && (!attacker.abilitynulled && attacker.ability == PBAbilities::SNIPER))
             damage=(damage*1.5).round
@@ -24639,8 +24643,8 @@ class PokeBattle_Battle
   end
   
   def pbAICritRate(attacker,opponent,move)
-    if ((!opponent.abilitynulled && opponent.ability == PBAbilities::BATTLEARMOR) ||
-        (!opponent.abilitynulled && opponent.ability == PBAbilities::SHELLARMOR)) &&
+    # Only Shell Armor prevents crits now, Battle Armor reduces damage when moving last
+    if (!opponent.abilitynulled && opponent.ability == PBAbilities::SHELLARMOR) &&
       !(opponent.moldbroken)
       return 0
     end
@@ -24821,21 +24825,14 @@ class PokeBattle_Battle
       end
       accuracy*=1.1 if attacker.hasWorkingItem(:WIDELENS)
       accuracy*=1.2 if attacker.hasWorkingItem(:ZOOMLENS) && attacker.pbSpeed<opponent.pbSpeed
-      if skill>=PBTrainerAI.averageSkill
-        accuracy*=0.8 if (!attacker.abilitynulled && attacker.ability == PBAbilities::HUSTLE) &&
-        move.basedamage>0 &&
-        move.pbIsPhysical?(move.pbType(move.type,attacker,opponent))
-      end
+      # Hustle no longer has accuracy penalty - now gives 0.5x defenses instead
       accuracy*=1.5 if isConst?(attacker.species,PBSpecies,:STANTLER) && attacker.hasWorkingItem(:STANTCREST)
       accuracy*=1.5 if isConst?(attacker.species,PBSpecies,:HYPNO) && attacker.hasWorkingItem(:HYPCREST)
       if skill>=PBTrainerAI.highSkill
         accuracy/=2 if (!opponent.abilitynulled && opponent.ability == PBAbilities::WONDERSKIN) &&
         move.basedamage==0 &&
         attacker.pbIsOpposing?(opponent.index)
-        accuracy/=1.2 if (!opponent.abilitynulled && opponent.ability == PBAbilities::TANGLEDFEET) &&
-        opponent.effects[PBEffects::Confusion]>0
-        accuracy/=1.2 if pbWeather==PBWeather::SANDSTORM &&
-        (!opponent.abilitynulled && opponent.ability == PBAbilities::SANDVEIL)
+        # Tangled Feet and Sand Veil no longer give evasion boosts
         accuracy/=1.2 if pbWeather==PBWeather::HAIL &&
         (!opponent.abilitynulled && opponent.ability == PBAbilities::SNOWCLOAK)
       end
@@ -25134,12 +25131,7 @@ class PokeBattle_Battle
         abilityscore*=1.3
       end
     end
-    if (!opponent.abilitynulled && opponent.ability == PBAbilities::SANDVEIL)
-      PBDebug.log(sprintf("Sand Veil Disrupt")) if $INTERNAL
-      if @weather==PBWeather::SANDSTORM
-        abilityscore*=1.3
-      end
-    end
+    # Sand Veil no longer gives evasion - now gives 1.5x defense in sandstorm
     if (!opponent.abilitynulled && (opponent.ability == PBAbilities::BLAZE || opponent.ability == PBAbilities::TORRENT || opponent.ability == PBAbilities::SWARM || opponent.ability == PBAbilities::OVERGROW))
       PBDebug.log(sprintf("Pinch Ability Disrupt")) if $INTERNAL
       if opponent.hp<=(opponent.totalhp/3)
@@ -34361,10 +34353,25 @@ def pbSwitchTo(currentmon,party,skill,pivoting=false,hardswitch=false,incomingmo
         end
       end
       if (battler.ability == PBAbilities::COMPOUNDEYES)
-        if (opponent1.item == PBItems::LAXINCENSE) || (opponent1.item == PBItems::BRIGHTPOWDER) || opponent1.stages[PBStats::EVASION]>0 || ((opponent1.ability == PBAbilities::SANDVEIL) && @weather==PBWeather::SANDSTORM) || ((opponent1.ability == PBAbilities::SNOWCLOAK) && @weather==PBWeather::HAIL)
+        if (opponent1.item == PBItems::LAXINCENSE) || (opponent1.item == PBItems::BRIGHTPOWDER) || opponent1.stages[PBStats::EVASION]>0 || ((opponent1.ability == PBAbilities::SNOWCLOAK) && @weather==PBWeather::HAIL)
           monscore+=25
         end
-        if (opponent2.item == PBItems::LAXINCENSE) || (opponent2.item == PBItems::BRIGHTPOWDER) || opponent2.stages[PBStats::EVASION]>0 || ((opponent2.ability == PBAbilities::SANDVEIL) && @weather==PBWeather::SANDSTORM) || ((opponent2.ability == PBAbilities::SNOWCLOAK) && @weather==PBWeather::HAIL)
+        if (opponent2.item == PBItems::LAXINCENSE) || (opponent2.item == PBItems::BRIGHTPOWDER) || opponent2.stages[PBStats::EVASION]>0 || ((opponent2.ability == PBAbilities::SNOWCLOAK) && @weather==PBWeather::HAIL)
+          monscore+=25
+        end
+      end
+      # Keen Eye - now applies Lock-On and Laser Focus on entry
+      if (battler.ability == PBAbilities::KEENEYE)
+        monscore+=20  # Guaranteed crit on first move is always valuable
+        # Extra value if battler has low-accuracy high-power moves
+        if battler.pbHasMove?(PBMoves::INFERNO) || battler.pbHasMove?(PBMoves::ZAPCANNON) || battler.pbHasMove?(PBMoves::DYNAMICPUNCH)
+          monscore+=40
+        end
+        # Value against evasive opponents
+        if opponent1.stages[PBStats::EVASION]>0 || ((opponent1.ability == PBAbilities::SNOWCLOAK) && @weather==PBWeather::HAIL)
+          monscore+=25
+        end
+        if opponent2.totalhp > 0 && (opponent2.stages[PBStats::EVASION]>0 || ((opponent2.ability == PBAbilities::SNOWCLOAK) && @weather==PBWeather::HAIL))
           monscore+=25
         end
       end
@@ -34412,6 +34419,16 @@ def pbSwitchTo(currentmon,party,skill,pivoting=false,hardswitch=false,incomingmo
         monscore+=20 if checkAImoves([PBMoves::WILLOWISP],aimem)
         monscore+=20 if checkAImoves(PBStuff::POISONMOVE,aimem)
       end
+      # Pick Up - steals item from fainted opponents
+      if (battler.ability == PBAbilities::PICKUP) && battler.item == 0
+        # Value having Pick Up when we have no item and opponents have items
+        if opponent1.item != 0 && !(!opponent1.abilitynulled && opponent1.ability == PBAbilities::STICKYHOLD)
+          monscore+=25
+        end
+        if opponent2.totalhp > 0 && opponent2.item != 0 && !(!opponent2.abilitynulled && opponent2.ability == PBAbilities::STICKYHOLD)
+          monscore+=25
+        end
+      end
       if (battler.ability == PBAbilities::WATERBUBBLE) || (battler.ability == PBAbilities::WATERVEIL) || (battler.ability == PBAbilities::FLAREBOOST)
         if checkAImoves([PBMoves::WILLOWISP],aimem)
           monscore+=10
@@ -34429,6 +34446,21 @@ def pbSwitchTo(currentmon,party,skill,pivoting=false,hardswitch=false,incomingmo
         end
         if opponent2.attack>opponent2.spatk
           monscore+=40
+        end
+      end
+      # Battle Armor - reduces damage by 34% when moving last, valuable for slow Pokemon
+      if (battler.ability == PBAbilities::BATTLEARMOR)
+        battlerspeed = pbRoughStat(battler,PBStats::SPEED,skill)
+        opponent1speed = pbRoughStat(opponent1,PBStats::SPEED,skill)
+        opponent2speed = opponent2.totalhp > 0 ? pbRoughStat(opponent2,PBStats::SPEED,skill) : 999
+        # More valuable if battler is slow (will move last)
+        if (@trickroom>0)
+          # In trick room, fast Pokemon move last
+          monscore+=40 if battlerspeed > opponent1speed
+          monscore+=40 if battlerspeed > opponent2speed && opponent2.totalhp > 0
+        else
+          monscore+=40 if battlerspeed < opponent1speed
+          monscore+=40 if battlerspeed < opponent2speed && opponent2.totalhp > 0
         end
       end
       if (battler.ability == PBAbilities::MULTISCALE)
@@ -34544,12 +34576,13 @@ def pbSwitchTo(currentmon,party,skill,pivoting=false,hardswitch=false,incomingmo
           end
         end
       end
+      # Rivalry now reduces damage taken from same-gender opponents
       if (battler.ability == PBAbilities::RIVALRY)
         if battler.gender==opponent1.gender
-          monscore+=30
+          monscore+=30  # Takes less damage from same gender
         end
         if battler.gender==opponent2.gender
-          monscore+=30
+          monscore+=30  # Takes less damage from same gender
         end
       end
       if (battler.ability == PBAbilities::SCRAPPY) || SilvallyCheck(battler,PBTypes::NORMAL)
@@ -35022,10 +35055,9 @@ def pbSwitchTo(currentmon,party,skill,pivoting=false,hardswitch=false,incomingmo
         monscore-=20 if (battler.ability == PBAbilities::PERISHBODY)
         monscore+=20 if (battler.ability == PBAbilities::JUSTIFIED)
       when 30
-        monscore+=25 if (battler.ability == PBAbilities::SANDVEIL)
+        # Sand Veil and Tangled Feet no longer give evasion
         monscore+=25 if (battler.ability == PBAbilities::SNOWCLOAK)
         monscore+=25 if (battler.ability == PBAbilities::ILLUSION)
-        monscore+=25 if (battler.ability == PBAbilities::TANGLEDFEET)
         monscore+=25 if (battler.ability == PBAbilities::MAGICBOUNCE) || SilvallyCheck(battler,PBTypes::PSYCHIC)
         monscore+=25 if (battler.ability == PBAbilities::COLORCHANGE)
       when 31
