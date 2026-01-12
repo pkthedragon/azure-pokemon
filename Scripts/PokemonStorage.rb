@@ -3212,5 +3212,18 @@ def pbPokeCenterPC
   pbSEPlay("computerclose")
 end
 
+def pbShrinePC
+  Kernel.pbMessage(_INTL("\\se[Door exit]{1} looked outside.",$Trainer.name))
+  loop do
+    commands=PokemonPCList.getCommandList()
+    command=Kernel.pbMessage(_INTL("Which storage should be accessed?"),
+       commands,commands.length)
+    if !PokemonPCList.callCommand(command)
+      break
+    end
+  end
+  pbSEPlay("Door exit")
+end
+
 PokemonPCList.registerPC(StorageSystemPC.new)
 PokemonPCList.registerPC(TrainerPC.new)

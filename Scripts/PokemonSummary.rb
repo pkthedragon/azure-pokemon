@@ -119,54 +119,103 @@ class MoveSelectionSprite < SpriteWrapper
   end
 end
 
-
-
-
 class Window_AbilityDesc < Window_DrawableCommand
   def initialize(viewport=nil)
-    @text = ""
-    super(0, 0, 314, 64, viewport)  # width gives ~282px inner text area
-    self.baseColor   = Color.new(64, 64, 64)
-    self.shadowColor = Color.new(176, 176, 176)
-    self.opacity     = 0
-    self.contents_opacity = 255
-    refresh
+    super(0, 0, 314, 64, viewport)
+    self.opacity = 0
+    self.contents_opacity = 0
+    self.active = false
+    self.visible = false
   end
 
-  def setText(text)
-    text = "" if !text
-    return if @text == text
-    @text = text
-    refresh
-  end
-
-  def refresh
-    self.contents.dispose if self.contents
-    self.contents = Bitmap.new(self.width - 32, self.height - 32)
-    self.contents.clear
-    pbSetSmallFont(self.contents)
-    base = self.baseColor ? self.baseColor.clone : Color.new(12 * 8, 12 * 8, 12 * 8)
-    shadow = self.shadowColor ? self.shadowColor.clone : Color.new(26 * 8, 26 * 8, 25 * 8)
-    formatted = "<c2=" + colorToRgb16(base) + colorToRgb16(shadow) + ">" + @text.to_s
-    chars = getFormattedText(self.contents, 0, 0, self.contents.width, -1, formatted, 26)
-    drawFormattedChars(self.contents, chars)
-    self.oy = 0
-  end
-
-  def update
-    return if !self.visible
-    super
-    # Scroll with L/R (shoulder) buttons to avoid conflicting with party navigation
-    if Input.repeat?(Input::L)
-      self.oy = [self.oy - 16, 0].max
-    elsif Input.repeat?(Input::R)
-      max_scroll = [self.contents.height - (self.height - 32), 0].max
-      self.oy = [self.oy + 16, max_scroll].min
+  def set_scroll_selected(value)
+    if value
+      self.active = true
+      self.cursor_rect.set(0, 0, self.width - 32, self.height - 32)
+    else
+      self.active = false
+      self.cursor_rect.set(0, 0, 0, 0)
     end
   end
 end
 
+
 class PokemonSummaryScene
+  def wrapAbilityLines(text, width)
+    bmp = @sprites["overlay"].bitmap
+    pbSetSystemFont(bmp)
+    text = "" if !text
+    chunks = text.to_s.gsub("\r\n", "\n").gsub("\r", "\n").split("\n", -1)
+    out = []
+
+    chunks.each do |chunk|
+      if chunk.nil? || chunk == ""
+        out << ""
+        next
+      end
+      words = chunk.split(/\s+/)
+      line  = ""
+  
+      words.each do |w|
+        test = (line == "") ? w : "#{line} #{w}"
+        if bmp.text_size(test).width <= width
+          line = test
+        else
+          out << line if line != ""
+          line = w
+          # hard-split any single overlong word
+          if bmp.text_size(line).width > width
+            part = ""
+            line.each_char do |ch|
+              t = part + ch
+              if bmp.text_size(t).width <= width
+                part = t
+              else
+                out << part if part != ""
+                 part = ch
+              end
+            end
+            line = part
+          end
+        end
+      end
+
+      out << line if line != ""
+    end
+
+    return out
+  end
+
+  def drawAbilityBoxText(abilitydesc)
+    overlay = @sprites["overlay"].bitmap
+    pbSetSystemFont(overlay)
+
+    @ability_lines = wrapAbilityLines(abilitydesc, 282)
+    @ability_lines = [""] if !@ability_lines || @ability_lines.length == 0
+    @ability_scroll_index = 0 if !@ability_scroll_index
+    @ability_scroll_index = 0 if @ability_scroll_index < 0
+    max_start = [@ability_lines.length - 2, 0].max
+    @ability_scroll_index = max_start if @ability_scroll_index > max_start
+
+    line1 = @ability_lines[@ability_scroll_index] || ""
+    line2 = @ability_lines[@ability_scroll_index + 1] || ""
+
+	text = line1.to_s
+	text += "\n" + line2.to_s if line2 && line2 != ""
+
+	drawTextEx(
+		overlay,
+		224,
+		316,
+		282,
+		2,                      # EXACTLY like old Summary
+		text,
+		Color.new(64,64,64),
+		Color.new(176,176,176)
+		)
+
+  end
+
   def pbPokerus(pkmn)
     return pkmn.pokerusStage
   end
@@ -611,7 +660,7 @@ class PokemonSummaryScene
        [sprintf("%d",pokemon.spdef),440,216,1,Color.new(64,64,64),Color.new(176,176,176)],
        [_INTL("Speed"),248,248,0,base,statshadows[2]],
        [sprintf("%d",pokemon.speed),440,248,1,Color.new(64,64,64),Color.new(176,176,176)],
-       [_INTL("Ability"),224,284,0,base,shadow],
+       [_INTL("Ability  [S]"),224,284,0,base,shadow],
        [abilityname,362,284,0,Color.new(64,64,64),Color.new(176,176,176)],
        [sprintf("%d",pokemon.iv[0]),484,76,1,Color.new(64,64,64),Color.new(176,176,176)],
        [sprintf("%d",pokemon.iv[1]),484,120,1,Color.new(64,64,64),Color.new(176,176,176)],
@@ -619,7 +668,6 @@ class PokemonSummaryScene
        [sprintf("%d",pokemon.iv[4]),484,184,1,Color.new(64,64,64),Color.new(176,176,176)],
        [sprintf("%d",pokemon.iv[5]),484,216,1,Color.new(64,64,64),Color.new(176,176,176)],
        [sprintf("%d",pokemon.iv[3]),484,248,1,Color.new(64,64,64),Color.new(176,176,176)],
-       [_INTL("L/R: Scroll"),224,300,0,Color.new(64,64,64),Color.new(176,176,176)],
     ]
     if pokemon.isMale?
       textpos.push([_INTL("♂"),178,62,0,Color.new(24,112,216),Color.new(136,168,208)])
@@ -628,14 +676,17 @@ class PokemonSummaryScene
     end
     pbDrawTextPositions(overlay,textpos)
     # Ability description scrollable window
-    if !@sprites["abilitydesc"]
-      @sprites["abilitydesc"] = Window_AbilityDesc.new(@viewport)
-      @sprites["abilitydesc"].x = 224
-      @sprites["abilitydesc"].y = 316
-      @sprites["abilitydesc"].visible = true
-    end
-    @sprites["abilitydesc"].visible = true
-    @sprites["abilitydesc"].setText(abilitydesc)
+    # Ability selector window (cursor/highlight only; text is drawn onto overlay like old script)
+	if !@sprites["abilitydesc"]
+	  @sprites["abilitydesc"] = Window_AbilityDesc.new(@viewport)
+	  @sprites["abilitydesc"].x = 224
+	  @sprites["abilitydesc"].y = 316
+	end
+	@sprites["abilitydesc"].visible = true
+
+	# Draw the ability text EXACTLY like the old summary did (two lines in the box)
+	drawAbilityBoxText(abilitydesc)
+
     drawMarkings(overlay,15,291,72,20,pokemon.markings)
     if pokemon.hp>0
       hpcolors=[
@@ -1259,39 +1310,24 @@ class PokemonSummaryScene
     end
   end
 
-  
-
-  # Change nature from the Trainer Memo page (page 1) by pressing a button.
-  # Opens a simple list of all natures and applies the chosen one.
-  def pbChangeNature
-    return false if !@pokemon || @pokemon.isEgg?
-    commands = []
-    for i in 0...PBNatures.getCount
-      commands.push(PBNatures.getName(i))
-    end
-    current = @pokemon.nature
-    cmd = Kernel.pbShowCommands(_INTL("Change {1}'s nature to which?", @pokemon.name), commands, current)
-    return false if cmd < 0 || cmd == current
-    @pokemon.setNature(cmd)
-    pbPlayDecisionSE()
-    # Redraw relevant pages if currently showing
-    case @page
-    when 1
-      drawPageTwo(@pokemon)
-    when 2
-      drawPageThree(@pokemon)
-    end
-    return true
-  end
-
 def pbScene
     pbPlayCry(@pokemon)
     loop do
+	  @abilityScroll = false if @abilityScroll.nil?
+	  @ability_scroll_index = 0 if @ability_scroll_index.nil?
       Graphics.update
       Input.update
       pbUpdate
       if Input.trigger?(Input:: B)
-        break
+	    if @abilityScroll
+		  @abilityScroll = false
+		  @sprites["abilitydesc"].set_scroll_selected(false)
+		  pbPlayCancelSE()
+		  Input.update
+		  next
+		else
+          break
+		end
       end
       dorefresh=false
       if Input.trigger?(Input::C)
@@ -1307,11 +1343,43 @@ def pbScene
           drawPageFive(@pokemon)
         end
       end
-      # Change nature from Trainer Memo page (page 1) with the X button
-      if Input.trigger?(Input::X) && @page==1 && !@pokemon.isEgg?
-        dorefresh = pbChangeNature || dorefresh
+	  # Ability scroll mode on Page 3 (@page == 2)
+	  if @page == 2 && @sprites["abilitydesc"] && @sprites["abilitydesc"].visible
+		if Input.trigger?(Input::Y)  # S key
+		@abilityScroll = !@abilityScroll
+		@sprites["abilitydesc"].set_scroll_selected(@abilityScroll)
+		pbPlayDecisionSE()
+	  end
+
+  # While selected: UP/DOWN scroll the ability description (line-by-line)
+	  if @abilityScroll
+		if Input.trigger?(Input::UP)
+		max_start = [(@ability_lines ? @ability_lines.length : 0) - 2, 0].max
+		if @ability_scroll_index <= 0
+          @ability_scroll_index = max_start
+		else
+          @ability_scroll_index -= 1
+		end
+		drawPageThree(@pokemon)
+		pbPlayCursorSE()
+		Input.update
+		next
+	  elsif Input.trigger?(Input::DOWN)
+		max_start = [(@ability_lines ? @ability_lines.length : 0) - 2, 0].max
+		if @ability_scroll_index >= max_start
+		  @ability_scroll_index = 0
+		else
+		  @ability_scroll_index += 1
+        end
+        drawPageThree(@pokemon)
+        pbPlayCursorSE()
+        Input.update
+        next
       end
-      if Input.trigger?(Input::UP) # && @partyindex>0
+    end
+  end
+
+      if Input.trigger?(Input::UP) && !(@page == 2 && @abilityScroll) # && @partyindex>0
         pbGoToPrevious
         @pokemon=@party[@partyindex]
         @sprites["pokemon"].setPokemonBitmap(@pokemon)
@@ -1323,7 +1391,7 @@ def pbScene
         dorefresh=true
         pbPlayCry(@pokemon)
       end
-      if Input.trigger?(Input::DOWN) #&& @partyindex<@party.length-1
+      if Input.trigger?(Input::DOWN) && !(@page == 2 && @abilityScroll) #&& @partyindex<@party.length-1
         pbGoToNext
         @pokemon=@party[@partyindex]
         @sprites["pokemon"].setPokemonBitmap(@pokemon)

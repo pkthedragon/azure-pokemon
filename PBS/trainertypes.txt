@@ -1,3 +1,4 @@
+286,TESTER,Tester,100,Battle! Dream,,,,255,
 #####PROTAGONISTS#####
 0,CONDUIT,Conduit,100,Battle! Dream,,,Female,255,
 1,CONDUIT1,Conduit,100,,,,Female,255,

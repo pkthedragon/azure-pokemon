@@ -2237,7 +2237,7 @@ Events.onMapSceneChange+=proc{|sender,e|
   end
 }
 
-def Kernel.pbStartOver(gameover=false)
+def Kernel.pbStartOver(gameover=false, shrine=false)
   if pbInBugContest?
     Kernel.pbBugContestStartOver
     return
@@ -2245,59 +2245,73 @@ def Kernel.pbStartOver(gameover=false)
 
   PokemonSelection.restore
   pbHealAll()
-  $game_variables[298]=0
-  $game_variables[708]=0
-  if $PokemonGlobal.pokecenterMapId && $PokemonGlobal.pokecenterMapId>=0
-    if gameover
-      Kernel.pbMessage(_INTL("\\w[]\\wm\\c[8]\\l[3]Not yet, {1}.",$Trainer.name))
-    else
-      Kernel.pbMessage(_INTL("\\w[]\\wm\\c[8]\\l[3]Not yet, {1}.",$Trainer.name))
-    end
-    Kernel.pbCancelVehicles
-    pbRemoveDependencies()
-    $game_switches[STARTING_OVER_SWITCH]=true
-    $game_temp.player_new_map_id=$PokemonGlobal.pokecenterMapId
-    $game_temp.player_new_x=$PokemonGlobal.pokecenterX
-    $game_temp.player_new_y=$PokemonGlobal.pokecenterY
-    $game_temp.player_new_direction=$PokemonGlobal.pokecenterDirection
+  $game_variables[298] = 0
+  $game_variables[708] = 0
+
+  do_transfer = proc {
     $scene.transfer_player if $scene.is_a?(Scene_Map)
     $game_map.refresh
+  }
+
+  if $PokemonGlobal.pokecenterMapId && $PokemonGlobal.pokecenterMapId >= 0
+    if gameover || !shrine
+      Kernel.pbMessage(_INTL("\\w[]\\wm\\c[8]\\l[3]You must not give up yet, {1}.", $Trainer.name))
+    end
+
+    Kernel.pbCancelVehicles
+    pbRemoveDependencies()
+    $game_switches[STARTING_OVER_SWITCH] = true
+    $game_temp.player_new_map_id = $PokemonGlobal.pokecenterMapId
+    $game_temp.player_new_x = $PokemonGlobal.pokecenterX
+    $game_temp.player_new_y = $PokemonGlobal.pokecenterY
+    $game_temp.player_new_direction = $PokemonGlobal.pokecenterDirection
+
+    if shrine
+      pbFadeOutIn(20) { do_transfer.call }
+    else
+      do_transfer.call
+    end
+
   else
-    homedata=pbGetMetadata(0,MetadataHome)
-    if (homedata && !pbRxdataExists?(sprintf("Data/Map%03d",homedata[0])) )
+    homedata = pbGetMetadata(0, MetadataHome)
+    if homedata && !pbRxdataExists?(sprintf("Data/Map%03d", homedata[0]))
       if $DEBUG
-        Kernel.pbMessage(_ISPRINTF("Can't find the map 'Map{1:03d}' in the Data folder.  The game will resume at the player's position.",homedata[0]))
+        Kernel.pbMessage(_ISPRINTF(
+          "Can't find the map 'Map{1:03d}' in the Data folder. The game will resume at the player's position.",
+          homedata[0]
+        ))
       end
       pbHealAll()
       return
     end
-    if gameover
-      Kernel.pbMessage(_INTL("\\w[]\\wm\\c[8]\\l[3]After the unfortunate defeat, {1} scurried home.",$Trainer.name))
-    else
-      Kernel.pbMessage(_INTL("\\w[]\\wm\\c[8]\\l[3]{1} scurried home, protecting the exhausted and fainted Pokémon from further harm.",$Trainer.name))
+
+    if gameover || !shrine
+      Kernel.pbMessage(_INTL("\\w[]\\wm\\c[8]\\l[3]You must not give up yet, {1}.", $Trainer.name))
     end
+
     if homedata
       Kernel.pbCancelVehicles
       pbRemoveDependencies()
-      $game_switches[STARTING_OVER_SWITCH]=true
-      $game_temp.player_new_map_id=homedata[0]
-      $game_temp.player_new_x=homedata[1]
-      $game_temp.player_new_y=homedata[2]
-      $game_temp.player_new_direction=homedata[3]
-      $scene.transfer_player if $scene.is_a?(Scene_Map)
-      $game_map.refresh
+      $game_switches[STARTING_OVER_SWITCH] = true
+      $game_temp.player_new_map_id = homedata[0]
+      $game_temp.player_new_x = homedata[1]
+      $game_temp.player_new_y = homedata[2]
+      $game_temp.player_new_direction = homedata[3]
+
+      if shrine
+        pbFadeOutIn(20) { do_transfer.call }
+      else
+        do_transfer.call
+      end
     else
       pbHealAll()
     end
   end
+
   pbEraseEscapePoint
 end
 
-def Kernel.pbReturnToLastPokemonCenter
-  pbBGMFade(1.0)
-  pbBGSFade(1.0)
-  pbFadeOutIn(99999) { Kernel.pbStartOver(true) }
-end
+
 
 def pbCaveEntranceEx(exiting)
   sprite=BitmapSprite.new(Graphics.width,Graphics.height)

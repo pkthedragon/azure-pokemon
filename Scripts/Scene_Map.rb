@@ -134,16 +134,21 @@ class Scene_Map
       return
     end    
     if Input.trigger?(Input::C)
-      unless pbMapInterpreterRunning?
-        $PokemonTemp.hiddenMoveEventCalling=true
-      end
-    end      
-    if Input.trigger?(Input::B)
-      unless pbMapInterpreterRunning? or $game_system.menu_disabled or $game_player.moving?
-        $game_temp.menu_calling = true
-        $game_temp.menu_beep = true
-      end
-    end
+	  unless pbMapInterpreterRunning?
+		unless $PokemonTemp && $PokemonTemp.rematch_menu_lock
+          $PokemonTemp.hiddenMoveEventCalling = true
+		end
+	  end
+	end
+	if Input.trigger?(Input::B)
+	  unless pbMapInterpreterRunning? or $game_system.menu_disabled or $game_player.moving?
+		unless $PokemonTemp && $PokemonTemp.rematch_menu_lock
+		  $game_temp.menu_calling = true
+		  $game_temp.menu_beep = true
+		end
+	  end
+	end
+
      if Input.trigger?(Input::Y)
       $game_switches[392] = !$game_switches[392]
     end

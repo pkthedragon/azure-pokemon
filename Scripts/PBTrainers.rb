@@ -277,16 +277,15 @@ KAINE=280
 JOLLY=281
 NODE=282
 XEVON=283
-PAX=284
-PYUKU=285
+TESTER=286
 
 def self.getName(id)
 return pbGetMessage(MessageTypes::TrainerTypes,id)
 end
 def self.getCount
-return 280
+return 279
 end
 def self.maxValue
-return 285
+return 286
 end
 end

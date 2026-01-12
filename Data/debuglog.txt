@@ -1219,3 +1219,64 @@ Not using an item.
 [Prefer Scratch]
 [No Z-Move.]
 [The foe Purrloin lost 3 HP, now has 0 HP]
+==============================
+Battle Start!
+205 - Haden
+==============================
+***Round 1***
+AI Pokemon Purrloin is faster than Fuecoco.
+Scratch: initial score: 12
+Scratch: final score: 12
+ 
+Growl: initial score: 10
+Growl: final score: 0
+ 
+Beginning AI Item use check.
+ 
+Highest item score: -10000
+Highest move score: 12
+Not using an item.
+ 
+[The foe Purrloin: Scratch=12, Growl=0]
+[Prefer Scratch]
+[No Z-Move.]
+[Fuecoco lost 3 HP, now has 21 HP]
+[The foe Purrloin lost 8 HP, now has 11 HP]
+***Round 2***
+AI Pokemon Purrloin is faster than Fuecoco.
+Scratch: initial score: 14
+Scratch: final score: 14
+ 
+Growl: initial score: 10
+Growl: final score: 0
+ 
+Beginning AI Item use check.
+ 
+Highest item score: -10000
+Highest move score: 14
+Not using an item.
+ 
+[The foe Purrloin: Scratch=14, Growl=0]
+[Prefer Scratch]
+[No Z-Move.]
+[Fuecoco lost 5 HP, now has 16 HP]
+[The foe Purrloin lost 8 HP, now has 3 HP]
+***Round 3***
+AI Pokemon Purrloin is faster than Fuecoco.
+Scratch: initial score: 18
+Scratch: final score: 11
+ 
+Growl: initial score: 10
+Growl: final score: 0
+ 
+Beginning AI Item use check.
+ 
+Highest item score: -10000
+Highest move score: 11
+Not using an item.
+ 
+[The foe Purrloin: Scratch=11, Growl=0]
+[Prefer Scratch]
+[No Z-Move.]
+[Fuecoco lost 3 HP, now has 13 HP]
+[The foe Purrloin lost 3 HP, now has 0 HP]

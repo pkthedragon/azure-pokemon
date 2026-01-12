@@ -1326,97 +1326,85 @@ DEFAULT_FONT_SIZE=nil
 DEFAULT_WINDOWSKIN=nil
 
 def pbDisplayNameWindow(params)
-  name=params[1].to_s
-  isDark=params[2] ? true : false
-  colorBase=colorToRgb32(MessageConfig::DARKTEXTBASE)
-  colorBase=colorToRgb32(MessageConfig::LIGHTTEXTBASE) if isDark==true
-  colorBase=params[3] if params[3] && params[3]!=""
-  colorShadow=colorToRgb32(MessageConfig::DARKTEXTSHADOW)
-  colorShadow=colorToRgb32(MessageConfig::LIGHTTEXTSHADOW) if isDark==true
-  colorShadow=params[4] if params[4] && params[4]!=""
-  font=params[5] if params[5] && params[5]!=""
-  font=DEFAULT_FONT if !font || font=="" || font=="0"
-  fontSize=DEFAULT_FONT_SIZE
-  fontSize=params[6] if params[6] && params[6]!=""
-  position=params[7] if params[7] && params[7]!=""
-  newX=params[8] if params[8] && params[8]!=""
-  newY=params[9] if params[9] && params[9]!=""
-  newSkin=params[10] if params[10] && params[10]!=""
-  newSkin=DEFAULT_WINDOWSKIN if !newSkin || newSkin=="" || newSkin=="0" || newSkin=="nil"
-  msgwindow=params[0]
-  fullName=(params[1].split(","))[0]
-  align=""
-  alignEnd=""
-  case DEFAULT_ALIGNMENT
-  when 0
-    align="<al>"
-    alignEnd="</al>"
-  when 1
-    align="<ac>"
-    alignEnd="</ac>"
-  when 2
-    align="<ar>"
-    alignEnd="</ar>"
+  msgwindow = params[0]
+  raw      = params[1].to_s
+  isDark   = params[2] ? true : false
+
+  # Parse "Name,..." (same as your current code)
+  name = (raw.split(","))[0].to_s
+
+  # --- Match message color logic from pbMessageDisplay ---
+  windowskin = msgwindow ? msgwindow.windowskin : nil
+  isDarkSkin = isDarkWindowskin(windowskin)
+
+  useLightText = false
+  if ($game_message && $game_message.background > 0) ||
+     ($game_system && $game_system.respond_to?("message_frame") &&
+      $game_system.message_frame != 0)
+    useLightText = true
   end
-  if !position.nil? && position!="nil"
-    case position
-    when "0"
-      align="<al>"
-      alignEnd="</al>"
-    when "1", "", nil
-      align="<ac>"
-      alignEnd="</ac>"
-    when "2"
-      align="<ar>"
-      alignEnd="</ar>"
-    end
-  end
-  fullName.insert(0,align)
-  fullName+=alignEnd
-  if !colorBase || colorBase.empty?
-    colorBase=colorToRgb32(MessageConfig::DARKTEXTBASE)
-    colorBase=colorToRgb32(MessageConfig::LIGHTTEXTBASE) if isDark==true
-  end
-  if !colorShadow || colorShadow.empty?
-    colorShadow=colorToRgb32(MessageConfig::DARKTEXTSHADOW)
-    colorShadow=colorToRgb32(MessageConfig::LIGHTTEXTSHADOW) if isDark==true
-  end
-  fullColor="<c3="+colorBase+","+colorShadow+">"
-  fullName.insert(0,fullColor) unless fullColor=="<c3=0,0>"
-  if font && !font.empty?
-    fullFont="<fn="+font+">"
-    fullName.insert(0,fullFont)
-    fullName+="</fn>"
-  end
-  if fontSize && ((fontSize.is_a?(Numeric) && fontSize!=0) ||
-     (fontSize.is_a?(String) && !fontSize.empty? && fontSize!="0"))
-    fullFontSize="<fs="+fontSize.to_s+">"
-    fullName.insert(0,fullFontSize)
-    fullName+="</fs>"
-  end
-  namewindow=Window_AdvancedTextPokemon.new(_INTL(fullName.to_s))
-  if newSkin
+  useLightText = true if isDark   # preserve your existing "isDark" override behavior
+
+  colortag = getSkinColor(windowskin, 0, useLightText ? true : isDarkSkin)
+
+  # --- Center align, but DO NOT set <fn> or <fs> (keeps same font/size as message text) ---
+  center_nudge_spaces = 4
+  display_name = name + (" " * center_nudge_spaces)
+  fullText = colortag + "<ac>" + display_name + "</ac>"
+
+  namewindow = Window_AdvancedTextPokemon.new(_INTL(fullText))
+
+  # Skin: keep same as message window unless a custom skin was provided
+  newSkin = params[10]
+  if newSkin && newSkin != "" && newSkin != "0" && newSkin != "nil"
     namewindow.setSkin("Graphics/Windowskins/#{newSkin}")
   elsif msgwindow
     namewindow.send(:__setWindowskin, msgwindow.windowskin)
   end
-  namewindow.resizeToFit(namewindow.text,Graphics.width)
-  namewindow.width=MIN_WIDTH if namewindow.width<=MIN_WIDTH
-  namewindow.y=msgwindow.y-namewindow.height if msgwindow
-  if newX && newX!="0"
-    namewindow.x=newX.to_i
+
+  # Size to the text at the message font size
+  namewindow.resizeToFit(namewindow.text, Graphics.width)
+
+  # Measure text using the window's actual font
+  text_w = namewindow.contents.text_size(display_name).width
+
+  # Internal window padding (borderX covers left+right frame)
+  frame_pad = namewindow.borderX
+
+  # EXTRA visual padding on EACH SIDE (this is the key)
+  side_pad = 10   # try 10–14 if you want more breathing room
+
+  new_w = text_w + frame_pad + (side_pad * 2)
+  new_w = [new_w, Graphics.width].min
+  new_w = [new_w, 1].max
+
+  namewindow.width = new_w
+
+  # Force re-layout so <ac> recenters correctly
+  namewindow.width = new_w
+  namewindow.width = namewindow.width
+  namewindow.text  = namewindow.text   # Position above the message window (same behavior you had)
+  namewindow.y = msgwindow.y - namewindow.height if msgwindow
+
+  # Respect your forced X/Y + offsets
+  newX = params[8]
+  newY = params[9]
+  if newX && newX != "" && newX != "0"
+    namewindow.x = newX.to_i
   else
-    namewindow.x+=OFFSET_NAMEWINDOW_X
+    namewindow.x += OFFSET_NAMEWINDOW_X
   end
-  if newY && newY!="0"
-    namewindow.y=newY.to_i
+  if newY && newY != "" && newY != "0"
+    namewindow.y = newY.to_i
   else
-    namewindow.y+=OFFSET_NAMEWINDOW_Y
+    namewindow.y += OFFSET_NAMEWINDOW_Y
   end
-  namewindow.viewport=msgwindow.viewport if msgwindow
-  namewindow.z=msgwindow.z if msgwindow
+
+  namewindow.viewport = msgwindow.viewport if msgwindow
+  namewindow.z = msgwindow.z if msgwindow
   return namewindow
 end
+
 
 def Kernel.pbMessageDisplay(msgwindow,message,letterbyletter=true,commandProc=nil)
   return if !msgwindow

@@ -419,14 +419,14 @@ def pbTrainerRematchListMenu(rematches, title)
 end
 
 def pbTrainerRematchMenu
-  rematches=($PokemonGlobal) ? $PokemonGlobal.trainerRematches : nil
-  rematches=[] if !rematches
+  rematches = ($PokemonGlobal) ? $PokemonGlobal.trainerRematches : nil
+  rematches = [] if !rematches
   if rematches.empty?
     Kernel.pbMessage(_INTL("You can't seem to recall."))
     return
   end
-  boss_rematches=[]
-  standard_rematches=[]
+  boss_rematches = []
+  standard_rematches = []
   for rematch in rematches
     if pbTrainerRematchBoss?(rematch)
       boss_rematches.push(rematch)
@@ -434,32 +434,52 @@ def pbTrainerRematchMenu
       standard_rematches.push(rematch)
     end
   end
-  commands=[_INTL("Trainer Rematches"),_INTL("Boss Rematches")]
-  using(cmdwindow=Window_CommandPokemon.new(commands)) {
-    cmdwindow.height=Graphics.height if cmdwindow.height>Graphics.height
-    cmdwindow.width=Graphics.width if cmdwindow.width>Graphics.width
-    cmdwindow.x=(Graphics.width-cmdwindow.width)/2
-    cmdwindow.y=(Graphics.height-cmdwindow.height)/2
+  old_menu_disabled = $game_system.menu_disabled
+  $game_system.menu_disabled = true
+  commands = [_INTL("Trainer Rematches"), _INTL("Boss Rematches"), _INTL("Cancel")]
+  using(cmdwindow = Window_CommandPokemon.new(commands)) {
+    cmdwindow.height = Graphics.height if cmdwindow.height > Graphics.height
+    cmdwindow.width  = Graphics.width  if cmdwindow.width  > Graphics.width
+    cmdwindow.x = (Graphics.width - cmdwindow.width) / 2
+    cmdwindow.y = (Graphics.height - cmdwindow.height) / 2
     loop do
       Graphics.update
       Input.update
       cmdwindow.update
+
       if Input.trigger?(Input::B)
         pbPlayCancelSE()
         break
       elsif Input.trigger?(Input::C)
         pbPlayDecisionSE()
-        selection=cmdwindow.index
-        if selection==0
-          pbTrainerRematchListMenu(standard_rematches,_INTL("trainers"))
-        elsif selection==1
-          pbTrainerRematchListMenu(boss_rematches,_INTL("boss trainers"))
+        selection = cmdwindow.index
+        if selection == 0
+          pbTrainerRematchListMenu(standard_rematches, _INTL("trainers"))
+        elsif selection == 1
+          pbTrainerRematchListMenu(boss_rematches, _INTL("boss trainers"))
+        else
+          pbPlayCancelSE()
         end
         break
       end
     end
   }
+ensure
+  $game_temp.menu_calling = false if $game_temp
+  Input.update
+  while Input.press?(Input::B) || Input.press?(Input::C)
+    Graphics.update
+    Input.update
+  end
+  2.times do
+    Graphics.update
+    Input.update
+  end
+  $game_system.menu_disabled = old_menu_disabled
 end
+
+
+
 
 def pbDoubleTrainerBattle(trainerid1, trainername1, trainerparty1, endspeech1,
                           trainerid2, trainername2, trainerparty2, endspeech2, 

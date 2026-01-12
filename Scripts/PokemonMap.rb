@@ -239,6 +239,7 @@ class PokemonTemp
   attr_accessor :surfJump
   attr_accessor :endSurf
   attr_accessor :forceSingleBattle
+  attr_accessor :rematch_menu_lock
 
   def initialize
     @menuLastChoice         = 0
@@ -256,6 +257,7 @@ class PokemonTemp
     @surfJump               = nil
     @endSurf                = nil
     @forceSingleBattle      = false
+	@rematch_menu_lock		= false
   end
 end
 
