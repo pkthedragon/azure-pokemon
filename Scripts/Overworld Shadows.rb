@@ -199,12 +199,22 @@ class Sprite_Character
 
     if @character.is_a?(Game_Event)
       page = OverworldShadows.active_event_page(@character)
-      if @old_page != page
+      graphic_empty = @character.character_name.to_s.empty?
+
+      # Dispose shadow if graphic becomes empty (e.g., during move command)
+      if @shadow && graphic_empty
         dispose_shadow
-        if page && !@character.character_name.to_s.empty? &&
+      # Check for page changes
+      elsif @old_page != page
+        dispose_shadow
+        if page && !graphic_empty &&
            OverworldShadows.should_get_shadow?(@character)
           make_shadow
         end
+      # Recreate shadow if graphic was restored
+      elsif !@shadow && !graphic_empty && page &&
+            OverworldShadows.should_get_shadow?(@character)
+        make_shadow
       end
       @old_page = page
     end
