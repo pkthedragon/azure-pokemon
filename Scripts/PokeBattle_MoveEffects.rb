@@ -47,20 +47,25 @@ class PokeBattle_Confusion < PokeBattle_Move
     @id=0
   end
 
-  def pbIsPhysical?(type)
-    if attacker.attack >= attacker.spatk
-    return true
-  else
-    return false
+  def pbEffect(attacker,opponent,hitnum=0,alltargets=nil,showanimation=true)
+    @attacker = attacker
+    super
   end
+
+  def pbIsPhysical?(type)
+    if @attacker.attack >= @attacker.spatk
+      return true
+    else
+      return false
+    end
   end
 
   def pbIsSpecial?(type)
-    if attacker.attack < attacker.spatk
-    return true
-  else
-    return false
-  end
+    if @attacker.attack < @attacker.spatk
+      return true
+    else
+      return false
+    end
   end
 
   def pbCalcDamage(attacker,opponent)
