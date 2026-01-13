@@ -2575,9 +2575,9 @@ class PokeBattle_Move_049 < PokeBattle_Move
         @battle.pbDisplay(_INTL("The pointed stones disappeared from around your team!"))
       end
     end
-    if attacker.pbOwnSide.effects[PBEffects::ToxicSpikes] || opponent.pbOwnSide.effects[PBEffects::ToxicSpikes]
-      attacker.pbOwnSide.effects[PBEffects::ToxicSpikes] = false
-      opponent.pbOwnSide.effects[PBEffects::ToxicSpikes] = false
+    if attacker.pbOwnSide.effects[PBEffects::ToxicSpikes]>0 || opponent.pbOwnSide.effects[PBEffects::ToxicSpikes]>0
+      attacker.pbOwnSide.effects[PBEffects::ToxicSpikes] = 0
+      opponent.pbOwnSide.effects[PBEffects::ToxicSpikes] = 0
       if !@battle.pbIsOpposing?(attacker.index)
         @battle.pbDisplay(_INTL("The poison spikes disappeared from around your opponent's team's feet!"))
       else
@@ -2613,7 +2613,7 @@ class PokeBattle_Move_049 < PokeBattle_Move
     opponent.pbOwnSide.effects[PBEffects::Safeguard] = 0
     opponent.pbOwnSide.effects[PBEffects::Spikes] = 0
     opponent.pbOwnSide.effects[PBEffects::StealthRock] = false
-    opponent.pbOwnSide.effects[PBEffects::ToxicSpikes] = false
+    opponent.pbOwnSide.effects[PBEffects::ToxicSpikes] = 0
     opponent.pbOwnSide.effects[PBEffects::StickyWeb] = false
     opponent.pbOwnSide.effects[PBEffects::MysticTree] = 0
     return true
@@ -9341,8 +9341,8 @@ class PokeBattle_Move_110 < PokeBattle_Move
         attacker.pbOwnSide.effects[PBEffects::Spikes] = 0
         @battle.pbDisplay(_INTL("{1} blew away Spikes!",attacker.pbThis))     
       end
-      if attacker.pbOwnSide.effects[PBEffects::ToxicSpikes]
-        attacker.pbOwnSide.effects[PBEffects::ToxicSpikes] = false
+      if attacker.pbOwnSide.effects[PBEffects::ToxicSpikes]>0
+        attacker.pbOwnSide.effects[PBEffects::ToxicSpikes] = 0
         @battle.pbDisplay(_INTL("{1} blew away poison spikes!",attacker.pbThis))     
       end
       if attacker.pbOwnSide.effects[PBEffects::StickyWeb]
@@ -12880,11 +12880,11 @@ class PokeBattle_Move_21A < PokeBattle_Move
             hpgain = opponent.pbRecoverHP(hpgain,true)
             pbDisplay(_INTL("{1} was healed by the mystical trees!",opponent.pbThis)) if hpgain > 0
           end
-          if opponent.pbOwnSide.effects[PBEffects::ToxicSpikes]
+          if opponent.pbOwnSide.effects[PBEffects::ToxicSpikes]>0
             @battle.pbDisplay(_INTL("{1} fell into the hazards!",opponent.pbThis)) if showmessage
             showmessage = false
             if opponent.pbHasType?(:POISON) && $fefieldeffect != 10
-              opponent.pbOwnSide.effects[PBEffects::ToxicSpikes] = false
+              opponent.pbOwnSide.effects[PBEffects::ToxicSpikes] = 0
               pbDisplay(_INTL("{1} absorbed the poison spikes!",opponent.pbThis))
             elsif opponent.pbCanPoisonSpikes?
               if opponent.pbHasType?(:GRASS) || (opponent.pbHasType?(:FAIRY) && $fefieldeffect != 42)

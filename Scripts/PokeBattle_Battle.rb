@@ -7933,7 +7933,7 @@ def pbStartBattle(canlose=false)
         # TSpikes
         if i.pbOwnSide.effects[PBEffects::ToxicSpikes]
           pbDisplay(_INTL("The waste swallowed up the toxic spikes!"))
-          i.pbOwnSide.effects[PBEffects::ToxicSpikes]=false
+          i.pbOwnSide.effects[PBEffects::ToxicSpikes]=0
           pbDisplay(_INTL("...Poison needles shot up from the ground!"))
           if !i.isFainted? && !i.isAirborne? &&
            !i.pbHasType?(:STEEL) && !i.pbHasType?(:POISON)
