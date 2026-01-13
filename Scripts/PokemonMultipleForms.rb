@@ -9174,19 +9174,19 @@ MultipleForms.register(:MILOTIC,{
 
 MultipleForms.register(:BURMY,{
   "type1"=>proc{|pokemon|
-    next if pokemon.form!=1
+    next if pokemon.form!=3
     next getID(PBTypes,:BUG)    # Mystic
   },
   "type2"=>proc{|pokemon|
-    next if pokemon.form!=1
+    next if pokemon.form!=3
     next getID(PBTypes,:NORMAL)    # Mystic
   },
   "getBaseStats"=>proc{|pokemon|
-    next if pokemon.form!=1
+    next if pokemon.form!=3
     next [36, 29, 45, 40, 29, 45]   # Mystic
   },
   "ability"=>proc{|pokemon|
-    next if pokemon.form!=1 # Only Mystic form
+    next if pokemon.form!=3 # Only Mystic form
     if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0)
       next getID(PBAbilities,:OVERCOAT)
     end
@@ -9197,7 +9197,7 @@ MultipleForms.register(:BURMY,{
   "getMoveList"=>proc{|pokemon|
     movelist=[]
     case pokemon.form            # Mystic
-    when 1 ; movelist=[[1,:DEFENSECURL],[10,:ROLLOUT],[15,:SILVERWIND],[20,:HEADBUTT]]
+    when 3 ; movelist=[[1,:DEFENSECURL],[10,:ROLLOUT],[15,:SILVERWIND],[20,:HEADBUTT]]
     end
     for i in movelist
       i[1]=getConst(PBMoves,i[1])
@@ -9205,7 +9205,7 @@ MultipleForms.register(:BURMY,{
     next movelist
   },
   "onSetForm"=>proc{|pokemon,form|
-    if form==1
+    if form==3
       pbSeenForm(pokemon)
     end
   }

@@ -1506,3 +1506,217 @@ Not using an item.
 [No Z-Move.]
 [Ozzie lost 2 HP, now has 13 HP]
 [The foe Purrloin lost 3 HP, now has 0 HP]
+==============================
+Battle Start!
+9 - Belle
+==============================
+***Round 1***
+Player Pokemon Ozzie is faster than Lillipup.
+Leer: initial score: 10
+Leer: final score: 14
+ 
+Tackle: initial score: 21
+Tackle: final score: 21
+ 
+Odor Sleuth: initial score: 5
+Odor Sleuth: final score: 5
+ 
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (0)
+Initial switchscore building: Healing (0)
+Initial switchscore building: fsteak (0)
+Initial switchscore building: Specific Switches (0)
+Initial switchscore building: Typing (0)
+Lillipup: initial switchscore: 0
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+Lillipup: initial noswitchscore: 66
+ 
+{
+ 
+}
+ 
+Lillipup: highest move score: 21
+Lillipup: final switching score: -133
+21 > -133, will not switch
+ 
+Beginning AI Item use check.
+ 
+Highest item score: -10000
+Highest move score: 21
+Not using an item.
+ 
+[The foe Lillipup: Leer=14, Tackle=21, Odor Sleuth=5]
+[Prefer Tackle]
+[No Z-Move.]
+[Ozzie lost 5 HP, now has 18 HP]
+***Round 2***
+Player Pokemon Ozzie is faster than Lillipup.
+Leer: initial score: 10
+Leer: final score: 14
+ 
+Tackle: initial score: 27
+Tackle: final score: 27
+ 
+Odor Sleuth: initial score: 5
+Odor Sleuth: final score: 5
+ 
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (0)
+Initial switchscore building: Healing (15)
+Initial switchscore building: fsteak (15)
+Initial switchscore building: Specific Switches (7)
+Initial switchscore building: Typing (7)
+Lillipup: initial switchscore: 7
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+Lillipup: initial noswitchscore: 50
+ 
+{
+ 
+}
+ 
+Lillipup: highest move score: 27
+Lillipup: final switching score: -121
+27 > -121, will not switch
+ 
+Beginning AI Item use check.
+ 
+Highest item score: -10000
+Highest move score: 27
+Not using an item.
+ 
+[The foe Lillipup: Leer=14, Tackle=27, Odor Sleuth=5]
+[Prefer Tackle]
+[No Z-Move.]
+[The foe Lillipup lost 7 HP, now has 13 HP]
+[Ozzie lost 5 HP, now has 13 HP]
+***Round 3***
+Player Pokemon Ozzie is faster than Lillipup.
+Leer: initial score: 10
+Leer: final score: 14
+ 
+Tackle: initial score: 38
+Tackle: final score: 38
+ 
+Odor Sleuth: initial score: 5
+Odor Sleuth: final score: 5
+ 
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (0)
+Initial switchscore building: Healing (30)
+Initial switchscore building: fsteak (30)
+Initial switchscore building: Specific Switches (15)
+Initial switchscore building: Typing (15)
+Lillipup: initial switchscore: 15
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+Lillipup: initial noswitchscore: 33
+ 
+{
+ 
+}
+ 
+Lillipup: highest move score: 38
+Lillipup: final switching score: -109
+38 > -109, will not switch
+ 
+Beginning AI Item use check.
+ 
+Highest item score: -10000
+Highest move score: 38
+Not using an item.
+ 
+[The foe Lillipup: Leer=14, Tackle=38, Odor Sleuth=5]
+[Prefer Tackle]
+[No Z-Move.]
+[The foe Lillipup lost 7 HP, now has 6 HP]
+[Ozzie lost 5 HP, now has 8 HP]
+***Round 4***
+Player Pokemon Ozzie is faster than Lillipup.
+Leer: initial score: 10
+Leer: final score: 8
+ 
+Tackle: initial score: 62
+Tackle: final score: 37
+ 
+Odor Sleuth: initial score: 5
+Odor Sleuth: final score: 5
+ 
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (0)
+Initial switchscore building: Healing (45)
+Initial switchscore building: fsteak (45)
+Initial switchscore building: Specific Switches (22)
+Initial switchscore building: Typing (22)
+Lillipup: initial switchscore: 22
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+Lillipup: initial noswitchscore: 16
+ 
+{
+ 
+}
+ 
+Lillipup: highest move score: 37
+Lillipup: final switching score: -97
+37 > -97, will not switch
+ 
+Beginning AI Item use check.
+ 
+Highest item score: -10000
+Highest move score: 37
+Not using an item.
+ 
+[The foe Lillipup: Leer=8, Tackle=37, Odor Sleuth=5]
+[Prefer Tackle]
+[No Z-Move.]
+[The foe Lillipup lost 6 HP, now has 0 HP]
+***Round 5***
+Player Pokemon Ozzie is faster than Shinx.
+Tackle: initial score: 27
+Tackle: final score: 27
+ 
+Thunder Shock: initial score: 9
+Thunder Shock: final score: 0
+ 
+Leer: initial score: 10
+Leer: final score: 7
+ 
+Beginning AI Item use check.
+ 
+Highest item score: -10000
+Highest move score: 27
+Not using an item.
+ 
+[The foe Shinx: Tackle=27, Thunder Shock=0, Leer=7]
+[Prefer Tackle]
+[No Z-Move.]
+[The foe Shinx lost 20 HP, now has 0 HP]
+**Exception: undefined method `effects' for -1:Integer
+["PokeBattle_Battler:2146:in `pbFaint'", "PokeBattle_Battler:6831:in `pbProcessMoveAgainstTarget'", "PokeBattle_Battler:7415:in `block in pbUseMove'", "PokeBattle_Battler:7326:in `loop'", "PokeBattle_Battler:7326:in `pbUseMove'", "PokeBattle_Battler:8714:in `block in pbProcessTurn'", "PBDebug:4:in `logonerr'", "PokeBattle_Battler:8713:in `pbProcessTurn'", "PokeBattle_Battle:5786:in `block in pbAttackPhase'", "PokeBattle_Battle:5785:in `each'", "PokeBattle_Battle:5785:in `pbAttackPhase'", "PokeBattle_Battle:5311:in `block (2 levels) in pbStartBattleCore'", "PBDebug:4:in `logonerr'", "PokeBattle_Battle:5310:in `block in pbStartBattleCore'", "PokeBattle_Battle:5294:in `loop'", "PokeBattle_Battle:5294:in `pbStartBattleCore'", "PokeBattle_Battle:4900:in `pbStartBattle'", "PokemonTrainers:746:in `block (2 levels) in pbTrainerBattle'", "PokemonField:706:in `pbSceneStandby'", "PokemonTrainers:745:in `block in pbTrainerBattle'", "PokemonField:1008:in `pbBattleAnimation'", "PokemonTrainers:744:in `pbTrainerBattle'", "(eval):1:in `pbExecuteScript'", "Interpreter:243:in `eval'", "Interpreter:243:in `pbExecuteScript'", "Interpreter:799:in `command_111'", "Interpreter:320:in `execute_command'", "Interpreter:193:in `block in update'", "Interpreter:106:in `loop'", "Interpreter:106:in `update'", "Autosave:30:in `block in update'", "Autosave:28:in `loop'", "Autosave:28:in `update'", "Scene_Map:72:in `block in main'", "Scene_Map:69:in `loop'", "Scene_Map:69:in `main'", "Main:79:in `mainFunctionDebug'", "Main:53:in `block in mainFunction'", "Compiler:38:in `pbCriticalCode'", "Main:53:in `mainFunction'", "Main:89:in `block (2 levels) in <main>'", "Main:88:in `loop'", "Main:88:in `block in <main>'", "Section000:336:in `eval'", "Section000:336:in `block in <main>'", "Section000:333:in `each'", "Section000:333:in `each_with_index'", "Section000:333:in `<main>'", "-e:in `eval'"]
+==============================
+Battle Start!
+Wild Battle
+==============================
+***Round 1***
+[The wild Nosepass: Tackle=200, Harden=100]
+If this battle is not wild, something has gone wrong in scoring moves (no preference chosen).
+[The wild Nosepass lost 14 HP, now has 6 HP]
+[Ozzie lost 2 HP, now has 9 HP]
+***Round 2***
+[The wild Nosepass: Tackle=200, Harden=100]
+If this battle is not wild, something has gone wrong in scoring moves (no preference chosen).
+[The wild Nosepass lost 6 HP, now has 0 HP]
