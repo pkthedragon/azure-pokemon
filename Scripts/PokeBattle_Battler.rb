@@ -6056,9 +6056,9 @@ class PokeBattle_Battler
         @battle.pbDisplay(_INTL("{1} avoided damage with Wonder Guard!",target.pbThis))
         return false 
       end
-      if (typemod==0 && !thismove.function==0x111) || (typemod==0 && thismove.function==0x10B)
+      if typemod==0 && thismove.function!=0x111 # Future Sight handled elsewhere
         @battle.pbDisplay(_INTL("It doesn't affect\r\n{1}...",target.pbThis(true)))
-        return false 
+        return false
       end
     end
     if accuracy

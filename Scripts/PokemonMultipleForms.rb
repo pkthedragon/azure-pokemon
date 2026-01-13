@@ -4978,7 +4978,7 @@ MultipleForms.register(:FUECOCO,{
   },
   "ability"=>proc{|pokemon|
     next if pokemon.form!=1 # Only Mystic form
-    if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0)
+    if pokemon.abilityIndex==0 || pokemon.abilityIndex==1 || (pokemon.abilityflag && pokemon.abilityflag==0) || (pokemon.abilityflag && pokemon.abilityflag==1)
       next getID(PBAbilities,:UNNERVE)
     end
     if pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)
@@ -5019,7 +5019,7 @@ MultipleForms.register(:CROCALOR,{
   },
   "ability"=>proc{|pokemon|
     next if pokemon.form!=1 # Only Mystic form
-    if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0)
+    if pokemon.abilityIndex==0 || pokemon.abilityIndex==1 || (pokemon.abilityflag && pokemon.abilityflag==0) || (pokemon.abilityflag && pokemon.abilityflag==1)
       next getID(PBAbilities,:UNNERVE)
     end
     if pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)
@@ -5061,7 +5061,7 @@ MultipleForms.register(:SKELEDIRGE,{
   },
   "ability"=>proc{|pokemon|
     next if pokemon.form!=1 # Only Mystic form
-    if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0)
+    if pokemon.abilityIndex==0 || pokemon.abilityIndex==1 || (pokemon.abilityflag && pokemon.abilityflag==0) || (pokemon.abilityflag && pokemon.abilityflag==1)
       next getID(PBAbilities,:UNNERVE)
     end
     if pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)
