@@ -1660,13 +1660,14 @@ module UIHelper
     end
   end
 
-  def self.pbShowCommands(helpwindow,helptext,commands)
+  def self.pbShowCommands(helpwindow,helptext,commands,defaultIndex=0)
     ret=-1
     oldvisible=helpwindow.visible
     helpwindow.visible=helptext ? true : false
     helpwindow.letterbyletter=false
     helpwindow.text=helptext ? helptext : ""
     cmdwindow=Window_CommandPokemon.new(commands)
+    cmdwindow.index=defaultIndex if defaultIndex>0
     begin
       cmdwindow.viewport=helpwindow.viewport
       pbBottomRight(cmdwindow)
