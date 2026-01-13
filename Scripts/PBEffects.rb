@@ -198,6 +198,7 @@ begin
     CounterpoiseDouble = 228
     Resusitated       = 229
     FutureSightDamage = 230
+    ShedSkinUsed      = 231
     StallEntry        = 705
     # These effects apply to a side - starts from 300
     LightScreen   = 300

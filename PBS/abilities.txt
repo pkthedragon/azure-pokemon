@@ -58,7 +58,7 @@
 58,MINUS,Minus,"Sets Minus for three turns. Boosts offenses if Plus is active."
 59,FORECAST,Forecast,"Transforms during weather or when holding a weather stone."
 60,STICKYHOLD,Sticky Hold,"Protects the Pokémon from item theft and phasing."
-61,SHEDSKIN,Shed Skin,"The Pokémon may heal its own status problems."
+61,SHEDSKIN,Shed Skin,"Sheds the first status condition at end of turn. Resets on switch out."
 62,GUTS,Guts,"Boosts Attack if there is a status problem."
 63,MARVELSCALE,Marvel Scale,"Ups defenses if there is a status problem."
 64,LIQUIDOOZE,Liquid Ooze,"Wounds attackers using draining or contact moves."

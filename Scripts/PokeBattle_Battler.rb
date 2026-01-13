@@ -899,6 +899,7 @@ class PokeBattle_Battler
       @effects[PBEffects::FriskLock]   = 0
       @effects[PBEffects::ForewarnDisable] = 0
       @effects[PBEffects::ForewarnDisableMove] = 0
+      @effects[PBEffects::ShedSkinUsed] = false
       @effects[PBEffects::LaserFocus]  = 0
       @effects[PBEffects::GastroAcid]  = false
       @effects[PBEffects::HealBlock]   = 0
