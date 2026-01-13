@@ -392,7 +392,7 @@ end
 def pbStartTrainerRematch(rematch)
   endspeech=_INTL("...")
   field=pbTrainerRematchField(rematch)
-  $game_variables[708]=field if field
+  $game_variables[708] = field ? field : 0
   if rematch[3]=="double" && rematch[4]
     pbDoubleTrainerBattle(rematch[0],rematch[1],rematch[2],endspeech,
                           rematch[4],rematch[5],rematch[6],endspeech)
@@ -433,6 +433,7 @@ def pbTrainerRematchListMenu(rematches, title)
 end
 
 def pbTrainerRematchMenu
+  old_menu_disabled = $game_system.menu_disabled rescue false
   rematches = ($PokemonGlobal) ? $PokemonGlobal.trainerRematches : nil
   rematches = [] if !rematches
   if rematches.empty?
@@ -448,7 +449,6 @@ def pbTrainerRematchMenu
       standard_rematches.push(rematch)
     end
   end
-  old_menu_disabled = $game_system.menu_disabled
   $game_system.menu_disabled = true
   commands = [_INTL("Trainer Rematches"), _INTL("Boss Rematches"), _INTL("Cancel")]
   using(cmdwindow = Window_CommandPokemon.new(commands)) {
