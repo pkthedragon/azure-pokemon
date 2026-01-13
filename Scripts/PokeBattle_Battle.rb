@@ -6958,9 +6958,9 @@ def pbStartBattle(canlose=false)
     # Fire Pledge + Grass Pledge combination damage - should go here
     for i in priority
       next if i.isFainted?
-      # Shed Skin
+      # Shed Skin - sheds the first status condition, resets on switch out
       if i.hasWorkingAbility(:SHEDSKIN)
-        if (pbRandom(10)<3 && i.status>0) || $fefieldeffect==32
+        if i.status>0 && !i.effects[PBEffects::ShedSkinUsed]
           case i.status
             when PBStatuses::SLEEP
               pbDisplay(_INTL("{1}'s Shed Skin cured its sleep problem!",i.pbThis))
@@ -6975,6 +6975,7 @@ def pbStartBattle(canlose=false)
           end
           i.status=0
           i.statusCount=0
+          i.effects[PBEffects::ShedSkinUsed]=true
         end
       end
       # Hydration
