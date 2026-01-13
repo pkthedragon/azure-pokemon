@@ -384,7 +384,9 @@ class PokeBattle_Battle
   attr_accessor(:shieldSetup)
   attr_accessor(:shieldCount)
   attr_accessor(:sosbattle)       # Stores fight is an sos battle or not
-  
+  attr_accessor(:lastFaintedEnemyAbility) # Last fainted enemy ability for Power of Alchemy
+  attr_accessor(:lastFaintedAllyAbility)  # Last fainted ally ability for Receiver
+
   include PokeBattle_BattleCommon
   
   MAXPARTYSIZE = 6
@@ -469,6 +471,8 @@ class PokeBattle_Battle
     end
     @lastMoveUsed    = -1
     @lastMoveUser    = -1
+    @lastFaintedEnemyAbility = [nil, nil] # [player side, opponent side]
+    @lastFaintedAllyAbility = [nil, nil]  # [player side, opponent side]
     @partnerswitch   = []
     @aiMoveMemory    = [[],[],[[],[],[],[],[],[],[],[],[],[],[],[]]]
     @synchronize     = [-1,-1,0]
@@ -4244,7 +4248,7 @@ end
        $fefieldeffect == 26
       if pkmn.pbOwnSide.effects[PBEffects::Spikes]>0
         if !pkmn.isAirborne?
-          if !pkmn.hasWorkingAbility(:MAGICGUARD) && !(pkmn.hasWorkingAbility(:WONDERGUARD) && $fefieldeffect == 44) && !pkmn.hasWorkingItem(:HEAVYDUTYBOOTS)
+          if !pkmn.hasWorkingAbility(:MAGICGUARD) && !(pkmn.hasWorkingAbility(:WONDERGUARD) && $fefieldeffect == 44) && !pkmn.hasWorkingItem(:HEAVYDUTYBOOTS) && !pkmn.hasWorkingAbility(:LIMBER)
             spikesdiv=[8,8,6,4][pkmn.pbOwnSide.effects[PBEffects::Spikes]]
             @scene.pbDamageAnimation(pkmn,0)
             pkmn.pbReduceHP([(pkmn.totalhp/spikesdiv).floor,1].max)
@@ -4257,7 +4261,7 @@ end
       battler = pkmn
       # Caltrops
       if pkmn.pbOwnSide.effects[PBEffects::Caltrops]>0 &&
-         !pkmn.isAirborne? && !pkmn.hasWorkingItem(:HEAVYDUTYBOOTS)
+         !pkmn.isAirborne? && !pkmn.hasWorkingItem(:HEAVYDUTYBOOTS) && !pkmn.hasWorkingAbility(:LIMBER)
         stacks = pkmn.pbOwnSide.effects[PBEffects::Caltrops]
         pkmn.effects[PBEffects::Wounded] = stacks
         @scene.pbDamageAnimation(pkmn,0)
@@ -4277,7 +4281,7 @@ end
       end
       # Stealth Rock
       if pkmn.pbOwnSide.effects[PBEffects::StealthRock]
-        if !pkmn.hasWorkingAbility(:MAGICGUARD) && !(pkmn.hasWorkingAbility(:WONDERGUARD) && $fefieldeffect == 44) && !pkmn.hasWorkingItem(:HEAVYDUTYBOOTS)
+        if !pkmn.hasWorkingAbility(:MAGICGUARD) && !(pkmn.hasWorkingAbility(:WONDERGUARD) && $fefieldeffect == 44) && !pkmn.hasWorkingItem(:HEAVYDUTYBOOTS) && !pkmn.hasWorkingAbility(:LIMBER)
           atype=getConst(PBTypes,:ROCK) || 0
           if $fefieldeffect == 25
               randtype = pbRandom(4)
@@ -4351,7 +4355,7 @@ end
       pkmn.pbFaint if pkmn.hp<=0
       # Mystical Tree
       if pkmn.pbOwnSide.effects[PBEffects::MysticTree]>0
-        if !pkmn.hasWorkingAbility(:MAGICGUARD) && !(pkmn.hasWorkingAbility(:WONDERGUARD) && $fefieldeffect == 44) && !pkmn.hasWorkingItem(:HEAVYDUTYBOOTS)
+        if !pkmn.hasWorkingAbility(:MAGICGUARD) && !(pkmn.hasWorkingAbility(:WONDERGUARD) && $fefieldeffect == 44) && !pkmn.hasWorkingItem(:HEAVYDUTYBOOTS) && !pkmn.hasWorkingAbility(:LIMBER)
           atype=getConst(PBTypes,:GRASS) || 0
           eff=PBTypes.getCombinedEffectiveness(atype,pkmn.type1,pkmn.type2)
           if $fefieldeffect == 36
@@ -4373,7 +4377,7 @@ end
       end
       # Sticky Web
       if pkmn.pbOwnSide.effects[PBEffects::StickyWeb]
-        if !pkmn.isAirborne? && !pkmn.hasWorkingItem(:HEAVYDUTYBOOTS)
+        if !pkmn.isAirborne? && !pkmn.hasWorkingItem(:HEAVYDUTYBOOTS) && !pkmn.hasWorkingAbility(:LIMBER)
           if $fefieldeffect == 15
             #StickyWebMessage
             pbDisplay(_INTL("{1} was caught in a sticky web!",pkmn.pbThis))
@@ -4388,7 +4392,7 @@ end
       pkmn.pbOwnSide.effects[PBEffects::ToxicSpikes]=0 if $fefieldeffect == 21 ||
        $fefieldeffect == 26
       if (pkmn.pbOwnSide.effects[PBEffects::ToxicSpikes] || 0) > 0
-        if !pkmn.isAirborne?
+        if !pkmn.isAirborne? && !pkmn.hasWorkingAbility(:LIMBER)
           if pkmn.pbHasType?(:POISON) && $fefieldeffect != 10
             pkmn.pbOwnSide.effects[PBEffects::ToxicSpikes]=0
             pbDisplay(_INTL("{1} absorbed the poison spikes!",pkmn.pbThis))

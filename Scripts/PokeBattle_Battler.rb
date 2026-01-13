@@ -1147,6 +1147,9 @@ class PokeBattle_Battler
     # Reverb ability effects
     @effects[PBEffects::ReverbEcho]       = 0
     @effects[PBEffects::ReverbTarget]     = -1
+    # Stalwart ability effects
+    @effects[PBEffects::StalwartMove]     = 0
+    @effects[PBEffects::StalwartStacks]   = 0
     @effects[PBEffects::ReverbUser]       = -1
   end
   
@@ -2023,18 +2026,56 @@ class PokeBattle_Battler
     else
       @battle.scene.pbFainted(self)     
     end
-    if pbPartner.hasWorkingAbility(:POWEROFALCHEMY) || pbPartner.hasWorkingAbility(:RECEIVER)
-      if (!isConst?(@ability,PBAbilities,:MULTITYPE) && 
+    # Track the fainted Pokemon's ability for Receiver and Power of Alchemy
+    if (!isConst?(@ability,PBAbilities,:MULTITYPE) &&
+        !isConst?(@ability,PBAbilities,:COMATOSE) &&
+        !isConst?(@ability,PBAbilities,:DISGUISE) &&
+        !isConst?(@ability,PBAbilities,:SCHOOLING) &&
+        !isConst?(@ability,PBAbilities,:RKSSYSTEM) &&
+        !isConst?(@ability,PBAbilities,:IMPOSTER) &&
+        !isConst?(@ability,PBAbilities,:SHIELDSDOWN) &&
+        !isConst?(@ability,PBAbilities,:POWEROFALCHEMY) &&
+        !isConst?(@ability,PBAbilities,:RECEIVER))
+      faintedSide = self.index & 1
+      # Track as ally for same side, enemy for opposite side
+      @battle.lastFaintedAllyAbility[faintedSide] = @ability
+      @battle.lastFaintedEnemyAbility[faintedSide ^ 1] = @ability
+    end
+    # Receiver - copies ally ability when ally faints
+    if pbPartner.hasWorkingAbility(:RECEIVER)
+      if (!isConst?(@ability,PBAbilities,:MULTITYPE) &&
           !isConst?(@ability,PBAbilities,:COMATOSE) &&
           !isConst?(@ability,PBAbilities,:DISGUISE) &&
           !isConst?(@ability,PBAbilities,:SCHOOLING) &&
           !isConst?(@ability,PBAbilities,:RKSSYSTEM) &&
           !isConst?(@ability,PBAbilities,:IMPOSTER) &&
-          !isConst?(@ability,PBAbilities,:SHIELDSDOWN))      
+          !isConst?(@ability,PBAbilities,:SHIELDSDOWN) &&
+          !isConst?(@ability,PBAbilities,:POWEROFALCHEMY) &&
+          !isConst?(@ability,PBAbilities,:RECEIVER))
         partnerability=@ability
         pbPartner.ability=partnerability
-        abilityname=PBAbilities.getName(partnerability)      
-        @battle.pbDisplay(_INTL("{1} took on {2}'s {3}!",pbPartner.pbThis,pbThis,abilityname))
+        abilityname=PBAbilities.getName(partnerability)
+        @battle.pbDisplay(_INTL("{1} received {2}'s {3}!",pbPartner.pbThis,pbThis,abilityname))
+      end
+    end
+    # Power of Alchemy - copies enemy ability when enemy faints
+    for i in @battle.battlers
+      next if i.isFainted?
+      next unless i.pbIsOpposing?(self.index) # Only check opponents of the fainted Pokemon
+      if i.hasWorkingAbility(:POWEROFALCHEMY)
+        if (!isConst?(@ability,PBAbilities,:MULTITYPE) &&
+            !isConst?(@ability,PBAbilities,:COMATOSE) &&
+            !isConst?(@ability,PBAbilities,:DISGUISE) &&
+            !isConst?(@ability,PBAbilities,:SCHOOLING) &&
+            !isConst?(@ability,PBAbilities,:RKSSYSTEM) &&
+            !isConst?(@ability,PBAbilities,:IMPOSTER) &&
+            !isConst?(@ability,PBAbilities,:SHIELDSDOWN) &&
+            !isConst?(@ability,PBAbilities,:POWEROFALCHEMY) &&
+            !isConst?(@ability,PBAbilities,:RECEIVER))
+          i.ability=@ability
+          abilityname=PBAbilities.getName(@ability)
+          @battle.pbDisplay(_INTL("{1} copied {2}'s {3}!",i.pbThis,pbThis,abilityname))
+        end
       end
     end    
     for i in @battle.battlers
@@ -3120,6 +3161,26 @@ class PokeBattle_Battler
         end
       end
     end
+    # Power of Alchemy - copies most recently fainted enemy ability on entry
+    if self.hasWorkingAbility(:POWEROFALCHEMY) && onactive
+      mySide = self.index & 1
+      lastEnemyAbility = @battle.lastFaintedEnemyAbility[mySide]
+      if lastEnemyAbility && lastEnemyAbility != 0
+        self.ability = lastEnemyAbility
+        abilityname = PBAbilities.getName(lastEnemyAbility)
+        @battle.pbDisplay(_INTL("{1} copied the foe's {2}!",pbThis,abilityname))
+      end
+    end
+    # Receiver - copies most recently fainted ally ability on entry
+    if self.hasWorkingAbility(:RECEIVER) && onactive
+      mySide = self.index & 1
+      lastAllyAbility = @battle.lastFaintedAllyAbility[mySide]
+      if lastAllyAbility && lastAllyAbility != 0
+        self.ability = lastAllyAbility
+        abilityname = PBAbilities.getName(lastAllyAbility)
+        @battle.pbDisplay(_INTL("{1} received its ally's {2}!",pbThis,abilityname))
+      end
+    end
     # Mimicry
     if self.hasWorkingAbility(:MIMICRY) && onactive
       protype = -1
@@ -3921,6 +3982,15 @@ class PokeBattle_Battler
   end
   def pbEffectsOnDealingDamage(move,user,target,damage,innards)
     movetype=move.pbType(move.type,user,target)
+    # Track successive hits for Stalwart ability
+    if damage>0 && target.hasWorkingAbility(:STALWART)
+      if target.effects[PBEffects::StalwartMove] == move.id
+        target.effects[PBEffects::StalwartStacks] += 1
+      else
+        target.effects[PBEffects::StalwartMove] = move.id
+        target.effects[PBEffects::StalwartStacks] = 1
+      end
+    end
     if damage>0 && move.isContactMove? && !user.hasWorkingAbility(:LONGREACH) && 
       !(user.hasWorkingItem(:PROTECTIVEPADS) || target.hasWorkingItem(:PROTECTIVEPADS))
       if !target.damagestate.substitute
@@ -5024,7 +5094,10 @@ class PokeBattle_Battler
       self.item=0
     end
     if hpcure && self.hp!=self.totalhp && @effects[PBEffects::HealBlock]==0
-      if (isConst?(self.species,PBSpecies,:INFERNAPE) && isConst?(self.item,PBItems,:INFCREST)) || self.hasWorkingItem(:LEFTOVERS)
+      # Check for Unnerve blocking Leftovers
+      unnerver=(pbOpposing1.hasWorkingAbility(:UNNERVE) ||
+        pbOpposing2.hasWorkingAbility(:UNNERVE))
+      if ((isConst?(self.species,PBSpecies,:INFERNAPE) && isConst?(self.item,PBItems,:INFCREST)) || self.hasWorkingItem(:LEFTOVERS)) && !unnerver
         pbRecoverHP((self.totalhp/16).floor,true)
         @battle.pbDisplay(_INTL("{1}'s {2} restored its HP a little!",pbThis,itemname))
       end
@@ -5387,7 +5460,7 @@ class PokeBattle_Battler
     changeeffect=0
     user=userandtarget[0]
     target=userandtarget[1]
-    if (thismove.function==0x179) || user.hasWorkingAbility(:STALWART) || user.hasWorkingAbility(:PROPELLERTAIL)
+    if (thismove.function==0x179) || user.hasWorkingAbility(:PROPELLERTAIL)
       return true
     end
     # LightningRod here, considers Hidden Power as Normal
@@ -7472,7 +7545,6 @@ class PokeBattle_Battler
               quakedrop =0 if @battle.battlers[i].hasWorkingAbility(:BULLETPROOF)
               quakedrop =0 if @battle.battlers[i].isbossmon
               quakedrop =0 if @battle.battlers[i].hasWorkingAbility(:ROCKHEAD)
-              quakedrop =0 if @battle.battlers[i].hasWorkingAbility(:STALWART)
               quakedrop/=3 if @battle.battlers[i].hasWorkingAbility(:PRISMARMOR)
               quakedrop =0 if @battle.battlers[i].effects[PBEffects::Protect] == true
               quakedrop =0 if @battle.battlers[i].effects[PBEffects::WideGuard] == true

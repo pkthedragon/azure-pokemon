@@ -1982,6 +1982,10 @@ class PokeBattle_Move
       damagemult = (damagemult*1.3).round
     end
 #### KUROTSUNE - 003 END
+    # Spirited (Vital Spirit) - 1.5x damage for moves with unchecked accuracy
+    if attacker.hasWorkingAbility(:VITALSPIRIT) && @accuracy==0
+      damagemult = (damagemult*1.5).round
+    end
     if opponent.hasWorkingAbility(:DRYSKIN) && !(opponent.moldbroken) && isConst?(type,PBTypes,:FIRE)
       damagemult=(damagemult*1.25).round
     end
@@ -4029,11 +4033,6 @@ class PokeBattle_Move
     if opponent.hasWorkingAbility(:TANGLEDFEET) && opponent.effects[PBEffects::Confusion]>0 && !(opponent.moldbroken)
       defmult=(defmult*0.5).round
     end
-    if opponent.hasWorkingAbility(:STALWART) && pbIsPhysical?(type) && !(opponent.moldbroken)
-      if ((PBStuff::SYNTHETICFIELDS).include?($fefieldeffect))
-        defmult=(defmult*2).round
-      end
-    end
 	if opponent.hasWorkingAbility(:NATURALSHROUD) &&
 		@battle.field.effects[PBEffects::ElectricTerrain] > 0 ||
 		@battle.field.effects[PBEffects::GrassyTerrain]  > 0 ||
@@ -5139,7 +5138,12 @@ class PokeBattle_Move
       end
     end
 	if (( (opponent.hasWorkingAbility(:MULTISCALE) || @battle.SilvallyCheck(opponent,PBTypes::DRAGON)) &&
-        !(opponent.moldbroken)) || opponent.hasWorkingAbility(:SHADOWSHIELD)) && opponent.hp==opponent.totalhp 
+        !(opponent.moldbroken)) || opponent.hasWorkingAbility(:SHADOWSHIELD)) && opponent.hp==opponent.totalhp
+      finaldamagemult=(finaldamagemult*0.5).round
+    end
+    # Limber - 0.5x damage when switching in
+    if opponent.hasWorkingAbility(:LIMBER) && !(opponent.moldbroken) &&
+       opponent.effects[PBEffects::BlinkEntryTurn]==@battle.turncount
       finaldamagemult=(finaldamagemult*0.5).round
     end
 #### JERICHO - 006 - START    
@@ -5188,15 +5192,11 @@ class PokeBattle_Move
         !(opponent.moldbroken)) || opponent.hasWorkingAbility(:PRISMARMOR)) && opponent.damagestate.typemod>4 
       finaldamagemult=(finaldamagemult*0.75).round
     end
+    # Stalwart - 10% damage reduction per successive hit with the same move
     if opponent.hasWorkingAbility(:STALWART) && !(opponent.moldbroken) && @basedamage>0
       if opponent.effects[PBEffects::StalwartMove]==@id && opponent.effects[PBEffects::StalwartStacks]>0
         reduction = (0.9 ** opponent.effects[PBEffects::StalwartStacks])
         finaldamagemult=(finaldamagemult*reduction).round
-      end
-    end
-    if opponent.hasWorkingAbility(:STALWART) && pbIsPhysical?(type) && !(opponent.moldbroken)  && opponent.damagestate.typemod>4 
-      if ((PBStuff::SYNTHETICFIELDS).include?($fefieldeffect))
-        finaldamagemult=(finaldamagemult*0.5).round
       end
     end
     if attacker.hasWorkingAbility(:STAKEOUT) && @battle.switchedOut[opponent.index]
@@ -5433,11 +5433,6 @@ class PokeBattle_Move
           opponent.damagestate.rampcrestused=true
           opponent.effects[PBEffects::RampCrestUsage]=true
           damage=damage-1
-        elsif $fefieldeffect==44 && opponent.hasWorkingAbility(:STALWART)  
-          if opponent.hp == opponent.totalhp  
-            damage=damage-1  
-            opponent.damagestat.stalwart=true  
-          end
         end
         damage=0 if damage<0
       end

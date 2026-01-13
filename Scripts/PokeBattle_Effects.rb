@@ -78,8 +78,7 @@ class PokeBattle_Battler
         end
       end 
     end
-    if hasWorkingAbility(:VITALSPIRIT) ||
-       hasWorkingAbility(:INSOMNIA) ||
+    if hasWorkingAbility(:INSOMNIA) ||
        hasWorkingAbility(:SWEETVEIL) ||
       (isConst?(self.ability,PBAbilities,:LEAFGUARD) &&
       ((@battle.pbWeather==PBWeather::SUNNYDAY && !hasWorkingItem(:UTILITYUMBRELLA)) ||
@@ -112,8 +111,7 @@ class PokeBattle_Battler
         return false if @battle.battlers[i].effects[PBEffects::FeverPitch]==true
       end
     end
-    if isConst?(ability,PBAbilities,:VITALSPIRIT) ||
-      isConst?(ability,PBAbilities,:INSOMNIA) ||
+    if isConst?(ability,PBAbilities,:INSOMNIA) ||
       isConst?(ability,PBAbilities,:SWEETVEIL) ||
      (isConst?(ability,PBAbilities,:LEAFGUARD) &&
      ((@battle.pbWeather==PBWeather::SUNNYDAY && !hasWorkingItem(:UTILITYUMBRELLA)) ||
@@ -411,8 +409,7 @@ class PokeBattle_Battler
       @battle.pbDisplay(_INTL("But it failed!")) if showMessages
       return false
     end
-    if hasWorkingAbility(:LIMBER) ||
-      (hasWorkingAbility(:IMMUNITY) && !(self.moldbroken)) ||
+    if (hasWorkingAbility(:IMMUNITY) && !(self.moldbroken)) ||
       (hasWorkingAbility(:LEAFGUARD) &&
       ((@battle.pbWeather==PBWeather::SUNNYDAY && !hasWorkingItem(:UTILITYUMBRELLA)) ||
        $fefieldeffect == 15 || ($fefieldeffect == 33 &&
@@ -430,8 +427,7 @@ class PokeBattle_Battler
     if pbHasType?(:ELECTRIC)
       return false
     end
-    if hasWorkingAbility(:LIMBER) ||
-     (hasWorkingAbility(:IMMUNITY) && !(self.moldbroken)) ||
+    if (hasWorkingAbility(:IMMUNITY) && !(self.moldbroken)) ||
      (hasWorkingAbility(:LEAFGUARD) &&
      ((@battle.pbWeather==PBWeather::SUNNYDAY && !hasWorkingItem(:UTILITYUMBRELLA)) ||
      $fefieldeffect == 15 || ($fefieldeffect == 33 &&

@@ -23216,11 +23216,6 @@ class PokeBattle_Battle
         defense=(defense*1.5).round
       end
     end
-    if skill>=PBTrainerAI.mediumSkill
-      if (!opponent.abilitynulled && opponent.ability == PBAbilities::STALWART) && move.pbIsPhysical?(type) && !(opponent.moldbroken) && (PBStuff::SYNTHETICFIELDS).include?($fefieldeffect)
-        defense=(defense*2).round
-      end
-    end
     # Fluffy
     if skill>=PBTrainerAI.mediumSkill
       if (!opponent.abilitynulled && opponent.ability == PBAbilities::FLUFFY) && !(opponent.moldbroken)
@@ -24184,9 +24179,6 @@ class PokeBattle_Battle
       if (!attacker.abilitynulled && attacker.ability == PBAbilities::STAKEOUT) && (switchedOut[opponent.index] || hardswitch==true)
         damage=(damage*2.0).round
       end
-    end
-    if ((!opponent.abilitynulled && opponent.ability == PBAbilities::STALWART) && (PBStuff::SYNTHETICFIELDS).include?($fefieldeffect)) && typemod>4
-      damage=(damage*0.5).round
     end
     # Final damage-altering items
     if skill>=PBTrainerAI.averageSkill
