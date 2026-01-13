@@ -1720,3 +1720,856 @@ If this battle is not wild, something has gone wrong in scoring moves (no prefer
 [The wild Nosepass: Tackle=200, Harden=100]
 If this battle is not wild, something has gone wrong in scoring moves (no preference chosen).
 [The wild Nosepass lost 6 HP, now has 0 HP]
+==============================
+Battle Start!
+Wild Battle
+==============================
+***Round 1***
+[The wild Zubat: Absorb=100, Supersonic=200]
+If this battle is not wild, something has gone wrong in scoring moves (no preference chosen).
+[The wild Zubat lost 3 HP, now has 18 HP]
+***Round 2***
+[The wild Zubat: Absorb=100, Supersonic=200]
+If this battle is not wild, something has gone wrong in scoring moves (no preference chosen).
+**Exception: undefined local variable or method `attacker' for #<PokeBattle_Confusion:0x000001dd1f818a00>
+["PokeBattle_MoveEffects:59:in `pbIsSpecial?'", "PokeBattle_Move:3593:in `pbCalcDamage'", "PokeBattle_MoveEffects:67:in `pbCalcDamage'", "PokeBattle_Move:5585:in `pbEffect'", "PokeBattle_Battler:6345:in `pbConfusionDamage'", "PokeBattle_Battler:6267:in `pbTryUseMove'", "PokeBattle_Battler:6936:in `pbUseMove'", "PokeBattle_Battler:8683:in `block in pbProcessTurn'", "PBDebug:4:in `logonerr'", "PokeBattle_Battler:8682:in `pbProcessTurn'", "PokeBattle_Battle:5786:in `block in pbAttackPhase'", "PokeBattle_Battle:5785:in `each'", "PokeBattle_Battle:5785:in `pbAttackPhase'", "PokeBattle_Battle:5311:in `block (2 levels) in pbStartBattleCore'", "PBDebug:4:in `logonerr'", "PokeBattle_Battle:5310:in `block in pbStartBattleCore'", "PokeBattle_Battle:5294:in `loop'", "PokeBattle_Battle:5294:in `pbStartBattleCore'", "PokeBattle_Battle:4900:in `pbStartBattle'", "PokemonField:1162:in `block (2 levels) in pbWildBattle'", "PokemonField:706:in `pbSceneStandby'", "PokemonField:1161:in `block in pbWildBattle'", "PokemonField:1008:in `pbBattleAnimation'", "PokemonField:1160:in `pbWildBattle'", "PokemonField:1894:in `pbBattleOnStepTaken'", "PokemonField:1918:in `pbOnStepTaken'", "Game_Player_:530:in `update'", "Walk_Run:86:in `update'", "Autosave:31:in `block in update'", "Autosave:28:in `loop'", "Autosave:28:in `update'", "Scene_Map:72:in `block in main'", "Scene_Map:69:in `loop'", "Scene_Map:69:in `main'", "Main:79:in `mainFunctionDebug'", "Main:53:in `block in mainFunction'", "Compiler:38:in `pbCriticalCode'", "Main:53:in `mainFunction'", "Main:89:in `block (2 levels) in <main>'", "Main:88:in `loop'", "Main:88:in `block in <main>'", "Section000:336:in `eval'", "Section000:336:in `block in <main>'", "Section000:333:in `each'", "Section000:333:in `each_with_index'", "Section000:333:in `<main>'", "-e:in `eval'"]
+[Ozzie lost 5 HP, now has 21 HP]
+[The wild Zubat gained 3 HP, now has 21 HP]
+***Round 3***
+==============================
+Battle Start!
+5 - Johnny
+==============================
+***Round 1***
+Player Pokemon Ozzie is faster than Bunnelby.
+Mud-Slap: initial score: 11
+Mud-Slap: final score: 15
+ 
+Leer: initial score: 10
+Leer: final score: 14
+ 
+Tackle: initial score: 19
+Tackle: final score: 19
+ 
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (0)
+Initial switchscore building: Healing (0)
+Initial switchscore building: fsteak (0)
+Initial switchscore building: Specific Switches (0)
+Initial switchscore building: Typing (0)
+Bunnelby: initial switchscore: 0
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+Bunnelby: initial noswitchscore: 66
+ 
+{
+ 
+}
+ 
+Bunnelby: highest move score: 19
+Bunnelby: final switching score: -133
+19 > -133, will not switch
+ 
+Beginning AI Item use check.
+ 
+Highest item score: -10000
+Highest move score: 19
+Not using an item.
+ 
+[The foe Bunnelby: Mud-Slap=15, Leer=14, Tackle=19]
+[Prefer Tackle]
+[No Z-Move.]
+[The foe Bunnelby lost 8 HP, now has 11 HP]
+[Ozzie lost 3 HP, now has 23 HP]
+***Round 2***
+Player Pokemon Ozzie is faster than Bunnelby.
+Mud-Slap: initial score: 13
+Mud-Slap: final score: 18
+ 
+Leer: initial score: 10
+Leer: final score: 14
+ 
+Tackle: initial score: 21
+Tackle: final score: 21
+ 
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (0)
+Initial switchscore building: Healing (15)
+Initial switchscore building: fsteak (15)
+Initial switchscore building: Specific Switches (7)
+Initial switchscore building: Typing (7)
+Bunnelby: initial switchscore: 7
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+Bunnelby: initial noswitchscore: 50
+ 
+{
+ 
+}
+ 
+Bunnelby: highest move score: 21
+Bunnelby: final switching score: -121
+21 > -121, will not switch
+ 
+Beginning AI Item use check.
+ 
+Highest item score: -10000
+Highest move score: 21
+Not using an item.
+ 
+[The foe Bunnelby: Mud-Slap=18, Leer=14, Tackle=21]
+[Prefer Tackle]
+[No Z-Move.]
+[The foe Bunnelby lost 11 HP, now has 0 HP]
+***Round 3***
+Player Pokemon Ozzie is faster than Skwovet.
+Tackle: initial score: 21
+Tackle: final score: 21
+ 
+Tail Whip: initial score: 10
+Tail Whip: final score: 7
+ 
+Bite: initial score: 21
+Bite: final score: 23
+ 
+Beginning AI Item use check.
+ 
+Highest item score: -10000
+Highest move score: 23
+Not using an item.
+ 
+[The foe Skwovet: Tackle=21, Tail Whip=7, Bite=23]
+[Prefer Bite]
+[No Z-Move.]
+[The foe Skwovet lost 8 HP, now has 17 HP]
+[Ozzie lost 3 HP, now has 20 HP]
+***Round 4***
+Player Pokemon Ozzie is faster than Skwovet.
+Tackle: initial score: 25
+Tackle: final score: 25
+ 
+Tail Whip: initial score: 10
+Tail Whip: final score: 7
+ 
+Bite: initial score: 25
+Bite: final score: 28
+ 
+Beginning AI Item use check.
+ 
+Highest item score: -10000
+Highest move score: 28
+Not using an item.
+ 
+[The foe Skwovet: Tackle=25, Tail Whip=7, Bite=28]
+[Prefer Bite]
+[No Z-Move.]
+[The foe Skwovet lost 8 HP, now has 9 HP]
+[Ozzie lost 5 HP, now has 15 HP]
+***Round 5***
+Player Pokemon Ozzie is faster than Skwovet.
+Tackle: initial score: 33
+Tackle: final score: 19
+ 
+Tail Whip: initial score: 10
+Tail Whip: final score: 4
+ 
+Bite: initial score: 33
+Bite: final score: 22
+ 
+Beginning AI Item use check.
+ 
+Highest item score: -10000
+Highest move score: 22
+Not using an item.
+ 
+[The foe Skwovet: Tackle=19, Tail Whip=4, Bite=22]
+[Prefer Bite]
+[No Z-Move.]
+[The foe Skwovet lost 8 HP, now has 1 HP]
+[Ozzie lost 8 HP, now has 7 HP]
+***Round 6***
+Player Pokemon Ozzie is faster than Skwovet.
+Tackle: initial score: 71
+Tackle: final score: 35
+ 
+Tail Whip: initial score: 10
+Tail Whip: final score: 3
+ 
+Bite: initial score: 71
+Bite: final score: 39
+ 
+Beginning AI Item use check.
+ 
+Highest item score: -10000
+Highest move score: 39
+Not using an item.
+ 
+[The foe Skwovet: Tackle=35, Tail Whip=3, Bite=39]
+[Prefer Bite]
+[No Z-Move.]
+[The foe Skwovet lost 1 HP, now has 0 HP]
+==============================
+Battle Start!
+118 - Richard
+==============================
+***Round 1***
+Player Pokemon Ozzie is faster than Chansey.
+Charm: initial score: 10
+Charm: final score: 0
+ 
+Metronome: initial score: 20
+Metronome: final score: 24
+ 
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (0)
+Initial switchscore building: Healing (0)
+Initial switchscore building: fsteak (0)
+Initial switchscore building: Specific Switches (0)
+Initial switchscore building: Typing (0)
+Chansey: initial switchscore: 0
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+Chansey: initial noswitchscore: 66
+ 
+{
+ 
+}
+ 
+Chansey: highest move score: 24
+Chansey: final switching score: -133
+24 > -133, will not switch
+ 
+Beginning AI Item use check.
+ 
+This is a HP-healing item.
+Cave Field Disrupt
+Score for Potion: -100
+Highest item score: -100
+Highest move score: 24
+Not using an item.
+ 
+[The foe Chansey: Charm=0, Metronome=24]
+[Prefer Metronome]
+[No Z-Move.]
+***Round 2***
+Player Pokemon Ozzie is faster than Chansey.
+Charm: initial score: 10
+Charm: final score: 0
+ 
+Metronome: initial score: 20
+Metronome: final score: 24
+ 
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (0)
+Initial switchscore building: Healing (15)
+Initial switchscore building: fsteak (15)
+Initial switchscore building: Specific Switches (7)
+Initial switchscore building: Typing (7)
+Chansey: initial switchscore: 7
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+Chansey: initial noswitchscore: 50
+ 
+{
+ 
+}
+ 
+Chansey: highest move score: 24
+Chansey: final switching score: -121
+24 > -121, will not switch
+ 
+Beginning AI Item use check.
+ 
+This is a HP-healing item.
+Cave Field Disrupt
+Score for Potion: -100
+Highest item score: -100
+Highest move score: 24
+Not using an item.
+ 
+[The foe Chansey: Charm=0, Metronome=24]
+[Prefer Metronome]
+[No Z-Move.]
+[The foe Chansey lost 7 HP, now has 40 HP]
+***Round 3***
+Player Pokemon Ozzie is faster than Chansey.
+Charm: initial score: 10
+Charm: final score: 0
+ 
+Metronome: initial score: 20
+Metronome: final score: 24
+ 
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (0)
+Initial switchscore building: Healing (30)
+Initial switchscore building: fsteak (30)
+Initial switchscore building: Specific Switches (15)
+Initial switchscore building: Typing (15)
+Chansey: initial switchscore: 15
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+Chansey: initial noswitchscore: 33
+ 
+{
+ 
+}
+ 
+Chansey: highest move score: 24
+Chansey: final switching score: -109
+24 > -109, will not switch
+ 
+Beginning AI Item use check.
+ 
+This is a HP-healing item.
+Cave Field Disrupt
+Score for Potion: -99
+Highest item score: -99
+Highest move score: 24
+Not using an item.
+ 
+[The foe Chansey: Charm=0, Metronome=24]
+[Prefer Metronome]
+[No Z-Move.]
+[The foe Chansey lost 7 HP, now has 33 HP]
+[Ozzie lost 5 HP, now has 27 HP]
+***Round 4***
+Player Pokemon Ozzie is faster than Chansey.
+Charm: initial score: 10
+Charm: final score: 0
+ 
+Metronome: initial score: 20
+Metronome: final score: 24
+ 
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (0)
+Initial switchscore building: Healing (30)
+Initial switchscore building: fsteak (30)
+Initial switchscore building: Specific Switches (15)
+Initial switchscore building: Typing (15)
+Chansey: initial switchscore: 15
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+Chansey: initial noswitchscore: 16
+ 
+{
+ 
+}
+ 
+Chansey: highest move score: 24
+Chansey: final switching score: -100
+24 > -100, will not switch
+ 
+Beginning AI Item use check.
+ 
+This is a HP-healing item.
+Cave Field Disrupt
+Score for Potion: -99
+Highest item score: -99
+Highest move score: 24
+Not using an item.
+ 
+[The foe Chansey: Charm=0, Metronome=24]
+[Prefer Metronome]
+[No Z-Move.]
+**Exception: undefined local variable or method `attacker' for #<PokeBattle_Confusion:0x0000025232754f50>
+["PokeBattle_MoveEffects:59:in `pbIsSpecial?'", "PokeBattle_Move:3593:in `pbCalcDamage'", "PokeBattle_MoveEffects:67:in `pbCalcDamage'", "PokeBattle_Move:5585:in `pbEffect'", "PokeBattle_Battler:6345:in `pbConfusionDamage'", "PokeBattle_Battler:6267:in `pbTryUseMove'", "PokeBattle_Battler:6936:in `pbUseMove'", "PokeBattle_Battler:8683:in `block in pbProcessTurn'", "PBDebug:4:in `logonerr'", "PokeBattle_Battler:8682:in `pbProcessTurn'", "PokeBattle_Battle:5786:in `block in pbAttackPhase'", "PokeBattle_Battle:5785:in `each'", "PokeBattle_Battle:5785:in `pbAttackPhase'", "PokeBattle_Battle:5311:in `block (2 levels) in pbStartBattleCore'", "PBDebug:4:in `logonerr'", "PokeBattle_Battle:5310:in `block in pbStartBattleCore'", "PokeBattle_Battle:5294:in `loop'", "PokeBattle_Battle:5294:in `pbStartBattleCore'", "PokeBattle_Battle:4900:in `pbStartBattle'", "PokemonTrainers:750:in `block (2 levels) in pbTrainerBattle'", "PokemonField:706:in `pbSceneStandby'", "PokemonTrainers:749:in `block in pbTrainerBattle'", "PokemonField:1008:in `pbBattleAnimation'", "PokemonTrainers:748:in `pbTrainerBattle'", "(eval):1:in `pbExecuteScript'", "Interpreter:243:in `eval'", "Interpreter:243:in `pbExecuteScript'", "Interpreter:799:in `command_111'", "Interpreter:320:in `execute_command'", "Interpreter:193:in `block in update'", "Interpreter:106:in `loop'", "Interpreter:106:in `update'", "Autosave:30:in `block in update'", "Autosave:28:in `loop'", "Autosave:28:in `update'", "Scene_Map:72:in `block in main'", "Scene_Map:69:in `loop'", "Scene_Map:69:in `main'", "Main:79:in `mainFunctionDebug'", "Main:53:in `block in mainFunction'", "Compiler:38:in `pbCriticalCode'", "Main:53:in `mainFunction'", "Main:89:in `block (2 levels) in <main>'", "Main:88:in `loop'", "Main:88:in `block in <main>'", "Section000:336:in `eval'", "Section000:336:in `block in <main>'", "Section000:333:in `each'", "Section000:333:in `each_with_index'", "Section000:333:in `<main>'", "-e:in `eval'"]
+[Ozzie lost 2 HP, now has 25 HP]
+***Round 5***
+==============================
+Battle Start!
+118 - Richard
+==============================
+***Round 1***
+Player Pokemon Ozzie is faster than Chansey.
+Charm: initial score: 10
+Charm: final score: 0
+ 
+Metronome: initial score: 20
+Metronome: final score: 24
+ 
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (0)
+Initial switchscore building: Healing (0)
+Initial switchscore building: fsteak (0)
+Initial switchscore building: Specific Switches (0)
+Initial switchscore building: Typing (0)
+Chansey: initial switchscore: 0
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+Chansey: initial noswitchscore: 66
+ 
+{
+ 
+}
+ 
+Chansey: highest move score: 24
+Chansey: final switching score: -133
+24 > -133, will not switch
+ 
+Beginning AI Item use check.
+ 
+This is a HP-healing item.
+Cave Field Disrupt
+Score for Potion: -100
+Highest item score: -100
+Highest move score: 24
+Not using an item.
+ 
+[The foe Chansey: Charm=0, Metronome=24]
+[Prefer Metronome]
+[No Z-Move.]
+[The foe Chansey lost 7 HP, now has 40 HP]
+***Round 2***
+Player Pokemon Ozzie is faster than Chansey.
+Charm: initial score: 10
+Charm: final score: 0
+ 
+Metronome: initial score: 20
+Metronome: final score: 24
+ 
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (0)
+Initial switchscore building: Healing (0)
+Initial switchscore building: fsteak (0)
+Initial switchscore building: Specific Switches (0)
+Initial switchscore building: Typing (0)
+Chansey: initial switchscore: 0
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+Chansey: initial noswitchscore: 50
+ 
+{
+ 
+}
+ 
+Chansey: highest move score: 24
+Chansey: final switching score: -125
+24 > -125, will not switch
+ 
+Beginning AI Item use check.
+ 
+This is a HP-healing item.
+Cave Field Disrupt
+Score for Potion: -99
+Highest item score: -99
+Highest move score: 24
+Not using an item.
+ 
+[The foe Chansey: Charm=0, Metronome=24]
+[Prefer Metronome]
+[No Z-Move.]
+***Round 3***
+Player Pokemon Ozzie is faster than Chansey.
+Charm: initial score: 10
+Charm: final score: 0
+ 
+Metronome: initial score: 20
+Metronome: final score: 24
+ 
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (0)
+Initial switchscore building: Healing (15)
+Initial switchscore building: fsteak (15)
+Initial switchscore building: Specific Switches (7)
+Initial switchscore building: Typing (7)
+Chansey: initial switchscore: 7
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+Chansey: initial noswitchscore: 33
+ 
+{
+ 
+}
+ 
+Chansey: highest move score: 24
+Chansey: final switching score: -112
+24 > -112, will not switch
+ 
+Beginning AI Item use check.
+ 
+This is a HP-healing item.
+Cave Field Disrupt
+Score for Potion: -99
+Highest item score: -99
+Highest move score: 24
+Not using an item.
+ 
+[The foe Chansey: Charm=0, Metronome=24]
+[Prefer Metronome]
+[No Z-Move.]
+[The foe Chansey lost 7 HP, now has 33 HP]
+[The foe Chansey gained 14 HP, now has 47 HP]
+***Round 4***
+Player Pokemon Ozzie is faster than Chansey.
+Charm: initial score: 10
+Charm: final score: 0
+ 
+Metronome: initial score: 20
+Metronome: final score: 24
+ 
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (0)
+Initial switchscore building: Healing (15)
+Initial switchscore building: fsteak (15)
+Initial switchscore building: Specific Switches (7)
+Initial switchscore building: Typing (7)
+Chansey: initial switchscore: 7
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+Chansey: initial noswitchscore: 16
+ 
+{
+ 
+}
+ 
+Chansey: highest move score: 24
+Chansey: final switching score: -104
+24 > -104, will not switch
+ 
+Beginning AI Item use check.
+ 
+This is a HP-healing item.
+Cave Field Disrupt
+Score for Potion: -100
+Highest item score: -100
+Highest move score: 24
+Not using an item.
+ 
+[The foe Chansey: Charm=0, Metronome=24]
+[Prefer Metronome]
+[No Z-Move.]
+[The foe Chansey lost 7 HP, now has 40 HP]
+[Ozzie lost 3 HP, now has 29 HP]
+***Round 5***
+Player Pokemon Ozzie is faster than Chansey.
+Charm: initial score: 10
+Charm: final score: 0
+ 
+Metronome: initial score: 20
+Metronome: final score: 24
+ 
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (0)
+Initial switchscore building: Healing (15)
+Initial switchscore building: fsteak (15)
+Initial switchscore building: Specific Switches (7)
+Initial switchscore building: Typing (7)
+Chansey: initial switchscore: 7
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+Chansey: initial noswitchscore: 0
+ 
+{
+ 
+}
+ 
+Chansey: highest move score: 24
+Chansey: final switching score: -96
+24 > -96, will not switch
+ 
+Beginning AI Item use check.
+ 
+This is a HP-healing item.
+Cave Field Disrupt
+Score for Potion: -99
+Highest item score: -99
+Highest move score: 24
+Not using an item.
+ 
+[The foe Chansey: Charm=0, Metronome=24]
+[Prefer Metronome]
+[No Z-Move.]
+[The foe Chansey lost 7 HP, now has 33 HP]
+[Ozzie lost 5 HP, now has 24 HP]
+***Round 6***
+Player Pokemon Ozzie is faster than Chansey.
+Charm: initial score: 10
+Charm: final score: 0
+ 
+Metronome: initial score: 20
+Metronome: final score: 24
+ 
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (0)
+Initial switchscore building: Healing (15)
+Initial switchscore building: fsteak (15)
+Initial switchscore building: Specific Switches (7)
+Initial switchscore building: Typing (7)
+Chansey: initial switchscore: 7
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+Chansey: initial noswitchscore: 0
+ 
+{
+ 
+}
+ 
+Chansey: highest move score: 24
+Chansey: final switching score: -96
+24 > -96, will not switch
+ 
+Beginning AI Item use check.
+ 
+This is a HP-healing item.
+Cave Field Disrupt
+Score for Potion: -99
+Highest item score: -99
+Highest move score: 24
+Not using an item.
+ 
+[The foe Chansey: Charm=0, Metronome=24]
+[Prefer Metronome]
+[No Z-Move.]
+[The foe Chansey lost 7 HP, now has 26 HP]
+[Ozzie lost 10 HP, now has 14 HP]
+***Round 7***
+[reusing commands for the foe Chansey]
+[The foe Chansey lost 7 HP, now has 19 HP]
+[Continuing move]
+***Round 8***
+Player Pokemon Ozzie is faster than Chansey.
+Charm: initial score: 10
+Charm: final score: 0
+ 
+Metronome: initial score: 20
+Metronome: final score: 24
+ 
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (0)
+Initial switchscore building: Healing (15)
+Initial switchscore building: fsteak (15)
+Initial switchscore building: Specific Switches (7)
+Initial switchscore building: Typing (7)
+Chansey: initial switchscore: 7
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+Chansey: initial noswitchscore: 0
+ 
+{
+ 
+}
+ 
+Chansey: highest move score: 24
+Chansey: final switching score: -96
+24 > -96, will not switch
+ 
+Beginning AI Item use check.
+ 
+This is a HP-healing item.
+Cave Field Disrupt
+Score for Potion: -98
+Highest item score: -98
+Highest move score: 24
+Not using an item.
+ 
+[The foe Chansey: Charm=0, Metronome=24]
+[Prefer Metronome]
+[No Z-Move.]
+[The foe Chansey lost 7 HP, now has 12 HP]
+[Ozzie lost 2 HP, now has 12 HP]
+***Round 9***
+Player Pokemon Ozzie is faster than Chansey.
+Charm: initial score: 10
+Charm: final score: 0
+ 
+Metronome: initial score: 20
+Metronome: final score: 24
+ 
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (-100)
+Initial switchscore building: Healing (-85)
+Initial switchscore building: fsteak (-85)
+Initial switchscore building: Specific Switches (-42)
+Initial switchscore building: Typing (-42)
+Chansey: initial switchscore: -42
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+Chansey: initial noswitchscore: 0
+ 
+{
+ 
+}
+ 
+Chansey: highest move score: 24
+Chansey: final switching score: -121
+24 > -121, will not switch
+ 
+Beginning AI Item use check.
+ 
+This is a HP-healing item.
+Cave Field Disrupt
+Score for Potion: -98
+Highest item score: -98
+Highest move score: 24
+Not using an item.
+ 
+[The foe Chansey: Charm=0, Metronome=24]
+[Prefer Metronome]
+[No Z-Move.]
+[Ozzie lost 2 HP, now has 10 HP]
+[The foe Chansey lost 7 HP, now has 5 HP]
+[Ozzie lost 2 HP, now has 8 HP]
+***Round 10***
+Player Pokemon Ozzie is faster than Chansey.
+Charm: initial score: 10
+Charm: final score: 0
+ 
+Metronome: initial score: 20
+Metronome: final score: 24
+ 
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (-100)
+Initial switchscore building: Healing (-85)
+Initial switchscore building: fsteak (-85)
+Initial switchscore building: Specific Switches (-42)
+Initial switchscore building: Typing (-42)
+Chansey: initial switchscore: -42
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+Chansey: initial noswitchscore: 0
+ 
+{
+ 
+}
+ 
+Chansey: highest move score: 24
+Chansey: final switching score: -121
+24 > -121, will not switch
+ 
+Beginning AI Item use check.
+ 
+This is a HP-healing item.
+Cave Field Disrupt
+Score for Potion: -83
+Highest item score: -83
+Highest move score: 24
+Not using an item.
+ 
+[The foe Chansey: Charm=0, Metronome=24]
+[Prefer Metronome]
+[No Z-Move.]
+[Ozzie lost 5 HP, now has 3 HP]
+[The foe Chansey lost 5 HP, now has 0 HP]
+[Ozzie lost 2 HP, now has 6 HP]
+***Round 11***
+AI Pokemon Audino is faster than Ozzie.
+Baby-Doll Eyes: initial score: 15
+Priority Check End
+Baby-Doll Eyes: final score: 0
+ 
+Disarming Voice: initial score: 50
+Disarming Voice: final score: 50
+ 
+Enchant: initial score: 25
+Enchant: final score: 0
+ 
+Beginning AI Item use check.
+ 
+This is a HP-healing item.
+Cave Field Disrupt
+Score for Potion: -100
+Highest item score: -100
+Highest move score: 50
+Not using an item.
+ 
+[The foe Audino: Baby-Doll Eyes=0, Disarming Voice=50, Enchant=0]
+[Prefer Disarming Voice]
+[No Z-Move.]
+[The foe Audino lost 11 HP, now has 18 HP]
+[Ozzie lost 2 HP, now has 4 HP]
+***Round 12***
+AI Pokemon Audino is faster than Ozzie.
+Baby-Doll Eyes: initial score: 15
+Priority Check End
+Baby-Doll Eyes: final score: 0
+ 
+Disarming Voice: initial score: 75
+Disarming Voice: final score: 78
+ 
+Enchant: initial score: 25
+Enchant: final score: 0
+ 
+Beginning AI Item use check.
+ 
+This is a HP-healing item.
+Cave Field Disrupt
+Score for Potion: -95
+Highest item score: -95
+Highest move score: 78
+Not using an item.
+ 
+[The foe Audino: Baby-Doll Eyes=0, Disarming Voice=78, Enchant=0]
+[Prefer Disarming Voice]
+[No Z-Move.]
+[The foe Audino lost 11 HP, now has 7 HP]
+[Ozzie lost 2 HP, now has 2 HP]
+***Round 13***
+AI Pokemon Audino is faster than Ozzie.
+Baby-Doll Eyes: initial score: 15
+Priority Check End
+Baby-Doll Eyes: final score: 0
+ 
+Disarming Voice: initial score: 110
+Disarming Voice: final score: 133
+ 
+Enchant: initial score: 25
+Enchant: final score: 0
+ 
+Beginning AI Item use check.
+ 
+This is a HP-healing item.
+Cave Field Disrupt
+Score for Potion: 15
+Highest item score: 15
+Highest move score: 133
+Not using an item.
+ 
+[The foe Audino: Baby-Doll Eyes=0.0, Disarming Voice=133, Enchant=0.0]
+[Prefer Disarming Voice]
+[No Z-Move.]
+[The foe Audino lost 7 HP, now has 0 HP]
