@@ -330,13 +330,18 @@ end
 # Rematch code
 
 BOSS_TRAINER_REMATCHES = [
-  # Example:
-  # pbTrainerRematchKey(:LEADER_Brock,"Brock",0,"single")
+  pbTrainerRematchKey(:POKEMONTRAINER_Percy,"Percy",0,"single"),
+  pbTrainerRematchKey(:POKEMONTRAINER_Kara,"Kara",0,"single"),
+  pbTrainerRematchKey(:POKEMONTRAINER_Kara,"Kara",2,"single"),
+  pbTrainerRematchKey(:POKEMONRANGER_M,"Pyuku",0,"single"),
+  pbTrainerRematchKey(:RICHBOY,"Chuck",0,"single"),
+  pbTrainerRematchKey(:HANDMAIDEN,"Rose",0,"single")
 ]
 
 BOSS_TRAINER_FIELDS = {
-  # Example:
-  # pbTrainerRematchKey(:LEADER_Brock,"Brock",0,"single") => 12
+  pbTrainerRematchKey(:POKEMONRANGER_M,"Pyuku",0,"single") => 23,  # Cave Field
+  pbTrainerRematchKey(:RICHBOY,"Chuck",0,"single") => 23,         # Cave Field
+  pbTrainerRematchKey(:HANDMAIDEN,"Rose",0,"single") => 2         # Grassy Terrain
 }
 
 def pbTrainerRematchKey(trainerid, trainername, trainerparty, battlekind,
