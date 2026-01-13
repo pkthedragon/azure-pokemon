@@ -1651,7 +1651,7 @@ class Scene_FieldNotes_Info
                   Kernel.pbMessage(_INTL("Consumed hazards return at the end of the turn, returning a special effect to the side they were on:"))
                   Kernel.pbMessage(_INTL("Stealth Rocks deal type-scaling Rock damage double the normal effect to Pokemon."))
                   Kernel.pbMessage(_INTL("Spikes deal 33% max HP to grounded Pokemon."))
-                  Kernel.pbMessage(_INTL("Toxic Spikes deal 12.5% max HP to grounded non-Poison/Steel types, and inflicts poison."))
+                  Kernel.pbMessage(_INTL("Poison Barbs deal 12.5% max HP to grounded non-Poison/Steel types, and inflicts poison."))
                   Kernel.pbMessage(_INTL("Sticky Web severely lowers Pokemon's speed."))
                 when 2
                   Kernel.pbMessage(_INTL("Gunk Shot, Sludge, Sludge Bomb, Sludge Wave"))

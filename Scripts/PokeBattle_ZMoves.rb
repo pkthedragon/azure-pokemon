@@ -692,9 +692,9 @@ class PokeBattle_ZMoves < PokeBattle_Move
               user.pbOpposingSide.effects[PBEffects::Spikes] = 0
               hazardsExist = true
             end
-            if user.pbOwnSide.effects[PBEffects::ToxicSpikes] || user.pbOpposingSide.effects[PBEffects::ToxicSpikes]
-              user.pbOwnSide.effects[PBEffects::ToxicSpikes] = false
-              user.pbOpposingSide.effects[PBEffects::ToxicSpikes] = false
+            if user.pbOwnSide.effects[PBEffects::ToxicSpikes]>0 || user.pbOpposingSide.effects[PBEffects::ToxicSpikes]>0
+              user.pbOwnSide.effects[PBEffects::ToxicSpikes] = 0
+              user.pbOpposingSide.effects[PBEffects::ToxicSpikes] = 0
               hazardsExist = true
             end
             if user.pbOwnSide.effects[PBEffects::StealthRock] || user.pbOpposingSide.effects[PBEffects::StealthRock]

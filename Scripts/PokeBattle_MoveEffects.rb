@@ -2575,13 +2575,13 @@ class PokeBattle_Move_049 < PokeBattle_Move
         @battle.pbDisplay(_INTL("The pointed stones disappeared from around your team!"))
       end
     end
-    if attacker.pbOwnSide.effects[PBEffects::ToxicSpikes] || opponent.pbOwnSide.effects[PBEffects::ToxicSpikes]
-      attacker.pbOwnSide.effects[PBEffects::ToxicSpikes] = false
-      opponent.pbOwnSide.effects[PBEffects::ToxicSpikes] = false
+    if attacker.pbOwnSide.effects[PBEffects::ToxicSpikes]>0 || opponent.pbOwnSide.effects[PBEffects::ToxicSpikes]>0
+      attacker.pbOwnSide.effects[PBEffects::ToxicSpikes] = 0
+      opponent.pbOwnSide.effects[PBEffects::ToxicSpikes] = 0
       if !@battle.pbIsOpposing?(attacker.index)
-        @battle.pbDisplay(_INTL("The poison spikes disappeared from around your opponent's team's feet!"))
+        @battle.pbDisplay(_INTL("The poison barbs disappeared from around your opponent's team's feet!"))
       else
-        @battle.pbDisplay(_INTL("The poison spikes disappeared from around your team's feet!"))
+        @battle.pbDisplay(_INTL("The poison barbs disappeared from around your team's feet!"))
       end
     end
     if attacker.pbOwnSide.effects[PBEffects::StickyWeb] || opponent.pbOwnSide.effects[PBEffects::StickyWeb]
@@ -2613,7 +2613,7 @@ class PokeBattle_Move_049 < PokeBattle_Move
     opponent.pbOwnSide.effects[PBEffects::Safeguard] = 0
     opponent.pbOwnSide.effects[PBEffects::Spikes] = 0
     opponent.pbOwnSide.effects[PBEffects::StealthRock] = false
-    opponent.pbOwnSide.effects[PBEffects::ToxicSpikes] = false
+    opponent.pbOwnSide.effects[PBEffects::ToxicSpikes] = 0
     opponent.pbOwnSide.effects[PBEffects::StickyWeb] = false
     opponent.pbOwnSide.effects[PBEffects::MysticTree] = 0
     return true
@@ -8926,15 +8926,15 @@ class PokeBattle_Move_103 < PokeBattle_Move
 end
  
 ################################################################################
-# Entry hazard.  Lays poison spikes on the opposing side (1 layer only).
+# Entry hazard.  Lays poison barbs on the opposing side (1 layer only).
 ################################################################################
 class PokeBattle_Move_104 < PokeBattle_Move
   def pbEffect(attacker,opponent,hitnum=0,alltargets=nil,showanimation=true)
-    if attacker.pbOpposingSide.effects[PBEffects::ToxicSpikes] || $fefieldeffect == 43
+    if attacker.pbOpposingSide.effects[PBEffects::ToxicSpikes]>0 || $fefieldeffect == 43
       @battle.pbDisplay(_INTL("But it failed!"))
       return -1
     elsif $fefieldeffect == 21 || $fefieldeffect == 26
-      @battle.pbDisplay(_INTL("...The spikes sunk into the water and vanished!"))
+      @battle.pbDisplay(_INTL("...The barbs sunk into the water and vanished!"))
       return -1
     end
     pbShowAnimation(@id,attacker,opponent,hitnum,alltargets,showanimation)
@@ -8942,17 +8942,17 @@ class PokeBattle_Move_104 < PokeBattle_Move
       next if !(attacker.pbIsOpposing?(i))
       if (@battle.battlers[i]).hasWorkingAbility(:MAGICBOUNCE) || (@battle.battlers[i]).effects[PBEffects::MagicCoat] ||
        @battle.SilvallyCheck((@battle.battlers[i]), "psychic")
-         attacker.pbOwnSide.effects[PBEffects::ToxicSpikes] = true
-         @battle.pbDisplay(_INTL("{1} bounced the Toxic Spikes back!",(@battle.battlers[i]).pbThis))
+         attacker.pbOwnSide.effects[PBEffects::ToxicSpikes] = 1
+         @battle.pbDisplay(_INTL("{1} bounced the Poison Barbs back!",(@battle.battlers[i]).pbThis))
        return 0
        break
       end
-    end     
-    attacker.pbOpposingSide.effects[PBEffects::ToxicSpikes] = true
+    end
+    attacker.pbOpposingSide.effects[PBEffects::ToxicSpikes] = 1
     if !@battle.pbIsOpposing?(attacker.index)
-      @battle.pbDisplay(_INTL("Poison spikes were scattered all around the foe's team's feet!"))
+      @battle.pbDisplay(_INTL("Poison barbs were scattered all around the foe's team's feet!"))
     else
-      @battle.pbDisplay(_INTL("Poison spikes were scattered all around your team's feet!"))
+      @battle.pbDisplay(_INTL("Poison barbs were scattered all around your team's feet!"))
     end
     return 0
   end
@@ -9341,9 +9341,9 @@ class PokeBattle_Move_110 < PokeBattle_Move
         attacker.pbOwnSide.effects[PBEffects::Spikes] = 0
         @battle.pbDisplay(_INTL("{1} blew away Spikes!",attacker.pbThis))     
       end
-      if attacker.pbOwnSide.effects[PBEffects::ToxicSpikes]
-        attacker.pbOwnSide.effects[PBEffects::ToxicSpikes] = false
-        @battle.pbDisplay(_INTL("{1} blew away poison spikes!",attacker.pbThis))     
+      if attacker.pbOwnSide.effects[PBEffects::ToxicSpikes]>0
+        attacker.pbOwnSide.effects[PBEffects::ToxicSpikes] = 0
+        @battle.pbDisplay(_INTL("{1} blew away Poison Barbs!",attacker.pbThis))     
       end
       if attacker.pbOwnSide.effects[PBEffects::StickyWeb]
         attacker.pbOwnSide.effects[PBEffects::StickyWeb] = false
@@ -12880,19 +12880,21 @@ class PokeBattle_Move_21A < PokeBattle_Move
             hpgain = opponent.pbRecoverHP(hpgain,true)
             pbDisplay(_INTL("{1} was healed by the mystical trees!",opponent.pbThis)) if hpgain > 0
           end
-          if opponent.pbOwnSide.effects[PBEffects::ToxicSpikes]
+          if opponent.pbOwnSide.effects[PBEffects::ToxicSpikes]>0
             @battle.pbDisplay(_INTL("{1} fell into the hazards!",opponent.pbThis)) if showmessage
             showmessage = false
             if opponent.pbHasType?(:POISON) && $fefieldeffect != 10
-              opponent.pbOwnSide.effects[PBEffects::ToxicSpikes] = false
-              pbDisplay(_INTL("{1} absorbed the poison spikes!",opponent.pbThis))
+              opponent.pbOwnSide.effects[PBEffects::ToxicSpikes] = 0
+              pbDisplay(_INTL("{1} absorbed the poison barbs!",opponent.pbThis))
             elsif opponent.pbCanPoisonSpikes?
-              if opponent.pbHasType?(:GRASS) || (opponent.pbHasType?(:FAIRY) && $fefieldeffect != 42)
+              # Badly poison if weak to Poison-type
+              poisonmod = PBTypes.getCombinedEffectiveness(PBTypes::POISON,opponent.type1,opponent.type2)
+              if poisonmod > 4
                 opponent.pbPoison(opponent,true)
-                @battle.pbDisplay(_INTL("{1} was badly poisoned!",opponent.pbThis))
+                @battle.pbDisplay(_INTL("{1} was badly poisoned by the poison barbs!",opponent.pbThis))
               else
                 opponent.pbPoison(opponent)
-                @battle.pbDisplay(_INTL("{1} was poisoned!",opponent.pbThis))
+                @battle.pbDisplay(_INTL("{1} was poisoned by the poison barbs!",opponent.pbThis))
               end
             end
           end

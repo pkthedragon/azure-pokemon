@@ -4388,21 +4388,23 @@ end
           end
         end
       end 
-      # Toxic Spikes
+      # Poison Barbs (formerly Toxic Spikes)
       pkmn.pbOwnSide.effects[PBEffects::ToxicSpikes]=0 if $fefieldeffect == 21 ||
        $fefieldeffect == 26
       if (pkmn.pbOwnSide.effects[PBEffects::ToxicSpikes] || 0) > 0
         if !pkmn.isAirborne? && !pkmn.hasWorkingAbility(:LIMBER)
           if pkmn.pbHasType?(:POISON) && $fefieldeffect != 10
             pkmn.pbOwnSide.effects[PBEffects::ToxicSpikes]=0
-            pbDisplay(_INTL("{1} absorbed the poison spikes!",pkmn.pbThis))
+            pbDisplay(_INTL("{1} absorbed the poison barbs!",pkmn.pbThis))
           elsif pkmn.pbCanPoisonSpikes? && !pkmn.hasWorkingItem(:HEAVYDUTYBOOTS)
-            if pkmn.pbHasType?(:GRASS) || (pkmn.pbHasType?(:FAIRY) && $fefieldeffect != 42)
+            # Badly poison if weak to Poison-type
+            poisonmod = PBTypes.getCombinedEffectiveness(PBTypes::POISON,pkmn.type1,pkmn.type2)
+            if poisonmod > 4
               pkmn.pbPoison(pkmn,true)
-              pbDisplay(_INTL("{1} was badly poisoned!",pkmn.pbThis))
+              pbDisplay(_INTL("{1} was badly poisoned by the poison barbs!",pkmn.pbThis))
             else
               pkmn.pbPoison(pkmn)
-              pbDisplay(_INTL("{1} was poisoned!",pkmn.pbThis))
+              pbDisplay(_INTL("{1} was poisoned by the poison barbs!",pkmn.pbThis))
             end
           end
         end
@@ -7930,10 +7932,10 @@ def pbStartBattle(canlose=false)
             end
           end
         end
-        # TSpikes
-        if i.pbOwnSide.effects[PBEffects::ToxicSpikes]
-          pbDisplay(_INTL("The waste swallowed up the toxic spikes!"))
-          i.pbOwnSide.effects[PBEffects::ToxicSpikes]=false
+        # Poison Barbs
+        if i.pbOwnSide.effects[PBEffects::ToxicSpikes]>0
+          pbDisplay(_INTL("The waste swallowed up the poison barbs!"))
+          i.pbOwnSide.effects[PBEffects::ToxicSpikes]=0
           pbDisplay(_INTL("...Poison needles shot up from the ground!"))
           if !i.isFainted? && !i.isAirborne? &&
            !i.pbHasType?(:STEEL) && !i.pbHasType?(:POISON)
