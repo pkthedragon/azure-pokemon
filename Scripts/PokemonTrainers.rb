@@ -341,27 +341,32 @@ def pbTrainerRematchKey(trainerid, trainername, trainerparty, battlekind,
           trainerid2,trainername2,trainerparty2]
 end
 
-BOSS_TRAINER_REMATCHES = [
-  pbTrainerRematchKey(:POKEMONTRAINER_Percy,"Percy",0,"single"),
-  pbTrainerRematchKey(:POKEMONTRAINER_Kara,"Kara",0,"single"),
-  pbTrainerRematchKey(:POKEMONTRAINER_Kara,"Kara",2,"single"),
-  pbTrainerRematchKey(:POKEMONRANGER_M,"Pyuku",0,"single"),
-  pbTrainerRematchKey(:RICHBOY,"Chuck",0,"single"),
-  pbTrainerRematchKey(:HANDMAIDEN,"Rose",0,"single")
-]
+# Lazy-loaded boss trainer rematches (initialized on first access after all scripts load)
+def pbGetBossTrainerRematches
+  $boss_trainer_rematches ||= [
+    pbTrainerRematchKey(:POKEMONTRAINER_Percy,"Percy",0,"single"),
+    pbTrainerRematchKey(:POKEMONTRAINER_Kara,"Kara",0,"single"),
+    pbTrainerRematchKey(:POKEMONTRAINER_Kara,"Kara",2,"single"),
+    pbTrainerRematchKey(:POKEMONRANGER_M,"Pyuku",0,"single"),
+    pbTrainerRematchKey(:RICHBOY,"Chuck",0,"single"),
+    pbTrainerRematchKey(:HANDMAIDEN,"Rose",0,"single")
+  ]
+end
 
-BOSS_TRAINER_FIELDS = {
-  pbTrainerRematchKey(:POKEMONRANGER_M,"Pyuku",0,"single") => 23,  # Cave Field
-  pbTrainerRematchKey(:RICHBOY,"Chuck",0,"single") => 23,         # Cave Field
-  pbTrainerRematchKey(:HANDMAIDEN,"Rose",0,"single") => 2         # Grassy Terrain
-}
+def pbGetBossTrainerFields
+  $boss_trainer_fields ||= {
+    pbTrainerRematchKey(:POKEMONRANGER_M,"Pyuku",0,"single") => 23,  # Cave Field
+    pbTrainerRematchKey(:RICHBOY,"Chuck",0,"single") => 23,         # Cave Field
+    pbTrainerRematchKey(:HANDMAIDEN,"Rose",0,"single") => 2         # Grassy Terrain
+  }
+end
 
 def pbTrainerRematchBoss?(rematch)
-  return BOSS_TRAINER_REMATCHES.include?(rematch)
+  return pbGetBossTrainerRematches.include?(rematch)
 end
 
 def pbTrainerRematchField(rematch)
-  return BOSS_TRAINER_FIELDS[rematch]
+  return pbGetBossTrainerFields[rematch]
 end
 
 def pbRegisterTrainerRematch(trainerid, trainername, trainerparty, battlekind,
