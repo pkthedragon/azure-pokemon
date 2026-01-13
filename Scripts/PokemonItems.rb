@@ -366,31 +366,38 @@ def pbRaiseEffortValues(pokemon,ev,evgain=10,evlimit=true)
 end
 
 def pbRaiseIV(pokemon,iv,ivgain=1)
-  totaliv=0
-  for i in 0...6
-    totaliv+=pokemon.iv[i]
+  # Vitamins increase IVs in steps: 0 -> 15 -> 31
+  currentiv = pokemon.iv[iv]
+  if currentiv >= 31
+    return 0  # Already at max
+  elsif currentiv >= 15
+    # Raise from 15+ to 31
+    ivgain = 31 - currentiv
+    pokemon.iv[iv] = 31
+  else
+    # Raise from 0-14 to 15
+    ivgain = 15 - currentiv
+    pokemon.iv[iv] = 15
   end
-  if totaliv+ivgain>155
-    ivgain=155-totaliv
-  end
-  if pokemon.iv[iv]+ivgain>31
-    ivgain=31-pokemon.iv[iv]
-  end
-  if ivgain>0
-    pokemon.iv[iv]+=ivgain
-    pokemon.calcStats
-  end
+  pokemon.calcStats
   return ivgain
 end
 
 def pbLowerIV(pokemon,iv,ivgain=1)
-  if pokemon.iv[iv]-ivgain<0
-    ivgain=0
+  # Wings decrease IVs in steps: 31 -> 15 -> 0
+  currentiv = pokemon.iv[iv]
+  if currentiv <= 0
+    return 0  # Already at min
+  elsif currentiv <= 15
+    # Lower from 1-15 to 0
+    ivgain = currentiv
+    pokemon.iv[iv] = 0
+  else
+    # Lower from 16-31 to 15
+    ivgain = currentiv - 15
+    pokemon.iv[iv] = 15
   end
-  if ivgain>0
-    pokemon.iv[iv]-=ivgain
-    pokemon.calcStats
-  end
+  pokemon.calcStats
   return ivgain
 end
 

@@ -1008,32 +1008,9 @@ class PokeBattle_Pokemon
     @obspa=0
     @obspd=0    
     @iv=[]
-    if !(group1==15 || group2==15)
-      @iv[0]=rand(32)
-      @iv[1]=rand(32)
-      @iv[2]=rand(32)
-      @iv[3]=rand(32)
-      @iv[4]=rand(32)
-      @iv[5]=rand(32)
-    else
-      stat1=rand(6)
-      stat2=rand(6)
-      stat3=rand(6)
-      while stat1==stat2 do stat2=rand(6)
-      end
-      while (stat1==stat3) || (stat2==stat3) do stat3=rand(6)
-      end
-      for i in 0..5
-        if i==stat1
-          @iv[i]=31
-        elsif i==stat2
-          @iv[i]=31
-        elsif i==stat3
-          @iv[i]=31
-        else      
-          @iv[i]=rand(32)
-        end
-      end
+    # All IVs default to 15
+    for i in 0..5
+      @iv[i]=15
     end
     if player
       @trainerID=player.id
