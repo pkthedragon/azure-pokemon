@@ -278,6 +278,7 @@
 270,AURORA,League Founder,100,Battle! League,,,,255,
 271,RYOU,League Founder,100,Battle! League,,,,255,
 272,TRENT,Tidepsalm,100,Battle! Faux,,,,255,
+284,PAX,Pax,100,Battle! Faux,,,,255,
 281,JOLLY,Ashen One,100,Battle! Faux,,,,255,
 282,NODE,Dark Leader,100,Battle! Faux,,,,255,
 273,GOLEM,Golem,0,Battle! Mini Boss,,,,255,

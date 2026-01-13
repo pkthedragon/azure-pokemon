@@ -2676,3 +2676,83 @@ Not using an item.
 [No Z-Move.]
 [The foe Pikachu lost 3 HP, now has 46 HP]
 [Ozzie lost 40 HP, now has 0 HP]
+==============================
+Battle Start!
+124 - Pyuku
+==============================
+***Round 1***
+AI Pokemon Elektra is faster than Ozzie.
+Thunder Shock: initial score: 2
+Thunder Shock: final score: 0
+ 
+Disarming Voice: initial score: 47
+Disarming Voice: final score: 47
+ 
+Nuzzle: initial score: 2
+Nuzzle: final score: 0
+ 
+Charge: initial score: 15
+[Not preferring status move]
+Charge: final score: 4
+ 
+Beginning AI Item use check.
+ 
+Highest item score: -10000
+Highest move score: 47
+Not using an item.
+ 
+[The foe Elektra: Thunder Shock=0, Disarming Voice=47, Nuzzle=0, Charge=4]
+[Prefer Disarming Voice]
+[No Z-Move.]
+[The foe Elektra lost 16 HP, now has 28 HP]
+***Round 2***
+AI Pokemon Elektra is faster than Ozzie.
+Thunder Shock: initial score: 2
+Thunder Shock: final score: 0
+ 
+Disarming Voice: initial score: 47
+Disarming Voice: final score: 49
+ 
+Nuzzle: initial score: 2
+Nuzzle: final score: 0
+ 
+Charge: initial score: 15
+[Not preferring status move]
+Charge: final score: 3
+ 
+Beginning AI Item use check.
+ 
+Highest item score: -10000
+Highest move score: 49
+Not using an item.
+ 
+[The foe Elektra: Thunder Shock=0, Disarming Voice=49, Nuzzle=0, Charge=3]
+[Prefer Disarming Voice]
+[No Z-Move.]
+[The foe Elektra lost 11 HP, now has 17 HP]
+***Round 3***
+AI Pokemon Elektra is faster than Ozzie.
+Thunder Shock: initial score: 2
+Thunder Shock: final score: 0
+ 
+Disarming Voice: initial score: 47
+Disarming Voice: final score: 49
+ 
+Nuzzle: initial score: 2
+Nuzzle: final score: 0
+ 
+Charge: initial score: 15
+[Not preferring status move]
+Charge: final score: 3
+ 
+Beginning AI Item use check.
+ 
+Highest item score: -10000
+Highest move score: 49
+Not using an item.
+ 
+[The foe Elektra: Thunder Shock=0, Disarming Voice=49, Nuzzle=0, Charge=3]
+[Prefer Disarming Voice]
+[No Z-Move.]
+[The foe Elektra lost 3 HP, now has 14 HP]
+[The foe Elektra lost 14 HP, now has 0 HP]
