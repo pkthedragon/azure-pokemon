@@ -1180,6 +1180,8 @@ def pbWildBattle(species,level,variable=nil,canescape=true,canlose=false)
         i.form=0
       end
     end
+    # Refresh PP after battle
+    for i in $Trainer.party; i.healPP; end
     if $PokemonGlobal.partner
       pbHealAll
       for i in $PokemonGlobal.partner[3]
@@ -1295,6 +1297,8 @@ def pbWildBattleBoss(species,level,variable=nil,canescape=true,canlose=false)
         end
       end
     end
+    # Refresh PP after battle
+    for i in $Trainer.party; i.healPP; end
     if $PokemonGlobal.partner
       pbHealAll
       for i in $PokemonGlobal.partner[3]
