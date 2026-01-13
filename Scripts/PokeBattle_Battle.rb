@@ -7534,6 +7534,27 @@ def pbStartBattle(canlose=false)
         end
       end
     end
+    # Frisk Lock
+    for i in priority
+      next if i.isFainted?
+      if i.effects[PBEffects::FriskLock]>0
+        i.effects[PBEffects::FriskLock]-=1
+        if i.effects[PBEffects::FriskLock]==0
+          pbDisplay(_INTL("{1}'s item is no longer locked!",i.pbThis))
+        end
+      end
+    end
+    # Forewarn Disable
+    for i in priority
+      next if i.isFainted?
+      if i.effects[PBEffects::ForewarnDisable]>0
+        i.effects[PBEffects::ForewarnDisable]-=1
+        if i.effects[PBEffects::ForewarnDisable]==0
+          i.effects[PBEffects::ForewarnDisableMove]=0
+          pbDisplay(_INTL("{1} is no longer forewarned!",i.pbThis))
+        end
+      end
+    end
     # Yawn
     for i in priority
       next if i.isFainted?
