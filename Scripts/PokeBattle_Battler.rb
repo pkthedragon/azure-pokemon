@@ -2141,11 +2141,13 @@ class PokeBattle_Battler
     if @species==PBSpecies::PARASECT && @pokemon.form==2 
       self.form=1
     end
-    if droprelease!=nil
-      oppmon = droprelease
-      oppmon.effects[PBEffects::SkyDrop]=false
-      @battle.scene.pbUnVanishSprite(oppmon)
-      @battle.pbDisplay(_INTL("{1} is freed from Sky Drop effect!",oppmon.pbThis))
+    if droprelease!=nil && droprelease!=-1
+      oppmon = @battle.battlers[droprelease]
+      if oppmon
+        oppmon.effects[PBEffects::SkyDrop]=false
+        @battle.scene.pbUnVanishSprite(oppmon)
+        @battle.pbDisplay(_INTL("{1} is freed from Sky Drop effect!",oppmon.pbThis))
+      end
     end    
     @battle.scene.partyBetweenKO1(self.index==1 || self.index==3) unless (@battle.doublebattle || pbNonActivePokemonCount==0)
     #PBDebug.log("[#{pbThis} fainted]") if $INTERNAL
@@ -6970,11 +6972,13 @@ class PokeBattle_Battler
       if self.vanished
         @battle.scene.pbUnVanishSprite(self)
         droprelease = self.effects[PBEffects::SkyDroppee]
-        if droprelease!=nil
-          oppmon = droprelease
-          oppmon.effects[PBEffects::SkyDrop]=false
-          @battle.scene.pbUnVanishSprite(oppmon)
-          @battle.pbDisplay(_INTL("{1} is freed from the Sky Drop effect!",oppmon.pbThis))
+        if droprelease!=nil && droprelease!=-1
+          oppmon = @battle.battlers[droprelease]
+          if oppmon
+            oppmon.effects[PBEffects::SkyDrop]=false
+            @battle.scene.pbUnVanishSprite(oppmon)
+            @battle.pbDisplay(_INTL("{1} is freed from the Sky Drop effect!",oppmon.pbThis))
+          end
         end
       end         
       self.lastMoveUsed=-1
