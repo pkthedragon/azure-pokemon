@@ -2573,3 +2573,106 @@ Not using an item.
 [Prefer Disarming Voice]
 [No Z-Move.]
 [The foe Audino lost 7 HP, now has 0 HP]
+==============================
+Battle Start!
+124 - Pyuku
+==============================
+***Round 1***
+AI Pokemon Pikachu is faster than Ozzie.
+Nasty Plot: initial score: 35
+Nasty Plot: final score: 86
+ 
+Electro Ball: initial score: 2
+Electro Ball: final score: 0
+ 
+Grass Knot: initial score: 67
+Grass Knot: final score: 67
+ 
+Wish: initial score: 20
+Wish: final score: 1
+ 
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (0)
+Initial switchscore building: Healing (0)
+Initial switchscore building: fsteak (0)
+Initial switchscore building: Specific Switches (0)
+Initial switchscore building: Typing (0)
+Pikachu: initial switchscore: 40
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+Pikachu: initial noswitchscore: 66
+ 
+{
+ 
+}
+ 
+Pikachu: highest move score: 86
+Pikachu: final switching score: -26
+86 > -26, will not switch
+ 
+Beginning AI Item use check.
+ 
+This is a HP-healing item.
+Cave Field Disrupt
+Score for Super Potion: -100
+Highest item score: -100
+Highest move score: 86
+Not using an item.
+ 
+[The foe Pikachu: Nasty Plot=86, Electro Ball=0, Grass Knot=67, Wish=1]
+[Prefer Nasty Plot]
+[No Z-Move.]
+[The foe Pikachu lost 9 HP, now has 49 HP]
+***Round 2***
+AI Pokemon Pikachu is faster than Ozzie.
+Nasty Plot: initial score: 35
+Nasty Plot: final score: 20
+ 
+Electro Ball: initial score: 2
+Electro Ball: final score: 0
+ 
+Grass Knot: initial score: 110
+Grass Knot: final score: 110
+ 
+Wish: initial score: 20
+Wish: final score: 0
+ 
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (0)
+Initial switchscore building: Healing (0)
+Initial switchscore building: fsteak (0)
+Initial switchscore building: Specific Switches (0)
+Initial switchscore building: Typing (0)
+Pikachu: initial switchscore: 40
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (60)
+Initial noswitchscore building: Better Switching Options (60)
+Initial noswitchscore building: Second Wind Situations (60)
+Pikachu: initial noswitchscore: 110
+ 
+{
+ 
+}
+ 
+Pikachu: highest move score: 110
+Pikachu: final switching score: -70
+110 > -70, will not switch
+ 
+Beginning AI Item use check.
+ 
+This is a HP-healing item.
+Cave Field Disrupt
+Score for Super Potion: -100
+Highest item score: -100
+Highest move score: 110
+Not using an item.
+ 
+[The foe Pikachu: Nasty Plot=10, Electro Ball=0, Grass Knot=110, Wish=0]
+[Prefer Grass Knot]
+[No Z-Move.]
+[The foe Pikachu lost 3 HP, now has 46 HP]
+[Ozzie lost 40 HP, now has 0 HP]
