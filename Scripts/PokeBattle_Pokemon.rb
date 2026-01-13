@@ -266,6 +266,33 @@ class PokeBattle_Pokemon
 # Returns the list of abilities this Pokémon can have.
   def getAbilityList
     abils=[]; ret=[[],[]]
+    # Check for form-specific ability list first
+    if defined?(MultipleForms)
+      formAbils = MultipleForms.call("abilityList",self)
+      if formAbils && formAbils.length > 0
+        for i in 0...formAbils.length
+          next if !formAbils[i] || formAbils[i]<=0
+          ret[0].push(formAbils[i]); ret[1].push(i)
+        end
+        return ret
+      end
+      # If there's an ability handler, test it with different abilityIndex values
+      if MultipleForms.hasFunction?(self,"ability") && @form && @form > 0
+        originalFlag = @abilityflag
+        foundAbils = []
+        for testIndex in [0, 1, 2]
+          @abilityflag = testIndex
+          testAbil = MultipleForms.call("ability",self)
+          if testAbil && testAbil > 0 && !foundAbils.include?(testAbil)
+            foundAbils.push(testAbil)
+            ret[0].push(testAbil); ret[1].push(testIndex)
+          end
+        end
+        @abilityflag = originalFlag
+        return ret if ret[0].length > 0
+      end
+    end
+    # Fall back to base species abilities
     dexdata=pbOpenDexData
     abils.push($pkmn_dex[@species][12][0])
     abils.push($pkmn_dex[@species][12][1])
