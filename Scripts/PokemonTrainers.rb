@@ -764,6 +764,8 @@ def pbTrainerBattle(trainerid,trainername,endspeech,
         end
       end
     end
+    # Refresh PP after battle
+    for i in $Trainer.party; i.healPP; end
     if $PokemonGlobal.partner
       pbHealAll
       for i in $PokemonGlobal.partner[3]
