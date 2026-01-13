@@ -3827,7 +3827,7 @@ class PokeBattle_Battler
       # Find all super-effective moves from foes
       semoves=[] # Array of [foe, move_id] pairs
       for foe in [pbOpposing1,pbOpposing2]
-        next if foe.isFainted?
+        next if !foe || foe.isFainted?
         for j in foe.moves
           movedata=PBMoveData.new(j.id)
           next if movedata.basedamage==0
