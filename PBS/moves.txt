@@ -444,7 +444,7 @@
 444,POISONGAS,Poison Gas,005,0,POISON,Status,90,15,0,04,0,bce,"A cloud of poison gas is sprayed on opposing Pokémon. It may poison those hit."
 445,POISONPOWDER,Poison Powder,005,0,POISON,Status,75,15,0,00,0,bce,"The user scatters a cloud of poisonous dust on the target. It may poison the target."
 446,TOXIC,Toxic,006,0,POISON,Status,90,5,0,00,0,bce,"If the user is a Poison-type, badly poisons target. Otherwise makes the user a Poison-type."
-447,TOXICSPIKES,Toxic Spikes,104,0,POISON,Status,0,10,0,80,0,c,"The user lays a trap of poison spikes. They poison opponents that switch into battle."
+447,TOXICSPIKES,Poison Barbs,104,0,POISON,Status,0,10,0,80,0,c,"The user lays a trap of poison barbs. They poison opponents that switch in, badly poisoning those weak to Poison."
 448,PSYCHOBOOST,Psycho Boost,03F,140,PSYCHIC,Special,90,5,100,00,0,bef,"The user hits the target at full power. The attack harshly reduces the user's Sp. Atk stat."
 449,DREAMEATER,Dream Eater,0DE,100,PSYCHIC,Special,100,10,0,00,0,be,"The user eats the dreams of a sleeping target. It absorbs half the damage caused."
 450,FUTURESIGHT,Future Sight,111,120,PSYCHIC,Special,100,5,0,00,0,,"Two turns after this move is used, a hunk of psychic energy attacks the target."

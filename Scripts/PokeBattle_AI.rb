@@ -13644,8 +13644,8 @@ class PokeBattle_Battle
           score*=1.5 if @doublebattle
         end
       end
-    when 0x104 # Toxic Spikes
-      if attacker.pbOpposingSide.effects[PBEffects::ToxicSpikes]!=1
+    when 0x104 # Poison Barbs (1 layer only)
+      if attacker.pbOpposingSide.effects[PBEffects::ToxicSpikes]==0
         if roles.include?(PBMonRoles::LEAD)
           score*=1.1
         end
@@ -13674,9 +13674,6 @@ class PokeBattle_Battle
           score*=miniscore
         else
           score*=0.1
-        end
-        if attacker.pbOpposingSide.effects[PBEffects::ToxicSpikes]>0
-          score*=0.9
         end
         if @doublebattle
           score*=0.6
