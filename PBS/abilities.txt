@@ -127,7 +127,7 @@
 127,UNNERVE,Unnerve,"Makes the foe unable to eat Berries or leftovers."
 128,DEFIANT,Defiant,"When a stat is lowered its Attack increases."
 129,DEFEATIST,Defeatist,"Lowers stats when HP becomes half or less."
-130,CURSEDBODY,Cursed Body,"May disable a move used on the Pokémon."
+130,CURSEDBODY,Cursed Body,"Disables the move that knocked it out."
 131,HEALER,Healer,"May heal the user or ally's status conditions and prevents wounds."
 132,FRIENDGUARD,Friend Guard,"Reduces damage done to allies."
 133,WEAKARMOR,Weak Armor,"Physical attacks lower Def. and sharply raise Spd."

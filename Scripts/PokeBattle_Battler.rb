@@ -1411,6 +1411,7 @@ class PokeBattle_Battler
   def itemWorks?(ignorefainted=false)
     return false if self.isFainted? if !ignorefainted
     return false if @effects[PBEffects::Embargo]>0
+    return false if @effects[PBEffects::FriskLock]>0
     return false if @effects[PBEffects::MultiTurnAttack]==PBMoves::BINDINGWORD
     return false if @battle.field.effects[PBEffects::MagicRoom]>0
     return false if self.ability == PBAbilities::KLUTZ && !self.abilitynulled
@@ -1420,6 +1421,7 @@ class PokeBattle_Battler
   def hasWorkingItem(item,ignorefainted=false)
     return false if self.isFainted? if !ignorefainted
     return false if @effects[PBEffects::Embargo]>0
+    return false if @effects[PBEffects::FriskLock]>0
     return false if @effects[PBEffects::MultiTurnAttack]==PBMoves::BINDINGWORD
     return false if @battle.field.effects[PBEffects::MagicRoom]>0
     return false if self.ability == PBAbilities::KLUTZ && !self.abilitynulled
@@ -3772,13 +3774,15 @@ class PokeBattle_Battler
       end
     end
     # Frisk
-    if self.hasWorkingAbility(:FRISK) && @battle.pbOwnedByPlayer?(@index) && onactive
+    if self.hasWorkingAbility(:FRISK) && onactive
       foes=[]
       foes.push(pbOpposing1) if pbOpposing1.item>0 && !pbOpposing1.isFainted?
       foes.push(pbOpposing2) if pbOpposing2.item>0 && !pbOpposing2.isFainted?
       for i in foes
         itemname=PBItems.getName(i.item)
         @battle.pbDisplay(_INTL("{1} frisked {2} and found its {3}!",pbThis,i.pbThis(true),itemname))
+        i.effects[PBEffects::FriskLock]=1
+        @battle.pbDisplay(_INTL("{1}'s item was locked!",i.pbThis))
       end
     end
     # Anticipation
@@ -3818,75 +3822,30 @@ class PokeBattle_Battler
       end
     end
     # Forewarn
-    if self.hasWorkingAbility(:FOREWARN) && @battle.pbOwnedByPlayer?(@index) && onactive
-      highpower=0
-      moves=[]
+    if self.hasWorkingAbility(:FOREWARN) && onactive
+      # Find all super-effective moves from foes
+      semoves=[] # Array of [foe, move_id] pairs
       for foe in [pbOpposing1,pbOpposing2]
         next if foe.isFainted?
         for j in foe.moves
           movedata=PBMoveData.new(j.id)
-          power=movedata.basedamage
-          power=160 if movedata.function==0x70    # OHKO
-          power=150 if movedata.function==0x8B    # Eruption
-          power=120 if movedata.function==0x71 || # Counter
-          movedata.function==0x72 || # Mirror Coat
-          movedata.function==0x73 || # Metal Burst
-          power=80 if movedata.function==0x6A ||  # SonicBoom
-          movedata.function==0x6B ||  # Dragon Rage
-          movedata.function==0x6D ||  # Night Shade
-          movedata.function==0x6E ||  # Endeavor
-          movedata.function==0x6F ||  # Psywave
-          movedata.function==0x89 ||  # Return
-          movedata.function==0x8A ||  # Frustration
-          movedata.function==0x8C ||  # Crush Grip
-          movedata.function==0x8D ||  # Gyro Ball
-          movedata.function==0x90 ||  # Hidden Power
-          movedata.function==0x96 ||  # Natural Gift
-          movedata.function==0x97 ||  # Trump Card
-          movedata.function==0x98 ||  # Flail
-          movedata.function==0x9A     # Grass Knot
-          if power>highpower
-            moves=[j.id]; highpower=power
-          elsif power==highpower
-            moves.push(j.id)
+          next if movedata.basedamage==0
+          eff=PBTypes.getCombinedEffectiveness(movedata.type,type1,type2)
+          if eff>4 # Super-effective
+            semoves.push([foe, j.id])
           end
         end
       end
-      if moves.length>0
-        move=moves[@battle.pbRandom(moves.length)]
+      if semoves.length>0
+        # Pick a random super-effective move to disable
+        chosen=semoves[@battle.pbRandom(semoves.length)]
+        foe=chosen[0]
+        move=chosen[1]
         movename=PBMoves.getName(move)
         @battle.pbDisplay(_INTL("{1}'s Forewarn alerted it to {2}!",pbThis,movename))
-        if (self.index==0 || self.index==2) && !@battle.isOnline? # Move memory system for AI
-          warnedMove = PokeBattle_Move.pbFromPBMove(@battle,PBMove.new(move),self)
-          if @battle.aiMoveMemory[0].length==0 && warnedMove.basedamage!=0
-            @battle.aiMoveMemory[0].push(warnedMove)
-          elsif @battle.aiMoveMemory[0].length!=0 && warnedMove.basedamage!=0          
-            dam1=@battle.pbRoughDamage(warnedMove,self,@battle.battlers[1],255,warnedMove.basedamage)
-            dam2=@battle.pbRoughDamage(@battle.aiMoveMemory[0][0],self,@battle.battlers[1],255,@battle.aiMoveMemory[0][0].basedamage)
-            if dam1>dam2
-              @battle.aiMoveMemory[0].clear
-              @battle.aiMoveMemory[0].push(warnedMove)
-            end          
-          end                    
-          if @battle.aiMoveMemory[1].length==0 
-            @battle.aiMoveMemory[1].push(warnedMove)        
-          else
-            dupecheck=0
-            for i in @battle.aiMoveMemory[1]
-              dupecheck+=1 if i.id == warnedMove.id
-            end
-            @battle.aiMoveMemory[1].push(warnedMove) if dupecheck==0
-          end 
-          if @battle.aiMoveMemory[2][self.pokemonIndex].length==0 
-            @battle.aiMoveMemory[2][self.pokemonIndex].push(warnedMove)        
-          else
-            dupecheck=0
-            for i in @battle.aiMoveMemory[2][self.pokemonIndex]
-              dupecheck+=1 if i.id == warnedMove.id
-            end
-            @battle.aiMoveMemory[2][self.pokemonIndex].push(warnedMove) if dupecheck==0
-          end         
-        end
+        foe.effects[PBEffects::ForewarnDisable]=1
+        foe.effects[PBEffects::ForewarnDisableMove]=move
+        @battle.pbDisplay(_INTL("{1}'s {2} was disabled!",foe.pbThis,movename))
       end
     end
     if !(self.abilityWorks?)
@@ -4320,7 +4279,8 @@ class PokeBattle_Battler
         end          
       end
       if !target.damagestate.substitute
-        if target.hasWorkingAbility(:CURSEDBODY,true) && (@battle.pbRandom(10)<3 || target.isFainted? && $fefieldeffect == 40)
+        # Cursed Body: disables the move that knocked it out
+        if target.hasWorkingAbility(:CURSEDBODY,true) && target.isFainted?
           if $fefieldeffect != 29
             if user.effects[PBEffects::Disable]<=0 && move.pp>0 && !user.isFainted?
               user.effects[PBEffects::Disable]=4
@@ -6256,6 +6216,10 @@ class PokeBattle_Battler
     end
     if @effects[PBEffects::Disable]>0 && thismove.id==@effects[PBEffects::DisableMove]
       @battle.pbDisplayPaused(_INTL("{1}'s {2} is disabled!",pbThis,thismove.name))
+      return false
+    end
+    if @effects[PBEffects::ForewarnDisable]>0 && thismove.id==@effects[PBEffects::ForewarnDisableMove]
+      @battle.pbDisplayPaused(_INTL("{1}'s {2} is disabled by Forewarn!",pbThis,thismove.name))
       return false
     end
     if self.hasWorkingAbility(:TRUANT) && @effects[PBEffects::Truant]
