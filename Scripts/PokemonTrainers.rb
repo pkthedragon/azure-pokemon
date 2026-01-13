@@ -329,6 +329,18 @@ end
 
 # Rematch code
 
+def pbTrainerRematchKey(trainerid, trainername, trainerparty, battlekind,
+                        trainerid2=nil, trainername2=nil, trainerparty2=nil)
+  if trainerid.is_a?(String) || trainerid.is_a?(Symbol)
+    trainerid=getID(PBTrainers,trainerid)
+  end
+  if trainerid2 && (trainerid2.is_a?(String) || trainerid2.is_a?(Symbol))
+    trainerid2=getID(PBTrainers,trainerid2)
+  end
+  return [trainerid,trainername,trainerparty,battlekind,
+          trainerid2,trainername2,trainerparty2]
+end
+
 BOSS_TRAINER_REMATCHES = [
   pbTrainerRematchKey(:POKEMONTRAINER_Percy,"Percy",0,"single"),
   pbTrainerRematchKey(:POKEMONTRAINER_Kara,"Kara",0,"single"),
@@ -343,18 +355,6 @@ BOSS_TRAINER_FIELDS = {
   pbTrainerRematchKey(:RICHBOY,"Chuck",0,"single") => 23,         # Cave Field
   pbTrainerRematchKey(:HANDMAIDEN,"Rose",0,"single") => 2         # Grassy Terrain
 }
-
-def pbTrainerRematchKey(trainerid, trainername, trainerparty, battlekind,
-                        trainerid2=nil, trainername2=nil, trainerparty2=nil)
-  if trainerid.is_a?(String) || trainerid.is_a?(Symbol)
-    trainerid=getID(PBTrainers,trainerid)
-  end
-  if trainerid2 && (trainerid2.is_a?(String) || trainerid2.is_a?(Symbol))
-    trainerid2=getID(PBTrainers,trainerid2)
-  end
-  return [trainerid,trainername,trainerparty,battlekind,
-          trainerid2,trainername2,trainerparty2]
-end
 
 def pbTrainerRematchBoss?(rematch)
   return BOSS_TRAINER_REMATCHES.include?(rematch)
