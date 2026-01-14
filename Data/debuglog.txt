@@ -2845,3 +2845,615 @@ Not using an item.
 [No Z-Move.]
 [The foe Elektra lost 4 HP, now has 6 HP]
 [The foe Elektra lost 6 HP, now has 0 HP]
+==============================
+Battle Start!
+179 - Kara
+==============================
+***Round 1***
+AI Pokemon Sola is faster than Ozzie.
+Defense Curl: initial score: 10
+[Not preferring status move]
+Defense Curl: final score: 0
+ 
+Splash: initial score: 1
+[Not preferring status move]
+Splash: final score: 0
+ 
+Pound: initial score: 23
+Pound: final score: 23
+ 
+Foresight: initial score: 5
+[Not preferring status move]
+Foresight: final score: 4
+ 
+Beginning AI Item use check.
+ 
+Highest item score: -10000
+Highest move score: 23
+Item use turned off.
+[The foe Sola: Defense Curl=0, Splash=0, Pound=23, Foresight=4]
+[Prefer Pound]
+[No Z-Move.]
+[Ozzie lost 8 HP, now has 13 HP]
+[The foe Sola lost 4 HP, now has 17 HP]
+[Ozzie lost 5 HP, now has 8 HP]
+***Round 2***
+==============================
+Battle Start!
+179 - Kara
+==============================
+***Round 1***
+AI Pokemon Sola is faster than Ozzie.
+Defense Curl: initial score: 10
+[Not preferring status move]
+Defense Curl: final score: 0
+ 
+Splash: initial score: 1
+[Not preferring status move]
+Splash: final score: 0
+ 
+Pound: initial score: 23
+Pound: final score: 23
+ 
+Foresight: initial score: 5
+[Not preferring status move]
+Foresight: final score: 4
+ 
+Beginning AI Item use check.
+ 
+Highest item score: -10000
+Highest move score: 23
+Item use turned off.
+[The foe Sola: Defense Curl=0, Splash=0, Pound=23, Foresight=4]
+[Prefer Pound]
+[No Z-Move.]
+[Ozzie lost 5 HP, now has 16 HP]
+[The foe Sola lost 4 HP, now has 17 HP]
+[Ozzie lost 5 HP, now has 11 HP]
+***Round 2***
+==============================
+Battle Start!
+179 - Kara
+==============================
+***Round 1***
+AI Pokemon Sola is faster than Ozzie.
+Defense Curl: initial score: 10
+[Not preferring status move]
+Defense Curl: final score: 1
+ 
+Splash: initial score: 1
+[Not preferring status move]
+Splash: final score: 0
+ 
+Pound: initial score: 23
+Pound: final score: 23
+ 
+Foresight: initial score: 5
+[Not preferring status move]
+Foresight: final score: 4
+ 
+Beginning AI Item use check.
+ 
+Highest item score: -10000
+Highest move score: 23
+Item use turned off.
+[The foe Sola: Defense Curl=1, Splash=0, Pound=23, Foresight=4]
+[Prefer Pound]
+[No Z-Move.]
+[Ozzie lost 5 HP, now has 16 HP]
+***Round 2***
+Player Pokemon Ozzie is faster than Sola.
+Defense Curl: initial score: 10
+[Not preferring status move]
+Defense Curl: final score: 1
+ 
+Splash: initial score: 1
+[Not preferring status move]
+Splash: final score: 0
+ 
+Pound: initial score: 31
+Pound: final score: 31
+ 
+Foresight: initial score: 5
+[Not preferring status move]
+Foresight: final score: 4
+ 
+Beginning AI Item use check.
+ 
+Highest item score: -10000
+Highest move score: 31
+Item use turned off.
+[The foe Sola: Defense Curl=1, Splash=0, Pound=31, Foresight=4]
+[Prefer Pound]
+[No Z-Move.]
+[Ozzie lost 5 HP, now has 11 HP]
+[The foe Sola lost 7 HP, now has 14 HP]
+***Round 3***
+Player Pokemon Ozzie is faster than Sola.
+Defense Curl: initial score: 10
+[Not preferring status move]
+Defense Curl: final score: 1
+ 
+Splash: initial score: 1
+[Not preferring status move]
+Splash: final score: 0
+ 
+Pound: initial score: 45
+Pound: final score: 45
+ 
+Foresight: initial score: 5
+[Not preferring status move]
+Foresight: final score: 4
+ 
+Beginning AI Item use check.
+ 
+Highest item score: -10000
+Highest move score: 45
+Item use turned off.
+[The foe Sola: Defense Curl=1, Splash=0, Pound=45, Foresight=4]
+[Prefer Pound]
+[No Z-Move.]
+[The foe Sola lost 7 HP, now has 7 HP]
+[Ozzie lost 3 HP, now has 8 HP]
+***Round 4***
+Player Pokemon Ozzie is faster than Sola.
+Defense Curl: initial score: 10
+[Not preferring status move]
+Defense Curl: final score: 0
+ 
+Splash: initial score: 1
+[Not preferring status move]
+Splash: final score: 0
+ 
+Pound: initial score: 62
+[Preferring damaging move]
+Pound: final score: 45
+ 
+Foresight: initial score: 5
+[Not preferring status move]
+Foresight: final score: 4
+ 
+Beginning AI Item use check.
+ 
+Highest item score: -10000
+Highest move score: 45
+Item use turned off.
+[The foe Sola: Defense Curl=0, Splash=0, Pound=45, Foresight=4]
+[Prefer Pound]
+[No Z-Move.]
+[The foe Sola lost 7 HP, now has 0 HP]
+==============================
+Battle Start!
+205 - Haden
+==============================
+***Round 1***
+Player Pokemon Ozzie is faster than Purrloin.
+Scratch: initial score: 13
+Scratch: final score: 13
+ 
+Growl: initial score: 10
+Growl: final score: 0
+ 
+Beginning AI Item use check.
+ 
+Highest item score: -10000
+Highest move score: 13
+Item use turned off.
+[The foe Purrloin: Scratch=13, Growl=0]
+[Prefer Scratch]
+[No Z-Move.]
+[The foe Purrloin lost 4 HP, now has 15 HP]
+[Ozzie lost 3 HP, now has 20 HP]
+***Round 2***
+Player Pokemon Ozzie is faster than Purrloin.
+Scratch: initial score: 15
+Scratch: final score: 15
+ 
+Growl: initial score: 10
+Growl: final score: 0
+ 
+Beginning AI Item use check.
+ 
+Highest item score: -10000
+Highest move score: 15
+Item use turned off.
+[The foe Purrloin: Scratch=15, Growl=0]
+[Prefer Scratch]
+[No Z-Move.]
+[The foe Purrloin lost 8 HP, now has 7 HP]
+[Ozzie lost 2 HP, now has 18 HP]
+***Round 3***
+Player Pokemon Ozzie is faster than Purrloin.
+Scratch: initial score: 16
+Scratch: final score: 16
+ 
+Growl: initial score: 10
+Growl: final score: 0
+ 
+Beginning AI Item use check.
+ 
+Highest item score: -10000
+Highest move score: 16
+Item use turned off.
+[The foe Purrloin: Scratch=16, Growl=0]
+[Prefer Scratch]
+[No Z-Move.]
+[The foe Purrloin lost 7 HP, now has 0 HP]
+==============================
+Battle Start!
+Wild Battle
+==============================
+***Round 1***
+==============================
+Battle Start!
+Wild Battle
+==============================
+***Round 1***
+==============================
+Battle Start!
+Wild Battle
+==============================
+***Round 1***
+==============================
+Battle Start!
+Wild Battle
+==============================
+***Round 1***
+==============================
+Battle Start!
+Wild Battle
+==============================
+***Round 1***
+==============================
+Battle Start!
+Wild Battle
+==============================
+***Round 1***
+[The wild Meowth: Fake Out=200, Scratch=100, Growl=100]
+If this battle is not wild, something has gone wrong in scoring moves (no preference chosen).
+***Round 2***
+==============================
+Battle Start!
+9 - Belle
+==============================
+***Round 1***
+Player Pokemon Ozzie is faster than Lillipup.
+Leer: initial score: 10
+Leer: final score: 14
+ 
+Tackle: initial score: 20
+Tackle: final score: 20
+ 
+Odor Sleuth: initial score: 5
+Odor Sleuth: final score: 5
+ 
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (0)
+Initial switchscore building: Healing (0)
+Initial switchscore building: fsteak (0)
+Initial switchscore building: Specific Switches (0)
+Initial switchscore building: Typing (0)
+Lillipup: initial switchscore: 0
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+Lillipup: initial noswitchscore: 66
+ 
+{
+ 
+}
+ 
+Lillipup: highest move score: 20
+Lillipup: final switching score: -133
+20 > -133, will not switch
+ 
+Beginning AI Item use check.
+ 
+Highest item score: -10000
+Highest move score: 20
+Item use turned off.
+[The foe Lillipup: Leer=14, Tackle=20, Odor Sleuth=5]
+[Prefer Tackle]
+[No Z-Move.]
+[The foe Lillipup lost 8 HP, now has 12 HP]
+[Ozzie lost 5 HP, now has 20 HP]
+***Round 2***
+Player Pokemon Ozzie is faster than Lillipup.
+Leer: initial score: 10
+Leer: final score: 14
+ 
+Tackle: initial score: 25
+Tackle: final score: 25
+ 
+Odor Sleuth: initial score: 5
+Odor Sleuth: final score: 5
+ 
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (0)
+Initial switchscore building: Healing (15)
+Initial switchscore building: fsteak (15)
+Initial switchscore building: Specific Switches (7)
+Initial switchscore building: Typing (7)
+Lillipup: initial switchscore: 7
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+Lillipup: initial noswitchscore: 50
+ 
+{
+ 
+}
+ 
+Lillipup: highest move score: 25
+Lillipup: final switching score: -121
+25 > -121, will not switch
+ 
+Beginning AI Item use check.
+ 
+Highest item score: -10000
+Highest move score: 25
+Item use turned off.
+[The foe Lillipup: Leer=14, Tackle=25, Odor Sleuth=5]
+[Prefer Tackle]
+[No Z-Move.]
+[The foe Lillipup lost 8 HP, now has 4 HP]
+[Ozzie lost 5 HP, now has 15 HP]
+***Round 3***
+Player Pokemon Ozzie is faster than Lillipup.
+Leer: initial score: 10
+Leer: final score: 8
+ 
+Tackle: initial score: 33
+Tackle: final score: 19
+ 
+Odor Sleuth: initial score: 5
+Odor Sleuth: final score: 5
+ 
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (-100)
+Initial switchscore building: Healing (-70)
+Initial switchscore building: fsteak (-70)
+Initial switchscore building: Specific Switches (-35)
+Initial switchscore building: Typing (-35)
+Lillipup: initial switchscore: -35
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+Lillipup: initial noswitchscore: 33
+ 
+{
+ 
+}
+ 
+Lillipup: highest move score: 19
+Lillipup: final switching score: -134
+19 > -134, will not switch
+ 
+Beginning AI Item use check.
+ 
+Highest item score: -10000
+Highest move score: 19
+Item use turned off.
+[The foe Lillipup: Leer=8, Tackle=19, Odor Sleuth=5]
+[Prefer Tackle]
+[No Z-Move.]
+[The foe Lillipup lost 4 HP, now has 0 HP]
+***Round 4***
+Player Pokemon Ozzie is faster than Shinx.
+Tackle: initial score: 16
+Tackle: final score: 16
+ 
+Thunder Shock: initial score: 5
+Thunder Shock: final score: 0
+ 
+Leer: initial score: 10
+Leer: final score: 7
+ 
+Beginning AI Item use check.
+ 
+Highest item score: -10000
+Highest move score: 16
+Item use turned off.
+[The foe Shinx: Tackle=16, Thunder Shock=0, Leer=7]
+[Prefer Tackle]
+[No Z-Move.]
+[The foe Shinx lost 7 HP, now has 13 HP]
+[Ozzie lost 3 HP, now has 15 HP]
+***Round 5***
+Player Pokemon Ozzie is faster than Shinx.
+Tackle: initial score: 20
+Tackle: final score: 20
+ 
+Thunder Shock: initial score: 6
+Thunder Shock: final score: 0
+ 
+Leer: initial score: 10
+Leer: final score: 7
+ 
+Beginning AI Item use check.
+ 
+Highest item score: -10000
+Highest move score: 20
+Item use turned off.
+[The foe Shinx: Tackle=20, Thunder Shock=0, Leer=7]
+[Prefer Tackle]
+[No Z-Move.]
+[The foe Shinx lost 3 HP, now has 10 HP]
+[Ozzie lost 3 HP, now has 12 HP]
+***Round 6***
+Player Pokemon Ozzie is faster than Shinx.
+Tackle: initial score: 25
+Tackle: final score: 25
+ 
+Thunder Shock: initial score: 8
+Thunder Shock: final score: 0
+ 
+Leer: initial score: 10
+Leer: final score: 7
+ 
+Beginning AI Item use check.
+ 
+Highest item score: -10000
+Highest move score: 25
+Item use turned off.
+[The foe Shinx: Tackle=25, Thunder Shock=0, Leer=7]
+[Prefer Tackle]
+[No Z-Move.]
+[The foe Shinx lost 10 HP, now has 0 HP]
+==============================
+Battle Start!
+44 - Sam
+==============================
+***Round 1***
+Player Pokemon Ozzie is faster than Zubat.
+Absorb: initial score: 33
+Absorb: final score: 33
+ 
+Supersonic: initial score: 10
+Supersonic: final score: 7
+ 
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (0)
+Initial switchscore building: Healing (0)
+Initial switchscore building: fsteak (0)
+Initial switchscore building: Specific Switches (0)
+Initial switchscore building: Typing (0)
+Zubat: initial switchscore: -40
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+Zubat: initial noswitchscore: 66
+ 
+{
+ 
+}
+ 
+Zubat: highest move score: 33
+Zubat: final switching score: -53
+33 > -53, will not switch
+ 
+Beginning AI Item use check.
+ 
+Highest item score: -10000
+Highest move score: 33
+Item use turned off.
+[The foe Zubat: Absorb=33, Supersonic=7]
+[Prefer Absorb]
+[No Z-Move.]
+[The foe Zubat lost 5 HP, now has 16 HP]
+[Ozzie lost 5 HP, now has 10 HP]
+[The foe Zubat gained 3 HP, now has 19 HP]
+***Round 2***
+Player Pokemon Ozzie is faster than Zubat.
+Absorb: initial score: 50
+Absorb: final score: 54
+ 
+Supersonic: initial score: 10
+Supersonic: final score: 7
+ 
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (0)
+Initial switchscore building: Healing (0)
+Initial switchscore building: fsteak (0)
+Initial switchscore building: Specific Switches (0)
+Initial switchscore building: Typing (0)
+Zubat: initial switchscore: -40
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+Zubat: initial noswitchscore: 50
+ 
+{
+ 
+}
+ 
+Zubat: highest move score: 54
+Zubat: final switching score: -45
+54 > -45, will not switch
+ 
+Beginning AI Item use check.
+ 
+Highest item score: -10000
+Highest move score: 54
+Item use turned off.
+[The foe Zubat: Absorb=54, Supersonic=7]
+[Prefer Absorb]
+[No Z-Move.]
+[The foe Zubat lost 5 HP, now has 14 HP]
+[Ozzie lost 5 HP, now has 5 HP]
+[The foe Zubat gained 3 HP, now has 17 HP]
+***Round 3***
+Player Pokemon Ozzie is faster than Zubat.
+Absorb: initial score: 100
+Absorb: final score: 123
+ 
+Supersonic: initial score: 10
+Supersonic: final score: 1
+ 
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (0)
+Initial switchscore building: Healing (0)
+Initial switchscore building: fsteak (0)
+Initial switchscore building: Specific Switches (0)
+Initial switchscore building: Typing (0)
+Zubat: initial switchscore: -40
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+Zubat: initial noswitchscore: 33
+ 
+{
+ 
+}
+ 
+Zubat: highest move score: 123
+Zubat: final switching score: -36
+123 > -36, will not switch
+ 
+Beginning AI Item use check.
+ 
+Highest item score: -10000
+Highest move score: 123
+Item use turned off.
+[The foe Zubat: Absorb=123, Supersonic=1]
+[Prefer Absorb]
+[No Z-Move.]
+[The foe Zubat lost 5 HP, now has 12 HP]
+[Ozzie lost 5 HP, now has 0 HP]
+[The foe Zubat gained 3 HP, now has 15 HP]
+==============================
+Battle Start!
+Wild Battle
+==============================
+***Round 1***
+==============================
+Battle Start!
+Wild Battle
+==============================
+***Round 1***
+==============================
+Battle Start!
+Wild Battle
+==============================
+***Round 1***
+[The wild Seel: Headbutt=200, Growl=100, Aqua Ring=100]
+If this battle is not wild, something has gone wrong in scoring moves (no preference chosen).
+[The wild Seel lost 12 HP, now has 10 HP]
+[Ozzie lost 2 HP, now has 29 HP]
+***Round 2***
+[The wild Seel: Headbutt=200, Growl=100, Aqua Ring=100]
+If this battle is not wild, something has gone wrong in scoring moves (no preference chosen).
+[Ozzie lost 4 HP, now has 25 HP]
+***Round 3***

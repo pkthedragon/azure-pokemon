@@ -478,8 +478,11 @@ CHEWTLE,7,12
 CHEWTLE,7,12
 CHEWTLE,7,12
 SuperRod
-FINNEON,6,9
-GOLDEEN,7,10
+FEEBAS,7,12
+FEEBAS,7,12
+CHEWTLE,7,12
+CHEWTLE,7,12
+CHEWTLE,7,12
 HeadbuttHigh
 NOIBAT,7,12
 NOIBAT,7,12
@@ -960,7 +963,7 @@ CORSOLA,30,35
 CORSOLA,30,35
 CORSOLA,30,35
 #########################
-#Seashore Shrine
+138 #Seashore Shrine
 Cave
 UNOWN,10,15
 UNOWN,10,15
@@ -975,7 +978,7 @@ UNOWN,10,15
 UNOWN,10,15
 UNOWN,10,15
 #########################
-#Logium Port
+054 #Logium Port
 14,3,5
 SuperRod
 FEEBAS,20,25
