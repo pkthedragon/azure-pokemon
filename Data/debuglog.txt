@@ -3457,3 +3457,376 @@ If this battle is not wild, something has gone wrong in scoring moves (no prefer
 If this battle is not wild, something has gone wrong in scoring moves (no preference chosen).
 [Ozzie lost 4 HP, now has 25 HP]
 ***Round 3***
+==============================
+Battle Start!
+Wild Battle
+==============================
+***Round 1***
+==============================
+Battle Start!
+Wild Battle
+==============================
+***Round 1***
+[The wild Seel: Headbutt=100, Growl=200, Aqua Ring=100]
+If this battle is not wild, something has gone wrong in scoring moves (no preference chosen).
+[The wild Seel lost 13 HP, now has 9 HP]
+[The wild Seel gained 1 HP, now has 10 HP]
+***Round 2***
+[The wild Seel: Headbutt=200, Growl=100, Aqua Ring=100]
+If this battle is not wild, something has gone wrong in scoring moves (no preference chosen).
+[The wild Seel lost 4 HP, now has 6 HP]
+[The wild Seel gained 1 HP, now has 7 HP]
+***Round 3***
+[The wild Seel: Headbutt=200, Growl=100, Aqua Ring=100]
+If this battle is not wild, something has gone wrong in scoring moves (no preference chosen).
+[The wild Seel lost 4 HP, now has 3 HP]
+[Ozzie lost 4 HP, now has 27 HP]
+[The wild Seel gained 1 HP, now has 4 HP]
+***Round 4***
+[The wild Seel: Headbutt=100, Growl=200, Aqua Ring=100]
+If this battle is not wild, something has gone wrong in scoring moves (no preference chosen).
+[Ozzie lost 4 HP, now has 23 HP]
+[The wild Seel gained 1 HP, now has 5 HP]
+***Round 5***
+==============================
+Battle Start!
+Wild Battle
+==============================
+***Round 1***
+==============================
+Battle Start!
+Wild Battle
+==============================
+***Round 1***
+[The wild Seel: Headbutt=200, Growl=100, Aqua Ring=100]
+If this battle is not wild, something has gone wrong in scoring moves (no preference chosen).
+[Ozzie lost 4 HP, now has 27 HP]
+[The wild Seel lost 12 HP, now has 10 HP]
+***Round 2***
+[The wild Seel: Headbutt=100, Growl=200, Aqua Ring=100]
+If this battle is not wild, something has gone wrong in scoring moves (no preference chosen).
+[The wild Seel lost 3 HP, now has 7 HP]
+***Round 3***
+[The wild Seel: Headbutt=200, Growl=100, Aqua Ring=100]
+If this battle is not wild, something has gone wrong in scoring moves (no preference chosen).
+[Ozzie lost 4 HP, now has 23 HP]
+[The wild Seel lost 3 HP, now has 4 HP]
+***Round 4***
+[The wild Seel: Headbutt=100, Growl=200, Aqua Ring=100]
+If this battle is not wild, something has gone wrong in scoring moves (no preference chosen).
+***Round 5***
+==============================
+Battle Start!
+Wild Battle
+==============================
+***Round 1***
+[The wild Seel: Headbutt=100, Growl=200, Aqua Ring=100]
+If this battle is not wild, something has gone wrong in scoring moves (no preference chosen).
+[The wild Seel lost 12 HP, now has 10 HP]
+***Round 2***
+[The wild Seel: Headbutt=100, Growl=200, Aqua Ring=100]
+If this battle is not wild, something has gone wrong in scoring moves (no preference chosen).
+[The wild Seel lost 3 HP, now has 7 HP]
+[The wild Seel gained 1 HP, now has 8 HP]
+***Round 3***
+[The wild Seel: Headbutt=100, Growl=200, Aqua Ring=100]
+If this battle is not wild, something has gone wrong in scoring moves (no preference chosen).
+[The wild Seel lost 3 HP, now has 5 HP]
+[The wild Seel gained 1 HP, now has 6 HP]
+***Round 4***
+[The wild Seel: Headbutt=200, Growl=100, Aqua Ring=100]
+If this battle is not wild, something has gone wrong in scoring moves (no preference chosen).
+[Ozzie lost 4 HP, now has 27 HP]
+[The wild Seel gained 1 HP, now has 7 HP]
+***Round 5***
+[The wild Seel: Headbutt=200, Growl=100, Aqua Ring=100]
+If this battle is not wild, something has gone wrong in scoring moves (no preference chosen).
+[Ozzie lost 4 HP, now has 23 HP]
+[The wild Seel gained 1 HP, now has 8 HP]
+***Round 6***
+[The wild Seel: Headbutt=200, Growl=100, Aqua Ring=100]
+If this battle is not wild, something has gone wrong in scoring moves (no preference chosen).
+[Ozzie lost 2 HP, now has 21 HP]
+[The wild Seel lost 8 HP, now has 0 HP]
+==============================
+Battle Start!
+Wild Battle
+==============================
+***Round 1***
+[The wild Seel: Headbutt=200, Growl=100, Aqua Ring=100]
+If this battle is not wild, something has gone wrong in scoring moves (no preference chosen).
+***Round 2***
+[The wild Seel: Headbutt=100, Growl=200, Aqua Ring=100]
+If this battle is not wild, something has gone wrong in scoring moves (no preference chosen).
+[The wild Seel lost 13 HP, now has 9 HP]
+[The wild Seel gained 1 HP, now has 10 HP]
+***Round 3***
+[The wild Seel: Headbutt=200, Growl=100, Aqua Ring=100]
+If this battle is not wild, something has gone wrong in scoring moves (no preference chosen).
+[The wild Seel lost 3 HP, now has 7 HP]
+[The wild Seel gained 1 HP, now has 8 HP]
+***Round 4***
+==============================
+Battle Start!
+Wild Battle
+==============================
+***Round 1***
+[The wild Seel: Headbutt=200, Growl=100, Aqua Ring=100]
+If this battle is not wild, something has gone wrong in scoring moves (no preference chosen).
+[Ozzie lost 4 HP, now has 27 HP]
+[The wild Seel lost 12 HP, now has 10 HP]
+***Round 2***
+[The wild Seel: Headbutt=200, Growl=100, Aqua Ring=100]
+If this battle is not wild, something has gone wrong in scoring moves (no preference chosen).
+[The wild Seel lost 3 HP, now has 7 HP]
+***Round 3***
+[The wild Seel: Headbutt=200, Growl=100, Aqua Ring=100]
+If this battle is not wild, something has gone wrong in scoring moves (no preference chosen).
+[Ozzie lost 4 HP, now has 23 HP]
+[The wild Seel lost 3 HP, now has 4 HP]
+***Round 4***
+[The wild Seel: Headbutt=100, Growl=200, Aqua Ring=100]
+If this battle is not wild, something has gone wrong in scoring moves (no preference chosen).
+==============================
+Battle Start!
+Wild Battle
+==============================
+***Round 1***
+[The wild Seel: Headbutt=200, Growl=100, Aqua Ring=100]
+If this battle is not wild, something has gone wrong in scoring moves (no preference chosen).
+[The wild Seel lost 12 HP, now has 10 HP]
+[The wild Seel gained 1 HP, now has 11 HP]
+***Round 2***
+[The wild Seel: Headbutt=100, Growl=200, Aqua Ring=100]
+If this battle is not wild, something has gone wrong in scoring moves (no preference chosen).
+[The wild Seel lost 4 HP, now has 7 HP]
+[The wild Seel gained 1 HP, now has 8 HP]
+***Round 3***
+[The wild Seel: Headbutt=200, Growl=100, Aqua Ring=100]
+If this battle is not wild, something has gone wrong in scoring moves (no preference chosen).
+[The wild Seel lost 4 HP, now has 4 HP]
+[ Ozzie lost 4 HP, now has 27 HP]
+[The wild Seel gained 1 HP, now has 5 HP]
+***Round 4***
+[The wild Seel: Headbutt=100, Growl=200, Aqua Ring=100]
+If this battle is not wild, something has gone wrong in scoring moves (no preference chosen).
+[The wild Seel gained 1 HP, now has 6 HP]
+***Round 5***
+==============================
+Battle Start!
+Wild Battle
+==============================
+***Round 1***
+[The wild Seel: Headbutt=200, Growl=100, Aqua Ring=100]
+If this battle is not wild, something has gone wrong in scoring moves (no preference chosen).
+[The wild Seel lost 12 HP, now has 10 HP]
+[Ozzie lost 4 HP, now has 27 HP]
+***Round 2***
+[The wild Seel: Headbutt=100, Growl=200, Aqua Ring=100]
+If this battle is not wild, something has gone wrong in scoring moves (no preference chosen).
+[The wild Seel lost 4 HP, now has 6 HP]
+[Ozzie lost 4 HP, now has 23 HP]
+***Round 3***
+[The wild Seel: Headbutt=100, Growl=200, Aqua Ring=100]
+If this battle is not wild, something has gone wrong in scoring moves (no preference chosen).
+[The wild Seel lost 4 HP, now has 2 HP]
+[Ozzie lost 4 HP, now has 19 HP]
+***Round 4***
+[pbRegisterItem called with idxPokemon=0, idxItem=1, idxTarget=1]
+[Item does NOT have UseInBattle handler]
+[Registering choice for Pokemon 0]
+[The wild Seel: Headbutt=100, Growl=200, Aqua Ring=100]
+If this battle is not wild, something has gone wrong in scoring moves (no preference chosen).
+***Round 5***
+[The wild Seel: Headbutt=100, Growl=200, Aqua Ring=100]
+If this battle is not wild, something has gone wrong in scoring moves (no preference chosen).
+[The wild Seel lost 2 HP, now has 0 HP]
+==============================
+Battle Start!
+Wild Battle
+==============================
+***Round 1***
+[The wild Seel: Headbutt=200, Growl=100, Aqua Ring=100]
+If this battle is not wild, something has gone wrong in scoring moves (no preference chosen).
+[The wild Seel lost 12 HP, now has 10 HP]
+[The wild Seel gained 1 HP, now has 11 HP]
+***Round 2***
+[The wild Seel: Headbutt=200, Growl=100, Aqua Ring=100]
+If this battle is not wild, something has gone wrong in scoring moves (no preference chosen).
+[The wild Seel lost 4 HP, now has 7 HP]
+[The wild Seel gained 1 HP, now has 8 HP]
+***Round 3***
+[The wild Seel: Headbutt=200, Growl=100, Aqua Ring=100]
+If this battle is not wild, something has gone wrong in scoring moves (no preference chosen).
+[The wild Seel lost 3 HP, now has 5 HP]
+[Ozzie lost 4 HP, now has 27 HP]
+[The wild Seel gained 1 HP, now has 6 HP]
+***Round 4***
+[The wild Seel: Headbutt=200, Growl=100, Aqua Ring=100]
+If this battle is not wild, something has gone wrong in scoring moves (no preference chosen).
+[The wild Seel lost 3 HP, now has 3 HP]
+[Ozzie lost 4 HP, now has 23 HP]
+[The wild Seel gained 1 HP, now has 4 HP]
+***Round 5***
+[User selected 'Poké Balls' submenu]
+[pbRegisterItem called with idxPokemon=0, idxItem=1, idxTarget=1]
+[Item does NOT have UseInBattle handler]
+[Registering choice for Pokemon 0]
+[The wild Seel: Headbutt=200, Growl=100, Aqua Ring=100]
+If this battle is not wild, something has gone wrong in scoring moves (no preference chosen).
+[The wild Seel gained 1 HP, now has 5 HP]
+***Round 6***
+[pbItemMenu returning ret=0, retindex=-1]
+[The wild Seel: Headbutt=100, Growl=200, Aqua Ring=100]
+If this battle is not wild, something has gone wrong in scoring moves (no preference chosen).
+[The wild Seel lost 5 HP, now has 0 HP]
+==============================
+Battle Start!
+Wild Battle
+==============================
+***Round 1***
+[The wild Seel: Headbutt=100, Growl=200, Aqua Ring=100]
+If this battle is not wild, something has gone wrong in scoring moves (no preference chosen).
+[The wild Seel lost 13 HP, now has 9 HP]
+[The wild Seel gained 1 HP, now has 10 HP]
+***Round 2***
+[The wild Seel: Headbutt=200, Growl=100, Aqua Ring=100]
+If this battle is not wild, something has gone wrong in scoring moves (no preference chosen).
+[The wild Seel lost 4 HP, now has 6 HP]
+[The wild Seel gained 1 HP, now has 7 HP]
+***Round 3***
+[The wild Seel: Headbutt=200, Growl=100, Aqua Ring=100]
+If this battle is not wild, something has gone wrong in scoring moves (no preference chosen).
+[The wild Seel lost 3 HP, now has 4 HP]
+[The wild Seel gained 1 HP, now has 5 HP]
+***Round 4***
+[User selected 'Poké Balls' submenu]
+[pickBallFromBag proc called]
+[Found 1 pokeballs in bag]
+[Showing ball selection menu with 1 balls]
+[User selected choice c=0, balls.length=1]
+[Returning ball=267 (Poké Ball)]
+[pbRegisterItem called with idxPokemon=0, idxItem=1, idxTarget=1]
+[Item does NOT have UseInBattle handler]
+[Registering choice for Pokemon 0]
+[The wild Seel: Headbutt=100, Growl=200, Aqua Ring=100]
+If this battle is not wild, something has gone wrong in scoring moves (no preference chosen).
+[The wild Seel gained 1 HP, now has 6 HP]
+***Round 5***
+[pbItemMenu returning ret=0, retindex=-1]
+[The wild Seel: Headbutt=100, Growl=200, Aqua Ring=100]
+If this battle is not wild, something has gone wrong in scoring moves (no preference chosen).
+[The wild Seel lost 6 HP, now has 0 HP]
+==============================
+Battle Start!
+Wild Battle
+==============================
+***Round 1***
+[The wild Seel: Headbutt=200, Growl=100, Aqua Ring=100]
+If this battle is not wild, something has gone wrong in scoring moves (no preference chosen).
+[The wild Seel lost 13 HP, now has 9 HP]
+[Ozzie lost 2 HP, now has 29 HP]
+***Round 2***
+[The wild Seel: Headbutt=100, Growl=200, Aqua Ring=100]
+If this battle is not wild, something has gone wrong in scoring moves (no preference chosen).
+[The wild Seel lost 4 HP, now has 5 HP]
+[Ozzie lost 4 HP, now has 25 HP]
+***Round 3***
+[User selected 'Poké Balls' submenu, about to call pickBallFromBag]
+[pickBallFromBag proc called]
+[Found 1 pokeballs in bag]
+[Showing ball selection menu with 1 balls]
+[User selected choice c=0, balls.length=1]
+[Returning ball=267 (Poké Ball)]
+[pbRegisterItem called with idxPokemon=0, idxItem=1, idxTarget=1]
+[Item does NOT have UseInBattle handler]
+[Registering choice for Pokemon 0]
+[The wild Seel: Headbutt=100, Growl=200, Aqua Ring=100]
+If this battle is not wild, something has gone wrong in scoring moves (no preference chosen).
+***Round 4***
+[The wild Seel: Headbutt=200, Growl=100, Aqua Ring=100]
+If this battle is not wild, something has gone wrong in scoring moves (no preference chosen).
+[The wild Seel lost 5 HP, now has 0 HP]
+==============================
+Battle Start!
+Wild Battle
+==============================
+***Round 1***
+[pbItemMenu called with index=0]
+[pbItemMenu initial: ret=0, retindex=-1]
+[pbItemMenu entering loop]
+[pbItemMenu loop iteration start, ret=0, retindex=-1]
+[pbItemMenu showing main menu with 0 items]
+[pbItemMenu user selected choice=0, belt_items.length=0]
+[User selected 'Poké Balls' submenu, about to call pickBallFromBag]
+[pickBallFromBag proc called]
+[Found 1 pokeballs in bag]
+[Showing ball selection menu with 1 balls]
+[User selected choice c=0, balls.length=1]
+[Returning ball=267 (Poké Ball)]
+[pbRegisterItem called with idxPokemon=0, idxItem=1, idxTarget=1]
+[Item does NOT have UseInBattle handler]
+[Registering choice for Pokemon 0]
+[The wild Seel: Headbutt=200, Growl=100, Aqua Ring=100]
+If this battle is not wild, something has gone wrong in scoring moves (no preference chosen).
+[Ozzie lost 4 HP, now has 27 HP]
+***Round 2***
+==============================
+Battle Start!
+Wild Battle
+==============================
+***Round 1***
+[The wild Seel: Headbutt=100, Growl=200, Aqua Ring=100]
+If this battle is not wild, something has gone wrong in scoring moves (no preference chosen).
+[The wild Seel lost 12 HP, now has 10 HP]
+[The wild Seel gained 1 HP, now has 11 HP]
+***Round 2***
+[The wild Seel: Headbutt=200, Growl=100, Aqua Ring=100]
+If this battle is not wild, something has gone wrong in scoring moves (no preference chosen).
+[The wild Seel lost 4 HP, now has 7 HP]
+[Ozzie lost 4 HP, now has 27 HP]
+[The wild Seel gained 1 HP, now has 8 HP]
+***Round 3***
+[The wild Seel: Headbutt=200, Growl=100, Aqua Ring=100]
+If this battle is not wild, something has gone wrong in scoring moves (no preference chosen).
+[The wild Seel lost 4 HP, now has 4 HP]
+[The wild Seel gained 1 HP, now has 5 HP]
+***Round 4***
+[pbItemMenu called with index=0]
+[pbItemMenu initial: ret=0, retindex=-1]
+[pbItemMenu entering loop]
+[pbItemMenu loop iteration start, ret=0, retindex=-1]
+[Found 1 pokeballs for menu]
+[pbItemMenu showing menu with 0 belt items and 1 balls]
+[pbItemMenu user selected choice=0, total_items=1]
+[User selected item choice=0, item=267 (Poké Ball)]
+[Item usetype=2]
+[Item is pokeball from belt, setting ret=267, retindex=0]
+[pbItemMenu exited loop, ret=267, retindex=0]
+[Not consuming pokeball 267]
+[pbItemMenu returning ret=267, retindex=0]
+[Item name: Poké Ball, isPokeBall: true]
+[pbRegisterItem called with idxPokemon=0, idxItem=267, idxTarget=0]
+[Item has UseInBattle handler]
+[BattleUseOnBattler returned true, calling UseInBattle]
+[UseInBattle handler called for pokeball 267, battler.index=0]
+[pbThrowPokeBall called with idxPokemon=0, ball=267]
+[Registering choice for Pokemon 0]
+==============================
+Battle Start!
+Wild Battle
+==============================
+***Round 1***
+[The wild Unown: Hidden Power=200]
+If this battle is not wild, something has gone wrong in scoring moves (no preference chosen).
+[Ozzie lost 27 HP, now has 4 HP]
+***Round 2***
+[The wild Unown: Hidden Power=200]
+If this battle is not wild, something has gone wrong in scoring moves (no preference chosen).
+[Ozzie lost 4 HP, now has 0 HP]
+***Round 3***
+==============================
+Battle Start!
+Wild Battle
+==============================
+***Round 1***

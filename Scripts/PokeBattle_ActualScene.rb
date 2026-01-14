@@ -3609,67 +3609,71 @@ class PokeBattle_Scene
 # Use this method to display the inventory
 # The return value is the item chosen, or 0 if the choice was canceled.
 def pbItemMenu(index)
+  PBDebug.log("[pbItemMenu called with index=#{index}]")
   ret=0
   retindex=-1
   pkmnid=-1
   belt_items=pbBattleBeltItems
-  pickBallFromBag = proc do
-    return 0 if !$PokemonBag
+  PBDebug.log("[pbItemMenu initial: ret=#{ret}, retindex=#{retindex}]")
+
+  # Helper to get pokeballs from bag
+  getBallsFromBag = proc do
     balls = []
-    # Scan all pockets for Poké Balls (simple + compatible with your bag structure)
-    for pocket in $PokemonBag.pockets
-      next if !pocket
-      for slot in pocket
-        next if !slot
-        itm = slot[0]
-        qty = slot[1]
-        next if !itm || qty.to_i <= 0
-        next if !pbIsPokeBall?(itm)
-        balls << itm
+    if $PokemonBag
+      for pocket in $PokemonBag.pockets
+        next if !pocket
+        for slot in pocket
+          next if !slot
+          itm = slot[0]
+          qty = slot[1]
+          next if !itm || qty.to_i <= 0
+          next if !pbIsPokeBall?(itm)
+          balls << itm
+        end
       end
+      balls.uniq!
     end
-    balls.uniq!
-    return 0 if balls.empty?
-    cmds = balls.map { |itm| _INTL("{1} (x{2})", PBItems.getName(itm), $PokemonBag.pbQuantity(itm)) }
-    cmds << _INTL("Cancel")
-    c = pbShowCommands(_INTL("Choose a Poké Ball."), cmds, cmds.length - 1)
-    return 0 if c < 0 || c >= balls.length
-    return balls[c]
+    balls
   end
 #  if belt_items.empty?
 #    pbDisplayMessage(_INTL("No belt items are available!"))
 #    pbFadeInAndShow(@sprites,oldsprites)
 #    return [ret,retindex]
 #  end
+  PBDebug.log("[pbItemMenu entering loop]")
   loop do
+    PBDebug.log("[pbItemMenu loop iteration start, ret=#{ret}, retindex=#{retindex}]")
     belt_items=pbBattleBeltItems
-#    if belt_items.empty?
-#      pbDisplayMessage(_INTL("No belt items are available!"))
-#      break
-#    end
+
+	# Build commands list with belt items and pokeballs
 	commands = belt_items.map { |itm| _INTL("{1} (x{2})", PBItems.getName(itm), $PokemonBag.pbQuantity(itm)) }
-	commands << _INTL("Poké Balls")
+	item_mapping = belt_items.dup
+
+	# Add pokeballs directly to the menu
+	balls = getBallsFromBag.call
+	PBDebug.log("[Found #{balls.length} pokeballs for menu]")
+	for ball in balls
+	  commands << _INTL("{1} (x{2})", PBItems.getName(ball), $PokemonBag.pbQuantity(ball))
+	  item_mapping << ball
+	end
+
 	commands << _INTL("Cancel")
+	PBDebug.log("[pbItemMenu showing menu with #{belt_items.length} belt items and #{balls.length} balls]")
 	choice = pbShowCommands(_INTL("Choose an item."), commands, commands.length - 1)
-	# "Poké Balls" entry
-	if choice == belt_items.length
-		ball = pickBallFromBag.call
-		next if ball == 0
-		if $game_switches[1493] && (@battle.opponent || @battle.isBossBattle?)
-			pbDisplayMessage(_INTL("You can't use items."))
-			next
-		end
-		if ItemHandlers.hasBattleUseOnBattler(ball)
-			ret = ball
-			retindex = index
-			break
-		end
-		next
-	end	
-    break if choice<0 || choice>=belt_items.length
-    item=belt_items[choice]
+	PBDebug.log("[pbItemMenu user selected choice=#{choice}, total_items=#{item_mapping.length}]")
+
+	# Check if cancel was selected
+    if choice<0 || choice>=item_mapping.length
+      PBDebug.log("[Choice is cancel or invalid (#{choice}), breaking]")
+      break
+    end
+
+	# Get the selected item
+    item=item_mapping[choice]
+    PBDebug.log("[User selected item choice=#{choice}, item=#{item} (#{PBItems.getName(item)})]")
     next if $PokemonBag.pbQuantity(item)<=0
     usetype=$ItemData[item][ITEMBATTLEUSE]
+    PBDebug.log("[Item usetype=#{usetype}]")
     next if usetype==0
     if (usetype==1 || usetype==3)
       if (($game_variables[:Difficulty_Mode]==2) && @battle.opponent) && $game_switches[1493]
@@ -3706,20 +3710,26 @@ def pbItemMenu(index)
         end
       end
 	  if pbIsPokeBall?(item)
+		PBDebug.log("[Item is pokeball from belt, setting ret=#{item}, retindex=#{index}]")
 		ret = item
 		retindex = index
         break
       end
 	  if ItemHandlers.hasBattleUseOnBattler(item)
+		PBDebug.log("[Item has BattleUseOnBattler, setting ret=#{item}, retindex=#{index}]")
 		ret = item
 		retindex = index
 		break
-	  end	  
+	  end
     end
   end
+  PBDebug.log("[pbItemMenu exited loop, ret=#{ret}, retindex=#{retindex}]")
   if ret > 0
     if !pbIsPokeBall?(ret)
+      PBDebug.log("[Consuming non-pokeball item #{ret}]")
       pbConsumeItemInBattle($PokemonBag, ret)
+    else
+      PBDebug.log("[Not consuming pokeball #{ret}]")
     end
     pbCleanupItemBelt
   end
@@ -3727,6 +3737,10 @@ def pbItemMenu(index)
   pbSetMessageMode(false)
   pbShowWindow(BLANK)
   pbSetMessageMode(false)
+  PBDebug.log("[pbItemMenu returning ret=#{ret}, retindex=#{retindex}]")
+  if ret > 0
+    PBDebug.log("[Item name: #{PBItems.getName(ret)}, isPokeBall: #{pbIsPokeBall?(ret)}]")
+  end
   return [ret,retindex]
 end
 

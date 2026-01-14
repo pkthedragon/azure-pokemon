@@ -1,6 +1,6 @@
 #########################
 001 # Logium Shore
-8,7,5
+14,3,5
 SuperRod
 FEEBAS,3,6
 FINNEON,3,6
@@ -65,7 +65,7 @@ BURMY,3,6
 BURMY,3,6
 #########################
 004 # Meadow Temple
-8,7,7
+21,6,7
 Land
 UNOWN,15,20
 UNOWN,15,20
@@ -99,7 +99,7 @@ TANGELA,15,20
 TANGELA,15,20
 #########################
 009 # Connecting Caves
-8,7,4
+21,4,4
 Cave
 ROLYCOLY,5,8
 WOOBAT,5,8
@@ -145,7 +145,7 @@ BURMY,5,8
 BURMY,5,8
 #########################
 018 # Connecting Caves
-8,7,4
+21,4,4
 Cave
 ROLYCOLY,7,12
 WOOBAT,7,12
@@ -191,7 +191,7 @@ BURMY,7,12
 BURMY,7,12
 #########################
 019 # Logium Path
-8,7,7
+21,6,7
 LandDay
 LEDYBA,10,15
 SEEDOT,10,15
@@ -238,7 +238,7 @@ TAROUNTULA,10,15
 TAROUNTULA,10,15
 #########################
 026 # Apolvita Grove
-8,7,7
+21,6,7
 LandDay
 GOSSIFLEUR,10,15
 CUTIEFLY,10,15
@@ -297,15 +297,15 @@ CHEWTLE,10,15
 CHEWTLE,10,15
 #########################
 031 # Underground Ruins
-8,7,4
+21,4,4
 
 #########################
 032 # Underground Ruins
-8,7,4
+21,4,4
 
 #########################
 033 # Underground Forest
-8,7,7
+21,6,7
 SuperRod
 FEEBAS,15,20
 GOLDEEN,15,20
@@ -364,7 +364,7 @@ MANKEY,15,20
 MANKEY,15,20
 #########################
 034 # Underground Forest
-8,7,7
+21,6,7
 SuperRod
 FEEBAS,15,20
 GOLDEEN,15,20
@@ -423,7 +423,7 @@ MANKEY,15,20
 MANKEY,15,20
 #########################
 035 # Meadow Temple
-8,7,7
+21,6,7
 Land
 UNOWN,15,20
 UNOWN,15,20
@@ -457,7 +457,7 @@ TANGELA,15,20
 TANGELA,15,20
 #########################
 044 # Connecting Caves
-8,7,4
+21,4,4
 Cave
 ROLYCOLY,7,12
 WOOBAT,7,12
@@ -503,7 +503,7 @@ BURMY,7,12
 BURMY,7,12
 #########################
 053 # Drowned Catacombs
-8,7,4
+21,4,4
 Cave
 CARBINK,25,30
 SNOM,25,30
@@ -519,7 +519,7 @@ MISDREAVUS,25,30
 MISDREAVUS,25,30
 #########################
 085 # Ranger Encampment
-8,7,4
+21,4,4
 WaterDay
 BUIZEL,20,25
 BUIZEL,20,25
@@ -558,7 +558,7 @@ COMBEE,20,25
 COMBEE,20,25
 #########################
 090 # Calypsan Sanctuary
-8,7,4
+21,4,4
 SuperRod
 KRABBY,20,25
 SHELLOS,20,25
@@ -599,7 +599,7 @@ BINACLE,20,25
 BINACLE,20,25
 #########################
 110 # Drowned Catacombs
-8,7,4
+21,4,4
 Cave
 CARBINK,25,30
 SNOM,25,30
@@ -615,7 +615,7 @@ MISDREAVUS,25,30
 MISDREAVUS,25,30
 #########################
 117 # Koneli City Ruins
-8,7,7
+21,6,7
 LandMorning
 FLOETTE,30,35
 FLOETTE,30,35
@@ -674,7 +674,7 @@ XATU,30,35
 XATU,30,35
 #########################
 121 # Koneli City Ruins
-8,7,7
+21,6,7
 LandMorning
 FLOETTE,30,35
 FLOETTE,30,35
@@ -733,7 +733,7 @@ XATU,30,35
 XATU,30,35
 #########################
 122 # Koneli City Ruins
-8,7,7
+21,6,7
 LandMorning
 FLOETTE,30,35
 FLOETTE,30,35
@@ -792,7 +792,7 @@ XATU,30,35
 XATU,30,35
 #########################
 123 # Koneli Cave
-8,7,4
+21,4,4
 Cave
 GEODUDE,30,35
 DIGLETT,30,35
@@ -808,7 +808,7 @@ MISDREAVUS,30,35
 MISDREAVUS,30,35
 #########################
 124 # Koneli Cave
-8,7,4
+21,4,4
 Cave
 GEODUDE,30,35
 DIGLETT,30,35
@@ -824,7 +824,7 @@ MISDREAVUS,30,35
 MISDREAVUS,30,35
 #########################
 106 # Koneli Manor
-8,7,4
+21,4,4
 Cave
 MISDREAVUS,30,35
 GOTHITA,30,35
@@ -840,7 +840,7 @@ LITWICK,30,35
 LITWICK,30,35
 #########################
 112 # Koneli Manor
-8,7,4
+21,4,4
 Cave
 MISDREAVUS,30,35
 GOTHITA,30,35
@@ -856,7 +856,7 @@ LITWICK,30,35
 LITWICK,30,35
 #########################
 127 # Koneli Manor
-8,7,4
+21,4,4
 Cave
 MISDREAVUS,30,35
 GOTHITA,30,35
@@ -872,7 +872,7 @@ LITWICK,30,35
 LITWICK,30,35
 #########################
 128 # Koneli Manor
-8,7,4
+21,4,4
 Cave
 MISDREAVUS,30,35
 GOTHITA,30,35
@@ -888,7 +888,7 @@ LITWICK,30,35
 LITWICK,30,35
 #########################
 129 # Koneli Manor
-8,7,4
+21,4,4
 Cave
 MISDREAVUS,30,35
 GOTHITA,30,35
@@ -904,7 +904,7 @@ LITWICK,30,35
 LITWICK,30,35
 #########################
 132 # Koneli Laboratory
-8,7,4
+21,4,4
 Cave
 MISDREAVUS,30,35
 MISDREAVUS,30,35
@@ -920,7 +920,7 @@ MISDREAVUS,30,35
 MISDREAVUS,30,35
 #########################
 130 # Spooky Temple
-8,7,4
+21,4,4
 Cave
 UNOWN,30,35
 UNOWN,30,35
@@ -942,7 +942,7 @@ CORSOLA,30,35
 CORSOLA,30,35
 #########################
 113 # Spooky Temple
-8,7,4
+21,4,4
 Cave
 UNOWN,30,35
 UNOWN,30,35
@@ -979,7 +979,7 @@ UNOWN,10,15
 UNOWN,10,15
 #########################
 054 #Logium Port
-8,7,5
+14,3,5
 SuperRod
 FEEBAS,20,25
 FINNEON,20,25

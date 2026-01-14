@@ -4562,6 +4562,7 @@ ItemHandlers::UseInBattle.add(:POKEDOLL,proc{|item,battler,battle|
 ItemHandlers::UseInBattle.copy(:POKEDOLL,:FLUFFYTAIL,:POKETOY)
 
 ItemHandlers::UseInBattle.addIf(proc{|item|
-   pbIsPokeBall?(item)},proc{|item,battler,battle|  # Any Poké Ball 
+   pbIsPokeBall?(item)},proc{|item,battler,battle|  # Any Poké Ball
+      PBDebug.log("[UseInBattle handler called for pokeball #{item}, battler.index=#{battler.index}]")
       battle.pbThrowPokeBall(battler.index,item)
 })

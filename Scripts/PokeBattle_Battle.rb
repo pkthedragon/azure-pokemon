@@ -136,6 +136,7 @@ module PokeBattle_BattleCommon
   end
   
   def pbThrowPokeBall(idxPokemon,ball,rareness=nil,showplayer=false)
+    PBDebug.log("[pbThrowPokeBall called with idxPokemon=#{idxPokemon}, ball=#{ball}]")
     itemname=PBItems.getName(ball)
     battler=nil
     if pbIsOpposing?(idxPokemon)
@@ -190,18 +191,21 @@ module PokeBattle_BattleCommon
         formrarity = MultipleForms.call("catchrate",pokemon)
         if formrarity!=nil
           rareness = formrarity
-        end         
+        end
+        # Check if Pokemon can be caught based on new rules
+        trapped = (battler.effects[PBEffects::MeanLook]>=0 ||
+                   battler.effects[PBEffects::MultiTurn]>0)
+        hasStatus = (battler.status!=0)
+        conditionMet = BallHandlers.isUnconditional?(ball,self,battler)
+
+        # Pokemon can only be caught if trapped, has status, or ball condition met
+        canCatch = (trapped || hasStatus || conditionMet)
+
         a=battler.totalhp
         b=battler.hp
         guaranteed=pbGuaranteedCatch?(ball,battler)
         rareness=BallHandlers.modifyCatchRate(ball,rareness,self,battler)
         x=(((a*3-b*2)*rareness)/(a*3)).floor
-        if battler.status==PBStatuses::SLEEP || battler.status==PBStatuses::FROZEN ||
-           battler.status==PBStatuses::PARALYSIS
-          x=(x*2.5).floor
-        elsif battler.status!=0
-          x=(x*1.5).floor
-        end
         #Critical Capture chances based on caught species'
         c=0
         if $Trainer
@@ -223,24 +227,27 @@ module PokeBattle_BattleCommon
         shakes=0; critical=false; critsuccess=false
         if guaranteed
           shakes=4
+        elsif !canCatch
+          # Pokemon cannot be caught - not trapped, no status, condition not met
+          shakes=0
         else
-          if x>255 || BallHandlers.isUnconditional?(ball,self,battler)
+          if x>255
             shakes=4
           else
             x=1 if x<1
             y = (65536/((255.0/x)**0.1875) ).floor
             if pbRandom(256)<c
               critical=true
-              if pbRandom(65536)<y 
+              if pbRandom(65536)<y
                 critsuccess=true
-                shakes=4 
-              end            
-            else          
+                shakes=4
+              end
+            else
               shakes+=1 if pbRandom(65536)<y
               shakes+=1 if pbRandom(65536)<y
               shakes+=1 if pbRandom(65536)<y
-              shakes+=1 if pbRandom(65536)<y 
-            end        
+              shakes+=1 if pbRandom(65536)<y
+            end
           end
         end
       end
@@ -3352,9 +3359,12 @@ class PokeBattle_Battle
   end
 
   def pbRegisterItem(idxPokemon,idxItem,idxTarget=nil)
+    PBDebug.log("[pbRegisterItem called with idxPokemon=#{idxPokemon}, idxItem=#{idxItem}, idxTarget=#{idxTarget}]")
     if ItemHandlers.hasUseInBattle(idxItem)
+      PBDebug.log("[Item has UseInBattle handler]")
       if idxPokemon==0
-        if ItemHandlers.triggerBattleUseOnBattler(idxItem,@battlers[idxPokemon],self)
+        if ItemHandlers.triggerBattleUseOnBattler(idxItem,@battlers[idxPokemon],@scene)
+          PBDebug.log("[BattleUseOnBattler returned true, calling UseInBattle]")
           ItemHandlers.triggerUseInBattle(idxItem,@battlers[idxPokemon],self)
           if @doublebattle
             @choices[idxPokemon+2][0]=3         # "Use an item"
@@ -3362,26 +3372,31 @@ class PokeBattle_Battle
             @choices[idxPokemon+2][2]=idxTarget # Index of Pokémon to use item on
           end
         else
+          PBDebug.log("[BattleUseOnBattler returned false]")
           return false
         end
       else
-        if ItemHandlers.triggerBattleUseOnBattler(idxItem,@battlers[idxPokemon],self)
+        PBDebug.log("[idxPokemon != 0, cannot use item]")
+        if ItemHandlers.triggerBattleUseOnBattler(idxItem,@battlers[idxPokemon],@scene)
           pbDisplay(_INTL("It's impossible to aim without being focused!"))
         end
         return false
       end
+    else
+      PBDebug.log("[Item does NOT have UseInBattle handler]")
     end
+    PBDebug.log("[Registering choice for Pokemon #{idxPokemon}]")
     @choices[idxPokemon][0]=3         # "Use an item"
     @choices[idxPokemon][1]=idxItem   # ID of item to be used
     @choices[idxPokemon][2]=idxTarget # Index of Pokémon to use item on
     side=(pbIsOpposing?(idxPokemon)) ? 1 : 0
-    owner=pbGetOwnerIndex(idxPokemon)    
+    owner=pbGetOwnerIndex(idxPokemon)
     if @megaEvolution[side][owner]==idxPokemon
       @megaEvolution[side][owner]=-1
     end
     if @zMove[side][owner]==idxPokemon
       @zMove[side][owner]=-1
-    end    
+    end
     return true
   end
 
