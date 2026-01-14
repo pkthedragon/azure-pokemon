@@ -66,6 +66,7 @@ class PokeBattle_Battler
   attr_accessor :obspa 
   attr_accessor :obspd
   # for boss system
+  attr_accessor :isBoss
   attr_accessor :onBreakEffects 
   attr_accessor :onEntryEffects 
   attr_accessor :chargeAttack 
@@ -859,6 +860,7 @@ class PokeBattle_Battler
     @missAcc      = false
     @grazed       = false
     @statLowered  = false
+    @isBoss       = false
   end
   
   def pbInitPermanentEffects
