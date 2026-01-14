@@ -1380,10 +1380,7 @@ class PokeBattle_Move
           typeChange=PBTypes::FIRE  
         end
       when 46 # Beach Field 
-        if (id == PBMoves::OMINOUSWIND || id == PBMoves::SILVERWIND ||
-         id == PBMoves::RAZORWIND || id == PBMoves::ICYWIND ||
-         id == PBMoves::GUST || id == PBMoves::TWISTER ||
-         id == PBMoves::FAIRYWIND)
+        if PBStuff::WINDMOVE.include?(id)
           typemod2=pbTypeModifier(PBTypes::GROUND,attacker,opponent)
           typemod3= ((typemod*typemod2) * 0.25).ceil
           typemod=typemod3
@@ -2285,7 +2282,7 @@ class PokeBattle_Move
         @battle.pbDisplay(_INTL("The attack powered up!",opponent.pbThis))
       end        
     end  
-    if (id == PBMoves::FAIRYWIND || id == PBMoves::SILVERWIND) && (@battle.field.effects[PBEffects::GrassyTerrain]>0 && $fefieldeffect!=2)
+    if PBStuff::WINDMOVE.include?(id) && (@battle.field.effects[PBEffects::GrassyTerrain]>0 && $fefieldeffect!=2)
       damagemult=(damagemult*1.5).round
       @battle.pbDisplay(_INTL("The wind picked up strength from the field!",opponent.pbThis)) if $feshutup == 0
       $feshutup+=1
@@ -2350,7 +2347,7 @@ class PokeBattle_Move
           $feshutup+=1
         end
       when 2 # Grassy Field
-        if (id == PBMoves::FAIRYWIND || id == PBMoves::SILVERWIND)
+        if PBStuff::WINDMOVE.include?(id)
           damagemult=(damagemult*1.5).round
           @battle.pbDisplay(_INTL("The wind picked up strength from the field!",opponent.pbThis)) if $feshutup == 0
           $feshutup+=1
