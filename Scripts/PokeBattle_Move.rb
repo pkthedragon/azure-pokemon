@@ -1781,6 +1781,10 @@ class PokeBattle_Move
         damagemult=(damagemult*(1.3*0x1000).round/0x1000)
       end
     end
+    # Pinning moves deal 2x damage to minimized targets
+    if opponent && opponent.effects[PBEffects::Minimize] && PBStuff::PINNINGMOVE.include?(self.id)
+      damagemult=(damagemult*2)
+    end
     return damagemult
   end
   

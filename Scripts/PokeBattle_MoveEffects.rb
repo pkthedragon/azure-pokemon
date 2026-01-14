@@ -14931,3 +14931,45 @@ class PokeBattle_Move_2AD < PokeBattle_Move
     return hadeffect
   end
 end
+
+
+################################################################################
+# Decreases the target's Defense and Special Defense by 1 stage. (Tail Whip)
+################################################################################
+class PokeBattle_Move_2AE < PokeBattle_Move
+  def pbEffect(attacker,opponent,hitnum=0,alltargets=nil,showanimation=true)
+    ret=-1; prevented=false
+    if opponent.effects[PBEffects::Protect] &&
+       !opponent.effects[PBEffects::ProtectNegation]
+      @battle.pbDisplay(_INTL("{1} protected itself!",opponent.pbThis))
+      @battle.successStates[attacker.index].protected=true
+      prevented=true
+    end
+    if !prevented && opponent.pbOwnSide.effects[PBEffects::Mist]>0
+      @battle.pbDisplay(_INTL("{1} is protected by Mist!",opponent.pbThis))
+      prevented=true
+    end
+    if !prevented && (((isConst?(opponent.ability,PBAbilities,:CLEARBODY) || isConst?(opponent.ability,PBAbilities,:TEMPORALSHIFT) ||
+       isConst?(opponent.ability,PBAbilities,:WHITESMOKE)) && !(opponent.moldbroken)) || opponent.hasWorkingAbility(:FULLMETALBODY))
+      @battle.pbDisplay(_INTL("{1}'s {2} prevents stat loss!",opponent.pbThis,
+         PBAbilities.getName(opponent.ability)))
+      prevented=true
+    end
+    if !prevented && opponent.pbTooLow?(PBStats::DEFENSE) &&
+       opponent.pbTooLow?(PBStats::SPDEF)
+      @battle.pbDisplay(_INTL("{1}'s stats won't go any lower!",opponent.pbThis))
+      prevented=true
+    end
+    if !prevented
+      pbShowAnimation(@id,attacker,opponent,hitnum,alltargets,showanimation)
+      showanim=true
+      if opponent.pbReduceStat(PBStats::DEFENSE,1,false,showanim)
+        ret=0; showanim=false
+      end
+      if opponent.pbReduceStat(PBStats::SPDEF,1,false,showanim)
+        ret=0; showanim=false
+      end
+    end
+    return ret
+  end
+end
