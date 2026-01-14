@@ -371,7 +371,7 @@
 371,HEALBELL,Heal Bell,019,0,NORMAL,Status,0,5,0,40,0,d,"The user makes a soothing bell chime to heal the status problems of all party Pokémon."
 372,HELPINGHAND,Helping Hand,09C,0,NORMAL,Status,0,15,0,100,5,,"The user assists an ally by boosting the power of its attack."
 336,HOWL,Howl,29F,0,NORMAL,Status,0,20,0,10,0,d,"Raises Attack; multiple Howls in the same turn increase the boost."
-374,LEER,Leer,043,0,DARK,Status,100,20,0,04,0,bce,"Lowers speed, target can't eat (berries and leftovers) for three turns."
+374,LEER,Leer,043,0,DARK,Status,100,20,0,04,0,bce,"Lowers speed, target can't eat for three turns."
 375,LOCKON,Lock-On,0A6,0,NORMAL,Status,0,5,0,00,0,be,"The user takes sure aim at the target. It ensures the next attack does not miss."
 376,LOVELYKISS,Lovely Kiss,004,0,NORMAL,Status,75,5,0,00,0,bce,"The user tries to force a kiss on the target. If it suceeds, the target falls asleep."
 377,LUCKYCHANT,Lucky Chant,0A1,0,NORMAL,Status,0,20,0,40,0,d,"The user chants toward the sky, preventing opposing Pokémon from landing critical hits and secondary effects."

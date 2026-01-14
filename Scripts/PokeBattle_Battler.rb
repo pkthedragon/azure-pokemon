@@ -895,6 +895,7 @@ class PokeBattle_Battler
       @effects[PBEffects::Confusion]   = 0
       @effects[PBEffects::Curse]       = false
       @effects[PBEffects::Embargo]     = 0
+      @effects[PBEffects::LeerBlock]   = 0
       @effects[PBEffects::FocusEnergy] = 0
       @effects[PBEffects::FriskLock]   = 0
       @effects[PBEffects::ForewarnDisable] = 0
@@ -4794,7 +4795,8 @@ class PokeBattle_Battler
   def pbBerryCureCheck(hpcure=false)
     return if self.isFainted?
     unnerver=(pbOpposing1.hasWorkingAbility(:UNNERVE) ||
-      pbOpposing2.hasWorkingAbility(:UNNERVE))
+      pbOpposing2.hasWorkingAbility(:UNNERVE) ||
+      @effects[PBEffects::LeerBlock]>0)
     itemname=(self.item==0) ? "" : PBItems.getName(self.item)
     if self.hasWorkingItem(:BERRYJUICE) && self.hp<=(self.totalhp/2).floor && 
       @effects[PBEffects::HealBlock]==0
@@ -5057,9 +5059,10 @@ class PokeBattle_Battler
       self.item=0
     end
     if hpcure && self.hp!=self.totalhp && @effects[PBEffects::HealBlock]==0
-      # Check for Unnerve blocking Leftovers
+      # Check for Unnerve/LeerBlock blocking Leftovers
       unnerver=(pbOpposing1.hasWorkingAbility(:UNNERVE) ||
-        pbOpposing2.hasWorkingAbility(:UNNERVE))
+        pbOpposing2.hasWorkingAbility(:UNNERVE) ||
+        @effects[PBEffects::LeerBlock]>0)
       if ((isConst?(self.species,PBSpecies,:INFERNAPE) && isConst?(self.item,PBItems,:INFCREST)) || self.hasWorkingItem(:LEFTOVERS)) && !unnerver
         pbRecoverHP((self.totalhp/16).floor,true)
         @battle.pbDisplay(_INTL("{1}'s {2} restored its HP a little!",pbThis,itemname))

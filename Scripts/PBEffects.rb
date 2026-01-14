@@ -199,6 +199,7 @@ begin
     Resusitated       = 229
     FutureSightDamage = 230
     ShedSkinUsed      = 231
+    LeerBlock         = 232
     StallEntry        = 705
     # These effects apply to a side - starts from 300
     LightScreen   = 300

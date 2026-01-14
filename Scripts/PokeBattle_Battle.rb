@@ -7535,6 +7535,16 @@ def pbStartBattle(canlose=false)
         end
       end
     end
+    # LeerBlock
+    for i in priority
+      next if i.isFainted?
+      if i.effects[PBEffects::LeerBlock]>0
+        i.effects[PBEffects::LeerBlock]-=1
+        if i.effects[PBEffects::LeerBlock]==0
+          pbDisplay(_INTL("{1} can eat again!",i.pbThis))
+        end
+      end
+    end
     # Frisk Lock
     for i in priority
       next if i.isFainted?
