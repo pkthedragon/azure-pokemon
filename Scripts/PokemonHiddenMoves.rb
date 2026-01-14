@@ -301,6 +301,51 @@ def Kernel.pbHeadbutt2(event)
   return
 end
 
+#===============================================================================
+# Displacement Move Encounters (any move that can shake trees/objects)
+#===============================================================================
+# Checks if player has any displacement move in their party
+def Kernel.pbDisplacementCheck
+  return nil if !defined?(PBStuff::DISPLACEMENTMOVE)
+  for move in PBStuff::DISPLACEMENTMOVE
+    movefinder = pbCheckMove(move)
+    return movefinder if movefinder
+  end
+  return nil
+end
+
+# Triggers headbutt encounter using any displacement move (for event scripts)
+def Kernel.pbDisplacementEncounter(event=nil)
+  # Use current player position if no event provided
+  if !event
+    event = Struct.new(:x, :y).new($game_player.x, $game_player.y)
+  end
+
+  movefinder = Kernel.pbDisplacementCheck
+  if $DEBUG || movefinder
+    if Kernel.pbConfirmMessage(_INTL("A Pokémon could be in this tree. Use a displacement move?"))
+      speciesname = !movefinder ? $Trainer.name : movefinder.name
+      # Find which move the Pokemon has
+      movename = "Headbutt"
+      if movefinder
+        for m in movefinder.moves
+          if PBStuff::DISPLACEMENTMOVE.include?(m.id)
+            movename = PBMoves.getName(m.id)
+            break
+          end
+        end
+      end
+      Kernel.pbMessage(_INTL("{1} used {2}!",speciesname,movename))
+      pbHiddenMoveAnimation(movefinder)
+      Kernel.pbHeadbuttEffect(event)
+    end
+  else
+    Kernel.pbMessage(_INTL("A Pokémon could be in this tree. Maybe a Pokémon could shake it."))
+  end
+  Input.update
+  return
+end
+
 HiddenMoveHandlers::CanUseMove.add(:HEADBUTT,lambda{|move,pkmn,showmsg|
    facingEvent=$game_player.pbFacingEvent
    if !facingEvent || (facingEvent.name!="HeadbuttTree" && facingEvent.graphicName!="Object tree 2")
@@ -539,9 +584,21 @@ def pbEndSwim(xOffset,yOffset)
   facingTag = Kernel.pbFacingTerrainTag
   # Check if we're on still water and facing non-water (land transition)
   if pbIsStillWaterTag?(currentTag) && !pbIsWaterTag?(facingTag)
+    # Calculate destination coordinates
+    newX = x + xOffset
+    newY = y + yOffset
+    # Temporarily turn off swimming to check if destination is passable from land
+    wasSwimming = $PokemonGlobal.swimming
     $PokemonGlobal.swimming = false
     Kernel.pbUpdateVehicle
-    # Allow seamless walk onto land (no jump needed for swimming)
+    # Check if the destination tile is passable (including events)
+    if !$game_player.passable?(x, y, $game_player.direction)
+      # Destination is blocked (e.g., by an event), restore swimming and block movement
+      $PokemonGlobal.swimming = wasSwimming
+      Kernel.pbUpdateVehicle
+      return true  # Return true to prevent movement
+    end
+    # Destination is clear, stay dismounted and allow movement
     return false  # Return false to allow normal movement to proceed
   end
   return false

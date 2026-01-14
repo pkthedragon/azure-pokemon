@@ -126,8 +126,10 @@ ItemHandlers::UseFromBag.copy(:BICYCLE,:MACHBIKE,:ACROBIKE)
 ItemHandlers::UseFromBag.add(:OLDROD,proc{|item|
    terrain=Kernel.pbFacingTerrainTag
    notCliff=$game_map.passable?($game_player.x,$game_player.y,$game_player.direction)
-   if ((pbIsWaterTag?(terrain) || pbIsGrimeTag?(terrain)) && !$PokemonGlobal.surfing && notCliff) ||
-      (pbIsWaterTag?(terrain) && $PokemonGlobal.surfing)
+   isSwimming = $PokemonGlobal.respond_to?(:swimming) && $PokemonGlobal.swimming
+   # Can fish when: facing water from shore (not surfing/swimming) OR when surfing (but not swimming)
+   if ((pbIsWaterTag?(terrain) || pbIsGrimeTag?(terrain)) && !$PokemonGlobal.surfing && !isSwimming && notCliff) ||
+      (pbIsWaterTag?(terrain) && $PokemonGlobal.surfing && !isSwimming)
  next 2
    else
      Kernel.pbMessage(_INTL("Can't use that here."))

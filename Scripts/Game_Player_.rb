@@ -66,7 +66,7 @@ class Game_Player < Game_Character
     if passable?(@x, @y, 2)
       return if pbLedge(0,1)
       return if pbEndSurf(0,1) || pbEndLavaSurf(0,1)
-      pbEndSwim(0,1)  # Handle swimming to land transition
+      return if pbEndSwim(0,1)  # Handle swimming to land transition, block if destination blocked
       turn_down
       @y += 1
       $PokemonTemp.dependentEvents.pbMoveDependentEvents
@@ -87,7 +87,7 @@ class Game_Player < Game_Character
     if passable?(@x, @y, 4)
       return if pbLedge(-1,0)
       return if pbEndSurf(-1,0) || pbEndLavaSurf(-1,0)
-      pbEndSwim(-1,0)  # Handle swimming to land transition
+      return if pbEndSwim(-1,0)  # Handle swimming to land transition, block if destination blocked
       turn_left
       @x -= 1
       $PokemonTemp.dependentEvents.pbMoveDependentEvents
@@ -108,7 +108,7 @@ class Game_Player < Game_Character
     if passable?(@x, @y, 6)
       return if pbLedge(1,0)
       return if pbEndSurf(1,0) || pbEndLavaSurf(1,0)
-      pbEndSwim(1,0)  # Handle swimming to land transition
+      return if pbEndSwim(1,0)  # Handle swimming to land transition, block if destination blocked
       turn_right
       @x += 1
       $PokemonTemp.dependentEvents.pbMoveDependentEvents
@@ -129,7 +129,7 @@ class Game_Player < Game_Character
     if passable?(@x, @y, 8)
       return if pbLedge(0,-1)
       return if pbEndSurf(0,-1) || pbEndLavaSurf(0,-1)
-      pbEndSwim(0,-1)  # Handle swimming to land transition
+      return if pbEndSwim(0,-1)  # Handle swimming to land transition, block if destination blocked
       turn_up
       @y -= 1
       $PokemonTemp.dependentEvents.pbMoveDependentEvents
@@ -437,6 +437,22 @@ class Game_Player < Game_Character
               result = true
             end
           end
+        end
+      end
+    end
+    # Check for HeadbuttTree terrain tag on facing tile
+    if !result && Kernel.pbFacingTerrainTag == PBTerrain::HeadbuttTree
+      # Check if player has any displacement move
+      movefinder = Kernel.pbDisplacementCheck
+      if movefinder
+        # Check if map has headbutt encounters defined
+        encdata = $PokemonEncounters.pbMapEncounter($game_map.map_id, EncounterTypes::HeadbuttLow) rescue nil
+        encdata2 = $PokemonEncounters.pbMapEncounter($game_map.map_id, EncounterTypes::HeadbuttHigh) rescue nil
+        if encdata || encdata2
+          # Create fake event at facing position for encounter calculation
+          fakeEvent = Struct.new(:x, :y).new(new_x, new_y)
+          Kernel.pbDisplacementEncounter(fakeEvent)
+          result = true
         end
       end
     end

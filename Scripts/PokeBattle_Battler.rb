@@ -1153,6 +1153,30 @@ class PokeBattle_Battler
     @effects[PBEffects::StalwartMove]     = 0
     @effects[PBEffects::StalwartStacks]   = 0
     @effects[PBEffects::ReverbUser]       = -1
+    # Additional effect initializations
+    @effects[PBEffects::Spritz]           = 0
+    @effects[PBEffects::Aftershock]       = 0
+    @effects[PBEffects::AftershockMove]   = 0
+    @effects[PBEffects::AftershockUser]   = -1
+    @effects[PBEffects::Stench]           = 0
+    @effects[PBEffects::MudBath]          = 0
+    @effects[PBEffects::NaturalOrder]     = 0
+    @effects[PBEffects::DamagingMoveThisTurn] = 0
+    @effects[PBEffects::TempShieldHP]     = 0
+    @effects[PBEffects::TempShieldTurns]  = 0
+    @effects[PBEffects::KingsRockGuardUsed] = false
+    @effects[PBEffects::HeartLocketUsed]  = false
+    @effects[PBEffects::TrickRoomOnEntry] = false
+    @effects[PBEffects::BlinkEntryTurn]   = 0
+    @effects[PBEffects::ActedThisTurn]    = false
+    @effects[PBEffects::SpookyTribute]    = false
+    @effects[PBEffects::TrickRoom]        = 0
+    @effects[PBEffects::Mimic]            = 0
+    @effects[PBEffects::StrengthSap]      = 0
+    @effects[PBEffects::SapSipper]        = 0
+    @effects[PBEffects::CounterpoiseSwap] = false
+    @effects[PBEffects::CounterpoiseDouble] = false
+    @effects[PBEffects::Resusitated]      = false
   end
   
   def pbUpdate(fullchange=false,wonderroom=false)
@@ -5306,7 +5330,7 @@ class PokeBattle_Battler
         pbAddTarget(targets,pbOpposing2) if !pbAddTarget(targets,pbOpposing1)
       when PBTargets::AllNonUsers
         for i in 0...4 # not ordered by priority
-          pbAddTarget(targets,@battle.battlers[i]) if i!=@index
+          pbAddTarget(targets,@battle.battlers[i]) if i!=@index && @battle.battlers[i]
         end
       when PBTargets::DragonDarts
         smartDart = move.pbDragonDartTargetting(user)
@@ -5848,33 +5872,9 @@ class PokeBattle_Battler
         @battle.successStates[user.index].protected=true
         return false
       end
-      #### KUROTSUNE - 016 - END      
-      if target.pbOwnSide.effects[PBEffects::WideGuard] && (thismove.target == PBTargets::AllOpposing ||
-          thismove.target == PBTargets::AllNonUsers) && thismove.basedamage > 0 && thismove.canProtectAgainst? && !target.effects[PBEffects::ProtectNegation]
-        if !target.pbPartner.effects[PBEffects::WideGuardCheck]
-          if target.effects[PBEffects::WideGuardUser]
-            @battle.pbDisplay(_INTL("{1}'s Wide Guard prevented damage!",target.pbThis))
-            user.pbCancelMoves
-            @battle.successStates[user.index].protected=true
-          elsif target.pbPartner.effects[PBEffects::WideGuardUser]
-            @battle.pbDisplay(_INTL("{1}'s Wide Guard prevented damage!",target.pbPartner.pbThis))
-            user.pbCancelMoves
-            @battle.successStates[user.index].protected=true
-          end
-          target.effects[PBEffects::WideGuardCheck]=true
-        else
-          target.pbPartner.effects[PBEffects::WideGuardCheck]=false        
-          user.pbCancelMoves
-          @battle.successStates[user.index].protected=true        
-        end      
-        return false
-      end
-      if target.pbOwnSide.effects[PBEffects::QuickGuard] && thismove.priority > 0 && thismove.canProtectAgainst? && !target.effects[PBEffects::ProtectNegation]
-        @battle.pbDisplay(_INTL("{1}'s Quick Guard prevented damage!",target.pbThis))
-        user.pbCancelMoves
-        @battle.successStates[user.index].protected=true
-        return false
-      end
+      #### KUROTSUNE - 016 - END
+      # Wide Guard and Quick Guard halve damage in damage calculation (PokeBattle_Move.rb lines 5121-5126)
+      # They don't block moves entirely
       # UPDATE 1/19/2014
       # King's Shield
       if target.effects[PBEffects::KingsShield] && ((thismove.basedamage > 0) || $fefieldeffect == 5 || $fefieldeffect == 31) && (!target.effects[PBEffects::ProtectNegation]) && (thismove.function!=0x116) && thismove.hasFlags?('b')

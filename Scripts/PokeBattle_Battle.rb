@@ -3855,7 +3855,7 @@ end
       end
       if pbIsOpposing?(i) && @battlers[i].participants.length>0 &&
          @battlers[i].isFainted?
-        haveexpall=(hasConst?(PBItems,:EXPALL) && $PokemonBag.pbHasItem?(:EXPALL))
+        haveexpall=$PokemonSystem.expall
         # First count the number of participants
         partic=0
         expshare=0
@@ -4673,10 +4673,12 @@ end
       trialname="Grass"
     elsif environ==PBEnvironment::Sand
       trialname="Sand"
-#    elsif $PokemonGlobal.surfing
-#      trialname="Water"
+    elsif $PokemonGlobal.surfing
+      trialname="Water"
     elsif $PokemonGlobal.lavasurfing
       trialname="Volcano"
+    elsif $PokemonGlobal.swimming
+      trialname="Water"
     end
     if pbResolveBitmap(sprintf("Graphics/Battlebacks/playerbase"+backdrop+trialname))
       base=trialname

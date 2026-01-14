@@ -147,7 +147,9 @@ def pbShowBattleStats(pkmn)
   report.push(_INTL("Aurora Veil: {1} turns",pkmn.pbOwnSide.effects[PBEffects::AuroraVeil])) if pkmn.pbOwnSide.effects[PBEffects::AuroraVeil]>0
   report.push(_INTL("Safeguard: {1} turns",pkmn.pbOwnSide.effects[PBEffects::Safeguard])) if pkmn.pbOwnSide.effects[PBEffects::Safeguard]>0
   report.push(_INTL("Lucky Chant: {1} turns",pkmn.pbOwnSide.effects[PBEffects::LuckyChant])) if pkmn.pbOwnSide.effects[PBEffects::LuckyChant]>0
-  report.push(_INTL("Mist: {1} turns",pkmn.pbOwnSide.effects[PBEffects::Mist])) if pkmn.pbOwnSide.effects[PBEffects::Mist]>0 
+  report.push(_INTL("Mist: {1} turns",pkmn.pbOwnSide.effects[PBEffects::Mist])) if pkmn.pbOwnSide.effects[PBEffects::Mist]>0
+  report.push(_INTL("Quick Guard: {1} turns",pkmn.pbOwnSide.effects[PBEffects::QuickGuard])) if pkmn.pbOwnSide.effects[PBEffects::QuickGuard]>0
+  report.push(_INTL("Wide Guard: {1} turns",pkmn.pbOwnSide.effects[PBEffects::WideGuard])) if pkmn.pbOwnSide.effects[PBEffects::WideGuard]>0
   report.push(_INTL("Battle Cry")) if pkmn.pbOwnSide.effects[PBEffects::BattleCry] % 2 == 1
   report.push(_INTL("Altered Field: {1} turns",@battle.field.effects[PBEffects::Terrain])) if @battle.field.effects[PBEffects::Terrain]>0
   report.push(_INTL("Messed up Field: {1} turns",@battle.field.effects[PBEffects::Splintered])) if @battle.field.effects[PBEffects::Splintered]>0  

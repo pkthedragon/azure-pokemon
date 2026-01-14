@@ -3830,3 +3830,2139 @@ Battle Start!
 Wild Battle
 ==============================
 ***Round 1***
+==============================
+Battle Start!
+44 - Sam
+==============================
+***Round 1***
+Player Pokemon Ozzie is faster than Zubat.
+Absorb: initial score: 16
+Absorb: final score: 16
+ 
+Supersonic: initial score: 10
+Supersonic: final score: 12
+ 
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (0)
+Initial switchscore building: Healing (0)
+Initial switchscore building: fsteak (0)
+Initial switchscore building: Specific Switches (0)
+Initial switchscore building: Typing (0)
+Zubat: initial switchscore: -40
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+Zubat: initial noswitchscore: 66
+ 
+{
+ 
+}
+ 
+Zubat: highest move score: 16
+Zubat: final switching score: -53
+16 > -53, will not switch
+ 
+Beginning AI Item use check.
+ 
+Highest item score: -10000
+Highest move score: 16
+Item use turned off.
+[The foe Zubat: Absorb=16, Supersonic=12]
+[Prefer Absorb]
+[No Z-Move.]
+[The foe Zubat lost 8 HP, now has 13 HP]
+[Ozzie lost 9 HP, now has 22 HP]
+[The foe Zubat gained 5 HP, now has 18 HP]
+***Round 2***
+Player Pokemon Ozzie is faster than Zubat.
+Absorb: initial score: 22
+Absorb: final score: 24
+ 
+Supersonic: initial score: 10
+Supersonic: final score: 12
+ 
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (0)
+Initial switchscore building: Healing (0)
+Initial switchscore building: fsteak (0)
+Initial switchscore building: Specific Switches (0)
+Initial switchscore building: Typing (0)
+Zubat: initial switchscore: -40
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+Zubat: initial noswitchscore: 50
+ 
+{
+ 
+}
+ 
+Zubat: highest move score: 24
+Zubat: final switching score: -45
+24 > -45, will not switch
+ 
+Beginning AI Item use check.
+ 
+Highest item score: -10000
+Highest move score: 24
+Item use turned off.
+[The foe Zubat: Absorb=24, Supersonic=12]
+[Prefer Absorb]
+[No Z-Move.]
+[The foe Zubat lost 18 HP, now has 0 HP]
+Scoring for Zubat switching to: Zubat
+Score: -10000000
+Not switching to self.
+Scoring for Zubat switching to: Machop
+Offensive: 1
+Defensive: 76
+Roles: 76
+Weather: 76
+Moves: 76
+Abilities: 76
+Items: 76
+Fields: 76
+Score: 76
+ 
+***Round 3***
+Player Pokemon Ozzie is faster than Machop.
+Low Kick: initial score: 8
+Low Kick: final score: 8
+ 
+Leer: initial score: 10
+[Not preferring status move]
+Leer: final score: 4
+ 
+Focus Energy: initial score: 25
+[Not preferring status move]
+Focus Energy: final score: 32
+ 
+Beginning AI Item use check.
+ 
+Highest item score: -10000
+Highest move score: 32
+Item use turned off.
+[The foe Machop: Low Kick=8, Leer=4, Focus Energy=32]
+[Prefer Focus Energy]
+[No Z-Move.]
+[The foe Machop lost 4 HP, now has 21 HP]
+***Round 4***
+Player Pokemon Ozzie is faster than Machop.
+Low Kick: initial score: 12
+Low Kick: final score: 12
+ 
+Leer: initial score: 10
+[Not preferring status move]
+Leer: final score: 4
+ 
+Focus Energy: initial score: 25
+Focus Energy: final score: 0
+ 
+Beginning AI Item use check.
+ 
+Highest item score: -10000
+Highest move score: 12
+Item use turned off.
+[The foe Machop: Low Kick=12, Leer=4, Focus Energy=0]
+[Prefer Low Kick]
+[No Z-Move.]
+[The foe Machop lost 4 HP, now has 17 HP]
+[Ozzie lost 4 HP, now has 21 HP]
+***Round 5***
+Player Pokemon Ozzie is faster than Machop.
+Low Kick: initial score: 14
+Low Kick: final score: 14
+ 
+Leer: initial score: 10
+[Not preferring status move]
+Leer: final score: 4
+ 
+Focus Energy: initial score: 25
+Focus Energy: final score: 0
+ 
+Beginning AI Item use check.
+ 
+Highest item score: -10000
+Highest move score: 14
+Item use turned off.
+[The foe Machop: Low Kick=14, Leer=4, Focus Energy=0]
+[Prefer Low Kick]
+[No Z-Move.]
+[The foe Machop lost 4 HP, now has 13 HP]
+[Ozzie lost 4 HP, now has 17 HP]
+***Round 6***
+Player Pokemon Ozzie is faster than Machop.
+Low Kick: initial score: 17
+[Preferring damaging move]
+Low Kick: final score: 18
+ 
+Leer: initial score: 10
+[Not preferring status move]
+Leer: final score: 4
+ 
+Focus Energy: initial score: 25
+Focus Energy: final score: 0
+ 
+Beginning AI Item use check.
+ 
+Highest item score: -10000
+Highest move score: 18
+Item use turned off.
+[The foe Machop: Low Kick=18, Leer=4, Focus Energy=0]
+[Prefer Low Kick]
+[No Z-Move.]
+[The foe Machop lost 13 HP, now has 0 HP]
+==============================
+Battle Start!
+Wild Battle
+==============================
+***Round 1***
+==============================
+Battle Start!
+Wild Battle
+==============================
+***Round 1***
+==============================
+Battle Start!
+Wild Battle
+==============================
+***Round 1***
+==============================
+Battle Start!
+Wild Battle
+==============================
+***Round 1***
+==============================
+Battle Start!
+Wild Battle
+==============================
+***Round 1***
+[The wild Chewtle: Tackle=200, Water Gun=100, Bite=100]
+If this battle is not wild, something has gone wrong in scoring moves (no preference chosen).
+[The wild Chewtle gained 0 HP, now has 25 HP]
+[Ozzie lost 3 HP, now has 31 HP]
+***Round 2***
+==============================
+Battle Start!
+5 - Johnny
+==============================
+***Round 1***
+Player Pokemon Ozzie is faster than Bunnelby.
+Mud-Slap: initial score: 6
+Mud-Slap: final score: 6
+ 
+Leer: initial score: 10
+Leer: final score: 10
+ 
+Tackle: initial score: 12
+Tackle: final score: 12
+ 
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (0)
+Initial switchscore building: Healing (0)
+Initial switchscore building: fsteak (0)
+Initial switchscore building: Specific Switches (0)
+Initial switchscore building: Typing (0)
+Bunnelby: initial switchscore: 0
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+Bunnelby: initial noswitchscore: 66
+ 
+{
+ 
+}
+ 
+Bunnelby: highest move score: 12
+Bunnelby: final switching score: -133
+12 > -133, will not switch
+ 
+Beginning AI Item use check.
+ 
+Highest item score: -10000
+Highest move score: 12
+Item use turned off.
+[The foe Bunnelby: Mud-Slap=6, Leer=10, Tackle=12]
+[Prefer Tackle]
+[No Z-Move.]
+[The foe Bunnelby lost 15 HP, now has 4 HP]
+[Ozzie lost 2 HP, now has 29 HP]
+***Round 2***
+Player Pokemon Ozzie is faster than Bunnelby.
+Mud-Slap: initial score: 6
+Mud-Slap: final score: 6
+ 
+Leer: initial score: 10
+Leer: final score: 10
+ 
+Tackle: initial score: 13
+Tackle: final score: 13
+ 
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (-100)
+Initial switchscore building: Healing (-85)
+Initial switchscore building: fsteak (-85)
+Initial switchscore building: Specific Switches (-42)
+Initial switchscore building: Typing (-42)
+Bunnelby: initial switchscore: -42
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+Bunnelby: initial noswitchscore: 50
+ 
+{
+ 
+}
+ 
+Bunnelby: highest move score: 13
+Bunnelby: final switching score: -146
+13 > -146, will not switch
+ 
+Beginning AI Item use check.
+ 
+Highest item score: -10000
+Highest move score: 13
+Item use turned off.
+[The foe Bunnelby: Mud-Slap=6, Leer=10, Tackle=13]
+[Prefer Tackle]
+[No Z-Move.]
+[Ozzie lost 2 HP, now has 27 HP]
+***Round 3***
+Player Pokemon Ozzie is faster than Bunnelby.
+Mud-Slap: initial score: 7
+Mud-Slap: final score: 7
+ 
+Leer: initial score: 10
+Leer: final score: 10
+ 
+Tackle: initial score: 14
+Tackle: final score: 14
+ 
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (-100)
+Initial switchscore building: Healing (-85)
+Initial switchscore building: fsteak (-85)
+Initial switchscore building: Specific Switches (-42)
+Initial switchscore building: Typing (-42)
+Bunnelby: initial switchscore: -42
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+Bunnelby: initial noswitchscore: 33
+ 
+{
+ 
+}
+ 
+Bunnelby: highest move score: 14
+Bunnelby: final switching score: -137
+14 > -137, will not switch
+ 
+Beginning AI Item use check.
+ 
+Highest item score: -10000
+Highest move score: 14
+Item use turned off.
+[The foe Bunnelby: Mud-Slap=7, Leer=10, Tackle=14]
+[Prefer Tackle]
+[No Z-Move.]
+[The foe Bunnelby lost 4 HP, now has 0 HP]
+***Round 4***
+Player Pokemon Ozzie is faster than Skwovet.
+Tackle: initial score: 17
+Tackle: final score: 17
+ 
+Tail Whip: initial score: 10
+Tail Whip: final score: 10
+ 
+Bite: initial score: 13
+Bite: final score: 13
+ 
+Beginning AI Item use check.
+ 
+Highest item score: -10000
+Highest move score: 17
+Item use turned off.
+[The foe Skwovet: Tackle=17, Tail Whip=10, Bite=13]
+[Prefer Tackle]
+[No Z-Move.]
+[The foe Skwovet lost 24 HP, now has 1 HP]
+[Ozzie lost 5 HP, now has 24 HP]
+***Round 5***
+Player Pokemon Ozzie is faster than Skwovet.
+Tackle: initial score: 20
+Tackle: final score: 20
+ 
+Tail Whip: initial score: 10
+Tail Whip: final score: 10
+ 
+Bite: initial score: 16
+Bite: final score: 16
+ 
+Beginning AI Item use check.
+ 
+Highest item score: -10000
+Highest move score: 20
+Item use turned off.
+[The foe Skwovet: Tackle=20, Tail Whip=10, Bite=16]
+[Prefer Tackle]
+[No Z-Move.]
+[The foe Skwovet lost 1 HP, now has 0 HP]
+==============================
+Battle Start!
+118 - Richard
+==============================
+***Round 1***
+Player Pokemon Ozzie is faster than Chansey.
+Charm: initial score: 10
+Charm: final score: 0
+ 
+Metronome: initial score: 20
+Metronome: final score: 24
+ 
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (0)
+Initial switchscore building: Healing (0)
+Initial switchscore building: fsteak (0)
+Initial switchscore building: Specific Switches (0)
+Initial switchscore building: Typing (0)
+Chansey: initial switchscore: 0
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+Chansey: initial noswitchscore: 66
+ 
+{
+ 
+}
+ 
+Chansey: highest move score: 24
+Chansey: final switching score: -133
+24 > -133, will not switch
+ 
+Beginning AI Item use check.
+ 
+This is a HP-healing item.
+Cave Field Disrupt
+Score for Potion: -100
+Highest item score: -100
+Highest move score: 24
+Item use turned off.
+[The foe Chansey: Charm=0, Metronome=24]
+[Prefer Metronome]
+[No Z-Move.]
+[The foe Chansey lost 10 HP, now has 37 HP]
+***Round 2***
+Player Pokemon Ozzie is faster than Chansey.
+Charm: initial score: 10
+Charm: final score: 0
+ 
+Metronome: initial score: 20
+Metronome: final score: 24
+ 
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (0)
+Initial switchscore building: Healing (0)
+Initial switchscore building: fsteak (0)
+Initial switchscore building: Specific Switches (0)
+Initial switchscore building: Typing (0)
+Chansey: initial switchscore: 0
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+Chansey: initial noswitchscore: 50
+ 
+{
+ 
+}
+ 
+Chansey: highest move score: 24
+Chansey: final switching score: -125
+24 > -125, will not switch
+ 
+Beginning AI Item use check.
+ 
+This is a HP-healing item.
+Cave Field Disrupt
+Score for Potion: -99
+Highest item score: -99
+Highest move score: 24
+Item use turned off.
+[The foe Chansey: Charm=0, Metronome=24]
+[Prefer Metronome]
+[No Z-Move.]
+[The foe Chansey lost 10 HP, now has 27 HP]
+***Round 3***
+Player Pokemon Ozzie is faster than Chansey.
+Charm: initial score: 10
+Charm: final score: 0
+ 
+Metronome: initial score: 20
+Metronome: final score: 24
+ 
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (0)
+Initial switchscore building: Healing (0)
+Initial switchscore building: fsteak (0)
+Initial switchscore building: Specific Switches (0)
+Initial switchscore building: Typing (0)
+Chansey: initial switchscore: 0
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+Chansey: initial noswitchscore: 33
+ 
+{
+ 
+}
+ 
+Chansey: highest move score: 24
+Chansey: final switching score: -116
+24 > -116, will not switch
+ 
+Beginning AI Item use check.
+ 
+This is a HP-healing item.
+Cave Field Disrupt
+Score for Potion: -98
+Highest item score: -98
+Highest move score: 24
+Item use turned off.
+[The foe Chansey: Charm=0, Metronome=24]
+[Prefer Metronome]
+[No Z-Move.]
+[The foe Chansey lost 10 HP, now has 17 HP]
+[Ozzie lost 2 HP, now has 25 HP]
+***Round 4***
+==============================
+Battle Start!
+Wild Battle
+==============================
+***Round 1***
+==============================
+Battle Start!
+118 - Richard
+==============================
+***Round 1***
+Player Pokemon Ozzie is faster than Chansey.
+Charm: initial score: 10
+Charm: final score: 0
+ 
+Metronome: initial score: 20
+Metronome: final score: 24
+ 
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (0)
+Initial switchscore building: Healing (0)
+Initial switchscore building: fsteak (0)
+Initial switchscore building: Specific Switches (0)
+Initial switchscore building: Typing (0)
+Chansey: initial switchscore: 0
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+Chansey: initial noswitchscore: 66
+ 
+{
+ 
+}
+ 
+Chansey: highest move score: 24
+Chansey: final switching score: -133
+24 > -133, will not switch
+ 
+Beginning AI Item use check.
+ 
+This is a HP-healing item.
+Cave Field Disrupt
+Score for Potion: -100
+Highest item score: -100
+Highest move score: 24
+Item use turned off.
+[The foe Chansey: Charm=0, Metronome=24]
+[Prefer Metronome]
+[No Z-Move.]
+[The foe Chansey lost 10 HP, now has 37 HP]
+***Round 2***
+Player Pokemon Ozzie is faster than Chansey.
+Charm: initial score: 10
+Charm: final score: 0
+ 
+Metronome: initial score: 20
+Metronome: final score: 24
+ 
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (0)
+Initial switchscore building: Healing (0)
+Initial switchscore building: fsteak (0)
+Initial switchscore building: Specific Switches (0)
+Initial switchscore building: Typing (0)
+Chansey: initial switchscore: 0
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+Chansey: initial noswitchscore: 50
+ 
+{
+ 
+}
+ 
+Chansey: highest move score: 24
+Chansey: final switching score: -125
+24 > -125, will not switch
+ 
+Beginning AI Item use check.
+ 
+This is a HP-healing item.
+Cave Field Disrupt
+Score for Potion: -99
+Highest item score: -99
+Highest move score: 24
+Item use turned off.
+[The foe Chansey: Charm=0, Metronome=24]
+[Prefer Metronome]
+[No Z-Move.]
+[The foe Chansey lost 10 HP, now has 27 HP]
+[Ozzie lost 2 HP, now has 25 HP]
+***Round 3***
+Player Pokemon Ozzie is faster than Chansey.
+Charm: initial score: 10
+Charm: final score: 0
+ 
+Metronome: initial score: 20
+Metronome: final score: 24
+ 
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (0)
+Initial switchscore building: Healing (0)
+Initial switchscore building: fsteak (0)
+Initial switchscore building: Specific Switches (0)
+Initial switchscore building: Typing (0)
+Chansey: initial switchscore: 0
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+Chansey: initial noswitchscore: 33
+ 
+{
+ 
+}
+ 
+Chansey: highest move score: 24
+Chansey: final switching score: -116
+24 > -116, will not switch
+ 
+Beginning AI Item use check.
+ 
+This is a HP-healing item.
+Cave Field Disrupt
+Score for Potion: -98
+Highest item score: -98
+Highest move score: 24
+Item use turned off.
+[The foe Chansey: Charm=0, Metronome=24]
+[Prefer Metronome]
+[No Z-Move.]
+[The foe Chansey lost 10 HP, now has 17 HP]
+***Round 4***
+==============================
+Battle Start!
+118 - Richard
+==============================
+***Round 1***
+Player Pokemon Ozzie is faster than Chansey.
+Charm: initial score: 10
+Charm: final score: 0
+ 
+Metronome: initial score: 20
+Metronome: final score: 24
+ 
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (0)
+Initial switchscore building: Healing (0)
+Initial switchscore building: fsteak (0)
+Initial switchscore building: Specific Switches (0)
+Initial switchscore building: Typing (0)
+Chansey: initial switchscore: 0
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+Chansey: initial noswitchscore: 66
+ 
+{
+ 
+}
+ 
+Chansey: highest move score: 24
+Chansey: final switching score: -133
+24 > -133, will not switch
+ 
+Beginning AI Item use check.
+ 
+This is a HP-healing item.
+Cave Field Disrupt
+Score for Potion: -100
+Highest item score: -100
+Highest move score: 24
+Item use turned off.
+[The foe Chansey: Charm=0, Metronome=24]
+[Prefer Metronome]
+[No Z-Move.]
+[The foe Chansey lost 10 HP, now has 37 HP]
+***Round 2***
+Player Pokemon Ozzie is faster than Chansey.
+Charm: initial score: 10
+Charm: final score: 0
+ 
+Metronome: initial score: 20
+Metronome: final score: 24
+ 
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (0)
+Initial switchscore building: Healing (15)
+Initial switchscore building: fsteak (15)
+Initial switchscore building: Specific Switches (7)
+Initial switchscore building: Typing (7)
+Chansey: initial switchscore: 7
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+Chansey: initial noswitchscore: 50
+ 
+{
+ 
+}
+ 
+Chansey: highest move score: 24
+Chansey: final switching score: -121
+24 > -121, will not switch
+ 
+Beginning AI Item use check.
+ 
+This is a HP-healing item.
+Cave Field Disrupt
+Score for Potion: -99
+Highest item score: -99
+Highest move score: 24
+Item use turned off.
+[The foe Chansey: Charm=0, Metronome=24]
+[Prefer Metronome]
+[No Z-Move.]
+[The foe Chansey lost 10 HP, now has 27 HP]
+***Round 3***
+Player Pokemon Ozzie is faster than Chansey.
+Charm: initial score: 10
+Charm: final score: 0
+ 
+Metronome: initial score: 20
+Metronome: final score: 24
+ 
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (0)
+Initial switchscore building: Healing (15)
+Initial switchscore building: fsteak (15)
+Initial switchscore building: Specific Switches (7)
+Initial switchscore building: Typing (7)
+Chansey: initial switchscore: 7
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+Chansey: initial noswitchscore: 33
+ 
+{
+ 
+}
+ 
+Chansey: highest move score: 24
+Chansey: final switching score: -112
+24 > -112, will not switch
+ 
+Beginning AI Item use check.
+ 
+This is a HP-healing item.
+Cave Field Disrupt
+Score for Potion: -98
+Highest item score: -98
+Highest move score: 24
+Item use turned off.
+[The foe Chansey: Charm=0, Metronome=24]
+[Prefer Metronome]
+[No Z-Move.]
+[The foe Chansey lost 10 HP, now has 17 HP]
+[Ozzie lost 3 HP, now has 24 HP]
+***Round 4***
+Player Pokemon Ozzie is faster than Chansey.
+Charm: initial score: 10
+Charm: final score: 0
+ 
+Metronome: initial score: 20
+Metronome: final score: 24
+ 
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (0)
+Initial switchscore building: Healing (15)
+Initial switchscore building: fsteak (15)
+Initial switchscore building: Specific Switches (7)
+Initial switchscore building: Typing (7)
+Chansey: initial switchscore: 7
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+Chansey: initial noswitchscore: 16
+ 
+{
+ 
+}
+ 
+Chansey: highest move score: 24
+Chansey: final switching score: -104
+24 > -104, will not switch
+ 
+Beginning AI Item use check.
+ 
+This is a HP-healing item.
+Cave Field Disrupt
+Score for Potion: -98
+Highest item score: -98
+Highest move score: 24
+Item use turned off.
+[The foe Chansey: Charm=0, Metronome=24]
+[Prefer Metronome]
+[No Z-Move.]
+[The foe Chansey lost 10 HP, now has 7 HP]
+***Round 5***
+Player Pokemon Ozzie is faster than Chansey.
+Charm: initial score: 10
+Charm: final score: 0
+ 
+Metronome: initial score: 20
+Metronome: final score: 24
+ 
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (-100)
+Initial switchscore building: Healing (-85)
+Initial switchscore building: fsteak (-85)
+Initial switchscore building: Specific Switches (-42)
+Initial switchscore building: Typing (-42)
+Chansey: initial switchscore: -42
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+Chansey: initial noswitchscore: 0
+ 
+{
+ 
+}
+ 
+Chansey: highest move score: 24
+Chansey: final switching score: -121
+24 > -121, will not switch
+ 
+Beginning AI Item use check.
+ 
+This is a HP-healing item.
+Cave Field Disrupt
+Score for Potion: -82
+Highest item score: -82
+Highest move score: 24
+Item use turned off.
+[The foe Chansey: Charm=0, Metronome=24]
+[Prefer Metronome]
+[No Z-Move.]
+[The foe Chansey lost 7 HP, now has 0 HP]
+***Round 6***
+Player Pokemon Ozzie is faster than Audino.
+Baby-Doll Eyes: initial score: 15
+Priority Check End
+Baby-Doll Eyes: final score: 0
+ 
+Disarming Voice: initial score: 10
+Disarming Voice: final score: 10
+ 
+Enchant: initial score: 25
+Enchant: final score: 30
+ 
+Beginning AI Item use check.
+ 
+This is a HP-healing item.
+Cave Field Disrupt
+Score for Potion: -100
+Highest item score: -100
+Highest move score: 30
+Item use turned off.
+[The foe Audino: Baby-Doll Eyes=0, Disarming Voice=10, Enchant=30]
+[Prefer Enchant]
+[No Z-Move.]
+[The foe Audino lost 22 HP, now has 7 HP]
+***Round 7***
+Player Pokemon Ozzie is faster than Audino.
+Baby-Doll Eyes: initial score: 15
+Priority Check End
+Baby-Doll Eyes: final score: 0
+ 
+Disarming Voice: initial score: 10
+Disarming Voice: final score: 10
+ 
+Enchant: initial score: 25
+Enchant: final score: 0
+ 
+Beginning AI Item use check.
+ 
+This is a HP-healing item.
+Cave Field Disrupt
+Score for Potion: -100
+Highest item score: -100
+Highest move score: 10
+Item use turned off.
+[The foe Audino: Baby-Doll Eyes=0, Disarming Voice=10, Enchant=0]
+[Prefer Disarming Voice]
+[No Z-Move.]
+[The foe Audino lost 6 HP, now has 1 HP]
+[The foe Audino lost 1 HP, now has 0 HP]
+==============================
+Battle Start!
+Wild Battle
+==============================
+***Round 1***
+==============================
+Battle Start!
+124 - Pyuku
+==============================
+***Round 1***
+AI Pokemon Elektra is faster than Ozzie.
+Thunder Shock: initial score: 3
+Thunder Shock: final score: 0
+ 
+Disarming Voice: initial score: 48
+Disarming Voice: final score: 48
+ 
+Nuzzle: initial score: 3
+Nuzzle: final score: 0
+ 
+Charge: initial score: 15
+Charge: final score: 4
+ 
+Beginning AI Item use check.
+ 
+Highest item score: -10000
+Highest move score: 48
+Item use turned off.
+[The foe Elektra: Thunder Shock=0, Disarming Voice=48, Nuzzle=0, Charge=4]
+[Prefer Disarming Voice]
+[No Z-Move.]
+[Ozzie lost 24 HP, now has 9 HP]
+[The foe Elektra lost 22 HP, now has 22 HP]
+***Round 2***
+AI Pokemon Elektra is faster than Ozzie.
+Thunder Shock: initial score: 11
+Thunder Shock: final score: 0
+ 
+Disarming Voice: initial score: 110
+Disarming Voice: final score: 127
+ 
+Nuzzle: initial score: 11
+Nuzzle: final score: 0
+ 
+Charge: initial score: 15
+Charge: final score: 0
+ 
+Beginning AI Item use check.
+ 
+Highest item score: -10000
+Highest move score: 127
+Item use turned off.
+[The foe Elektra: Thunder Shock=0, Disarming Voice=127, Nuzzle=0, Charge=0]
+[Prefer Disarming Voice]
+[No Z-Move.]
+[Ozzie lost 9 HP, now has 0 HP]
+***Round 3***
+AI Pokemon Elektra is faster than  Lorde.
+Thunder Shock: initial score: 86
+Thunder Shock: final score: 88
+ 
+Disarming Voice: initial score: 41
+Disarming Voice: final score: 43
+ 
+Nuzzle: initial score: 38
+Nuzzle: final score: 50
+ 
+Charge: initial score: 15
+[Not preferring status move]
+Charge: final score: 4
+ 
+Beginning AI Item use check.
+ 
+Highest item score: -10000
+Highest move score: 88
+Item use turned off.
+[The foe Elektra: Thunder Shock=88, Disarming Voice=10, Nuzzle=50, Charge=4]
+[Prefer Thunder Shock]
+[No Z-Move.]
+[ Lorde lost 16 HP, now has 20 HP]
+[The foe Elektra lost 3 HP, now has 19 HP]
+***Round 4***
+AI Pokemon Elektra is faster than  Lorde.
+Thunder Shock: initial score: 109
+Thunder Shock: final score: 109
+ 
+Disarming Voice: initial score: 75
+Disarming Voice: final score: 78
+ 
+Nuzzle: initial score: 70
+Nuzzle: final score: 70
+ 
+Charge: initial score: 15
+[Not preferring status move]
+Charge: final score: 0
+ 
+Beginning AI Item use check.
+ 
+Highest item score: -10000
+Highest move score: 109
+Item use turned off.
+[The foe Elektra: Thunder Shock=109, Disarming Voice=78, Nuzzle=70, Charge=0]
+[Prefer Thunder Shock]
+[No Z-Move.]
+[ Lorde lost 20 HP, now has 0 HP]
+==============================
+Battle Start!
+Wild Battle
+==============================
+***Round 1***
+==============================
+Battle Start!
+Wild Battle
+==============================
+***Round 1***
+==============================
+Battle Start!
+Wild Battle
+==============================
+***Round 1***
+==============================
+Battle Start!
+32 - Katar
+==============================
+***Round 1***
+Player Pokemon Ozzie is faster than Magikarp.
+Splash: initial score: 1
+Splash: final score: 1
+ 
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (0)
+Initial switchscore building: Healing (0)
+Initial switchscore building: fsteak (0)
+Initial switchscore building: Specific Switches (0)
+Initial switchscore building: Typing (0)
+Magikarp: initial switchscore: 0
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+Magikarp: initial noswitchscore: 66
+ 
+{
+ 
+}
+ 
+Magikarp: highest move score: 1
+Magikarp: final switching score: -33
+1 > -33, will not switch
+ 
+Beginning AI Item use check.
+ 
+Highest item score: -10000
+Highest move score: 1
+Item use turned off.
+[The foe Magikarp: Splash=1]
+[Prefer Splash]
+[No Z-Move.]
+[The foe Magikarp lost 16 HP, now has 0 HP]
+Scoring for Magikarp switching to: Magikarp
+Score: -10000000
+Not switching to self.
+Scoring for Magikarp switching to: Magikarp
+Offensive: -80
+Defensive: -380
+Roles: -380
+Weather: -380
+Moves: -380
+Abilities: -380
+Items: -380
+Fields: -380
+Score: -380
+ 
+Scoring for Magikarp switching to: Feebas
+Offensive: -80
+Defensive: -380
+Roles: -380
+Weather: -380
+Moves: -380
+Abilities: -380
+Items: -380
+Fields: -380
+Score: -380
+ 
+Scoring for Magikarp switching to: Feebas
+Offensive: -80
+Defensive: -380
+Roles: -380
+Weather: -380
+Moves: -380
+Abilities: -380
+Items: -380
+Fields: -380
+Score: -380
+ 
+Scoring for Magikarp switching to: Wishiwashi
+Offensive: 3
+Defensive: -296
+Roles: -296
+Weather: -296
+Moves: -296
+Abilities: -296
+Items: -296
+Fields: -296
+Score: -296
+ 
+Scoring for Magikarp switching to: Wishiwashi
+Offensive: 3
+Defensive: -296
+Roles: -296
+Weather: -296
+Moves: -296
+Abilities: -296
+Items: -296
+Fields: -296
+Score: -296
+ 
+***Round 2***
+Player Pokemon Ozzie is faster than Wishiwashi.
+Water Gun: initial score: 10
+Water Gun: final score: 10
+ 
+Growl: initial score: 10
+Growl: final score: 10
+ 
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (0)
+Initial switchscore building: Healing (0)
+Initial switchscore building: fsteak (0)
+Initial switchscore building: Specific Switches (0)
+Initial switchscore building: Typing (0)
+Wishiwashi: initial switchscore: 0
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+Wishiwashi: initial noswitchscore: 66
+ 
+{
+ 
+}
+ 
+Wishiwashi: highest move score: 10
+Wishiwashi: final switching score: -33
+10 > -33, will not switch
+ 
+Beginning AI Item use check.
+ 
+Highest item score: -10000
+Highest move score: 10
+Item use turned off.
+[The foe Wishiwashi: Water Gun=10, Growl=10]
+[Prefer Water Gun]
+[No Z-Move.]
+[The foe Wishiwashi lost 18 HP, now has 0 HP]
+Scoring for Wishiwashi switching to: Magikarp
+Score: -10000000
+ 
+Scoring for Wishiwashi switching to: Magikarp
+Offensive: -80
+Defensive: -380
+Roles: -380
+Weather: -380
+Moves: -380
+Abilities: -380
+Items: -380
+Fields: -380
+Score: -380
+ 
+Scoring for Wishiwashi switching to: Feebas
+Offensive: -80
+Defensive: -380
+Roles: -380
+Weather: -380
+Moves: -380
+Abilities: -380
+Items: -380
+Fields: -380
+Score: -380
+ 
+Scoring for Wishiwashi switching to: Feebas
+Offensive: -80
+Defensive: -380
+Roles: -380
+Weather: -380
+Moves: -380
+Abilities: -380
+Items: -380
+Fields: -380
+Score: -380
+ 
+Scoring for Wishiwashi switching to: Wishiwashi
+Score: -10000000
+Not switching to self.
+Scoring for Wishiwashi switching to: Wishiwashi
+Offensive: 3
+Defensive: -296
+Roles: -296
+Weather: -296
+Moves: -296
+Abilities: -296
+Items: -296
+Fields: -296
+Score: -296
+ 
+***Round 3***
+Player Pokemon Ozzie is faster than Wishiwashi.
+Water Gun: initial score: 10
+Water Gun: final score: 10
+ 
+Growl: initial score: 10
+Growl: final score: 10
+ 
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (0)
+Initial switchscore building: Healing (0)
+Initial switchscore building: fsteak (0)
+Initial switchscore building: Specific Switches (0)
+Initial switchscore building: Typing (0)
+Wishiwashi: initial switchscore: 0
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+Wishiwashi: initial noswitchscore: 66
+ 
+{
+ 
+}
+ 
+Wishiwashi: highest move score: 10
+Wishiwashi: final switching score: -33
+10 > -33, will not switch
+ 
+Beginning AI Item use check.
+ 
+Highest item score: -10000
+Highest move score: 10
+Item use turned off.
+[The foe Wishiwashi: Water Gun=10, Growl=10]
+[Prefer Water Gun]
+[No Z-Move.]
+[The foe Wishiwashi lost 18 HP, now has 0 HP]
+Scoring for Wishiwashi switching to: Magikarp
+Score: -10000000
+ 
+Scoring for Wishiwashi switching to: Magikarp
+Offensive: -80
+Defensive: -380
+Roles: -380
+Weather: -380
+Moves: -380
+Abilities: -380
+Items: -380
+Fields: -380
+Score: -380
+ 
+Scoring for Wishiwashi switching to: Feebas
+Offensive: -80
+Defensive: -380
+Roles: -380
+Weather: -380
+Moves: -380
+Abilities: -380
+Items: -380
+Fields: -380
+Score: -380
+ 
+Scoring for Wishiwashi switching to: Feebas
+Offensive: -80
+Defensive: -380
+Roles: -380
+Weather: -380
+Moves: -380
+Abilities: -380
+Items: -380
+Fields: -380
+Score: -380
+ 
+Scoring for Wishiwashi switching to: Wishiwashi
+Score: -10000000
+ 
+Scoring for Wishiwashi switching to: Wishiwashi
+Score: -10000000
+Not switching to self.
+***Round 4***
+Player Pokemon Ozzie is faster than Magikarp.
+Splash: initial score: 1
+Splash: final score: 1
+ 
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (0)
+Initial switchscore building: Healing (0)
+Initial switchscore building: fsteak (0)
+Initial switchscore building: Specific Switches (0)
+Initial switchscore building: Typing (0)
+Magikarp: initial switchscore: 0
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+Magikarp: initial noswitchscore: 66
+ 
+{
+ 
+}
+ 
+Magikarp: highest move score: 1
+Magikarp: final switching score: -33
+1 > -33, will not switch
+ 
+Beginning AI Item use check.
+ 
+Highest item score: -10000
+Highest move score: 1
+Item use turned off.
+[The foe Magikarp: Splash=1]
+[Prefer Splash]
+[No Z-Move.]
+[The foe Magikarp lost 16 HP, now has 0 HP]
+Scoring for Magikarp switching to: Magikarp
+Score: -10000000
+ 
+Scoring for Magikarp switching to: Magikarp
+Score: -10000000
+Not switching to self.
+Scoring for Magikarp switching to: Feebas
+Offensive: -80
+Defensive: -380
+Roles: -380
+Weather: -380
+Moves: -380
+Abilities: -380
+Items: -380
+Fields: -380
+Score: -380
+ 
+Scoring for Magikarp switching to: Feebas
+Offensive: -80
+Defensive: -380
+Roles: -380
+Weather: -380
+Moves: -380
+Abilities: -380
+Items: -380
+Fields: -380
+Score: -380
+ 
+Scoring for Magikarp switching to: Wishiwashi
+Score: -10000000
+ 
+Scoring for Magikarp switching to: Wishiwashi
+Score: -10000000
+ 
+***Round 5***
+Player Pokemon Ozzie is faster than Feebas.
+Splash: initial score: 1
+Splash: final score: 1
+ 
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (0)
+Initial switchscore building: Healing (0)
+Initial switchscore building: fsteak (0)
+Initial switchscore building: Specific Switches (0)
+Initial switchscore building: Typing (0)
+Feebas: initial switchscore: 0
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+Feebas: initial noswitchscore: 66
+ 
+{
+ 
+}
+ 
+Feebas: highest move score: 1
+Feebas: final switching score: -33
+1 > -33, will not switch
+ 
+Beginning AI Item use check.
+ 
+Highest item score: -10000
+Highest move score: 1
+Item use turned off.
+[The foe Feebas: Splash=1]
+[Prefer Splash]
+[No Z-Move.]
+[The foe Feebas lost 16 HP, now has 0 HP]
+Scoring for Feebas switching to: Magikarp
+Score: -10000000
+ 
+Scoring for Feebas switching to: Magikarp
+Score: -10000000
+ 
+Scoring for Feebas switching to: Feebas
+Score: -10000000
+Not switching to self.
+Scoring for Feebas switching to: Feebas
+Offensive: -80
+Defensive: -380
+Roles: -380
+Weather: -380
+Moves: -380
+Abilities: -380
+Items: -380
+Fields: -380
+Score: -380
+ 
+Scoring for Feebas switching to: Wishiwashi
+Score: -10000000
+ 
+Scoring for Feebas switching to: Wishiwashi
+Score: -10000000
+ 
+***Round 6***
+Player Pokemon Ozzie is faster than Feebas.
+Splash: initial score: 1
+[Not preferring status move]
+Splash: final score: 0
+ 
+Beginning AI Item use check.
+ 
+Highest item score: -10000
+Highest move score: 0
+Item use turned off.
+[The foe Feebas: Splash=0]
+[Prefer Splash]
+[No Z-Move.]
+[The foe Feebas lost 16 HP, now has 0 HP]
+==============================
+Battle Start!
+118 - Richard
+==============================
+***Round 1***
+Player Pokemon Ozzie is faster than Chansey.
+Charm: initial score: 10
+Charm: final score: 0
+ 
+Metronome: initial score: 20
+Metronome: final score: 24
+ 
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (0)
+Initial switchscore building: Healing (0)
+Initial switchscore building: fsteak (0)
+Initial switchscore building: Specific Switches (0)
+Initial switchscore building: Typing (0)
+Chansey: initial switchscore: 0
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+Chansey: initial noswitchscore: 66
+ 
+{
+ 
+}
+ 
+Chansey: highest move score: 24
+Chansey: final switching score: -133
+24 > -133, will not switch
+ 
+Beginning AI Item use check.
+ 
+This is a HP-healing item.
+Cave Field Disrupt
+Score for Potion: -100
+Highest item score: -100
+Highest move score: 24
+Item use turned off.
+[The foe Chansey: Charm=0, Metronome=24]
+[Prefer Metronome]
+[No Z-Move.]
+[ Lorde lost 1 HP, now has 32 HP]
+[ Lorde lost 4 HP, now has 28 HP]
+***Round 2***
+Player Pokemon  Lorde is faster than Chansey.
+Charm: initial score: 10
+Charm: final score: 0
+ 
+Metronome: initial score: 20
+Metronome: final score: 24
+ 
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (0)
+Initial switchscore building: Healing (0)
+Initial switchscore building: fsteak (0)
+Initial switchscore building: Specific Switches (0)
+Initial switchscore building: Typing (0)
+Chansey: initial switchscore: 0
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+Chansey: initial noswitchscore: 50
+ 
+{
+ 
+}
+ 
+Chansey: highest move score: 24
+Chansey: final switching score: -125
+24 > -125, will not switch
+ 
+Beginning AI Item use check.
+ 
+This is a HP-healing item.
+Cave Field Disrupt
+Score for Potion: -100
+Highest item score: -100
+Highest move score: 24
+Item use turned off.
+[The foe Chansey: Charm=0, Metronome=24]
+[Prefer Metronome]
+[No Z-Move.]
+[The foe Chansey lost 16 HP, now has 31 HP]
+[ Lorde lost 5 HP, now has 23 HP]
+[ Lorde lost 4 HP, now has 19 HP]
+***Round 3***
+AI Pokemon Chansey is faster than  Lorde.
+Charm: initial score: 10
+Charm: final score: 0
+ 
+Metronome: initial score: 20
+Metronome: final score: 24
+ 
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (0)
+Initial switchscore building: Healing (0)
+Initial switchscore building: fsteak (0)
+Initial switchscore building: Specific Switches (0)
+Initial switchscore building: Typing (0)
+Chansey: initial switchscore: 0
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+Chansey: initial noswitchscore: 33
+ 
+{
+ 
+}
+ 
+Chansey: highest move score: 24
+Chansey: final switching score: -116
+24 > -116, will not switch
+ 
+Beginning AI Item use check.
+ 
+This is a HP-healing item.
+Cave Field Disrupt
+Score for Potion: -98
+Highest item score: -98
+Highest move score: 24
+Item use turned off.
+[The foe Chansey: Charm=0, Metronome=24]
+[Prefer Metronome]
+[No Z-Move.]
+[ Lorde lost 1 HP, now has 18 HP]
+[The foe Chansey lost 16 HP, now has 15 HP]
+[ Lorde lost 4 HP, now has 14 HP]
+***Round 4***
+AI Pokemon Chansey is faster than  Lorde.
+Charm: initial score: 10
+Charm: final score: 0
+ 
+Metronome: initial score: 20
+Metronome: final score: 24
+ 
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (0)
+Initial switchscore building: Healing (0)
+Initial switchscore building: fsteak (0)
+Initial switchscore building: Specific Switches (0)
+Initial switchscore building: Typing (0)
+Chansey: initial switchscore: 0
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+Chansey: initial noswitchscore: 16
+ 
+{
+ 
+}
+ 
+Chansey: highest move score: 24
+Chansey: final switching score: -108
+24 > -108, will not switch
+ 
+Beginning AI Item use check.
+ 
+This is a HP-healing item.
+Cave Field Disrupt
+Score for Potion: -83
+Highest item score: -83
+Highest move score: 24
+Item use turned off.
+[The foe Chansey: Charm=0, Metronome=24]
+[Prefer Metronome]
+[No Z-Move.]
+[The foe Chansey lost 15 HP, now has 0 HP]
+***Round 5***
+AI Pokemon Audino is faster than  Lorde.
+Baby-Doll Eyes: initial score: 15
+Priority Check End
+Baby-Doll Eyes: final score: 0
+ 
+Disarming Voice: initial score: 17
+Disarming Voice: final score: 17
+ 
+Enchant: initial score: 25
+Enchant: final score: 30
+ 
+Beginning AI Item use check.
+ 
+This is a HP-healing item.
+Cave Field Disrupt
+Score for Potion: -100
+Highest item score: -100
+Highest move score: 30
+Item use turned off.
+[The foe Audino: Baby-Doll Eyes=0, Disarming Voice=17, Enchant=30]
+[Prefer Enchant]
+[No Z-Move.]
+[The foe Audino lost 10 HP, now has 19 HP]
+***Round 6***
+AI Pokemon Audino is faster than  Lorde.
+Baby-Doll Eyes: initial score: 15
+Priority Check End
+Baby-Doll Eyes: final score: 0
+ 
+Disarming Voice: initial score: 17
+Disarming Voice: final score: 17
+ 
+Enchant: initial score: 25
+Enchant: final score: 0
+ 
+Beginning AI Item use check.
+ 
+This is a HP-healing item.
+Cave Field Disrupt
+Score for Potion: -97
+Highest item score: -97
+Highest move score: 17
+Item use turned off.
+[The foe Audino: Baby-Doll Eyes=0, Disarming Voice=17, Enchant=0]
+[Prefer Disarming Voice]
+[No Z-Move.]
+[ Lorde lost 6 HP, now has 11 HP]
+[Ozzie lost 4 HP, now has 26 HP]
+***Round 7***
+Player Pokemon Ozzie is faster than Audino.
+Baby-Doll Eyes: initial score: 15
+Priority Check End
+Baby-Doll Eyes: final score: 0
+ 
+Disarming Voice: initial score: 11
+Disarming Voice: final score: 11
+ 
+Enchant: initial score: 25
+Enchant: final score: 30
+ 
+Beginning AI Item use check.
+ 
+This is a HP-healing item.
+Cave Field Disrupt
+Score for Potion: -97
+Highest item score: -97
+Highest move score: 30
+Item use turned off.
+[The foe Audino: Baby-Doll Eyes=0, Disarming Voice=11, Enchant=30]
+[Prefer Enchant]
+[No Z-Move.]
+[The foe Audino lost 19 HP, now has 0 HP]
+==============================
+Battle Start!
+32 - Katar
+==============================
+***Round 1***
+Player Pokemon Ozzie is faster than Magikarp.
+Splash: initial score: 1
+Splash: final score: 1
+ 
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (0)
+Initial switchscore building: Healing (0)
+Initial switchscore building: fsteak (0)
+Initial switchscore building: Specific Switches (0)
+Initial switchscore building: Typing (0)
+Magikarp: initial switchscore: 0
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+Magikarp: initial noswitchscore: 66
+ 
+{
+ 
+}
+ 
+Magikarp: highest move score: 1
+Magikarp: final switching score: -33
+1 > -33, will not switch
+ 
+Beginning AI Item use check.
+ 
+Highest item score: -10000
+Highest move score: 1
+Item use turned off.
+[The foe Magikarp: Splash=1]
+[Prefer Splash]
+[No Z-Move.]
+[The foe Magikarp lost 16 HP, now has 0 HP]
+Scoring for Magikarp switching to: Magikarp
+Score: -10000000
+Not switching to self.
+Scoring for Magikarp switching to: Magikarp
+Offensive: -80
+Defensive: -380
+Roles: -380
+Weather: -380
+Moves: -380
+Abilities: -380
+Items: -380
+Fields: -380
+Score: -380
+ 
+Scoring for Magikarp switching to: Feebas
+Offensive: -80
+Defensive: -380
+Roles: -380
+Weather: -380
+Moves: -380
+Abilities: -380
+Items: -380
+Fields: -380
+Score: -380
+ 
+Scoring for Magikarp switching to: Feebas
+Offensive: -80
+Defensive: -380
+Roles: -380
+Weather: -380
+Moves: -380
+Abilities: -380
+Items: -380
+Fields: -380
+Score: -380
+ 
+Scoring for Magikarp switching to: Wishiwashi
+Offensive: 3
+Defensive: -296
+Roles: -296
+Weather: -296
+Moves: -296
+Abilities: -296
+Items: -296
+Fields: -296
+Score: -296
+ 
+Scoring for Magikarp switching to: Wishiwashi
+Offensive: 3
+Defensive: -296
+Roles: -296
+Weather: -296
+Moves: -296
+Abilities: -296
+Items: -296
+Fields: -296
+Score: -296
+ 
+***Round 2***
+Player Pokemon Ozzie is faster than Wishiwashi.
+Water Gun: initial score: 11
+Water Gun: final score: 11
+ 
+Growl: initial score: 10
+Growl: final score: 10
+ 
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (0)
+Initial switchscore building: Healing (0)
+Initial switchscore building: fsteak (0)
+Initial switchscore building: Specific Switches (0)
+Initial switchscore building: Typing (0)
+Wishiwashi: initial switchscore: 0
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+Wishiwashi: initial noswitchscore: 66
+ 
+{
+ 
+}
+ 
+Wishiwashi: highest move score: 11
+Wishiwashi: final switching score: -33
+11 > -33, will not switch
+ 
+Beginning AI Item use check.
+ 
+Highest item score: -10000
+Highest move score: 11
+Item use turned off.
+[The foe Wishiwashi: Water Gun=11, Growl=10]
+[Prefer Water Gun]
+[No Z-Move.]
+[The foe Wishiwashi lost 18 HP, now has 0 HP]
+Scoring for Wishiwashi switching to: Magikarp
+Score: -10000000
+ 
+Scoring for Wishiwashi switching to: Magikarp
+Offensive: -80
+Defensive: -380
+Roles: -380
+Weather: -380
+Moves: -380
+Abilities: -380
+Items: -380
+Fields: -380
+Score: -380
+ 
+Scoring for Wishiwashi switching to: Feebas
+Offensive: -80
+Defensive: -380
+Roles: -380
+Weather: -380
+Moves: -380
+Abilities: -380
+Items: -380
+Fields: -380
+Score: -380
+ 
+Scoring for Wishiwashi switching to: Feebas
+Offensive: -80
+Defensive: -380
+Roles: -380
+Weather: -380
+Moves: -380
+Abilities: -380
+Items: -380
+Fields: -380
+Score: -380
+ 
+Scoring for Wishiwashi switching to: Wishiwashi
+Score: -10000000
+Not switching to self.
+Scoring for Wishiwashi switching to: Wishiwashi
+Offensive: 3
+Defensive: -296
+Roles: -296
+Weather: -296
+Moves: -296
+Abilities: -296
+Items: -296
+Fields: -296
+Score: -296
+ 
+***Round 3***
+Player Pokemon Ozzie is faster than Wishiwashi.
+Water Gun: initial score: 11
+Water Gun: final score: 11
+ 
+Growl: initial score: 10
+Growl: final score: 10
+ 
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (0)
+Initial switchscore building: Healing (0)
+Initial switchscore building: fsteak (0)
+Initial switchscore building: Specific Switches (0)
+Initial switchscore building: Typing (0)
+Wishiwashi: initial switchscore: 0
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+Wishiwashi: initial noswitchscore: 66
+ 
+{
+ 
+}
+ 
+Wishiwashi: highest move score: 11
+Wishiwashi: final switching score: -33
+11 > -33, will not switch
+ 
+Beginning AI Item use check.
+ 
+Highest item score: -10000
+Highest move score: 11
+Item use turned off.
+[The foe Wishiwashi: Water Gun=11, Growl=10]
+[Prefer Water Gun]
+[No Z-Move.]
+[The foe Wishiwashi lost 18 HP, now has 0 HP]
+Scoring for Wishiwashi switching to: Magikarp
+Score: -10000000
+ 
+Scoring for Wishiwashi switching to: Magikarp
+Offensive: -80
+Defensive: -380
+Roles: -380
+Weather: -380
+Moves: -380
+Abilities: -380
+Items: -380
+Fields: -380
+Score: -380
+ 
+Scoring for Wishiwashi switching to: Feebas
+Offensive: -80
+Defensive: -380
+Roles: -380
+Weather: -380
+Moves: -380
+Abilities: -380
+Items: -380
+Fields: -380
+Score: -380
+ 
+Scoring for Wishiwashi switching to: Feebas
+Offensive: -80
+Defensive: -380
+Roles: -380
+Weather: -380
+Moves: -380
+Abilities: -380
+Items: -380
+Fields: -380
+Score: -380
+ 
+Scoring for Wishiwashi switching to: Wishiwashi
+Score: -10000000
+ 
+Scoring for Wishiwashi switching to: Wishiwashi
+Score: -10000000
+Not switching to self.
+***Round 4***
+Player Pokemon Ozzie is faster than Magikarp.
+Splash: initial score: 1
+Splash: final score: 1
+ 
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (0)
+Initial switchscore building: Healing (0)
+Initial switchscore building: fsteak (0)
+Initial switchscore building: Specific Switches (0)
+Initial switchscore building: Typing (0)
+Magikarp: initial switchscore: 0
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+Magikarp: initial noswitchscore: 66
+ 
+{
+ 
+}
+ 
+Magikarp: highest move score: 1
+Magikarp: final switching score: -33
+1 > -33, will not switch
+ 
+Beginning AI Item use check.
+ 
+Highest item score: -10000
+Highest move score: 1
+Item use turned off.
+[The foe Magikarp: Splash=1]
+[Prefer Splash]
+[No Z-Move.]
+[The foe Magikarp lost 16 HP, now has 0 HP]
+Scoring for Magikarp switching to: Magikarp
+Score: -10000000
+ 
+Scoring for Magikarp switching to: Magikarp
+Score: -10000000
+Not switching to self.
+Scoring for Magikarp switching to: Feebas
+Offensive: -80
+Defensive: -380
+Roles: -380
+Weather: -380
+Moves: -380
+Abilities: -380
+Items: -380
+Fields: -380
+Score: -380
+ 
+Scoring for Magikarp switching to: Feebas
+Offensive: -80
+Defensive: -380
+Roles: -380
+Weather: -380
+Moves: -380
+Abilities: -380
+Items: -380
+Fields: -380
+Score: -380
+ 
+Scoring for Magikarp switching to: Wishiwashi
+Score: -10000000
+ 
+Scoring for Magikarp switching to: Wishiwashi
+Score: -10000000
+ 
+***Round 5***
+Player Pokemon Ozzie is faster than Feebas.
+Splash: initial score: 1
+Splash: final score: 1
+ 
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (0)
+Initial switchscore building: Healing (0)
+Initial switchscore building: fsteak (0)
+Initial switchscore building: Specific Switches (0)
+Initial switchscore building: Typing (0)
+Feebas: initial switchscore: 0
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+Feebas: initial noswitchscore: 66
+ 
+{
+ 
+}
+ 
+Feebas: highest move score: 1
+Feebas: final switching score: -33
+1 > -33, will not switch
+ 
+Beginning AI Item use check.
+ 
+Highest item score: -10000
+Highest move score: 1
+Item use turned off.
+[The foe Feebas: Splash=1]
+[Prefer Splash]
+[No Z-Move.]
+[The foe Feebas lost 16 HP, now has 0 HP]
+Scoring for Feebas switching to: Magikarp
+Score: -10000000
+ 
+Scoring for Feebas switching to: Magikarp
+Score: -10000000
+ 
+Scoring for Feebas switching to: Feebas
+Score: -10000000
+Not switching to self.
+Scoring for Feebas switching to: Feebas
+Offensive: -80
+Defensive: -380
+Roles: -380
+Weather: -380
+Moves: -380
+Abilities: -380
+Items: -380
+Fields: -380
+Score: -380
+ 
+Scoring for Feebas switching to: Wishiwashi
+Score: -10000000
+ 
+Scoring for Feebas switching to: Wishiwashi
+Score: -10000000
+ 
+***Round 6***
+Player Pokemon Ozzie is faster than Feebas.
+Splash: initial score: 1
+[Not preferring status move]
+Splash: final score: 0
+ 
+Beginning AI Item use check.
+ 
+Highest item score: -10000
+Highest move score: 0
+Item use turned off.
+[The foe Feebas: Splash=0]
+[Prefer Splash]
+[No Z-Move.]
+[The foe Feebas lost 16 HP, now has 0 HP]
+==============================
+Battle Start!
+Wild Battle
+==============================
+***Round 1***
+==============================
+Battle Start!
+Wild Battle
+==============================
+***Round 1***
+==============================
+Battle Start!
+Wild Battle
+==============================
+***Round 1***

@@ -5121,7 +5121,7 @@ class PokeBattle_Move
     if opponent.pbOwnSide.effects[PBEffects::QuickGuard] > 0 &&  @priority >= 1 && @basedamage > 0
       finaldamagemult=(finaldamagemult*0.5).round
     end
-    if opponent.pbOwnSide.effects[PBEffects::WideGuard] > 0 &&  @target==PBTargets::AllOpposing && @basedamage > 0
+    if opponent.pbOwnSide.effects[PBEffects::WideGuard] > 0 && (@target==PBTargets::AllOpposing || @target==PBTargets::AllNonUsers) && @basedamage > 0
       finaldamagemult=(finaldamagemult*0.5).round
     end
     # Gravity damage modifiers

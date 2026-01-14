@@ -2226,8 +2226,8 @@ class PokeBattle_Scene
       trialname="Grass"
     elsif environ==PBEnvironment::Sand
       trialname="Sand"
-#    elsif $PokemonGlobal.surfing
-#      trialname="Water"
+    elsif $PokemonGlobal.surfing || $PokemonGlobal.swimming
+      trialname="Water"
     elsif $PokemonGlobal.lavasurfing
       trialname="Volcano"
     end
@@ -2394,7 +2394,7 @@ class PokeBattle_Scene
       fieldbd = 26
       backdrop = "MurkwaterSurface"
     end
-    if $PokemonGlobal.surfing
+    if $PokemonGlobal.surfing || $PokemonGlobal.swimming
       fieldbd = 21
       backdrop = "Water"
     end
