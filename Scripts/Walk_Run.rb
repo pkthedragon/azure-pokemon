@@ -89,15 +89,15 @@ class Game_Player
     end
 	if $PokemonGlobal && $PokemonGlobal.respond_to?(:swimming)
     terrain = pbGetTerrainTag
-    on_water = (terrain == PBTerrain::Water || terrain == PBTerrain::DeepWater)  # adjust tags to your project
+    on_still_water = pbIsStillWaterTag?(terrain)  # Only still water allows swimming
 
     # Don't fight with Surf/Dive/Lava states
       if !$PokemonGlobal.surfing && !$PokemonGlobal.diving && !$PokemonGlobal.lavasurfing
-        if $PokemonGlobal.swimming && !on_water
+        if $PokemonGlobal.swimming && !on_still_water
           $PokemonGlobal.swimming = false
           @lock_pattern = false if defined?(@lock_pattern)
           refresh if respond_to?(:refresh)   # harmless if not defined
-        elsif !$PokemonGlobal.swimming && on_water
+        elsif !$PokemonGlobal.swimming && on_still_water
           $PokemonGlobal.swimming = true
           refresh if respond_to?(:refresh)
         end

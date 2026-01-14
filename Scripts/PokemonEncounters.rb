@@ -12,6 +12,8 @@ module EncounterTypes
   LandDay      = 10
   LandNight    = 11
   BugContest   = 12
+  WaterDay     = 13
+  WaterNight   = 14
   Names=[
      "Land",
      "Cave",
@@ -25,7 +27,9 @@ module EncounterTypes
      "LandMorning",
      "LandDay",
      "LandNight",
-     "BugContest"
+     "BugContest",
+     "WaterDay",
+     "WaterNight"
   ]
   EnctypeChances=[
      [20,20,10,10,10,10,5,5,4,4,1,1],
@@ -40,10 +44,12 @@ module EncounterTypes
      [20,20,10,10,10,10,5,5,4,4,1,1],
      [20,20,10,10,10,10,5,5,4,4,1,1],
      [20,20,10,10,10,10,5,5,4,4,1,1],
-     [20,20,10,10,10,10,5,5,4,4,1,1]
+     [20,20,10,10,10,10,5,5,4,4,1,1],
+     [60,30,5,4,1],
+     [60,30,5,4,1]
   ]
-  EnctypeDensities=[25,10,10,0,0,0,0,0,0,25,25,25,25]
-  EnctypeCompileDens=[1,2,3,0,0,0,0,0,0,1,1,1,1]
+  EnctypeDensities=[25,10,10,0,0,0,0,0,0,25,25,25,25,10,10]
+  EnctypeCompileDens=[1,2,3,0,0,0,0,0,0,1,1,1,1,3,3]
 end
 
 
@@ -91,7 +97,9 @@ class PokemonEncounters
 
   def isWater?
     return false if @density==nil
-    return @enctypes[EncounterTypes::Water] ? true : false
+    return (@enctypes[EncounterTypes::Water] ||
+            @enctypes[EncounterTypes::WaterDay] ||
+            @enctypes[EncounterTypes::WaterNight]) ? true : false
   end
 
   def isDesert?
@@ -103,8 +111,15 @@ class PokemonEncounters
   end
   
   def pbEncounterType
-    if $PokemonGlobal && $PokemonGlobal.surfing
-      return EncounterTypes::Water
+    if $PokemonGlobal && ($PokemonGlobal.surfing ||
+       ($PokemonGlobal.respond_to?(:swimming) && $PokemonGlobal.swimming))
+      time = pbGetTimeNow
+      enctype = EncounterTypes::Water
+      enctype = EncounterTypes::WaterNight if self.hasEncounter?(EncounterTypes::WaterNight) && PBDayNight.isNight?(time)
+      enctype = EncounterTypes::WaterDay if self.hasEncounter?(EncounterTypes::WaterDay) && PBDayNight.isDay?(time)
+      # Morning uses WaterDay if available, otherwise falls back to Water
+      enctype = EncounterTypes::WaterDay if self.hasEncounter?(EncounterTypes::WaterDay) && PBDayNight.isMorning?(time)
+      return enctype
     elsif self.isCave?
       return EncounterTypes::Cave
     elsif self.isGrass?
@@ -133,6 +148,8 @@ class PokemonEncounters
 
   def isEncounterPossibleHere?
     if $PokemonGlobal && $PokemonGlobal.surfing
+      return true
+    elsif $PokemonGlobal && $PokemonGlobal.respond_to?(:swimming) && $PokemonGlobal.swimming
       return true
     elsif pbGetTerrainTag($game_player)==PBTerrain::Ice
       return false
