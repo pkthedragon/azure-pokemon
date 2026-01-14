@@ -440,8 +440,8 @@ class Game_Player < Game_Character
         end
       end
     end
-    # Check for HeadbuttTree terrain tag on facing tile
-    if !result && Kernel.pbFacingTerrainTag == PBTerrain::HeadbuttTree
+    # Check for Rock terrain tag on facing tile (triggers displacement/headbutt)
+    if !result && Kernel.pbFacingTerrainTag == PBTerrain::Rock
       # Check if player has any displacement move
       movefinder = Kernel.pbDisplacementCheck
       if movefinder
