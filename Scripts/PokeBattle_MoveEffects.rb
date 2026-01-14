@@ -262,7 +262,7 @@ class PokeBattle_Move_004 < PokeBattle_Move
       return -1
     end
 	have_aura = false
-    for opp in [i.pbOpposing1, i.pbOpposing2]
+    for opp in [attacker.pbOpposing1, attacker.pbOpposing2]
       next if !opp || opp.isFainted?
       have_aura = true if opp.effects[PBEffects::NightmareAura]
     end
