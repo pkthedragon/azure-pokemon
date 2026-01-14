@@ -1029,8 +1029,9 @@ class PokemonSummaryScene
     yPos=98
     for i in 0...pokemon.moves.length
       if pokemon.moves[i].id>0
+        movetype = pokemon.moves[i].type || 0
         imagepos.push(["Graphics/Pictures/types",248,yPos+2,0,
-           pokemon.moves[i].type*28,64,28])
+           movetype*28,64,28])
         textpos.push([PBMoves.getName(pokemon.moves[i].id),316,yPos,0,
            Color.new(64,64,64),Color.new(176,176,176)])
         if pokemon.moves[i].totalpp>0
@@ -1116,8 +1117,9 @@ class PokemonSummaryScene
       end
       if moveobject
         if moveobject.id!=0
+          movetype = moveobject.type || 0
           imagepos.push(["Graphics/Pictures/types",248,yPos+2,0,
-             moveobject.type*28,64,28])
+             movetype*28,64,28])
           textpos.push([PBMoves.getName(moveobject.id),316,yPos,0,
              Color.new(64,64,64),Color.new(176,176,176)])
           if moveobject.totalpp>0
