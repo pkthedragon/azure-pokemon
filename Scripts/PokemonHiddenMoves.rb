@@ -530,6 +530,23 @@ def pbEndSurf(xOffset,yOffset)
   return false
 end
 
+def pbEndSwim(xOffset,yOffset)
+  return false if !$PokemonGlobal.respond_to?(:swimming) || !$PokemonGlobal.swimming
+  return false if $PokemonGlobal.surfing  # Don't interfere with surfing
+  x = $game_player.x
+  y = $game_player.y
+  currentTag = $game_map.terrain_tag(x,y)
+  facingTag = Kernel.pbFacingTerrainTag
+  # Check if we're on still water and facing non-water (land transition)
+  if pbIsStillWaterTag?(currentTag) && !pbIsWaterTag?(facingTag)
+    $PokemonGlobal.swimming = false
+    Kernel.pbUpdateVehicle
+    # Allow seamless walk onto land (no jump needed for swimming)
+    return false  # Return false to allow normal movement to proceed
+  end
+  return false
+end
+
 def Kernel.pbTransferSurfing(mapid,xcoord,ycoord,direction=$game_player.direction)
   pbFadeOutIn(99999){
      $game_temp.player_new_map_id    = mapid

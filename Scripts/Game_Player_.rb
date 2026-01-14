@@ -66,6 +66,7 @@ class Game_Player < Game_Character
     if passable?(@x, @y, 2)
       return if pbLedge(0,1)
       return if pbEndSurf(0,1) || pbEndLavaSurf(0,1)
+      pbEndSwim(0,1)  # Handle swimming to land transition
       turn_down
       @y += 1
       $PokemonTemp.dependentEvents.pbMoveDependentEvents
@@ -86,6 +87,7 @@ class Game_Player < Game_Character
     if passable?(@x, @y, 4)
       return if pbLedge(-1,0)
       return if pbEndSurf(-1,0) || pbEndLavaSurf(-1,0)
+      pbEndSwim(-1,0)  # Handle swimming to land transition
       turn_left
       @x -= 1
       $PokemonTemp.dependentEvents.pbMoveDependentEvents
@@ -106,6 +108,7 @@ class Game_Player < Game_Character
     if passable?(@x, @y, 6)
       return if pbLedge(1,0)
       return if pbEndSurf(1,0) || pbEndLavaSurf(1,0)
+      pbEndSwim(1,0)  # Handle swimming to land transition
       turn_right
       @x += 1
       $PokemonTemp.dependentEvents.pbMoveDependentEvents
@@ -126,6 +129,7 @@ class Game_Player < Game_Character
     if passable?(@x, @y, 8)
       return if pbLedge(0,-1)
       return if pbEndSurf(0,-1) || pbEndLavaSurf(0,-1)
+      pbEndSwim(0,-1)  # Handle swimming to land transition
       turn_up
       @y -= 1
       $PokemonTemp.dependentEvents.pbMoveDependentEvents
@@ -241,9 +245,11 @@ class Game_Player < Game_Character
     dest_tag = $game_map.terrain_tag(new_x, new_y)
     here_tag = $game_map.terrain_tag(x, y) rescue nil
 
+    # Track if we were swimming before potentially turning it off
+    was_swimming = $PokemonGlobal && $PokemonGlobal.respond_to?(:swimming) && $PokemonGlobal.swimming
+
     # If we were swimming and are stepping onto non-water, turn swim off
-    if $PokemonGlobal && $PokemonGlobal.respond_to?(:swimming) &&
-       $PokemonGlobal.swimming && !pbIsWaterTag?(dest_tag)
+    if was_swimming && !pbIsWaterTag?(dest_tag)
       $PokemonGlobal.swimming = false
       Kernel.pbUpdateVehicle
     end
@@ -259,9 +265,17 @@ class Game_Player < Game_Character
       return super
     end
 
-    # Calm water: freely swimmable
-    if pbIsCalmWaterTag?(dest_tag)
-      if $PokemonGlobal && !$PokemonGlobal.surfing && !$PokemonGlobal.diving && !$PokemonGlobal.lavasurfing
+    # Still water: freely swimmable (no surfing required)
+    if pbIsStillWaterTag?(dest_tag)
+      # Transition from surfing to swimming when entering still water
+      if $PokemonGlobal && $PokemonGlobal.surfing && !$PokemonGlobal.diving
+        $PokemonGlobal.surfing = false
+        $game_map.autoplayAsCue  # Resume normal map BGM
+        if $PokemonGlobal.respond_to?(:swimming)
+          $PokemonGlobal.swimming = true
+        end
+        Kernel.pbUpdateVehicle
+      elsif $PokemonGlobal && !$PokemonGlobal.surfing && !$PokemonGlobal.diving && !$PokemonGlobal.lavasurfing
         if $PokemonGlobal.respond_to?(:swimming)
           $PokemonGlobal.swimming = true
           Kernel.pbUpdateVehicle
@@ -273,6 +287,29 @@ class Game_Player < Game_Character
       end
       return true if $DEBUG and Input.press?(Input::CTRL)
       return true
+    end
+
+    # Moving/regular water: requires surfing (not swimmable)
+    if dest_tag == PBTerrain::Water
+      return false unless $PokemonGlobal && $PokemonGlobal.surfing
+      if !$game_map.valid?(new_x, new_y)
+        return false if !$MapFactory
+        return $MapFactory.isPassableFromEdge?(new_x, new_y)
+      end
+      return true if $DEBUG and Input.press?(Input::CTRL)
+      return super
+    end
+
+    # Seamless transition from swimming to walking
+    # Allow walking from still water onto land without passability restrictions
+    if was_swimming && pbIsStillWaterTag?(here_tag) && !pbIsWaterTag?(dest_tag)
+      if !$game_map.valid?(new_x, new_y)
+        return false if !$MapFactory
+        return $MapFactory.isPassableFromEdge?(new_x, new_y)
+      end
+      return true if $DEBUG and Input.press?(Input::CTRL)
+      # Check if the destination tile itself is passable (ignoring direction from water)
+      return $game_map.passableStrict?(new_x, new_y, 0) rescue true
     end
 
     # Land and everything else: original behaviour

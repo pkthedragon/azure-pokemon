@@ -616,6 +616,10 @@ def pbIsCalmWaterTag?(tag)
          tag==PBTerrain::StillWater
 end
 
+def pbIsStillWaterTag?(tag)
+  return tag==PBTerrain::StillWater
+end
+
 def pbIsRoughWaterTag?(tag)
   return tag==PBTerrain::DeepWater
 end
