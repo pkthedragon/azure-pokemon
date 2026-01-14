@@ -21806,7 +21806,7 @@ class PokeBattle_Battle
       end  
     end  
     if @field.effects[PBEffects::GrassyTerrain]>0
-      if (move.id == PBMoves::FAIRYWIND || move.id == PBMoves::SILVERWIND)
+      if PBStuff::WINDMOVE.include?(id)
         basedamage=(basedamage*1.5).round
       end
     end  
@@ -21856,7 +21856,7 @@ class PokeBattle_Battle
           basedamage=(basedamage*2).round
         end
       when 2 # Grassy Field
-        if (move.id == PBMoves::FAIRYWIND || move.id == PBMoves::SILVERWIND)
+        if PBStuff::WINDMOVE.include?(id)
           basedamage=(basedamage*1.5).round
         end
         if (move.id == PBMoves::MUDDYWATER || move.id == PBMoves::SURF || move.id == PBMoves::EARTHQUAKE ||
