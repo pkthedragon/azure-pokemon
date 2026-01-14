@@ -3725,12 +3725,8 @@ def pbItemMenu(index)
   end
   PBDebug.log("[pbItemMenu exited loop, ret=#{ret}, retindex=#{retindex}]")
   if ret > 0
-    if !pbIsPokeBall?(ret)
-      PBDebug.log("[Consuming non-pokeball item #{ret}]")
-      pbConsumeItemInBattle($PokemonBag, ret)
-    else
-      PBDebug.log("[Not consuming pokeball #{ret}]")
-    end
+    PBDebug.log("[Consuming item #{ret}]")
+    pbConsumeItemInBattle($PokemonBag, ret)
     pbCleanupItemBelt
   end
   pbShowWindow(BLANK)
