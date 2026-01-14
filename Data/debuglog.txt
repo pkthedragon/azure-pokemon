@@ -5976,3 +5976,17 @@ Battle Start!
 Wild Battle
 ==============================
 ***Round 1***
+==============================
+Battle Start!
+Wild Battle
+==============================
+***Round 1***
+==============================
+Battle Start!
+Wild Battle
+==============================
+***Round 1***
+[The wild Unown: Hidden Power=100]
+If this battle is not wild, something has gone wrong in scoring moves (no preference chosen).
+[Ozzie lost 15 HP, now has 30 HP]
+***Round 2***

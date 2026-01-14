@@ -323,7 +323,7 @@ def Kernel.pbDisplacementEncounter(event=nil)
 
   movefinder = Kernel.pbDisplacementCheck
   if $DEBUG || movefinder
-    if Kernel.pbConfirmMessage(_INTL("A Pokémon could be in this tree. Use a displacement move?"))
+    if Kernel.pbConfirmMessage(_INTL("You might be able to shake a Pokémon down. Use a displacement move?"))
       speciesname = !movefinder ? $Trainer.name : movefinder.name
       # Find which move the Pokemon has
       movename = "Headbutt"
@@ -340,7 +340,7 @@ def Kernel.pbDisplacementEncounter(event=nil)
       Kernel.pbHeadbuttEffect(event)
     end
   else
-    Kernel.pbMessage(_INTL("A Pokémon could be in this tree. Maybe a Pokémon could shake it."))
+    Kernel.pbMessage(_INTL("You might be able to shake a Pokémon down with a displacement move."))
   end
   Input.update
   return
