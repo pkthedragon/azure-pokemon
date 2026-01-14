@@ -5993,7 +5993,6 @@ class PokeBattle_Move_0B4 < PokeBattle_Move
        0xB5,    # Assist
        0xB6,    # Metronome
        0xD1,    # Uproar
-       0xD4,    # Bide
        0x115,   # Focus Punch
 # Two-turn attacks
        0xC3,    # Razor Wind

@@ -60,7 +60,7 @@ class PokeBattle_BattlePalace < PokeBattle_Battle
   end
 
   def pbMoveCategory(move)
-    if move.target==0x10 || move.function==0xD4 # Bide
+    if move.target==0x10
       return 1
     elsif move.basedamage==0 || move.function==0x71 || # Counter
        move.function==0x72 # Mirror Coat

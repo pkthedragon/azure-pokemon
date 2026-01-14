@@ -10909,43 +10909,6 @@ class PokeBattle_Battle
           score*=1.3
         end
       end
-    when 0xD4 # Bide
-      statmove = false
-      movelength = -1
-      for j in aimem
-        movelength = aimem.length
-        if j.basedamage==0
-          statmove=true
-        end
-      end
-      if ((attitemworks && attacker.item == PBItems::FOCUSSASH) || (!attacker.abilitynulled && attacker.ability == PBAbilities::STURDY))
-        score*=1.2
-      end
-      miniscore = attacker.hp*(1.0/attacker.totalhp)
-      score*=miniscore
-      if checkAIdamage(aimem,attacker,opponent,skill)*2 > attacker.hp
-        score*=0.2
-      end
-      if attacker.hp*3<attacker.totalhp
-        score*=0.7
-      end
-      if (attitemworks && attacker.item == PBItems::LEFTOVERS) || ((attitemworks && attacker.item == PBItems::BLACKSLUDGE) && attacker.pbHasType?(:POISON))
-        score*=1.1
-      end
-      if roles.include?(PBMonRoles::PHYSICALWALL) || roles.include?(PBMonRoles::SPECIALWALL)
-        score*=1.3
-      end
-      if (attacker.pbSpeed<pbRoughStat(opponent,PBStats::SPEED,skill)) ^ (@trickroom!=0)
-        score*=1.3
-      end
-      score*=0.5 if checkAImoves(PBStuff::SETUPMOVE,aimem)
-      if statmove
-        score*=0.8
-      else
-        if movelength==4
-          score*=1.3
-        end
-      end
     when 0xD5 # Recover
       fastermon=((attacker.pbSpeed>pbRoughStat(opponent,PBStats::SPEED,skill)) ^ (@trickroom!=0)) || (attacker.hasWorkingAbility(:PRANKSTER) || attacker.hasWorkingAbility(:TRIAGE)) 
       halfhealth=(attacker.totalhp/2)
@@ -20882,40 +20845,6 @@ class PokeBattle_Battle
       if skill>=PBTrainerAI.mediumSkill
         basedamage*=2 if attacker.effects[PBEffects::DefenseCurl]
       end
-    when 0xD4 # Bide
-      maxdam=30
-      if skill>=PBTrainerAI.highSkill
-        if @aiMoveMemory[2][opponent.pokemonIndex].length>0
-          for j in @aiMoveMemory[2][opponent.pokemonIndex]
-            next if j.basedamage<=1
-            tempdam = pbRoughDamage(j,opponent,attacker,skill,j.basedamage)*1.5
-            if tempdam>maxdam
-              maxdam=tempdam
-            end
-          end
-        end
-      elsif skill>=PBTrainerAI.averageSkill
-        if @aiMoveMemory[1].length>0
-          for j in @aiMoveMemory[1]
-            next if j.basedamage<=1
-            tempdam = pbRoughDamage(j,opponent,attacker,skill,j.basedamage)*1.5
-            if tempdam>maxdam
-              maxdam=tempdam
-            end
-          end
-        end
-      elsif skill>=PBTrainerAI.mediumSkill
-        if @aiMoveMemory[0].length>0
-          for j in @aiMoveMemory[0]
-            next if j.basedamage<=1
-            tempdam = pbRoughDamage(j,opponent,attacker,skill,j.basedamage)*1.5
-            if tempdam>maxdam
-              maxdam=tempdam
-            end
-          end
-        end
-      end
-      basedamage = maxdam
     when 0xE1 # Final Gambit
       basedamage=attacker.hp
     when 0xF7 # Fling
@@ -21387,7 +21316,6 @@ class PokeBattle_Battle
       move.function==0x71 ||   # Counter
       move.function==0x72 ||   # Mirror Coat
       move.function==0x73 ||   # Metal Burst
-      move.function==0xD4 ||   # Bide
       move.function==0xE1      # Final Gambit
       type=move.type
       type=move.pbType(type,attacker,opponent)

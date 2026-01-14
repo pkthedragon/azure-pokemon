@@ -91,8 +91,7 @@ class PokeBattle_BattleArena < PokeBattle_Battle
       return -1
     end
     if move.function==0x71 || # Counter
-       move.function==0x72 || # Mirror Coat
-       move.function==0xD4    # Bide
+       move.function==0x72    # Mirror Coat
       return 0
     end
     if move.basedamage==0

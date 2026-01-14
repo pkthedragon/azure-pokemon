@@ -341,7 +341,7 @@
 324,FURYATTACK,Fury Attack,0C0,18,FLYING,Physical,90,15,0,00,0,abef,"Hits 2-5 times. Piercing."
 325,WRAP,Wrap,0CF,20,NORMAL,Physical,100,10,0,00,0,abef,"Traps the target for four to five turns. Dealing 1/8th max HP each turn."
 326,CONSTRICT,Constrict,044,40,NORMAL,Physical,100,20,30,00,0,abe,"30% chance to lower speed."
-327,BIDE,Bide,0D4,1,NORMAL,Physical,0,10,0,10,1,abf,"The user endures for two turns, then strikes back to cause double the damage taken."
+327,BIDE,Bide,081,60,NORMAL,Physical,100,10,0,00,-4,abef,"Inflicts double the damage if the user has been hurt by the opponent in the same turn."
 328,CRUSHGRIP,Crush Grip,08C,1,NORMAL,Physical,100,5,100,00,0,abef,"More powerful the higher the target's HP. Crushes the target."
 329,ENDEAVOR,Endeavor,06E,1,NORMAL,Physical,100,5,0,00,0,abef,"An attack move that cuts down the target's HP to equal the user's HP."
 330,FLAIL,Flail,098,1,NORMAL,Physical,100,5,0,00,0,abef,"The user flails about to attack. It becomes more powerful the less HP the user has."
