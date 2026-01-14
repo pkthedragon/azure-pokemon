@@ -264,7 +264,7 @@
 264,MASTERBALL,Master Ball,3,0,The best Ball with the ultimate level of performance. It will catch any wild Pokémon without fail.,0,2,4,
 265,ULTRABALL,Ultra Ball,3,1200,An ultra-performance Ball for catching wild Pokémon when trapped or with a status condition. Can catch unconditionally when the target is below 75% HP.,0,2,4,
 266,GREATBALL,Great Ball,3,600,A good Ball for catching wild Pokémon when trapped or with a status condition. Can catch unconditionally when the target is below 50% HP.,0,2,4,
-267,POKEBALL,Poké Ball,3,200,A device for catching wild Pokémon when trapped or with a status condition. Can catch unconditionally when the target is below 25% HP.,0,2,4,
+267,POKEBALL,Poké Ball,3,200,Catches unconditionally when the target is below 25% HP.,0,2,4,
 268,SAFARIBALL,Safari Ball,3,0,A special Poké Ball that is used only in the Great Marsh. It is decorated in a camouflage pattern.,0,2,4,
 269,SPORTBALL,Sport Ball,3,0,A special Poké Ball for the Bug-Catching Contest.,0,2,4,
 270,NETBALL,Net Ball,3,1000,A Poké Ball for catching Water and Bug-type Pokémon. Also works on trapped Pokémon or those with a status condition.,0,2,4,
@@ -281,10 +281,10 @@
 281,FASTBALL,Fast Ball,3,300,A Poké Ball that makes it easier to catch Pokémon which are quick to run away.,0,2,4,
 282,LEVELBALL,Level Ball,3,300,A Poké Ball for catching Pokémon that are a lower level than your own.,0,2,4,
 283,LUREBALL,Lure Ball,3,300,A Poké Ball for catching Pokémon hooked by a Rod when fishing.,0,2,4,
-284,HEAVYBALL,Heavy Ball,3,300,A Poké Ball for catching Pokémon weighing 2000 or more. Also works on trapped Pokémon or those with a status condition.,0,2,4,
+284,HEAVYBALL,Heavy Ball,3,300,A Poké Ball for catching Pokémon weighing 2000 or more.,0,2,4,
 285,LOVEBALL,Love Ball,3,300,A Poké Ball for catching Pokémon that are the opposite gender of your Pokémon.,0,2,4,
-286,FRIENDBALL,Friend Ball,3,300,A Ball that maximizes caught Pokémon's friendship. Works when target is below 50% HP or is trapped/has a status condition.,0,2,4,
-287,MOONBALL,Moon Ball,3,300,A Poké Ball for catching Dark and Fairy-type Pokémon. Also works on trapped Pokémon or those with a status condition.,0,2,4,
+286,FRIENDBALL,Friend Ball,3,300,A Ball that maximizes caught Pokémon's friendship. Works when target is below 50% HP.,0,2,4,
+287,MOONBALL,Moon Ball,3,300,A Poké Ball for catching Dark and Fairy-type Pokémon.,0,2,4,
 288,TM01,TM01,4,3000,"The user is roused, and its Attack and Sp. Atk stats increase.",3,0,0,WORKUP
 289,TM02,TM02,4,3000,"The user slashes the target with huge, sharp claws.",3,0,0,DRAGONCLAW
 290,TM03,TM03,4,3000,The user materializes an odd psychic wave to attack the target. This attack does physical damage.,3,0,0,PSYSHOCK
