@@ -4205,6 +4205,7 @@ MultipleForms.register(:TORCHIC,{
     end
   },
   "getMoveList"=>proc{|pokemon|
+    next if pokemon.form==0      # Use default moveset for base form
     movelist=[]
     case pokemon.form            # Mystic
     when 1 ; movelist=[[1,:SCRATCH],[1,:GROWL],[5,:ROCKTHROW],[9,:PECK],
@@ -4248,6 +4249,7 @@ MultipleForms.register(:COMBUSKEN,{
     end
   },
   "getMoveList"=>proc{|pokemon|
+    next if pokemon.form==0      # Use default moveset for base form
     movelist=[]
     case pokemon.form            # Mystic
     when 1 ; movelist=[[0,:POISONSWEEP],[1,:SCRATCH],[1,:GROWL],[1,:LITHOFORM],
@@ -4292,6 +4294,7 @@ MultipleForms.register(:BLAZIKEN,{
     end
   },
   "getMoveList"=>proc{|pokemon|
+    next if pokemon.form==0      # Use default moveset for base form
     movelist=[]
     case pokemon.form            # Mystic
     when 1 ; movelist=[[0,:VILETOUCH],[1,:POISONSWEEP],[1,:PINMISSILE],[1,:SPIKECANNON],
@@ -4337,6 +4340,7 @@ MultipleForms.register(:MUDKIP,{
     end
   },
   "getMoveList"=>proc{|pokemon|
+    next if pokemon.form==0      # Use default moveset for base form
     movelist=[]
     case pokemon.form            # Mystic
     when 1 ; movelist=[[1,:TACKLE],[1,:GROWL],[4,:KARATECHOP],[6,:FORESIGHT],
@@ -4380,6 +4384,7 @@ MultipleForms.register(:MARSHTOMP,{
     end
   },
   "getMoveList"=>proc{|pokemon|
+    next if pokemon.form==0      # Use default moveset for base form
     movelist=[]
     case pokemon.form            # Mystic
     when 1 ; movelist=[[0,:BELLOW],[1,:DUALCHOP],[1,:SURF],[1,:TACKLE],
@@ -4424,6 +4429,7 @@ MultipleForms.register(:SWAMPERT,{
     end
   },
   "getMoveList"=>proc{|pokemon|
+    next if pokemon.form==0      # Use default moveset for base form
     movelist=[]
     case pokemon.form            # Mystic
     when 1 ; movelist=[[0,:DRAGONJAUNT],[1,:BELLOW],[1,:AURASPHERE],[1,:HAMMERARM],
@@ -4469,6 +4475,7 @@ MultipleForms.register(:TREECKO,{
     end
   },
   "getMoveList"=>proc{|pokemon|
+    next if pokemon.form==0      # Use default moveset for base form
     movelist=[]
     case pokemon.form            # Mystic
     when 1 ; movelist=[[1,:POUND],[1,:LEER],[3,:GUST],[6,:MIST],
@@ -4511,6 +4518,7 @@ MultipleForms.register(:GROVYLE,{
     end
   },
   "getMoveList"=>proc{|pokemon|
+    next if pokemon.form==0      # Use default moveset for base form
     movelist=[]
     case pokemon.form            # Mystic
     when 1 ; movelist=[[0,:MIMIC],[1,:POUND],[1,:LEER],[1,:MIST],
@@ -4555,6 +4563,7 @@ MultipleForms.register(:SCEPTILE,{
     end
   },
   "getMoveList"=>proc{|pokemon|
+    next if pokemon.form==0      # Use default moveset for base form
     movelist=[]
     case pokemon.form            # Mystic
     when 1 ; movelist=[[0,:MISTYSTEP],[1,:MIMIC],[1,:TAILWIND],[1,:AURASPHERE],
@@ -4600,6 +4609,7 @@ MultipleForms.register(:FENNEKIN,{
     end
   },
   "getMoveList"=>proc{|pokemon|
+    next if pokemon.form==0      # Use default moveset for base form
     movelist=[]
     case pokemon.form            # Mystic
     when 1 ; movelist=[[1,:SCRATCH],[1,:TAILWHIP],[5,:BUBBLE],[11,:PLAYNICE],
@@ -4642,6 +4652,7 @@ MultipleForms.register(:BRAIXEN,{
     end
   },
   "getMoveList"=>proc{|pokemon|
+    next if pokemon.form==0      # Use default moveset for base form
     movelist=[]
     case pokemon.form            # Mystic
     when 1 ; movelist=[[0,:INCINERATE],[1,:SCRATCH],[1,:TAILWHIP],[1,:BUBBLE],
@@ -4685,6 +4696,7 @@ MultipleForms.register(:DELPHOX,{
     end
   },
   "getMoveList"=>proc{|pokemon|
+    next if pokemon.form==0      # Use default moveset for base form
     movelist=[]
     case pokemon.form            # Mystic
     when 1 ; movelist=[[0,:PYROCLASM],[1,:INCINERATE],[1,:RECOVER],[1,:FOLLOWME],
@@ -4730,6 +4742,7 @@ MultipleForms.register(:FROAKIE,{
     end
   },
   "getMoveList"=>proc{|pokemon|
+    next if pokemon.form==0      # Use default moveset for base form
     movelist=[]
     case pokemon.form            # Mystic
     when 1 ; movelist=[[1,:POUND],[1,:GROWL],[5,:HELPINGHAND],[8,:DISARMINGVOICE],
@@ -4772,6 +4785,7 @@ MultipleForms.register(:FROGADIER,{
     end
   },
   "getMoveList"=>proc{|pokemon|
+    next if pokemon.form==0      # Use default moveset for base form
     movelist=[]
     case pokemon.form            # Mystic
     when 1 ; movelist=[[0,:MEGADRAIN],[1,:POUND],[1,:GROWL],[1,:HELPINGHAND],
@@ -4814,6 +4828,7 @@ MultipleForms.register(:GRENINJA,{
     end
   },
   "getMoveList"=>proc{|pokemon|
+    next if pokemon.form==0      # Use default moveset for base form
     movelist=[]
     case pokemon.form            # Mystic
     when 1 ; movelist=[[0,:NATURALORDER],[1,:MEGADRAIN],[1,:PETALDANCE],[1,:SNARL],
@@ -4858,6 +4873,7 @@ MultipleForms.register(:CHESPIN,{
     end
   },
   "getMoveList"=>proc{|pokemon|
+    next if pokemon.form==0      # Use default moveset for base form
     movelist=[]
     case pokemon.form            # Mystic
     when 1 ; movelist=[[1,:GROWL],[1,:TACKLE],[5,:PESTER],[8,:ROLLOUT],
@@ -4900,6 +4916,7 @@ MultipleForms.register(:QUILLADIN,{
     end
   },
   "getMoveList"=>proc{|pokemon|
+    next if pokemon.form==0      # Use default moveset for base form
     movelist=[]
     case pokemon.form            # Mystic
     when 1 ; movelist=[[0,:SPARK],[1,:GROWL],[1,:TACKLE],[5,:PESTER],
@@ -4942,6 +4959,7 @@ MultipleForms.register(:CHESNAUGHT,{
     end
   },
   "getMoveList"=>proc{|pokemon|
+    next if pokemon.form==0      # Use default moveset for base form
     movelist=[]
     case pokemon.form            # Mystic
     when 1 ; movelist=[[0,:STORMHOLD],[1,:SPARK],[1,:GYROBALL],[1,:SPIKECANNON],
@@ -4986,6 +5004,7 @@ MultipleForms.register(:FUECOCO,{
     end
   },
   "getMoveList"=>proc{|pokemon|
+    next if pokemon.form==0      # Use default moveset for base form
     movelist=[]
     case pokemon.form            # Mystic
     when 1 ; movelist=[[1,:TACKLE],[1,:LEER],[5,:MUDSLAP],[7,:ASTONISH],
@@ -5027,6 +5046,7 @@ MultipleForms.register(:CROCALOR,{
     end
   },
   "getMoveList"=>proc{|pokemon|
+    next if pokemon.form==0      # Use default moveset for base form
     movelist=[]
     case pokemon.form            # Mystic
     when 1 ; movelist=[[0,:PURSUIT],[1,:TACKLE],[1,:LEER],[5,:MUDSLAP],
@@ -5069,6 +5089,7 @@ MultipleForms.register(:SKELEDIRGE,{
     end
   },
   "getMoveList"=>proc{|pokemon|
+    next if pokemon.form==0      # Use default moveset for base form
     movelist=[]
     case pokemon.form            # Mystic
     when 1 ; movelist=[[0,:PHANTOMCALL],[1,:PURSUIT],[1,:SING],[1,:PAINSPLIT],
@@ -5113,6 +5134,7 @@ MultipleForms.register(:QUAXLY,{
     end
   },
   "getMoveList"=>proc{|pokemon|
+    next if pokemon.form==0      # Use default moveset for base form
     movelist=[]
     case pokemon.form            # Mystic
     when 1 ; movelist=[[1,:GROWL],[1,:POUND],[5,:POWDERSNOW],[7,:FEATHERDANCE],
@@ -5154,6 +5176,7 @@ MultipleForms.register(:QUAXWELL,{
     end
   },
   "getMoveList"=>proc{|pokemon|
+    next if pokemon.form==0      # Use default moveset for base form
     movelist=[]
     case pokemon.form            # Mystic
     when 1 ; movelist=[[0,:HEARTSTAMP],[1,:GROWL],[1,:POUND],[5,:POWDERSNOW],
@@ -5196,6 +5219,7 @@ MultipleForms.register(:QUAQUAVAL,{
     end
   },
   "getMoveList"=>proc{|pokemon|
+    next if pokemon.form==0      # Use default moveset for base form
     movelist=[]
     case pokemon.form            # Mystic
     when 1 ; movelist=[[0,:SWANDIVE],[1,:HEARTSTAMP],[1,:STOREDPOWER],[1,:EARTHPOWER],
@@ -5239,6 +5263,7 @@ MultipleForms.register(:SPRIGATITO,{
     end
   },
   "getMoveList"=>proc{|pokemon|
+    next if pokemon.form==0      # Use default moveset for base form
     movelist=[]
     case pokemon.form            # Mystic
     when 1 ; movelist=[[1,:SCRATCH],[1,:TAILWHIP],[5,:METALCLAW],[7,:FURYSWIPES],
@@ -5281,6 +5306,7 @@ MultipleForms.register(:FLORAGATO,{
     end
   },
   "getMoveList"=>proc{|pokemon|
+    next if pokemon.form==0      # Use default moveset for base form
     movelist=[]
     case pokemon.form            # Mystic
     when 1 ; movelist=[[0,:SHADOWSNEAK],[1,:SCRATCH],[1,:TAILWHIP],[5,:METALCLAW],
@@ -5323,6 +5349,7 @@ MultipleForms.register(:MEOWSCARADA,{
     end
   },
   "getMoveList"=>proc{|pokemon|
+    next if pokemon.form==0      # Use default moveset for base form
     movelist=[]
     case pokemon.form            # Mystic
     when 1 ; movelist=[[0,:CURTAINCALL],[1,:SHADOWSNEAK],[1,:NEEDLEARM],[1,:SPIRITSHACKLE],
@@ -5370,6 +5397,7 @@ MultipleForms.register(:POOCHYENA,{
     end
   },
   "getMoveList"=>proc{|pokemon|
+    next if pokemon.form==0      # Use default moveset for base form
     movelist=[]
     case pokemon.form            # Mystic
     when 1 ; movelist=[[1,:TACKLE],[4,:GROWL],[7,:EMBER],[10,:ESSENCEFEED],
@@ -5416,6 +5444,7 @@ MultipleForms.register(:MIGHTYENA,{
     end
   },
   "getMoveList"=>proc{|pokemon|
+    next if pokemon.form==0      # Use default moveset for base form
     movelist=[]
     case pokemon.form            # Mystic
     when 1 ; movelist=[[0,:SMOG],[1,:GLARE],[1,:INFERNO],[1,:DARKPULSE],
@@ -5464,6 +5493,7 @@ MultipleForms.register(:RIOLU,{
     end
   },
   "getMoveList"=>proc{|pokemon|
+    next if pokemon.form==0      # Use default moveset for base form
     movelist=[]
     # TODO: Fill Mystic Riolu movelist as [level,:MOVE] entries
     for i in movelist
@@ -5504,6 +5534,7 @@ MultipleForms.register(:LUCARIO,{
     end
   },
   "getMoveList"=>proc{|pokemon|
+    next if pokemon.form==0      # Use default moveset for base form
     movelist=[]
     # TODO: Fill Mystic Lucario movelist as [level,:MOVE] entries
     for i in movelist
@@ -5541,6 +5572,7 @@ MultipleForms.register(:GASTLY,{
     end
   },
   "getMoveList"=>proc{|pokemon|
+    next if pokemon.form==0      # Use default moveset for base form
     movelist=[]
     # TODO: Fill Mystic Gastly movelist as [level,:MOVE] entries
     for i in movelist
@@ -5578,6 +5610,7 @@ MultipleForms.register(:HAUNTER,{
     end
   },
   "getMoveList"=>proc{|pokemon|
+    next if pokemon.form==0      # Use default moveset for base form
     movelist=[]
     # TODO: Fill Mystic Haunter movelist as [level,:MOVE] entries
     for i in movelist
@@ -5615,6 +5648,7 @@ MultipleForms.register(:GENGAR,{
     end
   },
   "getMoveList"=>proc{|pokemon|
+    next if pokemon.form==0      # Use default moveset for base form
     movelist=[]
     # TODO: Fill Mystic Gengar movelist as [level,:MOVE] entries
     for i in movelist
@@ -5655,6 +5689,7 @@ MultipleForms.register(:ABRA,{
     end
   },
   "getMoveList"=>proc{|pokemon|
+    next if pokemon.form==0      # Use default moveset for base form
     movelist=[]
     # TODO: Fill Mystic Abra movelist as [level,:MOVE] entries
     for i in movelist
@@ -5695,6 +5730,7 @@ MultipleForms.register(:KADABRA,{
     end
   },
   "getMoveList"=>proc{|pokemon|
+    next if pokemon.form==0      # Use default moveset for base form
     movelist=[]
     # TODO: Fill Mystic Kadabra movelist as [level,:MOVE] entries
     for i in movelist
@@ -5735,6 +5771,7 @@ MultipleForms.register(:ALAKAZAM,{
     end
   },
   "getMoveList"=>proc{|pokemon|
+    next if pokemon.form==0      # Use default moveset for base form
     movelist=[]
     # TODO: Fill Mystic Alakazam movelist as [level,:MOVE] entries
     for i in movelist
@@ -5775,6 +5812,7 @@ MultipleForms.register(:MACHOP,{
     end
   },
   "getMoveList"=>proc{|pokemon|
+    next if pokemon.form==0      # Use default moveset for base form
     movelist=[]
     # TODO: Fill Mystic Machop movelist as [level,:MOVE] entries
     for i in movelist
@@ -5815,6 +5853,7 @@ MultipleForms.register(:MACHOKE,{
     end
   },
   "getMoveList"=>proc{|pokemon|
+    next if pokemon.form==0      # Use default moveset for base form
     movelist=[]
     # TODO: Fill Mystic Machoke movelist as [level,:MOVE] entries
     for i in movelist
@@ -5855,6 +5894,7 @@ MultipleForms.register(:MACHAMP,{
     end
   },
   "getMoveList"=>proc{|pokemon|
+    next if pokemon.form==0      # Use default moveset for base form
     movelist=[]
     # TODO: Fill Mystic Machamp movelist as [level,:MOVE] entries
     for i in movelist
@@ -5895,6 +5935,7 @@ MultipleForms.register(:STUFFUL,{
     end
   },
   "getMoveList"=>proc{|pokemon|
+    next if pokemon.form==0      # Use default moveset for base form
     movelist=[]
     # TODO: Fill Mystic Stufful movelist as [level,:MOVE] entries
     for i in movelist
@@ -5935,6 +5976,7 @@ MultipleForms.register(:BEWEAR,{
     end
   },
   "getMoveList"=>proc{|pokemon|
+    next if pokemon.form==0      # Use default moveset for base form
     movelist=[]
     # TODO: Fill Mystic Bewear movelist as [level,:MOVE] entries
     for i in movelist
@@ -5975,6 +6017,7 @@ MultipleForms.register(:VOLTORB,{
     end
   },
   "getMoveList"=>proc{|pokemon|
+    next if pokemon.form==0      # Use default moveset for base form
     movelist=[]
     case pokemon.form            # Mystic
     when 1 ; movelist=[[1,:MIRACLEEYE],[1,:PSYWAVE],[4,:CONFUSION],[6,:POISONGAS],
@@ -6021,6 +6064,7 @@ MultipleForms.register(:ELECTRODE,{
     end
   },
   "getMoveList"=>proc{|pokemon|
+    next if pokemon.form==0      # Use default moveset for base form
     movelist=[]
     case pokemon.form            # Mystic
     when 1 ; movelist=[[0,:MISTBALL],[1,:MIRACLEEYE],[1,:PSYWAVE],[4,:CONFUSION],
@@ -6067,6 +6111,7 @@ MultipleForms.register(:SOLOSIS,{
     end
   },
   "getMoveList"=>proc{|pokemon|
+    next if pokemon.form==0      # Use default moveset for base form
     movelist=[]
     # TODO: Fill Mystic Solosis movelist as [level,:MOVE] entries
     for i in movelist
@@ -6107,6 +6152,7 @@ MultipleForms.register(:DUOSION,{
     end
   },
   "getMoveList"=>proc{|pokemon|
+    next if pokemon.form==0      # Use default moveset for base form
     movelist=[]
     # TODO: Fill Mystic Duosion movelist as [level,:MOVE] entries
     for i in movelist
@@ -6147,6 +6193,7 @@ MultipleForms.register(:REUNICLUS,{
     end
   },
   "getMoveList"=>proc{|pokemon|
+    next if pokemon.form==0      # Use default moveset for base form
     movelist=[]
     # TODO: Fill Mystic Reuniclus movelist as [level,:MOVE] entries
     for i in movelist
@@ -6187,6 +6234,7 @@ MultipleForms.register(:GOTHITA,{
     end
   },
   "getMoveList"=>proc{|pokemon|
+    next if pokemon.form==0      # Use default moveset for base form
     movelist=[]
     # TODO: Fill Mystic Gothita movelist as [level,:MOVE] entries
     for i in movelist
@@ -6227,6 +6275,7 @@ MultipleForms.register(:GOTHORITA,{
     end
   },
   "getMoveList"=>proc{|pokemon|
+    next if pokemon.form==0      # Use default moveset for base form
     movelist=[]
     # TODO: Fill Mystic Gothorita movelist as [level,:MOVE] entries
     for i in movelist
@@ -6267,6 +6316,7 @@ MultipleForms.register(:GOTHITELLE,{
     end
   },
   "getMoveList"=>proc{|pokemon|
+    next if pokemon.form==0      # Use default moveset for base form
     movelist=[]
     # TODO: Fill Mystic Gothitelle movelist as [level,:MOVE] entries
     for i in movelist
@@ -6307,6 +6357,7 @@ MultipleForms.register(:SKORUPI,{
     end
   },
   "getMoveList"=>proc{|pokemon|
+    next if pokemon.form==0      # Use default moveset for base form
     movelist=[]
     case pokemon.form            # Mystic
     when 1 ; movelist=[[1,:RANCOR],[1,:POISONSTING],[1,:GROWL],[5,:BELLOW],
@@ -6353,6 +6404,7 @@ MultipleForms.register(:DRAPION,{
     end
   },
   "getMoveList"=>proc{|pokemon|
+    next if pokemon.form==0      # Use default moveset for base form
     movelist=[]
     case pokemon.form            # Mystic
     when 1 ; movelist=[[0,:CRUNCH],[1,:CRUNCH],[1,:FLAMETHROWER],[1,:OUTRAGE],
@@ -6398,6 +6450,7 @@ MultipleForms.register(:CLAMPERL,{
     end
   },
   "getMoveList"=>proc{|pokemon|
+    next if pokemon.form==0      # Use default moveset for base form
     movelist=[]
     # TODO: Fill Mystic Clamperl movelist as [level,:MOVE] entries
     for i in movelist
@@ -6435,6 +6488,7 @@ MultipleForms.register(:HUNTAIL,{
     end
   },
   "getMoveList"=>proc{|pokemon|
+    next if pokemon.form==0      # Use default moveset for base form
     movelist=[]
     # TODO: Fill Mystic Huntail movelist as [level,:MOVE] entries
     for i in movelist
@@ -6472,6 +6526,7 @@ MultipleForms.register(:GOREBYSS,{
     end
   },
   "getMoveList"=>proc{|pokemon|
+    next if pokemon.form==0      # Use default moveset for base form
     movelist=[]
     # TODO: Fill Mystic Gorebyss movelist as [level,:MOVE] entries
     for i in movelist
@@ -6512,6 +6567,7 @@ MultipleForms.register(:LITWICK,{
     end
   },
   "getMoveList"=>proc{|pokemon|
+    next if pokemon.form==0      # Use default moveset for base form
     movelist=[]
     # TODO: Fill Mystic Litwick movelist as [level,:MOVE] entries
     for i in movelist
@@ -6552,6 +6608,7 @@ MultipleForms.register(:LAMPENT,{
     end
   },
   "getMoveList"=>proc{|pokemon|
+    next if pokemon.form==0      # Use default moveset for base form
     movelist=[]
     # TODO: Fill Mystic Lampent movelist as [level,:MOVE] entries
     for i in movelist
@@ -6592,6 +6649,7 @@ MultipleForms.register(:CHANDELURE,{
     end
   },
   "getMoveList"=>proc{|pokemon|
+    next if pokemon.form==0      # Use default moveset for base form
     movelist=[]
     # TODO: Fill Mystic Chandelure movelist as [level,:MOVE] entries
     for i in movelist
@@ -6632,6 +6690,7 @@ MultipleForms.register(:AXEW,{
     end
   },
   "getMoveList"=>proc{|pokemon|
+    next if pokemon.form==0      # Use default moveset for base form
     movelist=[]
     # TODO: Fill Mystic Axew movelist as [level,:MOVE] entries
     for i in movelist
@@ -6672,6 +6731,7 @@ MultipleForms.register(:FRAXURE,{
     end
   },
   "getMoveList"=>proc{|pokemon|
+    next if pokemon.form==0      # Use default moveset for base form
     movelist=[]
     # TODO: Fill Mystic Fraxure movelist as [level,:MOVE] entries
     for i in movelist
@@ -6712,6 +6772,7 @@ MultipleForms.register(:HAXORUS,{
     end
   },
   "getMoveList"=>proc{|pokemon|
+    next if pokemon.form==0      # Use default moveset for base form
     movelist=[]
     # TODO: Fill Mystic Haxorus movelist as [level,:MOVE] entries
     for i in movelist
@@ -6752,6 +6813,7 @@ MultipleForms.register(:MIMEJR,{
     end
   },
   "getMoveList"=>proc{|pokemon|
+    next if pokemon.form==0      # Use default moveset for base form
     movelist=[]
     # TODO: Fill Mystic Mime Jr. movelist as [level,:MOVE] entries
     for i in movelist
@@ -6792,6 +6854,7 @@ MultipleForms.register(:PARAS,{
     end
   },
   "getMoveList"=>proc{|pokemon|
+    next if pokemon.form==0      # Use default moveset for base form
     movelist=[]
     # TODO: Fill Mystic Paras movelist as [level,:MOVE] entries
     for i in movelist
@@ -6826,6 +6889,7 @@ MultipleForms.register(:HONEDGE,{
     end
   },
   "getMoveList"=>proc{|pokemon|
+    next if pokemon.form==0      # Use default moveset for base form
     movelist=[]
     # TODO: Fill Mystic Honedge movelist as [level,:MOVE] entries
     for i in movelist
@@ -6863,6 +6927,7 @@ MultipleForms.register(:CHINGLING,{
     end
   },
   "getMoveList"=>proc{|pokemon|
+    next if pokemon.form==0      # Use default moveset for base form
     movelist=[]
     # TODO: Fill Mystic Chingling movelist as [level,:MOVE] entries
     for i in movelist
@@ -6900,6 +6965,7 @@ MultipleForms.register(:CHIMECHO,{
     end
   },
   "getMoveList"=>proc{|pokemon|
+    next if pokemon.form==0      # Use default moveset for base form
     movelist=[]
     # TODO: Fill Mystic Chimecho movelist as [level,:MOVE] entries
     for i in movelist
@@ -6937,6 +7003,7 @@ MultipleForms.register(:RELLOR,{
     end
   },
   "getMoveList"=>proc{|pokemon|
+    next if pokemon.form==0      # Use default moveset for base form
     movelist=[]
     # TODO: Fill Mystic Rellor movelist as [level,:MOVE] entries
     for i in movelist
@@ -6977,6 +7044,7 @@ MultipleForms.register(:RAPIDASH,{
     end
   },
   "getMoveList"=>proc{|pokemon|
+    next if pokemon.form==0      # Use default moveset for base form
     movelist=[]
     # TODO: Fill Mystic Rapidash movelist as [level,:MOVE] entries
     for i in movelist
@@ -7017,6 +7085,7 @@ MultipleForms.register(:MUDSDALE,{
     end
   },
   "getMoveList"=>proc{|pokemon|
+    next if pokemon.form==0      # Use default moveset for base form
     movelist=[]
     # TODO: Fill Mystic Mudsdale movelist as [level,:MOVE] entries
     for i in movelist
@@ -7057,6 +7126,7 @@ MultipleForms.register(:ELDEGOSS,{
     end
   },
   "getMoveList"=>proc{|pokemon|
+    next if pokemon.form==0      # Use default moveset for base form
     movelist=[]
     case pokemon.form            # Mystic
     when 1 ; movelist=[[0,:OMINOUSWIND],[1,:OMINOUSWIND],[1,:LEAFAGE],[1,:STUNSPORE],
@@ -7102,6 +7172,7 @@ MultipleForms.register(:MUK,{
     end
   },
   "getMoveList"=>proc{|pokemon|
+    next if pokemon.form==0      # Use default moveset for base form
     movelist=[]
     # TODO: Fill Mystic Muk movelist as [level,:MOVE] entries
     for i in movelist
@@ -7142,6 +7213,7 @@ MultipleForms.register(:LIEPARD,{
     end
   },
   "getMoveList"=>proc{|pokemon|
+    next if pokemon.form==0      # Use default moveset for base form
     movelist=[]
     case pokemon.form            # Mystic
     when 1 ; movelist=[[0,:ROCKTOMB],[1,:ROCKTOMB],[1,:THUNDERFANG],[1,:FIREFANG],
@@ -7190,6 +7262,7 @@ MultipleForms.register(:ROCKRUFF,{
     end
   },
   "getMoveList"=>proc{|pokemon|
+    next if pokemon.form==0      # Use default moveset for base form
     movelist=[]
     # TODO: Fill Mystic Rockruff movelist as [level,:MOVE] entries
     for i in movelist
@@ -7230,6 +7303,7 @@ MultipleForms.register(:LYCANROCMIDDAY,{
     end
   },
   "getMoveList"=>proc{|pokemon|
+    next if pokemon.form==0      # Use default moveset for base form
     movelist=[]
     # TODO: Fill Mystic Lycanroc-Midday movelist as [level,:MOVE] entries
     for i in movelist
@@ -7270,6 +7344,7 @@ MultipleForms.register(:LYCANROCMIDNIGHT,{
     end
   },
   "getMoveList"=>proc{|pokemon|
+    next if pokemon.form==0      # Use default moveset for base form
     movelist=[]
     # TODO: Fill Mystic Lycanroc-Midnight movelist as [level,:MOVE] entries
     for i in movelist
@@ -7310,6 +7385,7 @@ MultipleForms.register(:LYCANROCDUSK,{
     end
   },
   "getMoveList"=>proc{|pokemon|
+    next if pokemon.form==0      # Use default moveset for base form
     movelist=[]
     # TODO: Fill Mystic Lycanroc-Dusk movelist as [level,:MOVE] entries
     for i in movelist
@@ -7347,6 +7423,7 @@ MultipleForms.register(:CHARCADET,{
     end
   },
   "getMoveList"=>proc{|pokemon|
+    next if pokemon.form==0      # Use default moveset for base form
     movelist=[]
     # TODO: Fill Mystic Charcadet movelist as [level,:MOVE] entries
     for i in movelist
@@ -7384,6 +7461,7 @@ MultipleForms.register(:CERULEDGE,{
     end
   },
   "getMoveList"=>proc{|pokemon|
+    next if pokemon.form==0      # Use default moveset for base form
     movelist=[]
     # TODO: Fill Mystic Ceruledge movelist as [level,:MOVE] entries
     for i in movelist
@@ -7421,6 +7499,7 @@ MultipleForms.register(:ARMAROUGE,{
     end
   },
   "getMoveList"=>proc{|pokemon|
+    next if pokemon.form==0      # Use default moveset for base form
     movelist=[]
     # TODO: Fill Mystic Armarouge movelist as [level,:MOVE] entries
     for i in movelist
@@ -7458,6 +7537,7 @@ MultipleForms.register(:GIMMIGHOUL,{
     end
   },
   "getMoveList"=>proc{|pokemon|
+    next if pokemon.form==0      # Use default moveset for base form
     movelist=[]
     case pokemon.form            # Mystic
     when 1 ; movelist=[[1,:MAGNETBOMB],[1,:MAGNETRISE]]
@@ -7494,6 +7574,7 @@ MultipleForms.register(:GHOLDENGO,{
     end
   },
   "getMoveList"=>proc{|pokemon|
+    next if pokemon.form==0      # Use default moveset for base form
     movelist=[]
     case pokemon.form            # Mystic
     when 1 ; movelist=[[1,:MAGNETBOMB],[1,:MAGNETRISE],[7,:PSYWAVE],[14,:GRAVITY],
@@ -7535,6 +7616,7 @@ MultipleForms.register(:AMAURA,{
     end
   },
   "getMoveList"=>proc{|pokemon|
+    next if pokemon.form==0      # Use default moveset for base form
     movelist=[]
     # TODO: Fill Mystic Amaura movelist as [level,:MOVE] entries
     for i in movelist
@@ -7572,6 +7654,7 @@ MultipleForms.register(:AURORUS,{
     end
   },
   "getMoveList"=>proc{|pokemon|
+    next if pokemon.form==0      # Use default moveset for base form
     movelist=[]
     # TODO: Fill Mystic Aurorus movelist as [level,:MOVE] entries
     for i in movelist
@@ -7609,6 +7692,7 @@ MultipleForms.register(:TYRUNT,{
     end
   },
   "getMoveList"=>proc{|pokemon|
+    next if pokemon.form==0      # Use default moveset for base form
     movelist=[]
     # TODO: Fill Mystic Tyrunt movelist as [level,:MOVE] entries
     for i in movelist
@@ -7646,6 +7730,7 @@ MultipleForms.register(:TYRANTRUM,{
     end
   },
   "getMoveList"=>proc{|pokemon|
+    next if pokemon.form==0      # Use default moveset for base form
     movelist=[]
     # TODO: Fill Mystic Tyrantrum movelist as [level,:MOVE] entries
     for i in movelist
@@ -7683,6 +7768,7 @@ MultipleForms.register(:CUFANT,{
     end
   },
   "getMoveList"=>proc{|pokemon|
+    next if pokemon.form==0      # Use default moveset for base form
     movelist=[]
     # TODO: Fill Mystic Cufant movelist as [level,:MOVE] entries
     for i in movelist
@@ -7720,6 +7806,7 @@ MultipleForms.register(:COPPERAJAH,{
     end
   },
   "getMoveList"=>proc{|pokemon|
+    next if pokemon.form==0      # Use default moveset for base form
     movelist=[]
     # TODO: Fill Mystic Copperajah movelist as [level,:MOVE] entries
     for i in movelist
@@ -7757,6 +7844,7 @@ MultipleForms.register(:FALINKS,{
     end
   },
   "getMoveList"=>proc{|pokemon|
+    next if pokemon.form==0      # Use default moveset for base form
     movelist=[]
     # TODO: Fill Mystic Falinks movelist as [level,:MOVE] entries
     for i in movelist
@@ -7794,6 +7882,7 @@ MultipleForms.register(:ARROKUDA,{
     end
   },
   "getMoveList"=>proc{|pokemon|
+    next if pokemon.form==0      # Use default moveset for base form
     movelist=[]
     # TODO: Fill Mystic Arrokuda movelist as [level,:MOVE] entries
     for i in movelist
@@ -7831,6 +7920,7 @@ MultipleForms.register(:BARRASKEWDA,{
     end
   },
   "getMoveList"=>proc{|pokemon|
+    next if pokemon.form==0      # Use default moveset for base form
     movelist=[]
     # TODO: Fill Mystic Barraskewda movelist as [level,:MOVE] entries
     for i in movelist
@@ -7871,6 +7961,7 @@ MultipleForms.register(:TOXEL,{
     end
   },
   "getMoveList"=>proc{|pokemon|
+    next if pokemon.form==0      # Use default moveset for base form
     movelist=[]
     # TODO: Fill Mystic Toxel movelist as [level,:MOVE] entries
     for i in movelist
@@ -7905,6 +7996,7 @@ MultipleForms.register(:TOXTRICITYTRANCE,{
     end
   },
   "getMoveList"=>proc{|pokemon|
+    next if pokemon.form==0      # Use default moveset for base form
     movelist=[]
     # TODO: Fill Mystic Toxtricity-Trance movelist as [level,:MOVE] entries
     for i in movelist
@@ -7939,6 +8031,7 @@ MultipleForms.register(:TOXTRICITYDUBSTEP,{
     end
   },
   "getMoveList"=>proc{|pokemon|
+    next if pokemon.form==0      # Use default moveset for base form
     movelist=[]
     # TODO: Fill Mystic Toxtricity-Dubstep movelist as [level,:MOVE] entries
     for i in movelist
@@ -7976,6 +8069,7 @@ MultipleForms.register(:SHIELDON,{
     end
   },
   "getMoveList"=>proc{|pokemon|
+    next if pokemon.form==0      # Use default moveset for base form
     movelist=[]
     # TODO: Fill Mystic Shieldon movelist as [level,:MOVE] entries
     for i in movelist
@@ -8013,6 +8107,7 @@ MultipleForms.register(:BASTIODON,{
     end
   },
   "getMoveList"=>proc{|pokemon|
+    next if pokemon.form==0      # Use default moveset for base form
     movelist=[]
     # TODO: Fill Mystic Bastiodon movelist as [level,:MOVE] entries
     for i in movelist
@@ -8050,6 +8145,7 @@ MultipleForms.register(:CRANIDOS,{
     end
   },
   "getMoveList"=>proc{|pokemon|
+    next if pokemon.form==0      # Use default moveset for base form
     movelist=[]
     # TODO: Fill Mystic Cranidos movelist as [level,:MOVE] entries
     for i in movelist
@@ -8087,6 +8183,7 @@ MultipleForms.register(:RAMPARDOS,{
     end
   },
   "getMoveList"=>proc{|pokemon|
+    next if pokemon.form==0      # Use default moveset for base form
     movelist=[]
     # TODO: Fill Mystic Rampardos movelist as [level,:MOVE] entries
     for i in movelist
@@ -8127,6 +8224,7 @@ MultipleForms.register(:TINKATINK,{
     end
   },
   "getMoveList"=>proc{|pokemon|
+    next if pokemon.form==0      # Use default moveset for base form
     movelist=[]
     # TODO: Fill Mystic Tinkatink movelist as [level,:MOVE] entries
     for i in movelist
@@ -8167,6 +8265,7 @@ MultipleForms.register(:TINKATUFF,{
     end
   },
   "getMoveList"=>proc{|pokemon|
+    next if pokemon.form==0      # Use default moveset for base form
     movelist=[]
     # TODO: Fill Mystic Tinkatuff movelist as [level,:MOVE] entries
     for i in movelist
@@ -8207,6 +8306,7 @@ MultipleForms.register(:TINKATON,{
     end
   },
   "getMoveList"=>proc{|pokemon|
+    next if pokemon.form==0      # Use default moveset for base form
     movelist=[]
     # TODO: Fill Mystic Tinkaton movelist as [level,:MOVE] entries
     for i in movelist
@@ -8247,6 +8347,7 @@ MultipleForms.register(:TOGEPI,{
     end
   },
   "getMoveList"=>proc{|pokemon|
+    next if pokemon.form==0      # Use default moveset for base form
     movelist=[]
     # TODO: Fill Mystic Togepi movelist as [level,:MOVE] entries
     for i in movelist
@@ -8281,6 +8382,7 @@ MultipleForms.register(:TOGETIC,{
     end
   },
   "getMoveList"=>proc{|pokemon|
+    next if pokemon.form==0      # Use default moveset for base form
     movelist=[]
     # TODO: Fill Mystic Togetic movelist as [level,:MOVE] entries
     for i in movelist
@@ -8321,6 +8423,7 @@ MultipleForms.register(:TOGEKISS,{
     end
   },
   "getMoveList"=>proc{|pokemon|
+    next if pokemon.form==0      # Use default moveset for base form
     movelist=[]
     # TODO: Fill Mystic Togekiss movelist as [level,:MOVE] entries
     for i in movelist
@@ -8358,6 +8461,7 @@ MultipleForms.register(:MIMIKYU,{
     end
   },
   "getMoveList"=>proc{|pokemon|
+    next if pokemon.form==0      # Use default moveset for base form
     movelist=[]
     # TODO: Fill Mystic Mimikyu movelist as [level,:MOVE] entries
     for i in movelist
@@ -8392,6 +8496,7 @@ MultipleForms.register(:CARBINKSHELL,{
     end
   },
   "getMoveList"=>proc{|pokemon|
+    next if pokemon.form==0      # Use default moveset for base form
     movelist=[]
     # TODO: Fill Mystic Carbink-Shell movelist as [level,:MOVE] entries
     for i in movelist
@@ -8426,6 +8531,7 @@ MultipleForms.register(:CARBINKCORE,{
     end
   },
   "getMoveList"=>proc{|pokemon|
+    next if pokemon.form==0      # Use default moveset for base form
     movelist=[]
     # TODO: Fill Mystic Carbink-Core movelist as [level,:MOVE] entries
     for i in movelist
@@ -8466,6 +8572,7 @@ MultipleForms.register(:TANDEMAUS,{
     end
   },
   "getMoveList"=>proc{|pokemon|
+    next if pokemon.form==0      # Use default moveset for base form
     movelist=[]
     case pokemon.form            # Mystic
     when 1 ; movelist=[[1,:DOUBLEHIT],[1,:BABYDOLLEYES],[5,:CONFUSION],[8,:ALLYSWITCH],
@@ -8511,6 +8618,7 @@ MultipleForms.register(:MAUSHOLD,{
     end
   },
   "getMoveList"=>proc{|pokemon|
+    next if pokemon.form==0      # Use default moveset for base form
     movelist=[]
     case pokemon.form            # Mystic
     when 1 ; movelist=[[1,:FOLLOWME],[1,:CALMMIND],[1,:DOUBLEHIT],[1,:BABYDOLLEYES],
@@ -8556,6 +8664,7 @@ MultipleForms.register(:HELIOPTILE,{
     end
   },
   "getMoveList"=>proc{|pokemon|
+    next if pokemon.form==0      # Use default moveset for base form
     movelist=[]
     # TODO: Fill Mystic Helioptile movelist as [level,:MOVE] entries
     for i in movelist
@@ -8596,6 +8705,7 @@ MultipleForms.register(:HELIOLISK,{
     end
   },
   "getMoveList"=>proc{|pokemon|
+    next if pokemon.form==0      # Use default moveset for base form
     movelist=[]
     # TODO: Fill Mystic Heliolisk movelist as [level,:MOVE] entries
     for i in movelist
@@ -8636,6 +8746,7 @@ MultipleForms.register(:BOUNSWEET,{
     end
   },
   "getMoveList"=>proc{|pokemon|
+    next if pokemon.form==0      # Use default moveset for base form
     movelist=[]
     # TODO: Fill Mystic Bounsweet movelist as [level,:MOVE] entries
     for i in movelist
@@ -8676,6 +8787,7 @@ MultipleForms.register(:STEENEE,{
     end
   },
   "getMoveList"=>proc{|pokemon|
+    next if pokemon.form==0      # Use default moveset for base form
     movelist=[]
     # TODO: Fill Mystic Steenee movelist as [level,:MOVE] entries
     for i in movelist
@@ -8716,6 +8828,7 @@ MultipleForms.register(:TSAREENA,{
     end
   },
   "getMoveList"=>proc{|pokemon|
+    next if pokemon.form==0      # Use default moveset for base form
     movelist=[]
     # TODO: Fill Mystic Tsareena movelist as [level,:MOVE] entries
     for i in movelist
@@ -8756,6 +8869,7 @@ MultipleForms.register(:NACLI,{
     end
   },
   "getMoveList"=>proc{|pokemon|
+    next if pokemon.form==0      # Use default moveset for base form
     movelist=[]
     # TODO: Fill Mystic Nacli movelist as [level,:MOVE] entries
     for i in movelist
@@ -8796,6 +8910,7 @@ MultipleForms.register(:NACLSTACK,{
     end
   },
   "getMoveList"=>proc{|pokemon|
+    next if pokemon.form==0      # Use default moveset for base form
     movelist=[]
     # TODO: Fill Mystic Naclstack movelist as [level,:MOVE] entries
     for i in movelist
@@ -8836,6 +8951,7 @@ MultipleForms.register(:GARGANACL,{
     end
   },
   "getMoveList"=>proc{|pokemon|
+    next if pokemon.form==0      # Use default moveset for base form
     movelist=[]
     # TODO: Fill Mystic Garganacl movelist as [level,:MOVE] entries
     for i in movelist
@@ -8873,6 +8989,7 @@ MultipleForms.register(:SKIDDO,{
     end
   },
   "getMoveList"=>proc{|pokemon|
+    next if pokemon.form==0      # Use default moveset for base form
     movelist=[]
     case pokemon.form            # Mystic
     when 1 ; movelist=[[1,:TACKLE],[1,:CHARGE],[7,:NUZZLE],[9,:TAILWHIP],
@@ -8915,6 +9032,7 @@ MultipleForms.register(:GOGOAT,{
     end
   },
   "getMoveList"=>proc{|pokemon|
+    next if pokemon.form==0      # Use default moveset for base form
     movelist=[]
     case pokemon.form            # Mystic
     when 1 ; movelist=[[0,:ENDURE],[1,:HEADSMASH],[1,:TACKLE],[1,:CHARGE],
@@ -8961,6 +9079,7 @@ MultipleForms.register(:SKRELP,{
     end
   },
   "getMoveList"=>proc{|pokemon|
+    next if pokemon.form==0      # Use default moveset for base form
     movelist=[]
     # TODO: Fill Mystic Skrelp movelist as [level,:MOVE] entries
     for i in movelist
@@ -9001,6 +9120,7 @@ MultipleForms.register(:DRAGALGE,{
     end
   },
   "getMoveList"=>proc{|pokemon|
+    next if pokemon.form==0      # Use default moveset for base form
     movelist=[]
     # TODO: Fill Mystic Dragalge movelist as [level,:MOVE] entries
     for i in movelist
@@ -9041,6 +9161,7 @@ MultipleForms.register(:DEDENNE,{
     end
   },
   "getMoveList"=>proc{|pokemon|
+    next if pokemon.form==0      # Use default moveset for base form
     movelist=[]
     # TODO: Fill Mystic Dedenne movelist as [level,:MOVE] entries
     for i in movelist
@@ -9078,6 +9199,7 @@ MultipleForms.register(:CRAMORANT,{
     end
   },
   "getMoveList"=>proc{|pokemon|
+    next if pokemon.form==0      # Use default moveset for base form
     movelist=[]
     # TODO: Fill Mystic Cramorant movelist as [level,:MOVE] entries
     for i in movelist
@@ -9118,6 +9240,7 @@ MultipleForms.register(:FEEBAS,{
     end
   },
   "getMoveList"=>proc{|pokemon|
+    next if pokemon.form==0      # Use default moveset for base form
     movelist=[]
     # TODO: Fill Mystic Feebas movelist as [level,:MOVE] entries
     for i in movelist
@@ -9158,6 +9281,7 @@ MultipleForms.register(:MILOTIC,{
     end
   },
   "getMoveList"=>proc{|pokemon|
+    next if pokemon.form==0      # Use default moveset for base form
     movelist=[]
     # TODO: Fill Mystic Milotic movelist as [level,:MOVE] entries
     for i in movelist
@@ -9195,6 +9319,7 @@ MultipleForms.register(:BURMY,{
     end
   },
   "getMoveList"=>proc{|pokemon|
+    next if pokemon.form==0      # Use default moveset for base form
     movelist=[]
     case pokemon.form            # Mystic
     when 3 ; movelist=[[1,:DEFENSECURL],[10,:ROLLOUT],[15,:SILVERWIND],[20,:HEADBUTT]]
@@ -9234,6 +9359,7 @@ MultipleForms.register(:WORMADAM,{
     end
   },
   "getMoveList"=>proc{|pokemon|
+    next if pokemon.form==0      # Use default moveset for base form
     movelist=[]
     case pokemon.form            # Mystic
     when 3 ; movelist=[[0,:BEAUTIFY],[1,:SUCKERPUNCH],[1,:DEFENSECURL],[1,:ROLLOUT],
@@ -9277,6 +9403,7 @@ MultipleForms.register(:MOTHIM,{
     end
   },
   "getMoveList"=>proc{|pokemon|
+    next if pokemon.form==0      # Use default moveset for base form
     movelist=[]
     case pokemon.form            # Mystic
     when 1 ; movelist=[[0,:BEAUTIFY],[1,:SUCKERPUNCH],[1,:DEFENSECURL],[1,:ROLLOUT],
@@ -9323,6 +9450,7 @@ MultipleForms.register(:DRILBUR,{
     end
   },
   "getMoveList"=>proc{|pokemon|
+    next if pokemon.form==0      # Use default moveset for base form
     movelist=[]
     # TODO: Fill Mystic Drilbur movelist as [level,:MOVE] entries
     for i in movelist
@@ -9363,6 +9491,7 @@ MultipleForms.register(:EXCADRILL,{
     end
   },
   "getMoveList"=>proc{|pokemon|
+    next if pokemon.form==0      # Use default moveset for base form
     movelist=[]
     # TODO: Fill Mystic Excadrill movelist as [level,:MOVE] entries
     for i in movelist
@@ -9400,6 +9529,7 @@ MultipleForms.register(:VAPOREON,{
     end
   },
   "getMoveList"=>proc{|pokemon|
+    next if pokemon.form==0      # Use default moveset for base form
     movelist=[]
     # TODO: Fill Mystic Vaporeon movelist as [level,:MOVE] entries
     for i in movelist
@@ -9437,6 +9567,7 @@ MultipleForms.register(:JOLTEON,{
     end
   },
   "getMoveList"=>proc{|pokemon|
+    next if pokemon.form==0      # Use default moveset for base form
     movelist=[]
     # TODO: Fill Mystic Jolteon movelist as [level,:MOVE] entries
     for i in movelist
@@ -9474,6 +9605,7 @@ MultipleForms.register(:FLAREON,{
     end
   },
   "getMoveList"=>proc{|pokemon|
+    next if pokemon.form==0      # Use default moveset for base form
     movelist=[]
     # TODO: Fill Mystic Flareon movelist as [level,:MOVE] entries
     for i in movelist
@@ -9511,6 +9643,7 @@ MultipleForms.register(:ESPEON,{
     end
   },
   "getMoveList"=>proc{|pokemon|
+    next if pokemon.form==0      # Use default moveset for base form
     movelist=[]
     # TODO: Fill Mystic Espeon movelist as [level,:MOVE] entries
     for i in movelist
@@ -9548,6 +9681,7 @@ MultipleForms.register(:UMBREON,{
     end
   },
   "getMoveList"=>proc{|pokemon|
+    next if pokemon.form==0      # Use default moveset for base form
     movelist=[]
     # TODO: Fill Mystic Umbreon movelist as [level,:MOVE] entries
     for i in movelist
@@ -9585,6 +9719,7 @@ MultipleForms.register(:LEAFEON,{
     end
   },
   "getMoveList"=>proc{|pokemon|
+    next if pokemon.form==0      # Use default moveset for base form
     movelist=[]
     # TODO: Fill Mystic Leafeon movelist as [level,:MOVE] entries
     for i in movelist
@@ -9622,6 +9757,7 @@ MultipleForms.register(:GLACEON,{
     end
   },
   "getMoveList"=>proc{|pokemon|
+    next if pokemon.form==0      # Use default moveset for base form
     movelist=[]
     # TODO: Fill Mystic Glaceon movelist as [level,:MOVE] entries
     for i in movelist
@@ -9659,6 +9795,7 @@ MultipleForms.register(:SYLVEON,{
     end
   },
   "getMoveList"=>proc{|pokemon|
+    next if pokemon.form==0      # Use default moveset for base form
     movelist=[]
     # TODO: Fill Mystic Sylveon movelist as [level,:MOVE] entries
     for i in movelist
@@ -9696,6 +9833,7 @@ MultipleForms.register(:WYVEON,{
     end
   },
   "getMoveList"=>proc{|pokemon|
+    next if pokemon.form==0      # Use default moveset for base form
     movelist=[]
     # TODO: Fill Mystic Wyveon movelist as [level,:MOVE] entries
     for i in movelist
@@ -9736,6 +9874,7 @@ MultipleForms.register(:SILICOBRA,{
     end
   },
   "getMoveList"=>proc{|pokemon|
+    next if pokemon.form==0      # Use default moveset for base form
     movelist=[]
     # TODO: Fill Mystic Silicobra movelist as [level,:MOVE] entries
     for i in movelist
@@ -9776,6 +9915,7 @@ MultipleForms.register(:SANDACONDA,{
     end
   },
   "getMoveList"=>proc{|pokemon|
+    next if pokemon.form==0      # Use default moveset for base form
     movelist=[]
     # TODO: Fill Mystic Sandaconda movelist as [level,:MOVE] entries
     for i in movelist
@@ -9816,6 +9956,7 @@ MultipleForms.register(:LICKITUNG,{
     end
   },
   "getMoveList"=>proc{|pokemon|
+    next if pokemon.form==0      # Use default moveset for base form
     movelist=[]
     # TODO: Fill Mystic Lickitung movelist as [level,:MOVE] entries
     for i in movelist
@@ -9856,6 +9997,7 @@ MultipleForms.register(:LICKILICKY,{
     end
   },
   "getMoveList"=>proc{|pokemon|
+    next if pokemon.form==0      # Use default moveset for base form
     movelist=[]
     # TODO: Fill Mystic Lickilicky movelist as [level,:MOVE] entries
     for i in movelist
@@ -9896,6 +10038,7 @@ MultipleForms.register(:LEDYBA,{
     end
   },
   "getMoveList"=>proc{|pokemon|
+    next if pokemon.form==0      # Use default moveset for base form
     movelist=[]
     # TODO: Fill Mystic Ledyba movelist as [level,:MOVE] entries
     for i in movelist
@@ -9936,6 +10079,7 @@ MultipleForms.register(:LEDIAN,{
     end
   },
   "getMoveList"=>proc{|pokemon|
+    next if pokemon.form==0      # Use default moveset for base form
     movelist=[]
     # TODO: Fill Mystic Ledian movelist as [level,:MOVE] entries
     for i in movelist
@@ -9976,6 +10120,7 @@ MultipleForms.register(:GLIGAR,{
     end
   },
   "getMoveList"=>proc{|pokemon|
+    next if pokemon.form==0      # Use default moveset for base form
     movelist=[]
     # TODO: Fill Mystic Gligar movelist as [level,:MOVE] entries
     for i in movelist
@@ -10016,6 +10161,7 @@ MultipleForms.register(:GLISCOR,{
     end
   },
   "getMoveList"=>proc{|pokemon|
+    next if pokemon.form==0      # Use default moveset for base form
     movelist=[]
     # TODO: Fill Mystic Gliscor movelist as [level,:MOVE] entries
     for i in movelist
@@ -10053,6 +10199,7 @@ MultipleForms.register(:PINECO,{
     end
   },
   "getMoveList"=>proc{|pokemon|
+    next if pokemon.form==0      # Use default moveset for base form
     movelist=[]
     # TODO: Fill Mystic Pineco movelist as [level,:MOVE] entries
     for i in movelist
@@ -10090,6 +10237,7 @@ MultipleForms.register(:FORRETRESS,{
     end
   },
   "getMoveList"=>proc{|pokemon|
+    next if pokemon.form==0      # Use default moveset for base form
     movelist=[]
     # TODO: Fill Mystic Forretress movelist as [level,:MOVE] entries
     for i in movelist
@@ -10130,6 +10278,7 @@ MultipleForms.register(:SEEDOT,{
     end
   },
   "getMoveList"=>proc{|pokemon|
+    next if pokemon.form==0      # Use default moveset for base form
     movelist=[]
     # TODO: Fill Mystic Seedot movelist as [level,:MOVE] entries
     for i in movelist
@@ -10170,6 +10319,7 @@ MultipleForms.register(:NUZLEAF,{
     end
   },
   "getMoveList"=>proc{|pokemon|
+    next if pokemon.form==0      # Use default moveset for base form
     movelist=[]
     # TODO: Fill Mystic Nuzleaf movelist as [level,:MOVE] entries
     for i in movelist
@@ -10210,6 +10360,7 @@ MultipleForms.register(:SHIFTRY,{
     end
   },
   "getMoveList"=>proc{|pokemon|
+    next if pokemon.form==0      # Use default moveset for base form
     movelist=[]
     # TODO: Fill Mystic Shiftry movelist as [level,:MOVE] entries
     for i in movelist
@@ -10250,6 +10401,7 @@ MultipleForms.register(:FINNEON,{
     end
   },
   "getMoveList"=>proc{|pokemon|
+    next if pokemon.form==0      # Use default moveset for base form
     movelist=[]
     # TODO: Fill Mystic Finneon movelist as [level,:MOVE] entries
     for i in movelist
@@ -10290,6 +10442,7 @@ MultipleForms.register(:LUMINEON,{
     end
   },
   "getMoveList"=>proc{|pokemon|
+    next if pokemon.form==0      # Use default moveset for base form
     movelist=[]
     # TODO: Fill Mystic Lumineon movelist as [level,:MOVE] entries
     for i in movelist
@@ -10330,6 +10483,7 @@ MultipleForms.register(:TYMPOLE,{
     end
   },
   "getMoveList"=>proc{|pokemon|
+    next if pokemon.form==0      # Use default moveset for base form
     movelist=[]
     case pokemon.form            # Mystic
     when 1 ; movelist=[[1,:ABSORB],[1,:TAILWHIP],[4,:WATERSPORT],[5,:LEECHSEED],
@@ -10375,6 +10529,7 @@ MultipleForms.register(:PALPITOAD,{
     end
   },
   "getMoveList"=>proc{|pokemon|
+    next if pokemon.form==0      # Use default moveset for base form
     movelist=[]
     case pokemon.form            # Mystic
     when 1 ; movelist=[[1,:ABSORB],[1,:TAILWHIP],[1,:WATERSPORT],[1,:LEECHSEED],
@@ -10421,6 +10576,7 @@ MultipleForms.register(:SEISMITOAD,{
     end
   },
   "getMoveList"=>proc{|pokemon|
+    next if pokemon.form==0      # Use default moveset for base form
     movelist=[]
     case pokemon.form            # Mystic
     when 1 ; movelist=[[0,:LIQUIDATION],[1,:ABSORB],[1,:TAILWHIP],[1,:WATERSPORT],
@@ -10467,6 +10623,7 @@ MultipleForms.register(:PIDOVE,{
     end
   },
   "getMoveList"=>proc{|pokemon|
+    next if pokemon.form==0      # Use default moveset for base form
     movelist=[]
     # TODO: Fill Mystic Pidove movelist as [level,:MOVE] entries
     for i in movelist
@@ -10507,6 +10664,7 @@ MultipleForms.register(:TRANQUILL,{
     end
   },
   "getMoveList"=>proc{|pokemon|
+    next if pokemon.form==0      # Use default moveset for base form
     movelist=[]
     # TODO: Fill Mystic Tranquill movelist as [level,:MOVE] entries
     for i in movelist
@@ -10547,6 +10705,7 @@ MultipleForms.register(:UNFEZANT,{
     end
   },
   "getMoveList"=>proc{|pokemon|
+    next if pokemon.form==0      # Use default moveset for base form
     movelist=[]
     # TODO: Fill Mystic Unfezant movelist as [level,:MOVE] entries
     for i in movelist
@@ -10584,6 +10743,7 @@ MultipleForms.register(:KLEFKI,{
     end
   },
   "getMoveList"=>proc{|pokemon|
+    next if pokemon.form==0      # Use default moveset for base form
     movelist=[]
     # TODO: Fill Mystic Klefki movelist as [level,:MOVE] entries
     for i in movelist
@@ -10624,6 +10784,7 @@ MultipleForms.register(:BLIPBUG,{
     end
   },
   "getMoveList"=>proc{|pokemon|
+    next if pokemon.form==0      # Use default moveset for base form
     movelist=[]
     # TODO: Fill Mystic Blipbug movelist as [level,:MOVE] entries
     for i in movelist
@@ -10664,6 +10825,7 @@ MultipleForms.register(:DOTTLER,{
     end
   },
   "getMoveList"=>proc{|pokemon|
+    next if pokemon.form==0      # Use default moveset for base form
     movelist=[]
     # TODO: Fill Mystic Dottler movelist as [level,:MOVE] entries
     for i in movelist
@@ -10704,6 +10866,7 @@ MultipleForms.register(:ORBEETLE,{
     end
   },
   "getMoveList"=>proc{|pokemon|
+    next if pokemon.form==0      # Use default moveset for base form
     movelist=[]
     # TODO: Fill Mystic Orbeetle movelist as [level,:MOVE] entries
     for i in movelist
@@ -10744,6 +10907,7 @@ MultipleForms.register(:SPOINK,{
     end
   },
   "getMoveList"=>proc{|pokemon|
+    next if pokemon.form==0      # Use default moveset for base form
     movelist=[]
     # TODO: Fill Mystic Spoink movelist as [level,:MOVE] entries
     for i in movelist
@@ -10784,6 +10948,7 @@ MultipleForms.register(:GRUMPIG,{
     end
   },
   "getMoveList"=>proc{|pokemon|
+    next if pokemon.form==0      # Use default moveset for base form
     movelist=[]
     # TODO: Fill Mystic Grumpig movelist as [level,:MOVE] entries
     for i in movelist
@@ -10824,6 +10989,7 @@ MultipleForms.register(:SCATTERBUG,{
     end
   },
   "getMoveList"=>proc{|pokemon|
+    next if pokemon.form==0      # Use default moveset for base form
     movelist=[]
     case pokemon.form            # Mystic
     when 1 ; movelist=[[1,:TACKLE],[1,:SCARYFACE],[6,:GLARE],[15,:POUNCE]]
@@ -10863,6 +11029,7 @@ MultipleForms.register(:SPEWPA,{
     end
   },
   "getMoveList"=>proc{|pokemon|
+    next if pokemon.form==0      # Use default moveset for base form
     movelist=[]
     case pokemon.form            # Mystic
     when 1 ; movelist=[[0,:PROTECT],[1,:RAGE]]
@@ -10905,6 +11072,7 @@ MultipleForms.register(:VIVILLON,{
     end
   },
   "getMoveList"=>proc{|pokemon|
+    next if pokemon.form==0      # Use default moveset for base form
     movelist=[]
     case pokemon.form            # Mystic
     when 1 ; movelist=[[0,:TWISTER],[1,:DRAGONRUSH],[1,:HURRICANE],[1,:IRRITATION],
@@ -10947,6 +11115,7 @@ MultipleForms.register(:SALANDIT,{
     end
   },
   "getMoveList"=>proc{|pokemon|
+    next if pokemon.form==0      # Use default moveset for base form
     movelist=[]
     # TODO: Fill Mystic Salandit movelist as [level,:MOVE] entries
     for i in movelist
@@ -10984,6 +11153,7 @@ MultipleForms.register(:SALANDITPRIMORDIAL,{
     end
   },
   "getMoveList"=>proc{|pokemon|
+    next if pokemon.form==0      # Use default moveset for base form
     movelist=[]
     # TODO: Fill Mystic Salandit-Primordial movelist as [level,:MOVE] entries
     for i in movelist
@@ -11021,6 +11191,7 @@ MultipleForms.register(:SALAZZLE,{
     end
   },
   "getMoveList"=>proc{|pokemon|
+    next if pokemon.form==0      # Use default moveset for base form
     movelist=[]
     # TODO: Fill Mystic Salazzle movelist as [level,:MOVE] entries
     for i in movelist
@@ -11058,6 +11229,7 @@ MultipleForms.register(:SALAZZLEPRIMORDIAL,{
     end
   },
   "getMoveList"=>proc{|pokemon|
+    next if pokemon.form==0      # Use default moveset for base form
     movelist=[]
     # TODO: Fill Mystic Salazzle-Primordial movelist as [level,:MOVE] entries
     for i in movelist
@@ -11098,6 +11270,7 @@ MultipleForms.register(:SLUGMA,{
     end
   },
   "getMoveList"=>proc{|pokemon|
+    next if pokemon.form==0      # Use default moveset for base form
     movelist=[]
     case pokemon.form            # Mystic
     when 1 ; movelist=[[1,:CHARGE],[1,:SMOG],[6,:FIRESPIN],[8,:CHARGEBEAM],
@@ -11143,6 +11316,7 @@ MultipleForms.register(:MAGCARGO,{
     end
   },
   "getMoveList"=>proc{|pokemon|
+    next if pokemon.form==0      # Use default moveset for base form
     movelist=[]
     case pokemon.form            # Mystic
     when 1 ; movelist=[[0,:IONDELUGE],[1,:IONDELUGE],[1,:HEATWAVE],[1,:ENERGYBALL],
@@ -11187,6 +11361,7 @@ MultipleForms.register(:GIBLE,{
     end
   },
   "getMoveList"=>proc{|pokemon|
+    next if pokemon.form==0      # Use default moveset for base form
     movelist=[]
     # TODO: Fill Mystic Gible movelist as [level,:MOVE] entries
     for i in movelist
@@ -11224,6 +11399,7 @@ MultipleForms.register(:GABITE,{
     end
   },
   "getMoveList"=>proc{|pokemon|
+    next if pokemon.form==0      # Use default moveset for base form
     movelist=[]
     # TODO: Fill Mystic Gabite movelist as [level,:MOVE] entries
     for i in movelist
@@ -11261,6 +11437,7 @@ MultipleForms.register(:GARCHOMP,{
     end
   },
   "getMoveList"=>proc{|pokemon|
+    next if pokemon.form==0      # Use default moveset for base form
     movelist=[]
     # TODO: Fill Mystic Garchomp movelist as [level,:MOVE] entries
     for i in movelist
@@ -11298,6 +11475,7 @@ MultipleForms.register(:LARVITAR,{
     end
   },
   "getMoveList"=>proc{|pokemon|
+    next if pokemon.form==0      # Use default moveset for base form
     movelist=[]
     # TODO: Fill Mystic Larvitar movelist as [level,:MOVE] entries
     for i in movelist
@@ -11335,6 +11513,7 @@ MultipleForms.register(:PUPITAR,{
     end
   },
   "getMoveList"=>proc{|pokemon|
+    next if pokemon.form==0      # Use default moveset for base form
     movelist=[]
     # TODO: Fill Mystic Pupitar movelist as [level,:MOVE] entries
     for i in movelist
@@ -11372,6 +11551,7 @@ MultipleForms.register(:TYRANITAR,{
     end
   },
   "getMoveList"=>proc{|pokemon|
+    next if pokemon.form==0      # Use default moveset for base form
     movelist=[]
     # TODO: Fill Mystic Tyranitar movelist as [level,:MOVE] entries
     for i in movelist
@@ -11409,6 +11589,7 @@ MultipleForms.register(:DEINO,{
     end
   },
   "getMoveList"=>proc{|pokemon|
+    next if pokemon.form==0      # Use default moveset for base form
     movelist=[]
     # TODO: Fill Mystic Deino movelist as [level,:MOVE] entries
     for i in movelist
@@ -11446,6 +11627,7 @@ MultipleForms.register(:ZWEILOUS,{
     end
   },
   "getMoveList"=>proc{|pokemon|
+    next if pokemon.form==0      # Use default moveset for base form
     movelist=[]
     # TODO: Fill Mystic Zweilous movelist as [level,:MOVE] entries
     for i in movelist
@@ -11483,6 +11665,7 @@ MultipleForms.register(:HYDREIGON,{
     end
   },
   "getMoveList"=>proc{|pokemon|
+    next if pokemon.form==0      # Use default moveset for base form
     movelist=[]
     # TODO: Fill Mystic Hydreigon movelist as [level,:MOVE] entries
     for i in movelist
@@ -11520,6 +11703,7 @@ MultipleForms.register(:DREEPY,{
     end
   },
   "getMoveList"=>proc{|pokemon|
+    next if pokemon.form==0      # Use default moveset for base form
     movelist=[]
     # TODO: Fill Mystic Dreepy movelist as [level,:MOVE] entries
     for i in movelist
@@ -11557,6 +11741,7 @@ MultipleForms.register(:DRAKLOAK,{
     end
   },
   "getMoveList"=>proc{|pokemon|
+    next if pokemon.form==0      # Use default moveset for base form
     movelist=[]
     # TODO: Fill Mystic Drakloak movelist as [level,:MOVE] entries
     for i in movelist
@@ -11594,6 +11779,7 @@ MultipleForms.register(:DRAGAPULT,{
     end
   },
   "getMoveList"=>proc{|pokemon|
+    next if pokemon.form==0      # Use default moveset for base form
     movelist=[]
     # TODO: Fill Mystic Dragapult movelist as [level,:MOVE] entries
     for i in movelist
@@ -11631,6 +11817,7 @@ MultipleForms.register(:DRATINI,{
     end
   },
   "getMoveList"=>proc{|pokemon|
+    next if pokemon.form==0      # Use default moveset for base form
     movelist=[]
     # TODO: Fill Mystic Dratini movelist as [level,:MOVE] entries
     for i in movelist
@@ -11668,6 +11855,7 @@ MultipleForms.register(:DRAGONAIR,{
     end
   },
   "getMoveList"=>proc{|pokemon|
+    next if pokemon.form==0      # Use default moveset for base form
     movelist=[]
     # TODO: Fill Mystic Dragonair movelist as [level,:MOVE] entries
     for i in movelist
@@ -11705,6 +11893,7 @@ MultipleForms.register(:DRAGONITE,{
     end
   },
   "getMoveList"=>proc{|pokemon|
+    next if pokemon.form==0      # Use default moveset for base form
     movelist=[]
     # TODO: Fill Mystic Dragonite movelist as [level,:MOVE] entries
     for i in movelist
@@ -11742,6 +11931,7 @@ MultipleForms.register(:BAGON,{
     end
   },
   "getMoveList"=>proc{|pokemon|
+    next if pokemon.form==0      # Use default moveset for base form
     movelist=[]
     # TODO: Fill Mystic Bagon movelist as [level,:MOVE] entries
     for i in movelist
@@ -11779,6 +11969,7 @@ MultipleForms.register(:SHELGON,{
     end
   },
   "getMoveList"=>proc{|pokemon|
+    next if pokemon.form==0      # Use default moveset for base form
     movelist=[]
     # TODO: Fill Mystic Shelgon movelist as [level,:MOVE] entries
     for i in movelist
@@ -11816,6 +12007,7 @@ MultipleForms.register(:SALAMENCE,{
     end
   },
   "getMoveList"=>proc{|pokemon|
+    next if pokemon.form==0      # Use default moveset for base form
     movelist=[]
     # TODO: Fill Mystic Salamence movelist as [level,:MOVE] entries
     for i in movelist
@@ -11853,6 +12045,7 @@ MultipleForms.register(:BELDUM,{
     end
   },
   "getMoveList"=>proc{|pokemon|
+    next if pokemon.form==0      # Use default moveset for base form
     movelist=[]
     # TODO: Fill Mystic Beldum movelist as [level,:MOVE] entries
     for i in movelist
@@ -11890,6 +12083,7 @@ MultipleForms.register(:METANG,{
     end
   },
   "getMoveList"=>proc{|pokemon|
+    next if pokemon.form==0      # Use default moveset for base form
     movelist=[]
     # TODO: Fill Mystic Metang movelist as [level,:MOVE] entries
     for i in movelist
@@ -11927,6 +12121,7 @@ MultipleForms.register(:METAGROSS,{
     end
   },
   "getMoveList"=>proc{|pokemon|
+    next if pokemon.form==0      # Use default moveset for base form
     movelist=[]
     # TODO: Fill Mystic Metagross movelist as [level,:MOVE] entries
     for i in movelist
@@ -11967,6 +12162,7 @@ MultipleForms.register(:GOOMY,{
     end
   },
   "getMoveList"=>proc{|pokemon|
+    next if pokemon.form==0      # Use default moveset for base form
     movelist=[]
     # TODO: Fill Mystic Goomy movelist as [level,:MOVE] entries
     for i in movelist
@@ -12007,6 +12203,7 @@ MultipleForms.register(:SLIGGOO,{
     end
   },
   "getMoveList"=>proc{|pokemon|
+    next if pokemon.form==0      # Use default moveset for base form
     movelist=[]
     # TODO: Fill Mystic Sliggoo movelist as [level,:MOVE] entries
     for i in movelist
@@ -12047,6 +12244,7 @@ MultipleForms.register(:GOODRA,{
     end
   },
   "getMoveList"=>proc{|pokemon|
+    next if pokemon.form==0      # Use default moveset for base form
     movelist=[]
     # TODO: Fill Mystic Goodra movelist as [level,:MOVE] entries
     for i in movelist
@@ -12087,6 +12285,7 @@ MultipleForms.register(:JANGMOO,{
     end
   },
   "getMoveList"=>proc{|pokemon|
+    next if pokemon.form==0      # Use default moveset for base form
     movelist=[]
     # TODO: Fill Mystic Jangmo-o movelist as [level,:MOVE] entries
     for i in movelist
@@ -12127,6 +12326,7 @@ MultipleForms.register(:HAKAMOO,{
     end
   },
   "getMoveList"=>proc{|pokemon|
+    next if pokemon.form==0      # Use default moveset for base form
     movelist=[]
     # TODO: Fill Mystic Hakamo-o movelist as [level,:MOVE] entries
     for i in movelist
@@ -12167,6 +12367,7 @@ MultipleForms.register(:KOMMOO,{
     end
   },
   "getMoveList"=>proc{|pokemon|
+    next if pokemon.form==0      # Use default moveset for base form
     movelist=[]
     # TODO: Fill Mystic Kommo-o movelist as [level,:MOVE] entries
     for i in movelist
@@ -12204,6 +12405,7 @@ MultipleForms.register(:FRIGIBAX,{
     end
   },
   "getMoveList"=>proc{|pokemon|
+    next if pokemon.form==0      # Use default moveset for base form
     movelist=[]
     # TODO: Fill Mystic Frigibax movelist as [level,:MOVE] entries
     for i in movelist
@@ -12241,6 +12443,7 @@ MultipleForms.register(:ARCTIBAX,{
     end
   },
   "getMoveList"=>proc{|pokemon|
+    next if pokemon.form==0      # Use default moveset for base form
     movelist=[]
     # TODO: Fill Mystic Arctibax movelist as [level,:MOVE] entries
     for i in movelist
@@ -12278,6 +12481,7 @@ MultipleForms.register(:BAXCALIBUR,{
     end
   },
   "getMoveList"=>proc{|pokemon|
+    next if pokemon.form==0      # Use default moveset for base form
     movelist=[]
     # TODO: Fill Mystic Baxcalibur movelist as [level,:MOVE] entries
     for i in movelist
@@ -12318,6 +12522,7 @@ MultipleForms.register(:YANMA,{
     end
   },
   "getMoveList"=>proc{|pokemon|
+    next if pokemon.form==0      # Use default moveset for base form
     movelist=[]
     # TODO: Fill Mystic Yanma movelist as [level,:MOVE] entries
     for i in movelist
@@ -12358,6 +12563,7 @@ MultipleForms.register(:YANMEGA,{
     end
   },
   "getMoveList"=>proc{|pokemon|
+    next if pokemon.form==0      # Use default moveset for base form
     movelist=[]
     # TODO: Fill Mystic Yanmega movelist as [level,:MOVE] entries
     for i in movelist
@@ -12395,6 +12601,7 @@ MultipleForms.register(:POIPOLE,{
     end
   },
   "getMoveList"=>proc{|pokemon|
+    next if pokemon.form==0      # Use default moveset for base form
     movelist=[]
     # TODO: Fill Mystic Poipole movelist as [level,:MOVE] entries
     for i in movelist
@@ -12432,6 +12639,7 @@ MultipleForms.register(:NAGANADEL,{
     end
   },
   "getMoveList"=>proc{|pokemon|
+    next if pokemon.form==0      # Use default moveset for base form
     movelist=[]
     # TODO: Fill Mystic Naganadel movelist as [level,:MOVE] entries
     for i in movelist
@@ -12466,6 +12674,7 @@ MultipleForms.register(:ZERAORA,{
     end
   },
   "getMoveList"=>proc{|pokemon|
+    next if pokemon.form==0      # Use default moveset for base form
     movelist=[]
     # TODO: Fill Mystic Zeraora movelist as [level,:MOVE] entries
     for i in movelist
@@ -12500,6 +12709,7 @@ MultipleForms.register(:MESPRIT,{
     end
   },
   "getMoveList"=>proc{|pokemon|
+    next if pokemon.form==0      # Use default moveset for base form
     movelist=[]
     # TODO: Fill Mystic Mesprit movelist as [level,:MOVE] entries
     for i in movelist
@@ -12534,6 +12744,7 @@ MultipleForms.register(:UXIE,{
     end
   },
   "getMoveList"=>proc{|pokemon|
+    next if pokemon.form==0      # Use default moveset for base form
     movelist=[]
     # TODO: Fill Mystic Uxie movelist as [level,:MOVE] entries
     for i in movelist
@@ -12568,6 +12779,7 @@ MultipleForms.register(:AZELF,{
     end
   },
   "getMoveList"=>proc{|pokemon|
+    next if pokemon.form==0      # Use default moveset for base form
     movelist=[]
     # TODO: Fill Mystic Azelf movelist as [level,:MOVE] entries
     for i in movelist
@@ -12602,6 +12814,7 @@ MultipleForms.register(:HOOH,{
     end
   },
   "getMoveList"=>proc{|pokemon|
+    next if pokemon.form==0      # Use default moveset for base form
     movelist=[]
     # TODO: Fill Mystic Ho-Oh movelist as [level,:MOVE] entries
     for i in movelist
@@ -12636,6 +12849,7 @@ MultipleForms.register(:LUGIA,{
     end
   },
   "getMoveList"=>proc{|pokemon|
+    next if pokemon.form==0      # Use default moveset for base form
     movelist=[]
     # TODO: Fill Mystic Lugia movelist as [level,:MOVE] entries
     for i in movelist
@@ -12670,6 +12884,7 @@ MultipleForms.register(:DEOXYS,{
     end
   },
   "getMoveList"=>proc{|pokemon|
+    next if pokemon.form==0      # Use default moveset for base form
     movelist=[]
     # TODO: Fill Mystic Deoxys movelist as [level,:MOVE] entries
     for i in movelist
