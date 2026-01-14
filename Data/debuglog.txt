@@ -2756,3 +2756,92 @@ Not using an item.
 [No Z-Move.]
 [The foe Elektra lost 3 HP, now has 14 HP]
 [The foe Elektra lost 14 HP, now has 0 HP]
+==============================
+Battle Start!
+Wild Battle
+==============================
+***Round 1***
+[The wild Clauncher: Splash=100, Water Gun=200]
+If this battle is not wild, something has gone wrong in scoring moves (no preference chosen).
+[The wild Clauncher lost 18 HP, now has 0 HP]
+==============================
+Battle Start!
+124 - Pyuku
+==============================
+***Round 1***
+AI Pokemon Elektra is faster than Ozzie.
+Thunder Shock: initial score: 2
+Thunder Shock: final score: 0
+ 
+Disarming Voice: initial score: 35
+Disarming Voice: final score: 35
+ 
+Nuzzle: initial score: 2
+Nuzzle: final score: 0
+ 
+Charge: initial score: 15
+[Not preferring status move]
+Charge: final score: 4
+ 
+Beginning AI Item use check.
+ 
+Highest item score: -10000
+Highest move score: 35
+Not using an item.
+ 
+[The foe Elektra: Thunder Shock=0, Disarming Voice=35, Nuzzle=0, Charge=4]
+[Prefer Disarming Voice]
+[No Z-Move.]
+[The foe Elektra lost 15 HP, now has 29 HP]
+***Round 2***
+AI Pokemon Elektra is faster than Ozzie.
+Thunder Shock: initial score: 2
+Thunder Shock: final score: 0
+ 
+Disarming Voice: initial score: 35
+Disarming Voice: final score: 35
+ 
+Nuzzle: initial score: 2
+Nuzzle: final score: 0
+ 
+Charge: initial score: 15
+[Not preferring status move]
+Charge: final score: 3
+ 
+Beginning AI Item use check.
+ 
+Highest item score: -10000
+Highest move score: 35
+Not using an item.
+ 
+[The foe Elektra: Thunder Shock=0, Disarming Voice=35, Nuzzle=0, Charge=3]
+[Prefer Disarming Voice]
+[No Z-Move.]
+[The foe Elektra lost 4 HP, now has 25 HP]
+[The foe Elektra lost 15 HP, now has 10 HP]
+***Round 3***
+AI Pokemon Elektra is faster than Ozzie.
+Thunder Shock: initial score: 2
+Thunder Shock: final score: 0
+ 
+Disarming Voice: initial score: 35
+Disarming Voice: final score: 35
+ 
+Nuzzle: initial score: 2
+Nuzzle: final score: 0
+ 
+Charge: initial score: 15
+[Not preferring status move]
+Charge: final score: 0
+ 
+Beginning AI Item use check.
+ 
+Highest item score: -10000
+Highest move score: 35
+Not using an item.
+ 
+[The foe Elektra: Thunder Shock=0, Disarming Voice=35, Nuzzle=0, Charge=0]
+[Prefer Disarming Voice]
+[No Z-Move.]
+[The foe Elektra lost 4 HP, now has 6 HP]
+[The foe Elektra lost 6 HP, now has 0 HP]
