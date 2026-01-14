@@ -5990,3 +5990,8 @@ Wild Battle
 If this battle is not wild, something has gone wrong in scoring moves (no preference chosen).
 [Ozzie lost 15 HP, now has 30 HP]
 ***Round 2***
+==============================
+Battle Start!
+179 - Kara
+==============================
+***Round 1***
