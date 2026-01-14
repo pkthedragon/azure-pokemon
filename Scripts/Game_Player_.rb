@@ -8,6 +8,9 @@
 class Game_Player < Game_Character
   attr_accessor :bump_se
 
+  # Map IDs where terrain tag 4 (Rock) displacement encounters are disabled
+  ROCK_DISPLACEMENT_DISABLED_MAPS = []
+
   def map
     @map=nil
     return $game_map
@@ -442,17 +445,24 @@ class Game_Player < Game_Character
     end
     # Check for Rock terrain tag on facing tile (triggers displacement/headbutt)
     if !result && Kernel.pbFacingTerrainTag == PBTerrain::Rock
-      # Check if player has any displacement move
-      movefinder = Kernel.pbDisplacementCheck
-      if movefinder
-        # Check if map has headbutt encounters defined
-        encdata = $PokemonEncounters.pbMapEncounter($game_map.map_id, EncounterTypes::HeadbuttLow) rescue nil
-        encdata2 = $PokemonEncounters.pbMapEncounter($game_map.map_id, EncounterTypes::HeadbuttHigh) rescue nil
-        if encdata || encdata2
-          # Create fake event at facing position for encounter calculation
-          fakeEvent = Struct.new(:x, :y).new(new_x, new_y)
-          Kernel.pbDisplacementEncounter(fakeEvent)
-          result = true
+      # Skip if this map has rock displacement disabled
+      if !ROCK_DISPLACEMENT_DISABLED_MAPS.include?($game_map.map_id)
+        # Check if player has any displacement move
+        movefinder = Kernel.pbDisplacementCheck
+        if movefinder
+          # Check if map has headbutt encounters defined
+          encdata = $PokemonEncounters.pbMapEncounter($game_map.map_id, EncounterTypes::HeadbuttLow) rescue nil
+          encdata2 = $PokemonEncounters.pbMapEncounter($game_map.map_id, EncounterTypes::HeadbuttHigh) rescue nil
+          if encdata || encdata2
+            # Create fake event at facing position for encounter calculation
+            fakeEvent = Struct.new(:x, :y).new(new_x, new_y)
+            # Force Cave field effect (23) for terrain tag 4 displacement encounters
+            old_field = $game_variables[708]
+            $game_variables[708] = 23
+            Kernel.pbDisplacementEncounter(fakeEvent)
+            $game_variables[708] = old_field
+            result = true
+          end
         end
       end
     end
