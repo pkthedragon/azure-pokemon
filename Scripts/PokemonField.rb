@@ -563,7 +563,7 @@ class PBTerrain
   Ledge           = 1
   Grass           = 2
   Sand            = 3
-  Rock            = 4
+  HeadbuttTree    = 4
   DeepWater       = 5
   StillWater      = 6
   Water           = 7
@@ -585,7 +585,6 @@ class PBTerrain
   LeftConveyor    = 23
   RightConveyor   = 24
   UpConveyor      = 25
-  HeadbuttTree    = 26
 end
 
 def pbIsBridge?(tag)
@@ -685,7 +684,7 @@ def pbIsWaterfallTag?(tag)
 end
 
 def pbIsRockTag?(tag)
-  return tag==PBTerrain::Rock
+  return false
 end
 
 
@@ -1078,8 +1077,8 @@ def pbGetEnvironment
       return PBEnvironment::MovingWater
     elsif terrain==PBTerrain::StillWater
       return PBEnvironment::StillWater
-    elsif terrain==PBTerrain::Rock
-      return PBEnvironment::Rock
+    elsif terrain==PBTerrain::HeadbuttTree
+      return PBEnvironment::Forest
     elsif terrain==PBTerrain::Sand
       return PBEnvironment::Sand
     end

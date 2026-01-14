@@ -347,8 +347,7 @@ def Kernel.pbDisplacementEncounter(event=nil)
 end
 
 HiddenMoveHandlers::CanUseMove.add(:HEADBUTT,lambda{|move,pkmn,showmsg|
-   facingEvent=$game_player.pbFacingEvent
-   if !facingEvent || (facingEvent.name!="HeadbuttTree" && facingEvent.graphicName!="Object tree 2")
+   if Kernel.pbFacingTerrainTag != PBTerrain::HeadbuttTree
      Kernel.pbMessage(_INTL("Can't use that here.")) if showmsg
      return false
    end
@@ -359,8 +358,10 @@ HiddenMoveHandlers::UseMove.add(:HEADBUTT,lambda{|move,pokemon|
    if !pbHiddenMoveAnimation(pokemon)
      Kernel.pbMessage(_INTL("{1} used {2}!",pokemon.name,PBMoves.getName(move)))
    end
-   facingEvent=$game_player.pbFacingEvent
-   Kernel.pbHeadbuttEffect(facingEvent)
+   # Create fake event at facing position for encounter calculation
+   facingCoords = $game_player.pbFacingTile
+   fakeEvent = Struct.new(:x, :y).new(facingCoords[1], facingCoords[2])
+   Kernel.pbHeadbuttEffect(fakeEvent)
 })
 
 #===============================================================================
