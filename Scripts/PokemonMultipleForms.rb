@@ -4986,6 +4986,7 @@ MultipleForms.register(:FUECOCO,{
     end
   },
   "getMoveList"=>proc{|pokemon|
+    next if pokemon.form==0      # Use default moveset for base form
     movelist=[]
     case pokemon.form            # Mystic
     when 1 ; movelist=[[1,:TACKLE],[1,:LEER],[5,:MUDSLAP],[7,:ASTONISH],
