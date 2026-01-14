@@ -269,6 +269,7 @@ def pbDebugMenu
   commands.add("setencounters",_INTL("Set Encounters")) 
   commands.add("setmetadata",_INTL("Set Metadata")) 
   commands.add("terraintags",_INTL("Set Terrain Tags"))
+  commands.add("terraintagstext",_INTL("Set Terrain Tags (Text Mode)"))
   commands.add("trainertypes",_INTL("Edit Trainer Types"))
   commands.add("resettrainers",_INTL("Reset Trainers"))
   commands.add("testwildbattle",_INTL("Test Wild Battle"))
@@ -718,6 +719,8 @@ def pbDebugMenu
       pbClearData()
     elsif cmd=="terraintags"
       pbFadeOutIn(99999) { pbTilesetScreen }
+    elsif cmd=="terraintagstext"
+      pbTextTerrainTagEditor
     elsif cmd=="trainertypes"
       pbFadeOutIn(99999) { pbTrainerTypeEditor }
     elsif cmd=="resettrainers"
