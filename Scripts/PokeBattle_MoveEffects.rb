@@ -2262,7 +2262,7 @@ class PokeBattle_Move_043 < PokeBattle_Move
       return -1 if !opponent.pbCanReduceStatStage?(PBStats::SPEED,true)
       pbShowAnimation(@id,attacker,opponent,hitnum,alltargets,showanimation)
       opponent.pbReduceStat(PBStats::SPEED,1,false)
-      opponent.effects[PBEffects::Embargo]=3
+      opponent.effects[PBEffects::LeerBlock]=3
       @battle.pbDisplay(_INTL("{1} can't eat for three turns!",opponent.pbThis))
       return 0
     end
@@ -2290,7 +2290,7 @@ class PokeBattle_Move_043 < PokeBattle_Move
       if opponent.pbCanReduceStatStage?(PBStats::SPEED,false)
         opponent.pbReduceStat(PBStats::SPEED,1,false)
       end
-      opponent.effects[PBEffects::Embargo]=3
+      opponent.effects[PBEffects::LeerBlock]=3
     else
       if opponent.pbCanReduceStatStage?(PBStats::DEFENSE,false)
         opponent.pbReduceStat(PBStats::DEFENSE,1,false)
@@ -9495,6 +9495,7 @@ end
       unnerve = false
       unnerve = true if attacker.pbOpposing1 && attacker.pbOpposing1.hasWorkingAbility(:UNNERVE)
       unnerve = true if attacker.pbOpposing2 && attacker.pbOpposing2.hasWorkingAbility(:UNNERVE)
+      unnerve = true if attacker.effects[PBEffects::LeerBlock]>0
       if unnerve
         @battle.pbDisplay(_INTL("But it failed!"))
         return -1
