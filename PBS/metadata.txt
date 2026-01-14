@@ -54,6 +54,18 @@ Outdoor=false
 ShowArea=true
 MapPosition=0,13,14
 BattleBack=Cave
+[138]
+# Seashore Shrine
+Outdoor=false
+ShowArea=true
+MapPosition=0,13,16
+BattleBack=Cave
+[142]
+# Connecting Caves
+Outdoor=false
+ShowArea=true
+MapPosition=0,13,14
+BattleBack=Cave
 [010]
 # Koneli Cemetery
 Outdoor=true

@@ -21856,7 +21856,7 @@ class PokeBattle_Battle
           basedamage=(basedamage*2).round
         end
       when 2 # Grassy Field
-        if PBStuff::WINDMOVE.include?(id)
+        if PBStuff::WINDMOVE.include?(move.id)
           basedamage=(basedamage*1.5).round
         end
         if (move.id == PBMoves::MUDDYWATER || move.id == PBMoves::SURF || move.id == PBMoves::EARTHQUAKE ||
