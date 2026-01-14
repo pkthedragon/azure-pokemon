@@ -832,7 +832,7 @@ def pbMiniCheckEvolution(pokemon,evonib,level,poke)
       return poke if pokemon.level>=level && PBDayNight.isDay?(pbGetTimeNow)
     when PBEvolution::LevelNight
       return poke if pokemon.level>=level && PBDayNight.isNight?(pbGetTimeNow)
-    when PBEvolution::Crit
+    when PBEvolution::BattleCrits
       # Add code for custom evolution type 6
       return poke if pokemon.critted==true
     when PBEvolution::Custom7
