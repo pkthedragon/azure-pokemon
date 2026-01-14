@@ -35,7 +35,9 @@ class PBMove
 # Gets the maximum PP for this move.
   def totalpp
     return @totalpp if defined?(@totalpp)
+    return 0 if @id==0 || !$pkmn_move[@id]
     tpp=$pkmn_move[@id][5]
+    return 0 if !tpp
     return tpp+(tpp*@ppup/5).floor
   end
 
