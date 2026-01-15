@@ -3894,39 +3894,6 @@ class PokeBattle_Battler
         end     
       end
     end
-    # Frisk
-    if self.hasWorkingAbility(:FRISK) && onactive
-      foes=[]
-      foes.push(pbOpposing1) if pbOpposing1.item>0 && !pbOpposing1.isFainted?
-      foes.push(pbOpposing2) if pbOpposing2.item>0 && !pbOpposing2.isFainted?
-      for i in foes
-        itemname=PBItems.getName(i.item)
-        @battle.pbDisplay(_INTL("{1} frisked {2} and found its {3}!",pbThis,i.pbThis(true),itemname))
-        i.effects[PBEffects::FriskLock]=1
-        @battle.pbDisplay(_INTL("{1}'s item was locked!",i.pbThis))
-      end
-    end
-    # Anticipation
-    if self.hasWorkingAbility(:ANTICIPATION) && @battle.pbOwnedByPlayer?(@index) && onactive
-      found=false
-      for foe in [pbOpposing1,pbOpposing2]
-        next if foe.isFainted?
-        for j in foe.moves
-          movedata=PBMoveData.new(j.id)
-          eff=PBTypes.getCombinedEffectiveness(movedata.type,type1,type2)
-          if (movedata.basedamage>0 && eff>4 &&
-              movedata.function!=0x71 && # Counter
-              movedata.function!=0x72 && # Mirror Coat
-              movedata.function!=0x73) || # Metal Burst
-            (movedata.function==0x70 && eff>0) # OHKO
-            found=true
-            break
-          end
-        end
-        break if found
-      end
-      @battle.pbDisplay(_INTL("{1} shuddered with anticipation!",pbThis)) if found
-    end
     if self.hasWorkingAbility(:PLUS) && onactive
       self.pbOwnSide.effects[PBEffects::PlusSignal]=3
       @battle.pbDisplay(_INTL("{1} charged up Plus energy for its side!",pbThis))
@@ -3940,33 +3907,6 @@ class PokeBattle_Battler
         @battle.pbDisplay(_INTL("The opposing team is too nervous to eat berries!",pbThis))
       elsif !@battle.pbOwnedByPlayer?(@index)
         @battle.pbDisplay(_INTL("Your team is too nervous to eat berries!",pbThis))
-      end
-    end
-    # Forewarn
-    if self.hasWorkingAbility(:FOREWARN) && onactive
-      # Find all super-effective moves from foes
-      semoves=[] # Array of [foe, move_id] pairs
-      for foe in [pbOpposing1,pbOpposing2]
-        next if !foe || foe.isFainted?
-        for j in foe.moves
-          movedata=PBMoveData.new(j.id)
-          next if movedata.basedamage==0
-          eff=PBTypes.getCombinedEffectiveness(movedata.type,type1,type2)
-          if eff>4 # Super-effective
-            semoves.push([foe, j.id])
-          end
-        end
-      end
-      if semoves.length>0
-        # Pick a random super-effective move to disable
-        chosen=semoves[@battle.pbRandom(semoves.length)]
-        foe=chosen[0]
-        move=chosen[1]
-        movename=PBMoves.getName(move)
-        @battle.pbDisplay(_INTL("{1}'s Forewarn alerted it to {2}!",pbThis,movename))
-        foe.effects[PBEffects::ForewarnDisable]=1
-        foe.effects[PBEffects::ForewarnDisableMove]=move
-        @battle.pbDisplay(_INTL("{1}'s {2} was disabled!",foe.pbThis,movename))
       end
     end
     if !(self.abilityWorks?)
@@ -4406,17 +4346,6 @@ class PokeBattle_Battler
         end          
       end
       if !target.damagestate.substitute
-        # Cursed Body: disables the move that knocked it out
-        if target.hasWorkingAbility(:CURSEDBODY,true) && target.isFainted?
-          if $fefieldeffect != 29
-            if user.effects[PBEffects::Disable]<=0 && move.pp>0 && !user.isFainted?
-              user.effects[PBEffects::Disable]=4
-              user.effects[PBEffects::DisableMove]=move.id
-              @battle.pbDisplay(_INTL("{1}'s {2} disabled {3}!",target.pbThis,
-                  PBAbilities.getName(target.ability),user.pbThis(true)))
-            end
-          end
-        end
         if target.hasWorkingAbility(:GULPMISSILE,true) && isConst?(target.species, PBSpecies, :CRAMORANT) && !user.isFainted? &&
           !user.hasWorkingAbility(:MAGICGUARD) && !(user.hasWorkingAbility(:WONDERGUARD) && $fefieldeffect == 44) && target.form!=0
           @battle.scene.pbDamageAnimation(user,0)
@@ -6608,7 +6537,7 @@ class PokeBattle_Battler
       # Bloodthirsty - restore HP when using contact moves
       if user.hasWorkingAbility(:BLOODTHIRSTY) && thismove.isContactMove? &&
          target.damagestate.calcdamage>0 && !user.isFainted? && user.hp < user.totalhp
-        hpgain = user.pbRecoverHP((user.totalhp/8).floor,true)
+        hpgain = user.pbRecoverHP((target.damagestate.calcdamage/4).floor,true)
         @battle.pbDisplay(_INTL("{1}'s Bloodthirsty restored its HP!",user.pbThis)) if hpgain>0
       end
       if damage == -1

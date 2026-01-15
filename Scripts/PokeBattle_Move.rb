@@ -818,21 +818,6 @@ class PokeBattle_Move
       @battle.pbDisplay(_INTL("...But the attack was doused instantly!"))
       return 0
     end
-    #Telepathy
-    if opponent.hasWorkingAbility(:TELEPATHY) && 
-     @basedamage>0 &&
-     !(opponent.moldbroken)
-      partner=attacker.pbPartner
-      if opponent.index == partner.index
-        # if !@battle.pbIsOpposing?(attacker.index) #If it's your partner
-        @battle.pbDisplay(_INTL("{1} avoids attacks by its ally Pokémon!",opponent.pbThis))
-        return 0
-      end
-    end
-    if attacker.hasWorkingAbility(:TELEPATHY) && @basedamage>0 && !attacker.pbIsOpposing?(opponent.index)
-      @battle.pbDisplay(_INTL("{1}'s telepathy let its ally avoid the attack!",attacker.pbThis))
-      return 0
-    end
     # UPDATE Implementing Flying Press + Freeze Dry
     typemod=pbTypeModifier(type,attacker,opponent)
     typemod2= nil
@@ -4135,21 +4120,6 @@ class PokeBattle_Move
     if opponent.hasWorkingAbility(:ARMORTAIL) && !opponent.moldbroken && @basedamage>0
       if self.priority>0 || attacker.effects[PBEffects::TwoTurnAttack]>0
         damage=(damage*0.5).round
-      end
-    end
-    if opponent.hasWorkingAbility(:ANTICIPATION) && !opponent.moldbroken && @basedamage>0
-      if isConst?(type,PBTypes,:PSYCHIC)
-        damage=(damage*2).round
-      elsif !isContactMove?
-        damage=(damage*0.5).round
-      end
-    end
-    if @accuracy<=80
-      if attacker.hasWorkingAbility(:NOGUARD)
-        damage=(damage*1.2).round
-      end
-      if opponent.hasWorkingAbility(:NOGUARD) && !opponent.moldbroken
-        damage=(damage*1.2).round
       end
     end
     # Custom Overlay Terrains
