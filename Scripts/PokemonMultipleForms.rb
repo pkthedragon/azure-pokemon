@@ -694,12 +694,14 @@ MultipleForms.register(:BURMY,{
     "getFormOnCreation"=>proc{|pokemon|
       env=pbGetEnvironment()
       maps=[1,54,55,90]   # Map IDs for sandy form
-      if !pbGetMetadata($game_map.map_id,MetadataOutdoor)
+      # Check map ID first for explicit sandy form locations
+      if $game_map && maps.include?($game_map.map_id)
+        next 1 # Sandy Cloak
+      elsif !pbGetMetadata($game_map.map_id,MetadataOutdoor)
         next 2 # Trash Cloak
       elsif env==PBEnvironment::Sand ||
         env==PBEnvironment::Rock ||
-        env==PBEnvironment::Cave || 
-        ($game_map && maps.include?($game_map.map_id))
+        env==PBEnvironment::Cave
         next 1 # Sandy Cloak
       else
         next 0 # Plant Cloak
@@ -708,12 +710,14 @@ MultipleForms.register(:BURMY,{
     "getFormOnEnteringBattle"=>proc{|pokemon|
       env=pbGetEnvironment()
       maps=[1,54,55,90]   # Map IDs for sandy form
-      if !pbGetMetadata($game_map.map_id,MetadataOutdoor)
+      # Check map ID first for explicit sandy form locations
+      if $game_map && maps.include?($game_map.map_id)
+        next 1 # Sandy Cloak
+      elsif !pbGetMetadata($game_map.map_id,MetadataOutdoor)
         next 2 # Trash Cloak
       elsif env==PBEnvironment::Sand ||
         env==PBEnvironment::Rock ||
-        env==PBEnvironment::Cave || 
-        ($game_map && maps.include?($game_map.map_id))
+        env==PBEnvironment::Cave
         next 1 # Sandy Cloak
       else
         next 0 # Plant Cloak

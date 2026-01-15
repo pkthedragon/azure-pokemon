@@ -77,7 +77,11 @@ def pbGetRelearnableMoves(pokemon, exclude_level1=false)
 
   pbEachNaturalMove(pokemon){|move,level|
      if level<=pokemon.level && !pokemon.knowsMove?(move)
-       next if exclude_level1 && level<=1
+       # Exclude level 1 moves that haven't been learned before
+       if level<=1
+         # Check if this move was in the Pokemon's original moveset
+         next unless pokemon.firstmoves && pokemon.firstmoves.include?(move)
+       end
        moves.push(move) if !moves.include?(move)
      end
   }

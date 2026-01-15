@@ -2222,6 +2222,14 @@ class PokeBattle_Battle
       end
       return false
     end
+    # Forewarn - blocks disabled move
+    if thispkmn.effects[PBEffects::ForewarnDisable] > 0 &&
+       thismove.id == thispkmn.effects[PBEffects::ForewarnDisableMove]
+      if showMessages
+        pbDisplayPaused(_INTL("{1} is disabled by Forewarn!",thismove.name))
+      end
+      return false
+    end
     if thispkmn.effects[PBEffects::ChoiceBand]>=0 &&
       (thispkmn.hasWorkingItem(:CHOICEBAND) ||
       thispkmn.hasWorkingItem(:CHOICESPECS) ||
@@ -5629,8 +5637,50 @@ def pbStartBattle(canlose=false)
             # Apply additional effects
             addleffect = move.addlEffect
             addleffect *= 2 if i.hasWorkingAbility(:SERENEGRACE)
+            # Grazing blow prevents all secondary effects
+            addleffect = 0 if target.damagestate.partialhit
             if pbRandom(100) < addleffect
               move.pbAdditionalEffect(i,target)
+            end
+            # Stench - first contact move against a target flinches
+            if i.hasWorkingAbility(:STENCH) && move.isContactMove? && !target.effects[PBEffects::StenchUsed]
+              if !target.hasWorkingAbility(:INNERFOCUS) &&
+                 target.effects[PBEffects::Substitute]==0 &&
+                 target.status!=PBStatuses::SLEEP && target.status!=PBStatuses::FROZEN
+                target.effects[PBEffects::Flinch]=true
+                target.effects[PBEffects::StenchUsed]=true
+              end
+            end
+            # Propeller Tail - momentum moves blow away hazards and traps
+            if i.hasWorkingAbility(:PROPELLERTAIL) && PBStuff::MOMENTUMMOVE.include?(move.id)
+              if i.effects[PBEffects::MultiTurn]>0
+                mtattack=PBMoves.getName(i.effects[PBEffects::MultiTurnAttack])
+                mtuser=@battlers[i.effects[PBEffects::MultiTurnUser]]
+                pbDisplay(_INTL("{1} got free of {2}'s {3}!",i.pbThis,mtuser.pbThis(true),mtattack))
+                i.effects[PBEffects::MultiTurn]=0
+                i.effects[PBEffects::MultiTurnAttack]=0
+                i.effects[PBEffects::MultiTurnUser]=-1
+              end
+              if i.effects[PBEffects::LeechSeed]>=0
+                i.effects[PBEffects::LeechSeed]=-1
+                pbDisplay(_INTL("{1} shed Leech Seed!",i.pbThis))
+              end
+              if i.pbOwnSide.effects[PBEffects::StealthRock]
+                i.pbOwnSide.effects[PBEffects::StealthRock] = false
+                pbDisplay(_INTL("{1} blew away stealth rocks!",i.pbThis))
+              end
+              if i.pbOwnSide.effects[PBEffects::Spikes]>0
+                i.pbOwnSide.effects[PBEffects::Spikes] = 0
+                pbDisplay(_INTL("{1} blew away Spikes!",i.pbThis))
+              end
+              if i.pbOwnSide.effects[PBEffects::ToxicSpikes]>0
+                i.pbOwnSide.effects[PBEffects::ToxicSpikes] = 0
+                pbDisplay(_INTL("{1} blew away Poison Barbs!",i.pbThis))
+              end
+              if i.pbOwnSide.effects[PBEffects::StickyWeb]
+                i.pbOwnSide.effects[PBEffects::StickyWeb] = false
+                pbDisplay(_INTL("{1} blew away the sticky webbing!",i.pbThis))
+              end
             end
           end
           target.pbFaint if target.isFainted?
@@ -5917,7 +5967,15 @@ def pbStartBattle(canlose=false)
       @battlers[i].effects[PBEffects::KingsShield]=false # add this line
       @battlers[i].effects[PBEffects::ProtectNegation]=false
       @battlers[i].effects[PBEffects::Endure]=false
-      @battlers[i].effects[PBEffects::HyperBeam]-=1 if @battlers[i].effects[PBEffects::HyperBeam]>0
+      if @battlers[i].effects[PBEffects::HyperBeam]>0
+        @battlers[i].effects[PBEffects::HyperBeam]-=1
+        # Early Bird - 2x speed after recharging
+        if @battlers[i].effects[PBEffects::HyperBeam]==0 && @battlers[i].hasWorkingAbility(:EARLYBIRD)
+          @battlers[i].effects[PBEffects::EarlyBirdBoost]=2
+        end
+      end
+      # Decrement Early Bird boost counter
+      @battlers[i].effects[PBEffects::EarlyBirdBoost]-=1 if @battlers[i].effects[PBEffects::EarlyBirdBoost]>0
       @battlers[i].effects[PBEffects::SpikyShield]=false
       @battlers[i].effects[PBEffects::BanefulBunker]=false
       @battlers[i].effects[PBEffects::Obstruct]=false
@@ -6885,7 +6943,7 @@ def pbStartBattle(canlose=false)
       if i.hasWorkingAbility(:CARETAKER)
         partner=i.pbPartner
         if partner && !partner.isFainted? && partner.effects[PBEffects::HealBlock]==0
-          hpgain=partner.pbRecoverHP((partner.totalhp/16).floor,true)
+          hpgain=partner.pbRecoverHP((partner.totalhp/8).floor,true)
           pbDisplay(_INTL("{1}'s Caretaker restored {2}'s HP!",i.pbThis,partner.pbThis(true))) if hpgain>0
         end
       end

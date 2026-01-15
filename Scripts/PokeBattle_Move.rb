@@ -1711,6 +1711,7 @@ class PokeBattle_Move
       c+=3
     end
     c=3 if c>3
+    return false if c==0  # Base crit rate is 0
     return @battle.pbRandom(ratios[c])==0
   end
 
@@ -3623,6 +3624,13 @@ class PokeBattle_Move
         @battle.pbDisplay(_INTL("{1}'s {2} made it immune to the attack!",opponent.pbThis,PBAbilities.getName(opponent.ability)))
       end
     end
+    # Telepathy - user and allies dodge attacks from user and allies
+    if opponent.hasWorkingAbility(:TELEPATHY) && !(opponent.moldbroken)
+      if (attacker.index & 1) == (opponent.index & 1)
+        atkmult=0
+        @battle.pbDisplay(_INTL("{1} avoided the attack with {2}!",opponent.pbThis,PBAbilities.getName(opponent.ability)))
+      end
+    end
     if (opponent.hasWorkingAbility(:PASTELVEIL) || opponent.pbPartner.hasWorkingAbility(:PASTELVEIL)) &&
        ($fefieldeffect==3 || $fefieldeffect==9) && isConst?(type,PBTypes,:POISON) && !(opponent.moldbroken)
       atkmult=(atkmult*0.5).round
@@ -4033,6 +4041,10 @@ class PokeBattle_Move
     # Tangled Feet - 0.5x defenses when confused
     if opponent.hasWorkingAbility(:TANGLEDFEET) && opponent.effects[PBEffects::Confusion]>0 && !(opponent.moldbroken)
       defmult=(defmult*0.5).round
+    end
+    # Heavy Metal - increase defenses during gravity
+    if opponent.hasWorkingAbility(:HEAVYMETAL) && @battle.field.effects[PBEffects::Gravity]>0 && !(opponent.moldbroken)
+      defmult=(defmult*1.5).round
     end
 	if opponent.hasWorkingAbility(:NATURALSHROUD) &&
 		@battle.field.effects[PBEffects::ElectricTerrain] > 0 ||
@@ -5202,7 +5214,23 @@ class PokeBattle_Move
     end
     if attacker.hasWorkingAbility(:STAKEOUT) && @battle.switchedOut[opponent.index]
       finaldamagemult=(finaldamagemult*2.0).round
-    end    
+    end
+    if attacker.hasWorkingAbility(:EXECUTIONER) && opponent.hp <= (opponent.totalhp/2).floor
+      finaldamagemult=(finaldamagemult*1.5).round
+    end
+    # No Guard - 1.2x damage if move has 80 accuracy or below
+    if (attacker.hasWorkingAbility(:NOGUARD) || opponent.hasWorkingAbility(:NOGUARD)) && @accuracy > 0 && @accuracy <= 80
+      finaldamagemult=(finaldamagemult*1.2).round
+    end
+    # Anticipation - 0.5x damage from non-contact moves, 2x from Psychic-type
+    if opponent.hasWorkingAbility(:ANTICIPATION) && !(opponent.moldbroken)
+      movetype=pbType(@type,attacker,opponent)
+      if isConst?(movetype,PBTypes,:PSYCHIC)
+        finaldamagemult=(finaldamagemult*2.0).round
+      elsif !isContactMove?
+        finaldamagemult=(finaldamagemult*0.5).round
+      end
+    end
     if attacker.hasWorkingAbility(:OWNTEMPO) && attacker.effects[PBEffects::Metronome]>0
       met=1.0+(attacker.effects[PBEffects::Metronome]*0.1)
       met=2.0 if met>2.0
