@@ -360,15 +360,20 @@ TERASHELL=400
 TERAFORMZERO=401
 POISONPUPPETEER=402
 ABYSSAL=403
+CARETAKER=404
+BLOODTHIRSTY=405
+SCAVENGER=406
+EXECUTIONER=407
+EVENTHORIZON=408
 
 def self.getName(id)
 return pbGetMessage(MessageTypes::Abilities,id)
 end
 def self.getCount
-return 361
+return 366
 end
 
 def self.maxValue
-return 403
+return 408
 end
 end

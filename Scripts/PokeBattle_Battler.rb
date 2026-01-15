@@ -903,6 +903,7 @@ class PokeBattle_Battler
       @effects[PBEffects::ForewarnDisable] = 0
       @effects[PBEffects::ForewarnDisableMove] = 0
       @effects[PBEffects::ShedSkinUsed] = false
+      @effects[PBEffects::StenchUsed] = false
       @effects[PBEffects::LaserFocus]  = 0
       @effects[PBEffects::GastroAcid]  = false
       @effects[PBEffects::HealBlock]   = 0
@@ -1914,6 +1915,14 @@ class PokeBattle_Battler
     if self.hasWorkingAbility(:TANGLEDFEET) && self.effects[PBEffects::Confusion]>0
       speed=(speed*1.5).floor
     end
+    # Light Metal - double speed during gravity
+    if self.hasWorkingAbility(:LIGHTMETAL) && @battle.field.effects[PBEffects::Gravity]>0
+      speed=speed*2
+    end
+    # Early Bird - 2x speed the turn after waking/charging/recharging
+    if @effects[PBEffects::EarlyBirdBoost] > 0
+      speed=speed*2
+    end
     if self.hasWorkingItem(:MACHOBRACE) ||
       self.hasWorkingItem(:POWERWEIGHT) ||
       self.hasWorkingItem(:POWERBRACER) ||
@@ -2107,7 +2116,23 @@ class PokeBattle_Battler
           @battle.pbDisplay(_INTL("{1} copied {2}'s {3}!",i.pbThis,pbThis,abilityname))
         end
       end
-    end    
+    end
+    # Cursed Body - disable the move that knocked it out
+    if self.hasWorkingAbility(:CURSEDBODY) && @lastAttacker >= 0
+      attacker = @battle.battlers[@lastAttacker]
+      if attacker && !attacker.isFainted? && attacker.lastMoveUsed > 0
+        # Find which move slot was used
+        for i in 0...4
+          if attacker.moves[i] && attacker.moves[i].id == attacker.lastMoveUsed
+            attacker.effects[PBEffects::DisableMove] = attacker.lastMoveUsed
+            attacker.effects[PBEffects::Disable] = 4
+            movename = PBMoves.getName(attacker.lastMoveUsed)
+            @battle.pbDisplay(_INTL("{1}'s {2} disabled {3}'s {4}!",pbThis,PBAbilities.getName(@ability),attacker.pbThis(true),movename))
+            break
+          end
+        end
+      end
+    end
     for i in @battle.battlers
       next if i.isFainted?
       if i.hasWorkingAbility(:SOULHEART) && !i.pbTooHigh?(PBStats::SPATK)
@@ -3429,6 +3454,74 @@ class PokeBattle_Battler
         @battle.pbDisplay(_INTL("{1}'s {2} boosted its Accuracy!",pbThis,PBAbilities.getName(ability)))
       end
     end
+    # Frisk - Peek at enemy item and block usage for 1 turn
+    if self.hasWorkingAbility(:FRISK) && onactive
+      for i in 0...4
+        if pbIsOpposing?(i) && !@battle.battlers[i].isFainted?
+          opponent = @battle.battlers[i]
+          if opponent.item > 0
+            itemname = PBItems.getName(opponent.item)
+            @battle.pbDisplay(_INTL("{1} frisked {2} and found its {3}!",pbThis,opponent.pbThis(true),itemname))
+            opponent.effects[PBEffects::FriskLock] = 2
+          end
+        end
+      end
+    end
+    # Forewarn - Disable a foe's super-effective move on entry
+    if self.hasWorkingAbility(:FOREWARN) && onactive
+      for i in 0...4
+        if pbIsOpposing?(i) && !@battle.battlers[i].isFainted?
+          opponent = @battle.battlers[i]
+          # Find a super-effective move
+          for j in 0...4
+            next if !opponent.moves[j] || opponent.moves[j].id == 0
+            movetype = PBMoveData.new(opponent.moves[j].id).type
+            atype1 = self.type1
+            atype2 = self.type2
+            mod1 = PBTypes.getCombinedEffectiveness(movetype,atype1,atype2)
+            if mod1 > 4 # Super effective (>1x in the 4-based system)
+              opponent.effects[PBEffects::ForewarnDisable] = 2
+              opponent.effects[PBEffects::ForewarnDisableMove] = opponent.moves[j].id
+              movename = PBMoves.getName(opponent.moves[j].id)
+              @battle.pbDisplay(_INTL("{1}'s {2} disabled {3}'s {4}!",pbThis,PBAbilities.getName(ability),opponent.pbThis(true),movename))
+              break
+            end
+          end
+        end
+      end
+    end
+    # Color Change - Uses Camouflage on entry
+    if self.hasWorkingAbility(:COLORCHANGE) && onactive
+      if !self.hasWorkingAbility(:MULTITYPE) && !self.hasWorkingAbility(:RKSSYSTEM)
+        newtype = 0
+        case $fefieldeffect
+        when 1; newtype = getConst(PBTypes,:ELECTRIC) || 0
+        when 2; newtype = getConst(PBTypes,:GRASS) || 0
+        when 3; newtype = getConst(PBTypes,:FAIRY) || 0
+        when 4; newtype = getConst(PBTypes,:DARK) || 0
+        when 5; newtype = getConst(PBTypes,:PSYCHIC) || 0
+        when 6; newtype = getConst(PBTypes,:NORMAL) || 0
+        when 7,16; newtype = getConst(PBTypes,:FIRE) || 0
+        when 8,21,22; newtype = getConst(PBTypes,:WATER) || 0
+        when 9; newtype = getConst(PBTypes,:DRAGON) || 0
+        when 10,11,19; newtype = getConst(PBTypes,:POISON) || 0
+        when 12,20; newtype = getConst(PBTypes,:GROUND) || 0
+        when 13; newtype = getConst(PBTypes,:ICE) || 0
+        when 14,23; newtype = getConst(PBTypes,:ROCK) || 0
+        when 15; newtype = getConst(PBTypes,:BUG) || 0
+        when 17; newtype = getConst(PBTypes,:STEEL) || 0
+        when 18; newtype = getConst(PBTypes,:ELECTRIC) || 0
+        when 24; newtype = getConst(PBTypes,:FLYING) || 0
+        else; newtype = getConst(PBTypes,:NORMAL) || 0
+        end
+        if newtype > 0 && self.type1 != newtype
+          self.type1 = newtype
+          self.type2 = newtype
+          typename = PBTypes.getName(newtype)
+          @battle.pbDisplay(_INTL("{1}'s {2} changed it to {3} type!",pbThis,PBAbilities.getName(ability),typename))
+        end
+      end
+    end
     # Download
     if (self.hasWorkingAbility(:DOWNLOAD) ||  @battle.SilvallyCheck(self,PBTypes::ELECTRIC)) && onactive
       odef=ospdef=0
@@ -3801,39 +3894,6 @@ class PokeBattle_Battler
         end     
       end
     end
-    # Frisk
-    if self.hasWorkingAbility(:FRISK) && onactive
-      foes=[]
-      foes.push(pbOpposing1) if pbOpposing1.item>0 && !pbOpposing1.isFainted?
-      foes.push(pbOpposing2) if pbOpposing2.item>0 && !pbOpposing2.isFainted?
-      for i in foes
-        itemname=PBItems.getName(i.item)
-        @battle.pbDisplay(_INTL("{1} frisked {2} and found its {3}!",pbThis,i.pbThis(true),itemname))
-        i.effects[PBEffects::FriskLock]=1
-        @battle.pbDisplay(_INTL("{1}'s item was locked!",i.pbThis))
-      end
-    end
-    # Anticipation
-    if self.hasWorkingAbility(:ANTICIPATION) && @battle.pbOwnedByPlayer?(@index) && onactive
-      found=false
-      for foe in [pbOpposing1,pbOpposing2]
-        next if foe.isFainted?
-        for j in foe.moves
-          movedata=PBMoveData.new(j.id)
-          eff=PBTypes.getCombinedEffectiveness(movedata.type,type1,type2)
-          if (movedata.basedamage>0 && eff>4 &&
-              movedata.function!=0x71 && # Counter
-              movedata.function!=0x72 && # Mirror Coat
-              movedata.function!=0x73) || # Metal Burst
-            (movedata.function==0x70 && eff>0) # OHKO
-            found=true
-            break
-          end
-        end
-        break if found
-      end
-      @battle.pbDisplay(_INTL("{1} shuddered with anticipation!",pbThis)) if found
-    end
     if self.hasWorkingAbility(:PLUS) && onactive
       self.pbOwnSide.effects[PBEffects::PlusSignal]=3
       @battle.pbDisplay(_INTL("{1} charged up Plus energy for its side!",pbThis))
@@ -3847,33 +3907,6 @@ class PokeBattle_Battler
         @battle.pbDisplay(_INTL("The opposing team is too nervous to eat berries!",pbThis))
       elsif !@battle.pbOwnedByPlayer?(@index)
         @battle.pbDisplay(_INTL("Your team is too nervous to eat berries!",pbThis))
-      end
-    end
-    # Forewarn
-    if self.hasWorkingAbility(:FOREWARN) && onactive
-      # Find all super-effective moves from foes
-      semoves=[] # Array of [foe, move_id] pairs
-      for foe in [pbOpposing1,pbOpposing2]
-        next if !foe || foe.isFainted?
-        for j in foe.moves
-          movedata=PBMoveData.new(j.id)
-          next if movedata.basedamage==0
-          eff=PBTypes.getCombinedEffectiveness(movedata.type,type1,type2)
-          if eff>4 # Super-effective
-            semoves.push([foe, j.id])
-          end
-        end
-      end
-      if semoves.length>0
-        # Pick a random super-effective move to disable
-        chosen=semoves[@battle.pbRandom(semoves.length)]
-        foe=chosen[0]
-        move=chosen[1]
-        movename=PBMoves.getName(move)
-        @battle.pbDisplay(_INTL("{1}'s Forewarn alerted it to {2}!",pbThis,movename))
-        foe.effects[PBEffects::ForewarnDisable]=1
-        foe.effects[PBEffects::ForewarnDisableMove]=move
-        @battle.pbDisplay(_INTL("{1}'s {2} was disabled!",foe.pbThis,movename))
       end
     end
     if !(self.abilityWorks?)
@@ -4218,11 +4251,17 @@ class PokeBattle_Battler
           @battle.pbDisplay(_INTL("{1}'s Moxie raised its Attack!",user.pbThis))
         end
       end
-      if user.hasWorkingAbility(:EXECUTION) && 
+      if user.hasWorkingAbility(:EXECUTION) &&
         user.hp>0 && target.hp<=0
         hpgain=(damage/8).floor
         hpgain=user.pbRecoverHP(hpgain,true)
         @battle.pbDisplay(_INTL("{1}'s Execution healed some of its wounds!",user.pbThis))
+      end
+      if user.hasWorkingAbility(:SCAVENGER) &&
+        user.hp>0 && target.hp<=0
+        hpgain=(user.totalhp/4).floor
+        hpgain=user.pbRecoverHP(hpgain,true)
+        @battle.pbDisplay(_INTL("{1}'s Scavenger restored its HP!",user.pbThis)) if hpgain>0
       end
       if user.hasWorkingAbility(:BEASTBOOST) && user.hp>0 && target.hp<=0
         increment = 1
@@ -4307,17 +4346,6 @@ class PokeBattle_Battler
         end          
       end
       if !target.damagestate.substitute
-        # Cursed Body: disables the move that knocked it out
-        if target.hasWorkingAbility(:CURSEDBODY,true) && target.isFainted?
-          if $fefieldeffect != 29
-            if user.effects[PBEffects::Disable]<=0 && move.pp>0 && !user.isFainted?
-              user.effects[PBEffects::Disable]=4
-              user.effects[PBEffects::DisableMove]=move.id
-              @battle.pbDisplay(_INTL("{1}'s {2} disabled {3}!",target.pbThis,
-                  PBAbilities.getName(target.ability),user.pbThis(true)))
-            end
-          end
-        end
         if target.hasWorkingAbility(:GULPMISSILE,true) && isConst?(target.species, PBSpecies, :CRAMORANT) && !user.isFainted? &&
           !user.hasWorkingAbility(:MAGICGUARD) && !(user.hasWorkingAbility(:WONDERGUARD) && $fefieldeffect == 44) && target.form!=0
           @battle.scene.pbDamageAnimation(user,0)
@@ -6245,6 +6273,10 @@ class PokeBattle_Battler
       self.statusCount-=1 if self.hasWorkingAbility(:EARLYBIRD)
       if self.statusCount<=0
         self.pbCureStatus
+        # Early Bird - 2x speed the turn after waking up
+        if self.hasWorkingAbility(:EARLYBIRD)
+          @effects[PBEffects::EarlyBirdBoost] = 2
+        end
       else
         self.pbContinueStatus
         if !thismove.pbCanUseWhileAsleep? # Snore/Sleep Talk
@@ -6499,8 +6531,14 @@ class PokeBattle_Battler
           target.pbRecoverHP([1,((target.damagestate.hplost)/2).floor].max) if !target.isFainted?
           @battle.pbDisplay(_INTL("{1}'s crest causes {2} to take recoil damage and {3} to recover!",
               target.pbThis,user.pbThis(true),target.pbThis))
-          
+
         end
+      end
+      # Bloodthirsty - restore HP when using contact moves
+      if user.hasWorkingAbility(:BLOODTHIRSTY) && thismove.isContactMove? &&
+         target.damagestate.calcdamage>0 && !user.isFainted? && user.hp < user.totalhp
+        hpgain = user.pbRecoverHP((target.damagestate.calcdamage/4).floor,true)
+        @battle.pbDisplay(_INTL("{1}'s Bloodthirsty restored its HP!",user.pbThis)) if hpgain>0
       end
       if damage == -1
         user.effects[PBEffects::Tantrum]=true
@@ -6543,6 +6581,8 @@ class PokeBattle_Battler
         addleffect=0 if (isConst?(user.species,PBSpecies,:LEDIAN) && user.hasWorkingItem(:LEDICREST) && i>1)
         # Lucky Chant prevents secondary effects
         addleffect=0 if target.pbOwnSide.effects[PBEffects::LuckyChant]>0
+        # Grazing blow prevents all secondary effects
+        addleffect=0 if target.damagestate.partialhit
         if @battle.pbRandom(100)<addleffect
           thismove.pbAdditionalEffect(user,target)
         end

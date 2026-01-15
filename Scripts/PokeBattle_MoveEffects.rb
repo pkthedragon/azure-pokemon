@@ -6449,19 +6449,13 @@ class PokeBattle_Move_0C0 < PokeBattle_Move
   end
 
   def pbNumHits(attacker)
-    if @battle.pbOwnedByPlayer?(attacker.index) 
-       hitchances=[2,2,3,3,4,5] 
-    elsif !@battle.pbOwnedByPlayer?(attacker.index) 
-      if $game_variables[:Difficulty_Mode]==2
-        hitchances=[3,4,4,4,5,5] 
-      else
-        hitchances=[2,2,3,3,4,5] 
-      end
-    else
-      hitchances=[2,2,3,3,4,5] 
+    # Always 3 hits by default
+    ret=3
+    # 5 hits if Skill Link or Loaded Dice
+    if attacker.hasWorkingAbility(:SKILLLINK) || attacker.hasWorkingItem(:LOADEDDICE)
+      ret=5
     end
-    ret=hitchances[@battle.pbRandom(hitchances.length)]
-    ret=5 if attacker.hasWorkingAbility(:SKILLLINK)
+    # Ledian Crest special case
     if isConst?(attacker.species,PBSpecies,:LEDIAN) && attacker.hasWorkingItem(:LEDICREST) &&
      isConst?(@id,PBMoves,:COMETPUNCH)
       ret=ret*4
@@ -7394,13 +7388,27 @@ class PokeBattle_Move_0D5 < PokeBattle_Move
     if tribute_has?(attacker, :MEADOWTRIBUTE)
         hpgain = (hpgain*1.3).floor
       end
-      attacker.pbRecoverHP(hpgain,true)     
+      # Healer - amplify healing by 1.1x
+      if attacker.hasWorkingAbility(:HEALER)
+        hpgain = (hpgain*1.1).floor
+      end
+      attacker.pbRecoverHP(hpgain,true)
     else
     hpgain=((attacker.totalhp+1)/2).floor
     if tribute_has?(attacker, :MEADOWTRIBUTE)
         hpgain = (hpgain*1.3).floor
       end
+      # Healer - amplify healing by 1.1x
+      if attacker.hasWorkingAbility(:HEALER)
+        hpgain = (hpgain*1.1).floor
+      end
       attacker.pbRecoverHP(hpgain,true)
+    end
+    # Healer - cure status conditions
+    if attacker.hasWorkingAbility(:HEALER) && attacker.status>0
+      attacker.status=0
+      attacker.statusCount=0
+      @battle.pbDisplay(_INTL("{1}'s {2} cured its status problem!",attacker.pbThis,PBAbilities.getName(attacker.ability)))
     end
     @battle.pbDisplay(_INTL("{1}'s HP was restored.",attacker.pbThis))
     return 0
@@ -7424,7 +7432,17 @@ class PokeBattle_Move_0D6 < PokeBattle_Move
     if tribute_has?(attacker, :MEADOWTRIBUTE)
         hpgain = (hpgain*1.3).floor
       end
+      # Healer - amplify healing by 1.1x
+      if attacker.hasWorkingAbility(:HEALER)
+        hpgain = (hpgain*1.1).floor
+      end
       attacker.pbRecoverHP(hpgain,true)
+    # Healer - cure status conditions
+    if attacker.hasWorkingAbility(:HEALER) && attacker.status>0
+      attacker.status=0
+      attacker.statusCount=0
+      @battle.pbDisplay(_INTL("{1}'s {2} cured its status problem!",attacker.pbThis,PBAbilities.getName(attacker.ability)))
+    end
     attacker.effects[PBEffects::Roost]=true
     @battle.pbDisplay(_INTL("{1}'s HP was restored.",attacker.pbThis))
     return 0
@@ -7485,8 +7503,18 @@ class PokeBattle_Move_0D8 < PokeBattle_Move
   if tribute_has?(attacker, :MEADOWTRIBUTE)
       hpgain = (hpgain*1.3).floor
     end
+    # Healer - amplify healing by 1.1x
+    if attacker.hasWorkingAbility(:HEALER)
+      hpgain = (hpgain*1.1).floor
+    end
     pbShowAnimation(@id,attacker,nil,hitnum,alltargets,showanimation)
     attacker.pbRecoverHP(hpgain,true)
+    # Healer - cure status conditions
+    if attacker.hasWorkingAbility(:HEALER) && attacker.status>0
+      attacker.status=0
+      attacker.statusCount=0
+      @battle.pbDisplay(_INTL("{1}'s {2} cured its status problem!",attacker.pbThis,PBAbilities.getName(attacker.ability)))
+    end
     @battle.pbDisplay(_INTL("{1}'s HP was restored.",attacker.pbThis))
     return 0
   end
@@ -7945,7 +7973,7 @@ class PokeBattle_Move_0EB < PokeBattle_Move
       @battle.pbDisplay(_INTL("{1} anchored itself with its roots!",opponent.pbThis))
       return -1
     end
-    if !@battle.opponent && !isBossBattle?
+    if !@battle.opponent && !@battle.isBossBattle?
       if opponent.level>=attacker.level
         @battle.pbDisplay(_INTL("But it failed!"))
         return -1
@@ -9353,10 +9381,10 @@ class PokeBattle_Move_110 < PokeBattle_Move
         attacker.pbOwnSide.effects[PBEffects::StickyWeb] = false
         @battle.pbDisplay(_INTL("{1} blew away the sticky webbing!",attacker.pbThis))     
       end
-      if attacker.pbOwnSide.effects[PBEffects::MysticTree] || opponent.pbOwnSide.effects[PBEffects::MysticTree]
-        attacker.pbOwnSide.effects[PBEffects::MysticTree] = false
-        opponent.pbOwnSide.effects[PBEffects::MysticTree] = false
-        @battle.pbDisplay(_INTL("{1} blew away the mystical trees!",attacker.pbThis))     
+      if attacker.pbOwnSide.effects[PBEffects::MysticTree]>0 || opponent.pbOwnSide.effects[PBEffects::MysticTree]>0
+        attacker.pbOwnSide.effects[PBEffects::MysticTree] = 0
+        opponent.pbOwnSide.effects[PBEffects::MysticTree] = 0
+        @battle.pbDisplay(_INTL("{1} blew away the mystical trees!",attacker.pbThis))
       end
       if attacker.pbCanIncreaseStatStage?(PBStats::SPEED,true)
         ret=attacker.pbIncreaseStat(PBStats::SPEED,1,false)
@@ -13189,19 +13217,12 @@ class PokeBattle_Move_23D < PokeBattle_Move
   end
 
   def pbNumHits(attacker)
-    if @battle.pbOwnedByPlayer?(attacker.index) 
-      hitchances=[2,2,3,3,4,5] 
-    elsif !@battle.pbOwnedByPlayer?(attacker.index) 
-      if $game_variables[:Difficulty_Mode]==2
-        hitchances=[3,4,4,4,5,5] 
-      else
-        hitchances=[2,2,3,3,4,5] 
-      end
-    else
-      hitchances=[2,2,3,3,4,5] 
+    # Always 3 hits by default
+    ret=3
+    # 5 hits if Skill Link or Loaded Dice
+    if attacker.hasWorkingAbility(:SKILLLINK) || attacker.hasWorkingItem(:LOADEDDICE)
+      ret=5
     end
-    ret=hitchances[@battle.pbRandom(hitchances.length)]
-    ret=5 if attacker.hasWorkingAbility(:SKILLLINK)
     return ret
   end
 
@@ -13960,19 +13981,12 @@ class PokeBattle_Move_290 < PokeBattle_Move
   end
   
   def pbNumHits(attacker)
-    if @battle.pbOwnedByPlayer?(attacker.index) 
-       hitchances=[2,2,3,3,4,5] 
-    elsif !@battle.pbOwnedByPlayer?(attacker.index) 
-      if $game_variables[:Difficulty_Mode]==2
-        hitchances=[3,4,4,4,5,5] 
-      else
-        hitchances=[2,2,3,3,4,5] 
-      end
-    else
-      hitchances=[2,2,3,3,4,5] 
+    # Always 3 hits by default
+    ret=3
+    # 5 hits if Skill Link or Loaded Dice
+    if attacker.hasWorkingAbility(:SKILLLINK) || attacker.hasWorkingItem(:LOADEDDICE)
+      ret=5
     end
-    ret=hitchances[@battle.pbRandom(hitchances.length)]
-    ret=5 if attacker.hasWorkingAbility(:SKILLLINK)
     return ret
   end
 
@@ -14658,14 +14672,14 @@ class PokeBattle_Move_29E < PokeBattle_Move
 end
 
 ################################################################################
-# Sharpen – Attack +1 and sharply boosts crit rate (Focus Energy = 2)
+# Sharpen – Attack +1 and boosts crit rate (Focus Energy = 1)
 ################################################################################
 class PokeBattle_Move_29D < PokeBattle_Move
   def pbEffect(attacker,opponent,hitnum=0,alltargets=nil,showanimation=true)
     pbShowAnimation(@id, attacker, nil)
     attacker.pbIncreaseStat(PBStats::ATTACK,1,false)
-    if attacker.effects[PBEffects::FocusEnergy] < 2
-      attacker.effects[PBEffects::FocusEnergy] = 2
+    if attacker.effects[PBEffects::FocusEnergy] < 1
+      attacker.effects[PBEffects::FocusEnergy] = 1
       @battle.pbDisplay(_INTL("{1} sharpened its focus!", attacker.pbThis))
     end
     return 0
