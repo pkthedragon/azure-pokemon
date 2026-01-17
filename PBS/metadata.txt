@@ -152,13 +152,13 @@ MapPosition=0,16,2
 Outdoor=false
 ShowArea=false
 MapPosition=0,16,2
-BattleBack=Psychic
+BattleBack=Library
 [029]
 # Logium Library
 Outdoor=false
 ShowArea=false
 MapPosition=0,16,2
-BattleBack=Psychic
+BattleBack=Library
 [030]
 # Apolvita Cavern
 Outdoor=false
@@ -243,10 +243,12 @@ BattleBack=Darchlight
 # Logium Library
 Outdoor=false
 MapPosition=0,16,2
+BattleBack=Library
 [049]
 # Logium Library Attic
 Outdoor=false
 MapPosition=0,16,2
+BattleBack=Library
 [051]
 # Ranger Encampment
 Outdoor=true
