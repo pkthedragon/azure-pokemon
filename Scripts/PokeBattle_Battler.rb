@@ -6316,18 +6316,6 @@ class PokeBattle_Battler
       end
       # Freeze no longer immobilizes - HP sap happens at end of turn instead
     end
-    if @effects[PBEffects::Confusion]>0 && !@simplemove
-      @effects[PBEffects::Confusion]-=1
-      if @effects[PBEffects::Confusion]<=0
-        pbCureConfusion
-      else
-        pbContinueConfusion
-        # Confusion always causes self-hit but does not prevent the move from executing
-        @battle.pbDisplay(_INTL("It hurt itself from its confusion!"))
-        pbConfusionDamage
-        # Move continues to execute after self-hit (no return false)
-      end
-    end
     #### AME - 004 - START
     if @effects[PBEffects::Flinch]
       @effects[PBEffects::Flinch]=false
@@ -6371,6 +6359,18 @@ class PokeBattle_Battler
       end
     end
     #### AME - 004 - END
+    if @effects[PBEffects::Confusion]>0 && !@simplemove
+      @effects[PBEffects::Confusion]-=1
+      if @effects[PBEffects::Confusion]<=0
+        pbCureConfusion
+      else
+        pbContinueConfusion
+        # Confusion always causes self-hit but does not prevent the move from executing
+        @battle.pbDisplay(_INTL("It hurt itself from its confusion!"))
+        pbConfusionDamage
+        return false if self.isFainted?
+      end
+    end
     if @effects[PBEffects::Attract]>=0 && !@simplemove
       pbAnnounceAttract(@battle.battlers[@effects[PBEffects::Attract]])
       # Infatuation no longer immobilizes - instead, attacks against infatuated Pokemon always crit
@@ -6756,7 +6756,7 @@ class PokeBattle_Battler
       end
       # Reverb - Sound moves strike again next turn at 0.25x power
       if user.hasWorkingAbility(:REVERB) && thismove.isSoundBased? && thismove.basedamage > 0 &&
-         user.hp > 0 && !target.isFainted? && target.damagestate.calcdamage > 0
+         user.hp > 0 && target.damagestate.calcdamage > 0
         user.effects[PBEffects::ReverbEcho] = thismove.id
         user.effects[PBEffects::ReverbTarget] = target.index
         user.effects[PBEffects::ReverbUser] = user.index
