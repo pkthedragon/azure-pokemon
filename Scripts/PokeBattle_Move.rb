@@ -5119,7 +5119,7 @@ class PokeBattle_Move
       finaldamagemult=(finaldamagemult*0.5).round
     end
     # Shelter halves Rock-type damage on Cave Field
-    if $fefieldeffect == 23 && opponent.effects[PBEffects::Shelter] > 0 && isConst?(type,PBTypes,:ROCK)
+    if $fefieldeffect == 23 && (opponent.effects[PBEffects::Shelter] || 0) > 0 && isConst?(type,PBTypes,:ROCK)
       finaldamagemult=(finaldamagemult*0.5).round
     end
     # Gravity damage modifiers
