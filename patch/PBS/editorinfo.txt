@@ -1,0 +1,3 @@
+[POKEDEXES]
+pokedex1=Zakos
+pokedex2=National

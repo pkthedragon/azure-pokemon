@@ -1,0 +1,22 @@
+[0]
+Filename=mapRegion0.png
+Name=Zakos
+Point=13,16,"Logium Town A","Pokemon Laboratory",1,33,29,
+Point=13,14,"Connecting Caves",,,,,
+Point=14,7,"Connecting Caves",,,,,
+Point=22,15,"Connecting Caves",,,,,
+Point=16,2,"Logium Town B","Logium Library",20,36,26,
+Point=18,3,"Apolvita Caverns",,,,,
+Point=24,15,"Logium Town C","Abandoned Church",54,45,23,
+Point=27,15,"Logium Docks",,,,,
+Point=6,16,"Koneli Demesne","Koneli Manor",43,71,9,1359
+Point=16,10,"Underground Forest","Meadow Temple",,,,1302
+Point=7,9,"Village of the Ancients",,,,,
+Point=15,7,"Logium Path",,,,,
+Point=16,7,"Logium Path",,,,,
+Point=16,6,"Logium Path",,,,,
+Point=16,5,"Logium Path",,,,,
+Point=16,4,"Logium Path",,,,,
+Point=17,4,"Logium Path",,,,,
+Point=18,4,"Logium Path",,,,,
+Point=16,3,"Logium Path",,,,,
