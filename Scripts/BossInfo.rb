@@ -226,4 +226,79 @@ BOSSINFOHASH = {
             },
         }
     },
+
+    :MOTHEREXPLOUD => {
+        :name => "Mother Exploud", # nickname
+        :entryText => "Mother Exploud's howl echoes through the cave!", # dialogue upon enterring battle as a wild pokemon
+        :shieldCount => 1, # number of shields
+        :immunities => {},
+        :capturable => false, # can you catch this boss after shields are removed?
+        :moninfo => { # bosspokemon details
+            :species => PBSpecies::EXPLOUD,
+            :level => 23,
+            :form => 0,
+            :item => PBItems::THROATSPRAY,
+            :moves => [PBMoves::ECHOEDVOICE],
+            :ability => PBAbilities::AMPLIFY,
+            :gender => "F",
+            :nature => PBNatures::MODEST,
+            :iv => 20,
+            :happiness => 255
+        },
+        :sosDetails =>  { # sospokemon details
+            :activationRequirement => "@battlers[battlerIndex].shieldCount == 0",
+            :continuous => true,
+            :totalMonCount => 1,
+            :moninfos => {
+                1 => {
+                    :species => PBSpecies::WHISMUR,
+                    :level => 17,
+                    :form => 0,
+                    :item => PBItems::CHOPLEBERRY,
+                    :moves => [PBMoves::HELPINGHAND,PBMoves::MAGICPOWDER,PBMoves::ROAR,PBMoves::SUPERSONIC],
+                    :ability => PBAbilities::SOUNDPROOF,
+                    :nature => :MODEST,
+                    :iv => 20,
+                    :happiness => 255
+                },
+            },
+        },
+        :onEntryEffects => { # effects applied on entry, use same attributes/syntax as onbreakeffects
+            :abilitychange => PBAbilities::PARENTALBOND,
+            :message => "{1}'s motherly instincts take over!"
+        }
+    },
+
+    :TOXICROAKBOSS => {
+        :name => "Toxicroak", # nickname
+        :entryText => "A Toxicroak blocks the way!", # dialogue upon enterring battle as a wild pokemon
+        :shieldCount => 1, # number of shields
+        :immunities => {},
+        :capturable => false, # can you catch this boss after shields are removed?
+        :moninfo => { # bosspokemon details
+            :species => PBSpecies::TOXICROAK,
+            :level => 30,
+            :form => 0,
+            :item => PBItems::DAMPROCK,
+            :moves => [PBMoves::THUNDER,PBMoves::SURF,PBMoves::AURASPHERE,PBMoves::SNARL],
+            :ability => PBAbilities::DRYSKIN,
+            :gender => "M",
+            :nature => PBNatures::ADAMANT,
+            :iv => 25,
+            :happiness => 255
+        },
+        :onEntryEffects => { # effects applied on entry, use same attributes/syntax as onbreakeffects
+            :typeChange => [PBTypes::ELECTRIC,PBTypes::FIGHTING],
+            :message => "{1} crackles with electric energy!"
+        },
+        :onBreakEffects => { # in order of shield count, with the highest value being the first shield broken and the lowest the last
+            1 => {
+                :threshold => 0, # if desired, shield can be broken at higher hp% than 0
+                :weatherChange => PBWeather::RAINDANCE, # weather to apply
+                :weatherCount => 8, # weather turncount
+                :weatherChangeMessage => "A heavy rain began to fall!", # weather message
+                :weatherChangeAnimation => "Rain" # string of "Rain", "Sunny","Hail","Sandstorm"
+            },
+        }
+    },
 }
