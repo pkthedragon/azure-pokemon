@@ -186,12 +186,12 @@ BOSSINFOHASH = {
             :form => 1,
             :item => PBItems::MEADOWTRIBUTE,
             :moves => [PBMoves::MEGADRAIN,PBMoves::SHOCKWAVE,PBMoves::ANCIENTPOWER,PBMoves::GROWTH],
-            :ability => PBAbilities::DRIZZLE,
+            :ability => PBAbilities::LEAFGUARD,
             :gender => "M",
-            :nature => PBNatures::TIMID,
-            :iv => 20,
+            :nature => PBNatures::MODEST,
+            :iv => 31,
             :happiness => 255,
-            :ev => [50,50,50,50,50,50]
+            :ev => [252,0,0,0,252,0]
             },
         :sosDetails =>  { # sospokemon details
             :activationRequirement => "@battlers[battlerIndex].shieldCount == 0",
