@@ -25,7 +25,7 @@ class PokeBattle_Battler
       @battle.pbDisplay(_INTL("{1}'s team is protected by Safeguard!",pbThis)) if showMessages
       return false
     end
-    if ($fefieldeffect == 3 || @battle.field.effects[PBEffects::MistyTerrain]>0  && !$fefieldeffect==40) && !isAirborne? # Misty Field
+    if ($fefieldeffect == 3) && !isAirborne? # Misty Field only
       @battle.pbDisplay(_INTL("Misty Terrain prevents {1} from being inflicted by status!",pbThis(true))) if showMessages
       return false
     end
@@ -93,7 +93,7 @@ class PokeBattle_Battler
       @battle.pbDisplay(_INTL("{1} stayed awake using its partner's {2}!",pbThis,abilityname)) if showMessages
       return false
     end 
-    if $fefieldeffect == 1 || @battle.field.effects[PBEffects::ElectricTerrain]>0
+    if $fefieldeffect == 1
       if !isAirborne?
         @battle.pbDisplay(_INTL("The electricity jolted {1} awake!",pbThis)) if showMessages
         return false

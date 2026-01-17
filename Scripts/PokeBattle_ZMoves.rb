@@ -727,33 +727,85 @@ class PokeBattle_ZMoves < PokeBattle_Move
         @battle.pbDisplay(_INTL("The field was broken!"))
         @battle.seedCheck
       elsif $fefieldeffect == 23 # Cave
-        $fecounter+=1 
+        $fecounter+=1
         case $fecounter
         when 1
           @battle.pbDisplay(_INTL("Bits of rock fell from the crumbling ceiling!"))
         when 2
           @battle.pbDisplay(_INTL("The quake collapsed the ceiling!"))
+          # Set Stealth Rocks for both sides
+          for side in 0...2
+            next if @battle.sides[side].effects[PBEffects::StealthRock]
+            @battle.sides[side].effects[PBEffects::StealthRock]=true
+          end
+          @battle.pbDisplay(_INTL("Pointed stones float in the air!"))
+
+          # Activate Stealth Rocks immediately - deal damage to all Pokemon
           for i in 0...4
-            quakedrop = @battle.battlers[i].hp
-            next if quakedrop==0
-            quakedrop =0 if [0xC9, 0xCC, 0xCA, 0xCB, 0xCD, 0xCE, 0x23C].include?($pkmn_move[@battle.battlers[i].effects[PBEffects::TwoTurnAttack]][0])
-            quakedrop =0 if @battle.battlers[i].effects[PBEffects::SkyDrop]
-            quakedrop-=1 if (!@battle.battlers[i].abilitynulled && @battle.battlers[i].ability == PBAbilities::STURDY)                 
-            quakedrop/=3 if (!@battle.battlers[i].abilitynulled && @battle.battlers[i].ability == PBAbilities::SOLIDROCK)
-            quakedrop/=2 if (!@battle.battlers[i].abilitynulled && @battle.battlers[i].ability == PBAbilities::SHELLARMOR)
-            quakedrop/=2 if (!@battle.battlers[i].abilitynulled && @battle.battlers[i].ability == PBAbilities::BATTLEARMOR)
-            quakedrop =0 if (!@battle.battlers[i].abilitynulled && @battle.battlers[i].ability == PBAbilities::ROCKHEAD)
-            quakedrop/=3 if (!@battle.battlers[i].abilitynulled && @battle.battlers[i].ability == PBAbilities::PRISMARMOR)
-            quakedrop =0 if @battle.battlers[i].effects[PBEffects::Protect] == true
-            quakedrop =0 if @battle.battlers[i].pbOwnSide.effects[PBEffects::WideGuard] == true
-            quakedrop-=1 if @battle.battlers[i].effects[PBEffects::Endure] == true
-            quakedrop =0 if @battle.battlers[i].effects[PBEffects::KingsShield] == true
-            quakedrop =0 if @battle.battlers[i].effects[PBEffects::Obstruct] == true
-            quakedrop =0 if @battle.battlers[i].effects[PBEffects::SpikyShield] == true
-            quakedrop =0 if @battle.battlers[i].effects[PBEffects::MatBlock] == true
-            @battle.battlers[i].pbReduceHP(quakedrop) if quakedrop != 0
-            @battle.battlers[i].pbFaint if @battle.battlers[i].isFainted?           
-          end 
+            battler = @battle.battlers[i]
+            next if battler.hp==0
+            if battler.pbOwnSide.effects[PBEffects::StealthRock]
+              if !battler.hasWorkingAbility(:MAGICGUARD) && !(battler.hasWorkingAbility(:WONDERGUARD) && $fefieldeffect == 44) && !battler.hasWorkingItem(:HEAVYDUTYBOOTS) && !battler.hasWorkingAbility(:LIMBER)
+                atype=getConst(PBTypes,:ROCK) || 0
+                eff=PBTypes.getCombinedEffectiveness(atype,battler.type1,battler.type2)
+                if eff>0
+                  # Double damage on Cave Field
+                  eff = eff*2
+                  @battle.scene.pbDamageAnimation(battler,0)
+                  battler.pbReduceHP([(battler.totalhp*eff/32).floor,1].max)
+                  @battle.pbDisplay(_INTL("{1} was hurt by stealth rocks!",battler.pbThis))
+                end
+              end
+            end
+            battler.pbFaint if battler.isFainted?
+          end
+
+          # Apply crushing status to all Pokemon
+          for i in 0...4
+            battler = @battle.battlers[i]
+            next if battler.hp==0
+            # Check invulnerability
+            invulcheck=PBMoveData.new(battler.effects[PBEffects::TwoTurnAttack]).function
+            case invulcheck
+            when 0xC9, 0xCC, 0xCA, 0xCB, 0xCD, 0xCE
+              next
+            end
+            next if battler.effects[PBEffects::SkyDrop]
+            next if battler.isbossmon
+
+            # Check immunities
+            if battler.hasWorkingAbility(:BATTLEARMOR) || battler.hasWorkingAbility(:SHELLARMOR) ||
+               battler.hasWorkingAbility(:SOLIDROCK) || battler.hasWorkingAbility(:PRISMARMOR) ||
+               battler.hasWorkingAbility(:BULLETPROOF) || battler.hasWorkingAbility(:ROCKHEAD) ||
+               battler.hasWorkingAbility(:STALWART) || @battle.SilvallyCheck(battler,PBTypes::ROCK)
+              next
+            end
+
+            # Check protection
+            if battler.effects[PBEffects::Protect] || battler.effects[PBEffects::WideGuard] ||
+               battler.effects[PBEffects::KingsShield] || battler.effects[PBEffects::SpikyShield] ||
+               battler.effects[PBEffects::MatBlock] || battler.pbOwnSide.effects[PBEffects::DuneDefense]>0
+              next
+            end
+
+            # Endure, Miracle, Sturdy - survive at 1 HP instead of being crushed
+            if battler.hasWorkingAbility(:STURDY) || battler.effects[PBEffects::Endure] ||
+               battler.hasWorkingAbility(:MIRACLE)
+              if battler.hp > 1
+                @battle.scene.pbDamageAnimation(battler,0)
+                battler.pbReduceHP(battler.hp - 1)
+                @battle.pbDisplay(_INTL("{1} endured the cave-in!",battler.pbThis))
+              end
+              next
+            end
+
+            # Apply crushing status
+            if battler.pbCanCrush?(false)
+              battler.pbCrush(user)
+              @battle.pbDisplay(_INTL("{1} was crushed by the falling rocks!",battler.pbThis))
+            end
+          end
+          $fecounter = 0
         end       
       elsif $fefieldeffect == 25 # Crystal Cavern
         $fefieldeffect = 23
@@ -955,34 +1007,86 @@ class PokeBattle_ZMoves < PokeBattle_Move
         @battle.field.effects[PBEffects::Terrain]=0
         @battle.seedCheck
       elsif $fefieldeffect == 23 # Cave
-        $fecounter+=1 
+        $fecounter+=1
         case $fecounter
         when 1
           @battle.pbDisplay(_INTL("Bits of rock fell from the crumbling ceiling!"))
         when 2
           @battle.pbDisplay(_INTL("The quake collapsed the ceiling!"))
-          for i in 0...4
-            quakedrop = @battle.battlers[i].hp
-            next if quakedrop==0
-            quakedrop =0 if [0xC9, 0xCC, 0xCA, 0xCB, 0xCD, 0xCE, 0x23C].include?($pkmn_move[@battle.battlers[i].effects[PBEffects::TwoTurnAttack]][0])
-            quakedrop =0 if @battle.battlers[i].effects[PBEffects::SkyDrop]
-            quakedrop-=1 if (!@battle.battlers[i].abilitynulled && @battle.battlers[i].ability == PBAbilities::STURDY)                 
-            quakedrop/=3 if (!@battle.battlers[i].abilitynulled && @battle.battlers[i].ability == PBAbilities::SOLIDROCK)
-            quakedrop/=2 if (!@battle.battlers[i].abilitynulled && @battle.battlers[i].ability == PBAbilities::SHELLARMOR)
-            quakedrop/=2 if (!@battle.battlers[i].abilitynulled && @battle.battlers[i].ability == PBAbilities::BATTLEARMOR)
-            quakedrop =0 if (!@battle.battlers[i].abilitynulled && @battle.battlers[i].ability == PBAbilities::ROCKHEAD)
-            quakedrop/=3 if (!@battle.battlers[i].abilitynulled && @battle.battlers[i].ability == PBAbilities::PRISMARMOR)
-            quakedrop =0 if @battle.battlers[i].effects[PBEffects::Protect] == true
-            quakedrop =0 if @battle.battlers[i].pbOwnSide.effects[PBEffects::WideGuard] == true
-            quakedrop-=1 if @battle.battlers[i].effects[PBEffects::Endure] == true
-            quakedrop =0 if @battle.battlers[i].effects[PBEffects::Obstruct] == true
-            quakedrop =0 if @battle.battlers[i].effects[PBEffects::KingsShield] == true
-            quakedrop =0 if @battle.battlers[i].effects[PBEffects::SpikyShield] == true
-            quakedrop =0 if @battle.battlers[i].effects[PBEffects::MatBlock] == true
-            @battle.battlers[i].pbReduceHP(quakedrop) if quakedrop != 0
-            @battle.battlers[i].pbFaint if @battle.battlers[i].isFainted?            
+          # Set Stealth Rocks for both sides
+          for side in 0...2
+            next if @battle.sides[side].effects[PBEffects::StealthRock]
+            @battle.sides[side].effects[PBEffects::StealthRock]=true
           end
-        end         
+          @battle.pbDisplay(_INTL("Pointed stones float in the air!"))
+
+          # Activate Stealth Rocks immediately - deal damage to all Pokemon
+          for i in 0...4
+            battler = @battle.battlers[i]
+            next if battler.hp==0
+            if battler.pbOwnSide.effects[PBEffects::StealthRock]
+              if !battler.hasWorkingAbility(:MAGICGUARD) && !(battler.hasWorkingAbility(:WONDERGUARD) && $fefieldeffect == 44) && !battler.hasWorkingItem(:HEAVYDUTYBOOTS) && !battler.hasWorkingAbility(:LIMBER)
+                atype=getConst(PBTypes,:ROCK) || 0
+                eff=PBTypes.getCombinedEffectiveness(atype,battler.type1,battler.type2)
+                if eff>0
+                  # Double damage on Cave Field
+                  eff = eff*2
+                  @battle.scene.pbDamageAnimation(battler,0)
+                  battler.pbReduceHP([(battler.totalhp*eff/32).floor,1].max)
+                  @battle.pbDisplay(_INTL("{1} was hurt by stealth rocks!",battler.pbThis))
+                end
+              end
+            end
+            battler.pbFaint if battler.isFainted?
+          end
+
+          # Apply crushing status to all Pokemon
+          for i in 0...4
+            battler = @battle.battlers[i]
+            next if battler.hp==0
+            # Check invulnerability
+            invulcheck=PBMoveData.new(battler.effects[PBEffects::TwoTurnAttack]).function
+            case invulcheck
+            when 0xC9, 0xCC, 0xCA, 0xCB, 0xCD, 0xCE
+              next
+            end
+            next if battler.effects[PBEffects::SkyDrop]
+            next if battler.isbossmon
+
+            # Check immunities
+            if battler.hasWorkingAbility(:BATTLEARMOR) || battler.hasWorkingAbility(:SHELLARMOR) ||
+               battler.hasWorkingAbility(:SOLIDROCK) || battler.hasWorkingAbility(:PRISMARMOR) ||
+               battler.hasWorkingAbility(:BULLETPROOF) || battler.hasWorkingAbility(:ROCKHEAD) ||
+               battler.hasWorkingAbility(:STALWART) || @battle.SilvallyCheck(battler,PBTypes::ROCK)
+              next
+            end
+
+            # Check protection
+            if battler.effects[PBEffects::Protect] || battler.effects[PBEffects::WideGuard] ||
+               battler.effects[PBEffects::KingsShield] || battler.effects[PBEffects::SpikyShield] ||
+               battler.effects[PBEffects::MatBlock] || battler.pbOwnSide.effects[PBEffects::DuneDefense]>0
+              next
+            end
+
+            # Endure, Miracle, Sturdy - survive at 1 HP instead of being crushed
+            if battler.hasWorkingAbility(:STURDY) || battler.effects[PBEffects::Endure] ||
+               battler.hasWorkingAbility(:MIRACLE)
+              if battler.hp > 1
+                @battle.scene.pbDamageAnimation(battler,0)
+                battler.pbReduceHP(battler.hp - 1)
+                @battle.pbDisplay(_INTL("{1} endured the cave-in!",battler.pbThis))
+              end
+              next
+            end
+
+            # Apply crushing status
+            if battler.pbCanCrush?(false)
+              battler.pbCrush(user)
+              @battle.pbDisplay(_INTL("{1} was crushed by the falling rocks!",battler.pbThis))
+            end
+          end
+          $fecounter = 0
+        end
       end   
     elsif @id == PBMoves::SUBZEROSLAMMER # Subzero Slammer
       if $fefieldeffect == 16 # Volcanic Top Field
@@ -999,12 +1103,9 @@ class PokeBattle_ZMoves < PokeBattle_Move
         $fefieldeffect = 13
         @battle.pbChangeBGSprite
         @battle.pbDisplay(_INTL("The water froze over!"))
-        @battle.seedCheck 
+        @battle.seedCheck
       elsif $fefieldeffect == 23 # Cave Field
-        $fefieldeffect = 13
-        @battle.pbChangeBGSprite
-        @battle.pbDisplay(_INTL("The cavern froze over!"))
-        @battle.seedCheck 
+        # Cave Field transformation removed - field is now stable
       elsif $fefieldeffect == 26 # Murkwater Surface
         $febackup=26
         $fefieldeffect = 13
@@ -1101,13 +1202,9 @@ class PokeBattle_ZMoves < PokeBattle_Move
         @battle.field.effects[PBEffects::Terrain]=0
         @battle.seedCheck
       end     
-    elsif @id == PBMoves::DEVASTATINGDRAKE 
+    elsif @id == PBMoves::DEVASTATINGDRAKE
       if $fefieldeffect == 23 # Cave Field
-        @battle.basefield==23
-        $fefieldeffect = 32
-        @battle.pbChangeBGSprite
-        @battle.pbDisplay(_INTL("The explosion of draconic energy mutated the field!"))
-        @battle.seedCheck
+        # Cave Field transformation removed - field is now stable
       end
     elsif @id == PBMoves::SHATTEREDPSYCHE && $fefieldeffect==37
       if opponent.pbCanConfuse?(false)

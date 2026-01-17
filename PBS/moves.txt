@@ -900,7 +900,7 @@
 881,WINDVORTEX,Wind Vortex,000,40,FLYING,Special,100,15,0,00,1,bef,"+1 priority. Wind."
 882,SONICSCREAM,Sonic Scream,0A9,90,FLYING,Special,90,10,0,00,0,bef,"Ignores target's evasion and defense changes. Sound."
 883,SKYSCRAPER,Skyscraper,275,70,FLYING,Physical,100,10,0,00,0,abefl,"Critically hits targets at or below 50% max HP."
-884,BATTLECRY,Battle Cry,277,60,FIGHTING,Special,100,20,0,00,0,bef,"Raises power of user or ally's next move by 1.3x. Sound."
+884,BATTLECRY,Battle Cry,277,60,FIGHTING,Special,100,20,0,00,0,befk,"Raises power of user or ally's next move by 1.3x. Sound."
 885,SOULJAVELIN,Soul Javelin,0C0,25,FIGHTING,Special,90,10,0,00,0,bef,"Hits 2-5 times."
 886,SPIRITFIST,Spirit Fist,278,80,FIGHTING,Physical,100,10,0,00,0,abefj,"Deals damage to the target's special defense."
 887,DELUGE,Deluge,081,60,WATER,Physical,100,10,0,00,0,abef,"Doubles in power if the user was damaged this turn."

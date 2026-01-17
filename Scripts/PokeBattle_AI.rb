@@ -22091,9 +22091,7 @@ class PokeBattle_Battle
           move.id == PBMoves::LAVASURF)
           basedamage=(basedamage*1.3).round
         end
-        if (move.id == PBMoves::OMINOUSWIND || move.id == PBMoves::SILVERWIND ||
-            move.id == PBMoves::RAZORWIND || move.id == PBMoves::ICYWIND ||
-            move.id == PBMoves::GUST || move.id == PBMoves::TWISTER ||
+        if (PBStuff::WINDMOVE.include?(move.id) ||
             move.id == PBMoves::PRECIPICEBLADES || move.id == PBMoves::SMOG ||
             move.id == PBMoves::CLEARSMOG)
           basedamage=(basedamage*1.2).round
@@ -32678,14 +32676,10 @@ def pbSpeedChangingSwitch(mon,currentmon,passing=false)
   if mon.status==PBStatuses::PARALYSIS && !(mon.ability == PBAbilities::QUICKFEET)
     speed=(speed/2).floor
   end
-  if currentmon.pbOwnSide.effects[PBEffects::StickyWeb] && !mon.isAirborne? &&  ($fefieldeffect != 15) && !(mon.ability == PBAbilities::WHITESMOKE) && !(mon.ability == PBAbilities::CLEARBODY) && !(mon.ability == PBAbilities::CONTRARY) && !(mon.item == PBItems::HEAVYDUTYBOOTS)
+  if currentmon.pbOwnSide.effects[PBEffects::StickyWeb] && !mon.isAirborne? && !(mon.ability == PBAbilities::WHITESMOKE) && !(mon.ability == PBAbilities::CLEARBODY) && !(mon.ability == PBAbilities::CONTRARY) && !(mon.item == PBItems::HEAVYDUTYBOOTS)
     speed=(speed*2/3).floor
-  elsif currentmon.pbOwnSide.effects[PBEffects::StickyWeb] && !mon.isAirborne? &&  ($fefieldeffect == 15) && !(mon.ability == PBAbilities::WHITESMOKE) && !(mon.ability == PBAbilities::CLEARBODY) && !(mon.ability == PBAbilities::CONTRARY) && !(mon.item == PBItems::HEAVYDUTYBOOTS)
-    speed=(speed*0.5).floor
-  elsif currentmon.pbOwnSide.effects[PBEffects::StickyWeb] && !mon.isAirborne? &&  ($fefieldeffect != 15) && (mon.ability == PBAbilities::CONTRARY) && !(mon.item == PBItems::HEAVYDUTYBOOTS)
+  elsif currentmon.pbOwnSide.effects[PBEffects::StickyWeb] && !mon.isAirborne? && (mon.ability == PBAbilities::CONTRARY) && !(mon.item == PBItems::HEAVYDUTYBOOTS)
     speed=(speed*1.5).floor
-  elsif currentmon.pbOwnSide.effects[PBEffects::StickyWeb] && !mon.isAirborne? &&  ($fefieldeffect == 15) && (mon.ability == PBAbilities::CONTRARY) && !(mon.item == PBItems::HEAVYDUTYBOOTS)
-    speed=speed*2
   end
   if mon.item == PBItems::ELEMENTALSEED
     case $fefieldeffect

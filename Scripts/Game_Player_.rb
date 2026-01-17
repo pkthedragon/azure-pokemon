@@ -9,7 +9,7 @@ class Game_Player < Game_Character
   attr_accessor :bump_se
 
   # Map IDs where terrain tag 4 (Rock) displacement encounters are disabled
-  ROCK_DISPLACEMENT_DISABLED_MAPS = []
+  ROCK_DISPLACEMENT_DISABLED_MAPS = [1,19]
 
   def map
     @map=nil

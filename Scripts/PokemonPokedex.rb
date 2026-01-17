@@ -474,8 +474,8 @@ class PokemonPokedexScene
     for i in 1...regionalSpecies.length
       nationalSpecies=regionalSpecies[i]
       if pbCanAddForModeList?($PokemonGlobal.pokedexMode,nationalSpecies)
-        height=$pkmn_dex[nationalSpecies][14]
-        weight=$pkmn_dex[nationalSpecies][15]
+        height=$pkmn_dex[nationalSpecies]
+        weight=$pkmn_dex[nationalSpecies]
         # Pushing national species, name, height, weight, index number
         shift=DEXINDEXOFFSETS.include?(region)
         dexlist.push([nationalSpecies,

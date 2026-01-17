@@ -210,24 +210,14 @@ class PokeBattle_Move_003 < PokeBattle_Move
            @battle.pbDisplay(_INTL("{1} went to sleep!",attacker.pbPartner.pbThis))
          end
         @battle.pbDisplay(_INTL("{1} bounced the {2} back!",attacker.pbThis,PBMoves.getName(@id)))
-        attacker.effects[PBEffects::MagicBounced]=false 
-      end      
-      if isConst?(@id,PBMoves,:SPORE) || isConst?(@id,PBMoves,:SLEEPPOWDER)
-        if opponent.pbHasType?(:GRASS)
-          @battle.pbDisplay(_INTL("It doesn't affect {1}...",opponent.pbThis(true)))
-          return -1
-        elsif opponent.hasWorkingAbility(:OVERCOAT) && !(opponent.moldbroken)
-          @battle.pbDisplay(_INTL("{1}'s {2} made the attack ineffective!",
-          opponent.pbThis,PBAbilities.getName(opponent.ability),self.name))
-          return -1
-        elsif isConst?(opponent.item,PBItems,:SAFETYGOGGLES)
-          @battle.pbDisplay(_INTL("{1} avoided the move with its {2}!",
-          opponent.pbThis,PBItems.getName(opponent.item),self.name))
-          return -1
-        end
+        attacker.effects[PBEffects::MagicBounced]=false
       end
       pbShowAnimation(@id,attacker,opponent,hitnum,alltargets,showanimation)
       opponent.pbSleep
+      # Hypnosis on Psychic Field and Haunted Field causes 2-turn sleep
+      if isConst?(@id,PBMoves,:HYPNOSIS) && ($fefieldeffect == 37 || $fefieldeffect == 40)
+        opponent.pbSleepSelf(2)
+      end
       @battle.pbDisplay(_INTL("{1} went to sleep!",opponent.pbThis))
       if isConst?(@id,PBMoves,:DARKVOID) && attacker.effects[PBEffects::MagicBounced] && opponent.pbPartner.pbCanSleep?(true) && (attacker.index == 2 || attacker.index == 3)
         attacker.effects[PBEffects::MagicBounced]=false
@@ -256,28 +246,99 @@ end
 ################################################################################
 class PokeBattle_Move_004 < PokeBattle_Move
   def pbEffect(attacker,opponent,hitnum=0,alltargets=nil,showanimation=true)
-    return -1 if !opponent.pbCanSleep?(true)
-    if opponent.effects[PBEffects::Yawn]>0
-      @battle.pbDisplay(_INTL("But it failed!"))
-      return -1
+    # Check for Spore/Sleep Powder special immunities
+    if isConst?(@id,PBMoves,:SPORE) || isConst?(@id,PBMoves,:SLEEPPOWDER)
+      if opponent.pbHasType?(:GRASS)
+        pbShowAnimation(@id,attacker,opponent,hitnum,alltargets,showanimation)
+        @battle.pbDisplay(_INTL("It doesn't affect {1}...",opponent.pbThis(true)))
+        return -1
+      elsif opponent.hasWorkingAbility(:OVERCOAT) && !(opponent.moldbroken)
+        pbShowAnimation(@id,attacker,opponent,hitnum,alltargets,showanimation)
+        @battle.pbDisplay(_INTL("{1}'s {2} made the attack ineffective!",
+        opponent.pbThis,PBAbilities.getName(opponent.ability),self.name))
+        return -1
+      elsif isConst?(opponent.item,PBItems,:SAFETYGOGGLES)
+        pbShowAnimation(@id,attacker,opponent,hitnum,alltargets,showanimation)
+        @battle.pbDisplay(_INTL("{1} avoided the move with its {2}!",
+        opponent.pbThis,PBItems.getName(opponent.item),self.name))
+        return -1
+      end
     end
-	have_aura = false
-    for opp in [attacker.pbOpposing1, attacker.pbOpposing2]
-      next if !opp || opp.isFainted?
-      have_aura = true if opp.effects[PBEffects::NightmareAura]
-    end
-    if have_aura
-	  if opponent.pbCanSleep?(false)
-        opponent.pbSleep
-        @battle.pbDisplay(_INTL("{1} went to sleep!",opponent.pbThis))
+
+    # Yawn affects all Pokemon on battlefield, other sleep moves target opponent only
+    if isConst?(@id,PBMoves,:YAWN)
+      # Yawn affects all Pokemon on the battlefield including the user
+      affected = []
+      failed = true
+      pbShowAnimation(@id,attacker,opponent,hitnum,alltargets,showanimation)
+
+      for i in 0...4
+        battler = @battle.battlers[i]
+        next if !battler || battler.isFainted?
+        next if !battler.pbCanSleep?(true)
+        next if battler.effects[PBEffects::Yawn]>0
+
+        have_aura = false
+        for opp in [battler.pbOpposing1, battler.pbOpposing2]
+          next if !opp || opp.isFainted?
+          have_aura = true if opp.effects[PBEffects::NightmareAura]
+        end
+
+        if have_aura
+          if battler.pbCanSleep?(false)
+            battler.pbSleepSelf(2)  # Nightmare Aura causes instant 2-turn sleep
+            @battle.pbDisplay(_INTL("{1} went to sleep!",battler.pbThis))
+            affected.push(battler)
+            failed = false
+          end
+        else
+          battler.effects[PBEffects::Yawn]=2
+          @battle.pbDisplay(_INTL("{1} became drowsy!",battler.pbThis))
+          affected.push(battler)
+          failed = false
+        end
+      end
+
+      if failed
+        @battle.pbDisplay(_INTL("But it failed!"))
+        return -1
+      end
+      return 0
+    else
+      # Other sleep moves (Lovely Kiss, Hypnosis, Sleep Powder, Sing, Spore, Grass Whistle) target opponent only
+      return -1 if !opponent.pbCanSleep?(true)
+      if opponent.effects[PBEffects::Yawn]>0
+        @battle.pbDisplay(_INTL("But it failed!"))
+        return -1
+      end
+
+      have_aura = false
+      for opp in [opponent.pbOpposing1, opponent.pbOpposing2]
+        next if !opp || opp.isFainted?
+        have_aura = true if opp.effects[PBEffects::NightmareAura]
+      end
+
+      pbShowAnimation(@id,attacker,opponent,hitnum,alltargets,showanimation)
+
+      # Grass Whistle always causes 2-turn sleep
+      if isConst?(@id,PBMoves,:GRASSWHISTLE)
+        if opponent.pbCanSleep?(false)
+          opponent.pbSleepSelf(2)
+          @battle.pbDisplay(_INTL("{1} went to sleep!",opponent.pbThis))
+          return 0
+        end
+      elsif have_aura
+        if opponent.pbCanSleep?(false)
+          opponent.pbSleepSelf(2)  # Nightmare Aura causes instant 2-turn sleep
+          @battle.pbDisplay(_INTL("{1} went to sleep!",opponent.pbThis))
+          return 0
+        end
+      else
+        opponent.effects[PBEffects::Yawn]=2
+        @battle.pbDisplay(_INTL("{1} became drowsy!",opponent.pbThis))
         return 0
       end
-	else
-      pbShowAnimation(@id,attacker,opponent,hitnum,alltargets,showanimation)
-      opponent.effects[PBEffects::Yawn]=2
-      @battle.pbDisplay(_INTL("{1} made {2} drowsy!",attacker.pbThis,opponent.pbThis(true)))
-      return 0
-	end
+    end
   end
 end
 
@@ -1500,9 +1561,9 @@ class PokeBattle_Move_02A < PokeBattle_Move
     end
     pbShowAnimation(@id,attacker,nil,hitnum,alltargets,showanimation)
     showanim=true
-    if (($fefieldeffect == 3 || $fefieldeffect == 9 || $fefieldeffect == 29 ||
-      $fefieldeffect == 34 || $fefieldeffect == 35 || $fefieldeffect == 37) && 
-      isConst?(@id,PBMoves,:COSMICPOWER)) || 
+    if (($fefieldeffect == 9 || $fefieldeffect == 29 ||
+      $fefieldeffect == 34 || $fefieldeffect == 35 || $fefieldeffect == 37) &&
+      isConst?(@id,PBMoves,:COSMICPOWER)) ||
       ($fefieldeffect == 15 && isConst?(@id,PBMoves,:DEFENDORDER))
       if attacker.pbCanIncreaseStatStage?(PBStats::DEFENSE,false)
         attacker.pbIncreaseStat(PBStats::DEFENSE,2,false,showanim)
@@ -1676,14 +1737,18 @@ class PokeBattle_Move_02F < PokeBattle_Move
     return super(attacker,opponent,hitnum,alltargets,showanimation) if @basedamage>0
     return -1 if !attacker.pbCanIncreaseStatStage?(PBStats::DEFENSE,true)
     pbShowAnimation(@id,attacker,nil,hitnum,alltargets,showanimation)
-    if (($fefieldeffect == 10 || $fefieldeffect == 11 || 
-     $fefieldeffect == 26 || $fefieldeffect == 31) && 
+    if (($fefieldeffect == 10 || $fefieldeffect == 11 ||
+     $fefieldeffect == 26 || $fefieldeffect == 31) &&
      isConst?(@id,PBMoves,:ACIDARMOR)) || # Corro Fields
-     ($fefieldeffect == 17 && 
-     isConst?(@id,PBMoves,:IRONDEFENSE)) 
+     ($fefieldeffect == 17 &&
+     isConst?(@id,PBMoves,:IRONDEFENSE))
       ret=attacker.pbIncreaseStat(PBStats::DEFENSE,3,false)
     else
       ret=attacker.pbIncreaseStat(PBStats::DEFENSE,2,false)
+    end
+    # Set Shelter effect for Cave Field rock-type damage reduction
+    if isConst?(@id,PBMoves,:SHELTER)
+      attacker.effects[PBEffects::Shelter] = 1
     end
     return ret ? 0 : -1
   end
@@ -1711,6 +1776,8 @@ class PokeBattle_Move_030 < PokeBattle_Move
       ret=attacker.pbIncreaseStat(PBStats::SPEED,2,false)
       ret=attacker.pbIncreaseStat(PBStats::ATTACK,1,false)
       ret=attacker.pbIncreaseStat(PBStats::SPATK,1,false)
+    elsif isConst?(@id,PBMoves,:AGILITY) && attacker.item == 0 # Agility with no held item
+      ret=attacker.pbIncreaseStat(PBStats::SPEED,3,false)
     else
       ret=attacker.pbIncreaseStat(PBStats::SPEED,2,false)
     end
@@ -2878,6 +2945,15 @@ class PokeBattle_Move_051 < PokeBattle_Move
     end
     pbShowAnimation(@id,attacker,opponent,hitnum,alltargets,showanimation)
     @battle.pbDisplay(_INTL("All stat changes were eliminated!"))
+    # On Misty Field, boost Defense and Sp. Def of user and allies
+    if $fefieldeffect == 3
+      attacker.pbIncreaseStat(PBStats::DEFENSE,1,false)
+      attacker.pbIncreaseStat(PBStats::SPDEF,1,false)
+      if attacker.pbPartner && !attacker.pbPartner.isFainted?
+        attacker.pbPartner.pbIncreaseStat(PBStats::DEFENSE,1,false)
+        attacker.pbPartner.pbIncreaseStat(PBStats::SPDEF,1,false)
+      end
+    end
     return 0
   end
 end
@@ -3040,8 +3116,17 @@ class PokeBattle_Move_056 < PokeBattle_Move
     else
       @battle.pbDisplay(_INTL("The foe's team became shrouded in mist!"))
     end
-      return 0
+    # On Misty Field, also boost Defense and Sp. Def of user and allies
+    if $fefieldeffect == 3
+      attacker.pbIncreaseStat(PBStats::DEFENSE,1,false)
+      attacker.pbIncreaseStat(PBStats::SPDEF,1,false)
+      if attacker.pbPartner && !attacker.pbPartner.isFainted?
+        attacker.pbPartner.pbIncreaseStat(PBStats::DEFENSE,1,false)
+        attacker.pbPartner.pbIncreaseStat(PBStats::SPDEF,1,false)
+      end
     end
+    return 0
+  end
 end
 
 
@@ -5361,11 +5446,22 @@ class PokeBattle_Move_0A4 < PokeBattle_Move
       when 22
         return false if !opponent.pbCanReduceStatStage?(PBStats::ATTACK,1,false)
         opponent.pbReduceStat(PBStats::ATTACK,1,false)        
-      when 23
-        return false if opponent.hasWorkingAbility(:INNERFOCUS) ||
-          opponent.effects[PBEffects::Substitute]>0 || (opponent.status!=PBStatuses::SLEEP && 
-          opponent.status!=PBStatuses::FROZEN)
-        opponent.effects[PBEffects::Flinch]=true
+      when 23 # Cave - may cause crushing status
+        # Check immunities to crushing
+        if opponent.hasWorkingAbility(:BATTLEARMOR) || opponent.hasWorkingAbility(:SHELLARMOR) ||
+           opponent.hasWorkingAbility(:SOLIDROCK) || opponent.hasWorkingAbility(:PRISMARMOR) ||
+           opponent.hasWorkingAbility(:BULLETPROOF) || opponent.hasWorkingAbility(:ROCKHEAD) ||
+           opponent.hasWorkingAbility(:STALWART) || @battle.SilvallyCheck(opponent,PBTypes::ROCK)
+          return false
+        end
+
+        # Apply crushing status
+        if opponent.pbCanCrush?(false)
+          opponent.pbCrush(attacker)
+          @battle.pbDisplay(_INTL("{1} was crushed!",opponent.pbThis))
+          return true
+        end
+        return false
       when 24 
         return false if !opponent.pbCanReduceStatStage?(PBStats::SPEED,1,false)
         opponent.pbReduceStat(PBStats::SPEED,1,false)
@@ -7385,9 +7481,8 @@ class PokeBattle_Move_0D5 < PokeBattle_Move
     pbShowAnimation(@id,attacker,nil,hitnum,alltargets,showanimation)
     if $fefieldeffect == 15 && isConst?(@id,PBMoves,:HEALORDER)
     hpgain=((attacker.totalhp+1) * 0.66).floor
-    if tribute_has?(attacker, :MEADOWTRIBUTE)
-        hpgain = (hpgain*1.3).floor
-      end
+    # Apply tribute healing (including heroic effects)
+    hpgain = apply_tribute_healing(attacker, hpgain) if defined?(apply_tribute_healing)
       # Healer - amplify healing by 1.1x
       if attacker.hasWorkingAbility(:HEALER)
         hpgain = (hpgain*1.1).floor
@@ -7395,9 +7490,8 @@ class PokeBattle_Move_0D5 < PokeBattle_Move
       attacker.pbRecoverHP(hpgain,true)
     else
     hpgain=((attacker.totalhp+1)/2).floor
-    if tribute_has?(attacker, :MEADOWTRIBUTE)
-        hpgain = (hpgain*1.3).floor
-      end
+    # Apply tribute healing (including heroic effects)
+    hpgain = apply_tribute_healing(attacker, hpgain) if defined?(apply_tribute_healing)
       # Healer - amplify healing by 1.1x
       if attacker.hasWorkingAbility(:HEALER)
         hpgain = (hpgain*1.1).floor
@@ -7463,7 +7557,7 @@ class PokeBattle_Move_0D7 < PokeBattle_Move
     end
     pbShowAnimation(@id,attacker,nil,hitnum,alltargets,showanimation)
     attacker.effects[PBEffects::Wish]=2
-    if ($fefieldeffect == 3 || $fefieldeffect == 9 || $fefieldeffect == 29 ||
+    if ($fefieldeffect == 9 || $fefieldeffect == 29 ||
      $fefieldeffect == 31 || $fefieldeffect == 34)
       attacker.effects[PBEffects::WishAmount]=((attacker.totalhp+1)*0.75).floor
     else
@@ -7500,9 +7594,8 @@ class PokeBattle_Move_0D8 < PokeBattle_Move
         end
       end
     end
-  if tribute_has?(attacker, :MEADOWTRIBUTE)
-      hpgain = (hpgain*1.3).floor
-    end
+    # Apply tribute healing (including heroic effects)
+    hpgain = apply_tribute_healing(attacker, hpgain) if defined?(apply_tribute_healing)
     # Healer - amplify healing by 1.1x
     if attacker.hasWorkingAbility(:HEALER)
       hpgain = (hpgain*1.1).floor
@@ -7615,9 +7708,8 @@ class PokeBattle_Move_0DD < PokeBattle_Move
     ret=super(attacker,opponent,hitnum,alltargets,showanimation)
     if opponent.damagestate.calcdamage>0
       hpgain=((opponent.damagestate.hplost+1)/2).floor
-      if tribute_has?(attacker, :MEADOWTRIBUTE)
-        hpgain = (hpgain*1.3).floor
-      end
+      # Apply tribute healing (including heroic effects)
+      hpgain = apply_tribute_healing(attacker, hpgain) if defined?(apply_tribute_healing)
       if opponent.hasWorkingAbility(:LIQUIDOOZE,true)
         hpgain*=2 if ($fefieldeffect == 19 || $fefieldeffect == 26 || $fefieldeffect == 41)
         attacker.pbReduceHP(hpgain,true)
@@ -7643,9 +7735,8 @@ class PokeBattle_Move_0DE < PokeBattle_Move
     ret=super(attacker,opponent,hitnum,alltargets,showanimation)
     if opponent.damagestate.calcdamage>0 && hitnum==0
       hpgain=((opponent.damagestate.hplost+1)/2).floor
-      if tribute_has?(attacker, :MEADOWTRIBUTE)
-        hpgain = (hpgain*1.3).floor
-      end
+      # Apply tribute healing (including heroic effects)
+      hpgain = apply_tribute_healing(attacker, hpgain) if defined?(apply_tribute_healing)
       hpgain=(hpgain*1.3).floor if attacker.hasWorkingItem(:BIGROOT) || (attacker.hasWorkingItem(:TANGROWTHCREST) && isConst?(attacker.species,PBSpecies,:TANGROWTH))
       attacker.pbRecoverHP(hpgain,true)
       @battle.pbDisplay(_INTL("{1} had its energy drained!",opponent.pbThis))
@@ -8561,7 +8652,8 @@ class PokeBattle_Move_0F9 < PokeBattle_Move
     else
       pbShowAnimation(@id,attacker,opponent,hitnum,alltargets,showanimation)
       @battle.field.effects[PBEffects::MagicRoom]=5
-      if $fefieldeffect == 35 || $fefieldeffect == 37 || # New World
+      if $fefieldeffect == 35 || $fefieldeffect == 37 || # New World, Psychic Field
+         @battle.field.effects[PBEffects::PsychicTerrain]>0 || # Psychic Terrain overlay
          isConst?(attacker.item,PBItems,:AMPLIFIELDROCK)
         @battle.field.effects[PBEffects::MagicRoom]=8
       end
@@ -9704,10 +9796,12 @@ class PokeBattle_Move_118 < PokeBattle_Move
       return -1
     end
     pbShowAnimation(@id,attacker,opponent,hitnum,alltargets,showanimation)
-    @battle.field.effects[PBEffects::Gravity]=4
+    @battle.field.effects[PBEffects::Gravity]=5
+    @battle.field.effects[PBEffects::Gravity]=8 if isConst?(attacker.item,PBItems,:AMPLIFIELDROCK)
+    if $fefieldeffect == 37 || @battle.field.effects[PBEffects::PsychicTerrain]>0 # Psychic Field or Terrain overlay
+      @battle.field.effects[PBEffects::Gravity]=8
+    end
     @battle.field.effects[PBEffects::Gravity]=7 if attacker.hasWorkingAbility(:PERPETUAL)
-    @battle.field.effects[PBEffects::Gravity]=7 if isConst?(attacker.item,PBItems,:AMPLIFIELDROCK)
-    @battle.field.effects[PBEffects::Gravity]=7 if $fefieldeffect == 37
     if $fefieldeffect == 38
       rnd=@battle.pbRandom(6)
       @battle.field.effects[PBEffects::Gravity]=3+rnd
@@ -9894,6 +9988,7 @@ class PokeBattle_Move_11F < PokeBattle_Move
     if @battle.trickroom == 0
       @battle.trickroom=5
       if $fefieldeffect == 5 || $fefieldeffect == 34 || $fefieldeffect == 35 || $fefieldeffect == 37 ||
+       @battle.field.effects[PBEffects::PsychicTerrain]>0 || # Psychic Terrain overlay
        isConst?(attacker.item,PBItems,:AMPLIFIELDROCK)
         @battle.trickroom=8
       end
@@ -10008,7 +10103,8 @@ class PokeBattle_Move_124 < PokeBattle_Move
     end
     if @battle.field.effects[PBEffects::WonderRoom] == 0
       @battle.field.effects[PBEffects::WonderRoom] = 5
-      if $fefieldeffect == 35 || $fefieldeffect == 37 || # New World, Psychic Terrain
+      if $fefieldeffect == 35 || $fefieldeffect == 37 || # New World, Psychic Field
+         @battle.field.effects[PBEffects::PsychicTerrain]>0 || # Psychic Terrain overlay
          isConst?(attacker.item,PBItems,:AMPLIFIELDROCK)
         @battle.field.effects[PBEffects::WonderRoom] = 8
       end
@@ -10366,7 +10462,11 @@ class PokeBattle_Move_13A < PokeBattle_Move
     return -1 if !attacker.pbPartner.pbCanIncreaseStatStage?(PBStats::SPDEF,true)
     pbShowAnimation(@id,attacker,nil,hitnum,alltargets,showanimation)
     if $fefieldeffect == 3
-      ret=attacker.pbPartner.pbIncreaseStat(PBStats::SPDEF,2,false)
+      # On Misty Field, boost both Defense and Sp. Def of user and allies
+      attacker.pbIncreaseStat(PBStats::DEFENSE,1,false)
+      attacker.pbIncreaseStat(PBStats::SPDEF,1,false)
+      attacker.pbPartner.pbIncreaseStat(PBStats::DEFENSE,1,false)
+      ret=attacker.pbPartner.pbIncreaseStat(PBStats::SPDEF,1,false)
     else
       ret=attacker.pbPartner.pbIncreaseStat(PBStats::SPDEF,1,false)
     end
@@ -10376,7 +10476,10 @@ class PokeBattle_Move_13A < PokeBattle_Move
   def pbAdditionalEffect(attacker,opponent)
     if attacker.pbPartner.pbIncreaseStat(PBStats::SPDEF,false)
       if $fefieldeffect == 3
-        attacker.pbPartner.pbIncreaseStat(PBStats::SPDEF,2,false)
+        attacker.pbIncreaseStat(PBStats::DEFENSE,1,false)
+        attacker.pbIncreaseStat(PBStats::SPDEF,1,false)
+        attacker.pbPartner.pbIncreaseStat(PBStats::DEFENSE,1,false)
+        attacker.pbPartner.pbIncreaseStat(PBStats::SPDEF,1,false)
       else
         attacker.pbPartner.pbIncreaseStat(PBStats::SPDEF,1,false)
       end
@@ -11585,9 +11688,8 @@ class PokeBattle_Move_16C < PokeBattle_Move
     else
       hpgain=(attacker.totalhp/2).floor
     end
-  if tribute_has?(attacker, :MEADOWTRIBUTE)
-      hpgain = (hpgain*1.3).floor
-    end
+    # Apply tribute healing (including heroic effects)
+    hpgain = apply_tribute_healing(attacker, hpgain) if defined?(apply_tribute_healing)
     pbShowAnimation(@id,attacker,nil,hitnum,alltargets,showanimation)
     attacker.pbRecoverHP(hpgain,true)
     @battle.pbDisplay(_INTL("{1}'s HP was restored.",attacker.pbThis))
@@ -11774,7 +11876,6 @@ class PokeBattle_Move_172 < PokeBattle_Move
     hpgain = pbRoughStat(opponent,PBStats::ATTACK)
     hpgain=(hpgain*1.3).floor if attacker.hasWorkingItem(:BIGROOT)
     hpgain=(hpgain*1.3).floor if $fefieldeffect == 8 # Swamp Field
-    hpgain=(hpgain*1.3).floor if $fefieldeffect == 15 # Forest Field
   if tribute_has?(attacker, :MEADOWTRIBUTE)
       hpgain = (hpgain*1.3).floor
     end
@@ -13505,16 +13606,12 @@ class PokeBattle_Move_26E < PokeBattle_Move
     end
     hpgain=0
     if @battle.pbWeather==PBWeather::RAINDANCE && !attacker.hasWorkingItem(:UTILITYUMBRELLA)
-      if tribute_has?(attacker, :MEADOWTRIBUTE)
-        hpgain = (hpgain*1.3).floor
-      end      
-    hpgain=(attacker.totalhp*2/3).floor
+      hpgain=(attacker.totalhp*2/3).floor
     else
-    if tribute_has?(attacker, :MEADOWTRIBUTE)
-        hpgain = (hpgain*1.3).floor
-      end
       hpgain=(attacker.totalhp/2).floor
     end
+    # Apply tribute healing (including heroic effects)
+    hpgain = apply_tribute_healing(attacker, hpgain) if defined?(apply_tribute_healing)
     pbShowAnimation(@id,attacker,nil,hitnum,alltargets,showanimation)
     attacker.pbRecoverHP(hpgain,true)
     @battle.pbDisplay(_INTL("{1}'s HP was restored.",attacker.pbThis))

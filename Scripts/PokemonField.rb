@@ -1481,7 +1481,7 @@ def pbEvolutionCheck(currentlevels)
           pokemon.name=PBSpecies.getName(newspecies) if pokemon.name==PBSpecies.getName(pokemon.species)
           pokemon.calcStats
           # Check moves for new species
-          movelist=pokemon.getMoveList   
+          movelist=pokemon.getMoveList
           Achievements.incrementProgress("EVOLVE_POKEMON",1)
         else
           # Start evolution scene

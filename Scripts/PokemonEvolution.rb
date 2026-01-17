@@ -676,7 +676,26 @@ class PokemonEvolutionScene
         end
       }
       @pokemon.item=0 if removeItem
+      oldform = @pokemon.form
+      oldspecies = @pokemon.species
       @pokemon.species=@newspecies
+
+      # Handle Mystic form evolution
+      if isConst?(oldspecies,PBSpecies,:SCATTERBUG) && oldform == 1
+        # Mystic Scatterbug (form 1) → Mystic Spewpa (form 1)
+        @pokemon.form = 1 if isConst?(@newspecies,PBSpecies,:SPEWPA)
+      elsif isConst?(oldspecies,PBSpecies,:SPEWPA) && oldform == 1
+        # Mystic Spewpa (form 1) → Mystic Vivillon (form 9)
+        @pokemon.form = 9 if isConst?(@newspecies,PBSpecies,:VIVILLON)
+      elsif isConst?(oldspecies,PBSpecies,:BURMY) && oldform == 3
+        # Mystic Burmy (form 3) → Mystic Mothim/Wormadam
+        if isConst?(@newspecies,PBSpecies,:MOTHIM)
+          @pokemon.form = 1  # Mystic Mothim is form 1
+        elsif isConst?(@newspecies,PBSpecies,:WORMADAM)
+          @pokemon.form = 3  # Mystic Wormadam is form 3
+        end
+      end
+
       $Trainer.seen[@newspecies]=true
       $Trainer.owned[@newspecies]=true
       pbSeenForm(@pokemon)
