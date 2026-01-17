@@ -1925,11 +1925,11 @@ class PokeBattle_Move_035 < PokeBattle_Move
     pbShowAnimation(@id,attacker,nil,hitnum,alltargets,showanimation)
     showanim=true
     if attacker.pbCanReduceStatStage?(PBStats::DEFENSE,false,true)
-      attacker.pbReduceStat(PBStats::DEFENSE,1,false,showanim,true,true,true)
+      attacker.pbReduceStat(PBStats::DEFENSE,1,false,nil,nil,showanim,true)
       showanim=false
     end
     if attacker.pbCanReduceStatStage?(PBStats::SPDEF,false,true)
-      attacker.pbReduceStat(PBStats::SPDEF,1,false,showanim,true,true,true)
+      attacker.pbReduceStat(PBStats::SPDEF,1,false,nil,nil,showanim,true)
       showanim=false
     end
     showanim=true
@@ -2101,11 +2101,11 @@ class PokeBattle_Move_03B < PokeBattle_Move
         @battle.pbDisplay(_INTL("{1}'s stats can't be lowered due to Temporal Shift!",attacker.pbThis))
       else
         if attacker.pbCanReduceStatStage?(PBStats::ATTACK,false,true)
-          attacker.pbReduceStat(PBStats::ATTACK,1,false,showanim,true,true,true)
+          attacker.pbReduceStat(PBStats::ATTACK,1,false,nil,nil,showanim,true)
           showanim=false
         end
         if attacker.pbCanReduceStatStage?(PBStats::DEFENSE,false,true)
-          attacker.pbReduceStat(PBStats::DEFENSE,1,false,showanim,true,true,true)
+          attacker.pbReduceStat(PBStats::DEFENSE,1,false,nil,nil,showanim,true)
           showanim=false
         end
       end
@@ -2127,11 +2127,11 @@ class PokeBattle_Move_03C < PokeBattle_Move
         @battle.pbDisplay(_INTL("{1}'s stats can't be lowered due to Temporal Shift!",attacker.pbThis))
       else
         if attacker.pbCanReduceStatStage?(PBStats::DEFENSE,false,true)
-          attacker.pbReduceStat(PBStats::DEFENSE,1,false,showanim,true,true,true)
+          attacker.pbReduceStat(PBStats::DEFENSE,1,false,nil,nil,showanim,true)
           showanim=false
         end
         if attacker.pbCanReduceStatStage?(PBStats::SPDEF,false,true)
-          attacker.pbReduceStat(PBStats::SPDEF,1,false,showanim,true,true,true)
+          attacker.pbReduceStat(PBStats::SPDEF,1,false,nil,nil,showanim,true)
           showanim=false
         end
       end
@@ -2154,15 +2154,15 @@ class PokeBattle_Move_03D < PokeBattle_Move
         @battle.pbDisplay(_INTL("{1}'s stats can't be lowered due to Temporal Shift!",attacker.pbThis))
       else
         if attacker.pbCanReduceStatStage?(PBStats::SPEED,false,true)
-          attacker.pbReduceStat(PBStats::SPEED,1,false,showanim,true,true,true)
+          attacker.pbReduceStat(PBStats::SPEED,1,false,nil,nil,showanim,true)
           showanim=false
         end
         if attacker.pbCanReduceStatStage?(PBStats::DEFENSE,false,true)
-          attacker.pbReduceStat(PBStats::DEFENSE,1,false,showanim,true,true,true)
+          attacker.pbReduceStat(PBStats::DEFENSE,1,false,nil,nil,showanim,true)
           showanim=false
         end
         if attacker.pbCanReduceStatStage?(PBStats::SPDEF,false,true)
-          attacker.pbReduceStat(PBStats::SPDEF,1,false,showanim,true,true,true)
+          attacker.pbReduceStat(PBStats::SPDEF,1,false,nil,nil,showanim,true)
           showanim=false
         end
       end
@@ -2318,50 +2318,20 @@ end
 
 
 
-################################################################################
 # Decreases the target's Defense by 1 stage.
 ################################################################################
 class PokeBattle_Move_043 < PokeBattle_Move
   def pbEffect(attacker,opponent,hitnum=0,alltargets=nil,showanimation=true)
     return super(attacker,opponent,hitnum,alltargets,showanimation) if @basedamage>0
-    # Leer - lowers Speed and prevents eating for 3 turns
-    if isConst?(@id,PBMoves,:LEER)
-      return -1 if !opponent.pbCanReduceStatStage?(PBStats::SPEED,true)
-      pbShowAnimation(@id,attacker,opponent,hitnum,alltargets,showanimation)
-      opponent.pbReduceStat(PBStats::SPEED,1,false)
-      opponent.effects[PBEffects::LeerBlock]=3
-      @battle.pbDisplay(_INTL("{1} can't eat for three turns!",opponent.pbThis))
-      return 0
-    end
-    # Other Defense-lowering moves (Tail Whip, etc.)
-    if isConst?(@id,PBMoves,:TAILWHIP) && attacker.effects[PBEffects::MagicBounced] && (attacker.index == 0 || attacker.index == 1)
-      if attacker.pbPartner.pbCanReduceStatStage?(PBStats::DEFENSE,true)
-         pbShowAnimation(@id,opponent,attacker.pbPartner,hitnum,alltargets,showanimation)
-         attacker.pbPartner.pbReduceStat(PBStats::DEFENSE,1,false)
-      end
-      @battle.pbDisplay(_INTL("{1} bounced the {2} back!",attacker.pbThis,PBMoves.getName(@id)))
-      attacker.effects[PBEffects::MagicBounced]=false
-    end
     return -1 if !opponent.pbCanReduceStatStage?(PBStats::DEFENSE,true)
     pbShowAnimation(@id,attacker,opponent,hitnum,alltargets,showanimation)
-    if isConst?(@id,PBMoves,:TAILWHIP) && attacker.effects[PBEffects::MagicBounced] && opponent.pbPartner.pbCanReduceStatStage?(PBStats::DEFENSE,true) && (attacker.index == 2 || attacker.index == 3)
-      attacker.effects[PBEffects::MagicBounced]=false
-      opponent.pbPartner.pbReduceStat(PBStats::DEFENSE,1,false)
-    end
     ret=opponent.pbReduceStat(PBStats::DEFENSE,1,false)
     return ret ? 0 : -1
   end
 
   def pbAdditionalEffect(attacker,opponent)
-    if isConst?(@id,PBMoves,:LEER)
-      if opponent.pbCanReduceStatStage?(PBStats::SPEED,false)
-        opponent.pbReduceStat(PBStats::SPEED,1,false)
-      end
-      opponent.effects[PBEffects::LeerBlock]=3
-    else
-      if opponent.pbCanReduceStatStage?(PBStats::DEFENSE,false)
-        opponent.pbReduceStat(PBStats::DEFENSE,1,false)
-      end
+    if opponent.pbCanReduceStatStage?(PBStats::DEFENSE,false)
+      opponent.pbReduceStat(PBStats::DEFENSE,1,false)
     end
     return true
   end
@@ -12736,6 +12706,7 @@ end
 class PokeBattle_Move_213 < PokeBattle_Move
   def pbEffect(attacker,opponent,hitnum=0,alltargets=nil,showanimation=true)
     pbShowAnimation(@id,attacker,opponent,hitnum,alltargets,showanimation)
+    showanim = true
     if !opponent.isFainted? && !opponent.damagestate.substitute && (opponent.isShadow? || opponent.isbossmon)
       if opponent.effects[PBEffects::MultiTurn]==0
         opponent.effects[PBEffects::MultiTurn]=4+@battle.pbRandom(2)
@@ -12749,7 +12720,7 @@ class PokeBattle_Move_213 < PokeBattle_Move
           $bindingband=0
         end
         if opponent.pbCanReduceStatStage?(PBStats::SPEED,false,true)
-          opponent.pbReduceStat(PBStats::SPEED,1,false,showanim,true,true,true)
+          opponent.pbReduceStat(PBStats::SPEED,1,false,nil,nil,showanim,true)
           showanim=false
         end
       end
@@ -14882,36 +14853,25 @@ class PokeBattle_Move_2A1 < PokeBattle_Move
 end
 
 ################################################################################
-# Leer – lowers Speed of all opposing Pokémon and applies a short Embargo-like
-# item lock (3 turns).
+# Leer – lowers Speed and prevents eating for 3 turns.
 ################################################################################
 class PokeBattle_Move_2A2 < PokeBattle_Move
   def pbEffect(attacker,opponent,hitnum=0,alltargets=nil,showanimation=true)
     return super(attacker,opponent,hitnum,alltargets,showanimation) if @basedamage>0
-
+    return -1 if !opponent.pbCanReduceStatStage?(PBStats::SPEED,true)
     pbShowAnimation(@id,attacker,opponent,hitnum,alltargets,showanimation)
-    success = false
+    opponent.pbReduceStat(PBStats::SPEED,1,false)
+    opponent.effects[PBEffects::LeerBlock]=3
+    @battle.pbDisplay(_INTL("{1} can't eat for three turns!",opponent.pbThis))
+    return 0
+  end
 
-    @battle.battlers.each do |b|
-      next if !b
-      next if !attacker.pbIsOpposing?(b.index)
-      did_anything = false
-
-      if b.pbCanReduceStatStage?(PBStats::SPEED,false)
-        b.pbReduceStat(PBStats::SPEED,1,false)
-        did_anything = true
-      end
-
-      if b.effects[PBEffects::Embargo] <= 0
-        b.effects[PBEffects::Embargo] = 3
-        @battle.pbDisplay(_INTL("{1} can't use items anymore!", b.pbThis))
-        did_anything = true
-      end
-
-      success = true if did_anything
+  def pbAdditionalEffect(attacker,opponent)
+    if opponent.pbCanReduceStatStage?(PBStats::SPEED,false)
+      opponent.pbReduceStat(PBStats::SPEED,1,false)
     end
-
-    return success ? 0 : -1
+    opponent.effects[PBEffects::LeerBlock]=3
+    return true
   end
 end
 

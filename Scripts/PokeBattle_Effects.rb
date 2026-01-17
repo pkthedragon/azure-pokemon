@@ -914,7 +914,8 @@ end
 # Added another parameter to determine if we called from within increase
 # changed from: def pbReduceStat(stat,increment,showMessages,moveid=nil,attacker=nil,downanim=true,selfreduce=false)
   def pbReduceStat(stat,increment,showMessages1=true,moveid=nil,attacker=nil,downanim=true,selfreduce=false, cont_call=false, showMessages2=true, mirrored=false)
-    if moveid && attacker && attacker.hasWorkingItem(:DREADTRIBUTE) &&
+    if moveid && attacker && attacker.respond_to?(:hasWorkingItem) &&
+       attacker.hasWorkingItem(:DREADTRIBUTE) &&
        attacker.moves && attacker.moves[0] && attacker.moves[0].id==moveid
       increment += 1
     end
