@@ -5995,3 +5995,25 @@ Battle Start!
 179 - Kara
 ==============================
 ***Round 1***
+==============================
+Battle Start!
+Wild Battle
+==============================
+***Round 1***
+[The wild Unown: Hidden Power=100]
+If this battle is not wild, something has gone wrong in scoring moves (no preference chosen).
+**Exception: undefined method `>' for nil:NilClass
+["PokeBattle_Move:5122:in `pbCalcDamage'", "PokeBattle_Move:5603:in `pbEffect'", "PokeBattle_MoveEffects:9:in `pbEffect'", "PokeBattle_Battler:6551:in `block in pbProcessMoveAgainstTarget'", "PokeBattle_Battler:6434:in `each'", "PokeBattle_Battler:6434:in `pbProcessMoveAgainstTarget'", "PokeBattle_Battler:7445:in `block in pbUseMove'", "PokeBattle_Battler:7356:in `loop'", "PokeBattle_Battler:7356:in `pbUseMove'", "PokeBattle_Battler:8730:in `block in pbProcessTurn'", "PBDebug:4:in `logonerr'", "PokeBattle_Battler:8729:in `pbProcessTurn'", "PokeBattle_Battle:5851:in `block in pbAttackPhase'", "PokeBattle_Battle:5850:in `each'", "PokeBattle_Battle:5850:in `pbAttackPhase'", "PokeBattle_Battle:5334:in `block (2 levels) in pbStartBattleCore'", "PBDebug:4:in `logonerr'", "PokeBattle_Battle:5333:in `block in pbStartBattleCore'", "PokeBattle_Battle:5317:in `loop'", "PokeBattle_Battle:5317:in `pbStartBattleCore'", "PokeBattle_Battle:4923:in `pbStartBattle'", "PokemonField:1167:in `block (2 levels) in pbWildBattle'", "PokemonField:711:in `pbSceneStandby'", "PokemonField:1166:in `block in pbWildBattle'", "PokemonField:1013:in `pbBattleAnimation'", "PokemonField:1165:in `pbWildBattle'", "PokemonField:1903:in `pbBattleOnStepTaken'", "PokemonField:1927:in `pbOnStepTaken'", "Game_Player_:593:in `update'", "Walk_Run:86:in `update'", "Autosave:31:in `block in update'", "Autosave:28:in `loop'", "Autosave:28:in `update'", "Scene_Map:72:in `block in main'", "Scene_Map:69:in `loop'", "Scene_Map:69:in `main'", "Main:79:in `mainFunctionDebug'", "Main:53:in `block in mainFunction'", "Compiler:38:in `pbCriticalCode'", "Main:53:in `mainFunction'", "Main:89:in `block (2 levels) in <main>'", "Main:88:in `loop'", "Main:88:in `block in <main>'", "Section000:336:in `eval'", "Section000:336:in `block in <main>'", "Section000:333:in `each'", "Section000:333:in `each_with_index'", "Section000:333:in `<main>'", "-e:in `eval'"]
+**Exception: undefined method `>' for nil:NilClass
+["PokeBattle_Move:5122:in `pbCalcDamage'", "PokeBattle_Move:5603:in `pbEffect'", "PokeBattle_Battler:6551:in `block in pbProcessMoveAgainstTarget'", "PokeBattle_Battler:6434:in `each'", "PokeBattle_Battler:6434:in `pbProcessMoveAgainstTarget'", "PokeBattle_Battler:7445:in `block in pbUseMove'", "PokeBattle_Battler:7356:in `loop'", "PokeBattle_Battler:7356:in `pbUseMove'", "PokeBattle_Battler:8730:in `block in pbProcessTurn'", "PBDebug:4:in `logonerr'", "PokeBattle_Battler:8729:in `pbProcessTurn'", "PokeBattle_Battle:5851:in `block in pbAttackPhase'", "PokeBattle_Battle:5850:in `each'", "PokeBattle_Battle:5850:in `pbAttackPhase'", "PokeBattle_Battle:5334:in `block (2 levels) in pbStartBattleCore'", "PBDebug:4:in `logonerr'", "PokeBattle_Battle:5333:in `block in pbStartBattleCore'", "PokeBattle_Battle:5317:in `loop'", "PokeBattle_Battle:5317:in `pbStartBattleCore'", "PokeBattle_Battle:4923:in `pbStartBattle'", "PokemonField:1167:in `block (2 levels) in pbWildBattle'", "PokemonField:711:in `pbSceneStandby'", "PokemonField:1166:in `block in pbWildBattle'", "PokemonField:1013:in `pbBattleAnimation'", "PokemonField:1165:in `pbWildBattle'", "PokemonField:1903:in `pbBattleOnStepTaken'", "PokemonField:1927:in `pbOnStepTaken'", "Game_Player_:593:in `update'", "Walk_Run:86:in `update'", "Autosave:31:in `block in update'", "Autosave:28:in `loop'", "Autosave:28:in `update'", "Scene_Map:72:in `block in main'", "Scene_Map:69:in `loop'", "Scene_Map:69:in `main'", "Main:79:in `mainFunctionDebug'", "Main:53:in `block in mainFunction'", "Compiler:38:in `pbCriticalCode'", "Main:53:in `mainFunction'", "Main:89:in `block (2 levels) in <main>'", "Main:88:in `loop'", "Main:88:in `block in <main>'", "Section000:336:in `eval'", "Section000:336:in `block in <main>'", "Section000:333:in `each'", "Section000:333:in `each_with_index'", "Section000:333:in `<main>'", "-e:in `eval'"]
+***Round 2***
+==============================
+Battle Start!
+Wild Battle
+==============================
+***Round 1***
+[The wild Unown: Hidden Power=100]
+If this battle is not wild, something has gone wrong in scoring moves (no preference chosen).
+[The wild Unown lost 18 HP, now has 2 HP]
+[Ozzie lost 4 HP, now has 41 HP]
+***Round 2***
