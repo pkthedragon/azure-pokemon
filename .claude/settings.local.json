@@ -1,7 +1,12 @@
 {
   "permissions": {
     "allow": [
-      "Bash(tr:*)"
+      "Bash(tr:*)",
+      "Bash(git checkout:*)",
+      "Bash(git push)",
+      "Bash(comm:*)",
+      "Bash(grep:*)",
+      "Bash(find:*)"
     ]
   }
 }

@@ -1661,51 +1661,7 @@ MultipleForms.register(:MINIOR,{
 
 MultipleForms.register(:VIVILLON,{
     "getFormOnCreation"=>proc{|pokemon|
-      next rand(9)  # Forms 0-8 are regular patterns, form 9 is Mystic
-    },
-    "type1"=>proc{|pokemon|
-      next if pokemon.form!=9
-      next getID(PBTypes,:BUG)    # Mystic
-    },
-    "type2"=>proc{|pokemon|
-      next if pokemon.form!=9
-      next getID(PBTypes,:DRAGON)    # Mystic
-    },
-    "getBaseStats"=>proc{|pokemon|
-      next if pokemon.form!=9
-      next [52, 80, 50, 90, 89, 50]   # Mystic
-    },
-    "ability"=>proc{|pokemon|
-      next if pokemon.form!=9 # Only Mystic form
-      if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0)
-        next getID(PBAbilities,:SWARM)
-      end
-      if pokemon.abilityIndex==1 || (pokemon.abilityflag && pokemon.abilityflag==1)
-        next getID(PBAbilities,:NATURALCURE)
-      end
-      if pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)
-        next getID(PBAbilities,:MULTISCALE)
-      end
-    },
-    "getMoveList"=>proc{|pokemon|
-      next if pokemon.form!=9      # Use default moveset for regular forms
-      movelist=[]
-      # Mystic form movelist
-      movelist=[[0,:TWISTER],[1,:DRAGONRUSH],[1,:HURRICANE],[1,:IRRITATION],
-                [1,:EXTREMESPEED],[1,:GLARE],[12,:WINDVORTEX],[17,:ANCIENTPOWER],
-                [21,:AGILITY],[25,:BREAKINGSWIPE],[31,:BLUESHIFT],[35,:XSCISSOR],
-                [41,:ROOST],[45,:DRAGONDANCE],[50,:DRAGONPULSE],[55,:PESTILENTWAVE]]
-      for i in movelist
-        i[1]=getConst(PBMoves,i[1])
-      end
-      next movelist
-    },
-    "getMoveCompatibility"=>proc{|pokemon|
-      next if pokemon.form!=9
-      movelist=[]
-      # Mystic form TM compatibility
-      movelist=[:AGILITY,:AIRSLASH,:ATTRACT,:BREAKINGSWIPE,:BUGBITE,:BUGBUZZ,:BULKUP,:CALMMIND,:CONFIDE,:DEFOG,:DRACOMETEOR,:DRAGONCHEER,:DRAGONPULSE,:ELECTROWEB,:ENDURE,:FACADE,:FLASH,:FRUSTRATION,:GIGADRAIN,:GILDEDBARGAIN,:HIDDENPOWER,:HURRICANE,:HYPERBEAM,:INFESTATION,:IRONDEFENSE,:IRRITATION,:LIGHTSCREEN,:LOCUSTSWARM,:OUTRAGE,:POLLENPUFF,:PROTECT,:PSYCHUP,:RAINDANCE,:REFLECT,:REST,:RETURN,:ROOST,:ROUND,:SCALESHOT,:SCARYFACE,:SECRETPOWER,:SIGNALBEAM,:SLEEPTALK,:SNORE,:STRUGGLEBUG,:SUBSTITUTE,:SUNNYDAY,:SWAGGER,:SWORDSDANCE,:TAILWIND,:THIEF,:TOXIC,:UTURN,:XSCISSOR]
-      next movelist
+      next rand(9)
     },
     "onSetForm"=>proc{|pokemon,form|
       pbSeenForm(pokemon)
@@ -1857,13 +1813,11 @@ MultipleForms.register(:TANGROWTH,{
     "ability"=>proc{|pokemon|
       next if pokemon.form==0 # Normal
       if ((pokemon.abilityIndex==1 || (pokemon.abilityflag && pokemon.abilityflag==1)) || (pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)) || (pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0))) # Heroic
-        next getID(PBAbilities,:MAENADSFERVOR)
+        next getID(PBAbilities,:MAENADSFERVOR) 
       end
     },
     "getForm"=>proc{|pokemon|
-      # Heroic Tangrowth - check if holding Meadow Tribute
-      heroic_form = pbGetHeroicForm(pokemon) if defined?(pbGetHeroicForm)
-      next heroic_form if heroic_form
+      next 1  if isConst?(pokemon.item,PBItems,:TANTRIBUTE)
       next 0
     },
     "onSetForm"=>proc{|pokemon,form|
@@ -11517,6 +11471,59 @@ MultipleForms.register(:SPEWPA,{
   }
 })
 
+MultipleForms.register(:VIVILLON,{
+  "type1"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:BUG)    # Mystic
+  },
+  "type2"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next getID(PBTypes,:DRAGON)    # Mystic
+  },
+  "getBaseStats"=>proc{|pokemon|
+    next if pokemon.form!=1
+    next [52, 80, 50, 90, 89, 50]   # Mystic
+  },
+  "ability"=>proc{|pokemon|
+    next if pokemon.form!=1 # Only Mystic form
+    if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0)
+      next getID(PBAbilities,:SWARM)
+    end
+    if pokemon.abilityIndex==1 || (pokemon.abilityflag && pokemon.abilityflag==1)
+      next getID(PBAbilities,:NATURALCURE)
+    end
+    if pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)
+      next getID(PBAbilities,:MULTISCALE)
+    end
+  },
+  "getMoveList"=>proc{|pokemon|
+    next if pokemon.form==0      # Use default moveset for base form
+    movelist=[]
+    case pokemon.form            # Mystic
+    when 1 ; movelist=[[0,:TWISTER],[1,:DRAGONRUSH],[1,:HURRICANE],[1,:IRRITATION],
+                      [1,:EXTREMESPEED],[1,:GLARE],[12,:WINDVORTEX],[17,:ANCIENTPOWER],
+                      [21,:AGILITY],[25,:BREAKINGSWIPE],[31,:BLUESHIFT],[35,:XSCISSOR],
+                      [41,:ROOST],[45,:DRAGONDANCE],[50,:DRAGONPULSE],[55,:PESTILENTWAVE]]
+    end
+    for i in movelist
+      i[1]=getConst(PBMoves,i[1])
+    end
+    next movelist
+  },
+    "getMoveCompatibility"=>proc{|pokemon|
+      next if pokemon.form==0
+      movelist=[]
+      case pokemon.form
+      when 1; movelist=[# TMs
+		  :AGILITY,:AIRSLASH,:ATTRACT,:BREAKINGSWIPE,:BUGBITE,:BUGBUZZ,:BULKUP,:CALMMIND,:CONFIDE,:DEFOG,:DRACOMETEOR,:DRAGONCHEER,:DRAGONPULSE,:ELECTROWEB,:ENDURE,:FACADE,:FLASH,:FRUSTRATION,:GIGADRAIN,:GILDEDBARGAIN,:HIDDENPOWER,:HURRICANE,:HYPERBEAM,:INFESTATION,:IRONDEFENSE,:IRRITATION,:LIGHTSCREEN,:LOCUSTSWARM,:OUTRAGE,:POLLENPUFF,:PROTECT,:PSYCHUP,:RAINDANCE,:REFLECT,:REST,:RETURN,:ROOST,:ROUND,:SCALESHOT,:SCARYFACE,:SECRETPOWER,:SIGNALBEAM,:SLEEPTALK,:SNORE,:STRUGGLEBUG,:SUBSTITUTE,:SUNNYDAY,:SWAGGER,:SWORDSDANCE,:TAILWIND,:THIEF,:TOXIC,:UTURN,:XSCISSOR]
+      end
+	  },
+  "onSetForm"=>proc{|pokemon,form|	  
+    if form==1
+      pbSeenForm(pokemon)
+    end
+  }
+})
 
 MultipleForms.register(:SALANDIT,{
   "type1"=>proc{|pokemon|

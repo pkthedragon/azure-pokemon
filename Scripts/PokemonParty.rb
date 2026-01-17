@@ -1392,6 +1392,7 @@ class PokemonScreen
          _INTL("Gender"),
          _INTL("Ability"),
          _INTL("Nature"),
+         _INTL("Hidden Power"),
          _INTL("Shininess"),
          _INTL("Form"),
          _INTL("Happiness"),
@@ -1410,7 +1411,7 @@ class PokemonScreen
       ],command)
       case command
         ### Cancel ###
-        when -1, 21
+        when -1, 22
           break
         ### HP/Status ###
         when 0
@@ -1632,8 +1633,72 @@ class PokemonScreen
             end
             pbRefreshSingle(pkmnid)
           end
-        ### Shininess ###
+        ### Hidden Power ###
         when 7
+          cmd=0
+          loop do
+            hptypes = ["Normal","Fighting","Flying","Poison","Ground","Rock","Bug",
+                       "Ghost","Steel","Fire","Water","Grass","Electric","Psychic",
+                       "Ice","Dragon","Dark","Fairy"]
+            currenthp = "None"
+            # Check which Hidden Power move the Pokemon knows
+            for i in 0...4
+              move = pkmn.moves[i]
+              next if !move
+              if move.id >= PBMoves::HIDDENPOWERNOR && move.id <= PBMoves::HIDDENPOWERFAI
+                hpindex = move.id - PBMoves::HIDDENPOWERNOR
+                currenthp = hptypes[hpindex] if hpindex >= 0 && hpindex < hptypes.length
+                break
+              end
+            end
+            msg = _INTL("Current Hidden Power type: {1}",currenthp)
+            commands = []
+            hptypes.each do |type|
+              commands.push(type)
+            end
+            commands.push(_INTL("Remove Hidden Power"))
+            cmd=@scene.pbShowCommands(msg,commands,cmd)
+            # Break
+            if cmd==-1
+              break
+            # Set Hidden Power type
+            elsif cmd>=0 && cmd<hptypes.length
+              # Find and replace existing Hidden Power move
+              replaced = false
+              for i in 0...4
+                move = pkmn.moves[i]
+                next if !move
+                if move.id >= PBMoves::HIDDENPOWERNOR && move.id <= PBMoves::HIDDENPOWERFAI
+                  newmoveid = PBMoves::HIDDENPOWERNOR + cmd
+                  pkmn.moves[i] = PBMove.new(newmoveid)
+                  replaced = true
+                  break
+                end
+              end
+              # If no Hidden Power found, replace first move or add to empty slot
+              if !replaced
+                newmoveid = PBMoves::HIDDENPOWERNOR + cmd
+                if pkmn.moves[0]
+                  pkmn.moves[0] = PBMove.new(newmoveid)
+                else
+                  pkmn.pbLearnMove(newmoveid)
+                end
+              end
+            # Remove Hidden Power
+            elsif cmd==hptypes.length
+              for i in 0...4
+                move = pkmn.moves[i]
+                next if !move
+                if move.id >= PBMoves::HIDDENPOWERNOR && move.id <= PBMoves::HIDDENPOWERFAI
+                  pkmn.pbDeleteMoveAtIndex(i)
+                  break
+                end
+              end
+            end
+            pbRefreshSingle(pkmnid)
+          end
+        ### Shininess ###
+        when 8
           cmd=0
           loop do
             oldshiny=(pkmn.isShiny?) ? _INTL("shiny") : _INTL("normal")
@@ -1659,7 +1724,7 @@ class PokemonScreen
             pbRefreshSingle(pkmnid)
           end
         ### Form ###
-        when 8
+        when 9
           params=ChooseNumberParams.new
           params.setRange(0,100)
           params.setDefaultValue(pkmn.form)
@@ -1672,7 +1737,7 @@ class PokemonScreen
             pbRefreshSingle(pkmnid)
           end
         ### Happiness ###
-        when 9
+        when 10
           params=ChooseNumberParams.new
           params.setRange(0,255)
           params.setDefaultValue(pkmn.happiness)

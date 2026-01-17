@@ -944,6 +944,14 @@ class PokeBattle_Battler
       @effects[PBEffects::Substitute]         = 0
       @effects[PBEffects::Telekinesis]        = 0
     else
+      # Baton Pass now only passes Speed stat, reset all others
+      @stages[PBStats::ATTACK]   = 0
+      @stages[PBStats::DEFENSE]  = 0
+      # Keep Speed: @stages[PBStats::SPEED] is not reset
+      @stages[PBStats::SPATK]    = 0
+      @stages[PBStats::SPDEF]    = 0
+      @stages[PBStats::EVASION]  = 0
+      @stages[PBStats::ACCURACY] = 0
       if @effects[PBEffects::LockOn]>0
         @effects[PBEffects::LockOn]=2
       else
@@ -1226,6 +1234,9 @@ class PokeBattle_Battler
       @battle.shieldCount = pkmn.shieldCount ? pkmn.shieldCount : $game_variables[704]
       shieldlife=[(self.totalhp/4).floor,1].max
       self.effects[PBEffects::ShieldLife]=shieldlife
+      if @onEntryEffects
+        @battle.pbShieldEffects(self,@onEntryEffects,true)
+      end
     end
   end
   
@@ -1651,9 +1662,9 @@ class PokeBattle_Battler
     defmult=0x1000  
     if $fefieldeffect == 24 && @function==0xE0
       defmult=(defmult*0.5).round
-    end      
-    if self.hasWorkingAbility(:MARVELSCALE) && 
-      (self.status>0 || $fefieldeffect == 3 || $fefieldeffect == 9 ||
+    end
+    if self.hasWorkingAbility(:MARVELSCALE) &&
+      (self.status>0 || $fefieldeffect == 9 ||
         $fefieldeffect == 31 || $fefieldeffect == 32 || $fefieldeffect == 34)
       defmult=(defmult*1.5).round
     end
@@ -2676,8 +2687,10 @@ class PokeBattle_Battler
     end
     if isConst?(ability,PBAbilities,:EVENTHORIZON) && onactive
       if @battle.field.effects[PBEffects::Gravity]==0 && $fefieldeffect != 39
-        @battle.field.effects[PBEffects::Gravity]=5
-        @battle.field.effects[PBEffects::Gravity]=8 if $fefieldeffect == 37
+        @battle.field.effects[PBEffects::Gravity]=8
+        if $fefieldeffect == 37 || @battle.field.effects[PBEffects::PsychicTerrain]>0 # Psychic Field or Terrain overlay
+          @battle.field.effects[PBEffects::Gravity]=8
+        end
         if $fefieldeffect == 38
           rnd=@battle.pbRandom(6)
           @battle.field.effects[PBEffects::Gravity]=3+rnd
@@ -2851,12 +2864,10 @@ class PokeBattle_Battler
         if @battle.field.effects[PBEffects::GrassyTerrain]==0
           @battle.field.effects[PBEffects::GrassyTerrain]=5
           @battle.field.effects[PBEffects::GrassyTerrain]=8 if $fefieldeffect==42
-          @battle.field.effects[PBEffects::GrassyTerrain]=3 if ($fefieldeffect==10  || $fefieldeffect==12 || $fefieldeffect==13 || $fefieldeffect==7 || $fefieldeffect==16)
-          if isConst?(self.item,PBItems,:AMPLIFIELDROCK)      
+          if isConst?(self.item,PBItems,:AMPLIFIELDROCK)
             @battle.field.effects[PBEffects::GrassyTerrain]=8
-            @battle.field.effects[PBEffects::GrassyTerrain]=5 if ($fefieldeffect==10  || $fefieldeffect==12 || $fefieldeffect==13 || $fefieldeffect==7 || $fefieldeffect==16)
-          end          
-          @battle.pbDisplay(_INTL("The terrain became grassy!"))        
+          end
+          @battle.pbDisplay(_INTL("The terrain became grassy!"))
         end  
       else        
         $fetempfield = 2 
@@ -4035,6 +4046,14 @@ class PokeBattle_Battler
           @battle.pbDisplay(_INTL("{1} was hurt by the {2}!",user.pbThis,
               PBItems.getName(target.item)))
         end
+        # Electric Terrain/Field - Contact moves against grounded Pokemon have 1/4 recoil of damage dealt
+        if ($fefieldeffect == 1 || @battle.field.effects[PBEffects::ElectricTerrain]>0) &&
+          !target.isAirborne? && !user.isFainted? && !user.hasWorkingAbility(:MAGICGUARD) &&
+          !(user.hasWorkingAbility(:WONDERGUARD) && $fefieldeffect == 44)
+          @battle.scene.pbDamageAnimation(user,0)
+          user.pbReduceHP((damage/4).floor)
+          @battle.pbDisplay(_INTL("{1} was shocked by the electric field!",user.pbThis))
+        end
         if target.effects[PBEffects::BeakBlast] && user.pbCanBurn?(false) &&
           !user.hasWorkingAbility(:MAGICGUARD) && !(user.hasWorkingAbility(:WONDERGUARD) && $fefieldeffect == 44)
           user.pbBurn(target)
@@ -4070,9 +4089,14 @@ class PokeBattle_Battler
                 PBItems.getName(user.item),target.pbThis(true)))
           end
         end
-        # Effect Spore - when target faints from contact, attacker becomes drowsy
+        # Effect Spore - when target faints from contact, attacker falls asleep for 2 turns (Forest Field) or becomes drowsy (other fields)
         if target.ability == PBAbilities::EFFECTSPORE && !user.isFainted? &&
-          target.hp <= 0 && user.effects[PBEffects::Yawn] == 0
+          target.hp <= 0 && $fefieldeffect == 15 && user.pbCanSleep?(false)
+          user.pbSleepSelf(2)
+          @battle.pbDisplay(_INTL("{1}'s {2} put {3} to sleep!",target.pbThis,
+              PBAbilities.getName(target.ability),user.pbThis(true)))
+        elsif target.ability == PBAbilities::EFFECTSPORE && !user.isFainted? &&
+          target.hp <= 0 && $fefieldeffect != 15 && user.effects[PBEffects::Yawn] == 0
           user.effects[PBEffects::Yawn] = 2
           @battle.pbDisplay(_INTL("{1}'s {2} made {3} drowsy!",target.pbThis,
               PBAbilities.getName(target.ability),user.pbThis(true)))
@@ -5807,9 +5831,11 @@ class PokeBattle_Battler
         return false
       end
     end      
-    if ((target.hasWorkingAbility(:DAZZLING) || 
+    if ((target.hasWorkingAbility(:DAZZLING) ||
           target.hasWorkingAbility(:QUEENLYMAJESTY)) && !target.moldbroken) ||
-      $fefieldeffect == 37 && !(target.isAirborne?) || ($fefieldeffect == 34 && target.hasWorkingAbility(:MIRRORARMOR) && !target.moldbroken) ||
+      (@battle.field.effects[PBEffects::PsychicTerrain]>0 && $fefieldeffect!=37) || # Psychic Terrain overlay only
+      $fefieldeffect == 37 || # Psychic Field blocks all priority
+      ($fefieldeffect == 34 && target.hasWorkingAbility(:MIRRORARMOR) && !target.moldbroken) ||
       (target.pbPartner.hasWorkingAbility(:DAZZLING) || target.pbPartner.hasWorkingAbility(:QUEENLYMAJESTY)  || ($fefieldeffect == 34 && target.hasWorkingAbility(:MIRRORARMOR)) && !target.moldbroken)
       if thismove.priority>0
         if ((target.hasWorkingAbility(:DAZZLING) || 
@@ -6293,18 +6319,6 @@ class PokeBattle_Battler
       end
       # Freeze no longer immobilizes - HP sap happens at end of turn instead
     end
-    if @effects[PBEffects::Confusion]>0 && !@simplemove
-      @effects[PBEffects::Confusion]-=1
-      if @effects[PBEffects::Confusion]<=0
-        pbCureConfusion
-      else
-        pbContinueConfusion
-        # Confusion always causes self-hit but does not prevent the move from executing
-        @battle.pbDisplay(_INTL("It hurt itself from its confusion!"))
-        pbConfusionDamage
-        # Move continues to execute after self-hit (no return false)
-      end
-    end
     #### AME - 004 - START
     if @effects[PBEffects::Flinch]
       @effects[PBEffects::Flinch]=false
@@ -6348,6 +6362,18 @@ class PokeBattle_Battler
       end
     end
     #### AME - 004 - END
+    if @effects[PBEffects::Confusion]>0 && !@simplemove
+      @effects[PBEffects::Confusion]-=1
+      if @effects[PBEffects::Confusion]<=0
+        pbCureConfusion
+      else
+        pbContinueConfusion
+        # Confusion always causes self-hit but does not prevent the move from executing
+        @battle.pbDisplay(_INTL("It hurt itself from its confusion!"))
+        pbConfusionDamage
+        return false if self.isFainted?
+      end
+    end
     if @effects[PBEffects::Attract]>=0 && !@simplemove
       pbAnnounceAttract(@battle.battlers[@effects[PBEffects::Attract]])
       # Infatuation no longer immobilizes - instead, attacks against infatuated Pokemon always crit
@@ -6733,7 +6759,7 @@ class PokeBattle_Battler
       end
       # Reverb - Sound moves strike again next turn at 0.25x power
       if user.hasWorkingAbility(:REVERB) && thismove.isSoundBased? && thismove.basedamage > 0 &&
-         user.hp > 0 && !target.isFainted? && target.damagestate.calcdamage > 0
+         user.hp > 0 && target.damagestate.calcdamage > 0
         user.effects[PBEffects::ReverbEcho] = thismove.id
         user.effects[PBEffects::ReverbTarget] = target.index
         user.effects[PBEffects::ReverbUser] = user.index
@@ -7177,17 +7203,7 @@ class PokeBattle_Battler
       # FIELD TRANSFORMATIONS 1
       case $fefieldeffect
       when 1 # Electric Field
-        if (thismove.id == PBMoves::MUDSPORT)
-          if $fefieldeffect == $febackup
-            $fefieldeffect = 0
-          else
-            $fefieldeffect = $febackup
-          end
-          @battle.pbChangeBGSprite
-          @battle.pbDisplay(_INTL("The hyper-charged terrain shorted out!"))
-          @battle.field.effects[PBEffects::Terrain]=0
-          @battle.seedCheck
-        end
+        # Mud Sport field transformation removed
       when 3 # Misty Field
         if (thismove.id == PBMoves::TAILWIND)
           if $fefieldeffect == $febackup
@@ -7536,40 +7552,88 @@ class PokeBattle_Battler
           end
         end
       when 23 # Cave Collapse
-        if (thismove.id == PBMoves::EARTHQUAKE || thismove.id == PBMoves::MAGNITUDE || thismove.id == PBMoves::BULLDOZE)
-          $fecounter+=1
+        if (thismove.id == PBMoves::EARTHQUAKE || thismove.id == PBMoves::MAGNITUDE ||
+            thismove.id == PBMoves::BULLDOZE)
+          $fecounter += 1
           case $fecounter
           when 1
             @battle.pbDisplay(_INTL("Bits of rock fell from the crumbling ceiling!"))
           when 2
             @battle.pbDisplay(_INTL("The quake collapsed the ceiling!"))
-            for i in 0...4
-              quakedrop = @battle.battlers[i].hp
-              next if quakedrop==0
-              invulcheck=PBMoveData.new(@battle.battlers[i].effects[PBEffects::TwoTurnAttack]).function
-              case invulcheck
-              when 0xC9, 0xCC, 0xCA, 0xCB, 0xCD, 0xCE
-                quakedrop = 0
-              end
-              quakedrop =0 if @battle.battlers[i].effects[PBEffects::SkyDrop]
-              quakedrop-=1 if @battle.battlers[i].hasWorkingAbility(:STURDY)                 
-              quakedrop/=3 if (@battle.battlers[i].hasWorkingAbility(:SOLIDROCK) || @battle.SilvallyCheck(@battle.battlers[i],PBTypes::ROCK))
-              quakedrop/=2 if @battle.battlers[i].hasWorkingAbility(:SHELLARMOR)
-              quakedrop/=2 if @battle.battlers[i].hasWorkingAbility(:BATTLEARMOR)
-              quakedrop =0 if @battle.battlers[i].hasWorkingAbility(:BULLETPROOF)
-              quakedrop =0 if @battle.battlers[i].isbossmon
-              quakedrop =0 if @battle.battlers[i].hasWorkingAbility(:ROCKHEAD)
-              quakedrop/=3 if @battle.battlers[i].hasWorkingAbility(:PRISMARMOR)
-              quakedrop =0 if @battle.battlers[i].effects[PBEffects::Protect] == true
-              quakedrop =0 if @battle.battlers[i].effects[PBEffects::WideGuard] == true
-              quakedrop-=1 if @battle.battlers[i].effects[PBEffects::Endure] == true
-              quakedrop =0 if @battle.battlers[i].effects[PBEffects::KingsShield] == true
-              quakedrop =0 if @battle.battlers[i].effects[PBEffects::SpikyShield] == true
-              quakedrop =0 if @battle.battlers[i].effects[PBEffects::MatBlock] == true
-              quakedrop/=3 if @battle.battlers[i].pbOwnSide.effects[PBEffects::DuneDefense]>0
-              @battle.battlers[i].pbReduceHP(quakedrop) if quakedrop != 0
-              @battle.battlers[i].pbFaint if @battle.battlers[i].isFainted?
+            # Set Stealth Rocks for both sides
+            for side in 0...2
+              next if @battle.sides[side].effects[PBEffects::StealthRock]
+              @battle.sides[side].effects[PBEffects::StealthRock]=true
             end
+            @battle.pbDisplay(_INTL("Pointed stones float in the air!"))
+
+            # Activate Stealth Rocks immediately - deal damage to all Pokemon
+            for i in 0...4
+              battler = @battle.battlers[i]
+              next if battler.hp==0
+              if battler.pbOwnSide.effects[PBEffects::StealthRock]
+                if !battler.hasWorkingAbility(:MAGICGUARD) && !(battler.hasWorkingAbility(:WONDERGUARD) && $fefieldeffect == 44) && !battler.hasWorkingItem(:HEAVYDUTYBOOTS) && !battler.hasWorkingAbility(:LIMBER)
+                  atype=getConst(PBTypes,:ROCK) || 0
+                  eff=PBTypes.getCombinedEffectiveness(atype,battler.type1,battler.type2)
+                  if eff>0
+                    # Double damage on Cave Field
+                    eff = eff*2
+                    @battle.scene.pbDamageAnimation(battler,0)
+                    battler.pbReduceHP([(battler.totalhp*eff/32).floor,1].max)
+                    @battle.pbDisplay(_INTL("{1} was hurt by stealth rocks!",battler.pbThis))
+                  end
+                end
+              end
+              battler.pbFaint if battler.isFainted?
+            end
+
+            # Apply crushing status to all Pokemon
+            for i in 0...4
+              battler = @battle.battlers[i]
+              next if battler.hp==0
+
+              # Check invulnerability
+              invulcheck=PBMoveData.new(battler.effects[PBEffects::TwoTurnAttack]).function
+              case invulcheck
+              when 0xC9, 0xCC, 0xCA, 0xCB, 0xCD, 0xCE # Fly, Bounce, Dig, Dive, Phantom Force, Shadow Force
+                next
+              end
+              next if battler.effects[PBEffects::SkyDrop]
+              next if battler.isbossmon
+
+              # Check immunities
+              if battler.hasWorkingAbility(:BATTLEARMOR) || battler.hasWorkingAbility(:SHELLARMOR) ||
+                 battler.hasWorkingAbility(:SOLIDROCK) || battler.hasWorkingAbility(:PRISMARMOR) ||
+                 battler.hasWorkingAbility(:BULLETPROOF) || battler.hasWorkingAbility(:ROCKHEAD) ||
+                 battler.hasWorkingAbility(:STALWART) || @battle.SilvallyCheck(battler,PBTypes::ROCK)
+                next
+              end
+
+              # Check protection
+              if battler.effects[PBEffects::Protect] || battler.effects[PBEffects::WideGuard] ||
+                 battler.effects[PBEffects::KingsShield] || battler.effects[PBEffects::SpikyShield] ||
+                 battler.effects[PBEffects::MatBlock] || battler.pbOwnSide.effects[PBEffects::DuneDefense]>0
+                next
+              end
+
+              # Endure, Miracle, Sturdy - survive at 1 HP instead of being crushed
+              if battler.hasWorkingAbility(:STURDY) || battler.effects[PBEffects::Endure] ||
+                 battler.hasWorkingAbility(:MIRACLE)
+                if battler.hp > 1
+                  @battle.scene.pbDamageAnimation(battler,0)
+                  battler.pbReduceHP(battler.hp - 1)
+                  @battle.pbDisplay(_INTL("{1} endured the cave-in!",battler.pbThis))
+                end
+                next
+              end
+
+              # Apply crushing status
+              if battler.pbCanCrush?(false)
+                battler.pbCrush(self)
+                @battle.pbDisplay(_INTL("{1} was crushed by the falling rocks!",battler.pbThis))
+              end
+            end
+            $fecounter = 0
           end
         end
       when 30 # Mirror Shatter
@@ -7659,12 +7723,7 @@ class PokeBattle_Battler
       # FIELD TRANSFORMATIONS 2
       case $fefieldeffect
       when 2 # Grassy Field
-        if (thismove.id == PBMoves::SLUDGEWAVE)
-          $fefieldeffect = 10
-          @battle.pbChangeBGSprite
-          @battle.pbDisplay(_INTL("The grassy terrain was corroded!"))
-          @battle.seedCheck
-        end
+        # Sludge Wave field transformation removed
       when 3 # Misty Field
         if (thismove.id == PBMoves::WHIRLWIND || thismove.id == PBMoves::GUST ||
             thismove.id == PBMoves::RAZORWIND || thismove.id == PBMoves::HURRICANE ||
@@ -7679,20 +7738,6 @@ class PokeBattle_Battler
           @battle.pbDisplay(_INTL("The mist was blown away!"))
           @battle.field.effects[PBEffects::Terrain]=0
           @battle.seedCheck
-        end
-        if (thismove.id == PBMoves::CLEARSMOG || thismove.id == PBMoves::SMOG ||
-            thismove.id == PBMoves::POISONGAS)
-          $fecounter += 1
-          case $fecounter
-          when 1
-            @battle.pbDisplay(_INTL("Poison spread through the mist!"))
-          when 2
-            $fefieldeffect = 11
-            @battle.pbChangeBGSprite
-            @battle.pbDisplay(_INTL("The mist was corroded!"))
-            $fecounter = 0
-            @battle.seedCheck
-          end
         end
       when 4 # Dark Crystal Cavern
         if (thismove.id == PBMoves::EARTHQUAKE || thismove.id == PBMoves::BULLDOZE ||
@@ -8086,57 +8131,7 @@ class PokeBattle_Battler
           end
         end
       when 23 # Cave
-        if (thismove.id == PBMoves::POWERGEM || thismove.id == PBMoves::DIAMONDSTORM)
-          $fefieldeffect = 25
-          @battle.pbChangeBGSprite
-          @battle.pbDisplay(_INTL("The cave was littered with crystals!"))
-          @battle.seedCheck
-        end
-        if (thismove.id == PBMoves::HOTTEMPO || thismove.id == PBMoves::LAVASURF ||
-            thismove.id == PBMoves::ERUPTION || thismove.id == PBMoves::LAVAPLUME  ||
-            thismove.id == PBMoves::HEATWAVE || thismove.id == PBMoves::OVERHEAT || 
-            thismove.id == PBMoves::FUSIONFLARE)
-          $fefieldeffect = 7
-          @battle.pbChangeBGSprite
-          @battle.pbDisplay(_INTL("The overwhelming heat melted the cave into slag!"))
-          @battle.seedCheck
-        end
-        if (thismove.id == PBMoves::SLUDGEWAVE || thismove.id == PBMoves::ACIDDOWNPOUR)
-          $fefieldeffect = 41
-          @battle.pbChangeBGSprite
-          @battle.pbDisplay(_INTL("The cave was corrupted!"))
-          @battle.seedCheck
-        end
-        if (thismove.id == PBMoves::BLIZZARD)
-          $fefieldeffect = 13
-          $febackup = 23
-          @battle.pbChangeBGSprite
-          @battle.pbDisplay(_INTL("The cavern froze over!"))
-          @battle.seedCheck
-        end
-        if (thismove.id == PBMoves::DRACOMETEOR)
-          @battle.basefield = 25
-          $fefieldeffect = 32
-          $febackup = 32
-          @battle.pbChangeBGSprite
-          @battle.pbDisplay(_INTL("The draconic energy mutated the field!"))
-          @battle.seedCheck
-        end
-        if (thismove.id == PBMoves::DRAGONPULSE)
-          $fecounter += 1
-          case $fecounter
-          when 1
-            @battle.pbDisplay(_INTL("Draconic energy seeps in..."))
-          when 2
-            @battle.basefield = 25
-            $fefieldeffect = 32
-            $febackup = 32
-            @battle.pbChangeBGSprite
-            @battle.pbDisplay(_INTL("The draconic energy mutated the field!"))
-            $fecounter = 0
-            @battle.seedCheck
-          end
-        end
+        # Field transformations removed - Cave Field is now stable
       when 25 # Crystal Cavern
         if (thismove.id == PBMoves::DARKPULSE || thismove.id == PBMoves::DARKVOID ||
             thismove.id == PBMoves::NIGHTDAZE)
@@ -8492,6 +8487,13 @@ class PokeBattle_Battler
           end
           if hploss>0
             @battle.pbDisplay(_INTL("{1} lost some of its HP!",user.pbThis))
+          end
+        end
+        # Counterweight - raises speed when using momentum moves
+        if user.hasWorkingItem(:COUNTERWEIGHT) && PBStuff::MOMENTUMMOVE.include?(thismove.id)
+          if user.pbCanIncreaseStatStage?(PBStats::SPEED,false)
+            user.pbIncreaseStat(PBStats::SPEED,1,true)
+			@battle.pbDisplay(_INTL("{1} gained speed with its Counterweight!",user.pbThis))
           end
         end
         user.pbFaint if user.isFainted? # no return

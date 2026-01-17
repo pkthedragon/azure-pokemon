@@ -160,116 +160,57 @@ Events.onWildPokemonCreate+=proc {|sender,e|
     end
   # Egg moves for wild events
   case $game_variables[545]
-    when 1 # Clobbopus
-      pokemon.pbLearnMove(:SOAK)
+    when 1 # Seel
+      pokemon.pbLearnMove(:SPITUP)
     when 2 # Shuppet
-      pokemon.pbLearnMove(:PURSUIT)
-      pokemon.pbLearnMove(:FORESIGHT)
-    when 3 # Wooloo
-      pokemon.pbLearnMove(:COUNTER)
-    when 4 # Smoochum
-      pokemon.pbLearnMove(:FAKEOUT)
-    when 5 # Chingling
-      pokemon.pbLearnMove(:HYPNOSIS)
-    when 6 # Mystic Larvitar
-      pokemon.form=1
-      pokemon.resetMoves
-      pokemon.calcStats
-    when 7 # Pichu
+      pokemon.pbLearnMove(:CONFUSERAY)
+    when 3 # Pachirisu
+      pokemon.pbLearnMove(:FAKETEARS)
+    when 4 # Deerling
+	  pokemon.form=1
+      pokemon.pbLearnMove(:HEADBUTT)
+    when 5 # Yamper
+      pokemon.pbLearnMove(:FLAMECHARGE)
+    when 6 # Fidough
       pokemon.pbLearnMove(:WISH)
-    when 8 # Trubbish
-      pokemon.pbLearnMove(:ROCKBLAST)
-    when 9 # Lileep
-      pokemon.pbLearnMove(:MEGADRAIN)
-    when 10 # Duskull
+    when 7 # Hoppip
+      pokemon.pbLearnMove(:GRASSYTERRAIN)
+    when 8 # Duskull
       pokemon.pbLearnMove(:PAINSPLIT)
-    when 11 # Espurr
-      pokemon.pbLearnMove(:YAWN)
-    when 11 # Espurr
-      pokemon.pbLearnMove(:ASSIST)
-    when 12 # Sinistea
-      pokemon.pbLearnMove(:METRONOME)
-    when 13 # Mystic Stufful
-      pokemon.form=1
-      pokemon.resetMoves
-      pokemon.calcStats
-    when 14 # Sewaddle
-      pokemon.pbLearnMove(:SYNTHESIS)
-    when 15 # Whismur
-      pokemon.pbLearnMove(:EXTRASENSORY)
-    when 16 # Chikorita
-      pokemon.pbLearnMove(:LEECHSEED)
-      pokemon.pbLearnMove(:NATUREPOWER)
-    when 16 # Turtwig
-      pokemon.pbLearnMove(:WIDEGUARD)
-    when 17 # Castform
-      pokemon.pbLearnMove(:RAINDANCE)
-      pokemon.pbLearnMove(:HAIL)
-      pokemon.pbLearnMove(:SUNNYDAY)
-      pokemon.pbLearnMove(:OMINOUSWIND)
-    when 18 # Mystic Voltorb
-      pokemon.form=1
-      pokemon.resetMoves
-      pokemon.calcStats
-    when 19 # Applin
-      pokemon.pbLearnMove(:RECYCLE)
-      pokemon.pbLearnMove(:SUCKERPUNCH)
-    when 20 # Spinarak
-      pokemon.pbLearnMove(:RAGEPOWDER)
-      pokemon.pbLearnMove(:NIGHTSLASH)
-    when 21 # Dedenne
-      pokemon.pbLearnMove(:MAGNETRISE)
-    when 22 # Parasect
-      pokemon.pbLearnMove(:LEECHSEED)
-    when 31 # Houndour
-      pokemon.pbLearnMove(:FIRESPIN)
-    when 32 # Thievul
-      pokemon.pbLearnMove(:QUICKGUARD)
-    when 33 # Mystic Poochyena
-      pokemon.form=1
-      pokemon.resetMoves
-      pokemon.calcStats
-    when 34 # Mawile
-      pokemon.pbLearnMove(:FIREFANG)
-    when 35 # Snubbull
-      pokemon.pbLearnMove(:POWERUPPUNCH)
-    when 36 # Skitty
-      pokemon.pbLearnMove(:WISH)
-    when 37 # Sinistea
-      pokemon.pbLearnMove(:BATONPASS)
-    when 38 # Mystic Stufful
-      pokemon.form=1
-      pokemon.resetMoves
-      pokemon.calcStats
-    when 39 # Voltorb
-      pokemon.pbLearnMove(:ENDURE)
-    when 40 # Joltik
-      pokemon.pbLearnMove(:CROSSPOISON)
-    when 41 # Nidoran Male
+    when 9 # Whismur
+      pokemon.pbLearnMove(:DISARMINGVOICE)
+    when 10 # Loudred
+      pokemon.pbLearnMove(:DISARMINGVOICE)
+    when 11 # Chingling
+      pokemon.pbLearnMove(:HYPNOSIS)
+    when 12 # Dustox
+      pokemon.pbLearnMove(:SILVERWIND)
+    when 13 # Beautifly
+      pokemon.pbLearnMove(:SILVERWIND)
+    when 14 # Vivillon
+      pokemon.pbLearnMove(:SILVERWIND)
+    when 15 # Tangela
       pokemon.pbLearnMove(:CONFUSION)
-    when 42 # Nidoran Female
-      pokemon.pbLearnMove(:SUPERSONIC)
-    when 43 # Stantler
-      pokemon.pbLearnMove(:ZENHEADBUTT)
-    when 44 # Farfetch'd
+    when 16 # Farfetch'd
+      pokemon.pbLearnMove(:QUICKATTACK)
+    when 17 # Mystic Scatterbug
       pokemon.form=1
       pokemon.resetMoves
       pokemon.calcStats
-      pokemon.pbLearnMove(:BRICKBREAK)
-    when 46 # Tauros No Catch
-      pokemon.pbLearnMove(:THRASH)  
-      pokemon.pbLearnMove(:PAYBACK)
-      pokemon.pbLearnMove(:ZENHEADBUTT)
-      pokemon.pbLearnMove(:GIGAIMPACT)
-    when 47 # Corsola
-      pokemon.pbLearnMove(:AQUARING)
-    when 48 # Mystic Skorupi
+    when 18 # Applin
+      pokemon.pbLearnMove(:RECYCLE)
+    when 19 # Pichu
+      pokemon.pbLearnMove(:FAKEOUT)
+    when 20 # Trubbish
+      pokemon.pbLearnMove(:ROCKBLAST)
+    when 21 # Mystic Gimmighoul
       pokemon.form=1
       pokemon.resetMoves
-      pokemon.calcStats 
-    when 49 # Totodile
-      pokemon.pbLearnMove(:ICEPUNCH) 
-      pokemon.pbLearnMove(:AQUAJET) 
+      pokemon.calcStats
+    when 22 # Mystic Voltorb
+      pokemon.form=1
+      pokemon.resetMoves
+      pokemon.calcStats
     end	
 }
 

@@ -168,6 +168,7 @@ begin
     AftershockMove    = 173
     AftershockUser    = 174
     EarlyBirdBoost    = 175
+    Shelter           = 176
     Stench            = 200
     MudBath           = 201
     NaturalOrder      = 202

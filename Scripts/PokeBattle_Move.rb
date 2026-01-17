@@ -116,6 +116,28 @@ class PokeBattle_Move
     return attacker && attacker.hasWorkingItem(item_sym) && tribute_inscribed?(attacker)
   end
 
+  # Apply tribute healing modifiers, including heroic effects
+  # Returns the modified hpgain value
+  def apply_tribute_healing(attacker, hpgain)
+    return hpgain if !attacker || hpgain <= 0
+
+    # Check for Meadow Tribute
+    if tribute_has?(attacker, :MEADOWTRIBUTE)
+      # Check for heroic effect first
+      if defined?(pbGetHeroicEffect)
+        heroic_effect = pbGetHeroicEffect(attacker, @battle)
+        if heroic_effect && heroic_effect[:healing_multiplier]
+          # Apply heroic multiplier instead of standard
+          return (hpgain * heroic_effect[:healing_multiplier]).floor
+        end
+      end
+      # Standard Meadow Tribute effect
+      return (hpgain * 1.3).floor
+    end
+
+    return hpgain
+  end
+
   def totalpp
     return @totalpp if @totalpp && @totalpp>0
     return @thismove.totalpp if @thismove
@@ -144,6 +166,10 @@ class PokeBattle_Move
       when 20 # ashen beach
         if id == PBMoves::STRENGTH
           type=getConst(PBTypes,:FIGHTING) || 0
+        end
+      when 23 # Cave Field
+        if id == PBMoves::TERRAINPULSE
+          type=getConst(PBTypes,:ROCK) || 0
         end
       when 26 # murkwater surface
         if (id == PBMoves::MUDSLAP || id == PBMoves::MUDBOMB ||
@@ -453,6 +479,12 @@ class PokeBattle_Move
       mod2=2 if isConst?(otype2,PBTypes,:GHOST) &&
         isConst?(atype,PBTypes,:NORMAL)
     end
+    if $fefieldeffect == 40
+      mod1=2 if isConst?(otype1,PBTypes,:NORMAL) &&
+        isConst?(atype,PBTypes,:GHOST)
+      mod2=2 if isConst?(otype2,PBTypes,:NORMAL) &&
+        isConst?(atype,PBTypes,:GHOST)
+    end
     if attacker.hasWorkingAbility(:PIXILATE) || 
      attacker.hasWorkingAbility(:AERILATE) || 
      attacker.hasWorkingAbility(:REFRIGERATE) ||
@@ -530,6 +562,12 @@ class PokeBattle_Move
         isConst?(atype,PBTypes,:NORMAL)
       mod2=2 if isConst?(otype2,PBTypes,:GHOST) &&
         isConst?(atype,PBTypes,:NORMAL)
+    end
+    if $fefieldeffect == 40
+      mod1=2 if isConst?(otype1,PBTypes,:NORMAL) &&
+        isConst?(atype,PBTypes,:GHOST)
+      mod2=2 if isConst?(otype2,PBTypes,:NORMAL) &&
+        isConst?(atype,PBTypes,:GHOST)
     end
     if isConst?(attacker.ability,PBAbilities,:PIXILATE) || 
      isConst?(attacker.ability,PBAbilities,:AERILATE) || 
@@ -853,10 +891,7 @@ class PokeBattle_Move
       end
     end
     if $fefieldeffect == 29
-      if isConst?(type,PBTypes,:NORMAL) && (opponent.pbHasType?(PBTypes::DARK) ||
-       opponent.pbHasType?(PBTypes::GHOST))
-        typemod *= 2
-      end
+      # Normal-type moves affect Ghost-type Pokemon (already handled in pbTypeModifier)
     end
     if $fefieldeffect == 31
       if isConst?(type,PBTypes,:STEEL) && (opponent.pbHasType?(PBTypes::DRAGON))
@@ -864,6 +899,7 @@ class PokeBattle_Move
       end
     end
     if $fefieldeffect == 40
+      # Ghost-type moves affect Normal-type Pokemon (handled in pbTypeModifier)
       if isConst?(type,PBTypes,:GHOST) && (opponent.pbHasType?(PBTypes::DARK))
         typemod *= 2
       end
@@ -1120,10 +1156,16 @@ class PokeBattle_Move
           typeChange=PBTypes::ROCK
         end
       when 15 # Forest Field
-        if (id == PBMoves::CUT || id == PBMoves::AIRSLASH ||
-            id == PBMoves::GALESTRIKE || id == PBMoves::SLASH ||
-            id == PBMoves::FURYCUTTER || id == PBMoves::AIRCUTTER ||
-            id == PBMoves::PSYCHOCUT || id == PBMoves::BREAKINGSWIPE)
+        # Slashing moves gain Grass-type
+        if PBStuff::SLASHINGMOVE.include?(id)
+          typemod2=pbTypeModifier(PBTypes::GRASS,attacker,opponent)
+          typemod3= ((typemod*typemod2) * 0.25).ceil
+          typemod=typemod3
+          typeChange=PBTypes::GRASS
+        end
+        # Special Fire-type moves gain Grass-type
+        if isConst?(pbType(type,attacker,opponent),PBTypes,:FIRE) &&
+           !pbIsPhysical?(pbType(@type,attacker,opponent))
           typemod2=pbTypeModifier(PBTypes::GRASS,attacker,opponent)
           typemod3= ((typemod*typemod2) * 0.25).ceil
           typemod=typemod3
@@ -1145,9 +1187,7 @@ class PokeBattle_Move
           typemod=typemod3
           typeChange=PBTypes::FIRE
         end
-        if (id == PBMoves::OMINOUSWIND || id == PBMoves::SILVERWIND ||
-         id == PBMoves::RAZORWIND || id == PBMoves::ICYWIND ||
-         id == PBMoves::GUST || id == PBMoves::TWISTER ||
+        if (PBStuff::WINDMOVE.include?(id) ||
          id == PBMoves::PRECIPICEBLADES || id == PBMoves::SMOG ||
          id == PBMoves::CLEARSMOG)
           typemod2=pbTypeModifier(PBTypes::FIRE,attacker,opponent)
@@ -1444,9 +1484,7 @@ class PokeBattle_Move
     # Field Effects
     case $fefieldeffect
     when 2 # Grassy Field
-      if id == PBMoves::GRASSWHISTLE
-        baseaccuracy=80
-      end
+      # Grass Whistle accuracy boost removed
     when 3 # Misty Field
       if id == PBMoves::SWEETKISS
         baseaccuracy=100
@@ -1499,10 +1537,8 @@ class PokeBattle_Move
       if id == PBMoves::DARKVOID
         baseaccuracy=100
       end
-    when 37 # Psychic Terrain
-      if id == PBMoves::HYPNOSIS
-        baseaccuracy=90
-      end
+    when 37 # Psychic Field
+      # No accuracy modifications
     when 38 # Dimensional Field
       if id == PBMoves::DARKVOID
         baseaccuracy=100
@@ -1512,7 +1548,7 @@ class PokeBattle_Move
         baseaccuracy=100
       end
     when 40 # Haunted
-      if (id == PBMoves::WILLOWISP || id == PBMoves::HYPNOSIS || id == PBMoves::INFERNO)
+      if id == PBMoves::INFERNO
         baseaccuracy=90
       end
     when 42 # Darchlight Field
@@ -1584,11 +1620,6 @@ class PokeBattle_Move
       else
         accuracy/=2
       end
-    end
-    if opponent.hasWorkingAbility(:MAGICIAN) && @basedamage==0 &&
-     attacker.pbIsOpposing?(opponent.index) && !(opponent.moldbroken) &&
-     $fefieldeffect == 37
-      accuracy/=2
     end
     if isConst?(attacker.species,PBSpecies,:STANTLER) && attacker.hasWorkingItem(:STANTCREST)
       accuracy*=1.5
@@ -2220,7 +2251,7 @@ class PokeBattle_Move
     if isConst?(type,PBTypes,:NORMAL) &&
      isConst?(attacker.ability,PBAbilities,:PIXILATE)
       type=PBTypes::FAIRY unless $fefieldeffect == 24
-      if $fefieldeffect == 3 || @battle.field.effects[PBEffects::MistyTerrain]>0# Misty Field
+      if $fefieldeffect == 3 # Misty Field only
         damagemult=(damagemult*1.5).round
       else
         damagemult=(damagemult*1.2).round
@@ -2254,46 +2285,42 @@ class PokeBattle_Move
 	  end
     end
     if @battle.field.effects[PBEffects::ElectricTerrain]>0 && $fefieldeffect!=1 # Electric Terrain
-      if (id == PBMoves::EXPLOSION || id == PBMoves::SELFDESTRUCT) 
+      # Explosive moves deal 1.3x damage
+      if PBStuff::EXPLOSIVEMOVE.include?(id)
         damagemult=(damagemult*1.3).round
         @battle.pbDisplay(_INTL("The explosion became hyper-charged!",opponent.pbThis))
       end
-      if (id == PBMoves::HURRICANE || id == PBMoves::SMACKDOWN || id == PBMoves::THOUSANDARROWS ||
-          id == PBMoves::SURF || id == PBMoves::MUDDYWATER || id == PBMoves::PLASMAFISTS) # || (id == PBMoves::SMACKDOWN && $fefieldeffect!=32)
+      # Bomb moves deal 1.3x damage
+      if PBStuff::BOMBMOVE.include?(id)
         damagemult=(damagemult*1.3).round
-        @battle.pbDisplay(_INTL("The attack became hyper-charged!",opponent.pbThis))
-      end
-      if (id == PBMoves::MAGNETBOMB)
-        damagemult=(damagemult*2).round
         @battle.pbDisplay(_INTL("The attack powered up!",opponent.pbThis))
-      end        
+      end
     end  
-    if PBStuff::WINDMOVE.include?(id) && (@battle.field.effects[PBEffects::GrassyTerrain]>0 && $fefieldeffect!=2)
-      damagemult=(damagemult*1.5).round
-      @battle.pbDisplay(_INTL("The wind picked up strength from the field!",opponent.pbThis)) if $feshutup == 0
+    # Grassy Terrain overlay: weakens Muddy Water, Surf, Earthquake, Magnitude, Bulldoze
+    if @battle.field.effects[PBEffects::GrassyTerrain]>0 && $fefieldeffect!=2 &&
+       (id == PBMoves::MUDDYWATER || id == PBMoves::SURF || id == PBMoves::EARTHQUAKE ||
+        id == PBMoves::MAGNITUDE || id == PBMoves::BULLDOZE)
+      damagemult=(damagemult*0.5).round
+      @battle.pbDisplay(_INTL("The grass softened the attack...",opponent.pbThis)) if $feshutup == 0
       $feshutup+=1
     end    
     if @battle.field.effects[PBEffects::MistyTerrain]>0 && $fefieldeffect!=3
-      if (id == PBMoves::MYSTICALFIRE ||
-          id == PBMoves::MAGICALLEAF ||
-          id == PBMoves::DOOMDUMMY || id == PBMoves::ICYWIND ||
-          id == PBMoves::HIDDENPOWER ||
-          id == PBMoves::MISTBALL || id == PBMoves::AURASPHERE ||
-          id == PBMoves::STEAMERUPTION ||
-          id == PBMoves::SILVERWIND || id == PBMoves::MOONGEISTBEAM)
+      # Fairy-type attacks from grounded Pokemon deal 1.3x damage
+      if isConst?(type,PBTypes,:FAIRY) && !attacker.isAirborne?
         damagemult=(damagemult*1.3).round
         @battle.pbDisplay(_INTL("The mist's energy strengthened the attack!",opponent.pbThis)) if $feshutup == 0
         $feshutup+=1
-      end      
-    end
-    if @battle.field.effects[PBEffects::PsychicTerrain]>0 && $fefieldeffect!=37
-      if (id == PBMoves::HEX || id == PBMoves::MAGICALLEAF ||
-          id == PBMoves::MYSTICALFIRE || id == PBMoves::MOONBLAST ||
-          id == PBMoves::AURASPHERE || id == PBMoves::MINDBLOWN)
+      end
+      # Pulse moves deal 1.3x damage
+      if PBStuff::AURAPULSEMOVE.include?(id)
         damagemult=(damagemult*1.3).round
-        @battle.pbDisplay(_INTL("The psychic energy strengthened the attack!",opponent.pbThis)) if $feshutup == 0
+        @battle.pbDisplay(_INTL("The pulsing energy strengthened the attack!",opponent.pbThis)) if $feshutup == 0
         $feshutup+=1
-      end         
+      end
+    end
+    # Psychic Terrain overlay - no damage modifications
+    if @battle.field.effects[PBEffects::PsychicTerrain]>0 && $fefieldeffect!=37
+      # Overlay effects handled elsewhere (priority blocking, room durations)
     end
     if @battle.field.effects[PBEffects::Rainbow]>0 && $fefieldeffect!=9
       if (id == PBMoves::SILVERWIND || id == PBMoves::MYSTICALFIRE ||
@@ -2315,20 +2342,15 @@ class PokeBattle_Move
     #Specific Field Effects
     case $fefieldeffect
       when 1 # Electric Field
-        if (id == PBMoves::EXPLOSION || id == PBMoves::SELFDESTRUCT) 
+        # Explosive moves deal 1.5x damage
+        if PBStuff::EXPLOSIVEMOVE.include?(id)
           damagemult=(damagemult*1.5).round
           @battle.pbDisplay(_INTL("The explosion became hyper-charged!",opponent.pbThis)) if $feshutup == 0
           $feshutup+=1
         end
-        if (id == PBMoves::HURRICANE || id == PBMoves::SURF ||
-          id == PBMoves::SMACKDOWN || id == PBMoves::MUDDYWATER ||
-          id == PBMoves::THOUSANDARROWS ||  id == PBMoves::HYDROVORTEX)
+        # Bomb moves deal 1.5x damage
+        if PBStuff::BOMBMOVE.include?(id)
           damagemult=(damagemult*1.5).round
-          @battle.pbDisplay(_INTL("The attack became hyper-charged!",opponent.pbThis)) if $feshutup == 0
-          $feshutup+=1
-        end
-        if id == PBMoves::MAGNETBOMB || id == PBMoves::PLASMAFISTS 
-          damagemult=(damagemult*2).round
           @battle.pbDisplay(_INTL("The attack powered-up!",opponent.pbThis)) if $feshutup == 0
           $feshutup+=1
         end
@@ -2345,19 +2367,26 @@ class PokeBattle_Move
           $feshutup+=1
         end
       when 3 # Misty Field
-        if (id == PBMoves::MYSTICALFIRE || id == PBMoves::MAGICALLEAF ||
-         id == PBMoves::DOOMDUMMY || id == PBMoves::ICYWIND ||
-         id == PBMoves::MISTBALL || id == PBMoves::AURASPHERE ||
-         id == PBMoves::STEAMERUPTION || id == PBMoves::SILVERWIND || 
-         id == PBMoves::STRANGESTEAM)
+        # Pulse moves deal 1.5x damage
+        if PBStuff::AURAPULSEMOVE.include?(id)
+          damagemult=(damagemult*1.5).round
+          @battle.pbDisplay(_INTL("The pulse was amplified by the mist!",opponent.pbThis)) if $feshutup == 0
+          $feshutup+=1
+        end
+        # Mist Ball, Steam Eruption, Strange Steam, Clear Smog, Smog - 1.5x boost
+        if (id == PBMoves::MISTBALL || id == PBMoves::STEAMERUPTION ||
+         id == PBMoves::STRANGESTEAM || id == PBMoves::CLEARSMOG ||
+         id == PBMoves::SMOG || id == 678) # Steam Eruption duplicate ID
           damagemult=(damagemult*1.5).round
           @battle.pbDisplay(_INTL("The mist's energy strengthened the attack!",opponent.pbThis)) if $feshutup == 0
           $feshutup+=1
         end
-        if (id == PBMoves::DARKPULSE || id == PBMoves::SHADOWBALL ||
-         id == PBMoves::NIGHTDAZE)
-          damagemult=(damagemult*0.5).round
-          @battle.pbDisplay(_INTL("The mist softened the attack...",opponent.pbThis)) if $feshutup == 0
+        # Hidden Power, Secret Power, Ancient Power, Stored Power - 1.3x boost
+        if (id == PBMoves::HIDDENPOWER || id == PBMoves::SECRETPOWER ||
+         id == PBMoves::ANCIENTPOWER || id == PBMoves::STOREDPOWER ||
+         (id >= 641 && id <= 658)) # All Hidden Power variants
+          damagemult=(damagemult*1.3).round
+          @battle.pbDisplay(_INTL("The mist enhanced the attack!",opponent.pbThis)) if $feshutup == 0
           $feshutup+=1
         end
       when 4 # Dark Crystal Cavern
@@ -2636,24 +2665,26 @@ class PokeBattle_Move
           $feshutup+=1
         end
       when 15 # Forest Field
-        if (id == PBMoves::CUT)
-          damagemult=(damagemult*2).round
-          @battle.pbDisplay(_INTL("A tree slammed down!",opponent.pbThis)) if $feshutup == 0
-          $feshutup+=1
-        end
-        if (id == PBMoves::AIRSLASH || id == PBMoves::GALESTRIKE ||
-           id == PBMoves::SLASH || id == PBMoves::FURYCUTTER ||
-           id == PBMoves::AIRCUTTER || id == PBMoves::PSYCHOCUT ||
-           id == PBMoves::BREAKINGSWIPE)
+        # Slashing moves deal 1.5x damage
+        if PBStuff::SLASHINGMOVE.include?(id)
           damagemult=(damagemult*1.5).round
           @battle.pbDisplay(_INTL("A tree slammed down!",opponent.pbThis)) if $feshutup == 0
           $feshutup+=1
         end
+        # Special Fire-type moves deal 1.5x damage
+        if isConst?(type,PBTypes,:FIRE) &&
+           !pbIsPhysical?(pbType(@type,attacker,opponent))
+          damagemult=(damagemult*1.5).round
+          @battle.pbDisplay(_INTL("The forest ignited!",opponent.pbThis)) if $feshutup == 0
+          $feshutup+=1
+        end
+        # Attack Order deals 1.5x damage
         if (id == PBMoves::ATTACKORDER)
-          damagemult=(damagemult*2).round
+          damagemult=(damagemult*1.5).round
           @battle.pbDisplay(_INTL("They're coming out of the woodwork!",opponent.pbThis)) if $feshutup == 0
           $feshutup+=1
         end
+        # Surf and Muddy Water are weakened
         if (id == PBMoves::SURF || id == PBMoves::MUDDYWATER)
           damagemult=(damagemult*0.5).round
           @battle.pbDisplay(_INTL("The forest softened the attack...",opponent.pbThis)) if $feshutup == 0
@@ -2672,9 +2703,7 @@ class PokeBattle_Move
           @battle.pbDisplay(_INTL("The field powers up the flaming attacks!",opponent.pbThis)) if $feshutup == 0
           $feshutup+=1
         end
-        if (id == PBMoves::OMINOUSWIND || id == PBMoves::SILVERWIND ||
-         id == PBMoves::RAZORWIND || id == PBMoves::ICYWIND ||
-         id == PBMoves::GUST || id == PBMoves::TWISTER ||
+        if (PBStuff::WINDMOVE.include?(id) ||
          id == PBMoves::PRECIPICEBLADES || id == PBMoves::SMOG ||
          id == PBMoves::CLEARSMOG)
           damagemult=(damagemult*1.5).round
@@ -2897,17 +2926,12 @@ class PokeBattle_Move
           @battle.pbDisplay(_INTL("{1} was thrown down partway the mountain!",opponent.pbThis)) if $feshutup == 0
           $feshutup+=1
         end
-        if (id == PBMoves::OMINOUSWIND || id == PBMoves::ICYWIND || 
-         id == PBMoves::SILVERWIND || id == PBMoves::TWISTER || 
-         id == PBMoves::RAZORWIND || id == PBMoves::FAIRYWIND)
+        if PBStuff::WINDMOVE.include?(id)
           damagemult=(damagemult*1.5).round
           @battle.pbDisplay(_INTL("The wind strengthened the attack!",opponent.pbThis)) if $feshutup == 0
           $feshutup+=1
         end
-        if (id == PBMoves::OMINOUSWIND || id == PBMoves::ICYWIND || 
-         id == PBMoves::SILVERWIND || id == PBMoves::TWISTER || 
-         id == PBMoves::RAZORWIND || id == PBMoves::FAIRYWIND || 
-         id == PBMoves::GUST) && @battle.pbWeather==PBWeather::STRONGWINDS
+        if PBStuff::WINDMOVE.include?(id) && @battle.pbWeather==PBWeather::STRONGWINDS
           damagemult=(damagemult*1.5).round
           @battle.pbDisplay(_INTL("The wind strengthened the attack!",opponent.pbThis)) if $feshutup == 0
           $feshutup+=1
@@ -2925,9 +2949,7 @@ class PokeBattle_Move
           @battle.pbDisplay(_INTL("{1} was thrown partway down the mountain!",opponent.pbThis)) if $feshutup == 0
           $feshutup+=1
         end
-        if (id == PBMoves::OMINOUSWIND ||
-         id == PBMoves::SILVERWIND || id == PBMoves::TWISTER || 
-         id == PBMoves::RAZORWIND || id == PBMoves::FAIRYWIND)
+        if PBStuff::WINDMOVE.include?(id) && id != PBMoves::ICYWIND
           damagemult=(damagemult*1.5).round
           @battle.pbDisplay(_INTL("The wind strengthened the attack!",opponent.pbThis)) if $feshutup == 0
           $feshutup+=1
@@ -2937,10 +2959,7 @@ class PokeBattle_Move
           @battle.pbDisplay(_INTL("The frigid wind strengthened the attack!",opponent.pbThis)) if $feshutup == 0
           $feshutup+=1
         end
-        if (id == PBMoves::OMINOUSWIND || id == PBMoves::ICYWIND || 
-         id == PBMoves::SILVERWIND || id == PBMoves::TWISTER || 
-         id == PBMoves::RAZORWIND || id == PBMoves::FAIRYWIND || 
-         id == PBMoves::GUST) && @battle.pbWeather==PBWeather::STRONGWINDS
+        if PBStuff::WINDMOVE.include?(id) && @battle.pbWeather==PBWeather::STRONGWINDS
           damagemult=(damagemult*1.5).round
           @battle.pbDisplay(_INTL("The wind strengthened the attack!",opponent.pbThis)) if $feshutup == 0
           $feshutup+=1
@@ -2971,13 +2990,19 @@ class PokeBattle_Move
          id == PBMoves::ROAROFTIME || id == PBMoves::CRUSHGRIP ||
          id == PBMoves::SECRETSWORD || id == PBMoves::RELICSONG ||
          id == PBMoves::HYPERSPACEHOLE || id == PBMoves::LANDSWRATH ||
-         id == PBMoves::MOONGEISTBEAM || id == PBMoves::SUNSTEELSTRIKE ||         
+         id == PBMoves::MOONGEISTBEAM || id == PBMoves::SUNSTEELSTRIKE ||
          id == PBMoves::PRISMATICLASER || id == PBMoves::FLEURCANNON ||
          (id == PBMoves::MULTIPULSE && type != PBTypes::NORMAL) || id == PBMoves::BEHEMOTHBLADE ||
          id == PBMoves::BEHEMOTHBASH || id == PBMoves::DYNAMAXCANNON ||
          id == PBMoves::ETERNABEAM || id == PBMoves::GENESISSUPERNOVA)
           damagemult=(damagemult*1.3).round
           @battle.pbDisplay(_INTL("The legendary energy resonated with the attack!",opponent.pbThis)) if $feshutup == 0
+          $feshutup+=1
+        end
+        # Light moves deal 1.3x damage
+        if PBStuff::LIGHTMOVE.include?(id)
+          damagemult=(damagemult*1.3).round
+          @battle.pbDisplay(_INTL("The holy light strengthened the attack!",opponent.pbThis)) if $feshutup == 0
           $feshutup+=1
         end
       when 30 # Mirror
@@ -3230,7 +3255,7 @@ class PokeBattle_Move
           $feshutup+=1
         end
       when 40 # Haunted
-        if (id == PBMoves::FLAMEBURST || id == PBMoves::INFERNO || 
+        if (id == PBMoves::FLAMEBURST || id == PBMoves::INFERNO ||
             id == PBMoves::FIRESPIN || id == PBMoves::FLAMECHARGE)
           damagemult=(damagemult*1.3).round
           @battle.pbDisplay(_INTL("Will-o'-wisps joined the attack...",opponent.pbThis)) if $feshutup == 0
@@ -3239,6 +3264,12 @@ class PokeBattle_Move
         if (id == PBMoves::SPIRITBREAK)
           damagemult=(damagemult*1.5).round
           @battle.pbDisplay(_INTL("Busted!",opponent.pbThis)) if $feshutup == 0
+          $feshutup+=1
+        end
+        # Wind moves deal 1.3x damage
+        if PBStuff::WINDMOVE.include?(id)
+          damagemult=(damagemult*1.3).round
+          @battle.pbDisplay(_INTL("The ghostly wind strengthened the attack!",opponent.pbThis)) if $feshutup == 0
           $feshutup+=1
         end
       when 41 # Corrupted cave
@@ -3266,13 +3297,11 @@ class PokeBattle_Move
           $feshutup+=1
         end
       when 43 # Sky Field
-        if (id == PBMoves::ICYWIND || id == PBMoves::OMINOUSWIND || 
-         id == PBMoves::SILVERWIND || id == PBMoves::RAZORWIND ||
-         id == PBMoves::FAIRYWIND || id == PBMoves::AEROBLAST ||
+        if (PBStuff::WINDMOVE.include?(id) ||
          id == PBMoves::SKYUPPERCUT || id == PBMoves::FLYINGPRESS ||
          id == PBMoves::THUNDERSHOCK || id == PBMoves::THUNDERBOLT ||
          id == PBMoves::THUNDER || id == PBMoves::STEELWING ||
-         id == PBMoves::TWISTER || id == PBMoves::DRAGONDARTS || 
+         id == PBMoves::DRAGONDARTS ||
          id == PBMoves::GRAVAPPLE || id == PBMoves::DRAGONASCENT)
           damagemult=(damagemult*1.5).round
           @battle.pbDisplay(_INTL("The open skies strengthened the attack!",opponent.pbThis)) if $feshutup == 0
@@ -3386,8 +3415,7 @@ class PokeBattle_Move
           @battle.pbDisplay(_INTL("The saltwater strengthened the attack!",opponent.pbThis)) if $feshutup == 0
           $feshutup+=1
         end
-        if (id == PBMoves::OMINOUSWIND || id == PBMoves::SILVERWIND || id == PBMoves::RAZORWIND ||
-            id == PBMoves::ICYWIND || id == PBMoves::FAIRYWIND || id == PBMoves::TWISTER || id == PBMoves::GUST)
+        if PBStuff::WINDMOVE.include?(id)
           damagemult=(damagemult*1.3).round
           @battle.pbDisplay(_INTL("The sand mixed into the attack!",opponent.pbThis)) if $feshutup == 0
           $feshutup+=1
@@ -3723,12 +3751,8 @@ class PokeBattle_Move
         atkmult=(atkmult*multiplier).round  
       end  
     end
-    if (attacker.hasWorkingAbility(:PUREPOWER) && $fefieldeffect!=37) ||
+    if attacker.hasWorkingAbility(:PUREPOWER) ||
        attacker.hasWorkingAbility(:HUGEPOWER) && pbIsPhysical?(type)
-      atkmult=(atkmult*2.0).round
-    end
-    if attacker.hasWorkingAbility(:PUREPOWER) && ($fefieldeffect==37 || @battle.field.effects[PBEffects::PsychicTerrain]>0) && 
-      pbIsSpecial?(type)
       atkmult=(atkmult*2.0).round
     end
     if (attacker.hasWorkingAbility(:SOLARPOWER) || 
@@ -3992,14 +4016,18 @@ class PokeBattle_Move
     if $fefieldeffect == 24 && @function==0xE0
       defmult=(defmult*0.5).round
     end
-    if (opponent.hasWorkingAbility(:MARVELSCALE) || @battle.SilvallyCheck(opponent,PBTypes::WATER)) && 
+    if (opponent.hasWorkingAbility(:MARVELSCALE) || @battle.SilvallyCheck(opponent,PBTypes::WATER)) &&
      pbIsPhysical?(type) &&
-     (opponent.status>0 || $fefieldeffect == 3 || $fefieldeffect == 9 || @battle.field.effects[PBEffects::Rainbow]>0 || @battle.field.effects[PBEffects::MistyTerrain]>0 
-      $fefieldeffect == 31 || $fefieldeffect == 32 || $fefieldeffect == 34) && !(opponent.moldbroken) 
+     (opponent.status>0 || $fefieldeffect == 9 || @battle.field.effects[PBEffects::Rainbow]>0 || @battle.field.effects[PBEffects::MistyTerrain]>0 ||
+      $fefieldeffect == 31 || $fefieldeffect == 32 || $fefieldeffect == 34) && !(opponent.moldbroken)
       defmult=(defmult*1.5).round
     end
     if isConst?(opponent.ability,PBAbilities,:NATURALSHROUD) && pbIsPhysical?(type) &&
      ($fefieldeffect == 2 || $fefieldeffect == 15 || ($fefieldeffect == 33 && $fecounter>1) || @battle.field.effects[PBEffects::GrassyTerrain]>0) # Grassy Field
+      defmult=(defmult*1.5).round
+    end
+    # Forest Field - Grass and Bug-type Defense boost
+    if $fefieldeffect == 15 && (opponent.pbHasType?(:GRASS) || opponent.pbHasType?(:BUG))
       defmult=(defmult*1.5).round
     end
 #### AME - 005 - START
@@ -4042,10 +4070,6 @@ class PokeBattle_Move
 	end
     if opponent.hasWorkingAbility(:AMPLIFY) && isSoundBased?
       defmult=(defmult*2).round
-    end
-    if $fefieldeffect == 3 && pbIsSpecial?(type) &&
-     opponent.pbHasType?(:FAIRY)
-      defmult=(defmult*1.5).round
     end
     if $fefieldeffect == 12 && pbIsSpecial?(type) &&
      opponent.pbHasType?(:GROUND)
@@ -4723,24 +4747,16 @@ class PokeBattle_Move
           damage=(damage*1.3).floor if damage >= 0
         end
       when 3 # Misty Field
-        if (id == PBMoves::WHIRLWIND || id == PBMoves::GUST ||
-         id == PBMoves::RAZORWIND || id == PBMoves::HURRICANE||
-         id == PBMoves::DEFOG || id == PBMoves::TAILWIND ||
-         id == PBMoves::TWISTER || id == PBMoves::SUPERSONICSKYSTRIKE)
-          damage=(damage*1.3).floor if damage >= 0
-        end
-        if (id == PBMoves::CLEARSMOG || id == PBMoves::SMOG || id == PBMoves::ACIDDOWNPOUR)
-          damage=(damage*1.5).floor if damage >= 0
-        end
+        # No additional damage modifications here for Misty Field
       when 4 # Dark Crystal Cavern
         if (id == PBMoves::EARTHQUAKE || id == PBMoves::BULLDOZE ||
          id == PBMoves::MAGNITUDE || id == PBMoves::TECTONICRAGE)
           damage=(damage*1.3).floor if damage >= 0
         end
       when 7 # Burning Field
-        if (id == PBMoves::WHIRLWIND || id == PBMoves::GUST ||
-         id == PBMoves::RAZORWIND || id == PBMoves::DEFOG ||
-         id == PBMoves::TAILWIND || id == PBMoves::HURRICANE)
+        if (PBStuff::WINDMOVE.include?(id) ||
+         id == PBMoves::WHIRLWIND || id == PBMoves::DEFOG ||
+         id == PBMoves::TAILWIND)
           damage=(damage*1.3).floor if damage >= 0
         end
         if (id == PBMoves::SURF || id == PBMoves::MUDDYWATER ||
@@ -4761,11 +4777,10 @@ class PokeBattle_Move
          id == PBMoves::SEARINGSHOT || id == PBMoves::FLAMEBURST ||
          id == PBMoves::LAVAPLUME || id == PBMoves::FIREPLEDGE ||
          id == PBMoves::EXPLOSION || id == PBMoves::SELFDESTRUCT ||
-         id == PBMoves::TWISTER  || id == PBMoves::INFERNOOVERDRIVE)
+         id == PBMoves::INFERNOOVERDRIVE)
           damage=(damage*1.3).floor if damage >= 0
         end
-        if (id == PBMoves::GUST || id == PBMoves::HURRICANE ||
-         id == PBMoves::RAZORWIND || id == PBMoves::SUPERSONICSKYSTRIKE)
+        if (PBStuff::WINDMOVE.include?(id) || id == PBMoves::SUPERSONICSKYSTRIKE)
           damage=(damage*1.3).floor if damage >= 0
         end
       when 13 # Icy Field
@@ -5101,6 +5116,10 @@ class PokeBattle_Move
       finaldamagemult=(finaldamagemult*0.5).round
     end
     if opponent.pbOwnSide.effects[PBEffects::WideGuard] > 0 && (@target==PBTargets::AllOpposing || @target==PBTargets::AllNonUsers) && @basedamage > 0
+      finaldamagemult=(finaldamagemult*0.5).round
+    end
+    # Shelter halves Rock-type damage on Cave Field
+    if $fefieldeffect == 23 && opponent.effects[PBEffects::Shelter] > 0 && isConst?(type,PBTypes,:ROCK)
       finaldamagemult=(finaldamagemult*0.5).round
     end
     # Gravity damage modifiers

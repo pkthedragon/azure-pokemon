@@ -984,7 +984,7 @@ class PokeBattle_Battle
               battler.pbThis))
           end
           if battler.pbCanConfuse?(false)    
-            battler.effects[PBEffects::Confusion]=2+pbRandom(4)
+            battler.effects[PBEffects::Confusion]=3
             pbCommonAnimation("Confusion",battler,nil)
             pbDisplay(_INTL("{1} became confused!",battler.pbThis))
           end
@@ -1362,21 +1362,15 @@ class PokeBattle_Battle
           battler.item=0
         when 23 #Cave Field
           if !battler.pbTooHigh?(PBStats::DEFENSE)
-            battler.pbIncreaseStatBasic(PBStats::DEFENSE,1)
+            battler.pbIncreaseStatBasic(PBStats::DEFENSE,2) # Sharply boost Defense
             pbCommonAnimation("StatUp",battler,nil)
-            pbDisplay(_INTL("{1}'s Telluric Seed boosted its Defense!",
-              battler.pbThis)) 
+            pbDisplay(_INTL("{1}'s Telluric Seed sharply boosted its Defense!",
+              battler.pbThis))
           end
-          if !battler.hasWorkingAbility(:MAGICGUARD)
-            atype=getConst(PBTypes,:ROCK) || 0         
-            eff=PBTypes.getCombinedEffectiveness(atype,battler.type1,battler.type2)
-            if eff>0
-              eff = eff*2
-              @scene.pbDamageAnimation(battler,0)
-              battler.pbReduceHP([(battler.totalhp*eff/32).floor,1].max)
-              pbDisplay(_INTL("{1} was hurt by stealth rocks!",battler.pbThis))
-              battler.pbFaint if battler.isFainted?
-            end
+          # Apply crushing status to the holder
+          if battler.pbCanCrush?(false)
+            battler.pbCrush(battler)
+            pbDisplay(_INTL("{1} was crushed!",battler.pbThis))
           end
           battler.pokemon.itemRecycle=battler.item
           battler.pokemon.itemInitial=0 if battler.pokemon.itemInitial==battler.item
@@ -4401,14 +4395,8 @@ end
       # Sticky Web
       if pkmn.pbOwnSide.effects[PBEffects::StickyWeb]
         if !pkmn.isAirborne? && !pkmn.hasWorkingItem(:HEAVYDUTYBOOTS) && !pkmn.hasWorkingAbility(:LIMBER)
-          if $fefieldeffect == 15
-            #StickyWebMessage
-            pbDisplay(_INTL("{1} was caught in a sticky web!",pkmn.pbThis))
-            pkmn.pbReduceStat(PBStats::SPEED, 2, true)
-          else
-            pbDisplay(_INTL("{1} was caught in a sticky web!",pkmn.pbThis))
-            pkmn.pbReduceStat(PBStats::SPEED, 1, true)
-          end
+          pbDisplay(_INTL("{1} was caught in a sticky web!",pkmn.pbThis))
+          pkmn.pbReduceStat(PBStats::SPEED, 1, true)
         end
       end 
       # Poison Barbs (formerly Toxic Spikes)
@@ -4431,6 +4419,16 @@ end
             end
           end
         end
+      end
+    end
+    # Pre-paralyzed Pokemon in intense mode (Minerva's Ponyta-Galar)
+    if !onlyabilities && pbIsOpposing?(pkmn.index) &&
+       @opponent && @opponent.trainertype && isConst?(@opponent.trainertype,PBTrainers,:MINERVA) &&
+       $game_variables && $game_variables[:Difficulty_Mode] == 2
+      if isConst?(pkmn.species,PBSpecies,:PONYTA) && pkmn.form == 1 && pkmn.status == 0
+        pkmn.status = PBStatuses::PARALYSIS
+        pkmn.statusCount = 0
+        pbDisplay(_INTL("{1} entered the battle paralyzed!",pkmn.pbThis))
       end
     end
     pkmn.pbAbilityCureCheck
@@ -6390,26 +6388,15 @@ def pbStartBattle(canlose=false)
       pbDisplay(_INTL("Neutralizing Gas prevents poisoning."))
     end
     for i in priority
-      if @field.effects[PBEffects::GrassyTerrain]>0 
+      if @field.effects[PBEffects::GrassyTerrain]>0
         if  !($fefieldeffect==2 || $fefieldeffect==42) # Grassy Terrain - Terrain Overlay
-          next if i.hp<=0   
-          if !i.isAirborne? 
+          next if i.hp<=0
+          if !i.isAirborne?
             if i.effects[PBEffects::HealBlock]==0 && i.totalhp != i.hp
               pbDisplay(_INTL("The grassy terrain healed the Pokemon on the field.",i.pbThis)) if endmessage == false
               endmessage=true
               hpgain=(i.totalhp/16).floor
               hpgain=i.pbRecoverHP(hpgain,true)
-            end
-          end
-        end  
-        if !($fefieldeffect==15)
-          next if i.hp<=0   
-          if !i.isAirborne? 
-            if i.hasWorkingAbility(:SAPSIPPER) && i.effects[PBEffects::HealBlock]==0  && i.totalhp != i.hp
-              endmessage=true  
-              hpgain=(i.totalhp/16).floor
-              hpgain=i.pbRecoverHP(hpgain,true)
-              pbDisplay(_INTL("{1} ate away at some grass to recover!",i.pbThis)) if hpgain>0
             end
           end
         end
@@ -6969,8 +6956,8 @@ def pbStartBattle(canlose=false)
           @scene.pbDamageAnimation(i,0)
           hploss=i.pbReduceHP((i.totalhp/8).floor)
           pbDisplay(_INTL("{1}'s Dry Skin was hurt by the desert air!",i.pbThis)) if hploss>0
-        elsif ($fefieldeffect == 3 || $fefieldeffect == 8 || @field.effects[PBEffects::MistyTerrain]>0) && # Misty/Swamp Field 
-          i.effects[PBEffects::HealBlock]==0     
+        elsif ($fefieldeffect == 3 || $fefieldeffect == 8) && # Misty/Swamp Field only
+          i.effects[PBEffects::HealBlock]==0
           hpgain=(i.totalhp/16).floor
           hpgain=i.pbRecoverHP(hpgain,true)
           pbDisplay(_INTL("{1}'s Dry Skin was healed by the mist!",i.pbThis)) if hpgain>0
@@ -7647,7 +7634,7 @@ def pbStartBattle(canlose=false)
       if i.effects[PBEffects::Yawn]>0
         i.effects[PBEffects::Yawn]-=1
         if i.effects[PBEffects::Yawn]==0 && i.pbCanSleepYawn?
-          i.pbSleep
+          i.pbSleepSelf(1)  # Yawn causes 1 turn of sleep
           pbDisplay(_INTL("{1} fell asleep!",i.pbThis))
         end
       end
@@ -8551,42 +8538,6 @@ def pbStartBattle(canlose=false)
         pbCommonAnimation("StatUp",i,nil)
         pbDisplay(_INTL("{1}'s Cloud Nine raised its {2}!",i.pbThis,statnames[randoms[0]-1]))
       end     
-    end
-    if i.hasWorkingAbility(:MOODY)
-      randomup=[]
-      randomdown=[]
-      failsafe1=0
-      failsafe2=0
-      loop do
-        failsafe1+=1
-        break if failsafe1==1000
-        rand=1+self.pbRandom(5)
-        if !i.pbTooHigh?(rand)
-          randomup.push(rand)
-          break
-        end
-      end
-      loop do
-        failsafe2+=1
-        break if failsafe2==1000
-        rand=1+self.pbRandom(5)
-        if !i.pbTooLow?(rand) && rand!=randomup[0]
-          randomdown.push(rand)
-          break
-        end
-      end
-      statnames=[_INTL("Attack"),_INTL("Defense"),_INTL("Speed"),_INTL("Special Attack"),_INTL("Special Defense")]
-      if failsafe1!=1000                 
-        i.stages[randomup[0]]+=2
-        i.stages[randomup[0]]=6 if i.stages[randomup[0]]>6
-        pbCommonAnimation("StatUp",i,nil)
-        pbDisplay(_INTL("{1}'s Moody sharply raised its {2}!",i.pbThis,statnames[randomup[0]-1]))
-      end
-      if failsafe2!=1000
-        i.stages[randomdown[0]]-=1
-        pbCommonAnimation("StatDown",i,nil)
-        pbDisplay(_INTL("{1}'s Moody lowered its {2}!",i.pbThis,statnames[randomdown[0]-1]))
-      end
     end
     if !i.hasWorkingItem(:LEFTOVERS) && !i.hasWorkingItem(:BLACKSLUDGE) && 
        !i.hasWorkingItem(:SPIRITCREST)  && !i.hasWorkingItem(:INFCREST)
