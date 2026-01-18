@@ -4558,7 +4558,7 @@ end
     end
   end
 
-  def pbCommonAnimation(name,attacker,opponent,hitnum=0)
+  def pbCommonAnimation(name,attacker=nil,opponent=nil,hitnum=0)
     if @battlescene
       @scene.pbCommonAnimation(name,attacker,opponent,hitnum)
     end
