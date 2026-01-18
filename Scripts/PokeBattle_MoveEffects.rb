@@ -14732,7 +14732,7 @@ end
 ################################################################################
 # Meditate – raises Attack +1 and Sp. Def +1.
 ################################################################################
-class PokeBattle_Move_29E < PokeBattle_Move
+class PokeBattle_Move_2A0 < PokeBattle_Move
   def pbEffect(attacker,opponent,hitnum=0,alltargets=nil,showanimation=true)
     pbShowAnimation(@id, attacker, nil)
     attacker.pbIncreaseStat(PBStats::ATTACK,1,false)
