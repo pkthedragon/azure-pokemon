@@ -5269,6 +5269,8 @@ def pbStartBattle(canlose=false)
       pbDisplay(_INTL("The souls of the damned burn on."))
      when 46
       pbDisplay(_INTL("The waves lap at the shore."))
+	 when 47
+      pbDisplay(_INTL("Pages flutter around!"))
     end
     if ($game_variables[702] == 1) || ($game_variables[702] == 4) ### Azery - Auto Perma TR switch.
       @trickroom=8
