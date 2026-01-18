@@ -4662,6 +4662,9 @@ end
       elsif $febackgroundstore == 45
         backdrop="InfernalFieldPlaceholder"
       end  
+      if backdrop.nil? || backdrop == ""
+        backdrop = $febackup || "IndoorA"
+      end
       backdrop3 = backdrop
       $febackgroundstore = backdrop3
     else

@@ -4046,12 +4046,12 @@ class PokeBattle_Battler
           @battle.pbDisplay(_INTL("{1} was hurt by the {2}!",user.pbThis,
               PBItems.getName(target.item)))
         end
-        # Electric Terrain/Field - Contact moves against grounded Pokemon have 1/4 recoil of damage dealt
+        # Electric Terrain/Field - Contact moves against grounded Pokemon have 1/8 recoil of damage dealt
         if ($fefieldeffect == 1 || @battle.field.effects[PBEffects::ElectricTerrain]>0) &&
           !target.isAirborne? && !user.isFainted? && !user.hasWorkingAbility(:MAGICGUARD) &&
           !(user.hasWorkingAbility(:WONDERGUARD) && $fefieldeffect == 44)
           @battle.scene.pbDamageAnimation(user,0)
-          user.pbReduceHP((damage/4).floor)
+          user.pbReduceHP((damage/8).floor)
           @battle.pbDisplay(_INTL("{1} was shocked by the electric field!",user.pbThis))
         end
         if target.effects[PBEffects::BeakBlast] && user.pbCanBurn?(false) &&
