@@ -8795,7 +8795,7 @@ class PokeBattle_Move_0FF < PokeBattle_Move
       if ($fefieldeffect != 9) && (!$game_switches[1497])
         @battle.pbCommonAnimation("RainbowT",nil,nil)
       end
-      if $febackup>0 && $febackup<46 && @battle.field.effects[PBEffects::Splintered]==0
+      if $febackup>0 && $febackup<51 && @battle.field.effects[PBEffects::Splintered]==0
         @battle.pbDisplay(_INTL("The weather created a rainbow!"))
         @battle.field.effects[PBEffects::Rainbow]= rainbowhold
       else
@@ -8857,7 +8857,7 @@ class PokeBattle_Move_100 < PokeBattle_Move
       if ($fefieldeffect != 9) && (!$game_switches[1497])
         @battle.pbCommonAnimation("RainbowT",nil,nil)
       end
-      if $febackup>0 && $febackup<46 && @battle.field.effects[PBEffects::Splintered]==0
+      if $febackup>0 && $febackup<51 && @battle.field.effects[PBEffects::Splintered]==0
         @battle.pbDisplay(_INTL("The weather created a rainbow!"))
         @battle.field.effects[PBEffects::Rainbow]= rainbowhold
       else
@@ -10148,7 +10148,7 @@ class PokeBattle_Move_134 < PokeBattle_Move
       @battle.pbDisplay(_INTL("But it failed!"))      
       return -1
     end
-    if ($febackup>0 && $febackup<46 && @battle.field.effects[PBEffects::Splintered]==0) || ($game_map.map_id==53)
+    if ($febackup>0 && $febackup<51 && @battle.field.effects[PBEffects::Splintered]==0) || ($game_map.map_id==53)
       if @battle.field.effects[PBEffects::ElectricTerrain]>0 || $fefieldeffect==1
         @battle.pbDisplay(_INTL("But the field is already electrified!"))
       else
@@ -10188,7 +10188,7 @@ class PokeBattle_Move_135 < PokeBattle_Move
       @battle.pbDisplay(_INTL("But it failed!"))      
       return -1
     end
-    if ($febackup>0 && $febackup<46 && @battle.field.effects[PBEffects::Splintered]==0) || ($game_map.map_id==53)
+    if ($febackup>0 && $febackup<51 && @battle.field.effects[PBEffects::Splintered]==0) || ($game_map.map_id==53)
       if @battle.field.effects[PBEffects::GrassyTerrain]>0 || $fefieldeffect==2
         @battle.pbDisplay(_INTL("But the field is already grassy!"))
       else
@@ -10836,7 +10836,7 @@ class PokeBattle_Move_148 < PokeBattle_Move
     @battle.pbDisplay(_INTL("A deluge of ions showers the battlefield!"))
     @battle.field.effects[PBEffects::IonDeluge] = true
     if (!isConst?(attacker.item,PBItems,:EVERSTONE) || !isConst?(attacker.item,PBItems,:EVIOLITE)) && $fefieldeffect != 35
-      if ($febackup>0 && $febackup<46 && @battle.field.effects[PBEffects::Splintered]==0) || ($game_map.map_id==53)
+      if ($febackup>0 && $febackup<51 && @battle.field.effects[PBEffects::Splintered]==0) || ($game_map.map_id==53)
         if @battle.field.effects[PBEffects::ElectricTerrain]>0 || $fefieldeffect==1
           @battle.pbDisplay(_INTL("But the field is already electrified!"))
         else
@@ -11533,7 +11533,7 @@ class PokeBattle_Move_168 < PokeBattle_Move
       @battle.pbDisplay(_INTL("But it failed!"))      
       return -1
     end
-    if ($febackup>0 && $febackup<46 && @battle.field.effects[PBEffects::Splintered]==0) || ($game_map.map_id==53)
+    if ($febackup>0 && $febackup<51 && @battle.field.effects[PBEffects::Splintered]==0) || ($game_map.map_id==53)
       if @battle.field.effects[PBEffects::PsychicTerrain]>0 || $fefieldeffect==37
         @battle.pbDisplay(_INTL("But the field is already mysterious!"))
       else
@@ -11911,7 +11911,7 @@ class PokeBattle_Move_177 < PokeBattle_Move
     end
     
     if (!isConst?(attacker.item,PBItems,:EVERSTONE) || !isConst?(attacker.item,PBItems,:EVIOLITE)) && $fefieldeffect != 35
-      if $febackup>0 && $febackup<46 && @battle.field.effects[PBEffects::Splintered]==0
+      if $febackup>0 && $febackup<51 && @battle.field.effects[PBEffects::Splintered]==0
         if @battle.field.effects[PBEffects::ElectricTerrain]>0 || $fefieldeffect==1
           @battle.pbDisplay(_INTL("But the field is already electrified!"))
         else
