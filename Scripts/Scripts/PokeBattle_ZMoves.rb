@@ -648,7 +648,7 @@ class PokeBattle_ZMoves < PokeBattle_Move
         @battle.pbDisplay(_INTL("{1} is paralyzed! It may be unable to move!",opponent.pbThis))
       end
       if $fefieldeffect!=1 && $fefieldeffect!=35 
-        if $febackup>0 && $febackup<46 && @battle.field.effects[PBEffects::Splintered]==0 
+        if $febackup>0 && $febackup<51 && @battle.field.effects[PBEffects::Splintered]==0 
           if @battle.field.effects[PBEffects::ElectricTerrain]==0
             @battle.field.effects[PBEffects::ElectricTerrain]=3
             @battle.pbDisplay(_INTL("The terrain became electrified!"))
@@ -838,7 +838,7 @@ class PokeBattle_ZMoves < PokeBattle_Move
       end
     elsif @id == PBMoves::BLOOMDOOM
       if $fefieldeffect!=2 && $fefieldeffect!=35
-        if ($febackup>0 && $febackup<46 && @battle.field.effects[PBEffects::Splintered]==0) ||  ($game_map.map_id==53)
+        if ($febackup>0 && $febackup<51 && @battle.field.effects[PBEffects::Splintered]==0) ||  ($game_map.map_id==53)
           if @battle.field.effects[PBEffects::GrassyTerrain]==0
             @battle.field.effects[PBEffects::GrassyTerrain]=3
             @battle.pbDisplay(_INTL("The terrain became grassy!"))
@@ -1218,7 +1218,7 @@ class PokeBattle_ZMoves < PokeBattle_Move
         $fetempfield = 0
         $fefieldeffect = $fetempfield
         @battle.pbChangeBGSprite
-        @battle.field.effects[PBEffects::Splintered]=3 if $febackup>0 && $febackup<46
+        @battle.field.effects[PBEffects::Splintered]=3 if $febackup>0 && $febackup<51
         @battle.field.effects[PBEffects::Terrain]=3
         @battle.pbDisplay(_INTL("The field was devastated!"))
       end
