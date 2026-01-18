@@ -2501,7 +2501,8 @@ def pbDeleteMoveByID(pokemon,id)
   newmoves=[]
   for i in 0...4
     move = pokemon.moves[i]
-    next if !move || move.id==id
+    move_id = move&.id
+    next if move_id.nil? || move_id==id
     newmoves.push(move)
   end
   newmoves.push(PBMove.new(0))

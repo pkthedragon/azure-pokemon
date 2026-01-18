@@ -14040,7 +14040,7 @@ end
 # - TYPE MATCHES USER'S SECONDARY TYPE (or primary if none)
 ################################################################################
 class PokeBattle_Move_290 < PokeBattle_Move
-  def pbType(attacker, type=nil)
+  def pbType(type, attacker, opponent)
     types = attacker.pbTypes
     if types.length >= 2
       return types[1]
