@@ -2016,6 +2016,7 @@ class PokeBattle_Battler
   end
   
   def pbRecoverHP(amt,anim=false)
+    return 0 if amt.nil?
     # Wounds halve healing
     if @effects[PBEffects::Wounded]>0
       amt = (amt/2).floor

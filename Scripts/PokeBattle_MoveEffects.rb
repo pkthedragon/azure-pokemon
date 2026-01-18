@@ -1648,23 +1648,23 @@ class PokeBattle_Move_02C < PokeBattle_Move
     pbShowAnimation(@id,attacker,nil,hitnum,alltargets,showanimation)
     showanim=true
     if $fefieldeffect == 5 || $fefieldeffect == 20 || $fefieldeffect == 37 || $fefieldeffect == 50 # Chess/Ashen/Psychic/Library Field
-   if attacker.pbCanIncreaseStatStage?(PBStats::SPATK,false)
-      attacker.pbIncreaseStat(PBStats::SPATK,2,false,showanim)
-      showanim=false
-    end
-    if attacker.pbCanIncreaseStatStage?(PBStats::SPDEF,false)
-      attacker.pbIncreaseStat(PBStats::SPDEF,2,false,showanim)
-      showanim=false
-    end
+      if attacker.pbCanIncreaseStatStage?(PBStats::SPATK,false)
+        attacker.pbIncreaseStat(PBStats::SPATK,2,false,showanim)
+        showanim=false
+      end
+      if attacker.pbCanIncreaseStatStage?(PBStats::SPDEF,false)
+        attacker.pbIncreaseStat(PBStats::SPDEF,2,false,showanim)
+        showanim=false
+      end
     else
-    if attacker.pbCanIncreaseStatStage?(PBStats::SPATK,false)
-      attacker.pbIncreaseStat(PBStats::SPATK,1,false,showanim)
-      showanim=false
-    end
-    if attacker.pbCanIncreaseStatStage?(PBStats::SPDEF,false)
-      attacker.pbIncreaseStat(PBStats::SPDEF,1,false,showanim)
-      showanim=false
-    end
+      if attacker.pbCanIncreaseStatStage?(PBStats::SPATK,false)
+        attacker.pbIncreaseStat(PBStats::SPATK,1,false,showanim)
+        showanim=false
+      end
+      if attacker.pbCanIncreaseStatStage?(PBStats::SPDEF,false)
+        attacker.pbIncreaseStat(PBStats::SPDEF,1,false,showanim)
+        showanim=false
+      end
     end
     return 0
   end

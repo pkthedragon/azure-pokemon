@@ -4739,6 +4739,23 @@ class PokeBattle_Move
           @battle.pbDisplay(_INTL("The saltwater conducted the attack!",opponent.pbThis)) if $feshutup2 == 0
           $feshutup2+=1
         end
+      when 50 # Library Field
+        library_boosted = false
+        library_boosted ||= opponent.effects[PBEffects::Confusion]>0
+        library_boosted ||= isConst?(type,PBTypes,:FIRE)
+        library_boosted ||= isConst?(type,PBTypes,:PSYCHIC) && pbIsSpecial?(type)
+        library_boosted ||= PBStuff::SLASHINGMOVE.include?(id) || PBStuff::WINDMOVE.include?(id)
+        library_boosted ||= [PBMoves::FOCUSPUNCH,PBMoves::FOCUSBLAST,PBMoves::RETURN,
+                             PBMoves::FRUSTRATION,PBMoves::PERFORATE].include?(id)
+        library_boosted ||= [PBMoves::SMARTSTRIKE,PBMoves::ANCIENTPOWER,PBMoves::BARRAGE,
+                             PBMoves::HEADBUTT,PBMoves::ZENHEADBUTT,PBMoves::IRONHEAD,
+                             PBMoves::HEADSMASH,PBMoves::HEADCHARGE,PBMoves::SKULLBASH,
+                             PBMoves::MINDBLOWN].include?(id)
+        library_boosted ||= id == PBMoves::FIRESPIN || id == PBMoves::WHIRLPOOL
+        if library_boosted
+          @battle.pbDisplay(_INTL("The Library Field strengthened the attack!",opponent.pbThis)) if $feshutup2 == 0
+          $feshutup2+=1
+        end
     end
     # FIELD TRANSFORMATIONS
     case $fefieldeffect
