@@ -3450,7 +3450,7 @@ class PokeBattle_Move
       atk=attacker.spdef
       atkstage=attacker.stages[PBStats::SPDEF]+3
     end
-    if @function==0x175 || @function==0x25E || @function==0x0F6 # Photon Geyser 
+    if @function==0x175 || @function==0x25E || @function==0x0F6 || @function==0x02D # Photon Geyser 
       atk=attacker.spatk
       atkstage=attacker.stages[PBStats::SPATK]+3  
       if attacker.attack > attacker.spatk

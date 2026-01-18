@@ -1672,34 +1672,9 @@ end
 
 
 ################################################################################
-# Increases the user's Attack, Defense, Speed, Special Attack and Special Defense
-# by 1 stage each.
+# Uses higher offensive stat (handled in pbCalcDamage).
 ################################################################################
 class PokeBattle_Move_02D < PokeBattle_Move
-  def pbAdditionalEffect(attacker,opponent)
-    showanim=true
-    if attacker.pbCanIncreaseStatStage?(PBStats::ATTACK,false)
-      attacker.pbIncreaseStat(PBStats::ATTACK,1,false,nil,nil,showanim)
-      showanim=false
-    end
-    if attacker.pbCanIncreaseStatStage?(PBStats::DEFENSE,false)
-      attacker.pbIncreaseStat(PBStats::DEFENSE,1,false,nil,nil,showanim)
-      showanim=false
-    end
-    if attacker.pbCanIncreaseStatStage?(PBStats::SPATK,false)
-      attacker.pbIncreaseStat(PBStats::SPATK,1,false,nil,nil,showanim)
-      showanim=false
-    end
-    if attacker.pbCanIncreaseStatStage?(PBStats::SPDEF,false)
-      attacker.pbIncreaseStat(PBStats::SPDEF,1,false,nil,nil,showanim)
-      showanim=false
-    end
-    if attacker.pbCanIncreaseStatStage?(PBStats::SPEED,false)
-      attacker.pbIncreaseStat(PBStats::SPEED,1,false,nil,nil,showanim)
-      showanim=false
-    end
-    return true
-  end
 end
 
 
