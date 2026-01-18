@@ -6446,7 +6446,7 @@ class PokeBattle_Battler
         return
       end
       if target.isbossmon
-        bosscheck = bossMoveCheck(basemove,user,target) 
+        bosscheck = bossMoveCheck(thismove,user,target)
         return if bosscheck == 0
       end
       # Check success (accuracy/evasion calculation)
