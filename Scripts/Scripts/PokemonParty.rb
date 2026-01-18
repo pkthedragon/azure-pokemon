@@ -2099,6 +2099,7 @@ class PokemonScreen
       cmdRename=-1
       cmdNature=-1
       cmdAbility=-1
+      cmdHiddenPower=-1
       cmdRemind=-1
       # Build the commands
       commands[cmdSummary=commands.length]=_INTL("Summary")
@@ -2128,6 +2129,7 @@ class PokemonScreen
 
         commands[cmdNature  = commands.length] = _INTL("Change Nature")
         commands[cmdAbility = commands.length] = _INTL("Change Ability")
+        commands[cmdHiddenPower = commands.length] = _INTL("Change Hidden Power")
         commands[cmdRemind  = commands.length] = _INTL("Move Reminder")
 
         commands[cmdRename = commands.length] = _INTL("Rename")
@@ -2244,6 +2246,8 @@ class PokemonScreen
         pbPartyChangeNature(pkmn,pkmnid)
       elsif cmdAbility>=0 && command==cmdAbility
         pbPartyChangeAbility(pkmn,pkmnid)
+      elsif cmdHiddenPower>=0 && command==cmdHiddenPower
+        pbPartyChangeHiddenPower(pkmn,pkmnid)
       elsif cmdRemind>=0 && command==cmdRemind
         pbPartyMoveReminder(pkmn,pkmnid)
       elsif cmdRename>=0 && command==cmdRename
@@ -2346,6 +2350,47 @@ class PokemonScreen
     else
       pbDisplay(_INTL("Move Reminder is not set up."))
     end
+  end
+
+  # ===========================
+  # Change Hidden Power from party
+  # ===========================
+  def pbPartyChangeHiddenPower(pkmn,pkmnid)
+    return if !pkmn || pkmn.isEgg?
+    hptypes = ["Normal","Fighting","Flying","Poison","Ground","Rock","Bug",
+               "Ghost","Steel","Fire","Water","Grass","Electric","Psychic",
+               "Ice","Dragon","Dark","Fairy"]
+    current_index = -1
+    move_index = -1
+    for i in 0...4
+      move = pkmn.moves[i]
+      next if !move
+      if move.id >= PBMoves::HIDDENPOWERNOR && move.id <= PBMoves::HIDDENPOWERFAI
+        move_index = i
+        current_index = move.id - PBMoves::HIDDENPOWERNOR
+        break
+      end
+    end
+    if move_index < 0
+      pbDisplay(_INTL("{1} doesn't know Hidden Power.",pkmn.name))
+      return
+    end
+    commands = hptypes + [_INTL("Cancel")]
+    current_index = 0 if current_index < 0 || current_index >= hptypes.length
+    cmd = @scene.pbShowCommands(
+      _INTL("Choose a Hidden Power type for {1}.",pkmn.name),
+      commands,
+      current_index
+    )
+    return if cmd < 0 || cmd >= hptypes.length
+    if cmd == current_index
+      pbDisplay(_INTL("{1}'s Hidden Power is already {2}.",pkmn.name,hptypes[cmd]))
+      return
+    end
+    newmoveid = PBMoves::HIDDENPOWERNOR + cmd
+    pkmn.moves[move_index] = PBMove.new(newmoveid)
+    pbDisplay(_INTL("{1}'s Hidden Power became {2}.",pkmn.name,hptypes[cmd]))
+    pbRefreshSingle(pkmnid)
   end
 
 end
