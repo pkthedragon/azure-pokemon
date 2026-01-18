@@ -2500,9 +2500,12 @@ def pbDeleteMoveByID(pokemon,id)
   return if !id || id==0 || !pokemon
   newmoves=[]
   for i in 0...4
-    newmoves.push(pokemon.moves[i]) if pokemon.moves[i].id!=id
+    move = pokemon.moves[i]
+    next if !move || move.id==id
+    newmoves.push(move)
   end
   newmoves.push(PBMove.new(0))
+  newmoves.push(PBMove.new(0)) while newmoves.length<4
   for i in 0...4
     pokemon.moves[i]=newmoves[i]
   end
