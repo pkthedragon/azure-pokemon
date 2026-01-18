@@ -6122,10 +6122,9 @@ class PokeBattle_Battler
         self.missed = false
         return true
       end
-      # Blinded attackers graze with attacking moves (half damage, no secondary effects)
+      # Blinded attackers always miss (grazing blow) with damaging moves
       if user.effects[PBEffects::Blinded]>0 && thismove.basedamage > 0
         @battle.pbDisplay(_INTL("{1} can't see through its blindness!",user.pbThis))
-        user.effects[PBEffects::Blinded] = -1  # Clear blindness after attempting to attack
         @battle.pbDisplay(_INTL("{1}'s attack grazed!",user.pbThis))
         user.missAcc = true
         user.grazed = true
@@ -6393,8 +6392,6 @@ class PokeBattle_Battler
         @battle.pbDisplay(_INTL("{1} had its type changed to {3}!",pbThis,PBAbilities.getName(self.ability),typename))
       end
     end # end of update
-    # Clear blindness after successfully attempting to use any move
-    @effects[PBEffects::Blinded] = -1 if @effects[PBEffects::Blinded]>0
     turneffects[PBEffects::PassedTrying]=true
     return true
   end
@@ -8589,6 +8586,8 @@ class PokeBattle_Battler
         end
       end
     end
+    # Clear blindness after successfully attempting to use any move
+    @effects[PBEffects::Blinded] = -1 if @effects[PBEffects::Blinded]>0
     # End of move usage
     pbEndTurn(choice)
     @battle.pbJudgeSwitch

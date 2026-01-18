@@ -278,7 +278,14 @@ module PokeBattle_BattleCommon
           battler.pbReset
           battler.participants=[]
         else
-          @decision=4
+          if !@opponent && @doublebattle
+            pbRemoveFromParty(battler.index,battler.pokemonIndex)
+            battler.pbReset
+            battler.participants=[]
+            @decision=4 if pbAllFainted?(@party2)
+          else
+            @decision=4
+          end
         end
         if pbIsSnagBall?(ball)
           pokemon.ot=self.pbPlayer.name
@@ -1518,6 +1525,9 @@ class PokeBattle_Battle
   def pbIsUnlosableItem(pkmn,item)
     return true if pbIsMail?(item)
     return true if pbIsZCrystal?(item)
+    if defined?(pbTributeItemIDs) && pbTributeItemIDs.include?(item)
+      return true
+    end
     return false if pkmn.effects[PBEffects::Transform]
     if isConst?(pkmn.ability,PBAbilities,:MULTITYPE) &&
        (isConst?(item,PBItems,:FISTPLATE) ||
@@ -3195,7 +3205,10 @@ class PokeBattle_Battle
     if @battlers[index].effects[PBEffects::Attract]>=0 && !@battlers[index].isFainted?
       pbDisplay(_INTL("{1} is hurt by leaving its love behind!",@battlers[index].pbThis))
       @battlers[index].pbReduceHP((@battlers[index].totalhp/6).floor)
-      @battlers[index].pbFaint if @battlers[index].isFainted?
+      if @battlers[index].isFainted?
+        @battlers[index].pbFaint
+        return
+      end
     end
     if @battlers[index].effects[PBEffects::Illusion]
       @battlers[index].effects[PBEffects::Illusion] = nil

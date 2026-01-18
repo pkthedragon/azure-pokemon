@@ -29346,7 +29346,7 @@ def pbChooseMoves(index,chosenindex=0)
         x+=", " if j>0
         if attacker.moves[i].id < 1000
           x+=PBMoves.getName(attacker.moves[i].id)+"="+@scores[i].to_s
-        elsif attacker.moves[i].id == attacker.moves[4].id
+        elsif attacker.moves[4] && attacker.moves[i].id == attacker.moves[4].id
           x+=(attacker.moves[4].name)+"="+@scores[4].to_s
         end
         j+=1
@@ -29379,11 +29379,11 @@ def pbChooseMoves(index,chosenindex=0)
       end
       if attacker.moves[i].id < 1000
         PBDebug.log("[Prefer "+PBMoves.getName(attacker.moves[i].id)+"]") if $INTERNAL 
-      elsif attacker.moves[i].id == attacker.moves[4].id 
+      elsif attacker.moves[4] && attacker.moves[i].id == attacker.moves[4].id 
         PBDebug.log("[Prefer "+attacker.moves[4].name+"]") if $INTERNAL
       end
       if attacker.moves.length>4
-        if (attacker.moves[i].id==attacker.moves[4].id) && !preferredMoves.include?(chosenindex) 
+        if attacker.moves[4] && (attacker.moves[i].id==attacker.moves[4].id) && !preferredMoves.include?(chosenindex) 
           if attacker.moves[i].zmove
             PBDebug.log("[Prefer to use Z-Move]") if $INTERNAL 
             pbRegisterZMove(index)
@@ -29402,7 +29402,7 @@ def pbChooseMoves(index,chosenindex=0)
             end
             pbRegisterMove(index,i,false)
           end
-        elsif (attacker.moves[i].id==attacker.moves[4].id) && preferredMoves.include?(chosenindex)
+        elsif attacker.moves[4] && (attacker.moves[i].id==attacker.moves[4].id) && preferredMoves.include?(chosenindex)
           PBDebug.log("[Prefer non Z-Move]") if $INTERNAL 
           if attacker.moves[i].id < 1000
             if attacker.moves[i].basedamage>0

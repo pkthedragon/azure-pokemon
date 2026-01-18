@@ -78,7 +78,7 @@ def pbGetRelearnableMoves(pokemon, exclude_level1=false)
   pbEachNaturalMove(pokemon){|move,level|
      if level<=pokemon.level && !pokemon.knowsMove?(move)
        # Exclude level 1 moves that haven't been learned before
-       if level<=1
+       if level==1
          # Check if this move was in the Pokemon's original moveset
          next unless pokemon.firstmoves && pokemon.firstmoves.include?(move)
        end
@@ -187,7 +187,10 @@ class MoveRelearnerScene
     @pokemon=pokemon
     @moves=moves
     moveCommands=[]
-    moves.each{|i| moveCommands.push(PBMoves.getName(i)) }
+    moves.each do |i|
+      next if !i || i==0
+      moveCommands.push(PBMoves.getName(i))
+    end
     # Create sprite hash
     @viewport=Viewport.new(0,0,Graphics.width,Graphics.height)
     @viewport.z=99999
@@ -358,4 +361,3 @@ def pbRelearnMoveScreen(pokemon, moves=nil)
   }
   return retval
 end
-

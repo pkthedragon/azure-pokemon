@@ -2174,7 +2174,7 @@ def pbSeenForm(poke,gender=0,form=0)
   $Trainer.formseen[species]=[[],[]] if !$Trainer.formseen[species]
   $Trainer.formseen[species][gender][form]=true
   $Trainer.formlastseen[species]=[] if !$Trainer.formlastseen[species]
-  $Trainer.formlastseen[species]=[gender,form] if $Trainer.formlastseen[species]==[]
+  $Trainer.formlastseen[species]=[gender,form]
 end
 
 
