@@ -270,15 +270,26 @@ class Game_Player < Game_Character
 
     # Still water: freely swimmable (no surfing required)
     if pbIsStillWaterTag?(dest_tag)
+      if pbHasDependentEvents?
+        if $PokemonGlobal && $PokemonGlobal.surfing
+          if $PokemonGlobal.respond_to?(:swimming) && $PokemonGlobal.swimming
+            $PokemonGlobal.swimming = false
+            Kernel.pbUpdateVehicle
+          end
+        else
+          Kernel.pbMessage(_INTL("It can't be used when you have someone with you."))
+          return false
+        end
+      end
       # Transition from surfing to swimming when entering still water
-      if $PokemonGlobal && $PokemonGlobal.surfing && !$PokemonGlobal.diving
+      if !$game_player.pbHasDependentEvents? && $PokemonGlobal && $PokemonGlobal.surfing && !$PokemonGlobal.diving
         $PokemonGlobal.surfing = false
         $game_map.autoplayAsCue  # Resume normal map BGM
         if $PokemonGlobal.respond_to?(:swimming)
           $PokemonGlobal.swimming = true
         end
         Kernel.pbUpdateVehicle
-      elsif $PokemonGlobal && !$PokemonGlobal.surfing && !$PokemonGlobal.diving && !$PokemonGlobal.lavasurfing
+      elsif !$game_player.pbHasDependentEvents? && $PokemonGlobal && !$PokemonGlobal.surfing && !$PokemonGlobal.diving && !$PokemonGlobal.lavasurfing
         if $PokemonGlobal.respond_to?(:swimming)
           $PokemonGlobal.swimming = true
           Kernel.pbUpdateVehicle
