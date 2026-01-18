@@ -2043,7 +2043,7 @@ class PokeBattle_Battler
       return true
     end
     if self.isbossmon
-      if @battle.shieldCount > 0 && self.onBreakEffects
+      if self.shieldCount > 0 && self.onBreakEffects
         onBreakdata = self.onBreakEffects[self.shieldCount]
         hpthreshold = (onBreakdata && onBreakdata[:threshold]) ? onBreakdata[:threshold] : 0
         case hpthreshold  # Add extra threshold effects here; ex: Rejuv Admin Regirock
