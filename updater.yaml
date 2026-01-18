@@ -1,7 +1,7 @@
 game:
     name: Azure
     url: https://github.com/pkthedragon/azure-pokemon/archive/refs/heads/playtest-branch.zip
-    version: AZURE.2.5.0
+    version: AZURE.2.5.9.1
     version_url: https://github.com/pkthedragon/azure-patch/raw/main/_version.txt
     patch_url: https://github.com/pkthedragon/azure-patch/raw/main/patch.zip
     format: zip
