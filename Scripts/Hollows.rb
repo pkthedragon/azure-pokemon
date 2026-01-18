@@ -77,6 +77,13 @@ module PBHollow
       ]
     },
 	
+	[55, 1] => {
+      :any => [
+        [:pokemon, :DIGLETT, 15, 75, :SLASH],
+        [:pokemon, :ZUBAT, 15, 25, :QUICKATTACK]
+      ]
+    },	
+	
     [054, 1] => {
       :day => [
         [:pokemon, :WIGLETT, 20, 75, :MEMENTO],
