@@ -185,12 +185,8 @@ class MoveRelearnerScene
 
   def pbStartScene(pokemon,moves)
     @pokemon=pokemon
-    @moves=moves
-    moveCommands=[]
-    moves.each do |i|
-      next if !i || i==0
-      moveCommands.push(PBMoves.getName(i))
-    end
+    @moves=moves.select { |move| move && move!=0 }
+    moveCommands=@moves.map { |move| PBMoves.getName(move) }
     # Create sprite hash
     @viewport=Viewport.new(0,0,Graphics.width,Graphics.height)
     @viewport.z=99999
