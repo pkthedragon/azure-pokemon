@@ -609,6 +609,7 @@ class PokeBattle_Battle
   def seedCheck
     for battler in @battlers
       next if battler.hp==0
+      next if !battler.itemWorks?
       if isConst?(battler.item, PBItems, :ELEMENTALSEED)
         case $fefieldeffect
         when 1 #Electric Terrain
@@ -5993,6 +5994,7 @@ def pbStartBattle(canlose=false)
       @battlers[i].effects[PBEffects::SpikyShield]=false
       @battlers[i].effects[PBEffects::BanefulBunker]=false
       @battlers[i].effects[PBEffects::Obstruct]=false
+      @battlers[i].effects[PBEffects::SilkTrap]=false
       @battlers[i].effects[PBEffects::BeakBlast]=false
       @battlers[i].effects[PBEffects::ClangedScales]=false
       @battlers[i].effects[PBEffects::ShellTrap]=false

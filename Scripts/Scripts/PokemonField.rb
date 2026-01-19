@@ -2646,7 +2646,12 @@ def Kernel.pbItemBall(item,quantity=1,plural=nil)
   return false if !item || item<=0 || quantity<1
   itemname=PBItems.getName(item)
   pocket=pbGetPocket(item)
-  if $PokemonBag.pbStoreItem(item,quantity)   # If item can be picked up
+  current_qty=$PokemonBag.pbQuantity(item)
+  maxstack=BAGMAXPERSLOT
+  maxstore=[maxstack-current_qty,0].max
+  store_qty=[maxstore,quantity].min
+  overflow=quantity-store_qty
+  if store_qty>0 && $PokemonBag.pbStoreItem(item,store_qty)   # If item can be picked up
     Achievements.incrementProgress("ITEM_BALL_ITEMS",quantity)
     if $ItemData[item][ITEMUSE]==3 || $ItemData[item][ITEMUSE]==4
       Kernel.pbMessage(_INTL("\\se[itemlevel]{1} found \\c[1]{2}\\c[0]!\\nIt contained \\c[1]{3}\\c[0].\\wtnp[30]",
@@ -2663,12 +2668,20 @@ def Kernel.pbItemBall(item,quantity=1,plural=nil)
         if plural
           Kernel.pbMessage(_INTL("\\se[itemlevel]{1} found {2} \\c[1]{3}\\c[0]!\\wtnp[30]",
              $Trainer.name,quantity,plural))
-          Kernel.pbMessage(_INTL("{1} put the \\c[1]{2}\\c[0]\r\nin the <icon=bagPocket#{pocket}>\\c[1]{3}\\c[0] Pocket.",
-             $Trainer.name,plural,PokemonBag.pocketNames()[pocket]))
         else
           Kernel.pbMessage(_INTL("\\se[itemlevel]{1} found {2} \\c[1]{3}s\\c[0]!\\wtnp[30]",
              $Trainer.name,quantity,itemname))
-          Kernel.pbMessage(_INTL("{1} put the \\c[1]{2}s\\c[0]\r\nin the <icon=bagPocket#{pocket}>\\c[1]{3}\\c[0] Pocket.",
+        end
+        if store_qty>1
+          if plural
+            Kernel.pbMessage(_INTL("{1} put the \\c[1]{2}\\c[0]\r\nin the <icon=bagPocket#{pocket}>\\c[1]{3}\\c[0] Pocket.",
+               $Trainer.name,plural,PokemonBag.pocketNames()[pocket]))
+          else
+            Kernel.pbMessage(_INTL("{1} put the \\c[1]{2}s\\c[0]\r\nin the <icon=bagPocket#{pocket}>\\c[1]{3}\\c[0] Pocket.",
+               $Trainer.name,itemname,PokemonBag.pocketNames()[pocket]))
+          end
+        else
+          Kernel.pbMessage(_INTL("{1} put the \\c[1]{2}\\c[0]\r\nin the <icon=bagPocket#{pocket}>\\c[1]{3}\\c[0] Pocket.",
              $Trainer.name,itemname,PokemonBag.pocketNames()[pocket]))
         end
       else
@@ -2678,7 +2691,55 @@ def Kernel.pbItemBall(item,quantity=1,plural=nil)
            $Trainer.name,itemname,PokemonBag.pocketNames()[pocket]))
       end
     end
+    if overflow>0
+      $PokemonGlobal.pcItemStorage=PCItemStorage.new if !$PokemonGlobal.pcItemStorage
+      if $PokemonGlobal.pcItemStorage.pbStoreItem(item,overflow)
+        if overflow>1
+          overflow_name=plural || _INTL("{1}s",itemname)
+          Kernel.pbMessage(_INTL("{1} sent the {2} to the PC storage.",$Trainer.name,overflow_name))
+        else
+          Kernel.pbMessage(_INTL("{1} sent the {2} to the PC storage.",$Trainer.name,itemname))
+        end
+      else
+        Kernel.pbMessage(_INTL("There's no space left in the PC for that item."))
+        return false
+      end
+    end
     return true
+  elsif store_qty==0 && overflow>0
+    if $ItemData[item][ITEMUSE]==3 || $ItemData[item][ITEMUSE]==4
+      Kernel.pbMessage(_INTL("{1} found \\c[1]{2}\\c[0]!\\wtnp[20]",
+         $Trainer.name,itemname))
+    elsif isConst?(item,PBItems,:LEFTOVERS)
+      Kernel.pbMessage(_INTL("{1} found some \\c[1]{2}\\c[0]!\\wtnp[20]",
+         $Trainer.name,itemname))
+    else
+      if quantity>1
+        if plural
+          Kernel.pbMessage(_INTL("{1} found {2} \\c[1]{3}\\c[0]!\\wtnp[20]",
+             $Trainer.name,quantity,plural))
+        else
+          Kernel.pbMessage(_INTL("{1} found {2} \\c[1]{3}s\\c[0]!\\wtnp[20]",
+             $Trainer.name,quantity,itemname))
+        end
+      else
+        Kernel.pbMessage(_INTL("{1} found one \\c[1]{2}\\c[0]!\\wtnp[20]",
+           $Trainer.name,itemname))
+      end
+    end
+    $PokemonGlobal.pcItemStorage=PCItemStorage.new if !$PokemonGlobal.pcItemStorage
+    if $PokemonGlobal.pcItemStorage.pbStoreItem(item,overflow)
+      if overflow>1
+        overflow_name=plural || _INTL("{1}s",itemname)
+        Kernel.pbMessage(_INTL("{1} sent the {2} to the PC storage.",$Trainer.name,overflow_name))
+      else
+        Kernel.pbMessage(_INTL("{1} sent the {2} to the PC storage.",$Trainer.name,itemname))
+      end
+      return true
+    else
+      Kernel.pbMessage(_INTL("There's no space left in the PC for that item."))
+      return false
+    end
   else   # Can't add the item
     if $ItemData[item][ITEMUSE]==3 || $ItemData[item][ITEMUSE]==4
       Kernel.pbMessage(_INTL("{1} found \\c[1]{2}\\c[0]!\\wtnp[20]",
@@ -2732,8 +2793,13 @@ def Kernel.pbReceiveItem(item,quantity=1,plural=nil,silent=false)
           itemname))
     end
   end  
-  if $PokemonBag.pbStoreItem(item,quantity)   # If item can be added
-    if quantity>1
+  current_qty=$PokemonBag.pbQuantity(item)
+  maxstack=BAGMAXPERSLOT
+  maxstore=[maxstack-current_qty,0].max
+  store_qty=[maxstore,quantity].min
+  overflow=quantity-store_qty
+  if store_qty>0 && $PokemonBag.pbStoreItem(item,store_qty)   # If item can be added
+    if store_qty>1
       if plural && silent==false
         Kernel.pbMessage(_INTL("{1} put the \\c[1]{2}\\c[0]\r\nin the <icon=bagPocket#{pocket}>\\c[1]{3}\\c[0] Pocket.",
             $Trainer.name,plural,PokemonBag.pocketNames()[pocket]))
@@ -2745,7 +2811,35 @@ def Kernel.pbReceiveItem(item,quantity=1,plural=nil,silent=false)
       Kernel.pbMessage(_INTL("{1} put the \\c[1]{2}\\c[0]\r\nin the <icon=bagPocket#{pocket}>\\c[1]{3}\\c[0] Pocket.",
           $Trainer.name,itemname,PokemonBag.pocketNames()[pocket])) if silent==false
     end
+    if overflow>0
+      $PokemonGlobal.pcItemStorage=PCItemStorage.new if !$PokemonGlobal.pcItemStorage
+      if $PokemonGlobal.pcItemStorage.pbStoreItem(item,overflow)
+        if overflow>1
+          overflow_name=plural || _INTL("{1}s",itemname)
+          Kernel.pbMessage(_INTL("{1} sent the {2} to the PC storage.",$Trainer.name,overflow_name)) if silent==false
+        else
+          Kernel.pbMessage(_INTL("{1} sent the {2} to the PC storage.",$Trainer.name,itemname)) if silent==false
+        end
+      else
+        Kernel.pbMessage(_INTL("There's no space left in the PC for that item.")) if silent==false
+        return false
+      end
+    end
     return true
+  elsif store_qty==0 && overflow>0
+    $PokemonGlobal.pcItemStorage=PCItemStorage.new if !$PokemonGlobal.pcItemStorage
+    if $PokemonGlobal.pcItemStorage.pbStoreItem(item,overflow)
+      if overflow>1
+        overflow_name=plural || _INTL("{1}s",itemname)
+        Kernel.pbMessage(_INTL("{1} sent the {2} to the PC storage.",$Trainer.name,overflow_name)) if silent==false
+      else
+        Kernel.pbMessage(_INTL("{1} sent the {2} to the PC storage.",$Trainer.name,itemname)) if silent==false
+      end
+      return true
+    else
+      Kernel.pbMessage(_INTL("There's no space left in the PC for that item.")) if silent==false
+      return false
+    end
   else   # Can't add the item
     if Kernel.pbConfirmMessage(_INTL("The Bag is full. Send the item to the PC instead?"))
       $PokemonGlobal.pcItemStorage=PCItemStorage.new if !$PokemonGlobal.pcItemStorage

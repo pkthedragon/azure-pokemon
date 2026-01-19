@@ -1637,9 +1637,9 @@ class PokemonScreen
         when 7
           cmd=0
           loop do
-            hptypes = ["Normal","Fighting","Flying","Poison","Ground","Rock","Bug",
-                       "Ghost","Steel","Fire","Water","Grass","Electric","Psychic",
-                       "Ice","Dragon","Dark","Fairy"]
+            hptypes = ["Normal","Fire","Fighting","Water","Flying","Grass","Poison",
+                       "Electric","Ground","Psychic","Rock","Ice","Bug","Dragon",
+                       "Ghost","Dark","Steel","Fairy"]
             currenthp = "None"
             # Check which Hidden Power move the Pokemon knows
             for i in 0...4
@@ -1648,6 +1648,11 @@ class PokemonScreen
               if move.id >= PBMoves::HIDDENPOWERNOR && move.id <= PBMoves::HIDDENPOWERFAI
                 hpindex = move.id - PBMoves::HIDDENPOWERNOR
                 currenthp = hptypes[hpindex] if hpindex >= 0 && hpindex < hptypes.length
+                break
+              elsif move.id == PBMoves::HIDDENPOWER
+                current_type = pbHiddenPower(pkmn.iv)[0]
+                current_name = PBTypes.getName(current_type)
+                currenthp = current_name if hptypes.include?(current_name)
                 break
               end
             end
@@ -1673,6 +1678,11 @@ class PokemonScreen
                   pkmn.moves[i] = PBMove.new(newmoveid)
                   replaced = true
                   break
+                elsif move.id == PBMoves::HIDDENPOWER
+                  newmoveid = PBMoves::HIDDENPOWERNOR + cmd
+                  pkmn.moves[i] = PBMove.new(newmoveid)
+                  replaced = true
+                  break
                 end
               end
               # If no Hidden Power found, replace first move or add to empty slot
@@ -1690,6 +1700,9 @@ class PokemonScreen
                 move = pkmn.moves[i]
                 next if !move
                 if move.id >= PBMoves::HIDDENPOWERNOR && move.id <= PBMoves::HIDDENPOWERFAI
+                  pkmn.pbDeleteMoveAtIndex(i)
+                  break
+                elsif move.id == PBMoves::HIDDENPOWER
                   pkmn.pbDeleteMoveAtIndex(i)
                   break
                 end
@@ -2357,9 +2370,9 @@ class PokemonScreen
   # ===========================
   def pbPartyChangeHiddenPower(pkmn,pkmnid)
     return if !pkmn || pkmn.isEgg?
-    hptypes = ["Normal","Fighting","Flying","Poison","Ground","Rock","Bug",
-               "Ghost","Steel","Fire","Water","Grass","Electric","Psychic",
-               "Ice","Dragon","Dark","Fairy"]
+    hptypes = ["Normal","Fire","Fighting","Water","Flying","Grass","Poison",
+               "Electric","Ground","Psychic","Rock","Ice","Bug","Dragon",
+               "Ghost","Dark","Steel","Fairy"]
     current_index = -1
     move_index = -1
     for i in 0...4
@@ -2368,6 +2381,12 @@ class PokemonScreen
       if move.id >= PBMoves::HIDDENPOWERNOR && move.id <= PBMoves::HIDDENPOWERFAI
         move_index = i
         current_index = move.id - PBMoves::HIDDENPOWERNOR
+        break
+      elsif move.id == PBMoves::HIDDENPOWER
+        move_index = i
+        current_type = pbHiddenPower(pkmn.iv)[0]
+        current_name = PBTypes.getName(current_type)
+        current_index = hptypes.index(current_name) || -1
         break
       end
     end

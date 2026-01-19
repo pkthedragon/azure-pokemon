@@ -1070,6 +1070,7 @@ class PokeBattle_Battler
     @effects[PBEffects::WideGuardUser]    = false    
     @effects[PBEffects::BanefulBunker]    = false
     @effects[PBEffects::Stormhold]        = false
+    @effects[PBEffects::SilkTrap]         = false
     @effects[PBEffects::ProtectNegation]  = false
     @effects[PBEffects::ProtectRate]      = 1
     @effects[PBEffects::DestinyRate]      = 1
@@ -4047,14 +4048,6 @@ class PokeBattle_Battler
           @battle.pbDisplay(_INTL("{1} was hurt by the {2}!",user.pbThis,
               PBItems.getName(target.item)))
         end
-        # Electric Terrain/Field - Contact moves against grounded Pokemon have 1/8 recoil of damage dealt
-        if ($fefieldeffect == 1 || @battle.field.effects[PBEffects::ElectricTerrain]>0) &&
-          !target.isAirborne? && !user.isFainted? && !user.hasWorkingAbility(:MAGICGUARD) &&
-          !(user.hasWorkingAbility(:WONDERGUARD) && $fefieldeffect == 44)
-          @battle.scene.pbDamageAnimation(user,0)
-          user.pbReduceHP((damage/8).floor)
-          @battle.pbDisplay(_INTL("{1} was shocked by the electric field!",user.pbThis))
-        end
         if target.effects[PBEffects::BeakBlast] && user.pbCanBurn?(false) &&
           !user.hasWorkingAbility(:MAGICGUARD) && !(user.hasWorkingAbility(:WONDERGUARD) && $fefieldeffect == 44)
           user.pbBurn(target)
@@ -5834,7 +5827,6 @@ class PokeBattle_Battler
     end      
     if ((target.hasWorkingAbility(:DAZZLING) ||
           target.hasWorkingAbility(:QUEENLYMAJESTY)) && !target.moldbroken) ||
-      (@battle.field.effects[PBEffects::PsychicTerrain]>0 && $fefieldeffect!=37) || # Psychic Terrain overlay only
       $fefieldeffect == 37 || # Psychic Field blocks all priority
       ($fefieldeffect == 34 && target.hasWorkingAbility(:MIRRORARMOR) && !target.moldbroken) ||
       (target.pbPartner.hasWorkingAbility(:DAZZLING) || target.pbPartner.hasWorkingAbility(:QUEENLYMAJESTY)  || ($fefieldeffect == 34 && target.hasWorkingAbility(:MIRRORARMOR)) && !target.moldbroken)
@@ -5962,6 +5954,17 @@ class PokeBattle_Battler
               user.pbReduceHP((user.totalhp/8).floor)  
             end
           end
+        end
+        return false
+      end
+      # Silk Trap
+      if target.effects[PBEffects::SilkTrap] &&
+        !target.effects[PBEffects::ProtectNegation] && thismove.canProtectAgainst? && thismove.function!=0x116
+        @battle.pbDisplay(_INTL("{1} protected itself!", target.pbThis))
+        @battle.successStates[user.index].protected=true
+        # physical contact
+        if thismove.hasFlags?('a') && !user.hasWorkingAbility(:LONGREACH)
+          user.pbReduceStat(PBStats::SPEED,1,true)
         end
         return false
       end
@@ -6452,6 +6455,7 @@ class PokeBattle_Battler
           #TODO: Not shown if message is "It doesn't affect XXX..."
           @battle.pbDisplay(_INTL("{1} kept going and crashed!",user.pbThis))
           damage=[1,(user.totalhp/2).floor].max
+          damage=thismove.pbRecoilDamage(user,damage)
           if damage>0
             @battle.scene.pbDamageAnimation(user,0)
             user.pbReduceHP(damage)
