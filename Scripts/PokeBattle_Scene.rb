@@ -114,7 +114,7 @@ def pbShowBattleStats(pkmn)
   report.push(_INTL("Recharging")) if pkmn.effects[PBEffects::HyperBeam]!=0
   report.push(_INTL("Fury Cutter: +{1}",pkmn.effects[PBEffects::FuryCutter])) if pkmn.effects[PBEffects::FuryCutter]!=0
   report.push(_INTL("Echoed Voice: +{1}",pkmn.effects[PBEffects::EchoedVoice])) if pkmn.effects[PBEffects::EchoedVoice]!=0
-  report.push(_INTL("Cell Splitter: +{1}",pkmn.effects[PBEffects::EchoedVoice])) if pkmn.effects[PBEffects::CellSplitter]!=0
+  report.push(_INTL("Cell Splitter: +{1}",pkmn.effects[PBEffects::CellSplitter])) if pkmn.effects[PBEffects::CellSplitter]!=0
   report.push(_INTL("Mean Look")) if pkmn.effects[PBEffects::MeanLook]>-1
   report.push(_INTL("Jaw Lock")) if pkmn.effects[PBEffects::JawLock]
   report.push(_INTL("Foresight")) if pkmn.effects[PBEffects::Foresight]
