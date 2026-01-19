@@ -322,6 +322,12 @@ class Game_Player < Game_Character
         return $MapFactory.isPassableFromEdge?(new_x, new_y)
       end
       return true if $DEBUG and Input.press?(Input::CTRL)
+      # Block landing on non-through character events even if swimming is passable
+      for event in $game_map.events.values
+        next unless event.x == new_x && event.y == new_y
+        next if event.through
+        return false if event.character_name != ""
+      end
       # Check if the destination tile itself is passable (ignoring direction from water)
       return $game_map.passableStrict?(new_x, new_y, 0) rescue true
     end
