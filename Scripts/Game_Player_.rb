@@ -248,14 +248,8 @@ class Game_Player < Game_Character
     dest_tag = $game_map.terrain_tag(new_x, new_y)
     here_tag = $game_map.terrain_tag(x, y) rescue nil
 
-    # Track if we were swimming before potentially turning it off
+    # Track if we were swimming (state changes should happen after movement succeeds)
     was_swimming = $PokemonGlobal && $PokemonGlobal.respond_to?(:swimming) && $PokemonGlobal.swimming
-
-    # If we were swimming and are stepping onto non-water, turn swim off
-    if was_swimming && !pbIsWaterTag?(dest_tag)
-      $PokemonGlobal.swimming = false
-      Kernel.pbUpdateVehicle
-    end
 
     # Rough water: must be surfing already
     if pbIsRoughWaterTag?(dest_tag)
