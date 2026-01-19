@@ -188,8 +188,8 @@ begin
     TrickRoomOnEntry  = 217
     BlinkEntryTurn    = 218
     ActedThisTurn     = 219
-    SilkTrap          = 220
     SpookyTribute     = 220
+    SilkTrap          = 234
     UsingSubstituteRightNow = 221
     VespiCrest        = 222
     TrickRoom         = 223
