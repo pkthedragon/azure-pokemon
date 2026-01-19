@@ -32,7 +32,8 @@ class PokeBattle_Battle
     if move.id < 1000
       PBDebug.log(sprintf("%s: initial score: %d",PBMoves.getName(move.id),roughdamage)) if $INTERNAL && shutup==false
     else
-      PBDebug.log(sprintf("%s: initial score: %d",attacker.moves[4].name,roughdamage)) if $INTERNAL && shutup==false
+      zmove_name = attacker.moves[4] ? attacker.moves[4].name : move.name
+      PBDebug.log(sprintf("%s: initial score: %d",zmove_name,roughdamage)) if $INTERNAL && shutup==false
     end
     skill=PBTrainerAI.minimumSkill if skill<PBTrainerAI.minimumSkill
     $shutupmega=true
@@ -21804,7 +21805,7 @@ class PokeBattle_Battle
       end  
     end  
     if @field.effects[PBEffects::GrassyTerrain]>0
-      if PBStuff::WINDMOVE.include?(id)
+      if PBStuff::WINDMOVE.include?(move.id)
         basedamage=(basedamage*1.5).round
       end
     end  
