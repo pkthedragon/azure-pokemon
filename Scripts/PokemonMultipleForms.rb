@@ -694,6 +694,7 @@ MultipleForms.register(:BURMY,{
     "getFormOnCreation"=>proc{|pokemon|
       env=pbGetEnvironment()
       maps=[1,54,55,90]   # Map IDs for sandy form
+	    next 3 if pokemon.form==3
       if !pbGetMetadata($game_map.map_id,MetadataOutdoor)
         next 2 # Trash Cloak
       elsif env==PBEnvironment::Sand ||
@@ -708,6 +709,7 @@ MultipleForms.register(:BURMY,{
     "getFormOnEnteringBattle"=>proc{|pokemon|
       env=pbGetEnvironment()
       maps=[1,54,55,90]   # Map IDs for sandy form
+	    next 3 if pokemon.form==3
       if !pbGetMetadata($game_map.map_id,MetadataOutdoor)
         next 2 # Trash Cloak
       elsif env==PBEnvironment::Sand ||
@@ -741,7 +743,7 @@ MultipleForms.register(:BURMY,{
       end
     },
     "getMoveList"=>proc{|pokemon|
-      next if pokemon.form==0      # Use default moveset for base form
+      next if pokemon.form!=3      # Use default moveset for base form
       movelist=[]
       case pokemon.form            # Mystic
       when 3 ; movelist=[[1,:DEFENSECURL],[10,:ROLLOUT],[15,:SILVERWIND],[20,:HEADBUTT]]
@@ -767,6 +769,7 @@ MultipleForms.register(:BURMY,{
 MultipleForms.register(:WORMADAM,{
     "getFormOnCreation"=>proc{|pokemon|
       env=pbGetEnvironment()
+	  next 3 if pokemon.form==3
       if !pbGetMetadata($game_map.map_id,MetadataOutdoor)
         next 2 # Trash Cloak
       elsif env==PBEnvironment::Sand || env==PBEnvironment::Rock ||
