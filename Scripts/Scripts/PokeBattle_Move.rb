@@ -208,6 +208,15 @@ class PokeBattle_Move
     end
   end
 
+  def pbRecoilDamage(attacker,damage)
+    return 0 if damage<=0
+    return 0 if $fefieldeffect == 1
+    if @battle.field.effects[PBEffects::ElectricTerrain]>0
+      return (damage/2).floor
+    end
+    return damage
+  end
+
   def pbTargetsAll?(attacker)
     if @target==PBTargets::AllOpposing 
       # TODO: should apply even if partner faints during an attack
@@ -4144,6 +4153,13 @@ class PokeBattle_Move
     if opponent.hasWorkingAbility(:ARMORTAIL) && !opponent.moldbroken && @basedamage>0
       if self.priority>0 || attacker.effects[PBEffects::TwoTurnAttack]>0
         damage=(damage*0.5).round
+      end
+    end
+    if @battle.field.effects[PBEffects::PsychicTerrain]>0 && $fefieldeffect!=37 && @basedamage>0
+      if self.priority>0
+        damage=(damage*0.5).round
+        @battle.pbDisplay(_INTL("The Psychic Terrain weakened the attack!",opponent.pbThis)) if $feshutup2 == 0
+        $feshutup2+=1
       end
     end
     # Custom Overlay Terrains

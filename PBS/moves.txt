@@ -995,7 +995,7 @@
 977,TWINBEAM,Twin Beam,0BD,40,PSYCHIC,Special,100,10,0,00,0,ben,"Hits twice. Beam."
 978,AQUACUTTER,Aqua Cutter,000,70,WATER,Physical,100,10,0,00,0,abefh,"+1 Crit. Slashing."
 979,HYPERDRILL,Hyper Drill,0AD,100,NORMAL,Physical,100,5,0,00,0,aef,"The user spins the pointed part of its body at high speed to pierce the target. Ignores protecting moves."
-980,SILKTRAP,Silk Trap,252,0,BUG,Status,0,5,0,20,4,,"The user spins a silken trap, protecting itself from damage while lowering the Speed stat of any attacker that makes direct contact."
+980,SILKTRAP,Silk Trap,594,0,BUG,Status,0,5,0,20,4,,"The user spins a silken trap, protecting itself from damage while lowering the Speed stat of any attacker that makes direct contact."
 981,TIDYUP,Tidy Up,259,0,NORMAL,Status,0,5,0,20,0,,"The user tidies up and removes all entry hazards and Substitute. Also boosts the user's Attack and Speed stats."
 982,RUINATION,Ruination,06C,1,DARK,Special,90,10,0,00,0,be,"The user summons a ruinous disaster. This cuts the target's HP in half."
 983,COLLISIONCOURSE,Collision Course,260,100,FIGHTING,Physical,100,5,0,00,0,abef,"The user crashes to the ground, causing a massive explosion. Deals more damage if it's a supereffective hit."

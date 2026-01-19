@@ -55,6 +55,15 @@ class PokemonMartAdapter
   end
 
   def addItem(item)
+    current_qty=$PokemonBag.pbQuantity(item)
+    if current_qty>=BAGMAXPERSLOT
+      $PokemonGlobal.pcItemStorage=PCItemStorage.new if !$PokemonGlobal.pcItemStorage
+      if $PokemonGlobal.pcItemStorage.pbStoreItem(item,1)
+        Kernel.pbMessage(_INTL("{1} sent the {2} to the PC storage.",$Trainer.name,PBItems.getName(item)))
+        return true
+      end
+      return false
+    end
     return $PokemonBag.pbStoreItem(item)
   end
 

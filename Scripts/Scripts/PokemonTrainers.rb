@@ -393,11 +393,16 @@ def pbStartTrainerRematch(rematch)
   endspeech=_INTL("...")
   field=pbTrainerRematchField(rematch)
   $game_variables[708] = field ? field : 0
-  if rematch[3]=="double" && rematch[4]
-    pbDoubleTrainerBattle(rematch[0],rematch[1],rematch[2],endspeech,
-                          rematch[4],rematch[5],rematch[6],endspeech)
-  else
-    pbTrainerBattle(rematch[0],rematch[1],endspeech,false,rematch[2])
+  $PokemonTemp.trainer_rematch_battle = true if $PokemonTemp
+  begin
+    if rematch[3]=="double" && rematch[4]
+      pbDoubleTrainerBattle(rematch[0],rematch[1],rematch[2],endspeech,
+                            rematch[4],rematch[5],rematch[6],endspeech,true)
+    else
+      pbTrainerBattle(rematch[0],rematch[1],endspeech,false,rematch[2],true)
+    end
+  ensure
+    $PokemonTemp.trainer_rematch_battle = false if $PokemonTemp
   end
 end
 
@@ -610,6 +615,7 @@ def pbDoubleTrainerBattle(trainerid1, trainername1, trainerparty1, endspeech1,
            Graphics.update
          end
          PokemonSelection.restore
+         pbMapInterpreter.command_end if $PokemonTemp&.trainer_rematch_battle && pbMapInterpreterRunning?
        else
          $game_system.bgm_unpause
          $game_system.bgs_unpause
@@ -795,13 +801,14 @@ def pbTrainerBattle(trainerid,trainername,endspeech,
       end
     end
     if decision==2 || decision==5
-      if canlose
-        for i in $Trainer.party; i.heal; end
-        for i in 0...10
-          Graphics.update
-        end
-        PokemonSelection.restore
-      else
+     if canlose
+       for i in $Trainer.party; i.heal; end
+       for i in 0...10
+         Graphics.update
+       end
+       PokemonSelection.restore
+        pbMapInterpreter.command_end if $PokemonTemp&.trainer_rematch_battle && pbMapInterpreterRunning?
+     else
         $game_system.bgm_unpause if $game_switches[2100] != true #don't stop the music switch
         $game_system.bgs_unpause if $game_switches[2100] != true #don't stop the music switch
         #EXTREMELY CLUNKY PICTURE FIX
