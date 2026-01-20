@@ -56,7 +56,7 @@ class PBEvolution
      1,1,1,1,1,    # Silcoon, Cascoon, Ninjask, Shedinja, Beauty
      2,2,2,2,3,    # ItemMale, ItemFemale, DayHoldItem, NightHoldItem, HasMove
      4,1,1,1,4,    # HasInParty, LevelMale, LevelFemale, Location, TradeSpecies
-     1,1,1,1,1,1,1,2,2 # BadInfluence to HoldItem
+     1,1,1,1,1,1,1,1,2 # BadInfluence to HoldItem
   ]
 end
 

@@ -2357,6 +2357,15 @@ def pbEachNonEggPokemon
   }
 end
 
+def pbApplyMysticGimmighoulProgress(variable_value)
+  return if !$PokemonStorage
+  pbEachPokemon{|pokemon,_box|
+    next if !pokemon
+    next if !pokemon.respond_to?(:applyMysticGimmighoulProgress)
+    pokemon.applyMysticGimmighoulProgress(variable_value)
+  }
+end
+
 # Choose a Pokémon/egg from the party.
 # Stores result in variable _variableNumber_ and the chosen Pokémon's name in
 # variable _nameVarNumber_; result is -1 if no Pokémon was chosen

@@ -32,7 +32,11 @@ class Game_Variables
   def []=(variable_id, value)
     variable_id = Variables[variable_id] if variable_id.is_a?(Symbol)
     if variable_id <= 5000
+      old_value = @data[variable_id] || 0
       @data[variable_id] = value
+      if variable_id == 695 && value.to_i > old_value.to_i && defined?(pbApplyMysticGimmighoulProgress)
+        pbApplyMysticGimmighoulProgress(value)
+      end
     end
   end
 end
