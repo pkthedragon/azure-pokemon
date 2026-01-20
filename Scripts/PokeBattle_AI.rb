@@ -5485,6 +5485,36 @@ class PokeBattle_Battle
         miniscore/=100.0
         score*=miniscore if !hasgreatmoves(initialscores,scoreindex,skill,true)
       end
+    when 0xC8 # Demoralize
+      if !opponent.pbCanCrush?(false)
+        if move.basedamage==0
+          score=0
+        end
+      else
+        miniscore=100
+        livecount=0
+        for mon in pbParty(opponent.index)
+          next if mon.nil?
+          livecount+=1 if mon.hp>0
+        end
+        miniscore*=1.2 if livecount>1
+        miniscore*=unsetupminiscore(attacker,opponent,skill,move,roles,2,true,false,initialscores,scoreindex)
+        if move.basedamage>0
+          miniscore-=100
+          if move.addlEffect.to_f != 100
+            miniscore*=(move.addlEffect.to_f/100)
+            if (!attacker.abilitynulled && attacker.ability == PBAbilities::SERENEGRACE)
+              miniscore*=2
+            end
+          end
+          miniscore+=100
+          miniscore/=100.0
+          score*=miniscore if !(!attacker.abilitynulled && attacker.ability == PBAbilities::SHEERFORCE) && !hasgreatmoves(initialscores,scoreindex,skill,true)
+        else
+          miniscore/=100.0
+          score*=miniscore
+        end
+      end
     when 0x44 # Rock Tomb / Bulldoze / Glaciate 
       if ((pbRoughStat(opponent,PBStats::SPEED,skill)<attacker.pbSpeed) ^ (@trickroom!=0)) || opponent.stages[PBStats::SPEED]>0 || !opponent.pbCanReduceStatStage?(PBStats::SPEED)
         if move.basedamage==0
@@ -14503,103 +14533,98 @@ class PokeBattle_Battle
       end
     when 0x113 # Spit Up
       startscore = score
-      if attacker.effects[PBEffects::Stockpile]==0
-        score*=0
+      has_stockpile = (attacker.effects[PBEffects::Stockpile] > 0)
+      score*=0.7 if !has_stockpile
+      score+=60 if (!attacker.abilitynulled && attacker.ability == PBAbilities::ACCUMULATION)
+      score*=0.8
+      if roles.include?(PBMonRoles::PHYSICALWALL) || roles.include?(PBMonRoles::SPECIALWALL)
+        score*=0.7
+      end
+      if roles.include?(PBMonRoles::TANK)
+        score*=0.9
+      end
+      count=0
+      for m in attacker.moves
+        count+=1 if m.basedamage>0
+      end
+      if count>1
+        score*=0.5
+      end
+      if opponent.pbNonActivePokemonCount==0
+        score*=0.7
       else
-        score+=60 if (!attacker.abilitynulled && attacker.ability == PBAbilities::ACCUMULATION)
+        score*=1.2
+      end
+      if startscore < 110
+        score*=0.5
+      else
+        score*=1.3
+      end
+      if (attacker.pbSpeed<pbRoughStat(opponent,PBStats::SPEED,skill)) ^ (@trickroom!=0)
+        score*=1.1
+      else
         score*=0.8
-        if roles.include?(PBMonRoles::PHYSICALWALL) || roles.include?(PBMonRoles::SPECIALWALL)
-          score*=0.7
-        end
-        if roles.include?(PBMonRoles::TANK)
-          score*=0.9
-        end
-        count=0
-        for m in attacker.moves
-          count+=1 if m.basedamage>0
-        end
-        if count>1
-          score*=0.5
-        end
-        if opponent.pbNonActivePokemonCount==0
-          score*=0.7
-        else
-          score*=1.2
-        end
-        if startscore < 110
-          score*=0.5
-        else
-          score*=1.3
-        end
-        if (attacker.pbSpeed<pbRoughStat(opponent,PBStats::SPEED,skill)) ^ (@trickroom!=0)
-          score*=1.1
-        else
+      end
+      if attacker.pbHasMove?(getID(PBMoves,:SWALLOW))
+        if attacker.hp/(attacker.totalhp).to_f < 0.66
           score*=0.8
-        end
-        if attacker.pbHasMove?(getID(PBMoves,:SWALLOW))
-          if attacker.hp/(attacker.totalhp).to_f < 0.66
-            score*=0.8
-            if attacker.hp/(attacker.totalhp).to_f < 0.4
-              score*=0.5
-            end
+          if attacker.hp/(attacker.totalhp).to_f < 0.4
+            score*=0.5
           end
         end
       end
     when 0x114 # Swallow
       startscore = score
-      if attacker.effects[PBEffects::Stockpile]==0
-        score*=0
+      has_stockpile = (attacker.effects[PBEffects::Stockpile] > 0)
+      score+=10 if has_stockpile
+      score*=0.8
+      if roles.include?(PBMonRoles::PHYSICALWALL) || roles.include?(PBMonRoles::SPECIALWALL)
+        score*=0.9
+      end
+      if roles.include?(PBMonRoles::TANK)
+        score*=0.9
+      end
+      count=0
+      for m in attacker.moves
+        count+=1 if m.isHealingMove?
+      end
+      if count>1
+        score*=0.5
+      end
+      if (attacker.pbSpeed<pbRoughStat(opponent,PBStats::SPEED,skill)) ^ (@trickroom!=0)
+        score*=1.1
       else
-        score+= 10*attacker.effects[PBEffects::Stockpile]
         score*=0.8
-        if roles.include?(PBMonRoles::PHYSICALWALL) || roles.include?(PBMonRoles::SPECIALWALL)
-          score*=0.9
-        end
-        if roles.include?(PBMonRoles::TANK)
-          score*=0.9
-        end
-        count=0
-        for m in attacker.moves
-          count+=1 if m.isHealingMove?
-        end
-        if count>1
-          score*=0.5
-        end
-        if (attacker.pbSpeed<pbRoughStat(opponent,PBStats::SPEED,skill)) ^ (@trickroom!=0)
-          score*=1.1
-        else
-          score*=0.8
-        end
-        if checkAIdamage(aimem,attacker,opponent,skill)>attacker.hp
+      end
+      if checkAIdamage(aimem,attacker,opponent,skill)>attacker.hp
+        score*=2
+      elsif checkAIdamage(aimem,attacker,opponent,skill)*1.5 > attacker.hp
+        score*=1.5
+      end
+      if (attacker.pbSpeed<pbRoughStat(opponent,PBStats::SPEED,skill)) ^ (@trickroom!=0)
+        if checkAIdamage(aimem,attacker,opponent,skill)*2 > attacker.hp
           score*=2
-        elsif checkAIdamage(aimem,attacker,opponent,skill)*1.5 > attacker.hp
-          score*=1.5
+        else
+          score*=0.2
         end
-        if (attacker.pbSpeed<pbRoughStat(opponent,PBStats::SPEED,skill)) ^ (@trickroom!=0)
-          if checkAIdamage(aimem,attacker,opponent,skill)*2 > attacker.hp
-            score*=2
-          else
-            score*=0.2
-          end
-        end
-        if opponent.effects[PBEffects::Taunt]==0
-          score*=0.7 if opponent.moves.any? {|moveloop| (PBStuff::SETUPMOVE).include?(moveloop.id)}
-        end
-        if attacker.hp*2 < attacker.totalhp
-          score*=1.5
-        end
-        if attacker.status==PBStatuses::BURN || attacker.status==PBStatuses::POISON || attacker.effects[PBEffects::Curse] || attacker.effects[PBEffects::LeechSeed]>=0
+      end
+      if opponent.effects[PBEffects::Taunt]==0
+        score*=0.7 if opponent.moves.any? {|moveloop| (PBStuff::SETUPMOVE).include?(moveloop.id)}
+      end
+      if attacker.hp*2 < attacker.totalhp
+        score*=1.5
+      end
+      if attacker.status==PBStatuses::BURN || attacker.status==PBStatuses::POISON || attacker.effects[PBEffects::Curse] || attacker.effects[PBEffects::LeechSeed]>=0
+        score*=1.3
+        if attacker.effects[PBEffects::Toxic]>0
           score*=1.3
-          if attacker.effects[PBEffects::Toxic]>0
-            score*=1.3
-          end
         end
-        if opponent.effects[PBEffects::HyperBeam]>0
-          score*=1.2
-        end
-        if attacker.hp/(attacker.totalhp.to_f) > 0.8
-          score*=0
-        end
+      end
+      if opponent.effects[PBEffects::HyperBeam]>0
+        score*=1.2
+      end
+      if attacker.hp/(attacker.totalhp.to_f) > 0.8
+        score*=0
       end
     when 0x115 # Focus Punch
       startscore=score
@@ -20382,7 +20407,11 @@ class PokeBattle_Battle
     if move.id < 1000
       PBDebug.log(sprintf("%s: final score: %d",PBMoves.getName(move.id),score)) if $INTERNAL && shutup==false
     else
-      PBDebug.log(sprintf("%s: final score: %d",attacker.moves[4].name,score)) if $INTERNAL && shutup==false
+      move_name=nil
+      move_name=move.name if move.respond_to?(:name)
+      move_name=attacker.moves[4].name if !move_name && attacker.moves[4]
+      move_name=PBMoves.getName(move.id) if !move_name
+      PBDebug.log(sprintf("%s: final score: %d",move_name,score)) if $INTERNAL && shutup==false
     end
     PBDebug.log(sprintf(" ")) if $INTERNAL && shutup==false
     return score
