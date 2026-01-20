@@ -32,7 +32,8 @@ class PBEvolution
   LevelNight     = 30
   BattleCrits    = 31
   Custom7        = 32
-  GimmiCoin        = 33
+  GimmiCoin      = 33
+  HoldItem       = 34
 
   EVONAMES=["Unknown",
      "Happiness","HappinessDay","HappinessNight","Level","Trade",
@@ -41,7 +42,7 @@ class PBEvolution
      "ItemMale","ItemFemale","DayHoldItem","NightHoldItem","HasMove",
      "HasInParty","LevelMale","LevelFemale","Location","TradeSpecies",
      "BadInfluence","Affection","LevelRain","LevelDay","LevelNight","BattleCrits","Custom7",
-     "GimmiCoin"]
+     "GimmiCoin","HoldItem"]
 
   # 0 = no parameter
   # 1 = Positive integer
@@ -55,7 +56,7 @@ class PBEvolution
      1,1,1,1,1,    # Silcoon, Cascoon, Ninjask, Shedinja, Beauty
      2,2,2,2,3,    # ItemMale, ItemFemale, DayHoldItem, NightHoldItem, HasMove
      4,1,1,1,4,    # HasInParty, LevelMale, LevelFemale, Location, TradeSpecies
-     1,1,1,1,1,1,2 # Custom 1-8
+     1,1,1,1,1,1,1,2,2 # BadInfluence to HoldItem
   ]
 end
 
@@ -802,6 +803,8 @@ def pbMiniCheckEvolution(pokemon,evonib,level,poke)
       return poke if pokemon.item==level && PBDayNight.isDay?(pbGetTimeNow)
     when PBEvolution::NightHoldItem
       return poke if pokemon.item==level && PBDayNight.isNight?(pbGetTimeNow)
+    when PBEvolution::HoldItem
+      return poke if pokemon.item==level
     when PBEvolution::HasMove
       for i in 0...4
         if pokemon.moves[i].id==level

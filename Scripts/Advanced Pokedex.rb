@@ -298,7 +298,7 @@ class AdvancedPokedexScene
       when 1; _INTL("{1} when happy",evoPokemon)
       when 2; _INTL("{1} when happy at day",evoPokemon)
       when 3; _INTL("{1} when happy at night",evoPokemon)
-      when 4, 13, 34;_INTL("{1} at level {2}",
+      when 4, 13;_INTL("{1} at level {2}",
           evoPokemon,evoItem) # Pokémon that evolve by level AND Ninjask
       when 5; _INTL("{1} trading",evoPokemon)
       when 6; _INTL("{1} trading holding {2}",
@@ -323,6 +323,8 @@ class AdvancedPokedexScene
       when 18;_INTL("{1} holding {2} at day",
           evoPokemon,PBItems.getName(evoItem))
       when 19;_INTL("{1} holding {2} at night",
+          evoPokemon,PBItems.getName(evoItem))
+      when 34;_INTL("{1} holding {2}",
           evoPokemon,PBItems.getName(evoItem))
       when 20;_INTL("{1} when has move {2}",
           evoPokemon,PBMoves.getName(evoItem))

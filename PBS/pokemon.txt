@@ -1105,7 +1105,7 @@ Pokedex=Its fangs puncture even thick hide. It loves to feast on the blood of pe
 BattlerPlayerY=19
 BattlerEnemyY=13
 BattlerAltitude=12
-Evolutions=CROBAT,Happiness,0
+Evolutions=CROBAT,Level,38
 [43]
 Name=Oddish
 InternalName=ODDISH
@@ -2994,7 +2994,7 @@ Pokedex=Chansey lay nutritionally excellent eggs every day. The eggs are so deli
 BattlerPlayerY=25
 BattlerEnemyY=20
 BattlerAltitude=0
-Evolutions=BLISSEY,Happiness,0
+Evolutions=BLISSEY,Level,40
 [114]
 Name=Tangela
 InternalName=TANGELA
@@ -3519,7 +3519,7 @@ Pokedex=An Eevee has an unstable genetic makeup that suddenly mutates due to its
 BattlerPlayerY=24
 BattlerEnemyY=20
 BattlerAltitude=0
-Evolutions=VAPOREON,Item,WATERSTONE,JOLTEON,Item,THUNDERSTONE,FLAREON,Item,FIRESTONE,LEAFEON,Item,LEAFSTONE,GLACEON,Item,ICESTONE,LEAFEON,Location,543,GLACEON,Location,269,SYLVEON,Affection,18,ESPEON,HappinessDay,0,UMBREON,HappinessNight,0
+Evolutions=VAPOREON,Item,WATERSTONE,JOLTEON,Item,THUNDERSTONE,FLAREON,Item,FIRESTONE,LEAFEON,Item,LEAFSTONE,GLACEON,Item,ICESTONE,LEAFEON,Location,543,GLACEON,Location,269,SYLVEON,Item,SHINYSTONE,ESPEON,Item,SUNSTONE,UMBREON,Item,MOONSTONE
 [134]
 Name=Vaporeon
 InternalName=VAPOREON
@@ -4543,7 +4543,7 @@ Pokedex=It is still inept at retaining electricity. When it is startled, it disc
 BattlerPlayerY=29
 BattlerEnemyY=24
 BattlerAltitude=0
-Evolutions=PIKACHU,Happiness,0
+Evolutions=PIKACHU,Level,15
 [173]
 Name=Cleffa
 InternalName=CLEFFA
@@ -4570,7 +4570,7 @@ Pokedex=On nights with many shooting stars,Cleffa can be seen dancing in a ring.
 BattlerPlayerY=34
 BattlerEnemyY=29
 BattlerAltitude=0
-Evolutions=CLEFAIRY,Happiness,0
+Evolutions=CLEFAIRY,Level,15
 [174]
 Name=Igglybuff
 InternalName=IGGLYBUFF
@@ -4598,7 +4598,7 @@ Pokedex=Its soft and pliable body is very bouncy. When it sings continuously wit
 BattlerPlayerY=32
 BattlerEnemyY=27
 BattlerAltitude=0
-Evolutions=JIGGLYPUFF,Happiness,0
+Evolutions=JIGGLYPUFF,Level,15
 [175]
 Name=Togepi
 InternalName=TOGEPI
@@ -4625,7 +4625,7 @@ Pokedex=As its energy, it uses the positive feelings exuded by people and Pokém
 BattlerPlayerY=32
 BattlerEnemyY=28
 BattlerAltitude=0
-Evolutions=TOGETIC,Happiness,0
+Evolutions=TOGETIC,Level,15
 [176]
 Name=Togetic
 InternalName=TOGETIC
@@ -7878,7 +7878,7 @@ Pokedex=Its tail, which is packed with nutrition, is very bouncy like a rubber b
 BattlerPlayerY=26
 BattlerEnemyY=22
 BattlerAltitude=0
-Evolutions=MARILL,Happiness,0
+Evolutions=MARILL,Item,WATERSTONE
 [299]
 Name=Nosepass
 InternalName=NOSEPASS
@@ -10709,7 +10709,7 @@ Pokedex=Over the winter, it closes its bud and endures the cold. In spring, the 
 BattlerPlayerY=28
 BattlerEnemyY=20
 BattlerAltitude=0
-Evolutions=ROSELIA,HappinessDay,0
+Evolutions=ROSELIA,HoldItem,POISONBARB
 [407]
 Name=Roserade
 InternalName=ROSERADE
@@ -11239,7 +11239,7 @@ Pokedex=It slams foes by sharply uncoiling its rolled ears. It stings enough to 
 BattlerPlayerY=23
 BattlerEnemyY=9
 BattlerAltitude=0
-Evolutions=LOPUNNY,Happiness,0
+Evolutions=LOPUNNY,HasMove,JUMPKICK
 [428]
 Name=Lopunny
 InternalName=LOPUNNY
@@ -11726,7 +11726,7 @@ Pokedex=It wolfs down its weight in food once a day, swallowing food whole with 
 BattlerPlayerY=25
 BattlerEnemyY=19
 BattlerAltitude=0
-Evolutions=SNORLAX,Happiness,0
+Evolutions=SNORLAX,Level,40
 [447]
 Name=Riolu
 InternalName=RIOLU
@@ -13735,7 +13735,7 @@ Rareness=190
 Happiness=70
 Abilities=UNAWARE,KLUTZ
 HiddenAbility=SIMPLE
-Moves=1,CONFUSION,4,ODORSLEUTH,8,GUST,12,ASSURANCE,15,HEARTSTAMP,19,IMPRISON,21,AIRCUTTER,25,ENCHANT,29,AMNESIA,32,AIRSLASH,36,PSYSHOCK,41,PSYCHIC,47,ENDEAVOR,51,CALMMIND,55,SIMPLEBEAM
+Moves=1,CONFUSION,4,ODORSLEUTH,8,GUST,12,ASSURANCE,15,IMPRISON,19,HEARTSTAMP,21,AIRCUTTER,25,ENCHANT,29,AMNESIA,32,AIRSLASH,36,PSYSHOCK,41,PSYCHIC,47,ENDEAVOR,51,CALMMIND,55,SIMPLEBEAM
 EggMoves=CAPTIVATE,CHARM,FAKETEARS,FLATTER,HELPINGHAND,KNOCKOFF,PSYCHOSHIFT,ROOST,STOREDPOWER,SUPERSONIC,SYNCHRONOISE,VENOMDRENCH
 Compatibility=Flying,Field
 StepsToHatch=5120
@@ -13747,7 +13747,7 @@ Pokedex=Suction from its nostrils enables it to stick to cave walls during sleep
 BattlerPlayerY=30
 BattlerEnemyY=25
 BattlerAltitude=5
-Evolutions=SWOOBAT,Happiness,0
+Evolutions=SWOOBAT,HasMove,HEARTSTAMP
 [528]
 Name=Swoobat
 InternalName=SWOOBAT
@@ -13762,7 +13762,7 @@ Rareness=45
 Happiness=70
 Abilities=UNAWARE,KLUTZ
 HiddenAbility=SIMPLE
-Moves=1,CONFUSION,1,ODORSLEUTH,1,GUST,1,ASSURANCE,4,ODORSLEUTH,8,GUST,12,ASSURANCE,15,HEARTSTAMP,19,IMPRISON,21,AIRCUTTER,25,ENCHANT,29,AMNESIA,32,AIRSLASH,36,PSYSHOCK,41,PSYCHIC,47,ENDEAVOR,51,CALMMIND,55,SIMPLEBEAM
+Moves=1,CONFUSION,1,ODORSLEUTH,1,GUST,1,ASSURANCE,4,ODORSLEUTH,8,GUST,12,ASSURANCE,15,IMPRISON,19,HEARTSTAMP,21,AIRCUTTER,25,ENCHANT,29,AMNESIA,32,AIRSLASH,36,PSYSHOCK,41,PSYCHIC,47,ENDEAVOR,51,CALMMIND,55,SIMPLEBEAM
 Compatibility=Flying,Field
 StepsToHatch=5120
 Height=0.9
@@ -14101,7 +14101,7 @@ Pokedex=It protects itself from the cold by wrapping up in leaves. It stays on t
 BattlerPlayerY=24
 BattlerEnemyY=33
 BattlerAltitude=0
-Evolutions=LEAVANNY,Happiness,0
+Evolutions=LEAVANNY,Item,LEAFSTONE
 [542]
 Name=Leavanny
 InternalName=LEAVANNY
@@ -19981,7 +19981,7 @@ Pokedex=Due to the danger that this synthetic Pokémon may go on a rampage, it w
 BattlerPlayerY=8
 BattlerEnemyY=15
 BattlerAltitude=0
-Evolutions=SILVALLY,Happiness,0
+Evolutions=SILVALLY,TradeItem,UPGRADE
 [773]
 Name=Silvally
 InternalName=SILVALLY
@@ -22499,7 +22499,7 @@ Pokedex=It eats snow that piles up on the ground. The more snow it eats, the big
 BattlerPlayerY=21
 BattlerEnemyY=26
 BattlerAltitude=0
-Evolutions=FROSMOTH,HappinessNight,0
+Evolutions=FROSMOTH,Item,ICESTONE
 [873]
 Name=Frosmoth
 InternalName=FROSMOTH
@@ -23540,7 +23540,6 @@ Kind=Duckling
 Pokedex=This Pokémon migrated to Paldea from distant lands long ago. The gel secreted by its feathers repels water and grime.
 BattlerPlayerY =
 BattlerEnemyY =
-BattlerAltitude =
 Evolutions=QUAXWELL,Level,16
 #-------------------------------
 BattlerAltitude=0
@@ -23568,7 +23567,6 @@ Kind=Practicing
 Pokedex=These Pokémon constantly run through shallow waters to train their legs, then compete with each other to see which of them kicks most gracefully.
 BattlerPlayerY =
 BattlerEnemyY =
-BattlerAltitude =
 Evolutions=QUAQUAVAL,Level,36
 #-------------------------------
 BattlerAltitude=0
@@ -23794,7 +23792,6 @@ Kind=Mouse
 Pokedex=It has underdeveloped electric sacs on its cheeks. These sacs can produce electricity only if Pawmi rubs them furiously with the pads on its forepaws.
 BattlerPlayerY =
 BattlerEnemyY =
-BattlerAltitude =
 Evolutions=PAWMO,Level,18
 #-------------------------------
 BattlerAltitude=0
@@ -23823,7 +23820,6 @@ Kind=Mouse
 Pokedex=When its group is attacked, Pawmo is the first to leap into battle, defeating enemies with a fighting technique that utilizes electric shocks.
 BattlerPlayerY =
 BattlerEnemyY =
-BattlerAltitude =
 Evolutions=PAWMOT,Item,THUNDERSTONE
 #-------------------------------
 BattlerAltitude=0
@@ -23852,7 +23848,6 @@ Kind=Hands-On
 Pokedex=This Pokémon normally is slow to react, but once it enters battle, it will strike down its enemies with lightning-fast movements.
 BattlerPlayerY =
 BattlerEnemyY =
-BattlerAltitude =
 Evolutions =
 #-------------------------------
 BattlerAltitude=0
@@ -23881,7 +23876,6 @@ Kind=Couple
 Pokedex=Exhibiting great teamwork, they use their incisors to cut pieces out of any material that might be useful for a nest, then make off with them.
 BattlerPlayerY =
 BattlerEnemyY =
-BattlerAltitude =
 Evolutions=MAUSHOLD,Level,25
 #-------------------------------
 BattlerAltitude=0
@@ -23910,7 +23904,6 @@ Pokedex=They build huge nests with many rooms that are used for different purpos
 FormName=Family of Four
 BattlerPlayerY =
 BattlerEnemyY =
-BattlerAltitude =
 Evolutions =
 #-------------------------------
 BattlerAltitude=0
@@ -23939,7 +23932,6 @@ Kind=Puppy
 Pokedex=This Pokémon is smooth and moist to the touch. Yeast in Fidough’s breath induces fermentation in the Pokémon’s vicinity.
 BattlerPlayerY =
 BattlerEnemyY =
-BattlerAltitude =
 Evolutions=DACHSBUN,Level,26
 #-------------------------------
 BattlerAltitude=0
@@ -23967,7 +23959,6 @@ Kind=Dog
 Pokedex=The pleasant aroma that emanates from this Pokémon’s body helps wheat grow, so Dachsbun has been treasured by farming villages.
 BattlerPlayerY =
 BattlerEnemyY =
-BattlerAltitude =
 Evolutions =
 #-------------------------------
 BattlerAltitude=0
@@ -23997,7 +23988,6 @@ Kind=Olive
 Pokedex=It protects itself from enemies by emitting oil from the fruit on its head. This oil is bitter and astringent enough to make someone flinch.
 BattlerPlayerY =
 BattlerEnemyY =
-BattlerAltitude =
 Evolutions=DOLLIV,Level,25
 #-------------------------------
 BattlerAltitude=0
@@ -24054,7 +24044,6 @@ Kind=Olive
 Pokedex=This calm Pokémon is very compassionate. It will share its delicious, nutrient-rich oil with weakened Pokémon.
 BattlerPlayerY =
 BattlerEnemyY =
-BattlerAltitude =
 Evolutions =
 #-------------------------------
 BattlerAltitude=0
@@ -24085,7 +24074,6 @@ Pokedex=These Pokémon prefer to live in cities. They form flocks based on the c
 FormName=Green Plumage
 BattlerPlayerY =
 BattlerEnemyY =
-BattlerAltitude =
 Evolutions=
 #-------------------------------
 BattlerAltitude=0
@@ -24114,7 +24102,6 @@ Kind=Rock Salt
 Pokedex=It was born in a layer of rock salt deep under the earth. This species was particularly treasured in the old days, as they would share precious salt.
 BattlerPlayerY =
 BattlerEnemyY =
-BattlerAltitude =
 Evolutions=NACLSTACK,Level,24
 #-------------------------------
 BattlerAltitude=0
@@ -24142,7 +24129,6 @@ Kind=Rock Salt
 Pokedex=This Pokémon dry cures its prey by spraying salt over them. The curing process steals away the water in the prey’s body.
 BattlerPlayerY =
 BattlerEnemyY =
-BattlerAltitude =
 Evolutions=GARGANACL,Level,38
 #-------------------------------
 BattlerAltitude=0
@@ -24170,7 +24156,6 @@ Kind=Rock Salt
 Pokedex=Garganacl will rub its fingertips together and sprinkle injured Pokémon with salt. Even severe wounds will promptly heal afterward.
 BattlerPlayerY =
 BattlerEnemyY =
-BattlerAltitude =
 Evolutions =
 #-------------------------------
 BattlerAltitude=0
@@ -24199,7 +24184,6 @@ Kind=Fire Child
 Pokedex=Burnt charcoal came to life and became a Pokémon. Possessing a fiery fighting spirit, Charcadet will battle even tough opponents.
 BattlerPlayerY =
 BattlerEnemyY =
-BattlerAltitude =
 Evolutions=ARMAROUGE,Item,AUSPICIOUSARMOR,CERULEDGE,Item,MALICIOUSARMOR
 #-------------------------------
 BattlerAltitude=0
@@ -24228,7 +24212,6 @@ Kind=Fire Warrior
 Pokedex=Armarouge evolved through the use of a set of armor that belonged to a distinguished warrior. This Pokémon is incredibly loyal.
 BattlerPlayerY =
 BattlerEnemyY =
-BattlerAltitude =
 Evolutions =
 #-------------------------------
 BattlerAltitude=0
@@ -24257,7 +24240,6 @@ Kind=Fire Blades
 Pokedex=The fiery blades on its arms burn fiercely with the lingering resentment of a sword wielder who fell before accomplishing their goal.
 BattlerPlayerY =
 BattlerEnemyY =
-BattlerAltitude =
 Evolutions =
 #-------------------------------
 BattlerAltitude=0
@@ -24286,7 +24268,6 @@ Kind=EleTadpole
 Pokedex=Tadbulb shakes its tail to generate electricity. If it senses danger, it will make its head blink on and off to alert its allies.
 BattlerPlayerY =
 BattlerEnemyY =
-BattlerAltitude =
 Evolutions=BELLIBOLT,Item,THUNDERSTONE
 #-------------------------------
 BattlerAltitude=0
@@ -24314,7 +24295,6 @@ Kind=EleFrog
 Pokedex=When this Pokémon expands and contracts its wobbly body, the belly-button dynamo in its stomach produces a huge amount of electricity.
 BattlerPlayerY =
 BattlerEnemyY =
-BattlerAltitude =
 Evolutions =
 #-------------------------------
 BattlerAltitude=0
@@ -24344,7 +24324,6 @@ Kind=Storm Petrel
 Pokedex=When its wings catch the wind, the bones within produce electricity. This Pokémon dives into the ocean, catching prey by electrocuting them.
 BattlerPlayerY =
 BattlerEnemyY =
-BattlerAltitude =
 Evolutions=KILOWATTREL,Level,25
 #-------------------------------
 BattlerAltitude=0
@@ -24373,7 +24352,6 @@ Kind=Frigatebird
 Pokedex=Kilowattrel inflates its throat sac to amplify its electricity. By riding the wind, this Pokémon can fly over 430 miles in a day.
 BattlerPlayerY =
 BattlerEnemyY =
-BattlerAltitude =
 Evolutions =
 #-------------------------------
 BattlerAltitude=0
@@ -24402,7 +24380,6 @@ Kind=Rascal
 Pokedex=It always scowls in an attempt to make opponents take it seriously, but even crying children will burst into laughter when they see Maschiff’s face.
 BattlerPlayerY =
 BattlerEnemyY =
-BattlerAltitude =
 Evolutions=MABOSSTIFF,Level,30
 #-------------------------------
 BattlerAltitude=0
@@ -24430,7 +24407,6 @@ Kind=Boss
 Pokedex=This Pokémon can store energy in its large dewlap. Mabosstiff unleashes this energy all at once to blow away enemies.
 BattlerPlayerY =
 BattlerEnemyY =
-BattlerAltitude =
 Evolutions =
 #-------------------------------
 BattlerAltitude=0
@@ -24460,7 +24436,6 @@ Kind=Toxic Mouse
 Pokedex=Though usually a mellow Pokémon, it will sink its sharp, poison-soaked front teeth into any that anger it, causing paralysis in the object of its ire.
 BattlerPlayerY =
 BattlerEnemyY =
-BattlerAltitude =
 Evolutions=GRAFAIAI,Level,28
 #-------------------------------
 BattlerAltitude=0
@@ -24489,7 +24464,6 @@ Kind=Toxic Monkey
 Pokedex=The color of the poisonous saliva depends on what the Pokémon eats. Grafaiai covers its fingers in its saliva and draws patterns on trees in forests.
 BattlerPlayerY =
 BattlerEnemyY =
-BattlerAltitude =
 Evolutions =
 #-------------------------------
 BattlerAltitude=0
@@ -24519,7 +24493,6 @@ Kind=Tumbleweed
 Pokedex=A soul unable to move on to the afterlife was blown around by the wind until it got tangled up with dried grass and became a Pokémon.
 BattlerPlayerY =
 BattlerEnemyY =
-BattlerAltitude =
 Evolutions=BRAMBLEGHAST,Level,35
 #-------------------------------
 BattlerAltitude=0
@@ -24548,7 +24521,6 @@ Kind=Tumbleweed
 Pokedex=It will open the branches of its head to envelop its prey. Once it absorbs all the life energy it needs, it expels the prey and discards it.
 BattlerPlayerY =
 BattlerEnemyY =
-BattlerAltitude =
 Evolutions =
 #-------------------------------
 BattlerAltitude=0
@@ -24577,7 +24549,6 @@ Kind=Woodear
 Pokedex=Toedscool lives in muggy forests. The flaps that fall from its body are chewy and very delicious.
 BattlerPlayerY =
 BattlerEnemyY =
-BattlerAltitude =
 Evolutions=TOEDSCRUEL,Level,30
 #-------------------------------
 BattlerAltitude=0
@@ -24605,7 +24576,6 @@ Kind=Woodear
 Pokedex=These Pokémon gather into groups and form colonies deep within forests. They absolutely hate it when strangers approach.
 BattlerPlayerY =
 BattlerEnemyY =
-BattlerAltitude =
 Evolutions =
 #-------------------------------
 BattlerAltitude=0
@@ -24634,7 +24604,6 @@ Kind=Ambush
 Pokedex=Klawf hangs upside-down from cliffs, waiting for prey. But Klawf can’t remain in this position for long because its blood rushes to its head.
 BattlerPlayerY =
 BattlerEnemyY =
-BattlerAltitude =
 Evolutions =
 #-------------------------------
 BattlerAltitude=0
@@ -24663,7 +24632,6 @@ Kind=Spicy Pepper
 Pokedex=The more sunlight this Pokémon bathes in, the more spicy chemicals are produced by its body, and thus the spicier its moves become.
 BattlerPlayerY =
 BattlerEnemyY =
-BattlerAltitude =
 Evolutions=SCOVILLAIN,Item,FIRESTONE
 #-------------------------------
 BattlerAltitude=0
@@ -24692,7 +24660,6 @@ Kind=Spicy Pepper
 Pokedex=The red head converts spicy chemicals into fire energy and blasts the surrounding area with a super spicy stream of flame.
 BattlerPlayerY =
 BattlerEnemyY =
-BattlerAltitude =
 Evolutions=
 #-------------------------------
 BattlerAltitude=0
@@ -24721,7 +24688,6 @@ Kind=Rolling
 Pokedex=This Pokémon creates a mud ball by mixing sand and dirt with psychic energy. It treasures its mud ball more than its own life.
 BattlerPlayerY =
 BattlerEnemyY =
-BattlerAltitude =
 Evolutions=RABSCA,Level,25
 #-------------------------------
 BattlerAltitude=0
@@ -24750,7 +24716,6 @@ Kind=Rolling
 Pokedex=The body that supports the ball barely moves. Therefore, it is thought that the true body of this Pokémon is actually inside the ball.
 BattlerPlayerY =
 BattlerEnemyY =
-BattlerAltitude =
 Evolutions=
 #-------------------------------
 BattlerAltitude=0
@@ -24779,7 +24744,6 @@ Kind=Frill
 Pokedex=Flittle’s toes levitate about half an inch above the ground because of the psychic power emitted from the frills on the Pokémon’s belly.
 BattlerPlayerY =
 BattlerEnemyY =
-BattlerAltitude =
 Evolutions=ESPATHRA,Level,35
 #-------------------------------
 BattlerAltitude=0
@@ -24807,7 +24771,6 @@ Kind=Ostritch
 Pokedex=It immobilizes opponents by bathing them in psychic power from its large eyes. Despite its appearance, it has a vicious temperament.
 BattlerPlayerY =
 BattlerEnemyY =
-BattlerAltitude =
 Evolutions =
 #-------------------------------
 BattlerAltitude=0
@@ -24837,7 +24800,6 @@ Kind=Metalsmith
 Pokedex=It swings its handmade hammer around to protect itself, but the hammer is often stolen by Pokémon that eat metal.
 BattlerPlayerY =
 BattlerEnemyY =
-BattlerAltitude =
 Evolutions=TINKATUFF,Level,24
 #-------------------------------
 BattlerAltitude=0
@@ -24866,7 +24828,6 @@ Kind=Hammer
 Pokedex=This Pokémon will attack groups of Pawniard and Bisharp, gathering metal from them in order to create a large and sturdy hammer.
 BattlerPlayerY =
 BattlerEnemyY =
-BattlerAltitude =
 Evolutions=TINKATON,Level,38
 #-------------------------------
 BattlerAltitude=0
@@ -24895,7 +24856,6 @@ Kind=Hammer
 Pokedex=This intelligent Pokémon has a very daring disposition. It knocks rocks into the sky with its hammer, aiming for flying Corviknight.
 BattlerPlayerY =
 BattlerEnemyY =
-BattlerAltitude =
 Evolutions =
 #-------------------------------
 BattlerAltitude=0
@@ -24924,7 +24884,6 @@ Kind=Garden Eel
 Pokedex=This Pokémon can pick up the scent of a Veluza just over 65 feet away and will hide itself in the sand.
 BattlerPlayerY =
 BattlerEnemyY =
-BattlerAltitude =
 Evolutions=WUGTRIO,Level,26
 #-------------------------------
 BattlerAltitude=0
@@ -24952,7 +24911,6 @@ Kind=Garden Eel
 Pokedex=It has a vicious temperament, contrary to what its appearance may suggest. It wraps its long bodies around prey, then drags the prey into its den.
 BattlerPlayerY =
 BattlerEnemyY =
-BattlerAltitude =
 Evolutions =
 #-------------------------------
 BattlerAltitude=0
@@ -24982,7 +24940,6 @@ Kind=Item Drop
 Pokedex=It gathers things up in an apron made from shed feathers added to the Pokémon’s chest feathers, then drops those things from high places for fun.
 BattlerPlayerY =
 BattlerEnemyY =
-BattlerAltitude =
 Evolutions =
 #-------------------------------
 BattlerAltitude=0
@@ -25011,7 +24968,6 @@ Kind=Dolphin
 Pokedex=It likes playing with others of its kind using the water ring on its tail. It uses ultrasonic waves to sense the emotions of other living creatures.
 BattlerPlayerY =
 BattlerEnemyY =
-BattlerAltitude =
 Evolutions=PALAFIN,Trade,0
 #-------------------------------
 BattlerAltitude=0
@@ -25039,7 +24995,6 @@ Pokedex=This Pokémon changes its appearance if it hears its allies calling for 
 FormName=Zero
 BattlerPlayerY =
 BattlerEnemyY =
-BattlerAltitude =
 Evolutions =
 #-------------------------------
 BattlerAltitude=0
@@ -25069,7 +25024,6 @@ Kind=Single-Cyl
 Pokedex=It is said that this Pokémon was born when an unknown poison Pokémon entered and inspirited an engine left at a scrap-processing factory.
 BattlerPlayerY =
 BattlerEnemyY =
-BattlerAltitude =
 Evolutions=REVAVROOM,Level,40
 #-------------------------------
 BattlerAltitude=0
@@ -25098,7 +25052,6 @@ Kind=Muli-Cyl
 Pokedex=It creates a gas out of poison and minerals from rocks. It then detonates the gas in its cylinders— now numbering eight—to generate energy.
 BattlerPlayerY =
 BattlerEnemyY =
-BattlerAltitude =
 Evolutions =
 #-------------------------------
 BattlerAltitude=0
@@ -25128,7 +25081,6 @@ Kind=Mount
 Pokedex=Apparently Cyclizar has been allowing people to ride on its back since ancient times. Depictions of this have been found in 10,000-year-old murals.
 BattlerPlayerY =
 BattlerEnemyY =
-BattlerAltitude =
 Evolutions =
 #-------------------------------
 BattlerAltitude=0
@@ -25157,7 +25109,6 @@ Kind=Earthworm
 Pokedex=When attacked, this Pokémon will wield the tendrils on its body like fists and pelt the opponent with a storm of punches.
 BattlerPlayerY =
 BattlerEnemyY =
-BattlerAltitude =
 Evolutions =
 #-------------------------------
 BattlerAltitude=0
@@ -25187,7 +25138,6 @@ Kind=Ore
 Pokedex=It absorbs nutrients from cave walls. The petals it wears are made of crystallized poison.
 BattlerPlayerY =
 BattlerEnemyY =
-BattlerAltitude =
 Evolutions=GLIMMORA,Level,35
 #-------------------------------
 BattlerAltitude=0
@@ -25216,7 +25166,6 @@ Kind=Ore
 Pokedex=When this Pokémon detects danger, it will open up its crystalline petals and fire beams from its conical body.
 BattlerPlayerY =
 BattlerEnemyY =
-BattlerAltitude =
 Evolutions =
 #-------------------------------
 BattlerAltitude=0
@@ -25245,7 +25194,6 @@ Kind=Ghost Dog
 Pokedex=It is said that a dog Pokémon that died in the wild without ever interacting with a human was reborn as this Pokémon.
 BattlerPlayerY =
 BattlerEnemyY =
-BattlerAltitude =
 Evolutions=HOUNDSTONE,LevelNight,30
 #-------------------------------
 BattlerAltitude=0
@@ -25273,7 +25221,6 @@ Kind=Ghost Dog
 Pokedex=Houndstone spends most of its time sleeping in graveyards. Among all the dog Pokémon, this one is most loyal to its master.
 BattlerPlayerY =
 BattlerEnemyY =
-BattlerAltitude =
 Evolutions =
 #-------------------------------
 BattlerAltitude=0
@@ -25303,7 +25250,6 @@ Kind=Synchronize
 Pokedex=This Pokémon apparently ties the base of its neck into a knot so that the energy stored in its belly does not escape from its beak.
 BattlerPlayerY =
 BattlerEnemyY =
-BattlerAltitude =
 Evolutions =
 #-------------------------------
 BattlerAltitude=0
@@ -25332,7 +25278,6 @@ Kind=Terra Whale
 Pokedex=This species left the ocean and began living on land a very long time ago. It seems to be closely related to Wailmer.
 BattlerPlayerY =
 BattlerEnemyY =
-BattlerAltitude =
 Evolutions=CETITAN,Item,ICESTONE
 #-------------------------------
 BattlerAltitude=0
@@ -25360,7 +25305,6 @@ Kind=Terra Whale
 Pokedex=This Pokémon wanders around snowy, icy areas. It protects its body with powerful muscles and a thick layer of fat under its skin.
 BattlerPlayerY =
 BattlerEnemyY =
-BattlerAltitude =
 Evolutions =
 #-------------------------------
 BattlerAltitude=0
@@ -25390,7 +25334,6 @@ Kind=Jettison
 Pokedex=When Veluza discards unnecessary flesh, its mind becomes honed and its psychic power increases. The spare flesh has a mild but delicious flavor.
 BattlerPlayerY =
 BattlerEnemyY =
-BattlerAltitude =
 Evolutions =
 #-------------------------------
 BattlerAltitude=0
@@ -25419,7 +25362,6 @@ Kind=Big Catfish
 Pokedex=This Pokémon is a glutton, but it’s bad at getting food. It teams up with a Tatsugiri to catch prey.
 BattlerPlayerY =
 BattlerEnemyY =
-BattlerAltitude =
 Evolutions =
 #-------------------------------
 BattlerAltitude=0
@@ -25450,7 +25392,6 @@ Pokedex=This is a small dragon Pokémon. It lives inside the mouth of Dondozo to
 FormName=Curly
 BattlerPlayerY =
 BattlerEnemyY =
-BattlerAltitude =
 Evolutions =
 #-------------------------------
 BattlerAltitude=0
@@ -25479,7 +25420,6 @@ Kind=Rage Monkey
 Pokedex=When its anger rose beyond a critical point, this Pokémon gained power that is unfettered by the limits of its physical body.
 BattlerPlayerY =
 BattlerEnemyY =
-BattlerAltitude =
 Evolutions =
 #-------------------------------
 BattlerAltitude=0
@@ -25508,7 +25448,6 @@ Kind=Spiny Fish
 Pokedex=When attacked, this Pokémon will retaliate by sticking thick spines out from its body. It’s a risky move that puts everything on the line.
 BattlerPlayerY =
 BattlerEnemyY =
-BattlerAltitude =
 Evolutions =
 #-------------------------------
 BattlerAltitude=0
@@ -25537,7 +25476,6 @@ Kind=Long Neck
 Pokedex=Now that the brain waves from the head and tail are synced up, the psychic power of this Pokémon is 10 times stronger than Girafarig’s.
 BattlerPlayerY =
 BattlerEnemyY =
-BattlerAltitude =
 Evolutions =
 #-------------------------------
 BattlerAltitude=0
@@ -25566,7 +25504,6 @@ Pokedex=This Pokémon uses its hard tail to make its nest by boring holes into b
 FormName=Two-Segment
 BattlerPlayerY =
 BattlerEnemyY =
-BattlerAltitude =
 Evolutions =
 #-------------------------------
 BattlerAltitude=0
@@ -25595,7 +25532,6 @@ Kind=Big Blade
 Pokedex=Only a Bisharp that stands above all others in its vast army can evolve into Kingambit.
 BattlerPlayerY =
 BattlerEnemyY =
-BattlerAltitude =
 Evolutions =
 #-------------------------------
 BattlerAltitude=0
@@ -25624,7 +25560,6 @@ Kind=Paradox
 Pokedex=Sightings of this Pokémon have occurred in recent years. The name Great Tusk was taken from a creature listed in a certain book.
 BattlerPlayerY =
 BattlerEnemyY =
-BattlerAltitude =
 Evolutions =
 #-------------------------------
 BattlerAltitude=0
@@ -25653,7 +25588,6 @@ Kind=Paradox
 Pokedex=There has been only one reported sighting of this Pokémon. It resembles a mysterious creature depicted in an old expedition journal.
 BattlerPlayerY =
 BattlerEnemyY =
-BattlerAltitude =
 Evolutions =
 #-------------------------------
 BattlerAltitude=0
@@ -25682,7 +25616,6 @@ Kind=Paradox
 Pokedex=It is possible that the creature listed as Brute Bonnet in a certain book could actually be this Pokémon.
 BattlerPlayerY =
 BattlerEnemyY =
-BattlerAltitude =
 Evolutions =
 #-------------------------------
 BattlerAltitude=0
@@ -25711,7 +25644,6 @@ Kind=Paradox
 Pokedex=This Pokémon has characteristics similar to those of Flutter Mane, a creature mentioned in a certain book.
 BattlerPlayerY =
 BattlerEnemyY =
-BattlerAltitude =
 Evolutions =
 #-------------------------------
 BattlerAltitude=17
@@ -25740,7 +25672,6 @@ Kind=Paradox
 Pokedex=This mysterious Pokémon has some similarities to a creature that an old book introduced as Slither Wing.
 BattlerPlayerY =
 BattlerEnemyY =
-BattlerAltitude =
 Evolutions =
 #-------------------------------
 BattlerAltitude=0
@@ -25769,7 +25700,6 @@ Kind=Paradox
 Pokedex=No records exist of this Pokémon being caught. Data is lacking, but the Pokémon’s traits match up with a creature shown in an expedition journal.
 BattlerPlayerY =
 BattlerEnemyY =
-BattlerAltitude =
 Evolutions =
 #-------------------------------
 BattlerAltitude=15
@@ -25798,7 +25728,6 @@ Kind=Paradox
 Pokedex=Sightings of this Pokémon have occurred in recent years. It resembles a mysterious object described in an old expedition journal.
 BattlerPlayerY =
 BattlerEnemyY =
-BattlerAltitude =
 Evolutions =
 #-------------------------------
 BattlerAltitude=0
@@ -25827,7 +25756,6 @@ Kind=Paradox
 Pokedex=It resembles a mysterious object mentioned in an old book. There are only two reported sightings of this Pokémon.
 BattlerPlayerY =
 BattlerEnemyY =
-BattlerAltitude =
 Evolutions =
 #-------------------------------
 BattlerAltitude=0
@@ -25856,7 +25784,6 @@ Kind=Paradox
 Pokedex=This Pokémon shares many similarities with Iron Hands, an object mentioned in a certain expedition journal.
 BattlerPlayerY =
 BattlerEnemyY =
-BattlerAltitude =
 Evolutions =
 #-------------------------------
 BattlerAltitude=0
@@ -25885,7 +25812,6 @@ Kind=Paradox
 Pokedex=It's possible that Iron Jugulis, an object described in an old book, may actually be this Pokémon.
 BattlerPlayerY =
 BattlerEnemyY =
-BattlerAltitude =
 Evolutions =
 #-------------------------------
 BattlerAltitude=10
@@ -25914,7 +25840,6 @@ Kind=Paradox
 Pokedex=No records exist of this species being caught. Data is lacking, but the Pokémon's traits match up with an object described in an old book.
 BattlerPlayerY =
 BattlerEnemyY =
-BattlerAltitude =
 Evolutions =
 #-------------------------------
 BattlerAltitude=0
@@ -25943,7 +25868,6 @@ Kind=Paradox
 Pokedex=Some of its notable features match those of an object named within a certain expedition journal as Iron Thorns.
 BattlerPlayerY =
 BattlerEnemyY =
-BattlerAltitude =
 Evolutions =
 #-------------------------------
 BattlerAltitude=0
@@ -25973,7 +25897,6 @@ Kind=Ice Fin
 Pokedex=Frigibax absorbs heat through its dorsal fin and converts the heat into ice energy. The higher the temperature, the more energy Frigibax stores.
 BattlerPlayerY =
 BattlerEnemyY =
-BattlerAltitude =
 Evolutions=ARCTIBAX,Level,35
 #-------------------------------
 BattlerAltitude=0
@@ -26002,7 +25925,6 @@ Kind=Ice Fin
 Pokedex=Arctibax freezes the air around it, protecting its face with an ice mask and turning its dorsal fin into a blade of ice.
 BattlerPlayerY =
 BattlerEnemyY =
-BattlerAltitude =
 Evolutions=BAXCALIBUR,Level,54
 #-------------------------------
 BattlerAltitude=0
@@ -26031,7 +25953,6 @@ Kind=Ice Dragon
 Pokedex=This Pokémon blasts cryogenic air out from its mouth. This air can instantly freeze even liquid-hot lava.
 BattlerPlayerY =
 BattlerEnemyY =
-BattlerAltitude =
 Evolutions =
 BattlerAltitude=0
 [999]
@@ -26060,7 +25981,6 @@ Pokedex=This Pokémon was born inside a treasure chest about 1,500 years ago. It
 FormName=Chest
 BattlerPlayerY =
 BattlerEnemyY =
-BattlerAltitude =
 Evolutions=GHOLDENGO,GimmiCoin,999
 #-------------------------------
 BattlerAltitude=0
@@ -26089,7 +26009,6 @@ Kind=Coin Entity
 Pokedex=Its body seems to be made up of 1,000 coins. This Pokémon gets along well with others and is quick to make friends with anybody.
 BattlerPlayerY =
 BattlerEnemyY =
-BattlerAltitude =
 Evolutions =
 BattlerAltitude=0
 [1001]

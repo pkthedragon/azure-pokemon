@@ -298,7 +298,7 @@ module PokeBattle_BattleCommon
           self.pbPlayer.owned[species]=true
           if $Trainer.pokedex
             pbDisplayPaused(_INTL("{1}'s data was added to the Pokédex.",pokemon.name))
-            @scene.pbShowPokedex(species)
+            @scene.pbShowPokedex(pokemon)
           end
         end
         @scene.pbHideCaptureBall
