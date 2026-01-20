@@ -7667,6 +7667,10 @@ class PokeBattle_Move_0DD < PokeBattle_Move
         hpgain*=2 if ($fefieldeffect == 19 || $fefieldeffect == 26 || $fefieldeffect == 41)
         attacker.pbReduceHP(hpgain,true)
         @battle.pbDisplay(_INTL("{1} sucked up the liquid ooze!",attacker.pbThis))
+        if attacker.effects[PBEffects::Wounded] == 0
+          attacker.effects[PBEffects::Wounded]=3
+          @battle.pbDisplay(_INTL("{1} was wounded!",attacker.pbThis))
+        end
       else
         hpgain=(hpgain*1.3).floor if attacker.hasWorkingItem(:BIGROOT) || (attacker.hasWorkingItem(:TANGROWTHCREST) && isConst?(attacker.species,PBSpecies,:TANGROWTH))
         attacker.pbRecoverHP(hpgain,true)
@@ -10356,6 +10360,10 @@ class PokeBattle_Move_139 < PokeBattle_Move
         hpgain*=2 if ($fefieldeffect == 19 || $fefieldeffect == 26 || $fefieldeffect == 41)
         attacker.pbReduceHP(hpgain,true)
         @battle.pbDisplay(_INTL("{1} sucked up the liquid ooze!",attacker.pbThis))
+        if attacker.effects[PBEffects::Wounded] == 0
+          attacker.effects[PBEffects::Wounded]=3
+          @battle.pbDisplay(_INTL("{1} was wounded!",attacker.pbThis))
+        end
       else
         hpgain=(hpgain*1.3).floor if isConst?(attacker.item,PBItems,:BIGROOT) || (attacker.hasWorkingItem(:TANGROWTHCREST) && isConst?(attacker.species,PBSpecies,:TANGROWTH))
         if tribute_has?(attacker, :MEADOWTRIBUTE)
@@ -11163,6 +11171,10 @@ class PokeBattle_Move_158 < PokeBattle_Move
         hpgain*=2 if ($fefieldeffect == 19 || $fefieldeffect == 26 || $fefieldeffect == 41)
         attacker.pbReduceHP(hpgain,true)
         @battle.pbDisplay(_INTL("{1} sucked up the liquid ooze!",attacker.pbThis))
+        if attacker.effects[PBEffects::Wounded] == 0
+          attacker.effects[PBEffects::Wounded]=3
+          @battle.pbDisplay(_INTL("{1} was wounded!",attacker.pbThis))
+        end
       else
         hpgain=(hpgain*1.3).floor if attacker.hasWorkingItem(:BIGROOT)
     if tribute_has?(attacker, :MEADOWTRIBUTE)
@@ -12639,6 +12651,10 @@ class PokeBattle_Move_211 < PokeBattle_Move
         hpgain*=2 if ($fefieldeffect == 19 || $fefieldeffect == 26 || $fefieldeffect == 41)
         attacker.pbReduceHP(hpgain,true)
         @battle.pbDisplay(_INTL("{1} sucked up the liquid ooze!",attacker.pbThis))
+        if attacker.effects[PBEffects::Wounded] == 0
+          attacker.effects[PBEffects::Wounded]=3
+          @battle.pbDisplay(_INTL("{1} was wounded!",attacker.pbThis))
+        end
       else
         hpgain=(hpgain*1.3).floor if attacker.hasWorkingItem(:BIGROOT)
         if tribute_has?(attacker, :MEADOWTRIBUTE)
@@ -13333,6 +13349,10 @@ class PokeBattle_Move_248 < PokeBattle_Move
         hpgain*=2 if ($fefieldeffect == 19 || $fefieldeffect == 26 || $fefieldeffect == 41)
         attacker.pbReduceHP(hpgain,true)
         @battle.pbDisplay(_INTL("{1} sucked up the liquid ooze!",attacker.pbThis))
+        if attacker.effects[PBEffects::Wounded] == 0
+          attacker.effects[PBEffects::Wounded]=3
+          @battle.pbDisplay(_INTL("{1} was wounded!",attacker.pbThis))
+        end
       else
         hpgain=(hpgain*1.3).floor if isConst?(attacker.item,PBItems,:BIGROOT) || (attacker.hasWorkingItem(:TANGROWTHCREST) && isConst?(attacker.species,PBSpecies,:TANGROWTH))
         if tribute_has?(attacker, :MEADOWTRIBUTE)
@@ -13703,6 +13723,10 @@ class PokeBattle_Move_291 < PokeBattle_Move
         hpgain*=2 if ($fefieldeffect == 19 || $fefieldeffect == 26 || $fefieldeffect == 41)
         attacker.pbReduceHP(hpgain,true)
         @battle.pbDisplay(_INTL("{1} sucked up the liquid ooze!",attacker.pbThis))
+        if attacker.effects[PBEffects::Wounded] == 0
+          attacker.effects[PBEffects::Wounded]=3
+          @battle.pbDisplay(_INTL("{1} was wounded!",attacker.pbThis))
+        end
       else
         hpgain=(hpgain*1.3).floor if isConst?(attacker.item,PBItems,:BIGROOT) || (attacker.hasWorkingItem(:TANGROWTHCREST) && isConst?(attacker.species,PBSpecies,:TANGROWTH))
         if tribute_has?(attacker, :MEADOWTRIBUTE)

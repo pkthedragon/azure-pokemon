@@ -1040,6 +1040,7 @@ class PokeBattle_Move
       if @function==0x111
         return 1
       else        
+        attacker.pbTriggerSteadfastBoost if @basedamage>0
         @battle.pbDisplay(_INTL("It doesn't affect {1}...",opponent.pbThis(true)))
       end      
     end
@@ -1613,14 +1614,7 @@ class PokeBattle_Move
       accuracy*=(5/3)
     end
     # Hustle no longer lowers accuracy - now gives 0.5x defenses instead
-    if (opponent.hasWorkingAbility(:WONDERSKIN) && @basedamage==0 &&
-     attacker.pbIsOpposing?(opponent.index) && !(opponent.moldbroken))
-      if ($fefieldeffect == 9 || @battle.field.effects[PBEffects::Rainbow]>0)
-        accuracy*=0
-      else
-        accuracy/=2
-      end
-    end
+    # Wonder Skin no longer affects accuracy; retaliation handled on hit.
     if isConst?(attacker.species,PBSpecies,:STANTLER) && attacker.hasWorkingItem(:STANTCREST)
       accuracy*=1.5
     end
@@ -3628,8 +3622,8 @@ class PokeBattle_Move
       atkmult=(atkmult*0.5).round
     end
     if opponent.hasWorkingAbility(:BULLETPROOF) && isBulletproofMove? && !(opponent.moldbroken)
-      atkmult=(atkmult*0.5).round
-      @battle.pbDisplay(_INTL("{1}'s {2} softened the blow!",opponent.pbThis,PBAbilities.getName(opponent.ability)))
+      atkmult=0
+      @battle.pbDisplay(_INTL("{1}'s {2} made it immune to the attack!",opponent.pbThis,PBAbilities.getName(opponent.ability)))
     end
     if opponent.hasWorkingAbility(:IMPERVIOUS) && !(opponent.moldbroken)
       if PBStuff::PUNCHINGMOVE.include?(id) || PBStuff::KICKINGMOVE.include?(id) || PBStuff::BITEMOVE.include?(id)
@@ -3847,9 +3841,6 @@ class PokeBattle_Move
       atkmult=(atkmult*1.5).round
     end 
     if attacker.hasWorkingAbility(:LONGREACH) && ($fefieldeffect==27 || $fefieldeffect==28)
-      atkmult=(atkmult*1.5).round
-    end
-    if attacker.hasWorkingAbility(:CORROSION) && ($fefieldeffect==10 || $fefieldeffect==11 || $fefieldeffect==41)
       atkmult=(atkmult*1.5).round
     end
     if isConst?(opponent.species,PBSpecies,:BEHEEYEM) && opponent.hasWorkingItem(:BEHECREST)
@@ -5501,6 +5492,10 @@ class PokeBattle_Move
           if opponent.hasWorkingAbility(:LIQUIDOOZE,true)
             attacker.pbReduceHP(hpgain,true)
             @battle.pbDisplay(_INTL("{1} sucked up the liquid ooze!",attacker.pbThis))
+            if attacker.effects[PBEffects::Wounded] == 0
+              attacker.effects[PBEffects::Wounded]=3
+              @battle.pbDisplay(_INTL("{1} was wounded!",attacker.pbThis))
+            end
           else
             attacker.pbRecoverHP(hpgain,true)
             @battle.pbDisplay(_INTL("{1} had its energy drained!",opponent.pbThis))
