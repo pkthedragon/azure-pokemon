@@ -12,6 +12,9 @@ class PokeBattle_Pokemon
     @form=value
     self.calcStats
     MultipleForms.call("onSetForm",self,value)
+    if defined?($game_variables) && respond_to?(:applyMysticGimmighoulProgress)
+      applyMysticGimmighoulProgress($game_variables[695])
+    end
   end
   
   def hasMegaForm?

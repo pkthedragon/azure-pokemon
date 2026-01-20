@@ -14663,7 +14663,7 @@ Color=Yellow
 Kind=Coffin
 Pokedex=They pretend to be elaborate coffins to teach lessons to grave robbers. Their bodies are covered in pure gold.
 BattlerPlayerY=16
-BattlerEnemyY=-6
+BattlerEnemyY=8
 BattlerAltitude=0
 [564]
 Name=Tirtouga
@@ -14865,7 +14865,7 @@ Color=Gray
 Kind=Illusion Fox
 Pokedex=Each has the ability to fool a large group of people simultaneously. They protect their lair with illusory scenery.
 BattlerPlayerY=17
-BattlerEnemyY=22
+BattlerEnemyY=13
 BattlerAltitude=0
 [572]
 Name=Minccino
@@ -16030,7 +16030,7 @@ Color=Red
 Kind=Shell Out
 Pokedex=Having removed its heavy shell, it becomes very light and can fight with ninja-like movements.
 BattlerPlayerY=19
-BattlerEnemyY=17
+BattlerEnemyY=24
 BattlerAltitude=0
 [618]
 Name=Stunfisk
@@ -16312,7 +16312,7 @@ Kind=Valiant
 Pokedex=The more scars they have, the more respect these brave soldiers of the sky get from their peers.
 BattlerPlayerY=2
 BattlerEnemyY=1
-BattlerAltitude=10 
+BattlerAltitude=10
 [629]
 Name=Vullaby
 InternalName=VULLABY
@@ -20905,7 +20905,7 @@ Color=Yellow
 Kind=Hex Nut
 Pokedex=Revered long ago for its capacity to create iron from nothing, for some reason it has come back to life after 3,000 years.
 BattlerPlayerY=21
-BattlerEnemyY=26
+BattlerEnemyY=18
 BattlerAltitude=0
 [810]
 Name=Grookey
@@ -20955,7 +20955,7 @@ Color=Green
 Kind=Beat
 Pokedex=When it's drumming out rapid beats in battle, it gets so caught up in the rhythm that it won't even notice that it's already knocked out its opponent.
 BattlerPlayerY=21
-BattlerEnemyY=26
+BattlerEnemyY=18
 BattlerAltitude=0
 Evolutions=RILLABOOM,Level,35
 [812]
@@ -20980,7 +20980,7 @@ Color=Green
 Kind=Drumming
 Pokedex=The one with the best drumming techniques becomes the boss of the troop. It has a gentle disposition and values harmony among its group.
 BattlerPlayerY=21
-BattlerEnemyY=26
+BattlerEnemyY=17
 BattlerAltitude=0
 [813]
 Name=Scorbunny
@@ -21005,7 +21005,7 @@ Color=White
 Kind=Rabbit
 Pokedex=It has special pads on the backs of its feet, and one on its nose. Once it's raring to fight, these pads radiate tremendous heat.
 BattlerPlayerY=21
-BattlerEnemyY=26
+BattlerEnemyY=10
 BattlerAltitude=0
 Evolutions=RABOOT,Level,16
 [814]
@@ -21030,7 +21030,7 @@ Color=White
 Kind=Rabbit
 Pokedex=It kicks berries right off the branches of trees and then juggles them with its feet, practicing its footwork.
 BattlerPlayerY=21
-BattlerEnemyY=12
+BattlerEnemyY=18
 BattlerAltitude=0
 Evolutions=CINDERACE,Level,35
 [815]
@@ -21055,7 +21055,7 @@ Color=White
 Kind=Striker
 Pokedex=It's skilled at both offense and defense, and it gets pumped up when cheered on. But if it starts showboating, it could put itself in a tough spot.
 BattlerPlayerY=21
-BattlerEnemyY=26
+BattlerEnemyY=8
 BattlerAltitude=0
 [816]
 Name=Sobble
@@ -21105,7 +21105,7 @@ Color=Blue
 Kind=Water Lizard
 Pokedex=Highly intelligent but also very lazy, it keeps enemies out of its territory by laying traps everywhere.
 BattlerPlayerY=21
-BattlerEnemyY=26
+BattlerEnemyY=20
 BattlerAltitude=0
 Evolutions=INTELEON,Level,35
 [818]
@@ -21130,7 +21130,7 @@ Color=Blue
 Kind=Secret Agent
 Pokedex=Its nictitating membranes let it pick out foes' weak points so it can precisely blast them with water that shoots from its fingertips at Mach 3.
 BattlerPlayerY=21
-BattlerEnemyY=10
+BattlerEnemyY=9
 BattlerAltitude=0
 [819]
 Name=Skwovet
@@ -21180,7 +21180,7 @@ Color=Brown
 Kind=Greedy
 Pokedex=Common throughout the Galar region, this Pokémon has strong teeth and can chew through the toughest of berry shells.
 BattlerPlayerY=21
-BattlerEnemyY=26
+BattlerEnemyY=20
 BattlerAltitude=0
 [821]
 Name=Rookidee
@@ -21205,7 +21205,7 @@ Color=Blue
 Kind=Tiny Bird
 Pokedex=Jumping nimbly about, this small-bodied Pokémon takes advantage of even the slightest opportunity to disorient larger opponents.
 BattlerPlayerY=21
-BattlerEnemyY=26
+BattlerEnemyY=29
 BattlerAltitude=0
 Evolutions=CORVISQUIRE,Level,18
 [822]
@@ -21230,8 +21230,8 @@ Color=Blue
 Kind=Raven
 Pokedex=The lessons of many harsh battles have taught it how to accurately judge an opponent's strength.
 BattlerPlayerY=21
-BattlerEnemyY=15
-BattlerAltitude=0
+BattlerEnemyY=14
+BattlerAltitude=2
 Evolutions=CORVIKNIGHT,Level,38
 [823]
 Name=Corviknight
@@ -21256,7 +21256,7 @@ Color=Blue
 Kind=Raven
 Pokedex=With their great intellect and flying skills, these Pokémon very successfully act as the Galar region's airborne taxi service.
 BattlerPlayerY=21
-BattlerEnemyY=26
+BattlerEnemyY=21
 BattlerAltitude=0
 [824]
 Name=Blipbug
@@ -21307,7 +21307,7 @@ Color=Yellow
 Kind=Radome
 Pokedex=As it grows inside its shell, it uses its psychic abilities to monitor the outside world and prepare for evolution.
 BattlerPlayerY=21
-BattlerEnemyY=26
+BattlerEnemyY=28
 BattlerAltitude=0
 Evolutions=ORBEETLE,Level,30
 [826]
@@ -21333,8 +21333,8 @@ Color=Red
 Kind=Seven Spot
 Pokedex=It emits psychic energy to observe and study what's around itéand what's around it can include things over six miles away.
 BattlerPlayerY=21
-BattlerEnemyY=26
-BattlerAltitude=0
+BattlerEnemyY=14
+BattlerAltitude=1
 [827]
 Name=Nickit
 InternalName=NICKIT
@@ -21358,7 +21358,7 @@ Color=Brown
 Kind=Fox
 Pokedex=Cunning and cautious, this Pokémon survives by stealing food from others. It erases its tracks with swipes of its tail as it makes off with its plunder.
 BattlerPlayerY=21
-BattlerEnemyY=26
+BattlerEnemyY=27
 BattlerAltitude=0
 Evolutions=THIEVUL,Level,18
 [828]
@@ -21383,7 +21383,7 @@ Color=Brown
 Kind=Fox
 Pokedex=With a lithe body and sharp claws, it goes around stealing food and eggs. Boltund is its natural enemy.
 BattlerPlayerY=21
-BattlerEnemyY=26
+BattlerEnemyY=20
 BattlerAltitude=0
 [829]
 Name=Gossifleur
@@ -21408,7 +21408,7 @@ Color=Green
 Kind=Flowering
 Pokedex=It whirls around in the wind while singing a joyous song. This delightful display has charmed many into raising this Pokémon.
 BattlerPlayerY=21
-BattlerEnemyY=26
+BattlerEnemyY=27
 BattlerAltitude=0
 Evolutions=ELDEGOSS,Level,20
 [830]
@@ -21458,7 +21458,7 @@ Color=White
 Kind=Sheep
 Pokedex=If its fleece grows too long,Wooloo won't be able to move. Cloth made with the wool of this Pokémon is surprisingly strong.
 BattlerPlayerY=21
-BattlerEnemyY=26
+BattlerEnemyY=27
 BattlerAltitude=0
 Evolutions=DUBWOOL,Level,24
 [832]
@@ -21483,7 +21483,7 @@ Color=White
 Kind=Sheep
 Pokedex=Its majestic horns are meant only to impress the opposite gender. They never see use in battle.
 BattlerPlayerY=21
-BattlerEnemyY=26
+BattlerEnemyY=18
 BattlerAltitude=0
 [833]
 Name=Chewtle
@@ -21560,7 +21560,7 @@ Color=Yellow
 Kind=Puppy
 Pokedex=This gluttonous Pokémon only assists people with their work because it wants treats. As it runs, it crackles with electricity.
 BattlerPlayerY=21
-BattlerEnemyY=26
+BattlerEnemyY=29
 BattlerAltitude=0
 Evolutions=BOLTUND,Level,25
 [836]
@@ -21585,7 +21585,7 @@ Color=Yellow
 Kind=Dog
 Pokedex=It sends electricity through its legs to boost their strength. Running at top speed, it easily breaks 50 mph.
 BattlerPlayerY=21
-BattlerEnemyY=26
+BattlerEnemyY=17
 BattlerAltitude=0
 [837]
 Name=Rolycoly
@@ -21610,7 +21610,7 @@ Color=Black
 Kind=Coal
 Pokedex=It can race around like a unicycle, even on rough, rocky terrain. Burning coal sustains it.
 BattlerPlayerY=21
-BattlerEnemyY=26
+BattlerEnemyY=28
 BattlerAltitude=0
 Evolutions=CARKOL,Level,18
 [838]
@@ -21636,7 +21636,7 @@ Color=Black
 Kind=Coal
 Pokedex=By rapidly rolling its legs, it can travel at over 18 mph. The temperature of the flames it breathes exceeds 1,800 degrees Fahrenheit.
 BattlerPlayerY=21
-BattlerEnemyY=26
+BattlerEnemyY=24
 BattlerAltitude=0
 Evolutions=COALOSSAL,Level,34
 [839]
@@ -21662,7 +21662,7 @@ Color=Black
 Kind=Coal
 Pokedex=While it's engaged in battle, its mountain of coal will burn bright red, sending off sparks that scorch the surrounding area.
 BattlerPlayerY=21
-BattlerEnemyY=26
+BattlerEnemyY=14
 BattlerAltitude=0
 [840]
 Name=Applin
@@ -21688,7 +21688,7 @@ Color=Green
 Kind=Apple Core
 Pokedex=As soon as it's born, it burrows into an apple. Not only does the apple serve as its food source, but the flavor of the fruit determines its evolution.
 BattlerPlayerY=21
-BattlerEnemyY=26
+BattlerEnemyY=30
 BattlerAltitude=0
 Evolutions=FLAPPLE,Item,TARTAPPLE,APPLETUN,Item,SWEETAPPLE,DIPPLIN,Item,SYRUPYAPPLE
 [841]
@@ -21714,8 +21714,8 @@ Color=Green
 Kind=Apple Wing
 Pokedex=It flies on wings of apple skin and spits a powerful acid. It can also change its shape into that of an apple.
 BattlerPlayerY=21
-BattlerEnemyY=26
-BattlerAltitude=0
+BattlerEnemyY=24
+BattlerAltitude=2
 [842]
 Name=Appletun
 InternalName=APPLETUN
@@ -21739,7 +21739,7 @@ Color=Green
 Kind=Apple Nectar
 Pokedex=Its body is covered in sweet nectar, and the skin on its back is especially yummy. Children used to have it as a snack.
 BattlerPlayerY=21
-BattlerEnemyY=26
+BattlerEnemyY=15
 BattlerAltitude=0
 [843]
 Name=Silicobra
@@ -21764,7 +21764,7 @@ Color=Green
 Kind=Sand Snake
 Pokedex=It spews sand from its nostrils. While the enemy is blinded, it burrows into the ground to hide.
 BattlerPlayerY=21
-BattlerEnemyY=26
+BattlerEnemyY=27
 BattlerAltitude=0
 Evolutions=SANDACONDA,Level,36
 [844]
@@ -21815,7 +21815,7 @@ Color=Blue
 Kind=Gulp
 Pokedex=This hungry Pokémon swallows Arrokuda whole. Occasionally, it makes a mistake and tries to swallow a Pokémon other than its preferred prey.
 BattlerPlayerY=21
-BattlerEnemyY=26
+BattlerEnemyY=17
 BattlerAltitude=0
 [846]
 Name=Arrokuda
@@ -21840,8 +21840,8 @@ Color=Brown
 Kind=Rush
 Pokedex=After it's eaten its fill, its movements become extremely sluggish. That's when Cramorant swallows it up.
 BattlerPlayerY=21
-BattlerEnemyY=26
-BattlerAltitude=0
+BattlerEnemyY=28
+BattlerAltitude=2
 Evolutions=BARRASKEWDA,Level,26
 [847]
 Name=Barraskewda
@@ -21865,8 +21865,8 @@ Color=Brown
 Kind=Rush
 Pokedex=After it's eaten its fill, its movements become extremely sluggish. That's when Cramorant swallows it up.
 BattlerPlayerY=21
-BattlerEnemyY=26
-BattlerAltitude=0
+BattlerEnemyY=28
+BattlerAltitude=3
 [848]
 Name=Toxel
 InternalName=TOXEL
@@ -21943,7 +21943,7 @@ Color=Red
 Kind=Radiator
 Pokedex=It wraps prey up with its heated body, cooking them in its coils. Once they're well-done, it will voraciously nibble them down to the last morsel.
 BattlerPlayerY=21
-BattlerEnemyY=26
+BattlerEnemyY=28
 BattlerAltitude=0
 Evolutions=CENTISKORCH,Level,28
 [851]
@@ -21969,7 +21969,7 @@ Color=Red
 Kind=Radiator
 Pokedex=While its burning body is already dangerous on its own, this excessively hostile Pokémon also has large and very sharp fangs.
 BattlerPlayerY=21
-BattlerEnemyY=26
+BattlerEnemyY=19
 BattlerAltitude=0
 [852]
 Name=Clobbopus
@@ -21994,7 +21994,7 @@ Color=Brown
 Kind=Tantrum
 Pokedex=Its tentacles tear off easily, but it isn't alarmed when that happens—it knows they'll grow back. It's about as smart as a three-year-old.
 BattlerPlayerY=21
-BattlerEnemyY=28
+BattlerEnemyY=30
 BattlerAltitude=0
 Evolutions=GRAPPLOCT,HasMove,TAUNT
 [853]
@@ -22019,7 +22019,7 @@ Color=Blue
 Kind=Jujitsu
 Pokedex=Searching for an opponent to test its skills against, it emerges onto land. Once the battle is over, it returns to the sea.
 BattlerPlayerY=21
-BattlerEnemyY=26
+BattlerEnemyY=20
 BattlerAltitude=0
 [854]
 Name=Sinistea
@@ -22043,8 +22043,8 @@ Color=Purple
 Kind=Black Tea
 Pokedex=The teacup in which this Pokémon makes its home is a famous piece of antique tableware. Many forgeries are in circulation.
 BattlerPlayerY=21
-BattlerEnemyY=26
-BattlerAltitude=0
+BattlerEnemyY=27
+BattlerAltitude=4
 Evolutions=POLTEAGEIST,Item,CHIPPEDPOT
 [855]
 Name=Polteageist
@@ -22068,8 +22068,8 @@ Color=Purple
 Kind=Black Tea
 Pokedex=When angered, it launches tea from its body at the offender's mouth. The tea causes strong chills if swallowed.
 BattlerPlayerY=21
-BattlerEnemyY=26
-BattlerAltitude=0
+BattlerEnemyY=12
+BattlerAltitude=1
 [856]
 Name=Hatenna
 InternalName=HATENNA
@@ -22094,7 +22094,7 @@ Color=Pink
 Kind=Calm
 Pokedex=If this Pokémon senses a strong emotion, it will run away as fast as it can. It prefers areas without people.
 BattlerPlayerY=21
-BattlerEnemyY=26
+BattlerEnemyY=28
 BattlerAltitude=0
 Evolutions=HATTREM,Level,32
 [857]
@@ -22145,8 +22145,8 @@ Weight=5.1
 Color=Pink
 Kind=Serene
 Pokedex=If you're too loud around it, you risk being torn apart by the claws on its tentacle. This Pokémon is also known as the Forest Witch.
-BattlerPlayerY=21
-BattlerEnemyY=26
+BattlerPlayerY=16
+BattlerEnemyY=16
 BattlerAltitude=0
 [859]
 Name=Impidimp
@@ -22223,7 +22223,7 @@ Color=Purple
 Kind=Bulk Up
 Pokedex=Its hairs work like muscle fibers. When its hairs unfurl, they latch on to opponents, ensnaring them as tentacles would.
 BattlerPlayerY=21
-BattlerEnemyY=16
+BattlerEnemyY=15
 BattlerAltitude=0
 [862]
 Name=Obstagoon
@@ -22248,7 +22248,7 @@ Color=Gray
 Kind=Blocking
 Pokedex=It evolved after experiencing numerous fights. While crossing its arms, it lets out a shout that would make any opponent flinch.
 BattlerPlayerY=21
-BattlerEnemyY=26
+BattlerEnemyY=18
 BattlerAltitude=0
 [863]
 Name=Perrserker
@@ -22272,7 +22272,7 @@ Color=Brown
 Kind=Viking
 Pokedex=After many battles, it evolved dangerous claws that come together to form daggers when extended.
 BattlerPlayerY=21
-BattlerEnemyY=26
+BattlerEnemyY=27
 BattlerAltitude=0
 [864]
 Name=Cursola
@@ -22297,7 +22297,7 @@ Color=White
 Kind=Coral
 Pokedex=Be cautious of the ectoplasmic body surrounding its soul. You'll become stiff as stone if you touch it.
 BattlerPlayerY=21
-BattlerEnemyY=16
+BattlerEnemyY=24
 BattlerAltitude=0
 [865]
 Name=Sirfetch'd
@@ -22320,8 +22320,8 @@ Weight=117.0
 Color=White
 Kind=Wild Duck
 Pokedex=After deflecting attacks with its hard leaf shield, it strikes back with its sharp leek stalk. The leek stalk is both weapon and food.
-BattlerPlayerY=21
-BattlerEnemyY=0
+BattlerPlayerY=10
+BattlerEnemyY=14
 BattlerAltitude=0
 [866]
 Name=Mr. Rime
@@ -22346,7 +22346,7 @@ Color=Purple
 Kind=Comedian
 Pokedex=Its amusing movements make it very popular. It releases its psychic power from the pattern on its belly.
 BattlerPlayerY=21
-BattlerEnemyY=16
+BattlerEnemyY=20
 BattlerAltitude=0
 [867]
 Name=Runerigus
@@ -22371,7 +22371,7 @@ Color=Gray
 Kind=Grudge
 Pokedex=Never touch its shadowlike body, or you'll be shown the horrific memories behind the picture carved into it.
 BattlerPlayerY=21
-BattlerEnemyY=26
+BattlerEnemyY=21
 BattlerAltitude=0
 toobig=true
 [868]
@@ -22397,8 +22397,8 @@ Color=White
 Kind=Cream
 Pokedex=They say that any patisserie visited by Milcery is guaranteed success and good fortune.
 BattlerPlayerY=21
-BattlerEnemyY=26
-BattlerAltitude=0
+BattlerEnemyY=24
+BattlerAltitude=10
 Evolutions=ALCREMIE,Level,42
 [869]
 Name=Alcremie
@@ -22421,8 +22421,8 @@ Weight=0.5
 Color=White
 Kind=Cream
 Pokedex=When Alcremie is content, the cream it secretes from its hands becomes sweeter and richer.
-BattlerPlayerY=21
-BattlerEnemyY=26
+BattlerPlayerY=7
+BattlerEnemyY=10
 BattlerAltitude=0
 [870]
 Name=Falinks
@@ -22471,7 +22471,7 @@ Color=Purple
 Kind=Sea Urchin
 Pokedex=It stores electricity in each spine. Even if one gets broken off, it still continues to emit electricity for at least three hours.
 BattlerPlayerY=21
-BattlerEnemyY=26
+BattlerEnemyY=29
 BattlerAltitude=0
 [872]
 Name=Snom
@@ -22497,7 +22497,7 @@ Color=White
 Kind=Worm
 Pokedex=It eats snow that piles up on the ground. The more snow it eats, the bigger and more impressive the spikes on its back grow.
 BattlerPlayerY=21
-BattlerEnemyY=26
+BattlerEnemyY=34
 BattlerAltitude=0
 Evolutions=FROSMOTH,Item,ICESTONE
 [873]
@@ -22523,8 +22523,8 @@ Color=White
 Kind=Frost Moth
 Pokedex=It shows no mercy to any who desecrate fields and mountains. It will fly around on its icy wings, causing a blizzard to chase offenders away.
 BattlerPlayerY=21
-BattlerEnemyY=26
-BattlerAltitude=0
+BattlerEnemyY=18
+BattlerAltitude=3
 [874]
 Name=Stonjourner
 InternalName=STONJOURNER
@@ -22548,7 +22548,7 @@ Color=Gray
 Kind=Big Rock
 Pokedex=Once a year, on a specific date and at a specific time, they gather out of nowhere and form up in a circle.
 BattlerPlayerY=21
-BattlerEnemyY=26
+BattlerEnemyY=20
 BattlerAltitude=0
 [875]
 Name=Eiscue
@@ -22572,7 +22572,7 @@ Color=Blue
 Kind=Penguin
 Pokedex=This Pokémon keeps its heat-sensitive head cool with ice. It fishes for its food, dangling its single hair into the sea to lure in prey.
 BattlerPlayerY=21
-BattlerEnemyY=26
+BattlerEnemyY=12
 BattlerAltitude=0
 [876]
 Name=Indeedee
@@ -22673,7 +22673,7 @@ Color=Purple
 Kind=Copperderm
 Pokedex=These Pokémon live in herds. Their trunks have incredible grip strength, strong enough to crush giant rocks into powder.
 BattlerPlayerY=21
-BattlerEnemyY=26
+BattlerEnemyY=19
 BattlerAltitude=0
 [880]
 Name=Dracozolt
@@ -22698,7 +22698,7 @@ Color=Green
 Kind=Fossil
 Pokedex=The powerful muscles in its tail generate its electricity. Compared to its lower body, its upper half is entirely too small.
 BattlerPlayerY=21
-BattlerEnemyY=26
+BattlerEnemyY=22
 BattlerAltitude=0
 [881]
 Name=Arctozolt
@@ -22723,7 +22723,7 @@ Color=Blue
 Kind=Fossil
 Pokedex=This Pokémon lived on prehistoric seashores and was able to preserve food with the ice on its body. It went extinct because it moved so slowly.
 BattlerPlayerY=21
-BattlerEnemyY=26
+BattlerEnemyY=14
 BattlerAltitude=0
 [882]
 Name=Dracovish
@@ -22748,7 +22748,7 @@ Color=Green
 Kind=Fossil
 Pokedex=Its mighty legs are capable of running at speeds exceeding 40 mph, but this Pokémon can't breathe unless it's underwater.
 BattlerPlayerY=21
-BattlerEnemyY=26
+BattlerEnemyY=17
 BattlerAltitude=0
 [883]
 Name=Arctovish
@@ -22773,7 +22773,7 @@ Color=Blue
 Kind=Fossil
 Pokedex=The skin on its face is impervious to attack, but breathing difficulties made this Pokémon go extinct anyway.
 BattlerPlayerY=21
-BattlerEnemyY=26
+BattlerEnemyY=16
 BattlerAltitude=0
 [884]
 Name=Duraludon
@@ -22799,7 +22799,7 @@ Color=White
 Kind=Alloy
 Pokedex=The special metal that composes its body is very light, so this Pokémon has considerable agility. It lives in caves because it dislikes the rain.
 BattlerPlayerY=21
-BattlerEnemyY=26
+BattlerEnemyY=20
 BattlerAltitude=0
 Evolutions=ARCHALUDON,Item,METALALLOY
 [885]
@@ -22826,8 +22826,8 @@ Color=Green
 Kind=Lingering
 Pokedex=If this weak Pokémon is by itself, a mere child could defeat it. But if Dreepy has friends to help it train, it can evolve and become much stronger.
 BattlerPlayerY=21
-BattlerEnemyY=26
-BattlerAltitude=0
+BattlerEnemyY=27
+BattlerAltitude=1
 Evolutions=DRAKLOAK,Level,50
 [886]
 Name=Drakloak
@@ -22852,8 +22852,8 @@ Color=Green
 Kind=Caretaker
 Pokedex=Without a Dreepy to place on its head and care for, it gets so uneasy it'll try to substitute any Pokémon it finds for the missing Dreepy.
 BattlerPlayerY=21
-BattlerEnemyY=26
-BattlerAltitude=0
+BattlerEnemyY=22
+BattlerAltitude=2
 Evolutions=DRAGAPULT,Level,60
 [887]
 Name=Dragapult
@@ -22878,8 +22878,8 @@ Color=Green
 Kind=Stealth
 Pokedex=Apparently the Dreepy inside Dragapult's horns eagerly look forward to being launched out at Mach speeds.
 BattlerPlayerY=21
-BattlerEnemyY=26
-BattlerAltitude=0
+BattlerEnemyY=20
+BattlerAltitude=4
 [888]
 Name=Zacian
 InternalName=ZACIAN
@@ -22902,7 +22902,7 @@ Color=Blue
 Kind=Warrior
 Pokedex=This Pokémon has slumbered for many years. Some say it's Zamazenta's elder sister—others say the two Pokémon are rivals.
 BattlerPlayerY=21
-BattlerEnemyY=26
+BattlerEnemyY=18
 BattlerAltitude=0
 [889]
 Name=Zamazenta
@@ -22926,7 +22926,7 @@ Color=Red
 Kind=Warrior
 Pokedex=This Pokémon slept for aeons while in the form of a statue. It was asleep for so long, people forgot that it ever existed.
 BattlerPlayerY=21
-BattlerEnemyY=26
+BattlerEnemyY=14
 BattlerAltitude=0
 [890]
 Name=Eternatus
@@ -22952,7 +22952,7 @@ Kind=Gigantic
 Pokedex=It was inside a meteorite that fell 20,000 years ago. There seems to be a connection between this Pokémon and the Dynamax phenomenon.
 BattlerPlayerY=21
 BattlerEnemyY=12
-BattlerAltitude=2
+BattlerAltitude=16
 [891]
 Name=Kubfu
 InternalName=KUBFU
@@ -23050,7 +23050,7 @@ Color=Gray
 Kind=Electron
 Pokedex=This Pokémon is a cluster of electrical energy. It's said that removing the rings on Regieleki's body will unleash the Pokémon's latent power.
 BattlerPlayerY=14
-BattlerEnemyY=18
+BattlerEnemyY=20
 BattlerAltitude=0
 [895]
 Name=Regidrago
@@ -23099,7 +23099,7 @@ Habitat=Cave
 Kind=Wild Horse
 Pokedex=Glastrier emits intense cold from its hooves. It's also a belligerent Pokémon—anything it wants, it takes by force.
 BattlerPlayerY=14
-BattlerEnemyY=18
+BattlerEnemyY=16
 BattlerAltitude=0
 [897]
 Name=Spectrier
@@ -23123,7 +23123,7 @@ Color=Black
 Kind=Swift Horse
 Pokedex=It probes its surroundings with all its senses save one—it doesn't use its sense of sight. Spectrier's kicks are said to separate soul from body.
 BattlerPlayerY=14
-BattlerEnemyY=18
+BattlerEnemyY=16
 BattlerAltitude=0
 [898]
 Name=Calyrex
@@ -23148,7 +23148,7 @@ Color=Green
 Kind=King
 Pokedex=Calyrex is a merciful Pokémon, capable of providing healing and blessings. It reigned over the Galar region in times of yore.
 BattlerPlayerY=14
-BattlerEnemyY=18
+BattlerEnemyY=14
 BattlerAltitude=0
 [899]
 Name=Wyrdeer
@@ -23173,7 +23173,7 @@ Color=White
 Kind=Seed
 Pokedex=The black orbs shine with an uncanny light when the Pokémon is erecting invisible barriers. The fur shed from its beard retains heat well and is a highly useful material for winter clothing.
 BattlerPlayerY=16
-BattlerEnemyY=6
+BattlerEnemyY=11
 BattlerAltitude=0
 [900]
 Name=Kleavor
@@ -23198,7 +23198,7 @@ Color=Brown
 Kind=Axe
 Pokedex=A violent creature that fells towering trees with its crude axes and shields itself with hard stone. If one should chance upon this Pokémon in the wilds, one's only recourse is to flee.
 BattlerPlayerY=17
-BattlerEnemyY=10
+BattlerEnemyY=14
 BattlerAltitude=0
 [901]
 Name=Ursaluna
@@ -23223,7 +23223,7 @@ Color=Brown
 Kind=Peat
 Pokedex=I believe it was Hisui's swampy terrain that gave Ursaluna its burly physique and newfound capacity to manipulate peat at will.
 BattlerPlayerY=13
-BattlerEnemyY=8
+BattlerEnemyY=16
 BattlerAltitude=0
 [902]
 Name=Basculegion
@@ -23249,7 +23249,7 @@ Kind=Hostile
 Pokedex=Clads itself in the souls of comrades that perished before fulfilling their goals of journeying upstream. No other species throughout all Hisui's rivers is Basculegion's equal.
 BattlerPlayerY=30
 BattlerEnemyY=24
-BattlerAltitude=1
+BattlerAltitude=3
 [903]
 Name=Sneasler
 InternalName=SNEASLER
@@ -23322,9 +23322,9 @@ Weight=68.0
 Color=Pink
 Kind=Love-Hate
 Pokedex=When it flies to this land from across the sea, the bitter winter comes to an end. According to legend, this Pokémon's love gives rise to the budding of fresh life across Hisui.
-BattlerPlayerY=1
-BattlerEnemyY=8
-BattlerAltitude=1
+BattlerPlayerY=14
+BattlerEnemyY=16
+BattlerAltitude=16
 [994]
 Name=Iron Moth
 InternalName=IRONMOTH
@@ -23348,8 +23348,8 @@ Color=Yellow
 Kind=Paradox
 Pokedex=This Pokémon resembles an unknown object described in a paranormal magazine as a UFO sent to observe humanity.
 BattlerPlayerY=15
-BattlerEnemyY=20
-BattlerAltitude=0
+BattlerEnemyY=12
+BattlerAltitude=1
 [906]
 Name=Sprigatito
 InternalName=SPRIGATITO
@@ -23374,7 +23374,7 @@ RegionalNumbers=906
 Kind=Grass Cat
 Pokedex=Its fluffy fur is similar in composition to plants. This Pokémon frequently washes its face to keep it from drying out.
 BattlerPlayerY=6
-BattlerEnemyY=12
+BattlerEnemyY=15
 BattlerAltitude=0
 Evolutions=FLORAGATO,Level,16
 [907]
@@ -23428,7 +23428,7 @@ RegionalNumbers=908
 Kind=Magician
 Pokedex=This Pokémon uses the reflective fur lining its cape to camouflage the stem of its flower, creating the illusion that the flower is floating.
 BattlerPlayerY=18
-BattlerEnemyY=12
+BattlerEnemyY=14
 BattlerAltitude=0
 Evolutions=
 #-------------------------------
@@ -23456,7 +23456,7 @@ RegionalNumbers=909
 Kind=Fire Croc
 Pokedex=It lies on warm rocks and uses the heat absorbed by its square-shaped scales to create fire energy.
 BattlerPlayerY=15
-BattlerEnemyY=12
+BattlerEnemyY=16
 BattlerAltitude=0
 Evolutions=CROCALOR,Level,16
 #-------------------------------
@@ -23483,7 +23483,7 @@ RegionalNumbers=910
 Kind=Fire Croc
 Pokedex=The combination of Crocalor’s fire energy and overflowing vitality has caused an egg-shaped fireball to appear on the Pokémon’s head.
 BattlerPlayerY=16
-BattlerEnemyY=12
+BattlerEnemyY=13
 BattlerAltitude=0
 Evolutions=SKELEDIRGE,Level,36
 #-------------------------------
@@ -23511,7 +23511,7 @@ RegionalNumbers=911
 Kind=Singer
 Pokedex=The fiery bird changes shape when Skeledirge sings. Rumor has it that the bird was born when the fireball on Skeledirge’s head gained a soul.
 BattlerPlayerY=18
-BattlerEnemyY=12
+BattlerEnemyY=13
 BattlerAltitude=0
 Evolutions=
 #-------------------------------
@@ -23594,7 +23594,7 @@ RegionalNumbers=914
 Kind=Dancer
 Pokedex=A single kick from a Quaquaval can send a truck rolling. This Pokémon uses its powerful legs to perform striking dances from far-off lands.
 BattlerPlayerY=18
-BattlerEnemyY=12
+BattlerEnemyY=15
 BattlerAltitude=0
 Evolutions=
 #-------------------------------
@@ -23622,8 +23622,8 @@ Color=Gray
 RegionalNumbers=915
 Kind=Hog
 Pokedex=It searches for food all day. It possesses a keen sense of smell but doesn’t use it for anything other than foraging.
-BattlerPlayerY=10
-BattlerEnemyY=12
+BattlerPlayerY=20
+BattlerEnemyY=14
 BattlerAltitude=0
 Evolutions=OINKOLOGNE,Level,18
 #-------------------------------
@@ -23652,7 +23652,7 @@ Kind=Hog
 Pokedex=It entrances female Pokémon with the sweet, alluring scent that wafts from all over its body.
 FormName=Male
 BattlerPlayerY=12
-BattlerEnemyY=12
+BattlerEnemyY=13
 BattlerAltitude=0
 Evolutions=
 #-------------------------------
@@ -23680,7 +23680,7 @@ RegionalNumbers=917
 Kind=String Ball
 Pokedex=The ball of threads wrapped around its body is elastic enough to deflect the scythes of Scyther, this Pokémon’s natural enemy.
 BattlerPlayerY=14
-BattlerEnemyY=12
+BattlerEnemyY=14
 BattlerAltitude=0
 Evolutions=SPIDOPS,Level,15
 #-------------------------------
@@ -23707,7 +23707,7 @@ RegionalNumbers=918
 Kind=Trap
 Pokedex=It clings to branches and ceilings using its threads and moves without a sound. It takes out its prey before the prey even notices it.
 BattlerPlayerY=14
-BattlerEnemyY=12
+BattlerEnemyY=13
 BattlerAltitude=0
 Evolutions=
 #-------------------------------
@@ -23735,7 +23735,7 @@ RegionalNumbers=919
 Kind=Grasshopper
 Pokedex=It has its third set of legs folded up. When it’s in a tough spot, this Pokémon jumps over 30 feet using the strength of its legs.
 BattlerPlayerY=12
-BattlerEnemyY=12
+BattlerEnemyY=16
 BattlerAltitude=0
 Evolutions=LOKIX,Level,24
 #-------------------------------
@@ -23763,7 +23763,7 @@ RegionalNumbers=920
 Kind=Grasshopper
 Pokedex=When it decides to fight all out, it stands on its previously folded legs to enter Showdown Mode. It neutralizes its enemies in short order.
 BattlerPlayerY=16
-BattlerEnemyY=12
+BattlerEnemyY=14
 BattlerAltitude=0
 Evolutions=
 #-------------------------------
@@ -24015,7 +24015,7 @@ RegionalNumbers=929
 Kind=Olive
 Pokedex=Dolliv shares its tasty, fresh-scented oil with others. This species has coexisted with humans since times long gone.
 BattlerPlayerY=10
-BattlerEnemyY=12
+BattlerEnemyY=13
 BattlerAltitude=0
 Evolutions=ARBOLIVA,Level,35
 #-------------------------------
@@ -24270,7 +24270,7 @@ BattlerPlayerY =
 BattlerEnemyY =
 Evolutions=BELLIBOLT,Item,THUNDERSTONE
 #-------------------------------
-BattlerAltitude=0
+BattlerAltitude=4
 [939]
 Name=Bellibolt
 InternalName=BELLIBOLT
@@ -24718,7 +24718,7 @@ BattlerPlayerY =
 BattlerEnemyY =
 Evolutions=
 #-------------------------------
-BattlerAltitude=0
+BattlerAltitude=5
 [955]
 Name=Flittle
 InternalName=FLITTLE
@@ -24746,7 +24746,7 @@ BattlerPlayerY =
 BattlerEnemyY =
 Evolutions=ESPATHRA,Level,35
 #-------------------------------
-BattlerAltitude=0
+BattlerAltitude=1
 [956]
 Name=Espathra
 InternalName=ESPATHRA
@@ -24942,7 +24942,7 @@ BattlerPlayerY =
 BattlerEnemyY =
 Evolutions =
 #-------------------------------
-BattlerAltitude=0
+BattlerAltitude=7
 [963]
 Name=Finizen
 InternalName=FINIZEN
@@ -25026,7 +25026,7 @@ BattlerPlayerY =
 BattlerEnemyY =
 Evolutions=REVAVROOM,Level,40
 #-------------------------------
-BattlerAltitude=0
+BattlerAltitude=1
 [966]
 Name=Revavroom
 InternalName=REVAVROOM
@@ -25140,7 +25140,7 @@ BattlerPlayerY =
 BattlerEnemyY =
 Evolutions=GLIMMORA,Level,35
 #-------------------------------
-BattlerAltitude=0
+BattlerAltitude=2
 [970]
 Name=Glimmora
 InternalName=GLIMMORA
@@ -25168,7 +25168,7 @@ BattlerPlayerY =
 BattlerEnemyY =
 Evolutions =
 #-------------------------------
-BattlerAltitude=0
+BattlerAltitude=6
 [971]
 Name=Greavard
 InternalName=GREAVARD
@@ -25336,7 +25336,7 @@ BattlerPlayerY =
 BattlerEnemyY =
 Evolutions =
 #-------------------------------
-BattlerAltitude=0
+BattlerAltitude=3
 [977]
 Name=Dondozo
 InternalName=DONDOZO
@@ -25364,7 +25364,7 @@ BattlerPlayerY =
 BattlerEnemyY =
 Evolutions =
 #-------------------------------
-BattlerAltitude=0
+BattlerAltitude=10
 [978]
 Name=Tatsugiri
 InternalName=TATSUGIRI
@@ -25814,7 +25814,7 @@ BattlerPlayerY =
 BattlerEnemyY =
 Evolutions =
 #-------------------------------
-BattlerAltitude=10
+BattlerAltitude=2
 [994]
 Name=Iron Moth
 InternalName=IRONMOTH
@@ -25842,7 +25842,7 @@ BattlerPlayerY =
 BattlerEnemyY =
 Evolutions =
 #-------------------------------
-BattlerAltitude=0
+BattlerAltitude=1
 [995]
 Name=Iron Thorns
 InternalName=IRONTHORNS
@@ -26089,7 +26089,7 @@ RegionalNumbers=1003
 Kind=Ruinous
 Pokedex=The fear poured into an ancient ritual vessel has clad itself in rocks and dirt to become a Pokémon.
 BattlerPlayerY=15
-BattlerEnemyY=12
+BattlerEnemyY=11
 BattlerAltitude=0
 Evolutions=
 [1004]
@@ -26116,8 +26116,8 @@ RegionalNumbers=1004
 Kind=Ruinous
 Pokedex=The envy accumulated within curved beads that sparked multiple conflicts has clad itself in fire and become a Pokémon.
 BattlerPlayerY=15
-BattlerEnemyY=12
-BattlerAltitude=0
+BattlerEnemyY=15
+BattlerAltitude=3
 Evolutions=
 [1005]
 Name=Roaring Moon
@@ -26144,7 +26144,7 @@ Habitat=Rare
 Kind=Paradox
 Pokedex=It is possible that this is the creature listed as Roaring Moon in an expedition journal that still holds many mysteries.
 BattlerPlayerY=10
-BattlerEnemyY=15
+BattlerEnemyY=13
 BattlerAltitude=0
 Evolutions=
 [1006]
@@ -26198,7 +26198,7 @@ RegionalNumbers=1007
 Kind=Paradox
 Pokedex=This seems to be the Winged King mentioned in an old expedition journal. It was said to have split the land with its bare fists.
 BattlerPlayerY=15
-BattlerEnemyY=12
+BattlerEnemyY=11
 BattlerAltitude=0
 Evolutions=
 [1008]
@@ -26225,7 +26225,7 @@ RegionalNumbers=1008
 Kind=Paradox
 Pokedex=Much remains unknown about this creature. It resembles Cyclizar, but it is far more ruthless and powerful.
 BattlerPlayerY=15
-BattlerEnemyY=12
+BattlerEnemyY=11
 BattlerAltitude=0
 Evolutions=
 [1009]
@@ -26252,7 +26252,7 @@ RegionalNumbers=1009
 Kind=Paradox
 Pokedex=This Pokémon seems to have a striking resemblance to another Pokèmon called Suicune.
 BattlerPlayerY=15
-BattlerEnemyY=20
+BattlerEnemyY=14
 BattlerAltitude=0
 Evolutions=
 [1010]
@@ -26279,7 +26279,7 @@ RegionalNumbers=1010
 Kind=Paradox
 Pokedex=This Pokémon resembles an unknown object described in a paranormal magazine as a UFO sent to observe humanity.
 BattlerPlayerY=15
-BattlerEnemyY=20
+BattlerEnemyY=18
 BattlerAltitude=0
 Evolutions=
 [1011]
