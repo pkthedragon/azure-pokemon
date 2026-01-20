@@ -587,19 +587,24 @@ def pbEndSwim(xOffset,yOffset)
     # Calculate destination coordinates
     newX = x + xOffset
     newY = y + yOffset
-    # Temporarily turn off swimming to check if destination is passable from land
-    wasSwimming = $PokemonGlobal.swimming
-    $PokemonGlobal.swimming = false
-    Kernel.pbUpdateVehicle
-    # Check if the destination tile is passable (including events)
-    if !$game_player.passable?(x, y, $game_player.direction)
-      # Destination is blocked (e.g., by an event), restore swimming and block movement
-      $PokemonGlobal.swimming = wasSwimming
-      Kernel.pbUpdateVehicle
-      return true  # Return true to prevent movement
+    # Check if the destination tile is passable from land (including events)
+    if !$game_map.valid?(newX, newY)
+      return true if !$MapFactory
+      return true if !$MapFactory.isPassableFromEdge?(newX, newY)
+      return false
     end
-    # Destination is clear, stay dismounted and allow movement
-    return false  # Return false to allow normal movement to proceed
+    # Block landing on non-through character events even if swimming is passable
+    for event in $game_map.events.values
+      next unless event.x == newX && event.y == newY
+      next if event.through
+      next if event.tile_id && event.tile_id > 0
+      return true if event.character_name.to_s.strip != ""
+    end
+    # Check if the destination tile itself is passable (ignoring direction from water)
+    passable = $game_map.passableStrict?(newX, newY, 0) rescue true
+    return true unless passable
+    # Destination is clear, allow movement to proceed
+    return false
   end
   return false
 end

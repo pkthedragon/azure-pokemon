@@ -882,6 +882,11 @@ class PokeBattle_Pokemon
     if isConst?(self.item,PBItems,:SOOTHEBELL) && gain>0
       gain=(gain*3.0/2).round
     end
+    if gain>0 && knowsMove?(:FRUSTRATION)
+      gain=0
+    elsif gain<0 && knowsMove?(:RETURN)
+      gain=0
+    end
     oldhappiness = @happiness
     @happiness+=gain
     @happiness=[[255,@happiness].min,0].max
