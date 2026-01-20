@@ -5873,13 +5873,13 @@ def pbStartBattle(canlose=false)
       
       if symbiosis
         for s in symbiosis
-          if s.item == 0 && s.pbPartner.item
-            pbDisplay(_INTL("{1} received {2}'s {3} from symbiosis! ",s.pbThis, s.pbPartner.pbThis, PBItems.getName(s.pbPartner.item)))
-            s.item = s.pbPartner.item
-            s.pokemon.itemInitial = s.pbPartner.item
-            s.pbPartner.pokemon.itemInitial = 0
-            s.pbPartner.item=0
+          partner = s.pbPartner
+          next if !partner || partner.isFainted?
+          for stat in [PBStats::ATTACK,PBStats::DEFENSE,PBStats::SPEED,PBStats::SPATK,
+                       PBStats::SPDEF,PBStats::EVASION,PBStats::ACCURACY]
+            partner.stages[stat] = s.stages[stat]
           end
+          pbDisplay(_INTL("{1} shared its stat changes with {2}!",s.pbThis,partner.pbThis(true)))
         end
       end
       return if @decision>0
@@ -5887,24 +5887,18 @@ def pbStartBattle(canlose=false)
     pbWait(20)
   end
   
-  # Checks if anyone is eligible to receive an item through symbiosis
+  # Checks if anyone can share stat changes through Symbiosis
   def pbSymbiosisCheck(battlers)
-      result = Array.new
-      count  = 0
+      result = []
       for i in battlers
-        next if (i.pokemon.nil? || i.pbPartner.pokemon.nil?)
-        if i.item != 0 && i.pokemon.itemInitial != 0 && 
-          i.pbPartner.item != 0 && i.pbPartner.pokemon.itemInitial != 0 && 
-          i.pbPartner.hasWorkingAbility(:SYMBIOSIS)
-            result[count] = i
-            count += 1
-        end
+        next if i.pokemon.nil?
+        partner = i.pbPartner
+        next if !partner || partner.pokemon.nil?
+        next if i.isFainted?
+        result << i if i.hasWorkingAbility(:SYMBIOSIS)
       end
-      if result.any?
-        return result
-      else
-        return false
-      end
+      return result if result.any?
+      return false
     end
  
     def pbShieldDamage(battler,damage,move=nil)
@@ -7136,28 +7130,6 @@ def pbStartBattle(canlose=false)
               pbDisplay(_INTL("{1}'s Water Veil cured its status problem!",i.pbThis))
           i.status=0
           i.statusCount=0
-        end
-      end
-      # Healer
-      if i.hasWorkingAbility(:HEALER)
-        partner=i.pbPartner
-        if partner
-          if pbRandom(10)<3 && partner.status>0
-            case partner.status
-              when PBStatuses::SLEEP
-                pbDisplay(_INTL("{1}'s Healer cured its partner's sleep problem!",i.pbThis))
-              when PBStatuses::FROZEN
-                pbDisplay(_INTL("{1}'s Healer cured its partner's ice problem!",i.pbThis))
-              when PBStatuses::BURN
-                pbDisplay(_INTL("{1}'s Healer cured its partner's burn problem!",i.pbThis))
-              when PBStatuses::POISON
-                pbDisplay(_INTL("{1}'s Healer cured its partner's poison problem!",i.pbThis))
-              when PBStatuses::PARALYSIS
-                pbDisplay(_INTL("{1}'s Healer cured its partner's paralysis problem!",i.pbThis))
-            end
-            partner.status=0
-            partner.statusCount=0
-          end
         end
       end
     end
