@@ -192,7 +192,7 @@ end
 #  - map_id:    optional; defaults to current map
 # Returns true if something happened (battle or item), false otherwise.
 #===============================================================================
-def pbStartHollow(hollow_id, map_id = nil)
+def pbStartHollow(map_id = nil, hollow_id = nil)
   map_id ||= $game_map.map_id
 
   data = PBHollow.data_for(map_id, hollow_id)
