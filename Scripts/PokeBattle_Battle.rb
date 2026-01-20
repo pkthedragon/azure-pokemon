@@ -298,7 +298,7 @@ module PokeBattle_BattleCommon
           self.pbPlayer.owned[species]=true
           if $Trainer.pokedex
             pbDisplayPaused(_INTL("{1}'s data was added to the Pokédex.",pokemon.name))
-            @scene.pbShowPokedex(species)
+            @scene.pbShowPokedex(pokemon)
           end
         end
         @scene.pbHideCaptureBall
@@ -7652,7 +7652,7 @@ def pbStartBattle(canlose=false)
       if i.effects[PBEffects::Yawn]>0
         i.effects[PBEffects::Yawn]-=1
         if i.effects[PBEffects::Yawn]==0 && i.pbCanSleepYawn?
-          i.pbSleepSelf(1)  # Yawn causes 1 turn of sleep
+          i.pbSleepSelf(2)  # Yawn causes 1 full turn of sleep
           pbDisplay(_INTL("{1} fell asleep!",i.pbThis))
         end
       end

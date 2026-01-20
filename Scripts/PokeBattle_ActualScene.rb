@@ -4505,11 +4505,17 @@ end
     end
   end
 
-  def pbShowPokedex(species)
+  def pbShowPokedex(subject)
+    pokemon=nil
+    species=subject
+    if subject.respond_to?(:species)
+      pokemon=subject
+      species=subject.species
+    end
     pbFadeOutIn(99999){
        scene=PokemonPokedexScene.new
        screen=PokemonPokedex.new(scene)
-       screen.pbDexEntry(species)
+       screen.pbDexEntry(species,pokemon)
     }
   end
   
