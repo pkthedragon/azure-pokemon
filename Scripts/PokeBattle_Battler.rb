@@ -1454,7 +1454,7 @@ class PokeBattle_Battler
     return false if @effects[PBEffects::FriskLock]>0
     return false if @effects[PBEffects::MultiTurnAttack]==PBMoves::BINDINGWORD
     return false if @battle.field.effects[PBEffects::MagicRoom]>0
-    return false if self.ability == PBAbilities::KLUTZ && !self.abilitynulled
+    return false if self.ability == PBAbilities::KLUTZ && !self.abilitynulled && @turncount==0
     return true
   end
 
@@ -1464,7 +1464,7 @@ class PokeBattle_Battler
     return false if @effects[PBEffects::FriskLock]>0
     return false if @effects[PBEffects::MultiTurnAttack]==PBMoves::BINDINGWORD
     return false if @battle.field.effects[PBEffects::MagicRoom]>0
-    return false if self.ability == PBAbilities::KLUTZ && !self.abilitynulled
+    return false if self.ability == PBAbilities::KLUTZ && !self.abilitynulled && @turncount==0
     return isConst?(@item,PBItems,item)
   end
   
@@ -1737,6 +1737,11 @@ class PokeBattle_Battler
     end
     if $fefieldeffect == 32 && 
       self.pbHasType?(:DRAGON)
+      defmult=(defmult*1.5).round
+    end
+    if self.hasWorkingAbility(:MARVELSCALE) &&
+      (self.status>0 || $fefieldeffect == 9 ||
+        $fefieldeffect == 31 || $fefieldeffect == 32 || $fefieldeffect == 34)
       defmult=(defmult*1.5).round
     end
     #### AME - 005 - END
@@ -2020,6 +2025,9 @@ class PokeBattle_Battler
     # Wounds halve healing
     if @effects[PBEffects::Wounded]>0
       amt = (amt/2).floor
+    end
+    if self.hasWorkingAbility(:GLUTTONY)
+      amt = (amt*1.1).floor
     end
     if self.hp+amt>@totalhp
       amt=@totalhp-self.hp
@@ -3504,27 +3512,7 @@ class PokeBattle_Battler
     # Color Change - Uses Camouflage on entry
     if self.hasWorkingAbility(:COLORCHANGE) && onactive
       if !self.hasWorkingAbility(:MULTITYPE) && !self.hasWorkingAbility(:RKSSYSTEM)
-        newtype = 0
-        case $fefieldeffect
-        when 1; newtype = getConst(PBTypes,:ELECTRIC) || 0
-        when 2; newtype = getConst(PBTypes,:GRASS) || 0
-        when 3; newtype = getConst(PBTypes,:FAIRY) || 0
-        when 4; newtype = getConst(PBTypes,:DARK) || 0
-        when 5; newtype = getConst(PBTypes,:PSYCHIC) || 0
-        when 6; newtype = getConst(PBTypes,:NORMAL) || 0
-        when 7,16; newtype = getConst(PBTypes,:FIRE) || 0
-        when 8,21,22; newtype = getConst(PBTypes,:WATER) || 0
-        when 9; newtype = getConst(PBTypes,:DRAGON) || 0
-        when 10,11,19; newtype = getConst(PBTypes,:POISON) || 0
-        when 12,20; newtype = getConst(PBTypes,:GROUND) || 0
-        when 13; newtype = getConst(PBTypes,:ICE) || 0
-        when 14,23; newtype = getConst(PBTypes,:ROCK) || 0
-        when 15; newtype = getConst(PBTypes,:BUG) || 0
-        when 17; newtype = getConst(PBTypes,:STEEL) || 0
-        when 18; newtype = getConst(PBTypes,:ELECTRIC) || 0
-        when 24; newtype = getConst(PBTypes,:FLYING) || 0
-        else; newtype = getConst(PBTypes,:NORMAL) || 0
-        end
+        newtype = pbCamouflageType
         if newtype > 0 && self.type1 != newtype
           self.type1 = newtype
           self.type2 = newtype
@@ -4692,15 +4680,6 @@ class PokeBattle_Battler
           target.item=0
         end
       end      
-      if target.hasWorkingAbility(:ANGERPOINT)
-        if target.pbCanIncreaseStatStage?(PBStats::ATTACK) &&
-          target.damagestate.critical
-          target.stages[PBStats::ATTACK]=6
-          @battle.pbCommonAnimation("StatUp",target,nil)
-          @battle.pbDisplay(_INTL("{1}'s {2} maxed its Attack!",
-              target.pbThis,PBAbilities.getName(target.ability)))
-        end
-      end
       if target.hasWorkingItem(:REDCARD) && !target.damagestate.substitute &&
         !(@battle.pbIsWild? && (@battle.pbParty(user.index) == @battle.party2))
         choices = []
@@ -5831,35 +5810,31 @@ class PokeBattle_Battler
         return false
       end
     end      
-    if ((target.hasWorkingAbility(:DAZZLING) ||
-          target.hasWorkingAbility(:QUEENLYMAJESTY)) && !target.moldbroken) ||
+    if (target.hasWorkingAbility(:DAZZLING) && !target.moldbroken) ||
       (@battle.field.effects[PBEffects::PsychicTerrain]>0 && $fefieldeffect!=37) || # Psychic Terrain overlay only
       $fefieldeffect == 37 || # Psychic Field blocks all priority
       ($fefieldeffect == 34 && target.hasWorkingAbility(:MIRRORARMOR) && !target.moldbroken) ||
-      (target.pbPartner.hasWorkingAbility(:DAZZLING) || target.pbPartner.hasWorkingAbility(:QUEENLYMAJESTY)  || ($fefieldeffect == 34 && target.hasWorkingAbility(:MIRRORARMOR)) && !target.moldbroken)
+      (target.pbPartner.hasWorkingAbility(:DAZZLING) || ($fefieldeffect == 34 && target.hasWorkingAbility(:MIRRORARMOR)) && !target.moldbroken)
       if thismove.priority>0
-        if ((target.hasWorkingAbility(:DAZZLING) || 
-              target.hasWorkingAbility(:QUEENLYMAJESTY)) && !target.moldbroken) || 
+        if (target.hasWorkingAbility(:DAZZLING) && !target.moldbroken) || 
               ($fefieldeffect == 34 && target.hasWorkingAbility(:MIRRORARMOR) && !!target.moldbroken) ||
-              (target.pbPartner.hasWorkingAbility(:DAZZLING) || target.pbPartner.hasWorkingAbility(:QUEENLYMAJESTY)  || ($fefieldeffect == 34 && target.hasWorkingAbility(:MIRRORARMOR)) && !target.moldbroken)
+              (target.pbPartner.hasWorkingAbility(:DAZZLING) || ($fefieldeffect == 34 && target.hasWorkingAbility(:MIRRORARMOR)) && !target.moldbroken)
         end
         @battle.pbDisplay(_INTL("{1} wasn't affected!",target.pbThis))
         return false
       elsif !(thismove.pbIsPhysical?(thismove.type) || thismove.pbIsSpecial?(thismove.type)) && 
         user.hasWorkingAbility(:PRANKSTER) && thismove.priority==0
-        if ((target.hasWorkingAbility(:DAZZLING) || 
-              target.hasWorkingAbility(:QUEENLYMAJESTY)) && !target.moldbroken) ||
+        if (target.hasWorkingAbility(:DAZZLING) && !target.moldbroken) ||
                ($fefieldeffect == 34 && target.hasWorkingAbility(:MIRRORARMOR) && !!target.moldbroken) ||
-               (target.pbPartner.hasWorkingAbility(:DAZZLING) || target.pbPartner.hasWorkingAbility(:QUEENLYMAJESTY)  || ($fefieldeffect == 34 && target.hasWorkingAbility(:MIRRORARMOR)) && !target.moldbroken)
+               (target.pbPartner.hasWorkingAbility(:DAZZLING) || ($fefieldeffect == 34 && target.hasWorkingAbility(:MIRRORARMOR)) && !target.moldbroken)
           @battle.pbDisplay(_INTL("{1} activated!",PBAbilities.getName(target.ability)))
         end
         @battle.pbDisplay(_INTL("{1} wasn't affected!",target.pbThis))
         return false     
       elsif thismove.type==2 && ((user.hasWorkingAbility(:GALEWINGS) || @battle.SilvallyCheck(user, "flying")) && user.hp==user.totalhp) && thismove.priority>-1
-        if ((target.hasWorkingAbility(:DAZZLING) || 
-              target.hasWorkingAbility(:QUEENLYMAJESTY)) && !target.moldbroken) ||
+        if (target.hasWorkingAbility(:DAZZLING) && !target.moldbroken) ||
              ($fefieldeffect == 34 && target.hasWorkingAbility(:MIRRORARMOR) && !!target.moldbroken) ||
-             (target.pbPartner.hasWorkingAbility(:DAZZLING) || target.pbPartner.hasWorkingAbility(:QUEENLYMAJESTY)  || ($fefieldeffect == 34 && target.hasWorkingAbility(:MIRRORARMOR)) && !target.moldbroken)
+             (target.pbPartner.hasWorkingAbility(:DAZZLING) || ($fefieldeffect == 34 && target.hasWorkingAbility(:MIRRORARMOR)) && !target.moldbroken)
           @battle.pbDisplay(_INTL("{1} activated!",PBAbilities.getName(target.ability)))
         end
         @battle.pbDisplay(_INTL("{1} wasn't affected!",target.pbThis))
@@ -5869,10 +5844,9 @@ class PokeBattle_Battler
         if user.hasWorkingAbility(:TRIAGE)
           for j in healfunctions
             if thismove.function == j && (thismove.priority==0 || thismove.priority==-1 || thismove.priority==-2)
-              if ((target.hasWorkingAbility(:DAZZLING) || 
-                    target.hasWorkingAbility(:QUEENLYMAJESTY)) && !target.moldbroken) ||
+              if (target.hasWorkingAbility(:DAZZLING) && !target.moldbroken) ||
                      ($fefieldeffect == 34 && target.hasWorkingAbility(:MIRRORARMOR) && !!target.moldbroken) ||
-                     (target.pbPartner.hasWorkingAbility(:DAZZLING) || target.pbPartner.hasWorkingAbility(:QUEENLYMAJESTY)  || ($fefieldeffect == 34 && target.hasWorkingAbility(:MIRRORARMOR)) && !target.moldbroken)
+                     (target.pbPartner.hasWorkingAbility(:DAZZLING) || ($fefieldeffect == 34 && target.hasWorkingAbility(:MIRRORARMOR)) && !target.moldbroken)
                 @battle.pbDisplay(_INTL("{1} activated!",PBAbilities.getName(target.ability)))
               end
               @battle.pbDisplay(_INTL("{1} wasn't affected!",target.pbThis))
@@ -6793,6 +6767,7 @@ class PokeBattle_Battler
               target.effects[PBEffects::Flinch]=true
             end
           elsif user.hasWorkingAbility(:STENCH) &&
+            thismove.isContactMove? && !target.effects[PBEffects::StenchUsed] &&
             thismove.function!=0x09 && # Thunder Fang
             thismove.function!=0x0B && # Fire Fang
             thismove.function!=0x0E && # Ice Fang
@@ -6802,12 +6777,10 @@ class PokeBattle_Battler
             thismove.function!=0x12 && # Fake Out
             thismove.function!=0x78 && # Twister
             thismove.function!=0xC7 && # Sky Attack
+            !target.hasWorkingAbility(:INNERFOCUS) &&
             target.status!=PBStatuses::SLEEP && target.status!=PBStatuses::FROZEN
-            if (@battle.pbRandom(10)==0 || (($fefieldeffect == 19 ||
-                    $fefieldeffect == 26) &&
-                  @battle.pbRandom(10) < 2))
-              target.effects[PBEffects::Flinch]=true
-            end
+            target.effects[PBEffects::Flinch]=true
+            target.effects[PBEffects::StenchUsed]=true
           end
         end
       end
@@ -6818,6 +6791,11 @@ class PokeBattle_Battler
           target.pbCureStatus
         elsif thismove.name=="Scald" && target.status==PBStatuses::FROZEN
           target.pbCureStatus
+        end
+        if user.hasWorkingAbility(:HYPERCUTTER) && target.hp>0 &&
+           target.effects[PBEffects::Wounded] == 0 && !target.damagestate.substitute
+          target.effects[PBEffects::Wounded]=3
+          @battle.pbDisplay(_INTL("{1} was wounded!",target.pbThis))
         end
         # Rage
         if target.effects[PBEffects::Rage] && target.pbIsOpposing?(user.index)
@@ -6878,14 +6856,6 @@ class PokeBattle_Battler
         user.pbFaint # no return
         @battle.pbJudgeCheckpoint(user)
       end
-    end
-    # Color Change
-    movetype=thismove.pbType(thismove.type,user,target)
-    if target.hasWorkingAbility(:COLORCHANGE) && totaldamage>0 && !PBTypes.isPseudoType?(movetype) && !target.pbHasType?(movetype)
-      target.type1=movetype
-      target.type2=movetype
-      @battle.pbDisplay(_INTL("{1}'s {2} made it the {3} type!",target.pbThis,
-          PBAbilities.getName(target.ability),PBTypes.getName(movetype)))
     end
     # Berry check
     for j in 0...4

@@ -4022,6 +4022,12 @@ class PokeBattle_Move
       $fefieldeffect == 31 || $fefieldeffect == 32 || $fefieldeffect == 34) && !(opponent.moldbroken)
       defmult=(defmult*1.5).round
     end
+    if (opponent.hasWorkingAbility(:MARVELSCALE) || @battle.SilvallyCheck(opponent,PBTypes::WATER)) &&
+     pbIsSpecial?(type) &&
+     (opponent.status>0 || $fefieldeffect == 9 || @battle.field.effects[PBEffects::Rainbow]>0 || @battle.field.effects[PBEffects::MistyTerrain]>0 ||
+      $fefieldeffect == 31 || $fefieldeffect == 32 || $fefieldeffect == 34) && !(opponent.moldbroken)
+      defmult=(defmult*1.5).round
+    end
     if isConst?(opponent.ability,PBAbilities,:NATURALSHROUD) && pbIsPhysical?(type) &&
      ($fefieldeffect == 2 || $fefieldeffect == 15 || ($fefieldeffect == 33 && $fecounter>1) || @battle.field.effects[PBEffects::GrassyTerrain]>0) # Grassy Field
       defmult=(defmult*1.5).round
@@ -5217,6 +5223,9 @@ class PokeBattle_Move
         reduction = (0.9 ** opponent.effects[PBEffects::StalwartStacks])
         finaldamagemult=(finaldamagemult*reduction).round
       end
+    end
+    if opponent.hasWorkingAbility(:QUEENLYMAJESTY) && pbTargetsAll?(attacker)
+      finaldamagemult=(finaldamagemult*0.7).round
     end
     if attacker.hasWorkingAbility(:STAKEOUT) && @battle.switchedOut[opponent.index]
       finaldamagemult=(finaldamagemult*2.0).round
