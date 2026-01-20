@@ -1670,19 +1670,19 @@ MultipleForms.register(:VIVILLON,{
       next rand(9)  # Forms 0-8 are regular patterns, form 9 is Mystic
     },
     "type1"=>proc{|pokemon|
-      next if pokemon.form!=9 && pokemon.form!=10
+      next if pokemon.form!=10
       next getID(PBTypes,:BUG)    # Mystic
     },
     "type2"=>proc{|pokemon|
-      next if pokemon.form!=9 && pokemon.form!=10
+      next if pokemon.form!=10
       next getID(PBTypes,:DRAGON)    # Mystic
     },
     "getBaseStats"=>proc{|pokemon|
-      next if pokemon.form!=9 && pokemon.form!=10
+      next if pokemon.form!=10
       next [52, 80, 50, 90, 89, 50]   # Mystic
     },
     "ability"=>proc{|pokemon|
-      next if pokemon.form!=9 && pokemon.form!=10 # Only Mystic form
+      next if pokemon.form!=10 # Only Mystic form
       if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0)
         next getID(PBAbilities,:SWARM)
       end
@@ -1694,7 +1694,7 @@ MultipleForms.register(:VIVILLON,{
       end
     },
     "getMoveList"=>proc{|pokemon|
-      next if pokemon.form!=9 && pokemon.form!=10      # Use default moveset for regular forms
+      next if pokemon.form!=10      # Use default moveset for regular forms
       movelist=[]
       # Mystic form movelist
       movelist=[[0,:TWISTER],[1,:DRAGONRUSH],[1,:HURRICANE],[1,:IRRITATION],
@@ -1707,7 +1707,7 @@ MultipleForms.register(:VIVILLON,{
       next movelist
     },
     "getMoveCompatibility"=>proc{|pokemon|
-      next if pokemon.form!=9 && pokemon.form!=10
+      next if pokemon.form!=10
       movelist=[]
       # Mystic form TM compatibility
       movelist=[:AGILITY,:AIRSLASH,:ATTRACT,:BREAKINGSWIPE,:BUGBITE,:BUGBUZZ,:BULKUP,:CALMMIND,:CONFIDE,:DEFOG,:DRACOMETEOR,:DRAGONCHEER,:DRAGONPULSE,:ELECTROWEB,:ENDURE,:FACADE,:FLASH,:FRUSTRATION,:GIGADRAIN,:GILDEDBARGAIN,:HIDDENPOWER,:HURRICANE,:HYPERBEAM,:INFESTATION,:IRONDEFENSE,:IRRITATION,:LIGHTSCREEN,:LOCUSTSWARM,:OUTRAGE,:POLLENPUFF,:PROTECT,:PSYCHUP,:RAINDANCE,:REFLECT,:REST,:RETURN,:ROOST,:ROUND,:SCALESHOT,:SCARYFACE,:SECRETPOWER,:SIGNALBEAM,:SLEEPTALK,:SNORE,:STRUGGLEBUG,:SUBSTITUTE,:SUNNYDAY,:SWAGGER,:SWORDSDANCE,:TAILWIND,:THIEF,:TOXIC,:UTURN,:XSCISSOR]

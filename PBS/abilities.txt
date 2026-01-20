@@ -298,7 +298,7 @@
 340,HALCYON,Halcyon,"All moves with positive priority have zero priority."
 341,MANAECHOES,Mana Echoes,"The user's special attacks deal an additional 1/8th max HP damage."
 342,EXECUTIONER,Executioner,"Boosts attack if an enemy is below half HP."
-343,ASCETIC,Escetic,"Powers up Grass-type moves, incoming Grass-type moves deal less damage."
+343,ASCETIC,Ascetic,"Powers up Grass-type moves, incoming Grass-type moves deal less damage."
 344,WATERLOGGED,Waterlogged,"Powers up Water-type moves, incoming Water-type moves deal less damage."
 345,INCENDIARY,Incendiary,"Powers up Fire-type moves, incoming Fire-type moves deal less damage."
 346,EVENTHORIZON,Event Horizon,"The Pokémon intensifies gravity when it enters a battle."
