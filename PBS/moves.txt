@@ -1059,7 +1059,7 @@
 1040,BARRELBURST,Barrel Burst,292,120,WATER,Special,100,5,0,00,0,bef,"50% recoil. Sharply raises user's Speed."
 1041,TRAGICSLIP,Tragic Slip,393,1,DARK,Physical,100,10,0,00,0,abef,"Does more damage the taller the target is."
 1042,STALAGBITE,Stalagbite,297,65,ROCK,Physical,100,15,20,00,0,abe,"The user bites with jagged stone fangs. It may crush the target or lower its Defense."
-1043,DEMORALIZE,Demoralize,200,0,DARK,Status,0,10,0,00,0,bcek,"A dreadful sound overwhelms the foe, crushing its will and leaving it petrified."
+1043,DEMORALIZE,Demoralize,200,0,DARK,Status,0,10,0,00,0,bcek,"A dreadful sound overwhelms the foe, crushing it."
 1044,PETRIFY,Petrify,007,20,ROCK,Special,100,10,100,00,0,be,"Paralyzes."
 1045,THOUGHTBOMB,Thought Bomb,000,100,PSYCHIC,Special,80,5,0,00,0,befh,"The user detonates a sphere of condensed thought. Critical hits land more easily."
 1046,UNWIND,Unwind,299,130,PSYCHIC,Physical,100,5,0,00,0,abef,"The user lashes out violently, losing its Psychic typing for two turns."
