@@ -3461,8 +3461,7 @@ class PokeBattle_Battler
     end
     # Illuminate - Raises accuracy on entry
     if self.hasWorkingAbility(:ILLUMINATE) && onactive
-      if !pbTooHigh?(PBStats::ACCURACY)
-        pbIncreaseStatBasic(PBStats::ACCURACY,1)
+      if pbIncreaseStat(PBStats::ACCURACY,1,false,nil,nil,true,false,false)
         @battle.pbDisplay(_INTL("{1}'s {2} boosted its Accuracy!",pbThis,PBAbilities.getName(ability)))
       end
     end
