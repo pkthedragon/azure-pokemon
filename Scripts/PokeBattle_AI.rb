@@ -49,10 +49,11 @@ class PokeBattle_Battle
     #score=(pbRoughDamage(move,attacker,opponent,skill,move.basedamage)*100/opponent.hp) #roughdamage
     score=roughdamage
     bettertype = move.pbType(move.type,attacker,opponent)
+    move_type = bettertype
     opponent=attacker.pbOppositeOpposing if !opponent
     opponent=opponent.pbPartner if opponent && opponent.isFainted?
     roles = pbGetMonRole(attacker,opponent,skill)
-    if (move.priority>0) || prankpri || (!attacker.abilitynulled && (attacker.ability == PBAbilities::GALEWINGS && move.type==PBTypes::FLYING) && attacker.hp==attacker.totalhp) || (attacker.species == PBSpecies::FERALIGATR && attitemworks && attacker.item == PBItems::FERACREST && attacker.turncount==0) ||  (!attacker.abilitynulled && attacker.ability == PBAbilities::TRIAGE && move.isHealingMove?)
+    if (move.priority>0) || prankpri || (!attacker.abilitynulled && (attacker.ability == PBAbilities::GALEWINGS && move_type==PBTypes::FLYING) && attacker.hp==attacker.totalhp) || (attacker.species == PBSpecies::FERALIGATR && attitemworks && attacker.item == PBItems::FERACREST && attacker.turncount==0) ||  (!attacker.abilitynulled && attacker.ability == PBAbilities::TRIAGE && move.isHealingMove?)
       if move.basedamage>0 && !move.zmove
         PBDebug.log(sprintf("Priority Check Begin")) if $INTERNAL && shutup==false
         fastermon = (attacker.pbSpeed>pbRoughStat(opponent,PBStats::SPEED,skill)) ^ (@trickroom!=0)
@@ -68,9 +69,10 @@ class PokeBattle_Battle
         pridam = 0
         pridam2=0
         for i in attacker.moves
+          temp_type = i.pbType(i.type, attacker, opponent)
           #if (attacker.pbSpeed<=pbRoughStat(opponent,PBStats::SPEED,skill)) ^ (@trickroom!=0)
             if (i.priority>0 && !(i.id==(PBMoves::FAKEOUT) && attacker.turncount!=0)) ||
-              (!attacker.abilitynulled && attacker.ability == PBAbilities::GALEWINGS && i.type==PBTypes::FLYING && attacker.hp==attacker.totalhp) || 
+              (!attacker.abilitynulled && attacker.ability == PBAbilities::GALEWINGS && temp_type==PBTypes::FLYING && attacker.hp==attacker.totalhp) || 
               ((attacker.species == PBSpecies::FERALIGATR) && attitemworks && attacker.item == PBItems::FERACREST && attacker.turncount==0) ||
               (!attacker.abilitynulled && attacker.ability == PBAbilities::TRIAGE && i.isHealingMove?) && i.basedamage>0
               temppridam = pbRoughDamage(i,attacker,opponent,skill,i.basedamage)
@@ -4011,6 +4013,39 @@ class PokeBattle_Battle
           score*=0.2
         end
       end
+    when 0x23E # Beautify
+      stats = {
+        PBStats::ATTACK => attacker.attack,
+        PBStats::DEFENSE => attacker.defense,
+        PBStats::SPEED => attacker.speed,
+        PBStats::SPATK => attacker.spatk,
+        PBStats::SPDEF => attacker.spdef
+      }
+      higheststat = stats.max_by { |_, value| value }[0]
+      miniscore = setupminiscore(attacker,opponent,skill,move,true,1,true,initialscores,scoreindex)
+      case higheststat
+      when PBStats::ATTACK
+        physmove = attacker.moves.any? { |j| j.pbIsPhysical?(j.type) }
+        miniscore = 0 if !physmove
+      when PBStats::SPATK
+        specialmove = attacker.moves.any? { |j| j.pbIsSpecial?(j.type) }
+        miniscore = 0 if !specialmove
+      when PBStats::DEFENSE, PBStats::SPDEF
+        if roles.include?(PBMonRoles::PHYSICALWALL) || roles.include?(PBMonRoles::SPECIALWALL)
+          miniscore*=1.2
+        else
+          miniscore*=0.8
+        end
+      when PBStats::SPEED
+        if (attacker.pbSpeed<pbRoughStat(opponent,PBStats::SPEED,skill)) ^ (@trickroom!=0)
+          miniscore*=1.3
+        end
+      end
+      miniscore=0 if attacker.pbTooHigh?(higheststat)
+      miniscore*=0.5 if attacker.status==PBStatuses::BURN || attacker.status==PBStatuses::PARALYSIS
+      miniscore*=0.2 if checkAImoves([PBMoves::CLEARSMOG,PBMoves::HAZE],aimem)
+      miniscore/=100.0
+      score*=miniscore
     when 0x2F # Iron Defense
       miniscore = setupminiscore(attacker,opponent,skill,move,false,2,true,initialscores,scoreindex)
       if attacker.stages[PBStats::DEFENSE]>0
@@ -31204,7 +31239,8 @@ def pbShouldSwitch?(index,hardswitch=false)
       killedbypriority=false
       opppritier=0
       for i in opponent1.moves # checking through the current opponent for largely the same properties
-        if (i.priority>0 && !((i.id==PBMoves::FAKEOUT || i.id==PBMoves::FIRSTIMPRESSION) && opponent1.turncount>0)|| (i.type==PBTypes::FLYING && opponent1.ability == PBAbilities::GALEWINGS && (opponent1.hp==opponent1.totalhp || (($fefieldeffect == 16 || $fefieldeffect == 27 || $fefieldeffect == 28) && pbWeather == PBWeather::STRONGWINDS) || $fefieldeffect == 43)) ||
+        move_type = i.pbType(i.type, opponent1, currentmon)
+        if (i.priority>0 && !((i.id==PBMoves::FAKEOUT || i.id==PBMoves::FIRSTIMPRESSION) && opponent1.turncount>0)|| (move_type==PBTypes::FLYING && opponent1.ability == PBAbilities::GALEWINGS && (opponent1.hp==opponent1.totalhp || (($fefieldeffect == 16 || $fefieldeffect == 27 || $fefieldeffect == 28) && pbWeather == PBWeather::STRONGWINDS) || $fefieldeffect == 43)) ||
           (opponent1.species==PBSpecies::FERALIGATR && opponent1.item == PBItems::FERACREST && opponent1.turncount==0) ||
           (opponent1.ability == PBAbilities::TRIAGE && (PBStuff::HEALFUNCTIONS).include?(i.function))) && i.basedamage>0
           if opponent1.effects[PBEffects::Switching]==false 
@@ -31268,6 +31304,7 @@ def pbShouldSwitch?(index,hardswitch=false)
         end
       end
       if defined?(incomingmove)
+        incomingmove.type = incomingmove.pbType(incomingmove.type,opponent1,currentmon)
         totalmod=pbTypeModNoMessages(incomingmove.type,opponent1,currentmon,incomingmove,skill) # is the incoming move super effective, not very effective, or are we immune?
       end
       normaldam=0 # how much damage are we dealing to this opponent?
@@ -31277,7 +31314,8 @@ def pbShouldSwitch?(index,hardswitch=false)
       oppprikill=false
       maxplaypri=0
       for i in currentmon.moves
-        if i.priority>0 || (i.type==PBTypes::FLYING && currentmon.ability == PBAbilities::GALEWINGS && (currentmon.hp==currentmon.totalhp || (($fefieldeffect == 16 || $fefieldeffect == 27 || $fefieldeffect == 28) && pbWeather == PBWeather::STRONGWINDS) || $fefieldeffect == 43)) ||
+        move_type = i.pbType(i.type, currentmon, opponent1)
+        if i.priority>0 || (move_type==PBTypes::FLYING && currentmon.ability == PBAbilities::GALEWINGS && (currentmon.hp==currentmon.totalhp || (($fefieldeffect == 16 || $fefieldeffect == 27 || $fefieldeffect == 28) && pbWeather == PBWeather::STRONGWINDS) || $fefieldeffect == 43)) ||
           (currentmon.species==PBSpecies::FERALIGATR && currentmon.item == PBItems::FERACREST && currentmon.turncount==0) ||
           (currentmon.ability == PBAbilities::TRIAGE && (PBStuff::HEALFUNCTIONS).include?(i.function)) && i.basedamage>0 ### tbh i use this bit so much now that i might as well just make a brand new function for it at this rate
           pritempdamage = pbRoughDamage(i,currentmon,opponent1,skill,i.basedamage) 

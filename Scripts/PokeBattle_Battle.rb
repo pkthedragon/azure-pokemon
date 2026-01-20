@@ -5873,6 +5873,7 @@ def pbStartBattle(canlose=false)
       
       if symbiosis
         for s in symbiosis
+          next if s.isFainted?
           partner = s.pbPartner
           next if !partner || partner.isFainted?
           for stat in [PBStats::ATTACK,PBStats::DEFENSE,PBStats::SPEED,PBStats::SPATK,

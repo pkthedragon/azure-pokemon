@@ -1924,6 +1924,9 @@ class PokeBattle_Battler
     if self.hasWorkingAbility(:QUICKFEET) && self.status>0
       speed=(speed*1.5).floor
     end
+    if $fefieldeffect == 50 && self.effects[PBEffects::ThroatChop] > 0
+      speed=(speed*0.5).floor
+    end
     if self.hasWorkingAbility(:MAENADSFERVOR) && self.effects[PBEffects::Confusion]>0
       speed=(speed*2).floor
     end
@@ -6523,6 +6526,10 @@ class PokeBattle_Battler
         @battle.scene.pbUnVanishSprite(target) unless (thismove.function==0x10D && !user.pbHasType?(:GHOST)) # Curse
       end
       damage=thismove.pbEffect(user,target,i,alltargets,showanimation) # Recoil/drain, etc. are applied here
+      if $fefieldeffect == 50 && thismove.isSoundBased? && user.effects[PBEffects::ThroatChop]==0
+        user.effects[PBEffects::ThroatChop]=3
+        @battle.pbDisplay(_INTL("{1} was silenced!",user.pbThis))
+      end
       if isConst?(target.species,PBSpecies,:BASTIODON) && target.hasWorkingItem(:BASTCREST,true)
         if target.damagestate.calcdamage>0 && !target.damagestate.substitute &&
           !user.hasWorkingAbility(:ROCKHEAD) && !user.hasWorkingAbility(:MAGICGUARD) &&

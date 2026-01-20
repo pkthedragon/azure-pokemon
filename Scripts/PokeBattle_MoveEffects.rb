@@ -5276,6 +5276,13 @@ class PokeBattle_Move_0A4 < PokeBattle_Move
   
   
   def pbAdditionalEffect(attacker,opponent)
+      if $fefieldeffect == 0 && @battle.field.effects[PBEffects::GrassyTerrain]>0
+        return false if !opponent.pbCanSleep?(false)
+        return false if opponent.effects[PBEffects::Yawn]>0
+        opponent.effects[PBEffects::Yawn]=2
+        @battle.pbDisplay(_INTL("{1} became drowsy!",opponent.pbThis))
+        return true
+      end
       case $fefieldeffect
       when 1
         return false if !opponent.pbCanParalyze?(false)
@@ -5283,8 +5290,9 @@ class PokeBattle_Move_0A4 < PokeBattle_Move
         @battle.pbDisplay(_INTL("{1} is paralyzed!  It may be unable to move!",opponent.pbThis))
       when 2
         return false if !opponent.pbCanSleep?(false)
-        opponent.pbSleep
-        @battle.pbDisplay(_INTL("{1} went to sleep!",opponent.pbThis))  
+        return false if opponent.effects[PBEffects::Yawn]>0
+        opponent.effects[PBEffects::Yawn]=2
+        @battle.pbDisplay(_INTL("{1} became drowsy!",opponent.pbThis))
       when 3
         return false if !opponent.pbCanReduceStatStage?(PBStats::SPATK,1,false)
         opponent.pbReduceStat(PBStats::SPATK,1,false)
@@ -13286,7 +13294,8 @@ end
 ################################################################################
 class PokeBattle_Move_23E < PokeBattle_Move
   def pbEffect(attacker,opponent,hitnum=0,alltargets=nil,showanimation=true)
-    higheststat = [0,attacker.attack,attacker.def,attacker.speed,attacker.spatk,attacker.spdef].index([0,attacker.attack,attacker.def,attacker.speed,attacker.spatk,attacker.spdef].max)
+    stats = [0,attacker.attack,attacker.defense,attacker.speed,attacker.spatk,attacker.spdef]
+    higheststat = stats.index(stats.max)
     return -1 if !attacker.pbCanIncreaseStatStage?(higheststat,true)
     pbShowAnimation(@id,attacker,nil,hitnum,alltargets,showanimation)
     ret=attacker.pbIncreaseStat(higheststat,2,false)
