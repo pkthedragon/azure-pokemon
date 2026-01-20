@@ -54,10 +54,6 @@ class PokeBattle_Battler
   def pbCanSleep?(showMessages=true,selfsleep=false,ignorestatus=false)
     return false if isFainted?
     return false if !pbCanStatus?(showMessages,selfsleep)
-    if isConst?(ability,PBAbilities,:EARLYBIRD) && $fefieldeffect == 43
-      @battle.pbDisplay(_INTL("{1} can't fall asleep in the open skies!",pbThis)) if showMessages
-      return false
-    end
     if (!ignorestatus && status==PBStatuses::SLEEP) || (isConst?(ability,PBAbilities,:COMATOSE) && $fefieldeffect!=1)
       @battle.pbDisplay(_INTL("{1} is already asleep!",pbThis)) if showMessages
       return false
