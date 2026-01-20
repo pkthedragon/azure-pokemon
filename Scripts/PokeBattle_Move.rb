@@ -5224,7 +5224,7 @@ class PokeBattle_Move
         finaldamagemult=(finaldamagemult*reduction).round
       end
     end
-    if opponent.hasWorkingAbility(:QUEENLYMAJESTY) && pbTargetsAll?(attacker)
+    if opponent.hasWorkingAbility(:QUEENLYMAJESTY) && !opponent.moldbroken && pbTargetsAll?(attacker)
       finaldamagemult=(finaldamagemult*0.7).round
     end
     if attacker.hasWorkingAbility(:STAKEOUT) && @battle.switchedOut[opponent.index]
