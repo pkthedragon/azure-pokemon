@@ -1,2 +1,0 @@
-call time  cumulative   self        calls
-     ms   seconds   seconds           name

@@ -2174,7 +2174,7 @@ def pbSeenForm(poke,gender=0,form=0)
   $Trainer.formseen[species]=[[],[]] if !$Trainer.formseen[species]
   $Trainer.formseen[species][gender][form]=true
   $Trainer.formlastseen[species]=[] if !$Trainer.formlastseen[species]
-  $Trainer.formlastseen[species]=[gender,form] if $Trainer.formlastseen[species]==[]
+  $Trainer.formlastseen[species]=[gender,form]
 end
 
 
@@ -2357,6 +2357,15 @@ def pbEachNonEggPokemon
   }
 end
 
+def pbApplyMysticGimmighoulProgress(variable_value)
+  return if !$PokemonStorage
+  pbEachPokemon{|pokemon,_box|
+    next if !pokemon
+    next if !pokemon.respond_to?(:applyMysticGimmighoulProgress)
+    pokemon.applyMysticGimmighoulProgress(variable_value)
+  }
+end
+
 # Choose a Pokémon/egg from the party.
 # Stores result in variable _variableNumber_ and the chosen Pokémon's name in
 # variable _nameVarNumber_; result is -1 if no Pokémon was chosen
@@ -2500,9 +2509,13 @@ def pbDeleteMoveByID(pokemon,id)
   return if !id || id==0 || !pokemon
   newmoves=[]
   for i in 0...4
-    newmoves.push(pokemon.moves[i]) if pokemon.moves[i].id!=id
+    move = pokemon.moves[i]
+    move_id = move&.id
+    next if move_id.nil? || move_id==id
+    newmoves.push(move)
   end
   newmoves.push(PBMove.new(0))
+  newmoves.push(PBMove.new(0)) while newmoves.length<4
   for i in 0...4
     pokemon.moves[i]=newmoves[i]
   end

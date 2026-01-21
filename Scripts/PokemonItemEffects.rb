@@ -181,12 +181,16 @@ ItemHandlers::UseFromBag.add(:EXPALLOFF,proc{|item|
 })
 
 ItemHandlers::UseFromBag.add(:NULLTRIBUTE, proc { |item|
-  current_sym = :NULLTRIBUTE
+  current_sym = item.is_a?(Symbol) ? item : (getConstantName(PBItems, item) rescue nil)
+  current_sym = current_sym.to_sym if current_sym.is_a?(String)
+  current_sym ||= :NULLTRIBUTE
   names, items = pbBuildUnlockedTributeLists(current_sym)
   current_index = items.index(current_sym) || 0
-  cmd = pbShowCommands(
+  cmd = Kernel.pbMessage(
     _INTL("Change the Tribute's attunement?"),
     names,
+    -1,
+    nil,
     current_index
   )
   if cmd < 0 || cmd >= items.length

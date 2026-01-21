@@ -133,8 +133,11 @@ class PokeBattle_Struggle < PokeBattle_Move
     pbShowAnimation(@id,attacker,nil,hitnum,alltargets,showanimation)
     ret=super(attacker,opponent,hitnum,alltargets,showanimation=false)    
     if opponent.damagestate.calcdamage>0
-      attacker.pbReduceHP((attacker.totalhp/4).floor)
-      @battle.pbDisplay(_INTL("{1} is damaged by the recoil!",attacker.pbThis))
+      recoil=attacker.pbAdjustElectricRecoilCrashDamage((attacker.totalhp/4).floor)
+      if recoil>0
+        attacker.pbReduceHP(recoil)
+        @battle.pbDisplay(_INTL("{1} is damaged by the recoil!",attacker.pbThis))
+      end
     end
     return ret
   end
@@ -1648,23 +1651,23 @@ class PokeBattle_Move_02C < PokeBattle_Move
     pbShowAnimation(@id,attacker,nil,hitnum,alltargets,showanimation)
     showanim=true
     if $fefieldeffect == 5 || $fefieldeffect == 20 || $fefieldeffect == 37 || $fefieldeffect == 50 # Chess/Ashen/Psychic/Library Field
-   if attacker.pbCanIncreaseStatStage?(PBStats::SPATK,false)
-      attacker.pbIncreaseStat(PBStats::SPATK,2,false,showanim)
-      showanim=false
-    end
-    if attacker.pbCanIncreaseStatStage?(PBStats::SPDEF,false)
-      attacker.pbIncreaseStat(PBStats::SPDEF,2,false,showanim)
-      showanim=false
-    end
+      if attacker.pbCanIncreaseStatStage?(PBStats::SPATK,false)
+        attacker.pbIncreaseStat(PBStats::SPATK,2,false,showanim)
+        showanim=false
+      end
+      if attacker.pbCanIncreaseStatStage?(PBStats::SPDEF,false)
+        attacker.pbIncreaseStat(PBStats::SPDEF,2,false,showanim)
+        showanim=false
+      end
     else
-    if attacker.pbCanIncreaseStatStage?(PBStats::SPATK,false)
-      attacker.pbIncreaseStat(PBStats::SPATK,1,false,showanim)
-      showanim=false
-    end
-    if attacker.pbCanIncreaseStatStage?(PBStats::SPDEF,false)
-      attacker.pbIncreaseStat(PBStats::SPDEF,1,false,showanim)
-      showanim=false
-    end
+      if attacker.pbCanIncreaseStatStage?(PBStats::SPATK,false)
+        attacker.pbIncreaseStat(PBStats::SPATK,1,false,showanim)
+        showanim=false
+      end
+      if attacker.pbCanIncreaseStatStage?(PBStats::SPDEF,false)
+        attacker.pbIncreaseStat(PBStats::SPDEF,1,false,showanim)
+        showanim=false
+      end
     end
     return 0
   end
@@ -1672,34 +1675,9 @@ end
 
 
 ################################################################################
-# Increases the user's Attack, Defense, Speed, Special Attack and Special Defense
-# by 1 stage each.
+# Uses higher offensive stat (handled in pbCalcDamage).
 ################################################################################
 class PokeBattle_Move_02D < PokeBattle_Move
-  def pbAdditionalEffect(attacker,opponent)
-    showanim=true
-    if attacker.pbCanIncreaseStatStage?(PBStats::ATTACK,false)
-      attacker.pbIncreaseStat(PBStats::ATTACK,1,false,nil,nil,showanim)
-      showanim=false
-    end
-    if attacker.pbCanIncreaseStatStage?(PBStats::DEFENSE,false)
-      attacker.pbIncreaseStat(PBStats::DEFENSE,1,false,nil,nil,showanim)
-      showanim=false
-    end
-    if attacker.pbCanIncreaseStatStage?(PBStats::SPATK,false)
-      attacker.pbIncreaseStat(PBStats::SPATK,1,false,nil,nil,showanim)
-      showanim=false
-    end
-    if attacker.pbCanIncreaseStatStage?(PBStats::SPDEF,false)
-      attacker.pbIncreaseStat(PBStats::SPDEF,1,false,nil,nil,showanim)
-      showanim=false
-    end
-    if attacker.pbCanIncreaseStatStage?(PBStats::SPEED,false)
-      attacker.pbIncreaseStat(PBStats::SPEED,1,false,nil,nil,showanim)
-      showanim=false
-    end
-    return true
-  end
 end
 
 
@@ -3601,10 +3579,7 @@ class PokeBattle_Move_060 < PokeBattle_Move
     else
       @battle.pbDisplay(_INTL("{1} transformed into the {2} type!",attacker.pbThis,typename))  
     end
-    for m in attacker.moves
-      next if m.type != oldtype
-      m.type = newtype
-    end	
+    attacker.pbApplyCamouflageMoveTypes(newtype)
     return 0
   end
 end
@@ -5301,6 +5276,13 @@ class PokeBattle_Move_0A4 < PokeBattle_Move
   
   
   def pbAdditionalEffect(attacker,opponent)
+      if $fefieldeffect == 0 && @battle.field.effects[PBEffects::GrassyTerrain]>0
+        return false if !opponent.pbCanSleep?(false)
+        return false if opponent.effects[PBEffects::Yawn]>0
+        opponent.effects[PBEffects::Yawn]=2
+        @battle.pbDisplay(_INTL("{1} became drowsy!",opponent.pbThis))
+        return true
+      end
       case $fefieldeffect
       when 1
         return false if !opponent.pbCanParalyze?(false)
@@ -5308,8 +5290,9 @@ class PokeBattle_Move_0A4 < PokeBattle_Move
         @battle.pbDisplay(_INTL("{1} is paralyzed!  It may be unable to move!",opponent.pbThis))
       when 2
         return false if !opponent.pbCanSleep?(false)
-        opponent.pbSleep
-        @battle.pbDisplay(_INTL("{1} went to sleep!",opponent.pbThis))  
+        return false if opponent.effects[PBEffects::Yawn]>0
+        opponent.effects[PBEffects::Yawn]=2
+        @battle.pbDisplay(_INTL("{1} became drowsy!",opponent.pbThis))
       when 3
         return false if !opponent.pbCanReduceStatStage?(PBStats::SPATK,1,false)
         opponent.pbReduceStat(PBStats::SPATK,1,false)
@@ -7684,6 +7667,10 @@ class PokeBattle_Move_0DD < PokeBattle_Move
         hpgain*=2 if ($fefieldeffect == 19 || $fefieldeffect == 26 || $fefieldeffect == 41)
         attacker.pbReduceHP(hpgain,true)
         @battle.pbDisplay(_INTL("{1} sucked up the liquid ooze!",attacker.pbThis))
+        if attacker.effects[PBEffects::Wounded] == 0
+          attacker.effects[PBEffects::Wounded]=3
+          @battle.pbDisplay(_INTL("{1} was wounded!",attacker.pbThis))
+        end
       else
         hpgain=(hpgain*1.3).floor if attacker.hasWorkingItem(:BIGROOT) || (attacker.hasWorkingItem(:TANGROWTHCREST) && isConst?(attacker.species,PBSpecies,:TANGROWTH))
         attacker.pbRecoverHP(hpgain,true)
@@ -8649,8 +8636,11 @@ class PokeBattle_Move_0FA < PokeBattle_Move
        !attacker.hasWorkingAbility(:ROCKHEAD) &&
        !attacker.hasWorkingAbility(:MAGICGUARD) && !(attacker.hasWorkingItem(:RAMPCREST) && attacker.species == PBSpecies::RAMPARDOS) &&
        !(attacker.hasWorkingAbility(:WONDERGUARD) && $fefieldeffect == 44)
-      attacker.pbReduceHP([1,((opponent.damagestate.hplost+2)/4).floor].max)
-      @battle.pbDisplay(_INTL("{1} is damaged by the recoil!",attacker.pbThis))
+      recoil=attacker.pbAdjustElectricRecoilCrashDamage([1,((opponent.damagestate.hplost+2)/4).floor].max)
+      if recoil>0
+        attacker.pbReduceHP(recoil)
+        @battle.pbDisplay(_INTL("{1} is damaged by the recoil!",attacker.pbThis))
+      end
     end
     return ret
   end
@@ -8668,8 +8658,11 @@ class PokeBattle_Move_0FB < PokeBattle_Move
        !attacker.hasWorkingAbility(:ROCKHEAD) &&
        !attacker.hasWorkingAbility(:MAGICGUARD) && !(attacker.hasWorkingItem(:RAMPCREST) && attacker.species == PBSpecies::RAMPARDOS) &&
        !(attacker.hasWorkingAbility(:WONDERGUARD) && $fefieldeffect == 44)
-      attacker.pbReduceHP([1,((opponent.damagestate.hplost+1)/3).floor].max)
-      @battle.pbDisplay(_INTL("{1} is damaged by the recoil!",attacker.pbThis))
+      recoil=attacker.pbAdjustElectricRecoilCrashDamage([1,((opponent.damagestate.hplost+1)/3).floor].max)
+      if recoil>0
+        attacker.pbReduceHP(recoil)
+        @battle.pbDisplay(_INTL("{1} is damaged by the recoil!",attacker.pbThis))
+      end
     end
     return ret
   end
@@ -8687,8 +8680,11 @@ class PokeBattle_Move_0FC < PokeBattle_Move
        !attacker.hasWorkingAbility(:ROCKHEAD) &&
        !attacker.hasWorkingAbility(:MAGICGUARD) && !(attacker.hasWorkingItem(:RAMPCREST) && attacker.species == PBSpecies::RAMPARDOS) &&
        !(attacker.hasWorkingAbility(:WONDERGUARD) && $fefieldeffect == 44)
-      attacker.pbReduceHP([1,((opponent.damagestate.hplost+1)/2).floor].max)
-      @battle.pbDisplay(_INTL("{1} is damaged by the recoil!",attacker.pbThis))
+      recoil=attacker.pbAdjustElectricRecoilCrashDamage([1,((opponent.damagestate.hplost+1)/2).floor].max)
+      if recoil>0
+        attacker.pbReduceHP(recoil)
+        @battle.pbDisplay(_INTL("{1} is damaged by the recoil!",attacker.pbThis))
+      end
     end
     return ret
   end
@@ -8707,8 +8703,11 @@ class PokeBattle_Move_0FD < PokeBattle_Move
        !attacker.hasWorkingAbility(:ROCKHEAD) &&
        !attacker.hasWorkingAbility(:MAGICGUARD) && !(attacker.hasWorkingItem(:RAMPCREST) && attacker.species == PBSpecies::RAMPARDOS) &&
        !(attacker.hasWorkingAbility(:WONDERGUARD) && $fefieldeffect == 44)
-      attacker.pbReduceHP([1,((opponent.damagestate.hplost+1)/3).floor].max)
-      @battle.pbDisplay(_INTL("{1} is damaged by the recoil!",attacker.pbThis))
+      recoil=attacker.pbAdjustElectricRecoilCrashDamage([1,((opponent.damagestate.hplost+1)/3).floor].max)
+      if recoil>0
+        attacker.pbReduceHP(recoil)
+        @battle.pbDisplay(_INTL("{1} is damaged by the recoil!",attacker.pbThis))
+      end
     end
     return ret
   end
@@ -8734,8 +8733,11 @@ class PokeBattle_Move_0FE < PokeBattle_Move
        !attacker.hasWorkingAbility(:ROCKHEAD) &&
        !attacker.hasWorkingAbility(:MAGICGUARD) && !(attacker.hasWorkingItem(:RAMPCREST) && attacker.species == PBSpecies::RAMPARDOS) &&
        !(attacker.hasWorkingAbility(:WONDERGUARD) && $fefieldeffect == 44)
-      attacker.pbReduceHP([1,((opponent.damagestate.hplost+1)/3).floor].max)
-      @battle.pbDisplay(_INTL("{1} is damaged by the recoil!",attacker.pbThis))
+      recoil=attacker.pbAdjustElectricRecoilCrashDamage([1,((opponent.damagestate.hplost+1)/3).floor].max)
+      if recoil>0
+        attacker.pbReduceHP(recoil)
+        @battle.pbDisplay(_INTL("{1} is damaged by the recoil!",attacker.pbThis))
+      end
     end
     return ret
   end
@@ -8759,8 +8761,11 @@ class PokeBattle_Move_0FX < PokeBattle_Move
        !attacker.hasWorkingAbility(:ROCKHEAD) &&
        !attacker.hasWorkingAbility(:MAGICGUARD) && !(attacker.hasWorkingItem(:RAMPCREST) && attacker.species == PBSpecies::RAMPARDOS) &&
        !(attacker.hasWorkingAbility(:WONDERGUARD) && $fefieldeffect == 44)
-      attacker.pbReduceHP([1,((opponent.damagestate.hplost+1)/3).floor].max)
-      @battle.pbDisplay(_INTL("{1} is damaged by the recoil!",attacker.pbThis))
+      recoil=attacker.pbAdjustElectricRecoilCrashDamage([1,((opponent.damagestate.hplost+1)/3).floor].max)
+      if recoil>0
+        attacker.pbReduceHP(recoil)
+        @battle.pbDisplay(_INTL("{1} is damaged by the recoil!",attacker.pbThis))
+      end
     end
     return ret
   end
@@ -8820,7 +8825,7 @@ class PokeBattle_Move_0FF < PokeBattle_Move
       if ($fefieldeffect != 9) && (!$game_switches[1497])
         @battle.pbCommonAnimation("RainbowT",nil,nil)
       end
-      if $febackup>0 && $febackup<46 && @battle.field.effects[PBEffects::Splintered]==0
+      if $febackup>0 && $febackup<51 && @battle.field.effects[PBEffects::Splintered]==0
         @battle.pbDisplay(_INTL("The weather created a rainbow!"))
         @battle.field.effects[PBEffects::Rainbow]= rainbowhold
       else
@@ -8882,7 +8887,7 @@ class PokeBattle_Move_100 < PokeBattle_Move
       if ($fefieldeffect != 9) && (!$game_switches[1497])
         @battle.pbCommonAnimation("RainbowT",nil,nil)
       end
-      if $febackup>0 && $febackup<46 && @battle.field.effects[PBEffects::Splintered]==0
+      if $febackup>0 && $febackup<51 && @battle.field.effects[PBEffects::Splintered]==0
         @battle.pbDisplay(_INTL("The weather created a rainbow!"))
         @battle.field.effects[PBEffects::Rainbow]= rainbowhold
       else
@@ -10173,7 +10178,7 @@ class PokeBattle_Move_134 < PokeBattle_Move
       @battle.pbDisplay(_INTL("But it failed!"))      
       return -1
     end
-    if ($febackup>0 && $febackup<46 && @battle.field.effects[PBEffects::Splintered]==0) || ($game_map.map_id==53)
+    if ($febackup>0 && $febackup<51 && @battle.field.effects[PBEffects::Splintered]==0) || ($game_map.map_id==53)
       if @battle.field.effects[PBEffects::ElectricTerrain]>0 || $fefieldeffect==1
         @battle.pbDisplay(_INTL("But the field is already electrified!"))
       else
@@ -10213,7 +10218,7 @@ class PokeBattle_Move_135 < PokeBattle_Move
       @battle.pbDisplay(_INTL("But it failed!"))      
       return -1
     end
-    if ($febackup>0 && $febackup<46 && @battle.field.effects[PBEffects::Splintered]==0) || ($game_map.map_id==53)
+    if ($febackup>0 && $febackup<51 && @battle.field.effects[PBEffects::Splintered]==0) || ($game_map.map_id==53)
       if @battle.field.effects[PBEffects::GrassyTerrain]>0 || $fefieldeffect==2
         @battle.pbDisplay(_INTL("But the field is already grassy!"))
       else
@@ -10373,6 +10378,10 @@ class PokeBattle_Move_139 < PokeBattle_Move
         hpgain*=2 if ($fefieldeffect == 19 || $fefieldeffect == 26 || $fefieldeffect == 41)
         attacker.pbReduceHP(hpgain,true)
         @battle.pbDisplay(_INTL("{1} sucked up the liquid ooze!",attacker.pbThis))
+        if attacker.effects[PBEffects::Wounded] == 0
+          attacker.effects[PBEffects::Wounded]=3
+          @battle.pbDisplay(_INTL("{1} was wounded!",attacker.pbThis))
+        end
       else
         hpgain=(hpgain*1.3).floor if isConst?(attacker.item,PBItems,:BIGROOT) || (attacker.hasWorkingItem(:TANGROWTHCREST) && isConst?(attacker.species,PBSpecies,:TANGROWTH))
         if tribute_has?(attacker, :MEADOWTRIBUTE)
@@ -10861,7 +10870,7 @@ class PokeBattle_Move_148 < PokeBattle_Move
     @battle.pbDisplay(_INTL("A deluge of ions showers the battlefield!"))
     @battle.field.effects[PBEffects::IonDeluge] = true
     if (!isConst?(attacker.item,PBItems,:EVERSTONE) || !isConst?(attacker.item,PBItems,:EVIOLITE)) && $fefieldeffect != 35
-      if ($febackup>0 && $febackup<46 && @battle.field.effects[PBEffects::Splintered]==0) || ($game_map.map_id==53)
+      if ($febackup>0 && $febackup<51 && @battle.field.effects[PBEffects::Splintered]==0) || ($game_map.map_id==53)
         if @battle.field.effects[PBEffects::ElectricTerrain]>0 || $fefieldeffect==1
           @battle.pbDisplay(_INTL("But the field is already electrified!"))
         else
@@ -11180,6 +11189,10 @@ class PokeBattle_Move_158 < PokeBattle_Move
         hpgain*=2 if ($fefieldeffect == 19 || $fefieldeffect == 26 || $fefieldeffect == 41)
         attacker.pbReduceHP(hpgain,true)
         @battle.pbDisplay(_INTL("{1} sucked up the liquid ooze!",attacker.pbThis))
+        if attacker.effects[PBEffects::Wounded] == 0
+          attacker.effects[PBEffects::Wounded]=3
+          @battle.pbDisplay(_INTL("{1} was wounded!",attacker.pbThis))
+        end
       else
         hpgain=(hpgain*1.3).floor if attacker.hasWorkingItem(:BIGROOT)
     if tribute_has?(attacker, :MEADOWTRIBUTE)
@@ -11558,7 +11571,7 @@ class PokeBattle_Move_168 < PokeBattle_Move
       @battle.pbDisplay(_INTL("But it failed!"))      
       return -1
     end
-    if ($febackup>0 && $febackup<46 && @battle.field.effects[PBEffects::Splintered]==0) || ($game_map.map_id==53)
+    if ($febackup>0 && $febackup<51 && @battle.field.effects[PBEffects::Splintered]==0) || ($game_map.map_id==53)
       if @battle.field.effects[PBEffects::PsychicTerrain]>0 || $fefieldeffect==37
         @battle.pbDisplay(_INTL("But the field is already mysterious!"))
       else
@@ -11910,12 +11923,13 @@ class PokeBattle_Move_176 < PokeBattle_Move
     ret=super(attacker,opponent,hitnum,alltargets,showanimation)
     if !isConst?(attacker.ability,PBAbilities,:MAGICGUARD)
       if $fefieldeffect == 17 && isConst?(@id,PBMoves,:STEELBEAM)
-        attacker.pbReduceHP(((attacker.totalhp)/4).ceil)
+        recoil=attacker.pbAdjustElectricRecoilCrashDamage(((attacker.totalhp)/4).ceil)
       elsif $fefieldeffect == 18 && isConst?(@id,PBMoves,:STEELBEAM)
-        attacker.pbReduceHP(attacker.hp)
+        recoil=attacker.pbAdjustElectricRecoilCrashDamage(attacker.hp)
       else
-        attacker.pbReduceHP(((attacker.totalhp)/2).ceil)
+        recoil=attacker.pbAdjustElectricRecoilCrashDamage(((attacker.totalhp)/2).ceil)
       end
+      attacker.pbReduceHP(recoil) if recoil>0
       if isConst?(@id,PBMoves,:MINDBLOWN)
         @battle.pbDisplay(_INTL("{1}'s mind was blown and took damage!",attacker.pbThis))
       end
@@ -11936,7 +11950,7 @@ class PokeBattle_Move_177 < PokeBattle_Move
     end
     
     if (!isConst?(attacker.item,PBItems,:EVERSTONE) || !isConst?(attacker.item,PBItems,:EVIOLITE)) && $fefieldeffect != 35
-      if $febackup>0 && $febackup<46 && @battle.field.effects[PBEffects::Splintered]==0
+      if $febackup>0 && $febackup<51 && @battle.field.effects[PBEffects::Splintered]==0
         if @battle.field.effects[PBEffects::ElectricTerrain]>0 || $fefieldeffect==1
           @battle.pbDisplay(_INTL("But the field is already electrified!"))
         else
@@ -12656,6 +12670,10 @@ class PokeBattle_Move_211 < PokeBattle_Move
         hpgain*=2 if ($fefieldeffect == 19 || $fefieldeffect == 26 || $fefieldeffect == 41)
         attacker.pbReduceHP(hpgain,true)
         @battle.pbDisplay(_INTL("{1} sucked up the liquid ooze!",attacker.pbThis))
+        if attacker.effects[PBEffects::Wounded] == 0
+          attacker.effects[PBEffects::Wounded]=3
+          @battle.pbDisplay(_INTL("{1} was wounded!",attacker.pbThis))
+        end
       else
         hpgain=(hpgain*1.3).floor if attacker.hasWorkingItem(:BIGROOT)
         if tribute_has?(attacker, :MEADOWTRIBUTE)
@@ -13029,8 +13047,11 @@ class PokeBattle_Move_21B < PokeBattle_Move
        !attacker.hasWorkingAbility(:ROCKHEAD) && attacker.hp >= (0.5 * attacker.totalhp).floor &&
        !attacker.hasWorkingAbility(:MAGICGUARD) && !(attacker.hasWorkingItem(:RAMPCREST) && attacker.species == PBSpecies::RAMPARDOS) &&
        !(attacker.hasWorkingAbility(:WONDERGUARD) && $fefieldeffect == 44)
-      attacker.pbReduceHP([1,((opponent.damagestate.hplost+1)/4).floor].max)
-      @battle.pbDisplay(_INTL("{1} is damaged by the recoil!",attacker.pbThis))
+      recoil=attacker.pbAdjustElectricRecoilCrashDamage([1,((opponent.damagestate.hplost+1)/4).floor].max)
+      if recoil>0
+        attacker.pbReduceHP(recoil)
+        @battle.pbDisplay(_INTL("{1} is damaged by the recoil!",attacker.pbThis))
+      end
     end
     return ret
   end
@@ -13311,7 +13332,8 @@ end
 ################################################################################
 class PokeBattle_Move_23E < PokeBattle_Move
   def pbEffect(attacker,opponent,hitnum=0,alltargets=nil,showanimation=true)
-    higheststat = [0,attacker.attack,attacker.def,attacker.speed,attacker.spatk,attacker.spdef].index([0,attacker.attack,attacker.def,attacker.speed,attacker.spatk,attacker.spdef].max)
+    stats = [0,attacker.attack,attacker.defense,attacker.speed,attacker.spatk,attacker.spdef]
+    higheststat = stats.index(stats.max)
     return -1 if !attacker.pbCanIncreaseStatStage?(higheststat,true)
     pbShowAnimation(@id,attacker,nil,hitnum,alltargets,showanimation)
     ret=attacker.pbIncreaseStat(higheststat,2,false)
@@ -13349,6 +13371,10 @@ class PokeBattle_Move_248 < PokeBattle_Move
         hpgain*=2 if ($fefieldeffect == 19 || $fefieldeffect == 26 || $fefieldeffect == 41)
         attacker.pbReduceHP(hpgain,true)
         @battle.pbDisplay(_INTL("{1} sucked up the liquid ooze!",attacker.pbThis))
+        if attacker.effects[PBEffects::Wounded] == 0
+          attacker.effects[PBEffects::Wounded]=3
+          @battle.pbDisplay(_INTL("{1} was wounded!",attacker.pbThis))
+        end
       else
         hpgain=(hpgain*1.3).floor if isConst?(attacker.item,PBItems,:BIGROOT) || (attacker.hasWorkingItem(:TANGROWTHCREST) && isConst?(attacker.species,PBSpecies,:TANGROWTH))
         if tribute_has?(attacker, :MEADOWTRIBUTE)
@@ -13719,6 +13745,10 @@ class PokeBattle_Move_291 < PokeBattle_Move
         hpgain*=2 if ($fefieldeffect == 19 || $fefieldeffect == 26 || $fefieldeffect == 41)
         attacker.pbReduceHP(hpgain,true)
         @battle.pbDisplay(_INTL("{1} sucked up the liquid ooze!",attacker.pbThis))
+        if attacker.effects[PBEffects::Wounded] == 0
+          attacker.effects[PBEffects::Wounded]=3
+          @battle.pbDisplay(_INTL("{1} was wounded!",attacker.pbThis))
+        end
       else
         hpgain=(hpgain*1.3).floor if isConst?(attacker.item,PBItems,:BIGROOT) || (attacker.hasWorkingItem(:TANGROWTHCREST) && isConst?(attacker.species,PBSpecies,:TANGROWTH))
         if tribute_has?(attacker, :MEADOWTRIBUTE)
@@ -14040,7 +14070,7 @@ end
 # - TYPE MATCHES USER'S SECONDARY TYPE (or primary if none)
 ################################################################################
 class PokeBattle_Move_290 < PokeBattle_Move
-  def pbType(attacker, type=nil)
+  def pbType(type, attacker, opponent)
     types = attacker.pbTypes
     if types.length >= 2
       return types[1]
@@ -14108,8 +14138,11 @@ class PokeBattle_Move_0ZZ < PokeBattle_Move   # 0ZZ = Barrel Burst code
        !attacker.hasWorkingAbility(:ROCKHEAD) &&
        !attacker.hasWorkingAbility(:MAGICGUARD) && !(attacker.hasWorkingItem(:RAMPCREST) && attacker.species == PBSpecies::RAMPARDOS) &&
        !(attacker.hasWorkingAbility(:WONDERGUARD) && $fefieldeffect == 44)
-      attacker.pbReduceHP([1,((opponent.damagestate.hplost+2)/2).floor].max)
-      @battle.pbDisplay(_INTL("{1} is damaged by the recoil!",attacker.pbThis))
+      recoil=attacker.pbAdjustElectricRecoilCrashDamage([1,((opponent.damagestate.hplost+2)/2).floor].max)
+      if recoil>0
+        attacker.pbReduceHP(recoil)
+        @battle.pbDisplay(_INTL("{1} is damaged by the recoil!",attacker.pbThis))
+      end
     end
   if attacker.pbCanIncreaseStatStage?(PBStats::SPEED,attacker,false)
       attacker.pbIncreaseStatBasic(PBStats::SPEED,3)
@@ -14361,8 +14394,11 @@ class PokeBattle_Move_27F < PokeBattle_Move
        !attacker.hasWorkingAbility(:ROCKHEAD) &&
        !attacker.hasWorkingAbility(:MAGICGUARD) && !(attacker.hasWorkingItem(:RAMPCREST) && attacker.species == PBSpecies::RAMPARDOS) &&
        !(attacker.hasWorkingAbility(:WONDERGUARD) && $fefieldeffect == 44)
-      attacker.pbReduceHP([1,((opponent.damagestate.hplost+1)/3).floor].max)
-      @battle.pbDisplay(_INTL("{1} is damaged by the recoil!",attacker.pbThis))
+      recoil=attacker.pbAdjustElectricRecoilCrashDamage([1,((opponent.damagestate.hplost+1)/3).floor].max)
+      if recoil>0
+        attacker.pbReduceHP(recoil)
+        @battle.pbDisplay(_INTL("{1} is damaged by the recoil!",attacker.pbThis))
+      end
     end
     return ret
   end
@@ -14757,7 +14793,7 @@ end
 ################################################################################
 # Meditate – raises Attack +1 and Sp. Def +1.
 ################################################################################
-class PokeBattle_Move_29E < PokeBattle_Move
+class PokeBattle_Move_2A0 < PokeBattle_Move
   def pbEffect(attacker,opponent,hitnum=0,alltargets=nil,showanimation=true)
     pbShowAnimation(@id, attacker, nil)
     attacker.pbIncreaseStat(PBStats::ATTACK,1,false)

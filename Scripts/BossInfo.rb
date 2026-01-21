@@ -128,7 +128,7 @@ BOSSINFOHASH = {
         :capturable => false, # can you catch this boss after shields are removed?
         :moninfo => { # bosspokemon details
             :species => PBSpecies::TANGROWTH,
-            :level => 22,
+            :level => 20,
             :form => 1,
             :item => PBItems::MEADOWTRIBUTE,
             :moves => [PBMoves::MEGADRAIN,PBMoves::SHOCKWAVE,PBMoves::FLAIL,PBMoves::LEECHSEED],
@@ -182,10 +182,10 @@ BOSSINFOHASH = {
         :capturable => false, # can you catch this boss after shields are removed?
         :moninfo => { # bosspokemon details
             :species => PBSpecies::TANGROWTH,
-            :level => 25,
+            :level => 22,
             :form => 1,
             :item => PBItems::MEADOWTRIBUTE,
-            :moves => [PBMoves::MEGADRAIN,PBMoves::SHOCKWAVE,PBMoves::ANCIENTPOWER,PBMoves::GROWTH],
+            :moves => [PBMoves::MEGADRAIN,PBMoves::SHOCKWAVE,PBMoves::ANCIENTPOWER,PBMoves::CONFUSERAY],
             :ability => PBAbilities::LEAFGUARD,
             :gender => "M",
             :nature => PBNatures::MODEST,
@@ -298,6 +298,35 @@ BOSSINFOHASH = {
                 :weatherCount => 8, # weather turncount
                 :weatherChangeMessage => "A heavy rain began to fall!", # weather message
                 :weatherChangeAnimation => "Rain" # string of "Rain", "Sunny","Hail","Sandstorm"
+            },
+        }
+    },
+
+    :TOTEMLICKITUNG => {
+        :name => "Lickitung-Mystic", # nickname
+        :entryText => "Totem Lickitung attacks!", # dialogue upon enterring battle as a wild pokemon
+        :shieldCount => 1, # number of shields
+        :immunities => {},
+        :capturable => false, # can you catch this boss after shields are removed?
+        :moninfo => { # bosspokemon details
+            :species => PBSpecies::LICKITUNG,
+            :level => 25,
+            :form => 1,
+            :item => PBItems::EVIOLITE,
+            :moves => [PBMoves::SANDTOMB,PBMoves::ROLLOUT,PBMoves::REBUILD,PBMoves::CURSE],
+            :ability => PBAbilities::STALWART,
+            :nature => PBNatures::CAREFUL,
+            :iv => 31,
+            :happiness => 255
+        },
+        :onBreakEffects => { # in order of shield count, with the highest value being the first shield broken and the lowest the last
+            1 => {
+                :threshold => 0, # if desired, shield can be broken at higher hp% than 0
+                :message => "{1}'s shield shattered!",
+                :statusCure => true, # if status is cured when shield is broken
+                :statDropCure => true, # if statdrops are negated when shield is broken
+                :ppRefresh => true,
+                :ppRefreshMessage => "{1} refreshed its PP!"
             },
         }
     },

@@ -248,14 +248,8 @@ class Game_Player < Game_Character
     dest_tag = $game_map.terrain_tag(new_x, new_y)
     here_tag = $game_map.terrain_tag(x, y) rescue nil
 
-    # Track if we were swimming before potentially turning it off
+    # Track if we were swimming (state changes should happen after movement succeeds)
     was_swimming = $PokemonGlobal && $PokemonGlobal.respond_to?(:swimming) && $PokemonGlobal.swimming
-
-    # If we were swimming and are stepping onto non-water, turn swim off
-    if was_swimming && !pbIsWaterTag?(dest_tag)
-      $PokemonGlobal.swimming = false
-      Kernel.pbUpdateVehicle
-    end
 
     # Rough water: must be surfing already
     if pbIsRoughWaterTag?(dest_tag)
@@ -270,15 +264,26 @@ class Game_Player < Game_Character
 
     # Still water: freely swimmable (no surfing required)
     if pbIsStillWaterTag?(dest_tag)
+      if pbHasDependentEvents?
+        if $PokemonGlobal && $PokemonGlobal.surfing
+          if $PokemonGlobal.respond_to?(:swimming) && $PokemonGlobal.swimming
+            $PokemonGlobal.swimming = false
+            Kernel.pbUpdateVehicle
+          end
+        else
+          Kernel.pbMessage(_INTL("It can't be used when you have someone with you."))
+          return false
+        end
+      end
       # Transition from surfing to swimming when entering still water
-      if $PokemonGlobal && $PokemonGlobal.surfing && !$PokemonGlobal.diving
+      if !$game_player.pbHasDependentEvents? && $PokemonGlobal && $PokemonGlobal.surfing && !$PokemonGlobal.diving
         $PokemonGlobal.surfing = false
         $game_map.autoplayAsCue  # Resume normal map BGM
         if $PokemonGlobal.respond_to?(:swimming)
           $PokemonGlobal.swimming = true
         end
         Kernel.pbUpdateVehicle
-      elsif $PokemonGlobal && !$PokemonGlobal.surfing && !$PokemonGlobal.diving && !$PokemonGlobal.lavasurfing
+      elsif !$game_player.pbHasDependentEvents? && $PokemonGlobal && !$PokemonGlobal.surfing && !$PokemonGlobal.diving && !$PokemonGlobal.lavasurfing
         if $PokemonGlobal.respond_to?(:swimming)
           $PokemonGlobal.swimming = true
           Kernel.pbUpdateVehicle
@@ -311,6 +316,13 @@ class Game_Player < Game_Character
         return $MapFactory.isPassableFromEdge?(new_x, new_y)
       end
       return true if $DEBUG and Input.press?(Input::CTRL)
+      # Block landing on non-through character events even if swimming is passable
+      for event in $game_map.events.values
+        next unless event.x == new_x && event.y == new_y
+        next if event.through
+        next if event.tile_id && event.tile_id > 0
+        return false if event.character_name.to_s.strip != ""
+      end
       # Check if the destination tile itself is passable (ignoring direction from water)
       return $game_map.passableStrict?(new_x, new_y, 0) rescue true
     end

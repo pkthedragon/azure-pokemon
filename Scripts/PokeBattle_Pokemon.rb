@@ -62,6 +62,7 @@ class PokeBattle_Pokemon
   attr_accessor(:obspd) 
   attr_accessor(:berry_pouch_items)
   attr_accessor(:gem_pouch_items)
+  attr_accessor(:mystic_gimmighoul_bonus)
 ################################################################################
 # Ownership, obtained information
 ################################################################################
@@ -881,6 +882,11 @@ class PokeBattle_Pokemon
     if isConst?(self.item,PBItems,:SOOTHEBELL) && gain>0
       gain=(gain*3.0/2).round
     end
+    if gain>0 && knowsMove?(:FRUSTRATION)
+      gain=0
+    elsif gain<0 && knowsMove?(:RETURN)
+      gain=0
+    end
     oldhappiness = @happiness
     @happiness+=gain
     @happiness=[[255,@happiness].min,0].max
@@ -916,6 +922,52 @@ class PokeBattle_Pokemon
 # Returns this Pokémon's base stats.  An array of six values.
   def baseStats
     return $pkmn_dex[@species][5]
+  end
+
+  def mysticGimmighoul?
+    return isConst?(@species,PBSpecies,:GIMMIGHOUL) && self.form == 1
+  end
+
+  def applyMysticGimmighoulProgress(variable_value)
+    return unless mysticGimmighoul?
+    variable_value = variable_value.to_i
+    desired_bonus = (variable_value / 3).floor
+    @mystic_gimmighoul_bonus ||= 0
+    if desired_bonus > @mystic_gimmighoul_bonus
+      @mystic_gimmighoul_bonus = desired_bonus
+      calcStats
+    end
+    desired_move_count = (variable_value / 5).floor
+    return if desired_move_count <= 0
+    move_symbols = [
+      :HEARTSTAMP,
+      :IRONDEFENSE,
+      :GYROBALL,
+      :GRAVITY,
+      :PURSUIT,
+      :REFLECT,
+      :LIGHTSCREEN,
+      :ZENHEADBUTT,
+      :IRONHEAD,
+      :MIRACLE,
+      :ALLYSWITCH,
+      :HEALINGWISH,
+      :PSYCHIC,
+      :FLASHCANNON,
+      :AGILITY,
+      :SELFDESTRUCT,
+      :THUNDERBOLT,
+      :FLAMETHROWER,
+      :ICEBEAM,
+      :HYPERBEAM
+    ]
+    @firstmoves ||= []
+    max_index = [desired_move_count, move_symbols.length].min
+    for i in 0...max_index
+      move_id = getID(PBMoves, move_symbols[i])
+      next if !move_id || move_id <= 0
+      @firstmoves << move_id unless @firstmoves.include?(move_id)
+    end
   end
 
 # Returns the maximum HP of this Pokémon.
@@ -956,6 +1008,10 @@ class PokeBattle_Pokemon
       else
         stats[i]=calcStat(base,level,@iv[i],@ev[i],pvalues[i-1],oiv[i])
       end
+    end
+    bonus = @mystic_gimmighoul_bonus || 0
+    if bonus > 0 && mysticGimmighoul?
+      stats = stats.map { |stat| stat + bonus }
     end
     diff=@totalhp-@hp
     @totalhp=stats[0]
@@ -1007,6 +1063,7 @@ class PokeBattle_Pokemon
     @obspe=0
     @obspa=0
     @obspd=0    
+    @mystic_gimmighoul_bonus=0
     @iv=[]
     # All IVs default to 15
     for i in 0..5

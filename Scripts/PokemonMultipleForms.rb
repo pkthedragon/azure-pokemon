@@ -12,6 +12,9 @@ class PokeBattle_Pokemon
     @form=value
     self.calcStats
     MultipleForms.call("onSetForm",self,value)
+    if defined?($game_variables) && respond_to?(:applyMysticGimmighoulProgress)
+      applyMysticGimmighoulProgress($game_variables[695])
+    end
   end
   
   def hasMegaForm?
@@ -694,6 +697,7 @@ MultipleForms.register(:BURMY,{
     "getFormOnCreation"=>proc{|pokemon|
       env=pbGetEnvironment()
       maps=[1,54,55,90]   # Map IDs for sandy form
+	    next 3 if pokemon.form==3
       if !pbGetMetadata($game_map.map_id,MetadataOutdoor)
         next 2 # Trash Cloak
       elsif env==PBEnvironment::Sand ||
@@ -708,6 +712,7 @@ MultipleForms.register(:BURMY,{
     "getFormOnEnteringBattle"=>proc{|pokemon|
       env=pbGetEnvironment()
       maps=[1,54,55,90]   # Map IDs for sandy form
+	    next 3 if pokemon.form==3
       if !pbGetMetadata($game_map.map_id,MetadataOutdoor)
         next 2 # Trash Cloak
       elsif env==PBEnvironment::Sand ||
@@ -741,7 +746,7 @@ MultipleForms.register(:BURMY,{
       end
     },
     "getMoveList"=>proc{|pokemon|
-      next if pokemon.form==0      # Use default moveset for base form
+      next if pokemon.form!=3      # Use default moveset for base form
       movelist=[]
       case pokemon.form            # Mystic
       when 3 ; movelist=[[1,:DEFENSECURL],[10,:ROLLOUT],[15,:SILVERWIND],[20,:HEADBUTT]]
@@ -767,6 +772,7 @@ MultipleForms.register(:BURMY,{
 MultipleForms.register(:WORMADAM,{
     "getFormOnCreation"=>proc{|pokemon|
       env=pbGetEnvironment()
+	  next 3 if pokemon.form==3
       if !pbGetMetadata($game_map.map_id,MetadataOutdoor)
         next 2 # Trash Cloak
       elsif env==PBEnvironment::Sand || env==PBEnvironment::Rock ||
@@ -815,16 +821,16 @@ MultipleForms.register(:WORMADAM,{
       next if pokemon.form==0
       movelist=[]
       case pokemon.form
-      when 1 ; movelist=[[0,:QUIVERDANCE],[1,:SUCKERPUNCH],[1,:TACKLE],
-          [1,:PROTECT],[1,:BUGBITE],[10,:PROTECT],[15,:BUGBITE],
-          [20,:HIDDENPOWER],[23,:CONFUSION],[26,:ROCKBLAST],
-          [29,:HARDEN],[32,:PSYBEAM],[35,:CAPTIVATE],[38,:FLAIL],
-          [41,:ENCHANT],[44,:PSYCHIC],[47,:FISSURE],[50,:BUGBUZZ]]
-      when 2 ; movelist=[[0,:QUIVERDANCE],[1,:METALBURST],[1,:SUCKERPUNCH],[1,:TACKLE],
-          [1,:PROTECT],[1,:TACKLE],[10,:PROTECT],[15,:BUGBITE],
-          [20,:HIDDENPOWER],[23,:CONFUSION],[26,:MIRRORSHOT],
-          [29,:METALSOUND],[32,:PSYBEAM],[35,:CAPTIVATE],[38,:FLAIL],
-          [41,:ENCHANT],[44,:PSYCHIC],[47,:IRONHEAD],[50,:BUGBUZZ]]
+      when 1 ; movelist=[[0,:HIDDENPOWER],[1,:EARTHPOWER],[1,:PESTER],
+          [1,:DEFENSECURL],[1,:BUGBITE],[5,:CONFUSION],[10,:DEFENSECURL],[15,:BUGBITE],
+          [20,:PROTECT],[23,:PSYBEAM],[26,:ROCKBLAST],[26,:SILVERWIND],
+          [29,:ROCKPOLISH],[32,:CARAPACESHOT],[35,:COUNTER],[35,:MIRRORCOAT],[38,:EARTHPOWER],
+          [41,:STICKYWEB],[44,:PSYCHIC],[47,:FISSURE],[50,:BUGBUZZ],[55,:QUIVERDANCE]]
+	  when 2 ; movelist=[[0,:HIDDENPOWER],[1,:EARTHPOWER],[1,:PESTER],
+          [1,:DEFENSECURL],[1,:BUGBITE],[5,:CONFUSION],[10,:DEFENSECURL],[15,:BUGBITE],
+          [20,:PROTECT],[23,:PSYBEAM],[26,:MIRRORSHOT],[26,:SILVERWIND],
+          [29,:IRONDEFENSE],[32,:CARAPACESHOT],[35,:COUNTER],[35,:MIRRORCOAT],[38,:FLASHCANNON],
+          [41,:STICKYWEB],[44,:PSYCHIC],[47,:STEELBEAM],[50,:BUGBUZZ],[55,:QUIVERDANCE]]
       when 3 ; movelist=[[0,:BEAUTIFY],[1,:SUCKERPUNCH],[1,:DEFENSECURL],[1,:ROLLOUT],
                       [1,:SILVERWIND],[10,:ROLLOUT],[15,:SILVERWIND],[20,:HEADBUTT],
                       [23,:LIFEDEW],[26,:STRUGGLEBUG],[29,:ROUND],[32,:PSYBEAM],
@@ -1664,19 +1670,19 @@ MultipleForms.register(:VIVILLON,{
       next rand(9)  # Forms 0-8 are regular patterns, form 9 is Mystic
     },
     "type1"=>proc{|pokemon|
-      next if pokemon.form!=9
+      next if pokemon.form!=10
       next getID(PBTypes,:BUG)    # Mystic
     },
     "type2"=>proc{|pokemon|
-      next if pokemon.form!=9
+      next if pokemon.form!=10
       next getID(PBTypes,:DRAGON)    # Mystic
     },
     "getBaseStats"=>proc{|pokemon|
-      next if pokemon.form!=9
+      next if pokemon.form!=10
       next [52, 80, 50, 90, 89, 50]   # Mystic
     },
     "ability"=>proc{|pokemon|
-      next if pokemon.form!=9 # Only Mystic form
+      next if pokemon.form!=10 # Only Mystic form
       if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0)
         next getID(PBAbilities,:SWARM)
       end
@@ -1688,7 +1694,7 @@ MultipleForms.register(:VIVILLON,{
       end
     },
     "getMoveList"=>proc{|pokemon|
-      next if pokemon.form!=9      # Use default moveset for regular forms
+      next if pokemon.form!=10      # Use default moveset for regular forms
       movelist=[]
       # Mystic form movelist
       movelist=[[0,:TWISTER],[1,:DRAGONRUSH],[1,:HURRICANE],[1,:IRRITATION],
@@ -1701,7 +1707,7 @@ MultipleForms.register(:VIVILLON,{
       next movelist
     },
     "getMoveCompatibility"=>proc{|pokemon|
-      next if pokemon.form!=9
+      next if pokemon.form!=10
       movelist=[]
       # Mystic form TM compatibility
       movelist=[:AGILITY,:AIRSLASH,:ATTRACT,:BREAKINGSWIPE,:BUGBITE,:BUGBUZZ,:BULKUP,:CALMMIND,:CONFIDE,:DEFOG,:DRACOMETEOR,:DRAGONCHEER,:DRAGONPULSE,:ELECTROWEB,:ENDURE,:FACADE,:FLASH,:FRUSTRATION,:GIGADRAIN,:GILDEDBARGAIN,:HIDDENPOWER,:HURRICANE,:HYPERBEAM,:INFESTATION,:IRONDEFENSE,:IRRITATION,:LIGHTSCREEN,:LOCUSTSWARM,:OUTRAGE,:POLLENPUFF,:PROTECT,:PSYCHUP,:RAINDANCE,:REFLECT,:REST,:RETURN,:ROOST,:ROUND,:SCALESHOT,:SCARYFACE,:SECRETPOWER,:SIGNALBEAM,:SLEEPTALK,:SNORE,:STRUGGLEBUG,:SUBSTITUTE,:SUNNYDAY,:SWAGGER,:SWORDSDANCE,:TAILWIND,:THIEF,:TOXIC,:UTURN,:XSCISSOR]
@@ -1854,32 +1860,11 @@ MultipleForms.register(:EISCUE,{
   
 ### Heroic Pokemon ###
 MultipleForms.register(:TANGROWTH,{
-    "ability"=>proc{|pokemon|
-      next if pokemon.form==0 # Normal
-      if ((pokemon.abilityIndex==1 || (pokemon.abilityflag && pokemon.abilityflag==1)) || (pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)) || (pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0))) # Heroic
-        next getID(PBAbilities,:MAENADSFERVOR)
-      end
-    },
     "getForm"=>proc{|pokemon|
       # Heroic Tangrowth - check if holding Meadow Tribute
       heroic_form = pbGetHeroicForm(pokemon) if defined?(pbGetHeroicForm)
       next heroic_form if heroic_form
       next 0
-    },
-    "onSetForm"=>proc{|pokemon,form|
-      pbSeenForm(pokemon)
-      moves=[
-        :WINEGODSBLESSING
-      ]
-      moves.each{|move|
-        pbDeleteMoveByID(pokemon,getID(PBMoves,move))
-      }
-      if form>0
-        pokemon.pbLearnMove(moves[form-1])
-      end
-      if pokemon.moves.find_all{|i| i.id!=0}.length==0
-        pokemon.pbLearnMove(:VINEWHIP)
-      end
     }
   })
   
@@ -5652,9 +5637,9 @@ MultipleForms.register(:SPRIGATITO,{
     next if pokemon.form==0      # Use default moveset for base form
     movelist=[]
     case pokemon.form            # Mystic
-    when 1 ; movelist=[[1,:SCRATCH],[1,:TAILWHIP],[5,:METALCLAW],[7,:FURYSWIPES],
-                      [10,:SHARPEN],[13,:TWINEEDLE],[15,:SPIKES],[17,:SPIKECANNON],
-                      [21,:PINMISSILE],[25,:LOCKON],[28,:FLING],[32,:SMARTSTRIKE],
+    when 1 ; movelist=[[1,:SCRATCH],[1,:TAILWHIP],[5,:RAM],[7,:POISONSTING],
+                      [10,:LOCKON],[13,:FURYSWIPES],[15,:METALCLAW],[17,:FURYATTACK],
+                      [21,:SPIKECANNON],[25,:SHARPEN],[28,:PINMISSILE],[32,:SMARTSTRIKE],
                       [36,:LASTRESORT]]
     end
     for i in movelist
@@ -5705,10 +5690,10 @@ MultipleForms.register(:FLORAGATO,{
     next if pokemon.form==0      # Use default moveset for base form
     movelist=[]
     case pokemon.form            # Mystic
-    when 1 ; movelist=[[0,:SHADOWSNEAK],[1,:SCRATCH],[1,:TAILWHIP],[5,:METALCLAW],
-                      [7,:FURYSWIPES],[10,:SHARPEN],[13,:TWINEEDLE],[15,:SPIKES],
-                      [20,:SPIKECANNON],[24,:PINMISSILE],[28,:LOCKON],[33,:SHADOWCLAW],
-                      [38,:SMARTSTRIKE],[42,:LASTRESORT],[46,:PERFORATE]]
+    when 1 ; movelist=[[0,:ASTONISH],[1,:SCRATCH],[1,:TAILWHIP],[5,:RAM],
+                      [7,:POISONSTING],[10,:LOCKON],[13,:FURYSWIPES],[15,:METALCLAW],
+                      [21,:SPIKECANNON],[24,:SHARPEN],[28,:SHADOWSNEAK],[33,:SHADOWCLAW],
+                      [38,:PINMISSILE],[42,:LASTRESORT],[46,:PERFORATE]]
     end
     for i in movelist
       i[1]=getConst(PBMoves,i[1])
@@ -5758,11 +5743,11 @@ MultipleForms.register(:MEOWSCARADA,{
     next if pokemon.form==0      # Use default moveset for base form
     movelist=[]
     case pokemon.form            # Mystic
-    when 1 ; movelist=[[0,:CURTAINCALL],[1,:SHADOWSNEAK],[1,:NEEDLEARM],[1,:SPIRITSHACKLE],
-                      [1,:FLING],[1,:SCRATCH],[1,:TAILWHIP],[5,:METALCLAW],
-                      [7,:FURYSWIPES],[10,:SHARPEN],[13,:TWINEEDLE],[15,:SPIKES],
-                      [20,:SPIKECANNON],[24,:PINMISSILE],[29,:LOCKON],[33,:SHADOWCLAW],
-                      [38,:FELLSTINGER],[42,:SMARTSTRIKE],[47,:LASTRESORT],[52,:PERFORATE],
+    when 1 ; movelist=[[0,:CURTAINCALL],[1,:ASTONISH],[1,:FELLSTINGER],[1,:NEEDLEARM],
+                      [1,:SPIRITSHACKLE],[1,:FLING],[1,:SCRATCH],[1,:TAILWHIP],[5,:RAM],
+                      [7,:POISONSTING],[10,:LOCKON],[13,:FURYSWIPES],[15,:METALCLAW],
+                      [21,:SPIKECANNON],[24,:SHARPEN],[29,:SHADOWSNEAK],[33,:SHADOWCLAW],
+                      [38,:PINMISSILE],[42,:SMARTSTRIKE],[47,:LASTRESORT],[52,:PERFORATE],
                       [58,:ENCORE],[64,:GUILLOTINE]]
     end
     for i in movelist

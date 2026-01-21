@@ -120,7 +120,7 @@ BattleBack=Grassy
 Outdoor=false
 ShowArea=false
 MapPosition=0,16,2
-BattleBack=Psychic
+BattleBack=Library
 [022]
 # Logium Town B
 Outdoor=false

@@ -6017,3 +6017,43 @@ If this battle is not wild, something has gone wrong in scoring moves (no prefer
 [The wild Unown lost 18 HP, now has 2 HP]
 [Ozzie lost 4 HP, now has 41 HP]
 ***Round 2***
+==============================
+Battle Start!
+181 - Minerva
+==============================
+***Round 1***
+==============================
+Battle Start!
+Wild Battle
+==============================
+***Round 1***
+==============================
+Battle Start!
+Wild Battle
+==============================
+***Round 1***
+==============================
+Battle Start!
+Wild Battle
+==============================
+***Round 1***
+==============================
+Battle Start!
+124 - Pyuku
+==============================
+***Round 1***
+==============================
+Battle Start!
+Wild Battle
+==============================
+***Round 1***
+==============================
+Battle Start!
+Wild Battle
+==============================
+***Round 1***
+==============================
+Battle Start!
+Wild Battle
+==============================
+***Round 1***

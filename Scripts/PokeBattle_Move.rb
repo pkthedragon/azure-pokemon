@@ -1040,6 +1040,7 @@ class PokeBattle_Move
       if @function==0x111
         return 1
       else        
+        attacker.pbTriggerSteadfastBoost if @basedamage>0
         @battle.pbDisplay(_INTL("It doesn't affect {1}...",opponent.pbThis(true)))
       end      
     end
@@ -1613,14 +1614,7 @@ class PokeBattle_Move
       accuracy*=(5/3)
     end
     # Hustle no longer lowers accuracy - now gives 0.5x defenses instead
-    if (opponent.hasWorkingAbility(:WONDERSKIN) && @basedamage==0 &&
-     attacker.pbIsOpposing?(opponent.index) && !(opponent.moldbroken))
-      if ($fefieldeffect == 9 || @battle.field.effects[PBEffects::Rainbow]>0)
-        accuracy*=0
-      else
-        accuracy/=2
-      end
-    end
+    # Wonder Skin no longer affects accuracy; retaliation handled on hit.
     if isConst?(attacker.species,PBSpecies,:STANTLER) && attacker.hasWorkingItem(:STANTCREST)
       accuracy*=1.5
     end
@@ -3450,7 +3444,7 @@ class PokeBattle_Move
       atk=attacker.spdef
       atkstage=attacker.stages[PBStats::SPDEF]+3
     end
-    if @function==0x175 || @function==0x25E || @function==0x0F6 # Photon Geyser 
+    if @function==0x175 || @function==0x25E || @function==0x0F6 || @function==0x02D # Photon Geyser 
       atk=attacker.spatk
       atkstage=attacker.stages[PBStats::SPATK]+3  
       if attacker.attack > attacker.spatk
@@ -3628,8 +3622,8 @@ class PokeBattle_Move
       atkmult=(atkmult*0.5).round
     end
     if opponent.hasWorkingAbility(:BULLETPROOF) && isBulletproofMove? && !(opponent.moldbroken)
-      atkmult=(atkmult*0.5).round
-      @battle.pbDisplay(_INTL("{1}'s {2} softened the blow!",opponent.pbThis,PBAbilities.getName(opponent.ability)))
+      atkmult=0
+      @battle.pbDisplay(_INTL("{1}'s {2} made it immune to the attack!",opponent.pbThis,PBAbilities.getName(opponent.ability)))
     end
     if opponent.hasWorkingAbility(:IMPERVIOUS) && !(opponent.moldbroken)
       if PBStuff::PUNCHINGMOVE.include?(id) || PBStuff::KICKINGMOVE.include?(id) || PBStuff::BITEMOVE.include?(id)
@@ -3849,9 +3843,6 @@ class PokeBattle_Move
     if attacker.hasWorkingAbility(:LONGREACH) && ($fefieldeffect==27 || $fefieldeffect==28)
       atkmult=(atkmult*1.5).round
     end
-    if attacker.hasWorkingAbility(:CORROSION) && ($fefieldeffect==10 || $fefieldeffect==11 || $fefieldeffect==41)
-      atkmult=(atkmult*1.5).round
-    end
     if isConst?(opponent.species,PBSpecies,:BEHEEYEM) && opponent.hasWorkingItem(:BEHECREST)
       priorityAttacker = @battle.pbGetPriority(attacker)
       priorityOpponent = @battle.pbGetPriority(opponent)
@@ -4018,6 +4009,12 @@ class PokeBattle_Move
     end
     if (opponent.hasWorkingAbility(:MARVELSCALE) || @battle.SilvallyCheck(opponent,PBTypes::WATER)) &&
      pbIsPhysical?(type) &&
+     (opponent.status>0 || $fefieldeffect == 9 || @battle.field.effects[PBEffects::Rainbow]>0 || @battle.field.effects[PBEffects::MistyTerrain]>0 ||
+      $fefieldeffect == 31 || $fefieldeffect == 32 || $fefieldeffect == 34) && !(opponent.moldbroken)
+      defmult=(defmult*1.5).round
+    end
+    if (opponent.hasWorkingAbility(:MARVELSCALE) || @battle.SilvallyCheck(opponent,PBTypes::WATER)) &&
+     pbIsSpecial?(type) &&
      (opponent.status>0 || $fefieldeffect == 9 || @battle.field.effects[PBEffects::Rainbow]>0 || @battle.field.effects[PBEffects::MistyTerrain]>0 ||
       $fefieldeffect == 31 || $fefieldeffect == 32 || $fefieldeffect == 34) && !(opponent.moldbroken)
       defmult=(defmult*1.5).round
@@ -4739,6 +4736,23 @@ class PokeBattle_Move
           @battle.pbDisplay(_INTL("The saltwater conducted the attack!",opponent.pbThis)) if $feshutup2 == 0
           $feshutup2+=1
         end
+      when 50 # Library Field
+        library_boosted = false
+        library_boosted ||= opponent.effects[PBEffects::Confusion]>0
+        library_boosted ||= isConst?(type,PBTypes,:FIRE)
+        library_boosted ||= isConst?(type,PBTypes,:PSYCHIC) && pbIsSpecial?(type)
+        library_boosted ||= PBStuff::SLASHINGMOVE.include?(id) || PBStuff::WINDMOVE.include?(id)
+        library_boosted ||= [PBMoves::FOCUSPUNCH,PBMoves::FOCUSBLAST,PBMoves::RETURN,
+                             PBMoves::FRUSTRATION,PBMoves::PERFORATE].include?(id)
+        library_boosted ||= [PBMoves::SMARTSTRIKE,PBMoves::ANCIENTPOWER,PBMoves::BARRAGE,
+                             PBMoves::HEADBUTT,PBMoves::ZENHEADBUTT,PBMoves::IRONHEAD,
+                             PBMoves::HEADSMASH,PBMoves::HEADCHARGE,PBMoves::SKULLBASH,
+                             PBMoves::MINDBLOWN].include?(id)
+        library_boosted ||= id == PBMoves::FIRESPIN || id == PBMoves::WHIRLPOOL
+        if library_boosted
+          @battle.pbDisplay(_INTL("The Library Field strengthened the attack!",opponent.pbThis)) if $feshutup2 == 0
+          $feshutup2+=1
+        end
     end
     # FIELD TRANSFORMATIONS
     case $fefieldeffect
@@ -5201,6 +5215,9 @@ class PokeBattle_Move
         finaldamagemult=(finaldamagemult*reduction).round
       end
     end
+    if opponent.hasWorkingAbility(:QUEENLYMAJESTY) && !opponent.moldbroken && pbTargetsAll?(attacker)
+      finaldamagemult=(finaldamagemult*0.7).round
+    end
     if attacker.hasWorkingAbility(:STAKEOUT) && @battle.switchedOut[opponent.index]
       finaldamagemult=(finaldamagemult*2.0).round
     end
@@ -5475,6 +5492,10 @@ class PokeBattle_Move
           if opponent.hasWorkingAbility(:LIQUIDOOZE,true)
             attacker.pbReduceHP(hpgain,true)
             @battle.pbDisplay(_INTL("{1} sucked up the liquid ooze!",attacker.pbThis))
+            if attacker.effects[PBEffects::Wounded] == 0
+              attacker.effects[PBEffects::Wounded]=3
+              @battle.pbDisplay(_INTL("{1} was wounded!",attacker.pbThis))
+            end
           else
             attacker.pbRecoverHP(hpgain,true)
             @battle.pbDisplay(_INTL("{1} had its energy drained!",opponent.pbThis))

@@ -278,7 +278,14 @@ module PokeBattle_BattleCommon
           battler.pbReset
           battler.participants=[]
         else
-          @decision=4
+          if !@opponent && @doublebattle
+            pbRemoveFromParty(battler.index,battler.pokemonIndex)
+            battler.pbReset
+            battler.participants=[]
+            @decision=4 if pbAllFainted?(@party2)
+          else
+            @decision=4
+          end
         end
         if pbIsSnagBall?(ball)
           pokemon.ot=self.pbPlayer.name
@@ -291,7 +298,7 @@ module PokeBattle_BattleCommon
           self.pbPlayer.owned[species]=true
           if $Trainer.pokedex
             pbDisplayPaused(_INTL("{1}'s data was added to the Pokédex.",pokemon.name))
-            @scene.pbShowPokedex(species)
+            @scene.pbShowPokedex(pokemon)
           end
         end
         @scene.pbHideCaptureBall
@@ -1518,6 +1525,9 @@ class PokeBattle_Battle
   def pbIsUnlosableItem(pkmn,item)
     return true if pbIsMail?(item)
     return true if pbIsZCrystal?(item)
+    if defined?(pbTributeItemIDs) && pbTributeItemIDs.include?(item)
+      return true
+    end
     return false if pkmn.effects[PBEffects::Transform]
     if isConst?(pkmn.ability,PBAbilities,:MULTITYPE) &&
        (isConst?(item,PBItems,:FISTPLATE) ||
@@ -2254,6 +2264,14 @@ class PokeBattle_Battle
         return false
     end
 #### KUROTSUNE - 018 - END
+
+    if thispkmn.hasWorkingAbility(:ANGERPOINT) && thismove.basedamage==0
+      if showMessages
+        pbDisplayPaused(_INTL("{1}'s Anger Point doesn't allow use of status moves!",
+            thispkmn.pbThis))
+      end
+      return false
+    end
     
     if opp1.effects[PBEffects::Imprison]
       if thismove.id==opp1.moves[0].id ||
@@ -3195,7 +3213,10 @@ class PokeBattle_Battle
     if @battlers[index].effects[PBEffects::Attract]>=0 && !@battlers[index].isFainted?
       pbDisplay(_INTL("{1} is hurt by leaving its love behind!",@battlers[index].pbThis))
       @battlers[index].pbReduceHP((@battlers[index].totalhp/6).floor)
-      @battlers[index].pbFaint if @battlers[index].isFainted?
+      if @battlers[index].isFainted?
+        @battlers[index].pbFaint
+        return
+      end
     end
     if @battlers[index].effects[PBEffects::Illusion]
       @battlers[index].effects[PBEffects::Illusion] = nil
@@ -4558,7 +4579,7 @@ end
     end
   end
 
-  def pbCommonAnimation(name,attacker,opponent,hitnum=0)
+  def pbCommonAnimation(name,attacker=nil,opponent=nil,hitnum=0)
     if @battlescene
       @scene.pbCommonAnimation(name,attacker,opponent,hitnum)
     end
@@ -4662,6 +4683,9 @@ end
       elsif $febackgroundstore == 45
         backdrop="InfernalFieldPlaceholder"
       end  
+      if backdrop.nil? || backdrop == ""
+        backdrop = $febackup || "IndoorA"
+      end
       backdrop3 = backdrop
       $febackgroundstore = backdrop3
     else
@@ -5266,6 +5290,8 @@ def pbStartBattle(canlose=false)
       pbDisplay(_INTL("The souls of the damned burn on."))
      when 46
       pbDisplay(_INTL("The waves lap at the shore."))
+	 when 47
+      pbDisplay(_INTL("Pages flutter around!"))
     end
     if ($game_variables[702] == 1) || ($game_variables[702] == 4) ### Azery - Auto Perma TR switch.
       @trickroom=8
@@ -5855,13 +5881,14 @@ def pbStartBattle(canlose=false)
       
       if symbiosis
         for s in symbiosis
-          if s.item == 0 && s.pbPartner.item
-            pbDisplay(_INTL("{1} received {2}'s {3} from symbiosis! ",s.pbThis, s.pbPartner.pbThis, PBItems.getName(s.pbPartner.item)))
-            s.item = s.pbPartner.item
-            s.pokemon.itemInitial = s.pbPartner.item
-            s.pbPartner.pokemon.itemInitial = 0
-            s.pbPartner.item=0
+          next if s.isFainted?
+          partner = s.pbPartner
+          next if !partner || partner.isFainted?
+          for stat in [PBStats::ATTACK,PBStats::DEFENSE,PBStats::SPEED,PBStats::SPATK,
+                       PBStats::SPDEF,PBStats::EVASION,PBStats::ACCURACY]
+            partner.stages[stat] = s.stages[stat]
           end
+          pbDisplay(_INTL("{1} shared its stat changes with {2}!",s.pbThis,partner.pbThis(true)))
         end
       end
       return if @decision>0
@@ -5869,24 +5896,18 @@ def pbStartBattle(canlose=false)
     pbWait(20)
   end
   
-  # Checks if anyone is eligible to receive an item through symbiosis
+  # Checks if anyone can share stat changes through Symbiosis
   def pbSymbiosisCheck(battlers)
-      result = Array.new
-      count  = 0
+      result = []
       for i in battlers
-        next if (i.pokemon.nil? || i.pbPartner.pokemon.nil?)
-        if i.item != 0 && i.pokemon.itemInitial != 0 && 
-          i.pbPartner.item != 0 && i.pbPartner.pokemon.itemInitial != 0 && 
-          i.pbPartner.hasWorkingAbility(:SYMBIOSIS)
-            result[count] = i
-            count += 1
-        end
+        next if i.pokemon.nil?
+        partner = i.pbPartner
+        next if !partner || partner.pokemon.nil?
+        next if i.isFainted?
+        result << i if i.hasWorkingAbility(:SYMBIOSIS)
       end
-      if result.any?
-        return result
-      else
-        return false
-      end
+      return result if result.any?
+      return false
     end
  
     def pbShieldDamage(battler,damage,move=nil)
@@ -6047,7 +6068,6 @@ def pbStartBattle(canlose=false)
             if !i.pbHasType?(:FIRE) && !i.effects[PBEffects::AquaRing] &&
              !isConst?(i.ability,PBAbilities,:FLAREBOOST) &&
              !isConst?(i.ability,PBAbilities,:MAGICGUARD) &&
-             !isConst?(i.ability,PBAbilities,:WATERVEIL) &&
              !isConst?(i.ability,PBAbilities,:FLASHFIRE) &&
              !isConst?(i.ability,PBAbilities,:HEATPROOF) &&
              !SilvallyCheck(i,PBTypes::STEEL) &&
@@ -6336,7 +6356,7 @@ def pbStartBattle(canlose=false)
             end
           end
           if !i.isAirborne? && !i.pbHasType?(:POISON) && !i.isBoss &&
-           !i.hasWorkingAbility(:WONDERSKIN) && !i.hasWorkingAbility(:IMMUNITY) &&
+           !i.hasWorkingAbility(:IMMUNITY) &&
            !i.hasWorkingAbility(:PASTELVEIL)
             if i.pbCanPoison?(false)
               pbDisplay(_INTL("{1} was poisoned!",i.pbThis)) if endmessage == false
@@ -6767,7 +6787,6 @@ def pbStartBattle(canlose=false)
               next if i.isFainted?
               if !i.pbHasType?(:ICE) &&
                  !i.hasWorkingAbility(:ICEBODY) &&
-                 !i.hasWorkingAbility(:SNOWCLOAK) &&
                  !i.hasWorkingAbility(:TEMPEST) &&
                  !i.hasWorkingAbility(:MAGICGUARD) &&
                  !(i.hasWorkingAbility(:WONDERGUARD) && $fefieldeffect == 44) &&
@@ -7043,6 +7062,7 @@ def pbStartBattle(canlose=false)
       # Hydration
       if i.hasWorkingAbility(:HYDRATION) && ((pbWeather==PBWeather::RAINDANCE && !i.hasWorkingItem(:UTILITYUMBRELLA)) ||
         $fefieldeffect == 21 || $fefieldeffect == 22 || $fefieldeffect == 46)
+        has_negative = false
         if i.status>0
           case i.status
             when PBStatuses::SLEEP
@@ -7058,6 +7078,15 @@ def pbStartBattle(canlose=false)
           end
           i.status=0
           i.statusCount=0
+        end
+        for stat in [PBStats::ATTACK,PBStats::DEFENSE,PBStats::SPEED,PBStats::SPATK,PBStats::SPDEF,PBStats::ACCURACY,PBStats::EVASION]
+          if i.stages[stat] < 0
+            i.stages[stat] = 0
+            has_negative = true
+          end
+        end
+        if has_negative
+          pbDisplay(_INTL("{1}'s Hydration cleared its negative stat changes!",i.pbThis))
         end
       end
       # Leaf Guard - clears status and negative stats in Sun
@@ -7110,36 +7139,6 @@ def pbStartBattle(canlose=false)
           i.pbReduceStatBasic(PBStats::SPEED,1)
           pbCommonAnimation("StatDown",i,nil)
           pbDisplay(_INTL("{1}'s Wandering Spirit lowered its Speed!",i.pbThis))
-        end
-      end
-      if i.hasWorkingAbility(:WATERVEIL) && ($fefieldeffect == 21 || 
-        $fefieldeffect == 22)
-        if i.status>0
-              pbDisplay(_INTL("{1}'s Water Veil cured its status problem!",i.pbThis))
-          i.status=0
-          i.statusCount=0
-        end
-      end
-      # Healer
-      if i.hasWorkingAbility(:HEALER)
-        partner=i.pbPartner
-        if partner
-          if pbRandom(10)<3 && partner.status>0
-            case partner.status
-              when PBStatuses::SLEEP
-                pbDisplay(_INTL("{1}'s Healer cured its partner's sleep problem!",i.pbThis))
-              when PBStatuses::FROZEN
-                pbDisplay(_INTL("{1}'s Healer cured its partner's ice problem!",i.pbThis))
-              when PBStatuses::BURN
-                pbDisplay(_INTL("{1}'s Healer cured its partner's burn problem!",i.pbThis))
-              when PBStatuses::POISON
-                pbDisplay(_INTL("{1}'s Healer cured its partner's poison problem!",i.pbThis))
-              when PBStatuses::PARALYSIS
-                pbDisplay(_INTL("{1}'s Healer cured its partner's paralysis problem!",i.pbThis))
-            end
-            partner.status=0
-            partner.statusCount=0
-          end
         end
       end
     end
@@ -7219,6 +7218,10 @@ def pbStartBattle(canlose=false)
           hploss = hploss * 2 if ($fefieldeffect == 19 || $fefieldeffect == 26 || $fefieldeffect == 41)
           recipient.pbReduceHP(hploss,true)
           pbDisplay(_INTL("{1} sucked up the liquid ooze!",recipient.pbThis))
+          if recipient.effects[PBEffects::Wounded] == 0
+            recipient.effects[PBEffects::Wounded]=3
+            pbDisplay(_INTL("{1} was wounded!",recipient.pbThis))
+          end
           if i.isFainted?
             return if !i.pbFaint
           end
@@ -7243,6 +7246,10 @@ def pbStartBattle(canlose=false)
           if i.hasWorkingAbility(:LIQUIDOOZE)
             recipient.pbReduceHP(hploss,true)
             pbDisplay(_INTL("{1} sucked up the liquid ooze!",recipient.pbThis))
+            if recipient.effects[PBEffects::Wounded] == 0
+              recipient.effects[PBEffects::Wounded]=3
+              pbDisplay(_INTL("{1} was wounded!",recipient.pbThis))
+            end
             hploss= hploss / 2 if $fefieldeffect == 19 || $fefieldeffect == 26
           elsif recipient.effects[PBEffects::HealBlock]==0
             hploss=(hploss*1.3).floor if recipient.hasWorkingItem(:BIGROOT) || isConst?(i.species,PBSpecies,:TANGROWTH) && i.hasWorkingItem(:TANGROWTHCREST)
@@ -7293,7 +7300,8 @@ def pbStartBattle(canlose=false)
           i.pbPoison(i)
         end
       end
-      if i.status==PBStatuses::POISON  && !i.hasWorkingAbility(:MAGICGUARD) &&  !(i.hasWorkingAbility(:WONDERGUARD) && $fefieldeffect == 44)
+      if i.status==PBStatuses::POISON  && !i.hasWorkingAbility(:MAGICGUARD) && !i.hasWorkingAbility(:TOXICBOOST) &&
+        !(i.hasWorkingAbility(:WONDERGUARD) && $fefieldeffect == 44)
         if i.hasWorkingAbility(:POISONHEAL) || (isConst?(i.species,PBSpecies,:ZANGOOSE) &&
            isConst?(i.item,PBItems,:ZANGCREST))
           if i.effects[PBEffects::HealBlock]==0
@@ -7634,7 +7642,7 @@ def pbStartBattle(canlose=false)
       if i.effects[PBEffects::Yawn]>0
         i.effects[PBEffects::Yawn]-=1
         if i.effects[PBEffects::Yawn]==0 && i.pbCanSleepYawn?
-          i.pbSleepSelf(1)  # Yawn causes 1 turn of sleep
+          i.pbSleepSelf(2)  # Yawn causes 1 full turn of sleep
           pbDisplay(_INTL("{1} fell asleep!",i.pbThis))
         end
       end
@@ -8464,17 +8472,6 @@ def pbStartBattle(canlose=false)
         end
         hploss=i.pbReduceHP((i.totalhp/32).floor*nightmarechip,true)
         pbDisplay(_INTL("{1}'s nightmares are becoming a reality!",i.pbThis)) if hploss>0
-    end
-    # Bad Dreams
-    if (i.status==PBStatuses::SLEEP || isConst?(i.ability,PBAbilities,:COMATOSE) && $fefieldeffect!=1) && 
-       !isConst?(i.ability,PBAbilities,:MAGICGUARD) && !(isConst?(i.ability,PBAbilities,:WONDERGUARD) && $fefieldeffect == 44) &&
-       $fefieldeffect != 9
-      if i.pbOpposing1.hasWorkingAbility(:BADDREAMS) ||
-         i.pbOpposing2.hasWorkingAbility(:BADDREAMS)
-        hploss=i.pbReduceHP((i.totalhp/8).floor,true)
-        hploss*=2 if $fefieldeffect==45
-        pbDisplay(_INTL("{1} is having a bad dream!",i.pbThis)) if hploss>0
-      end
     end
     # Nightmare Aura
     if (i.status==PBStatuses::SLEEP || isConst?(i.ability,PBAbilities,:COMATOSE) && $fefieldeffect!=1) &&

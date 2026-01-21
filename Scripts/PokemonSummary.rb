@@ -1207,6 +1207,7 @@ class PokemonSummaryScene
           @sprites["movepresel"].visible=false
           switching=false
         else
+          next if $game_temp&.in_battle
           if !(@pokemon.isShadow? rescue false)
             if !switching
               @sprites["movepresel"].index=selmove

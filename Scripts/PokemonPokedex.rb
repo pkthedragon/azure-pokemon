@@ -463,7 +463,7 @@ class PokemonPokedexScene
 
   def pbGetDexList()
     dexlist=[]
-    region=-1
+    region=pbGetPokedexRegion
     regionalSpecies=pbAllRegionalSpecies(region)
     if regionalSpecies.length==1
       # If no regional species defined, use National Pokédex order
@@ -474,8 +474,10 @@ class PokemonPokedexScene
     for i in 1...regionalSpecies.length
       nationalSpecies=regionalSpecies[i]
       if pbCanAddForModeList?($PokemonGlobal.pokedexMode,nationalSpecies)
-        height=$pkmn_dex[nationalSpecies]
-        weight=$pkmn_dex[nationalSpecies]
+        dex_entry=$pkmn_dex[nationalSpecies]
+        next if !dex_entry
+        height=dex_entry[14]
+        weight=dex_entry[15]
         # Pushing national species, name, height, weight, index number
         shift=DEXINDEXOFFSETS.include?(region)
         dexlist.push([nationalSpecies,
@@ -542,7 +544,13 @@ class PokemonPokedexScene
     end
     @dexlist=dexlist
     @sprites["pokedex"].commands=@dexlist
-    @sprites["pokedex"].index=index
+    if @dexlist.empty?
+      @sprites["pokedex"].index=0
+    else
+      index=0 if index<0
+      index=@dexlist.length-1 if index>=@dexlist.length
+      @sprites["pokedex"].index=index
+    end
     @sprites["pokedex"].refresh
     # Draw the slider
     ycoord=62
@@ -663,7 +671,7 @@ class PokemonPokedexScene
     messagebox.text=searchlist.getText(helptexts,searchlist.index)
   end
 
-  def pbChangeToDexEntry(species)
+  def pbChangeToDexEntry(species,pokemon=nil)
     @sprites["dexentry"].visible=true
       if @sprites["dexbar"] && $game_switches[704]
          @sprites["dexbar"].visible=true 
@@ -672,6 +680,9 @@ class PokemonPokedexScene
     @sprites["overlay"].bitmap.clear
     basecolor=Color.new(88,88,80)
     shadowcolor=Color.new(168,184,184)
+    if pokemon
+      species=pokemon.species
+    end
     indexNumber=pbGetRegionalNumber(pbGetPokedexRegion(),species)
     indexNumber=species if indexNumber==0
     indexNumber-=1 if DEXINDEXOFFSETS.include?(pbGetPokedexRegion)
@@ -682,12 +693,17 @@ class PokemonPokedexScene
        [sprintf(_INTL("WT")),318,190,0,basecolor,shadowcolor]
     ]
     if $Trainer.owned[species]
-      type1=$pkmn_dex[species][3]
-      type2=$pkmn_dex[species][4]
-      height=$pkmn_dex[species][14]
-      weight=$pkmn_dex[species][15]
+      type1=pokemon ? pokemon.type1 : $pkmn_dex[species][3]
+      type2=pokemon ? pokemon.type2 : $pkmn_dex[species][4]
+      height=pokemon ? pokemon.height : $pkmn_dex[species][14]
+      weight=pokemon ? pokemon.weight : $pkmn_dex[species][15]
       kind=pbGetMessage(MessageTypes::Kinds,species)
       dexentry=pbGetMessage(MessageTypes::Entries,species)
+      if pokemon
+        dexentryproc=MultipleForms.getFunction(species,"dexEntry") rescue nil
+        formentry=dexentryproc.call(pokemon) if dexentryproc
+        dexentry=formentry if formentry && formentry!=""
+      end
       inches=(height/0.254).round
       pounds=(weight/0.45359).round
       textpos.push([_ISPRINTF("{1:s} Pokémon",kind),244,74,0,basecolor,shadowcolor])
@@ -724,16 +740,16 @@ class PokemonPokedexScene
       end
     end
     pbDrawTextPositions(@sprites["overlay"].bitmap,textpos)
-    pkmnbitmap=AnimatedBitmap.new(pbPokemonBitmapFile(species,false))
+    pkmnbitmap=pokemon ? pbLoadPokemonBitmap(pokemon) : AnimatedBitmap.new(pbPokemonBitmapFile(species,false))
     @sprites["overlay"].bitmap.blt(
        40-(pkmnbitmap.width-128)/2,
        70-(pkmnbitmap.height-128)/2,
        pkmnbitmap.bitmap,pkmnbitmap.bitmap.rect)
     pkmnbitmap.dispose
-    pbPlayCry(species)
+    pbPlayCry(pokemon || species)
   end
 
-  def pbStartDexEntryScene(species)     # Used only when capturing a new species
+  def pbStartDexEntryScene(species,pokemon=nil)     # Used only when capturing a new species
     @sprites={}
     @viewport=Viewport.new(0,0,Graphics.width,Graphics.height)
     @viewport.z=99999
@@ -745,7 +761,7 @@ class PokemonPokedexScene
     @sprites["overlay"].x=0
     @sprites["overlay"].y=0
     @sprites["overlay"].visible=false
-    pbChangeToDexEntry(species)
+    pbChangeToDexEntry(species,pokemon)
     pbDrawImagePositions(@sprites["overlay"].bitmap,[[_INTL("Graphics/Pictures/Pokedex/pokedexBlank"),0,0,0,0,-1,-1]])
     pbFadeInAndShow(@sprites)
   end
@@ -1103,8 +1119,8 @@ class PokemonPokedex
     @scene=scene
   end
 
-  def pbDexEntry(species)
-    @scene.pbStartDexEntryScene(species)
+  def pbDexEntry(species,pokemon=nil)
+    @scene.pbStartDexEntryScene(species,pokemon)
     @scene.pbMiddleDexEntryScene
     @scene.pbEndScene
   end

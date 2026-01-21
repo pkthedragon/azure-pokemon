@@ -77,6 +77,13 @@ module PBHollow
       ]
     },
 	
+	[55, 1] => {
+      :any => [
+        [:pokemon, :DIGLETT, 15, 75, :SLASH],
+        [:pokemon, :ZUBAT, 15, 25, :QUICKATTACK]
+      ]
+    },	
+	
     [054, 1] => {
       :day => [
         [:pokemon, :WIGLETT, 20, 75, :MEMENTO],
@@ -185,7 +192,7 @@ end
 #  - map_id:    optional; defaults to current map
 # Returns true if something happened (battle or item), false otherwise.
 #===============================================================================
-def pbStartHollow(hollow_id, map_id = nil)
+def pbStartHollow(map_id = nil, hollow_id = nil)
   map_id ||= $game_map.map_id
 
   data = PBHollow.data_for(map_id, hollow_id)
