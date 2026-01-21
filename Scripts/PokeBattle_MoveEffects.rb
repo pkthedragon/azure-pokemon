@@ -133,8 +133,11 @@ class PokeBattle_Struggle < PokeBattle_Move
     pbShowAnimation(@id,attacker,nil,hitnum,alltargets,showanimation)
     ret=super(attacker,opponent,hitnum,alltargets,showanimation=false)    
     if opponent.damagestate.calcdamage>0
-      attacker.pbReduceHP((attacker.totalhp/4).floor)
-      @battle.pbDisplay(_INTL("{1} is damaged by the recoil!",attacker.pbThis))
+      recoil=attacker.pbAdjustElectricRecoilCrashDamage((attacker.totalhp/4).floor)
+      if recoil>0
+        attacker.pbReduceHP(recoil)
+        @battle.pbDisplay(_INTL("{1} is damaged by the recoil!",attacker.pbThis))
+      end
     end
     return ret
   end
@@ -8636,8 +8639,11 @@ class PokeBattle_Move_0FA < PokeBattle_Move
        !attacker.hasWorkingAbility(:ROCKHEAD) &&
        !attacker.hasWorkingAbility(:MAGICGUARD) && !(attacker.hasWorkingItem(:RAMPCREST) && attacker.species == PBSpecies::RAMPARDOS) &&
        !(attacker.hasWorkingAbility(:WONDERGUARD) && $fefieldeffect == 44)
-      attacker.pbReduceHP([1,((opponent.damagestate.hplost+2)/4).floor].max)
-      @battle.pbDisplay(_INTL("{1} is damaged by the recoil!",attacker.pbThis))
+      recoil=attacker.pbAdjustElectricRecoilCrashDamage([1,((opponent.damagestate.hplost+2)/4).floor].max)
+      if recoil>0
+        attacker.pbReduceHP(recoil)
+        @battle.pbDisplay(_INTL("{1} is damaged by the recoil!",attacker.pbThis))
+      end
     end
     return ret
   end
@@ -8655,8 +8661,11 @@ class PokeBattle_Move_0FB < PokeBattle_Move
        !attacker.hasWorkingAbility(:ROCKHEAD) &&
        !attacker.hasWorkingAbility(:MAGICGUARD) && !(attacker.hasWorkingItem(:RAMPCREST) && attacker.species == PBSpecies::RAMPARDOS) &&
        !(attacker.hasWorkingAbility(:WONDERGUARD) && $fefieldeffect == 44)
-      attacker.pbReduceHP([1,((opponent.damagestate.hplost+1)/3).floor].max)
-      @battle.pbDisplay(_INTL("{1} is damaged by the recoil!",attacker.pbThis))
+      recoil=attacker.pbAdjustElectricRecoilCrashDamage([1,((opponent.damagestate.hplost+1)/3).floor].max)
+      if recoil>0
+        attacker.pbReduceHP(recoil)
+        @battle.pbDisplay(_INTL("{1} is damaged by the recoil!",attacker.pbThis))
+      end
     end
     return ret
   end
@@ -8674,8 +8683,11 @@ class PokeBattle_Move_0FC < PokeBattle_Move
        !attacker.hasWorkingAbility(:ROCKHEAD) &&
        !attacker.hasWorkingAbility(:MAGICGUARD) && !(attacker.hasWorkingItem(:RAMPCREST) && attacker.species == PBSpecies::RAMPARDOS) &&
        !(attacker.hasWorkingAbility(:WONDERGUARD) && $fefieldeffect == 44)
-      attacker.pbReduceHP([1,((opponent.damagestate.hplost+1)/2).floor].max)
-      @battle.pbDisplay(_INTL("{1} is damaged by the recoil!",attacker.pbThis))
+      recoil=attacker.pbAdjustElectricRecoilCrashDamage([1,((opponent.damagestate.hplost+1)/2).floor].max)
+      if recoil>0
+        attacker.pbReduceHP(recoil)
+        @battle.pbDisplay(_INTL("{1} is damaged by the recoil!",attacker.pbThis))
+      end
     end
     return ret
   end
@@ -8694,8 +8706,11 @@ class PokeBattle_Move_0FD < PokeBattle_Move
        !attacker.hasWorkingAbility(:ROCKHEAD) &&
        !attacker.hasWorkingAbility(:MAGICGUARD) && !(attacker.hasWorkingItem(:RAMPCREST) && attacker.species == PBSpecies::RAMPARDOS) &&
        !(attacker.hasWorkingAbility(:WONDERGUARD) && $fefieldeffect == 44)
-      attacker.pbReduceHP([1,((opponent.damagestate.hplost+1)/3).floor].max)
-      @battle.pbDisplay(_INTL("{1} is damaged by the recoil!",attacker.pbThis))
+      recoil=attacker.pbAdjustElectricRecoilCrashDamage([1,((opponent.damagestate.hplost+1)/3).floor].max)
+      if recoil>0
+        attacker.pbReduceHP(recoil)
+        @battle.pbDisplay(_INTL("{1} is damaged by the recoil!",attacker.pbThis))
+      end
     end
     return ret
   end
@@ -8721,8 +8736,11 @@ class PokeBattle_Move_0FE < PokeBattle_Move
        !attacker.hasWorkingAbility(:ROCKHEAD) &&
        !attacker.hasWorkingAbility(:MAGICGUARD) && !(attacker.hasWorkingItem(:RAMPCREST) && attacker.species == PBSpecies::RAMPARDOS) &&
        !(attacker.hasWorkingAbility(:WONDERGUARD) && $fefieldeffect == 44)
-      attacker.pbReduceHP([1,((opponent.damagestate.hplost+1)/3).floor].max)
-      @battle.pbDisplay(_INTL("{1} is damaged by the recoil!",attacker.pbThis))
+      recoil=attacker.pbAdjustElectricRecoilCrashDamage([1,((opponent.damagestate.hplost+1)/3).floor].max)
+      if recoil>0
+        attacker.pbReduceHP(recoil)
+        @battle.pbDisplay(_INTL("{1} is damaged by the recoil!",attacker.pbThis))
+      end
     end
     return ret
   end
@@ -8746,8 +8764,11 @@ class PokeBattle_Move_0FX < PokeBattle_Move
        !attacker.hasWorkingAbility(:ROCKHEAD) &&
        !attacker.hasWorkingAbility(:MAGICGUARD) && !(attacker.hasWorkingItem(:RAMPCREST) && attacker.species == PBSpecies::RAMPARDOS) &&
        !(attacker.hasWorkingAbility(:WONDERGUARD) && $fefieldeffect == 44)
-      attacker.pbReduceHP([1,((opponent.damagestate.hplost+1)/3).floor].max)
-      @battle.pbDisplay(_INTL("{1} is damaged by the recoil!",attacker.pbThis))
+      recoil=attacker.pbAdjustElectricRecoilCrashDamage([1,((opponent.damagestate.hplost+1)/3).floor].max)
+      if recoil>0
+        attacker.pbReduceHP(recoil)
+        @battle.pbDisplay(_INTL("{1} is damaged by the recoil!",attacker.pbThis))
+      end
     end
     return ret
   end
@@ -11905,12 +11926,13 @@ class PokeBattle_Move_176 < PokeBattle_Move
     ret=super(attacker,opponent,hitnum,alltargets,showanimation)
     if !isConst?(attacker.ability,PBAbilities,:MAGICGUARD)
       if $fefieldeffect == 17 && isConst?(@id,PBMoves,:STEELBEAM)
-        attacker.pbReduceHP(((attacker.totalhp)/4).ceil)
+        recoil=attacker.pbAdjustElectricRecoilCrashDamage(((attacker.totalhp)/4).ceil)
       elsif $fefieldeffect == 18 && isConst?(@id,PBMoves,:STEELBEAM)
-        attacker.pbReduceHP(attacker.hp)
+        recoil=attacker.pbAdjustElectricRecoilCrashDamage(attacker.hp)
       else
-        attacker.pbReduceHP(((attacker.totalhp)/2).ceil)
+        recoil=attacker.pbAdjustElectricRecoilCrashDamage(((attacker.totalhp)/2).ceil)
       end
+      attacker.pbReduceHP(recoil) if recoil>0
       if isConst?(@id,PBMoves,:MINDBLOWN)
         @battle.pbDisplay(_INTL("{1}'s mind was blown and took damage!",attacker.pbThis))
       end
@@ -13028,8 +13050,11 @@ class PokeBattle_Move_21B < PokeBattle_Move
        !attacker.hasWorkingAbility(:ROCKHEAD) && attacker.hp >= (0.5 * attacker.totalhp).floor &&
        !attacker.hasWorkingAbility(:MAGICGUARD) && !(attacker.hasWorkingItem(:RAMPCREST) && attacker.species == PBSpecies::RAMPARDOS) &&
        !(attacker.hasWorkingAbility(:WONDERGUARD) && $fefieldeffect == 44)
-      attacker.pbReduceHP([1,((opponent.damagestate.hplost+1)/4).floor].max)
-      @battle.pbDisplay(_INTL("{1} is damaged by the recoil!",attacker.pbThis))
+      recoil=attacker.pbAdjustElectricRecoilCrashDamage([1,((opponent.damagestate.hplost+1)/4).floor].max)
+      if recoil>0
+        attacker.pbReduceHP(recoil)
+        @battle.pbDisplay(_INTL("{1} is damaged by the recoil!",attacker.pbThis))
+      end
     end
     return ret
   end
@@ -14116,8 +14141,11 @@ class PokeBattle_Move_0ZZ < PokeBattle_Move   # 0ZZ = Barrel Burst code
        !attacker.hasWorkingAbility(:ROCKHEAD) &&
        !attacker.hasWorkingAbility(:MAGICGUARD) && !(attacker.hasWorkingItem(:RAMPCREST) && attacker.species == PBSpecies::RAMPARDOS) &&
        !(attacker.hasWorkingAbility(:WONDERGUARD) && $fefieldeffect == 44)
-      attacker.pbReduceHP([1,((opponent.damagestate.hplost+2)/2).floor].max)
-      @battle.pbDisplay(_INTL("{1} is damaged by the recoil!",attacker.pbThis))
+      recoil=attacker.pbAdjustElectricRecoilCrashDamage([1,((opponent.damagestate.hplost+2)/2).floor].max)
+      if recoil>0
+        attacker.pbReduceHP(recoil)
+        @battle.pbDisplay(_INTL("{1} is damaged by the recoil!",attacker.pbThis))
+      end
     end
   if attacker.pbCanIncreaseStatStage?(PBStats::SPEED,attacker,false)
       attacker.pbIncreaseStatBasic(PBStats::SPEED,3)
@@ -14369,8 +14397,11 @@ class PokeBattle_Move_27F < PokeBattle_Move
        !attacker.hasWorkingAbility(:ROCKHEAD) &&
        !attacker.hasWorkingAbility(:MAGICGUARD) && !(attacker.hasWorkingItem(:RAMPCREST) && attacker.species == PBSpecies::RAMPARDOS) &&
        !(attacker.hasWorkingAbility(:WONDERGUARD) && $fefieldeffect == 44)
-      attacker.pbReduceHP([1,((opponent.damagestate.hplost+1)/3).floor].max)
-      @battle.pbDisplay(_INTL("{1} is damaged by the recoil!",attacker.pbThis))
+      recoil=attacker.pbAdjustElectricRecoilCrashDamage([1,((opponent.damagestate.hplost+1)/3).floor].max)
+      if recoil>0
+        attacker.pbReduceHP(recoil)
+        @battle.pbDisplay(_INTL("{1} is damaged by the recoil!",attacker.pbThis))
+      end
     end
     return ret
   end
