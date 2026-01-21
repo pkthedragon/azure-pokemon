@@ -4988,6 +4988,10 @@ def pbStartBattle(canlose=false)
             pbDisplayPaused(_INTL("{1} attacked!",wildpoke.name))
           end
         end
+        # Call boss entry effects after scene is initialized
+        if @battlers[1].isbossmon && @battlers[1].onEntryEffects
+          pbShieldEffects(@battlers[1],@battlers[1].onEntryEffects,true)
+        end
       elsif @party2.length==2
         if !@doublebattle
           raise _INTL("Only one wild Pokémon is allowed in single battles")
@@ -5001,6 +5005,13 @@ def pbStartBattle(canlose=false)
         @scene.pbStartBattle(self)
         pbDisplayPaused(_INTL("Wild {1} and\r\n{2} appeared!",
            @party2[0].name,@party2[1].name))
+        # Call boss entry effects after scene is initialized
+        if @battlers[1].isbossmon && @battlers[1].onEntryEffects
+          pbShieldEffects(@battlers[1],@battlers[1].onEntryEffects,true)
+        end
+        if @battlers[3].isbossmon && @battlers[3].onEntryEffects
+          pbShieldEffects(@battlers[3],@battlers[3].onEntryEffects,true)
+        end
       else
         raise _INTL("Only one or two wild Pokémon are allowed")
       end
