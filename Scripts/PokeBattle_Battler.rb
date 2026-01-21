@@ -1982,6 +1982,15 @@ class PokeBattle_Battler
   ################################################################################
   # Change HP
   ################################################################################
+  def pbAdjustElectricRecoilCrashDamage(damage)
+    return 0 if damage<=0
+    return 0 if $fefieldeffect == 1
+    if @battle.field.effects[PBEffects::ElectricTerrain]>0
+      damage = (damage/2).floor
+    end
+    return damage
+  end
+
   def pbReduceHP(amt,anim=false)
     if amt>=self.hp
       amt=self.hp
@@ -4055,14 +4064,6 @@ class PokeBattle_Battler
           user.pbReduceHP((user.totalhp/6).floor)
           @battle.pbDisplay(_INTL("{1} was hurt by the {2}!",user.pbThis,
               PBItems.getName(target.item)))
-        end
-        # Electric Terrain/Field - Contact moves against grounded Pokemon have 1/8 recoil of damage dealt
-        if ($fefieldeffect == 1 || @battle.field.effects[PBEffects::ElectricTerrain]>0) &&
-          !target.isAirborne? && !user.isFainted? && !user.hasWorkingAbility(:MAGICGUARD) &&
-          !(user.hasWorkingAbility(:WONDERGUARD) && $fefieldeffect == 44)
-          @battle.scene.pbDamageAnimation(user,0)
-          user.pbReduceHP((damage/8).floor)
-          @battle.pbDisplay(_INTL("{1} was shocked by the electric field!",user.pbThis))
         end
         if target.effects[PBEffects::BeakBlast] && user.pbCanBurn?(false) &&
           !user.hasWorkingAbility(:MAGICGUARD) && !(user.hasWorkingAbility(:WONDERGUARD) && $fefieldeffect == 44)
@@ -6460,6 +6461,7 @@ class PokeBattle_Battler
           #TODO: Not shown if message is "It doesn't affect XXX..."
           @battle.pbDisplay(_INTL("{1} kept going and crashed!",user.pbThis))
           damage=[1,(user.totalhp/2).floor].max
+          damage=user.pbAdjustElectricRecoilCrashDamage(damage)
           if damage>0
             @battle.scene.pbDamageAnimation(user,0)
             user.pbReduceHP(damage)
@@ -6479,6 +6481,7 @@ class PokeBattle_Battler
           if isConst?(user.ability,PBAbilities,:GORILLATACTICS)
             damage=[1,(user.totalhp/4).floor].max
           end
+          damage=user.pbAdjustElectricRecoilCrashDamage(damage)
           if damage>0 
             @battle.scene.pbDamageAnimation(user,0)
             user.pbReduceHP(damage) 
@@ -6488,6 +6491,7 @@ class PokeBattle_Battler
           @battle.pbDisplay(_INTL("{1} hit a mirror instead!",user.pbThis)) 
           @battle.pbDisplay(_INTL("The mirror shattered!",user.pbThis)) 
           damage=[1,(user.totalhp/4).floor].max 
+          damage=user.pbAdjustElectricRecoilCrashDamage(damage)
           if damage>0 
             @battle.scene.pbDamageAnimation(user,0)
             user.pbReduceHP(damage) 
