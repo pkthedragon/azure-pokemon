@@ -532,7 +532,7 @@ class PokeBattle_Battle
         if !opponent.abilitynulled
           miniscore*=0.3 if opponent.ability == PBAbilities::NATURALCURE
           miniscore*=0.4 if opponent.ability == PBAbilities::SHEDSKIN
-          miniscore*=0.5 if (opponent.ability == PBAbilities::WONDERSKIN || (opponent.ability == PBAbilities::MAGICIAN && $fefieldeffect==37))
+          miniscore*=0.5 if (opponent.ability == PBAbilities::MAGICIAN && $fefieldeffect==37)
           miniscore*=1.5 if (opponent.ability == PBAbilities::STURDY) && (opponent.hp==opponent.totalhp)
           miniscore*=0.7 if opponent.ability == PBAbilities::MARVELSCALE || SilvallyCheck(opponent,PBTypes::WATER)
           miniscore*=0.5 if opponent.ability == PBAbilities::SYNCHRONIZE && attacker.status==0
@@ -11465,7 +11465,7 @@ class PokeBattle_Battle
         if attacker.pbHasMove?((PBMoves::SNORE))
           score*=1.2
         end
-        if !attacker.abilitynulled && (attacker.ability == PBAbilities::SHEDSKIN || attacker.ability == PBAbilities::EARLYBIRD)
+        if !attacker.abilitynulled && attacker.ability == PBAbilities::SHEDSKIN
           score*=1.1
         end
         if @doublebattle
@@ -14352,9 +14352,6 @@ class PokeBattle_Battle
         if opponent.statusCount>2 || (!attacker.abilitynulled && attacker.ability == PBAbilities::WORLDOFNIGHTMARES)
           score*=4
         end
-        if (!opponent.abilitynulled && opponent.ability == PBAbilities::EARLYBIRD) && !(!attacker.abilitynulled && attacker.ability == PBAbilities::WORLDOFNIGHTMARES)
-          score*=0.5
-        end
         if (!opponent.abilitynulled && opponent.ability == PBAbilities::COMATOSE)
           score*=6
         end
@@ -14680,7 +14677,7 @@ class PokeBattle_Battle
       else
         score *= 0.8
       end
-      if opponent.status==PBStatuses::SLEEP && !(!opponent.abilitynulled && opponent.ability == PBAbilities::EARLYBIRD) && !(!opponent.abilitynulled && opponent.ability == PBAbilities::SHEDSKIN)
+      if opponent.status==PBStatuses::SLEEP && !(!opponent.abilitynulled && opponent.ability == PBAbilities::SHEDSKIN)
         score*=1.2
       end
       if @doublebattle
@@ -24807,12 +24804,8 @@ class PokeBattle_Battle
       accuracy*=1.5 if isConst?(attacker.species,PBSpecies,:STANTLER) && attacker.hasWorkingItem(:STANTCREST)
       accuracy*=1.5 if isConst?(attacker.species,PBSpecies,:HYPNO) && attacker.hasWorkingItem(:HYPCREST)
       if skill>=PBTrainerAI.highSkill
-        accuracy/=2 if (!opponent.abilitynulled && opponent.ability == PBAbilities::WONDERSKIN) &&
-        move.basedamage==0 &&
-        attacker.pbIsOpposing?(opponent.index)
-        # Tangled Feet and Sand Veil no longer give evasion boosts
-        accuracy/=1.2 if pbWeather==PBWeather::HAIL &&
-        (!opponent.abilitynulled && opponent.ability == PBAbilities::SNOWCLOAK)
+        # Wonder Skin no longer affects accuracy.
+        # Tangled Feet and Sand Veil no longer give evasion boosts.
       end
       if skill>=PBTrainerAI.averageSkill
         accuracy/=1.1 if opponent.hasWorkingItem(:BRIGHTPOWDER)
@@ -27155,12 +27148,12 @@ class PokeBattle_Battle
         fieldscore*=0.3
       end
       if (!opponent.abilitynulled && opponent.ability == PBAbilities::LEVITATE || opponent.ability == PBAbilities::SOLARIDOL || opponent.ability == PBAbilities::LUNARIDOL) || (!opponent.abilitynulled && opponent.ability == PBAbilities::CLOUDNINE) ||
-        (!opponent.abilitynulled && opponent.ability == PBAbilities::EARLYBIRD) || (!opponent.abilitynulled && opponent.ability == PBAbilities::BIGPECKS) ||
+        (!opponent.abilitynulled && opponent.ability == PBAbilities::BIGPECKS) ||
         (!opponent.abilitynulled && opponent.ability == PBAbilities::GALEWINGS) || SilvallyCheck(opponent,PBTypes::FLYING)
         fieldscore*=1.5
       end
       if (!attacker.abilitynulled && attacker.ability == PBAbilities::LEVITATE || attacker.ability == PBAbilities::SOLARIDOL || attacker.ability == PBAbilities::LUNARIDOL) || (!attacker.abilitynulled && attacker.ability == PBAbilities::CLOUDNINE) ||
-        (!attacker.abilitynulled && attacker.ability == PBAbilities::EARLYBIRD) || (!attacker.abilitynulled && attacker.ability == PBAbilities::BIGPECKS) ||
+        (!attacker.abilitynulled && attacker.ability == PBAbilities::BIGPECKS) ||
         (!attacker.abilitynulled && attacker.ability == PBAbilities::GALEWINGS) || SilvallyCheck(attacker,PBTypes::FLYING)
         fieldscore*=0.5
       end
@@ -27594,7 +27587,7 @@ class PokeBattle_Battle
         thisdam=0
       end
       if opponent.moves.any? {|moveloop| (PBStuff::SLEEPMOVE).include?(moveloop.id)} && attacker.pbCanSleep?(false) &&
-        if attacker.status==0 && !(attacker.hasWorkingItem(:LUMBERRY) || attacker.hasWorkingItem(:CHESTOBERRY)) && !(attacker.ability == PBAbilities::EARLYBIRD || attacker.ability == PBAbilities::NATURALCURE) && !(attacker.pbHasMove?(PBMoves::SLEEPTALK))
+        if attacker.status==0 && !(attacker.hasWorkingItem(:LUMBERRY) || attacker.hasWorkingItem(:CHESTOBERRY)) && !(attacker.ability == PBAbilities::NATURALCURE) && !(attacker.pbHasMove?(PBMoves::SLEEPTALK))
           threatened=true
         end
       end
