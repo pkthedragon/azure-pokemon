@@ -2006,9 +2006,9 @@ class PokeBattle_Battler
     end
     shielddam = false
     oldhp=self.hp
-    if self.isbossmon 
+    if self.isbossmon
       if self.shieldCount>0
-        onBreakdata = self.onBreakEffects[self.shieldCount]
+        onBreakdata = self.onBreakEffects ? self.onBreakEffects[self.shieldCount] : nil
         hpthreshold = (onBreakdata && onBreakdata[:threshold]) ? onBreakdata[:threshold] : 0
         if hpthreshold == 0.1 # unused currently, but can add. ex: Rejuv Admin
         else
@@ -2077,15 +2077,15 @@ class PokeBattle_Battler
       return true
     end
     if self.isbossmon
-      if self.shieldCount > 0 && self.onBreakEffects
-        onBreakdata = self.onBreakEffects[self.shieldCount]
+      if self.shieldCount > 0
+        onBreakdata = self.onBreakEffects ? self.onBreakEffects[self.shieldCount] : nil
         hpthreshold = (onBreakdata && onBreakdata[:threshold]) ? onBreakdata[:threshold] : 0
         case hpthreshold  # Add extra threshold effects here; ex: Rejuv Admin Regirock
         when 0
-          boss = @battle.battlers[self.index] 
+          boss = @battle.battlers[self.index]
           self.pbRecoverHP(self.totalhp,true)
           @battle.pbShieldEffects(self,onBreakdata) if onBreakdata
-          self.shieldCount-=1 if self.shieldCount>0 
+          self.shieldCount-=1 if self.shieldCount>0
           @battle.scene.pbUpdateShield(boss.shieldCount,self.index)
           if boss.sosDetails
             @battle.pbBossSOS(@battle.battlers,shieldbreak=true)
