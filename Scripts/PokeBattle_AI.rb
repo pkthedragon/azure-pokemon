@@ -7866,6 +7866,59 @@ class PokeBattle_Battle
         score*=1.3
       end
       score*=1.5 if checkAIdamage(aimem,attacker,opponent,skill)<(attacker.hp/3.0)
+    when 0x247 # Cell Splitter
+      # Multi-hit move that gains +2 hits each consecutive turn (2, 4, 6, 8...)
+      if attacker.status==PBStatuses::PARALYSIS
+        score*=0.7
+      end
+      if attacker.effects[PBEffects::Confusion]>0
+        score*=0.7
+      end
+      if attacker.effects[PBEffects::Attract]>=0
+        score*=0.7
+      end
+      # Accuracy/evasion considerations for multi-hit
+      if attacker.stages[PBStats::ACCURACY]<0
+        ministat = attacker.stages[PBStats::ACCURACY]
+        minimini = 15 * ministat
+        minimini += 100
+        minimini /= 100.0
+        score*=minimini
+      end
+      miniscore = opponent.stages[PBStats::EVASION]
+      miniscore*=(-5)
+      miniscore+=100
+      miniscore/=100.0
+      score*=miniscore
+      # Boost score if already building up hits
+      if attacker.effects[PBEffects::CellSplitter]>0
+        score*=1.3
+        score*=1.2 if attacker.effects[PBEffects::CellSplitter]>=2
+        score*=1.2 if attacker.effects[PBEffects::CellSplitter]>=4
+      end
+      # More valuable if attacker is healthy and can sustain the chain
+      if attacker.hp==attacker.totalhp
+        score*=1.3
+      elsif attacker.hp>attacker.totalhp*0.7
+        score*=1.1
+      end
+      # Boost if opponent's damage is low (safe to build up)
+      score*=1.5 if checkAIdamage(aimem,attacker,opponent,skill)<(attacker.hp/3.0)
+      # Penalize if opponent has protect moves (could break the chain)
+      score*=0.8 if checkAImoves(PBStuff::PROTECTMOVE,aimem)
+      # Multi-hit benefits against Focus Sash/Sturdy
+      if opponent.hp==opponent.totalhp && (opponent.hasWorkingItem(:FOCUSSASH) || (!opponent.abilitynulled && opponent.ability == PBAbilities::STURDY))
+        score*=1.3
+      end
+      # Multi-hit benefits against Substitute
+      if opponent.effects[PBEffects::Substitute]>0
+        score*=1.3
+      end
+      # Penalize for contact damage abilities/items (multiple hits = multiple procs)
+      if opponent.hasWorkingItem(:ROCKYHELMET) || (!opponent.abilitynulled && opponent.ability == PBAbilities::IRONBARBS) || (!opponent.abilitynulled && opponent.ability == PBAbilities::ROUGHSKIN)
+        hits = 2 + attacker.effects[PBEffects::CellSplitter]
+        score*=(1.0 - 0.05*hits) # More hits = more recoil damage
+      end
     when 0x93 # Rage
       if attacker.attack>attacker.spatk
         score*=1.2
@@ -20809,6 +20862,10 @@ class PokeBattle_Battle
       basedamage=basedamage<<(attacker.effects[PBEffects::FuryCutter]-1)
     when 0x92 # Echoed Voice
       basedamage*=attacker.effects[PBEffects::EchoedVoice]
+    when 0x247 # Cell Splitter
+      # Hits = 2 + counter (counter increases by 2 each consecutive turn: 2, 4, 6, 8...)
+      hits = 2 + attacker.effects[PBEffects::CellSplitter]
+      basedamage*=hits
     when 0x94 # Present
       basedamage=50
     when 0x95 # Magnitude
