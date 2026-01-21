@@ -6523,8 +6523,8 @@ class PokeBattle_Battler
         user.effects[PBEffects::FuryCutter]=0 if thismove.function==0x91 # Fury Cutter
         user.effects[PBEffects::EchoedVoice]+=1 if thismove.function==0x92 # Echoed Voice        
         user.effects[PBEffects::EchoedVoice]=0 if thismove.function!=0x92 # Not Echoed Voice
-        user.effects[PBEffects::CellSplitter]+=2 if thismove.function==0xF7 # Cell Splitter
-        user.effects[PBEffects::CellSplitter]=0 if thismove.function!=0xF7 # Not Cell Splitter
+        user.effects[PBEffects::CellSplitter]+=2 if thismove.function==0x247 # Cell Splitter
+        user.effects[PBEffects::CellSplitter]=0 if thismove.function!=0x247 # Not Cell Splitter
         user.effects[PBEffects::Stockpile]=0 if thismove.function==0x113 # Spit Up
         return 0
       end
@@ -6547,7 +6547,7 @@ class PokeBattle_Battler
       else
         user.effects[PBEffects::EchoedVoice]=0
       end
-      if thismove.function==0xF7 # Cell Splitter
+      if thismove.function==0x247 # Cell Splitter
         user.effects[PBEffects::CellSplitter]+=2  # No cap on hits
       else
         user.effects[PBEffects::CellSplitter]=0
