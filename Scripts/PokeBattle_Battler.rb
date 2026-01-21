@@ -1234,9 +1234,7 @@ class PokeBattle_Battler
       @battle.shieldCount = pkmn.shieldCount ? pkmn.shieldCount : $game_variables[704]
       shieldlife=[(self.totalhp/4).floor,1].max
       self.effects[PBEffects::ShieldLife]=shieldlife
-      if @onEntryEffects
-        @battle.pbShieldEffects(self,@onEntryEffects,true)
-      end
+      # Note: Entry effects are called later in pbStartBattleCore after scene is initialized
     end
   end
   
