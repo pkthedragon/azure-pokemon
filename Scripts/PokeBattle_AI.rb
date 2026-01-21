@@ -31761,7 +31761,8 @@ def pbShouldSwitch?(index,hardswitch=false)
         end
         poisoned=false
         if currentmon.pbOwnSide.effects[PBEffects::ToxicSpikes] > 0 && battler.status==0
-          if battler.hasType?(:POISON) && !battler.hasType?(:FLYING) && !(battler.ability == PBAbilities::LEVITATE || battler.ability == PBAbilities::SOLARIDOL || battler.ability == PBAbilities::LUNARIDOL)
+          if !battler.isAirborne? && !battler.hasWorkingAbility(:LIMBER) &&
+             battler.pbCanPoisonSpikes? && !battler.hasWorkingItem(:HEAVYDUTYBOOTS)
             battler.status=PBStatuses::POISON
             poisoned=true
           end
