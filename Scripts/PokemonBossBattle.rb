@@ -599,7 +599,7 @@ class PokeBattle_Battle
     if onBreakdata[:statDropCure]
       for s in [PBStats::ATTACK,PBStats::DEFENSE,PBStats::SPEED, PBStats::SPATK,PBStats::SPDEF,PBStats::ACCURACY,PBStats::EVASION]
         battler.stages[s] = 0 if battler.stages[s]<0
-        battler.effects[PBEffects::StatChangeHolder][s] = 0 if battler.effects[PBEffects::StatChangeHolder][s] < 0
+        battler.effects[PBEffects::StatChangeHolder][s] = 0 if battler.effects[PBEffects::StatChangeHolder] && battler.effects[PBEffects::StatChangeHolder][s] < 0
       end
       pbDisplayBrief(_INTL("{1} cleared itself of stat drops!",battler.pbThis))
     end
@@ -614,7 +614,7 @@ class PokeBattle_Battle
     if onBreakdata[:statDropRefresh]
       for s in [PBStats::ATTACK,PBStats::DEFENSE,PBStats::SPEED, PBStats::SPATK,PBStats::SPDEF,PBStats::ACCURACY,PBStats::EVASION]
         battler.stages[s] = 0 if battler.stages[s]!=0
-        battler.effects[PBEffects::StatChangeHolder][s] = 0 if battler.effects[PBEffects::StatChangeHolder][s] != 0
+        battler.effects[PBEffects::StatChangeHolder][s] = 0 if battler.effects[PBEffects::StatChangeHolder] && battler.effects[PBEffects::StatChangeHolder][s] != 0
       end
       pbDisplayBrief(_INTL("{1} cleared itself of stat changes!",battler.pbThis))
     end
