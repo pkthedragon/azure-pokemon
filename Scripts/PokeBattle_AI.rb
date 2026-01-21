@@ -53,6 +53,12 @@ class PokeBattle_Battle
     opponent=attacker.pbOppositeOpposing if !opponent
     opponent=opponent.pbPartner if opponent && opponent.isFainted?
     roles = pbGetMonRole(attacker,opponent,skill)
+    # Fake Out, First Impression, Mat Block, and Forebode only work on turn 1 - set score to 0 if turncount != 1
+    if ((move.id == PBMoves::FAKEOUT || move.id == getID(PBMoves,:FIRSTIMPRESSION) ||
+         move.id == PBMoves::MATBLOCK || move.id == getID(PBMoves,:FOREBODE)) && attacker.turncount != 1)
+      PBDebug.log(sprintf("Move only works on first turn, but turncount = %d. Score set to 0.",attacker.turncount)) if $INTERNAL && shutup==false
+      return 0
+    end
     if (move.priority>0) || prankpri || (!attacker.abilitynulled && (attacker.ability == PBAbilities::GALEWINGS && move_type==PBTypes::FLYING) && attacker.hp==attacker.totalhp) || (attacker.species == PBSpecies::FERALIGATR && attitemworks && attacker.item == PBItems::FERACREST && attacker.turncount==0) ||  (!attacker.abilitynulled && attacker.ability == PBAbilities::TRIAGE && move.isHealingMove?)
       if move.basedamage>0 && !move.zmove
         PBDebug.log(sprintf("Priority Check Begin")) if $INTERNAL && shutup==false

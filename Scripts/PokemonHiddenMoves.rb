@@ -240,12 +240,9 @@ def Kernel.pbHeadbuttEffect(event)
   elsif a<b && (a-b).abs>5
     chance=5
   end
-  if rand(9)>=chance
+  # Always trigger encounter if available
+  if !pbEncounter(chance==1 ? EncounterTypes::HeadbuttLow : EncounterTypes::HeadbuttHigh)
     Kernel.pbMessage(_INTL("Nope.  Nothing..."))
-  else
-    if !pbEncounter(chance==1 ? EncounterTypes::HeadbuttLow : EncounterTypes::HeadbuttHigh)
-      Kernel.pbMessage(_INTL("Nope.  Nothing..."))
-    end
   end
 end
 
@@ -271,17 +268,14 @@ def Kernel.pbHeadbuttEffect2(event)
   chance=1
   if a==b
     chance=8
-elsif a>b && (a-b).abs<5
+  elsif a>b && (a-b).abs<5
     chance=5
   elsif a<b && (a-b).abs>5
     chance=5
   end
-  if rand(10)>=chance
+  # Always trigger encounter if available
+  if !pbEncounter(chance==1 ? EncounterTypes::HeadbuttLow : EncounterTypes::HeadbuttHigh)
     Kernel.pbMessage(_INTL("Nope.  Nothing..."))
-  else
-    if !pbEncounter(chance==1 ? EncounterTypes::HeadbuttLow : EncounterTypes::HeadbuttHigh)
-      Kernel.pbMessage(_INTL("Nope.  Nothing..."))
-    end
   end
 end
 
@@ -367,9 +361,8 @@ HiddenMoveHandlers::UseMove.add(:HEADBUTT,lambda{|move,pokemon|
 # Rock Smash
 #===============================================================================
 def pbRockSmashRandomEncounter
-  if rand(100)<25
-    pbEncounter(EncounterTypes::RockSmash)
-  end
+  # Always trigger Rock Smash encounter if available
+  pbEncounter(EncounterTypes::RockSmash)
 end
 
 def Kernel.pbRockSmash

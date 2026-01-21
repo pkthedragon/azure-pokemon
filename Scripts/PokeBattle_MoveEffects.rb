@@ -4728,9 +4728,17 @@ class PokeBattle_Move_094 < PokeBattle_Move
     side.effects[PBEffects::Presents] += 1
     stacks = side.effects[PBEffects::Presents]
     if stacks==1
-      @battle.pbDisplay(_INTL("Presents were scattered around {1}'s side!",attacker.pbTeam))
+      if @battle.pbIsOpposing?(attacker.index)
+        @battle.pbDisplay(_INTL("Presents were scattered on the opposing team's side!"))
+      else
+        @battle.pbDisplay(_INTL("Presents were scattered on your team's side!"))
+      end
     else
-      @battle.pbDisplay(_INTL("More presents were scattered around {1}'s side!",attacker.pbTeam,stacks))
+      if @battle.pbIsOpposing?(attacker.index)
+        @battle.pbDisplay(_INTL("More presents were scattered on the opposing team's side!"))
+      else
+        @battle.pbDisplay(_INTL("More presents were scattered on your team's side!"))
+      end
     end
     return 0
   end
@@ -13805,7 +13813,7 @@ end
 class PokeBattle_Move_293 < PokeBattle_Move
   def pbEffect(attacker,opponent,hitnum=0,alltargets=nil,showanimation=true)
     if opponent.effects[PBEffects::Forebode][0]
-      @battle.pbDisplay(_INTL("But it failed!"))      
+      @battle.pbDisplay(_INTL("But it failed!"))
       return -1
     end
     pbShowAnimation(PBMoves::LEER,attacker,opponent,hitnum,alltargets,showanimation)

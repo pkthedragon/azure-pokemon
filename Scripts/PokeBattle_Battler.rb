@@ -3272,24 +3272,24 @@ class PokeBattle_Battler
         end
       end
     end
-    # Power of Alchemy - copies most recently fainted enemy ability on entry
+    # Power of Alchemy - copies most recently fainted ally ability on entry (SWAPPED)
     if self.hasWorkingAbility(:POWEROFALCHEMY) && onactive
-      mySide = self.index & 1
-      lastEnemyAbility = @battle.lastFaintedEnemyAbility[mySide]
-      if lastEnemyAbility && lastEnemyAbility != 0
-        self.ability = lastEnemyAbility
-        abilityname = PBAbilities.getName(lastEnemyAbility)
-        @battle.pbDisplay(_INTL("{1} copied the foe's {2}!",pbThis,abilityname))
-      end
-    end
-    # Receiver - copies most recently fainted ally ability on entry
-    if self.hasWorkingAbility(:RECEIVER) && onactive
       mySide = self.index & 1
       lastAllyAbility = @battle.lastFaintedAllyAbility[mySide]
       if lastAllyAbility && lastAllyAbility != 0
         self.ability = lastAllyAbility
         abilityname = PBAbilities.getName(lastAllyAbility)
-        @battle.pbDisplay(_INTL("{1} received its ally's {2}!",pbThis,abilityname))
+        @battle.pbDisplay(_INTL("{1} copied its ally's {2}!",pbThis,abilityname))
+      end
+    end
+    # Receiver - copies most recently fainted enemy ability on entry (SWAPPED)
+    if self.hasWorkingAbility(:RECEIVER) && onactive
+      mySide = self.index & 1
+      lastEnemyAbility = @battle.lastFaintedEnemyAbility[mySide]
+      if lastEnemyAbility && lastEnemyAbility != 0
+        self.ability = lastEnemyAbility
+        abilityname = PBAbilities.getName(lastEnemyAbility)
+        @battle.pbDisplay(_INTL("{1} received the foe's {2}!",pbThis,abilityname))
       end
     end
     # Mimicry
@@ -6548,7 +6548,7 @@ class PokeBattle_Battler
         user.effects[PBEffects::EchoedVoice]=0
       end
       if thismove.function==0xF7 # Cell Splitter
-        user.effects[PBEffects::CellSplitter]+=2 if user.effects[PBEffects::CellSplitter]<8
+        user.effects[PBEffects::CellSplitter]+=2  # No cap on hits
       else
         user.effects[PBEffects::CellSplitter]=0
       end
