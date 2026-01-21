@@ -106,7 +106,23 @@ BADGEFORFLY            = 9
 BADGEFORSTRENGTH       = 4
 BADGEFORDIVE           = 6
 BADGEFORWATERFALL      = 10
-BADGEFORLAVASURF       = 12 
+BADGEFORLAVASURF       = 12
+
+#===============================================================================
+# * HM usage is now controlled by switches instead of badges.
+# * Each switch corresponds to a specific HM ability.
+# * Turn the switch ON to allow the player to use that HM.
+#===============================================================================
+SWITCHFORCUT           = 1851
+SWITCHFORFLASH         = 1852
+SWITCHFORROCKCLIMB     = 1853
+SWITCHFORROCKSMASH     = 1854
+SWITCHFORSURF          = 1855
+SWITCHFORFLY           = 1856
+SWITCHFORSTRENGTH      = 1857
+SWITCHFORDIVE          = 1858
+SWITCHFORWATERFALL     = 1859
+SWITCHFORLAVASURF      = 1860 
 
 #===============================================================================
 # * The names of each pocket of the Bag.  Leave the first entry blank.

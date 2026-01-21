@@ -54,13 +54,13 @@ def Kernel.pbHiddenMoveEvent
   Events.onAction.trigger(nil)
 end
 
-def pbCheckHiddenMoveBadge(badge=-1,showmsg=true)
-  return true if badge<0   # No badge requirement
+def pbCheckHiddenMoveSwitch(switch_num=-1,showmsg=true)
+  return true if switch_num<0   # No switch requirement
   return true if $DEBUG
-  if (HIDDENMOVESCOUNTBADGES) ? $Trainer.numbadges>=badge : $Trainer.badges[badge]
+  if $game_switches[switch_num]
     return true
   end
-  Kernel.pbMessage(_INTL("Sorry, a new Badge is required.")) if showmsg
+  Kernel.pbMessage(_INTL("You are not able to use this move yet.")) if showmsg
   return false
 end
 
@@ -180,7 +180,7 @@ end
 def Kernel.pbCut
   move = getID(PBMoves,:CUT)
   movefinder = Kernel.pbCheckMove(move)
-  if !pbCheckHiddenMoveBadge(BADGEFORCUT,false) || !$PokemonBag.pbHasItem?(:HM01) || 
+  if !pbCheckHiddenMoveSwitch(SWITCHFORCUT,false) || !$PokemonBag.pbHasItem?(:HM01) ||
    (!$DEBUG && !movefinder && !$PokemonBag.pbHasItem?(:GOLDENAXE) )
     Kernel.pbMessage(_INTL("This tree looks like it can be cut down."))
     return false
@@ -205,7 +205,7 @@ def Kernel.pbCut
 end
 
 HiddenMoveHandlers::CanUseMove.add(:CUT,lambda{|move,pkmn,showmsg|
-  return false if !pbCheckHiddenMoveBadge(BADGEFORCUT,showmsg)
+  return false if !pbCheckHiddenMoveSwitch(SWITCHFORCUT,showmsg)
   facingEvent = $game_player.pbFacingEvent   
   if !facingEvent || (facingEvent.name!="Tree" && facingEvent.graphicName!="Object tree 1" && facingEvent.graphicName!="Object tree 3")
     Kernel.pbMessage(_INTL("Can't use that here.")) if showmsg
@@ -368,7 +368,7 @@ end
 def Kernel.pbRockSmash
   move = getID(PBMoves,:ROCKSMASH)
   movefinder = Kernel.pbCheckMove(move)
-  if !pbCheckHiddenMoveBadge(BADGEFORROCKSMASH,false) || 
+  if !pbCheckHiddenMoveSwitch(SWITCHFORROCKSMASH,false) ||
    (!$DEBUG && !movefinder && !$PokemonBag.pbHasItem?(:GOLDENHAMMER) )
     if $game_switches[999] == true
       Kernel.pbMessage(_INTL("It's a brittle wall. A Pokémon may be able to smash it."))
@@ -409,7 +409,7 @@ def Kernel.pbRockSmash
 end
 
 HiddenMoveHandlers::CanUseMove.add(:ROCKSMASH,lambda{|move,pkmn,showmsg|
-  return false if !pbCheckHiddenMoveBadge(BADGEFORROCKSMASH,showmsg)
+  return false if !pbCheckHiddenMoveSwitch(SWITCHFORROCKSMASH,showmsg)
   facingEvent=$game_player.pbFacingEvent
   if !facingEvent || (facingEvent.name!="Rock" && facingEvent.graphicName!="Object rock")
     Kernel.pbMessage(_INTL("Can't use that here.")) if showmsg
@@ -441,7 +441,7 @@ def Kernel.pbStrength
   end
   move = getID(PBMoves,:STRENGTH)
   movefinder = Kernel.pbCheckMove(move)
-  if !pbCheckHiddenMoveBadge(BADGEFORSTRENGTH,false) || !$PokemonBag.pbHasItem?(:HM04) || 
+  if !pbCheckHiddenMoveSwitch(SWITCHFORSTRENGTH,false) || !$PokemonBag.pbHasItem?(:HM04) ||
     (!$DEBUG && !movefinder && !$PokemonBag.pbHasItem?(:GOLDENGAUNTLET) )
     Kernel.pbMessage(_INTL("It's a big boulder, but a Pokémon may be able to push it aside."))
     return false
@@ -481,7 +481,7 @@ Events.onAction+=lambda{|sender,e|
 }
 
 HiddenMoveHandlers::CanUseMove.add(:STRENGTH,lambda{|move,pkmn,showmsg|
-  return false if !pbCheckHiddenMoveBadge(BADGEFORSTRENGTH,showmsg)
+  return false if !pbCheckHiddenMoveSwitch(SWITCHFORSTRENGTH,showmsg)
   #if $PokemonMap.strengthUsed
   if $strengthUsed
     Kernel.pbMessage(_INTL("You can already move boulders.")) if showmsg
@@ -507,7 +507,7 @@ def Kernel.pbSurf
   return false if $game_player.pbHasDependentEvents?
   move = getID(PBMoves,:SURF)
   movefinder = Kernel.pbCheckMove(move)
-  if !pbCheckHiddenMoveBadge(BADGEFORSURF,false) || !$PokemonBag.pbHasItem?(:HM03) || 
+  if !pbCheckHiddenMoveSwitch(SWITCHFORSURF,false) || !$PokemonBag.pbHasItem?(:HM03) ||
     (!$DEBUG && !movefinder && !$PokemonBag.pbHasItem?(:GOLDENSURFBOARD) )
     return false
   end
@@ -625,7 +625,7 @@ Events.onAction+=lambda{|sender,e|
   Kernel.pbSurf
 }
 HiddenMoveHandlers::CanUseMove.add(:SURF,lambda{|move,pkmn,showmsg|
-  return false if !pbCheckHiddenMoveBadge(BADGEFORSURF,showmsg)
+  return false if !pbCheckHiddenMoveSwitch(SWITCHFORSURF,showmsg)
   if $PokemonGlobal.surfing
     Kernel.pbMessage(_INTL("You're already surfing.")) if showmsg
     return false
@@ -664,7 +664,7 @@ def Kernel.pbLavaSurf
   return false if $game_player.pbHasDependentEvents?
   move = getID(PBMoves,:LAVASURF)
   movefinder = Kernel.pbCheckMove(move)
-  if !pbCheckHiddenMoveBadge(BADGEFORLAVASURF,false) || !$PokemonBag.pbHasItem?(:TM110) || 
+  if !pbCheckHiddenMoveSwitch(SWITCHFORLAVASURF,false) || !$PokemonBag.pbHasItem?(:TM110) ||
    (!$DEBUG && !movefinder && !$PokemonBag.pbHasItem?(:GOLDENDRIFTBOARD) )
     return false
   end
@@ -746,7 +746,7 @@ Events.onAction+=lambda{|sender,e|
 }
 
 HiddenMoveHandlers::CanUseMove.add(:LAVASURF,lambda{|move,pkmn,showmsg|
-  return false if !pbCheckHiddenMoveBadge(BADGEFORLAVASURF,showmsg)
+  return false if !pbCheckHiddenMoveSwitch(SWITCHFORLAVASURF,showmsg)
   if $PokemonGlobal.lavasurfing
     Kernel.pbMessage(_INTL("You're already surfing.")) if showmsg
     return false
@@ -822,7 +822,7 @@ end
 def Kernel.pbWaterfall
   move = getID(PBMoves,:WATERFALL)
   movefinder = Kernel.pbCheckMove(move)
-  if !pbCheckHiddenMoveBadge(BADGEFORWATERFALL,false) || !$PokemonBag.pbHasItem?(:HM05) || 
+  if !pbCheckHiddenMoveSwitch(SWITCHFORWATERFALL,false) || !$PokemonBag.pbHasItem?(:HM05) ||
     (!$DEBUG && !movefinder && !$PokemonBag.pbHasItem?(:GOLDENJETPACK) )
     Kernel.pbMessage(_INTL("A wall of water is crashing down with a mighty roar."))
     return false
@@ -858,7 +858,7 @@ Events.onAction+=lambda{|sender,e|
 }
 
 HiddenMoveHandlers::CanUseMove.add(:WATERFALL,lambda{|move,pkmn,showmsg|
-  return false if !pbCheckHiddenMoveBadge(BADGEFORWATERFALL,showmsg)
+  return false if !pbCheckHiddenMoveSwitch(SWITCHFORWATERFALL,showmsg)
    if Kernel.pbFacingTerrainTag!=PBTerrain::Waterfall
      Kernel.pbMessage(_INTL("Can't use that here.")) if showmsg
      return false
@@ -882,7 +882,7 @@ def Kernel.pbDive
   return false if !divemap
   move = getID(PBMoves,:DIVE)
   movefinder = Kernel.pbCheckMove(move)
-  if !pbCheckHiddenMoveBadge(BADGEFORDIVE,false) || 
+  if !pbCheckHiddenMoveSwitch(SWITCHFORDIVE,false) ||
    (!$DEBUG && !movefinder && !$PokemonBag.pbHasItem?(:GOLDENSCUBAGEAR))
     Kernel.pbMessage(_INTL("The sea is deep here. A Pokémon may be able to go underwater."))
     return false
@@ -930,7 +930,7 @@ def Kernel.pbSurfacing
   return if !divemap
   move = getID(PBMoves,:DIVE)
   movefinder = Kernel.pbCheckMove(move)
-  if !pbCheckHiddenMoveBadge(BADGEFORDIVE,false) || 
+  if !pbCheckHiddenMoveSwitch(SWITCHFORDIVE,false) ||
    (!$DEBUG && !movefinder && !$PokemonBag.pbHasItem?(:GOLDENSCUBAGEAR))
     Kernel.pbMessage(_INTL("Light is filtering down from above. A Pokémon may be able to surface here."))
     return false
@@ -998,7 +998,7 @@ Events.onAction+=lambda{|sender,e|
 }
 
 HiddenMoveHandlers::CanUseMove.add(:DIVE,lambda{|move,pkmn,showmsg|
-  return false if !pbCheckHiddenMoveBadge(BADGEFORDIVE,showmsg)
+  return false if !pbCheckHiddenMoveSwitch(SWITCHFORDIVE,showmsg)
   if $PokemonGlobal.diving
     return true if DIVINGSURFACEANYWHERE
     divemap = nil
@@ -1062,7 +1062,7 @@ HiddenMoveHandlers::UseMove.add(:DIVE,lambda{|move,pokemon|
 # Fly
 #===============================================================================
 HiddenMoveHandlers::CanUseMove.add(:FLY,lambda{|move,pkmn,showmsg|
-  return false if !pbCheckHiddenMoveBadge(BADGEFORFLY,showmsg)
+  return false if !pbCheckHiddenMoveSwitch(SWITCHFORFLY,showmsg)
   return false if !$PokemonBag.pbHasItem?(:HM02)
   if inPast?
     Kernel.pbMessage(_INTL("You are unable to travel in the past!"))
@@ -1112,7 +1112,7 @@ HiddenMoveHandlers::UseMove.add(:FLY,lambda{|move,pokemon|
 # Flash
 #===============================================================================
 HiddenMoveHandlers::CanUseMove.add(:FLASH,lambda{|move,pkmn,showmsg|
-  return false if !pbCheckHiddenMoveBadge(BADGEFORFLASH,showmsg)
+  return false if !pbCheckHiddenMoveSwitch(SWITCHFORFLASH,showmsg)
   if !pbGetMetadata($game_map.map_id,MetadataDarkMap)
     Kernel.pbMessage(_INTL("Can't use that here.")) if showmsg
     return false
@@ -1288,7 +1288,7 @@ end
 def Kernel.pbRockClimb
   move = getID(PBMoves,:ROCKCLIMB)
   movefinder = Kernel.pbCheckMove(move)
-  if !pbCheckHiddenMoveBadge(BADGEFORROCKCLIMB,false) || !$PokemonBag.pbHasItem?(:TM101) || 
+  if !pbCheckHiddenMoveSwitch(SWITCHFORROCKCLIMB,false) || !$PokemonBag.pbHasItem?(:TM101) ||
    (!$DEBUG && !movefinder && !$PokemonBag.pbHasItem?(:GOLDENCLAWS) )
     Kernel.pbMessage(_INTL("A wall of rock is in front of you."))
     return false
@@ -1322,7 +1322,7 @@ Events.onAction+=lambda{|sender,e|
 }
 
 HiddenMoveHandlers::CanUseMove.add(:ROCKCLIMB,lambda{|move,pkmn,showmsg|
-  return false if !pbCheckHiddenMoveBadge(BADGEFORROCKCLIMB,showmsg)
+  return false if !pbCheckHiddenMoveSwitch(SWITCHFORROCKCLIMB,showmsg)
   if Kernel.pbFacingTerrainTag!=PBTerrain::RockClimb
     Kernel.pbMessage(_INTL("Can't use that here.")) if showmsg
     return false
