@@ -603,6 +603,14 @@ class PokeBattle_Battle
       end
       pbDisplayBrief(_INTL("{1} cleared itself of stat drops!",battler.pbThis))
     end
+    if onBreakdata[:ppRefresh]
+      battler.moves.each do |move|
+        next if move.nil?
+        battler.pbSetPP(move,move.totalpp)
+      end
+      pp_message = onBreakdata[:ppRefreshMessage] || "{1} refreshed its PP!"
+      pbDisplayBrief(_INTL(pp_message,battler.pbThis)) if pp_message && pp_message != ""
+    end
     if onBreakdata[:statDropRefresh]
       for s in [PBStats::ATTACK,PBStats::DEFENSE,PBStats::SPEED, PBStats::SPATK,PBStats::SPDEF,PBStats::ACCURACY,PBStats::EVASION]
         battler.stages[s] = 0 if battler.stages[s]!=0

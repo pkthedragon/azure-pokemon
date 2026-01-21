@@ -301,4 +301,33 @@ BOSSINFOHASH = {
             },
         }
     },
+
+    :TOTEMLICKITUNG => {
+        :name => "Lickitung-Mystic", # nickname
+        :entryText => "Totem Lickitung attacks!", # dialogue upon enterring battle as a wild pokemon
+        :shieldCount => 1, # number of shields
+        :immunities => {},
+        :capturable => false, # can you catch this boss after shields are removed?
+        :moninfo => { # bosspokemon details
+            :species => PBSpecies::LICKITUNG,
+            :level => 25,
+            :form => 1,
+            :item => PBItems::EVIOLITE,
+            :moves => [PBMoves::SANDTOMB,PBMoves::ROLLOUT,PBMoves::REBUILD,PBMoves::CURSE],
+            :ability => PBAbilities::STALWART,
+            :nature => PBNatures::CAREFUL,
+            :iv => 31,
+            :happiness => 255
+        },
+        :onBreakEffects => { # in order of shield count, with the highest value being the first shield broken and the lowest the last
+            1 => {
+                :threshold => 0, # if desired, shield can be broken at higher hp% than 0
+                :message => "{1}'s shield shattered!",
+                :statusCure => true, # if status is cured when shield is broken
+                :statDropCure => true, # if statdrops are negated when shield is broken
+                :ppRefresh => true,
+                :ppRefreshMessage => "{1} refreshed its PP!"
+            },
+        }
+    },
 }
