@@ -1427,11 +1427,15 @@ end
 def pbCompileBosses
   $bosscache = nil
   bossdata = {}
+  # Remove existing constant if it exists to allow reloading
+  Object.send(:remove_const, :BOSSINFOHASH) if Object.const_defined?(:BOSSINFOHASH)
   File.open("Scripts/BossInfo.rb"){|f| eval(f.read)}
+  puts "Loaded #{BOSSINFOHASH.keys.length} bosses from BossInfo.rb"
   BOSSINFOHASH.each {|boss, data|
     bossdata[boss] = BossData.new(boss,data)
   }
   save_data(bossdata,"Data/bossdata.dat")
+  puts "Boss data saved to Data/bossdata.dat (#{File.size("Data/bossdata.dat")} bytes)"
   $bosscache = load_data("Data/bossdata.dat")
 end
 
