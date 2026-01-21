@@ -803,7 +803,8 @@ def pbDebugMenu
       pbCompileTextUI
     elsif cmd=="compiletrainers"
       pbCompileTrainers
-      Kernel.pbMessage(_INTL("Trainers have been compiled."))
+      pbCompileBosses
+      Kernel.pbMessage(_INTL("Trainers and bosses have been compiled."))
     elsif cmd =="compileitems"
       pbCompileItems
       Kernel.pbMessage(_INTL("Items have been compiled."))
