@@ -9445,6 +9445,10 @@ class PokeBattle_Battle
         if (opponent.lastMoveUsed<=0 || oldmove.pp==0)
           score*=0.2
         else
+          # Discourage Encore against moves that benefit from successive use
+          if [0x91, 0x92, 0xD3, 0x247].include?(oldmove.function) # Fury Cutter, Echoed Voice, Rollout, Cell Splitter
+            score*=0.3
+          end
           if (attacker.pbSpeed>pbRoughStat(opponent,PBStats::SPEED,skill)) ^ (@trickroom!=0)
             score*=1.5
           else
