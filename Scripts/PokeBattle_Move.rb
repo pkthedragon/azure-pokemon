@@ -74,8 +74,8 @@ class PokeBattle_Move
 # object generated is a subclass of this one which depends on the move's
 # function code (found in the script section PokeBattle_MoveEffect).
   def PokeBattle_Move.pbFromPBMove(battle,move,user)
-    className="" if !move
-    className=sprintf("PokeBattle_Move_%03X",$pkmn_move[move.id][0]) if move
+    return nil if !move
+    className=sprintf("PokeBattle_Move_%03X",$pkmn_move[move.id][0])
     if Object.const_defined?(className)
       return Kernel.const_get(className).new(battle,move,user)
     else
