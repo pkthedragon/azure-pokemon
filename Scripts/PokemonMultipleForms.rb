@@ -5743,7 +5743,7 @@ MultipleForms.register(:MEOWSCARADA,{
     next if pokemon.form==0      # Use default moveset for base form
     movelist=[]
     case pokemon.form            # Mystic
-    when 1 ; movelist=[[0,:CURTAINCALL],,[1,:ASTONISH],[1,:FELLSTINGER],[1,:NEEDLEARM],
+    when 1 ; movelist=[[0,:CURTAINCALL],[1,:ASTONISH],[1,:FELLSTINGER],[1,:NEEDLEARM],
                       [1,:SPIRITSHACKLE],[1,:FLING],[1,:SCRATCH],[1,:TAILWHIP],[5,:RAM],
                       [7,:POISONSTING],[10,:LOCKON],[13,:FURYSWIPES],[15,:METALCLAW],
                       [21,:SPIKECANNON],[24,:SHARPEN],[29,:SHADOWSNEAK],[33,:SHADOWCLAW],
