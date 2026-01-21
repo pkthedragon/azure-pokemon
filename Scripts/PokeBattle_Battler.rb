@@ -6548,7 +6548,7 @@ class PokeBattle_Battler
         user.effects[PBEffects::EchoedVoice]=0
       end
       if thismove.function==0x247 # Cell Splitter
-        user.effects[PBEffects::CellSplitter]+=2  # No cap on hits
+        user.effects[PBEffects::CellSplitter]+=2 if i==0 # Only increment once per turn, not per hit
       else
         user.effects[PBEffects::CellSplitter]=0
       end
