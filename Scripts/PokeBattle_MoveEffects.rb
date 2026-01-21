@@ -7353,26 +7353,27 @@ end
 
 
 ################################################################################
-# User must use this move for 4 more rounds.  Power doubles each round.
+# User must use this move for 3 more rounds.  Power doubles each round.
 # Power is also doubled if user has curled up.
 ################################################################################
 class PokeBattle_Move_0D3 < PokeBattle_Move
   def pbBaseDamage(basedmg,attacker,opponent)
-    shift=(4-attacker.effects[PBEffects::Rollout]) # from 0 through 4, 0 is most powerful
+    shift=(3-attacker.effects[PBEffects::Rollout]) # from 0 through 3, 0 is most powerful
     shift+=1 if attacker.effects[PBEffects::DefenseCurl]
     basedmg=basedmg<<shift
     return basedmg
   end
 
   def pbEffect(attacker,opponent,hitnum=0,alltargets=nil,showanimation=true)
-    attacker.effects[PBEffects::Rollout]=5 if attacker.effects[PBEffects::Rollout]==0
+    attacker.effects[PBEffects::Rollout]=4 if attacker.effects[PBEffects::Rollout]==0
     attacker.effects[PBEffects::Rollout]-=1
     attacker.currentMove=thismove.id
     ret=super(attacker,opponent,hitnum,alltargets,showanimation)
     if opponent.damagestate.calcdamage==0 ||
-       pbTypeModifier(@type,attacker,opponent)==0 || 
-       attacker.status==PBStatuses::SLEEP  #TODO: Not likely what actually happens, but good enough
-      # Cancel effect if attack is ineffective
+       pbTypeModifier(@type,attacker,opponent)==0 ||
+       attacker.status==PBStatuses::SLEEP || #TODO: Not likely what actually happens, but good enough
+       attacker.grazed
+      # Cancel effect if attack is ineffective or grazed
       attacker.effects[PBEffects::Rollout]=0
     end
     return ret
