@@ -168,11 +168,10 @@ STORAGEBOXES = 35
 #===============================================================================
 DEXDEPENDSONLOCATION = false
 def pbDexNames; return [
-   [_INTL("Zakos Pokedex"),0],
    _INTL("National Pokédex")
 ]; end
 ALWAYSSHOWALLFORMS = false
-DEXINDEXOFFSETS    = [892]
+DEXINDEXOFFSETS    = []
 #===============================================================================
 # * The amount of money the player starts the game with.
 # * The maximum amount of money the player can have.

@@ -211,7 +211,25 @@ Events.onWildPokemonCreate+=proc {|sender,e|
       pokemon.form=1
       pokemon.resetMoves
       pokemon.calcStats
-    end	
+	when 23 # Houndour (228)
+	  pokemon.pbLearnMove(:THUNDERFANG)
+	when 24 # Ponyta (077)
+	  pokemon.pbLearnMove(:MORNINGSUN)
+	when 25 # Mareep (179)
+	  pokemon.pbLearnMove(:AGILITY)
+	when 26 # Psyduck (054)
+	  pokemon.pbLearnMove(:MUDBOMB)
+	when 27 # Milcery (868)
+	  pokemon.pbLearnMove(:BABYDOLLEYES)
+	when 28 # Corsola
+	  pokemon.pbLearnMove(:HAZE)
+	when 29 # Castform
+	  pokemon.pbLearnMove(:HEX)
+	when 30 # Buneary (427)
+	  pokemon.pbLearnMove(:POWERUPPUNCH)
+	when 31 # Klink (599)
+	  pokemon.pbLearnMove(:MAGNETRISE)
+    end
 }
 
 Events.onWildPokemonCreate += proc {|sender, e|

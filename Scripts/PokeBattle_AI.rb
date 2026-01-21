@@ -90,14 +90,20 @@ class PokeBattle_Battle
         cheesing=false
         olddata = PBMove.new(opponent.lastMoveUsed)
         abusing=false
+        opponentHasSetup=false
+        # Check if opponent has setup moves in their moveset
+        for move in opponent.moves
+          if (PBStuff::SETUPMOVE).include?(move.id) || (PBStuff::DEFSETUPMOVE).include?(move.id)
+            opponentHasSetup=true
+            break
+          end
+        end
         if olddata!=-1
           oldmove = PokeBattle_Move.pbFromPBMove(self,olddata,opponent)
           #if oldmove.basepower==0
+          # Reliably detect setup moves - no randomness
           if (PBStuff::SETUPMOVE).include?(oldmove.id) || (PBStuff::DEFSETUPMOVE).include?(oldmove.id)
-            rndpredict=pbAIRandom(4)
-            if rndpredict>=2
-              abusing=true
-            end
+            abusing=true
           end
         end
         if !(attacker==@battlers[2])
@@ -260,17 +266,24 @@ class PokeBattle_Battle
                 score+=75
               end
             else
-              if !((opponent.moves.any? {|moveloop| (PBStuff::SETUPMOVE).include?(moveloop.id)}) && (pridam<opponent.hp/3))
-                score+=150 
-              elsif ((opponent.moves.any? {|moveloop| (PBStuff::SETUPMOVE).include?(moveloop.id)}) && !(pridam<opponent.hp/3))
-                score+=75
-              elsif (((opponent.moves.any? {|moveloop| (PBStuff::SETUPMOVE).include?(moveloop.id)}) && (pridam<opponent.hp/3)) || (opponent.moves.any? {|moveloop| (PBStuff::DEFSETUPMOVE).include?(moveloop.id)}) && (pridam<opponent.hp/3))
-                if abusing==false
-                  score+=50
+              # Check if opponent has setup moves - if so, don't use priority unless it deals significant damage
+              if opponentHasSetup
+                # If opponent has setup moves and priority damage is low, heavily penalize using priority
+                if pridam < opponent.hp/3
+                  # Don't boost priority - let AI accept death or switch instead
+                  score*=0.3
+                  PBDebug.log(sprintf("Opponent has setup moves and priority damage too low - not using priority")) if $INTERNAL
+                elsif pridam < opponent.hp/2
+                  # Moderate damage - small boost only
+                  score+=25
+                else
+                  # High damage - normal boost
+                  score+=75
                 end
               else
-                score+=75
-              end 
+                # No setup moves detected - use normal priority boost logic
+                score+=150
+              end
             end
           end
         end

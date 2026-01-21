@@ -2125,8 +2125,28 @@ class PokeBattle_Battler
       @battle.lastFaintedAllyAbility[faintedSide] = @ability
       @battle.lastFaintedEnemyAbility[faintedSide ^ 1] = @ability
     end
-    # Receiver - copies ally ability when ally faints
-    if pbPartner.hasWorkingAbility(:RECEIVER)
+    # Receiver - copies enemy ability when enemy faints (SWAPPED)
+    for i in @battle.battlers
+      next if i.isFainted?
+      next unless i.pbIsOpposing?(self.index) # Only check opponents of the fainted Pokemon
+      if i.hasWorkingAbility(:RECEIVER)
+        if (!isConst?(@ability,PBAbilities,:MULTITYPE) &&
+            !isConst?(@ability,PBAbilities,:COMATOSE) &&
+            !isConst?(@ability,PBAbilities,:DISGUISE) &&
+            !isConst?(@ability,PBAbilities,:SCHOOLING) &&
+            !isConst?(@ability,PBAbilities,:RKSSYSTEM) &&
+            !isConst?(@ability,PBAbilities,:IMPOSTER) &&
+            !isConst?(@ability,PBAbilities,:SHIELDSDOWN) &&
+            !isConst?(@ability,PBAbilities,:POWEROFALCHEMY) &&
+            !isConst?(@ability,PBAbilities,:RECEIVER))
+          i.ability=@ability
+          abilityname=PBAbilities.getName(@ability)
+          @battle.pbDisplay(_INTL("{1} received {2}'s {3}!",i.pbThis,pbThis,abilityname))
+        end
+      end
+    end
+    # Power of Alchemy - copies ally ability when ally faints (SWAPPED)
+    if pbPartner.hasWorkingAbility(:POWEROFALCHEMY)
       if (!isConst?(@ability,PBAbilities,:MULTITYPE) &&
           !isConst?(@ability,PBAbilities,:COMATOSE) &&
           !isConst?(@ability,PBAbilities,:DISGUISE) &&
@@ -2139,27 +2159,7 @@ class PokeBattle_Battler
         partnerability=@ability
         pbPartner.ability=partnerability
         abilityname=PBAbilities.getName(partnerability)
-        @battle.pbDisplay(_INTL("{1} received {2}'s {3}!",pbPartner.pbThis,pbThis,abilityname))
-      end
-    end
-    # Power of Alchemy - copies enemy ability when enemy faints
-    for i in @battle.battlers
-      next if i.isFainted?
-      next unless i.pbIsOpposing?(self.index) # Only check opponents of the fainted Pokemon
-      if i.hasWorkingAbility(:POWEROFALCHEMY)
-        if (!isConst?(@ability,PBAbilities,:MULTITYPE) &&
-            !isConst?(@ability,PBAbilities,:COMATOSE) &&
-            !isConst?(@ability,PBAbilities,:DISGUISE) &&
-            !isConst?(@ability,PBAbilities,:SCHOOLING) &&
-            !isConst?(@ability,PBAbilities,:RKSSYSTEM) &&
-            !isConst?(@ability,PBAbilities,:IMPOSTER) &&
-            !isConst?(@ability,PBAbilities,:SHIELDSDOWN) &&
-            !isConst?(@ability,PBAbilities,:POWEROFALCHEMY) &&
-            !isConst?(@ability,PBAbilities,:RECEIVER))
-          i.ability=@ability
-          abilityname=PBAbilities.getName(@ability)
-          @battle.pbDisplay(_INTL("{1} copied {2}'s {3}!",i.pbThis,pbThis,abilityname))
-        end
+        @battle.pbDisplay(_INTL("{1} copied {2}'s {3}!",pbPartner.pbThis,pbThis,abilityname))
       end
     end
     # Cursed Body - disable the move that knocked it out

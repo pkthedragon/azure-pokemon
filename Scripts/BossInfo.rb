@@ -235,11 +235,11 @@ BOSSINFOHASH = {
         :capturable => false, # can you catch this boss after shields are removed?
         :moninfo => { # bosspokemon details
             :species => PBSpecies::EXPLOUD,
-            :level => 23,
+            :level => 20,
             :form => 0,
             :item => PBItems::THROATSPRAY,
-            :moves => [PBMoves::ECHOEDVOICE, PBMoves::STOMP, PBMoves::HOWL, PBMoves::UPROAR],
-            :ability => PBAbilities::AMPLIFY,
+            :moves => [PBMoves::ECHOEDVOICE, PBMoves::ECHOEDVOICE, PBMoves::ECHOEDVOICE, PBMoves::ECHOEDVOICE],
+            :ability => PBAbilities::SCRAPPY,
             :gender => "F",
             :nature => PBNatures::MODEST,
             :iv => 20,
@@ -265,7 +265,7 @@ BOSSINFOHASH = {
         },
         :onEntryEffects => { # effects applied on entry, use same attributes/syntax as onbreakeffects
             :abilitychange => PBAbilities::PARENTALBOND,
-            :message => "{1}'s motherly instincts take over!"
+            :message => "{1}'s motherly instincts take over! Its ability became Parental Bond!"
         }
     },
 
@@ -289,7 +289,7 @@ BOSSINFOHASH = {
         },
         :onEntryEffects => { # effects applied on entry, use same attributes/syntax as onbreakeffects
             :typeChange => [PBTypes::ELECTRIC,PBTypes::FIGHTING],
-            :message => "{1} crackles with electric energy!"
+            :message => "{1} crackles with electricity!"
         },
         :onBreakEffects => { # in order of shield count, with the highest value being the first shield broken and the lowest the last
             1 => {
@@ -303,7 +303,7 @@ BOSSINFOHASH = {
     },
 
     :TOTEMLICKITUNG => {
-        :name => "Lickitung-Mystic", # nickname
+        :name => "Guardian Lickitung", # nickname
         :entryText => "Totem Lickitung attacks!", # dialogue upon enterring battle as a wild pokemon
         :shieldCount => 1, # number of shields
         :immunities => {},
