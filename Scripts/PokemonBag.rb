@@ -921,8 +921,23 @@ end
     pocket=pbGetPocket(item)
     maxsize=maxPocketSize(pocket)
     maxsize=@pockets[pocket].length+1 if maxsize<0
-    return ItemStorageHelper.pbStoreItem(
-      @pockets[pocket],maxsize,BAGMAXPERSLOT,item,qty,true)
+    max_per_slot=BAGMAXPERSLOT
+    if max_per_slot>0
+      current_qty=ItemStorageHelper.pbQuantity(@pockets[pocket],@pockets[pocket].length,item)
+      if current_qty>=max_per_slot
+        return pbSendOverflowToPC(item,qty)
+      end
+      bag_qty=[qty,max_per_slot-current_qty].min
+      overflow=qty-bag_qty
+    else
+      bag_qty=qty
+      overflow=0
+    end
+    stored=ItemStorageHelper.pbStoreItem(
+      @pockets[pocket],maxsize,BAGMAXPERSLOT,item,bag_qty,true)
+    return false unless stored
+    return pbSendOverflowToPC(item,overflow) if overflow>0
+    return true
   end
 
   def pbChangeItem(olditem,newitem)
@@ -954,6 +969,25 @@ end
   end
 
     
+end
+
+class PokemonBag
+  def pbSendOverflowToPC(item,qty)
+    return true if qty<=0
+    return false if !$PokemonGlobal
+    $PokemonGlobal.pcItemStorage=PCItemStorage.new if !$PokemonGlobal.pcItemStorage
+    if $PokemonGlobal.pcItemStorage.pbStoreItem(item,qty)
+      itemname=PBItems.getName(item)
+      if qty>1
+        Kernel.pbMessage(_INTL("{1} sent the extra {2} {3}s to the PC storage.",$Trainer.name,qty,itemname))
+      else
+        Kernel.pbMessage(_INTL("{1} sent the extra {2} to the PC storage.",$Trainer.name,itemname))
+      end
+      return true
+    end
+    Kernel.pbMessage(_INTL("There's no space left in the PC for that item."))
+    return false
+  end
 end
 
 

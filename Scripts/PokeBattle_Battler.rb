@@ -1398,6 +1398,15 @@ class PokeBattle_Battler
     end
   end
 
+  def pbApplyCamouflageMoveTypes(newtype)
+    return if newtype.nil? || newtype <= 0
+    normal_type = PBTypes::NORMAL
+    for move in @moves
+      next if move.type != normal_type
+      move.type = newtype
+    end
+  end
+
   def pbHasMove?(id)
     if id.is_a?(String) || id.is_a?(Symbol)
       id=getID(PBMoves,id)
@@ -3543,6 +3552,7 @@ class PokeBattle_Battler
         if newtype > 0 && self.type1 != newtype
           self.type1 = newtype
           self.type2 = newtype
+          pbApplyCamouflageMoveTypes(newtype)
           typename = PBTypes.getName(newtype)
           @battle.pbDisplay(_INTL("{1}'s {2} changed it to {3} type!",pbThis,PBAbilities.getName(ability),typename))
         end

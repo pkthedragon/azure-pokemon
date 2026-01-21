@@ -3579,10 +3579,7 @@ class PokeBattle_Move_060 < PokeBattle_Move
     else
       @battle.pbDisplay(_INTL("{1} transformed into the {2} type!",attacker.pbThis,typename))  
     end
-    for m in attacker.moves
-      next if m.type != oldtype
-      m.type = newtype
-    end	
+    attacker.pbApplyCamouflageMoveTypes(newtype)
     return 0
   end
 end
