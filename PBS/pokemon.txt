@@ -2258,6 +2258,7 @@ BattlerAltitude=0
 Name=Seel
 InternalName=SEEL
 Type1=WATER
+Type2=ICE
 BaseStats=65,45,55,45,45,70
 GenderRate=Female50Percent
 GrowthRate=MediumFast
