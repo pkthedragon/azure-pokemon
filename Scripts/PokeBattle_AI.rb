@@ -31757,13 +31757,15 @@ def pbShouldSwitch?(index,hardswitch=false)
           battler.type2=PBTypes::QMARKS
         end
         if battler.item == PBItems::MAGICALSEED && ($fefieldeffect==40)
-          battler.status=PBStatuses::BURN
+          # Use instance_variable_set to avoid modifying the real party Pokemon via the status= setter
+          battler.instance_variable_set(:@status, PBStatuses::BURN)
         end
         poisoned=false
         if currentmon.pbOwnSide.effects[PBEffects::ToxicSpikes] > 0 && battler.status==0
           if !battler.isAirborne? && !battler.hasWorkingAbility(:LIMBER) &&
              battler.pbCanPoisonSpikes? && !battler.hasWorkingItem(:HEAVYDUTYBOOTS)
-            battler.status=PBStatuses::POISON
+            # Use instance_variable_set to avoid modifying the real party Pokemon via the status= setter
+            battler.instance_variable_set(:@status, PBStatuses::POISON)
             poisoned=true
           end
         end
@@ -31919,7 +31921,8 @@ def pbShouldSwitch?(index,hardswitch=false)
         end
         if opponent1.moves.any? {|moveloop| (PBStuff::BURNMOVE).include?(moveloop.id)} && battler.pbCanBurn?(false) && !(battler.item == PBItems::MAGICALSEED && ($fefieldeffect==40))
           if battler.status==0 && !(battler.hasWorkingItem(:LUMBERRY) || battler.hasWorkingItem(:RAWSTBERRY)) && !(battler.ability == PBAbilities::MAGICGUARD)
-            battler.status=PBStatuses::BURN
+            # Use instance_variable_set to avoid modifying the real party Pokemon via the status= setter
+            battler.instance_variable_set(:@status, PBStatuses::BURN)
             burned=true
           end
         end
@@ -33069,7 +33072,8 @@ def pbSwitchTo(currentmon,party,skill,pivoting=false,hardswitch=false,incomingmo
     burned=false
     if battler.item == PBItems::MAGICALSEED && ($fefieldeffect==40)
       burned=true
-      battler.status=PBStatuses::BURN
+      # Use instance_variable_set to avoid modifying the real party Pokemon via the status= setter
+      battler.instance_variable_set(:@status, PBStatuses::BURN)
       if !(isConst?(battler.type1,PBTypes,:GHOST) || isConst?(battler.type2,PBTypes,:GHOST))
       battler.type2=PBTypes::GHOST
       end
@@ -33313,7 +33317,8 @@ def pbSwitchTo(currentmon,party,skill,pivoting=false,hardswitch=false,incomingmo
       if opponent1.moves.any? {|moveloop| (PBStuff::BURNMOVE).include?(moveloop.id)} && battler.pbCanBurn?(false)
         if (battler.attack>battler.spatk) && battler.status==0 && !(battler.hasWorkingItem(:LUMBERRY) || battler.hasWorkingItem(:RAWSTBERRY)) && !(battler.ability == PBAbilities::GUTS || battler.ability == PBAbilities::FLAREBOOST) && !(battler.pbHasMove?(PBMoves::FACADE)) && !(battler.pbHasMove?(PBMoves::REST))
           burned=true
-          battler.status=PBStatuses::BURN
+          # Use instance_variable_set to avoid modifying the real party Pokemon via the status= setter
+          battler.instance_variable_set(:@status, PBStatuses::BURN)
         end
       end
     end
