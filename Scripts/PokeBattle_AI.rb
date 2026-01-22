@@ -7654,8 +7654,26 @@ class PokeBattle_Battle
         score*=1.5
       end
     when 0x83 # Round
-      if @doublebattle && attacker.pbPartner.pbHasMove?((PBMoves::ROUND))
-        score*=1.5
+      # Round chains with partner - if partner selected Round or will use Round,
+      # the second user gets doubled damage (60 -> 120) and moves immediately after
+      if @doublebattle
+        partner = attacker.pbPartner
+        if partner && !partner.isFainted? && partner.pbHasMove?(PBMoves::ROUND)
+          # Partner has Round - significant bonus
+          score*=1.5
+          # Even better if partner is faster (they use Round first, we get the boost)
+          partnerSpeed = pbRoughStat(partner,PBStats::SPEED,skill)
+          attackerSpeed = attacker.pbSpeed
+          if (partnerSpeed > attackerSpeed) ^ (@trickroom!=0)
+            score*=1.3  # Partner moves first, we get doubled damage
+          elsif (partnerSpeed < attackerSpeed) ^ (@trickroom!=0)
+            score*=1.1  # We move first, partner gets doubled damage
+          end
+          # If partner already used Round this turn, we definitely want to use it
+          if partner.hasMovedThisRound? && partner.effects[PBEffects::Round]
+            score*=1.5
+          end
+        end
       end
     when 0x84 # Payback
       if (pbRoughStat(opponent,PBStats::SPEED,skill)>attacker.pbSpeed) ^ (@trickroom!=0)
@@ -20026,6 +20044,35 @@ class PokeBattle_Battle
       end
       if miniscore > 1
         score*=miniscore if !(!attacker.abilitynulled && attacker.ability == PBAbilities::SHEERFORCE) && !hasgreatmoves(initialscores,scoreindex,skill,true)
+      end
+    when 0x29F # Howl (also Attack Order, but Howl is status move)
+      # Only apply this for Howl (status move), not Attack Order (damage move)
+      if move.basedamage == 0 && move.id == PBMoves::HOWL
+        # Howl chains with partner - if partner selected Howl or will use Howl,
+        # the second user gets 3x boost (+3 instead of +1) and moves immediately after
+        if @doublebattle
+          partner = attacker.pbPartner
+          if partner && !partner.isFainted? && partner.pbHasMove?(PBMoves::HOWL)
+            # Partner has Howl - significant bonus
+            score*=1.5
+            # Even better if partner is faster (they use Howl first, we get the 3x boost)
+            partnerSpeed = pbRoughStat(partner,PBStats::SPEED,skill)
+            attackerSpeed = attacker.pbSpeed
+            if (partnerSpeed > attackerSpeed) ^ (@trickroom!=0)
+              score*=1.4  # Partner moves first, we get +3 Attack
+            elsif (partnerSpeed < attackerSpeed) ^ (@trickroom!=0)
+              score*=1.2  # We move first, partner gets +3 Attack
+            end
+            # If partner already used Howl this turn, we definitely want to use it
+            if partner.hasMovedThisRound? && partner.lastMoveUsed == PBMoves::HOWL
+              score*=1.6
+            end
+          end
+        end
+        # Standard stat boost considerations
+        if attacker.pbTooHigh?(PBStats::ATTACK)
+          score*=0.1
+        end
       end
     end
     ###### END FUNCTION CODES
