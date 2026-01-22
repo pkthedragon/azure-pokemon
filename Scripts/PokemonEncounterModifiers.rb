@@ -219,15 +219,13 @@ Events.onWildPokemonCreate+=proc {|sender,e|
 	  pokemon.pbLearnMove(:AGILITY)
 	when 26 # Psyduck (054)
 	  pokemon.pbLearnMove(:MUDBOMB)
-	when 27 # Milcery (868)
-	  pokemon.pbLearnMove(:BABYDOLLEYES)
-	when 28 # Corsola
+	when 27 # Corsola
 	  pokemon.pbLearnMove(:HAZE)
-	when 29 # Castform
+	when 28 # Castform
 	  pokemon.pbLearnMove(:HEX)
-	when 30 # Buneary (427)
+	when 29 # Buneary (427)
 	  pokemon.pbLearnMove(:POWERUPPUNCH)
-	when 31 # Klink (599)
+	when 30 # Klink (599)
 	  pokemon.pbLearnMove(:MAGNETRISE)
     end
 }

@@ -14,8 +14,8 @@ module PBHollow
   # Replace / add whatever you want here.
   SCENT_MOVES = [
     :SWEETSCENT,
-    :AROMATHERAPY
-    # :SCENTSPRAY, :FLOWERSCENT, etc…
+    :AROMATHERAPY,
+    :SPRITZ
   ]
 
   # each value is an array of entries:
@@ -92,6 +92,13 @@ module PBHollow
       :night => [
         [:pokemon, :KRABBY, 20, 75, :AGILITY],
         [:pokemon, :CLOBBOPUS, 20, 25, :SOAK]
+      ]
+    },
+	
+    [036, 1] => {
+      :any => [
+        [:pokemon, :SMOLIV, 20, 75, :SYNTHESIS],
+        [:pokemon, :FLETCHLING, 20, 25, :QUICKGUARD]
       ]
     },
   }
