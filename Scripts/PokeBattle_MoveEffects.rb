@@ -4371,23 +4371,21 @@ end
 ################################################################################
 # Power is doubled if the user's ally has already used this move this round.
 # This move goes immediately after the ally, ignoring priority.
+# Round inflicts damage. If another Pokémon uses Round before the user this turn,
+# the user will use Round directly after it (regardless of Speed); all but the
+# first Round within a turn will double in power to 120.
 ################################################################################
 class PokeBattle_Move_083 < PokeBattle_Move
 ##### KUROTSUNE - 010 - START
-  def pbBaseDamage(basedmg,attacker,opponent)    
-    if attacker.pbPartner.hasMovedThisRound? &&
-       attacker.pbPartner.effects[PBEffects::Round]
-       return basedmg*2
-    elsif !attacker.pbPartner.hasMovedThisRound?
-      # Partner hasn't moved yet,
-      # so we flag the user with the
-      # Round effect
-      attacker.effects[PBEffects::Round] = true
-      return basedmg
-    else
-      # Return base damage with no alterations
-      return basedmg
+  def pbBaseDamage(basedmg,attacker,opponent)
+    # Always set Round effect so turn loop can trigger partner to move immediately
+    attacker.effects[PBEffects::Round] = true
+    # Check if partner already used Round this turn - if so, double power
+    partner = attacker.pbPartner
+    if partner && partner.hasMovedThisRound? && partner.effects[PBEffects::Round]
+      return basedmg*2  # 60 * 2 = 120
     end
+    return basedmg
   end
 ##### KUROTSUNE - 010 - END
 end
@@ -14813,25 +14811,30 @@ end
 
 ################################################################################
 # Howl – behaves like Round. If allies have already used Howl this turn,
-# the boost increases. Example:
+# the boost is amplified 3x. Example:
 #  1st Howl = +1 Attack
-#  2nd Howl = +2 Attack
-#  3rd Howl = +3 Attack
+#  2nd Howl = +3 Attack (3x amplification)
+#  3rd Howl = +3 Attack (3x amplification)
+# Also triggers partner to move immediately after if they selected Howl.
 ################################################################################
 class PokeBattle_Move_29F < PokeBattle_Move
   def pbEffect(attacker,opponent,hitnum=0,alltargets=nil,showanimation=true)
     pbShowAnimation(@id, attacker, nil)
-    howl_count = 1
+    # Check if any ally has already used Howl this turn
+    ally_used_howl = false
     attacker_side = attacker.index % 2
     @battle.battlers.each do |b|
       next if !b || b.index == attacker.index
       next if b.index % 2 != attacker_side
+      next if !b.hasMovedThisRound?
       next if b.lastMoveUsed != PBMoves::HOWL
-      howl_count += 1
+      ally_used_howl = true
+      break
     end
-    boost = howl_count   # +1, +2, +3, etc.
+    # First Howl = +1, subsequent Howls = +3 (3x amplification)
+    boost = ally_used_howl ? 3 : 1
     attacker.pbIncreaseStat(PBStats::ATTACK, boost, false)
-    if howl_count >= 2
+    if ally_used_howl
       @battle.pbDisplay(_INTL("{1}'s pack howled together!", attacker.pbThis))
     end
 

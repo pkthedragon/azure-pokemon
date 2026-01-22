@@ -5885,11 +5885,30 @@ def pbStartBattle(canlose=false)
       end
     end     
     for i in priority
+      # Skip battlers that have already moved this round (e.g., due to Round chaining)
+      next if i.hasMovedThisRound?
       i.pbProcessTurn(@choices[i.index])
+      # Round chaining: If this battler used Round and partner selected Round but hasn't moved,
+      # make partner move immediately after (regardless of Speed)
       if i.effects[PBEffects::Round]
-        i.pbPartner.selectedMove = 297
+        partner = i.pbPartner
+        if partner && !partner.isFainted? && !partner.hasMovedThisRound? &&
+           pbChoseMoveFunctionCode?(partner.index, 0x83) # Partner selected Round
+          partner.pbProcessTurn(@choices[partner.index])
+          return if @decision>0
+        end
       end
-      
+      # Howl chaining: If this battler used Howl and partner selected Howl but hasn't moved,
+      # make partner move immediately after (regardless of Speed)
+      if i.lastMoveUsed == PBMoves::HOWL
+        partner = i.pbPartner
+        if partner && !partner.isFainted? && !partner.hasMovedThisRound? &&
+           pbChoseMove?(partner.index, :HOWL) # Partner selected Howl (not Attack Order which shares function code)
+          partner.pbProcessTurn(@choices[partner.index])
+          return if @decision>0
+        end
+      end
+
       if symbiosis
         for s in symbiosis
           next if s.isFainted?
