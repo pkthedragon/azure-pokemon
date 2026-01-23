@@ -29820,6 +29820,18 @@ end
 # Decide whether the opponent should Mega Evolve their Pokémon.
 ################################################################################
 def pbEnemyShouldMegaEvolve?(index)
+  # Check cache first to avoid redundant expensive calculations
+  @aiMegaEvolveCache = {} if !@aiMegaEvolveCache
+  return @aiMegaEvolveCache[index] if @aiMegaEvolveCache.has_key?(index)
+
+  # Compute and cache the result
+  result = pbEnemyShouldMegaEvolveInternal?(index)
+  @aiMegaEvolveCache[index] = result
+  return result
+end
+
+# Internal implementation of mega evolution decision logic
+def pbEnemyShouldMegaEvolveInternal?(index)
   return pbCanMegaEvolve?(index) if (@battlers[index].item == PBItems::DEMONSTONE)
   return false if @battlers[index].isMega?
   return false if !pbCanMegaEvolve?(index)

@@ -5416,6 +5416,8 @@ def pbStartBattle(canlose=false)
     @aiMoveScoreCache = {}
     # Clear AI priority damage cache (stores pre-calculated priority damage for each attacker)
     @aiPriorityCache = {}
+    # Clear AI mega evolution decision cache (stores pbEnemyShouldMegaEvolve results per battler)
+    @aiMegaEvolveCache = {}
 #### SARDINES - v17 - START
 #    @scene.pbResetCommandIndices
 #### SARDINES - v17 - END
