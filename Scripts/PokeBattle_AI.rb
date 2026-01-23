@@ -29554,9 +29554,10 @@ class PokeBattle_Battle
       for i in 0...scoresAndTargets.length
         idx=scoresAndTargets[i][1]
         thisScore=scoresAndTargets[i][2]
+        existing_score = @scores[idx] || 0
         if thisScore>0 || thisScore==-1
-          if scores[idx]==0 || ((scores[idx]==thisScore && pbAIRandom(10)<5) ||
-              (scores[idx] < thisScore))
+          if existing_score==0 || ((existing_score==thisScore && pbAIRandom(10)<5) ||
+              (existing_score < thisScore))
             #    (scores[idx]!=thisScore && pbAIRandom(10)<3))
             @scores[idx]=thisScore
             @targets[idx]=scoresAndTargets[i][3]
