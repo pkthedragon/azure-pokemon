@@ -5639,8 +5639,8 @@ MultipleForms.register(:SPRIGATITO,{
     case pokemon.form            # Mystic
     when 1 ; movelist=[[1,:SCRATCH],[1,:TAILWHIP],[5,:RAM],[7,:POISONSTING],
                       [10,:LOCKON],[13,:FURYSWIPES],[15,:METALCLAW],[17,:FURYATTACK],
-                      [21,:SPIKECANNON],[25,:SHARPEN],[28,:PINMISSILE],[32,:SMARTSTRIKE],
-                      [36,:LASTRESORT]]
+                      [21,:SPIKECANNON],[25,:AUTOTOMIZE],[28,:PINMISSILE],[32,:SMARTSTRIKE],
+                      [36,:SHARPEN]]
     end
     for i in movelist
       i[1]=getConst(PBMoves,i[1])
@@ -5692,8 +5692,8 @@ MultipleForms.register(:FLORAGATO,{
     case pokemon.form            # Mystic
     when 1 ; movelist=[[0,:ASTONISH],[1,:SCRATCH],[1,:TAILWHIP],[5,:RAM],
                       [7,:POISONSTING],[10,:LOCKON],[13,:FURYSWIPES],[15,:METALCLAW],
-                      [21,:SPIKECANNON],[24,:SHARPEN],[28,:SHADOWSNEAK],[33,:SHADOWCLAW],
-                      [38,:PINMISSILE],[42,:LASTRESORT],[46,:PERFORATE]]
+                      [21,:SPIKECANNON],[24,:AUTOTOMIZE],[28,:SHADOWSNEAK],[33,:SHADOWCLAW],
+                      [38,:PINMISSILE],[42,:SHARPEN],[46,:PERFORATE]]
     end
     for i in movelist
       i[1]=getConst(PBMoves,i[1])
@@ -5743,12 +5743,12 @@ MultipleForms.register(:MEOWSCARADA,{
     next if pokemon.form==0      # Use default moveset for base form
     movelist=[]
     case pokemon.form            # Mystic
-    when 1 ; movelist=[[0,:CURTAINCALL],[1,:ASTONISH],[1,:FELLSTINGER],[1,:NEEDLEARM],
+    when 1 ; movelist=[[0,:CURTAINCALL],[1,:ASTONISH],[1,:FELLSTINGER],[1,:NEEDLEARM],[1,:ENCORE],
                       [1,:SPIRITSHACKLE],[1,:FLING],[1,:SCRATCH],[1,:TAILWHIP],[5,:RAM],
                       [7,:POISONSTING],[10,:LOCKON],[13,:FURYSWIPES],[15,:METALCLAW],
-                      [21,:SPIKECANNON],[24,:SHARPEN],[29,:SHADOWSNEAK],[33,:SHADOWCLAW],
+                      [21,:SPIKECANNON],[24,:AUTOTOMIZE],[29,:SHADOWSNEAK],[33,:SHADOWCLAW],
                       [38,:PINMISSILE],[42,:SMARTSTRIKE],[47,:LASTRESORT],[52,:PERFORATE],
-                      [58,:ENCORE],[64,:GUILLOTINE]]
+                      [58,:SHARPEN],[64,:GUILLOTINE]]
     end
     for i in movelist
       i[1]=getConst(PBMoves,i[1])

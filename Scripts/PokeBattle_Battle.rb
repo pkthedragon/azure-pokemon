@@ -2741,59 +2741,65 @@ class PokeBattle_Battle
       if !pbOwnedByPlayer?(index)
         if !pbIsOpposing?(index) || (@opponent && pbIsOpposing?(index))
           newenemy=pbSwitchInBetween(index,false,false)
+          if newenemy >= 0
 #### JERICHO - 001 - START
-            if !pbIsOpposing?(index)
-              if isConst?(@party1[newenemy].ability,PBAbilities,:ILLUSION) #ILLUSION
-                party3=@party1.find_all {|item| item && !item.egg? && item.hp>0 }
-                if party3[@party1.length-1] != @party1[newenemy]
-                  illusionpoke = party3[party3.length-1]
-                end
-              end #ILLUSION
-              newname = illusionpoke != nil ? illusionpoke.name : @party1[newenemy].name #ILLUSION
-            else
-              if isConst?(@party2[newenemy].ability,PBAbilities,:ILLUSION) #ILLUSION
-                party3=@party1.find_all {|item| item && !item.egg? && item.hp>0 }
-                if party3[@party1.length-1] != @party1[newenemy]
-                  illusionpoke = party3[party3.length-1]
-                end
-              end #ILLUSION
-              newname = illusionpoke != nil ? illusionpoke.name : PBSpecies.getName(@party2[newenemy].species) #ILLUSION
-            end
+              if !pbIsOpposing?(index)
+                if isConst?(@party1[newenemy].ability,PBAbilities,:ILLUSION) #ILLUSION
+                  party3=@party1.find_all {|item| item && !item.egg? && item.hp>0 }
+                  if party3[@party1.length-1] != @party1[newenemy]
+                    illusionpoke = party3[party3.length-1]
+                  end
+                end #ILLUSION
+                newname = illusionpoke != nil ? illusionpoke.name : @party1[newenemy].name #ILLUSION
+              else
+                if isConst?(@party2[newenemy].ability,PBAbilities,:ILLUSION) #ILLUSION
+                  party3=@party2.find_all {|item| item && !item.egg? && item.hp>0 }
+                  if party3[@party2.length-1] != @party2[newenemy]
+                    illusionpoke = party3[party3.length-1]
+                  end
+                end #ILLUSION
+                newname = illusionpoke != nil ? illusionpoke.name : PBSpecies.getName(@party2[newenemy].species) #ILLUSION
+              end
 #### JERICHO - 001 - END
-          opponent=pbGetOwner(index)
-          if !@doublebattle && firstbattlerhp>0 && @shiftStyle && @opponent &&
-              @internalbattle && pbCanChooseNonActive?(0) && pbIsOpposing?(index) &&
-              @battlers[0].effects[PBEffects::Outrage]==0 
-#### JERICHO - 001 - START  
-              pbDisplayPaused(_INTL("{1} is about to send in {2}.",opponent.fullname,newname)) #ILLUSION              
-#### JERICHO - 001 - END                       
-            if pbDisplayConfirm(_INTL("Will {1} change Pokémon?",self.pbPlayer.name))
-              newpoke=pbSwitchPlayer(0,true,true)
-              if newpoke>=0
-                pbDisplayBrief(_INTL("{1}, that's enough!  Come back!",@battlers[0].name))
-                pbRecallAndReplace(0,newpoke)
-                switched.push(0)
+            opponent=pbGetOwner(index)
+            if !@doublebattle && firstbattlerhp>0 && @shiftStyle && @opponent &&
+                @internalbattle && pbCanChooseNonActive?(0) && pbIsOpposing?(index) &&
+                @battlers[0].effects[PBEffects::Outrage]==0
+#### JERICHO - 001 - START
+                pbDisplayPaused(_INTL("{1} is about to send in {2}.",opponent.fullname,newname)) #ILLUSION
+#### JERICHO - 001 - END
+              if pbDisplayConfirm(_INTL("Will {1} change Pokémon?",self.pbPlayer.name))
+                newpoke=pbSwitchPlayer(0,true,true)
+                if newpoke>=0
+                  pbDisplayBrief(_INTL("{1}, that's enough!  Come back!",@battlers[0].name))
+                  pbRecallAndReplace(0,newpoke)
+                  switched.push(0)
+                end
               end
             end
+            pbRecallAndReplace(index,newenemy)
+            switched.push(index)
           end
-          pbRecallAndReplace(index,newenemy)
-          switched.push(index)
         end
       elsif @opponent || isBossBattle?
         newpoke=pbSwitchInBetween(index,true,false)
-        pbRecallAndReplace(index,newpoke)
-        switched.push(index)
+        if newpoke >= 0
+          pbRecallAndReplace(index,newpoke)
+          switched.push(index)
+        end
       else
         switch=false
-        if !pbDisplayConfirm(_INTL("Use next Pokémon?")) 
+        if !pbDisplayConfirm(_INTL("Use next Pokémon?"))
           switch=(pbRun(index,true)<=0)
         else
           switch=true
         end
         if switch
           newpoke=pbSwitchInBetween(index,true,false)
-          pbRecallAndReplace(index,newpoke)
-          switched.push(index)
+          if newpoke >= 0
+            pbRecallAndReplace(index,newpoke)
+            switched.push(index)
+          end
         end
       end
     end
@@ -3215,7 +3221,7 @@ class PokeBattle_Battle
       @battlers[index].pbReduceHP((@battlers[index].totalhp/6).floor)
       if @battlers[index].isFainted?
         @battlers[index].pbFaint
-        return
+        # Don't return - we still need to send out the replacement Pokemon
       end
     end
     if @battlers[index].effects[PBEffects::Illusion]
@@ -4443,8 +4449,9 @@ end
       end
     end
     # Pre-paralyzed Pokemon in intense mode (Minerva's Ponyta-Galar)
+    owner = pbGetOwner(pkmn.index) if pbIsOpposing?(pkmn.index)
     if !onlyabilities && pbIsOpposing?(pkmn.index) &&
-       @opponent && @opponent.trainertype && isConst?(@opponent.trainertype,PBTrainers,:MINERVA) &&
+       owner && owner.trainertype && isConst?(owner.trainertype,PBTrainers,:MINERVA) &&
        $game_variables && $game_variables[:Difficulty_Mode] == 2
       if isConst?(pkmn.species,PBSpecies,:PONYTA) && pkmn.form == 1 && pkmn.status == 0
         pkmn.status = PBStatuses::PARALYSIS
@@ -4988,6 +4995,10 @@ def pbStartBattle(canlose=false)
             pbDisplayPaused(_INTL("{1} attacked!",wildpoke.name))
           end
         end
+        # Call boss entry effects after scene is initialized
+        if @battlers[1].isbossmon && @battlers[1].onEntryEffects
+          pbShieldEffects(@battlers[1],@battlers[1].onEntryEffects,true)
+        end
       elsif @party2.length==2
         if !@doublebattle
           raise _INTL("Only one wild Pokémon is allowed in single battles")
@@ -5001,6 +5012,13 @@ def pbStartBattle(canlose=false)
         @scene.pbStartBattle(self)
         pbDisplayPaused(_INTL("Wild {1} and\r\n{2} appeared!",
            @party2[0].name,@party2[1].name))
+        # Call boss entry effects after scene is initialized
+        if @battlers[1].isbossmon && @battlers[1].onEntryEffects
+          pbShieldEffects(@battlers[1],@battlers[1].onEntryEffects,true)
+        end
+        if @battlers[3].isbossmon && @battlers[3].onEntryEffects
+          pbShieldEffects(@battlers[3],@battlers[3].onEntryEffects,true)
+        end
       else
         raise _INTL("Only one or two wild Pokémon are allowed")
       end
@@ -5394,6 +5412,10 @@ def pbStartBattle(canlose=false)
 
   def pbCommandPhase
     @scene.pbBeginCommandPhase
+    # Clear AI move score cache to avoid stale data between turns
+    @aiMoveScoreCache = {}
+    # Clear AI priority damage cache (stores pre-calculated priority damage for each attacker)
+    @aiPriorityCache = {}
 #### SARDINES - v17 - START
 #    @scene.pbResetCommandIndices
 #### SARDINES - v17 - END
@@ -5874,11 +5896,30 @@ def pbStartBattle(canlose=false)
       end
     end     
     for i in priority
+      # Skip battlers that have already moved this round (e.g., due to Round chaining)
+      next if i.hasMovedThisRound?
       i.pbProcessTurn(@choices[i.index])
+      # Round chaining: If this battler used Round and partner selected Round but hasn't moved,
+      # make partner move immediately after (regardless of Speed)
       if i.effects[PBEffects::Round]
-        i.pbPartner.selectedMove = 297
+        partner = i.pbPartner
+        if partner && !partner.isFainted? && !partner.hasMovedThisRound? &&
+           pbChoseMoveFunctionCode?(partner.index, 0x83) # Partner selected Round
+          partner.pbProcessTurn(@choices[partner.index])
+          return if @decision>0
+        end
       end
-      
+      # Howl chaining: If this battler used Howl and partner selected Howl but hasn't moved,
+      # make partner move immediately after (regardless of Speed)
+      if i.lastMoveUsed == PBMoves::HOWL
+        partner = i.pbPartner
+        if partner && !partner.isFainted? && !partner.hasMovedThisRound? &&
+           pbChoseMove?(partner.index, :HOWL) # Partner selected Howl (not Attack Order which shares function code)
+          partner.pbProcessTurn(@choices[partner.index])
+          return if @decision>0
+        end
+      end
+
       if symbiosis
         for s in symbiosis
           next if s.isFainted?

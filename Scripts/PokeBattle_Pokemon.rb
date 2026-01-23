@@ -1011,7 +1011,7 @@ class PokeBattle_Pokemon
     end
     bonus = @mystic_gimmighoul_bonus || 0
     if bonus > 0 && mysticGimmighoul?
-      stats = stats.map { |stat| stat + bonus }
+      stats = stats.map { |stat| stat + (bonus * 2) }
     end
     diff=@totalhp-@hp
     @totalhp=stats[0]

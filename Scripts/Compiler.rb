@@ -2435,8 +2435,21 @@ def pbCompilePokemonData
   metrics[1].fillNils(dexdatas.length,0) # enemy Y
   metrics[2].fillNils(dexdatas.length,0) # altitude
   save_data(metrics,"Data/metrics.dat")
+  # Write regionals.dat in binary format expected by pbAllRegionalSpecies/pbGetRegionalNumber
+  # Format: numRegions (2 bytes), numDexDatas (2 bytes), then for each region,
+  # numDexDatas entries where each entry is the regional dex number for that national species
   File.open("Data/regionals.dat","wb"){|f|
-    Marshal.dump(regionals,f)
+    numRegions = regionals.length
+    numDexDatas = maxValue + 1  # Need entries for species 0..maxValue
+    f.fputw(numRegions)
+    f.fputw(numDexDatas)
+    for regionIndex in 0...numRegions
+      regionData = regionals[regionIndex] || []
+      for speciesIndex in 0...numDexDatas
+        regionalNum = regionData[speciesIndex] || 0
+        f.fputw(regionalNum)
+      end
+    end
   }
   File.open("Data/evolutions.dat","wb"){|f|
      mx=[maxValue,evolutions.length-1].max

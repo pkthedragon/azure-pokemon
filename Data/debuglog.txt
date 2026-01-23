@@ -6057,3 +6057,2076 @@ Battle Start!
 Wild Battle
 ==============================
 ***Round 1***
+==============================
+Battle Start!
+Wild Battle
+==============================
+***Round 1***
+==============================
+Battle Start!
+62 - Jiara
+==============================
+***Round 1***
+AI Pokemon Togetic is faster than  dog?.
+Metronome: initial score: 20
+Metronome: final score: 10
+ 
+Sweet Kiss: initial score: 20
+Sweet Kiss: final score: 0
+ 
+Life Dew: initial score: 30
+Life Dew: final score: 0
+ 
+Yawn: initial score: 20
+Yawn: final score: 28
+ 
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (0)
+Initial switchscore building: Healing (0)
+Initial switchscore building: fsteak (0)
+Initial switchscore building: Specific Switches (0)
+Initial switchscore building: Typing (0)
+Togetic: initial switchscore: 40
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+Togetic: initial noswitchscore: 66
+ 
+{
+ 
+}
+ 
+Togetic: highest move score: 28
+Togetic: final switching score: -26
+28 > -26, will not switch
+ 
+Beginning AI Item use check.
+ 
+Highest item score: -10000
+Highest move score: 28
+Item use turned off.
+[The foe Togetic: Metronome=10, Sweet Kiss=0, Life Dew=0, Yawn=28]
+[Prefer Yawn]
+[No Z-Move.]
+[The foe Togetic lost 46 HP, now has 0 HP]
+Scoring for Togetic switching to: Togetic
+Score: -10000000
+Not switching to self.
+Scoring for Togetic switching to: Jigglypuff
+Offensive: 9
+Defensive: 84
+Roles: 84
+Weather: 84
+Moves: 84
+Abilities: 84
+Items: 84
+Fields: 84
+Score: 84
+ 
+Scoring for Togetic switching to: Delcatty
+Offensive: 13
+Defensive: 163
+Roles: 163
+Weather: 163
+Moves: 163
+Abilities: 193
+Items: 193
+Fields: 193
+Score: 193
+ 
+***Round 2***
+AI Pokemon Delcatty is faster than  dog?.
+Feint Attack: initial score: 23
+Feint Attack: final score: 23
+ 
+Double Slap: initial score: 21
+Double Slap: final score: 21
+ 
+Sing: initial score: 25
+Sing: final score: 0
+ 
+Charm: initial score: 10
+Charm: final score: 10
+ 
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (0)
+Initial switchscore building: Healing (0)
+Initial switchscore building: fsteak (0)
+Initial switchscore building: Specific Switches (0)
+Initial switchscore building: Typing (0)
+Delcatty: initial switchscore: 0
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+Delcatty: initial noswitchscore: 66
+ 
+{
+ 
+}
+ 
+Delcatty: highest move score: 23
+Delcatty: final switching score: -66
+23 > -66, will not switch
+ 
+Beginning AI Item use check.
+ 
+Highest item score: -10000
+Highest move score: 23
+Item use turned off.
+[The foe Delcatty: Feint Attack=23, Double Slap=21, Sing=0, Charm=10]
+[Prefer Feint Attack]
+[No Z-Move.]
+[rats lost 22 HP, now has 33 HP]
+***Round 3***
+Player Pokemon rats is faster than Delcatty.
+Feint Attack: initial score: 33
+Feint Attack: final score: 33
+ 
+Double Slap: initial score: 33
+Double Slap: final score: 33
+ 
+Sing: initial score: 25
+Sing: final score: 30
+ 
+Charm: initial score: 10
+Charm: final score: 10
+ 
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (0)
+Initial switchscore building: Healing (0)
+Initial switchscore building: fsteak (0)
+Initial switchscore building: Specific Switches (0)
+Initial switchscore building: Typing (0)
+Delcatty: initial switchscore: 0
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+Delcatty: initial noswitchscore: 50
+ 
+{
+ 
+}
+ 
+Delcatty: highest move score: 33
+Delcatty: final switching score: -50
+33 > -50, will not switch
+ 
+Beginning AI Item use check.
+ 
+Highest item score: -10000
+Highest move score: 33
+Item use turned off.
+[The foe Delcatty: Feint Attack=33, Double Slap=33, Sing=30, Charm=10]
+[Prefer Double Slap]
+[No Z-Move.]
+[The foe Delcatty lost 56 HP, now has 0 HP]
+Scoring for Delcatty switching to: Togetic
+Score: -10000000
+ 
+Scoring for Delcatty switching to: Jigglypuff
+Offensive: 8
+Defensive: -291
+Roles: -291
+Weather: -291
+Moves: -291
+Abilities: -291
+Items: -291
+Fields: -291
+Score: -291
+ 
+Scoring for Delcatty switching to: Delcatty
+Score: -10000000
+Not switching to self.
+***Round 4***
+Player Pokemon rats is faster than Jigglypuff.
+Tough Love: initial score: 30
+Tough Love: final score: 45
+ 
+Disarming Voice: initial score: 24
+Disarming Voice: final score: 24
+ 
+Sing: initial score: 25
+Sing: final score: 30
+ 
+Double Slap: initial score: 33
+Double Slap: final score: 33
+ 
+Beginning AI Item use check.
+ 
+Highest item score: -10000
+Highest move score: 45
+Item use turned off.
+[The foe Jigglypuff: Tough Love=45, Disarming Voice=24, Sing=30, Double Slap=33]
+[Prefer Tough Love]
+[No Z-Move.]
+[The foe Jigglypuff lost 68 HP, now has 0 HP]
+==============================
+Battle Start!
+44 - Chandler
+==============================
+***Round 1***
+AI Pokemon Mightyena is faster than  dog?.
+Sand Attack: initial score: 5
+Sand Attack: final score: 5
+ 
+Bite: initial score: 31
+Bite: final score: 31
+ 
+Odor Sleuth: initial score: 5
+Odor Sleuth: final score: 5
+ 
+Roar: initial score: 20
+Roar: final score: 16
+ 
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (0)
+Initial switchscore building: Healing (0)
+Initial switchscore building: fsteak (0)
+Initial switchscore building: Specific Switches (0)
+Initial switchscore building: Typing (0)
+Mightyena: initial switchscore: 0
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+Mightyena: initial noswitchscore: 66
+ 
+{
+ 
+}
+ 
+Mightyena: highest move score: 31
+Mightyena: final switching score: -33
+31 > -33, will not switch
+ 
+Beginning AI Item use check.
+ 
+Highest item score: -10000
+Highest move score: 31
+Item use turned off.
+[The foe Mightyena: Sand Attack=5, Bite=31, Odor Sleuth=5, Roar=16]
+[Prefer Bite]
+[No Z-Move.]
+[ dog? lost 18 HP, now has 40 HP]
+[The foe Mightyena lost 11 HP, now has 42 HP]
+***Round 2***
+Player Pokemon  dog? is faster than Mightyena.
+Sand Attack: initial score: 5
+Sand Attack: final score: 5
+ 
+Bite: initial score: 45
+Bite: final score: 45
+ 
+Odor Sleuth: initial score: 5
+Odor Sleuth: final score: 5
+ 
+Roar: initial score: 20
+Roar: final score: 24
+ 
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (0)
+Initial switchscore building: Healing (0)
+Initial switchscore building: fsteak (0)
+Initial switchscore building: Specific Switches (0)
+Initial switchscore building: Typing (0)
+Mightyena: initial switchscore: 0
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+Mightyena: initial noswitchscore: 50
+ 
+{
+ 
+}
+ 
+Mightyena: highest move score: 45
+Mightyena: final switching score: -25
+45 > -25, will not switch
+ 
+Beginning AI Item use check.
+ 
+Highest item score: -10000
+Highest move score: 45
+Item use turned off.
+[The foe Mightyena: Sand Attack=5, Bite=45, Odor Sleuth=5, Roar=24]
+[Prefer Bite]
+[No Z-Move.]
+[The foe Mightyena lost 23 HP, now has 19 HP]
+[ dog? lost 18 HP, now has 22 HP]
+***Round 3***
+Player Pokemon  dog? is faster than Mightyena.
+Sand Attack: initial score: 5
+Sand Attack: final score: 1
+ 
+Bite: initial score: 110
+Bite: final score: 110
+ 
+Odor Sleuth: initial score: 5
+Odor Sleuth: final score: 1
+ 
+Roar: initial score: 20
+Roar: final score: 4
+ 
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (0)
+Initial switchscore building: Healing (0)
+Initial switchscore building: fsteak (0)
+Initial switchscore building: Specific Switches (0)
+Initial switchscore building: Typing (100)
+Mightyena: initial switchscore: 100
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+Mightyena: initial noswitchscore: 33
+ 
+{
+ 
+}
+ 
+Mightyena: highest move score: 110
+Mightyena: final switching score: 33
+110 > 33, will not switch
+ 
+Beginning AI Item use check.
+ 
+Highest item score: -10000
+Highest move score: 110
+Item use turned off.
+[The foe Mightyena: Sand Attack=1, Bite=110, Odor Sleuth=1, Roar=4]
+[Prefer Bite]
+[No Z-Move.]
+[The foe Mightyena lost 19 HP, now has 0 HP]
+Scoring for Mightyena switching to: Mightyena
+Score: -10000000
+Not switching to self.
+Scoring for Mightyena switching to: Rhyhorn
+Offensive: 41
+Defensive: 241
+Roles: 241
+Weather: 241
+Moves: 241
+Abilities: 241
+Items: 241
+Fields: 241
+Score: 241
+ 
+Scoring for Mightyena switching to: Staravia
+Offensive: 34
+Defensive: -165
+Roles: -165
+Weather: -165
+Moves: -165
+Abilities: -165
+Items: -165
+Fields: -165
+Score: -165
+ 
+Scoring for Mightyena switching to: Gligar
+Offensive: 30
+Defensive: 230
+Roles: 230
+Weather: 230
+Moves: 230
+Abilities: 230
+Items: 230
+Fields: 230
+Score: 230
+ 
+***Round 4***
+Player Pokemon  dog? is faster than Rhyhorn.
+Fury Attack: initial score: 13
+Fury Attack: final score: 13
+ 
+Scary Face: initial score: 15
+Scary Face: final score: 0
+ 
+Stomp: initial score: 86
+Stomp: final score: 86
+ 
+Stalagbite: initial score: 110
+Stalagbite: final score: 110
+ 
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (0)
+Initial switchscore building: Healing (0)
+Initial switchscore building: fsteak (0)
+Initial switchscore building: Specific Switches (0)
+Initial switchscore building: Typing (0)
+Rhyhorn: initial switchscore: -40
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+Rhyhorn: initial noswitchscore: 66
+ 
+{
+ 
+}
+ 
+Rhyhorn: highest move score: 110
+Rhyhorn: final switching score: -53
+110 > -53, will not switch
+ 
+Beginning AI Item use check.
+ 
+Highest item score: -10000
+Highest move score: 110
+Item use turned off.
+[The foe Rhyhorn: Fury Attack=13, Scary Face=0.0, Stomp=86, ]
+[No Z-Move.]
+[The foe Rhyhorn lost 12 HP, now has 44 HP]
+[ dog? lost 22 HP, now has 0 HP]
+***Round 5***
+Player Pokemon Mr. Krabs is faster than Rhyhorn.
+Fury Attack: initial score: 6
+Fury Attack: final score: 6
+ 
+Scary Face: initial score: 15
+Scary Face: final score: 15
+ 
+Stomp: initial score: 20
+Stomp: final score: 20
+ 
+Stalagbite: initial score: 28
+Stalagbite: final score: 28
+ 
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (0)
+Initial switchscore building: Healing (15)
+Initial switchscore building: fsteak (15)
+Initial switchscore building: Specific Switches (7)
+Initial switchscore building: Typing (7)
+Rhyhorn: initial switchscore: 47
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (-15)
+Initial noswitchscore building: Better Switching Options (-15)
+Initial noswitchscore building: Second Wind Situations (-15)
+Rhyhorn: initial noswitchscore: 35
+ 
+{
+ 
+}
+ 
+Rhyhorn: highest move score: 28
+Rhyhorn: final switching score: 6
+28 > 6, will not switch
+ 
+Beginning AI Item use check.
+ 
+Highest item score: -10000
+Highest move score: 28
+Item use turned off.
+[The foe Rhyhorn: Fury Attack=6, Scary Face=15, Stomp=20, ]
+[No Z-Move.]
+[The foe Rhyhorn lost 44 HP, now has 0 HP]
+Scoring for Rhyhorn switching to: Mightyena
+Score: -10000000
+ 
+Scoring for Rhyhorn switching to: Rhyhorn
+Score: -10000000
+Not switching to self.
+Scoring for Rhyhorn switching to: Staravia
+Offensive: 13
+Defensive: 13
+Roles: 13
+Weather: 13
+Moves: 13
+Abilities: 13
+Items: 13
+Fields: 13
+Score: 13
+ 
+Scoring for Rhyhorn switching to: Gligar
+Offensive: 10
+Defensive: 10
+Roles: 10
+Weather: 10
+Moves: 10
+Abilities: 10
+Items: 10
+Fields: 10
+Score: 10
+ 
+***Round 6***
+AI Pokemon Staravia is faster than Mr. Krabs.
+Quick Attack: initial score: 21
+Priority Check Begin
+AI Pokemon is faster.
+Expected damage taken: 57
+Priority Check End
+Vice Grip: final score: 21
+ 
+Wing Attack: initial score: 28
+Wing Attack: final score: 28
+ 
+Double Team: initial score: 15
+Double Team: final score: 0
+ 
+Endeavor: initial score: 2
+Endeavor: final score: 0
+ 
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (0)
+Initial switchscore building: Healing (0)
+Initial switchscore building: fsteak (0)
+Initial switchscore building: Specific Switches (0)
+Initial switchscore building: Typing (0)
+Staravia: initial switchscore: 0
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+Staravia: initial noswitchscore: 66
+ 
+{
+ 
+}
+ 
+Staravia: highest move score: 28
+Staravia: final switching score: -33
+28 > -33, will not switch
+ 
+Beginning AI Item use check.
+ 
+Highest item score: -10000
+Highest move score: 28
+Item use turned off.
+[The foe Staravia: Quick Attack=21, Wing Attack=28, Double Team=0, Endeavor=0]
+[Prefer Wing Attack]
+[No Z-Move.]
+[Mr. Krabs lost 13 HP, now has 33 HP]
+[The foe Staravia lost 19 HP, now has 31 HP]
+***Round 7***
+AI Pokemon Staravia is faster than Mr. Krabs.
+Quick Attack: initial score: 30
+Priority Check Begin
+AI Pokemon is faster.
+Expected damage taken: 57
+Priority Check End
+Vice Grip: final score: 30
+ 
+Wing Attack: initial score: 39
+Wing Attack: final score: 39
+ 
+Double Team: initial score: 15
+Double Team: final score: 0
+ 
+Endeavor: initial score: 3
+Endeavor: final score: 4
+ 
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (0)
+Initial switchscore building: Healing (0)
+Initial switchscore building: fsteak (0)
+Initial switchscore building: Specific Switches (0)
+Initial switchscore building: Typing (0)
+Staravia: initial switchscore: 0
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+Staravia: initial noswitchscore: 50
+ 
+{
+ 
+}
+ 
+Staravia: highest move score: 39
+Staravia: final switching score: -25
+39 > -25, will not switch
+ 
+Beginning AI Item use check.
+ 
+Highest item score: -10000
+Highest move score: 39
+Item use turned off.
+[The foe Staravia: Quick Attack=30, Wing Attack=39, Double Team=0, Endeavor=4]
+[Prefer Wing Attack]
+[No Z-Move.]
+[Mr. Krabs lost 13 HP, now has 20 HP]
+[The foe Staravia lost 31 HP, now has 0 HP]
+Scoring for Staravia switching to: Mightyena
+Score: -10000000
+ 
+Scoring for Staravia switching to: Rhyhorn
+Score: -10000000
+ 
+Scoring for Staravia switching to: Staravia
+Score: -10000000
+Not switching to self.
+Scoring for Staravia switching to: Gligar
+Offensive: 10
+Defensive: 10
+Roles: 10
+Weather: 10
+Moves: 10
+Abilities: 10
+Items: 10
+Fields: 10
+Score: 10
+ 
+***Round 8***
+AI Pokemon Gligar is faster than Mr. Krabs.
+Harden: initial score: 10
+[Not preferring status move]
+Harden: final score: 0
+ 
+Mud-Slap: initial score: 50
+[Preferring damaging move]
+Mud-Slap: final score: 55
+ 
+Quick Attack: initial score: 30
+Priority Check Begin
+AI Pokemon is faster.
+Expected damage taken: 64
+Priority Check End
+[Preferring damaging move]
+Vice Grip: final score: 33
+ 
+Fury Cutter: initial score: 30
+[Preferring damaging move]
+Fury Cutter: final score: 42
+ 
+Beginning AI Item use check.
+ 
+Highest item score: -10000
+Highest move score: 55
+Item use turned off.
+[The foe Gligar: Harden=0, Mud-Slap=55, Quick Attack=33, Fury Cutter=42]
+[Prefer Mud-Slap]
+[No Z-Move.]
+[Mr. Krabs lost 10 HP, now has 10 HP]
+[The foe Gligar lost 32 HP, now has 22 HP]
+***Round 9***
+AI Pokemon Gligar is faster than Mr. Krabs.
+Harden: initial score: 10
+[Not preferring status move]
+Harden: final score: 0
+ 
+Mud-Slap: initial score: 100
+[Preferring damaging move]
+Mud-Slap: final score: 104
+ 
+Quick Attack: initial score: 60
+Priority Check Begin
+AI Pokemon is faster.
+Expected damage taken: 64
+Priority Check End
+[Preferring damaging move]
+Vice Grip: final score: 66
+ 
+Fury Cutter: initial score: 60
+[Preferring damaging move]
+Fury Cutter: final score: 66
+ 
+Beginning AI Item use check.
+ 
+Highest item score: -10000
+Highest move score: 104
+Item use turned off.
+[The foe Gligar: Harden=0, Mud-Slap=104, Quick Attack=66, Fury Cutter=66]
+[Prefer Mud-Slap]
+[No Z-Move.]
+[Mr. Krabs lost 10 HP, now has 0 HP]
+***Round 10***
+Player Pokemon  dog. is faster than Gligar.
+Harden: initial score: 10
+[Not preferring status move]
+Harden: final score: 0
+ 
+Mud-Slap: initial score: 8
+Mud-Slap: final score: 8
+ 
+Quick Attack: initial score: 8
+Priority Check Begin
+Player Pokemon is faster.
+Expected damage taken: 13
+Priority Check End
+[Not preferring status move]
+Tickle: final score: 1
+ 
+Fury Cutter: initial score: 18
+Fury Cutter: final score: 18
+ 
+Beginning AI Item use check.
+ 
+Highest item score: -10000
+Highest move score: 18
+Item use turned off.
+[The foe Gligar: Harden=0, Mud-Slap=8, Quick Attack=1, Fury Cutter=18]
+[Prefer Fury Cutter]
+[No Z-Move.]
+[The foe Gligar lost 13 HP, now has 9 HP]
+[The foe Gligar lost 7 HP, now has 2 HP]
+[ dog. lost 11 HP, now has 50 HP]
+[The foe Gligar gained 2 HP, now has 4 HP]
+***Round 11***
+Player Pokemon  dog. is faster than Gligar.
+Harden: initial score: 10
+[Not preferring status move]
+Harden: final score: 0
+ 
+Mud-Slap: initial score: 10
+Mud-Slap: final score: 10
+ 
+Quick Attack: initial score: 10
+Priority Check Begin
+Player Pokemon is faster.
+Expected damage taken: 13
+Priority Check End
+[Not preferring status move]
+Tickle: final score: 36
+ 
+Fury Cutter: initial score: 22
+Fury Cutter: final score: 15
+ 
+Beginning AI Item use check.
+ 
+Highest item score: -10000
+Highest move score: 36
+Item use turned off.
+[The foe Gligar: Harden=0, Mud-Slap=10, Quick Attack=36, Fury Cutter=15]
+[Prefer Quick Attack]
+[No Z-Move.]
+[The foe Gligar lost 4 HP, now has 0 HP]
+==============================
+Battle Start!
+135 - Kaius
+==============================
+***Round 1***
+AI Pokemon Pikachu is faster than  dog?.
+Play Nice: initial score: 10
+Play Nice: final score: 10
+ 
+Quick Attack: initial score: 12
+Priority Check Begin
+AI Pokemon is faster.
+Expected damage taken: 19
+Priority Check End
+Flame Charge: final score: 10
+ 
+Electro Ball: initial score: 10
+Electro Ball: final score: 10
+ 
+Thunder Wave: initial score: 30
+Thunder Wave: final score: 0
+ 
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (0)
+Initial switchscore building: Healing (0)
+Initial switchscore building: fsteak (0)
+Initial switchscore building: Specific Switches (0)
+Initial switchscore building: Typing (0)
+Pikachu: initial switchscore: -40
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+Pikachu: initial noswitchscore: 66
+ 
+{
+ 
+}
+ 
+Pikachu: highest move score: 10
+Pikachu: final switching score: -106
+10 > -106, will not switch
+ 
+Beginning AI Item use check.
+ 
+Highest item score: -10000
+Highest move score: 10
+Item use turned off.
+[The foe Pikachu: Play Nice=10, Quick Attack=10, Electro Ball=10, Thunder Wave=0]
+[Prefer Quick Attack]
+[No Z-Move.]
+[ dog? lost 7 HP, now has 51 HP]
+[The foe Pikachu lost 16 HP, now has 27 HP]
+***Round 2***
+AI Pokemon Pikachu is faster than  dog?.
+Play Nice: initial score: 10
+Play Nice: final score: 10
+ 
+Quick Attack: initial score: 13
+Priority Check Begin
+AI Pokemon is faster.
+Expected damage taken: 19
+Priority Check End
+Flame Charge: final score: 9
+ 
+Electro Ball: initial score: 11
+Electro Ball: final score: 11
+ 
+Thunder Wave: initial score: 30
+Thunder Wave: final score: 0
+ 
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (0)
+Initial switchscore building: Healing (0)
+Initial switchscore building: fsteak (0)
+Initial switchscore building: Specific Switches (0)
+Initial switchscore building: Typing (0)
+Pikachu: initial switchscore: -40
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+Pikachu: initial noswitchscore: 50
+ 
+{
+ 
+}
+ 
+Pikachu: highest move score: 11
+Pikachu: final switching score: -90
+11 > -90, will not switch
+ 
+Beginning AI Item use check.
+ 
+Highest item score: -10000
+Highest move score: 11
+Item use turned off.
+[The foe Pikachu: Play Nice=10, Quick Attack=9, Electro Ball=11, Thunder Wave=0]
+[Prefer Electro Ball]
+[No Z-Move.]
+[ dog? lost 6 HP, now has 45 HP]
+[The foe Pikachu lost 16 HP, now has 11 HP]
+***Round 3***
+Player Pokemon  dog? is faster than Pikachu.
+Play Nice: initial score: 10
+Play Nice: final score: 10
+ 
+Quick Attack: initial score: 15
+Priority Check Begin
+Player Pokemon is faster.
+Expected damage taken: 19
+Priority Check End
+Flame Charge: final score: 165
+ 
+Electro Ball: initial score: 11
+Electro Ball: final score: 11
+ 
+Thunder Wave: initial score: 30
+Thunder Wave: final score: 0
+ 
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (-100)
+Initial switchscore building: Healing (-100)
+Initial switchscore building: fsteak (-100)
+Initial switchscore building: Specific Switches (-100)
+Initial switchscore building: Typing (-40)
+Pikachu: initial switchscore: -80
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+Pikachu: initial noswitchscore: 33
+ 
+{
+ 
+}
+ 
+Pikachu: highest move score: 165
+Pikachu: final switching score: -113
+165 > -113, will not switch
+ 
+Beginning AI Item use check.
+ 
+Highest item score: -10000
+Highest move score: 165
+Item use turned off.
+[The foe Pikachu: Play Nice=10, Quick Attack=165, Electro Ball=10, Thunder Wave=0]
+[Prefer Quick Attack]
+[No Z-Move.]
+[ dog? lost 7 HP, now has 38 HP]
+[The foe Pikachu lost 11 HP, now has 0 HP]
+Scoring for Pikachu switching to: Pikachu
+Score: -10000000
+Not switching to self.
+Scoring for Pikachu switching to: Togedemaru
+Offensive: 9
+Defensive: 159
+Roles: 159
+Weather: 159
+Moves: 159
+Abilities: 159
+Items: 159
+Fields: 159
+Score: 159
+ 
+Scoring for Pikachu switching to: Dedenne
+Offensive: 7
+Defensive: 207
+Roles: 207
+Weather: 207
+Moves: 227
+Abilities: 227
+Items: 227
+Fields: 227
+Score: 227
+ 
+Scoring for Pikachu switching to: Morpeko
+Offensive: 8
+Defensive: 208
+Roles: 208
+Weather: 208
+Moves: 208
+Abilities: 208
+Items: 208
+Fields: 208
+Score: 208
+ 
+***Round 4***
+Player Pokemon  dog? is faster than Dedenne.
+Thunder Shock: initial score: 15
+Thunder Shock: final score: 15
+ 
+Charge: initial score: 15
+Charge: final score: 5
+ 
+Charm: initial score: 10
+Charm: final score: 10
+ 
+Parabolic Charge: initial score: 26
+Parabolic Charge: final score: 26
+ 
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (0)
+Initial switchscore building: Healing (0)
+Initial switchscore building: fsteak (0)
+Initial switchscore building: Specific Switches (0)
+Initial switchscore building: Typing (0)
+Dedenne: initial switchscore: -40
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+Dedenne: initial noswitchscore: 66
+ 
+{
+ 
+}
+ 
+Dedenne: highest move score: 26
+Dedenne: final switching score: -106
+26 > -106, will not switch
+ 
+Beginning AI Item use check.
+ 
+Highest item score: -10000
+Highest move score: 26
+Item use turned off.
+[The foe Dedenne: Thunder Shock=15, Charge=5, Charm=10, Parabolic Charge=26]
+[Prefer Parabolic Charge]
+[No Z-Move.]
+[The foe Dedenne lost 12 HP, now has 43 HP]
+[ dog? lost 10 HP, now has 28 HP]
+[The foe Dedenne gained 5 HP, now has 48 HP]
+***Round 5***
+Player Pokemon  dog? is faster than Dedenne.
+Thunder Shock: initial score: 21
+Thunder Shock: final score: 21
+ 
+Charge: initial score: 15
+Charge: final score: 5
+ 
+Charm: initial score: 10
+Charm: final score: 10
+ 
+Parabolic Charge: initial score: 35
+Parabolic Charge: final score: 38
+ 
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (0)
+Initial switchscore building: Healing (0)
+Initial switchscore building: fsteak (0)
+Initial switchscore building: Specific Switches (0)
+Initial switchscore building: Typing (0)
+Dedenne: initial switchscore: -40
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+Dedenne: initial noswitchscore: 50
+ 
+{
+ 
+}
+ 
+Dedenne: highest move score: 38
+Dedenne: final switching score: -90
+38 > -90, will not switch
+ 
+Beginning AI Item use check.
+ 
+Highest item score: -10000
+Highest move score: 38
+Item use turned off.
+[The foe Dedenne: Thunder Shock=21, Charge=5, Charm=10, Parabolic Charge=38]
+[Prefer Parabolic Charge]
+[No Z-Move.]
+[ dog. lost 13 HP, now has 48 HP]
+[The foe Dedenne gained 7 HP, now has 55 HP]
+***Round 6***
+AI Pokemon Dedenne is faster than  dog..
+Thunder Shock: initial score: 18
+Thunder Shock: final score: 18
+ 
+Charge: initial score: 15
+Charge: final score: 4
+ 
+Charm: initial score: 10
+Charm: final score: 0
+ 
+Parabolic Charge: initial score: 27
+Parabolic Charge: final score: 27
+ 
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (0)
+Initial switchscore building: Healing (0)
+Initial switchscore building: fsteak (0)
+Initial switchscore building: Specific Switches (0)
+Initial switchscore building: Typing (0)
+Dedenne: initial switchscore: 0
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+Dedenne: initial noswitchscore: 33
+ 
+{
+ 
+}
+ 
+Dedenne: highest move score: 27
+Dedenne: final switching score: -33
+27 > -33, will not switch
+ 
+Beginning AI Item use check.
+ 
+Highest item score: -10000
+Highest move score: 27
+Item use turned off.
+[The foe Dedenne: Thunder Shock=18, Charge=4, Charm=0, Parabolic Charge=27]
+[Prefer Parabolic Charge]
+[No Z-Move.]
+[ dog. lost 13 HP, now has 35 HP]
+[The foe Dedenne lost 22 HP, now has 33 HP]
+[The foe Dedenne lost 6 HP, now has 27 HP]
+***Round 7***
+AI Pokemon Dedenne is faster than  dog..
+Thunder Shock: initial score: 25
+Thunder Shock: final score: 25
+ 
+Charge: initial score: 15
+Charge: final score: 1
+ 
+Charm: initial score: 10
+Charm: final score: 0
+ 
+Parabolic Charge: initial score: 37
+Parabolic Charge: final score: 41
+ 
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (60)
+Initial switchscore building: Healing (60)
+Initial switchscore building: fsteak (60)
+Initial switchscore building: Specific Switches (60)
+Initial switchscore building: Typing (60)
+Dedenne: initial switchscore: 60
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+Dedenne: initial noswitchscore: 16
+ 
+{
+ 
+}
+ 
+Dedenne: highest move score: 41
+Dedenne: final switching score: 43
+41 < 43, will switch
+ 
+Scoring for Dedenne switching to: Pikachu
+Score: -10000000
+ 
+Scoring for Dedenne switching to: Togedemaru
+Offensive: 7
+Defensive: 82
+Roles: 82
+Weather: 82
+Moves: 82
+Abilities: 82
+Items: 82
+Fields: 82
+Score: 82
+ 
+Scoring for Dedenne switching to: Dedenne
+Offensive: 13
+Defensive: -237
+Roles: -237
+Weather: -237
+Moves: -237
+Abilities: -237
+Items: -237
+Fields: -237
+Score: -237
+ 
+Scoring for Dedenne switching to: Morpeko
+Offensive: 6
+Defensive: 31
+Roles: 31
+Weather: 31
+Moves: 31
+Abilities: 31
+Items: 31
+Fields: 31
+Score: 31
+ 
+Switching to Togedemaru
+Beginning AI Item use check.
+ 
+Highest item score: -10000
+Highest move score: 41
+Item use turned off.
+[The foe Dedenne: Thunder Shock=25, Charge=1, Charm=0, Parabolic Charge=41]
+[Prefer Parabolic Charge]
+[No Z-Move.]
+[The foe Dedenne lost 9 HP, now has 18 HP]
+[ dog. lost 13 HP, now has 22 HP]
+[The foe Dedenne gained 7 HP, now has 25 HP]
+[The foe Dedenne lost 19 HP, now has 6 HP]
+[The foe Dedenne lost 6 HP, now has 0 HP]
+Scoring for Dedenne switching to: Pikachu
+Score: -10000000
+ 
+Scoring for Dedenne switching to: Togedemaru
+Offensive: 7
+Defensive: 207
+Roles: 207
+Weather: 207
+Moves: 207
+Abilities: 207
+Items: 207
+Fields: 207
+Score: 207
+ 
+Scoring for Dedenne switching to: Dedenne
+Score: -10000000
+Not switching to self.
+Scoring for Dedenne switching to: Morpeko
+Offensive: 6
+Defensive: 156
+Roles: 156
+Weather: 156
+Moves: 156
+Abilities: 156
+Items: 156
+Fields: 156
+Score: 156
+ 
+***Round 8***
+AI Pokemon Togedemaru is faster than  dog..
+Defense Curl: initial score: 10
+Defense Curl: final score: 3
+ 
+Rollout: initial score: 22
+Rollout: final score: 24
+ 
+Charge: initial score: 15
+Charge: final score: 6
+ 
+Spark: initial score: 31
+Spark: final score: 31
+ 
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (0)
+Initial switchscore building: Healing (0)
+Initial switchscore building: fsteak (0)
+Initial switchscore building: Specific Switches (0)
+Initial switchscore building: Typing (0)
+Togedemaru: initial switchscore: -40
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+Togedemaru: initial noswitchscore: 66
+ 
+{
+ 
+}
+ 
+Togedemaru: highest move score: 31
+Togedemaru: final switching score: -106
+31 > -106, will not switch
+ 
+Beginning AI Item use check.
+ 
+Highest item score: -10000
+Highest move score: 31
+Item use turned off.
+[The foe Togedemaru: Defense Curl=3, Rollout=24, Charge=6, Spark=31]
+[Prefer Spark]
+[No Z-Move.]
+[yap yap yap lost 10 HP, now has 56 HP]
+[yap yap yap lost 4 HP, now has 52 HP]
+***Round 9***
+AI Pokemon Togedemaru is faster than yap yap yap.
+Defense Curl: initial score: 10
+Defense Curl: final score: 4
+ 
+Rollout: initial score: 5
+Rollout: final score: 3
+ 
+Charge: initial score: 15
+Charge: final score: 6
+ 
+Spark: initial score: 19
+Spark: final score: 19
+ 
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (0)
+Initial switchscore building: Healing (0)
+Initial switchscore building: fsteak (0)
+Initial switchscore building: Specific Switches (0)
+Initial switchscore building: Typing (0)
+Togedemaru: initial switchscore: 0
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+Togedemaru: initial noswitchscore: 50
+ 
+{
+ 
+}
+ 
+Togedemaru: highest move score: 19
+Togedemaru: final switching score: -50
+19 > -50, will not switch
+ 
+Beginning AI Item use check.
+ 
+Highest item score: -10000
+Highest move score: 19
+Item use turned off.
+[The foe Togedemaru: Defense Curl=4, Rollout=3, Charge=6, Spark=19]
+[Prefer Spark]
+[No Z-Move.]
+[yap yap yap lost 10 HP, now has 42 HP]
+[The foe Togedemaru lost 54 HP, now has 0 HP]
+[yap yap yap lost 4 HP, now has 38 HP]
+Scoring for Togedemaru switching to: Pikachu
+Score: -10000000
+ 
+Scoring for Togedemaru switching to: Togedemaru
+Score: -10000000
+Not switching to self.
+Scoring for Togedemaru switching to: Dedenne
+Score: -10000000
+ 
+Scoring for Togedemaru switching to: Morpeko
+Offensive: 8
+Defensive: 8
+Roles: 8
+Weather: 8
+Moves: 8
+Abilities: 8
+Items: 8
+Fields: 8
+Score: 8
+ 
+***Round 10***
+AI Pokemon Morpeko is faster than yap yap yap.
+Tail Whip: initial score: 10
+Tail Whip: final score: 10
+ 
+Leer: initial score: 10
+Leer: final score: 10
+ 
+Power Trip: initial score: 7
+Power Trip: final score: 7
+ 
+Quick Attack: initial score: 21
+Priority Check Begin
+AI Pokemon is faster.
+Expected damage taken: 60
+Priority Check End
+Rock Throw: final score: 21
+ 
+Beginning AI Item use check.
+ 
+Highest item score: -10000
+Highest move score: 21
+Item use turned off.
+[The foe Morpeko: Tail Whip=10, Leer=10, Power Trip=7, Quick Attack=21]
+[Prefer Quick Attack]
+[No Z-Move.]
+[yap yap yap lost 8 HP, now has 30 HP]
+[The foe Morpeko lost 51 HP, now has 0 HP]
+==============================
+Battle Start!
+205 - Alex
+206 - Harper
+==============================
+***Round 1***
+Player Pokemon Meowstic is faster than Shieldon.
+Player Pokemon Meowstic is faster than Shieldon.
+Power Gem: initial score: 25
+Power Gem: final score: 25
+ 
+Power Gem: initial score: 25
+Power Gem: final score: 25
+ 
+Prankster Disrupt
+Mirror Shot: initial score: 20
+Mirror Shot: final score: 20
+ 
+Mirror Shot: initial score: 20
+Mirror Shot: final score: 17
+ 
+Metal Sound: initial score: 10
+Metal Sound: final score: 10
+ 
+Metal Sound: initial score: 10
+Metal Sound: final score: 5
+ 
+Swagger: initial score: 20
+Swagger: final score: 30
+ 
+Swagger: initial score: 20
+Swagger: final score: 30
+ 
+Prankster Disrupt
+Swagger: initial score: 20
+Swagger: final score: 10
+ 
+Swagger: Score for using on partner: 10
+
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (0)
+Initial switchscore building: Healing (0)
+Initial switchscore building: fsteak (0)
+Initial switchscore building: Specific Switches (0)
+Initial switchscore building: worthsaving not activated
+Initial switchscore building: Typing (0)
+Shieldon: initial switchscore: -40
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+Shieldon: initial noswitchscore: 116
+ 
+{
+ 
+}
+ 
+Shieldon: highest move score: 31
+Shieldon: final switching score: -156
+31 > -156, will not switch
+ 
+Beginning AI Item use check.
+ 
+Highest item score: -10000
+Highest move score: 31
+Item use turned off.
+[The ally Shieldon: Power Gem=26, Mirror Shot=5, Metal Sound=5, Swagger=31]
+[Prefer Swagger]
+[No Z-Move.]
+AI Pokemon Meowstic is faster than  dog?.
+AI Pokemon Meowstic is faster than Shieldon.
+ 
+ 
+ 
+ 
+Psybeam: initial score: 44
+Psybeam: final score: 45
+ 
+Psybeam: initial score: 23
+Psybeam: final score: 23
+ 
+Thunderbolt: initial score: 22
+Thunderbolt: final score: 22
+ 
+Thunderbolt: initial score: 48
+Thunderbolt: final score: 49
+ 
+Swagger: initial score: 20
+Swagger: final score: 14
+ 
+Swagger: initial score: 20
+Swagger: final score: 30
+ 
+Swagger: Final Score after Status-Target Adjustment: 14
+Swagger: Final Score after Status-Target Adjustment: 30
+
+Light Screen: initial score: 35
+Light Screen: final score: 92
+ 
+Light Screen: initial score: 35
+Light Screen: final score: 120
+ 
+Light Screen: Final Score after Status-Target Adjustment: 92
+Light Screen: Final Score after Status-Target Adjustment: 120
+
+Swagger: initial score: 20
+Swagger: final score: 13
+ 
+Swagger: Score for using on partner: 13
+
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (0)
+Initial switchscore building: Healing (0)
+Initial switchscore building: fsteak (0)
+Initial switchscore building: Specific Switches (0)
+Initial switchscore building: worthsaving not activated
+Initial switchscore building: Typing (0)
+Meowstic: initial switchscore: 0
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+Meowstic: initial noswitchscore: 116
+ 
+{
+ 
+}
+ 
+Meowstic: highest move score: 120
+Meowstic: final switching score: -116
+120 > -116, will not switch
+ 
+Beginning AI Item use check.
+ 
+Highest item score: -10000
+Highest move score: 120
+Item use turned off.
+[The foe Meowstic: Psybeam=5, Thunderbolt=5, Swagger=5, Light Screen=120]
+[Prefer Light Screen]
+[No Z-Move.]
+AI Pokemon Meowstic is faster than Shieldon.
+AI Pokemon Meowstic is faster than  dog?.
+Psybeam: initial score: 23
+Psybeam: final score: 23
+ 
+Psybeam: initial score: 44
+Psybeam: final score: 45
+ 
+Energy Ball: initial score: 48
+Energy Ball: final score: 48
+ 
+Energy Ball: initial score: 47
+Energy Ball: final score: 47
+ 
+Charm: initial score: 10
+Priority Check End
+Charm: final score: 0
+ 
+Charm: initial score: 10
+Priority Check End
+Charm: final score: 0
+ 
+Charm: Final Score after Status-Target Adjustment: 0
+Charm: Final Score after Status-Target Adjustment: 0
+
+Reflect: initial score: 35
+Priority Check End
+Reflect: final score: 0
+ 
+Reflect: initial score: 35
+Priority Check End
+Reflect: final score: 0
+ 
+Reflect: Final Score after Status-Target Adjustment: 0
+Reflect: Final Score after Status-Target Adjustment: 0
+
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (0)
+Initial switchscore building: Healing (0)
+Initial switchscore building: fsteak (0)
+Initial switchscore building: Specific Switches (0)
+Initial switchscore building: worthsaving not activated
+Initial switchscore building: Typing (0)
+Meowstic: initial switchscore: 0
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+Meowstic: initial noswitchscore: 116
+ 
+{
+ 
+}
+ 
+Meowstic: highest move score: 48
+Meowstic: final switching score: -116
+48 > -116, will not switch
+ 
+Beginning AI Item use check.
+ 
+Highest item score: -10000
+Highest move score: 48
+Item use turned off.
+[The foe Meowstic: Psybeam=45, Energy Ball=48, Charm=1, Reflect=0]
+[Prefer Energy Ball]
+[No Z-Move.]
+[The ally Shieldon lost 23 HP, now has 24 HP]
+[The foe Meowstic lost 23 HP, now has 41 HP]
+[The ally Shieldon gained 2 HP, now has 26 HP]
+***Round 2***
+Player Pokemon Meowstic is faster than Shieldon.
+Player Pokemon Meowstic is faster than Shieldon.
+Power Gem: initial score: 17
+Power Gem: final score: 17
+ 
+Power Gem: initial score: 26
+Power Gem: final score: 26
+ 
+Mirror Shot: initial score: 14
+Mirror Shot: final score: 14
+ 
+Mirror Shot: initial score: 21
+Mirror Shot: final score: 17
+ 
+Metal Sound: initial score: 10
+Metal Sound: final score: 10
+ 
+Metal Sound: initial score: 10
+Metal Sound: final score: 5
+ 
+Swagger: initial score: 20
+Swagger: final score: 0
+ 
+Swagger: initial score: 20
+Swagger: final score: 30
+ 
+Swagger: initial score: 20
+Swagger: final score: 10
+ 
+Swagger: Score for using on partner: 10
+
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (0)
+Initial switchscore building: Healing (0)
+Initial switchscore building: fsteak (0)
+Initial switchscore building: Specific Switches (0)
+Initial switchscore building: worthsaving not activated
+Initial switchscore building: Typing (0)
+Shieldon: initial switchscore: -40
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+Shieldon: initial noswitchscore: 100
+ 
+{
+ 
+}
+ 
+Shieldon: highest move score: 30
+Shieldon: final switching score: -140
+30 > -140, will not switch
+ 
+Beginning AI Item use check.
+ 
+Highest item score: -10000
+Highest move score: 30
+Item use turned off.
+[The ally Shieldon: Power Gem=26, Mirror Shot=5, Metal Sound=5, Swagger=30]
+[Prefer Swagger]
+[No Z-Move.]
+AI Pokemon Meowstic is faster than  dog?.
+AI Pokemon Meowstic is faster than Shieldon.
+ 
+ 
+ 
+ 
+Psybeam: initial score: 44
+Psybeam: final score: 45
+ 
+Psybeam: initial score: 42
+Psybeam: final score: 42
+ 
+Thunderbolt: initial score: 22
+Thunderbolt: final score: 22
+ 
+Thunderbolt: initial score: 88
+Thunderbolt: final score: 88
+ 
+Swagger: initial score: 20
+Swagger: final score: 14
+ 
+Swagger: initial score: 20
+Swagger: final score: 30
+ 
+Swagger: Final Score after Status-Target Adjustment: 14
+Swagger: Final Score after Status-Target Adjustment: 30
+
+Light Screen: initial score: 35
+Light Screen: final score: 0
+ 
+Light Screen: initial score: 35
+Light Screen: final score: 0
+ 
+Light Screen: Final Score after Status-Target Adjustment: 0
+Light Screen: Final Score after Status-Target Adjustment: 0
+
+Swagger: initial score: 20
+Swagger: final score: 39
+ 
+Swagger: Score for using on partner: 39
+
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (0)
+Initial switchscore building: Healing (0)
+Initial switchscore building: fsteak (0)
+Initial switchscore building: Specific Switches (0)
+Initial switchscore building: worthsaving not activated
+Initial switchscore building: Typing (0)
+Meowstic: initial switchscore: 0
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+Meowstic: initial noswitchscore: 100
+ 
+{
+ 
+}
+ 
+Meowstic: highest move score: 88
+Meowstic: final switching score: -100
+88 > -100, will not switch
+ 
+Beginning AI Item use check.
+ 
+Highest item score: -10000
+Highest move score: 88
+Item use turned off.
+[The foe Meowstic: Psybeam=5, Thunderbolt=88, Swagger=5, Light Screen=0]
+[Prefer Thunderbolt]
+[No Z-Move.]
+AI Pokemon Meowstic is faster than Shieldon.
+AI Pokemon Meowstic is faster than  dog?.
+ 
+ 
+Psybeam: initial score: 42
+Psybeam: final score: 42
+ 
+Psybeam: initial score: 44
+Psybeam: final score: 45
+ 
+Energy Ball: initial score: 88
+Energy Ball: final score: 88
+ 
+Energy Ball: initial score: 47
+Energy Ball: final score: 47
+ 
+Charm: initial score: 10
+Priority Check End
+Charm: final score: 0
+ 
+Charm: initial score: 10
+Priority Check End
+Charm: final score: 0
+ 
+Charm: Final Score after Status-Target Adjustment: 0
+Charm: Final Score after Status-Target Adjustment: 0
+
+Reflect: initial score: 35
+Priority Check End
+Reflect: final score: 0
+ 
+Reflect: initial score: 35
+Priority Check End
+Reflect: final score: 0
+ 
+Reflect: Final Score after Status-Target Adjustment: 0
+Reflect: Final Score after Status-Target Adjustment: 0
+
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (60)
+Initial switchscore building: Healing (60)
+Initial switchscore building: fsteak (60)
+Initial switchscore building: Specific Switches (60)
+Initial switchscore building: worthsaving not activated
+Initial switchscore building: Typing (60)
+Meowstic: initial switchscore: 60
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+Meowstic: initial noswitchscore: 100
+ 
+{
+ 
+}
+ 
+Meowstic: highest move score: 88
+Meowstic: final switching score: -40
+88 > -40, will not switch
+ 
+Beginning AI Item use check.
+ 
+Highest item score: -10000
+Highest move score: 88
+Item use turned off.
+[The foe Meowstic: Psybeam=5, Energy Ball=88, Charm=1, Reflect=0]
+[Prefer Energy Ball]
+[No Z-Move.]
+[The foe Meowstic lost 9 HP, now has 55 HP]
+[The ally Shieldon lost 21 HP, now has 5 HP]
+[The ally Shieldon lost 5 HP, now has 0 HP]
+[The foe Meowstic lost 23 HP, now has 18 HP]
+Scoring for Shieldon switching to: Yamper
+Score: -10000000
+ 
+Scoring for Shieldon switching to: Spidops
+Score: -10000000
+ 
+Scoring for Shieldon switching to: Krabby
+Score: -10000000
+ 
+Scoring for Shieldon switching to: Raticate
+Score: -10000000
+ 
+Scoring for Shieldon switching to: Tangela
+Score: -10000000
+ 
+Scoring for Shieldon switching to: Marshtomp
+Score: -10000000
+ 
+Scoring for Shieldon switching to: Shieldon
+Score: -10000000
+Not switching to self.
+Scoring for Shieldon switching to: Haunter
+Offensive: 54
+Defensive: 54
+Roles: 54
+Weather: 54
+Moves: 94
+Abilities: 94
+Items: 94
+Fields: 94
+Score: 94
+ 
+Scoring for Shieldon switching to: Porygon2
+Offensive: 16
+Defensive: 16
+Roles: 16
+Weather: 16
+Moves: 16
+Abilities: 16
+Items: 16
+Fields: 16
+Score: 16
+ 
+Scoring for Shieldon switching to: Solosis
+Offensive: 35
+Defensive: -264
+Roles: -264
+Weather: -264
+Moves: -264
+Abilities: -234
+Items: -234
+Fields: -234
+Score: -234
+ 
+***Round 3***
+Player Pokemon Meowstic is faster than Haunter.
+Player Pokemon Meowstic is faster than Haunter.
+Hex: initial score: 65
+Hex: final score: 65
+ 
+Hex: initial score: 110
+Hex: final score: 110
+ 
+Clear Smog: initial score: 27
+Clear Smog: final score: 29
+ 
+Clear Smog: initial score: 83
+Clear Smog: final score: 87
+ 
+Sucker Punch: initial score: 36
+Priority Check Begin
+Player Pokemon is faster.
+Expected damage taken: 69
+Expected damage taken from partner: 132
+Priority Check End
+Reflect: final score: 173
+ 
+Sucker Punch: initial score: 110
+Priority Check Begin
+Player Pokemon is faster.
+Expected damage taken: 132
+Expected damage taken from partner: 69
+Priority Check End
+Light Screen: final score: 115
+ 
+Hypnosis: initial score: 25
+Hypnosis: final score: 14
+ 
+Hypnosis: initial score: 25
+Hypnosis: final score: 6
+ 
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (0)
+Initial switchscore building: Healing (0)
+Initial switchscore building: fsteak (0)
+Initial switchscore building: Specific Switches (0)
+Initial switchscore building: worthsaving not activated
+Initial switchscore building: Typing (0)
+Haunter: initial switchscore: 40
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+Haunter: initial noswitchscore: 116
+ 
+{
+ 
+}
+ 
+Haunter: highest move score: 173
+Haunter: final switching score: -76
+173 > -76, will not switch
+ 
+Beginning AI Item use check.
+ 
+Highest item score: -10000
+Highest move score: 173
+Item use turned off.
+[The ally Haunter: Hex=5, Clear Smog=5, Sucker Punch=173, Hypnosis=5]
+[Prefer Sucker Punch]
+[No Z-Move.]
+AI Pokemon Meowstic is faster than  dog?.
+AI Pokemon Meowstic is faster than Haunter.
+ 
+ 
+ 
+ 
+Psybeam: initial score: 85
+Psybeam: final score: 88
+ 
+Psybeam: initial score: 110
+Psybeam: final score: 110
+ 
+Thunderbolt: initial score: 45
+Thunderbolt: final score: 45
+ 
+Thunderbolt: initial score: 110
+Thunderbolt: final score: 110
+ 
+Swagger: initial score: 20
+Swagger: final score: 14
+ 
+Swagger: initial score: 20
+Swagger: final score: 6
+ 
+Swagger: Final Score after Status-Target Adjustment: 14
+Swagger: Final Score after Status-Target Adjustment: 6
+
+Light Screen: initial score: 35
+Light Screen: final score: 0
+ 
+Light Screen: initial score: 35
+Light Screen: final score: 0
+ 
+Light Screen: Final Score after Status-Target Adjustment: 0
+Light Screen: Final Score after Status-Target Adjustment: 0
+
+Swagger: initial score: 20
+Swagger: final score: 39
+ 
+Swagger: Score for using on partner: 39
+
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (-100)
+Initial switchscore building: Healing (-85)
+Initial switchscore building: fsteak (-85)
+Initial switchscore building: Specific Switches (-85)
+Initial switchscore building: worthsaving not activated
+Initial switchscore building: Typing (-85)
+Meowstic: initial switchscore: -75
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (15)
+Initial noswitchscore building: Better Switching Options (15)
+Initial noswitchscore building: Second Wind Situations (15)
+Meowstic: initial noswitchscore: 98
+ 
+{
+ 
+}
+ 
+Meowstic: highest move score: 110
+Meowstic: final switching score: -173
+110 > -173, will not switch
+ 
+Beginning AI Item use check.
+ 
+Highest item score: -10000
+Highest move score: 110
+Item use turned off.
+[The foe Meowstic: Psybeam=110, Thunderbolt=110, Swagger=5, Light Screen=0]
+[Prefer Psybeam]
+[No Z-Move.]
+AI Pokemon Meowstic is faster than Haunter.
+AI Pokemon Meowstic is faster than  dog?.
+ 
+ 
+Psybeam: initial score: 110
+Psybeam: final score: 110
+ 
+Psybeam: initial score: 44
+Psybeam: final score: 45
+ 
+Energy Ball: initial score: 32
+Energy Ball: final score: 32
+ 
+Energy Ball: initial score: 47
+Energy Ball: final score: 47
+ 
+Charm: initial score: 10
+Priority Check End
+Charm: final score: 0
+ 
+Charm: initial score: 10
+Priority Check End
+Charm: final score: 0
+ 
+Charm: Final Score after Status-Target Adjustment: 0
+Charm: Final Score after Status-Target Adjustment: 0
+
+Levitate Disrupt
+Reflect: initial score: 35
+Priority Check End
+Reflect: final score: 0
+ 
+Reflect: initial score: 35
+Priority Check End
+Reflect: final score: 0
+ 
+Reflect: Final Score after Status-Target Adjustment: 0
+Reflect: Final Score after Status-Target Adjustment: 0
+
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (60)
+Initial switchscore building: Healing (60)
+Initial switchscore building: fsteak (60)
+Initial switchscore building: Specific Switches (60)
+Initial switchscore building: worthsaving not activated
+Initial switchscore building: Typing (60)
+Meowstic: initial switchscore: 70
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+Meowstic: initial noswitchscore: 83
+ 
+{
+ 
+}
+ 
+Meowstic: highest move score: 110
+Meowstic: final switching score: -13
+110 > -13, will not switch
+ 
+Beginning AI Item use check.
+ 
+Highest item score: -10000
+Highest move score: 110
+Item use turned off.
+[The foe Meowstic: Psybeam=110, Energy Ball=5, Charm=1, Reflect=0]
+[Prefer Psybeam]
+[No Z-Move.]
+[The foe Meowstic lost 20 HP, now has 35 HP]
+[The ally Haunter lost 55 HP, now has 0 HP]
+[The foe Meowstic lost 9 HP, now has 26 HP]
+[ dog? lost 27 HP, now has 34 HP]
+[ dog? lost 12 HP, now has 22 HP]
+[The foe Meowstic lost 18 HP, now has 0 HP]
+Scoring for Meowstic switching to: Meowstic
+Score: -10000000
+Not switching to self.
+Scoring for Meowstic switching to: Mr. Mime
+Offensive: 162
+Defensive: 312
+Roles: 372
+Weather: 372
+Moves: 417
+Abilities: 417
+Items: 417
+Fields: 417
+Score: 417
+ 
+Scoring for Meowstic switching to: Durant
+Offensive: 112
+Defensive: 262
+Roles: 322
+Weather: 322
+Moves: 322
+Abilities: 322
+Items: 322
+Fields: 322
+Score: 322
+ 
+Scoring for Meowstic switching to: Raticate
+Offensive: 181
+Defensive: 331
+Roles: 391
+Weather: 391
+Moves: 391
+Abilities: 391
+Items: 391
+Fields: 391
+Score: 117
+ 
+Scoring for Meowstic switching to: Meowstic
+Score: -10000000
+ 
+Scoring for Meowstic switching to: Sudowoodo
+Score: -10000000
+ 
+Scoring for Meowstic switching to: Heatmor
+Score: -10000000
+ 
+Scoring for Meowstic switching to: Linoone
+Score: -10000000
+ 
+**Exception: undefined method `trainertype' for [#<PokeBattle_Trainer:0x000002b988eab7a0 @name="Alex", @language=2, @trainertype=205, @id=47726246, @metaID=0, @outfit=0, @pokegear=false, @pokedex=false, @seen=[nil, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false], @owned=[nil, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false], @formseen=[nil, [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []]], @formlastseen=[nil, [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], []], @shadowcaught=[nil, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false], @badges=[false, false, false, false, false, false, false, false], @money=1500, @party=[], @lastSave="", @tutorlist=[], @saveNumber=0, @noOnlineBattle=false, @storedOnlineParty=[], @onlineMusic="Battle- Trainer.mp3">, #<PokeBattle_Trainer:0x000002b98901de80 @name="Harper", @language=2, @trainertype=206, @id=648881828, @metaID=0, @outfit=0, @pokegear=false, @pokedex=false, @seen=[nil, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false], @owned=[nil, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false], @formseen=[nil, [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []]], @formlastseen=[nil, [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], []], @shadowcaught=[nil, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false], @badges=[false, false, false, false, false, false, false, false], @money=1500, @party=[], @lastSave="", @tutorlist=[], @saveNumber=0, @noOnlineBattle=false, @storedOnlineParty=[], @onlineMusic="Battle- Trainer.mp3">]:Array
+["PokeBattle_Battle:4453:in `pbOnActiveOne'", "PokeBattle_Battle:3250:in `pbRecallAndReplace'", "PokeBattle_Battle:2780:in `block in pbSwitch'", "PokeBattle_Battle:2737:in `each'", "PokeBattle_Battle:2737:in `pbSwitch'", "PokeBattle_Battle:8732:in `pbEndOfRoundPhase'", "PokeBattle_Clauses:42:in `pbEndOfRoundPhase'", "PokeBattle_Battle:5381:in `block (2 levels) in pbStartBattleCore'", "PBDebug:4:in `logonerr'", "PokeBattle_Battle:5380:in `block in pbStartBattleCore'", "PokeBattle_Battle:5360:in `loop'", "PokeBattle_Battle:5360:in `pbStartBattleCore'", "PokeBattle_Battle:4953:in `pbStartBattle'", "PokemonTrainers:615:in `block (2 levels) in pbDoubleTrainerBattle'", "PokemonField:711:in `pbSceneStandby'", "PokemonTrainers:614:in `block in pbDoubleTrainerBattle'", "PokemonField:1013:in `pbBattleAnimation'", "PokemonTrainers:613:in `pbDoubleTrainerBattle'", "(eval):1:in `pbExecuteScript'", "Interpreter:243:in `eval'", "Interpreter:243:in `pbExecuteScript'", "Interpreter:799:in `command_111'", "Interpreter:320:in `execute_command'", "Interpreter:193:in `block in update'", "Interpreter:106:in `loop'", "Interpreter:106:in `update'", "Autosave:30:in `block in update'", "Autosave:28:in `loop'", "Autosave:28:in `update'", "Scene_Map:72:in `block in main'", "Scene_Map:69:in `loop'", "Scene_Map:69:in `main'", "Main:79:in `mainFunctionDebug'", "Main:53:in `block in mainFunction'", "Compiler:38:in `pbCriticalCode'", "Main:53:in `mainFunction'", "Main:89:in `block (2 levels) in <main>'", "Main:88:in `loop'", "Main:88:in `block in <main>'", "Section000:336:in `eval'", "Section000:336:in `block in <main>'", "Section000:333:in `each'", "Section000:333:in `each_with_index'", "Section000:333:in `<main>'", "-e:in `eval'"]
+***Round 4***

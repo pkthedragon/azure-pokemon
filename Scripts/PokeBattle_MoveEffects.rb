@@ -449,7 +449,7 @@ class PokeBattle_Move_006 < PokeBattle_Move
     user_is_poison = attacker.pbHasType?(:POISON)
     if user_is_poison
       # Poison-type user badly poisons the target
-      if !opponent.pbCanPoison?(attacker,false,self) || opponent.status==PBStatuses::POISON
+      if !opponent.pbCanPoison?(false) || opponent.status==PBStatuses::POISON
         @battle.pbDisplay(_INTL("But it failed!"))
         return -1
       end
@@ -4371,23 +4371,21 @@ end
 ################################################################################
 # Power is doubled if the user's ally has already used this move this round.
 # This move goes immediately after the ally, ignoring priority.
+# Round inflicts damage. If another Pokémon uses Round before the user this turn,
+# the user will use Round directly after it (regardless of Speed); all but the
+# first Round within a turn will double in power to 120.
 ################################################################################
 class PokeBattle_Move_083 < PokeBattle_Move
 ##### KUROTSUNE - 010 - START
-  def pbBaseDamage(basedmg,attacker,opponent)    
-    if attacker.pbPartner.hasMovedThisRound? &&
-       attacker.pbPartner.effects[PBEffects::Round]
-       return basedmg*2
-    elsif !attacker.pbPartner.hasMovedThisRound?
-      # Partner hasn't moved yet,
-      # so we flag the user with the
-      # Round effect
-      attacker.effects[PBEffects::Round] = true
-      return basedmg
-    else
-      # Return base damage with no alterations
-      return basedmg
+  def pbBaseDamage(basedmg,attacker,opponent)
+    # Always set Round effect so turn loop can trigger partner to move immediately
+    attacker.effects[PBEffects::Round] = true
+    # Check if partner already used Round this turn - if so, double power
+    partner = attacker.pbPartner
+    if partner && partner.hasMovedThisRound? && partner.effects[PBEffects::Round]
+      return basedmg*2  # 60 * 2 = 120
     end
+    return basedmg
   end
 ##### KUROTSUNE - 010 - END
 end
@@ -4728,9 +4726,17 @@ class PokeBattle_Move_094 < PokeBattle_Move
     side.effects[PBEffects::Presents] += 1
     stacks = side.effects[PBEffects::Presents]
     if stacks==1
-      @battle.pbDisplay(_INTL("Presents were scattered around {1}'s side!",attacker.pbTeam))
+      if @battle.pbIsOpposing?(attacker.index)
+        @battle.pbDisplay(_INTL("Presents were scattered on the opposing team's side!"))
+      else
+        @battle.pbDisplay(_INTL("Presents were scattered on your team's side!"))
+      end
     else
-      @battle.pbDisplay(_INTL("More presents were scattered around {1}'s side!",attacker.pbTeam,stacks))
+      if @battle.pbIsOpposing?(attacker.index)
+        @battle.pbDisplay(_INTL("More presents were scattered on the opposing team's side!"))
+      else
+        @battle.pbDisplay(_INTL("More presents were scattered on your team's side!"))
+      end
     end
     return 0
   end
@@ -7345,26 +7351,27 @@ end
 
 
 ################################################################################
-# User must use this move for 4 more rounds.  Power doubles each round.
+# User must use this move for 3 more rounds.  Power doubles each round.
 # Power is also doubled if user has curled up.
 ################################################################################
 class PokeBattle_Move_0D3 < PokeBattle_Move
   def pbBaseDamage(basedmg,attacker,opponent)
-    shift=(4-attacker.effects[PBEffects::Rollout]) # from 0 through 4, 0 is most powerful
+    shift=(3-attacker.effects[PBEffects::Rollout]) # from 0 through 3, 0 is most powerful
     shift+=1 if attacker.effects[PBEffects::DefenseCurl]
     basedmg=basedmg<<shift
     return basedmg
   end
 
   def pbEffect(attacker,opponent,hitnum=0,alltargets=nil,showanimation=true)
-    attacker.effects[PBEffects::Rollout]=5 if attacker.effects[PBEffects::Rollout]==0
+    attacker.effects[PBEffects::Rollout]=4 if attacker.effects[PBEffects::Rollout]==0
     attacker.effects[PBEffects::Rollout]-=1
     attacker.currentMove=thismove.id
     ret=super(attacker,opponent,hitnum,alltargets,showanimation)
     if opponent.damagestate.calcdamage==0 ||
-       pbTypeModifier(@type,attacker,opponent)==0 || 
-       attacker.status==PBStatuses::SLEEP  #TODO: Not likely what actually happens, but good enough
-      # Cancel effect if attack is ineffective
+       pbTypeModifier(@type,attacker,opponent)==0 ||
+       attacker.status==PBStatuses::SLEEP || #TODO: Not likely what actually happens, but good enough
+       attacker.grazed
+      # Cancel effect if attack is ineffective or grazed
       attacker.effects[PBEffects::Rollout]=0
     end
     return ret
@@ -13805,7 +13812,7 @@ end
 class PokeBattle_Move_293 < PokeBattle_Move
   def pbEffect(attacker,opponent,hitnum=0,alltargets=nil,showanimation=true)
     if opponent.effects[PBEffects::Forebode][0]
-      @battle.pbDisplay(_INTL("But it failed!"))      
+      @battle.pbDisplay(_INTL("But it failed!"))
       return -1
     end
     pbShowAnimation(PBMoves::LEER,attacker,opponent,hitnum,alltargets,showanimation)
@@ -14198,7 +14205,7 @@ class PokeBattle_Move_27E < PokeBattle_Move
     typemod = pbTypeModifier(type,attacker,opponent)
 
     if typemod==0
-      if opponent.pbCanBurn?(attacker,false)
+      if opponent.pbCanBurn?(false)
         opponent.pbBurn(attacker)
         @battle.pbDisplay(_INTL("{1} was burned by the overload!",opponent.pbThis))
         return 0
@@ -14485,19 +14492,19 @@ class PokeBattle_Move_28E < PokeBattle_Move
     return false if !isConst?(attacker.species,PBSpecies,:SAWSBUCK)
     case attacker.form
     when 0   # Spring – paralyze
-      return false if !opponent.pbCanParalyze?(attacker,false)
+      return false if !opponent.pbCanParalyze?(false)
       opponent.pbParalyze(attacker)
       @battle.pbDisplay(_INTL("{1} was paralyzed!",opponent.pbThis))
     when 1   # Summer – burn
-      return false if !opponent.pbCanBurn?(attacker,false)
+      return false if !opponent.pbCanBurn?(false)
       opponent.pbBurn(attacker)
       @battle.pbDisplay(_INTL("{1} was burned!",opponent.pbThis))
     when 2   # Autumn – crush
-      return false if !opponent.pbCanCrush?(attacker,false)
+      return false if !opponent.pbCanCrush?(false)
       opponent.pbCrush(attacker)
       @battle.pbDisplay(_INTL("{1} was crushed!",opponent.pbThis))
     when 3   # Winter – freeze
-      return false if !opponent.pbCanFreeze?(attacker,false)
+      return false if !opponent.pbCanFreeze?(false)
       opponent.pbFreeze
       @battle.pbDisplay(_INTL("{1} was frozen!",opponent.pbThis))
     else
@@ -14727,7 +14734,7 @@ class PokeBattle_Move_223 < PokeBattle_Move
     r = @battle.pbRandom(3)
     case r
     when 0
-      return false if !opponent.pbCanPoison?(attacker,false)
+      return false if !opponent.pbCanPoison?(false)
       opponent.pbPoison(attacker)
       @battle.pbDisplay(_INTL("{1} was poisoned!",opponent.pbThis))
     when 1
@@ -14735,7 +14742,7 @@ class PokeBattle_Move_223 < PokeBattle_Move
       opponent.pbParalyze(attacker)
       @battle.pbDisplay(_INTL("{1} is paralyzed! It may be unable to move!",opponent.pbThis))
     when 2
-      return false if !opponent.pbCanBurn?(attacker,false)
+      return false if !opponent.pbCanBurn?(false)
       opponent.pbBurn(attacker)
       @battle.pbDisplay(_INTL("{1} was burned!",opponent.pbThis))
     end
@@ -14804,25 +14811,30 @@ end
 
 ################################################################################
 # Howl – behaves like Round. If allies have already used Howl this turn,
-# the boost increases. Example:
+# the boost is amplified 3x. Example:
 #  1st Howl = +1 Attack
-#  2nd Howl = +2 Attack
-#  3rd Howl = +3 Attack
+#  2nd Howl = +3 Attack (3x amplification)
+#  3rd Howl = +3 Attack (3x amplification)
+# Also triggers partner to move immediately after if they selected Howl.
 ################################################################################
 class PokeBattle_Move_29F < PokeBattle_Move
   def pbEffect(attacker,opponent,hitnum=0,alltargets=nil,showanimation=true)
     pbShowAnimation(@id, attacker, nil)
-    howl_count = 1
+    # Check if any ally has already used Howl this turn
+    ally_used_howl = false
     attacker_side = attacker.index % 2
     @battle.battlers.each do |b|
       next if !b || b.index == attacker.index
       next if b.index % 2 != attacker_side
+      next if !b.hasMovedThisRound?
       next if b.lastMoveUsed != PBMoves::HOWL
-      howl_count += 1
+      ally_used_howl = true
+      break
     end
-    boost = howl_count   # +1, +2, +3, etc.
+    # First Howl = +1, subsequent Howls = +3 (3x amplification)
+    boost = ally_used_howl ? 3 : 1
     attacker.pbIncreaseStat(PBStats::ATTACK, boost, false)
-    if howl_count >= 2
+    if ally_used_howl
       @battle.pbDisplay(_INTL("{1}'s pack howled together!", attacker.pbThis))
     end
 

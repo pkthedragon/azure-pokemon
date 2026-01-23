@@ -272,7 +272,7 @@
 314,AMBIDEXTROUS,Ambidextrous,"Non-STAB moves are boosted."
 315,ASSASSINATE,Assassinate,"This Pokémon deals more damage to Pokémon that haven't attacked it."
 316,HEADSTRONG,Headstrong,"All Pokémon ignore immunities."
-317,ERRATIC,Erratic,"Any contact has a 30% chance to confuse for three turns."
+317,ERRATIC,Erratic,"The user's contact moves confuse for three turns."
 318,ELDRITCH,Eldritch,"Blinds opponents on entry."
 319,STALKER,Stalker,"Raises speed if enemy is faster."
 320,LACERATE,Lacerate,"Normal-type moves become Steel-type moves."

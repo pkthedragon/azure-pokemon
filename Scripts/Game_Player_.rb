@@ -8,8 +8,8 @@
 class Game_Player < Game_Character
   attr_accessor :bump_se
 
-  # Map IDs where terrain tag 4 (Rock) displacement encounters are disabled
-  ROCK_DISPLACEMENT_DISABLED_MAPS = [1,19]
+  # Map IDs where terrain tag 4 (Rock) displacement encounters are enabled
+  ROCK_DISPLACEMENT_ENABLED_MAPS = [94, 142, 44, 18, 9, 55]
 
   def map
     @map=nil
@@ -457,8 +457,8 @@ class Game_Player < Game_Character
     end
     # Check for Rock terrain tag on facing tile (triggers displacement/headbutt)
     if !result && Kernel.pbFacingTerrainTag == PBTerrain::Rock
-      # Skip if this map has rock displacement disabled
-      if !ROCK_DISPLACEMENT_DISABLED_MAPS.include?($game_map.map_id)
+      # Only trigger if this map has rock displacement enabled
+      if ROCK_DISPLACEMENT_ENABLED_MAPS.include?($game_map.map_id)
         # Check if player has any displacement move
         movefinder = Kernel.pbDisplacementCheck
         if movefinder

@@ -53,6 +53,12 @@ class PokeBattle_Battle
     opponent=attacker.pbOppositeOpposing if !opponent
     opponent=opponent.pbPartner if opponent && opponent.isFainted?
     roles = pbGetMonRole(attacker,opponent,skill)
+    # Fake Out, First Impression, Mat Block, and Forebode only work on turn 1 - set score to 0 if turncount != 1
+    if ((move.id == PBMoves::FAKEOUT || move.id == getID(PBMoves,:FIRSTIMPRESSION) ||
+         move.id == PBMoves::MATBLOCK || move.id == getID(PBMoves,:FOREBODE)) && attacker.turncount != 1)
+      PBDebug.log(sprintf("Move only works on first turn, but turncount = %d. Score set to 0.",attacker.turncount)) if $INTERNAL && shutup==false
+      return 0
+    end
     if (move.priority>0) || prankpri || (!attacker.abilitynulled && (attacker.ability == PBAbilities::GALEWINGS && move_type==PBTypes::FLYING) && attacker.hp==attacker.totalhp) || (attacker.species == PBSpecies::FERALIGATR && attitemworks && attacker.item == PBItems::FERACREST && attacker.turncount==0) ||  (!attacker.abilitynulled && attacker.ability == PBAbilities::TRIAGE && move.isHealingMove?)
       if move.basedamage>0 && !move.zmove
         PBDebug.log(sprintf("Priority Check Begin")) if $INTERNAL && shutup==false
@@ -66,18 +72,22 @@ class PokeBattle_Battle
         else
           PBDebug.log(sprintf("Player Pokemon is faster.")) if $INTERNAL && shutup==false
         end
-        pridam = 0
-        pridam2=0
-        for i in attacker.moves
-          temp_type = i.pbType(i.type, attacker, opponent)
-          #if (attacker.pbSpeed<=pbRoughStat(opponent,PBStats::SPEED,skill)) ^ (@trickroom!=0)
+        # Use cached priority damage values if available, otherwise calculate them
+        priCache = @aiPriorityCache ? @aiPriorityCache[attacker.index] : nil
+        if priCache
+          pridam = priCache[:attacker_pridam]
+          pridam2 = priCache[:attacker_pridam2]
+        else
+          pridam = 0
+          pridam2=0
+          for i in attacker.moves
+            temp_type = i.pbType(i.type, attacker, opponent)
             if (i.priority>0 && !(i.id==(PBMoves::FAKEOUT) && attacker.turncount!=0)) ||
-              (!attacker.abilitynulled && attacker.ability == PBAbilities::GALEWINGS && temp_type==PBTypes::FLYING && attacker.hp==attacker.totalhp) || 
+              (!attacker.abilitynulled && attacker.ability == PBAbilities::GALEWINGS && temp_type==PBTypes::FLYING && attacker.hp==attacker.totalhp) ||
               ((attacker.species == PBSpecies::FERALIGATR) && attitemworks && attacker.item == PBItems::FERACREST && attacker.turncount==0) ||
               (!attacker.abilitynulled && attacker.ability == PBAbilities::TRIAGE && i.isHealingMove?) && i.basedamage>0
               temppridam = pbRoughDamage(i,attacker,opponent,skill,i.basedamage)
               temppridam2 = pbRoughDamage(i,attacker,opponent.pbPartner,skill,i.basedamage)
-              movepriority=i.priority
               if temppridam>pridam
                 pridam = temppridam
               end
@@ -85,19 +95,29 @@ class PokeBattle_Battle
                 pridam2 = temppridam2
               end
             end
-          #end
+          end
         end
         cheesing=false
         olddata = PBMove.new(opponent.lastMoveUsed)
         abusing=false
+        # Use cached setup move check if available
+        if priCache
+          opponentHasSetup = priCache[:opp_has_setup]
+        else
+          opponentHasSetup=false
+          for move in opponent.moves
+            if (PBStuff::SETUPMOVE).include?(move.id) || (PBStuff::DEFSETUPMOVE).include?(move.id)
+              opponentHasSetup=true
+              break
+            end
+          end
+        end
         if olddata!=-1
           oldmove = PokeBattle_Move.pbFromPBMove(self,olddata,opponent)
           #if oldmove.basepower==0
+          # Reliably detect setup moves - no randomness
           if (PBStuff::SETUPMOVE).include?(oldmove.id) || (PBStuff::DEFSETUPMOVE).include?(oldmove.id)
-            rndpredict=pbAIRandom(4)
-            if rndpredict>=2
-              abusing=true
-            end
+            abusing=true
           end
         end
         if !(attacker==@battlers[2])
@@ -176,23 +196,32 @@ class PokeBattle_Battle
           icansurvive=false
         end
         aegischeck=false
+        # Use cached Aegislash shield damage if available
         if (attacker.species == PBSpecies::AEGISLASH && attacker.form==1)
           aegischeck=true
-          originalform = attacker.form
-          shieldmon=pbAegislashStats(attacker) 
-          shieldmon.pbUpdate
-          for i in opponent.moves
-            tempdam = pbRoughDamage(i,opponent,shieldmon,skill,i.basedamage)
-            shielddam = tempdam if tempdam>shielddam
+          if priCache
+            shielddam = priCache[:shield_dam]
+          else
+            originalform = attacker.form
+            shieldmon=pbAegislashStats(attacker)
+            shieldmon.pbUpdate
+            for i in opponent.moves
+              tempdam = pbRoughDamage(i,opponent,shieldmon,skill,i.basedamage)
+              shielddam = tempdam if tempdam>shielddam
+            end
+            shieldmon.form = originalform
+            shieldmon.pbUpdate
           end
-          shieldmon.form = originalform
-          shieldmon.pbUpdate
         end
         movedamage=checkAIdamage(aimem,attacker,opponent,skill)
-        for i in opponent.moves
-          #if (attacker.pbSpeed<=pbRoughStat(opponent,PBStats::SPEED,skill)) ^ (@trickroom!=0)
+        # Use cached opponent priority damage if available
+        if priCache
+          ourpridam = priCache[:opp_pridam]
+          opppri = priCache[:opp_has_pri]
+        else
+          for i in opponent.moves
             if (i.priority>0 && !(i.id==(PBMoves::FAKEOUT) && opponent.turncount!=0)) ||
-              (!opponent.abilitynulled && opponent.ability == PBAbilities::GALEWINGS && i.type==PBTypes::FLYING && opponent.hp==opponent.totalhp) || 
+              (!opponent.abilitynulled && opponent.ability == PBAbilities::GALEWINGS && i.type==PBTypes::FLYING && opponent.hp==opponent.totalhp) ||
               ((opponent.species == PBSpecies::FERALIGATR) && oppitemworks && opponent.item == PBItems::FERACREST && opponent.turncount==0) ||
               (!opponent.abilitynulled && opponent.ability == PBAbilities::TRIAGE && i.isHealingMove?)
               temppridam = pbRoughDamage(i,opponent,attacker,skill,i.basedamage)
@@ -201,14 +230,18 @@ class PokeBattle_Battle
                 ourpridam = temppridam
               end
             end
-          #end
+          end
         end
+        # Use cached opponent partner priority damage if available
         if !$game_switches[1998]
           if @doublebattle && !opponent.pbPartner.isFainted?
-            for i in opponent.pbPartner.moves
-              #if (attacker.pbSpeed<=pbRoughStat(opponent,PBStats::SPEED,skill)) ^ (@trickroom!=0)
+            if priCache
+              ourpridam2 = priCache[:opp2_pridam]
+              partneropppri = priCache[:opp2_has_pri]
+            else
+              for i in opponent.pbPartner.moves
                 if (i.priority>0 && !(i.id==(PBMoves::FAKEOUT) && opponent.turncount!=0)) ||
-                  (!opponent.pbPartner.abilitynulled && opponent.ability == PBAbilities::GALEWINGS && i.type==PBTypes::FLYING && opponent.pbPartner.hp==opponent.pbPartner.totalhp) || 
+                  (!opponent.pbPartner.abilitynulled && opponent.ability == PBAbilities::GALEWINGS && i.type==PBTypes::FLYING && opponent.pbPartner.hp==opponent.pbPartner.totalhp) ||
                   ((opponent.pbPartner.species == PBSpecies::FERALIGATR) && opponent.pbPartner.item == PBItems::FERACREST && opponent.pbPartner.turncount==0) ||
                   (!opponent.pbPartner.abilitynulled && opponent.pbPartner.ability == PBAbilities::TRIAGE && i.isHealingMove?) && i.basedamage>0
                   temppridam = pbRoughDamage(i,opponent.pbPartner,attacker,skill,i.basedamage)
@@ -217,7 +250,7 @@ class PokeBattle_Battle
                     ourpridam2 = temppridam
                   end
                 end
-              #end
+              end
             end
           end
         end
@@ -260,17 +293,24 @@ class PokeBattle_Battle
                 score+=75
               end
             else
-              if !((opponent.moves.any? {|moveloop| (PBStuff::SETUPMOVE).include?(moveloop.id)}) && (pridam<opponent.hp/3))
-                score+=150 
-              elsif ((opponent.moves.any? {|moveloop| (PBStuff::SETUPMOVE).include?(moveloop.id)}) && !(pridam<opponent.hp/3))
-                score+=75
-              elsif (((opponent.moves.any? {|moveloop| (PBStuff::SETUPMOVE).include?(moveloop.id)}) && (pridam<opponent.hp/3)) || (opponent.moves.any? {|moveloop| (PBStuff::DEFSETUPMOVE).include?(moveloop.id)}) && (pridam<opponent.hp/3))
-                if abusing==false
-                  score+=50
+              # Check if opponent has setup moves - if so, don't use priority unless it deals significant damage
+              if opponentHasSetup
+                # If opponent has setup moves and priority damage is low, heavily penalize using priority
+                if pridam < opponent.hp/3
+                  # Don't boost priority - let AI accept death or switch instead
+                  score*=0.3
+                  PBDebug.log(sprintf("Opponent has setup moves and priority damage too low - not using priority")) if $INTERNAL
+                elsif pridam < opponent.hp/2
+                  # Moderate damage - small boost only
+                  score+=25
+                else
+                  # High damage - normal boost
+                  score+=75
                 end
               else
-                score+=75
-              end 
+                # No setup moves detected - use normal priority boost logic
+                score+=150
+              end
             end
           end
         end
@@ -7635,8 +7675,26 @@ class PokeBattle_Battle
         score*=1.5
       end
     when 0x83 # Round
-      if @doublebattle && attacker.pbPartner.pbHasMove?((PBMoves::ROUND))
-        score*=1.5
+      # Round chains with partner - if partner selected Round or will use Round,
+      # the second user gets doubled damage (60 -> 120) and moves immediately after
+      if @doublebattle
+        partner = attacker.pbPartner
+        if partner && !partner.isFainted? && partner.pbHasMove?(PBMoves::ROUND)
+          # Partner has Round - significant bonus
+          score*=1.5
+          # Even better if partner is faster (they use Round first, we get the boost)
+          partnerSpeed = pbRoughStat(partner,PBStats::SPEED,skill)
+          attackerSpeed = attacker.pbSpeed
+          if (partnerSpeed > attackerSpeed) ^ (@trickroom!=0)
+            score*=1.3  # Partner moves first, we get doubled damage
+          elsif (partnerSpeed < attackerSpeed) ^ (@trickroom!=0)
+            score*=1.1  # We move first, partner gets doubled damage
+          end
+          # If partner already used Round this turn, we definitely want to use it
+          if partner.hasMovedThisRound? && partner.effects[PBEffects::Round]
+            score*=1.5
+          end
+        end
       end
     when 0x84 # Payback
       if (pbRoughStat(opponent,PBStats::SPEED,skill)>attacker.pbSpeed) ^ (@trickroom!=0)
@@ -7847,6 +7905,59 @@ class PokeBattle_Battle
         score*=1.3
       end
       score*=1.5 if checkAIdamage(aimem,attacker,opponent,skill)<(attacker.hp/3.0)
+    when 0x247 # Cell Splitter
+      # Multi-hit move that gains +2 hits each consecutive turn (2, 4, 6, 8...)
+      if attacker.status==PBStatuses::PARALYSIS
+        score*=0.7
+      end
+      if attacker.effects[PBEffects::Confusion]>0
+        score*=0.7
+      end
+      if attacker.effects[PBEffects::Attract]>=0
+        score*=0.7
+      end
+      # Accuracy/evasion considerations for multi-hit
+      if attacker.stages[PBStats::ACCURACY]<0
+        ministat = attacker.stages[PBStats::ACCURACY]
+        minimini = 15 * ministat
+        minimini += 100
+        minimini /= 100.0
+        score*=minimini
+      end
+      miniscore = opponent.stages[PBStats::EVASION]
+      miniscore*=(-5)
+      miniscore+=100
+      miniscore/=100.0
+      score*=miniscore
+      # Boost score if already building up hits
+      if attacker.effects[PBEffects::CellSplitter]>0
+        score*=1.3
+        score*=1.2 if attacker.effects[PBEffects::CellSplitter]>=2
+        score*=1.2 if attacker.effects[PBEffects::CellSplitter]>=4
+      end
+      # More valuable if attacker is healthy and can sustain the chain
+      if attacker.hp==attacker.totalhp
+        score*=1.3
+      elsif attacker.hp>attacker.totalhp*0.7
+        score*=1.1
+      end
+      # Boost if opponent's damage is low (safe to build up)
+      score*=1.5 if checkAIdamage(aimem,attacker,opponent,skill)<(attacker.hp/3.0)
+      # Penalize if opponent has protect moves (could break the chain)
+      score*=0.8 if checkAImoves(PBStuff::PROTECTMOVE,aimem)
+      # Multi-hit benefits against Focus Sash/Sturdy
+      if opponent.hp==opponent.totalhp && (opponent.hasWorkingItem(:FOCUSSASH) || (!opponent.abilitynulled && opponent.ability == PBAbilities::STURDY))
+        score*=1.3
+      end
+      # Multi-hit benefits against Substitute
+      if opponent.effects[PBEffects::Substitute]>0
+        score*=1.3
+      end
+      # Penalize for contact damage abilities/items (multiple hits = multiple procs)
+      if opponent.hasWorkingItem(:ROCKYHELMET) || (!opponent.abilitynulled && opponent.ability == PBAbilities::IRONBARBS) || (!opponent.abilitynulled && opponent.ability == PBAbilities::ROUGHSKIN)
+        hits = 2 + attacker.effects[PBEffects::CellSplitter]
+        score*=(1.0 - 0.05*hits) # More hits = more recoil damage
+      end
     when 0x93 # Rage
       if attacker.attack>attacker.spatk
         score*=1.2
@@ -9373,6 +9484,10 @@ class PokeBattle_Battle
         if (opponent.lastMoveUsed<=0 || oldmove.pp==0)
           score*=0.2
         else
+          # Discourage Encore against moves that benefit from successive use
+          if [0x91, 0x92, 0xD3, 0x247].include?(oldmove.function) # Fury Cutter, Echoed Voice, Rollout, Cell Splitter
+            score*=0.3
+          end
           if (attacker.pbSpeed>pbRoughStat(opponent,PBStats::SPEED,skill)) ^ (@trickroom!=0)
             score*=1.5
           else
@@ -19951,6 +20066,35 @@ class PokeBattle_Battle
       if miniscore > 1
         score*=miniscore if !(!attacker.abilitynulled && attacker.ability == PBAbilities::SHEERFORCE) && !hasgreatmoves(initialscores,scoreindex,skill,true)
       end
+    when 0x29F # Howl (also Attack Order, but Howl is status move)
+      # Only apply this for Howl (status move), not Attack Order (damage move)
+      if move.basedamage == 0 && move.id == PBMoves::HOWL
+        # Howl chains with partner - if partner selected Howl or will use Howl,
+        # the second user gets 3x boost (+3 instead of +1) and moves immediately after
+        if @doublebattle
+          partner = attacker.pbPartner
+          if partner && !partner.isFainted? && partner.pbHasMove?(PBMoves::HOWL)
+            # Partner has Howl - significant bonus
+            score*=1.5
+            # Even better if partner is faster (they use Howl first, we get the 3x boost)
+            partnerSpeed = pbRoughStat(partner,PBStats::SPEED,skill)
+            attackerSpeed = attacker.pbSpeed
+            if (partnerSpeed > attackerSpeed) ^ (@trickroom!=0)
+              score*=1.4  # Partner moves first, we get +3 Attack
+            elsif (partnerSpeed < attackerSpeed) ^ (@trickroom!=0)
+              score*=1.2  # We move first, partner gets +3 Attack
+            end
+            # If partner already used Howl this turn, we definitely want to use it
+            if partner.hasMovedThisRound? && partner.lastMoveUsed == PBMoves::HOWL
+              score*=1.6
+            end
+          end
+        end
+        # Standard stat boost considerations
+        if attacker.pbTooHigh?(PBStats::ATTACK)
+          score*=0.1
+        end
+      end
     end
     ###### END FUNCTION CODES
     if (!opponent.abilitynulled && opponent.ability == PBAbilities::DANCER)
@@ -20790,6 +20934,10 @@ class PokeBattle_Battle
       basedamage=basedamage<<(attacker.effects[PBEffects::FuryCutter]-1)
     when 0x92 # Echoed Voice
       basedamage*=attacker.effects[PBEffects::EchoedVoice]
+    when 0x247 # Cell Splitter
+      # Hits = 2 + counter (counter increases by 2 each consecutive turn: 2, 4, 6, 8...)
+      hits = 2 + attacker.effects[PBEffects::CellSplitter]
+      basedamage*=hits
     when 0x94 # Present
       basedamage=50
     when 0x95 # Magnitude
@@ -28643,6 +28791,22 @@ class PokeBattle_Battle
         ioncheck = false
         powdercheck = false
         priokill = false
+        # Check if damage arrays are already cached for this battler to avoid redundant calculations
+        @aiMoveScoreCache = {} if !@aiMoveScoreCache
+        if @aiMoveScoreCache[index]
+          cachedData = @aiMoveScoreCache[index]
+          baseDamageArray = cachedData[0].clone
+          baseDamageArray2 = cachedData[1].clone
+          baseDamageArray3 = cachedData[2].clone
+          priokill = cachedData[3]
+          if doublestargetting
+            return [baseDamageArray, baseDamageArray2, baseDamageArray3, priokill]
+          end
+          # Skip to move score calculation since damage arrays are already cached
+          @useCachedDamageArrays = true
+        else
+          @useCachedDamageArrays = false
+        end
         if doublestargetting
           if skill>=PBTrainerAI.averageSkill
             for j in aimem
@@ -28661,6 +28825,105 @@ class PokeBattle_Battle
             end
           end
         end
+        # Pre-calculate priority damage values once per attacker to avoid redundant calculations in pbGetMoveScore
+        @aiPriorityCache = {} if !@aiPriorityCache
+        if !@aiPriorityCache[index]
+          priCache = {}
+          # Calculate attacker's max priority damage against both opponents (equivalent to lines 77-95 in pbGetMoveScore)
+          attacker_pridam = 0
+          attacker_pridam2 = 0
+          for i in attacker.moves
+            temp_type = i.pbType(i.type, attacker, opponent)
+            if (i.priority>0 && !(i.id==(PBMoves::FAKEOUT) && attacker.turncount!=0)) ||
+              (!attacker.abilitynulled && attacker.ability == PBAbilities::GALEWINGS && temp_type==PBTypes::FLYING && attacker.hp==attacker.totalhp) ||
+              ((attacker.species == PBSpecies::FERALIGATR) && attacker.itemWorks? && attacker.item == PBItems::FERACREST && attacker.turncount==0) ||
+              (!attacker.abilitynulled && attacker.ability == PBAbilities::TRIAGE && i.isHealingMove?) && i.basedamage>0
+              temppridam = pbRoughDamage(i,attacker,opponent,skill,i.basedamage)
+              temppridam2 = pbRoughDamage(i,attacker,otheropp,skill,i.basedamage)
+              attacker_pridam = temppridam if temppridam > attacker_pridam
+              attacker_pridam2 = temppridam2 if temppridam2 > attacker_pridam2
+            end
+          end
+          priCache[:attacker_pridam] = attacker_pridam
+          priCache[:attacker_pridam2] = attacker_pridam2
+
+          # Calculate opponent's max priority damage against attacker (equivalent to lines 204-217 in pbGetMoveScore)
+          opp_pridam = 0
+          opp_has_pri = false
+          for i in opponent.moves
+            if (i.priority>0 && !(i.id==(PBMoves::FAKEOUT) && opponent.turncount!=0)) ||
+              (!opponent.abilitynulled && opponent.ability == PBAbilities::GALEWINGS && i.type==PBTypes::FLYING && opponent.hp==opponent.totalhp) ||
+              ((opponent.species == PBSpecies::FERALIGATR) && opponent.itemWorks? && opponent.item == PBItems::FERACREST && opponent.turncount==0) ||
+              (!opponent.abilitynulled && opponent.ability == PBAbilities::TRIAGE && i.isHealingMove?)
+              temppridam = pbRoughDamage(i,opponent,attacker,skill,i.basedamage)
+              opp_has_pri = true
+              opp_pridam = temppridam if temppridam > opp_pridam
+            end
+          end
+          priCache[:opp_pridam] = opp_pridam
+          priCache[:opp_has_pri] = opp_has_pri
+
+          # Calculate opponent's partner's max priority damage against attacker (equivalent to lines 220-233 in pbGetMoveScore)
+          opp2_pridam = 0
+          opp2_has_pri = false
+          if @doublebattle && !otheropp.isFainted?
+            for i in otheropp.moves
+              if (i.priority>0 && !(i.id==(PBMoves::FAKEOUT) && otheropp.turncount!=0)) ||
+                (!otheropp.abilitynulled && otheropp.ability == PBAbilities::GALEWINGS && i.type==PBTypes::FLYING && otheropp.hp==otheropp.totalhp) ||
+                ((otheropp.species == PBSpecies::FERALIGATR) && otheropp.item == PBItems::FERACREST && otheropp.turncount==0) ||
+                (!otheropp.abilitynulled && otheropp.ability == PBAbilities::TRIAGE && i.isHealingMove?) && i.basedamage>0
+                temppridam = pbRoughDamage(i,otheropp,attacker,skill,i.basedamage)
+                opp2_has_pri = true
+                opp2_pridam = temppridam if temppridam > opp2_pridam
+              end
+            end
+          end
+          priCache[:opp2_pridam] = opp2_pridam
+          priCache[:opp2_has_pri] = opp2_has_pri
+
+          # Calculate Aegislash shield form damage (equivalent to lines 196-199 in pbGetMoveScore)
+          shield_dam = 0
+          shield_dam2 = 0
+          if (attacker.species == PBSpecies::AEGISLASH && attacker.form==1)
+            originalform = attacker.form
+            shieldmon = pbAegislashStats(attacker)
+            shieldmon.pbUpdate
+            for i in opponent.moves
+              tempdam = pbRoughDamage(i,opponent,shieldmon,skill,i.basedamage)
+              shield_dam = tempdam if tempdam > shield_dam
+            end
+            for i in otheropp.moves
+              tempdam = pbRoughDamage(i,otheropp,shieldmon,skill,i.basedamage)
+              shield_dam2 = tempdam if tempdam > shield_dam2
+            end
+            shieldmon.form = originalform
+            shieldmon.pbUpdate
+          end
+          priCache[:shield_dam] = shield_dam
+          priCache[:shield_dam2] = shield_dam2
+
+          # Check if opponent has setup moves (equivalent to lines 100-106 in pbGetMoveScore)
+          opp_has_setup = false
+          for move in opponent.moves
+            if (PBStuff::SETUPMOVE).include?(move.id) || (PBStuff::DEFSETUPMOVE).include?(move.id)
+              opp_has_setup = true
+              break
+            end
+          end
+          priCache[:opp_has_setup] = opp_has_setup
+
+          opp2_has_setup = false
+          for move in otheropp.moves
+            if (PBStuff::SETUPMOVE).include?(move.id) || (PBStuff::DEFSETUPMOVE).include?(move.id)
+              opp2_has_setup = true
+              break
+            end
+          end
+          priCache[:opp2_has_setup] = opp2_has_setup
+
+          @aiPriorityCache[index] = priCache
+        end
+        if !@useCachedDamageArrays
         for j in 0...attacker.moves.length
           next if attacker.isFainted?
           next if attacker.moves[j].id < 1
@@ -28771,13 +29034,23 @@ class PokeBattle_Battle
           end
           baseDamageArray3.push(dmgPercent3)
         end
-        if doublestargetting       
+        # Cache the damage arrays for this battler to avoid redundant calculations
+        @aiMoveScoreCache = {} if !@aiMoveScoreCache
+        @aiMoveScoreCache[index] = [baseDamageArray.clone, baseDamageArray2.clone, baseDamageArray3.clone, priokill]
+        end # end of if !@useCachedDamageArrays
+        if doublestargetting
           return [baseDamageArray,baseDamageArray2,baseDamageArray3,priokill]
         end
         maxdam1=checkAIdamage(aimem,attacker.pbPartner,otheropp,skill)
         maxdam2=checkAIdamage(aimem,attacker.pbPartner,opponent,skill)
         if !($game_switches[1998]) && !(attacker==@battlers[2])
-          damagevalues=pbBuildMoveScores(attacker.pbPartner.index,true,true)
+          # Use cached partner damage values if available to avoid redundant calculations
+          partnerIndex = attacker.pbPartner.index
+          if @aiMoveScoreCache && @aiMoveScoreCache[partnerIndex]
+            damagevalues = @aiMoveScoreCache[partnerIndex]
+          else
+            damagevalues = pbBuildMoveScores(partnerIndex,true,true)
+          end
           adjusted=nil
           priomove=false 
           partnercanattack=false # will our partner die before attacking
@@ -31757,13 +32030,15 @@ def pbShouldSwitch?(index,hardswitch=false)
           battler.type2=PBTypes::QMARKS
         end
         if battler.item == PBItems::MAGICALSEED && ($fefieldeffect==40)
-          battler.status=PBStatuses::BURN
+          # Use instance_variable_set to avoid modifying the real party Pokemon via the status= setter
+          battler.instance_variable_set(:@status, PBStatuses::BURN)
         end
         poisoned=false
         if currentmon.pbOwnSide.effects[PBEffects::ToxicSpikes] > 0 && battler.status==0
           if !battler.isAirborne? && !battler.hasWorkingAbility(:LIMBER) &&
              battler.pbCanPoisonSpikes? && !battler.hasWorkingItem(:HEAVYDUTYBOOTS)
-            battler.status=PBStatuses::POISON
+            # Use instance_variable_set to avoid modifying the real party Pokemon via the status= setter
+            battler.instance_variable_set(:@status, PBStatuses::POISON)
             poisoned=true
           end
         end
@@ -31919,7 +32194,8 @@ def pbShouldSwitch?(index,hardswitch=false)
         end
         if opponent1.moves.any? {|moveloop| (PBStuff::BURNMOVE).include?(moveloop.id)} && battler.pbCanBurn?(false) && !(battler.item == PBItems::MAGICALSEED && ($fefieldeffect==40))
           if battler.status==0 && !(battler.hasWorkingItem(:LUMBERRY) || battler.hasWorkingItem(:RAWSTBERRY)) && !(battler.ability == PBAbilities::MAGICGUARD)
-            battler.status=PBStatuses::BURN
+            # Use instance_variable_set to avoid modifying the real party Pokemon via the status= setter
+            battler.instance_variable_set(:@status, PBStatuses::BURN)
             burned=true
           end
         end
@@ -33069,7 +33345,8 @@ def pbSwitchTo(currentmon,party,skill,pivoting=false,hardswitch=false,incomingmo
     burned=false
     if battler.item == PBItems::MAGICALSEED && ($fefieldeffect==40)
       burned=true
-      battler.status=PBStatuses::BURN
+      # Use instance_variable_set to avoid modifying the real party Pokemon via the status= setter
+      battler.instance_variable_set(:@status, PBStatuses::BURN)
       if !(isConst?(battler.type1,PBTypes,:GHOST) || isConst?(battler.type2,PBTypes,:GHOST))
       battler.type2=PBTypes::GHOST
       end
@@ -33313,7 +33590,8 @@ def pbSwitchTo(currentmon,party,skill,pivoting=false,hardswitch=false,incomingmo
       if opponent1.moves.any? {|moveloop| (PBStuff::BURNMOVE).include?(moveloop.id)} && battler.pbCanBurn?(false)
         if (battler.attack>battler.spatk) && battler.status==0 && !(battler.hasWorkingItem(:LUMBERRY) || battler.hasWorkingItem(:RAWSTBERRY)) && !(battler.ability == PBAbilities::GUTS || battler.ability == PBAbilities::FLAREBOOST) && !(battler.pbHasMove?(PBMoves::FACADE)) && !(battler.pbHasMove?(PBMoves::REST))
           burned=true
-          battler.status=PBStatuses::BURN
+          # Use instance_variable_set to avoid modifying the real party Pokemon via the status= setter
+          battler.instance_variable_set(:@status, PBStatuses::BURN)
         end
       end
     end

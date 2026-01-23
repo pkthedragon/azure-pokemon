@@ -11,14 +11,14 @@ def gameCornerShop(index)
   # List of prizes in internal name
   prizes = [
     [],
-    [:SLUGMA,:MUNNA,:MARACTUS,:HELIOPTILE,0],
+    [:SLUGMA,:MUNNA,:HELIOPTILE,:SPINDA,0],
     [:HEALTHWING,:MUSCLEWING,:RESISTWING,:GENIUSWING,:CLEVERWING,:SWIFTWING,:HPUP,:PROTEIN,:IRON,:CALCIUM,:ZINC,:CARBOS,:EXPCANDYM,:GOURMETTREAT],
     [:ARON,:DURANT,:MIENFOO,:RUFFLET,:AXEW,0]
   ]
   # List of prices
   prices = [
     [],
-    [5,10,15,20,0],
+    [5,7,10,13,0],
     [1,1,1,1,1,1,3,3,3,3,3,3,5,5],
     [5000,13500,15000,20000,30000,0]
   ]  
@@ -169,10 +169,10 @@ def gameCornerShop(index)
               i.pbLearnMove(:STOCKPILE)
             elsif itemid == 517
               i.pbLearnMove(:HEALINGWISH)
-            elsif itemid == 556
-              i.pbLearnMove(:SPIKES)
             elsif itemid == 694
               i.pbLearnMove(:GLARE)
+            elsif itemid == 327
+              i.pbLearnMove(:ROLEPLAY)
     end
             Kernel.pbAddPokemon(i)
         else

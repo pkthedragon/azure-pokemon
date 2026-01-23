@@ -225,7 +225,7 @@ ItemHandlers::UseFromBag.copy(
 )
 
 ItemHandlers::UseFromBag.add(:GOLDENWINGS,proc{|item|
-  next 0 if !pbCheckHiddenMoveBadge(BADGEFORFLY,true)
+  next 0 if !pbCheckHiddenMoveSwitch(SWITCHFORFLY,true)
   next 0 if !$PokemonBag.pbHasItem?(:HM02)
   if inPast?
     Kernel.pbMessage(_INTL("You are unable to travel in the past!"))
@@ -3549,7 +3549,7 @@ ItemHandlers::UseInField.add(:EXPALLOFF,proc{|item|
 })
 
 ItemHandlers::UseInField.add(:GOLDENWINGS,proc{|item|
-  next 0 if !pbCheckHiddenMoveBadge(BADGEFORFLY,true)
+  next 0 if !pbCheckHiddenMoveSwitch(SWITCHFORFLY,true)
   next 0 if !$PokemonBag.pbHasItem?(:HM02)
   if inPast?
     Kernel.pbMessage(_INTL("You are unable to travel in the past!"))

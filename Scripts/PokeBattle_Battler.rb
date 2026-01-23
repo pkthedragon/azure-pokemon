@@ -1234,9 +1234,7 @@ class PokeBattle_Battler
       @battle.shieldCount = pkmn.shieldCount ? pkmn.shieldCount : $game_variables[704]
       shieldlife=[(self.totalhp/4).floor,1].max
       self.effects[PBEffects::ShieldLife]=shieldlife
-      if @onEntryEffects
-        @battle.pbShieldEffects(self,@onEntryEffects,true)
-      end
+      # Note: Entry effects are called later in pbStartBattleCore after scene is initialized
     end
   end
   
@@ -2008,9 +2006,9 @@ class PokeBattle_Battler
     end
     shielddam = false
     oldhp=self.hp
-    if self.isbossmon 
+    if self.isbossmon
       if self.shieldCount>0
-        onBreakdata = self.onBreakEffects[self.shieldCount]
+        onBreakdata = self.onBreakEffects ? self.onBreakEffects[self.shieldCount] : nil
         hpthreshold = (onBreakdata && onBreakdata[:threshold]) ? onBreakdata[:threshold] : 0
         if hpthreshold == 0.1 # unused currently, but can add. ex: Rejuv Admin
         else
@@ -2079,15 +2077,15 @@ class PokeBattle_Battler
       return true
     end
     if self.isbossmon
-      if self.shieldCount > 0 && self.onBreakEffects
-        onBreakdata = self.onBreakEffects[self.shieldCount]
+      if self.shieldCount > 0
+        onBreakdata = self.onBreakEffects ? self.onBreakEffects[self.shieldCount] : nil
         hpthreshold = (onBreakdata && onBreakdata[:threshold]) ? onBreakdata[:threshold] : 0
         case hpthreshold  # Add extra threshold effects here; ex: Rejuv Admin Regirock
         when 0
-          boss = @battle.battlers[self.index] 
+          boss = @battle.battlers[self.index]
           self.pbRecoverHP(self.totalhp,true)
           @battle.pbShieldEffects(self,onBreakdata) if onBreakdata
-          self.shieldCount-=1 if self.shieldCount>0 
+          self.shieldCount-=1 if self.shieldCount>0
           @battle.scene.pbUpdateShield(boss.shieldCount,self.index)
           if boss.sosDetails
             @battle.pbBossSOS(@battle.battlers,shieldbreak=true)
@@ -2127,8 +2125,28 @@ class PokeBattle_Battler
       @battle.lastFaintedAllyAbility[faintedSide] = @ability
       @battle.lastFaintedEnemyAbility[faintedSide ^ 1] = @ability
     end
-    # Receiver - copies ally ability when ally faints
-    if pbPartner.hasWorkingAbility(:RECEIVER)
+    # Receiver - copies enemy ability when enemy faints (SWAPPED)
+    for i in @battle.battlers
+      next if i.isFainted?
+      next unless i.pbIsOpposing?(self.index) # Only check opponents of the fainted Pokemon
+      if i.hasWorkingAbility(:RECEIVER)
+        if (!isConst?(@ability,PBAbilities,:MULTITYPE) &&
+            !isConst?(@ability,PBAbilities,:COMATOSE) &&
+            !isConst?(@ability,PBAbilities,:DISGUISE) &&
+            !isConst?(@ability,PBAbilities,:SCHOOLING) &&
+            !isConst?(@ability,PBAbilities,:RKSSYSTEM) &&
+            !isConst?(@ability,PBAbilities,:IMPOSTER) &&
+            !isConst?(@ability,PBAbilities,:SHIELDSDOWN) &&
+            !isConst?(@ability,PBAbilities,:POWEROFALCHEMY) &&
+            !isConst?(@ability,PBAbilities,:RECEIVER))
+          i.ability=@ability
+          abilityname=PBAbilities.getName(@ability)
+          @battle.pbDisplay(_INTL("{1} received {2}'s {3}!",i.pbThis,pbThis,abilityname))
+        end
+      end
+    end
+    # Power of Alchemy - copies ally ability when ally faints (SWAPPED)
+    if pbPartner.hasWorkingAbility(:POWEROFALCHEMY)
       if (!isConst?(@ability,PBAbilities,:MULTITYPE) &&
           !isConst?(@ability,PBAbilities,:COMATOSE) &&
           !isConst?(@ability,PBAbilities,:DISGUISE) &&
@@ -2141,27 +2159,7 @@ class PokeBattle_Battler
         partnerability=@ability
         pbPartner.ability=partnerability
         abilityname=PBAbilities.getName(partnerability)
-        @battle.pbDisplay(_INTL("{1} received {2}'s {3}!",pbPartner.pbThis,pbThis,abilityname))
-      end
-    end
-    # Power of Alchemy - copies enemy ability when enemy faints
-    for i in @battle.battlers
-      next if i.isFainted?
-      next unless i.pbIsOpposing?(self.index) # Only check opponents of the fainted Pokemon
-      if i.hasWorkingAbility(:POWEROFALCHEMY)
-        if (!isConst?(@ability,PBAbilities,:MULTITYPE) &&
-            !isConst?(@ability,PBAbilities,:COMATOSE) &&
-            !isConst?(@ability,PBAbilities,:DISGUISE) &&
-            !isConst?(@ability,PBAbilities,:SCHOOLING) &&
-            !isConst?(@ability,PBAbilities,:RKSSYSTEM) &&
-            !isConst?(@ability,PBAbilities,:IMPOSTER) &&
-            !isConst?(@ability,PBAbilities,:SHIELDSDOWN) &&
-            !isConst?(@ability,PBAbilities,:POWEROFALCHEMY) &&
-            !isConst?(@ability,PBAbilities,:RECEIVER))
-          i.ability=@ability
-          abilityname=PBAbilities.getName(@ability)
-          @battle.pbDisplay(_INTL("{1} copied {2}'s {3}!",i.pbThis,pbThis,abilityname))
-        end
+        @battle.pbDisplay(_INTL("{1} copied {2}'s {3}!",pbPartner.pbThis,pbThis,abilityname))
       end
     end
     # Cursed Body - disable the move that knocked it out
@@ -3274,24 +3272,24 @@ class PokeBattle_Battler
         end
       end
     end
-    # Power of Alchemy - copies most recently fainted enemy ability on entry
+    # Power of Alchemy - copies most recently fainted ally ability on entry (SWAPPED)
     if self.hasWorkingAbility(:POWEROFALCHEMY) && onactive
-      mySide = self.index & 1
-      lastEnemyAbility = @battle.lastFaintedEnemyAbility[mySide]
-      if lastEnemyAbility && lastEnemyAbility != 0
-        self.ability = lastEnemyAbility
-        abilityname = PBAbilities.getName(lastEnemyAbility)
-        @battle.pbDisplay(_INTL("{1} copied the foe's {2}!",pbThis,abilityname))
-      end
-    end
-    # Receiver - copies most recently fainted ally ability on entry
-    if self.hasWorkingAbility(:RECEIVER) && onactive
       mySide = self.index & 1
       lastAllyAbility = @battle.lastFaintedAllyAbility[mySide]
       if lastAllyAbility && lastAllyAbility != 0
         self.ability = lastAllyAbility
         abilityname = PBAbilities.getName(lastAllyAbility)
-        @battle.pbDisplay(_INTL("{1} received its ally's {2}!",pbThis,abilityname))
+        @battle.pbDisplay(_INTL("{1} copied its ally's {2}!",pbThis,abilityname))
+      end
+    end
+    # Receiver - copies most recently fainted enemy ability on entry (SWAPPED)
+    if self.hasWorkingAbility(:RECEIVER) && onactive
+      mySide = self.index & 1
+      lastEnemyAbility = @battle.lastFaintedEnemyAbility[mySide]
+      if lastEnemyAbility && lastEnemyAbility != 0
+        self.ability = lastEnemyAbility
+        abilityname = PBAbilities.getName(lastEnemyAbility)
+        @battle.pbDisplay(_INTL("{1} received the foe's {2}!",pbThis,abilityname))
       end
     end
     # Mimicry
@@ -4191,10 +4189,7 @@ class PokeBattle_Battler
             @battle.pbDisplay(_INTL("{1}'s {2} lowered {3}'s Speed!",target.pbThis,PBAbilities.getName(target.ability),user.pbThis(true)))
           end
         end        
-        eschance = 3
-        eschance = 6 if ($fefieldeffect == 19 || $fefieldeffect == 41)
-        eschance.to_i  
-        if target.ability == PBAbilities::POISONPOINT && @battle.pbRandom(10) < eschance && user.pbCanPoison?(false)
+        if target.hasWorkingAbility(:POISONPOINT,true) && user.pbCanPoison?(false)
           user.pbPoison(target)
           @battle.pbDisplay(_INTL("{1}'s {2} poisoned {3}!",target.pbThis, PBAbilities.getName(target.ability),user.pbThis(true)))
         end
@@ -4210,13 +4205,6 @@ class PokeBattle_Battler
           user.pbParalyze(target)
           @battle.pbDisplay(_INTL("{1}'s {2} paralyzed {3}!  It may be unable to move!",
               target.pbThis,PBAbilities.getName(target.ability),user.pbThis(true)))
-        end
-        if target.hasWorkingAbility(:ERRATIC) &&
-          @battle.pbRandom(10) < 3 && user.pbCanConfuse?(false)
-          user.effects[PBEffects::Confusion]=3
-          @battle.pbCommonAnimation("Confusion",user,nil)
-          @battle.pbDisplay(_INTL("{1}'s {2} confused {3}!",target.pbThis,
-              PBAbilities.getName(target.ability),user.pbThis(true)))
         end
         if target.hasWorkingAbility(:PICKPOCKET) &&
           !target.hasWorkingAbility(:OBLIVIOUS) &&
@@ -4253,10 +4241,15 @@ class PokeBattle_Battler
               PBAbilities.getName(target.ability),user.pbThis(true)))
         end
       end
-      if (user.hasWorkingAbility(:POISONPOINT,true) || user.hasWorkingAbility(:POISONPOINT,true)) && target.pbCanPoison?(false) &&
-        (@battle.pbRandom(10)<3 || (@battle.pbRandom(10)<6 && $fefieldeffect==41))
+      if user.hasWorkingAbility(:POISONPOINT,true) && target.pbCanPoison?(false)
         target.pbPoison(user)
         @battle.pbDisplay(_INTL("{1}'s {2} poisoned {3}!",user.pbThis,
+            PBAbilities.getName(user.ability),target.pbThis(true)))
+      end
+      if user.hasWorkingAbility(:ERRATIC,true) && target.pbCanConfuse?(false)
+        target.effects[PBEffects::Confusion]=3
+        @battle.pbCommonAnimation("Confusion",target,nil)
+        @battle.pbDisplay(_INTL("{1}'s {2} confused {3}!",user.pbThis,
             PBAbilities.getName(user.ability),target.pbThis(true)))
       end
       if user.hasWorkingAbility(:COTTONMOLT,true)
@@ -6525,8 +6518,8 @@ class PokeBattle_Battler
         user.effects[PBEffects::FuryCutter]=0 if thismove.function==0x91 # Fury Cutter
         user.effects[PBEffects::EchoedVoice]+=1 if thismove.function==0x92 # Echoed Voice        
         user.effects[PBEffects::EchoedVoice]=0 if thismove.function!=0x92 # Not Echoed Voice
-        user.effects[PBEffects::CellSplitter]+=2 if thismove.function==0xF7 # Cell Splitter
-        user.effects[PBEffects::CellSplitter]=0 if thismove.function!=0xF7 # Not Cell Splitter
+        user.effects[PBEffects::CellSplitter]+=2 if thismove.function==0x247 # Cell Splitter
+        user.effects[PBEffects::CellSplitter]=0 if thismove.function!=0x247 # Not Cell Splitter
         user.effects[PBEffects::Stockpile]=0 if thismove.function==0x113 # Spit Up
         return 0
       end
@@ -6549,8 +6542,8 @@ class PokeBattle_Battler
       else
         user.effects[PBEffects::EchoedVoice]=0
       end
-      if thismove.function==0xF7 # Cell Splitter
-        user.effects[PBEffects::CellSplitter]+=2 if user.effects[PBEffects::CellSplitter]<8
+      if thismove.function==0x247 # Cell Splitter
+        user.effects[PBEffects::CellSplitter]+=2 if i==0 # Only increment once per turn, not per hit
       else
         user.effects[PBEffects::CellSplitter]=0
       end

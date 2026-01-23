@@ -2057,7 +2057,7 @@ def pbFishingEnd
 end
 
 def pbFishing(hasencounter,rodtype=1)
-  bitechance=20+(25*rodtype)   # 45, 70, 95
+  bitechance=100   # Always get a bite when hasencounter is true
   if $Trainer.party.length>0 && !$Trainer.party[0].isEgg?
     bitechance*=2 if isConst?($Trainer.party[0].ability,PBAbilities,:STICKYHOLD)
     bitechance*=2 if isConst?($Trainer.party[0].ability,PBAbilities,:SUCTIONCUPS)
@@ -2066,10 +2066,18 @@ def pbFishing(hasencounter,rodtype=1)
   oldpattern=$game_player.fullPattern
   pbFishingBegin
   msgwindow=Kernel.pbCreateMessageWindow
+  # If no encounter available, fail immediately
+  if !hasencounter
+    pbFishingEnd
+    $game_player.setDefaultCharName(nil,oldpattern)
+    Kernel.pbMessageDisplay(msgwindow,_INTL("Not even a nibble..."))
+    Kernel.pbDisposeMessageWindow(msgwindow)
+    return false
+  end
   loop do
     time=2+rand(10)
     message=""
-    time.times do 
+    time.times do
       message+=".  "
     end
     if pbWaitMessage(msgwindow,time)
@@ -2079,7 +2087,8 @@ def pbFishing(hasencounter,rodtype=1)
       Kernel.pbDisposeMessageWindow(msgwindow)
       return false
     end
-    if rand(100)<bitechance && hasencounter
+    # Always get a bite if hasencounter is true
+    if hasencounter
       frames=rand(21)+20
       if !pbWaitForInput(msgwindow,message+_INTL("\r\nOh! A bite!"),frames)
         pbFishingEnd
@@ -2095,12 +2104,6 @@ def pbFishing(hasencounter,rodtype=1)
         $game_player.setDefaultCharName(nil,oldpattern)
         return true
       end
-    else
-      pbFishingEnd
-      $game_player.setDefaultCharName(nil,oldpattern)
-      Kernel.pbMessageDisplay(msgwindow,_INTL("Not even a nibble..."))
-      Kernel.pbDisposeMessageWindow(msgwindow)
-      return false
     end
   end
   Kernel.pbDisposeMessageWindow(msgwindow)

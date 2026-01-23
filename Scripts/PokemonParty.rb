@@ -1645,9 +1645,14 @@ class PokemonScreen
             for i in 0...4
               move = pkmn.moves[i]
               next if !move
+              # Check for typed Hidden Power (641-658)
               if move.id >= PBMoves::HIDDENPOWERNOR && move.id <= PBMoves::HIDDENPOWERFAI
                 hpindex = move.id - PBMoves::HIDDENPOWERNOR
                 currenthp = hptypes[hpindex] if hpindex >= 0 && hpindex < hptypes.length
+                break
+              # Check for base Hidden Power (333)
+              elsif move.id == PBMoves::HIDDENPOWER
+                currenthp = "Base (untyped)"
                 break
               end
             end
@@ -1668,7 +1673,9 @@ class PokemonScreen
               for i in 0...4
                 move = pkmn.moves[i]
                 next if !move
-                if move.id >= PBMoves::HIDDENPOWERNOR && move.id <= PBMoves::HIDDENPOWERFAI
+                # Check for both typed Hidden Power and base Hidden Power
+                if (move.id >= PBMoves::HIDDENPOWERNOR && move.id <= PBMoves::HIDDENPOWERFAI) ||
+                   move.id == PBMoves::HIDDENPOWER
                   newmoveid = PBMoves::HIDDENPOWERNOR + cmd
                   pkmn.moves[i] = PBMove.new(newmoveid)
                   replaced = true
@@ -1689,7 +1696,9 @@ class PokemonScreen
               for i in 0...4
                 move = pkmn.moves[i]
                 next if !move
-                if move.id >= PBMoves::HIDDENPOWERNOR && move.id <= PBMoves::HIDDENPOWERFAI
+                # Check for both typed Hidden Power and base Hidden Power
+                if (move.id >= PBMoves::HIDDENPOWERNOR && move.id <= PBMoves::HIDDENPOWERFAI) ||
+                   move.id == PBMoves::HIDDENPOWER
                   pkmn.pbDeleteMoveAtIndex(i)
                   break
                 end
@@ -2362,12 +2371,19 @@ class PokemonScreen
                "Ice","Dragon","Dark","Fairy"]
     current_index = -1
     move_index = -1
+    is_base_hp = false
     for i in 0...4
       move = pkmn.moves[i]
       next if !move
+      # Check for typed Hidden Power moves (641-658)
       if move.id >= PBMoves::HIDDENPOWERNOR && move.id <= PBMoves::HIDDENPOWERFAI
         move_index = i
         current_index = move.id - PBMoves::HIDDENPOWERNOR
+        break
+      # Check for base Hidden Power move (333)
+      elsif move.id == PBMoves::HIDDENPOWER
+        move_index = i
+        is_base_hp = true
         break
       end
     end
@@ -2375,22 +2391,39 @@ class PokemonScreen
       pbDisplay(_INTL("{1} doesn't know Hidden Power.",pkmn.name))
       return
     end
-    commands = hptypes + [_INTL("Cancel")]
-    current_index = 0 if current_index < 0 || current_index >= hptypes.length
-    cmd = @scene.pbShowCommands(
-      _INTL("Choose a Hidden Power type for {1}.",pkmn.name),
-      commands,
-      current_index
-    )
-    return if cmd < 0 || cmd >= hptypes.length
-    if cmd == current_index
-      pbDisplay(_INTL("{1}'s Hidden Power is already {2}.",pkmn.name,hptypes[cmd]))
-      return
+    # If it's the base Hidden Power, allow changing to any typed version
+    if is_base_hp
+      pbDisplay(_INTL("{1} knows the base Hidden Power. Choose a type to change it to.",pkmn.name))
+      commands = hptypes + [_INTL("Cancel")]
+      cmd = @scene.pbShowCommands(
+        _INTL("Choose a Hidden Power type for {1}.",pkmn.name),
+        commands,
+        0
+      )
+      return if cmd < 0 || cmd >= hptypes.length
+      newmoveid = PBMoves::HIDDENPOWERNOR + cmd
+      pkmn.moves[move_index] = PBMove.new(newmoveid)
+      pbDisplay(_INTL("{1}'s Hidden Power became {2}!",pkmn.name,hptypes[cmd]))
+      pbRefreshSingle(pkmnid)
+    else
+      # Already a typed Hidden Power - can change to other types but NOT back to base
+      commands = hptypes + [_INTL("Cancel")]
+      current_index = 0 if current_index < 0 || current_index >= hptypes.length
+      cmd = @scene.pbShowCommands(
+        _INTL("Choose a Hidden Power type for {1}.",pkmn.name),
+        commands,
+        current_index
+      )
+      return if cmd < 0 || cmd >= hptypes.length
+      if cmd == current_index
+        pbDisplay(_INTL("{1}'s Hidden Power is already {2}.",pkmn.name,hptypes[cmd]))
+        return
+      end
+      newmoveid = PBMoves::HIDDENPOWERNOR + cmd
+      pkmn.moves[move_index] = PBMove.new(newmoveid)
+      pbDisplay(_INTL("{1}'s Hidden Power became {2}!",pkmn.name,hptypes[cmd]))
+      pbRefreshSingle(pkmnid)
     end
-    newmoveid = PBMoves::HIDDENPOWERNOR + cmd
-    pkmn.moves[move_index] = PBMove.new(newmoveid)
-    pbDisplay(_INTL("{1}'s Hidden Power became {2}.",pkmn.name,hptypes[cmd]))
-    pbRefreshSingle(pkmnid)
   end
 
 end

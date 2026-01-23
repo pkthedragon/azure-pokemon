@@ -6,7 +6,9 @@
       "Bash(git push)",
       "Bash(comm:*)",
       "Bash(grep:*)",
-      "Bash(find:*)"
+      "Bash(find:*)",
+      "Bash(ls:*)",
+      "Bash(python:*)"
     ]
   }
 }

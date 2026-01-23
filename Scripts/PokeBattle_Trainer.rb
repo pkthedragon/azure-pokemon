@@ -170,12 +170,13 @@ class PokeBattle_Trainer
   def pokedexSeen(region=-1)   # Number of Pokémon seen
     ret=0
     if region==-1
-      for i in 0..PBSpecies.maxValue
+      for i in 1..PBSpecies.maxValue
         ret+=1 if @seen[i]
       end
     else
       regionlist=pbAllRegionalSpecies(region)
       for i in regionlist
+        next if !i || i==0  # Skip empty entries
         ret+=1 if @seen[i]
       end
     end
@@ -185,12 +186,13 @@ class PokeBattle_Trainer
   def pokedexOwned(region=-1)   # Number of Pokémon owned
     ret=0
     if region==-1
-      for i in 0..PBSpecies.maxValue
+      for i in 1..PBSpecies.maxValue
         ret+=1 if @owned[i]
       end
     else
       regionlist=pbAllRegionalSpecies(region)
       for i in regionlist
+        next if !i || i==0  # Skip empty entries
         ret+=1 if @owned[i]
       end
     end
