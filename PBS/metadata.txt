@@ -195,12 +195,12 @@ ShowArea=true
 MapPosition=0,16,10
 BattleBack=Grassy
 [036]
-# Aplovita Cavern
-Outdoor=false
+# Emera Ranch
+Outdoor=true
 ShowArea=true
 MapPosition=0,18,3
-DarkMap=true
-BattleBack=Cave
+DarkMap=false
+BattleBack=Grassy
 [038]
 # Tent of Mystery
 Outdoor=false
