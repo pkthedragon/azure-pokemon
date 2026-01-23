@@ -449,7 +449,7 @@ class PokeBattle_Move_006 < PokeBattle_Move
     user_is_poison = attacker.pbHasType?(:POISON)
     if user_is_poison
       # Poison-type user badly poisons the target
-      if !opponent.pbCanPoison?(attacker,false,self) || opponent.status==PBStatuses::POISON
+      if !opponent.pbCanPoison?(false) || opponent.status==PBStatuses::POISON
         @battle.pbDisplay(_INTL("But it failed!"))
         return -1
       end
@@ -14205,7 +14205,7 @@ class PokeBattle_Move_27E < PokeBattle_Move
     typemod = pbTypeModifier(type,attacker,opponent)
 
     if typemod==0
-      if opponent.pbCanBurn?(attacker,false)
+      if opponent.pbCanBurn?(false)
         opponent.pbBurn(attacker)
         @battle.pbDisplay(_INTL("{1} was burned by the overload!",opponent.pbThis))
         return 0
@@ -14492,19 +14492,19 @@ class PokeBattle_Move_28E < PokeBattle_Move
     return false if !isConst?(attacker.species,PBSpecies,:SAWSBUCK)
     case attacker.form
     when 0   # Spring – paralyze
-      return false if !opponent.pbCanParalyze?(attacker,false)
+      return false if !opponent.pbCanParalyze?(false)
       opponent.pbParalyze(attacker)
       @battle.pbDisplay(_INTL("{1} was paralyzed!",opponent.pbThis))
     when 1   # Summer – burn
-      return false if !opponent.pbCanBurn?(attacker,false)
+      return false if !opponent.pbCanBurn?(false)
       opponent.pbBurn(attacker)
       @battle.pbDisplay(_INTL("{1} was burned!",opponent.pbThis))
     when 2   # Autumn – crush
-      return false if !opponent.pbCanCrush?(attacker,false)
+      return false if !opponent.pbCanCrush?(false)
       opponent.pbCrush(attacker)
       @battle.pbDisplay(_INTL("{1} was crushed!",opponent.pbThis))
     when 3   # Winter – freeze
-      return false if !opponent.pbCanFreeze?(attacker,false)
+      return false if !opponent.pbCanFreeze?(false)
       opponent.pbFreeze
       @battle.pbDisplay(_INTL("{1} was frozen!",opponent.pbThis))
     else
@@ -14734,7 +14734,7 @@ class PokeBattle_Move_223 < PokeBattle_Move
     r = @battle.pbRandom(3)
     case r
     when 0
-      return false if !opponent.pbCanPoison?(attacker,false)
+      return false if !opponent.pbCanPoison?(false)
       opponent.pbPoison(attacker)
       @battle.pbDisplay(_INTL("{1} was poisoned!",opponent.pbThis))
     when 1
@@ -14742,7 +14742,7 @@ class PokeBattle_Move_223 < PokeBattle_Move
       opponent.pbParalyze(attacker)
       @battle.pbDisplay(_INTL("{1} is paralyzed! It may be unable to move!",opponent.pbThis))
     when 2
-      return false if !opponent.pbCanBurn?(attacker,false)
+      return false if !opponent.pbCanBurn?(false)
       opponent.pbBurn(attacker)
       @battle.pbDisplay(_INTL("{1} was burned!",opponent.pbThis))
     end
