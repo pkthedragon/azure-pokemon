@@ -28791,6 +28791,22 @@ class PokeBattle_Battle
         ioncheck = false
         powdercheck = false
         priokill = false
+        # Check if damage arrays are already cached for this battler to avoid redundant calculations
+        @aiMoveScoreCache = {} if !@aiMoveScoreCache
+        if @aiMoveScoreCache[index]
+          cachedData = @aiMoveScoreCache[index]
+          baseDamageArray = cachedData[0].clone
+          baseDamageArray2 = cachedData[1].clone
+          baseDamageArray3 = cachedData[2].clone
+          priokill = cachedData[3]
+          if doublestargetting
+            return [baseDamageArray, baseDamageArray2, baseDamageArray3, priokill]
+          end
+          # Skip to move score calculation since damage arrays are already cached
+          @useCachedDamageArrays = true
+        else
+          @useCachedDamageArrays = false
+        end
         if doublestargetting
           if skill>=PBTrainerAI.averageSkill
             for j in aimem
@@ -28907,6 +28923,7 @@ class PokeBattle_Battle
 
           @aiPriorityCache[index] = priCache
         end
+        if !@useCachedDamageArrays
         for j in 0...attacker.moves.length
           next if attacker.isFainted?
           next if attacker.moves[j].id < 1
@@ -29020,6 +29037,7 @@ class PokeBattle_Battle
         # Cache the damage arrays for this battler to avoid redundant calculations
         @aiMoveScoreCache = {} if !@aiMoveScoreCache
         @aiMoveScoreCache[index] = [baseDamageArray.clone, baseDamageArray2.clone, baseDamageArray3.clone, priokill]
+        end # end of if !@useCachedDamageArrays
         if doublestargetting
           return [baseDamageArray,baseDamageArray2,baseDamageArray3,priokill]
         end
