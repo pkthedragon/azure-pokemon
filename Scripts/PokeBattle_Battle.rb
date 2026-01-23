@@ -3221,7 +3221,7 @@ class PokeBattle_Battle
       @battlers[index].pbReduceHP((@battlers[index].totalhp/6).floor)
       if @battlers[index].isFainted?
         @battlers[index].pbFaint
-        return
+        # Don't return - we still need to send out the replacement Pokemon
       end
     end
     if @battlers[index].effects[PBEffects::Illusion]
