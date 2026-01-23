@@ -2741,59 +2741,65 @@ class PokeBattle_Battle
       if !pbOwnedByPlayer?(index)
         if !pbIsOpposing?(index) || (@opponent && pbIsOpposing?(index))
           newenemy=pbSwitchInBetween(index,false,false)
+          if newenemy >= 0
 #### JERICHO - 001 - START
-            if !pbIsOpposing?(index)
-              if isConst?(@party1[newenemy].ability,PBAbilities,:ILLUSION) #ILLUSION
-                party3=@party1.find_all {|item| item && !item.egg? && item.hp>0 }
-                if party3[@party1.length-1] != @party1[newenemy]
-                  illusionpoke = party3[party3.length-1]
-                end
-              end #ILLUSION
-              newname = illusionpoke != nil ? illusionpoke.name : @party1[newenemy].name #ILLUSION
-            else
-              if isConst?(@party2[newenemy].ability,PBAbilities,:ILLUSION) #ILLUSION
-                party3=@party1.find_all {|item| item && !item.egg? && item.hp>0 }
-                if party3[@party1.length-1] != @party1[newenemy]
-                  illusionpoke = party3[party3.length-1]
-                end
-              end #ILLUSION
-              newname = illusionpoke != nil ? illusionpoke.name : PBSpecies.getName(@party2[newenemy].species) #ILLUSION
-            end
+              if !pbIsOpposing?(index)
+                if isConst?(@party1[newenemy].ability,PBAbilities,:ILLUSION) #ILLUSION
+                  party3=@party1.find_all {|item| item && !item.egg? && item.hp>0 }
+                  if party3[@party1.length-1] != @party1[newenemy]
+                    illusionpoke = party3[party3.length-1]
+                  end
+                end #ILLUSION
+                newname = illusionpoke != nil ? illusionpoke.name : @party1[newenemy].name #ILLUSION
+              else
+                if isConst?(@party2[newenemy].ability,PBAbilities,:ILLUSION) #ILLUSION
+                  party3=@party2.find_all {|item| item && !item.egg? && item.hp>0 }
+                  if party3[@party2.length-1] != @party2[newenemy]
+                    illusionpoke = party3[party3.length-1]
+                  end
+                end #ILLUSION
+                newname = illusionpoke != nil ? illusionpoke.name : PBSpecies.getName(@party2[newenemy].species) #ILLUSION
+              end
 #### JERICHO - 001 - END
-          opponent=pbGetOwner(index)
-          if !@doublebattle && firstbattlerhp>0 && @shiftStyle && @opponent &&
-              @internalbattle && pbCanChooseNonActive?(0) && pbIsOpposing?(index) &&
-              @battlers[0].effects[PBEffects::Outrage]==0 
-#### JERICHO - 001 - START  
-              pbDisplayPaused(_INTL("{1} is about to send in {2}.",opponent.fullname,newname)) #ILLUSION              
-#### JERICHO - 001 - END                       
-            if pbDisplayConfirm(_INTL("Will {1} change Pokémon?",self.pbPlayer.name))
-              newpoke=pbSwitchPlayer(0,true,true)
-              if newpoke>=0
-                pbDisplayBrief(_INTL("{1}, that's enough!  Come back!",@battlers[0].name))
-                pbRecallAndReplace(0,newpoke)
-                switched.push(0)
+            opponent=pbGetOwner(index)
+            if !@doublebattle && firstbattlerhp>0 && @shiftStyle && @opponent &&
+                @internalbattle && pbCanChooseNonActive?(0) && pbIsOpposing?(index) &&
+                @battlers[0].effects[PBEffects::Outrage]==0
+#### JERICHO - 001 - START
+                pbDisplayPaused(_INTL("{1} is about to send in {2}.",opponent.fullname,newname)) #ILLUSION
+#### JERICHO - 001 - END
+              if pbDisplayConfirm(_INTL("Will {1} change Pokémon?",self.pbPlayer.name))
+                newpoke=pbSwitchPlayer(0,true,true)
+                if newpoke>=0
+                  pbDisplayBrief(_INTL("{1}, that's enough!  Come back!",@battlers[0].name))
+                  pbRecallAndReplace(0,newpoke)
+                  switched.push(0)
+                end
               end
             end
+            pbRecallAndReplace(index,newenemy)
+            switched.push(index)
           end
-          pbRecallAndReplace(index,newenemy)
-          switched.push(index)
         end
       elsif @opponent || isBossBattle?
         newpoke=pbSwitchInBetween(index,true,false)
-        pbRecallAndReplace(index,newpoke)
-        switched.push(index)
+        if newpoke >= 0
+          pbRecallAndReplace(index,newpoke)
+          switched.push(index)
+        end
       else
         switch=false
-        if !pbDisplayConfirm(_INTL("Use next Pokémon?")) 
+        if !pbDisplayConfirm(_INTL("Use next Pokémon?"))
           switch=(pbRun(index,true)<=0)
         else
           switch=true
         end
         if switch
           newpoke=pbSwitchInBetween(index,true,false)
-          pbRecallAndReplace(index,newpoke)
-          switched.push(index)
+          if newpoke >= 0
+            pbRecallAndReplace(index,newpoke)
+            switched.push(index)
+          end
         end
       end
     end
