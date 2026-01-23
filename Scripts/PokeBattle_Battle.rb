@@ -4449,8 +4449,9 @@ end
       end
     end
     # Pre-paralyzed Pokemon in intense mode (Minerva's Ponyta-Galar)
+    owner = pbGetOwner(pkmn.index) if pbIsOpposing?(pkmn.index)
     if !onlyabilities && pbIsOpposing?(pkmn.index) &&
-       @opponent && @opponent.trainertype && isConst?(@opponent.trainertype,PBTrainers,:MINERVA) &&
+       owner && owner.trainertype && isConst?(owner.trainertype,PBTrainers,:MINERVA) &&
        $game_variables && $game_variables[:Difficulty_Mode] == 2
       if isConst?(pkmn.species,PBSpecies,:PONYTA) && pkmn.form == 1 && pkmn.status == 0
         pkmn.status = PBStatuses::PARALYSIS
