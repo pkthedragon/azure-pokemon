@@ -1667,7 +1667,7 @@ MultipleForms.register(:MINIOR,{
 
 MultipleForms.register(:VIVILLON,{
     "getFormOnCreation"=>proc{|pokemon|
-      next rand(9)  # Forms 0-8 are regular patterns, form 9 is Mystic
+      next rand(9)  # Forms 0-9 are regular patterns, form 10 is Mystic
     },
     "type1"=>proc{|pokemon|
       next if pokemon.form!=10
@@ -1697,10 +1697,10 @@ MultipleForms.register(:VIVILLON,{
       next if pokemon.form!=10      # Use default moveset for regular forms
       movelist=[]
       # Mystic form movelist
-      movelist=[[0,:TWISTER],[1,:DRAGONRUSH],[1,:HURRICANE],[1,:IRRITATION],
+      movelist=[[0,:BLUESHIFT],[1,:DRAGONRUSH],[1,:HURRICANE],[1,:IRRITATION],
                 [1,:EXTREMESPEED],[1,:GLARE],[12,:WINDVORTEX],[17,:ANCIENTPOWER],
-                [21,:AGILITY],[25,:BREAKINGSWIPE],[31,:BLUESHIFT],[35,:XSCISSOR],
-                [41,:ROOST],[45,:DRAGONDANCE],[50,:DRAGONPULSE],[55,:PESTILENTWAVE]]
+                [21,:TWISTER],[31,:XSCISSOR],[35,:BREAKINGSWIPE],[41,:ROOST],
+				[45,:DRAGONDANCE],[50,:DRAGONPULSE],[55,:PESTILENTWAVE]]
       for i in movelist
         i[1]=getConst(PBMoves,i[1])
       end
@@ -11480,7 +11480,7 @@ MultipleForms.register(:SPEWPA,{
     next if pokemon.form==0      # Use default moveset for base form
     movelist=[]
     case pokemon.form            # Mystic
-    when 1 ; movelist=[[0,:PROTECT],[1,:RAGE]]
+    when 1 ; movelist=[[0,:PROTECT],[1,:RAGE],[25,:RANCOR]]
     end
     for i in movelist
       i[1]=getConst(PBMoves,i[1])
