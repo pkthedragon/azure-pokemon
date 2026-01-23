@@ -344,20 +344,66 @@ end
 # Lazy-loaded boss trainer rematches (initialized on first access after all scripts load)
 def pbGetBossTrainerRematches
   $boss_trainer_rematches ||= [
-    pbTrainerRematchKey(:POKEMONTRAINER_Percy,"Percy",0,"single"),
+    # Normal terrain battles
     pbTrainerRematchKey(:POKEMONTRAINER_Kara,"Kara",0,"single"),
+    pbTrainerRematchKey(:POKEMONTRAINER_Percy,"Percy",0,"single"),
     pbTrainerRematchKey(:POKEMONTRAINER_Kara,"Kara",2,"single"),
+    # Grassy Terrain battles
+    pbTrainerRematchKey(:HANDMAIDEN,"Rose",0,"single"),
+    pbTrainerRematchKey(:LUX,"Lux",0,"single"),
+    pbTrainerRematchKey(:ELDERCULTIST_Perrin,"Pride",0,"double",
+                        :POKEMONTRAINER_Percy,"Percy",0),
+    pbTrainerRematchKey(:POKEMONTRAINER_Kara,"Kara",3,"single"),
+    pbTrainerRematchKey(:LISTIS,"Listis",0,"single"),
+    pbTrainerRematchKey(:POKEFAN_M2,"Bryant",0,"single"),
+    pbTrainerRematchKey(:PAX,"Pax",0,"double"),
+    # Library Field battles
+    pbTrainerRematchKey(:MINERVA,"Minerva",0,"single"),
+    pbTrainerRematchKey(:ATEN,"Aten",0,"single"),
+    pbTrainerRematchKey(:TEMPLAR1,"Davith",0,"single"),
+    # Beach battles
+    pbTrainerRematchKey(:POKEMONTRAINER_Percy,"Percy",1,"single"),
+    pbTrainerRematchKey(:ZOSSIE,"Zossie",0,"double"),
+    pbTrainerRematchKey(:ELDER,"Nick",0,"double"),
+    pbTrainerRematchKey(:TRENT,"Trent",0,"single"),
+    # Cave battles
     pbTrainerRematchKey(:POKEMONRANGER_M,"Pyuku",0,"single"),
     pbTrainerRematchKey(:RICHBOY,"Chuck",0,"single"),
-    pbTrainerRematchKey(:HANDMAIDEN,"Rose",0,"single")
+    # Forest Field battles
+    pbTrainerRematchKey(:GENTLEMAN,"Willberg",0,"single"),
+    pbTrainerRematchKey(:POKEMONRANGER_M,"Pyuku",2,"single"),
+    # Double battle (no specific field)
+    pbTrainerRematchKey(:CULTISTM,"Alex",0,"double",
+                        :CULTISTF,"Harper",0)
   ]
 end
 
 def pbGetBossTrainerFields
   $boss_trainer_fields ||= {
-    pbTrainerRematchKey(:POKEMONRANGER_M,"Pyuku",0,"single") => 23,  # Cave Field
-    pbTrainerRematchKey(:RICHBOY,"Chuck",0,"single") => 23,         # Cave Field
-    pbTrainerRematchKey(:HANDMAIDEN,"Rose",0,"single") => 2         # Grassy Terrain
+    # Grassy Terrain (2)
+    pbTrainerRematchKey(:HANDMAIDEN,"Rose",0,"single") => 2,
+    pbTrainerRematchKey(:LUX,"Lux",0,"single") => 2,
+    pbTrainerRematchKey(:ELDERCULTIST_Perrin,"Pride",0,"double",
+                        :POKEMONTRAINER_Percy,"Percy",0) => 2,
+    pbTrainerRematchKey(:POKEMONTRAINER_Kara,"Kara",3,"single") => 2,
+    pbTrainerRematchKey(:LISTIS,"Listis",0,"single") => 2,
+    pbTrainerRematchKey(:POKEFAN_M2,"Bryant",0,"single") => 2,
+    pbTrainerRematchKey(:PAX,"Pax",0,"double") => 2,
+    # Library Field (50)
+    pbTrainerRematchKey(:MINERVA,"Minerva",0,"single") => 50,
+    pbTrainerRematchKey(:ATEN,"Aten",0,"single") => 50,
+    pbTrainerRematchKey(:TEMPLAR1,"Davith",0,"single") => 50,
+    # Beach (46)
+    pbTrainerRematchKey(:POKEMONTRAINER_Percy,"Percy",1,"single") => 46,
+    pbTrainerRematchKey(:ZOSSIE,"Zossie",0,"double") => 46,
+    pbTrainerRematchKey(:ELDER,"Nick",0,"double") => 46,
+    pbTrainerRematchKey(:TRENT,"Trent",0,"single") => 46,
+    # Cave Field (23)
+    pbTrainerRematchKey(:POKEMONRANGER_M,"Pyuku",0,"single") => 23,
+    pbTrainerRematchKey(:RICHBOY,"Chuck",0,"single") => 23,
+    # Forest Field (15)
+    pbTrainerRematchKey(:GENTLEMAN,"Willberg",0,"single") => 15,
+    pbTrainerRematchKey(:POKEMONRANGER_M,"Pyuku",2,"single") => 15
   }
 end
 
@@ -397,7 +443,8 @@ def pbStartTrainerRematch(rematch)
     pbDoubleTrainerBattle(rematch[0],rematch[1],rematch[2],endspeech,
                           rematch[4],rematch[5],rematch[6],endspeech)
   else
-    pbTrainerBattle(rematch[0],rematch[1],endspeech,false,rematch[2])
+    doublebattle = (rematch[3]=="double")
+    pbTrainerBattle(rematch[0],rematch[1],endspeech,doublebattle,rematch[2])
   end
 end
 
