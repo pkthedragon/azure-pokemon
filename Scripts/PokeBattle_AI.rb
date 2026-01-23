@@ -28369,6 +28369,13 @@ class PokeBattle_Battle
     #return -1 if memory.length == 0
     return 0 if (@doublebattle && opponent.index==@battlers[3].index && $game_switches[1998]==true)
     return 0 if opponent.nil? || opponent.isFainted?
+
+    # Check cache for simple damage queries (movename=false)
+    if !movename
+      @aiDamageCache = {} if !@aiDamageCache
+      cacheKey = [attacker.index, opponent.index, hardswitch]
+      return @aiDamageCache[cacheKey] if @aiDamageCache.has_key?(cacheKey)
+    end
     maxdam=0
     nextdamage=0
     moveid=0
@@ -28444,6 +28451,11 @@ class PokeBattle_Battle
     if movename
       return [maxdam,moveid,nextdamage,secondmove,movetypemod]
     else
+      # Cache the result for future calls with same attacker/opponent pair
+      if @aiDamageCache
+        cacheKey = [attacker.index, opponent.index, hardswitch]
+        @aiDamageCache[cacheKey] = maxdam
+      end
       return maxdam
     end
   end
