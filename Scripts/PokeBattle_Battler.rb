@@ -4189,10 +4189,7 @@ class PokeBattle_Battler
             @battle.pbDisplay(_INTL("{1}'s {2} lowered {3}'s Speed!",target.pbThis,PBAbilities.getName(target.ability),user.pbThis(true)))
           end
         end        
-        eschance = 3
-        eschance = 6 if ($fefieldeffect == 19 || $fefieldeffect == 41)
-        eschance.to_i  
-        if target.ability == PBAbilities::POISONPOINT && @battle.pbRandom(10) < eschance && user.pbCanPoison?(false)
+        if target.hasWorkingAbility(:POISONPOINT,true) && user.pbCanPoison?(false)
           user.pbPoison(target)
           @battle.pbDisplay(_INTL("{1}'s {2} poisoned {3}!",target.pbThis, PBAbilities.getName(target.ability),user.pbThis(true)))
         end
@@ -4208,12 +4205,6 @@ class PokeBattle_Battler
           user.pbParalyze(target)
           @battle.pbDisplay(_INTL("{1}'s {2} paralyzed {3}!  It may be unable to move!",
               target.pbThis,PBAbilities.getName(target.ability),user.pbThis(true)))
-        end
-        if target.hasWorkingAbility(:ERRATIC) && user.pbCanConfuse?(false)
-          user.effects[PBEffects::Confusion]=3
-          @battle.pbCommonAnimation("Confusion",user,nil)
-          @battle.pbDisplay(_INTL("{1}'s {2} confused {3}!",target.pbThis,
-              PBAbilities.getName(target.ability),user.pbThis(true)))
         end
         if target.hasWorkingAbility(:PICKPOCKET) &&
           !target.hasWorkingAbility(:OBLIVIOUS) &&
@@ -4250,10 +4241,15 @@ class PokeBattle_Battler
               PBAbilities.getName(target.ability),user.pbThis(true)))
         end
       end
-      if (user.hasWorkingAbility(:POISONPOINT,true) || user.hasWorkingAbility(:POISONPOINT,true)) && target.pbCanPoison?(false) &&
-        (@battle.pbRandom(10)<3 || (@battle.pbRandom(10)<6 && $fefieldeffect==41))
+      if user.hasWorkingAbility(:POISONPOINT,true) && target.pbCanPoison?(false)
         target.pbPoison(user)
         @battle.pbDisplay(_INTL("{1}'s {2} poisoned {3}!",user.pbThis,
+            PBAbilities.getName(user.ability),target.pbThis(true)))
+      end
+      if user.hasWorkingAbility(:ERRATIC,true) && target.pbCanConfuse?(false)
+        target.effects[PBEffects::Confusion]=3
+        @battle.pbCommonAnimation("Confusion",target,nil)
+        @battle.pbDisplay(_INTL("{1}'s {2} confused {3}!",user.pbThis,
             PBAbilities.getName(user.ability),target.pbThis(true)))
       end
       if user.hasWorkingAbility(:COTTONMOLT,true)
