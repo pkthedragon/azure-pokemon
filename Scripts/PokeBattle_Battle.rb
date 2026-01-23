@@ -5412,6 +5412,8 @@ def pbStartBattle(canlose=false)
 
   def pbCommandPhase
     @scene.pbBeginCommandPhase
+    # Clear AI move score cache to avoid stale data between turns
+    @aiMoveScoreCache = {}
 #### SARDINES - v17 - START
 #    @scene.pbResetCommandIndices
 #### SARDINES - v17 - END

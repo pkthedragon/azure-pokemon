@@ -28898,13 +28898,22 @@ class PokeBattle_Battle
           end
           baseDamageArray3.push(dmgPercent3)
         end
-        if doublestargetting       
+        # Cache the damage arrays for this battler to avoid redundant calculations
+        @aiMoveScoreCache = {} if !@aiMoveScoreCache
+        @aiMoveScoreCache[index] = [baseDamageArray.clone, baseDamageArray2.clone, baseDamageArray3.clone, priokill]
+        if doublestargetting
           return [baseDamageArray,baseDamageArray2,baseDamageArray3,priokill]
         end
         maxdam1=checkAIdamage(aimem,attacker.pbPartner,otheropp,skill)
         maxdam2=checkAIdamage(aimem,attacker.pbPartner,opponent,skill)
         if !($game_switches[1998]) && !(attacker==@battlers[2])
-          damagevalues=pbBuildMoveScores(attacker.pbPartner.index,true,true)
+          # Use cached partner damage values if available to avoid redundant calculations
+          partnerIndex = attacker.pbPartner.index
+          if @aiMoveScoreCache && @aiMoveScoreCache[partnerIndex]
+            damagevalues = @aiMoveScoreCache[partnerIndex]
+          else
+            damagevalues = pbBuildMoveScores(partnerIndex,true,true)
+          end
           adjusted=nil
           priomove=false 
           partnercanattack=false # will our partner die before attacking
