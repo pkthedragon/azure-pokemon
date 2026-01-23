@@ -4209,8 +4209,7 @@ class PokeBattle_Battler
           @battle.pbDisplay(_INTL("{1}'s {2} paralyzed {3}!  It may be unable to move!",
               target.pbThis,PBAbilities.getName(target.ability),user.pbThis(true)))
         end
-        if target.hasWorkingAbility(:ERRATIC) &&
-          @battle.pbRandom(10) < 3 && user.pbCanConfuse?(false)
+        if target.hasWorkingAbility(:ERRATIC) && user.pbCanConfuse?(false)
           user.effects[PBEffects::Confusion]=3
           @battle.pbCommonAnimation("Confusion",user,nil)
           @battle.pbDisplay(_INTL("{1}'s {2} confused {3}!",target.pbThis,
