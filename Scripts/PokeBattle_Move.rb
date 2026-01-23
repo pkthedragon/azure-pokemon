@@ -5144,8 +5144,8 @@ class PokeBattle_Move
       end
       # Pinning and negative priority moves deal 1.3x or 1.5x if user is heavier
       if (PBStuff::PINNINGMOVE).include?(@id) || @priority < 0
-        userweight = attacker.pbWeight
-        oppweight = opponent.pbWeight
+        userweight = attacker.weight
+        oppweight = opponent.weight
         if userweight > oppweight
           finaldamagemult=(finaldamagemult*1.5).round
         else
