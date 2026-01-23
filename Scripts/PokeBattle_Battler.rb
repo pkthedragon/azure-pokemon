@@ -2882,7 +2882,8 @@ class PokeBattle_Battler
     #Surges
     if isConst?(ability,PBAbilities,:ELECTRICSURGE) && onactive  &&  ($fefieldeffect!=35)
       @battle.pbAnimation(571,self,nil)
-      if ($febackup>0 && $febackup<51 && @battle.field.effects[PBEffects::Splintered]==0) || ($game_map.map_id==53)
+      field_present = ($fefieldeffect>0 && $fefieldeffect<51 && @battle.field.effects[PBEffects::Splintered]==0) || ($game_map.map_id==53)
+      if field_present
         if @battle.field.effects[PBEffects::ElectricTerrain]==0
           @battle.field.effects[PBEffects::ElectricTerrain]=5
           if isConst?(self.item,PBItems,:AMPLIFIELDROCK) 
@@ -2903,7 +2904,8 @@ class PokeBattle_Battler
     end  
     if isConst?(ability,PBAbilities,:GRASSYSURGE) && onactive && ($fefieldeffect!=35)
       @battle.pbAnimation(581,self,nil)
-      if ($febackup>0 && $febackup<51 && @battle.field.effects[PBEffects::Splintered]==0) || ($game_map.map_id==53)
+      field_present = ($fefieldeffect>0 && $fefieldeffect<51 && @battle.field.effects[PBEffects::Splintered]==0) || ($game_map.map_id==53)
+      if field_present
         if @battle.field.effects[PBEffects::GrassyTerrain]==0
           @battle.field.effects[PBEffects::GrassyTerrain]=5
           @battle.field.effects[PBEffects::GrassyTerrain]=8 if $fefieldeffect==42
@@ -2925,7 +2927,8 @@ class PokeBattle_Battler
     end          
     if isConst?(ability,PBAbilities,:MISTYSURGE) && onactive  &&  ($fefieldeffect!=35)
       @battle.pbAnimation(588,self,nil)
-      if ($febackup>0 && $febackup<51 && @battle.field.effects[PBEffects::Splintered]==0) || ($game_map.map_id==53)
+      field_present = ($fefieldeffect>0 && $fefieldeffect<51 && @battle.field.effects[PBEffects::Splintered]==0) || ($game_map.map_id==53)
+      if field_present
         if @battle.field.effects[PBEffects::MistyTerrain]==0
           @battle.field.effects[PBEffects::MistyTerrain]=5
           if isConst?(self.item,PBItems,:AMPLIFIELDROCK) 
@@ -2946,7 +2949,8 @@ class PokeBattle_Battler
     end  
     if isConst?(ability,PBAbilities,:PSYCHICSURGE) && onactive  &&  ($fefieldeffect!=35)
       @battle.pbAnimation(719,self,nil)
-      if ($febackup>0 && $febackup<51 && @battle.field.effects[PBEffects::Splintered]==0) || ($game_map.map_id==53)
+      field_present = ($fefieldeffect>0 && $fefieldeffect<51 && @battle.field.effects[PBEffects::Splintered]==0) || ($game_map.map_id==53)
+      if field_present
         if @battle.field.effects[PBEffects::PsychicTerrain]==0
           @battle.field.effects[PBEffects::PsychicTerrain]=5
           if isConst?(self.item,PBItems,:AMPLIFIELDROCK)
