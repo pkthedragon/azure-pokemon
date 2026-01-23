@@ -5414,6 +5414,8 @@ def pbStartBattle(canlose=false)
     @scene.pbBeginCommandPhase
     # Clear AI move score cache to avoid stale data between turns
     @aiMoveScoreCache = {}
+    # Clear AI priority damage cache (stores pre-calculated priority damage for each attacker)
+    @aiPriorityCache = {}
 #### SARDINES - v17 - START
 #    @scene.pbResetCommandIndices
 #### SARDINES - v17 - END
