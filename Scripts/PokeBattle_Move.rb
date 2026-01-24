@@ -3519,12 +3519,12 @@ class PokeBattle_Move
       if attacker.hasWorkingItem(:FISTTRIBUTE)
         atk      = attacker.attack
         atkstage = attacker.stages[PBStats::ATTACK]+3
-        damagemult = (damagemult*1.2).round
+        damagemult = (damagemult*1.1).round
       end
       if attacker.hasWorkingItem(:MINDTRIBUTE)
         atk      = attacker.spatk
         atkstage = attacker.stages[PBStats::SPATK]+3
-        damagemult = (damagemult*1.2).round
+        damagemult = (damagemult*1.1).round
       end
       if attacker.hasWorkingItem(:SPOOKYTRIBUTE) && attacker.effects[PBEffects::SpookyTribute]==3
         damagemult = (damagemult*1.5).round
@@ -5265,10 +5265,10 @@ class PokeBattle_Move
     end
     if tribute_inscribed?(attacker)
       if attacker.hasWorkingItem(:NULLTRIBUTE)
-        finaldamagemult=(finaldamagemult*1.3).round
+        finaldamagemult=(finaldamagemult*1.2).round
       end
       if attacker.hasWorkingItem(:BLANKTRIBUTE)
-        finaldamagemult=(finaldamagemult*1.2).round
+        finaldamagemult=(finaldamagemult*1.1).round
       end
       if attacker.hasWorkingItem(:FLAMETRIBUTE) && attacker.turncount <= 1
         finaldamagemult=(finaldamagemult*1.5).round

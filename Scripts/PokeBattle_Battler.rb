@@ -3244,6 +3244,57 @@ class PokeBattle_Battler
     if self.hasWorkingItem(:AIRBALLOON) && onactive && !megad
       @battle.pbDisplay(_INTL("{1} is floating on its balloon!",pbThis))
     end
+    # Vengeant Diadem - raise highest stat if last in party, otherwise raise lowest
+    if self.hasWorkingItem(:VENGEANTDIADEM) && onactive && !megad
+      party = @battle.pbParty(self.index)
+      aliveCount = 0
+      for poke in party
+        next if !poke || poke.hp <= 0 || poke.isEgg?
+        aliveCount += 1
+      end
+      # Find highest and lowest boostable stats
+      statvals = {
+        PBStats::ATTACK => self.attack,
+        PBStats::DEFENSE => self.defense,
+        PBStats::SPATK => self.spatk,
+        PBStats::SPDEF => self.spdef,
+        PBStats::SPEED => self.speed
+      }
+      highest = statvals.max_by { |k, v| v }[0]
+      lowest = statvals.min_by { |k, v| v }[0]
+      if aliveCount <= 1
+        # Last in party - raise highest stat
+        if pbCanIncreaseStatStage?(highest)
+          pbIncreaseStatBasic(highest, 1)
+          @battle.pbCommonAnimation("StatUp", self, nil)
+          @battle.pbDisplay(_INTL("{1}'s Vengeant Diadem raised its {2}!",
+              pbThis, PBStats.getName(highest)))
+        end
+      else
+        # Not last - raise lowest stat
+        if pbCanIncreaseStatStage?(lowest)
+          pbIncreaseStatBasic(lowest, 1)
+          @battle.pbCommonAnimation("StatUp", self, nil)
+          @battle.pbDisplay(_INTL("{1}'s Vengeant Diadem raised its {2}!",
+              pbThis, PBStats.getName(lowest)))
+        end
+      end
+    end
+    # Noxious Draught - deals 1/8th max HP damage to all other Pokemon on entry
+    if self.hasWorkingItem(:NOXIOUSDRAUGHT) && onactive && !megad
+      @battle.pbDisplay(_INTL("{1}'s Noxious Draught released toxic fumes!",pbThis))
+      for i in 0...4
+        target = @battle.battlers[i]
+        next if !target || target.isFainted? || target.index == self.index
+        next if target.hasWorkingAbility(:MAGICGUARD)
+        next if target.hasWorkingAbility(:WONDERGUARD) && $fefieldeffect == 44
+        damage = (target.totalhp / 8).floor
+        damage = 1 if damage < 1
+        @battle.scene.pbDamageAnimation(target, 0)
+        target.pbReduceHP(damage, true)
+        @battle.pbDisplay(_INTL("{1} was hurt by the toxic fumes!",target.pbThis))
+      end
+    end
     # Trace
     if self.hasWorkingAbility(:TRACE) || (self.hasWorkingAbility(:ADAPTABILITY) &&
         $fefieldeffect == 34)
