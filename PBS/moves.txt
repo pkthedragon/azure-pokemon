@@ -386,7 +386,7 @@
 370,HARDEN,Harden,01D,0,STEEL,Status,0,20,0,10,0,d,"Raises defense. The user cannot be critically hit next turn."
 371,HEALBELL,Heal Bell,019,0,NORMAL,Status,0,5,0,40,0,d,"Heals status of all party Pokemon. Sound."
 372,HELPINGHAND,Helping Hand,09C,0,NORMAL,Status,0,15,0,100,5,,"The user assists an ally by boosting the power of its attack."
-373,HOWL,Howl,29F,0,NORMAL,Status,0,20,0,10,0,d,"Raises attack. Amplified if another Pokemon used Howl consecutively. Sound."
+373,HOWL,Howl,2AF,0,NORMAL,Status,0,20,0,10,0,d,"Raises attack. Amplified if another Pokemon used Howl consecutively. Sound."
 374,LEER,Leer,2A2,0,DARK,Status,0,20,0,04,0,bce,"Lowers speed. Target can't eat (berries and leftovers) for three turns."
 375,LOCKON,Lock-On,0A6,0,STEEL,Status,0,5,0,00,0,be,"The user's next move cannot miss and always critically hits."
 376,LOVELYKISS,Lovely Kiss,004,0,NORMAL,Status,0,5,0,00,0,bce,"Makes the target drowsy."

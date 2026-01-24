@@ -1128,6 +1128,7 @@ class PokeBattle_Battler
     #### KUROTSUNE - 004 - END
     #### KUROTSUNE - 010 - START
     @effects[PBEffects::Round]            = false
+    @effects[PBEffects::Howl]             = false
     #### KUROTSUNE - 010 - END
     #### KUROTSUNE - 024 - START
     @effects[PBEffects::Powder]           = false
