@@ -7372,11 +7372,60 @@ class PokeBattle_Battle
           end
         end
       end
-    when 0x71..0x73 # Counter, Mirror Coat, Metal Burst
+    when 0x71 # Counter Stance - 5 turn buff causing 1/4th recoil on physical attacks
+      if attacker.effects[PBEffects::CounterStance] > 0
+        score = 0 # Already active
+      else
+        score = 100
+        # Better if opponent uses mostly physical attacks
+        physcount = 0
+        speccount = 0
+        for j in opponent.moves
+          next if j.basedamage <= 0
+          physcount += 1 if j.pbIsPhysical?(j.type)
+          speccount += 1 if j.pbIsSpecial?(j.type)
+        end
+        if physcount > speccount
+          score *= 1.5
+        elsif speccount > physcount
+          score *= 0.3
+        end
+        # Better at higher HP
+        score *= (attacker.hp.to_f / attacker.totalhp)
+        # Worse if opponent has Magic Guard
+        score *= 0.1 if opponent.hasWorkingAbility(:MAGICGUARD)
+        # Better if we have recovery or bulk
+        score *= 1.3 if attacker.pbHasMove?(:RECOVER) || attacker.pbHasMove?(:ROOST) || attacker.pbHasMove?(:SOFTBOILED) || attacker.pbHasMove?(:MOONLIGHT) || attacker.pbHasMove?(:SYNTHESIS) || attacker.pbHasMove?(:MORNINGSUN)
+      end
+    when 0x72 # Mirror Coat - 5 turn buff causing 1/4th recoil on special attacks
+      if attacker.effects[PBEffects::MirrorCoatBuff] > 0
+        score = 0 # Already active
+      else
+        score = 100
+        # Better if opponent uses mostly special attacks
+        physcount = 0
+        speccount = 0
+        for j in opponent.moves
+          next if j.basedamage <= 0
+          physcount += 1 if j.pbIsPhysical?(j.type)
+          speccount += 1 if j.pbIsSpecial?(j.type)
+        end
+        if speccount > physcount
+          score *= 1.5
+        elsif physcount > speccount
+          score *= 0.3
+        end
+        # Better at higher HP
+        score *= (attacker.hp.to_f / attacker.totalhp)
+        # Worse if opponent has Magic Guard
+        score *= 0.1 if opponent.hasWorkingAbility(:MAGICGUARD)
+        # Better if we have recovery or bulk
+        score *= 1.3 if attacker.pbHasMove?(:RECOVER) || attacker.pbHasMove?(:ROOST) || attacker.pbHasMove?(:SOFTBOILED) || attacker.pbHasMove?(:MOONLIGHT) || attacker.pbHasMove?(:SYNTHESIS) || attacker.pbHasMove?(:MORNINGSUN)
+      end
+    when 0x73 # Metal Burst
       maxdam = checkAIdamage(aimem,attacker,opponent,skill)
       if (attacker.pbSpeed>pbRoughStat(opponent,PBStats::SPEED,skill)) ^ (@trickroom!=0)
-        score*=0.5
-        score*=0.01 if move.function == 0x73
+        score*=0.01
       end
       if ((!attacker.abilitynulled && attacker.ability == PBAbilities::STURDY) || (attitemworks && attacker.item == PBItems::FOCUSSASH) || (isConst?(attacker.species,PBSpecies,:RAMPARDOS) && isConst?(attacker.item,PBItems,:RAMPCREST))) && attacker.hp == attacker.totalhp
         score*=1.2
@@ -7389,15 +7438,6 @@ class PokeBattle_Battle
       score*=0.7 if $pkmn_move[attacker.lastMoveUsed][0] == move.function
       score*=0.6 if checkAImoves(PBStuff::SETUPMOVE,aimem)
       score*=attacker.hp*(1.0/attacker.totalhp)
-      if move.function == 0x71
-        score*=0.3 if opponent.spatk>opponent.attack
-        score*=0.05 if checkAIbest(aimem,3,[],false,attacker,opponent,skill)
-        score*=1.1 if $pkmn_move[attacker.lastMoveUsed][0]==0x72
-      elsif move.function == 0x72
-        score*=0.3 if opponent.spatk<opponent.attack
-        score*=0.05 if checkAIbest(aimem,2,[],false,attacker,opponent,skill)
-        score*=1.1 if $pkmn_move[attacker.lastMoveUsed][0]==0x72
-      end
     when 0x74 # Flame Burst
       if @doublebattle && opponent.pbPartner.hp>0
         score*=1.1
@@ -20942,46 +20982,10 @@ class PokeBattle_Battle
       end
     when 0x70 # OHKO
       basedamage=opponent.totalhp
-    when 0x71 # Counter
-      maxdam=60
-      for j in opponent.moves
-        next if j.pbIsSpecial?(j.type)
-        next if j.basedamage<=1
-        tempdam = pbRoughDamage(j,opponent,attacker,skill,j.basedamage)*2
-        if tempdam>maxdam
-          maxdam=tempdam
-        end
-        if !(opponent.item == PBItems::INTERCEPTZ2) && pbCanZMove?(opponent.index)
-          if opponent.pbCompatibleZMoveFromMove?(j)
-            zmove = PokeBattle_ZMoves2.new(j,opponent.item)
-            tempdam = pbRoughDamage(zmove,opponent,attacker,skill,zmove.basedamage) 
-            if tempdam>maxdam
-              maxdam=tempdam
-            end
-          end
-        end
-      end
-      basedamage = maxdam
-    when 0x72 # Mirror Coat
-      maxdam=60
-      for j in opponent.moves
-        next if j.pbIsPhysical?(j.type)
-        next if j.basedamage<=1
-        tempdam = pbRoughDamage(j,opponent,attacker,skill,j.basedamage)*2
-        if tempdam>maxdam
-          maxdam=tempdam
-        end
-        if !(opponent.item == PBItems::INTERCEPTZ2) && pbCanZMove?(opponent.index)
-          if opponent.pbCompatibleZMoveFromMove?(j)
-            zmove = PokeBattle_ZMoves2.new(j,opponent.item)
-            tempdam = pbRoughDamage(zmove,opponent,attacker,skill,zmove.basedamage) 
-            if tempdam>maxdam
-              maxdam=tempdam
-            end
-          end
-        end
-      end
-      basedamage = maxdam
+    when 0x71 # Counter Stance (status move - no base damage)
+      basedamage = 0
+    when 0x72 # Mirror Coat (status move - no base damage)
+      basedamage = 0
     when 0x73 # Metal Burst
       maxdam=45
       for j in opponent.moves

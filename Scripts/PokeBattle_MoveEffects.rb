@@ -4051,7 +4051,8 @@ end
 
 
 ################################################################################
-# Counters a physical move used against the user this round, with 2x the power.
+# Counter Stance - For the next 5 turns, physical attacks against the user
+# have 1/4th recoil damage.
 ################################################################################
 class PokeBattle_Move_071 < PokeBattle_Move
   def pbEffect(attacker,opponent,hitnum=0,alltargets=nil,showanimation=true)
@@ -4069,16 +4070,17 @@ end
 
 
 ################################################################################
-# Counters a specical move used against the user this round, with 2x the power.
+# Mirror Coat - For the next 5 turns, special attacks against the user
+# have 1/4th recoil damage.
 ################################################################################
 class PokeBattle_Move_072 < PokeBattle_Move
   def pbEffect(attacker,opponent,hitnum=0,alltargets=nil,showanimation=true)
-    if attacker.effects[PBEffects::MirrorCoat] > 0
+    if attacker.effects[PBEffects::MirrorCoatBuff] > 0
       @battle.pbDisplay(_INTL("But it failed!"))
       return -1
     end
     pbShowAnimation(@id,attacker,opponent,hitnum,alltargets,showanimation)
-    attacker.effects[PBEffects::MirrorCoat] = 5
+    attacker.effects[PBEffects::MirrorCoatBuff] = 5
     @battle.pbDisplay(_INTL("{1} is coated in reflective psychic energy!",attacker.pbThis))
     return 0
   end

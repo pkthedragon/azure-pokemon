@@ -118,7 +118,7 @@
 113,ARMTHRUST,Arm Thrust,0C0,18,FIGHTING,Physical,90,15,0,00,0,abef,"Hits 2-5 times."
 114,TRIPLEKICK,Triple Kick,0BF,20,FIGHTING,Physical,90,5,0,00,0,abefl,"Hits up to three times. Increasing in power by 20 each time. Kicking."
 
-115,COUNTER,Counter Stance,071,0,FIGHTING,Status,0,5,0,01,0,ab,"For the next 5 turns. Physical attacks against the user have 1/3rd recoil."
+115,COUNTER,Counter Stance,071,0,FIGHTING,Status,0,20,0,10,0,d,"For the next 5 turns, physical attacks against the user have 1/4th recoil."
 
 116,FINALGAMBIT,Final Gambit,0E1,1,FIGHTING,Special,100,5,0,00,0,ab,"The user sacrifices itself but does damage equal to the its current HP."
 117,LOWKICK,Low Kick,09A,1,FIGHTING,Physical,100,10,0,00,0,abef,"Power increases with target's weight. Kicking."
@@ -479,7 +479,7 @@
 460,PSYBEAM,Psybeam,013,65,PSYCHIC,Special,100,15,10,00,0,ben,"10% chance to confuse. Beam."
 461,HEARTSTAMP,Heart Stamp,2AC,60,PSYCHIC,Special,100,15,30,00,0,abe,"Move uses the higher of the user's offenses. 30% chance to infatuate."
 462,CONFUSION,Confusion,013,50,PSYCHIC,Special,100,20,10,00,0,be,"The target is hit by a weak telekinetic force. It may also leave the target confused."
-463,MIRRORCOAT,Mirror Coat,072,0,PSYCHIC,Status,0,5,0,01,0,b,"For the next 5 turns. Special attacks against the user have 1/3rd recoil."
+463,MIRRORCOAT,Mirror Coat,072,0,PSYCHIC,Status,0,20,0,10,0,d,"For the next 5 turns, special attacks against the user have 1/4th recoil."
 
 464,PSYWAVE,Psywave,06D,1,PSYCHIC,Special,100,15,0,00,0,bef,"The target is attacked with an odd psychic wave. The attack varies in intensity."
 465,STOREDPOWER,Stored Power,08E,1,PSYCHIC,Special,100,5,0,00,0,bef,"The user attacks the target. The more the user's stats are raised, the greater the damage."

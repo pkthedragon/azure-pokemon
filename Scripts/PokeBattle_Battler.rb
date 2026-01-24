@@ -911,6 +911,7 @@ class PokeBattle_Battler
       @effects[PBEffects::JawLock]     = false 
       @effects[PBEffects::JawLockUser] = -1
       @effects[PBEffects::MirrorCoat]   = 0
+      @effects[PBEffects::MirrorCoatBuff] = 0
       @effects[PBEffects::CounterStance] = 0
       @effects[PBEffects::NightmareAura]      = false
       @effects[PBEffects::EarlyBirdBoost] = 0
@@ -1038,6 +1039,7 @@ class PokeBattle_Battler
     @effects[PBEffects::MiracleEye]       = false
     @effects[PBEffects::MirrorCoat]       = -1
     @effects[PBEffects::MirrorCoatTarget] = -1
+    @effects[PBEffects::MirrorCoatBuff]   = 0
     #    @effects[PBEffects::MudSport]         = false
     @effects[PBEffects::MultiTurn]        = 0
     @effects[PBEffects::MultiTurnAttack]  = 0
@@ -4041,6 +4043,28 @@ class PokeBattle_Battler
   end
   def pbEffectsOnDealingDamage(move,user,target,damage,innards)
     movetype=move.pbType(move.type,user,target)
+    # Counter Stance - physical attacks against the user have 1/4th recoil
+    if damage>0 && !target.damagestate.substitute &&
+      target.effects[PBEffects::CounterStance] > 0 && move.pbIsPhysical?(movetype) &&
+      !user.isFainted? && !user.hasWorkingAbility(:MAGICGUARD) &&
+      !(user.hasWorkingAbility(:WONDERGUARD) && $fefieldeffect == 44)
+      recoildamage = (damage/4).floor
+      recoildamage = 1 if recoildamage < 1
+      @battle.scene.pbDamageAnimation(user,0)
+      user.pbReduceHP(recoildamage)
+      @battle.pbDisplay(_INTL("{1}'s stance countered the attack!",target.pbThis))
+    end
+    # Mirror Coat - special attacks against the user have 1/4th recoil
+    if damage>0 && !target.damagestate.substitute &&
+      target.effects[PBEffects::MirrorCoatBuff] > 0 && move.pbIsSpecial?(movetype) &&
+      !user.isFainted? && !user.hasWorkingAbility(:MAGICGUARD) &&
+      !(user.hasWorkingAbility(:WONDERGUARD) && $fefieldeffect == 44)
+      recoildamage = (damage/4).floor
+      recoildamage = 1 if recoildamage < 1
+      @battle.scene.pbDamageAnimation(user,0)
+      user.pbReduceHP(recoildamage)
+      @battle.pbDisplay(_INTL("{1}'s Mirror Coat reflected some damage!",target.pbThis))
+    end
     # Track successive hits for Stalwart ability
     if damage>0 && target.hasWorkingAbility(:STALWART)
       if target.effects[PBEffects::StalwartMove] == move.id

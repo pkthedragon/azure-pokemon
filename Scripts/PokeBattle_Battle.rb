@@ -7785,11 +7785,11 @@ def pbStartBattle(canlose=false)
         end
       end
     end
-    # Mirror Coat / Counter Stance
+    # Mirror Coat / Counter Stance buff turn countdown
     for battler in @battlers
       next if battler.nil?
-      if battler.effects[PBEffects::MirrorCoat] > 0
-        battler.effects[PBEffects::MirrorCoat] -= 1
+      if battler.effects[PBEffects::MirrorCoatBuff] > 0
+        battler.effects[PBEffects::MirrorCoatBuff] -= 1
       end
       if battler.effects[PBEffects::CounterStance] > 0
         battler.effects[PBEffects::CounterStance] -= 1
