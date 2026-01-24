@@ -29006,7 +29006,7 @@ class PokeBattle_Battle
         if !@useCachedDamageArrays
         for j in 0...attacker.moves.length
           next if attacker.isFainted?
-          next if attacker.moves[j].id < 1
+          next if !attacker.moves[j].id || attacker.moves[j].id < 1
           changed1=false
           changed2=false
           # check attacker.moves[j].basedamage and if this is 0 instead check the status method
@@ -29214,7 +29214,7 @@ class PokeBattle_Battle
           partnermove2=0
           besttarget=nil
           for lmao in attacker.pbPartner.moves
-            next if (!lmao || lmao.nil? || lmao.id < 1)
+            next if (!lmao || lmao.nil? || !lmao.id || lmao.id < 1)
             if lmao.basedamage>0 && ((lmao.priority>0) || (!attacker.pbPartner.abilitynulled && (attacker.pbPartner.ability == PBAbilities::GALEWINGS && lmao.type==PBTypes::FLYING) && attacker.pbPartner.hp==attacker.pbPartner.totalhp) || (attacker.pbPartner.species == PBSpecies::FERALIGATR && attacker.pbPartner.item == PBItems::FERACREST && attacker.pbPartner.turncount==0) ||  (!attacker.pbPartner.abilitynulled && attacker.pbPartner.ability == PBAbilities::TRIAGE && lmao.isHealingMove?))
               priomove=true if !(lmao.id==getID(PBMoves,:FAKEOUT) && attacker.pbPartner.turncount>0)
               fakeouter=true if (lmao.id==getID(PBMoves,:FAKEOUT) && attacker.pbPartner.turncount==0)
@@ -29652,7 +29652,7 @@ class PokeBattle_Battle
       baseDamageArray=[]
       baseDamageArrayAdj=[]
       for j in 0...attacker.moves.length
-        next if attacker.moves[j].id < 1
+        next if !attacker.moves[j].id || attacker.moves[j].id < 1
         # check attacker.moves[j].basedamage and if this is 0 instead check the status method
         dmgValue = pbRoughDamage(attacker.moves[j],attacker,opponent,skill,attacker.moves[j].basedamage) 
         if attacker.moves[j].basedamage!=0
