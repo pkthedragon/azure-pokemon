@@ -471,7 +471,7 @@
 452,PSYCHIC,Psychic,046,90,PSYCHIC,Special,100,10,10,00,0,be,"10% chance to lower special defense. Displacement."
 453,EXTRASENSORY,Extrasensory,295,80,PSYCHIC,Special,100,10,10,00,0,be,"10% chance to crush. Pinning."
 454,PSYSHOCK,Psyshock,122,80,PSYCHIC,Special,100,10,0,00,0,bef,"The user creates an odd psychic wave to hit the target. This attack does physical damage."
-455,ZENHEADBUTT,Zen Headbutt,06B,80,PSYCHIC,Physical,90,10,30,00,0,abef,"30% chance to raise the user's special defense. Displacement."
+455,ZENHEADBUTT,Zen Headbutt,2FF,80,PSYCHIC,Physical,90,10,30,00,0,abef,"30% chance to raise the user's special defense. Displacement."
 456,LUSTERPURGE,Luster Purge,046,70,PSYCHIC,Special,100,10,50,00,0,be,"50% chance to lower special defense. Light."
 457,MISTBALL,Mist Ball,045,70,PSYCHIC,Special,100,10,50,00,0,be,"50% chance to lower special attack. Ball."
 458,PSYCHOCUT,Psycho Cut,000,70,PSYCHIC,Physical,100,15,0,00,0,befh,"+1 Crit. Slashing."

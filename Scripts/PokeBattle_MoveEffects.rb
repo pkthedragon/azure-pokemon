@@ -1178,7 +1178,6 @@ class PokeBattle_Move_01D < PokeBattle_Move
     if attacker.pbCanIncreaseStatStage?(PBStats::DEFENSE,false)
       attacker.pbIncreaseStat(PBStats::DEFENSE,1,false)
     end
-    attacker.effects[PBEffects::SusCrit]=2
     return true
   end
 end
@@ -1259,7 +1258,14 @@ end
 ################################################################################
 # Increases the user's Special Defense by 1 stage.
 ################################################################################
-class PokeBattle_Move_02Z < PokeBattle_Move
+class PokeBattle_Move_2FF < PokeBattle_Move
+  def pbAdditionalEffect(attacker,opponent)
+    if attacker.pbCanIncreaseStatStage?(PBStats::SPDEF,false)
+      attacker.pbIncreaseStat(PBStats::SPDEF,1,false)
+    end
+    return true
+  end
+  
   def pbAdditionalEffect(attacker,opponent)
     if attacker.pbCanIncreaseStatStage?(PBStats::SPDEF,false)
       attacker.pbIncreaseStat(PBStats::SPDEF,1,false)

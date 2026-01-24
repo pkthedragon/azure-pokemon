@@ -687,7 +687,7 @@ end
   def pbStatChangeMoveId
     return nil if !@battle || @battle.lastMoveUser < 0
     user=@battle.battlers[@battle.lastMoveUser]
-    return nil if !user || user.currentMove != @battle.lastMoveUsed
+    return nil if !user
     move_id=@battle.lastMoveUsed
     begin
       move_data=PBMoveData.new(move_id)
