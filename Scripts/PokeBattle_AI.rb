@@ -306,27 +306,27 @@ class PokeBattle_Battle
               if pridam >= opponent.hp
                 score+=150
                 PBDebug.log(sprintf("Priority move would KO - using priority")) if $INTERNAL
+              elsif !opponentHasSetup
+                # Opponent has NO setup moves - they can only attack, so use priority for guaranteed chip damage
+                # This applies regardless of "abusing" since they literally cannot abuse setup
+                score+=150
+                PBDebug.log(sprintf("Opponent has no setup moves - using priority for guaranteed chip damage")) if $INTERNAL
               elsif abusing==false
-                # Opponent not abusing setup - check if they have setup moves in their moveset
-                if opponentHasSetup
-                  # If opponent has setup moves and priority damage is low, heavily penalize using priority
-                  if pridam < opponent.hp/3
-                    # Don't boost priority - let AI accept death or switch instead
-                    score*=0.3
-                    PBDebug.log(sprintf("Opponent has setup moves and priority damage too low - not using priority")) if $INTERNAL
-                  elsif pridam < opponent.hp/2
-                    # Moderate damage - small boost only
-                    score+=25
-                  else
-                    # High damage - normal boost
-                    score+=75
-                  end
+                # Opponent has setup moves but isn't actively abusing them
+                # If opponent has setup moves and priority damage is low, heavily penalize using priority
+                if pridam < opponent.hp/3
+                  # Don't boost priority - let AI accept death or switch instead
+                  score*=0.3
+                  PBDebug.log(sprintf("Opponent has setup moves and priority damage too low - not using priority")) if $INTERNAL
+                elsif pridam < opponent.hp/2
+                  # Moderate damage - small boost only
+                  score+=25
                 else
-                  # No setup moves detected - use normal priority boost logic
-                  score+=150
+                  # High damage - normal boost
+                  score+=75
                 end
               else
-                # Opponent is abusing setup moves, but priority wouldn't kill
+                # Opponent has setup moves and is actively abusing them
                 # Check if priority does meaningful damage
                 if pridam >= opponent.hp/2
                   score+=50
