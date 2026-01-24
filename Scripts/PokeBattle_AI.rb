@@ -6746,6 +6746,45 @@ class PokeBattle_Battle
             end
           end
         end
+        # Safe turn detection: if attacker is protected by a shield effect, boost Tailwind significantly
+        # This includes Telluric Seed shields on Corrosive Field (BanefulBunker) and Forest Field (SpikyShield)
+        if attacker.effects[PBEffects::BanefulBunker] || attacker.effects[PBEffects::SpikyShield] || attacker.effects[PBEffects::KingsShield]
+          score*=3
+          PBDebug.log(sprintf("Attacker is shielded - safe turn to use Tailwind")) if $INTERNAL
+        end
+        # About to die logic: if attacker will be KO'd, consider Tailwind's team benefit vs chip damage
+        maxdam = checkAIdamage(aimem,attacker,opponent,skill)
+        if maxdam >= attacker.hp
+          # Attacker is going to die - check if Tailwind's team benefit outweighs chip damage
+          # Calculate how much chip damage attacker could do with attacking moves
+          maxattackdam = 0
+          for m in attacker.moves
+            next if m.basedamage == 0
+            tempdam = pbRoughDamage(m,attacker,opponent,skill,m.basedamage)
+            maxattackdam = tempdam if tempdam > maxattackdam
+          end
+          # Count teammates who would benefit from Tailwind
+          livecount = 0
+          slowcount = 0
+          for mon in pbParty(attacker.index)
+            next if mon.nil?
+            next if mon.hp == 0
+            livecount += 1
+            # Count mons that are slower than opponent and would benefit from Tailwind
+            if mon.speed < pbRoughStat(opponent,PBStats::SPEED,skill)
+              slowcount += 1
+            end
+          end
+          # If multiple teammates would benefit and chip damage is low relative to opponent HP,
+          # prefer Tailwind for the team-wide speed boost
+          if slowcount >= 2 && maxattackdam < opponent.hp / 3
+            score*=2.5
+            PBDebug.log(sprintf("About to die - Tailwind benefits %d slow teammates, chip damage low", slowcount)) if $INTERNAL
+          elsif slowcount >= 1 && maxattackdam < opponent.hp / 4
+            score*=2
+            PBDebug.log(sprintf("About to die - Tailwind benefits teammates more than chip damage")) if $INTERNAL
+          end
+        end
       end
       if attacker.effects[PBEffects::FocusEnergy]!=2 &&  (move.name == "Z-Tailwind" && move.zmove)  
         miniscore=100     
