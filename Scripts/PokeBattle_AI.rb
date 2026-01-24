@@ -57,9 +57,10 @@ class PokeBattle_Battle
       return 0
     end
     roles = pbGetMonRole(attacker,opponent,skill)
-    # Fake Out, First Impression, Mat Block, and Forebode only work on turn 1 - set score to 0 if turncount != 1
+    # Fake Out, First Impression, Mat Block, and Forebode only work on turn 1 - set score to 0 if turncount != 0
+    # Note: turncount is 0 during command phase on the first turn after entering, incremented to 1 at start of attack phase
     if ((move.id == PBMoves::FAKEOUT || move.id == getID(PBMoves,:FIRSTIMPRESSION) ||
-         move.id == PBMoves::MATBLOCK || move.id == getID(PBMoves,:FOREBODE)) && attacker.turncount != 1)
+         move.id == PBMoves::MATBLOCK || move.id == getID(PBMoves,:FOREBODE)) && attacker.turncount != 0)
       PBDebug.log(sprintf("Move only works on first turn, but turncount = %d. Score set to 0.",attacker.turncount)) if $INTERNAL && shutup==false
       return 0
     end
@@ -1810,7 +1811,20 @@ class PokeBattle_Battle
       end
     when 0x12 # Fake Out
       if attacker.turncount==0
-        if opponent.effects[PBEffects::Substitute]==0 && !(!opponent.abilitynulled && opponent.ability == PBAbilities::INNERFOCUS)
+        # Check if another move can kill - if so, prefer the killing move over Fake Out
+        canKillWithOtherMove = false
+        for othermove in attacker.moves
+          next if othermove.id == move.id || othermove.basedamage <= 0
+          otherdam = pbRoughDamage(othermove, attacker, opponent, skill, othermove.basedamage)
+          if otherdam >= opponent.hp
+            canKillWithOtherMove = true
+            break
+          end
+        end
+        if canKillWithOtherMove
+          # Don't boost Fake Out if we can kill with another move
+          score = score
+        elsif opponent.effects[PBEffects::Substitute]==0 && !(!opponent.abilitynulled && opponent.ability == PBAbilities::INNERFOCUS)
           if score>=110
             score*=4.5
           end
