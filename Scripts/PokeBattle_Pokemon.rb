@@ -1069,9 +1069,9 @@ class PokeBattle_Pokemon
     @harvestBerry=0
     @harvestUsed=false
     @iv=[]
-    # All IVs default to 31
+    # All IVs default to 15
     for i in 0..5
-      @iv[i]=31
+      @iv[i]=15
     end
     if player
       @trainerID=player.id
