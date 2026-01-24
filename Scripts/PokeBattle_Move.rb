@@ -4133,7 +4133,10 @@ class PokeBattle_Move
     damage=(((2.0*attacker.level/5+2).floor*basedmg*atk/defense).floor/50).floor+2
     # Multi-targeting attacks
     if pbTargetsAll?(attacker)
-      damage=(damage*0.75).round
+      # King's Rock ignores spread move damage nerf
+      if !attacker.hasWorkingItem(:KINGSROCK)
+        damage=(damage*0.75).round
+      end
       if opponent.hasWorkingAbility(:QUEENLYMAJESTY) && !opponent.moldbroken
         damage=(damage*0.7).round
       end
@@ -5438,12 +5441,6 @@ class PokeBattle_Move
 	          opponent.pbCrush(attacker)
 	          @battle.pbDisplay(_INTL("{1} was crushed by the steel whip!",opponent.pbThis))
 	        end
-	      end
-	      if damage>0 && attacker && pbTargetsAll?(attacker) &&
-	         opponent.hasWorkingItem(:KINGSROCK) && !opponent.effects[PBEffects::KingsRockGuardUsed]
-	        @battle.pbDisplay(_INTL("{1} was shielded from the spread move by the King's Rock!",opponent.pbThis))
-	        opponent.damagestate.calcdamage=0
-	        damage=0
 	      end
 	      if damage>=opponent.hp
 	        damage=opponent.hp
