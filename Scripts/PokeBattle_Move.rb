@@ -3452,7 +3452,8 @@ class PokeBattle_Move
         atkstage=attacker.stages[PBStats::ATTACK]+3
       end
     end
-    if type>=0 && (pbIsSpecial?(type) || (isConst?(attacker.species,PBSpecies,:CRYOGONAL) && attacker.hasWorkingItem(:CRYCREST)))
+    usesHigherOffensiveStat = (@function==0x175 || @function==0x25E || @function==0x0F6 || @function==0x02D)
+    if type>=0 && (pbIsSpecial?(type) || (isConst?(attacker.species,PBSpecies,:CRYOGONAL) && attacker.hasWorkingItem(:CRYCREST))) && !usesHigherOffensiveStat
       atk=attacker.spatk
       atkstage=attacker.stages[PBStats::SPATK]+3
 #      if @function==0x121 # Foul Play

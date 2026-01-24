@@ -29422,7 +29422,7 @@ class PokeBattle_Battle
             if attacker.moves[i].target==PBTargets::AllOpposing || (movecode == 0xB3 && ($fefieldeffect==8 || $fefieldeffect==16 || $fefieldeffect==18 || $fefieldeffect==27 ||
                   $fefieldeffect==33 && $fecounter == 4 || $fefieldeffect==42)) || (movecode == 0x10F && attacker.ability == PBAbilities::WORLDOFNIGHTMARES) || (attacker.hasWorkingAbility(:TEMPEST) && (movecode == 0x87)) || (movecode == 0xCF && $fefieldeffect==40)
               # Consider both scores as it will hit BOTH targets
-              if ((hasgreatmoves(baseDamageArray,i,skill,false) || hasgreatmoves(baseDamageArray2,i,skill,false)) && (dmgPercent<100 && dmgPercent2<100)) ||
+              if ((hasgreatmoves(baseDamageArray,i,skill,false) || hasgreatmoves(baseDamageArray2,i,skill,false)) && (baseDamageArray[i]<100 && baseDamageArray2[i]<100)) ||
                 (currentroles.include?(PBMonRoles::SCREENER) && ((attacker.pbOwnSide.effects[PBEffects::Reflect]==0 && checkAIHas?([PBMoves::REFLECT],attacker)) || (attacker.pbOwnSide.effects[PBEffects::LightScreen]==0 && checkAIHas?([PBMoves::LIGHTSCREEN],attacker)) ||
                 (attacker.pbOwnSide.effects[PBEffects::AuroraVeil]==0 && @weather==PBWeather::HAIL && checkAIHas?([PBMoves::AURORAVEIL],attacker)) || attacker.pbOwnSide.effects[PBEffects::AreniteWall]==0 && @weather==PBWeather::SANDSTORM && checkAIHas?([PBMoves::DUNEDEFENSE],attacker)))
                 totalscore = ((score1+score2)*0.80)
@@ -32321,7 +32321,7 @@ def pbShouldSwitch?(index,hardswitch=false)
         elsif increment>1
           setupdam=(maximumdamage*increment)
         end
-        if (battler.item == PBItems::MAGICALSEED && $fefieldeffect==31) || (battler.item == PBItems::TELLURICSEED && $fefieldeffect==10 || $fefieldeffect==14) # accounts for shield seeds negating damage
+        if (battler.item == PBItems::MAGICALSEED && $fefieldeffect==31) || (battler.item == PBItems::TELLURICSEED && ($fefieldeffect==10 || $fefieldeffect==14 || $fefieldeffect==15)) # accounts for shield seeds negating damage
           thisdam=0 if !(PBStuff::PROTECTIGNORINGMOVE).include?(maxmove.id)
           if incomingmove.isContactMove? && (battler.item == PBItems::MAGICALSEED && $fefieldeffect==31) # accounting for kings shield stat drops
             if !(opponent1.pbHasMove?(getID(PBMoves,:STOMPINGTANTRUM)) || opponent1.ability==PBAbilities::CONTRARY || opponent1.ability==PBAbilities::DEFIANT || opponent1.ability==PBAbilities::COMPETITIVE) # scenarios in which damage drops wont matter
@@ -34060,7 +34060,7 @@ def pbSwitchTo(currentmon,party,skill,pivoting=false,hardswitch=false,incomingmo
           if speeddropvar==true
             fasterthan1=false
           end
-          if (battler.item == PBItems::MAGICALSEED && $fefieldeffect==31) || (battler.item == PBItems::TELLURICSEED && $fefieldeffect==10 || $fefieldeffect==14) && !opponent1.isFainted?
+          if ((battler.item == PBItems::MAGICALSEED && $fefieldeffect==31) || (battler.item == PBItems::TELLURICSEED && ($fefieldeffect==10 || $fefieldeffect==14 || $fefieldeffect==15))) && !opponent1.isFainted?
             expecteddamage=0 if !(PBStuff::PROTECTIGNORINGMOVE).include?(opponent1strongmove.id)
             if incomingmove.isContactMove? && (battler.item == PBItems::MAGICALSEED && $fefieldeffect==31)
               if !(opponent1.pbHasMove?(getID(PBMoves,:STOMPINGTANTRUM)) || opponent1.ability==PBAbilities::CONTRARY || opponent1.ability==PBAbilities::DEFIANT || opponent1.ability==PBAbilities::COMPETITIVE)
