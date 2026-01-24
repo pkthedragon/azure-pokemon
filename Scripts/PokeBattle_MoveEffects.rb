@@ -14814,35 +14814,6 @@ class PokeBattle_Move_2A0 < PokeBattle_Move
 end
 
 ################################################################################
-# Tail Whip – lowers Defense and Sp. Def of all opposing Pokémon by 1 stage.
-################################################################################
-class PokeBattle_Move_2A0 < PokeBattle_Move
-  def pbEffect(attacker,opponent,hitnum=0,alltargets=nil,showanimation=true)
-    return super(attacker,opponent,hitnum,alltargets,showanimation) if @basedamage>0
-
-    pbShowAnimation(@id,attacker,opponent,hitnum,alltargets,showanimation)
-    success = false
-
-    @battle.battlers.each do |b|
-      next if !b
-      next if !attacker.pbIsOpposing?(b.index)
-      lowered = false
-      if b.pbCanReduceStatStage?(PBStats::DEFENSE,false)
-        b.pbReduceStat(PBStats::DEFENSE,1,false)
-        lowered = true
-      end
-      if b.pbCanReduceStatStage?(PBStats::SPDEF,false)
-        b.pbReduceStat(PBStats::SPDEF,1,false)
-        lowered = true
-      end
-      success = true if lowered
-    end
-
-    return success ? 0 : -1
-  end
-end
-
-################################################################################
 # Growl – lowers Attack and Sp. Atk of all opposing Pokémon by 1 stage.
 ################################################################################
 class PokeBattle_Move_2A1 < PokeBattle_Move
