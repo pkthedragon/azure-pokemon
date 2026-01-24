@@ -95,10 +95,17 @@ module PBHollow
       ]
     },
 	
-    [036, 1] => {
+    [36, 1] => {
       :any => [
         [:pokemon, :SMOLIV, 20, 75, :SYNTHESIS],
         [:pokemon, :FLETCHLING, 20, 25, :QUICKGUARD]
+      ]
+    },
+	
+    [90, 1] => {
+      :any => [
+        [:pokemon, :CLAUNCHER, 20, 75, :AQUAJET],
+        [:pokemon, :SHUCKLE, 20, 25, :TOXIC]
       ]
     },
   }
