@@ -10820,3 +10820,213 @@ Item use turned off.
 [Prefer Energy Ball]
 [No Z-Move.]
 [The ally Shieldon lost 23 HP, now has 24 HP]
+==============================
+Battle Start!
+205 - Alex
+206 - Harper
+==============================
+***Round 1***
+Player Pokemon Meowstic is faster than Shieldon.
+Player Pokemon Meowstic is faster than Shieldon.
+Power Gem: initial score: 25
+Power Gem: final score: 25
+ 
+Power Gem: initial score: 25
+Power Gem: final score: 25
+ 
+Prankster Disrupt
+Mirror Shot: initial score: 20
+Mirror Shot: final score: 20
+ 
+Mirror Shot: initial score: 20
+Mirror Shot: final score: 17
+ 
+Metal Sound: initial score: 10
+Metal Sound: final score: 10
+ 
+Metal Sound: initial score: 10
+Metal Sound: final score: 5
+ 
+Swagger: initial score: 20
+Swagger: final score: 30
+ 
+Swagger: initial score: 20
+Swagger: final score: 30
+ 
+Prankster Disrupt
+Swagger: initial score: 20
+Swagger: final score: 10
+ 
+Swagger: Score for using on partner: 10
+
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (0)
+Initial switchscore building: Healing (0)
+Initial switchscore building: fsteak (0)
+Initial switchscore building: Specific Switches (0)
+Initial switchscore building: worthsaving not activated
+Initial switchscore building: Typing (0)
+Shieldon: initial switchscore: -40
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+Shieldon: initial noswitchscore: 116
+ 
+{
+ 
+}
+ 
+Shieldon: highest move score: 31
+Shieldon: final switching score: -156
+31 > -156, will not switch
+ 
+Beginning AI Item use check.
+ 
+Highest item score: -10000
+Highest move score: 31
+Item use turned off.
+[The ally Shieldon: Power Gem=26, Mirror Shot=5, Metal Sound=5, Swagger=31]
+[Prefer Swagger]
+[No Z-Move.]
+AI Pokemon Meowstic is faster than  dog?.
+AI Pokemon Meowstic is faster than Shieldon.
+ 
+ 
+ 
+ 
+Psybeam: initial score: 44
+Psybeam: final score: 45
+ 
+Psybeam: initial score: 23
+Psybeam: final score: 23
+ 
+Thunderbolt: initial score: 22
+Thunderbolt: final score: 22
+ 
+Thunderbolt: initial score: 48
+Thunderbolt: final score: 49
+ 
+Swagger: initial score: 20
+Swagger: final score: 14
+ 
+Swagger: initial score: 20
+Swagger: final score: 30
+ 
+Swagger: Final Score after Status-Target Adjustment: 14
+Swagger: Final Score after Status-Target Adjustment: 30
+
+Light Screen: initial score: 35
+Light Screen: final score: 92
+ 
+Light Screen: initial score: 35
+Light Screen: final score: 120
+ 
+Light Screen: Final Score after Status-Target Adjustment: 92
+Light Screen: Final Score after Status-Target Adjustment: 120
+
+Swagger: initial score: 20
+Swagger: final score: 13
+ 
+Swagger: Score for using on partner: 13
+
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (0)
+Initial switchscore building: Healing (0)
+Initial switchscore building: fsteak (0)
+Initial switchscore building: Specific Switches (0)
+Initial switchscore building: worthsaving not activated
+Initial switchscore building: Typing (0)
+Meowstic: initial switchscore: 0
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+Meowstic: initial noswitchscore: 116
+ 
+{
+ 
+}
+ 
+Meowstic: highest move score: 120
+Meowstic: final switching score: -116
+120 > -116, will not switch
+ 
+Beginning AI Item use check.
+ 
+Highest item score: -10000
+Highest move score: 120
+Item use turned off.
+[The foe Meowstic: Psybeam=5, Thunderbolt=5, Swagger=5, Light Screen=120]
+[Prefer Light Screen]
+[No Z-Move.]
+AI Pokemon Meowstic is faster than Shieldon.
+AI Pokemon Meowstic is faster than  dog?.
+Psybeam: initial score: 23
+Psybeam: final score: 23
+ 
+Psybeam: initial score: 44
+Psybeam: final score: 45
+ 
+Energy Ball: initial score: 48
+Energy Ball: final score: 48
+ 
+Energy Ball: initial score: 47
+Energy Ball: final score: 47
+ 
+Charm: initial score: 10
+Priority Check End
+Charm: final score: 0
+ 
+Charm: initial score: 10
+Priority Check End
+Charm: final score: 0
+ 
+Charm: Final Score after Status-Target Adjustment: 0
+Charm: Final Score after Status-Target Adjustment: 0
+
+Reflect: initial score: 35
+Priority Check End
+Reflect: final score: 0
+ 
+Reflect: initial score: 35
+Priority Check End
+Reflect: final score: 0
+ 
+Reflect: Final Score after Status-Target Adjustment: 0
+Reflect: Final Score after Status-Target Adjustment: 0
+
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (0)
+Initial switchscore building: Healing (0)
+Initial switchscore building: fsteak (0)
+Initial switchscore building: Specific Switches (0)
+Initial switchscore building: worthsaving not activated
+Initial switchscore building: Typing (0)
+Meowstic: initial switchscore: 0
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+Meowstic: initial noswitchscore: 116
+ 
+{
+ 
+}
+ 
+Meowstic: highest move score: 48
+Meowstic: final switching score: -116
+48 > -116, will not switch
+ 
+Beginning AI Item use check.
+ 
+Highest item score: -10000
+Highest move score: 48
+Item use turned off.
+[The foe Meowstic: Psybeam=45, Energy Ball=48, Charm=1, Reflect=0]
+[Prefer Energy Ball]
+[No Z-Move.]
+[The ally Shieldon lost 23 HP, now has 24 HP]
