@@ -67,6 +67,22 @@ def pbGetBabyCompatibleMoves(pokemon, babyspecies)
 end
 #>>DemICE
 
+# Helper function to check if a move is any form of Hidden Power
+def pbIsHiddenPowerMove?(move)
+  return move == PBMoves::HIDDENPOWER ||
+         (move >= PBMoves::HIDDENPOWERNOR && move <= PBMoves::HIDDENPOWERFAI)
+end
+
+# Helper function to check if a Pokemon knows any form of Hidden Power
+def pbKnowsAnyHiddenPower?(pokemon)
+  return false if !pokemon
+  for i in 0...4
+    next if !pokemon.moves[i]
+    return true if pbIsHiddenPowerMove?(pokemon.moves[i].id)
+  end
+  return false
+end
+
 def pbHasRelearnableMove?(pokemon)
   return pbGetRelearnableMoves(pokemon).length>0
 end
@@ -74,9 +90,13 @@ end
 def pbGetRelearnableMoves(pokemon, exclude_level1=false)
   return [] if !pokemon || pokemon.isEgg? || (pokemon.isShadow? rescue false)
   moves=[]
+  # Check if Pokemon already knows any form of Hidden Power
+  knowsHiddenPower = pbKnowsAnyHiddenPower?(pokemon)
 
   pbEachNaturalMove(pokemon){|move,level|
      if level<=pokemon.level && !pokemon.knowsMove?(move)
+       # Skip Hidden Power if Pokemon already knows any Hidden Power variant
+       next if pbIsHiddenPowerMove?(move) && knowsHiddenPower
        # Exclude level 1 moves that haven't been learned before
        if level==1
          # Check if this move was in the Pokemon's original moveset
@@ -88,6 +108,8 @@ def pbGetRelearnableMoves(pokemon, exclude_level1=false)
   tmoves=[]
   if pokemon.firstmoves
     for i in pokemon.firstmoves
+      # Skip Hidden Power if Pokemon already knows any Hidden Power variant
+      next if pbIsHiddenPowerMove?(i) && knowsHiddenPower
       tmoves.push(i) if !pokemon.knowsMove?(i) && !moves.include?(i)
     end
   end
