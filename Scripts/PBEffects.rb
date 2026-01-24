@@ -174,6 +174,7 @@ begin
     MudBath           = 201
     NaturalOrder      = 202
     FeverPitchBoost   = 203
+    MirrorCoatBuff    = 204
     CounterStance     = 205
     NightmareAura     = 206
     DamagingMoveThisTurn = 207

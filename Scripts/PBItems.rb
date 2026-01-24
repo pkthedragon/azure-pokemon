@@ -1102,6 +1102,7 @@ APEXBALL=1141
 POCKETBALL=1142
 VIRUSBALL=1143
 BANDITBALL=1144
+SHARPTALONS=1145
 
 def PBItems.getName(id)
 return pbGetMessage(MessageTypes::Items,id)
