@@ -19,6 +19,8 @@ class PokeBattle_Pokemon
   attr_accessor(:item)        # Held item
   attr_accessor(:itemRecycle) # Consumed held item (used in battle only)
   attr_accessor(:itemInitial) # Resulting held item (used in battle only)
+  attr_accessor(:harvestBerry) # First berry consumed this turn (battle only)
+  attr_accessor(:harvestUsed) # Harvest used since last refresh (battle only)
   attr_accessor(:mail)        # Mail
   attr_accessor(:fused)       # The Pokémon fused into this one
   attr_accessor(:name)        # Nickname
@@ -1064,6 +1066,8 @@ class PokeBattle_Pokemon
     @obspa=0
     @obspd=0    
     @mystic_gimmighoul_bonus=0
+    @harvestBerry=0
+    @harvestUsed=false
     @iv=[]
     # All IVs default to 15
     for i in 0..5
