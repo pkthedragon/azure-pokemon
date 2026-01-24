@@ -4922,6 +4922,15 @@ class PokeBattle_Battler
   ################################################################################
   # Held item effects
   ################################################################################
+  def pbRecordHarvestBerry(berry)
+    return if !@pokemon
+    return if !berry || berry<=0
+    return if !pbIsBerry?(berry)
+    return if !self.hasWorkingAbility(:HARVEST)
+    return if @pokemon.harvestBerry && @pokemon.harvestBerry>0
+    @pokemon.harvestBerry=berry
+  end
+
   berryconsumed = false
   def pbConfusionBerry(symbol,flavor,message1,message2)
     if isConst?(self.item,PBItems,symbol) && ((self.hasWorkingAbility(:GLUTTONY) && self.hp<=(self.totalhp/2).floor) || self.hp<=(self.totalhp/4).floor)
@@ -4939,6 +4948,7 @@ class PokeBattle_Battler
           @battle.pbDisplay(_INTL("{1} became confused!",pbThis))
         end
       end
+      pbRecordHarvestBerry(self.item)
       @pokemon.itemRecycle=self.item
       @pokemon.itemInitial=0 if @pokemon.itemInitial==self.item
       self.item=0
@@ -4958,6 +4968,7 @@ class PokeBattle_Battler
           pbIncreaseStatBasic(stat,1)
         end
         @battle.pbDisplay(message)
+        pbRecordHarvestBerry(self.item)
         @pokemon.itemRecycle=self.item
         $belch=true
         @pokemon.itemInitial=0 if @pokemon.itemInitial==self.item
@@ -4991,6 +5002,7 @@ class PokeBattle_Battler
           self.pbRecoverHP(10,true)
         end
         @battle.pbDisplay(_INTL("{1}'s {2} restored health!",pbThis,itemname))   
+        pbRecordHarvestBerry(self.item)
         @pokemon.itemRecycle=self.item
         $belch=true
         @pokemon.itemInitial=0 if @pokemon.itemInitial==self.item
@@ -5005,6 +5017,7 @@ class PokeBattle_Battler
           self.pbRecoverHP((self.totalhp/4).floor,true)
         end
         @battle.pbDisplay(_INTL("{1}'s {2} restored health!",pbThis,itemname))   
+        pbRecordHarvestBerry(self.item)
         @pokemon.itemRecycle=self.item
         $belch=true
         @pokemon.itemInitial=0 if @pokemon.itemInitial==self.item
@@ -5020,6 +5033,7 @@ class PokeBattle_Battler
           self.pbRecoverHP((self.totalhp/4).floor,true)
         end
         @battle.pbDisplay(_INTL("{1}'s {2} restored health!",pbThis,itemname))   
+        pbRecordHarvestBerry(self.item)
         @pokemon.itemRecycle=self.item
         $belch=true
         @pokemon.itemInitial=0 if @pokemon.itemInitial==self.item
@@ -5030,6 +5044,7 @@ class PokeBattle_Battler
         berryconsumed = true
         self.status=0
         @battle.pbDisplay(_INTL("{1}'s {2} cured its paralysis problem!",pbThis,itemname))
+        pbRecordHarvestBerry(self.item)
         @pokemon.itemRecycle=self.item
         $belch=true
         @pokemon.itemInitial=0 if @pokemon.itemInitial==self.item
@@ -5039,6 +5054,7 @@ class PokeBattle_Battler
         berryconsumed = true
         self.status=0
         @battle.pbDisplay(_INTL("{1}'s {2} cured its sleep problem!",pbThis,itemname))
+        pbRecordHarvestBerry(self.item)
         @pokemon.itemRecycle=self.item
         $belch=true
         @pokemon.itemInitial=0 if @pokemon.itemInitial==self.item
@@ -5048,6 +5064,7 @@ class PokeBattle_Battler
         berryconsumed = true
         self.status=0
         @battle.pbDisplay(_INTL("{1}'s {2} cured its poison problem!",pbThis,itemname))
+        pbRecordHarvestBerry(self.item)
         @pokemon.itemRecycle=self.item
         $belch=true
         @pokemon.itemInitial=0 if @pokemon.itemInitial==self.item
@@ -5057,6 +5074,7 @@ class PokeBattle_Battler
         berryconsumed = true
         self.status=0
         @battle.pbDisplay(_INTL("{1}'s {2} cured its burn problem!",pbThis,itemname))
+        pbRecordHarvestBerry(self.item)
         @pokemon.itemRecycle=self.item
         $belch=true
         @pokemon.itemInitial=0 if @pokemon.itemInitial==self.item
@@ -5066,6 +5084,7 @@ class PokeBattle_Battler
         berryconsumed = true
         self.status=0
         @battle.pbDisplay(_INTL("{1}'s {2} cured its ice problem!",pbThis,itemname))
+        pbRecordHarvestBerry(self.item)
         @pokemon.itemRecycle=self.item
         $belch=true
         @pokemon.itemInitial=0 if @pokemon.itemInitial==self.item
@@ -5082,6 +5101,7 @@ class PokeBattle_Battler
             pokemove.pp=pokemove.totalpp if pokemove.pp>pokemove.totalpp 
             battlermove.pp=pokemove.pp
             @battle.pbDisplay(_INTL("{1}'s {2} restored {3}'s PP!",pbThis,itemname,movename)) 
+            pbRecordHarvestBerry(self.item)
             @pokemon.itemRecycle=self.item
             $belch=true
             @pokemon.itemInitial=0 if @pokemon.itemInitial==self.item
@@ -5094,6 +5114,7 @@ class PokeBattle_Battler
         berryconsumed = true
         @effects[PBEffects::Confusion]=0
         @battle.pbDisplay(_INTL("{1}'s {2} cured its confusion problem!",pbThis,itemname))
+        pbRecordHarvestBerry(self.item)
         @pokemon.itemRecycle=self.item
         $belch=true
         @pokemon.itemInitial=0 if @pokemon.itemInitial==self.item
@@ -5120,6 +5141,7 @@ class PokeBattle_Battler
             @battle.pbDisplay(_INTL("{1}'s {2} cured its frozen problem!",pbThis,itemname))
           end
         end
+        pbRecordHarvestBerry(self.item)
         @pokemon.itemRecycle=self.item
         $belch=true
         @pokemon.itemInitial=0 if @pokemon.itemInitial==self.item
@@ -5156,6 +5178,7 @@ class PokeBattle_Battler
           (self.hp<=(self.totalhp/4).floor)
           @battle.pbDisplay(_INTL("{1} used its {2} to get pumped!",pbThis,itemname))
           @effects[PBEffects::FocusEnergy]=2
+          pbRecordHarvestBerry(self.item)
           @pokemon.itemRecycle=self.item
           $belch=true
           @pokemon.itemInitial=0 if @pokemon.itemInitial==self.item
@@ -5180,6 +5203,7 @@ class PokeBattle_Battler
             stat=stats[@battle.pbRandom(stats.length)]
             pbIncreaseStatBasic(stat,2)
             @battle.pbDisplay(messages[stat])
+            pbRecordHarvestBerry(self.item)
             @pokemon.itemRecycle=self.item
             $belch=true
             @pokemon.itemInitial=0 if @pokemon.itemInitial==self.item
@@ -5268,6 +5292,7 @@ class PokeBattle_Battler
   end
   
   def pbSpecialBerryUse(berry)
+    berryconsumed=false
     if berry == 398
       berryconsumed=true
       pbItemRestoreHP(self,self.totalhp/4)
@@ -5382,6 +5407,7 @@ class PokeBattle_Battler
         @battle.pbDisplay(messages[stat])
       end      
     end
+    pbRecordHarvestBerry(berry) if berryconsumed
     if berryconsumed and self.hasWorkingAbility(:CHEEKPOUCH)
       self.pbRecoverHP((self.totalhp/3).floor,true)
       @battle.pbDisplay(_INTL("{1}'s {2} restored health!",pbThis,PBAbilities.getName(self.ability)))
@@ -5395,6 +5421,7 @@ class PokeBattle_Battler
         (self.hp<=(self.totalhp/4).floor)
         @custap = true
         @battle.pbDisplay(_INTL("{1} ate its Custap berry to move first!",pbThis))
+        pbRecordHarvestBerry(self.item)
         @pokemon.itemRecycle=self.item
         $belch=true
         @pokemon.itemInitial=0 if @pokemon.itemInitial==self.item

@@ -542,11 +542,15 @@ class PokeBattle_Battle
       next if !i
       i.itemRecycle = 0
       i.itemInitial = i.item
+      i.harvestBerry = 0
+      i.harvestUsed = false
     end
     for i in @party2
       next if !i
       i.itemRecycle = 0
       i.itemInitial = i.item
+      i.harvestBerry = 0
+      i.harvestUsed = false
     end
 #### SARDINES - Eruption - START
     @eruption        = false
@@ -8544,23 +8548,27 @@ def pbStartBattle(canlose=false)
       return if !i.pbFaint
       next
     end
-    # Harvest 
-    if i.hasWorkingAbility(:HARVEST) && i.item<=0 && i.pokemon.itemRecycle>0 #if an item was recycled, check
-      if pbIsBerry?(i.pokemon.itemRecycle) && (rand(100)>50 || 
-       (pbWeather==PBWeather::SUNNYDAY && !i.hasWorkingItem(:UTILITYUMBRELLA)) || ($fefieldeffect == 33 && $fecounter>0))
-        i.item=i.pokemon.itemRecycle
-        i.pokemon.itemInitial=i.pokemon.itemRecycle
-        i.pokemon.itemRecycle=0
-        firstberryletter=PBItems.getName(i.item).split(//).first
-        if firstberryletter=="A" || firstberryletter=="E" || firstberryletter=="I" ||
-          firstberryletter=="O" || firstberryletter=="U"
-              pbDisplay(_INTL("{1} harvested an {2}!",i.pbThis,PBItems.getName(i.item)))
-        else      
-          pbDisplay(_INTL("{1} harvested a {2}!",i.pbThis,PBItems.getName(i.item)))
-        end
-        i.pbBerryCureCheck(true)
+    # Harvest
+    sunny = pbWeather==PBWeather::SUNNYDAY && !i.hasWorkingItem(:UTILITYUMBRELLA)
+    harvested_berry = i.pokemon.harvestBerry
+    if i.hasWorkingAbility(:HARVEST) && i.item<=0 && harvested_berry.to_i>0 &&
+       (!i.pokemon.harvestUsed || sunny)
+      i.item=harvested_berry
+      i.pokemon.itemInitial=harvested_berry
+      i.pokemon.itemRecycle=0
+      i.pokemon.harvestBerry=0
+      i.pokemon.harvestUsed=true
+      firstberryletter=PBItems.getName(i.item).split(//).first
+      if firstberryletter=="A" || firstberryletter=="E" || firstberryletter=="I" ||
+        firstberryletter=="O" || firstberryletter=="U"
+            pbDisplay(_INTL("{1} harvested an {2}!",i.pbThis,PBItems.getName(i.item)))
+      else      
+        pbDisplay(_INTL("{1} harvested a {2}!",i.pbThis,PBItems.getName(i.item)))
       end
+      i.pbBerryCureCheck(true)
     end
+    i.pokemon.harvestBerry=0
+    i.pokemon.harvestUsed=false if sunny
     # Moody
     if i.hasWorkingAbility(:CLOUDNINE) && $fefieldeffect == 9
       failsafe=0
@@ -8607,16 +8615,6 @@ def pbStartBattle(canlose=false)
       end
     end
   end
-#    # Harvest 
-#    if i.hasWorkingAbility(:HARVEST) && i.item<=0 && i.pokemon.itemRecycle>0 #if an item was recycled, check
-#      if pbIsSeed?(i.pokemon.itemRecycle) || ($fefieldeffect == 33 && $fecounter>0)
-#        i.item=i.pokemon.itemRecycle
-#        i.pokemon.itemInitial=i.pokemon.itemRecycle
-#        i.pokemon.itemRecycle=0
-#        pbDisplay(_INTL("{1} harvested {2}!",i.pbThis,PBItems.getName(i.item)))
-#        i.pbSeedCheck(true)
-#      end
-#    end
     for i in priority
       next if i.isFainted?
       if i.effects[PBEffects::BurnUp]
