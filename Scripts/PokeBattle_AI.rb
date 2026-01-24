@@ -32321,7 +32321,7 @@ def pbShouldSwitch?(index,hardswitch=false)
         elsif increment>1
           setupdam=(maximumdamage*increment)
         end
-        if (battler.item == PBItems::MAGICALSEED && $fefieldeffect==31) || (battler.item == PBItems::TELLURICSEED && $fefieldeffect==10 || $fefieldeffect==14) # accounts for shield seeds negating damage
+        if (battler.item == PBItems::MAGICALSEED && $fefieldeffect==31) || (battler.item == PBItems::TELLURICSEED && ($fefieldeffect==10 || $fefieldeffect==14 || $fefieldeffect==15)) # accounts for shield seeds negating damage
           thisdam=0 if !(PBStuff::PROTECTIGNORINGMOVE).include?(maxmove.id)
           if incomingmove.isContactMove? && (battler.item == PBItems::MAGICALSEED && $fefieldeffect==31) # accounting for kings shield stat drops
             if !(opponent1.pbHasMove?(getID(PBMoves,:STOMPINGTANTRUM)) || opponent1.ability==PBAbilities::CONTRARY || opponent1.ability==PBAbilities::DEFIANT || opponent1.ability==PBAbilities::COMPETITIVE) # scenarios in which damage drops wont matter
@@ -34060,7 +34060,7 @@ def pbSwitchTo(currentmon,party,skill,pivoting=false,hardswitch=false,incomingmo
           if speeddropvar==true
             fasterthan1=false
           end
-          if (battler.item == PBItems::MAGICALSEED && $fefieldeffect==31) || (battler.item == PBItems::TELLURICSEED && $fefieldeffect==10 || $fefieldeffect==14) && !opponent1.isFainted?
+          if ((battler.item == PBItems::MAGICALSEED && $fefieldeffect==31) || (battler.item == PBItems::TELLURICSEED && ($fefieldeffect==10 || $fefieldeffect==14 || $fefieldeffect==15))) && !opponent1.isFainted?
             expecteddamage=0 if !(PBStuff::PROTECTIGNORINGMOVE).include?(opponent1strongmove.id)
             if incomingmove.isContactMove? && (battler.item == PBItems::MAGICALSEED && $fefieldeffect==31)
               if !(opponent1.pbHasMove?(getID(PBMoves,:STOMPINGTANTRUM)) || opponent1.ability==PBAbilities::CONTRARY || opponent1.ability==PBAbilities::DEFIANT || opponent1.ability==PBAbilities::COMPETITIVE)
