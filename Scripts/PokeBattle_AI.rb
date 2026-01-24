@@ -9551,7 +9551,7 @@ class PokeBattle_Battle
       if opponent.effects[PBEffects::Substitute]>0
         score*=1.3
       end
-      if attacker.hasWorkingItem(:RAZORFANG) || attacker.hasWorkingItem(:KINGSROCK)
+      if attacker.hasWorkingItem(:RAZORFANG)
         score*=1.1
       end
     when 0xBE # Twinneedle
@@ -9626,7 +9626,7 @@ class PokeBattle_Battle
       if opponent.effects[PBEffects::Substitute]>0
         score*=1.3
       end
-      if attacker.hasWorkingItem(:RAZORFANG) || attacker.hasWorkingItem(:KINGSROCK)
+      if attacker.hasWorkingItem(:RAZORFANG)
         score*=1.1
       end
     when 0xBF # Triple Kick
@@ -9639,7 +9639,7 @@ class PokeBattle_Battle
       if opponent.effects[PBEffects::Substitute]>0
         score*=1.3
       end
-      if attacker.hasWorkingItem(:RAZORFANG) || attacker.hasWorkingItem(:KINGSROCK)
+      if attacker.hasWorkingItem(:RAZORFANG)
         score*=1.2
       end
     when 0xC0 # Bullet Seed
@@ -9655,7 +9655,7 @@ class PokeBattle_Battle
       if opponent.effects[PBEffects::Substitute]>0
         score*=1.3
       end
-      if attacker.hasWorkingItem(:RAZORFANG) || attacker.hasWorkingItem(:KINGSROCK)
+      if attacker.hasWorkingItem(:RAZORFANG)
         score*=1.3
       end
     when 0xC1 # Beat Up
@@ -9674,7 +9674,7 @@ class PokeBattle_Battle
         if opponent.effects[PBEffects::Substitute]>0
           score*=1.3
         end
-        if attacker.hasWorkingItem(:RAZORFANG) || attacker.hasWorkingItem(:KINGSROCK)
+        if attacker.hasWorkingItem(:RAZORFANG)
           score*=1.3
         end
         if opponent == attacker.pbPartner && (!opponent.abilitynulled && opponent.ability == PBAbilities::JUSTIFIED)
@@ -13036,7 +13036,7 @@ class PokeBattle_Battle
           if opponent.pbCanParalyze?(false) && !(!opponent.abilitynulled && opponent.ability == PBAbilities::QUICKFEET)
             score*=1.3
           end
-        when getID(PBItems,:KINGSROCK), getID(PBItems,:RAZORCLAW)
+        when getID(PBItems,:RAZORCLAW)
           if !(!opponent.abilitynulled && opponent.ability == PBAbilities::INNERFOCUS) && ((attacker.pbSpeed>opponent.pbSpeed) ^ (@trickroom!=0))
             score*=1.3
           end
@@ -23474,7 +23474,10 @@ class PokeBattle_Battle
     # Multi-targeting attacks
     if skill>=PBTrainerAI.mediumSkill
       if move.pbTargetsAll?(attacker)
-        damage=(damage*0.75).round
+        # King's Rock ignores spread move damage nerf
+        if !attacker.hasWorkingItem(:KINGSROCK)
+          damage=(damage*0.75).round
+        end
       end
     end
     # Terrain Boosts
@@ -29006,7 +29009,7 @@ class PokeBattle_Battle
         if !@useCachedDamageArrays
         for j in 0...attacker.moves.length
           next if attacker.isFainted?
-          next if attacker.moves[j].id < 1
+          next if !attacker.moves[j].id || attacker.moves[j].id < 1
           changed1=false
           changed2=false
           # check attacker.moves[j].basedamage and if this is 0 instead check the status method
@@ -29214,7 +29217,7 @@ class PokeBattle_Battle
           partnermove2=0
           besttarget=nil
           for lmao in attacker.pbPartner.moves
-            next if (!lmao || lmao.nil? || lmao.id < 1)
+            next if (!lmao || lmao.nil? || !lmao.id || lmao.id < 1)
             if lmao.basedamage>0 && ((lmao.priority>0) || (!attacker.pbPartner.abilitynulled && (attacker.pbPartner.ability == PBAbilities::GALEWINGS && lmao.type==PBTypes::FLYING) && attacker.pbPartner.hp==attacker.pbPartner.totalhp) || (attacker.pbPartner.species == PBSpecies::FERALIGATR && attacker.pbPartner.item == PBItems::FERACREST && attacker.pbPartner.turncount==0) ||  (!attacker.pbPartner.abilitynulled && attacker.pbPartner.ability == PBAbilities::TRIAGE && lmao.isHealingMove?))
               priomove=true if !(lmao.id==getID(PBMoves,:FAKEOUT) && attacker.pbPartner.turncount>0)
               fakeouter=true if (lmao.id==getID(PBMoves,:FAKEOUT) && attacker.pbPartner.turncount==0)
@@ -29652,7 +29655,7 @@ class PokeBattle_Battle
       baseDamageArray=[]
       baseDamageArrayAdj=[]
       for j in 0...attacker.moves.length
-        next if attacker.moves[j].id < 1
+        next if !attacker.moves[j].id || attacker.moves[j].id < 1
         # check attacker.moves[j].basedamage and if this is 0 instead check the status method
         dmgValue = pbRoughDamage(attacker.moves[j],attacker,opponent,skill,attacker.moves[j].basedamage) 
         if attacker.moves[j].basedamage!=0
@@ -33726,7 +33729,12 @@ def pbSwitchTo(currentmon,party,skill,pivoting=false,hardswitch=false,incomingmo
       end
       if maxdam>damageoutput || maxdam2>damageoutput
         if @doublebattle && k.pbTargetsAll?(battler)
-          damageoutput=((maxdam+maxdam2)*0.75)
+          # King's Rock ignores spread move damage nerf
+          if battler.hasWorkingItem(:KINGSROCK)
+            damageoutput=(maxdam+maxdam2)
+          else
+            damageoutput=((maxdam+maxdam2)*0.75)
+          end
           if (damageoutput>(opponent1.hp+opponent2.hp) && fastermonthanboth)
             wipeout=true 
             bestmove=k

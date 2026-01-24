@@ -6822,7 +6822,7 @@ class PokeBattle_Battler
       # Make the target flinch
       if target.damagestate.calcdamage>0 && !target.damagestate.substitute
         if !isConst?(target.ability,PBAbilities,:SHIELDDUST) || target.moldbroken || thismove.hasFlags?("m")
-          if (user.hasWorkingItem(:KINGSROCK) || user.hasWorkingItem(:RAZORFANG)) &&
+          if user.hasWorkingItem(:RAZORFANG) &&
             thismove.canKingsRock? && target.status!=PBStatuses::SLEEP && target.status!=PBStatuses::FROZEN
             if @battle.pbRandom(10)==0
               target.effects[PBEffects::Flinch]=true
