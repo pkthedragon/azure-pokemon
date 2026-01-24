@@ -52,6 +52,10 @@ class PokeBattle_Battle
     move_type = bettertype
     opponent=attacker.pbOppositeOpposing if !opponent
     opponent=opponent.pbPartner if opponent && opponent.isFainted?
+    if pbStatMoveLockedForTargets?(attacker,opponent,move)
+      PBDebug.log(sprintf("Move is locked for all targets. Score set to 0.")) if $INTERNAL && shutup==false
+      return 0
+    end
     roles = pbGetMonRole(attacker,opponent,skill)
     # Fake Out, First Impression, Mat Block, and Forebode only work on turn 1 - set score to 0 if turncount != 1
     if ((move.id == PBMoves::FAKEOUT || move.id == getID(PBMoves,:FIRSTIMPRESSION) ||
@@ -28327,6 +28331,49 @@ class PokeBattle_Battle
       end
     end
     return count
+  end
+
+  def pbStatMoveTargets(attacker,opponent,move)
+    targets=[]
+    case move.target
+    when PBTargets::User
+      targets << attacker
+    when PBTargets::UserSide
+      targets << attacker
+      targets << attacker.pbPartner if @doublebattle && attacker.pbPartner && !attacker.pbPartner.isFainted?
+    when PBTargets::BothSides
+      targets << attacker
+      targets << attacker.pbPartner if @doublebattle && attacker.pbPartner && !attacker.pbPartner.isFainted?
+      targets << opponent if opponent && !opponent.isFainted?
+      targets << opponent.pbPartner if @doublebattle && opponent && opponent.pbPartner && !opponent.pbPartner.isFainted?
+    when PBTargets::Partner
+      targets << attacker.pbPartner if @doublebattle && attacker.pbPartner && !attacker.pbPartner.isFainted?
+    when PBTargets::UserOrPartner
+      targets << attacker
+      targets << attacker.pbPartner if @doublebattle && attacker.pbPartner && !attacker.pbPartner.isFainted?
+    when PBTargets::SingleOpposing, PBTargets::OppositeOpposing, PBTargets::RandomOpposing
+      targets << opponent if opponent && !opponent.isFainted?
+    when PBTargets::AllOpposing, PBTargets::OpposingSide
+      targets << opponent if opponent && !opponent.isFainted?
+      targets << opponent.pbPartner if @doublebattle && opponent && opponent.pbPartner && !opponent.pbPartner.isFainted?
+    when PBTargets::AllNonUsers
+      targets << opponent if opponent && !opponent.isFainted?
+      if @doublebattle
+        targets << opponent.pbPartner if opponent && opponent.pbPartner && !opponent.pbPartner.isFainted?
+        targets << attacker.pbPartner if attacker.pbPartner && !attacker.pbPartner.isFainted?
+      end
+    end
+    return targets.compact.uniq
+  end
+
+  def pbStatMoveLockedForTargets?(attacker,opponent,move)
+    return false if move.basedamage>0
+    targets=pbStatMoveTargets(attacker,opponent,move)
+    return false if targets.empty?
+    return targets.all? do |target|
+      lock=target.effects[PBEffects::StatMoveLock]
+      lock && lock[move.id]
+    end
   end
   
   ################################################################################

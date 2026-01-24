@@ -1164,6 +1164,9 @@ class PokeBattle_Battler
     @effects[PBEffects::StalwartMove]     = 0
     @effects[PBEffects::StalwartStacks]   = 0
     @effects[PBEffects::ReverbUser]       = -1
+    @effects[PBEffects::StatMoveLock]     = {}
+    @effects[PBEffects::StatMoveLockPending] = {}
+    @effects[PBEffects::StatMoveLockMessage] = nil
     # Additional effect initializations
     @effects[PBEffects::Spritz]           = 0
     @effects[PBEffects::Aftershock]       = 0
@@ -8692,16 +8695,24 @@ class PokeBattle_Battler
     @battle.synchronize[1]=-1
     @battle.synchronize[2]=0
     for i in 0...4
-      @battle.battlers[i].pbAbilityCureCheck
-      @battle.battlers[i].pbBerryCureCheck
-      @battle.battlers[i].pbAbilitiesOnSwitchIn(false)
-      @battle.battlers[i].pbCheckForm
+      battler=@battle.battlers[i]
+      next if !battler
+      pending=battler.effects[PBEffects::StatMoveLockPending]
+      if pending && !pending.empty?
+        battler.effects[PBEffects::StatMoveLock].merge!(pending)
+        pending.clear
+      end
+      battler.effects[PBEffects::StatMoveLockMessage] = nil
+      battler.pbAbilityCureCheck
+      battler.pbBerryCureCheck
+      battler.pbAbilitiesOnSwitchIn(false)
+      battler.pbCheckForm
       #End of turn ability nullification check
-      if @battle.battlers[i].abilitynulled == true 
-        if !(@battle.battlers[i].abilityWorks?)
-          @battle.battlers[i].abilitynulled = true
+      if battler.abilitynulled == true 
+        if !(battler.abilityWorks?)
+          battler.abilitynulled = true
         else
-          @battle.battlers[i].abilitynulled = false
+          battler.abilitynulled = false
         end
       end
     end
