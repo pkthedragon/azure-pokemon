@@ -7735,6 +7735,24 @@ class PokeBattle_Battle
             elsif (allySpeed < attackerSpeed) ^ (@trickroom!=0)
               score*=1.1  # We move first, ally gets doubled damage
             end
+            # Priority boost: If attacker would be KO'd by a faster opponent,
+            # but ally with Round is faster than that opponent, Round lets us attack first
+            @battlers.each do |opp|
+              next if !opp || opp.isFainted?
+              next if opp.index % 2 == attacker_side  # Skip allies
+              oppSpeed = pbRoughStat(opp,PBStats::SPEED,skill)
+              # Check if opponent is faster than attacker (would move first normally)
+              next unless (oppSpeed > attackerSpeed) ^ (@trickroom!=0)
+              # Check if opponent could KO attacker
+              oppDamage = checkAIdamage(aimem,attacker,opp,skill)
+              next unless oppDamage >= attacker.hp
+              # Check if ally with Round is faster than this threatening opponent
+              if (allySpeed > oppSpeed) ^ (@trickroom!=0)
+                # Ally moves first -> chains attacker -> attacker moves before opponent KOs it
+                score*=2.0  # Strong priority boost for survival
+                break
+              end
+            end
           end
           # If any ally already used Round this turn, we definitely want to use it
           if ally_used_round
