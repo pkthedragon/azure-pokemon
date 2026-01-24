@@ -687,7 +687,7 @@ end
   def pbStatChangeMoveId
     return nil if !@battle || @battle.lastMoveUser < 0
     user=@battle.battlers[@battle.lastMoveUser]
-    return nil if !user || user.currentMove != @battle.lastMoveUsed
+    return nil if !user
     move_id=@battle.lastMoveUsed
     begin
       move_data=PBMoveData.new(move_id)
@@ -950,7 +950,7 @@ end
       increment += 1
     end
     stat_move_id=pbStatChangeMoveId
-    return false if pbStatChangeMoveLocked?(stat_move_id,showMessages1)
+    return false if !selfreduce && pbStatChangeMoveLocked?(stat_move_id,showMessages1)
     # no, we don't want to say reduce 5 times - Thunder Raid
     if moveid == 207
       showMessages2 = false
@@ -1006,7 +1006,7 @@ end
     end
     if pbCanReduceStatStage?(stat,showMessages1,selfreduce)
       pbReduceStatBasic(stat,increment)
-      pbRegisterStatChangeMove(stat_move_id)
+      pbRegisterStatChangeMove(stat_move_id) if !selfreduce
       if moveid!=207
         @battle.pbCommonAnimation("StatDown",self,nil) if downanim
       end

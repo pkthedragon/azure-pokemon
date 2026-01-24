@@ -4095,7 +4095,7 @@ class PokeBattle_Battler
       end
     end
   end
-  def pbEffectsOnDealingDamage(move,user,target,damage,innards)
+  def pbEffectsOnDealingDamage(move,user,target,damage,innards,hitnum=0)
     movetype=move.pbType(move.type,user,target)
     # Counter Stance - physical attacks against the user have 1/4th recoil
     if damage>0 && !target.damagestate.substitute &&
@@ -4637,7 +4637,7 @@ class PokeBattle_Battler
         end
       end
       # Cotton Down
-      if target.hasWorkingAbility(:COTTONDOWN,true)
+      if target.hasWorkingAbility(:COTTONDOWN,true) && hitnum==0
         @battle.pbDisplay(_INTL("{1}'s {2} scatters cotton around!",
             target.pbThis,PBAbilities.getName(target.ability)))
         for i in @battle.battlers
@@ -6789,7 +6789,7 @@ class PokeBattle_Battler
         end
       end
       # Ability effects
-      pbEffectsOnDealingDamage(thismove,user,target,damage,innardsOutHp)
+      pbEffectsOnDealingDamage(thismove,user,target,damage,innardsOutHp,i)
       # Mana Echoes - Special attacks deal an additional 1/8th of user's max HP damage
       if user.hasWorkingAbility(:MANAECHOES) && target.damagestate.calcdamage>0 &&
          !target.damagestate.substitute && !target.isFainted? &&
@@ -8640,8 +8640,8 @@ class PokeBattle_Battler
         # Counterweight - raises speed when using momentum moves
         if user.hasWorkingItem(:COUNTERWEIGHT) && PBStuff::MOMENTUMMOVE.include?(thismove.id)
           if user.pbCanIncreaseStatStage?(PBStats::SPEED,false)
-            user.pbIncreaseStat(PBStats::SPEED,1,true)
-			@battle.pbDisplay(_INTL("{1} gained speed with its Counterweight!",user.pbThis))
+            user.pbIncreaseStat(PBStats::SPEED,1,false,nil,nil,true,false,false)
+            @battle.pbDisplay(_INTL("{1} gained speed with its Counterweight!",user.pbThis))
           end
         end
         user.pbFaint if user.isFainted? # no return
