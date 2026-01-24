@@ -2398,6 +2398,13 @@ class PokeBattle_Scene
       fieldbd = 21
       backdrop = "Water"
     end
+    if $PokemonTemp.encounterType &&
+       ($PokemonTemp.encounterType==EncounterTypes::OldRod ||
+        $PokemonTemp.encounterType==EncounterTypes::GoodRod ||
+        $PokemonTemp.encounterType==EncounterTypes::SuperRod)
+      fieldbd = 21
+      backdrop = "Water"
+    end
     #>>DemICE
     if $game_variables[708] != 0
       fieldbd = $game_variables[708]
