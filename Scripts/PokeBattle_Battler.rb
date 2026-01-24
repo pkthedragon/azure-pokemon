@@ -1105,6 +1105,9 @@ class PokeBattle_Battler
     #   @effects[PBEffects::WaterSport]       = false
     @effects[PBEffects::WeightMultiplier] = 1.0
     @effects[PBEffects::Yawn]             = 0
+    @effects[PBEffects::StatMoveLock]     = {}
+    @effects[PBEffects::StatMoveLockPending] = {}
+    @effects[PBEffects::StatMoveLockMessage] = nil
     @effects[PBEffects::BeakBlast]        = false
     @effects[PBEffects::BurnUp]           = false
     @effects[PBEffects::ClangedScales]    = false
