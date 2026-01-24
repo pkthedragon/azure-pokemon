@@ -41,7 +41,7 @@
 38,PUNISHMENT,Punishment,08F,1,DARK,Physical,100,5,0,00,0,abef,"This attack's power increases the more the target has powered up with stat changes."
 39,DARKVOID,Dark Void,003,0,DARK,Status,0,5,0,04,-1,bce,"-1 priority. Puts the target to sleep for two turns."
 40,EMBARGO,Embargo,0F8,0,DARK,Status,0,10,0,00,0,bce,"It prevents the target from using any items."
-41,FAKETEARS,Fake Tears,04F,0,DARK,Status,0,15,0,00,0,bce,"Lowers special attack and special defense."
+41,FAKETEARS,Fake Tears,2A3,0,DARK,Status,0,15,0,00,0,bce,"Lowers special attack and special defense."
 42,FLATTER,Flatter,040,0,DARK,Status,0,15,0,00,0,bce,"Sharply raises target's special attack instead."
 43,HONECLAWS,Hone Claws,029,0,DARK,Status,0,10,0,10,0,d,"The user sharpens its claws to boost its Attack stat and accuracy."
 44,MEMENTO,Memento,0E2,0,DARK,Status,0,5,0,00,0,e,"The user faints using this move. It harshly lowers the target's Attack and Sp. Atk."
