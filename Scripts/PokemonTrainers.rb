@@ -97,9 +97,7 @@ def pbLoadTrainerDifficult(trainerid,trainername,partyid=0,procedure=nil)
       end
       pokemon.setNature(poke[TPNATURE])
       iv=poke[TPIV]
-      # Only modify IVs if explicitly defined (non-nil and non-zero)
-      # Pokemon already default to 15 IVs from initialization
-      if iv && iv > 0
+      if iv && iv > 0 && iv != TPDEFAULTS[TPIV]
         for i in 0...6
           if iv == 32
             pokemon.iv[0]=31
@@ -111,6 +109,10 @@ def pbLoadTrainerDifficult(trainerid,trainername,partyid=0,procedure=nil)
           else
             pokemon.iv[i]=iv&0x1F
           end
+        end
+      else
+        for i in 0...6
+          pokemon.iv[i]=31
         end
       end
       if poke[TPPREMEGA]=="true"
