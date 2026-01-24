@@ -1637,9 +1637,9 @@ class PokemonScreen
         when 7
           cmd=0
           loop do
-            hptypes = ["Normal","Fighting","Flying","Poison","Ground","Rock","Bug",
-                       "Ghost","Steel","Fire","Water","Grass","Electric","Psychic",
-                       "Ice","Dragon","Dark","Fairy"]
+            hptypes = ["Normal","Fire","Fighting","Water","Flying","Grass","Poison",
+                       "Electric","Ground","Psychic","Rock","Ice","Bug","Dragon",
+                       "Ghost","Dark","Steel","Fairy"]
             currenthp = "None"
             # Check which Hidden Power move the Pokemon knows
             for i in 0...4
@@ -2366,9 +2366,9 @@ class PokemonScreen
   # ===========================
   def pbPartyChangeHiddenPower(pkmn,pkmnid)
     return if !pkmn || pkmn.isEgg?
-    hptypes = ["Normal","Fighting","Flying","Poison","Ground","Rock","Bug",
-               "Ghost","Steel","Fire","Water","Grass","Electric","Psychic",
-               "Ice","Dragon","Dark","Fairy"]
+    hptypes = ["Normal","Fire","Fighting","Water","Flying","Grass","Poison",
+               "Electric","Ground","Psychic","Rock","Ice","Bug","Dragon",
+               "Ghost","Dark","Steel","Fairy"]
     current_index = -1
     move_index = -1
     is_base_hp = false

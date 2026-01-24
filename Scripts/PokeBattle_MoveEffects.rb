@@ -552,8 +552,8 @@ class PokeBattle_Move_009 < PokeBattle_Move
       hadeffect=true
     end
     if @battle.pbRandom(10)==0
-      if opponent.pbCanReduceStatStage?(PBStats::DEF,false)
-        opponent.pbReduceStat(PBStats::DEF,1,false)
+      if opponent.pbCanReduceStatStage?(PBStats::DEFENSE,false)
+        opponent.pbReduceStat(PBStats::DEFENSE,1,false)
       end
       hadeffect=true
     end
@@ -609,8 +609,8 @@ class PokeBattle_Move_00B < PokeBattle_Move
       hadeffect=true
     end
     if @battle.pbRandom(10)==0
-      if opponent.pbCanReduceStatStage?(PBStats::DEF,false)
-        opponent.pbReduceStat(PBStats::DEF,1,false)
+      if opponent.pbCanReduceStatStage?(PBStats::DEFENSE,false)
+        opponent.pbReduceStat(PBStats::DEFENSE,1,false)
       end
       hadeffect=true
     end
@@ -683,8 +683,8 @@ class PokeBattle_Move_00E < PokeBattle_Move
       hadeffect=true
     end
     if @battle.pbRandom(10)==0
-      if opponent.pbCanReduceStatStage?(PBStats::DEF,false)
-        opponent.pbReduceStat(PBStats::DEF,1,false)
+      if opponent.pbCanReduceStatStage?(PBStats::DEFENSE,false)
+        opponent.pbReduceStat(PBStats::DEFENSE,1,false)
       end
       hadeffect=true
     end
@@ -14290,8 +14290,8 @@ class PokeBattle_Move_297 < PokeBattle_Move
       hadeffect=true
     end
     if @battle.pbRandom(10)==0
-      if opponent.pbCanReduceStatStage?(PBStats::DEF,false)
-        opponent.pbReduceStat(PBStats::DEF,1,false)
+      if opponent.pbCanReduceStatStage?(PBStats::DEFENSE,false)
+        opponent.pbReduceStat(PBStats::DEFENSE,1,false)
       end
       hadeffect=true
     end
@@ -14984,8 +14984,8 @@ class PokeBattle_Move_2AD < PokeBattle_Move
       hadeffect=true
     end
     if @battle.pbRandom(10)==0
-      if opponent.pbCanReduceStatStage?(PBStats::DEF,false)
-        opponent.pbReduceStat(PBStats::DEF,1,false)
+      if opponent.pbCanReduceStatStage?(PBStats::DEFENSE,false)
+        opponent.pbReduceStat(PBStats::DEFENSE,1,false)
       end
       hadeffect=true
     end

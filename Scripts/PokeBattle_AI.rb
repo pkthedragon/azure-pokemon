@@ -306,27 +306,27 @@ class PokeBattle_Battle
               if pridam >= opponent.hp
                 score+=150
                 PBDebug.log(sprintf("Priority move would KO - using priority")) if $INTERNAL
+              elsif !opponentHasSetup
+                # Opponent has NO setup moves - they can only attack, so use priority for guaranteed chip damage
+                # This applies regardless of "abusing" since they literally cannot abuse setup
+                score+=150
+                PBDebug.log(sprintf("Opponent has no setup moves - using priority for guaranteed chip damage")) if $INTERNAL
               elsif abusing==false
-                # Opponent not abusing setup - check if they have setup moves in their moveset
-                if opponentHasSetup
-                  # If opponent has setup moves and priority damage is low, heavily penalize using priority
-                  if pridam < opponent.hp/3
-                    # Don't boost priority - let AI accept death or switch instead
-                    score*=0.3
-                    PBDebug.log(sprintf("Opponent has setup moves and priority damage too low - not using priority")) if $INTERNAL
-                  elsif pridam < opponent.hp/2
-                    # Moderate damage - small boost only
-                    score+=25
-                  else
-                    # High damage - normal boost
-                    score+=75
-                  end
+                # Opponent has setup moves but isn't actively abusing them
+                # If opponent has setup moves and priority damage is low, heavily penalize using priority
+                if pridam < opponent.hp/3
+                  # Don't boost priority - let AI accept death or switch instead
+                  score*=0.3
+                  PBDebug.log(sprintf("Opponent has setup moves and priority damage too low - not using priority")) if $INTERNAL
+                elsif pridam < opponent.hp/2
+                  # Moderate damage - small boost only
+                  score+=25
                 else
-                  # No setup moves detected - use normal priority boost logic
-                  score+=150
+                  # High damage - normal boost
+                  score+=75
                 end
               else
-                # Opponent is abusing setup moves, but priority wouldn't kill
+                # Opponent has setup moves and is actively abusing them
                 # Check if priority does meaningful damage
                 if pridam >= opponent.hp/2
                   score+=50
@@ -6744,6 +6744,45 @@ class PokeBattle_Battle
                 score*=1.5
               end
             end
+          end
+        end
+        # Safe turn detection: if attacker is protected by a shield effect, boost Tailwind significantly
+        # This includes Telluric Seed shields on Corrosive Field (BanefulBunker) and Forest Field (SpikyShield)
+        if attacker.effects[PBEffects::BanefulBunker] || attacker.effects[PBEffects::SpikyShield] || attacker.effects[PBEffects::KingsShield]
+          score*=3
+          PBDebug.log(sprintf("Attacker is shielded - safe turn to use Tailwind")) if $INTERNAL
+        end
+        # About to die logic: if attacker will be KO'd, consider Tailwind's team benefit vs chip damage
+        maxdam = checkAIdamage(aimem,attacker,opponent,skill)
+        if maxdam >= attacker.hp
+          # Attacker is going to die - check if Tailwind's team benefit outweighs chip damage
+          # Calculate how much chip damage attacker could do with attacking moves
+          maxattackdam = 0
+          for m in attacker.moves
+            next if m.basedamage == 0
+            tempdam = pbRoughDamage(m,attacker,opponent,skill,m.basedamage)
+            maxattackdam = tempdam if tempdam > maxattackdam
+          end
+          # Count teammates who would benefit from Tailwind
+          livecount = 0
+          slowcount = 0
+          for mon in pbParty(attacker.index)
+            next if mon.nil?
+            next if mon.hp == 0
+            livecount += 1
+            # Count mons that are slower than opponent and would benefit from Tailwind
+            if mon.speed < pbRoughStat(opponent,PBStats::SPEED,skill)
+              slowcount += 1
+            end
+          end
+          # If multiple teammates would benefit and chip damage is low relative to opponent HP,
+          # prefer Tailwind for the team-wide speed boost
+          if slowcount >= 2 && maxattackdam < opponent.hp / 3
+            score*=2.5
+            PBDebug.log(sprintf("About to die - Tailwind benefits %d slow teammates, chip damage low", slowcount)) if $INTERNAL
+          elsif slowcount >= 1 && maxattackdam < opponent.hp / 4
+            score*=2
+            PBDebug.log(sprintf("About to die - Tailwind benefits teammates more than chip damage")) if $INTERNAL
           end
         end
       end
