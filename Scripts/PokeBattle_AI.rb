@@ -7700,23 +7700,62 @@ class PokeBattle_Battle
         score*=1.5
       end
     when 0x83 # Round
-      # Round chains with partner - if partner selected Round or will use Round,
-      # the second user gets doubled damage (60 -> 120) and moves immediately after
+      # Round chains with allies - if any ally selected Round or will use Round,
+      # the second+ user gets doubled damage (60 -> 120) and moves immediately after
       if @doublebattle
-        partner = attacker.pbPartner
-        if partner && !partner.isFainted? && partner.pbHasMove?(PBMoves::ROUND)
-          # Partner has Round - significant bonus
-          score*=1.5
-          # Even better if partner is faster (they use Round first, we get the boost)
-          partnerSpeed = pbRoughStat(partner,PBStats::SPEED,skill)
-          attackerSpeed = attacker.pbSpeed
-          if (partnerSpeed > attackerSpeed) ^ (@trickroom!=0)
-            score*=1.3  # Partner moves first, we get doubled damage
-          elsif (partnerSpeed < attackerSpeed) ^ (@trickroom!=0)
-            score*=1.1  # We move first, partner gets doubled damage
+        attacker_side = attacker.index % 2
+        ally_has_round = false
+        ally_used_round = false
+        fastest_ally_with_round = nil
+        @battlers.each do |ally|
+          next if !ally || ally.index == attacker.index
+          next if ally.index % 2 != attacker_side
+          next if ally.isFainted?
+          if ally.pbHasMove?(PBMoves::ROUND)
+            ally_has_round = true
+            # Track if this ally is faster than current fastest
+            if fastest_ally_with_round.nil? ||
+               (pbRoughStat(ally,PBStats::SPEED,skill) > pbRoughStat(fastest_ally_with_round,PBStats::SPEED,skill)) ^ (@trickroom!=0)
+              fastest_ally_with_round = ally
+            end
+            # Check if ally already used Round this turn
+            if ally.hasMovedThisRound? && ally.effects[PBEffects::Round]
+              ally_used_round = true
+            end
           end
-          # If partner already used Round this turn, we definitely want to use it
-          if partner.hasMovedThisRound? && partner.effects[PBEffects::Round]
+        end
+        if ally_has_round
+          score*=1.5
+          # Even better if fastest ally is faster (they use Round first, we get the boost)
+          if fastest_ally_with_round
+            allySpeed = pbRoughStat(fastest_ally_with_round,PBStats::SPEED,skill)
+            attackerSpeed = attacker.pbSpeed
+            if (allySpeed > attackerSpeed) ^ (@trickroom!=0)
+              score*=1.3  # Ally moves first, we get doubled damage
+            elsif (allySpeed < attackerSpeed) ^ (@trickroom!=0)
+              score*=1.1  # We move first, ally gets doubled damage
+            end
+            # Priority boost: If attacker would be KO'd by a faster opponent,
+            # but ally with Round is faster than that opponent, Round lets us attack first
+            @battlers.each do |opp|
+              next if !opp || opp.isFainted?
+              next if opp.index % 2 == attacker_side  # Skip allies
+              oppSpeed = pbRoughStat(opp,PBStats::SPEED,skill)
+              # Check if opponent is faster than attacker (would move first normally)
+              next unless (oppSpeed > attackerSpeed) ^ (@trickroom!=0)
+              # Check if opponent could KO attacker
+              oppDamage = checkAIdamage(aimem,attacker,opp,skill)
+              next unless oppDamage >= attacker.hp
+              # Check if ally with Round is faster than this threatening opponent
+              if (allySpeed > oppSpeed) ^ (@trickroom!=0)
+                # Ally moves first -> chains attacker -> attacker moves before opponent KOs it
+                score*=2.0  # Strong priority boost for survival
+                break
+              end
+            end
+          end
+          # If any ally already used Round this turn, we definitely want to use it
+          if ally_used_round
             score*=1.5
           end
         end
@@ -20091,34 +20130,55 @@ class PokeBattle_Battle
       if miniscore > 1
         score*=miniscore if !(!attacker.abilitynulled && attacker.ability == PBAbilities::SHEERFORCE) && !hasgreatmoves(initialscores,scoreindex,skill,true)
       end
-    when 0x29F # Howl (also Attack Order, but Howl is status move)
-      # Only apply this for Howl (status move), not Attack Order (damage move)
-      if move.basedamage == 0 && move.id == PBMoves::HOWL
-        # Howl chains with partner - if partner selected Howl or will use Howl,
-        # the second user gets 3x boost (+3 instead of +1) and moves immediately after
-        if @doublebattle
-          partner = attacker.pbPartner
-          if partner && !partner.isFainted? && partner.pbHasMove?(PBMoves::HOWL)
-            # Partner has Howl - significant bonus
-            score*=1.5
-            # Even better if partner is faster (they use Howl first, we get the 3x boost)
-            partnerSpeed = pbRoughStat(partner,PBStats::SPEED,skill)
-            attackerSpeed = attacker.pbSpeed
-            if (partnerSpeed > attackerSpeed) ^ (@trickroom!=0)
-              score*=1.4  # Partner moves first, we get +3 Attack
-            elsif (partnerSpeed < attackerSpeed) ^ (@trickroom!=0)
-              score*=1.2  # We move first, partner gets +3 Attack
+    when 0x29F # Attack Order - damage based on stat boosts
+      # Attack Order is now correctly separate from Howl (which uses 0x2AF)
+      # No special AI handling needed here - it uses standard damage calculation
+    when 0x2AF # Howl
+      # Howl chains with allies - if any ally selected Howl or will use Howl,
+      # the second+ user gets 3x boost (+3 instead of +1) and moves immediately after
+      if @doublebattle
+        attacker_side = attacker.index % 2
+        ally_has_howl = false
+        ally_used_howl = false
+        fastest_ally_with_howl = nil
+        @battlers.each do |ally|
+          next if !ally || ally.index == attacker.index
+          next if ally.index % 2 != attacker_side
+          next if ally.isFainted?
+          if ally.pbHasMove?(PBMoves::HOWL)
+            ally_has_howl = true
+            # Track if this ally is faster than current fastest
+            if fastest_ally_with_howl.nil? ||
+               (pbRoughStat(ally,PBStats::SPEED,skill) > pbRoughStat(fastest_ally_with_howl,PBStats::SPEED,skill)) ^ (@trickroom!=0)
+              fastest_ally_with_howl = ally
             end
-            # If partner already used Howl this turn, we definitely want to use it
-            if partner.hasMovedThisRound? && partner.lastMoveUsed == PBMoves::HOWL
-              score*=1.6
+            # Check if ally already used Howl this turn
+            if ally.hasMovedThisRound? && ally.lastMoveUsed == PBMoves::HOWL
+              ally_used_howl = true
             end
           end
         end
-        # Standard stat boost considerations
-        if attacker.pbTooHigh?(PBStats::ATTACK)
-          score*=0.1
+        if ally_has_howl
+          score*=1.5
+          # Even better if fastest ally is faster (they use Howl first, we get the 3x boost)
+          if fastest_ally_with_howl
+            allySpeed = pbRoughStat(fastest_ally_with_howl,PBStats::SPEED,skill)
+            attackerSpeed = attacker.pbSpeed
+            if (allySpeed > attackerSpeed) ^ (@trickroom!=0)
+              score*=1.4  # Ally moves first, we get +3 Attack
+            elsif (allySpeed < attackerSpeed) ^ (@trickroom!=0)
+              score*=1.2  # We move first, ally gets +3 Attack
+            end
+          end
+          # If any ally already used Howl this turn, we definitely want to use it
+          if ally_used_howl
+            score*=1.6
+          end
         end
+      end
+      # Standard stat boost considerations
+      if attacker.pbTooHigh?(PBStats::ATTACK)
+        score*=0.1
       end
     end
     ###### END FUNCTION CODES

@@ -5903,23 +5903,29 @@ def pbStartBattle(canlose=false)
       # Skip battlers that have already moved this round (e.g., due to Round chaining)
       next if i.hasMovedThisRound?
       i.pbProcessTurn(@choices[i.index])
-      # Round chaining: If this battler used Round and partner selected Round but hasn't moved,
-      # make partner move immediately after (regardless of Speed)
+      # Round chaining: If this battler used Round and any ally selected Round but hasn't moved,
+      # make those allies move immediately after (regardless of Speed)
       if i.effects[PBEffects::Round]
-        partner = i.pbPartner
-        if partner && !partner.isFainted? && !partner.hasMovedThisRound? &&
-           pbChoseMoveFunctionCode?(partner.index, 0x83) # Partner selected Round
-          partner.pbProcessTurn(@choices[partner.index])
+        attacker_side = i.index % 2
+        @battlers.each do |ally|
+          next if !ally || ally.index == i.index
+          next if ally.index % 2 != attacker_side
+          next if ally.isFainted? || ally.hasMovedThisRound?
+          next unless pbChoseMoveFunctionCode?(ally.index, 0x83) # Ally selected Round
+          ally.pbProcessTurn(@choices[ally.index])
           return if @decision>0
         end
       end
-      # Howl chaining: If this battler used Howl and partner selected Howl but hasn't moved,
-      # make partner move immediately after (regardless of Speed)
-      if i.lastMoveUsed == PBMoves::HOWL
-        partner = i.pbPartner
-        if partner && !partner.isFainted? && !partner.hasMovedThisRound? &&
-           pbChoseMove?(partner.index, :HOWL) # Partner selected Howl (not Attack Order which shares function code)
-          partner.pbProcessTurn(@choices[partner.index])
+      # Howl chaining: If this battler used Howl and any ally selected Howl but hasn't moved,
+      # make those allies move immediately after (regardless of Speed)
+      if i.effects[PBEffects::Howl]
+        attacker_side = i.index % 2
+        @battlers.each do |ally|
+          next if !ally || ally.index == i.index
+          next if ally.index % 2 != attacker_side
+          next if ally.isFainted? || ally.hasMovedThisRound?
+          next unless pbChoseMove?(ally.index, :HOWL)
+          ally.pbProcessTurn(@choices[ally.index])
           return if @decision>0
         end
       end

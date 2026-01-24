@@ -101,6 +101,7 @@ begin
     FairyLockRate     = 107
     ParentalBond      = 108
     Round             = 109
+    Howl              = 234
     Powder            = 110
     Electrify         = 111
     MeFirst           = 112
