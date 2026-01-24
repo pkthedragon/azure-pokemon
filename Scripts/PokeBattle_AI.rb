@@ -287,29 +287,50 @@ class PokeBattle_Battle
           shielded=true
         end
         if !fastermon
-          if ((movedamage>=attacker.hp && aegischeck==false || movedamage>attacker.hp && shielddam>attacker.hp && aegischeck==true) && !(opponent.status==PBStatuses::SLEEP && opponent.statusCount>1) && !icansurvive && !shielded) && !(attacker.species == PBSpecies::PARASECT && attacker.form==1) && abusing==false && !(@shieldCount>0)
+          if ((movedamage>=attacker.hp && aegischeck==false || movedamage>attacker.hp && shielddam>attacker.hp && aegischeck==true) && !(opponent.status==PBStatuses::SLEEP && opponent.statusCount>1) && !icansurvive && !shielded) && !(attacker.species == PBSpecies::PARASECT && attacker.form==1) && !(@shieldCount>0)
             if (@doublebattle)
               if fakefree==false
-                score+=75
-              end
-            else
-              # Check if opponent has setup moves - if so, don't use priority unless it deals significant damage
-              if opponentHasSetup
-                # If opponent has setup moves and priority damage is low, heavily penalize using priority
-                if pridam < opponent.hp/3
-                  # Don't boost priority - let AI accept death or switch instead
-                  score*=0.3
-                  PBDebug.log(sprintf("Opponent has setup moves and priority damage too low - not using priority")) if $INTERNAL
-                elsif pridam < opponent.hp/2
-                  # Moderate damage - small boost only
-                  score+=25
-                else
-                  # High damage - normal boost
+                # In double battles, check if priority would kill before boosting
+                if pridam >= opponent.hp
+                  score+=75
+                elsif abusing==false
                   score+=75
                 end
-              else
-                # No setup moves detected - use normal priority boost logic
+              end
+            else
+              # Check if priority would kill the opponent - if so, always use it
+              if pridam >= opponent.hp
                 score+=150
+                PBDebug.log(sprintf("Priority move would KO - using priority")) if $INTERNAL
+              elsif abusing==false
+                # Opponent not abusing setup - check if they have setup moves in their moveset
+                if opponentHasSetup
+                  # If opponent has setup moves and priority damage is low, heavily penalize using priority
+                  if pridam < opponent.hp/3
+                    # Don't boost priority - let AI accept death or switch instead
+                    score*=0.3
+                    PBDebug.log(sprintf("Opponent has setup moves and priority damage too low - not using priority")) if $INTERNAL
+                  elsif pridam < opponent.hp/2
+                    # Moderate damage - small boost only
+                    score+=25
+                  else
+                    # High damage - normal boost
+                    score+=75
+                  end
+                else
+                  # No setup moves detected - use normal priority boost logic
+                  score+=150
+                end
+              else
+                # Opponent is abusing setup moves, but priority wouldn't kill
+                # Check if priority does meaningful damage
+                if pridam >= opponent.hp/2
+                  score+=50
+                  PBDebug.log(sprintf("Opponent abusing setup but priority does good damage - small boost")) if $INTERNAL
+                else
+                  # Low priority damage against setup abuser - don't boost
+                  PBDebug.log(sprintf("Opponent abusing setup and priority damage too low - not boosting")) if $INTERNAL
+                end
               end
             end
           end
@@ -28369,6 +28390,13 @@ class PokeBattle_Battle
     #return -1 if memory.length == 0
     return 0 if (@doublebattle && opponent.index==@battlers[3].index && $game_switches[1998]==true)
     return 0 if opponent.nil? || opponent.isFainted?
+
+    # Check cache for simple damage queries (movename=false)
+    if !movename
+      @aiDamageCache = {} if !@aiDamageCache
+      cacheKey = [attacker.index, opponent.index, hardswitch]
+      return @aiDamageCache[cacheKey] if @aiDamageCache.has_key?(cacheKey)
+    end
     maxdam=0
     nextdamage=0
     moveid=0
@@ -28444,6 +28472,11 @@ class PokeBattle_Battle
     if movename
       return [maxdam,moveid,nextdamage,secondmove,movetypemod]
     else
+      # Cache the result for future calls with same attacker/opponent pair
+      if @aiDamageCache
+        cacheKey = [attacker.index, opponent.index, hardswitch]
+        @aiDamageCache[cacheKey] = maxdam
+      end
       return maxdam
     end
   end
@@ -29821,6 +29854,18 @@ end
 # Decide whether the opponent should Mega Evolve their Pokémon.
 ################################################################################
 def pbEnemyShouldMegaEvolve?(index)
+  # Check cache first to avoid redundant expensive calculations
+  @aiMegaEvolveCache = {} if !@aiMegaEvolveCache
+  return @aiMegaEvolveCache[index] if @aiMegaEvolveCache.has_key?(index)
+
+  # Compute and cache the result
+  result = pbEnemyShouldMegaEvolveInternal?(index)
+  @aiMegaEvolveCache[index] = result
+  return result
+end
+
+# Internal implementation of mega evolution decision logic
+def pbEnemyShouldMegaEvolveInternal?(index)
   return pbCanMegaEvolve?(index) if (@battlers[index].item == PBItems::DEMONSTONE)
   return false if @battlers[index].isMega?
   return false if !pbCanMegaEvolve?(index)
