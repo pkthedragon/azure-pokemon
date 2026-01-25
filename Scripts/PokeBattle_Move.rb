@@ -209,6 +209,12 @@ class PokeBattle_Move
   end
 
   def pbTargetsAll?(attacker)
+    if $fefieldeffect == 50 && (id == PBMoves::FIRESPIN || id == PBMoves::WHIRLPOOL)
+      numtargets=0
+      numtargets+=1 if !attacker.pbOpposing1.isFainted?
+      numtargets+=1 if !attacker.pbOpposing2.isFainted?
+      return numtargets>1
+    end
     if @target==PBTargets::AllOpposing 
       # TODO: should apply even if partner faints during an attack
       numtargets=0
@@ -5136,7 +5142,7 @@ class PokeBattle_Move
     if opponent.pbOwnSide.effects[PBEffects::QuickGuard] > 0 &&  @priority >= 1 && @basedamage > 0
       finaldamagemult=(finaldamagemult*0.5).round
     end
-    if opponent.pbOwnSide.effects[PBEffects::WideGuard] > 0 && (@target==PBTargets::AllOpposing || @target==PBTargets::AllNonUsers) && @basedamage > 0
+    if opponent.pbOwnSide.effects[PBEffects::WideGuard] > 0 && pbTargetsAll?(attacker) && @basedamage > 0
       finaldamagemult=(finaldamagemult*0.5).round
     end
     # Shelter halves Rock-type damage on Cave Field

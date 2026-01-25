@@ -9315,6 +9315,8 @@ class PokeBattle_Battle
         newmove=getConst(PBMoves,:DAZZLINGGLEAM) || 0
       when 43
         newmove=getConst(PBMoves,:SKYATTACK) || 0
+      when 50
+        newmove=getConst(PBMoves,:CALMMIND) || 0
       else
         newmove=getConst(PBMoves,:TRIATTACK) || 0
       end
