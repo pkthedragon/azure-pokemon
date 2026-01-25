@@ -7516,7 +7516,8 @@ class PokeBattle_Battler
                 thismove.id == 219 || thismove.id == 220 || thismove.id == 445 || 
                 thismove.id == 596 || thismove.id == 600)) || $fefieldeffect == 40 &&
             (thismove.id == 147 || thismove.id == 379 || thismove.id == 177 || thismove.id == 133) || user.hasWorkingAbility(:WORLDOFNIGHTMARES) &&
-            (thismove.id == 188) || user.hasWorkingAbility(:TEMPEST) && (thismove.id == 304))  
+            (thismove.id == 188) || user.hasWorkingAbility(:TEMPEST) && (thismove.id == 304) ||
+            ($fefieldeffect == 50 && (thismove.id == PBMoves::FIRESPIN || thismove.id == PBMoves::WHIRLPOOL)))
           # Add target's partner to list of targets
           pbAddTarget(targets,target.pbPartner)
         end
