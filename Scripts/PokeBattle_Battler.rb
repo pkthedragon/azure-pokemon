@@ -5595,6 +5595,9 @@ class PokeBattle_Battler
     if move.function==0x10D && pbHasType?(:GHOST) # Curse
       target=PBTargets::SingleNonUser
     end
+    if $fefieldeffect == 50 && (move.id == PBMoves::FIRESPIN || move.id == PBMoves::WHIRLPOOL)
+      target=PBTargets::AllOpposing
+    end
     side=(pbIsOpposing?(self.index)) ? 1 : 0
     owner=@battle.pbGetOwnerIndex(self.index)
     if @battle.zMove[side][owner]==self.index && self.item == PBItems::KOMMONIUMZ2
