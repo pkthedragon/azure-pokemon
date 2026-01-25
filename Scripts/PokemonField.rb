@@ -1286,6 +1286,7 @@ def pbWildBattleBoss(species,level,variable=nil,canescape=true,canlose=false)
     pbSceneStandby {
       decision=battle.pbStartBattle(canlose)
     }
+    pbSet(variable,decision)
     Achievements.incrementProgress("WILD_ENCOUNTERS",1)
     Achievements.incrementProgress("MOVES_USED",$game_variables[530])
     Achievements.incrementProgress("ITEMS_USED",$game_variables[536])

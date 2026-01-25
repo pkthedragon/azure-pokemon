@@ -5647,6 +5647,8 @@ def pbStartBattle(canlose=false)
       end
       @battlers[i].turncount+=1 if !@battlers[i].isFainted?
       @battlers[i].effects[PBEffects::Rage]=false if !pbChoseMove?(i,:RAGE)
+      @battlers[i].effects[PBEffects::Round]=false
+      @battlers[i].effects[PBEffects::Howl]=false
       #@battlers[i].pbCustapBerry
       # If Rift/Boss mon and shieldCount == -1,
       # update @battle.shieldCount (when enters battle in rift form)
