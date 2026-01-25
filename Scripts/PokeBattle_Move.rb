@@ -4753,6 +4753,9 @@ class PokeBattle_Move
                              PBMoves::HEADSMASH,PBMoves::HEADCHARGE,PBMoves::SKULLBASH,
                              PBMoves::MINDBLOWN].include?(id)
         library_boosted ||= id == PBMoves::FIRESPIN || id == PBMoves::WHIRLPOOL
+        if id == PBMoves::FIRESPIN || id == PBMoves::WHIRLPOOL
+          damage=(damage*1.5).floor
+        end
         if library_boosted
           @battle.pbDisplay(_INTL("The Library Field strengthened the attack!",opponent.pbThis)) if $feshutup2 == 0
           $feshutup2+=1
