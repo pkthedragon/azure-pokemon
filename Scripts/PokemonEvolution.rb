@@ -707,6 +707,8 @@ class PokemonEvolutionScene
       shedinjamoves=@pokemon.moves.clone      
       for i in movelist
         if i[0]==0 || (i[0]==@pokemon.level && @pokemon.level!=1)     # Learned a new move
+          @pokemon.firstmoves ||= []
+          @pokemon.firstmoves << i[1] unless @pokemon.firstmoves.include?(i[1])
           pbLearnMove(@pokemon,i[1],true)
         end
       end
