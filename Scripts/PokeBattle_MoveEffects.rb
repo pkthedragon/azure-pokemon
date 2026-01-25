@@ -7741,6 +7741,10 @@ class PokeBattle_Move_0DF < PokeBattle_Move
      if isConst?(attacker.ability,PBAbilities,:MEGALAUNCHER)
           hpgain=((opponent.totalhp+1)/1.33).floor
        end
+    # Healer - amplify healing by 1.1x
+    if attacker.hasWorkingAbility(:HEALER)
+      hpgain = (hpgain*1.1).floor
+    end
     opponent.pbRecoverHP(hpgain,true)
     @battle.pbDisplay(_INTL("{1}'s HP was restored.",opponent.pbThis))  
     return 0
@@ -11571,6 +11575,10 @@ class PokeBattle_Move_167 < PokeBattle_Move
 	  if isConst?(@id, PBMoves, :EGGBOMB) && attacker.hasWorkingAbility(:GRENADIER)
 	    hpgain==(hpgain*1.5).floor
 	  end
+      # Healer - amplify healing by 1.1x
+      if attacker.hasWorkingAbility(:HEALER)
+        hpgain = (hpgain*1.1).floor
+      end
       pbShowAnimation(@id,attacker,opponent,hitnum,alltargets,showanimation)
       opponent.pbRecoverHP(hpgain,true)
       @battle.pbDisplay(_INTL("{1}'s HP was restored.",opponent.pbThis))
@@ -12373,6 +12381,10 @@ class PokeBattle_Move_187 < PokeBattle_Move
     if tribute_has?(attacker, :MEADOWTRIBUTE)
         hpgain1 = (hpgain1*1.3).floor
       end
+      # Healer - amplify healing by 1.1x
+      if attacker.hasWorkingAbility(:HEALER)
+        hpgain1 = (hpgain1*1.1).floor
+      end
       attacker.pbRecoverHP(hpgain1,true)
       @battle.pbDisplay(_INTL("{1}'s HP was restored.",attacker.pbThis)) 
     end
@@ -12380,6 +12392,10 @@ class PokeBattle_Move_187 < PokeBattle_Move
       if attacker.pbPartner.hp != attacker.pbPartner.totalhp
       if tribute_has?(attacker, :MEADOWTRIBUTE)
           hpgain2 = (hpgain2*1.3).floor
+        end
+        # Healer - amplify healing by 1.1x
+        if attacker.hasWorkingAbility(:HEALER)
+          hpgain2 = (hpgain2*1.1).floor
         end
         attacker.pbPartner.pbRecoverHP(hpgain2,true)
         @battle.pbDisplay(_INTL("{1}'s HP was restored.",attacker.pbPartner.pbThis))

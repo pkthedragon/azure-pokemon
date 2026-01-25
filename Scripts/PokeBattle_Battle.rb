@@ -2446,7 +2446,7 @@ class PokeBattle_Battle
         if (!@battlers[i].abilitynulled && (@battlers[i].ability == PBAbilities::TRIAGE))
           pri+=3 if (PBStuff::HEALFUNCTIONS).include?(@choices[i][2].function)
         end
-        if @battlers[i].hasWorkingAbility(:QUICKDRAW) && @battlers[i].turncount==0
+        if @battlers[i].hasWorkingAbility(:QUICKDRAW) && @battlers[i].turncount==1
           pri+=1
         end
         if $fefieldeffect==38 && @choices[i][2].function==0x11E
