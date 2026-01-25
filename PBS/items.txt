@@ -1103,3 +1103,4 @@
 1143,VIRUSBALL,Virus Ball,3,1000,A Ball that gives caught Pokémon Pokérus. Works when target is below 50% HP or is trapped/has a status condition.,0,2,4,
 1144,BANDITBALL,Bandit Ball,3,300,A Ball that grants 100 Poké Dollars when catching. Works when target is below 50% HP or is trapped/has a status condition.,0,2,4,
 1145,SHARPTALONS,Sharp Talons,1,200,An item to be held by a Pokémon. The holder's kicking and claw moves are boosted 1.2x.,0,0,0,
+1146,DURIABERRY,Duria Berry,5,750,A Berry to be consumed by Pokémon. It doubles the power of not-very-effective moves.,0,0,5,

@@ -5260,6 +5260,19 @@ class PokeBattle_Move
     if attacker.hasWorkingItem(:EXPERTBELT) && opponent.damagestate.typemod>4
       finaldamagemult=(finaldamagemult*1.2).round
     end
+    if attacker.hasWorkingItem(:DURIABERRY) && opponent.damagestate.typemod>0 &&
+       opponent.damagestate.typemod<4
+      if attacker.hasWorkingAbility(:RIPEN)
+        finaldamagemult=(finaldamagemult*4.0).round
+      else
+        finaldamagemult=(finaldamagemult*2.0).round
+      end
+      attacker.pbRecordHarvestBerry(attacker.item)
+      attacker.pokemon.itemRecycle=attacker.item
+      attacker.pokemon.itemInitial=0 if attacker.pokemon.itemInitial==attacker.item
+      attacker.item=0
+      @battle.pbDisplayPaused(_INTL("The {1} strengthened {2}'s power!",PBItems.getName(attacker.pokemon.itemRecycle),self.name))
+    end
     if (attacker.ability == (PBAbilities::NEUROFORCE)) && (!attacker.abilitynulled && opponent.damagestate.typemod>4)
       finaldamagemult=(finaldamagemult*1.25).round
     end
