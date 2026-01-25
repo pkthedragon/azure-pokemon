@@ -29852,6 +29852,9 @@ def pbChooseMoves(index,chosenindex=0)
   otheropp=opponent.pbPartner
   owner=pbGetOwner(attacker.index)
   skill=owner ? owner.skill : 0
+  if attacker.isbossmon || attacker.issossmon
+    skill=PBTrainerAI.bestSkill
+  end
   wildbattle=(!@opponent && pbIsOpposing?(index) && !($game_switches[290]) && !attacker.isbossmon && !attacker.issossmon)
   for i in 0...attacker.moves.length
     #next if scores[i] == -1
