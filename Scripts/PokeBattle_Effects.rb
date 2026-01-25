@@ -698,12 +698,14 @@ end
     return move_id
   end
 
-  def pbStatChangeMoveLocked?(move_id,showMessages=false)
+  def pbStatChangeMoveLocked?(move_id,showMessages=false,change_direction=nil)
     return false if !move_id
     lock=@effects[PBEffects::StatMoveLock]
     return false if !lock || !lock[move_id]
     if showMessages && @effects[PBEffects::StatMoveLockMessage] != move_id
-      @battle.pbDisplay(_INTL("This move can't be used again!"))
+      move_name=PBMoves.getName(move_id)
+      direction = (change_direction == :lower) ? "lower" : "raise"
+      @battle.pbDisplay(_INTL("{1} can't {2} {3}'s stats any more!",move_name,direction,pbThis))
       @effects[PBEffects::StatMoveLockMessage] = move_id
     end
     return true
@@ -771,7 +773,7 @@ end
       increment += 1
     end
     stat_move_id=pbStatChangeMoveId
-    return false if pbStatChangeMoveLocked?(stat_move_id,showMessages1)
+    return false if pbStatChangeMoveLocked?(stat_move_id,showMessages1,:raise)
     # here we call reduce instead
     if hasWorkingAbility(:CONTRARY) && !cont_call && !(self.moldbroken)
       ret=pbReduceStat(stat,increment,showMessages1,moveid,attacker,upanim,false,true,showMessages2)
@@ -950,7 +952,7 @@ end
       increment += 1
     end
     stat_move_id=pbStatChangeMoveId
-    return false if pbStatChangeMoveLocked?(stat_move_id,showMessages1)
+    return false if pbStatChangeMoveLocked?(stat_move_id,showMessages1,:lower)
     # no, we don't want to say reduce 5 times - Thunder Raid
     if moveid == 207
       showMessages2 = false

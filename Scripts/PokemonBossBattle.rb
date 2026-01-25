@@ -898,7 +898,7 @@ class PokeBattle_Battle
         return pbResetBattlers  if (shieldbreak && !onEntry && @sosbattle > 2 && sosData[:clearingRequirement].include?(battler.shieldCount-1))
       end
       allowed = false
-      allowed = (shieldbreak || onEntry || sosData[:continuous])
+      allowed = (shieldbreak || onEntry)
       if eval(sosData[:activationRequirement]) && @battlers[battlerIndex].pbPartner.isFainted?
         if (@opponent && pbPokemonCount(@party2)==1) || !(@opponent)
           if (allowed == true) 
