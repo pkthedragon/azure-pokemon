@@ -2755,7 +2755,7 @@ MultipleForms.register(:MEOWTH,{
     },
     "getFormOnCreation"=>proc{|pokemon|
       aMaps=[123,124]   # Map IDs for second form
-      gMaps=[97,238]
+      gMaps=[54,97,238]
       # Map IDs for alolan and galarian forms respectively
       if $game_map && aMaps.include?($game_map.map_id)
         next 1

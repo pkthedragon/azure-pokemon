@@ -86,12 +86,12 @@ module PBHollow
 	
     [054, 1] => {
       :day => [
-        [:pokemon, :WIGLETT, 20, 75, :MEMENTO],
-        [:pokemon, :CLOBBOPUS, 20, 25, :SOAK]
+        [:pokemon, :MEOWTH, 20, 75, :CURSE],
+        [:pokemon, :WIGLETT, 20, 25, :DIG]
       ],
       :night => [
-        [:pokemon, :KRABBY, 20, 75, :AGILITY],
-        [:pokemon, :CLOBBOPUS, 20, 25, :SOAK]
+        [:pokemon, :MEOWTH, 20, 75, :CURSE],
+        [:pokemon, :KRABBY, 20, 25, :ANCIENTPOWER]
       ]
     },
 	
