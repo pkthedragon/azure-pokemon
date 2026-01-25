@@ -6019,6 +6019,8 @@ class PokeBattle_Move_0B3 < PokeBattle_Move
         move=getConst(PBMoves,:PUNISHMENT) || 0
       when 46  
         move=getConst(PBMoves,:SCORCHINGSANDS) || 0
+      when 50
+        move=getConst(PBMoves,:CALMMIND) || 0
       else
         move=getConst(PBMoves,:TRIATTACK) || 0
     end
