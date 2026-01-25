@@ -1034,6 +1034,7 @@ def pbLoadWildBoss(poke,bossdata=$bosscache)
   end
   pokemon.form = poke[:form] ? poke[:form] : 0
   pokemon.setAbility(0) # doesn't matter as it's getting replaced; same with SOS mons
+  pokemon.abilityoverride = poke[:ability]
   case poke[:gender]
     when "M" then pokemon.setGender(0)
     when "F" then pokemon.setGender(1)
