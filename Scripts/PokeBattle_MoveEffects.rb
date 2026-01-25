@@ -12385,6 +12385,12 @@ class PokeBattle_Move_187 < PokeBattle_Move
         @battle.pbDisplay(_INTL("{1}'s HP was restored.",attacker.pbPartner.pbThis))
       end
     end
+    # Healer - cure status conditions
+    if attacker.hasWorkingAbility(:HEALER) && attacker.status>0
+      attacker.status=0
+      attacker.statusCount=0
+      @battle.pbDisplay(_INTL("{1}'s {2} cured its status problem!",attacker.pbThis,PBAbilities.getName(attacker.ability)))
+    end
     if ($fefieldeffect == 11 || $fefieldeffect == 26) && 
      attacker.pbCanPoison?(true)
       attacker.pbPoison(attacker,true)
