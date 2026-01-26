@@ -518,29 +518,38 @@ class PokemonSummaryScene
       memo+=_INTL("<c3=F83820,E09890>{1}<c3=404040,B0B0B0> nature.\n",naturename)
       memo+=_INTL("<c3=404040,B0B0B0>{1}\n",pokemon.happinessText) if !pokemon.egg?
     end
-    if pokemon.timeReceived
-      month=pbGetAbbrevMonthName(pokemon.timeReceived.mon)
-      date=pokemon.timeReceived.day
-      year=pokemon.timeReceived.year
-      memo+=_INTL("<c3=404040,B0B0B0>{1} {2}, {3}\n",month,date,year)
-    end
-    mapname=pbGetMapNameFromId(pokemon.obtainMap)
-    if (pokemon.obtainText rescue false) && pokemon.obtainText!=""
-      mapname=pokemon.obtainText
-    end
-    if mapname && mapname!=""
-      memo+=sprintf("<c3=F83820,E09890>%s\n",mapname)
+    if pokemon.obtainMode==1 # hatched
+      mapname=pbGetMapNameFromId(pokemon.obtainMap)
+      if (pokemon.obtainText rescue false) && pokemon.obtainText!=""
+        mapname=pokemon.obtainText
+      end
+      mapname=_INTL("Faraway place") if !mapname || mapname==""
+      memo+=_INTL("<c3=F83820,E09890>{1}<c3=404040,B0B0B0>: Egg received.\n",mapname)
     else
-      memo+=_INTL("<c3=F83820,E09890>Faraway place\n")
+      if pokemon.timeReceived
+        month=pbGetAbbrevMonthName(pokemon.timeReceived.mon)
+        date=pokemon.timeReceived.day
+        year=pokemon.timeReceived.year
+        memo+=_INTL("<c3=404040,B0B0B0>{1} {2}, {3}\n",month,date,year)
+      end
+      mapname=pbGetMapNameFromId(pokemon.obtainMap)
+      if (pokemon.obtainText rescue false) && pokemon.obtainText!=""
+        mapname=pokemon.obtainText
+      end
+      if mapname && mapname!=""
+        memo+=sprintf("<c3=F83820,E09890>%s\n",mapname)
+      else
+        memo+=_INTL("<c3=F83820,E09890>Faraway place\n")
+      end
     end
     if pokemon.obtainMode
       mettext=[_INTL("Met at Lv. {1}.",pokemon.obtainLevel),
-               _INTL("Egg received."),
+               "",
                _INTL("Traded at Lv. {1}.",pokemon.obtainLevel),
                "",
                _INTL("Had a fateful encounter at Lv. {1}.",pokemon.obtainLevel)
                ][pokemon.obtainMode]
-      memo+=sprintf("<c3=404040,B0B0B0>%s\n",mettext)
+      memo+=sprintf("<c3=404040,B0B0B0>%s\n",mettext) if mettext!=""
       if pokemon.obtainMode==1 # hatched
         if pokemon.timeEggHatched
           month=pbGetAbbrevMonthName(pokemon.timeEggHatched.mon)
@@ -549,12 +558,8 @@ class PokemonSummaryScene
           memo+=_INTL("<c3=404040,B0B0B0>{1} {2}, {3}\n",month,date,year)
         end
         mapname=pbGetMapNameFromId(pokemon.hatchedMap)
-        if mapname && mapname!=""
-          memo+=sprintf("<c3=F83820,E09890>%s\n",mapname)
-        else
-          memo+=_INTL("<c3=F83820,E09890>Faraway place\n")
-        end
-        memo+=_INTL("<c3=404040,B0B0B0>Egg hatched.\n")
+        mapname=_INTL("Faraway place") if !mapname || mapname==""
+        memo+=_INTL("<c3=F83820,E09890>{1}<c3=404040,B0B0B0>: Egg hatched.\n",mapname)
       else
         memo+="<c3=404040,B0B0B0>\n"
       end
