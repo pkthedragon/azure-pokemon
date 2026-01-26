@@ -263,6 +263,11 @@ module ItemHandlers
     if !BattleUseOnBattler[item]
       return false
     else
+      if battler && battler.respond_to?(:battle) && battler.battle
+        return battler.battle.pbWithStatChangeSource([:item,item]) do
+          BattleUseOnBattler.trigger(item,battler,scene)
+        end
+      end
       return BattleUseOnBattler.trigger(item,battler,scene)
     end
   end
@@ -272,6 +277,11 @@ module ItemHandlers
     if !BattleUseOnPokemon[item]
       return false
     else
+      if battler && battler.respond_to?(:battle) && battler.battle
+        return battler.battle.pbWithStatChangeSource([:item,item]) do
+          BattleUseOnPokemon.trigger(item,pokemon,battler,scene)
+        end
+      end
       return BattleUseOnPokemon.trigger(item,pokemon,battler,scene)
     end
   end
@@ -281,6 +291,12 @@ module ItemHandlers
     if !UseInBattle[item]
       return
     else
+      if battle
+        battle.pbWithStatChangeSource([:item,item]) do
+          UseInBattle.trigger(item,battler,battle)
+        end
+        return
+      end
       UseInBattle.trigger(item,battler,battle)
     end
   end

@@ -28510,12 +28510,11 @@ class PokeBattle_Battle
   end
 
   def pbStatMoveLockedForTargets?(attacker,opponent,move)
-    return false if move.basedamage>0
     targets=pbStatMoveTargets(attacker,opponent,move)
     return false if targets.empty?
     return targets.all? do |target|
       lock=target.effects[PBEffects::StatMoveLock]
-      lock && lock[move.id]
+      lock && lock[[:move,move.id]]
     end
   end
   

@@ -400,6 +400,7 @@ class PokeBattle_Battle
   attr_accessor(:sosbattle)       # Stores fight is an sos battle or not
   attr_accessor(:lastFaintedEnemyAbility) # Last fainted enemy ability for Power of Alchemy
   attr_accessor(:lastFaintedAllyAbility)  # Last fainted ally ability for Receiver
+  attr_accessor(:statChangeSource)
 
   include PokeBattle_BattleCommon
   
@@ -420,6 +421,14 @@ class PokeBattle_Battle
 
   def pbAIRandom(x)
     return rand(x)
+  end
+
+  def pbWithStatChangeSource(source)
+    previous_source=@statChangeSource
+    @statChangeSource=source
+    yield
+  ensure
+    @statChangeSource=previous_source
   end
 
   def isOnline?
