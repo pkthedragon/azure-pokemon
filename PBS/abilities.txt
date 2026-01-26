@@ -48,7 +48,7 @@
 48,EARLYBIRD,Early Bird,"2x speed the turn after waking up, charging, or recharging"
 49,FLAMEBODY,Flame Body,"When the user faints, if the attacker made contact, burn it."
 50,RUNAWAY,Run Away,"Immune to Pursuit and trapping moves and abilities, can always flee."
-51,KEENEYE,Keen Eye,"Uses Lock-On and Laser Focus on entry, the user's accuracy can't be lowered."
+51,KEENEYE,Keen Eye,"Ignores accuracy and evasion changes, and the user's accuracy can't be lowered."
 52,HYPERCUTTER,Hyper Cutter,"Attack can't be lowered. Damaging moves wound foes for 3 turns."
 53,PICKUP,Pickup,"Picks up the enemy's item upon fainting, can find items outside of battle"
 54,TRUANT,Truant,"Skips every other turn to heal 1/3rd max HP"

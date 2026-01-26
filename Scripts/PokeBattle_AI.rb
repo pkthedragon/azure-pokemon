@@ -125,6 +125,22 @@ class PokeBattle_Battle
             abusing=true
           end
         end
+        playerMove = nil
+        playerDamagingChoice = false
+        playerSetupChoice = false
+        playerChoiceDamage = 0
+        if @choices && opponent && @choices[opponent.index]
+          playerChoice = @choices[opponent.index]
+          if playerChoice[0]==1 && playerChoice[2]
+            playerMove = playerChoice[2]
+            if playerMove.basedamage>0
+              playerDamagingChoice = true
+              playerChoiceDamage = pbRoughDamage(playerMove,opponent,attacker,skill,playerMove.basedamage)
+            elsif (PBStuff::SETUPMOVE).include?(playerMove.id) || (PBStuff::DEFSETUPMOVE).include?(playerMove.id)
+              playerSetupChoice = true
+            end
+          end
+        end
         if !(attacker==@battlers[2])
           restoreamount=pbHPConversion(opponent.effects[PBEffects::UsingItem][0],opponent)
           if restoreamount>0
@@ -173,6 +189,11 @@ class PokeBattle_Battle
               score*=0.8
             end
           end
+        end
+        if playerDamagingChoice && playerChoiceDamage>=attacker.hp
+          score*=1.5
+        elsif playerSetupChoice
+          score*=0.6
         end
         movedamage = 0
         movedamage2 = 0
@@ -31476,7 +31497,10 @@ def pbShouldSwitch?(index,hardswitch=false)
     end
     finalmod += mod1*mod2
   end
-  switchscore+=140 if finalmod==0
+  immunitylock = (finalmod==0)
+  if immunitylock
+    switchscore+=240
+  end
   totalpp=0
   for i in currentmon.moves
     totalpp+= i.pp
@@ -33442,6 +33466,16 @@ def pbSwitchTo(currentmon,party,skill,pivoting=false,hardswitch=false,incomingmo
     end
   end
   monparty=pbParty(opponent1.index)
+  currentmonNoHit = true
+  for move in currentmon.moves
+    next if move.id==0 || move.pp==0 || move.basedamage==0
+    mod1 = pbTypeModNoMessages(move.type,currentmon,opponent1,move,skill)
+    mod2 = @doublebattle ? pbTypeModNoMessages(move.type,currentmon,opponent2,move,skill) : 0
+    if mod1>0 || mod2>0
+      currentmonNoHit = false
+      break
+    end
+  end
   opp1roles = pbGetMonRole(opponent1,currentmon,skill)
   opp2roles = pbGetMonRole(opponent2,currentmon,skill)
   aimem = getAIMemory(skill,opponent1.pokemonIndex)
@@ -33629,6 +33663,23 @@ def pbSwitchTo(currentmon,party,skill,pivoting=false,hardswitch=false,incomingmo
       end
     end
     theseRoles = pbGetMonRole(battler,opponent1,skill,supercount,party)
+    if currentmonNoHit
+      battlerCanHit = false
+      for move in battler.moves
+        next if move.id==0 || move.pp==0 || move.basedamage==0
+        mod1 = pbTypeModNoMessages(move.type,battler,opponent1,move,skill)
+        mod2 = @doublebattle ? pbTypeModNoMessages(move.type,battler,opponent2,move,skill) : 0
+        if mod1>0 || mod2>0
+          battlerCanHit = true
+          break
+        end
+      end
+      if battlerCanHit
+        monscore += 80
+      else
+        monscore -= 200
+      end
+    end
     if theseRoles.include?(PBMonRoles::PHYSICALWALL) || theseRoles.include?(PBMonRoles::SPECIALWALL)
       wallvar = true
     else
@@ -34833,18 +34884,12 @@ def pbSwitchTo(currentmon,party,skill,pivoting=false,hardswitch=false,incomingmo
           monscore+=25
         end
       end
-      # Keen Eye - now applies Lock-On and Laser Focus on entry
+      # Keen Eye - ignores accuracy/evasion changes and prevents accuracy drops
       if (battler.ability == PBAbilities::KEENEYE)
-        monscore+=20  # Guaranteed crit on first move is always valuable
-        # Extra value if battler has low-accuracy high-power moves
-        if battler.pbHasMove?(PBMoves::INFERNO) || battler.pbHasMove?(PBMoves::ZAPCANNON) || battler.pbHasMove?(PBMoves::DYNAMICPUNCH)
-          monscore+=40
-        end
-        # Value against evasive opponents
-        if opponent1.stages[PBStats::EVASION]>0 || ((opponent1.ability == PBAbilities::SNOWCLOAK) && @weather==PBWeather::HAIL)
+        if (opponent1.item == PBItems::LAXINCENSE) || (opponent1.item == PBItems::BRIGHTPOWDER) || opponent1.stages[PBStats::EVASION]>0 || ((opponent1.ability == PBAbilities::SNOWCLOAK) && @weather==PBWeather::HAIL)
           monscore+=25
         end
-        if opponent2.totalhp > 0 && (opponent2.stages[PBStats::EVASION]>0 || ((opponent2.ability == PBAbilities::SNOWCLOAK) && @weather==PBWeather::HAIL))
+        if opponent2.totalhp > 0 && ((opponent2.item == PBItems::LAXINCENSE) || (opponent2.item == PBItems::BRIGHTPOWDER) || opponent2.stages[PBStats::EVASION]>0 || ((opponent2.ability == PBAbilities::SNOWCLOAK) && @weather==PBWeather::HAIL))
           monscore+=25
         end
       end

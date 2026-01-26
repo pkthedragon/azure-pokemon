@@ -896,7 +896,7 @@
 877,FAERIEFIB,Faerie Fib,273,90,FAIRY,Special,100,10,0,00,0,bef,"Uses target's special attack stat. Sound."
 878,SERAPHSEMBRACE,Seraph's Embrace,016,110,FAIRY,Physical,85,5,10,00,0,abef,"10% chance to charm for three turns."
 879,LITHOFORM,Lithoform,00F,110,ROCK,Special,85,5,10,00,0,be,"10% chance to flinch target."
-880,RELICSHOT,Relic Shot,00F,50,ROCK,Special,90,20,20,00,0,bef,"20% chance to paralyze."
+880,RELICSHOT,Relic Shot,295,50,ROCK,Special,90,20,20,00,0,bef,"20% chance to crush."
 881,WINDVORTEX,Wind Vortex,000,40,FLYING,Special,100,15,0,00,1,bef,"+1 priority. Wind."
 882,SONICSCREAM,Sonic Scream,0A9,90,FLYING,Special,90,10,0,00,0,bef,"Ignores target's evasion and defense changes. Sound."
 883,SKYSCRAPER,Skyscraper,275,70,FLYING,Physical,100,10,0,00,0,abefl,"Critically hits targets at or below 50% max HP."

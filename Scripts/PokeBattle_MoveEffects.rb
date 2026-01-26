@@ -14150,9 +14150,11 @@ end
 # - On a critical hit, drains target's Speed (target -1, user +1).
 ################################################################################
 class PokeBattle_Move_291 < PokeBattle_Move
-  def pbEffect(attacker, opponent)
-    return if opponent.fainted?
-    return if !opponent.damagestate.critical
+  def pbEffect(attacker, opponent, hitnum=0, alltargets=nil, showanimation=true)
+    ret = super(attacker, opponent, hitnum, alltargets, showanimation)
+    return ret if ret < 0
+    return ret if opponent.fainted?
+    return ret if !opponent.damagestate.critical
     lowered = false
     if opponent.pbCanReduceStatStage?(PBStats::SPEED, attacker, false)
       opponent.pbReduceStat(PBStats::SPEED, 1, attacker, false)
@@ -14166,6 +14168,7 @@ class PokeBattle_Move_291 < PokeBattle_Move
     if lowered || raised
       @battle.pbDisplay(_INTL("{1} drained Speed from {2}!", attacker.pbThis, opponent.pbThis))
     end
+    return ret
   end
 end
 
