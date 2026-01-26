@@ -2665,6 +2665,12 @@ class PokeBattle_Battler
   ################################################################################
   def pbAbilitiesOnSwitchIn(onactive,megad=false)
     return if hp<=0
+    previous_stat_source=nil
+    if @battle
+      previous_stat_source=@battle.statChangeSource
+      @battle.statChangeSource=[:ability,ability]
+    end
+    begin
     if self.hasWorkingAbility(:NEUTRALIZINGGAS)  && onactive    
       @battle.pbDisplay(_INTL("Neutralizing Gas fills the area! Abilities are suppressed!"))
     end    
@@ -4080,6 +4086,9 @@ class PokeBattle_Battler
         @effects[PBEffects::DisableMove]=0
         @battle.pbDisplay(_INTL("{1} transformed into {2}!",pbThis,choice.pbThis(true)))
       end
+    end
+    ensure
+      @battle.statChangeSource=previous_stat_source if @battle
     end
   end
   def pbEffectsOnDealingDamage(move,user,target,damage,innards)

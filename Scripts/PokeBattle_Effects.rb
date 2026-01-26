@@ -689,32 +689,57 @@ end
     user=@battle.battlers[@battle.lastMoveUser]
     return nil if !user
     move_id=@battle.lastMoveUsed
+    return nil if !move_id || move_id<=0
     begin
-      move_data=PBMoveData.new(move_id)
+      PBMoveData.new(move_id)
     rescue
       return nil
     end
-    return nil if move_data.basedamage>0
     return move_id
   end
 
-  def pbStatChangeMoveLocked?(move_id,showMessages=false,change_direction=nil)
-    return false if !move_id
+  def pbStatChangeSourceKey(move_id=nil)
+    if @battle && @battle.respond_to?(:statChangeSource) && @battle.statChangeSource
+      return @battle.statChangeSource
+    end
+    move_id = nil if move_id && !move_id.is_a?(Integer)
+    move_id ||= pbStatChangeMoveId
+    return nil if !move_id
+    return [:move,move_id]
+  end
+
+  def pbStatChangeSourceName(source_key)
+    return nil if !source_key
+    source_type,source_id=source_key
+    case source_type
+    when :move
+      return PBMoves.getName(source_id)
+    when :ability
+      return PBAbilities.getName(source_id)
+    when :item
+      return PBItems.getName(source_id)
+    else
+      return source_key.to_s
+    end
+  end
+
+  def pbStatChangeMoveLocked?(source_key,showMessages=false,change_direction=nil)
+    return false if !source_key
     lock=@effects[PBEffects::StatMoveLock]
-    return false if !lock || !lock[move_id]
-    if showMessages && @effects[PBEffects::StatMoveLockMessage] != move_id
-      move_name=PBMoves.getName(move_id)
+    return false if !lock || !lock[source_key]
+    if showMessages && @effects[PBEffects::StatMoveLockMessage] != source_key
+      source_name=pbStatChangeSourceName(source_key)
       direction = (change_direction == :lower) ? "lower" : "raise"
-      @battle.pbDisplay(_INTL("{1} can't {2} {3}'s stats any more!",move_name,direction,pbThis))
-      @effects[PBEffects::StatMoveLockMessage] = move_id
+      @battle.pbDisplay(_INTL("{1} can't {2} {3}'s stats any more!",source_name,direction,pbThis))
+      @effects[PBEffects::StatMoveLockMessage] = source_key
     end
     return true
   end
 
-  def pbRegisterStatChangeMove(move_id)
-    return if !move_id
+  def pbRegisterStatChangeMove(source_key)
+    return if !source_key
     pending=@effects[PBEffects::StatMoveLockPending]
-    pending[move_id]=true if pending
+    pending[source_key]=true if pending
   end
 
   def pbTooHigh?(stat)
@@ -749,6 +774,8 @@ end
   end
 
   def pbIncreaseStatBasic(stat,increment)
+    stat_source=pbStatChangeSourceKey
+    return false if pbStatChangeMoveLocked?(stat_source,false,:raise)
     if !(self.moldbroken) && (hasWorkingAbility(:SIMPLE))
       increment*=2
     end
@@ -759,6 +786,8 @@ end
       @stages[stat]+=increment
       @stages[stat]=3 if @stages[stat]>3
     end
+    pbRegisterStatChangeMove(stat_source)
+    return true
   end
 
 # UPDATE 11/29/2013
@@ -772,8 +801,8 @@ end
        attacker.moves[0].basedamage>0
       increment += 1
     end
-    stat_move_id=pbStatChangeMoveId
-    return false if pbStatChangeMoveLocked?(stat_move_id,showMessages1,:raise)
+    stat_source=pbStatChangeSourceKey(moveid)
+    return false if pbStatChangeMoveLocked?(stat_source,showMessages1,:raise)
     # here we call reduce instead
     if hasWorkingAbility(:CONTRARY) && !cont_call && !(self.moldbroken)
       ret=pbReduceStat(stat,increment,showMessages1,moveid,attacker,upanim,false,true,showMessages2)
@@ -825,7 +854,7 @@ end
     end
     if pbCanIncreaseStatStage?(stat,showMessages1)
       pbIncreaseStatBasic(stat,increment)
-      pbRegisterStatChangeMove(stat_move_id)
+      pbRegisterStatChangeMove(stat_source)
       # Big Pecks: foes gain Defense when an enemy raises its stats
       if attacker && attacker.pbIsOpposing?(self.index)
         for foe in [pbOpposing1,pbOpposing2]
@@ -927,6 +956,8 @@ end
   end
 
   def pbReduceStatBasic(stat,increment)
+    stat_source=pbStatChangeSourceKey
+    return false if pbStatChangeMoveLocked?(stat_source,false,:lower)
     if !(self.moldbroken) && (hasWorkingAbility(:SIMPLE))
       increment*=2
     end
@@ -938,6 +969,8 @@ end
       @stages[stat]=-3 if @stages[stat]<-3
     end
     self.statLowered = true
+    pbRegisterStatChangeMove(stat_source)
+    return true
   end
 
 # UPDATE 11/29/2013
@@ -951,8 +984,8 @@ end
        attacker.moves && attacker.moves[0] && attacker.moves[0].id==moveid
       increment += 1
     end
-    stat_move_id=pbStatChangeMoveId
-    return false if pbStatChangeMoveLocked?(stat_move_id,showMessages1,:lower)
+    stat_source=pbStatChangeSourceKey(moveid)
+    return false if pbStatChangeMoveLocked?(stat_source,showMessages1,:lower)
     # no, we don't want to say reduce 5 times - Thunder Raid
     if moveid == 207
       showMessages2 = false
@@ -1008,7 +1041,7 @@ end
     end
     if pbCanReduceStatStage?(stat,showMessages1,selfreduce)
       pbReduceStatBasic(stat,increment)
-      pbRegisterStatChangeMove(stat_move_id)
+      pbRegisterStatChangeMove(stat_source)
       if moveid!=207
         @battle.pbCommonAnimation("StatDown",self,nil) if downanim
       end
