@@ -9817,10 +9817,10 @@ MultipleForms.register(:MOTHIM,{
     next if pokemon.form==0      # Use default moveset for base form
     movelist=[]
     case pokemon.form            # Mystic
-    when 1 ; movelist=[[0,:BEAUTIFY],[1,:SUCKERPUNCH],[1,:DEFENSECURL],[1,:ROLLOUT],
+    when 1 ; movelist=[[0,:ENDURE],[1,:SUCKERPUNCH],[1,:DEFENSECURL],[1,:ROLLOUT],
                       [1,:SILVERWIND],[10,:ROLLOUT],[15,:SILVERWIND],[20,:HEADBUTT],
-                      [23,:ENDURE],[26,:SKITTERSMACK],[29,:FACADE],[32,:HEARTSTAMP],
-                      [35,:AGILITY],[38,:QUICKATTACK],[41,:AMNESIA],[44,:ZENHEADBUTT],
+                      [23,:SKITTERSMACK],[26,:AGILITY],[29,:FACADE],[32,:HEARTSTAMP],
+                      [35,:BEAUTIFY],[38,:QUICKATTACK],[41,:AMNESIA],[44,:ZENHEADBUTT],
                       [47,:BODYSLAM],[50,:FLAIL]]
     end
     for i in movelist

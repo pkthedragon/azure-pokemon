@@ -2038,7 +2038,7 @@ Pokedex=A Ponyta is very weak at birth. It can barely stand up. Its legs become 
 BattlerPlayerY=19
 BattlerEnemyY=16
 BattlerAltitude=0
-Evolutions=RAPIDASH,Level,40
+Evolutions=RAPIDASH,Level,28
 [78]
 Name=Rapidash
 InternalName=RAPIDASH
@@ -11389,7 +11389,7 @@ Pokedex=It emits cries by agitating an orb at the back of its throat. It moves w
 BattlerPlayerY=33
 BattlerEnemyY=20
 BattlerAltitude=12
-Evolutions=CHIMECHO,HappinessNight,0
+Evolutions=CHIMECHO,15
 [434]
 Name=Stunky
 InternalName=STUNKY
@@ -16047,7 +16047,7 @@ Rareness=75
 Happiness=70
 Abilities=STATIC,QUICKDRAW
 HiddenAbility=ELECTRICSURGE
-Moves=1,FISSURE,1,FLAIL,1,TACKLE,1,WATERGUN,1,MUDSLAP,1,POISONSTING,5,BIDE,9,THUNDERSHOCK,13,MUDSHOT,17,CAMOUFLAGE,20,CHARGE,21,MUDBOMB,25,SHOCKWAVE,25,FRACTURE,30,ENDURE,30,DISCHARGE,35,BOUNCE,40,MUDDYWATER,45,THUNDERBOLT,50,REVENGE,55,FLAIL,61,FISSURE
+Moves=1,FISSURE,1,FLAIL,1,TACKLE,1,WATERGUN,1,MUDSLAP,1,POISONSTING,5,BIDE,9,THUNDERSHOCK,13,MUDSHOT,17,CAMOUFLAGE,20,CHARGE,21,MUDBOMB,25,SHOCKWAVE,25,BOUNCE,30,ENDURE,30,DISCHARGE,35,FRACTURE,40,MUDDYWATER,45,THUNDERBOLT,50,REVENGE,55,FLAIL,61,FISSURE
 EggMoves=ASTONISH,CURSE,EARTHPOWER,EERIEIMPULSE,MEFIRST,PAINSPLIT,REFLECTTYPE,SHOCKWAVE,SLEEPTALK,SPARK,SPITE,YAWN
 Compatibility=Water1,Amorphous
 StepsToHatch=5120
@@ -21411,7 +21411,7 @@ Pokedex=It whirls around in the wind while singing a joyous song. This delightfu
 BattlerPlayerY=21
 BattlerEnemyY=27
 BattlerAltitude=0
-Evolutions=ELDEGOSS,Level,20
+Evolutions=ELDEGOSS,Level,25
 [830]
 Name=Eldegoss
 InternalName=ELDEGOSS

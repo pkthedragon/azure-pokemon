@@ -1110,10 +1110,10 @@ return pbGetMessage(MessageTypes::Items,id)
 end
 
 def PBItems.getCount
-  return 1147
+return 1147
 end
 
 def PBItems.maxValue
-  return 1146
+return 1146
 end
 end
