@@ -1585,6 +1585,10 @@ class PokeBattle_Move
                   @function==0xA9 || # Chip Away
                   (attacker.hasWorkingAbility(:UNAWARE) || @battle.SilvallyCheck(attacker,PBTypes::FAIRY)) && !(opponent.moldbroken)
     evasion=(100.0*stagemul[evastage+3]/stagediv[evastage+3])
+    if attacker.hasWorkingAbility(:KEENEYE)
+      accuracy=100.0
+      evasion=100.0
+    end
     if attacker.hasWorkingAbility(:COMPOUNDEYES)
       accuracy*=1.3
     end
@@ -1637,12 +1641,7 @@ class PokeBattle_Move
     if opponent.hasWorkingItem(:LAXINCENSE)
       evasion*=1.1
     end
-    # UPDATE 11/17/2013
-    # keen eye should now ignore evasion increases
-    # since in the above nothing can lower evasion, this will work
-    # this is not a solution if the above code can lower evasion - that would
-    # be counter-intuitive to keen-eye.
-    evasion = 100 if attacker.hasWorkingAbility(:KEENEYE)
+    # Keen Eye handled by ignoring accuracy/evasion stage changes above.
     evasion = 100 if $fefieldeffect == 20 &&
     (attacker.hasWorkingAbility(:INNERFOCUS) ||
     attacker.hasWorkingAbility(:PUREPOWER) ||

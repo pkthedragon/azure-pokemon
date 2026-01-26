@@ -3552,19 +3552,6 @@ class PokeBattle_Battler
         @battle.pbDisplay(_INTL("{1}'s {2} blinded its opponents!",pbThis,PBAbilities.getName(ability)))
       end
     end
-    # Keen Eye - Uses Lock-On and Laser Focus on entry
-    if self.hasWorkingAbility(:KEENEYE) && onactive
-      # Apply Lock-On to all opponents (user always hits them)
-      for i in 0...4
-        if pbIsOpposing?(i) && !@battle.battlers[i].isFainted?
-          @battle.battlers[i].effects[PBEffects::LockOn]=2
-          @battle.battlers[i].effects[PBEffects::LockOnPos]=@index
-        end
-      end
-      # Apply Laser Focus to self (guaranteed critical hits)
-      @effects[PBEffects::LaserFocus]=2
-      @battle.pbDisplay(_INTL("{1}'s {2} locked on and focused!",pbThis,PBAbilities.getName(ability)))
-    end
     # Illuminate - Raises accuracy on entry
     if self.hasWorkingAbility(:ILLUMINATE) && onactive
       if pbIncreaseStat(PBStats::ACCURACY,1,false,nil,nil,true,false,false)
@@ -6634,7 +6621,6 @@ class PokeBattle_Battler
         user.effects[PBEffects::FuryCutter]=0 if thismove.function==0x91 # Fury Cutter
         user.effects[PBEffects::EchoedVoice]+=1 if thismove.function==0x92 # Echoed Voice        
         user.effects[PBEffects::EchoedVoice]=0 if thismove.function!=0x92 # Not Echoed Voice
-        user.effects[PBEffects::CellSplitter]+=2 if thismove.function==0x247 # Cell Splitter
         user.effects[PBEffects::CellSplitter]=0 if thismove.function!=0x247 # Not Cell Splitter
         user.effects[PBEffects::Stockpile]=0 if thismove.function==0x113 # Spit Up
         return 0
@@ -6987,6 +6973,17 @@ class PokeBattle_Battler
       end
       target.pbUpdateTargetedMove(thismove,user)
       break if target.damagestate.calcdamage<=0
+    end
+    recklessfunctions = [0xFA,0xFB,0xFC,0xFD,0xFE,0x10B,0x130]
+    if user.grazed && recklessfunctions.include?(thismove.function)
+      @battle.pbDisplay(_INTL("{1} kept going and crashed!",user.pbThis))
+      damage=[1,(user.totalhp/2).floor].max
+      damage=user.pbAdjustElectricRecoilCrashDamage(damage)
+      if damage>0
+        @battle.scene.pbDamageAnimation(user,0)
+        user.pbReduceHP(damage)
+      end
+      user.pbFaint if user.isFainted?
     end
     if totaldamage>0
       turneffects[PBEffects::TotalDamage]+=totaldamage 
