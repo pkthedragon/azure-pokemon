@@ -5467,7 +5467,7 @@ class PokeBattle_Battler
       pbAddTarget(targets,pbOpposing2) if !pbAddTarget(targets,pbOpposing1) 
     elsif $fefieldeffect == 40 && (move.id == 147 || move.id == 379 || move.id == 177 || move.id == 133)
       pbAddTarget(targets,pbOpposing2) if !pbAddTarget(targets,pbOpposing1) 
-    elsif $fefieldeffect == 50 && (move.id == 147 || move.id == 379 || move.id == 177 || move.id == 133 || move.id == 553)
+    elsif $fefieldeffect == 50 && (move.id == 147 || move.id == 553)
       pbAddTarget(targets,pbOpposing2) if !pbAddTarget(targets,pbOpposing1) 
     elsif self.hasWorkingAbility(:TEMPEST) && (move.id == 304)
       pbAddTarget(targets,pbOpposing2) if !pbAddTarget(targets,pbOpposing1) 

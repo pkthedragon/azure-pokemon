@@ -271,7 +271,7 @@ class Game_Player < Game_Character
             Kernel.pbUpdateVehicle
           end
         else
-          Kernel.pbMessage(_INTL("It can't be used when you have someone with you."))
+          Kernel.pbMessage(_INTL("You can't swim when you have someone with you."))
           return false
         end
       end
