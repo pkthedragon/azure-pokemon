@@ -5467,6 +5467,8 @@ class PokeBattle_Battler
       pbAddTarget(targets,pbOpposing2) if !pbAddTarget(targets,pbOpposing1) 
     elsif $fefieldeffect == 40 && (move.id == 147 || move.id == 379 || move.id == 177 || move.id == 133)
       pbAddTarget(targets,pbOpposing2) if !pbAddTarget(targets,pbOpposing1) 
+    elsif $fefieldeffect == 50 && (move.id == 147 || move.id == 379 || move.id == 177 || move.id == 133 || move.id == 553)
+      pbAddTarget(targets,pbOpposing2) if !pbAddTarget(targets,pbOpposing1) 
     elsif self.hasWorkingAbility(:TEMPEST) && (move.id == 304)
       pbAddTarget(targets,pbOpposing2) if !pbAddTarget(targets,pbOpposing1) 
     else
@@ -5590,9 +5592,6 @@ class PokeBattle_Battler
     target=move.target
     if move.function==0x10D && pbHasType?(:GHOST) # Curse
       target=PBTargets::SingleNonUser
-    end
-    if $fefieldeffect == 50 && (move.id == PBMoves::FIRESPIN || move.id == PBMoves::WHIRLPOOL)
-      target=PBTargets::AllOpposing
     end
     side=(pbIsOpposing?(self.index)) ? 1 : 0
     owner=@battle.pbGetOwnerIndex(self.index)
@@ -7521,9 +7520,9 @@ class PokeBattle_Battler
               (thismove.id == 192 || thismove.id == 214 || thismove.id == 218 || 
                 thismove.id == 219 || thismove.id == 220 || thismove.id == 445 || 
                 thismove.id == 596 || thismove.id == 600)) || $fefieldeffect == 40 &&
-            (thismove.id == 147 || thismove.id == 379 || thismove.id == 177 || thismove.id == 133) || user.hasWorkingAbility(:WORLDOFNIGHTMARES) &&
-            (thismove.id == 188) || user.hasWorkingAbility(:TEMPEST) && (thismove.id == 304) ||
-            ($fefieldeffect == 50 && (thismove.id == PBMoves::FIRESPIN || thismove.id == PBMoves::WHIRLPOOL)))
+            (thismove.id == 147 || thismove.id == 379 || thismove.id == 177 || thismove.id == 133) || $fefieldeffect == 50 &&
+            (thismove.id == 147 || thismove.id == 379 || thismove.id == 177 || thismove.id == 133 || thismove.id == 553) || user.hasWorkingAbility(:WORLDOFNIGHTMARES) &&
+            (thismove.id == 188) || user.hasWorkingAbility(:TEMPEST) && (thismove.id == 304))
           # Add target's partner to list of targets
           pbAddTarget(targets,target.pbPartner)
         end

@@ -209,12 +209,6 @@ class PokeBattle_Move
   end
 
   def pbTargetsAll?(attacker)
-    if $fefieldeffect == 50 && (id == PBMoves::FIRESPIN || id == PBMoves::WHIRLPOOL)
-      numtargets=0
-      numtargets+=1 if !attacker.pbOpposing1.isFainted?
-      numtargets+=1 if !attacker.pbOpposing2.isFainted?
-      return numtargets>1
-    end
     if @target==PBTargets::AllOpposing 
       # TODO: should apply even if partner faints during an attack
       numtargets=0
