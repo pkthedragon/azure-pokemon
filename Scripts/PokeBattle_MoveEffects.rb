@@ -1756,6 +1756,8 @@ class PokeBattle_Move_030 < PokeBattle_Move
     pbShowAnimation(@id,attacker,nil,hitnum,alltargets,showanimation)
     if $fefieldeffect == 14 && isConst?(@id,PBMoves,:ROCKPOLISH) # Rocky Field
       ret=attacker.pbIncreaseStat(PBStats::SPEED,3,false)
+    elsif isConst?(@id,PBMoves,:AGILITY) && attacker.item<=0
+      ret=attacker.pbIncreaseStat(PBStats::SPEED,3,false)
     elsif $fefieldeffect == 25 && isConst?(@id,PBMoves,:ROCKPOLISH) # Crystal Cavern
       ret=attacker.pbIncreaseStat(PBStats::SPEED,2,false)
       ret=attacker.pbIncreaseStat(PBStats::ATTACK,1,false)
@@ -1768,7 +1770,8 @@ class PokeBattle_Move_030 < PokeBattle_Move
 
   def pbAdditionalEffect(attacker,opponent)
     if attacker.pbCanIncreaseStatStage?(PBStats::SPEED,false)
-      attacker.pbIncreaseStat(PBStats::SPEED,2,false)
+      increment = isConst?(@id,PBMoves,:AGILITY) && attacker.item<=0 ? 3 : 2
+      attacker.pbIncreaseStat(PBStats::SPEED,increment,false)
     end
     return true
   end

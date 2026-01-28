@@ -776,6 +776,8 @@ end
   def pbIncreaseStatBasic(stat,increment)
     stat_source=pbStatChangeSourceKey
     return false if pbStatChangeMoveLocked?(stat_source,false,:raise)
+    cn=@battle.pbCheckGlobalAbility(:CLOUDNINE)
+    return false if cn
     if !(self.moldbroken) && (hasWorkingAbility(:SIMPLE))
       increment*=2
     end
