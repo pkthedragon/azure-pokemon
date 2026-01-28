@@ -1760,8 +1760,6 @@ class PokeBattle_Move_030 < PokeBattle_Move
       ret=attacker.pbIncreaseStat(PBStats::SPEED,2,false)
       ret=attacker.pbIncreaseStat(PBStats::ATTACK,1,false)
       ret=attacker.pbIncreaseStat(PBStats::SPATK,1,false)
-    elsif isConst?(@id,PBMoves,:AGILITY) && attacker.item == 0 # Agility with no held item
-      ret=attacker.pbIncreaseStat(PBStats::SPEED,3,false)
     else
       ret=attacker.pbIncreaseStat(PBStats::SPEED,2,false)
     end
