@@ -174,7 +174,7 @@
 174,FURCOAT,Fur Coat,"Halves damage from physical moves."
 175,GALEWINGS,Gale Wings,"Gives priority to Flying-type moves when HP is full."
 176,GOOEY,Gooey,"Contact lowers the foe's Speed stat."
-177,NATURALSHROUD,Natural Shroud,"Boosts defenses during terrain and powers up certain moves."
+177,NATURALSHROUD,Natural Shroud,"Boosts defenses by 1.3x during terrain and powers up certain moves."
 178,MAGICIAN,Magician,"Steals enemy item upon attacking, deals 1.5x damage to itemless enemies."
 179,MEGALAUNCHER,Mega Launcher,"Boosts the power of pulse, aura, and cannon moves 1.5x"
 180,PARENTALBOND,Parental Bond,"Parent and child attack together."

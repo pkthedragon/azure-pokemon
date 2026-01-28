@@ -4021,7 +4021,7 @@ class PokeBattle_Move
     end
     if isConst?(opponent.ability,PBAbilities,:NATURALSHROUD) && pbIsPhysical?(type) &&
      ($fefieldeffect == 2 || $fefieldeffect == 15 || ($fefieldeffect == 33 && $fecounter>1) || @battle.field.effects[PBEffects::GrassyTerrain]>0) # Grassy Field
-      defmult=(defmult*1.5).round
+      defmult=(defmult*1.3).round
     end
     # Forest Field - Grass and Bug-type Defense boost
     if $fefieldeffect == 15 && (opponent.pbHasType?(:GRASS) || opponent.pbHasType?(:BUG))
@@ -4063,7 +4063,7 @@ class PokeBattle_Move
 		@battle.field.effects[PBEffects::PsychicTerrain] > 0 ||
 		@battle.field.effects[PBEffects::DampTerrain]    > 0 ||
 		@battle.field.effects[PBEffects::MuddyTerrain]   > 0
-      defmult=(defmult*1.5).round
+      defmult=(defmult*1.3).round
 	end
     if opponent.hasWorkingAbility(:AMPLIFY) && isSoundBased?
       defmult=(defmult*2).round
