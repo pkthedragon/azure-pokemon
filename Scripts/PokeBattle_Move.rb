@@ -3499,7 +3499,8 @@ class PokeBattle_Move
         minusboost = 1.5 if attacker.hasWorkingAbility(:MINUS) && attacker.pbPartner.hasWorkingAbility(:PLUS)
         plusboost = 1.5 if attacker.hasWorkingAbility(:PLUS) && attacker.pbPartner.hasWorkingAbility(:MINUS)
         solarBoost = 1.5 if (attacker.hasWorkingAbility(:SOLARPOWER) || (isConst?(attacker.species,PBSpecies,:CASTFORM) && isConst?(attacker.item,PBItems,:CASTCREST) && attacker.form==1) ) && @battle.pbWeather==PBWeather::SUNNYDAY && !attacker.hasWorkingItem(:UTILITYUMBRELLA)
-        hydroBoost = 1.5 if opponent.hasWorkingAbility(:HYDROPLANE) || (isConst?(opponent.species,PBSpecies,:CASTFORM) && @battle.pbWeather==PBWeather::RAINDANCE && !opponent.hasWorkingItem(:UTILITYUMBRELLA))
+        hydroBoost = 1.5 if (opponent.hasWorkingAbility(:HYDROPLANE) && (@battle.pbWeather==PBWeather::RAINDANCE || $fefieldeffect == 21) && !opponent.hasWorkingItem(:UTILITYUMBRELLA)) ||
+          (isConst?(opponent.species,PBSpecies,:CASTFORM) && @battle.pbWeather==PBWeather::RAINDANCE && !opponent.hasWorkingItem(:UTILITYUMBRELLA))
 		fgBoost = 1.5 if attacker.hasWorkingAbility(:FLOWERGIFT) && @battle.pbWeather==PBWeather::SUNNYDAY && !attacker.hasWorkingItem(:UTILITYUMBRELLA)
         batteryBoost = 1.3 if attacker.pbPartner.hasWorkingAbility(:BATTERY)
         gl1 = attacker.spatk
@@ -3754,7 +3755,7 @@ class PokeBattle_Move
        $fefieldeffect!=39 && @battle.pbWeather==PBWeather::SUNNYDAY && !attacker.hasWorkingItem(:UTILITYUMBRELLA) && pbIsSpecial?(type)
       atkmult=(atkmult*1.5).round
     end
-    if attacker.hasWorkingAbility(:HYDROPLANE) && @battle.pbWeather==PBWeather::RAINDANCE && !attacker.hasWorkingItem(:UTILITYUMBRELLA) && pbIsPhysical?(type)
+    if attacker.hasWorkingAbility(:HYDROPLANE) && (@battle.pbWeather==PBWeather::RAINDANCE || $fefieldeffect == 21) && !attacker.hasWorkingItem(:UTILITYUMBRELLA) && pbIsPhysical?(type)
       atkmult=(atkmult*1.5).round
     end
     if attacker.hasWorkingAbility(:FLASHFIRE) && $fefieldeffect!=39 &&
@@ -3905,7 +3906,8 @@ class PokeBattle_Move
         minusboost = 1.5 if opponent.hasWorkingAbility(:MINUS) && opponent.pbPartner.hasWorkingAbility(:PLUS)
         plusboost = 1.5 if opponent.hasWorkingAbility(:PLUS) && opponent.pbPartner.hasWorkingAbility(:MINUS)
         solarBoost = 1.5 if (opponent.hasWorkingAbility(:SOLARPOWER) || (isConst?(opponent.species,PBSpecies,:CASTFORM) && isConst?(opponent.item,PBItems,:CASTCREST) && opponent.form==1) ) && @battle.pbWeather==PBWeather::SUNNYDAY && !opponent.hasWorkingItem(:UTILITYUMBRELLA)
-        hydroBoost = 1.5 if opponent.hasWorkingAbility(:HYDROPLANE) || (isConst?(opponent.species,PBSpecies,:CASTFORM) && @battle.pbWeather==PBWeather::RAINDANCE && !opponent.hasWorkingItem(:UTILITYUMBRELLA))
+        hydroBoost = 1.5 if (opponent.hasWorkingAbility(:HYDROPLANE) && (@battle.pbWeather==PBWeather::RAINDANCE || $fefieldeffect == 21) && !opponent.hasWorkingItem(:UTILITYUMBRELLA)) ||
+          (isConst?(opponent.species,PBSpecies,:CASTFORM) && @battle.pbWeather==PBWeather::RAINDANCE && !opponent.hasWorkingItem(:UTILITYUMBRELLA))
         fgBoost = 1.5 if opponent.hasWorkingAbility(:FLOWERGIFT) && @battle.pbWeather==PBWeather::SUNNYDAY && !opponent.hasWorkingItem(:UTILITYUMBRELLA)
         batteryBoost = 1.3 if attacker.pbPartner.hasWorkingAbility(:BATTERY)
         gl1 = opponent.spatk
