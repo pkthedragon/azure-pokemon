@@ -7011,6 +7011,13 @@ def pbStartBattle(canlose=false)
         hpgain=i.pbRecoverHP((i.totalhp/16).floor,true)
         pbDisplay(_INTL("{1}'s Rain Dish restored its HP a little!",i.pbThis)) if hpgain>0
       end
+      # Hydroplane
+      if i.hasWorkingAbility(:HYDROPLANE) && !i.hasWorkingItem(:UTILITYUMBRELLA) &&
+       (pbWeather==PBWeather::RAINDANCE || $fefieldeffect == 21)
+        @scene.pbDamageAnimation(i,0)
+        hploss=i.pbReduceHP((i.totalhp/8).floor)
+        pbDisplay(_INTL("{1} was hurt by hydroplaning!",i.pbThis)) if hploss>0
+      end
       # Caretaker
       if i.hasWorkingAbility(:CARETAKER)
         partner=i.pbPartner
