@@ -313,7 +313,7 @@ class PokeBattle_ZMoves < PokeBattle_Move
               @battle.pbCommonAnimation("Powder",battler,nil)
               battler.pbReduceHP((battler.totalhp/4.0).floor)
               battler.pbFaint if battler.hp<1
-              return false
+              return false if battler.hp<1
             end
             success = battler.pbChangeTarget(@thismove,userandtarget,ztargets)
             next if !success

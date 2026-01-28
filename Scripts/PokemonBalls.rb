@@ -148,10 +148,10 @@ BallHandlers::IsUnconditional.add(:GREATBALL,proc{|ball,battle,battler|
    next pbBallHPConditionMet?(battler,0.5)
 })
 
-# Ultra Ball - Catches Pokemon below 75% HP
+# Ultra Ball - Catches Pokemon below full HP
 BallHandlers::IsUnconditional.add(:ULTRABALL,proc{|ball,battle,battler|
    next false if battle.opponent
-   next pbBallHPConditionMet?(battler,0.75)
+   next battler.hp < battler.totalhp
 })
 
 # Nest Ball - Catches Pokemon below level 30

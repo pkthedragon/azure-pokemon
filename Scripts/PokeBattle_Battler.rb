@@ -1678,7 +1678,7 @@ class PokeBattle_Battler
     end
     if isConst?(self.ability,PBAbilities,:NATURALSHROUD) && 
       ($fefieldeffect == 2 || $fefieldeffect == 15) # Grassy Field
-      defmult=(defmult*1.5).round
+      defmult=(defmult*1.3).round
     end
     if self.hasWorkingAbility(:FLOWERVEIL) &&
       (@battle.pbWeather==PBWeather::SUNNYDAY || $fefieldeffect == 33 ||
@@ -7208,7 +7208,7 @@ class PokeBattle_Battler
       @battle.pbDisplay(_INTL("The powder around {1} exploded!",pbThis))
       pbReduceHP((@totalhp/4).floor)
       pbFaint if @hp<1
-      return false
+      return false if @hp<1
     end
     #### KUROTSUNE - 023 - END
     # Remember that user chose a two-turn move

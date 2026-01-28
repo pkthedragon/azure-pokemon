@@ -262,7 +262,7 @@
 262,SWIFTWING,Swift Wing,2,3000,An item for use on a Pokémon. It lowers the base Speed IV of a single Pokémon.,1,0,0,
 263,RARECANDY,Rare Candy,2,4800,A candy that is packed with energy. It raises the level of a single Pokémon by one.,1,0,0,
 264,MASTERBALL,Master Ball,3,0,The best Ball with the ultimate level of performance. It will catch any wild Pokémon without fail.,0,2,4,
-265,ULTRABALL,Ultra Ball,3,1200,An ultra-performance Ball for catching wild Pokémon when trapped or with a status condition. Can catch unconditionally when the target is below 75% HP.,0,2,4,
+265,ULTRABALL,Ultra Ball,3,1200,An ultra-performance Ball for catching wild Pokémon when trapped or with a status condition. Can catch unconditionally when the target is below full HP.,0,2,4,
 266,GREATBALL,Great Ball,3,600,A good Ball for catching wild Pokémon when trapped or with a status condition. Can catch unconditionally when the target is below 50% HP.,0,2,4,
 267,POKEBALL,Poké Ball,3,200,Catches unconditionally when the target is below 25% HP.,0,2,4,
 268,SAFARIBALL,Safari Ball,3,0,A special Poké Ball that is used only in the Great Marsh. It is decorated in a camouflage pattern.,0,2,4,
