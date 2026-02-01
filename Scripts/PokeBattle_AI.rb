@@ -29961,8 +29961,11 @@ def pbChooseMoves(index,chosenindex=0)
   if !wildbattle #&& maxscore>100
     stdev=pbStdDev(@scores)
     preferredMoves=[]
+    # For boss Pokemon, use a threshold to consider moves with scores close to maxscore as "tied"
+    # This prevents score fluctuations from causing random move switching
+    scoreThreshold = (attacker.isbossmon || attacker.issossmon) ? (maxscore * 0.9) : maxscore
     for i in 0...attacker.moves.length
-      if attacker.moves[i].id!=0 && (@scores[i] >= (maxscore* 1)) && pbCanChooseMove?(index,i,false)
+      if attacker.moves[i].id!=0 && (@scores[i] >= scoreThreshold) && pbCanChooseMove?(index,i,false)
         preferredMoves.push(i)
         preferredMoves.push(i) if @scores[i]==maxscore # Doubly prefer the best move
       end
@@ -29970,11 +29973,28 @@ def pbChooseMoves(index,chosenindex=0)
     if preferredMoves.length>0
       if preferredMoves.length>1
         bestaccuracy=-10
+        bestbasedamage=-10
+        bestscore=-10
         for m in 0...preferredMoves.length
           next if attacker.moves[preferredMoves[m]].zmove && !preferredMoves.include?(chosenindex) && preferredMoves.length>1
-          if attacker.moves[preferredMoves[m]].accuracy>bestaccuracy
-            bestaccuracy=attacker.moves[preferredMoves[m]].accuracy
-            i=preferredMoves[m]
+          moveacc = attacker.moves[preferredMoves[m]].accuracy
+          movedam = attacker.moves[preferredMoves[m]].basedamage
+          movescore = @scores[preferredMoves[m]]
+          # For boss Pokemon, use a deterministic tiebreaker: score > accuracy > base damage
+          # This ensures consistent move selection when scores are close
+          if (attacker.isbossmon || attacker.issossmon)
+            if movescore>bestscore || (movescore==bestscore && moveacc>bestaccuracy) ||
+               (movescore==bestscore && moveacc==bestaccuracy && movedam>bestbasedamage)
+              bestscore=movescore
+              bestaccuracy=moveacc
+              bestbasedamage=movedam
+              i=preferredMoves[m]
+            end
+          else
+            if moveacc>bestaccuracy
+              bestaccuracy=moveacc
+              i=preferredMoves[m]
+            end
           end
         end
       else
