@@ -622,6 +622,7 @@ Events.onAction+=lambda{|sender,e|
   return if pbGetMetadata($game_map.map_id,MetadataBicycleAlways)
   return if !pbIsRoughWaterTag?(Kernel.pbFacingTerrainTag)
   return if !$game_map.passable?($game_player.x,$game_player.y,$game_player.direction)
+  return if $game_player.pbHasDependentEvents?
   Kernel.pbSurf
 }
 HiddenMoveHandlers::CanUseMove.add(:SURF,lambda{|move,pkmn,showmsg|
@@ -742,6 +743,7 @@ Events.onAction+=lambda{|sender,e|
   return if pbGetMetadata($game_map.map_id,MetadataBicycleAlways)
   return if !pbIsPassableLavaTag?(Kernel.pbFacingTerrainTag)
   return if !$game_map.passable?($game_player.x,$game_player.y,$game_player.direction)
+  return if $game_player.pbHasDependentEvents?
   Kernel.pbLavaSurf
 }
 
@@ -878,6 +880,7 @@ HiddenMoveHandlers::UseMove.add(:WATERFALL,lambda{|move,pokemon|
 # Dive
 #===============================================================================
 def Kernel.pbDive
+  return false if $game_player.pbHasDependentEvents?
   divemap = pbGetMetadata($game_map.map_id,MetadataDiveMap)
   return false if !divemap
   move = getID(PBMoves,:DIVE)

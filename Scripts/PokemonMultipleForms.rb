@@ -749,7 +749,7 @@ MultipleForms.register(:BURMY,{
       next if pokemon.form!=3      # Use default moveset for base form
       movelist=[]
       case pokemon.form            # Mystic
-      when 3 ; movelist=[[1,:DEFENSECURL],[10,:ROLLOUT],[15,:SILVERWIND],[20,:HEADBUTT]]
+      when 3 ; movelist=[[1,:DEFENSECURL],[10,:ROLLOUT],[15,:BUGBITE],[20,:HEADBUTT]]
       end
       for i in movelist
         i[1]=getConst(PBMoves,i[1])
@@ -831,10 +831,10 @@ MultipleForms.register(:WORMADAM,{
           [20,:PROTECT],[23,:PSYBEAM],[26,:MIRRORSHOT],[26,:SILVERWIND],
           [29,:IRONDEFENSE],[32,:CARAPACESHOT],[35,:COUNTER],[35,:MIRRORCOAT],[38,:FLASHCANNON],
           [41,:STICKYWEB],[44,:PSYCHIC],[47,:STEELBEAM],[50,:BUGBUZZ],[55,:QUIVERDANCE]]
-      when 3 ; movelist=[[0,:BEAUTIFY],[1,:SUCKERPUNCH],[1,:DEFENSECURL],[1,:ROLLOUT],
-                      [1,:SILVERWIND],[10,:ROLLOUT],[15,:SILVERWIND],[20,:HEADBUTT],
+      when 3 ; movelist=[[0,:PROTECT],[1,:SUCKERPUNCH],[1,:DEFENSECURL],[1,:ROLLOUT],
+                      [1,:BUGBITE],[10,:ROLLOUT],[15,:BUGBITE],[20,:SILVERWIND],
                       [23,:LIFEDEW],[26,:STRUGGLEBUG],[29,:ROUND],[32,:PSYBEAM],
-                      [35,:ROOST],[38,:PROTECT],[41,:COTTONGUARD],[44,:PSYCHIC],
+                      [35,:BEAUTIFY],[38,:ROOST],[41,:COTTONGUARD],[44,:PSYCHIC],
                       [47,:HYPERVOICE],[50,:HEALINGWISH]]
       end
       for i in movelist
@@ -1699,7 +1699,7 @@ MultipleForms.register(:VIVILLON,{
       # Mystic form movelist
       movelist=[[0,:BLUESHIFT],[1,:DRAGONRUSH],[1,:HURRICANE],[1,:IRRITATION],
                 [1,:EXTREMESPEED],[1,:GLARE],[12,:WINDVORTEX],[17,:TWISTER],
-                [21,:ANCIENTPOWER],[31,:XSCISSOR],[35,:BREAKINGSWIPE],[41,:ROOST],
+                [21,:BUGBITE],[26,:ANCIENTPOWER],[31,:XSCISSOR],[35,:BREAKINGSWIPE],[41,:ROOST],
 				[45,:DRAGONDANCE],[50,:DRAGONPULSE],[55,:PESTILENTWAVE]]
       for i in movelist
         i[1]=getConst(PBMoves,i[1])
@@ -9818,8 +9818,8 @@ MultipleForms.register(:MOTHIM,{
     movelist=[]
     case pokemon.form            # Mystic
     when 1 ; movelist=[[0,:ENDURE],[1,:SUCKERPUNCH],[1,:DEFENSECURL],[1,:ROLLOUT],
-                      [1,:SILVERWIND],[10,:ROLLOUT],[15,:SILVERWIND],[20,:HEADBUTT],
-                      [23,:SKITTERSMACK],[26,:AGILITY],[29,:FACADE],[32,:HEARTSTAMP],
+                      [1,:BUGBITE],[10,:ROLLOUT],[15,:BUGBITE],[20,:HEADBUTT],
+                      [23,:SILVERWIND],[26,:FACADE],[29,:SKITTERSMACK],[32,:AGILITY],
                       [35,:BEAUTIFY],[38,:QUICKATTACK],[41,:AMNESIA],[44,:ZENHEADBUTT],
                       [47,:BODYSLAM],[50,:FLAIL]]
     end

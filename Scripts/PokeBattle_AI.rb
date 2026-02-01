@@ -52,10 +52,6 @@ class PokeBattle_Battle
     move_type = bettertype
     opponent=attacker.pbOppositeOpposing if !opponent
     opponent=opponent.pbPartner if opponent && opponent.isFainted?
-    if pbStatMoveLockedForTargets?(attacker,opponent,move)
-      PBDebug.log(sprintf("Move is locked for all targets. Score set to 0.")) if $INTERNAL && shutup==false
-      return 0
-    end
     roles = pbGetMonRole(attacker,opponent,skill)
     # Fake Out, First Impression, Mat Block, and Forebode only work on turn 1 - set score to 0 if turncount != 0
     # Note: turncount is 0 during command phase on the first turn after entering, incremented to 1 at start of attack phase
@@ -5850,7 +5846,7 @@ class PokeBattle_Battle
           end
         end
       else
-        if (!hasgreatmoves(initialscores,scoreindex,skill,true) || !attacker.isBoss)
+        if (!hasgreatmoves(initialscores,scoreindex,skill,true) || !attacker.isbossmon)
           score*=unsetupminiscore(attacker,opponent,skill,move,roles,1,false,false,initialscores,scoreindex) 
         end
       end
@@ -6132,7 +6128,7 @@ class PokeBattle_Battle
           physmove=true
         end
       end
-      if !physmove || opponent.stages[PBStats::DEFENSE]>1 && !opponent.isBoss || !opponent.pbCanReduceStatStage?(PBStats::DEFENSE)
+      if !physmove || opponent.stages[PBStats::DEFENSE]>1 && !opponent.isbossmon || !opponent.pbCanReduceStatStage?(PBStats::DEFENSE)
         if move.basedamage==0
           score=0
         end
@@ -8770,6 +8766,11 @@ class PokeBattle_Battle
       ministat/=100.0
       score*=ministat
     when 0xAA # Protect
+      # Always fail if used consecutively
+      ratesharers=[391,121,361,584,603,641,786]
+      if ratesharers.include?(attacker.lastMoveUsed)
+        score*=0
+      end
       if (opponent.effects[PBEffects::Taunt]==0 && attacker.effects[PBEffects::Wish]==0)
          score*=0.5 if opponent.moves.any? {|moveloop| (PBStuff::SETUPMOVE).include?(moveloop.id)} && !(attacker.ability == PBAbilities::SPEEDBOOST)
       end
@@ -9032,54 +9033,84 @@ class PokeBattle_Battle
           end
         end
       end
-      ratesharers=[391,121,122,515,361,584,603,641,786]   # Protect, Detect, Quick Guard, Wide Guard, Endure, King's Shield, Spiky Shield, Baneful Bunker, Obstruct in that order
+      ratesharers=[391,121,361,584,603,641,786]   # Protect, Detect, Endure, King's Shield, Spiky Shield, Baneful Bunker, Obstruct in that order
       score/=(attacker.effects[PBEffects::ProtectRate]*3.0) if ratesharers.include?(attacker.lastMoveUsed)
-    when 0xAB # Quick Guard
-      ratesharers=[391,121,122,515,361,584,603,641,786]   # Protect, Detect, Quick Guard, Wide Guard, Endure, King's Shield, Spiky Shield, Baneful Bunker, Obstruct in that order
-      score/=(attacker.effects[PBEffects::ProtectRate]*2.0) if ratesharers.include?(attacker.lastMoveUsed)
-      if ((!opponent.abilitynulled && opponent.ability == PBAbilities::GALEWINGS) && opponent.hp == opponent.totalhp) || ((!opponent.abilitynulled && opponent.ability == PBAbilities::PRANKSTER) && attacker.pbHasType?(:DARK)) || checkAIpriority(aimem)
-        score*=2
-        if @doublebattle
-          score*=1.3
-          score*=0.3 if checkAIhealing(aimem) || checkAImoves(PBStuff::SETUPMOVE,aimem)
-          score*=0.1 if checkAImoves(PBStuff::PROTECTIGNORINGMOVE,aimem)
-          if attacker.effects[PBEffects::Wish]>0
-            score*=2 if checkAIdamage(aimem,attacker,opponent,skill)>attacker.hp || (attacker.pbPartner.hp*(1.0/attacker.pbPartner.totalhp))<0.25
-          end
-        end
-      else
+    when 0xAB # Quick Guard (5-turn screen that halves priority move damage)
+      # Fail if already active
+      if attacker.pbOwnSide.effects[PBEffects::QuickGuard] > 0
         score*=0
-      end
-    when 0xAC # Wide Guard
-      ratesharers=[391,121,122,515,361,584,603,641,786]   # Protect, Detect, Quick Guard, Wide Guard, Endure, King's Shield, Spiky Shield, Baneful Bunker, Obstruct in that order
-      score/=(attacker.effects[PBEffects::ProtectRate]*2.0) if ratesharers.include?(attacker.lastMoveUsed)
-      widevar = false
-      for j in aimem
-        widevar = true if (j.target == PBTargets::AllOpposing || j.target == PBTargets::AllNonUsers)
-      end
-      if @doublebattle
-        if widevar
-          score*=2
-          score*=0.3 if checkAIhealing(aimem) || checkAImoves(PBStuff::SETUPMOVE,aimem)
-          score*=0.1 if checkAImoves(PBStuff::PROTECTIGNORINGMOVE,aimem)
-          if attacker.effects[PBEffects::Wish]>0
-            maxdam = checkAIdamage(aimem,attacker,opponent,skill)
-            if maxdam>attacker.hp || (attacker.pbPartner.hp*(1.0/attacker.pbPartner.totalhp))<0.25
-              score*=2
+      else
+        # Check if opponent has priority moves
+        haspriority = false
+        if aimem.length > 0
+          for j in aimem
+            if j.priority > 0
+              haspriority = true
+              break
             end
           end
-          if $fefieldeffect==11
-            score*=2 if checkAImoves([PBMoves::HEATWAVE,PBMoves::LAVAPLUME,PBMoves::ERUPTION,PBMoves::MINDBLOWN],aimem)
+        end
+        # Check for priority-granting abilities
+        if (!opponent.abilitynulled && opponent.ability == PBAbilities::GALEWINGS && opponent.hp == opponent.totalhp) ||
+           (!opponent.abilitynulled && opponent.ability == PBAbilities::PRANKSTER) ||
+           (!opponent.abilitynulled && opponent.ability == PBAbilities::TRIAGE)
+          haspriority = true
+        end
+        if haspriority
+          score*=1.5
+          score*=1.3 if @doublebattle
+          # More valuable if partner is weak
+          if @doublebattle && attacker.pbPartner && !attacker.pbPartner.isFainted?
+            if (attacker.pbPartner.hp.to_f / attacker.pbPartner.totalhp) < 0.5
+              score*=1.3
+            end
           end
-          if $fefieldeffect==23
-            score*=2 if checkAImoves([PBMoves::MAGNITUDE,PBMoves::EARTHQUAKE,PBMoves::BULLDOZE],aimem)
-          end
-          if $fefieldeffect==30
-            score*=2 if (checkAImoves([PBMoves::MAGNITUDE,PBMoves::EARTHQUAKE,PBMoves::BULLDOZE],aimem) || checkAImoves([PBMoves::HYPERVOICE,PBMoves::BOOMBURST],aimem))
+        else
+          score*=0.1
+        end
+      end
+    when 0xAC # Wide Guard (5-turn screen that halves spread move damage)
+      # Fail if already active
+      if attacker.pbOwnSide.effects[PBEffects::WideGuard] > 0
+        score*=0
+      else
+        # Check if opponent has spread moves
+        hasspread = false
+        if aimem.length > 0
+          for j in aimem
+            if j.target == PBTargets::AllOpposing || j.target == PBTargets::AllNonUsers
+              hasspread = true
+              break
+            end
           end
         end
-      else
-        score*=0
+        if hasspread
+          # Base score for having spread moves
+          if @doublebattle
+            score*=1.8
+            # More valuable if partner is weak
+            if attacker.pbPartner && !attacker.pbPartner.isFainted?
+              if (attacker.pbPartner.hp.to_f / attacker.pbPartner.totalhp) < 0.5
+                score*=1.4
+              end
+            end
+          else
+            # Still useful in singles, but less so than doubles
+            score*=1.3
+          end
+          # Field effect boosts
+          if $fefieldeffect==11
+            score*=1.3 if checkAImoves([PBMoves::HEATWAVE,PBMoves::LAVAPLUME,PBMoves::ERUPTION,PBMoves::MINDBLOWN],aimem)
+          end
+          if $fefieldeffect==23
+            score*=1.3 if checkAImoves([PBMoves::MAGNITUDE,PBMoves::EARTHQUAKE,PBMoves::BULLDOZE],aimem)
+          end
+          if $fefieldeffect==30
+            score*=1.3 if (checkAImoves([PBMoves::MAGNITUDE,PBMoves::EARTHQUAKE,PBMoves::BULLDOZE],aimem) || checkAImoves([PBMoves::HYPERVOICE,PBMoves::BOOMBURST],aimem))
+          end
+        else
+          score*=0.1
+        end
       end
     when 0xAD # Feint
       if checkAImoves(PBStuff::PROTECTIGNORINGMOVE,aimem)
@@ -9087,11 +9118,9 @@ class PokeBattle_Battle
         ratesharers=[
           391,   # Protect
           121,   # Detect
-          122,   # Quick Guard
-          515,   # Wide Guard
           361,   # Endure
           584,   # King's Shield
-          603,    # Spiky Shield
+          603,   # Spiky Shield
           641,   # Baneful Bunker
           786    # Obstruct
         ]
@@ -11894,7 +11923,7 @@ class PokeBattle_Battle
         score*=0
       end
     when 0xDC # Leech Seed
-      if (opponent.effects[PBEffects::LeechSeed]<0 && ! opponent.pbHasType?(:GRASS) && opponent.effects[PBEffects::Substitute]<=0) && !opponent.isBoss
+      if (opponent.effects[PBEffects::LeechSeed]<0 && ! opponent.pbHasType?(:GRASS) && opponent.effects[PBEffects::Substitute]<=0) && !opponent.isbossmon
         if (roles.include?(PBMonRoles::PHYSICALWALL) || roles.include?(PBMonRoles::SPECIALWALL) || roles.include?(PBMonRoles::TANK))
           score*=1.2
         end
@@ -12421,6 +12450,11 @@ class PokeBattle_Battle
         score*=0
       end
     when 0xE8 # Endure
+      # Always fail if used consecutively
+      ratesharers=[391,121,361,584,603,641,786]   # Protect, Detect, Endure, King's Shield, Spiky Shield, Baneful Bunker, Obstruct in that order
+      if ratesharers.include?(attacker.lastMoveUsed)
+        score*=0
+      end
       if attacker.hp>1
         if attacker.hp==attacker.totalhp && ((attitemworks && attacker.item == PBItems::FOCUSSASH) || (!attacker.abilitynulled && attacker.ability == PBAbilities::STURDY))
           score*=0
@@ -15558,6 +15592,11 @@ class PokeBattle_Battle
         score*=0
       end
     when 0x133 # Kings Shield
+      # Always fail if used consecutively
+      ratesharers=[391,121,361,584,603,641,786]
+      if ratesharers.include?(attacker.lastMoveUsed)
+        score*=0
+      end
       if opponent.effects[PBEffects::Taunt]==0
         score*=0.3 if opponent.moves.any? {|moveloop| (PBStuff::SETUPMOVE).include?(moveloop.id)}
        end
@@ -15753,7 +15792,7 @@ class PokeBattle_Battle
         score*=1.5 if pbRoughStat(opponent,PBStats::ATTACK,skill)>pbRoughStat(opponent,PBStats::SPATK,skill)
         score*=0.1 if attacker.status==0 && ((checkAImoves([PBMoves::WILLOWISP,PBMoves::THUNDERWAVE],aimem) || checkAImoves(PBStuff::SLEEPMOVE,aimem)) && !(opponent.effects[PBEffects::Attacking]==true))
       end
-      ratesharers=[391,121,122,515,361,584,603,641,786]   # Protect, Detect, Quick Guard, Wide Guard, Endure, King's Shield, Spiky Shield, Baneful Bunker, Obstruct in that order
+      ratesharers=[391,121,361,584,603,641,786]   # Protect, Detect, Endure, King's Shield, Spiky Shield, Baneful Bunker, Obstruct in that order
       score/=(attacker.effects[PBEffects::ProtectRate]*2.0) if ratesharers.include?(attacker.lastMoveUsed)
     when 0x134 # Electric Terrain
       sleepvar=false
@@ -16349,6 +16388,11 @@ class PokeBattle_Battle
         score*=0
       end
     when 0x140 # Spiky Shield
+      # Always fail if used consecutively
+      ratesharers=[391,121,361,584,603,641,786]
+      if ratesharers.include?(attacker.lastMoveUsed)
+        score*=0
+      end
       if opponent.effects[PBEffects::Taunt]==0
         score*=0.3 if opponent.moves.any? {|moveloop| (PBStuff::SETUPMOVE).include?(moveloop.id)}
       end
@@ -16481,7 +16525,7 @@ class PokeBattle_Battle
         end
         score*=1.3 if contactcheck
       end
-      ratesharers=[391,121,122,515,361,584,603,641,786]   # Protect, Detect, Quick Guard, Wide Guard, Endure, King's Shield, Spiky Shield, Baneful Bunker, Obstruct in that order
+      ratesharers=[391,121,361,584,603,641,786]   # Protect, Detect, Endure, King's Shield, Spiky Shield, Baneful Bunker, Obstruct in that order
       score/=(attacker.effects[PBEffects::ProtectRate]*2.0) if ratesharers.include?(attacker.lastMoveUsed)
     when 0x141 # Sticky Web
       if !attacker.pbOpposingSide.effects[PBEffects::StickyWeb]
@@ -17589,6 +17633,11 @@ class PokeBattle_Battle
         score=0
       end
     when 0x15C # Baneful Bunker
+      # Always fail if used consecutively
+      ratesharers=[391,121,361,584,603,641,786]
+      if ratesharers.include?(attacker.lastMoveUsed)
+        score*=0
+      end
       if opponent.effects[PBEffects::Taunt]==0
         score*=0.3 if opponent.moves.any? {|moveloop| (PBStuff::SETUPMOVE).include?(moveloop.id)}
       end
@@ -17735,7 +17784,7 @@ class PokeBattle_Battle
           score*=0.7 if (!opponent.abilitynulled && opponent.ability == PBAbilities::TOXICBOOST) || (!opponent.abilitynulled && opponent.ability == PBAbilities::GUTS) || (!opponent.abilitynulled && opponent.ability == PBAbilities::QUICKFEET)
         end
       end
-      ratesharers=[391,121,122,515,361,584,603,641,786]   # Protect, Detect, Quick Guard, Wide Guard, Endure, King's Shield, Spiky Shield, Baneful Bunker, Obstruct in that order
+      ratesharers=[391,121,361,584,603,641,786]   # Protect, Detect, Endure, King's Shield, Spiky Shield, Baneful Bunker, Obstruct in that order
       score/=(attacker.effects[PBEffects::ProtectRate]*2.0) if ratesharers.include?(attacker.lastMoveUsed)
     when 0x15D # Beak Blast
       contactcheck = false
@@ -19729,6 +19778,11 @@ class PokeBattle_Battle
         score=0
       end
     when 0x188 # Obstruct
+      # Always fail if used consecutively
+      ratesharers=[391,121,361,584,603,641,786]
+      if ratesharers.include?(attacker.lastMoveUsed)
+        score*=0
+      end
       score*=0.3 if opponent.moves.any? {|moveloop| (PBStuff::SETUPMOVE).include?(moveloop.id)}
       if ((!attacker.abilitynulled && attacker.ability == PBAbilities::SPEEDBOOST) || ((!attacker.abilitynulled && attacker.ability == PBAbilities::STEAMENGINE) && $fefieldeffect==7 || $fefieldeffect==16 || $fefieldeffect==21 || $fefieldeffect==22 || $fefieldeffect==45)) && attacker.pbSpeed<pbRoughStat(opponent,PBStats::SPEED,skill) && @trickroom==0
         score*=4 if (attacker.pbSpeed*1.5>pbRoughStat(opponent,PBStats::SPEED,skill))
@@ -19873,7 +19927,7 @@ class PokeBattle_Battle
         end
         score*=1.3 if contactcheck && !(!opponent.abilitynulled && (opponent.ability == PBAbilities::DEFIANT || opponent.ability == PBAbilities::COMPETITIVE || opponent.ability == PBAbilities::MIRRORARMOR || opponent.ability == PBAbilities::CONTRARY)) 
       end
-      ratesharers=[391,121,122,515,361,584,603,641,786]   # Protect, Detect, Quick Guard, Wide Guard, Endure, King's Shield, Spiky Shield, Baneful Bunker, Obstruct in that order
+      ratesharers=[391,121,361,584,603,641,786]   # Protect, Detect, Endure, King's Shield, Spiky Shield, Baneful Bunker, Obstruct in that order
       score/=(attacker.effects[PBEffects::ProtectRate]*2.0) if ratesharers.include?(attacker.lastMoveUsed)
     when 0x201 # Barbed Web - to do
       if opponent.pbOwnSide.effects[PBEffects::StickyWeb]==true
@@ -21085,7 +21139,7 @@ class PokeBattle_Battle
           PBStats::SPATK,PBStats::SPDEF,PBStats::ACCURACY,PBStats::EVASION]
         mult+=attacker.stages[i] if attacker.stages[i]>0
       end
-      basedamage=20*(mult+1)
+      basedamage=30*(mult+1)
     when 0x8F # Punishment
       mult=0
       for i in [PBStats::ATTACK,PBStats::DEFENSE,PBStats::SPEED,
@@ -24604,7 +24658,7 @@ class PokeBattle_Battle
     end
     if $game_variables[699]>0
       attackerhitnum=$game_variables[699] 
-      if attacker.isBoss
+      if attacker.isbossmon
         damage*=attackerhitnum
       end
     end
@@ -28509,14 +28563,6 @@ class PokeBattle_Battle
     return targets.compact.uniq
   end
 
-  def pbStatMoveLockedForTargets?(attacker,opponent,move)
-    targets=pbStatMoveTargets(attacker,opponent,move)
-    return false if targets.empty?
-    return targets.all? do |target|
-      lock=target.effects[PBEffects::StatMoveLock]
-      lock && lock[[:move,move.id]]
-    end
-  end
   
   ################################################################################
   # AI Memory utility functions
@@ -29657,8 +29703,8 @@ class PokeBattle_Battle
               end 
             end
             #Prefer targets with more dangerous abilities if scores are equal
-            if (score1 == score2) && ((attacker.moves[i].target==PBTargets::SingleNonUser || attacker.moves[i].target==PBTargets::SingleOpposing || attacker.moves[i].target==PBTargets::OppositeOpposing) || attacker.isBoss)
-              if !(attacker.isBoss)
+            if (score1 == score2) && ((attacker.moves[i].target==PBTargets::SingleNonUser || attacker.moves[i].target==PBTargets::SingleOpposing || attacker.moves[i].target==PBTargets::OppositeOpposing) || attacker.isbossmon)
+              if !(attacker.isbossmon)
                 maxdam1=checkAIdamage(aimem,attacker.pbPartner,opponent,skill)
                 maxdam2=checkAIdamage(aimem,attacker.pbPartner,otheropp,skill)
                 if attacker.moves[i].id==getID(PBMoves,:FAKEOUT)
@@ -31414,6 +31460,13 @@ def pbShouldSwitch?(index,hardswitch=false)
   end
   if currentmon.effects[PBEffects::Yawn]>0 && currentmon.status!=PBStatuses::SLEEP
     switchscore+=95
+  end
+  # Protected turns - Don't switch if we have a shield effect active (e.g. from Telluric Seed on Forest Field)
+  if currentmon.effects[PBEffects::SpikyShield] ||
+     currentmon.effects[PBEffects::BanefulBunker] ||
+     currentmon.effects[PBEffects::KingsShield]
+    noswitchscore += 250
+    PBDebug.log("Pokemon has active shield effect - heavily penalizing switch") if $INTERNAL
   end
   # Stat Stages
   PBDebug.log(sprintf("Initial switchscore building: Stat Stages (%d)",switchscore)) if $INTERNAL

@@ -32,6 +32,9 @@ begin
       @effects[PBEffects::MysticTree]  = 0
       @effects[PBEffects::Presents]  = 0
       @effects[PBEffects::Caltrops]  = 0
+      @effects[PBEffects::PressurePlate] = 0
+      @effects[PBEffects::Undertow] = 0
+      @effects[PBEffects::ManaBond] = 0
       @effects[PBEffects::PlusSignal]  = 0
       @effects[PBEffects::MinusSignal] = 0
       $belch=false

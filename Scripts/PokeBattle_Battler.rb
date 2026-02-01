@@ -1105,9 +1105,10 @@ class PokeBattle_Battler
     #   @effects[PBEffects::WaterSport]       = false
     @effects[PBEffects::WeightMultiplier] = 1.0
     @effects[PBEffects::Yawn]             = 0
-    @effects[PBEffects::StatMoveLock]     = {}
-    @effects[PBEffects::StatMoveLockPending] = {}
-    @effects[PBEffects::StatMoveLockMessage] = nil
+    @effects[PBEffects::StatCapPositive] = {}
+    @effects[PBEffects::StatCapNegative] = {}
+    @effects[PBEffects::StatCapContributors] = {}
+    @effects[PBEffects::StatCapPendingMessages] = []
     @effects[PBEffects::BeakBlast]        = false
     @effects[PBEffects::BurnUp]           = false
     @effects[PBEffects::ClangedScales]    = false
@@ -1170,9 +1171,10 @@ class PokeBattle_Battler
     @effects[PBEffects::StalwartMove]     = 0
     @effects[PBEffects::StalwartStacks]   = 0
     @effects[PBEffects::ReverbUser]       = -1
-    @effects[PBEffects::StatMoveLock]     = {}
-    @effects[PBEffects::StatMoveLockPending] = {}
-    @effects[PBEffects::StatMoveLockMessage] = nil
+    @effects[PBEffects::StatCapPositive] = {}
+    @effects[PBEffects::StatCapNegative] = {}
+    @effects[PBEffects::StatCapContributors] = {}
+    @effects[PBEffects::StatCapPendingMessages] = []
     # Additional effect initializations
     @effects[PBEffects::Spritz]           = 0
     @effects[PBEffects::Aftershock]       = 0
@@ -2191,10 +2193,12 @@ class PokeBattle_Battler
       next if i.isFainted?
       if i.hasWorkingAbility(:SOULHEART) && !i.pbTooHigh?(PBStats::SPATK)
         @battle.pbDisplay(_INTL("{1}'s Soul-heart activated!",i.pbThis))
+        @battle.statChangeSource=[:ability,i.ability]
         i.pbIncreaseStat(PBStats::SPATK,1,true)
         if ($fefieldeffect==3 || $fefieldeffect==9 || $fefieldeffect==31) && !i.pbTooHigh?(PBStats::SPDEF)
           i.pbIncreaseStat(PBStats::SPDEF,1,true)
         end
+        @battle.statChangeSource=nil
       end
       # Pick Up - steal the fainted opponent's item
       if i.hasWorkingAbility(:PICKUP) && i.item==0 && self.item!=0 &&
@@ -2545,8 +2549,9 @@ class PokeBattle_Battler
       else
         @battle.pbDisplay(_INTL("{1} transformed!",pbThis))
       end
-      if isConst?(self.ability, PBAbilities, :STANCECHANGE) && 
+      if isConst?(self.ability, PBAbilities, :STANCECHANGE) &&
         ($fefieldeffect == 5 || $fefieldeffect == 31)
+        @battle.statChangeSource=[:ability,self.ability]
         if self.form == 1
           self.pbReduceStat(PBStats::DEFENSE,1,false)
           self.pbIncreaseStat(PBStats::ATTACK,1,false)
@@ -2554,6 +2559,7 @@ class PokeBattle_Battler
           self.pbReduceStat(PBStats::ATTACK,1,false)
           self.pbIncreaseStat(PBStats::DEFENSE,1,false)
         end
+        @battle.statChangeSource=nil
       end
     end
   end
@@ -2665,9 +2671,7 @@ class PokeBattle_Battler
   ################################################################################
   def pbAbilitiesOnSwitchIn(onactive,megad=false)
     return if hp<=0
-    previous_stat_source=nil
     if @battle
-      previous_stat_source=@battle.statChangeSource
       @battle.statChangeSource=[:ability,ability]
     end
     begin
@@ -3560,9 +3564,11 @@ class PokeBattle_Battler
     end
     # Illuminate - Raises accuracy on entry
     if self.hasWorkingAbility(:ILLUMINATE) && onactive
+      @battle.statChangeSource=[:ability,self.ability]
       if pbIncreaseStat(PBStats::ACCURACY,1,false,nil,nil,true,false,false)
         @battle.pbDisplay(_INTL("{1}'s {2} boosted its Accuracy!",pbThis,PBAbilities.getName(ability)))
       end
+      @battle.statChangeSource=nil
     end
     # Frisk - Peek at enemy item and block usage for 1 turn
     if self.hasWorkingAbility(:FRISK) && onactive
@@ -4088,7 +4094,7 @@ class PokeBattle_Battler
       end
     end
     ensure
-      @battle.statChangeSource=previous_stat_source if @battle
+      @battle.statChangeSource=nil if @battle
     end
   end
   def pbEffectsOnDealingDamage(move,user,target,damage,innards)
@@ -4234,7 +4240,8 @@ class PokeBattle_Battler
             target.pbAbilitiesOnSwitchIn(true)
           end
         end
-        if target.hasWorkingAbility(:GOOEY) 
+        if target.hasWorkingAbility(:GOOEY)
+          @battle.statChangeSource=[:ability,target.ability]
           if user.hasWorkingAbility(:CONTRARY)
             if $fefieldeffect == 8 || $fefieldeffect == 26
               user.pbReduceStat(PBStats::SPEED,2,false,nil,nil,true,false,false,false)
@@ -4243,7 +4250,7 @@ class PokeBattle_Battler
               user.pbReduceStat(PBStats::SPEED,1,false,nil,nil,true,false,false,false)
               @battle.pbDisplay(_INTL("{1}'s {2} boosted {3}'s Speed!",target.pbThis,PBAbilities.getName(target.ability),user.pbThis(true)))
             end
-          elsif user.hasWorkingAbility(:WHITESMOKE) || user.hasWorkingAbility(:CLEARBODY) || 
+          elsif user.hasWorkingAbility(:WHITESMOKE) || user.hasWorkingAbility(:CLEARBODY) ||
             user.hasWorkingAbility(:FULLMETALBODY) || user.hasWorkingAbility(:TEMPORALSHIFT)
             @battle.pbDisplay(_INTL("{1}'s {2} prevents stat loss!",user.pbThis,PBAbilities.getName(user.ability)))
           elsif $fefieldeffect == 8 || $fefieldeffect == 26
@@ -4253,24 +4260,27 @@ class PokeBattle_Battler
             user.pbReduceStat(PBStats::SPEED,1,false,nil,nil,true,false,false,false)
             @battle.pbDisplay(_INTL("{1}'s {2} lowered {3}'s Speed!",target.pbThis,PBAbilities.getName(target.ability),user.pbThis(true)))
           end
+          @battle.statChangeSource=nil
           if $fefieldeffect ==19 && user.pbCanPoison?(false)
             user.pbPoison(target)
             @battle.pbDisplay(_INTL("{1}'s {2} poisoned {3}!",target.pbThis,
                 PBAbilities.getName(target.ability),user.pbThis(true)))
           end
         end
-        if target.hasWorkingAbility(:TANGLINGHAIR) 
+        if target.hasWorkingAbility(:TANGLINGHAIR)
+          @battle.statChangeSource=[:ability,target.ability]
           if user.hasWorkingAbility(:CONTRARY)
             user.pbReduceStat(PBStats::SPEED,1,false,nil,nil,true,false,false,false)
             @battle.pbDisplay(_INTL("{1}'s {2} boosted {3}'s Speed!",target.pbThis,PBAbilities.getName(target.ability),user.pbThis(true)))
-          elsif user.hasWorkingAbility(:WHITESMOKE) || user.hasWorkingAbility(:CLEARBODY) || 
+          elsif user.hasWorkingAbility(:WHITESMOKE) || user.hasWorkingAbility(:CLEARBODY) ||
             user.hasWorkingAbility(:FULLMETALBODY) || user.hasWorkingAbility(:TEMPORALSHIFT)
             @battle.pbDisplay(_INTL("{1}'s {2} prevents stat loss!",user.pbThis,PBAbilities.getName(user.ability)))
           else
             user.pbReduceStat(PBStats::SPEED,1,false,nil,nil,true,false,false,false)
             @battle.pbDisplay(_INTL("{1}'s {2} lowered {3}'s Speed!",target.pbThis,PBAbilities.getName(target.ability),user.pbThis(true)))
           end
-        end        
+          @battle.statChangeSource=nil
+        end
         if target.hasWorkingAbility(:POISONPOINT,true) && user.pbCanPoison?(false)
           user.pbPoison(target)
           @battle.pbDisplay(_INTL("{1}'s {2} poisoned {3}!",target.pbThis, PBAbilities.getName(target.ability),user.pbThis(true)))
@@ -4282,7 +4292,7 @@ class PokeBattle_Battler
               PBAbilities.getName(target.ability),user.pbThis(true)))
         end
         # Static - when target faints from contact, paralyze the attacker
-        if target.hasWorkingAbility(:STATIC) &&
+        if target.hasWorkingAbility(:STATIC,true) &&
           target.hp <= 0 && !user.isFainted? && user.pbCanParalyze?(false)
           user.pbParalyze(target)
           @battle.pbDisplay(_INTL("{1}'s {2} paralyzed {3}!  It may be unable to move!",
@@ -4396,6 +4406,7 @@ class PokeBattle_Battler
         @battle.pbDisplay(_INTL("{1}'s Scavenger restored its HP!",user.pbThis)) if hpgain>0
       end
       if user.hasWorkingAbility(:BEASTBOOST) && user.hp>0 && target.hp<=0
+        @battle.statChangeSource=[:ability,user.ability]
         increment = 1
         increment = 2 if $fefieldeffect == 38
         aBoost = user.attack
@@ -4405,7 +4416,7 @@ class PokeBattle_Battler
         spdBoost = user.speed
         boostStat = [aBoost,dBoost,saBoost,sdBoost,spdBoost].max
         case boostStat
-        when aBoost            
+        when aBoost
           if !user.pbTooHigh?(PBStats::ATTACK)
             @battle.pbCommonAnimation("StatUp",self,nil)
             user.pbIncreaseStatBasic(PBStats::ATTACK,increment)
@@ -4416,19 +4427,19 @@ class PokeBattle_Battler
             @battle.pbCommonAnimation("StatUp",self,nil)
             user.pbIncreaseStatBasic(PBStats::DEFENSE,increment)
             @battle.pbDisplay(_INTL("{1}'s Beast Boost raised its Defense!",user.pbThis))
-          end        
+          end
         when saBoost
           if !user.pbTooHigh?(PBStats::SPATK)
             @battle.pbCommonAnimation("StatUp",self,nil)
             user.pbIncreaseStatBasic(PBStats::SPATK,increment)
             @battle.pbDisplay(_INTL("{1}'s Beast Boost raised its Special Attack!",user.pbThis))
-          end            
+          end
         when sdBoost
           if !user.pbTooHigh?(PBStats::SPDEF)
             @battle.pbCommonAnimation("StatUp",self,nil)
             user.pbIncreaseStatBasic(PBStats::SPDEF,increment)
             @battle.pbDisplay(_INTL("{1}'s Beast Boost raised its Special Defense!",user.pbThis))
-          end 
+          end
         when spdBoost
           if !user.pbTooHigh?(PBStats::SPEED)
             @battle.pbCommonAnimation("StatUp",self,nil)
@@ -4436,6 +4447,7 @@ class PokeBattle_Battler
             @battle.pbDisplay(_INTL("{1}'s Beast Boost raised its Speed!",user.pbThis))
           end
         end
+        @battle.statChangeSource=nil
       end
       if $fefieldeffect == 44 && user.hp>0 && target.hp<=0  
         aBoost = target.attack  
@@ -4484,7 +4496,10 @@ class PokeBattle_Battler
           user.pbReduceHP((user.totalhp/4).floor)
           if target.form==1 # Gulping Form
             if user.pbCanReduceStatStage?(PBStats::DEFENSE,false,true)
+
+              @battle.statChangeSource=[:ability,target.ability]
               user.pbReduceStatBasic(PBStats::DEFENSE,1)
+@battle.statChangeSource=nil
               @battle.pbCommonAnimation("StatDown",target,nil)
               @battle.pbDisplay(_INTL("{1}'s {2} lowered its Defense!",
                   target.pbThis,PBAbilities.getName(target.ability)))
@@ -4528,11 +4543,14 @@ class PokeBattle_Battler
         if target.hasWorkingAbility(:JUSTIFIED) &&
           isConst?(movetype,PBTypes,:DARK)
           if target.pbCanIncreaseStatStage?(PBStats::ATTACK)
+
+            @battle.statChangeSource=[:ability,target.ability]
             if $fefieldeffect == 29
               target.pbIncreaseStatBasic(PBStats::ATTACK,2)
             else
               target.pbIncreaseStatBasic(PBStats::ATTACK,1)
             end
+@battle.statChangeSource=nil
             @battle.pbCommonAnimation("StatUp",target,nil)
             @battle.pbDisplay(_INTL("{1}'s {2} raised its Attack!",
                 target.pbThis,PBAbilities.getName(target.ability)))
@@ -4565,13 +4583,18 @@ class PokeBattle_Battler
             isConst?(movetype,PBTypes,:DARK) ||
             isConst?(movetype,PBTypes,:GHOST))
           if target.pbCanIncreaseStatStage?(PBStats::SPEED)
+
+            @battle.statChangeSource=[:ability,target.ability]
             target.pbIncreaseStatBasic(PBStats::SPEED,1)
+@battle.statChangeSource=nil
             @battle.pbCommonAnimation("StatUp",target,nil)
             @battle.pbDisplay(_INTL("{1}'s {2} raised its speed!",
                 target.pbThis,PBAbilities.getName(target.ability)))
           end
         end
         if target.hasWorkingAbility(:WEAKARMOR) && move.pbIsPhysical?(movetype)
+
+          @battle.statChangeSource=[:ability,target.ability]
           if target.pbCanReduceStatStage?(PBStats::DEFENSE,false,true)
             target.pbReduceStatBasic(PBStats::DEFENSE,1)
             @battle.pbCommonAnimation("StatDown",target,nil)
@@ -4584,16 +4607,22 @@ class PokeBattle_Battler
             @battle.pbDisplay(_INTL("{1}'s {2} sharply raised its Speed!",
                 target.pbThis,PBAbilities.getName(target.ability)))
           end
+@battle.statChangeSource=nil
         end
         if target.hasWorkingAbility(:STAMINA)
           if target.pbCanIncreaseStatStage?(PBStats::DEFENSE)
+            @battle.statChangeSource=[:ability,target.ability]
             target.pbIncreaseStatBasic(PBStats::DEFENSE,1)
+            @battle.statChangeSource=nil
+            target.pbDisplayStatCapMessages
             @battle.pbCommonAnimation("StatUp",target,nil)
             @battle.pbDisplay(_INTL("{1}'s {2} raised its Defense!",
                 target.pbThis,PBAbilities.getName(target.ability)))
           end
         end   
         if target.hasWorkingAbility(:WATERCOMPACTION) && isConst?(movetype,PBTypes,:WATER)
+
+          @battle.statChangeSource=[:ability,target.ability]
           if ($fefieldeffect!=20 && $fefieldeffect != 46)
             if target.pbCanIncreaseStatStage?(PBStats::DEFENSE)
               target.pbIncreaseStatBasic(PBStats::DEFENSE,2)
@@ -4601,32 +4630,36 @@ class PokeBattle_Battler
               @battle.pbDisplay(_INTL("{1}'s Water Compaction sharply raised its Defense!",
                   target.pbThis,PBAbilities.getName(target.ability)))
             end
-          else             
+          else
             boost = false
-            if target.pbCanIncreaseStatStage?(PBStats::DEFENSE)              
+            if target.pbCanIncreaseStatStage?(PBStats::DEFENSE)
               target.pbIncreaseStatBasic(PBStats::DEFENSE,2)
               @battle.pbCommonAnimation("StatUp",target,nil) if !boost
               #@battle.pbDisplay(_INTL("{1}'s {2} sharply raised its Defense!",
               #target.pbThis,PBAbilities.getName(target.ability)))
               boost = true
-            end  
-            if target.pbCanIncreaseStatStage?(PBStats::SPDEF)              
+            end
+            if target.pbCanIncreaseStatStage?(PBStats::SPDEF)
               target.pbIncreaseStatBasic(PBStats::SPDEF,2)
               @battle.pbCommonAnimation("StatUp",target,nil) if !boost
               #@battle.pbDisplay(_INTL("{1}'s {2} sharply raised its Defense!",
               #target.pbThis,PBAbilities.getName(target.ability)))
               boost = true
-            end            
+            end
             @battle.pbDisplay(_INTL("{1}'s {2} sharply raised its Defense and Special Defense!",
                 target.pbThis,PBAbilities.getName(target.ability))) if boost
-          end          
+          end
+@battle.statChangeSource=nil
         end        
       end
       # Steam Engine
-      if target.hasWorkingAbility(:STEAMENGINE) && 
+      if target.hasWorkingAbility(:STEAMENGINE) &&
         (isConst?(movetype,PBTypes,:WATER) || isConst?(movetype,PBTypes,:FIRE))
         if target.pbCanIncreaseStatStage?(PBStats::SPEED)
+
+          @battle.statChangeSource=[:ability,target.ability]
           target.pbIncreaseStatBasic(PBStats::SPEED,6)
+@battle.statChangeSource=nil
           @battle.pbCommonAnimation("StatUp",target,nil)
           @battle.pbDisplay(_INTL("{1}'s {2} drastically raised its Speed!",
               target.pbThis,PBAbilities.getName(target.ability)))
@@ -4661,7 +4694,10 @@ class PokeBattle_Battler
           @battle.pbDisplay(_INTL("A sandstorm brewed!"))
         end
         if ($fefieldeffect == 12 || $fefieldeffect == 20 || $fefieldeffect == 46) && user.pbCanReduceStatStage?(PBStats::ACCURACY)
+
+          @battle.statChangeSource=[:ability,target.ability]
           user.pbReduceStatBasic(PBStats::ACCURACY,1)
+@battle.statChangeSource=nil
           @battle.pbCommonAnimation("StatDown",user,nil)
           @battle.pbDisplay(_INTL("{1}'s accuracy fell!",user.pbThis))
         end
@@ -7652,10 +7688,10 @@ class PokeBattle_Battler
               combust-=1 if @battle.battlers[i].hasWorkingAbility(:STURDY)
               combust =0 if @battle.battlers[i].hasWorkingAbility(:FLASHFIRE)
               if @battle.battlers[i].isbossmon && @battle.shieldCount>0
-                combust =0 
+                combust =0
               end
               combust =0 if @battle.battlers[i].effects[PBEffects::Protect] == true
-              combust =0 if @battle.battlers[i].effects[PBEffects::WideGuard] == true
+              combust =0 if @battle.battlers[i].pbOwnSide.effects[PBEffects::WideGuard] > 0
               combust-=1 if @battle.battlers[i].effects[PBEffects::Endure] == true
               combust =0 if @battle.battlers[i].effects[PBEffects::KingsShield] == true
               combust =0 if @battle.battlers[i].effects[PBEffects::SpikyShield] == true
@@ -7810,7 +7846,7 @@ class PokeBattle_Battler
             shatter =0 if @battle.battlers[i].hasWorkingAbility(:SHELLARMOR)
             shatter =0 if @battle.battlers[i].hasWorkingAbility(:BATTLEARMOR)
             shatter =0 if @battle.battlers[i].effects[PBEffects::Protect] == true
-            shatter =0 if @battle.battlers[i].effects[PBEffects::WideGuard] == true
+            shatter =0 if @battle.battlers[i].pbOwnSide.effects[PBEffects::WideGuard] > 0
             shatter =0 if @battle.battlers[i].effects[PBEffects::KingsShield] == true
             shatter =0 if @battle.battlers[i].effects[PBEffects::SpikyShield] == true
             shatter =0 if @battle.battlers[i].effects[PBEffects::MatBlock] == true
@@ -7827,10 +7863,10 @@ class PokeBattle_Battler
         combust = user.totalhp
         if combust!=0
           if (thismove.id == PBMoves::DIG || thismove.id == PBMoves::DIVE ||
-              thismove.id == PBMoves::FLY || thismove.id == PBMoves::BOUNCE) && 
+              thismove.id == PBMoves::FLY || thismove.id == PBMoves::BOUNCE) &&
             user.effects[PBEffects::TwoTurnAttack] > 0
             combust-=1 if user.hasWorkingAbility(:STURDY)
-            combust =0 if user.effects[PBEffects::WideGuard] == true
+            combust =0 if user.pbOwnSide.effects[PBEffects::WideGuard] > 0
             combust =0 if user.effects[PBEffects::MatBlock] == true
             @battle.pbDisplay(_INTL("The corrupted field damaged {1}!",user.pbThis)) if combust != 0
             user.pbReduceHP(combust) if combust != 0
@@ -7864,7 +7900,7 @@ class PokeBattle_Battler
                 combust = 0.5
               end
               combust =0 if @battle.battlers[i].effects[PBEffects::Protect] == true
-              combust =0 if @battle.battlers[i].effects[PBEffects::WideGuard] == true
+              combust =0 if @battle.battlers[i].pbOwnSide.effects[PBEffects::WideGuard] > 0
               #combust-=1 if @battle.battlers[i].effects[PBEffects::Endure] == true
               combust =0 if @battle.battlers[i].effects[PBEffects::KingsShield] == true
               combust =0 if @battle.battlers[i].effects[PBEffects::SpikyShield] == true
@@ -8812,12 +8848,6 @@ class PokeBattle_Battler
     for i in 0...4
       battler=@battle.battlers[i]
       next if !battler
-      pending=battler.effects[PBEffects::StatMoveLockPending]
-      if pending && !pending.empty?
-        battler.effects[PBEffects::StatMoveLock].merge!(pending)
-        pending.clear
-      end
-      battler.effects[PBEffects::StatMoveLockMessage] = nil
       battler.pbAbilityCureCheck
       battler.pbBerryCureCheck
       battler.pbAbilitiesOnSwitchIn(false)

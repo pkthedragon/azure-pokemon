@@ -708,45 +708,99 @@ end
     return [:move,move_id]
   end
 
-  def pbStatChangeSourceName(source_key)
-    return nil if !source_key
-    source_type,source_id=source_key
-    case source_type
-    when :move
-      return PBMoves.getName(source_id)
-    when :ability
-      return PBAbilities.getName(source_id)
-    when :item
-      return PBItems.getName(source_id)
+  def pbDisplayStatCapMessages
+    return if @effects[PBEffects::StatCapPendingMessages].empty?
+
+    messages = @effects[PBEffects::StatCapPendingMessages]
+
+    # Group by direction and magnitude
+    pos_by_mag = {1 => [], 2 => [], 3 => []}
+    neg_by_mag = {1 => [], 2 => [], 3 => []}
+
+    messages.each do |msg|
+      mag = msg[:increment] >= 3 ? 3 : msg[:increment]
+      stat_name = case msg[:stat]
+        when PBStats::ATTACK then "Attack"
+        when PBStats::DEFENSE then "Defense"
+        when PBStats::SPEED then "Speed"
+        when PBStats::SPATK then "Special Attack"
+        when PBStats::SPDEF then "Special Defense"
+        when PBStats::EVASION then "evasiveness"
+        when PBStats::ACCURACY then "accuracy"
+      end
+
+      if msg[:direction] == :positive
+        pos_by_mag[mag] << stat_name
+      else
+        neg_by_mag[mag] << stat_name
+      end
+    end
+
+    # Build the message parts
+    parts = []
+
+    # Positive caps
+    [3, 2, 1].each do |mag|
+      next if pos_by_mag[mag].empty?
+      stat_list = pos_by_mag[mag].length == 1 ? pos_by_mag[mag][0] :
+                  pos_by_mag[mag][0..-2].join(", ") + ", and " + pos_by_mag[mag][-1]
+      adverb = mag == 3 ? "drastically" : (mag == 2 ? "sharply" : nil)
+      cap_word = pos_by_mag[mag].length == 1 ? "cap" : "caps"
+      if adverb
+        parts << "positive #{stat_list} stat #{cap_word} #{adverb} increased"
+      else
+        parts << "positive #{stat_list} stat #{cap_word} increased"
+      end
+    end
+
+    # Negative caps
+    [3, 2, 1].each do |mag|
+      next if neg_by_mag[mag].empty?
+      stat_list = neg_by_mag[mag].length == 1 ? neg_by_mag[mag][0] :
+                  neg_by_mag[mag][0..-2].join(", ") + ", and " + neg_by_mag[mag][-1]
+      adverb = mag == 3 ? "drastically" : (mag == 2 ? "sharply" : nil)
+      cap_word = neg_by_mag[mag].length == 1 ? "cap" : "caps"
+      if adverb
+        parts << "negative #{stat_list} stat #{cap_word} #{adverb} increased"
+      else
+        parts << "negative #{stat_list} stat #{cap_word} increased"
+      end
+    end
+
+    # Combine and display
+    if parts.length == 1
+      @battle.pbDisplay(_INTL("{1}'s {2}!",pbThis,parts[0]))
+    elsif parts.length == 2
+      @battle.pbDisplay(_INTL("{1}'s {2} and its {3}!",pbThis,parts[0],parts[1]))
     else
-      return source_key.to_s
+      # Join all but last with commas, then add "and" before last
+      @battle.pbDisplay(_INTL("{1}'s {2}!",pbThis,parts[0..-2].join(", ") + ", and its " + parts[-1]))
     end
-  end
 
-  def pbStatChangeMoveLocked?(source_key,showMessages=false,change_direction=nil)
-    return false if !source_key
-    lock=@effects[PBEffects::StatMoveLock]
-    return false if !lock || !lock[source_key]
-    if showMessages && @effects[PBEffects::StatMoveLockMessage] != source_key
-      source_name=pbStatChangeSourceName(source_key)
-      direction = (change_direction == :lower) ? "lower" : "raise"
-      @battle.pbDisplay(_INTL("{1} can't {2} {3}'s stats any more!",source_name,direction,pbThis))
-      @effects[PBEffects::StatMoveLockMessage] = source_key
-    end
-    return true
-  end
-
-  def pbRegisterStatChangeMove(source_key)
-    return if !source_key
-    pending=@effects[PBEffects::StatMoveLockPending]
-    pending[source_key]=true if pending
+    # Clear pending messages
+    @effects[PBEffects::StatCapPendingMessages].clear
   end
 
   def pbTooHigh?(stat)
+    cap = @effects[PBEffects::StatCapPositive][stat] || 0
+    # Check if there's a pending stat source that would raise the cap
+    stat_source = pbStatChangeSourceKey
+    if stat_source
+      contributors = @effects[PBEffects::StatCapContributors][stat_source]
+      if !contributors || !contributors.has_key?(stat)
+        # This source hasn't contributed yet, so it would raise the cap
+        # Calculate what the new cap would be (assuming +1 increment by default)
+        increment = 1
+        if !(self.moldbroken) && (hasWorkingAbility(:SIMPLE))
+          increment = 2
+        end
+        cap = [cap + increment, 3].min
+      end
+    end
     if @effects[PBEffects::MultiTurnAttack] == PBMoves::BINDINGWORD # Stats suppressed by binding word
-      return @effects[PBEffects::StatChangeHolder][stat]>=3
+      return @effects[PBEffects::StatChangeHolder][stat]>=cap
     else
-      return @stages[stat]>=3
+      return @stages[stat]>=cap
     end
   end
 
@@ -775,20 +829,60 @@ end
 
   def pbIncreaseStatBasic(stat,increment)
     stat_source=pbStatChangeSourceKey
-    return false if pbStatChangeMoveLocked?(stat_source,false,:raise)
     cn=@battle.pbCheckGlobalAbility(:CLOUDNINE)
     return false if cn
+
+    # Store original increment for cap calculation
+    original_increment = increment
+
+    # Cap increment at +3
+    increment = [increment, 3].min
+
+    # Check if this source has contributed to the cap yet
+    if stat_source
+      contributors = @effects[PBEffects::StatCapContributors][stat_source]
+      if !contributors || !contributors.has_key?(stat)
+        # First time this effect is trying to raise this stat
+        # Increase the positive cap (max +3)
+        # Account for Simple ability when setting cap
+        cap_increment = increment
+        if !(self.moldbroken) && (hasWorkingAbility(:SIMPLE))
+          cap_increment *= 2
+        end
+        current_cap = @effects[PBEffects::StatCapPositive][stat] || 0
+        new_cap = [current_cap + cap_increment, 3].min
+        @effects[PBEffects::StatCapPositive][stat] = new_cap
+
+        # Add to pending cap messages
+        @effects[PBEffects::StatCapPendingMessages] << {
+          direction: :positive,
+          stat: stat,
+          increment: cap_increment
+        }
+
+        # Mark this effect as having contributed
+        @effects[PBEffects::StatCapContributors][stat_source] ||= {}
+        @effects[PBEffects::StatCapContributors][stat_source][stat] = cap_increment
+      end
+    end
+
+    # Apply Simple ability
     if !(self.moldbroken) && (hasWorkingAbility(:SIMPLE))
       increment*=2
     end
+
+    # Cap final increment at +3
+    increment = [increment, 3].min
+
+    # Now attempt to change the stat within caps (max +3)
+    cap = [@effects[PBEffects::StatCapPositive][stat] || 0, 3].min
     if @effects[PBEffects::MultiTurnAttack] == PBMoves::BINDINGWORD # Stats suppressed by binding word
       @effects[PBEffects::StatChangeHolder][stat]+=increment
-      @effects[PBEffects::StatChangeHolder][stat]=3 if @effects[PBEffects::StatChangeHolder][stat]>3
+      @effects[PBEffects::StatChangeHolder][stat]=cap if @effects[PBEffects::StatChangeHolder][stat]>cap
     else
       @stages[stat]+=increment
-      @stages[stat]=3 if @stages[stat]>3
+      @stages[stat]=cap if @stages[stat]>cap
     end
-    pbRegisterStatChangeMove(stat_source)
     return true
   end
 
@@ -804,7 +898,6 @@ end
       increment += 1
     end
     stat_source=pbStatChangeSourceKey(moveid)
-    return false if pbStatChangeMoveLocked?(stat_source,showMessages1,:raise)
     # here we call reduce instead
     if hasWorkingAbility(:CONTRARY) && !cont_call && !(self.moldbroken)
       ret=pbReduceStat(stat,increment,showMessages1,moveid,attacker,upanim,false,true,showMessages2)
@@ -856,7 +949,6 @@ end
     end
     if pbCanIncreaseStatStage?(stat,showMessages1)
       pbIncreaseStatBasic(stat,increment)
-      pbRegisterStatChangeMove(stat_source)
       # Big Pecks: foes gain Defense when an enemy raises its stats
       if attacker && attacker.pbIsOpposing?(self.index)
         for foe in [pbOpposing1,pbOpposing2]
@@ -870,16 +962,17 @@ end
         end
       end
       @battle.pbCommonAnimation("StatUp",self,nil) if upanim
-#### JERICHO - 004 - START
+      # For message display: if Simple is active, show the doubled increment
+      # (The actual stat change with Simple was already handled in pbIncreaseStatBasic)
+      message_increment = increment
       if !(self.moldbroken) && (hasWorkingAbility(:SIMPLE))
-        increment*=2
+        message_increment *= 2
       end
-#### JERICHO - 004 - END      
-      if increment>3
+      if message_increment>3
         @battle.pbDisplay(arrStatTexts[3]) if showMessages2
-      elsif increment==3
+      elsif message_increment==3
         @battle.pbDisplay(arrStatTexts[2]) if showMessages2
-      elsif increment==2
+      elsif message_increment==2
         @battle.pbDisplay(arrStatTexts[1]) if showMessages2
       else
         @battle.pbDisplay(arrStatTexts[0]) if showMessages2
@@ -893,10 +986,25 @@ end
 # Decrease stat stages
 #===============================================================================
   def pbTooLow?(stat)
+    cap = @effects[PBEffects::StatCapNegative][stat] || 0
+    # Check if there's a pending stat source that would raise the cap
+    stat_source = pbStatChangeSourceKey
+    if stat_source
+      contributors = @effects[PBEffects::StatCapContributors][stat_source]
+      if !contributors || !contributors.has_key?(stat)
+        # This source hasn't contributed yet, so it would raise the cap
+        # Calculate what the new cap would be (assuming -1 increment by default)
+        increment = 1
+        if !(self.moldbroken) && (hasWorkingAbility(:SIMPLE))
+          increment = 2
+        end
+        cap = [cap + increment, 6].min
+      end
+    end
     if @effects[PBEffects::MultiTurnAttack] == PBMoves::BINDINGWORD # Stats suppressed by binding word
-      return @effects[PBEffects::StatChangeHolder][stat]<=-3
+      return @effects[PBEffects::StatChangeHolder][stat]<=-cap
     else
-      return @stages[stat]<=-3
+      return @stages[stat]<=-cap
     end
   end
 
@@ -959,19 +1067,50 @@ end
 
   def pbReduceStatBasic(stat,increment)
     stat_source=pbStatChangeSourceKey
-    return false if pbStatChangeMoveLocked?(stat_source,false,:lower)
+
+    # Check if this source has contributed to the cap yet
+    if stat_source
+      contributors = @effects[PBEffects::StatCapContributors][stat_source]
+      if !contributors || !contributors.has_key?(stat)
+        # First time this effect is trying to lower this stat
+        # Increase the negative cap
+        # Account for Simple ability when setting cap
+        cap_increment = increment
+        if !(self.moldbroken) && (hasWorkingAbility(:SIMPLE))
+          cap_increment *= 2
+        end
+        current_cap = @effects[PBEffects::StatCapNegative][stat] || 0
+        new_cap = [current_cap + cap_increment, 6].min
+        @effects[PBEffects::StatCapNegative][stat] = new_cap
+
+        # Add to pending cap messages
+        @effects[PBEffects::StatCapPendingMessages] << {
+          direction: :negative,
+          stat: stat,
+          increment: cap_increment
+        }
+
+        # Mark this effect as having contributed
+        @effects[PBEffects::StatCapContributors][stat_source] ||= {}
+        @effects[PBEffects::StatCapContributors][stat_source][stat] = -cap_increment
+      end
+    end
+
+    # Apply Simple ability
     if !(self.moldbroken) && (hasWorkingAbility(:SIMPLE))
       increment*=2
     end
+
+    # Now attempt to change the stat within caps
+    cap = @effects[PBEffects::StatCapNegative][stat] || 0
     if @effects[PBEffects::MultiTurnAttack] == PBMoves::BINDINGWORD # Stats suppressed by binding word
       @effects[PBEffects::StatChangeHolder][stat]-=increment
-      @effects[PBEffects::StatChangeHolder][stat]=-3 if @effects[PBEffects::StatChangeHolder][stat]<-3
+      @effects[PBEffects::StatChangeHolder][stat]=-cap if @effects[PBEffects::StatChangeHolder][stat]<-cap
     else
       @stages[stat]-=increment
-      @stages[stat]=-3 if @stages[stat]<-3
+      @stages[stat]=-cap if @stages[stat]<-cap
     end
     self.statLowered = true
-    pbRegisterStatChangeMove(stat_source)
     return true
   end
 
@@ -987,7 +1126,6 @@ end
       increment += 1
     end
     stat_source=pbStatChangeSourceKey(moveid)
-    return false if pbStatChangeMoveLocked?(stat_source,showMessages1,:lower)
     # no, we don't want to say reduce 5 times - Thunder Raid
     if moveid == 207
       showMessages2 = false
@@ -1043,14 +1181,16 @@ end
     end
     if pbCanReduceStatStage?(stat,showMessages1,selfreduce)
       pbReduceStatBasic(stat,increment)
-      pbRegisterStatChangeMove(stat_source)
       if moveid!=207
         @battle.pbCommonAnimation("StatDown",self,nil) if downanim
       end
+      # For message display: if Simple is active, show the doubled increment
+      # (The actual stat change with Simple was already handled in pbReduceStatBasic)
+      message_increment = increment
       if !(self.moldbroken) && (hasWorkingAbility(:SIMPLE))
-        increment*=2
+        message_increment *= 2
       end
-      if increment>=2 
+      if message_increment>=2
         @battle.pbDisplay(arrStatTexts[1]) if showMessages2
       else
         @battle.pbDisplay(arrStatTexts[0]) if showMessages2
@@ -1129,7 +1269,7 @@ end
           if self.stages[i]<0
             self.stages[i]=0; reducedstats=true
           end
-          if self.effects[PBEffects::StatChangeHolder][i] < 0
+          if self.effects[PBEffects::StatChangeHolder] && self.effects[PBEffects::StatChangeHolder][i] < 0
             self.effects[PBEffects::StatChangeHolder][i] = 0 ; reducedstats=true
           end
         end

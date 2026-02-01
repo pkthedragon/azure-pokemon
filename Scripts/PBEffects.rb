@@ -236,9 +236,10 @@ begin
     ReverbUser    = 328 # Stores the user index for Reverb ability
     PlusSignal    = 325
     MinusSignal   = 326
-    StatMoveLock  = 329
-    StatMoveLockPending = 330
-    StatMoveLockMessage = 331
+    StatCapPositive = 329
+    StatCapNegative = 330
+    StatCapContributors = 331
+    StatCapPendingMessages = 332
     # These effects apply to the battle (i.e. both sides) - starts from 400
     Gravity       = 400
     MagicRoom     = 401

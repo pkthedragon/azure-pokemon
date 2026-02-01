@@ -4234,13 +4234,24 @@ end
   def pbSwitch(index,lax,cancancel)
     party=@battle.pbParty(index)
     partypos=@battle.partyorder
+
+    # For partner Pokemon with control enabled, adjust party view
+    if $game_switches[2030] && @battle.player.is_a?(Array) && index == 2
+      secondParty = @battle.pbSecondPartyBegin(index)
+      # Build party positions for partner's Pokemon only
+      partypos = []
+      for i in secondParty...party.length
+        partypos.push(i)
+      end
+    end
+
     ret=-1
     # Fade out and hide all sprites
 #    visiblesprites=pbFadeOutAndHide(@sprites)
     pbShowWindow(BLANK)
     pbSetMessageMode(true)
     modparty=[]
-    for i in 0...6
+    for i in 0...partypos.length
       modparty.push(party[partypos[i]])
     end
     visiblesprites=pbFadeOutAndHide(@sprites)

@@ -823,7 +823,7 @@ class PokeBattle_ZMoves < PokeBattle_Move
           shatter =0 if (!@battle.battlers[i].abilitynulled && @battle.battlers[i].ability == PBAbilities::SHELLARMOR)
           shatter =0 if (!@battle.battlers[i].abilitynulled && @battle.battlers[i].ability == PBAbilities::BATTLEARMOR)
           shatter =0 if @battle.battlers[i].effects[PBEffects::Protect] == true
-          shatter =0 if @battle.battlers[i].pbOwnSide.effects[PBEffects::WideGuard] == true
+          shatter =0 if @battle.battlers[i].pbOwnSide.effects[PBEffects::WideGuard] > 0
           shatter =0 if @battle.battlers[i].effects[PBEffects::Obstruct] == true
           shatter =0 if @battle.battlers[i].effects[PBEffects::KingsShield] == true
           shatter =0 if @battle.battlers[i].effects[PBEffects::SpikyShield] == true
@@ -956,7 +956,7 @@ class PokeBattle_ZMoves < PokeBattle_Move
             combust-=1 if (!@battle.battlers[i].abilitynulled && @battle.battlers[i].ability == PBAbilities::STURDY)
             combust =0 if (!@battle.battlers[i].abilitynulled && @battle.battlers[i].ability == PBAbilities::FLASHFIRE)
             combust =0 if @battle.battlers[i].effects[PBEffects::Protect] == true
-            combust =0 if @battle.battlers[i].pbOwnSide.effects[PBEffects::WideGuard] == true
+            combust =0 if @battle.battlers[i].pbOwnSide.effects[PBEffects::WideGuard] > 0
             combust-=1 if @battle.battlers[i].effects[PBEffects::Endure] == true
             combust =0 if @battle.battlers[i].effects[PBEffects::Obstruct] == true
             combust =0 if @battle.battlers[i].effects[PBEffects::KingsShield] == true

@@ -173,7 +173,7 @@ class PokeBattle_Move_001 < PokeBattle_Move
       return super(attacker,opponent,hitnum,alltargets,showanimation) if @basedamage>0
       return -1 if !opponent.pbCanReduceStatStage?(PBStats::ACCURACY,true)
       pbShowAnimation(@id,attacker,nil,hitnum,alltargets,showanimation)
-      ret=opponent.pbReduceStat(PBStats::ACCURACY,1,false)
+      ret=opponent.pbReduceStat(PBStats::ACCURACY,1,false,@id,attacker)
       return ret ? 0 : -1
     end
   end
@@ -553,7 +553,7 @@ class PokeBattle_Move_009 < PokeBattle_Move
     end
     if @battle.pbRandom(10)==0
       if opponent.pbCanReduceStatStage?(PBStats::DEFENSE,false)
-        opponent.pbReduceStat(PBStats::DEFENSE,1,false)
+        opponent.pbReduceStat(PBStats::DEFENSE,1,false,@id,attacker)
       end
       hadeffect=true
     end
@@ -610,7 +610,7 @@ class PokeBattle_Move_00B < PokeBattle_Move
     end
     if @battle.pbRandom(10)==0
       if opponent.pbCanReduceStatStage?(PBStats::DEFENSE,false)
-        opponent.pbReduceStat(PBStats::DEFENSE,1,false)
+        opponent.pbReduceStat(PBStats::DEFENSE,1,false,@id,attacker)
       end
       hadeffect=true
     end
@@ -684,7 +684,7 @@ class PokeBattle_Move_00E < PokeBattle_Move
     end
     if @battle.pbRandom(10)==0
       if opponent.pbCanReduceStatStage?(PBStats::DEFENSE,false)
-        opponent.pbReduceStat(PBStats::DEFENSE,1,false)
+        opponent.pbReduceStat(PBStats::DEFENSE,1,false,@id,attacker)
       end
       hadeffect=true
     end
@@ -695,14 +695,13 @@ end
 
 
 ################################################################################
-# Causes the target to flinch.
+# Wounds the target for 3 turns.
 ################################################################################
 class PokeBattle_Move_00F < PokeBattle_Move
   def pbAdditionalEffect(attacker,opponent)
-    if !opponent.hasWorkingAbility(:INNERFOCUS) &&
-       opponent.effects[PBEffects::Substitute]==0 &&
-       opponent.status!=PBStatuses::SLEEP && opponent.status!=PBStatuses::FROZEN
-      opponent.effects[PBEffects::Flinch]=true
+    if opponent.effects[PBEffects::Wounded] == 0
+      opponent.effects[PBEffects::Wounded]=3
+      @battle.pbDisplay(_INTL("{1} was wounded!",opponent.pbThis))
       return true
     end
     return false
@@ -1132,17 +1131,17 @@ class PokeBattle_Move_01C < PokeBattle_Move
     pbShowAnimation(@id,attacker,nil,hitnum,alltargets,showanimation)
     if ($fefieldeffect == 9 || $fefieldeffect == 20) &&
        isConst?(@id,PBMoves,:MEDITATE)  # Rainbow/Ashen Field
-      ret=attacker.pbIncreaseStat(PBStats::ATTACK,3,false)
+      ret=attacker.pbIncreaseStat(PBStats::ATTACK,3,false,@id,attacker)
     elsif $fefieldeffect == 37 && isConst?(@id,PBMoves,:MEDITATE)  # Psychic Terrain
-      ret=attacker.pbIncreaseStat(PBStats::ATTACK,2,false)
-      ret=attacker.pbIncreaseStat(PBStats::SPATK,2,false)
-    elsif $fefieldeffect == 44 && isConst?(@id,PBMoves,:HOWL)  
-      ret=attacker.pbIncreaseStat(PBStats::ATTACK,2,false)
+      ret=attacker.pbIncreaseStat(PBStats::ATTACK,2,false,@id,attacker)
+      ret=attacker.pbIncreaseStat(PBStats::SPATK,2,false,@id,attacker)
+    elsif $fefieldeffect == 44 && isConst?(@id,PBMoves,:HOWL)
+      ret=attacker.pbIncreaseStat(PBStats::ATTACK,2,false,@id,attacker)
     else
-      ret=attacker.pbIncreaseStat(PBStats::ATTACK,1,false)
+      ret=attacker.pbIncreaseStat(PBStats::ATTACK,1,false,@id,attacker)
       if isConst?(@id,PBMoves,:HOWL)
         if attacker.pbPartner && attacker.pbPartner.pbCanIncreaseStatStage?(PBStats::ATTACK,true)
-          attacker.pbPartner.pbIncreaseStat(PBStats::ATTACK,1,false)
+          attacker.pbPartner.pbIncreaseStat(PBStats::ATTACK,1,false,@id,attacker)
         end
       end
     end
@@ -1151,7 +1150,7 @@ class PokeBattle_Move_01C < PokeBattle_Move
 
   def pbAdditionalEffect(attacker,opponent)
     if attacker.pbCanIncreaseStatStage?(PBStats::ATTACK,false)
-      attacker.pbIncreaseStat(PBStats::ATTACK,1,false)
+      attacker.pbIncreaseStat(PBStats::ATTACK,1,false,@id,attacker)
     end
     return true
   end
@@ -1167,7 +1166,7 @@ class PokeBattle_Move_01D < PokeBattle_Move
     return super(attacker,opponent,hitnum,alltargets,showanimation) if @basedamage>0
     return -1 if !attacker.pbCanIncreaseStatStage?(PBStats::DEFENSE,true)
     pbShowAnimation(@id,attacker,opponent,hitnum,alltargets,showanimation)
-    ret=attacker.pbIncreaseStat(PBStats::DEFENSE,1,false)
+    ret=attacker.pbIncreaseStat(PBStats::DEFENSE,1,false,@id,attacker)
     # User cannot be critically hit next turn (use SusCrit effect)
     attacker.effects[PBEffects::SusCrit]=2
     @battle.pbDisplay(_INTL("{1} hardened its defenses against critical hits!",attacker.pbThis))
@@ -1176,7 +1175,7 @@ class PokeBattle_Move_01D < PokeBattle_Move
 
   def pbAdditionalEffect(attacker,opponent)
     if attacker.pbCanIncreaseStatStage?(PBStats::DEFENSE,false)
-      attacker.pbIncreaseStat(PBStats::DEFENSE,1,false)
+      attacker.pbIncreaseStat(PBStats::DEFENSE,1,false,@id,attacker)
     end
     return true
   end
@@ -1191,7 +1190,7 @@ class PokeBattle_Move_01E < PokeBattle_Move
   def pbEffect(attacker,opponent,hitnum=0,alltargets=nil,showanimation=true)
     return -1 if !attacker.pbCanIncreaseStatStage?(PBStats::DEFENSE,true)
     pbShowAnimation(@id,attacker,nil,hitnum,alltargets,showanimation)
-    ret=attacker.pbIncreaseStat(PBStats::DEFENSE,1,false)
+    ret=attacker.pbIncreaseStat(PBStats::DEFENSE,1,false,@id,attacker)
     attacker.effects[PBEffects::DefenseCurl]=true if ret
     if $fefieldeffect==13 || ($fefieldeffect==32 && @basefield==13) # Icy Field/Dragon's Den
       if attacker.pbCanIncreaseStatStage?(PBStats::SPEED)
@@ -1214,7 +1213,7 @@ class PokeBattle_Move_01F < PokeBattle_Move
     return super(attacker,opponent,hitnum,alltargets,showanimation) if @basedamage>0
     return -1 if !attacker.pbCanIncreaseStatStage?(PBStats::SPEED,true)
     pbShowAnimation(@id,attacker,opponent,hitnum,alltargets,showanimation)
-    ret=attacker.pbIncreaseStat(PBStats::SPEED,1,false)
+    ret=attacker.pbIncreaseStat(PBStats::SPEED,1,false,@id,attacker)
     return ret ? 0 : -1
   end
   
@@ -1227,7 +1226,7 @@ class PokeBattle_Move_01F < PokeBattle_Move
 
   def pbAdditionalEffect(attacker,opponent)
     if attacker.pbCanIncreaseStatStage?(PBStats::SPEED,false)
-      attacker.pbIncreaseStat(PBStats::SPEED,1,false)
+      attacker.pbIncreaseStat(PBStats::SPEED,1,false,@id,attacker)
     end
     return true
   end
@@ -1243,13 +1242,13 @@ class PokeBattle_Move_020 < PokeBattle_Move
     return super(attacker,opponent,hitnum,alltargets,showanimation) if @basedamage>0
     return -1 if !attacker.pbCanIncreaseStatStage?(PBStats::SPATK,true)
     pbShowAnimation(@id,attacker,opponent,hitnum,alltargets,showanimation)
-    ret=attacker.pbIncreaseStat(PBStats::SPATK,1,false)
+    ret=attacker.pbIncreaseStat(PBStats::SPATK,1,false,@id,attacker)
     return ret ? 0 : -1
   end
 
   def pbAdditionalEffect(attacker,opponent)
     if attacker.pbCanIncreaseStatStage?(PBStats::SPATK,false)
-      attacker.pbIncreaseStat(PBStats::SPATK,1,false)
+      attacker.pbIncreaseStat(PBStats::SPATK,1,false,@id,attacker)
     end
     return true
   end
@@ -1261,14 +1260,14 @@ end
 class PokeBattle_Move_2FF < PokeBattle_Move
   def pbAdditionalEffect(attacker,opponent)
     if attacker.pbCanIncreaseStatStage?(PBStats::SPDEF,false)
-      attacker.pbIncreaseStat(PBStats::SPDEF,1,false)
+      attacker.pbIncreaseStat(PBStats::SPDEF,1,false,@id,attacker)
     end
     return true
   end
-  
+
   def pbAdditionalEffect(attacker,opponent)
     if attacker.pbCanIncreaseStatStage?(PBStats::SPDEF,false)
-      attacker.pbIncreaseStat(PBStats::SPDEF,1,false)
+      attacker.pbIncreaseStat(PBStats::SPDEF,1,false,@id,attacker)
     end
     return true
   end
@@ -1282,9 +1281,9 @@ class PokeBattle_Move_021 < PokeBattle_Move
     return -1 if !attacker.pbCanIncreaseStatStage?(PBStats::SPDEF,true)
     pbShowAnimation(@id,attacker,nil,hitnum,alltargets,showanimation)
     if $fefieldeffect == 1 # Electric Field
-    ret=attacker.pbIncreaseStat(PBStats::SPDEF,2,false)
+    ret=attacker.pbIncreaseStat(PBStats::SPDEF,2,false,@id,attacker)
     else
-    ret=attacker.pbIncreaseStat(PBStats::SPDEF,1,false)
+    ret=attacker.pbIncreaseStat(PBStats::SPDEF,1,false,@id,attacker)
     end
     if ret
       attacker.effects[PBEffects::Charge] = true
@@ -1305,16 +1304,16 @@ class PokeBattle_Move_022 < PokeBattle_Move
     return -1 if !attacker.pbCanIncreaseStatStage?(PBStats::EVASION,true)
     pbShowAnimation(@id,attacker,opponent,hitnum,alltargets,showanimation)
     if $fefieldeffect == 30
-      ret=attacker.pbIncreaseStat(PBStats::EVASION,2,false)
+      ret=attacker.pbIncreaseStat(PBStats::EVASION,2,false,@id,attacker)
     else
-      ret=attacker.pbIncreaseStat(PBStats::EVASION,1,false)
+      ret=attacker.pbIncreaseStat(PBStats::EVASION,1,false,@id,attacker)
     end
     return ret ? 0 : -1
   end
 
   def pbAdditionalEffect(attacker,opponent)
     if attacker.pbCanIncreaseStatStage?(PBStats::EVASION,false)
-      attacker.pbIncreaseStat(PBStats::EVASION,1,false)
+      attacker.pbIncreaseStat(PBStats::EVASION,1,false,@id,attacker)
     end
     return true
   end
@@ -1364,11 +1363,11 @@ class PokeBattle_Move_024 < PokeBattle_Move
     pbShowAnimation(@id,attacker,opponent,hitnum,alltargets,showanimation)
     showanim=true
     if attacker.pbCanIncreaseStatStage?(PBStats::ATTACK,false)
-      attacker.pbIncreaseStat(PBStats::ATTACK,1,false,showanim)
+      attacker.pbIncreaseStat(PBStats::ATTACK,1,false,@id,attacker,showanim)
       showanim=false
     end
     if attacker.pbCanIncreaseStatStage?(PBStats::DEFENSE,false)
-      attacker.pbIncreaseStat(PBStats::DEFENSE,1,false,showanim)
+      attacker.pbIncreaseStat(PBStats::DEFENSE,1,false,@id,attacker,showanim)
       showanim=false
     end
     return 0
@@ -1392,44 +1391,45 @@ class PokeBattle_Move_025 < PokeBattle_Move
     showanim=true
     if $fefieldeffect == 2 # Grassy Field
       if attacker.pbCanIncreaseStatStage?(PBStats::ATTACK,false)
-        attacker.pbIncreaseStat(PBStats::ATTACK,2,false,showanim)
+        attacker.pbIncreaseStat(PBStats::ATTACK,2,false,@id,attacker,showanim)
         showanim=false
       end
       if attacker.pbCanIncreaseStatStage?(PBStats::DEFENSE,false)
-        attacker.pbIncreaseStat(PBStats::DEFENSE,2,false,showanim)
+        attacker.pbIncreaseStat(PBStats::DEFENSE,2,false,@id,attacker,showanim)
         showanim=false
       end
       if attacker.pbCanIncreaseStatStage?(PBStats::ACCURACY,false)
-        attacker.pbIncreaseStat(PBStats::ACCURACY,2,false,showanim)
+        attacker.pbIncreaseStat(PBStats::ACCURACY,2,false,@id,attacker,showanim)
         showanim=false
       end
     elsif $fefieldeffect == 32 # Dragon's Den
       if attacker.pbCanIncreaseStatStage?(PBStats::ATTACK,false)
-        attacker.pbIncreaseStat(PBStats::ATTACK,2,false,showanim)
+        attacker.pbIncreaseStat(PBStats::ATTACK,2,false,@id,attacker,showanim)
         showanim=false
       end
       if attacker.pbCanIncreaseStatStage?(PBStats::DEFENSE,false)
-        attacker.pbIncreaseStat(PBStats::DEFENSE,2,false,showanim)
+        attacker.pbIncreaseStat(PBStats::DEFENSE,2,false,@id,attacker,showanim)
         showanim=false
       end
       if attacker.pbCanIncreaseStatStage?(PBStats::ACCURACY,false)
-        attacker.pbIncreaseStat(PBStats::ACCURACY,2,false,showanim)
+        attacker.pbIncreaseStat(PBStats::ACCURACY,2,false,@id,attacker,showanim)
         showanim=false
-      end      
-    else      
+      end
+    else
       if attacker.pbCanIncreaseStatStage?(PBStats::ATTACK,false)
-        attacker.pbIncreaseStat(PBStats::ATTACK,1,false,showanim)
+        attacker.pbIncreaseStat(PBStats::ATTACK,1,false,@id,attacker,showanim)
         showanim=false
       end
       if attacker.pbCanIncreaseStatStage?(PBStats::DEFENSE,false)
-        attacker.pbIncreaseStat(PBStats::DEFENSE,1,false,showanim)
+        attacker.pbIncreaseStat(PBStats::DEFENSE,1,false,@id,attacker,showanim)
         showanim=false
       end
       if attacker.pbCanIncreaseStatStage?(PBStats::ACCURACY,false)
-        attacker.pbIncreaseStat(PBStats::ACCURACY,1,false,showanim)
+        attacker.pbIncreaseStat(PBStats::ACCURACY,1,false,@id,attacker,showanim)
         showanim=false
       end
     end
+    attacker.pbDisplayStatCapMessages
     return 0
   end
 end
@@ -1447,25 +1447,25 @@ class PokeBattle_Move_026 < PokeBattle_Move
     end
     pbShowAnimation(@id,attacker,nil,hitnum,alltargets,showanimation)
     showanim=true
-    if ($fefieldeffect == 6 || $fefieldeffect == 32) &&   
+    if ($fefieldeffect == 6 || $fefieldeffect == 32) &&
      isConst?(@id,PBMoves,:DRAGONDANCE)
       if attacker.pbCanIncreaseStatStage?(PBStats::ATTACK,false)
-        attacker.pbIncreaseStat(PBStats::ATTACK,2,false,showanim)
+        attacker.pbIncreaseStat(PBStats::ATTACK,2,false,@id,attacker,showanim)
         showanim=false
       end
       if attacker.pbCanIncreaseStatStage?(PBStats::SPEED,false)
-        attacker.pbIncreaseStat(PBStats::SPEED,2,false,showanim)
+        attacker.pbIncreaseStat(PBStats::SPEED,2,false,@id,attacker,showanim)
         showanim=false
-      end    
+      end
     else
       if attacker.pbCanIncreaseStatStage?(PBStats::ATTACK,false)
-        attacker.pbIncreaseStat(PBStats::ATTACK,1,false,showanim)
+        attacker.pbIncreaseStat(PBStats::ATTACK,1,false,@id,attacker,showanim)
         showanim=false
       end
       if attacker.pbCanIncreaseStatStage?(PBStats::SPEED,false)
-        attacker.pbIncreaseStat(PBStats::SPEED,1,false,showanim)
+        attacker.pbIncreaseStat(PBStats::SPEED,1,false,@id,attacker,showanim)
         showanim=false
-      end    
+      end
     end
     return 0
   end
@@ -1486,11 +1486,11 @@ class PokeBattle_Move_027 < PokeBattle_Move
     pbShowAnimation(@id,attacker,opponent,hitnum,alltargets,showanimation)
     showanim=true
     if attacker.pbCanIncreaseStatStage?(PBStats::ATTACK,false)
-      attacker.pbIncreaseStat(PBStats::ATTACK,1,false,showanim)
+      attacker.pbIncreaseStat(PBStats::ATTACK,1,false,@id,attacker,showanim)
       showanim=false
     end
     if attacker.pbCanIncreaseStatStage?(PBStats::SPATK,false)
-      attacker.pbIncreaseStat(PBStats::SPATK,1,false,showanim)
+      attacker.pbIncreaseStat(PBStats::SPATK,1,false,@id,attacker,showanim)
       showanim=false
     end
     return 0
@@ -1521,11 +1521,11 @@ class PokeBattle_Move_028 < PokeBattle_Move
       increment = 3 if $fefieldeffect == 33 && $fecounter >= 2
     end 
     if attacker.pbCanIncreaseStatStage?(PBStats::ATTACK,false)
-      attacker.pbIncreaseStat(PBStats::ATTACK,increment,false,showanim)
+      attacker.pbIncreaseStat(PBStats::ATTACK,increment,false,@id,attacker,showanim)
       showanim=false
     end
     if attacker.pbCanIncreaseStatStage?(PBStats::SPATK,false)
-      attacker.pbIncreaseStat(PBStats::SPATK,increment,false,showanim)
+      attacker.pbIncreaseStat(PBStats::SPATK,increment,false,@id,attacker,showanim)
       showanim=false
     end
     return 0
@@ -1547,11 +1547,11 @@ class PokeBattle_Move_029 < PokeBattle_Move
     pbShowAnimation(@id,attacker,opponent,hitnum,alltargets,showanimation)
     showanim=true
     if attacker.pbCanIncreaseStatStage?(PBStats::ATTACK,false)
-      attacker.pbIncreaseStat(PBStats::ATTACK,1,false,showanim)
+      attacker.pbIncreaseStat(PBStats::ATTACK,1,false,@id,attacker,showanim)
       showanim=false
     end
     if attacker.pbCanIncreaseStatStage?(PBStats::ACCURACY,false)
-      attacker.pbIncreaseStat(PBStats::ACCURACY,1,false,showanim)
+      attacker.pbIncreaseStat(PBStats::ACCURACY,1,false,@id,attacker,showanim)
       showanim=false
     end
     return 0
@@ -1575,20 +1575,20 @@ class PokeBattle_Move_02A < PokeBattle_Move
       isConst?(@id,PBMoves,:COSMICPOWER)) ||
       ($fefieldeffect == 15 && isConst?(@id,PBMoves,:DEFENDORDER))
       if attacker.pbCanIncreaseStatStage?(PBStats::DEFENSE,false)
-        attacker.pbIncreaseStat(PBStats::DEFENSE,2,false,showanim)
+        attacker.pbIncreaseStat(PBStats::DEFENSE,2,false,@id,attacker,showanim)
         showanim=false
       end
       if attacker.pbCanIncreaseStatStage?(PBStats::SPDEF,false)
-        attacker.pbIncreaseStat(PBStats::SPDEF,2,false,showanim)
+        attacker.pbIncreaseStat(PBStats::SPDEF,2,false,@id,attacker,showanim)
         showanim=false
       end
     else
       if attacker.pbCanIncreaseStatStage?(PBStats::DEFENSE,false)
-        attacker.pbIncreaseStat(PBStats::DEFENSE,1,false,showanim)
+        attacker.pbIncreaseStat(PBStats::DEFENSE,1,false,@id,attacker,showanim)
         showanim=false
       end
       if attacker.pbCanIncreaseStatStage?(PBStats::SPDEF,false)
-        attacker.pbIncreaseStat(PBStats::SPDEF,1,false,showanim)
+        attacker.pbIncreaseStat(PBStats::SPDEF,1,false,@id,attacker,showanim)
         showanim=false
       end
     end
@@ -1611,31 +1611,31 @@ class PokeBattle_Move_02B < PokeBattle_Move
     pbShowAnimation(@id,attacker,nil,hitnum,alltargets,showanimation)
     showanim=true
       if $fefieldeffect == 6 &&   isConst?(@id,PBMoves,:QUIVERDANCE)
- 
+
     if attacker.pbCanIncreaseStatStage?(PBStats::SPATK,false)
-      attacker.pbIncreaseStat(PBStats::SPATK,2,false,showanim)
+      attacker.pbIncreaseStat(PBStats::SPATK,2,false,@id,attacker,showanim)
       showanim=false
     end
     if attacker.pbCanIncreaseStatStage?(PBStats::SPDEF,false)
-      attacker.pbIncreaseStat(PBStats::SPDEF,2,false,showanim)
+      attacker.pbIncreaseStat(PBStats::SPDEF,2,false,@id,attacker,showanim)
       showanim=false
     end
     if attacker.pbCanIncreaseStatStage?(PBStats::SPEED,false)
-      attacker.pbIncreaseStat(PBStats::SPEED,2,false,showanim)
+      attacker.pbIncreaseStat(PBStats::SPEED,2,false,@id,attacker,showanim)
       showanim=false
     end
     else
- 
+
     if attacker.pbCanIncreaseStatStage?(PBStats::SPATK,false)
-      attacker.pbIncreaseStat(PBStats::SPATK,1,false,showanim)
+      attacker.pbIncreaseStat(PBStats::SPATK,1,false,@id,attacker,showanim)
       showanim=false
     end
     if attacker.pbCanIncreaseStatStage?(PBStats::SPDEF,false)
-      attacker.pbIncreaseStat(PBStats::SPDEF,1,false,showanim)
+      attacker.pbIncreaseStat(PBStats::SPDEF,1,false,@id,attacker,showanim)
       showanim=false
     end
     if attacker.pbCanIncreaseStatStage?(PBStats::SPEED,false)
-      attacker.pbIncreaseStat(PBStats::SPEED,1,false,showanim)
+      attacker.pbIncreaseStat(PBStats::SPEED,1,false,@id,attacker,showanim)
       showanim=false
     end
     end
@@ -1658,20 +1658,20 @@ class PokeBattle_Move_02C < PokeBattle_Move
     showanim=true
     if $fefieldeffect == 5 || $fefieldeffect == 20 || $fefieldeffect == 37 || $fefieldeffect == 50 # Chess/Ashen/Psychic/Library Field
       if attacker.pbCanIncreaseStatStage?(PBStats::SPATK,false)
-        attacker.pbIncreaseStat(PBStats::SPATK,2,false,showanim)
+        attacker.pbIncreaseStat(PBStats::SPATK,2,false,@id,attacker,showanim)
         showanim=false
       end
       if attacker.pbCanIncreaseStatStage?(PBStats::SPDEF,false)
-        attacker.pbIncreaseStat(PBStats::SPDEF,2,false,showanim)
+        attacker.pbIncreaseStat(PBStats::SPDEF,2,false,@id,attacker,showanim)
         showanim=false
       end
     else
       if attacker.pbCanIncreaseStatStage?(PBStats::SPATK,false)
-        attacker.pbIncreaseStat(PBStats::SPATK,1,false,showanim)
+        attacker.pbIncreaseStat(PBStats::SPATK,1,false,@id,attacker,showanim)
         showanim=false
       end
       if attacker.pbCanIncreaseStatStage?(PBStats::SPDEF,false)
-        attacker.pbIncreaseStat(PBStats::SPDEF,1,false,showanim)
+        attacker.pbIncreaseStat(PBStats::SPDEF,1,false,@id,attacker,showanim)
         showanim=false
       end
     end
@@ -1696,18 +1696,18 @@ class PokeBattle_Move_02E < PokeBattle_Move
     return super(attacker,opponent,hitnum,alltargets,showanimation) if @basedamage>0
     return -1 if !attacker.pbCanIncreaseStatStage?(PBStats::ATTACK,true)
     pbShowAnimation(@id,attacker,nil,hitnum,alltargets,showanimation)
-    if ($fefieldeffect == 6 || $fefieldeffect == 31 || $fefieldeffect == 44) && 
+    if ($fefieldeffect == 6 || $fefieldeffect == 31 || $fefieldeffect == 44) &&
      isConst?(@id,PBMoves,:SWORDSDANCE)
-      ret=attacker.pbIncreaseStat(PBStats::ATTACK,3,false)
+      ret=attacker.pbIncreaseStat(PBStats::ATTACK,3,false,@id,attacker)
     else
-      ret=attacker.pbIncreaseStat(PBStats::ATTACK,2,false)
+      ret=attacker.pbIncreaseStat(PBStats::ATTACK,2,false,@id,attacker)
     end
     return ret ? 0 : -1
   end
- 
+
   def pbAdditionalEffect(attacker,opponent)
     if attacker.pbCanIncreaseStatStage?(PBStats::ATTACK,false)
-      attacker.pbIncreaseStat(PBStats::ATTACK,2,false)
+      attacker.pbIncreaseStat(PBStats::ATTACK,2,false,@id,attacker)
     end
     return true
   end
@@ -1726,9 +1726,9 @@ class PokeBattle_Move_02F < PokeBattle_Move
      isConst?(@id,PBMoves,:ACIDARMOR)) || # Corro Fields
      ($fefieldeffect == 17 &&
      isConst?(@id,PBMoves,:IRONDEFENSE))
-      ret=attacker.pbIncreaseStat(PBStats::DEFENSE,3,false)
+      ret=attacker.pbIncreaseStat(PBStats::DEFENSE,3,false,@id,attacker)
     else
-      ret=attacker.pbIncreaseStat(PBStats::DEFENSE,2,false)
+      ret=attacker.pbIncreaseStat(PBStats::DEFENSE,2,false,@id,attacker)
     end
     # Set Shelter effect for Cave Field rock-type damage reduction
     if isConst?(@id,PBMoves,:SHELTER)
@@ -1739,7 +1739,7 @@ class PokeBattle_Move_02F < PokeBattle_Move
 
   def pbAdditionalEffect(attacker,opponent)
     if attacker.pbCanIncreaseStatStage?(PBStats::DEFENSE,false)
-      attacker.pbIncreaseStat(PBStats::DEFENSE,2,false)
+      attacker.pbIncreaseStat(PBStats::DEFENSE,2,false,@id,attacker)
     end
     return true
   end
@@ -1755,15 +1755,15 @@ class PokeBattle_Move_030 < PokeBattle_Move
     return -1 if !attacker.pbCanIncreaseStatStage?(PBStats::SPEED,true)
     pbShowAnimation(@id,attacker,nil,hitnum,alltargets,showanimation)
     if $fefieldeffect == 14 && isConst?(@id,PBMoves,:ROCKPOLISH) # Rocky Field
-      ret=attacker.pbIncreaseStat(PBStats::SPEED,3,false)
+      ret=attacker.pbIncreaseStat(PBStats::SPEED,3,false,@id,attacker)
     elsif isConst?(@id,PBMoves,:AGILITY) && attacker.item<=0
-      ret=attacker.pbIncreaseStat(PBStats::SPEED,3,false)
+      ret=attacker.pbIncreaseStat(PBStats::SPEED,3,false,@id,attacker)
     elsif $fefieldeffect == 25 && isConst?(@id,PBMoves,:ROCKPOLISH) # Crystal Cavern
-      ret=attacker.pbIncreaseStat(PBStats::SPEED,2,false)
-      ret=attacker.pbIncreaseStat(PBStats::ATTACK,1,false)
-      ret=attacker.pbIncreaseStat(PBStats::SPATK,1,false)
+      ret=attacker.pbIncreaseStat(PBStats::SPEED,2,false,@id,attacker)
+      ret=attacker.pbIncreaseStat(PBStats::ATTACK,1,false,@id,attacker)
+      ret=attacker.pbIncreaseStat(PBStats::SPATK,1,false,@id,attacker)
     else
-      ret=attacker.pbIncreaseStat(PBStats::SPEED,2,false)
+      ret=attacker.pbIncreaseStat(PBStats::SPEED,2,false,@id,attacker)
     end
     return ret ? 0 : -1
   end
@@ -1771,7 +1771,7 @@ class PokeBattle_Move_030 < PokeBattle_Move
   def pbAdditionalEffect(attacker,opponent)
     if attacker.pbCanIncreaseStatStage?(PBStats::SPEED,false)
       increment = isConst?(@id,PBMoves,:AGILITY) && attacker.item<=0 ? 3 : 2
-      attacker.pbIncreaseStat(PBStats::SPEED,increment,false)
+      attacker.pbIncreaseStat(PBStats::SPEED,increment,false,@id,attacker)
     end
     return true
   end
@@ -1786,9 +1786,9 @@ class PokeBattle_Move_031 < PokeBattle_Move
     return -1 if !attacker.pbCanIncreaseStatStage?(PBStats::SPEED,true)
     pbShowAnimation(@id,attacker,nil,hitnum,alltargets,showanimation)
     if $fefieldeffect == 17
-     ret=attacker.pbIncreaseStat(PBStats::SPEED,3,false)   
+     ret=attacker.pbIncreaseStat(PBStats::SPEED,3,false,@id,attacker)
     else
-    ret=attacker.pbIncreaseStat(PBStats::SPEED,2,false)
+    ret=attacker.pbIncreaseStat(PBStats::SPEED,2,false,@id,attacker)
     end
     if ret
       attacker.effects[PBEffects::WeightMultiplier]/=2
@@ -1808,18 +1808,18 @@ class PokeBattle_Move_032 < PokeBattle_Move
     return super(attacker,opponent,hitnum,alltargets,showanimation) if @basedamage>0
     return -1 if !attacker.pbCanIncreaseStatStage?(PBStats::SPATK,true)
     pbShowAnimation(@id,attacker,nil,hitnum,alltargets,showanimation)
-    if $fefieldeffect == 5 || $fefieldeffect == 37 ||  
+    if $fefieldeffect == 5 || $fefieldeffect == 37 ||
        $fefieldeffect == 45 # Chess Field, Psychic Terrain, Infernal Field
-      ret=attacker.pbIncreaseStat(PBStats::SPATK,3,false)
+      ret=attacker.pbIncreaseStat(PBStats::SPATK,3,false,@id,attacker)
     else
-      ret=attacker.pbIncreaseStat(PBStats::SPATK,2,false)
+      ret=attacker.pbIncreaseStat(PBStats::SPATK,2,false,@id,attacker)
     end
     return ret ? 0 : -1
   end
 
   def pbAdditionalEffect(attacker,opponent)
     if attacker.pbCanIncreaseStatStage?(PBStats::SPATK,false)
-      attacker.pbIncreaseStat(PBStats::SPATK,2,false)
+      attacker.pbIncreaseStat(PBStats::SPATK,2,false,@id,attacker)
     end
     return true
   end
@@ -1836,14 +1836,14 @@ class PokeBattle_Move_033 < PokeBattle_Move
     return -1 if !attacker.pbCanIncreaseStatStage?(PBStats::SPDEF,true)
     pbShowAnimation(@id,attacker,opponent,hitnum,alltargets,showanimation)
     stages = ($fefieldeffect == 50) ? 3 : 2
-    ret=attacker.pbIncreaseStat(PBStats::SPDEF,stages,false)
+    ret=attacker.pbIncreaseStat(PBStats::SPDEF,stages,false,@id,attacker)
     return ret ? 0 : -1
   end
 
   def pbAdditionalEffect(attacker,opponent)
     if attacker.pbCanIncreaseStatStage?(PBStats::SPDEF,false)
       stages = ($fefieldeffect == 50) ? 3 : 2
-      attacker.pbIncreaseStat(PBStats::SPDEF,stages,false)
+      attacker.pbIncreaseStat(PBStats::SPDEF,stages,false,@id,attacker)
     end
     return true
   end
@@ -1860,17 +1860,17 @@ class PokeBattle_Move_034 < PokeBattle_Move
     pbShowAnimation(@id,attacker,opponent,hitnum,alltargets,showanimation)
     if attacker.index == opponent.index
       return -1 if !attacker.pbCanIncreaseStatStage?(PBStats::EVASION,true)
-      ret = attacker.pbIncreaseStat(PBStats::EVASION,2,false)
+      ret = attacker.pbIncreaseStat(PBStats::EVASION,2,false,@id,attacker)
       attacker.effects[PBEffects::Minimize] = true if ret
       return ret ? 0 : -1
     else
       success = false
       if opponent.pbCanReduceStatStage?(PBStats::DEFENSE,false)
-        opponent.pbReduceStat(PBStats::DEFENSE,1,false)
+        opponent.pbReduceStat(PBStats::DEFENSE,1,false,@id,attacker)
         success = true
       end
       if opponent.pbCanReduceStatStage?(PBStats::SPDEF,false)
-        opponent.pbReduceStat(PBStats::SPDEF,1,false)
+        opponent.pbReduceStat(PBStats::SPDEF,1,false,@id,attacker)
         success = true
       end
       if success
@@ -1885,7 +1885,7 @@ class PokeBattle_Move_034 < PokeBattle_Move
 
   def pbAdditionalEffect(attacker,opponent)
     if attacker.pbCanIncreaseStatStage?(PBStats::EVASION,false)
-      attacker.pbIncreaseStat(PBStats::EVASION,2,false)
+      attacker.pbIncreaseStat(PBStats::EVASION,2,false,@id,attacker)
       attacker.effects[PBEffects::Minimize] = true
     end
     return true
@@ -1910,24 +1910,24 @@ class PokeBattle_Move_035 < PokeBattle_Move
     pbShowAnimation(@id,attacker,nil,hitnum,alltargets,showanimation)
     showanim=true
     if attacker.pbCanReduceStatStage?(PBStats::DEFENSE,false,true)
-      attacker.pbReduceStat(PBStats::DEFENSE,1,false,nil,nil,showanim,true)
+      attacker.pbReduceStat(PBStats::DEFENSE,1,false,@id,attacker,showanim,true)
       showanim=false
     end
     if attacker.pbCanReduceStatStage?(PBStats::SPDEF,false,true)
-      attacker.pbReduceStat(PBStats::SPDEF,1,false,nil,nil,showanim,true)
+      attacker.pbReduceStat(PBStats::SPDEF,1,false,@id,attacker,showanim,true)
       showanim=false
     end
     showanim=true
     if attacker.pbCanIncreaseStatStage?(PBStats::ATTACK,false)
-      attacker.pbIncreaseStat(PBStats::ATTACK,2,false,showanim)
+      attacker.pbIncreaseStat(PBStats::ATTACK,2,false,@id,attacker,showanim)
       showanim=false
     end
     if attacker.pbCanIncreaseStatStage?(PBStats::SPATK,false)
-      attacker.pbIncreaseStat(PBStats::SPATK,2,false,showanim)
+      attacker.pbIncreaseStat(PBStats::SPATK,2,false,@id,attacker,showanim)
       showanim=false
     end
     if attacker.pbCanIncreaseStatStage?(PBStats::SPEED,false)
-      attacker.pbIncreaseStat(PBStats::SPEED,2,false,showanim)
+      attacker.pbIncreaseStat(PBStats::SPEED,2,false,@id,attacker,showanim)
       showanim=false
     end
     return 0
@@ -1949,14 +1949,14 @@ class PokeBattle_Move_036 < PokeBattle_Move
     showanim=true
     if attacker.pbCanIncreaseStatStage?(PBStats::ATTACK,false)
       if $fefieldeffect == 17
-      attacker.pbIncreaseStat(PBStats::ATTACK,2,false,showanim)
+      attacker.pbIncreaseStat(PBStats::ATTACK,2,false,@id,attacker,showanim)
       else
-      attacker.pbIncreaseStat(PBStats::ATTACK,1,false,showanim)
+      attacker.pbIncreaseStat(PBStats::ATTACK,1,false,@id,attacker,showanim)
       end
       showanim=false
     end
     if attacker.pbCanIncreaseStatStage?(PBStats::SPEED,false)
-      attacker.pbIncreaseStat(PBStats::SPEED,2,false,showanim)
+      attacker.pbIncreaseStat(PBStats::SPEED,2,false,@id,attacker,showanim)
       showanim=false
     end
     return 0
@@ -1984,7 +1984,7 @@ class PokeBattle_Move_037 < PokeBattle_Move
     end
     stat=array[@battle.pbRandom(array.length)]
     pbShowAnimation(@id,attacker,opponent,hitnum,alltargets,showanimation)
-    ret=opponent.pbIncreaseStat(stat,2,false)
+    ret=opponent.pbIncreaseStat(stat,2,false,@id,attacker)
     return 0
   end
 end
@@ -1999,13 +1999,13 @@ class PokeBattle_Move_038 < PokeBattle_Move
     return super(attacker,opponent,hitnum,alltargets,showanimation) if @basedamage>0
     return -1 if !attacker.pbCanIncreaseStatStage?(PBStats::DEFENSE,true)
     pbShowAnimation(@id,attacker,opponent,hitnum,alltargets,showanimation)
-    ret=attacker.pbIncreaseStat(PBStats::DEFENSE,3,false)
+    ret=attacker.pbIncreaseStat(PBStats::DEFENSE,3,false,@id,attacker)
     return ret ? 0 : -1
   end
 
   def pbAdditionalEffect(attacker,opponent)
     if attacker.pbCanIncreaseStatStage?(PBStats::DEFENSE,false)
-      attacker.pbIncreaseStat(PBStats::DEFENSE,3,false)
+      attacker.pbIncreaseStat(PBStats::DEFENSE,3,false,@id,attacker)
     end
     return true
   end
@@ -2021,13 +2021,13 @@ class PokeBattle_Move_039 < PokeBattle_Move
     return super(attacker,opponent,hitnum,alltargets,showanimation) if @basedamage>0
     return -1 if !attacker.pbCanIncreaseStatStage?(PBStats::SPATK,true)
     pbShowAnimation(@id,attacker,opponent,hitnum,alltargets,showanimation)
-    ret=attacker.pbIncreaseStat(PBStats::SPATK,3,false)
+    ret=attacker.pbIncreaseStat(PBStats::SPATK,3,false,@id,attacker)
     return ret ? 0 : -1
   end
 
   def pbAdditionalEffect(attacker,opponent)
     if attacker.pbCanIncreaseStatStage?(PBStats::DEFENSE,false)
-      attacker.pbIncreaseStat(PBStats::SPATK,3,false)
+      attacker.pbIncreaseStat(PBStats::SPATK,3,false,@id,attacker)
     end
     return true
   end
@@ -2057,12 +2057,12 @@ class PokeBattle_Move_03A < PokeBattle_Move
     @battle.pbDisplay(_INTL("{1} cut its own HP and maximized its Attack!",attacker.pbThis))
     if $fefieldeffect == 6
        if attacker.pbCanIncreaseStatStage?(PBStats::DEFENSE,false)
-      attacker.pbIncreaseStat(PBStats::DEFENSE,1,false,showanim)
+      attacker.pbIncreaseStat(PBStats::DEFENSE,1,false,@id,attacker,showanim)
       attacker.effects[PBEffects::StockpileDef]+=1
       showanim=false
     end
     if attacker.pbCanIncreaseStatStage?(PBStats::SPDEF,false)
-      attacker.pbIncreaseStat(PBStats::SPDEF,1,false,showanim)
+      attacker.pbIncreaseStat(PBStats::SPDEF,1,false,@id,attacker,showanim)
       attacker.effects[PBEffects::StockpileSpDef]+=1
       showanim=false
     end
@@ -2086,11 +2086,11 @@ class PokeBattle_Move_03B < PokeBattle_Move
         @battle.pbDisplay(_INTL("{1}'s stats can't be lowered due to Temporal Shift!",attacker.pbThis))
       else
         if attacker.pbCanReduceStatStage?(PBStats::ATTACK,false,true)
-          attacker.pbReduceStat(PBStats::ATTACK,1,false,nil,nil,showanim,true)
+          attacker.pbReduceStat(PBStats::ATTACK,1,false,@id,attacker,showanim,true)
           showanim=false
         end
         if attacker.pbCanReduceStatStage?(PBStats::DEFENSE,false,true)
-          attacker.pbReduceStat(PBStats::DEFENSE,1,false,nil,nil,showanim,true)
+          attacker.pbReduceStat(PBStats::DEFENSE,1,false,@id,attacker,showanim,true)
           showanim=false
         end
       end
@@ -2112,11 +2112,11 @@ class PokeBattle_Move_03C < PokeBattle_Move
         @battle.pbDisplay(_INTL("{1}'s stats can't be lowered due to Temporal Shift!",attacker.pbThis))
       else
         if attacker.pbCanReduceStatStage?(PBStats::DEFENSE,false,true)
-          attacker.pbReduceStat(PBStats::DEFENSE,1,false,nil,nil,showanim,true)
+          attacker.pbReduceStat(PBStats::DEFENSE,1,false,@id,attacker,showanim,true)
           showanim=false
         end
         if attacker.pbCanReduceStatStage?(PBStats::SPDEF,false,true)
-          attacker.pbReduceStat(PBStats::SPDEF,1,false,nil,nil,showanim,true)
+          attacker.pbReduceStat(PBStats::SPDEF,1,false,@id,attacker,showanim,true)
           showanim=false
         end
       end
@@ -2139,15 +2139,15 @@ class PokeBattle_Move_03D < PokeBattle_Move
         @battle.pbDisplay(_INTL("{1}'s stats can't be lowered due to Temporal Shift!",attacker.pbThis))
       else
         if attacker.pbCanReduceStatStage?(PBStats::SPEED,false,true)
-          attacker.pbReduceStat(PBStats::SPEED,1,false,nil,nil,showanim,true)
+          attacker.pbReduceStat(PBStats::SPEED,1,false,@id,attacker,showanim,true)
           showanim=false
         end
         if attacker.pbCanReduceStatStage?(PBStats::DEFENSE,false,true)
-          attacker.pbReduceStat(PBStats::DEFENSE,1,false,nil,nil,showanim,true)
+          attacker.pbReduceStat(PBStats::DEFENSE,1,false,@id,attacker,showanim,true)
           showanim=false
         end
         if attacker.pbCanReduceStatStage?(PBStats::SPDEF,false,true)
-          attacker.pbReduceStat(PBStats::SPDEF,1,false,nil,nil,showanim,true)
+          attacker.pbReduceStat(PBStats::SPDEF,1,false,@id,attacker,showanim,true)
           showanim=false
         end
       end
@@ -2169,7 +2169,7 @@ class PokeBattle_Move_03E < PokeBattle_Move
         @battle.pbDisplay(_INTL("{1}'s stats can't be lowered due to Temporal Shift!",attacker.pbThis))
       else
         if attacker.pbCanReduceStatStage?(PBStats::SPEED,false,true)
-          attacker.pbReduceStat(PBStats::SPEED,1,false,true,true,true,true)
+          attacker.pbReduceStat(PBStats::SPEED,1,false,@id,attacker,true,true)
         end
       end
     end
@@ -2190,7 +2190,7 @@ class PokeBattle_Move_03F < PokeBattle_Move
         @battle.pbDisplay(_INTL("{1}'s stats can't be lowered due to Temporal Shift!",attacker.pbThis))
       else
         if attacker.pbCanReduceStatStage?(PBStats::SPATK,false,true)
-          attacker.pbReduceStat(PBStats::SPATK,2,false,true,true,true,true)
+          attacker.pbReduceStat(PBStats::SPATK,2,false,@id,attacker,true,true)
         end
       end
     end
@@ -2212,10 +2212,10 @@ class PokeBattle_Move_040 < PokeBattle_Move
     ret=-1
     pbShowAnimation(@id,attacker,opponent,hitnum,alltargets,showanimation)
     if opponent.pbCanIncreaseStatStage?(PBStats::SPATK)
-      if $fefieldeffect == 44  
-        opponent.pbIncreaseStat(PBStats::SPATK,3,false)  
-      else  
-        opponent.pbIncreaseStat(PBStats::SPATK,2,false)  
+      if $fefieldeffect == 44
+        opponent.pbIncreaseStat(PBStats::SPATK,3,false,@id,attacker)
+      else
+        opponent.pbIncreaseStat(PBStats::SPATK,2,false,@id,attacker)
       end
       ret=0
     end
@@ -2243,10 +2243,10 @@ class PokeBattle_Move_041 < PokeBattle_Move
     ret=-1
     pbShowAnimation(@id,attacker,opponent,hitnum,alltargets,showanimation)
     if opponent.pbCanIncreaseStatStage?(PBStats::ATTACK)
-      if $fefieldeffect == 44  
-        opponent.pbIncreaseStat(PBStats::ATTACK,3,false)  
-      else  
-        opponent.pbIncreaseStat(PBStats::ATTACK,2,false)  
+      if $fefieldeffect == 44
+        opponent.pbIncreaseStat(PBStats::ATTACK,3,false,@id,attacker)
+      else
+        opponent.pbIncreaseStat(PBStats::ATTACK,2,false,@id,attacker)
       end
       ret=0
     end
@@ -2271,18 +2271,18 @@ class PokeBattle_Move_042 < PokeBattle_Move
       if isConst?(@id,PBMoves,:GROWL) && attacker.effects[PBEffects::MagicBounced] && (attacker.index == 0 || attacker.index == 1)
         if attacker.pbPartner.pbCanReduceStatStage?(PBStats::ATTACK,false)
            pbShowAnimation(@id,opponent,attacker.pbPartner,hitnum,alltargets,showanimation)
-           attacker.pbPartner.pbReduceStat(PBStats::ATTACK,1,false)          
+           attacker.pbPartner.pbReduceStat(PBStats::ATTACK,1,false,@id,attacker)
         end
         @battle.pbDisplay(_INTL("{1} bounced the {2} back!",attacker.pbThis,PBMoves.getName(@id)))
-        attacker.effects[PBEffects::MagicBounced]=false 
-      end        
+        attacker.effects[PBEffects::MagicBounced]=false
+      end
     return -1 if !opponent.pbCanReduceStatStage?(PBStats::ATTACK,true)
     pbShowAnimation(@id,attacker,opponent,hitnum,alltargets,showanimation)
     if isConst?(@id,PBMoves,:GROWL) && attacker.effects[PBEffects::MagicBounced] && opponent.pbPartner.pbCanReduceStatStage?(PBStats::ATTACK,false) && (attacker.index == 2 || attacker.index == 3)
       attacker.effects[PBEffects::MagicBounced]=false
-      opponent.pbPartner.pbReduceStat(PBStats::ATTACK,1,false)
-    end     
-    ret=opponent.pbReduceStat(PBStats::ATTACK,1,false)
+      opponent.pbPartner.pbReduceStat(PBStats::ATTACK,1,false,@id,attacker)
+    end
+    ret=opponent.pbReduceStat(PBStats::ATTACK,1,false,@id,attacker)
     return ret ? 0 : -1
   end
   
@@ -2295,7 +2295,7 @@ class PokeBattle_Move_042 < PokeBattle_Move
 
   def pbAdditionalEffect(attacker,opponent)
     if opponent.pbCanReduceStatStage?(PBStats::ATTACK,false)
-      opponent.pbReduceStat(PBStats::ATTACK,1,false)         
+      opponent.pbReduceStat(PBStats::ATTACK,1,false,@id,attacker)
     end
     return true
   end
@@ -2310,13 +2310,13 @@ class PokeBattle_Move_043 < PokeBattle_Move
     return super(attacker,opponent,hitnum,alltargets,showanimation) if @basedamage>0
     return -1 if !opponent.pbCanReduceStatStage?(PBStats::DEFENSE,true)
     pbShowAnimation(@id,attacker,opponent,hitnum,alltargets,showanimation)
-    ret=opponent.pbReduceStat(PBStats::DEFENSE,1,false)
+    ret=opponent.pbReduceStat(PBStats::DEFENSE,1,false,@id,attacker)
     return ret ? 0 : -1
   end
 
   def pbAdditionalEffect(attacker,opponent)
     if opponent.pbCanReduceStatStage?(PBStats::DEFENSE,false)
-      opponent.pbReduceStat(PBStats::DEFENSE,1,false)
+      opponent.pbReduceStat(PBStats::DEFENSE,1,false,@id,attacker)
     end
     return true
   end
@@ -2344,13 +2344,13 @@ class PokeBattle_Move_044 < PokeBattle_Move
     return super(attacker,opponent,hitnum,alltargets,showanimation) if @basedamage>0
     return -1 if !opponent.pbCanReduceStatStage?(PBStats::SPEED,true)
     pbShowAnimation(@id,attacker,opponent,hitnum,alltargets,showanimation)
-    ret=opponent.pbReduceStat(PBStats::SPEED,1,false)
+    ret=opponent.pbReduceStat(PBStats::SPEED,1,false,@id,attacker)
     return ret ? 0 : -1
   end
 
   def pbAdditionalEffect(attacker,opponent)
     if opponent.pbCanReduceStatStage?(PBStats::SPEED,false)
-      opponent.pbReduceStat(PBStats::SPEED,1,false)
+      opponent.pbReduceStat(PBStats::SPEED,1,false,@id,attacker)
     end
     return true
   end
@@ -2370,16 +2370,16 @@ class PokeBattle_Move_045 < PokeBattle_Move
     return -1 if !opponent.pbCanReduceStatStage?(PBStats::SPATK,true)
     pbShowAnimation(@id,attacker,opponent,hitnum,alltargets,showanimation)
     if isConst?(@id,PBMoves,:SNARL) && $fefieldeffect == 39
-      ret=opponent.pbReduceStat(PBStats::SPATK,2,false)
+      ret=opponent.pbReduceStat(PBStats::SPATK,2,false,@id,attacker)
       return ret ? 0 : -1
     end
-    ret=opponent.pbReduceStat(PBStats::SPATK,1,false)
+    ret=opponent.pbReduceStat(PBStats::SPATK,1,false,@id,attacker)
     return ret ? 0 : -1
   end
 
   def pbAdditionalEffect(attacker,opponent)
     if opponent.pbCanReduceStatStage?(PBStats::SPATK,false)
-      opponent.pbReduceStat(PBStats::SPATK,1,false)
+      opponent.pbReduceStat(PBStats::SPATK,1,false,@id,attacker)
     end
     return true
   end
@@ -2395,13 +2395,13 @@ class PokeBattle_Move_046 < PokeBattle_Move
     return super(attacker,opponent,hitnum,alltargets,showanimation) if @basedamage>0
     return -1 if !opponent.pbCanReduceStatStage?(PBStats::SPDEF,true)
     pbShowAnimation(@id,attacker,opponent,hitnum,alltargets,showanimation)
-    ret=opponent.pbReduceStat(PBStats::SPDEF,1,false)
+    ret=opponent.pbReduceStat(PBStats::SPDEF,1,false,@id,attacker)
     return ret ? 0 : -1
   end
 
   def pbAdditionalEffect(attacker,opponent)
     if opponent.pbCanReduceStatStage?(PBStats::SPDEF,false)
-      opponent.pbReduceStat(PBStats::SPDEF,1,false)
+      opponent.pbReduceStat(PBStats::SPDEF,1,false,@id,attacker)
     end
     return true
   end
@@ -2426,16 +2426,16 @@ class PokeBattle_Move_047 < PokeBattle_Move
      isConst?(@id,PBMoves,:FLASH)) ||
      ($fefieldeffect == 20 &&
      isConst?(@id,PBMoves,:KINESIS))
-      ret=opponent.pbReduceStat(PBStats::ACCURACY,2,false)    
+      ret=opponent.pbReduceStat(PBStats::ACCURACY,2,false,@id,attacker)
     elsif $fefieldeffect == 37 && isConst?(@id,PBMoves,:KINESIS)
-      opponent.pbReduceStat(PBStats::ACCURACY,2,false)    
-      opponent.pbReduceStat(PBStats::ATTACK,2,false) if opponent.pbCanReduceStatStage?(PBStats::ATTACK,false)
-      opponent.pbReduceStat(PBStats::SPATK,2,false) if opponent.pbCanReduceStatStage?(PBStats::SPATK,false)   
+      opponent.pbReduceStat(PBStats::ACCURACY,2,false,@id,attacker)
+      opponent.pbReduceStat(PBStats::ATTACK,2,false,@id,attacker) if opponent.pbCanReduceStatStage?(PBStats::ATTACK,false)
+      opponent.pbReduceStat(PBStats::SPATK,2,false,@id,attacker) if opponent.pbCanReduceStatStage?(PBStats::SPATK,false)
       return 0
-    else      
-      ret=opponent.pbReduceStat(PBStats::ACCURACY,1,false)
-      if $fefieldeffect == 5 && isConst?(@id,PBMoves,:KINESIS)  
-        attacker.effects[PBEffects::KinesisBoost] = true  
+    else
+      ret=opponent.pbReduceStat(PBStats::ACCURACY,1,false,@id,attacker)
+      if $fefieldeffect == 5 && isConst?(@id,PBMoves,:KINESIS)
+        attacker.effects[PBEffects::KinesisBoost] = true
       end
     end
     return ret ? 0 : -1
@@ -2464,12 +2464,12 @@ class PokeBattle_Move_047 < PokeBattle_Move
         @battle.pbDisplay(_INTL("{1} was poisoned!",opponent.pbThis))
       when 4
         if opponent.pbCanReduceStatStage?(PBStats::ACCURACY,false)
-          opponent.pbReduceStat(PBStats::ACCURACY,1,false)
+          opponent.pbReduceStat(PBStats::ACCURACY,1,false,@id,attacker)
         end
       end
     else
       if opponent.pbCanReduceStatStage?(PBStats::ACCURACY,false)
-        opponent.pbReduceStat(PBStats::ACCURACY,1,false)
+        opponent.pbReduceStat(PBStats::ACCURACY,1,false,@id,attacker)
       end
     end
     return true
@@ -2488,45 +2488,45 @@ class PokeBattle_Move_048 < PokeBattle_Move
       if isConst?(@id,PBMoves,:SWEETSCENT) && attacker.effects[PBEffects::MagicBounced] && (attacker.index == 0 || attacker.index == 1)
         if attacker.pbPartner.pbCanReduceStatStage?(PBStats::EVASION,false)
            pbShowAnimation(@id,opponent,attacker.pbPartner,hitnum,alltargets,showanimation)
-           attacker.pbPartner.pbReduceStat(PBStats::EVASION,1,false)          
+           attacker.pbPartner.pbReduceStat(PBStats::EVASION,1,false,@id,attacker)
         end
         @battle.pbDisplay(_INTL("{1} bounced the {2} back!",attacker.pbThis,PBMoves.getName(@id)))
-        attacker.effects[PBEffects::MagicBounced]=false 
-      end     
+        attacker.effects[PBEffects::MagicBounced]=false
+      end
     return -1 if !opponent.pbCanReduceStatStage?(PBStats::EVASION,true)
     pbShowAnimation(@id,attacker,opponent,hitnum,alltargets,showanimation)
     if $fefieldeffect == 33 && $fecounter > 1
       case $fecounter
         when 2
-          ret=opponent.pbReduceStat(PBStats::EVASION,1,false)
-          ret=opponent.pbReduceStat(PBStats::DEFENSE,1,false)
-          ret=opponent.pbReduceStat(PBStats::SPDEF,1,false)
+          ret=opponent.pbReduceStat(PBStats::EVASION,1,false,@id,attacker)
+          ret=opponent.pbReduceStat(PBStats::DEFENSE,1,false,@id,attacker)
+          ret=opponent.pbReduceStat(PBStats::SPDEF,1,false,@id,attacker)
         when 3
-          ret=opponent.pbReduceStat(PBStats::EVASION,2,false)
-          ret=opponent.pbReduceStat(PBStats::DEFENSE,2,false)
-          ret=opponent.pbReduceStat(PBStats::SPDEF,2,false)
+          ret=opponent.pbReduceStat(PBStats::EVASION,2,false,@id,attacker)
+          ret=opponent.pbReduceStat(PBStats::DEFENSE,2,false,@id,attacker)
+          ret=opponent.pbReduceStat(PBStats::SPDEF,2,false,@id,attacker)
         when 4
-          ret=opponent.pbReduceStat(PBStats::EVASION,3,false)
-          ret=opponent.pbReduceStat(PBStats::DEFENSE,3,false)
-          ret=opponent.pbReduceStat(PBStats::SPDEF,3,false)
+          ret=opponent.pbReduceStat(PBStats::EVASION,3,false,@id,attacker)
+          ret=opponent.pbReduceStat(PBStats::DEFENSE,3,false,@id,attacker)
+          ret=opponent.pbReduceStat(PBStats::SPDEF,3,false,@id,attacker)
       end
     elsif $fefieldeffect == 3
-      ret=opponent.pbReduceStat(PBStats::EVASION,2,false)
-      ret=opponent.pbReduceStat(PBStats::DEFENSE,1,false)
-      ret=opponent.pbReduceStat(PBStats::SPDEF,1,false)      
+      ret=opponent.pbReduceStat(PBStats::EVASION,2,false,@id,attacker)
+      ret=opponent.pbReduceStat(PBStats::DEFENSE,1,false,@id,attacker)
+      ret=opponent.pbReduceStat(PBStats::SPDEF,1,false,@id,attacker)
     else
-      ret=opponent.pbReduceStat(PBStats::EVASION,2,false)
+      ret=opponent.pbReduceStat(PBStats::EVASION,2,false,@id,attacker)
     end
     if isConst?(@id,PBMoves,:GSWEETSCENT) && attacker.effects[PBEffects::MagicBounced] && opponent.pbPartner.pbCanReduceStatStage?(PBStats::EVASION,false) && (attacker.index == 2 || attacker.index == 3)
       attacker.effects[PBEffects::MagicBounced]=false
-      opponent.pbPartner.pbReduceStat(PBStats::EVASION,1,false)
-    end    
+      opponent.pbPartner.pbReduceStat(PBStats::EVASION,1,false,@id,attacker)
+    end
     return ret ? 0 : -1
   end
 
   def pbAdditionalEffect(attacker,opponent)
     if opponent.pbCanReduceStatStage?(PBStats::EVASION,false)
-      opponent.pbReduceStat(PBStats::EVASION,2,false)
+      opponent.pbReduceStat(PBStats::EVASION,2,false,@id,attacker)
     end
     return true
   end
@@ -2542,7 +2542,7 @@ class PokeBattle_Move_049 < PokeBattle_Move
   def pbEffect(attacker,opponent,hitnum=0,alltargets=nil,showanimation=true)
     return super(attacker,opponent,hitnum,alltargets,showanimation) if @basedamage>0
     pbShowAnimation(@id,attacker,opponent,hitnum,alltargets,showanimation)
-    ret=opponent.pbReduceStat(PBStats::EVASION,1,false)
+    ret=opponent.pbReduceStat(PBStats::EVASION,1,false,@id,attacker)
      ####
     if attacker.pbOpposingSide.effects[PBEffects::Reflect]>0
       attacker.pbOpposingSide.effects[PBEffects::Reflect]=0
@@ -2631,7 +2631,7 @@ class PokeBattle_Move_049 < PokeBattle_Move
 
   def pbAdditionalEffect(attacker,opponent)
     if opponent.pbCanReduceStatStage?(PBStats::EVASION,false)
-      opponent.pbReduceStat(PBStats::EVASION,1,false)
+      opponent.pbReduceStat(PBStats::EVASION,1,false,@id,attacker)
     end
     opponent.pbOwnSide.effects[PBEffects::Reflect] = 0
     opponent.pbOwnSide.effects[PBEffects::LightScreen] = 0
@@ -2675,10 +2675,10 @@ class PokeBattle_Move_04A < PokeBattle_Move
     end
     pbShowAnimation(@id,attacker,opponent,hitnum,alltargets,showanimation)
     ret=-1; showanim=true
-    if opponent.pbReduceStat(PBStats::ATTACK,1,false,showanim)
+    if opponent.pbReduceStat(PBStats::ATTACK,1,false,@id,attacker,showanim)
       ret=0; showanim=false
     end
-    if opponent.pbReduceStat(PBStats::DEFENSE,1,false,showanim)
+    if opponent.pbReduceStat(PBStats::DEFENSE,1,false,@id,attacker,showanim)
       ret=0; showanim=false
     end
     return ret
@@ -2696,16 +2696,16 @@ class PokeBattle_Move_04B < PokeBattle_Move
     return -1 if !opponent.pbCanReduceStatStage?(PBStats::ATTACK,true)
     pbShowAnimation(@id,attacker,nil,hitnum,alltargets,showanimation)
     if $fefieldeffect == 6 && (@id == PBMoves::FEATHERDANCE)
-    ret=opponent.pbReduceStat(PBStats::ATTACK,3,false)
+    ret=opponent.pbReduceStat(PBStats::ATTACK,3,false,@id,attacker)
     else
-    ret=opponent.pbReduceStat(PBStats::ATTACK,2,false)
+    ret=opponent.pbReduceStat(PBStats::ATTACK,2,false,@id,attacker)
     end
     return ret ? 0 : -1
   end
- 
+
   def pbAdditionalEffect(attacker,opponent)
     if opponent.pbCanReduceStatStage?(PBStats::ATTACK,false)
-      opponent.pbReduceStat(PBStats::ATTACK,2,false)
+      opponent.pbReduceStat(PBStats::ATTACK,2,false,@id,attacker)
     end
     return true
   end
@@ -2718,16 +2718,16 @@ end
 ################################################################################
 class PokeBattle_Move_04C < PokeBattle_Move
   def pbEffect(attacker,opponent,hitnum=0,alltargets=nil,showanimation=true)
-    return super(attacker,opponent,hitnum,alltargets,showanimation) if @basedamage>0
+    return super(attacker,opponent,hitnum=0,alltargets,showanimation) if @basedamage>0
     return -1 if !opponent.pbCanReduceStatStage?(PBStats::DEFENSE,true)
     pbShowAnimation(@id,attacker,opponent,hitnum,alltargets,showanimation)
-    ret=opponent.pbReduceStat(PBStats::DEFENSE,2,false)
+    ret=opponent.pbReduceStat(PBStats::DEFENSE,2,false,@id,attacker)
     return ret ? 0 : -1
   end
 
   def pbAdditionalEffect(attacker,opponent)
     if opponent.pbCanReduceStatStage?(PBStats::DEFENSE,false)
-      opponent.pbReduceStat(PBStats::DEFENSE,2,false)
+      opponent.pbReduceStat(PBStats::DEFENSE,2,false,@id,attacker)
     end
     return true
   end
@@ -2746,10 +2746,10 @@ class PokeBattle_Move_04D < PokeBattle_Move
       if attacker.effects[PBEffects::MagicBounced] && (attacker.index == 0 || attacker.index == 1)
         if attacker.pbPartner.pbCanReduceStatStage?(PBStats::SPEED,false)
           pbShowAnimation(@id,opponent,attacker.pbPartner,hitnum,alltargets,showanimation)
-          attacker.pbPartner.pbReduceStat(PBStats::SPEED,2,false)
+          attacker.pbPartner.pbReduceStat(PBStats::SPEED,2,false,@id,attacker)
         end
         @battle.pbDisplay(_INTL("{1} bounced the {2} back!",attacker.pbThis,PBMoves.getName(@id)))
-        attacker.effects[PBEffects::MagicBounced]=false 
+        attacker.effects[PBEffects::MagicBounced]=false
       end
     end    
     if isConst?(@id,PBMoves,:COTTONSPORE)
@@ -2770,17 +2770,17 @@ class PokeBattle_Move_04D < PokeBattle_Move
     pbShowAnimation(@id,attacker,opponent,hitnum,alltargets,showanimation)
     decrement = 2
     decrement = 4 if (isConst?(@id,PBMoves,:SCARYFACE) && $fefieldeffect==40)
-    ret=opponent.pbReduceStat(PBStats::SPEED,decrement,false)
+    ret=opponent.pbReduceStat(PBStats::SPEED,decrement,false,@id,attacker)
     if (isConst?(@id,PBMoves,:COTTONSPORE) || isConst?(@id,PBMoves,:STRINGSHOT)) && attacker.effects[PBEffects::MagicBounced] && opponent.pbPartner.pbCanReduceStatStage?(PBStats::SPEED,false) && (attacker.index == 2 || attacker.index == 3)
       attacker.effects[PBEffects::MagicBounced]=false
-      opponent.pbPartner.pbReduceStat(PBStats::SPEED,2,false)
+      opponent.pbPartner.pbReduceStat(PBStats::SPEED,2,false,@id,attacker)
     end
     return ret ? 0 : -1
   end
 
   def pbAdditionalEffect(attacker,opponent)
     if opponent.pbCanReduceStatStage?(PBStats::SPEED,false)
-      opponent.pbReduceStat(PBStats::SPEED,2,false)
+      opponent.pbReduceStat(PBStats::SPEED,2,false,@id,attacker)
     end
     return true
   end
@@ -2801,22 +2801,22 @@ class PokeBattle_Move_04E < PokeBattle_Move
       @battle.pbDisplay(_INTL("But it failed!"))
       return -1
     end
-    if opponent.hasWorkingAbility(:OBLIVIOUS) && !(opponent.moldbroken) 
+    if opponent.hasWorkingAbility(:OBLIVIOUS) && !(opponent.moldbroken)
       @battle.pbDisplay(_INTL("{1}'s {2} prevents romance!",opponent.pbThis,
          PBAbilities.getName(opponent.ability)))
       return -1
     end
     pbShowAnimation(@id,attacker,opponent,hitnum,alltargets,showanimation)
-    ret=opponent.pbReduceStat(PBStats::SPATK,2,false)
+    ret=opponent.pbReduceStat(PBStats::SPATK,2,false,@id,attacker)
     return ret ? 0 : -1
   end
 
   def pbAdditionalEffect(attacker,opponent)
     return false if attacker.gender==2 || opponent.gender==2 ||
                     attacker.gender==opponent.gender
-    return false if opponent.hasWorkingAbility(:OBLIVIOUS) && !(opponent.moldbroken) 
+    return false if opponent.hasWorkingAbility(:OBLIVIOUS) && !(opponent.moldbroken)
     if opponent.pbCanReduceStatStage?(PBStats::SPATK,false)
-      opponent.pbReduceStat(PBStats::SPATK,2,false)
+      opponent.pbReduceStat(PBStats::SPATK,2,false,@id,attacker)
     end
     return true
   end
@@ -2834,16 +2834,16 @@ class PokeBattle_Move_04F < PokeBattle_Move
     pbShowAnimation(@id,attacker,opponent,hitnum,alltargets,showanimation)
     if isConst?(@id,PBMoves,:METALSOUND) && ($fefieldeffect == 17 ||
      $fefieldeffect == 18)
-      ret=opponent.pbReduceStat(PBStats::SPDEF,3,false)
+      ret=opponent.pbReduceStat(PBStats::SPDEF,3,false,@id,attacker)
     else
-      ret=opponent.pbReduceStat(PBStats::SPDEF,2,false)
+      ret=opponent.pbReduceStat(PBStats::SPDEF,2,false,@id,attacker)
     end
     return ret ? 0 : -1
   end
 
   def pbAdditionalEffect(attacker,opponent)
     if opponent.pbCanReduceStatStage?(PBStats::SPDEF,false)
-      opponent.pbReduceStat(PBStats::SPDEF,2,false)
+      opponent.pbReduceStat(PBStats::SPDEF,2,false,@id,attacker)
     end
     return true
   end
@@ -2875,7 +2875,7 @@ end
 def pbAdditionalEffect(attacker,opponent)
   if (@id == PBMoves::HEAVENLYWING)
     if attacker.pbCanIncreaseStatStage?(PBStats::ATTACK,false)
-      attacker.pbIncreaseStat(PBStats::ATTACK,1,false)
+      attacker.pbIncreaseStat(PBStats::ATTACK,1,false,@id,attacker)
     end
     return true
   end
@@ -2902,11 +2902,11 @@ class PokeBattle_Move_051 < PokeBattle_Move
     @battle.pbDisplay(_INTL("All stat changes were eliminated!"))
     # On Misty Field, boost Defense and Sp. Def of user and allies
     if $fefieldeffect == 3
-      attacker.pbIncreaseStat(PBStats::DEFENSE,1,false)
-      attacker.pbIncreaseStat(PBStats::SPDEF,1,false)
+      attacker.pbIncreaseStat(PBStats::DEFENSE,1,false,@id,attacker)
+      attacker.pbIncreaseStat(PBStats::SPDEF,1,false,@id,attacker)
       if attacker.pbPartner && !attacker.pbPartner.isFainted?
-        attacker.pbPartner.pbIncreaseStat(PBStats::DEFENSE,1,false)
-        attacker.pbPartner.pbIncreaseStat(PBStats::SPDEF,1,false)
+        attacker.pbPartner.pbIncreaseStat(PBStats::DEFENSE,1,false,@id,attacker)
+        attacker.pbPartner.pbIncreaseStat(PBStats::SPDEF,1,false,@id,attacker)
       end
     end
     return 0
@@ -3046,7 +3046,7 @@ class PokeBattle_Move_055 < PokeBattle_Move
     end
     if $fefieldeffect == 37
       if attacker.pbCanIncreaseStatStage?(PBStats::SPATK,false)
-        attacker.pbIncreaseStat(PBStats::SPATK,2,false)
+        attacker.pbIncreaseStat(PBStats::SPATK,2,false,@id,attacker)
       end
     end
     return 0
@@ -3073,11 +3073,11 @@ class PokeBattle_Move_056 < PokeBattle_Move
     end
     # On Misty Field, also boost Defense and Sp. Def of user and allies
     if $fefieldeffect == 3
-      attacker.pbIncreaseStat(PBStats::DEFENSE,1,false)
-      attacker.pbIncreaseStat(PBStats::SPDEF,1,false)
+      attacker.pbIncreaseStat(PBStats::DEFENSE,1,false,@id,attacker)
+      attacker.pbIncreaseStat(PBStats::SPDEF,1,false,@id,attacker)
       if attacker.pbPartner && !attacker.pbPartner.isFainted?
-        attacker.pbPartner.pbIncreaseStat(PBStats::DEFENSE,1,false)
-        attacker.pbPartner.pbIncreaseStat(PBStats::SPDEF,1,false)
+        attacker.pbPartner.pbIncreaseStat(PBStats::DEFENSE,1,false,@id,attacker)
+        attacker.pbPartner.pbIncreaseStat(PBStats::SPDEF,1,false,@id,attacker)
       end
     end
     return 0
@@ -4613,8 +4613,8 @@ class PokeBattle_Move_08E < PokeBattle_Move
     for i in [PBStats::ATTACK,PBStats::DEFENSE,PBStats::SPEED,PBStats::SPATK,PBStats::SPDEF,PBStats::ACCURACY,PBStats::EVASION]
       mult+=attacker.stages[i] if attacker.stages[i]>0
     end
-    bp = 20
-    bp = 40 if $fefieldeffect == 39
+    bp = 30
+    bp = 60 if $fefieldeffect == 39
 	if attacker.effects[PBEffects::FeverPitchBoost]
 	  return 150
 	else
@@ -5140,7 +5140,7 @@ class PokeBattle_Move_0A2 < PokeBattle_Move
     end  
     if $fefieldeffect  == 30
       if attacker.pbCanIncreaseStatStage?(PBStats::EVASION,false)
-        attacker.pbIncreaseStat(PBStats::EVASION,1,false)
+        attacker.pbIncreaseStat(PBStats::EVASION,1,false,@id,attacker)
       end
     end
     return 0
@@ -5170,7 +5170,7 @@ class PokeBattle_Move_0A3 < PokeBattle_Move
     end
     if $fefieldeffect  == 30
       if attacker.pbCanIncreaseStatStage?(PBStats::EVASION,false)
-        attacker.pbIncreaseStat(PBStats::EVASION,1,false)
+        attacker.pbIncreaseStat(PBStats::EVASION,1,false,@id,attacker)
       end
     end
     return 0
@@ -5314,23 +5314,23 @@ class PokeBattle_Move_0A4 < PokeBattle_Move
         @battle.pbDisplay(_INTL("{1} became drowsy!",opponent.pbThis))
       when 3
         return false if !opponent.pbCanReduceStatStage?(PBStats::SPATK,1,false)
-        opponent.pbReduceStat(PBStats::SPATK,1,false)
+        opponent.pbReduceStat(PBStats::SPATK,1,false,@id,attacker)
       when 4
         return false if !opponent.pbCanReduceStatStage?(PBStats::ACCURACY,1,false)
-        opponent.pbReduceStat(PBStats::ACCURACY,1,false)
+        opponent.pbReduceStat(PBStats::ACCURACY,1,false,@id,attacker)
       when 5
         return false if !opponent.pbCanReduceStatStage?(PBStats::DEFENSE,1,false)
-        opponent.pbReduceStat(PBStats::DEFENSE,1,false)
+        opponent.pbReduceStat(PBStats::DEFENSE,1,false,@id,attacker)
       when 6
         return false if !opponent.pbCanReduceStatStage?(PBStats::SPDEF,1,false)
-        opponent.pbReduceStat(PBStats::SPDEF,1,false)
+        opponent.pbReduceStat(PBStats::SPDEF,1,false,@id,attacker)
       when 7
         return false if !opponent.pbCanBurn?(false)
         opponent.pbBurn
-        @battle.pbDisplay(_INTL("{1} was burned!",opponent.pbThis))  
+        @battle.pbDisplay(_INTL("{1} was burned!",opponent.pbThis))
       when 8
         return false if !opponent.pbCanReduceStatStage?(PBStats::SPEED,1,false)
-        opponent.pbReduceStat(PBStats::SPEED,1,false)
+        opponent.pbReduceStat(PBStats::SPEED,1,false,@id,attacker)
       when 9
         rnd=@battle.pbRandom(5)
         case rnd
@@ -5365,26 +5365,26 @@ class PokeBattle_Move_0A4 < PokeBattle_Move
         @battle.pbDisplay(_INTL("{1} was poisoned!",opponent.pbThis))  
       when 12
         return false if !opponent.pbCanReduceStatStage?(PBStats::ACCURACY,1,false)
-        opponent.pbReduceStat(PBStats::ACCURACY,1,false)
+        opponent.pbReduceStat(PBStats::ACCURACY,1,false,@id,attacker)
       when 13
         return false if !opponent.pbCanReduceStatStage?(PBStats::SPEED,1,false)
-        opponent.pbReduceStat(PBStats::SPEED,1,false)  
+        opponent.pbReduceStat(PBStats::SPEED,1,false,@id,attacker)
       when 14
         return false if opponent.hasWorkingAbility(:INNERFOCUS) ||
-         opponent.effects[PBEffects::Substitute]>0 || (opponent.status!=PBStatuses::SLEEP && 
+         opponent.effects[PBEffects::Substitute]>0 || (opponent.status!=PBStatuses::SLEEP &&
          opponent.status!=PBStatuses::FROZEN)
         opponent.effects[PBEffects::Flinch]=true
       when 15
         return false if !opponent.pbCanSleep?(false)
         opponent.pbSleep
-        @battle.pbDisplay(_INTL("{1} went to sleep!",opponent.pbThis))  
+        @battle.pbDisplay(_INTL("{1} went to sleep!",opponent.pbThis))
       when 16
         return false if !opponent.pbCanBurn?(false)
         opponent.pbBurn
-        @battle.pbDisplay(_INTL("{1} was burned!",opponent.pbThis))  
+        @battle.pbDisplay(_INTL("{1} was burned!",opponent.pbThis))
       when 17
         return false if !opponent.pbCanReduceStatStage?(PBStats::ATTACK,1,false)
-        opponent.pbReduceStat(PBStats::ATTACK,1,false)
+        opponent.pbReduceStat(PBStats::ATTACK,1,false,@id,attacker)
       when 18
         return false if !opponent.pbCanParalyze?(false)
         opponent.pbParalyze(attacker)
@@ -5411,13 +5411,13 @@ class PokeBattle_Move_0A4 < PokeBattle_Move
         end
       when 20
         return false if !opponent.pbCanReduceStatStage?(PBStats::ACCURACY,1,false)
-        opponent.pbReduceStat(PBStats::ACCURACY,1,false)
+        opponent.pbReduceStat(PBStats::ACCURACY,1,false,@id,attacker)
       when 21
         return false if !opponent.pbCanReduceStatStage?(PBStats::SPEED,1,false)
-        opponent.pbReduceStat(PBStats::SPEED,1,false)        
+        opponent.pbReduceStat(PBStats::SPEED,1,false,@id,attacker)
       when 22
         return false if !opponent.pbCanReduceStatStage?(PBStats::ATTACK,1,false)
-        opponent.pbReduceStat(PBStats::ATTACK,1,false)        
+        opponent.pbReduceStat(PBStats::ATTACK,1,false,@id,attacker)        
       when 23 # Cave - may cause crushing status
         # Check immunities to crushing
         if opponent.hasWorkingAbility(:BATTLEARMOR) || opponent.hasWorkingAbility(:SHELLARMOR) ||
@@ -5434,9 +5434,9 @@ class PokeBattle_Move_0A4 < PokeBattle_Move
           return true
         end
         return false
-      when 24 
+      when 24
         return false if !opponent.pbCanReduceStatStage?(PBStats::SPEED,1,false)
-        opponent.pbReduceStat(PBStats::SPEED,1,false)
+        opponent.pbReduceStat(PBStats::SPEED,1,false,@id,attacker)
       when 25
         rnd=@battle.pbRandom(4)
         case rnd
@@ -5449,7 +5449,7 @@ class PokeBattle_Move_0A4 < PokeBattle_Move
             opponent.pbFreeze
             @battle.pbDisplay(_INTL("{1} was frozen solid!",opponent.pbThis))
           when 2
-            return false if !opponent.pbCanConfuse?(false)            
+            return false if !opponent.pbCanConfuse?(false)
             opponent.effects[PBEffects::Confusion]=3
             @battle.pbCommonAnimation("Confusion",opponent,nil)
             @battle.pbDisplay(_INTL("{1} became confused!",opponent.pbThis))
@@ -5464,7 +5464,7 @@ class PokeBattle_Move_0A4 < PokeBattle_Move
         @battle.pbDisplay(_INTL("{1} was poisoned!",opponent.pbThis))
       when 27
         return false if opponent.hasWorkingAbility(:INNERFOCUS) ||
-         opponent.effects[PBEffects::Substitute]>0 || (opponent.status!=PBStatuses::SLEEP && 
+         opponent.effects[PBEffects::Substitute]>0 || (opponent.status!=PBStatuses::SLEEP &&
          opponent.status!=PBStatuses::FROZEN)
         opponent.effects[PBEffects::Flinch]=true
       when 28
@@ -5473,10 +5473,10 @@ class PokeBattle_Move_0A4 < PokeBattle_Move
         @battle.pbDisplay(_INTL("{1} was frozen!",opponent.pbThis))
       when 29
         return false if !opponent.pbCanReduceStatStage?(PBStats::SPATK,1,false)
-        opponent.pbReduceStat(PBStats::SPATK,1,false)
+        opponent.pbReduceStat(PBStats::SPATK,1,false,@id,attacker)
       when 30
         return false if !opponent.pbCanReduceStatStage?(PBStats::EVASION,1,false)
-        opponent.pbReduceStat(PBStats::EVASION,1,false)
+        opponent.pbReduceStat(PBStats::EVASION,1,false,@id,attacker)
       when 31
         return false if !opponent.pbCanSleep?(false)
         opponent.pbSleep
@@ -5489,34 +5489,34 @@ class PokeBattle_Move_0A4 < PokeBattle_Move
         case $fecounter
           when 0
             return false if !opponent.pbCanReduceStatStage?(PBStats::EVASION,1,false)
-            opponent.pbReduceStat(PBStats::EVASION,1,false)
+            opponent.pbReduceStat(PBStats::EVASION,1,false,@id,attacker)
           when 1
             return false if !opponent.pbCanReduceStatStage?(PBStats::EVASION,1,false)
-            opponent.pbReduceStat(PBStats::EVASION,1,false)
+            opponent.pbReduceStat(PBStats::EVASION,1,false,@id,attacker)
           when 2
-            opponent.pbReduceStat(PBStats::DEFENSE,1,false) if opponent.pbCanReduceStatStage?(PBStats::DEFENSE,1,false)
-            opponent.pbReduceStat(PBStats::SPDEF,1,false) if opponent.pbCanReduceStatStage?(PBStats::SPDEF,1,false)
-            opponent.pbReduceStat(PBStats::EVASION,1,false) if opponent.pbCanReduceStatStage?(PBStats::EVASION,1,false)
+            opponent.pbReduceStat(PBStats::DEFENSE,1,false,@id,attacker) if opponent.pbCanReduceStatStage?(PBStats::DEFENSE,1,false)
+            opponent.pbReduceStat(PBStats::SPDEF,1,false,@id,attacker) if opponent.pbCanReduceStatStage?(PBStats::SPDEF,1,false)
+            opponent.pbReduceStat(PBStats::EVASION,1,false,@id,attacker) if opponent.pbCanReduceStatStage?(PBStats::EVASION,1,false)
           when 3
-            opponent.pbReduceStat(PBStats::DEFENSE,1,false) if opponent.pbCanReduceStatStage?(PBStats::DEFENSE,1,false)
-            opponent.pbReduceStat(PBStats::SPDEF,1,false) if opponent.pbCanReduceStatStage?(PBStats::SPDEF,1,false)
-            opponent.pbReduceStat(PBStats::EVASION,1,false) if opponent.pbCanReduceStatStage?(PBStats::EVASION,1,false)
+            opponent.pbReduceStat(PBStats::DEFENSE,1,false,@id,attacker) if opponent.pbCanReduceStatStage?(PBStats::DEFENSE,1,false)
+            opponent.pbReduceStat(PBStats::SPDEF,1,false,@id,attacker) if opponent.pbCanReduceStatStage?(PBStats::SPDEF,1,false)
+            opponent.pbReduceStat(PBStats::EVASION,1,false,@id,attacker) if opponent.pbCanReduceStatStage?(PBStats::EVASION,1,false)
           when 4
-            opponent.pbReduceStat(PBStats::DEFENSE,2,false) if opponent.pbCanReduceStatStage?(PBStats::DEFENSE,1,false)
-            opponent.pbReduceStat(PBStats::SPDEF,2,false) if opponent.pbCanReduceStatStage?(PBStats::SPDEF,1,false)
-            opponent.pbReduceStat(PBStats::EVASION,2,false) if opponent.pbCanReduceStatStage?(PBStats::EVASION,1,false)
+            opponent.pbReduceStat(PBStats::DEFENSE,2,false,@id,attacker) if opponent.pbCanReduceStatStage?(PBStats::DEFENSE,1,false)
+            opponent.pbReduceStat(PBStats::SPDEF,2,false,@id,attacker) if opponent.pbCanReduceStatStage?(PBStats::SPDEF,1,false)
+            opponent.pbReduceStat(PBStats::EVASION,2,false,@id,attacker) if opponent.pbCanReduceStatStage?(PBStats::EVASION,1,false)
         end
       when 34
         return false if !opponent.pbCanReduceStatStage?(PBStats::SPATK,1,false)
-        opponent.pbReduceStat(PBStats::SPDEF,1,false)  
+        opponent.pbReduceStat(PBStats::SPDEF,1,false,@id,attacker)
       when 35
-        opponent.pbReduceStat(PBStats::ATTACK,1,false) if opponent.pbCanReduceStatStage?(PBStats::ATTACK,1,false)
-        opponent.pbReduceStat(PBStats::DEFENSE,1,false) if opponent.pbCanReduceStatStage?(PBStats::DEFENSE,1,false)
-        opponent.pbReduceStat(PBStats::SPATK,1,false) if opponent.pbCanReduceStatStage?(PBStats::SPATK,1,false)
-        opponent.pbReduceStat(PBStats::SPDEF,1,false) if opponent.pbCanReduceStatStage?(PBStats::SPDEF,1,false)
-        opponent.pbReduceStat(PBStats::SPEED,1,false) if opponent.pbCanReduceStatStage?(PBStats::SPEED,1,false)
-        opponent.pbReduceStat(PBStats::ACCURACY,1,false) if opponent.pbCanReduceStatStage?(PBStats::ACCURACY,1,false)
-        opponent.pbReduceStat(PBStats::EVASION,1,false) if opponent.pbCanReduceStatStage?(PBStats::EVASION,1,false)
+        opponent.pbReduceStat(PBStats::ATTACK,1,false,@id,attacker) if opponent.pbCanReduceStatStage?(PBStats::ATTACK,1,false)
+        opponent.pbReduceStat(PBStats::DEFENSE,1,false,@id,attacker) if opponent.pbCanReduceStatStage?(PBStats::DEFENSE,1,false)
+        opponent.pbReduceStat(PBStats::SPATK,1,false,@id,attacker) if opponent.pbCanReduceStatStage?(PBStats::SPATK,1,false)
+        opponent.pbReduceStat(PBStats::SPDEF,1,false,@id,attacker) if opponent.pbCanReduceStatStage?(PBStats::SPDEF,1,false)
+        opponent.pbReduceStat(PBStats::SPEED,1,false,@id,attacker) if opponent.pbCanReduceStatStage?(PBStats::SPEED,1,false)
+        opponent.pbReduceStat(PBStats::ACCURACY,1,false,@id,attacker) if opponent.pbCanReduceStatStage?(PBStats::ACCURACY,1,false)
+        opponent.pbReduceStat(PBStats::EVASION,1,false,@id,attacker) if opponent.pbCanReduceStatStage?(PBStats::EVASION,1,false)
       when 36
         return false if !opponent.pbCanConfuse?(false)            
         opponent.effects[PBEffects::Confusion]=3
@@ -5566,16 +5566,16 @@ class PokeBattle_Move_0A4 < PokeBattle_Move
         opponent.effects[PBEffects::Confusion]=3
         @battle.pbCommonAnimation("Confusion",opponent,nil)
         @battle.pbDisplay(_INTL("{1} became confused!",opponent.pbThis))
-      when 44  
-        return false if !attack.pbCanIncreaseStatStage?(PBStats::ATTACK,1,false)  
-        attack.pbIncreaseStat(PBStats::ATTACK,1,false)  
+      when 44
+        return false if !attack.pbCanIncreaseStatStage?(PBStats::ATTACK,1,false)
+        attack.pbIncreaseStat(PBStats::ATTACK,1,false,@id,attacker)  
       when 45  
         return false if !opponent.pbCanBurn?(false)  
         opponent.pbBurn  
         @battle.pbDisplay(_INTL("{1} was burned!",opponent.pbThis))
-      when 46  
+      when 46
         return false if !opponent.pbCanReduceStatStage?(PBStats::ACCURACY,1,false)
-        opponent.pbReduceStat(PBStats::ACCURACY,1,false)
+        opponent.pbReduceStat(PBStats::ACCURACY,1,false,@id,attacker)
       when 50
         if opponent.effects[PBEffects::ThroatChop]==0
           opponent.effects[PBEffects::ThroatChop]=3
@@ -5621,9 +5621,9 @@ class PokeBattle_Move_0A6 < PokeBattle_Move
     @battle.pbDisplay(_INTL("{1} took aim at {2}!",attacker.pbThis,opponent.pbThis(true)))
     if $fefieldeffect == 37 && isConst?(@id,PBMoves,:MINDREADER)
       if attacker.pbCanIncreaseStatStage?(PBStats::SPATK,false)
-        attacker.pbIncreaseStat(PBStats::SPATK,2,false)
+        attacker.pbIncreaseStat(PBStats::SPATK,2,false,@id,attacker)
       end
-    end    
+    end
     return 0
   end
 end
@@ -5664,7 +5664,7 @@ class PokeBattle_Move_0A8 < PokeBattle_Move
     @battle.pbDisplay(_INTL("{1} was identified!",opponent.pbThis))
     if $fefieldeffect == 29 || $fefieldeffect == 31 || $fefieldeffect == 37
       if attacker.pbCanIncreaseStatStage?(PBStats::SPATK,false)
-        attacker.pbIncreaseStat(PBStats::SPATK,2,false)
+        attacker.pbIncreaseStat(PBStats::SPATK,2,false,@id,attacker)
       end
     end
     return 0
@@ -5696,7 +5696,8 @@ class PokeBattle_Move_0AA < PokeBattle_Move
       @battle.pbDisplay(_INTL("But it failed!"))
       return -1
     end
-    if @battle.pbRandom(65536)<(65536/attacker.effects[PBEffects::ProtectRate]).floor
+    # Always fail if used consecutively (ProtectRate > 1)
+    if attacker.effects[PBEffects::ProtectRate] == 1
       attacker.effects[PBEffects::Protect]=true
       attacker.effects[PBEffects::ProtectRate]*=2
       @battle.pbAnimation(@id,attacker,nil)
@@ -5723,7 +5724,11 @@ class PokeBattle_Move_0AB < PokeBattle_Move
     end
     pbShowAnimation(@id,attacker,opponent,hitnum,alltargets,showanimation)
     side.effects[PBEffects::QuickGuard] = 5
-    @battle.pbDisplay(_INTL("{1} is protected from priority attacks!",attacker.pbTeam))
+    if !@battle.pbIsOpposing?(attacker.index)
+      @battle.pbDisplay(_INTL("Quick Guard protected your team!"))
+    else
+      @battle.pbDisplay(_INTL("Quick Guard protected the opposing team!"))
+    end
     return 0
   end
 end
@@ -5742,7 +5747,11 @@ class PokeBattle_Move_0AC < PokeBattle_Move
     end
     pbShowAnimation(@id,attacker,opponent,hitnum,alltargets,showanimation)
     side.effects[PBEffects::WideGuard] = 5
-    @battle.pbDisplay(_INTL("{1} is protected by Wide Guard!",attacker.pbTeam))
+    if !@battle.pbIsOpposing?(attacker.index)
+      @battle.pbDisplay(_INTL("Wide Guard protected your team!"))
+    else
+      @battle.pbDisplay(_INTL("Wide Guard protected the opposing team!"))
+    end
     return 0
   end
 end   
@@ -5790,13 +5799,13 @@ class PokeBattle_Move_0AE < PokeBattle_Move
     end
     if $fefieldeffect == 43 || $fefieldeffect == 30
       if attacker.pbCanIncreaseStatStage?(PBStats::ATTACK,false)
-        attacker.pbIncreaseStat(PBStats::ATTACK,1,false)
+        attacker.pbIncreaseStat(PBStats::ATTACK,1,false,@id,attacker)
       end
       if attacker.pbCanIncreaseStatStage?(PBStats::SPATK,false)
-        attacker.pbIncreaseStat(PBStats::SPATK,1,false)
+        attacker.pbIncreaseStat(PBStats::SPATK,1,false,@id,attacker)
       end
       if attacker.pbCanIncreaseStatStage?(PBStats::SPEED,false)
-        attacker.pbIncreaseStat(PBStats::SPEED,1,false)
+        attacker.pbIncreaseStat(PBStats::SPEED,1,false,@id,attacker)
       end
     end
     attacker.pbUseMoveSimple(opponent.lastMoveUsed,-1,opponent.index)
@@ -5816,13 +5825,13 @@ class PokeBattle_Move_0AF < PokeBattle_UnimplementedMove
      if canCopy       
       if $fefieldeffect  == 30
         if attacker.pbCanIncreaseStatStage?(PBStats::ACCURACY,false)
-          attacker.pbIncreaseStat(PBStats::ACCURACY,1,false)
+          attacker.pbIncreaseStat(PBStats::ACCURACY,1,false,@id,attacker)
         end
         if attacker.pbCanIncreaseStatStage?(PBStats::ATTACK,false)
-          attacker.pbIncreaseStat(PBStats::ATTACK,1,false)
+          attacker.pbIncreaseStat(PBStats::ATTACK,1,false,@id,attacker)
         end
         if attacker.pbCanIncreaseStatStage?(PBStats::SPATK,false)
-          attacker.pbIncreaseStat(PBStats::SPATK,1,false)
+          attacker.pbIncreaseStat(PBStats::SPATK,1,false,@id,attacker)
         end
       end
       attacker.pbUseMoveSimple(lastMove,-1,-1)
@@ -6825,7 +6834,7 @@ class PokeBattle_Move_0C7 < PokeBattle_Move
 
   def pbAdditionalEffect(attacker,opponent)
   if opponent.pbCanReduceStatStage?(PBStats::SPE,false)
-      opponent.pbReduceStat(PBStats::SPE,1,false)
+      opponent.pbReduceStat(PBStats::SPE,1,false,@id,attacker)
       return true
     else
     return false
@@ -6861,10 +6870,10 @@ class PokeBattle_Move_0C8 < PokeBattle_Move
 
   def pbEffect(attacker,opponent,hitnum=0,alltargets=nil,showanimation=true)
     if @immediate || attacker.effects[PBEffects::TwoTurnAttack]>0
-      @battle.pbCommonAnimation("Skull Bash charging",attacker,nil) 
+      @battle.pbCommonAnimation("Skull Bash charging",attacker,nil)
       @battle.pbDisplay(_INTL("{1} lowered its head!",attacker.pbThis))
       if attacker.pbCanIncreaseStatStage?(PBStats::DEFENSE,false)
-        attacker.pbIncreaseStat(PBStats::DEFENSE,1,false)
+        attacker.pbIncreaseStat(PBStats::DEFENSE,1,false,@id,attacker)
       end
     end
     return 0 if attacker.effects[PBEffects::TwoTurnAttack]>0
@@ -7832,10 +7841,10 @@ class PokeBattle_Move_0E2 < PokeBattle_Move
     if !prevented
       pbShowAnimation(@id,attacker,opponent,hitnum,alltargets,showanimation)
       showanim=true
-      if opponent.pbReduceStat(PBStats::ATTACK,2,false,showanim)
+      if opponent.pbReduceStat(PBStats::ATTACK,2,false,@id,attacker,showanim)
         ret=0; showanim=false
       end
-      if opponent.pbReduceStat(PBStats::SPATK,2,false,showanim)
+      if opponent.pbReduceStat(PBStats::SPATK,2,false,@id,attacker,showanim)
         ret=0; showanim=false
       end
     end
@@ -7969,7 +7978,8 @@ class PokeBattle_Move_0E8 < PokeBattle_Move
       @battle.pbDisplay(_INTL("But it failed!"))
       return -1
     end
-    if @battle.pbRandom(65536)<(65536/attacker.effects[PBEffects::ProtectRate]).floor
+    # Always fail if used consecutively (ProtectRate > 1)
+    if attacker.effects[PBEffects::ProtectRate] == 1
       attacker.effects[PBEffects::Endure]=true
       attacker.effects[PBEffects::ProtectRate]*=2
       @battle.pbAnimation(@id,attacker,nil)
@@ -8032,12 +8042,12 @@ class PokeBattle_Move_0EB < PokeBattle_Move
       end
       opponent.pbFaint if opponent.isFainted?
     end
-    if $fefieldeffect == 44  
-      if attacker.pbCanIncreaseStatStage?(PBStats::ATTACK,false)  
-        attacker.pbIncreaseStat(PBStats::ATTACK,2,false)  
-      end  
-      @battle.pbDisplay(_INTL("{1} can't be switched out on Colosseum Field!",opponent.pbThis))  
-      return -1        
+    if $fefieldeffect == 44
+      if attacker.pbCanIncreaseStatStage?(PBStats::ATTACK,false)
+        attacker.pbIncreaseStat(PBStats::ATTACK,2,false,@id,attacker)
+      end
+      @battle.pbDisplay(_INTL("{1} can't be switched out on Colosseum Field!",opponent.pbThis))
+      return -1
     end
     if isConst?(opponent.ability,PBAbilities,:SUCTIONCUPS) && !(opponent.moldbroken)
       @battle.pbDisplay(_INTL("{1} anchored itself with {2}!",opponent.pbThis,PBAbilities.getName(opponent.ability)))
@@ -9243,7 +9253,7 @@ class PokeBattle_Move_109 < PokeBattle_Move
   def pbAdditionalEffect(attacker,opponent)
     if opponent.isFainted? &&
        attacker.pbCanIncreaseStatStage?(PBStats::SPATK,false)
-      attacker.pbIncreaseStat(PBStats::SPATK,3,false)
+      attacker.pbIncreaseStat(PBStats::SPATK,3,false,@id,attacker)
     end
   end
 end
@@ -9349,15 +9359,15 @@ class PokeBattle_Move_10D < PokeBattle_Move
       else
         @battle.pbCommonAnimation("CurseNoGhost",attacker,nil)
         if lowerspeed
-          attacker.pbReduceStat(PBStats::SPEED,1,false,true,true,true,true)
+          attacker.pbReduceStat(PBStats::SPEED,1,false,@id,attacker,true,true)
         end
         showanim=true
         if raiseatk
-          attacker.pbIncreaseStat(PBStats::ATTACK,1,false,showanim)
+          attacker.pbIncreaseStat(PBStats::ATTACK,1,false,@id,attacker,showanim)
           showanim=false
         end
         if raisedef
-          attacker.pbIncreaseStat(PBStats::DEFENSE,1,false,showanim)
+          attacker.pbIncreaseStat(PBStats::DEFENSE,1,false,@id,attacker,showanim)
           showanim=false
         end
       end
@@ -9480,7 +9490,7 @@ class PokeBattle_Move_110 < PokeBattle_Move
         @battle.pbDisplay(_INTL("{1} blew away the mystical trees!",attacker.pbThis))
       end
       if attacker.pbCanIncreaseStatStage?(PBStats::SPEED,true)
-        ret=attacker.pbIncreaseStat(PBStats::SPEED,1,false)
+        ret=attacker.pbIncreaseStat(PBStats::SPEED,1,false,@id,attacker)
       end
     end
     return ret ? 0 : -1
@@ -9530,12 +9540,12 @@ class PokeBattle_Move_112 < PokeBattle_Move
         attacker.effects[PBEffects::Stockpile]))
     showanim=true
     if attacker.pbCanIncreaseStatStage?(PBStats::DEFENSE,false)
-      attacker.pbIncreaseStat(PBStats::DEFENSE,1,false,showanim)
+      attacker.pbIncreaseStat(PBStats::DEFENSE,1,false,@id,attacker,showanim)
       attacker.effects[PBEffects::StockpileDef]+=1
       showanim=false
     end
     if attacker.pbCanIncreaseStatStage?(PBStats::SPDEF,false)
-      attacker.pbIncreaseStat(PBStats::SPDEF,1,false,showanim)
+      attacker.pbIncreaseStat(PBStats::SPDEF,1,false,@id,attacker,showanim)
       attacker.effects[PBEffects::StockpileSpDef]+=1
       showanim=false
     end
@@ -9576,12 +9586,12 @@ class PokeBattle_Move_113 < PokeBattle_Move
       # Consume one stockpile stage and drop the corresponding Def/SpDef one stage each.
       if attacker.effects[PBEffects::StockpileDef] > 0 &&
          attacker.pbCanReduceStatStage?(PBStats::DEFENSE,false,true)
-        attacker.pbReduceStat(PBStats::DEFENSE,1,false,true)
+        attacker.pbReduceStat(PBStats::DEFENSE,1,false,@id,attacker,true)
         attacker.effects[PBEffects::StockpileDef] -= 1
       end
       if attacker.effects[PBEffects::StockpileSpDef] > 0 &&
          attacker.pbCanReduceStatStage?(PBStats::SPDEF,false,true)
-        attacker.pbReduceStat(PBStats::SPDEF,1,false,true)
+        attacker.pbReduceStat(PBStats::SPDEF,1,false,@id,attacker,true)
         attacker.effects[PBEffects::StockpileSpDef] -= 1
       end
 
@@ -9596,7 +9606,7 @@ class PokeBattle_Move_113 < PokeBattle_Move
   def pbAdditionalEffect(attacker,opponent)
     return false if opponent.damagestate.substitute
     if opponent.pbCanReduceStatStage?(PBStats::SPDEF,false)
-      opponent.pbReduceStat(PBStats::SPDEF,1,false)
+      opponent.pbReduceStat(PBStats::SPDEF,1,false,@id,attacker)
       @battle.pbDisplay(_INTL("{1}'s Sp. Def fell!",opponent.pbThis))
       return true
     end
@@ -9665,12 +9675,12 @@ end
       if !attacker.hasWorkingAbility(:ACCUMULATION)
         if attacker.effects[PBEffects::StockpileDef] > 0 &&
            attacker.pbCanReduceStatStage?(PBStats::DEFENSE,false,true)
-          attacker.pbReduceStat(PBStats::DEFENSE,1,false,true)
+          attacker.pbReduceStat(PBStats::DEFENSE,1,false,@id,attacker,true)
           attacker.effects[PBEffects::StockpileDef] -= 1
         end
         if attacker.effects[PBEffects::StockpileSpDef] > 0 &&
            attacker.pbCanReduceStatStage?(PBStats::SPDEF,false,true)
-          attacker.pbReduceStat(PBStats::SPDEF,1,false,true)
+          attacker.pbReduceStat(PBStats::SPDEF,1,false,@id,attacker,true)
           attacker.effects[PBEffects::StockpileSpDef] -= 1
         end
         attacker.effects[PBEffects::Stockpile] -= 1
@@ -9722,8 +9732,8 @@ class PokeBattle_Move_116 < PokeBattle_Move
     elsif opponent.effects[PBEffects::KingsShield]==true
       @battle.pbDisplay(_INTL("{1} protected itself!", opponent.pbThis))
       @battle.successStates[attacker.index].protected=true
-      attacker.pbReduceStat(PBStats::ATTACK, 2, true)
-      attacker.pbReduceStat(PBStats::SPATK, 2, true) if $fefieldeffect == 31
+      attacker.pbReduceStat(PBStats::ATTACK, 2, true, @id, attacker)
+      attacker.pbReduceStat(PBStats::SPATK, 2, true, @id, attacker) if $fefieldeffect == 31
       return -1
     end
     if opponent.effects[PBEffects::BanefulBunker] || opponent.effects[PBEffects::Obstruct] || opponent.effects[PBEffects::Stormhold]
@@ -9890,8 +9900,8 @@ class PokeBattle_Move_11A < PokeBattle_Move
       attacker.effects[PBEffects::KinesisBoost] = true
     end
     if $fefieldeffect == 37
-      opponent.pbReduceStat(PBStats::DEFENSE,2,false) if opponent.pbCanReduceStatStage?(PBStats::DEFENSE,false)
-      opponent.pbReduceStat(PBStats::SPDEF,2,false) if opponent.pbCanReduceStatStage?(PBStats::SPDEF,false)
+      opponent.pbReduceStat(PBStats::DEFENSE,2,false,@id,attacker) if opponent.pbCanReduceStatStage?(PBStats::DEFENSE,false)
+      opponent.pbReduceStat(PBStats::SPDEF,2,false,@id,attacker) if opponent.pbCanReduceStatStage?(PBStats::SPDEF,false)
     end
     return 0
   end
@@ -10181,7 +10191,8 @@ class PokeBattle_Move_133 < PokeBattle_Move
       @battle.pbDisplay(_INTL("But it failed!"))
       return -1
     end
-    if @battle.pbRandom(65536)<(65536/attacker.effects[PBEffects::ProtectRate]).floor
+    # Always fail if used consecutively (ProtectRate > 1)
+    if attacker.effects[PBEffects::ProtectRate] == 1
       attacker.effects[PBEffects::KingsShield]=true
       attacker.effects[PBEffects::ProtectRate]*=2
       @battle.pbAnimation(@id,attacker,nil)
@@ -10371,18 +10382,18 @@ class PokeBattle_Move_138 < PokeBattle_Move
     if !prevented
       pbShowAnimation(@id,attacker,opponent,hitnum,alltargets,showanimation)
       showanim=true
-      if isConst?(@id,PBMoves,:NOBLEROAR) && ($fefieldeffect == 31 || $fefieldeffect == 32)        
-        if opponent.pbReduceStat(PBStats::ATTACK,2,false,showanim)
+      if isConst?(@id,PBMoves,:NOBLEROAR) && ($fefieldeffect == 31 || $fefieldeffect == 32)
+        if opponent.pbReduceStat(PBStats::ATTACK,2,false,@id,attacker,showanim)
           ret=0; showanim=false
         end
-        if opponent.pbReduceStat(PBStats::SPATK,2,false,showanim)
+        if opponent.pbReduceStat(PBStats::SPATK,2,false,@id,attacker,showanim)
           ret=0; showanim=false
         end
       else
-        if opponent.pbReduceStat(PBStats::ATTACK,1,false,showanim)
+        if opponent.pbReduceStat(PBStats::ATTACK,1,false,@id,attacker,showanim)
           ret=0; showanim=false
         end
-        if opponent.pbReduceStat(PBStats::SPATK,1,false,showanim)
+        if opponent.pbReduceStat(PBStats::SPATK,1,false,@id,attacker,showanim)
           ret=0; showanim=false
         end
       end
@@ -10440,7 +10451,8 @@ class PokeBattle_Move_140 < PokeBattle_Move
       @battle.pbDisplay(_INTL("But it failed!"))
       return -1
     end
-    if @battle.pbRandom(65536)<(65536/attacker.effects[PBEffects::ProtectRate]).floor
+    # Always fail if used consecutively (ProtectRate > 1)
+    if attacker.effects[PBEffects::ProtectRate] == 1
       attacker.effects[PBEffects::SpikyShield]=true
       attacker.effects[PBEffects::ProtectRate]*=2
       @battle.pbAnimation(@id,attacker,nil)
@@ -10468,25 +10480,25 @@ class PokeBattle_Move_13A < PokeBattle_Move
     pbShowAnimation(@id,attacker,nil,hitnum,alltargets,showanimation)
     if $fefieldeffect == 3
       # On Misty Field, boost both Defense and Sp. Def of user and allies
-      attacker.pbIncreaseStat(PBStats::DEFENSE,1,false)
-      attacker.pbIncreaseStat(PBStats::SPDEF,1,false)
-      attacker.pbPartner.pbIncreaseStat(PBStats::DEFENSE,1,false)
-      ret=attacker.pbPartner.pbIncreaseStat(PBStats::SPDEF,1,false)
+      attacker.pbIncreaseStat(PBStats::DEFENSE,1,false,@id,attacker)
+      attacker.pbIncreaseStat(PBStats::SPDEF,1,false,@id,attacker)
+      attacker.pbPartner.pbIncreaseStat(PBStats::DEFENSE,1,false,@id,attacker)
+      ret=attacker.pbPartner.pbIncreaseStat(PBStats::SPDEF,1,false,@id,attacker)
     else
-      ret=attacker.pbPartner.pbIncreaseStat(PBStats::SPDEF,1,false)
+      ret=attacker.pbPartner.pbIncreaseStat(PBStats::SPDEF,1,false,@id,attacker)
     end
     return ret ? 0 : -1
   end
- 
+
   def pbAdditionalEffect(attacker,opponent)
-    if attacker.pbPartner.pbIncreaseStat(PBStats::SPDEF,false)
+    if attacker.pbPartner.pbIncreaseStat(PBStats::SPDEF,false,@id,attacker)
       if $fefieldeffect == 3
-        attacker.pbIncreaseStat(PBStats::DEFENSE,1,false)
-        attacker.pbIncreaseStat(PBStats::SPDEF,1,false)
-        attacker.pbPartner.pbIncreaseStat(PBStats::DEFENSE,1,false)
-        attacker.pbPartner.pbIncreaseStat(PBStats::SPDEF,1,false)
+        attacker.pbIncreaseStat(PBStats::DEFENSE,1,false,@id,attacker)
+        attacker.pbIncreaseStat(PBStats::SPDEF,1,false,@id,attacker)
+        attacker.pbPartner.pbIncreaseStat(PBStats::DEFENSE,1,false,@id,attacker)
+        attacker.pbPartner.pbIncreaseStat(PBStats::SPDEF,1,false,@id,attacker)
       else
-        attacker.pbPartner.pbIncreaseStat(PBStats::SPDEF,1,false)
+        attacker.pbPartner.pbIncreaseStat(PBStats::SPDEF,1,false,@id,attacker)
       end
     end
     return true
@@ -10502,9 +10514,9 @@ class PokeBattle_Move_13B < PokeBattle_Move
     return -1 if !opponent.pbCanReduceStatStage?(PBStats::SPATK,true)
     pbShowAnimation(@id,attacker,nil,hitnum,alltargets,showanimation)
     if $fefieldeffect == 1
-      ret=opponent.pbReduceStat(PBStats::SPATK,3,false)
+      ret=opponent.pbReduceStat(PBStats::SPATK,3,false,@id,attacker)
     else
-      ret=opponent.pbReduceStat(PBStats::SPATK,2,false)
+      ret=opponent.pbReduceStat(PBStats::SPATK,2,false,@id,attacker)
     end
     return ret ? 0 : -1
   end
@@ -10512,9 +10524,9 @@ class PokeBattle_Move_13B < PokeBattle_Move
   def pbAdditionalEffect(attacker,opponent)
     if opponent.pbCanReduceStatStage?(PBStats::SPATK,false)
       if $fefieldeffect == 1
-        opponent.pbReduceStat(PBStats::SPATK,3,false)
+        opponent.pbReduceStat(PBStats::SPATK,3,false,@id,attacker)
       else
-        opponent.pbReduceStat(PBStats::SPATK,2,false)
+        opponent.pbReduceStat(PBStats::SPATK,2,false,@id,attacker)
       end
     end
     return true
@@ -10571,14 +10583,14 @@ class PokeBattle_Move_13D < PokeBattle_Move
     end
     pbShowAnimation(@id,attacker,opponent,hitnum,alltargets,showanimation)
     ret=-1; showanim=true
-    if opponent.pbReduceStat(PBStats::ATTACK,1,false,showanim)
+    if opponent.pbReduceStat(PBStats::ATTACK,1,false,@id,attacker,showanim)
       ret=0; showanim=false
     end
-    if opponent.pbReduceStat(PBStats::SPATK,1,false,showanim)
+    if opponent.pbReduceStat(PBStats::SPATK,1,false,@id,attacker,showanim)
       ret=0; showanim=false
     end
     if $fefieldeffect == 39
-      if opponent.pbReduceStat(PBStats::SPEED,1,false,showanim)
+      if opponent.pbReduceStat(PBStats::SPEED,1,false,@id,attacker,showanim)
         ret=0; showanim=false
       end
     end
@@ -10623,13 +10635,13 @@ class PokeBattle_Move_13E < PokeBattle_Move
     end
     if attacker.effects[PBEffects::TwoTurnAttack]==0
       if attacker.pbCanIncreaseStatStage?(PBStats::SPATK,false)
-        attacker.pbIncreaseStat(PBStats::SPATK,2,false)
+        attacker.pbIncreaseStat(PBStats::SPATK,2,false,@id,attacker)
       end
       if attacker.pbCanIncreaseStatStage?(PBStats::SPDEF,false)
-        attacker.pbIncreaseStat(PBStats::SPDEF,2,false)
+        attacker.pbIncreaseStat(PBStats::SPDEF,2,false,@id,attacker)
       end
       if attacker.pbCanIncreaseStatStage?(PBStats::SPEED,false)
-        attacker.pbIncreaseStat(PBStats::SPEED,2,false)
+        attacker.pbIncreaseStat(PBStats::SPEED,2,false,@id,attacker)
       end
     end
     return 0 if attacker.effects[PBEffects::TwoTurnAttack]>0
@@ -10669,16 +10681,16 @@ class PokeBattle_Move_13F < PokeBattle_Move
     end
     pbShowAnimation(@id,attacker,opponent,hitnum,alltargets,showanimation)
     ret=-1; showanim=true
-    
+
     if opponent.status==PBStatuses::POISON || $fefieldeffect == 10 ||
       $fefieldeffect == 11 || $fefieldeffect == 19 || $fefieldeffect == 26
-      if opponent.pbReduceStat(PBStats::ATTACK,1,false,showanim)
+      if opponent.pbReduceStat(PBStats::ATTACK,1,false,@id,attacker,showanim)
         ret=0; showanim=false
       end
-      if opponent.pbReduceStat(PBStats::SPATK,1,false,showanim)
+      if opponent.pbReduceStat(PBStats::SPATK,1,false,@id,attacker,showanim)
         ret=0; showanim=false
       end
-      if opponent.pbReduceStat(PBStats::SPEED,1,false,showanim)
+      if opponent.pbReduceStat(PBStats::SPEED,1,false,@id,attacker,showanim)
         ret=0; showanim=false
       end
       return ret
@@ -10828,11 +10840,11 @@ class PokeBattle_Move_146 < PokeBattle_Move
         pbShowAnimation(@id,attacker,nil,hitnum,alltargets,showanimation)
         showanim=true
         if attacker.pbPartner.pbCanIncreaseStatStage?(PBStats::DEFENSE,false)
-          attacker.pbPartner.pbIncreaseStat(PBStats::DEFENSE,1,false,showanim)
+          attacker.pbPartner.pbIncreaseStat(PBStats::DEFENSE,1,false,@id,attacker,showanim)
           showanim=false
         end
         if attacker.pbPartner.pbCanIncreaseStatStage?(PBStats::SPDEF,false)
-          attacker.pbPartner.pbIncreaseStat(PBStats::SPDEF,1,false,showanim)
+          attacker.pbPartner.pbIncreaseStat(PBStats::SPDEF,1,false,@id,attacker,showanim)
           showanim=false
         end
       else # partner cannot increase stats, check next attacker
@@ -10842,18 +10854,18 @@ class PokeBattle_Move_146 < PokeBattle_Move
       # partner does not have Plus/Minus
       partnerfail = true
     end
-    if attacker.hasWorkingAbility(:PLUS) || 
+    if attacker.hasWorkingAbility(:PLUS) ||
        attacker.hasWorkingAbility(:MINUS)
       if attacker.pbCanIncreaseStatStage?(PBStats::DEFENSE,false) &&
          attacker.pbCanIncreaseStatStage?(PBStats::SPDEF,false)
         pbShowAnimation(@id,attacker,nil,hitnum,alltargets,showanimation)
         showanim=true
         if attacker.pbCanIncreaseStatStage?(PBStats::DEFENSE,false)
-          attacker.pbIncreaseStat(PBStats::DEFENSE,1,false,showanim)
+          attacker.pbIncreaseStat(PBStats::DEFENSE,1,false,@id,attacker,showanim)
           showanim=false
         end
         if attacker.pbCanIncreaseStatStage?(PBStats::SPDEF,false)
-          attacker.pbIncreaseStat(PBStats::SPDEF,1,false,showanim)
+          attacker.pbIncreaseStat(PBStats::SPDEF,1,false,@id,attacker,showanim)
           showanim=false
         end
       else # attacker cannot increase stats
@@ -10878,7 +10890,7 @@ class PokeBattle_Move_147 < PokeBattle_Move
   def pbAdditionalEffect(attacker,opponent)
     if opponent.isFainted? &&
        attacker.pbCanIncreaseStatStage?(PBStats::ATTACK,false)
-      attacker.pbIncreaseStat(PBStats::ATTACK,3,false)
+      attacker.pbIncreaseStat(PBStats::ATTACK,3,false,@id,attacker)
     end
   end
 end
@@ -10939,13 +10951,13 @@ class PokeBattle_Move_149 < PokeBattle_Move
     if $fefieldeffect == 31 # Fairy Tale Field
       @battle.pbDisplay(_INTL("{1} boosted its defenses with the shield!",attacker.pbThis))
       if attacker.pbCanIncreaseStatStage?(PBStats::DEFENSE,false)
-        attacker.pbIncreaseStat(PBStats::DEFENSE,1,false,showanim)
+        attacker.pbIncreaseStat(PBStats::DEFENSE,1,false,@id,attacker,showanim)
       end
       if attacker.pbCanIncreaseStatStage?(PBStats::SPDEF,false)
-        attacker.pbIncreaseStat(PBStats::SPDEF,1,false,showanim)
+        attacker.pbIncreaseStat(PBStats::SPDEF,1,false,@id,attacker,showanim)
       end
     end
-    return 0 
+    return 0
   end
 end
 #### KUROTSUNE - 016 - END
@@ -10974,26 +10986,26 @@ class PokeBattle_Move_150 < PokeBattle_Move
         if $fefieldeffect == 33 && $fecounter>0
           if $fecounter>1
             if @battle.battlers[i].pbCanIncreaseStatStage?(PBStats::DEFENSE,false)
-              @battle.battlers[i].pbIncreaseStat(PBStats::DEFENSE,2,false,showanim)
+              @battle.battlers[i].pbIncreaseStat(PBStats::DEFENSE,2,false,@id,attacker,showanim)
               showanim=false
             end
             if @battle.battlers[i].pbCanIncreaseStatStage?(PBStats::SPDEF,false)
-              @battle.battlers[i].pbIncreaseStat(PBStats::SPDEF,2,false,showanim)
+              @battle.battlers[i].pbIncreaseStat(PBStats::SPDEF,2,false,@id,attacker,showanim)
               showanim=false
             end
           else
             if @battle.battlers[i].pbCanIncreaseStatStage?(PBStats::DEFENSE,false)
-              @battle.battlers[i].pbIncreaseStat(PBStats::DEFENSE,1,false,showanim)
+              @battle.battlers[i].pbIncreaseStat(PBStats::DEFENSE,1,false,@id,attacker,showanim)
               showanim=false
             end
             if @battle.battlers[i].pbCanIncreaseStatStage?(PBStats::SPDEF,false)
-              @battle.battlers[i].pbIncreaseStat(PBStats::SPDEF,1,false,showanim)
+              @battle.battlers[i].pbIncreaseStat(PBStats::SPDEF,1,false,@id,attacker,showanim)
               showanim=false
             end
           end
         else
           if @battle.battlers[i].pbCanIncreaseStatStage?(PBStats::DEFENSE,false)
-            @battle.battlers[i].pbIncreaseStat(PBStats::DEFENSE,1,false,showanim)
+            @battle.battlers[i].pbIncreaseStat(PBStats::DEFENSE,1,false,@id,attacker,showanim)
             showanim=false
           end
         end
@@ -11002,26 +11014,26 @@ class PokeBattle_Move_150 < PokeBattle_Move
     if $fefieldeffect == 31 # Fairy Tale Field
       @battle.pbDisplay(_INTL("{1} boosted its defenses with the shield!"))
       if attacker.pbCanIncreaseStatStage?(PBStats::DEFENSE,false)
-        attacker.pbIncreaseStat(PBStats::DEFENSE,1,false,showanim)
+        attacker.pbIncreaseStat(PBStats::DEFENSE,1,false,@id,attacker,showanim)
       end
       if attacker.pbCanIncreaseStatStage?(PBStats::SPDEF,false)
-        attacker.pbIncreaseStat(PBStats::SPDEF,1,false,showanim)
+        attacker.pbIncreaseStat(PBStats::SPDEF,1,false,@id,attacker,showanim)
       end
     end
     if $fefieldeffect == 33 && $fecounter>0 # Flower Garden
       if $fecounter>1
         if attacker.pbCanIncreaseStatStage?(PBStats::DEFENSE,false)
-          attacker.pbIncreaseStat(PBStats::DEFENSE,2,false,showanim)
+          attacker.pbIncreaseStat(PBStats::DEFENSE,2,false,@id,attacker,showanim)
         end
         if attacker.pbCanIncreaseStatStage?(PBStats::SPDEF,false)
-          attacker.pbIncreaseStat(PBStats::SPDEF,2,false,showanim)
+          attacker.pbIncreaseStat(PBStats::SPDEF,2,false,@id,attacker,showanim)
         end
       else
         if attacker.pbCanIncreaseStatStage?(PBStats::DEFENSE,false)
-          attacker.pbIncreaseStat(PBStats::DEFENSE,1,false,showanim)
+          attacker.pbIncreaseStat(PBStats::DEFENSE,1,false,@id,attacker,showanim)
         end
         if attacker.pbCanIncreaseStatStage?(PBStats::SPDEF,false)
-          attacker.pbIncreaseStat(PBStats::SPDEF,1,false,showanim)
+          attacker.pbIncreaseStat(PBStats::SPDEF,1,false,@id,attacker,showanim)
         end
       end
     end
@@ -11054,20 +11066,20 @@ class PokeBattle_Move_151 < PokeBattle_Move
         showanim=true
         if $fefieldeffect == 33
           if @battle.battlers[i].pbCanIncreaseStatStage?(PBStats::SPATK,false)
-            @battle.battlers[i].pbIncreaseStat(PBStats::SPATK,2,false,showanim)
+            @battle.battlers[i].pbIncreaseStat(PBStats::SPATK,2,false,@id,attacker,showanim)
             showanim=false
           end
           if @battle.battlers[i].pbCanIncreaseStatStage?(PBStats::SPDEF,false)
-            @battle.battlers[i].pbIncreaseStat(PBStats::SPDEF,2,false,showanim)
+            @battle.battlers[i].pbIncreaseStat(PBStats::SPDEF,2,false,@id,attacker,showanim)
             showanim=false
           end
         else
           if @battle.battlers[i].pbCanIncreaseStatStage?(PBStats::SPATK,false)
-            @battle.battlers[i].pbIncreaseStat(PBStats::SPATK,1,false,showanim)
+            @battle.battlers[i].pbIncreaseStat(PBStats::SPATK,1,false,@id,attacker,showanim)
             showanim=false
           end
           if @battle.battlers[i].pbCanIncreaseStatStage?(PBStats::SPDEF,false)
-            @battle.battlers[i].pbIncreaseStat(PBStats::SPDEF,1,false,showanim)
+            @battle.battlers[i].pbIncreaseStat(PBStats::SPDEF,1,false,@id,attacker,showanim)
             showanim=false
           end
         end
@@ -11075,11 +11087,11 @@ class PokeBattle_Move_151 < PokeBattle_Move
     end
     if $fefieldeffect == 33 && !attacker.pbHasType?(:GRASS)
       if attacker.pbCanIncreaseStatStage?(PBStats::ATTACK,false)
-        attacker.pbIncreaseStat(PBStats::ATTACK,2,false,showanim)
+        attacker.pbIncreaseStat(PBStats::ATTACK,2,false,@id,attacker,showanim)
         showanim=false
       end
       if attacker.pbCanIncreaseStatStage?(PBStats::SPATK,false)
-        attacker.pbIncreaseStat(PBStats::SPATK,2,false,showanim)
+        attacker.pbIncreaseStat(PBStats::SPATK,2,false,@id,attacker,showanim)
         showanim=false
       end
     end
@@ -11258,11 +11270,11 @@ class PokeBattle_Move_159 < PokeBattle_Move
   def pbEffect(attacker,opponent,hitnum=0,alltargets=nil,showanimation=true)
     ret=super(attacker,opponent,hitnum,alltargets,showanimation)
     opponent.effects[PBEffects::ProtectNegation]=true if ret>0
-  
+
   if opponent.pbCanReduceStatStage?(PBStats::DEFENSE,false)
-      opponent.pbReduceStat(PBStats::DEFENSE,1,false)
+      opponent.pbReduceStat(PBStats::DEFENSE,1,false,@id,attacker)
     end
-    
+
   return ret
   end
 end
@@ -11304,8 +11316,8 @@ class PokeBattle_Move_15B < PokeBattle_Move
         @battle.pbDisplay(_INTL("An Aurora is protecting the opposing team!"))
       end      
       if attacker.pbCanIncreaseStatStage?(PBStats::EVASION,false)
-        attacker.pbIncreaseStat(PBStats::EVASION,1,false)
-      end    
+        attacker.pbIncreaseStat(PBStats::EVASION,1,false,@id,attacker)
+      end
     end
     return 0
   end
@@ -11325,7 +11337,8 @@ class PokeBattle_Move_15C < PokeBattle_Move
       @battle.pbDisplay(_INTL("But it failed!"))
       return -1
     end
-    if @battle.pbRandom(65536)<(65536/attacker.effects[PBEffects::ProtectRate]).floor
+    # Always fail if used consecutively (ProtectRate > 1)
+    if attacker.effects[PBEffects::ProtectRate] == 1
       attacker.effects[PBEffects::BanefulBunker]=true
       attacker.effects[PBEffects::ProtectRate]*=2
       @battle.pbAnimation(@id,attacker,nil)
@@ -11371,8 +11384,8 @@ class PokeBattle_Move_15F < PokeBattle_Move
   def pbEffect(attacker,opponent,hitnum=0,alltargets=nil,showanimation=true)
     ret=super(attacker,opponent,hitnum,alltargets,showanimation)
     if opponent.damagestate.calcdamage>0
-      if attacker.pbCanReduceStatStage?(PBStats::DEFENSE,false,true)        
-        attacker.pbReduceStat(PBStats::DEFENSE,1,false,true,true,true,true) unless attacker.effects[PBEffects::ClangedScales]
+      if attacker.pbCanReduceStatStage?(PBStats::DEFENSE,false,true)
+        attacker.pbReduceStat(PBStats::DEFENSE,1,false,@id,attacker,true,true) unless attacker.effects[PBEffects::ClangedScales]
         attacker.effects[PBEffects::ClangedScales]=true
       end
     end
@@ -11462,14 +11475,14 @@ class PokeBattle_Move_163 < PokeBattle_Move
           pbShowAnimation(@id,attacker,nil,hitnum,alltargets,showanimation)
           showanim=true
           if attacker.pbPartner.pbCanIncreaseStatStage?(PBStats::ATTACK,false)
-            attacker.pbPartner.pbIncreaseStat(PBStats::ATTACK,1,false,showanim)
+            attacker.pbPartner.pbIncreaseStat(PBStats::ATTACK,1,false,@id,attacker,showanim)
             showanim=false
           end
           if attacker.pbPartner.pbCanIncreaseStatStage?(PBStats::SPATK,false)
-            attacker.pbPartner.pbIncreaseStat(PBStats::SPATK,1,false,showanim)
+            attacker.pbPartner.pbIncreaseStat(PBStats::SPATK,1,false,@id,attacker,showanim)
             showanim=false
           end
-        else 
+        else
           @battle.pbDisplay(_INTL("{1}'s stats won't go any higher!",attacker.pbPartner.pbThis))
           return -1
         end
@@ -11479,27 +11492,27 @@ class PokeBattle_Move_163 < PokeBattle_Move
           pbShowAnimation(@id,attacker,nil,hitnum,alltargets,showanimation)
           showanim=true
           if attacker.pbPartner.pbCanIncreaseStatStage?(PBStats::ATTACK,false)
-            attacker.pbPartner.pbIncreaseStat(PBStats::ATTACK,2,false,showanim)
+            attacker.pbPartner.pbIncreaseStat(PBStats::ATTACK,2,false,@id,attacker,showanim)
             showanim=false
           end
           if attacker.pbPartner.pbCanIncreaseStatStage?(PBStats::SPATK,false)
-            attacker.pbPartner.pbIncreaseStat(PBStats::SPATK,2,false,showanim)
+            attacker.pbPartner.pbIncreaseStat(PBStats::SPATK,2,false,@id,attacker,showanim)
             showanim=false
           end
-        else 
+        else
           @battle.pbDisplay(_INTL("{1}'s stats won't go any higher!",attacker.pbPartner.pbThis))
           return -1
-        end   
+        end
         if attacker.pbCanIncreaseStatStage?(PBStats::ATTACK,false) &&
            attacker.pbCanIncreaseStatStage?(PBStats::SPATK,false)
           pbShowAnimation(@id,attacker,nil,hitnum,alltargets,showanimation)
           showanim=true
           if attacker.pbCanIncreaseStatStage?(PBStats::ATTACK,false)
-            attacker.pbIncreaseStat(PBStats::ATTACK,2,false,showanim)
+            attacker.pbIncreaseStat(PBStats::ATTACK,2,false,@id,attacker,showanim)
             showanim=false
           end
           if attacker.pbCanIncreaseStatStage?(PBStats::SPATK,false)
-            attacke.pbIncreaseStat(PBStats::SPATK,2,false,showanim)
+            attacke.pbIncreaseStat(PBStats::SPATK,2,false,@id,attacker,showanim)
             showanim=false
           end
         else 
@@ -11820,21 +11833,21 @@ class PokeBattle_Move_170 < PokeBattle_Move
     if $fefieldeffect == 6 # Big Top Arena
       showanim=true
       if attacker.pbCanIncreaseStatStage?(PBStats::ATTACK,false)
-        attacker.pbIncreaseStat(PBStats::ATTACK,1,false,showanim)
+        attacker.pbIncreaseStat(PBStats::ATTACK,1,false,@id,attacker,showanim)
         showanim=false
       end
       if attacker.pbCanIncreaseStatStage?(PBStats::SPATK,false)
-        attacker.pbIncreaseStat(PBStats::SPATK,1,false,showanim)
+        attacker.pbIncreaseStat(PBStats::SPATK,1,false,@id,attacker,showanim)
         showanim=false
-      end    
+      end
       if opponent.pbCanIncreaseStatStage?(PBStats::ATTACK,false)
-        opponent.pbIncreaseStat(PBStats::ATTACK,1,false,showanim)
+        opponent.pbIncreaseStat(PBStats::ATTACK,1,false,@id,attacker,showanim)
         showanim=false
       end
       if opponent.pbCanIncreaseStatStage?(PBStats::SPATK,false)
-        opponent.pbIncreaseStat(PBStats::SPATK,1,false,showanim)
+        opponent.pbIncreaseStat(PBStats::SPATK,1,false,@id,attacker,showanim)
         showanim=false
-      end      
+      end
     end      
     @battle.pbDisplay(_INTL("{1} became the center of attention!",opponent.pbThis))
     return 0
@@ -11893,7 +11906,7 @@ class PokeBattle_Move_172 < PokeBattle_Move
       hpgain = (hpgain*1.3).floor
     end
     pbShowAnimation(@id,attacker,opponent,hitnum,alltargets,showanimation)
-    opponent.pbReduceStat(PBStats::ATTACK,1,false)
+    opponent.pbReduceStat(PBStats::ATTACK,1,false,@id,attacker)
     if attacker.hp!=attacker.totalhp
       attacker.pbRecoverHP(hpgain,true)
       @battle.pbDisplay(_INTL("{1}'s HP was restored.",attacker.pbThis))
@@ -11919,10 +11932,10 @@ end
 # Toxic Thread
 ################################################################################
 class PokeBattle_Move_174 < PokeBattle_Move
-  def pbEffect(attacker,opponent,hitnum=0,alltargets=nil,showanimation=true)  
+  def pbEffect(attacker,opponent,hitnum=0,alltargets=nil,showanimation=true)
     pbShowAnimation(@id,attacker,opponent,hitnum,alltargets,showanimation)
-    if opponent.pbCanReduceStatStage?(PBStats::SPEED,true)   
-      opponent.pbReduceStat(PBStats::SPEED,1,false)
+    if opponent.pbCanReduceStatStage?(PBStats::SPEED,true)
+      opponent.pbReduceStat(PBStats::SPEED,1,false,@id,attacker)
     end
     if opponent.pbCanPoison?(true)
       if $fefieldeffect==41
@@ -12035,8 +12048,8 @@ class PokeBattle_Move_17A < PokeBattle_Move
       pbShowAnimation(@id,attacker,nil,hitnum,alltargets,showanimation)
       attacker.pbSpecialBerryUse(ourberry)
       if attacker.pbCanIncreaseStatStage?(PBStats::DEFENSE,true)
-       #ret=attacker.pbIncreaseStat(PBStats::DEFENSE,2,false)
-       attacker.pbIncreaseStat(PBStats::DEFENSE,2,false)
+       #ret=attacker.pbIncreaseStat(PBStats::DEFENSE,2,false,@id,attacker)
+       attacker.pbIncreaseStat(PBStats::DEFENSE,2,false,@id,attacker)
       end
       #return ret ? 0 : -1
       return 0
@@ -12063,52 +12076,52 @@ end
       end  
       pbShowAnimation(@name,attacker,nil,hitnum,alltargets,showanimation)  
       showanim=true  
-      if $fefieldeffect == 5  
-        if attacker.pbCanIncreaseStatStage?(PBStats::SPATK,false)  
-          attacker.pbIncreaseStat(PBStats::SPATK,2,false,showanim,nil,showanim)  
-          showanim=false  
-        end  
-        if attacker.pbCanReduceStatStage?(PBStats::SPDEF,false)  
-          attacker.pbReduceStat(PBStats::SPDEF,1,false,showanim,nil,showanim)  
-          showanim=false  
-        end  
-        if attacker.pbCanIncreaseStatStage?(PBStats::SPEED,false)  
-          attacker.pbIncreaseStat(PBStats::SPEED,2,false,showanim,nil,showanim)  
-          showanim=false  
-        end  
-        if attacker.pbCanIncreaseStatStage?(PBStats::ATTACK,false)  
-          attacker.pbIncreaseStat(PBStats::ATTACK,2,false,showanim,nil,showanim)  
-          showanim=false  
-        end  
-        if attacker.pbCanReduceStatStage?(PBStats::DEFENSE,false)  
-          attacker.pbReduceStat(PBStats::DEFENSE,1,false,showanim,nil,showanim)  
-          showanim=false  
-        end  
-      else  
-        boost = 1  
-        if $fefieldeffect == 44  
-          boost = 2  
-        end  
-        if attacker.pbCanIncreaseStatStage?(PBStats::SPATK,false)  
-          attacker.pbIncreaseStat(PBStats::SPATK,boost,false,showanim,nil,showanim)  
-          showanim=false  
-        end  
-        if attacker.pbCanIncreaseStatStage?(PBStats::SPDEF,false)  
-          attacker.pbIncreaseStat(PBStats::SPDEF,boost,false,showanim,nil,showanim)  
-          showanim=false  
-        end  
-        if attacker.pbCanIncreaseStatStage?(PBStats::SPEED,false)  
-          attacker.pbIncreaseStat(PBStats::SPEED,boost,false,showanim,nil,showanim)  
-          showanim=false  
-        end  
-        if attacker.pbCanIncreaseStatStage?(PBStats::ATTACK,false)  
-          attacker.pbIncreaseStat(PBStats::ATTACK,boost,false,showanim,nil,showanim)  
-          showanim=false  
-        end  
-        if attacker.pbCanIncreaseStatStage?(PBStats::DEFENSE,false)  
-          attacker.pbIncreaseStat(PBStats::DEFENSE,boost,false,showanim,nil,showanim)  
-          showanim=false  
-        end  
+      if $fefieldeffect == 5
+        if attacker.pbCanIncreaseStatStage?(PBStats::SPATK,false)
+          attacker.pbIncreaseStat(PBStats::SPATK,2,false,@id,attacker,showanim)
+          showanim=false
+        end
+        if attacker.pbCanReduceStatStage?(PBStats::SPDEF,false)
+          attacker.pbReduceStat(PBStats::SPDEF,1,false,@id,attacker,showanim)
+          showanim=false
+        end
+        if attacker.pbCanIncreaseStatStage?(PBStats::SPEED,false)
+          attacker.pbIncreaseStat(PBStats::SPEED,2,false,@id,attacker,showanim)
+          showanim=false
+        end
+        if attacker.pbCanIncreaseStatStage?(PBStats::ATTACK,false)
+          attacker.pbIncreaseStat(PBStats::ATTACK,2,false,@id,attacker,showanim)
+          showanim=false
+        end
+        if attacker.pbCanReduceStatStage?(PBStats::DEFENSE,false)
+          attacker.pbReduceStat(PBStats::DEFENSE,1,false,@id,attacker,showanim)
+          showanim=false
+        end
+      else
+        boost = 1
+        if $fefieldeffect == 44
+          boost = 2
+        end
+        if attacker.pbCanIncreaseStatStage?(PBStats::SPATK,false)
+          attacker.pbIncreaseStat(PBStats::SPATK,boost,false,@id,attacker,showanim)
+          showanim=false
+        end
+        if attacker.pbCanIncreaseStatStage?(PBStats::SPDEF,false)
+          attacker.pbIncreaseStat(PBStats::SPDEF,boost,false,@id,attacker,showanim)
+          showanim=false
+        end
+        if attacker.pbCanIncreaseStatStage?(PBStats::SPEED,false)
+          attacker.pbIncreaseStat(PBStats::SPEED,boost,false,@id,attacker,showanim)
+          showanim=false
+        end
+        if attacker.pbCanIncreaseStatStage?(PBStats::ATTACK,false)
+          attacker.pbIncreaseStat(PBStats::ATTACK,boost,false,@id,attacker,showanim)
+          showanim=false
+        end
+        if attacker.pbCanIncreaseStatStage?(PBStats::DEFENSE,false)
+          attacker.pbIncreaseStat(PBStats::DEFENSE,boost,false,@id,attacker,showanim)
+          showanim=false
+        end
       end  
         
       if attacker.effects[PBEffects::MeanLook]==-1  
@@ -12133,7 +12146,7 @@ class PokeBattle_Move_17C < PokeBattle_Move
     end
 
     pbShowAnimation(@id,attacker,opponent,hitnum,alltargets,showanimation)
-    opponent.pbReduceStat(PBStats::SPEED,1,true) if opponent.pbCanReduceStatStage?(PBStats::SPEED,false)
+    opponent.pbReduceStat(PBStats::SPEED,1,true,@id,attacker) if opponent.pbCanReduceStatStage?(PBStats::SPEED,false)
     if opponent.effects[PBEffects::TarShot]==false
       opponent.effects[PBEffects::TarShot]=true
       @battle.pbDisplay(_INTL("{1} was covered in flammable tar!",opponent.pbThis))
@@ -12290,25 +12303,25 @@ class PokeBattle_Move_183 < PokeBattle_Move
     attacker.pbReduceHP(clanglife)
     showanim=true
     if attacker.pbCanIncreaseStatStage?(PBStats::SPATK,false)
-      attacker.pbIncreaseStat(PBStats::SPATK,boost,false,showanim,nil,showanim)
+      attacker.pbIncreaseStat(PBStats::SPATK,boost,false,@id,attacker,showanim)
       showanim=false
     end
     if attacker.pbCanIncreaseStatStage?(PBStats::SPDEF,false)
-      attacker.pbIncreaseStat(PBStats::SPDEF,boost,false,showanim,nil,showanim)
+      attacker.pbIncreaseStat(PBStats::SPDEF,boost,false,@id,attacker,showanim)
       showanim=false
     end
     if attacker.pbCanIncreaseStatStage?(PBStats::SPEED,false)
-      attacker.pbIncreaseStat(PBStats::SPEED,boost,false,showanim,nil,showanim)
+      attacker.pbIncreaseStat(PBStats::SPEED,boost,false,@id,attacker,showanim)
       showanim=false
     end
     if attacker.pbCanIncreaseStatStage?(PBStats::ATTACK,false)
-      attacker.pbIncreaseStat(PBStats::ATTACK,boost,false,showanim,nil,showanim)
+      attacker.pbIncreaseStat(PBStats::ATTACK,boost,false,@id,attacker,showanim)
       showanim=false
     end
     if attacker.pbCanIncreaseStatStage?(PBStats::DEFENSE,false)
-      attacker.pbIncreaseStat(PBStats::DEFENSE,boost,false,showanim,nil,showanim)
+      attacker.pbIncreaseStat(PBStats::DEFENSE,boost,false,@id,attacker,showanim)
       showanim=false
-    end 
+    end
     return 0
   end
 end
@@ -12333,11 +12346,11 @@ class PokeBattle_Move_185 < PokeBattle_Move
     pbShowAnimation(@id,attacker,opponent,hitnum,alltargets,showanimation)
     showanim=true
     if opponent.pbCanIncreaseStatStage?(PBStats::SPATK,false)
-      opponent.pbIncreaseStat(PBStats::SPATK,2,false,showanim,nil,showanim)
+      opponent.pbIncreaseStat(PBStats::SPATK,2,false,@id,attacker,showanim)
       showanim=false
     end
     if opponent.pbCanIncreaseStatStage?(PBStats::ATTACK,false)
-      opponent.pbIncreaseStat(PBStats::ATTACK,2,false,showanim,nil,showanim)
+      opponent.pbIncreaseStat(PBStats::ATTACK,2,false,@id,attacker,showanim)
       showanim=false
     end
     return 0
@@ -12356,7 +12369,7 @@ class PokeBattle_Move_186 < PokeBattle_Move
   end
   def pbAdditionalEffect(attacker,opponent)
     if attacker.pbCanIncreaseStatStage?(PBStats::SPEED,false)
-      attacker.pbIncreaseStat(PBStats::SPEED,1,false)
+      attacker.pbIncreaseStat(PBStats::SPEED,1,false,@id,attacker)
     end
     return true
   end
@@ -12444,7 +12457,8 @@ class PokeBattle_Move_188 < PokeBattle_Move
       @battle.pbDisplay(_INTL("But it failed!"))
       return -1
     end
-    if @battle.pbRandom(65536)<(65536/attacker.effects[PBEffects::ProtectRate]).floor
+    # Always fail if used consecutively (ProtectRate > 1)
+    if attacker.effects[PBEffects::ProtectRate] == 1
       attacker.effects[PBEffects::Obstruct]=true
       attacker.effects[PBEffects::ProtectRate]*=3
       @battle.pbAnimation(@id,attacker,nil)
@@ -12626,11 +12640,11 @@ class PokeBattle_Move_208 < PokeBattle_Move
     statdrop = false
     if @battle.ultramegadeath == 0
       if opponent.pbCanReduceStatStage?(PBStats::DEFENSE,false)
-        opponent.pbReduceStat(PBStats::DEFENSE,1,false)
+        opponent.pbReduceStat(PBStats::DEFENSE,1,false,@id,attacker)
         statdrop = true
       end
       if opponent.pbCanReduceStatStage?(PBStats::SPDEF,false)
-        opponent.pbReduceStat(PBStats::SPDEF,1,false)
+        opponent.pbReduceStat(PBStats::SPDEF,1,false,@id,attacker)
         statdrop = true
       end
       if statdrop
@@ -12639,11 +12653,11 @@ class PokeBattle_Move_208 < PokeBattle_Move
       end
     else
       if opponent.pbCanReduceStatStage?(PBStats::ATTACK,false)
-        opponent.pbReduceStat(PBStats::ATTACK,1,false)
+        opponent.pbReduceStat(PBStats::ATTACK,1,false,@id,attacker)
         statdrop = true
       end
       if opponent.pbCanReduceStatStage?(PBStats::SPATK,false)
-        opponent.pbReduceStat(PBStats::SPATK,1,false)
+        opponent.pbReduceStat(PBStats::SPATK,1,false,@id,attacker)
         statdrop = true
       end
       if statdrop
@@ -12679,25 +12693,25 @@ class PokeBattle_Move_210 < PokeBattle_Move
     end
     pbShowAnimation(@id,attacker,nil,hitnum,alltargets,showanimation)
     showanim=true
-    if ($fefieldeffect == 6) &&   
+    if ($fefieldeffect == 6) &&
      isConst?(@id,PBMoves,:AQUABATICS)
       if attacker.pbCanIncreaseStatStage?(PBStats::SPATK,false)
-        attacker.pbIncreaseStat(PBStats::SPATK,2,false,showanim)
+        attacker.pbIncreaseStat(PBStats::SPATK,2,false,@id,attacker,showanim)
         showanim=false
       end
       if attacker.pbCanIncreaseStatStage?(PBStats::SPEED,false)
-        attacker.pbIncreaseStat(PBStats::SPEED,2,false,showanim)
+        attacker.pbIncreaseStat(PBStats::SPEED,2,false,@id,attacker,showanim)
         showanim=false
-      end    
+      end
     else
       if attacker.pbCanIncreaseStatStage?(PBStats::SPATK,false)
-        attacker.pbIncreaseStat(PBStats::SPATK,1,false,showanim)
+        attacker.pbIncreaseStat(PBStats::SPATK,1,false,@id,attacker,showanim)
         showanim=false
       end
       if attacker.pbCanIncreaseStatStage?(PBStats::SPEED,false)
-        attacker.pbIncreaseStat(PBStats::SPEED,1,false,showanim)
+        attacker.pbIncreaseStat(PBStats::SPEED,1,false,@id,attacker,showanim)
         showanim=false
-      end    
+      end
     end
     return 0
   end
@@ -12782,7 +12796,7 @@ class PokeBattle_Move_213 < PokeBattle_Move
           $bindingband=0
         end
         if opponent.pbCanReduceStatStage?(PBStats::SPEED,false,true)
-          opponent.pbReduceStat(PBStats::SPEED,1,false,nil,nil,showanim,true)
+          opponent.pbReduceStat(PBStats::SPEED,1,false,@id,attacker,showanim,true)
           showanim=false
         end
       end
@@ -12800,12 +12814,12 @@ class PokeBattle_Move_214 < PokeBattle_Move
     case rnd
     when 0
     if attacker.pbCanIncreaseStatStage?(PBStats::DEFENSE,false)
-      attacker.pbIncreaseStat(PBStats::DEFENSE,1,false,nil,nil,showanim)
+      attacker.pbIncreaseStat(PBStats::DEFENSE,1,false,@id,attacker,showanim)
       showanim=false
     end
-    when 1 
+    when 1
     if attacker.pbCanIncreaseStatStage?(PBStats::SPDEF,false)
-      attacker.pbIncreaseStat(PBStats::SPDEF,1,false,nil,nil,showanim)
+      attacker.pbIncreaseStat(PBStats::SPDEF,1,false,@id,attacker,showanim)
       showanim=false
     end
     end
@@ -13069,9 +13083,9 @@ class PokeBattle_Move_21A < PokeBattle_Move
             @battle.pbDisplay(_INTL("{1} fell into the hazards!",opponent.pbThis)) if showmessage
             showmessage = false
             if $fefieldeffect == 15
-              opponent.pbReduceStat(PBStats::SPEED, 2, true)
+              opponent.pbReduceStat(PBStats::SPEED, 2, true, @id, attacker)
             else
-              opponent.pbReduceStat(PBStats::SPEED, 1, true)
+              opponent.pbReduceStat(PBStats::SPEED, 1, true, @id, attacker)
             end
           end
         end
@@ -13143,7 +13157,7 @@ class PokeBattle_Move_21D < PokeBattle_Move
     showanim=true
     for i in [PBStats::ATTACK,PBStats::DEFENSE,PBStats::SPEED,PBStats::SPATK,PBStats::SPDEF]
       if opponent.pbCanReduceStatStage?(i,false)
-        opponent.pbReduceStat(i,1,false,nil,nil,showanim)
+        opponent.pbReduceStat(i,1,false,@id,attacker,showanim)
         showanim=false
       end
     end
@@ -13243,7 +13257,7 @@ class PokeBattle_Move_237 < PokeBattle_Move
         @battle.pbDisplay(_INTL("{1}'s thoughts are spiralling into chaos!",attacker.pbThis))
       end
       if attacker.pbCanIncreaseStatStage?(PBStats::SPATK,false)
-        attacker.pbIncreaseStat(PBStats::SPATK,1,abilitymessage:false)
+        attacker.pbIncreaseStat(PBStats::SPATK,1,false,@id,attacker)
       end
     end
     return 0 if attacker.effects[PBEffects::TwoTurnAttack]>0
@@ -13265,7 +13279,8 @@ class PokeBattle_Move_23B < PokeBattle_Move
       @battle.pbDisplay(_INTL("But it failed!"))
       return -1
     end
-    if @battle.pbRandom(65536)<(65536/attacker.effects[PBEffects::ProtectRate]).floor
+    # Always fail if used consecutively (ProtectRate > 1)
+    if attacker.effects[PBEffects::ProtectRate] == 1
       attacker.effects[PBEffects::Stormhold]=true
       attacker.effects[PBEffects::ProtectRate]*=2
       @battle.pbAnimation(@id,attacker,nil)
@@ -13380,7 +13395,7 @@ class PokeBattle_Move_23E < PokeBattle_Move
     higheststat = stats.index(stats.max)
     return -1 if !attacker.pbCanIncreaseStatStage?(higheststat,true)
     pbShowAnimation(@id,attacker,nil,hitnum,alltargets,showanimation)
-    ret=attacker.pbIncreaseStat(higheststat,2,false)
+    ret=attacker.pbIncreaseStat(higheststat,2,false,@id,attacker)
     if ret
       attacker.effects[PBEffects::WeightMultiplier]/=2
       @battle.pbDisplay(_INTL("{1} became nimble!",attacker.pbThis))
@@ -13683,7 +13698,7 @@ end
 ################################################################################
 class PokeBattle_Move_28D < PokeBattle_Move
   def pbEffect(attacker,opponent,hitnum=0,alltargets=nil,showanimation=true)
-    if opponent.effects[PBEffects::Endure]>0
+    if opponent.effects[PBEffects::Endure]
       @battle.pbDisplay(_INTL("But it failed!",attacker.pbThis))
       return -1
     end
@@ -13716,11 +13731,11 @@ class PokeBattle_Move_28E < PokeBattle_Move
     pbShowAnimation(@id,attacker,nil,hitnum,alltargets,showanimation)
     showanim=true
     if attacker.pbCanIncreaseStatStage?(PBStats::DEFENSE,false)
-      attacker.pbIncreaseStat(PBStats::DEFENSE,1,false,showanim)
+      attacker.pbIncreaseStat(PBStats::DEFENSE,1,false,@id,attacker,showanim)
       showanim=false
     end
     if attacker.pbCanIncreaseStatStage?(PBStats::SPDEF,false)
-      attacker.pbIncreaseStat(PBStats::SPDEF,1,false,showanim)
+      attacker.pbIncreaseStat(PBStats::SPDEF,1,false,@id,attacker,showanim)
       showanim=false
     end
     attacker.effects[PBEffects::Rebuild] = true
@@ -13751,11 +13766,11 @@ class PokeBattle_Move_28F < PokeBattle_Move
         end
         showanim=true
         if @battle.battlers[i].pbCanIncreaseStatStage?(PBStats::SPEED,false)
-          @battle.battlers[i].pbIncreaseStat(PBStats::SPATK,1,false,showanim)
+          @battle.battlers[i].pbIncreaseStat(PBStats::SPATK,1,false,@id,attacker,showanim)
           showanim=false
         end
         if @battle.battlers[i].pbCanIncreaseStatStage?(PBStats::SPDEF,false)
-          @battle.battlers[i].pbIncreaseStat(PBStats::SPDEF,1,false,showanim)
+          @battle.battlers[i].pbIncreaseStat(PBStats::SPDEF,1,false,@id,attacker,showanim)
           showanim=false
         end
       end
@@ -13819,24 +13834,24 @@ class PokeBattle_Move_292 < PokeBattle_Move
     return -1 if !opponent.pbCanReduceStatStage?(PBStats::SPEED,true) && !opponent.pbCanReduceStatStage?(PBStats::ACCURACY,true)
     pbShowAnimation(@id,attacker,opponent,hitnum,alltargets,showanimation)
     ret= -1
-    showanim=true      
-    if opponent.pbReduceStat(PBStats::SPEED,1,false,showanim)
+    showanim=true
+    if opponent.pbReduceStat(PBStats::SPEED,1,false,@id,attacker,showanim)
       ret = 0 ; showanim = false
     end
-    if opponent.pbReduceStat(PBStats::ACCURACY,1,false,showanim)
+    if opponent.pbReduceStat(PBStats::ACCURACY,1,false,@id,attacker,showanim)
       ret = 0 ; showanim = false
     end
     return ret ? 0 : -1
   end
 
   def pbAdditionalEffect(attacker,opponent)
-    showanim=true 
+    showanim=true
     if opponent.pbCanReduceStatStage?(PBStats::SPEED,false)
-      opponent.pbReduceStat(PBStats::SPEED,1,false,showanim)
+      opponent.pbReduceStat(PBStats::SPEED,1,false,@id,attacker,showanim)
       showanim = false
     end
     if opponent.pbCanReduceStatStage?(PBStats::ACCURACY,false)
-      opponent.pbReduceStat(PBStats::ACCURACY,1,false,showanim)
+      opponent.pbReduceStat(PBStats::ACCURACY,1,false,@id,attacker,showanim)
       showanim = false
     end
     return true
@@ -14135,11 +14150,11 @@ class PokeBattle_Move_290 < PokeBattle_Move
   def pbEffect(attacker, target)
     return if attacker.fainted?
     if attacker.pbCanIncreaseStatStage?(PBStats::SPEED, attacker, false)
-      attacker.pbIncreaseStat(PBStats::SPEED, 1)
+      attacker.pbIncreaseStat(PBStats::SPEED, 1, false, @id, attacker)
       @battle.pbDisplay(_INTL("{1}'s Speed rose!", attacker.pbThis))
     end
     if attacker.pbCanReduceStatStage?(PBStats::DEFENSE, attacker, false)
-      attacker.pbReduceStat(PBStats::DEFENSE, 1)
+      attacker.pbReduceStat(PBStats::DEFENSE, 1, false, @id, attacker)
       @battle.pbDisplay(_INTL("{1}'s Defense fell!", attacker.pbThis))
     end
   end
@@ -14158,7 +14173,7 @@ class PokeBattle_Move_291 < PokeBattle_Move
     return ret if !opponent.damagestate.critical
     lowered = false
     if opponent.pbCanReduceStatStage?(PBStats::SPEED, attacker, false)
-      opponent.pbReduceStat(PBStats::SPEED, 1, attacker, false)
+      opponent.pbReduceStat(PBStats::SPEED, 1, false, @id, attacker)
       lowered = true
     end
     raised = false
@@ -14327,7 +14342,7 @@ class PokeBattle_Move_297 < PokeBattle_Move
     end
     if @battle.pbRandom(10)==0
       if opponent.pbCanReduceStatStage?(PBStats::DEFENSE,false)
-        opponent.pbReduceStat(PBStats::DEFENSE,1,false)
+        opponent.pbReduceStat(PBStats::DEFENSE,1,false,@id,attacker)
       end
       hadeffect=true
     end
@@ -14710,7 +14725,7 @@ class PokeBattle_Move_29H < PokeBattle_Move
         next if !battler || battler.isFainted?
         next if attacker.pbIsOpposing?(i)  # only our side
         if battler.pbCanIncreaseStatStage?(PBStats::SPEED,false)
-          battler.pbIncreaseStat(PBStats::SPEED,1,false)
+          battler.pbIncreaseStat(PBStats::SPEED,1,false,@id,attacker)
           @battle.pbCommonAnimation("StatUp",battler,nil)
           @battle.pbDisplay(_INTL("{1}'s Speed rose!",battler.pbThis))
         end
@@ -14828,7 +14843,7 @@ end
 class PokeBattle_Move_29D < PokeBattle_Move
   def pbEffect(attacker,opponent,hitnum=0,alltargets=nil,showanimation=true)
     pbShowAnimation(@id, attacker, nil)
-    attacker.pbIncreaseStat(PBStats::ATTACK,1,false)
+    attacker.pbIncreaseStat(PBStats::ATTACK,1,false,@id,attacker)
     if attacker.effects[PBEffects::FocusEnergy] < 1
       attacker.effects[PBEffects::FocusEnergy] = 1
       @battle.pbDisplay(_INTL("{1} sharpened its focus!", attacker.pbThis))
@@ -14843,8 +14858,8 @@ end
 class PokeBattle_Move_2A0 < PokeBattle_Move
   def pbEffect(attacker,opponent,hitnum=0,alltargets=nil,showanimation=true)
     pbShowAnimation(@id, attacker, nil)
-    attacker.pbIncreaseStat(PBStats::ATTACK,1,false)
-    attacker.pbIncreaseStat(PBStats::SPDEF,1,false)
+    attacker.pbIncreaseStat(PBStats::ATTACK,1,false,@id,attacker)
+    attacker.pbIncreaseStat(PBStats::SPDEF,1,false,@id,attacker)
     return 0
   end
 end
@@ -14864,11 +14879,11 @@ class PokeBattle_Move_2A1 < PokeBattle_Move
       next if !attacker.pbIsOpposing?(b.index)
       lowered = false
       if b.pbCanReduceStatStage?(PBStats::ATTACK,false)
-        b.pbReduceStat(PBStats::ATTACK,1,false)
+        b.pbReduceStat(PBStats::ATTACK,1,false,@id,attacker)
         lowered = true
       end
       if b.pbCanReduceStatStage?(PBStats::SPATK,false)
-        b.pbReduceStat(PBStats::SPATK,1,false)
+        b.pbReduceStat(PBStats::SPATK,1,false,@id,attacker)
         lowered = true
       end
       success = true if lowered
@@ -14886,7 +14901,7 @@ class PokeBattle_Move_2A2 < PokeBattle_Move
     return super(attacker,opponent,hitnum,alltargets,showanimation) if @basedamage>0
     return -1 if !opponent.pbCanReduceStatStage?(PBStats::SPEED,true)
     pbShowAnimation(@id,attacker,opponent,hitnum,alltargets,showanimation)
-    opponent.pbReduceStat(PBStats::SPEED,1,false)
+    opponent.pbReduceStat(PBStats::SPEED,1,false,@id,attacker)
     opponent.effects[PBEffects::LeerBlock]=3
     @battle.pbDisplay(_INTL("{1} can't eat for three turns!",opponent.pbThis))
     return 0
@@ -14894,7 +14909,7 @@ class PokeBattle_Move_2A2 < PokeBattle_Move
 
   def pbAdditionalEffect(attacker,opponent)
     if opponent.pbCanReduceStatStage?(PBStats::SPEED,false)
-      opponent.pbReduceStat(PBStats::SPEED,1,false)
+      opponent.pbReduceStat(PBStats::SPEED,1,false,@id,attacker)
     end
     opponent.effects[PBEffects::LeerBlock]=3
     return true
@@ -14919,11 +14934,11 @@ class PokeBattle_Move_2A3 < PokeBattle_Move
     success = false
 
     if opponent.pbCanReduceStatStage?(PBStats::SPATK,false)
-      opponent.pbReduceStat(PBStats::SPATK,1,false)
+      opponent.pbReduceStat(PBStats::SPATK,1,false,@id,attacker)
       success = true
     end
     if opponent.pbCanReduceStatStage?(PBStats::SPDEF,false)
-      opponent.pbReduceStat(PBStats::SPDEF,1,false)
+      opponent.pbReduceStat(PBStats::SPDEF,1,false,@id,attacker)
       success = true
     end
 
@@ -14938,7 +14953,7 @@ class PokeBattle_Move_2A4 < PokeBattle_Move
   def pbEffect(attacker,opponent,hitnum=0,alltargets=nil,showanimation=true)
     return -1 if !opponent.pbCanReduceStatStage?(PBStats::SPATK,true)
     pbShowAnimation(@id,attacker,opponent)
-    opponent.pbReduceStat(PBStats::SPATK,2,false)
+    opponent.pbReduceStat(PBStats::SPATK,2,false,@id,attacker)
     return 0
   end
 end
@@ -14950,7 +14965,7 @@ class PokeBattle_Move_2A7 < PokeBattle_Move
   def pbEffect(attacker,opponent,hitnum=0,alltargets=nil,showanimation=true)
     return -1 unless opponent.pbCanReduceStatStage?(PBStats::ACCURACY,true)
     pbShowAnimation(@id,attacker,opponent)
-    opponent.pbReduceStat(PBStats::ACCURACY,2,false)
+    opponent.pbReduceStat(PBStats::ACCURACY,2,false,@id,attacker)
     return 0
   end
 end
@@ -14961,7 +14976,7 @@ end
 class PokeBattle_Move_2A9 < PokeBattle_Move
   def pbEffect(attacker,opponent,hitnum=0,alltargets=nil,showanimation=true)
     pbShowAnimation(@id, attacker, opponent)
-    attacker.pbIncreaseStat(PBStats::DEFENSE,1,false)
+    attacker.pbIncreaseStat(PBStats::DEFENSE,1,false,@id,attacker)
     attacker.effects[PBEffects::CounterpoiseDouble] = true
     attacker.effects[PBEffects::CounterpoiseSwap]   = true
     @battle.pbDisplay(_INTL("{1} steadied its stance!", attacker.pbThis))
@@ -14977,7 +14992,7 @@ class PokeBattle_Move_2AB < PokeBattle_Move
     pbShowAnimation(@id, attacker, opponent, hitnum, alltargets, showanimation)
     success = false
     if attacker.pbCanIncreaseStatStage?(PBStats::ACCURACY, false)
-      attacker.pbIncreaseStat(PBStats::ACCURACY, 1, false)
+      attacker.pbIncreaseStat(PBStats::ACCURACY, 1, false, @id, attacker)
       success = true
     end
     if opponent.pbCanBlind?(true)
@@ -15021,7 +15036,7 @@ class PokeBattle_Move_2AD < PokeBattle_Move
     end
     if @battle.pbRandom(10)==0
       if opponent.pbCanReduceStatStage?(PBStats::DEFENSE,false)
-        opponent.pbReduceStat(PBStats::DEFENSE,1,false)
+        opponent.pbReduceStat(PBStats::DEFENSE,1,false,@id,attacker)
       end
       hadeffect=true
     end
@@ -15060,10 +15075,10 @@ class PokeBattle_Move_2AE < PokeBattle_Move
     if !prevented
       pbShowAnimation(@id,attacker,opponent,hitnum,alltargets,showanimation)
       showanim=true
-      if opponent.pbReduceStat(PBStats::DEFENSE,1,false,showanim)
+      if opponent.pbReduceStat(PBStats::DEFENSE,1,false,@id,attacker,showanim)
         ret=0; showanim=false
       end
-      if opponent.pbReduceStat(PBStats::SPDEF,1,false,showanim)
+      if opponent.pbReduceStat(PBStats::SPDEF,1,false,@id,attacker,showanim)
         ret=0; showanim=false
       end
     end
@@ -15092,7 +15107,7 @@ class PokeBattle_Move_2AF < PokeBattle_Move
     end
     # First Howl = +1, subsequent Howls = +3 (3x amplification)
     boost = ally_used_howl ? 3 : 1
-    attacker.pbIncreaseStat(PBStats::ATTACK, boost, false)
+    attacker.pbIncreaseStat(PBStats::ATTACK, boost, false, @id, attacker)
     if ally_used_howl
       @battle.pbDisplay(_INTL("{1}'s pack howled together!", attacker.pbThis))
     end

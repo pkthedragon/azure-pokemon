@@ -271,7 +271,11 @@ class Game_Player < Game_Character
             Kernel.pbUpdateVehicle
           end
         else
-          Kernel.pbMessage(_INTL("You can't swim when you have someone with you."))
+          # Show message only once per direction change (prevent spam)
+          if !@water_message_cooldown || @water_message_cooldown <= 0
+            Kernel.pbMessage(_INTL("You can't swim when you have someone with you."))
+            @water_message_cooldown = 30  # Cooldown for ~30 frames (0.5 seconds)
+          end
           return false
         end
       end
@@ -514,6 +518,8 @@ class Game_Player < Game_Character
   # * Frame Update
   #-----------------------------------------------------------------------------
   def update
+    # Decrement water message cooldown
+    @water_message_cooldown -= 1 if @water_message_cooldown && @water_message_cooldown > 0
     # Remember whether or not moving in local variables
     last_moving = moving?
     # If moving, event running, move route forcing, and message window
@@ -535,6 +541,8 @@ class Game_Player < Game_Character
             move_up
         end
       elsif dir!=@lastdir
+        # Reset water message cooldown when direction changes
+        @water_message_cooldown = 0 if @water_message_cooldown
         case dir
           when 2
             turn_down

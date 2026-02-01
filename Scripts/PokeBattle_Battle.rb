@@ -472,7 +472,9 @@ class PokeBattle_Battle
     @party1          = p1
     @party2          = p2
     @partyorder      = []
-    for i in 0...6; @partyorder.push(i); end
+    # Extend partyorder for partner battles with control enabled
+    maxparty = ($game_switches[2030] && player.is_a?(Array)) ? 12 : 6
+    for i in 0...maxparty; @partyorder.push(i); end
     @fullparty1      = false
     @fullparty2      = false
     @battlers        = []
@@ -1511,7 +1513,8 @@ class PokeBattle_Battle
 
   def pbOwnedByPlayer?(index)
     return false if pbIsOpposing?(index)
-    return false if @player.is_a?(Array) && index==2
+    # If switch 2030 is ON, player controls partner Pokemon
+    return false if @player.is_a?(Array) && index==2 && !$game_switches[2030]
     return true
   end
 
@@ -1994,6 +1997,22 @@ class PokeBattle_Battle
     pbPokemonCount(party)==0
   end
 
+  # Check if a specific trainer's Pokemon are all fainted in partner battles
+  def pbTrainerAllFainted?(battlerIndex)
+    return pbAllFainted?(pbParty(battlerIndex)) if !@player.is_a?(Array)
+
+    party = pbParty(battlerIndex)
+    secondParty = pbSecondPartyBegin(battlerIndex)
+    start = (battlerIndex == 0) ? 0 : secondParty
+    finish = (battlerIndex == 0) ? secondParty : party.length
+
+    for i in start...finish
+      next if !party[i]
+      return false if party[i].hp > 0 && !party[i].isEgg?
+    end
+    return true
+  end
+
   def pbMaxLevelFromIndex(index)
     party=pbParty(index)
     owner=(pbIsOpposing?(index)) ? @opponent : @player
@@ -2060,6 +2079,10 @@ class PokeBattle_Battle
     secondParty=pbSecondPartyBegin(battlerIndex)
     if !pbIsOpposing?(battlerIndex)
       return true if !@player || !@player.is_a?(Array)
+      # If partner control is enabled, battler 2 can only switch with partner's Pokemon (>= secondParty)
+      if $game_switches[2030] && battlerIndex==2
+        return partyIndex>=secondParty
+      end
       return (battlerIndex==0) ? partyIndex<secondParty : partyIndex>=secondParty
     else
       return true if !@opponent || !@opponent.is_a?(Array)
@@ -3207,13 +3230,16 @@ class PokeBattle_Battle
     if pbOwnedByPlayer?(index)
       # Reorder the party for this battle
       bpo=-1; bpn=-1
-      for i in 0...6
+      partysize = [@partyorder.length, party.length].max
+      for i in 0...partysize
         bpo=i if @partyorder[i]==@battlers[index].pokemonIndex
         bpn=i if @partyorder[i]==newpoke
       end
-      poke1=@partyorder[bpo]
-      @partyorder[bpo]=@partyorder[bpn]
-      @partyorder[bpn]=poke1
+      if bpo >= 0 && bpn >= 0
+        poke1=@partyorder[bpo]
+        @partyorder[bpo]=@partyorder[bpn]
+        @partyorder[bpn]=poke1
+      end
       @battlers[index].pbInitialize(party[newpoke],newpoke,batonpass)
       pbSendOut(index,party[newpoke])
     else
@@ -3338,7 +3364,20 @@ class PokeBattle_Battle
 
   def pbDefaultChooseNewEnemy(index,party)
     return -1 if party.nil?
-    for i in 0...party.length
+
+    startIdx = 0
+    endIdx = party.length
+
+    # Adjust range for partner control
+    if $game_switches[2030] && @player.is_a?(Array) && !pbIsOpposing?(index)
+      if index == 2
+        startIdx = pbSecondPartyBegin(index)
+      elsif index == 0
+        endIdx = pbSecondPartyBegin(0)
+      end
+    end
+
+    for i in startIdx...endIdx
       next if !party[i]
       next if party[i].isEgg?
       next if party[i].hp<=0
@@ -3402,6 +3441,14 @@ class PokeBattle_Battle
 
   def pbRegisterItem(idxPokemon,idxItem,idxTarget=nil)
     PBDebug.log("[pbRegisterItem called with idxPokemon=#{idxPokemon}, idxItem=#{idxItem}, idxTarget=#{idxTarget}]")
+    # Block using items on partner's Pokemon when partner control is enabled
+    if $game_switches[2030] && @player.is_a?(Array) && idxTarget
+      secondPartyStart = pbSecondPartyBegin(idxPokemon)
+      if idxTarget >= secondPartyStart
+        pbDisplay(_INTL("You can't use items on your partner's Pokémon!"))
+        return false
+      end
+    end
     if ItemHandlers.hasUseInBattle(idxItem)
       PBDebug.log("[Item has UseInBattle handler]")
       if idxPokemon==0
@@ -4552,6 +4599,29 @@ end
 
   def pbJudge
 #   PBDebug.log("[Counts: #{pbPokemonCount(@party1)}/#{pbPokemonCount(@party2)}]")
+    # When partner control is enabled, continue battle if one trainer faints
+    if $game_switches[2030] && @player.is_a?(Array)
+      # Check if both player and partner are fainted
+      playerFainted = pbTrainerAllFainted?(0)
+      partnerFainted = pbTrainerAllFainted?(2)
+
+      if playerFainted && partnerFainted && pbAllFainted?(@party2)
+        @decision=pbDecisionOnDraw() # Draw
+        return
+      end
+      if playerFainted && partnerFainted
+        @decision=2 # Loss - both player and partner fainted
+        return
+      end
+      if pbAllFainted?(@party2)
+        @decision=1 # Win
+        return
+      end
+      # Battle continues if only one trainer fainted
+      return
+    end
+
+    # Original logic for non-partner battles
     if pbAllFainted?(@party1) && pbAllFainted?(@party2)
       @decision=pbDecisionOnDraw() # Draw
       return

@@ -56,23 +56,39 @@ def pbShowBattleStats(pkmn)
     report = [_INTL("Type: {1}",PBTypes.getName(pkmn.type1))]  
   end
   
+  # Get stat caps for display
+  atkcappos = pkmn.effects[PBEffects::StatCapPositive][PBStats::ATTACK] || 0
+  atkcapneg = -(pkmn.effects[PBEffects::StatCapNegative][PBStats::ATTACK] || 0)
+  defcappos = pkmn.effects[PBEffects::StatCapPositive][PBStats::DEFENSE] || 0
+  defcapneg = -(pkmn.effects[PBEffects::StatCapNegative][PBStats::DEFENSE] || 0)
+  spacappos = pkmn.effects[PBEffects::StatCapPositive][PBStats::SPATK] || 0
+  spacapneg = -(pkmn.effects[PBEffects::StatCapNegative][PBStats::SPATK] || 0)
+  spdcappos = pkmn.effects[PBEffects::StatCapPositive][PBStats::SPDEF] || 0
+  spdcapneg = -(pkmn.effects[PBEffects::StatCapNegative][PBStats::SPDEF] || 0)
+  specappos = pkmn.effects[PBEffects::StatCapPositive][PBStats::SPEED] || 0
+  specapneg = -(pkmn.effects[PBEffects::StatCapNegative][PBStats::SPEED] || 0)
+  acccappos = pkmn.effects[PBEffects::StatCapPositive][PBStats::ACCURACY] || 0
+  acccapneg = -(pkmn.effects[PBEffects::StatCapNegative][PBStats::ACCURACY] || 0)
+  evacappos = pkmn.effects[PBEffects::StatCapPositive][PBStats::EVASION] || 0
+  evacapneg = -(pkmn.effects[PBEffects::StatCapNegative][PBStats::EVASION] || 0)
+
   if (pkmn == @battle.battlers[0] || pkmn == @battle.battlers[2]) || $INTERNAL==true
-    report.push(_INTL("Attack:        {1}   {2}{3}",pkmn.pbCalcAttack(),atksbl,pkmn.stages[PBStats::ATTACK]),
-                _INTL("Defense:      {1}   {2}{3}",pkmn.pbCalcDefense(),defsbl,pkmn.stages[PBStats::DEFENSE]),
-                _INTL("Sp.Attack:   {1}   {2}{3}",pkmn.pbCalcSpAtk(),spasbl,pkmn.stages[PBStats::SPATK]),
-                _INTL("Sp.Defense: {1}   {2}{3}",pkmn.pbCalcSpDef(),spdsbl,pkmn.stages[PBStats::SPDEF]),
-                _INTL("Speed:         {1}   {2}{3}",pkmn.pbSpeed(),spesbl,pkmn.stages[PBStats::SPEED]),
-                _INTL("Accuracy:   {1}% {2}{3}",pkmn.pbCalcAcc(),accsbl,pkmn.stages[PBStats::ACCURACY]),
-                _INTL("Evasion:       {1}% {2}{3}",pkmn.pbCalcEva(),evasbl,pkmn.stages[PBStats::EVASION]),
+    report.push(_INTL("Attack:        {1}   ({2}{3}) (+{4}/{5})",pkmn.pbCalcAttack(),atksbl,pkmn.stages[PBStats::ATTACK],atkcappos,atkcapneg),
+                _INTL("Defense:      {1}   ({2}{3}) (+{4}/{5})",pkmn.pbCalcDefense(),defsbl,pkmn.stages[PBStats::DEFENSE],defcappos,defcapneg),
+                _INTL("Sp.Attack:   {1}   ({2}{3}) (+{4}/{5})",pkmn.pbCalcSpAtk(),spasbl,pkmn.stages[PBStats::SPATK],spacappos,spacapneg),
+                _INTL("Sp.Defense: {1}   ({2}{3}) (+{4}/{5})",pkmn.pbCalcSpDef(),spdsbl,pkmn.stages[PBStats::SPDEF],spdcappos,spdcapneg),
+                _INTL("Speed:         {1}   ({2}{3}) (+{4}/{5})",pkmn.pbSpeed(),spesbl,pkmn.stages[PBStats::SPEED],specappos,specapneg),
+                _INTL("Accuracy:   {1}% ({2}{3}) (+{4}/{5})",pkmn.pbCalcAcc(),accsbl,pkmn.stages[PBStats::ACCURACY],acccappos,acccapneg),
+                _INTL("Evasion:       {1}% ({2}{3}) (+{4}/{5})",pkmn.pbCalcEva(),evasbl,pkmn.stages[PBStats::EVASION],evacappos,evacapneg),
                 _INTL("Crit. Rate:    {1}%    +{2}/3",crit,c))
   else
-    report.push(_INTL("Attack:           {1}{2}",atksbl,pkmn.stages[PBStats::ATTACK]),
-                _INTL("Defense:         {1}{2}",defsbl,pkmn.stages[PBStats::DEFENSE]),
-                _INTL("Sp.Attack:      {1}{2}",spasbl,pkmn.stages[PBStats::SPATK]),
-                _INTL("Sp.Defense:    {1}{2}",spdsbl,pkmn.stages[PBStats::SPDEF]),
-                _INTL("Speed:            {1}{2}",spesbl,pkmn.stages[PBStats::SPEED]),
-                _INTL("Accuracy:      {1}{2}",accsbl,pkmn.stages[PBStats::ACCURACY]),
-                _INTL("Evasion:          {1}{2}",evasbl,pkmn.stages[PBStats::EVASION]),
+    report.push(_INTL("Attack:           ({1}{2}) (+{3}/{4})",atksbl,pkmn.stages[PBStats::ATTACK],atkcappos,atkcapneg),
+                _INTL("Defense:         ({1}{2}) (+{3}/{4})",defsbl,pkmn.stages[PBStats::DEFENSE],defcappos,defcapneg),
+                _INTL("Sp.Attack:      ({1}{2}) (+{3}/{4})",spasbl,pkmn.stages[PBStats::SPATK],spacappos,spacapneg),
+                _INTL("Sp.Defense:    ({1}{2}) (+{3}/{4})",spdsbl,pkmn.stages[PBStats::SPDEF],spdcappos,spdcapneg),
+                _INTL("Speed:            ({1}{2}) (+{3}/{4})",spesbl,pkmn.stages[PBStats::SPEED],specappos,specapneg),
+                _INTL("Accuracy:      ({1}{2}) (+{3}/{4})",accsbl,pkmn.stages[PBStats::ACCURACY],acccappos,acccapneg),
+                _INTL("Evasion:          ({1}{2}) (+{3}/{4})",evasbl,pkmn.stages[PBStats::EVASION],evacappos,evacapneg),
                 _INTL("Crit. Rate:  {1}%  +{2}",crit,c))
   end
   dur=@battle.weatherduration
@@ -95,7 +111,13 @@ def pbShowBattleStats(pkmn)
     weatherreport=_INTL("Weather: Shadow Sky, {1} {2}",dur,turns)
   end
   report.push(weatherreport) if @battle.weather!=0
-  report.push(_INTL("Ability: {1}",pkmn.ability.nil? ? "Ability Negated" : PBAbilities.getName(pkmn.ability)))
+  # Show disguised ability if Illusion is active
+  if pkmn.effects[PBEffects::Illusion] != nil
+    disguisedAbility = pkmn.effects[PBEffects::Illusion].ability
+    report.push(_INTL("Ability: {1}",disguisedAbility.nil? ? "Ability Negated" : PBAbilities.getName(disguisedAbility)))
+  else
+    report.push(_INTL("Ability: {1}",pkmn.ability.nil? ? "Ability Negated" : PBAbilities.getName(pkmn.ability)))
+  end
   report.push(_INTL("Slow Start: {1} turns",(5-pkmn.turncount))) if pkmn.hasWorkingAbility(:SLOWSTART) && pkmn.turncount<=5 && (pkmn == @battle.battlers[0] || pkmn == @battle.battlers[2])
   report.push(_INTL("Throat Chop: {1} turns",pkmn.effects[PBEffects::ThroatChop])) if pkmn.effects[PBEffects::ThroatChop]!=0
   report.push(_INTL("Unburdened")) if pkmn.unburdened && (pkmn == @battle.battlers[0] || pkmn == @battle.battlers[2]) && pkmn.hasWorkingAbility(:UNBURDEN)
@@ -150,6 +172,9 @@ def pbShowBattleStats(pkmn)
   report.push(_INTL("Mist: {1} turns",pkmn.pbOwnSide.effects[PBEffects::Mist])) if pkmn.pbOwnSide.effects[PBEffects::Mist]>0
   report.push(_INTL("Quick Guard: {1} turns",pkmn.pbOwnSide.effects[PBEffects::QuickGuard])) if pkmn.pbOwnSide.effects[PBEffects::QuickGuard]>0
   report.push(_INTL("Wide Guard: {1} turns",pkmn.pbOwnSide.effects[PBEffects::WideGuard])) if pkmn.pbOwnSide.effects[PBEffects::WideGuard]>0
+  report.push(_INTL("Crafty Shield active")) if pkmn.pbOwnSide.effects[PBEffects::CraftyShield]
+  report.push(_INTL("Mat Block active")) if pkmn.pbOwnSide.effects[PBEffects::MatBlock]
+  report.push(_INTL("Dune Defense: {1} turns",pkmn.pbOwnSide.effects[PBEffects::DuneDefense])) if pkmn.pbOwnSide.effects[PBEffects::DuneDefense] && pkmn.pbOwnSide.effects[PBEffects::DuneDefense]>0
   report.push(_INTL("Battle Cry")) if pkmn.pbOwnSide.effects[PBEffects::BattleCry] % 2 == 1
   report.push(_INTL("Altered Field: {1} turns",@battle.field.effects[PBEffects::Terrain])) if @battle.field.effects[PBEffects::Terrain]>0
   report.push(_INTL("Messed up Field: {1} turns",@battle.field.effects[PBEffects::Splintered])) if @battle.field.effects[PBEffects::Splintered]>0  
@@ -167,6 +192,12 @@ def pbShowBattleStats(pkmn)
   report.push(_INTL("Poison Barbs active")) if pkmn.pbOwnSide.effects[PBEffects::ToxicSpikes]>0
   report.push(_INTL("Stealth Rock active")) if pkmn.pbOwnSide.effects[PBEffects::StealthRock]
   report.push(_INTL("Sticky Web active")) if pkmn.pbOwnSide.effects[PBEffects::StickyWeb]
+  report.push(_INTL("Bonfire active")) if pkmn.pbOwnSide.effects[PBEffects::Bonfire] && pkmn.pbOwnSide.effects[PBEffects::Bonfire]>0
+  report.push(_INTL("Caltrops active")) if pkmn.pbOwnSide.effects[PBEffects::Caltrops] && pkmn.pbOwnSide.effects[PBEffects::Caltrops]>0
+  report.push(_INTL("Pressure Plate active")) if pkmn.pbOwnSide.effects[PBEffects::PressurePlate] && pkmn.pbOwnSide.effects[PBEffects::PressurePlate]>0
+  report.push(_INTL("Undertow active")) if pkmn.pbOwnSide.effects[PBEffects::Undertow] && pkmn.pbOwnSide.effects[PBEffects::Undertow]>0
+  report.push(_INTL("Presents active")) if pkmn.pbOwnSide.effects[PBEffects::Presents] && pkmn.pbOwnSide.effects[PBEffects::Presents]>0
+  report.push(_INTL("Mana Bond active")) if pkmn.pbOwnSide.effects[PBEffects::ManaBond] && pkmn.pbOwnSide.effects[PBEffects::ManaBond]>0
   report.push(_INTL("Wonder Room Stat Swap active")) if pkmn.wonderroom==true
   fieldnames = ["No Field", "Electric Terrain", "Grassy Terrain", "Misty Terrain", "Dark Crystal Cavern",
                 "Chess Board", "Big Top Arena", "Volcanic Field", "Swamp Field", "Rainbow Field",
@@ -591,25 +622,39 @@ class PokeBattle_DebugScene
   def pbSwitch(index,lax,cancancel)
     party=@battle.pbParty(index)
     commands=[]
-    inactives=[1,1,1,1,1,1]
+    inactives=[1,1,1,1,1,1,1,1,1,1,1,1]  # Extended for larger parties
     partypos=[]
     activecmd=0
     numactive=(@doublebattle)?2:1
+
+    # Determine party range for partner control
+    startIdx = 0
+    endIdx = party.length - 1
+    if $game_switches[2030] && @battle.player.is_a?(Array) && index == 2
+      startIdx = @battle.pbSecondPartyBegin(index)
+    elsif $game_switches[2030] && @battle.player.is_a?(Array) && index == 0
+      endIdx = @battle.pbSecondPartyBegin(0) - 1
+    end
+
     battler=@battle.battlers[0]
-    commands[commands.length]=pbPokemonString(party[battler.pokemonIndex])
-    activecmd=0 if battler.index==index
-    inactives[battler.pokemonIndex]=0
-    partypos[partypos.length]=battler.pokemonIndex
-    if @battle.doublebattle
-      battler=@battle.battlers[2]
+    if battler.pokemonIndex >= startIdx && battler.pokemonIndex <= endIdx
       commands[commands.length]=pbPokemonString(party[battler.pokemonIndex])
-      activecmd=1 if battler.index==index
+      activecmd=0 if battler.index==index
       inactives[battler.pokemonIndex]=0
       partypos[partypos.length]=battler.pokemonIndex
     end
-    for i in 0..party.length-1
-      if inactives[i]==1
-        commands[commands.length]=pbPokemonString(party[i]) 
+    if @battle.doublebattle
+      battler=@battle.battlers[2]
+      if battler.pokemonIndex >= startIdx && battler.pokemonIndex <= endIdx
+        commands[commands.length]=pbPokemonString(party[battler.pokemonIndex])
+        activecmd=commands.length-1 if battler.index==index
+        inactives[battler.pokemonIndex]=0
+        partypos[partypos.length]=battler.pokemonIndex
+      end
+    end
+    for i in startIdx..endIdx
+      if inactives[i]==1 && party[i]
+        commands[commands.length]=pbPokemonString(party[i])
         partypos[partypos.length]=i
       end
     end
@@ -760,7 +805,20 @@ class PokeBattle_SceneNonInteractive < PokeBattle_Scene
   end
 
   def pbSwitch(index,lax,cancancel)
-    for i in 0...@battle.pbParty(index).length
+    party = @battle.pbParty(index)
+    startIdx = 0
+    endIdx = party.length
+
+    # Adjust range for partner control
+    if $game_switches[2030] && @battle.player.is_a?(Array)
+      if index == 2
+        startIdx = @battle.pbSecondPartyBegin(index)
+      elsif index == 0
+        endIdx = @battle.pbSecondPartyBegin(0)
+      end
+    end
+
+    for i in startIdx...endIdx
       if lax
         return i if @battle.pbCanSwitchLax?(index,i,false)
       else
@@ -875,7 +933,20 @@ class PokeBattle_DebugSceneNoLogging
   end
 
   def pbSwitch(index,lax,cancancel)
-    for i in 0..@battle.pbParty(index).length-1
+    party = @battle.pbParty(index)
+    startIdx = 0
+    endIdx = party.length
+
+    # Adjust range for partner control
+    if $game_switches[2030] && @battle.player.is_a?(Array)
+      if index == 2
+        startIdx = @battle.pbSecondPartyBegin(index)
+      elsif index == 0
+        endIdx = @battle.pbSecondPartyBegin(0)
+      end
+    end
+
+    for i in startIdx...endIdx
       if lax
         return i if @battle.pbCanSwitchLax?(index,i,false)
       else
@@ -1059,7 +1130,20 @@ class PokeBattle_DebugSceneNoGraphics
   end
 
   def pbSwitch(index,lax,cancancel)
-    for i in 0..@battle.pbParty(index).length-1
+    party = @battle.pbParty(index)
+    startIdx = 0
+    endIdx = party.length
+
+    # Adjust range for partner control
+    if $game_switches[2030] && @battle.player.is_a?(Array)
+      if index == 2
+        startIdx = @battle.pbSecondPartyBegin(index)
+      elsif index == 0
+        endIdx = @battle.pbSecondPartyBegin(0)
+      end
+    end
+
+    for i in startIdx...endIdx
       if lax
         return i if @battle.pbCanSwitchLax?(index,i,false)
       else

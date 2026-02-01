@@ -1049,14 +1049,15 @@ ANTICLINE=1051
 EQUINOXHORN=1052
 MOONRISE=1053
 REBUILD=1054
+RAM=1055
 
 def self.getName(id)
 return pbGetMessage(MessageTypes::Moves,id)
 end
 def self.getCount
-return 1050
+return 1051
 end
 def self.maxValue
-return 1054
+return 1055
 end
 end
