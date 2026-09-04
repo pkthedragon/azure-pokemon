@@ -224,8 +224,13 @@ end
 
 
 
-def pbGetBTTrainers(challengeID)
-  trlists=(load_data("Data/trainerlists.dat") rescue [])
+def pbLoadBTTrainerLists(mutable=false)
+  return (load_data("Data/trainerlists.dat") rescue []) if mutable
+  return (pbCachedData("Data/trainerlists.dat") rescue [])
+end
+
+def pbGetBTTrainers(challengeID,mutable=false)
+  trlists=pbLoadBTTrainerLists(mutable)
   for i in 0...trlists.length
     tr=trlists[i]
     if !tr[5] && tr[2].include?(challengeID)
@@ -241,8 +246,8 @@ def pbGetBTTrainers(challengeID)
   return []
 end
 
-def pbGetBTPokemon(challengeID)
-  trlists=(load_data("Data/trainerlists.dat") rescue [])
+def pbGetBTPokemon(challengeID,mutable=false)
+  trlists=pbLoadBTTrainerLists(mutable)
   for tr in trlists
     if !tr[5] && tr[2].include?(challengeID)
       return tr[1]

@@ -1,0 +1,8 @@
+# Map connections use named sections. Each point is either an edge and offset
+# (for example North,12) or an absolute X,Y coordinate.
+#
+# [Connection_001]
+# Map1 = 2
+# Map1Point = East,10
+# Map2 = 4
+# Map2Point = West,10

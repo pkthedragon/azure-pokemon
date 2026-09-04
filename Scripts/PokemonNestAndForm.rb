@@ -21,9 +21,7 @@ class PokemonNestMapScene
     @viewport=Viewport.new(0,0,Graphics.width,Graphics.height)
     @viewport.z=99999
     @sprites={}
-    pbRgssOpen("Data/townmap.dat","rb"){|f|
-       @mapdata=Marshal.load(f)
-    }
+    @mapdata=pbLoadTownMapData
     mappos=!$game_map ? nil : pbGetMetadata($game_map.map_id,MetadataMapPosition)
     region=regionmap
     if region<0                                    # Use player's current region
@@ -73,7 +71,7 @@ class PokemonNestMapScene
     @point4.fill_rect(4,4,
                       PokemonRegionMapScene::SQUAREWIDTH,
                       PokemonRegionMapScene::SQUAREHEIGHT,Color.new(255,0,0))
-    encdata=load_data("Data/encounters.dat")
+    encdata=pbCachedData("Data/encounters.dat")
     points=[]
     mapwidth=1+PokemonRegionMapScene::RIGHT-PokemonRegionMapScene::LEFT
     for enc in encdata.keys
@@ -212,7 +210,7 @@ class PokemonNestMapScene
         @point4.fill_rect(4,4,
                           PokemonRegionMapScene::SQUAREWIDTH,
                           PokemonRegionMapScene::SQUAREHEIGHT,Color.new(255,0,0))
-        encdata=load_data("Data/encounters.dat")
+        encdata=pbCachedData("Data/encounters.dat")
         points=[]
         mapwidth=1+PokemonRegionMapScene::RIGHT-PokemonRegionMapScene::LEFT
         for enc in encdata.keys
@@ -323,7 +321,7 @@ class PokemonNestMapScene
         @point4.fill_rect(4,4,
                           PokemonRegionMapScene::SQUAREWIDTH,
                           PokemonRegionMapScene::SQUAREHEIGHT,Color.new(255,0,0))
-        encdata=load_data("Data/encounters.dat")
+        encdata=pbCachedData("Data/encounters.dat")
         points=[]
         mapwidth=1+PokemonRegionMapScene::RIGHT-PokemonRegionMapScene::LEFT
         for enc in encdata.keys
@@ -481,7 +479,7 @@ class PokedexFormScene
       backSprite=AnimatedBitmap.new(backBitmap)
       @sprites["back"].bitmap=backSprite.bitmap
     end
-    metrics=load_data("Data/metrics.dat")
+    metrics=pbCachedData("Data/metrics.dat")
     backMetric=metrics[0][@species]
     pbPositionPokemonSprite(@sprites["front"],74,96)
     pbPositionPokemonSprite(@sprites["back"],310,96)
@@ -608,10 +606,8 @@ class PokedexFormScene
       if Input.trigger?(Input::C)
         pbChooseForm
       elsif Input.trigger?(Input::RIGHT)
-        if $game_switches[704]
-         ret=6
-         break
-        end
+        ret=6
+        break
       elsif Input.trigger?(Input::LEFT)
         ret=4
         break

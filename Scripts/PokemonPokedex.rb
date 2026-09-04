@@ -176,8 +176,6 @@ class Window_Pokedex < Window_DrawableCommand
     if $Trainer.seen[species]
       if $Trainer.owned[species]
         pbCopyBitmap(self.contents,@pokeballOwned.bitmap,rect.x-6,rect.y+8)
-      else
-        pbCopyBitmap(self.contents,@pokeballSeen.bitmap,rect.x-6,rect.y+8)
       end
       text=_ISPRINTF("{1:03d}{2:s} {3:s}",(@commands[index][5]) ? indexNumber-1 : indexNumber," ",@commands[index][1])
     else
@@ -442,14 +440,16 @@ class PokemonPokedexScene
   end
 
   def pbCanAddForModeList?(mode,nationalSpecies)
-    case mode
-      when 0
-        return true
-      when 1
-        return $Trainer.seen[nationalSpecies]
-      when 2, 3, 4, 5
-        return $Trainer.owned[nationalSpecies]
-    end
+    # Show all Pokemon regardless of mode
+    return true
+    # case mode
+    #   when 0
+    #     return true
+    #   when 1
+    #     return $Trainer.seen[nationalSpecies]
+    #   when 2, 3, 4, 5
+    #     return $Trainer.owned[nationalSpecies]
+    # end
   end
 
   def pbCanAddForModeSearch?(mode,nationalSpecies)
@@ -491,18 +491,19 @@ class PokemonPokedexScene
     dexlist=pbGetDexList()
     case $PokemonGlobal.pokedexMode
       when 0 # Numerical mode
-        # Remove species not seen from the list
-        i=0; loop do break unless i<dexlist.length
-          break if $Trainer.seen[dexlist[i][0]]
-          dexlist[i]=nil
-          i+=1
-        end
-        i=dexlist.length-1; loop do break unless i>=0
-          break if !dexlist[i] || $Trainer.seen[dexlist[i][0]]
-          dexlist[i]=nil
-          i-=1
-        end
-        dexlist.compact!
+        # Show all Pokemon - don't filter by seen status
+        # # Remove species not seen from the list
+        # i=0; loop do break unless i<dexlist.length
+        #   break if $Trainer.seen[dexlist[i][0]]
+        #   dexlist[i]=nil
+        #   i+=1
+        # end
+        # i=dexlist.length-1; loop do break unless i>=0
+        #   break if !dexlist[i] || $Trainer.seen[dexlist[i][0]]
+        #   dexlist[i]=nil
+        #   i-=1
+        # end
+        # dexlist.compact!
         # Sort species in ascending order by index number, not national species
         dexlist.sort!{|a,b| a[4]<=>b[4]}
       when 1 # Alphabetical mode
@@ -673,9 +674,9 @@ class PokemonPokedexScene
 
   def pbChangeToDexEntry(species,pokemon=nil)
     @sprites["dexentry"].visible=true
-      if @sprites["dexbar"] && $game_switches[704]
-         @sprites["dexbar"].visible=true 
-      end 
+      if @sprites["dexbar"]
+         @sprites["dexbar"].visible=true
+      end
     @sprites["overlay"].visible=true
     @sprites["overlay"].bitmap.clear
     basecolor=Color.new(88,88,80)
@@ -784,7 +785,7 @@ class PokemonPokedexScene
     pbFadeInAndShow(@sprites)
     curindex=index
     page=1
-    newpage=0
+    newpage=4  # Start on Advanced Pokedex page
     ret=0
     pbActivateWindow(@sprites,nil){
        loop do
@@ -828,7 +829,7 @@ class PokemonPokedexScene
            newpage=page-1 if page>1
            pbPlayCursorSE() if newpage>1
          elsif Input.trigger?(Input::RIGHT) || ret==6
-           newpage=page+1 if page<($game_switches[704] ? 4 : 3)
+           newpage=page+1 if page<4  # Advanced page always available
            pbPlayCursorSE() if newpage>1
          elsif Input.trigger?(Input::A)
            pbPlayCry(@dexlist[curindex][0])

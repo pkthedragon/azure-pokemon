@@ -4611,7 +4611,7 @@ class LargePlane < Plane
     if value==nil
       if @__bitmap!=nil
         @__bitmap=nil
-        @__sprite.visible=(@__visible && !@__bitmap.nil?)
+        @__sprite.visible=(@__visible && !@__bitmap.nil?) if @__sprite && !@__sprite.disposed?
       end
     elsif @__bitmap!=value && !value.disposed?
       @__bitmap=value
@@ -4619,42 +4619,43 @@ class LargePlane < Plane
     elsif value.disposed?
       if @__bitmap!=nil
         @__bitmap=nil
-        @__sprite.visible=(@__visible && !@__bitmap.nil?)
+        @__sprite.visible=(@__visible && !@__bitmap.nil?) if @__sprite && !@__sprite.disposed?
       end
     end
   end
 
-  def viewport; @__sprite.viewport; end
-  def zoom_x; @__sprite.zoom_x; end
-  def zoom_y; @__sprite.zoom_y; end
-  def opacity; @__sprite.opacity; end
-  def blend_type; @__sprite.blend_type; end
+  def viewport; @__sprite && !@__sprite.disposed? ? @__sprite.viewport : nil; end
+  def zoom_x; @__sprite && !@__sprite.disposed? ? @__sprite.zoom_x : 1.0; end
+  def zoom_y; @__sprite && !@__sprite.disposed? ? @__sprite.zoom_y : 1.0; end
+  def opacity; @__sprite && !@__sprite.disposed? ? @__sprite.opacity : 255; end
+  def blend_type; @__sprite && !@__sprite.disposed? ? @__sprite.blend_type : 0; end
   def visible; @__visible; end
-  def z; @__sprite.z; end
-  def color; @__sprite.color; end
-  def tone; @__sprite.tone; end
+  def z; @__sprite && !@__sprite.disposed? ? @__sprite.z : 0; end
+  def color; @__sprite && !@__sprite.disposed? ? @__sprite.color : Color.new(0,0,0,0); end
+  def tone; @__sprite && !@__sprite.disposed? ? @__sprite.tone : Tone.new(0,0,0,0); end
 
-  def zoom_x=(v); 
-    if @__sprite.zoom_x!=v
+  def zoom_x=(v);
+    if @__sprite && !@__sprite.disposed? && @__sprite.zoom_x!=v
       @__sprite.zoom_x=v; refresh
     end
   end
 
-  def zoom_y=(v); 
-    if @__sprite.zoom_y!=v
+  def zoom_y=(v);
+    if @__sprite && !@__sprite.disposed? && @__sprite.zoom_y!=v
       @__sprite.zoom_y=v; refresh
     end
   end
 
-  def opacity=(v); @__sprite.opacity=(v); end
-  def blend_type=(v); @__sprite.blend_type=(v); end
-  def visible=(v); @__visible=v; @__sprite.visible=(@__visible && !@__bitmap.nil?); end
-  def z=(v); @__sprite.z=(v); end
-  def color=(v); @__sprite.color=(v); end
-  def tone=(v); @__sprite.tone=(v); end
+  def opacity=(v); @__sprite.opacity=(v) if @__sprite && !@__sprite.disposed?; end
+  def blend_type=(v); @__sprite.blend_type=(v) if @__sprite && !@__sprite.disposed?; end
+  def visible=(v); @__visible=v; @__sprite.visible=(@__visible && !@__bitmap.nil? && !@__bitmap.disposed?) if @__sprite && !@__sprite.disposed?; end
+  def z=(v); @__sprite.z=(v) if @__sprite && !@__sprite.disposed?; end
+  def color=(v); @__sprite.color=(v) if @__sprite && !@__sprite.disposed?; end
+  def tone=(v); @__sprite.tone=(v) if @__sprite && !@__sprite.disposed?; end
   def update; ;end
 
   def refresh
+    return if !@__sprite || @__sprite.disposed?
     @__sprite.visible=(@__visible && !@__bitmap.nil?)
     if @__bitmap
       if !@__bitmap.disposed?

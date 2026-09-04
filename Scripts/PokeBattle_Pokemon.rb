@@ -28,6 +28,10 @@ class PokeBattle_Pokemon
   attr_accessor(:happiness)   # Current happiness
   attr_accessor(:status)      # Status problem (PBStatuses) 
   attr_accessor(:statusCount) # Sleep count/Toxic flag
+  attr_accessor(:beneficialStatus)
+  attr_accessor(:beneficialStatusData)
+  attr_accessor(:tributeDracoMove)
+  attr_accessor(:tributeDracoPP)
   attr_accessor(:eggsteps)    # Steps to hatch egg, 0 if Pokémon is not an egg
   attr_accessor(:moves)       # Moves (PBMove)
   attr_accessor(:premega)     # can mega evolve without mega stone
@@ -296,7 +300,6 @@ class PokeBattle_Pokemon
       end
     end
     # Fall back to base species abilities
-    dexdata=pbOpenDexData
     abils.push($pkmn_dex[@species][12][0])
     abils.push($pkmn_dex[@species][12][1])
     abils.push($pkmn_dex[@species][17])
@@ -394,7 +397,7 @@ class PokeBattle_Pokemon
     end
     time=1+(strain%4)
     @pokerus=time
-    @pokerus|=strain<<4
+    @pokerus|=strain << 4
   end
 
 # Resets the infection time for this Pokemon's Pokérus (even if cured).
@@ -403,7 +406,7 @@ class PokeBattle_Pokemon
     strain=@pokerus%16
     time=1+(strain%4)
     @pokerus=time
-    @pokerus|=strain<<4
+    @pokerus|=strain << 4
   end
 
 # Reduces the time remaining for this Pokemon's Pokérus (if infected).
@@ -720,7 +723,6 @@ class PokeBattle_Pokemon
 
 # Returns the items this species can be found holding in the wild.
   def wildHoldItems
-    dexdata=pbOpenDexData
     itemcommon=$pkmn_dex[@species][18]
     itemuncommon=$pkmn_dex[@species][19]
     itemrare=$pkmn_dex[@species][20]
@@ -776,6 +778,7 @@ class PokeBattle_Pokemon
     if @hp==0
       @status=0
       @statusCount=0
+      clearBeneficialStatus
     end
   end
 
@@ -794,6 +797,11 @@ class PokeBattle_Pokemon
     return if egg?
     @status=0
     @statusCount=0
+  end
+
+  def clearBeneficialStatus
+    @beneficialStatus=nil
+    @beneficialStatusData=nil
   end
 
 # Heals all PP of this Pokémon.
@@ -1051,9 +1059,9 @@ class PokeBattle_Pokemon
     @species=species
     # Individual Values
     @personalID=rand(256)
-    @personalID|=rand(256)<<8
-    @personalID|=rand(256)<<16
-    @personalID|=rand(256)<<24
+    @personalID|=rand(256) << 8
+    @personalID|=rand(256) << 16
+    @personalID|=rand(256) << 24
     @hp=1
     @totalhp=1
     @ev=[0,0,0,0,0,0]
@@ -1089,6 +1097,10 @@ class PokeBattle_Pokemon
     @status=0
     @critted=false
     @statusCount=0
+    @beneficialStatus=nil
+    @beneficialStatusData=nil
+    @tributeDracoMove=0
+    @tributeDracoPP=nil
     @item=0
     @mail=nil
     @fused=nil

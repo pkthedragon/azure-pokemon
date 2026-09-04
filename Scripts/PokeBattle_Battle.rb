@@ -2,8 +2,8 @@
 #    0 - Undecided or aborted
 #    1 - Player won
 #    2 - Player lost
-#    3 - Player or wild Pokémon ran from battle, or player forfeited the match
-#    4 - Wild Pokémon was caught
+#    3 - Player or wild PokÃ©mon ran from battle, or player forfeited the match
+#    4 - Wild PokÃ©mon was caught
 #    5 - Draw
 ################################################################################
 # Battle Peer.
@@ -87,7 +87,7 @@ end
 
 
 ################################################################################
-# Catching and storing Pokémon.
+# Catching and storing PokÃ©mon.
 ################################################################################
 module PokeBattle_BattleCommon
   def pbStorePokemon(pokemon)
@@ -123,7 +123,7 @@ module PokeBattle_BattleCommon
 
   def pbBallFetch(pokeball)
     if !pbInSafari?
-      for i in 0...4
+      eachActiveBattlerIndex do |i|
         if self.battlers[i].ability==PBAbilities::BALLFETCH && !self.abilitynulled && self.battlers[i].item==0
           if $fefieldeffect == 28
             self.battlers[i].effects[PBEffects::BallFetch]=getID(PBItems,:SNOWBALL)
@@ -134,7 +134,7 @@ module PokeBattle_BattleCommon
       end
     end
   end
-  
+
   def pbThrowPokeBall(idxPokemon,ball,rareness=nil,showplayer=false)
     PBDebug.log("[pbThrowPokeBall called with idxPokemon=#{idxPokemon}, ball=#{ball}]")
     itemname=PBItems.getName(ball)
@@ -149,7 +149,7 @@ module PokeBattle_BattleCommon
       aboveLimit = true
     end
     if battler.isFainted?
-      battler=battler.pbPartner
+      battler = battler.firstLivingAlly
     end
     pbDisplayBrief(_INTL("{1} threw one {2}!",self.pbPlayer.name,itemname))
     $game_variables[536] += 1
@@ -164,11 +164,11 @@ module PokeBattle_BattleCommon
       if !(no_catch || battler.isbossmon || battler.issossmon)
         pbDisplay(_INTL("The Trainer blocked the Ball!\nDon't be a thief!"))
       else
-        pbDisplay(_INTL("The Pokémon knocked the ball away!"))
+        pbDisplay(_INTL("The PokÃ©mon knocked the ball away!"))
       end
       pbBallFetch(ball)
     elsif @raidbattle && (@shieldCount>0 || aboveLimit)
-      pbDisplay(_INTL("The Pokémon knocked the ball away!"))
+      pbDisplay(_INTL("The PokÃ©mon knocked the ball away!"))
       pbBallFetch(ball)
     else
       if $game_switches[1998]==true
@@ -176,7 +176,7 @@ module PokeBattle_BattleCommon
         return
       end
       if no_catch || battler.issossmon || (battler.isbossmon && (!battler.capturable || battler.shieldCount > 0))
-        pbDisplay(_INTL("The Pokémon knocked the ball away!"))
+        pbDisplay(_INTL("The PokÃ©mon knocked the ball away!"))
         pbBallFetch(ball)
         return
       end
@@ -252,10 +252,10 @@ module PokeBattle_BattleCommon
         end
       end
       @scene.pbThrow(ball,(critical) ? 1 : shakes,critical,critsuccess,battler.index,showplayer)
-      
+
       case shakes
       when 0
-        pbDisplay(_INTL("Oh no! The Pokémon broke free!"))
+        pbDisplay(_INTL("Oh no! The PokÃ©mon broke free!"))
         BallHandlers.onFailCatch(ball,self,pokemon)
         pbBallFetch(ball)
       when 1
@@ -278,7 +278,7 @@ module PokeBattle_BattleCommon
           battler.pbReset
           battler.participants=[]
         else
-          if !@opponent && @doublebattle
+          if !@opponent && !singleBattle?
             pbRemoveFromParty(battler.index,battler.pokemonIndex)
             battler.pbReset
             battler.participants=[]
@@ -297,7 +297,7 @@ module PokeBattle_BattleCommon
         if !self.pbPlayer.owned[species]
           self.pbPlayer.owned[species]=true
           if $Trainer.pokedex
-            pbDisplayPaused(_INTL("{1}'s data was added to the Pokédex.",pokemon.name))
+            pbDisplayPaused(_INTL("{1}'s data was added to the PokÃ©dex.",pokemon.name))
             @scene.pbShowPokedex(pokemon)
           end
         end
@@ -340,18 +340,19 @@ class PokeBattle_Battle
   attr_accessor(:decision)        # Decision: 0=undecided; 1=win; 2=loss; 3=escaped; 4=caught
   attr_accessor(:internalbattle)  # Internal battle flag
   attr_accessor(:doublebattle)    # Double battle flag
+  attr_reader(:sideSizes)         # Active battler counts for player/foe sides
   attr_accessor(:cantescape)      # True if player can't escape
   attr_accessor(:shiftStyle)      # Shift/Set "battle style" option
   attr_accessor(:battlescene)     # "Battle scene" option
   attr_accessor(:debug)           # Debug flag
   attr_reader(:player)            # Player trainer
   attr_reader(:opponent)          # Opponent trainer
-  attr_reader(:party1)            # Player's Pokémon party
-  attr_reader(:party2)            # Foe's Pokémon party
-  attr_reader(:partyorder)        # Order of Pokémon in the player's party
+  attr_reader(:party1)            # Player's PokÃ©mon party
+  attr_reader(:party2)            # Foe's PokÃ©mon party
+  attr_reader(:partyorder)        # Order of PokÃ©mon in the player's party
   attr_accessor(:fullparty1)      # True if player's party's max size is 6 instead of 3
   attr_accessor(:fullparty2)      # True if opponent's party's max size is 6 instead of 3
-  attr_reader(:battlers)          # Currently active Pokémon
+  attr_reader(:battlers)          # Currently active PokÃ©mon
   attr_accessor(:items)           # Items held by opponents
   attr_reader(:sides)             # Effects common to each side of a battle
   attr_reader(:field)             # Effects common to the whole of a battle
@@ -361,24 +362,24 @@ class PokeBattle_Battle
   attr_accessor(:weatherbackup)    # The original weather of the area, if it exists.  #### DemICE - persistentweather
   attr_accessor(:weatherbackupanim)# Easy loading for original weather's animation.  #### DemICE - persistentweather
   attr_reader(:switching)         # True if during the switching phase of the round
-  attr_reader(:faintswitch)       # True if switching after a faint during endphase  
+  attr_reader(:faintswitch)       # True if switching after a faint during endphase
   attr_reader(:struggle)          # The Struggle move
-  attr_accessor(:choices)         # Choices made by each Pokémon this round
+  attr_accessor(:choices)         # Choices made by each PokÃ©mon this round
   attr_reader(:successStates)     # Success states
   attr_accessor(:lastMoveUsed)    # Last move used
   attr_accessor(:lastMoveUser)    # Last move user
   attr_accessor(:synchronize)     # Synchronize state
-  attr_accessor(:megaEvolution)   # Battle index of each trainer's Pokémon to Mega Evolve
+  attr_accessor(:megaEvolution)   # Battle index of each trainer's PokÃ©mon to Mega Evolve
   attr_accessor(:amuletcoin)      # Whether Amulet Coin's effect applies
   attr_accessor(:extramoney)      # Money gained in battle by using Pay Day
   attr_accessor(:endspeech)       # Speech by opponent when player wins
   attr_accessor(:endspeech2)      # Speech by opponent when player wins
   attr_accessor(:endspeechwin)    # Speech by opponent when opponent wins
-  attr_accessor(:endspeechwin2)   # Speech by opponent when opponent wins 
+  attr_accessor(:endspeechwin2)   # Speech by opponent when opponent wins
   attr_accessor(:trickroom)
-#### KUROTSUNE - 015 - START  
+#### KUROTSUNE - 015 - START
   attr_accessor(:switchedOut)
-#### KUROTSUNE - 015 - END  
+#### KUROTSUNE - 015 - END
   attr_accessor(:previousMove)    # Move used directly previously
   attr_accessor(:aiMoveMemory)
   attr_accessor(:rules)
@@ -403,7 +404,7 @@ class PokeBattle_Battle
   attr_accessor(:statChangeSource)
 
   include PokeBattle_BattleCommon
-  
+
   MAXPARTYSIZE = 6
 
   class BattleAbortedException < Exception; end
@@ -433,27 +434,29 @@ class PokeBattle_Battle
 
   def isOnline?
     return false
-  end  
+  end
 ################################################################################
 # Initialise battle class.
 ################################################################################
   def initialize(scene,p1,p2,player,opponent)
     if p1.length==0
-      raise ArgumentError.new(_INTL("Party 1 has no Pokémon."))
+      raise ArgumentError.new(_INTL("Party 1 has no PokÃ©mon."))
       return
     end
     if p2.length==0
-      raise ArgumentError.new(_INTL("Party 2 has no Pokémon."))
+      raise ArgumentError.new(_INTL("Party 2 has no PokÃ©mon."))
       return
     end
     if p2.length>2 && !opponent
-      raise ArgumentError.new(_INTL("Wild battles with more than two Pokémon are not allowed."))
+      raise ArgumentError.new(_INTL("Wild battles with more than two PokÃ©mon are not allowed."))
       return
     end
     @scene           = scene
     @decision        = 0
     @internalbattle  = true
     @doublebattle    = false
+    @sideSizes       = [1,1]
+    @sizeRuleExplicit = false
     @cantescape      = false
     @shiftStyle      = true
     @battlescene     = true
@@ -522,11 +525,11 @@ class PokeBattle_Battle
       @zMove[1]=[-1]*@opponent.length
     else
       @zMove[1]=[-1]
-    end    
+    end
     @amuletcoin      = false
 #### KUROTSUNE - 015 - START
     @switchedOut     = []
-#### KUROTSUNE - 015 - END    
+#### KUROTSUNE - 015 - END
     @extramoney      = 0
     @endspeech       = ""
     @endspeech2      = ""
@@ -576,8 +579,8 @@ class PokeBattle_Battle
     $game_variables[541] = 0
     @ultramegadeath  = 0
   end
-  
-  
+
+
   def pbMakeFakeBattler(pokemon,batonpass=false,currentmon=nil,effectnegate=true)
     if @index.nil? || !currentmon.nil?
        @index=currentmon.index
@@ -594,24 +597,268 @@ class PokeBattle_Battle
   def pbIsWild?
     return !@opponent? true : false
   end
-  
+
   def pbDoubleBattleAllowed?
     return true
   end
-  
+
+  def doublebattle=(value)
+    @doublebattle = value ? true : false
+    return if @sizeRuleExplicit
+    @sideSizes = @doublebattle ? [2,2] : [1,1]
+  end
+
+  def pbEnsureBattlerSlots(slot_count)
+    slot_count = [slot_count.to_i, 4].max
+    while @choices.length < slot_count
+      @choices.push([0,0,nil,-1])
+    end
+    while @successStates.length < slot_count
+      @successStates.push(PokeBattle_SuccessState.new)
+    end
+    while @battlers.length < slot_count
+      @battlers[@battlers.length] = PokeBattle_Battler.new(self, @battlers.length)
+    end
+  end
+
+  def setBattleMode(mode, explicit = true)
+    normalized = pbNormalizeBattleSizeRule(mode)
+    normalized = (@doublebattle) ? "double" : "single" if !normalized
+    @sizeRuleExplicit = explicit
+    @sideSizes = [
+       pbBattleSideSizeFromRule(normalized, false),
+       pbBattleSideSizeFromRule(normalized, true)
+    ]
+    @doublebattle = (@sideSizes[0] > 1 || @sideSizes[1] > 1)
+    @rules["size"] = normalized if @rules
+    pbEnsureBattlerSlots(@sideSizes.max * 2)
+    return normalized
+  end
+
+  def pbSideSize(index)
+    return @sideSizes[pbIsOpposing?(index) ? 1 : 0]
+  end
+
+  def singleBattle?
+    return @sideSizes[0] <= 1 && @sideSizes[1] <= 1
+  end
+
+  def maxBattlerIndex
+    return [@battlers.length - 1, (@sideSizes.max * 2) - 1, 3].max
+  end
+
+  def pbSidePosition(index)
+    return index / 2
+  end
+
+  def tripleBattle?
+    return @sideSizes[0] >= 3 || @sideSizes[1] >= 3
+  end
+
+  def pbBattlerIndex(side, position)
+    return (position * 2) + side
+  end
+
+  def pbEncodeShiftSelection(battlerIndex)
+    return -(1000 + battlerIndex + 1)
+  end
+
+  def pbShiftSelection?(selection)
+    return selection.is_a?(Numeric) && selection <= -1001
+  end
+
+  def pbDecodeShiftSelection(selection)
+    return nil if !pbShiftSelection?(selection)
+    return (-selection) - 1001
+  end
+
+  def pbFirstEmptySameSideBattlerIndex(index)
+    side = pbIsOpposing?(index) ? 1 : 0
+    for position in 0...@sideSizes[side]
+      battler_index = pbBattlerIndex(side, position)
+      battler = @battlers[battler_index]
+      return battler_index if !battler || battler.isFainted? || battler.hp<=0
+    end
+    return nil
+  end
+
+  def eachSameSideBattler(index)
+    return if !block_given?
+    side = pbIsOpposing?(index) ? 1 : 0
+    for position in 0...@sideSizes[side]
+      battler = @battlers[pbBattlerIndex(side, position)]
+      yield battler if battler
+    end
+  end
+
+  def eachOtherSideBattler(index)
+    return if !block_given?
+    side = pbIsOpposing?(index) ? 0 : 1
+    for position in 0...@sideSizes[side]
+      battler = @battlers[pbBattlerIndex(side, position)]
+      yield battler if battler
+    end
+  end
+
+  def allSameSideBattlers(index)
+    ret = []
+    eachSameSideBattler(index) { |battler| ret.push(battler) }
+    return ret
+  end
+
+  def allOtherSideBattlers(index)
+    ret = []
+    eachOtherSideBattler(index) { |battler| ret.push(battler) }
+    return ret
+  end
+
+  def eachActiveBattlerIndex
+    return if !block_given?
+    for i in 0...@battlers.length
+      next if pbSidePosition(i) >= pbSideSize(i)
+      yield i
+    end
+  end
+
+  def activeBattlerIndices
+    ret = []
+    eachActiveBattlerIndex { |i| ret.push(i) }
+    return ret
+  end
+
+  def nearBattlers?(index1, index2)
+    pos1 = pbSidePosition(index1)
+    pos2 = pbSidePosition(index2)
+    if pbIsOpposing?(index1) != pbIsOpposing?(index2)
+      return (pos1 - pos2).abs <= 1
+    end
+    return (pos1 - pos2).abs == 1
+  end
+
+  def pbTripleLaneDistance(index1, index2)
+    return (pbSidePosition(index1) - pbSidePosition(index2)).abs
+  end
+
+  def pbMoveIgnoresTripleLanes?(move, attacker, target = nil)
+    return false if !tripleBattle? || !move || !attacker
+    resolved_type = move.type
+    if move.respond_to?(:pbType)
+      begin
+        resolved_type = move.pbType(move.type, attacker, target)
+      rescue
+        resolved_type = move.type
+      end
+    end
+    return true if isConst?(resolved_type, PBTypes, :FLYING)
+    return true if isConst?(resolved_type, PBTypes, :GHOST)
+    return true if PBStuff::AURAPULSEMOVE.include?(move.id)
+    return true if PBStuff::CANNONMOVE.include?(move.id)
+    return true if move.isBeamMove?
+    return true if PBStuff::WINDMOVE.include?(move.id)
+    return true if PBStuff::SCALINGMOVE.include?(move.id)
+    return false
+  end
+
+  def pbMoveCanTargetInTriple?(attacker, target, move)
+    return true if !tripleBattle? || !attacker || !target || !move
+    return true if attacker.index == target.index
+    return true if pbMoveIgnoresTripleLanes?(move, attacker, target)
+    return pbTripleLaneDistance(attacker.index, target.index) <= 1
+  end
+
+  def pbTripleLaneDamageMultiplier(attacker, target, move)
+    return 1.0 if !tripleBattle? || !attacker || !target || !move
+    return 1.0 if move.basedamage <= 0
+    spread_move = false
+    if attacker.respond_to?(:pbTarget)
+      chosen_target = attacker.pbTarget(move)
+      spread_move = (chosen_target == PBTargets::AllOpposing || chosen_target == PBTargets::AllNonUsers)
+    end
+    return 0.5 if spread_move
+    case pbTripleLaneDistance(attacker.index, target.index)
+    when 0 then return 1.0
+    when 1 then return 0.5
+    else        return 0.75
+    end
+  end
+
+  def pbActiveSameSideBattlerForPartyIndex(idxPokemon, pkmnidxTo)
+    ret = nil
+    eachSameSideBattler(idxPokemon) do |battler|
+      next if !battler || battler.isFainted?
+      if battler.pokemonIndex == pkmnidxTo
+        ret = battler
+        break
+      end
+    end
+    return ret
+  end
+
+  def pbCanRegisterSwitchAction?(idxPokemon, showMessages)
+    alreadyChosen = false
+    eachSameSideBattler(idxPokemon) do |battler|
+      next if !battler || battler.index == idxPokemon
+      if @choices[battler.index] && @choices[battler.index][0] == 2
+        alreadyChosen = true
+        break
+      end
+    end
+    if alreadyChosen
+      pbDisplayPaused(_INTL("Only one switch or shift can be chosen per round!")) if showMessages
+      return false
+    end
+    return true
+  end
+
+  def pbCanShift?(idxPokemon, targetBattlerIndex, showMessages)
+    return false if !tripleBattle?
+    return false if targetBattlerIndex.nil? || targetBattlerIndex < 0 || targetBattlerIndex >= @battlers.length
+    targetBattler = @battlers[targetBattlerIndex]
+    return false if !targetBattler || targetBattler.isFainted?
+    if idxPokemon == targetBattlerIndex
+      pbDisplayPaused(_INTL("{1} is already in battle!", @battlers[idxPokemon].name)) if showMessages
+      return false
+    end
+    if pbIsOpposing?(idxPokemon) != pbIsOpposing?(targetBattlerIndex)
+      pbDisplayPaused(_INTL("You can only shift with an allied Pokémon.")) if showMessages
+      return false
+    end
+    if pbGetOwnerIndex(idxPokemon) != pbGetOwnerIndex(targetBattlerIndex)
+      pbDisplayPaused(_INTL("Those Pokémon can't swap lanes.")) if showMessages
+      return false
+    end
+    return false if !pbCanSwitch?(idxPokemon, -1, showMessages)
+    return false if !pbCanRegisterSwitchAction?(idxPokemon, showMessages)
+    if @choices[targetBattlerIndex] && @choices[targetBattlerIndex][0] == 2
+      pbDisplayPaused(_INTL("{1} is already repositioning this round!", targetBattler.pbThis)) if showMessages
+      return false
+    end
+    return true
+  end
+
   def pbCheckSideAbility(a,pkmn) #checks to see if your side has a pokemon with a certain ability.
-    for i in 0...4 # in order from own first, opposing first, own second, opposing second
+    for i in 0..maxBattlerIndex # in order from own first, opposing first, own second, opposing second
       if @battlers[i].hasWorkingAbility(a)
-        if @battlers[i]==pkmn || @battlers[i]==pkmn.pbPartner
+        if !pkmn || !pkmn.respond_to?(:index)
+          return @battlers[i]
+        end
+        sameSide = false
+        eachSameSideBattler(pkmn.index) do |battler|
+          if battler==@battlers[i]
+            sameSide = true
+            break
+          end
+        end
+        if sameSide
           return @battlers[i]
         end
       end
     end
     return nil
   end
-  
+
   def pbWeather
-    for i in 0...4
+    for i in 0..maxBattlerIndex
       if @battlers[i].hasWorkingAbility(:CLOUDNINE) ||
          @battlers[i].hasWorkingAbility(:AIRLOCK) ||
          $fefieldeffect == 22
@@ -620,7 +867,7 @@ class PokeBattle_Battle
     end
     return @weather
   end
-  
+
   def seedCheck
     for battler in @battlers
       next if battler.hp==0
@@ -651,7 +898,7 @@ class PokeBattle_Battle
           pbDisplay(_INTL("{1} planted its roots!",battler.pbThis))
           battler.pokemon.itemRecycle=battler.item
           battler.pokemon.itemInitial=0 if battler.pokemon.itemInitial==battler.item
-          battler.item=0 
+          battler.item=0
         when 3 #Misty Terrain
           if !battler.pbTooHigh?(PBStats::SPDEF)
             battler.pbIncreaseStatBasic(PBStats::SPDEF,1)
@@ -661,7 +908,7 @@ class PokeBattle_Battle
           end
           battler.pbRecoverHP(battler.totalhp,true)
           battler.status=0
-          battler.statusCount=0            
+          battler.statusCount=0
           pbDisplayPaused(_INTL("The healing wish came true for {1}!",battler.pbThis(true)))
           battler.pokemon.itemRecycle=battler.item
           battler.pokemon.itemInitial=0 if battler.pokemon.itemInitial==battler.item
@@ -677,19 +924,19 @@ class PokeBattle_Battle
             battler.pbIncreaseStatBasic(PBStats::ATTACK,1)
             pbCommonAnimation("StatUp",battler,nil) if !boost
             boost=true
-          end          
+          end
           if !battler.pbTooHigh?(PBStats::SPEED)
             battler.pbIncreaseStatBasic(PBStats::SPEED,1)
             pbCommonAnimation("StatUp",battler,nil) if !boost
             boost=true
-          end     
+          end
           if boost
             pbDisplay(_INTL("{1}'s Elemental Seed boosted its Special Attack, Attack, and Speed!",
               battler.pbThis))
           end
-          battler.effects[PBEffects::MultiTurn]=4          
+          battler.effects[PBEffects::MultiTurn]=4
           battler.effects[PBEffects::MultiTurnAttack]=147
-          battler.effects[PBEffects::MultiTurnUser]=battler.index 
+          battler.effects[PBEffects::MultiTurnUser]=battler.index
           pbAnimation(147,battler,nil) # Fire Spin Animation
           pbDisplayPaused(_INTL("{1} was trapped in the vortex!",battler.pbThis(true)))
           battler.pokemon.itemRecycle=battler.item
@@ -706,12 +953,12 @@ class PokeBattle_Battle
             battler.pbIncreaseStatBasic(PBStats::ATTACK,1)
             pbCommonAnimation("StatUp",battler,nil) if !boost
             boost=true
-          end             
+          end
           if boost
             pbDisplay(_INTL("{1}'s Elemental Seed boosted its Attack and Special Attack!",
               battler.pbThis))
           end
-          if battler.pbCanPoison?(true)  
+          if battler.pbCanPoison?(true)
             battler.pbPoison(battler,true)
             pbDisplayPaused(_INTL("{1} was badly poisoned!",battler.pbThis(true)))
           end
@@ -727,7 +974,7 @@ class PokeBattle_Battle
             battler.pokemon.itemRecycle=battler.item
             battler.pokemon.itemInitial=0 if battler.pokemon.itemInitial==battler.item
             battler.item=0
-          end  
+          end
         when 21 #Water Surface
           if !battler.pbTooHigh?(PBStats::SPDEF)
             battler.pbIncreaseStatBasic(PBStats::SPDEF,1)
@@ -740,7 +987,7 @@ class PokeBattle_Battle
           pbDisplay(_INTL("{1} surrounded itself with a veil of water!",battler.pbThis))
           battler.pokemon.itemRecycle=battler.item
           battler.pokemon.itemInitial=0 if battler.pokemon.itemInitial==battler.item
-          battler.item=0     
+          battler.item=0
         when 22 #Underwater
           if !battler.pbTooHigh?(PBStats::SPEED)
             battler.pbIncreaseStatBasic(PBStats::SPEED,1)
@@ -752,13 +999,13 @@ class PokeBattle_Battle
              isConst?(battler.ability,PBAbilities,:RKSSYSTEM))
             battler.type1=getConst(PBTypes,:WATER)
             battler.type2=getConst(PBTypes,:WATER)
-            typename=PBTypes.getName(getConst(PBTypes,:WATER))    
+            typename=PBTypes.getName(getConst(PBTypes,:WATER))
             pbAnimation(557,battler,nil) # Soak animation
             pbDisplay(_INTL("{1} transformed into the {2} type!",battler.pbThis,typename))
           end
           battler.pokemon.itemRecycle=battler.item
           battler.pokemon.itemInitial=0 if battler.pokemon.itemInitial==battler.item
-          battler.item=0  
+          battler.item=0
         when 26 #Murkwater Surface
           battler.effects[PBEffects::AquaRing]=true
           pbAnimation(555,battler,nil) # Aqua Ring animation
@@ -775,7 +1022,7 @@ class PokeBattle_Battle
           end
           battler.pokemon.itemRecycle=battler.item
           battler.pokemon.itemInitial=0 if battler.pokemon.itemInitial==battler.item
-          battler.item=0  
+          battler.item=0
         when 32 #Dragon's Den
           if !battler.pbTooHigh?(PBStats::SPATK)
             battler.pbIncreaseStatBasic(PBStats::SPATK,1)
@@ -830,27 +1077,27 @@ class PokeBattle_Battle
           battler.pokemon.itemRecycle=battler.item
           battler.pokemon.itemInitial=0 if battler.pokemon.itemInitial==battler.item
           battler.item=0
-        when 45 #Infernal Field  
-          boost=false  
-          if !battler.pbTooHigh?(PBStats::SPATK)  
-            battler.pbIncreaseStatBasic(PBStats::SPATK,1)  
-            pbCommonAnimation("StatUp",battler,nil) if !boost  
-            boost=true  
-          end  
-          if !battler.pbTooHigh?(PBStats::ATTACK)  
-            battler.pbIncreaseStatBasic(PBStats::ATTACK,1)  
-            pbCommonAnimation("StatUp",battler,nil) if !boost  
-            boost=true  
-          end            
-          if boost  
-            pbDisplay(_INTL("{1}'s Elemental Seed boosted its offenses!",  
-              battler.pbThis))  
-          end  
-          battler.effects[PBEffects::MeanLook]=battler.index    
-          pbAnimation(379,battler,nil) # Mean Look Animation  
-          pbDisplayPaused(_INTL("{1} was trapped in the field!",battler.pbThis(true)))  
-          battler.pokemon.itemRecycle=battler.item  
-          battler.pokemon.itemInitial=0 if battler.pokemon.itemInitial==battler.item  
+        when 45 #Infernal Field
+          boost=false
+          if !battler.pbTooHigh?(PBStats::SPATK)
+            battler.pbIncreaseStatBasic(PBStats::SPATK,1)
+            pbCommonAnimation("StatUp",battler,nil) if !boost
+            boost=true
+          end
+          if !battler.pbTooHigh?(PBStats::ATTACK)
+            battler.pbIncreaseStatBasic(PBStats::ATTACK,1)
+            pbCommonAnimation("StatUp",battler,nil) if !boost
+            boost=true
+          end
+          if boost
+            pbDisplay(_INTL("{1}'s Elemental Seed boosted its offenses!",
+              battler.pbThis))
+          end
+          battler.effects[PBEffects::MeanLook]=battler.index
+          pbAnimation(379,battler,nil) # Mean Look Animation
+          pbDisplayPaused(_INTL("{1} was trapped in the field!",battler.pbThis(true)))
+          battler.pokemon.itemRecycle=battler.item
+          battler.pokemon.itemInitial=0 if battler.pokemon.itemInitial==battler.item
           battler.item=0
         end
       elsif isConst?(battler.item, PBItems, :MAGICALSEED)
@@ -877,7 +1124,7 @@ class PokeBattle_Battle
           end
           battler.pbRecoverHP(battler.totalhp,true)
           battler.status=0
-          battler.statusCount=0            
+          battler.statusCount=0
           pbDisplayPaused(_INTL("The healing wish came true for {1}!",battler.pbThis(true)))
           battler.pokemon.itemRecycle=battler.item
           battler.pokemon.itemInitial=0 if battler.pokemon.itemInitial==battler.item
@@ -921,7 +1168,7 @@ class PokeBattle_Battle
           battler.pokemon.itemRecycle=battler.item
           battler.pokemon.itemInitial=0 if battler.pokemon.itemInitial==battler.item
           battler.item=0
-        when 34 #Starlight Arena 
+        when 34 #Starlight Arena
           next if isConst?(battler.ability,PBAbilities,:WORLDOFNIGHTMARES)
           if !battler.pbTooHigh?(PBStats::SPATK)
             battler.pbIncreaseStatBasic(PBStats::SPATK,1)
@@ -931,7 +1178,7 @@ class PokeBattle_Battle
           end
           battler.pbRecoverHP(battler.totalhp,true)
           battler.status=0
-          battler.statusCount=0            
+          battler.statusCount=0
           pbDisplayPaused(_INTL("{1} became cloaked in mystical moonlight!!",battler.pbThis(true)))
           battler.pokemon.itemRecycle=battler.item
           battler.pokemon.itemInitial=0 if battler.pokemon.itemInitial==battler.item
@@ -1005,7 +1252,7 @@ class PokeBattle_Battle
             pbDisplay(_INTL("{1}'s Magical Seed boosted its Special Attack and Special Defense!",
               battler.pbThis))
           end
-          if battler.pbCanConfuse?(false)    
+          if battler.pbCanConfuse?(false)
             battler.effects[PBEffects::Confusion]=3
             pbCommonAnimation("Confusion",battler,nil)
             pbDisplay(_INTL("{1} became confused!",battler.pbThis))
@@ -1103,7 +1350,7 @@ class PokeBattle_Battle
             pbCommonAnimation("StatUp",battler,nil)
             pbDisplay(_INTL("{1}'s Synthetic Seed boosted its Special Attack!",
               battler.pbThis))
-          end            
+          end
           battler.effects[PBEffects::LaserFocus]=2
           pbAnimation(658,battler,nil) # Laser Focus Animation
           pbDisplay(_INTL("{1} is focused!",battler.pbThis))
@@ -1187,20 +1434,20 @@ class PokeBattle_Battle
           battler.pokemon.itemRecycle=battler.item
           battler.pokemon.itemInitial=0 if battler.pokemon.itemInitial==battler.item
           battler.item=0
-        when 44 #Colosseum Field  
-          if !battler.pbTooHigh?(PBStats::ATTACK)  
-            battler.pbIncreaseStatBasic(PBStats::ATTACK,2)  
-            pbCommonAnimation("StatUp",battler,nil) if !boost  
-            pbDisplay(_INTL("{1}'s Synthetic Seed boosted its Attack!",  
-              battler.pbThis))  
-          end  
-          if battler.effects[PBEffects::Taunt]==0    
-            pbAnimation(49,battler,nil) # Taunt Animation  
-            battler.effects[PBEffects::Taunt]=4  
-            pbDisplayPaused(_INTL("{1} feels taunted!",battler.pbThis(true)))  
-          end  
-          battler.pokemon.itemRecycle=battler.item  
-          battler.pokemon.itemInitial=0 if battler.pokemon.itemInitial==battler.item  
+        when 44 #Colosseum Field
+          if !battler.pbTooHigh?(PBStats::ATTACK)
+            battler.pbIncreaseStatBasic(PBStats::ATTACK,2)
+            pbCommonAnimation("StatUp",battler,nil) if !boost
+            pbDisplay(_INTL("{1}'s Synthetic Seed boosted its Attack!",
+              battler.pbThis))
+          end
+          if battler.effects[PBEffects::Taunt]==0
+            pbAnimation(49,battler,nil) # Taunt Animation
+            battler.effects[PBEffects::Taunt]=4
+            pbDisplayPaused(_INTL("{1} feels taunted!",battler.pbThis(true)))
+          end
+          battler.pokemon.itemRecycle=battler.item
+          battler.pokemon.itemInitial=0 if battler.pokemon.itemInitial==battler.item
           battler.item=0
         when 50 # Library Field
           if battler.effects[PBEffects::FocusEnergy] < 3
@@ -1211,7 +1458,7 @@ class PokeBattle_Battle
           battler.pokemon.itemRecycle=battler.item
           battler.pokemon.itemInitial=0 if battler.pokemon.itemInitial==battler.item
           battler.item=0
-        end        
+        end
       elsif isConst?(battler.item, PBItems, :TELLURICSEED)
         case $fefieldeffect
         when 8 #Swamp Field
@@ -1270,9 +1517,9 @@ class PokeBattle_Battle
             pbDisplay(_INTL("{1}'s Telluric Seed boosted its Special Defense, Defense, and Speed!",
               battler.pbThis))
           end
-          battler.effects[PBEffects::MultiTurn]=4          
+          battler.effects[PBEffects::MultiTurn]=4
           battler.effects[PBEffects::MultiTurnAttack]=232
-          battler.effects[PBEffects::MultiTurnUser]=battler.index 
+          battler.effects[PBEffects::MultiTurnUser]=battler.index
           pbAnimation(232,battler,nil) # Sand Tomb Animation
           pbDisplayPaused(_INTL("{1} was trapped by Sand Tomb!",battler.pbThis(true)))
           battler.pokemon.itemRecycle=battler.item
@@ -1295,7 +1542,7 @@ class PokeBattle_Battle
               battler.pbThis))
           end
           if !battler.hasWorkingAbility(:MAGICGUARD)
-            atype=getConst(PBTypes,:ROCK) || 0         
+            atype=getConst(PBTypes,:ROCK) || 0
             eff=PBTypes.getCombinedEffectiveness(atype,battler.type1,battler.type2)
             if eff>0
               eff = eff*2
@@ -1307,7 +1554,7 @@ class PokeBattle_Battle
           end
           battler.pokemon.itemRecycle=battler.item
           battler.pokemon.itemInitial=0 if battler.pokemon.itemInitial==battler.item
-          battler.item=0 
+          battler.item=0
         when 15 #Forest Field
           if !battler.pbTooHigh?(PBStats::ATTACK)
             battler.pbIncreaseStatBasic(PBStats::ATTACK,1)
@@ -1418,13 +1665,13 @@ class PokeBattle_Battle
             battler.pbIncreaseStatBasic(PBStats::SPATK,1)
             pbCommonAnimation("StatUp",battler,nil)
             pbDisplay(_INTL("{1}'s Telluric Seed boosted its Special Attack!",
-              battler.pbThis)) 
-          end                      
+              battler.pbThis))
+          end
           if !battler.pbTooLow?(PBStats::ACCURACY)
             battler.pbIncreaseStatBasic(PBStats::ACCURACY,1)
             pbCommonAnimation("StatDown",battler,nil)
             pbDisplay(_INTL("{1}'s Telluric Seed lowered its Accuracy!",
-              battler.pbThis)) 
+              battler.pbThis))
           end
           battler.pokemon.itemRecycle=battler.item
           battler.pokemon.itemInitial=0 if battler.pokemon.itemInitial==battler.item
@@ -1445,9 +1692,9 @@ class PokeBattle_Battle
             pbDisplay(_INTL("{1}'s Telluric Seed boosted its Speed and Accuracy!",
               battler.pbThis))
           end
-          battler.effects[PBEffects::MultiTurn]=4          
+          battler.effects[PBEffects::MultiTurn]=4
           battler.effects[PBEffects::MultiTurnAttack]=232
-          battler.effects[PBEffects::MultiTurnUser]=battler.index 
+          battler.effects[PBEffects::MultiTurnUser]=battler.index
           pbAnimation(232,battler,nil) # Sand Tomb Animation
           pbDisplayPaused(_INTL("{1} was trapped by Sand Tomb!",battler.pbThis(true)))
           battler.pokemon.itemRecycle=battler.item
@@ -1465,7 +1712,7 @@ class PokeBattle_Battle
           spdBoost = battler.speed
           boostStat = [aBoost,dBoost,saBoost,sdBoost,spdBoost].max
           case boostStat
-          when aBoost            
+          when aBoost
             if !battler.pbTooHigh?(PBStats::ATTACK)
               pbCommonAnimation("StatUp",battler,nil)
               battler.pbIncreaseStatBasic(PBStats::ATTACK,increment)
@@ -1503,7 +1750,7 @@ class PokeBattle_Battle
       end
     end
   end
- 
+
 ################################################################################
 # Get battler info.
 ################################################################################
@@ -1511,15 +1758,28 @@ class PokeBattle_Battle
     return (index%2)==1
   end
 
+  def pbGetOwnerIndexFromBattlerIndex(battlerIndex)
+    owners = pbIsOpposing?(battlerIndex) ? @opponent : @player
+    return 0 if !owners || !owners.is_a?(Array) || owners.length <= 1
+    sideSize = pbSideSize(battlerIndex)
+    sidePosition = pbSidePosition(battlerIndex)
+    if owners.length == 2
+      return 0 if sideSize <= 1
+      return sidePosition if sideSize == 2
+      return (sidePosition >= sideSize - 1) ? 1 : 0
+    end
+    return [sidePosition, owners.length - 1].min
+  end
+
   def pbOwnedByPlayer?(index)
     return false if pbIsOpposing?(index)
     # If switch 2030 is ON, player controls partner Pokemon
-    return false if @player.is_a?(Array) && index==2 && !$game_switches[2030]
+    return false if @player.is_a?(Array) && pbGetOwnerIndexFromBattlerIndex(index) > 0 && !$game_switches[2030]
     return true
   end
 
   def pbIsDoubleBattler?(index)
-    return (index>=2)
+    return pbSidePosition(index)>0
   end
 
   def pbThisEx(battlerindex,pokemonindex)
@@ -1537,7 +1797,7 @@ class PokeBattle_Battle
     end
   end
 
-# Checks whether an item can be removed from a Pokémon.
+# Checks whether an item can be removed from a PokÃ©mon.
   def pbIsUnlosableItem(pkmn,item)
     return true if pbIsMail?(item)
     return true if pbIsZCrystal?(item)
@@ -1561,7 +1821,7 @@ class PokeBattle_Battle
         isConst?(item,PBItems,:MINDPLATE) ||
         isConst?(item,PBItems,:ICICLEPLATE) ||
         isConst?(item,PBItems,:DRACOPLATE) ||
-        isConst?(item,PBItems,:PIXIEPLATE) || 
+        isConst?(item,PBItems,:PIXIEPLATE) ||
         isConst?(item,PBItems,:DREADPLATE))
       return true
     end
@@ -1581,10 +1841,10 @@ class PokeBattle_Battle
         isConst?(item,PBItems,:PSYCHICMEMORY) ||
         isConst?(item,PBItems,:ICEMEMORY) ||
         isConst?(item,PBItems,:DRAGONMEMORY) ||
-        isConst?(item,PBItems,:FAIRYMEMORY) || 
+        isConst?(item,PBItems,:FAIRYMEMORY) ||
         isConst?(item,PBItems,:DARKMEMORY))
       return true
-    end    
+    end
     if isConst?(pkmn.species,PBSpecies,:GIRATINA) &&
        isConst?(item,PBItems,:GRISEOUSORB)
       return true
@@ -1689,19 +1949,19 @@ class PokeBattle_Battle
        (isConst?(item,PBItems,:MEWTWONITEX) ||
         isConst?(item,PBItems,:MEWTWONITEY))
       return true
-    end  
+    end
     if isConst?(pkmn.species,PBSpecies,:PINSIR) &&
        isConst?(item,PBItems,:PINSIRITE)
       return true
-    end  
+    end
     if isConst?(pkmn.species,PBSpecies,:SCIZOR) &&
        isConst?(item,PBItems,:SCIZORITE)
       return true
-    end  
+    end
     if isConst?(pkmn.species,PBSpecies,:TYRANITAR) &&
        isConst?(item,PBItems,:TYRANITARITE)
       return true
-    end  
+    end
     if isConst?(pkmn.species,PBSpecies,:BEEDRILL) &&
        isConst?(item,PBItems,:BEEDRILLITE)
       return true
@@ -1797,7 +2057,7 @@ class PokeBattle_Battle
 
 
   def pbCheckGlobalAbility(a)
-    for i in 0...4 # in order from own first, opposing first, own second, opposing second
+    for i in 0..maxBattlerIndex # in order from own first, opposing first, own second, opposing second
       if @battlers[i].ability == getConst(PBAbilities,a)
         return @battlers[i] if @battlers[i].hasWorkingAbility(a)
       end
@@ -1808,9 +2068,9 @@ class PokeBattle_Battle
   def SilvallyCheck(mon, type)
     if !isConst?(mon.species,PBSpecies,:SILVALLY)
       return false
-    end  
+    end
     if mon.is_a? PokeBattle_Battler
-      if pbOwnedByPlayer?(mon.index) && !$PokemonBag.pbHasItem?(:SILVCREST) 
+      if pbOwnedByPlayer?(mon.index) && !$PokemonBag.pbHasItem?(:SILVCREST)
         return false
       end
       if type == PBTypes::FIRE && mon.hasWorkingItem(:FIREMEMORY)
@@ -1847,19 +2107,19 @@ class PokeBattle_Battle
         return true
       end
       # In case no memory
-      if type == PBTypes::NORMAL && 
-       !(mon.hasWorkingItem(:FIREMEMORY) || mon.hasWorkingItem(:WATERMEMORY) || 
-       mon.hasWorkingItem(:GRASSMEMORY) || mon.hasWorkingItem(:ELECTRICMEMORY) || 
-       mon.hasWorkingItem(:ICEMEMORY) || mon.hasWorkingItem(:DRAGONMEMORY) || 
-       mon.hasWorkingItem(:PSYCHICMEMORY) || mon.hasWorkingItem(:DARKMEMORY) || 
-       mon.hasWorkingItem(:POISONMEMORY) || mon.hasWorkingItem(:GHOSTMEMORY) || 
+      if type == PBTypes::NORMAL &&
+       !(mon.hasWorkingItem(:FIREMEMORY) || mon.hasWorkingItem(:WATERMEMORY) ||
+       mon.hasWorkingItem(:GRASSMEMORY) || mon.hasWorkingItem(:ELECTRICMEMORY) ||
+       mon.hasWorkingItem(:ICEMEMORY) || mon.hasWorkingItem(:DRAGONMEMORY) ||
+       mon.hasWorkingItem(:PSYCHICMEMORY) || mon.hasWorkingItem(:DARKMEMORY) ||
+       mon.hasWorkingItem(:POISONMEMORY) || mon.hasWorkingItem(:GHOSTMEMORY) ||
        mon.hasWorkingItem(:FIGHTINGMEMORY) || mon.hasWorkingItem(:BUGMEMORY) ||
-       mon.hasWorkingItem(:FAIRYMEMORY) || mon.hasWorkingItem(:GROUNDMEMORY) || 
+       mon.hasWorkingItem(:FAIRYMEMORY) || mon.hasWorkingItem(:GROUNDMEMORY) ||
        mon.hasWorkingItem(:ROCKMEMORY) || mon.hasWorkingItem(:STEELMEMORY))
         return true
       end
     elsif mon.is_a? PokeBattle_Pokemon
-      if @party1.include?(mon) && !$PokemonBag.pbHasItem?(:SILVCREST) 
+      if @party1.include?(mon) && !$PokemonBag.pbHasItem?(:SILVCREST)
         return false
       end
       if type == PBTypes::FIRE && mon.item == PBItems::FIREMEMORY
@@ -1896,14 +2156,14 @@ class PokeBattle_Battle
         return true
       end
       # In case no memory
-      if type == PBTypes::NORMAL && 
-       !(mon.hasWorkingItem(:FIREMEMORY) || mon.hasWorkingItem(:WATERMEMORY) || 
-       mon.hasWorkingItem(:GRASSMEMORY) || mon.hasWorkingItem(:ELECTRICMEMORY) || 
-       mon.hasWorkingItem(:ICEMEMORY) || mon.hasWorkingItem(:DRAGONMEMORY) || 
-       mon.hasWorkingItem(:PSYCHICMEMORY) || mon.hasWorkingItem(:DARKMEMORY) || 
-       mon.hasWorkingItem(:POISONMEMORY) || mon.hasWorkingItem(:GHOSTMEMORY) || 
+      if type == PBTypes::NORMAL &&
+       !(mon.hasWorkingItem(:FIREMEMORY) || mon.hasWorkingItem(:WATERMEMORY) ||
+       mon.hasWorkingItem(:GRASSMEMORY) || mon.hasWorkingItem(:ELECTRICMEMORY) ||
+       mon.hasWorkingItem(:ICEMEMORY) || mon.hasWorkingItem(:DRAGONMEMORY) ||
+       mon.hasWorkingItem(:PSYCHICMEMORY) || mon.hasWorkingItem(:DARKMEMORY) ||
+       mon.hasWorkingItem(:POISONMEMORY) || mon.hasWorkingItem(:GHOSTMEMORY) ||
        mon.hasWorkingItem(:FIGHTINGMEMORY) || mon.hasWorkingItem(:BUGMEMORY) ||
-       mon.hasWorkingItem(:FAIRYMEMORY) || mon.hasWorkingItem(:GROUNDMEMORY) || 
+       mon.hasWorkingItem(:FAIRYMEMORY) || mon.hasWorkingItem(:GROUNDMEMORY) ||
        mon.hasWorkingItem(:ROCKMEMORY) || mon.hasWorkingItem(:STEELMEMORY))
         return true
       end
@@ -1911,7 +2171,7 @@ class PokeBattle_Battle
 
     return false
   end
-  
+
 ################################################################################
 # Player-related info.
 ################################################################################
@@ -1927,7 +2187,8 @@ class PokeBattle_Battle
     return [] if !@items
     if pbIsOpposing?(battlerIndex)
       if @opponent.is_a?(Array)
-        return (battlerIndex==1) ? @items[0] : @items[1]
+        ownerIndex = pbGetOwnerIndexFromBattlerIndex(battlerIndex)
+        return @items[ownerIndex] || @items[0] || []
       else
         return @items
       end
@@ -1951,7 +2212,7 @@ class PokeBattle_Battle
         next if !hasConst?(PBItems,i)
         for k in ringsB
           return PBItems.getName(k) if $PokemonBag.pbQuantity(k)>0
-        end        
+        end
       end
     end
     # Add your own Mega objects for particular trainer types here
@@ -1959,8 +2220,8 @@ class PokeBattle_Battle
 #      return _INTL("Mega Net")
 #    end
     return _INTL("Mega Ring")
-  end  
-  
+  end
+
   def pbHasMegaRing(battlerIndex)
     return true if !pbBelongsToPlayer?(battlerIndex)
     rings=[:MEGARING,:MEGABRACELET,:MEGACUFF,:MEGACHARM]
@@ -1969,8 +2230,8 @@ class PokeBattle_Battle
       return true if $PokemonBag.pbQuantity(i)>0
     end
     return false
-  end   
-  
+  end
+
   def pbHasZRing(battlerIndex)
     return true if !pbBelongsToPlayer?(battlerIndex)
     rings=[:MEGARING,:MEGABRACELET,:MEGACUFF,:MEGACHARM]
@@ -1979,8 +2240,8 @@ class PokeBattle_Battle
       return true if $PokemonBag.pbQuantity(i)>0
     end
     return false
-  end    
-  
+  end
+
 ################################################################################
 # Get party info, manipulate parties.
 ################################################################################
@@ -2003,8 +2264,9 @@ class PokeBattle_Battle
 
     party = pbParty(battlerIndex)
     secondParty = pbSecondPartyBegin(battlerIndex)
-    start = (battlerIndex == 0) ? 0 : secondParty
-    finish = (battlerIndex == 0) ? secondParty : party.length
+    ownerIndex = pbGetOwnerIndexFromBattlerIndex(battlerIndex)
+    start = (ownerIndex == 0) ? 0 : secondParty
+    finish = (ownerIndex == 0) ? secondParty : party.length
 
     for i in start...finish
       next if !party[i]
@@ -2018,10 +2280,11 @@ class PokeBattle_Battle
     owner=(pbIsOpposing?(index)) ? @opponent : @player
     maxlevel=0
     if owner.is_a?(Array)
-      start=0
-      limit=pbSecondPartyBegin(index)
-      start=limit if pbIsDoubleBattler?(index)
-      for i in start...start+limit
+      split=pbSecondPartyBegin(index)
+      ownerIndex = pbGetOwnerIndexFromBattlerIndex(index)
+      start = (ownerIndex == 0) ? 0 : split
+      finish = (ownerIndex == 0) ? split : party.length
+      for i in start...finish
         next if !party[i]
         maxlevel=party[i].level if maxlevel<party[i].level
       end
@@ -2032,8 +2295,8 @@ class PokeBattle_Battle
       end
     end
     return maxlevel
-  end    
-  
+  end
+
   def pbMaxLevel(party)
     lv=0
     for i in party
@@ -2064,9 +2327,84 @@ class PokeBattle_Battle
     return -1
   end
 
+  def pbActiveBattlerIndicesForSide(opposing)
+    side = opposing ? 1 : 0
+    ret = []
+    for position in 0...@sideSizes[side]
+      ret.push(pbBattlerIndex(side,position))
+    end
+    return ret
+  end
+
+  def pbCommandPhaseBattlers
+    return pbActiveBattlerIndicesForSide(false) + pbActiveBattlerIndicesForSide(true)
+  end
+
+  def pbOwnerActiveBattlerIndices(opposing,ownerIndex)
+    ret = []
+    pbActiveBattlerIndicesForSide(opposing).each do |battlerIndex|
+      ret.push(battlerIndex) if pbGetOwnerIndexFromBattlerIndex(battlerIndex)==ownerIndex
+    end
+    return ret
+  end
+
+  def pbOwnedPartyRangeForSideOwner(opposing,ownerIndex)
+    party = opposing ? @party2 : @party1
+    secondParty = [pbSecondPartyBegin(opposing ? 1 : 0),party.length].min
+    owners = opposing ? @opponent : @player
+    return 0,party.length if !owners || !owners.is_a?(Array) || owners.length<=1
+    return (ownerIndex==0) ? [0,secondParty] : [secondParty,party.length]
+  end
+
+  def pbSetBlankBattler(index)
+    @battlers[index].pbInitBlank
+    @battlers[index].fainted = true
+    @choices[index] = [0,0,nil,-1] if @choices[index]
+  end
+
+  def pbPrepareTrainerSideSendOuts(opposing)
+    sideIndices = pbActiveBattlerIndicesForSide(opposing)
+    party = opposing ? @party2 : @party1
+    owners = opposing ? @opponent : @player
+    sendouts = []
+    sideIndices.each { |battlerIndex| pbSetBlankBattler(battlerIndex) }
+    if owners && owners.is_a?(Array)
+      owners.each_with_index do |owner,ownerIndex|
+        ownerSent = 0
+        ownerIndices = pbOwnerActiveBattlerIndices(opposing,ownerIndex)
+        next if ownerIndices.length==0
+        startIdx,endIdx = pbOwnedPartyRangeForSideOwner(opposing,ownerIndex)
+        nextSearch = startIdx
+        ownerIndices.each do |battlerIndex|
+          sendout = pbFindNextUnfainted(party,nextSearch,endIdx)
+          next if sendout<0
+          @battlers[battlerIndex].pbInitialize(party[sendout],sendout,false)
+          sendouts.push([battlerIndex,sendout,owner])
+          nextSearch = sendout+1
+          ownerSent += 1
+        end
+        ownerName = (owner && owner.respond_to?(:fullname)) ? owner.fullname : _INTL("Trainer")
+        raise _INTL("{1} has no unfainted PokÃ©mon",ownerName) if ownerSent==0
+      end
+    else
+      nextSearch = 0
+      sideIndices.each do |battlerIndex|
+        sendout = pbFindNextUnfainted(party,nextSearch)
+        next if sendout<0
+        @battlers[battlerIndex].pbInitialize(party[sendout],sendout,false)
+        sendouts.push([battlerIndex,sendout,owners])
+        nextSearch = sendout+1
+      end
+      if sendouts.length==0
+        raise _INTL(opposing ? "Trainer has no unfainted PokÃ©mon" : "Player has no unfainted PokÃ©mon")
+      end
+    end
+    return sendouts
+  end
+
   def pbFindPlayerBattler(pkmnIndex)
     battler=nil
-    for k in 0...4
+    eachActiveBattlerIndex do |k|
       if !pbIsOpposing?(k) && @battlers[k].pokemonIndex==pkmnIndex
         battler=@battlers[k]
         break
@@ -2079,27 +2417,27 @@ class PokeBattle_Battle
     secondParty=pbSecondPartyBegin(battlerIndex)
     if !pbIsOpposing?(battlerIndex)
       return true if !@player || !@player.is_a?(Array)
-      # If partner control is enabled, battler 2 can only switch with partner's Pokemon (>= secondParty)
-      if $game_switches[2030] && battlerIndex==2
+      ownerIndex = pbGetOwnerIndexFromBattlerIndex(battlerIndex)
+      if $game_switches[2030] && ownerIndex > 0
         return partyIndex>=secondParty
       end
-      return (battlerIndex==0) ? partyIndex<secondParty : partyIndex>=secondParty
+      return (ownerIndex==0) ? partyIndex<secondParty : partyIndex>=secondParty
     else
       return true if !@opponent || !@opponent.is_a?(Array)
-      return (battlerIndex==1) ? partyIndex<secondParty : partyIndex>=secondParty
+      return (pbGetOwnerIndexFromBattlerIndex(battlerIndex)==0) ? partyIndex<secondParty : partyIndex>=secondParty
     end
   end
 
   def pbGetOwner(battlerIndex)
     if pbIsOpposing?(battlerIndex)
       if @opponent.is_a?(Array)
-        return (battlerIndex==1) ? @opponent[0] : @opponent[1]
+        return @opponent[pbGetOwnerIndexFromBattlerIndex(battlerIndex)] || @opponent[0]
       else
         return @opponent
       end
     else
       if @player.is_a?(Array)
-        return (battlerIndex==0) ? @player[0] : @player[1]
+        return @player[pbGetOwnerIndexFromBattlerIndex(battlerIndex)] || @player[0]
       else
         return @player
       end
@@ -2109,13 +2447,17 @@ class PokeBattle_Battle
   def pbGetOwnerPartner(battlerIndex)
     if pbIsOpposing?(battlerIndex)
       if @opponent.is_a?(Array)
-        return (battlerIndex==1) ? @opponent[1] : @opponent[0]
+        ownerIndex = pbGetOwnerIndexFromBattlerIndex(battlerIndex)
+        partnerIndex = (ownerIndex == 0) ? 1 : 0
+        return @opponent[partnerIndex] || @opponent[ownerIndex]
       else
         return @opponent
       end
     else
       if @player.is_a?(Array)
-        return (battlerIndex==0) ? @player[1] : @player[0]
+        ownerIndex = pbGetOwnerIndexFromBattlerIndex(battlerIndex)
+        partnerIndex = (ownerIndex == 0) ? 1 : 0
+        return @player[partnerIndex] || @player[ownerIndex]
       else
         return @player
       end
@@ -2123,20 +2465,12 @@ class PokeBattle_Battle
   end
 
   def pbGetOwnerIndex(battlerIndex)
-    if pbIsOpposing?(battlerIndex)
-      return (@opponent.is_a?(Array)) ? ((battlerIndex==1) ? 0 : 1) : 0
-    else
-      return (@player.is_a?(Array)) ? ((battlerIndex==0) ? 0 : 1) : 0
-    end
+    return pbGetOwnerIndexFromBattlerIndex(battlerIndex)
   end
 
   def pbBelongsToPlayer?(battlerIndex)
-    if @player.is_a?(Array) && @player.length>1
-      return battlerIndex==0
-    else
-      return (battlerIndex%2)==0
-    end
-    return false
+    return false if pbIsOpposing?(battlerIndex)
+    return pbGetOwnerIndexFromBattlerIndex(battlerIndex)==0
   end
 
   def pbPartyGetOwner(battlerIndex,partyIndex)
@@ -2164,7 +2498,7 @@ class PokeBattle_Battle
     if !side || !side.is_a?(Array) # Wild or single opponent
       party.compact!
       for i in battlerIndex...party.length
-        for j in 0..3
+        for j in 0...@battlers.length
           next if !@battlers[j]
           if pbGetOwner(j)==side && @battlers[j].pokemonIndex==i
             @battlers[j].pokemonIndex-=1
@@ -2192,13 +2526,14 @@ class PokeBattle_Battle
       end
     end
   end
-  
+
 ################################################################################
 # Check whether actions can be taken.
 ################################################################################
   def pbCanShowCommands?(idxPokemon)
     thispkmn=@battlers[idxPokemon]
     return false if thispkmn.isFainted?
+    return false if thispkmn.effects[PBEffects::Commander]
     return false if thispkmn.effects[PBEffects::TwoTurnAttack]>0
     return false if thispkmn.effects[PBEffects::HyperBeam]>0
     return false if thispkmn.effects[PBEffects::Rollout]>0
@@ -2206,15 +2541,15 @@ class PokeBattle_Battle
     return false if thispkmn.effects[PBEffects::Rage]==true && $fefieldeffect == 24
     return false if thispkmn.effects[PBEffects::Uproar]>0
     return false if thispkmn.effects[PBEffects::Bide]>0
-#### KUROTSUNE - 022 - START    
-    #return false if thispkmn.effects[PBEffects::SkyDrop]    
-#### KUROTSUNE - 022 - END    
+#### KUROTSUNE - 022 - START
+    #return false if thispkmn.effects[PBEffects::SkyDrop]
+#### KUROTSUNE - 022 - END
     return true
   end
-  
+
   def zMove
     return @zMove
-  end  
+  end
 
 ################################################################################
 # Attacking.
@@ -2229,6 +2564,17 @@ class PokeBattle_Battle
        !pbCanChooseMove?(idxPokemon,1,false) &&
        !pbCanChooseMove?(idxPokemon,2,false) &&
        !pbCanChooseMove?(idxPokemon,3,false)
+      if pbCanDracoTribute?(idxPokemon)
+        backup=pbRegisterDracoTribute(idxPokemon,true)
+        can_choose_draco=pbCanChooseMove?(idxPokemon,0,false)
+        if backup
+          for i in 0...4
+            @battlers[idxPokemon].moves[i]=backup[i]
+          end
+          @battlers[idxPokemon].pbDisableTributeDraco if @battlers[idxPokemon].respond_to?(:pbDisableTributeDraco)
+        end
+        return true if can_choose_draco
+      end
       return false
     end
     # Encore
@@ -2239,23 +2585,24 @@ class PokeBattle_Battle
   def pbCanChooseMove?(idxPokemon,idxMove,showMessages,sleeptalk=false)
     thispkmn=@battlers[idxPokemon]
     thismove=thispkmn.moves[idxMove]
-    opp1=thispkmn.pbOpposing1
-    opp2=thispkmn.pbOpposing2
     if (thispkmn.hasWorkingAbility(:MOLDBREAKER) || thispkmn.hasWorkingAbility(:TERAVOLT) || thispkmn.hasWorkingAbility(:TURBOBLAZE)) || (thispkmn.hasWorkingAbility(:SHADOWTAG) && $fefieldeffect==40)
-      opp1.moldbroken=true
-      opp2.moldbroken=true
+      thispkmn.opposingBattlers.each { |opp| opp.moldbroken=true if opp }
     elsif thispkmn.hasWorkingAbility(:CORROSION)
-      opp1.corroded=true
-      opp2.corroded=true
+      thispkmn.opposingBattlers.each { |opp| opp.corroded=true if opp }
     else
-      opp1.moldbroken=false
-      opp2.moldbroken=false  
-      opp1.corroded=false
-      opp2.corroded=false
-    end  
+      thispkmn.opposingBattlers.each do |opp|
+        next if !opp
+        opp.moldbroken=false
+        opp.corroded=false
+      end
+    end
     if !thismove||thismove.id==0
       return false
     end
+    tribute_icicle_status = defined?(pbTributeMoveMatches?) &&
+      pbTributeMoveMatches?(thispkmn,:ICICLETRIBUTE,thismove.id) && thismove.basedamage<=0
+    pixie_tribute_attack = thismove.respond_to?(:pixie_tribute_power) &&
+      thismove.pixie_tribute_power(thispkmn)>0
     if thismove.pp<=0 && thismove.totalpp>0 && !sleeptalk
       if showMessages
         pbDisplayPaused(_INTL("There's no PP left for this move!"))
@@ -2292,7 +2639,8 @@ class PokeBattle_Battle
       end
     end
 #### KUROTSUNE - 018 - START
-    if isConst?(thispkmn.item,PBItems,:ASSAULTVEST) && !(thismove.pbIsPhysical?(thismove.type) || thismove.pbIsSpecial?(thismove.type))
+    if isConst?(thispkmn.item,PBItems,:ASSAULTVEST) &&
+       !(thismove.pbIsPhysical?(thismove.type) || thismove.pbIsSpecial?(thismove.type) || pixie_tribute_attack)
         if showMessages
           pbDisplayPaused(_INTL("{1} doesn't allow use of non-attacking moves!",
              PBItems.getName(thispkmn.item)))
@@ -2301,15 +2649,15 @@ class PokeBattle_Battle
     end
 #### KUROTSUNE - 018 - END
 
-    if thispkmn.hasWorkingAbility(:ANGERPOINT) && thismove.basedamage==0
+    if thispkmn.hasWorkingAbility(:ANGERPOINT) && thismove.basedamage==0 && !pixie_tribute_attack
       if showMessages
         pbDisplayPaused(_INTL("{1}'s Anger Point doesn't allow use of status moves!",
             thispkmn.pbThis))
       end
       return false
     end
-    
-    if opp1.effects[PBEffects::Imprison]
+
+    if !tribute_icicle_status && opp1.effects[PBEffects::Imprison]
       if thismove.id==opp1.moves[0].id ||
          thismove.id==opp1.moves[1].id ||
          thismove.id==opp1.moves[2].id ||
@@ -2321,7 +2669,7 @@ class PokeBattle_Battle
         return false
       end
     end
-    if opp2.effects[PBEffects::Imprison]
+    if !tribute_icicle_status && opp2.effects[PBEffects::Imprison]
       if thismove.id==opp2.moves[0].id ||
          thismove.id==opp2.moves[1].id ||
          thismove.id==opp2.moves[2].id ||
@@ -2333,13 +2681,14 @@ class PokeBattle_Battle
         return false
       end
     end
-    if thispkmn.effects[PBEffects::Taunt]>0 && thismove.basedamage==0
+    if !tribute_icicle_status &&
+       thispkmn.effects[PBEffects::Taunt]>0 && thismove.basedamage==0 && !pixie_tribute_attack
       if showMessages
         pbDisplayPaused(_INTL("{1} can't use {2} after the Taunt!",thispkmn.pbThis,thismove.name))
       end
       return false
     end
-    if thispkmn.effects[PBEffects::Torment]
+    if !tribute_icicle_status && thispkmn.effects[PBEffects::Torment]
       if thismove.id==thispkmn.lastMoveUsed
         if showMessages
           pbDisplayPaused(_INTL("{1} can't use the same move in a row due to the torment!",thispkmn.pbThis))
@@ -2367,7 +2716,7 @@ class PokeBattle_Battle
       @choices[idxPokemon][2]=nil
       return
     end
-    if thispkmn.effects[PBEffects::Encore]>0 && 
+    if thispkmn.effects[PBEffects::Encore]>0 &&
        pbCanChooseMove?(idxPokemon,thispkmn.effects[PBEffects::EncoreIndex],false)
       PBDebug.log("[Auto choosing Encore move...]") if $INTERNAL
 	  enc_idx = thispkmn.effects[PBEffects::EncoreIndex]
@@ -2383,7 +2732,7 @@ class PokeBattle_Battle
 		@choices[idxPokemon][2]=enc_move
 		@choices[idxPokemon][3]=-1
 	  end
-      if @doublebattle
+      if !singleBattle?
         thismove=enc_move
         target=thispkmn.pbTarget(thismove)
         if target==PBTargets::SingleNonUser #&& ($fefieldeffect != 33 ||
@@ -2428,6 +2777,62 @@ class PokeBattle_Battle
 	return true
   end
 
+  def pbCanDracoTribute?(index)
+    battler=@battlers[index]
+    return false if !battler || battler.isFainted?
+    return false if !battler.respond_to?(:pbHasDracoTributeMove?) || !battler.pbHasDracoTributeMove?
+    return false if !battler.moves || !battler.moves[0] || battler.moves[0].id==0
+    return true
+  end
+
+  def pbRegisterDracoTribute(index,setup=false)
+    return nil if !pbCanDracoTribute?(index)
+    battler=@battlers[index]
+    if setup
+      backup=battler.moves.clone
+      battler.pbEnableTributeDraco
+      return backup
+    end
+    battler.pbDisableTributeDraco
+    return battler.moves.clone
+  end
+
+  def pbFindTributeChainMoveIndex(battler,move_name)
+    return nil if !battler || !move_name
+    for idx in 0...battler.moves.length
+      move=battler.moves[idx]
+      next if !move || move.id==0
+      next if move.name!=move_name
+      next if !pbCanChooseMove?(battler.index,idx,false)
+      return idx
+    end
+    return nil
+  end
+
+  def pbTriggerTributeChain(user,move)
+    return false if !user || !move
+    attacker_side=user.index % 2
+    @battlers.each do |ally|
+      next if !ally || ally.index==user.index
+      next if ally.index % 2 != attacker_side
+      next if ally.isFainted? || ally.hasMovedThisRound?
+      if @choices[ally.index][0]==1 && @choices[ally.index][2] &&
+         @choices[ally.index][2].name==move.name
+        ally.pbProcessTurn(@choices[ally.index])
+        return true
+      end
+      move_index=pbFindTributeChainMoveIndex(ally,move.name)
+      next if move_index.nil?
+      target=@choices[user.index][3]
+      target=-1 if target.nil?
+      followup=[1,move_index,ally.moves[move_index],target]
+      @choices[ally.index]=followup
+      ally.pbProcessTurn(followup)
+      return true
+    end
+    return false
+  end
+
 
 
   def pbChoseMove?(i,move)
@@ -2463,8 +2868,9 @@ class PokeBattle_Battle
     # -Then Items  (stored as priorityarray[i][1])
     # -Then speed (stored as priorityarray[i][2]) (trick room is applied by just making speed negative.)
     # -The last element is just the battler index (which is otherwise lost when sorting)
-    for i in 0..3
-      priorityarray[i] =[0,0,0,i] #initializes the array and stores the battler index
+    active_indices = activeBattlerIndices.find_all { |i| !@battlers[i].isFainted? }
+    active_indices.each do |i|
+      priorityarray.push([0,0,0,i]) #initializes the array and stores the battler index
       # Move priority
       pri=0
 	  if @choices[i][0]==1 # Is a move
@@ -2472,11 +2878,13 @@ class PokeBattle_Battle
 		  PBDebug.log("PRIORITY CHOICE NIL: i=#{i} choice=#{@choices[i].inspect}") if $INTERNAL
 		  next
 		end
+        pixie_attack = @choices[i][2].respond_to?(:pixie_tribute_power) &&
+                       @choices[i][2].pixie_tribute_power(@battlers[i])>0
 		pri=@choices[i][2].priority if !@choices[i][2].zmove  # Base move priority
-		pri+=1 if (!@battlers[i].abilitynulled && (@battlers[i].ability == PBAbilities::PRANKSTER)) && @choices[i][2].basedamage==0
+		pri+=1 if (!@battlers[i].abilitynulled && (@battlers[i].ability == PBAbilities::PRANKSTER)) && @choices[i][2].basedamage==0 && !pixie_attack
         pri+=1 if (!@battlers[i].abilitynulled && (@battlers[i].ability == PBAbilities::GALEWINGS)) && @choices[i][2].type==2 && ((@battlers[i].hp == @battlers[i].totalhp) || (($fefieldeffect == 16  || $fefieldeffect == 27 || $fefieldeffect == 28) && @weather == PBWeather::STRONGWINDS)) || $fefieldeffect == 43
         if (!@battlers[i].abilitynulled && (@battlers[i].ability == PBAbilities::TRIAGE))
-          pri+=3 if (PBStuff::HEALFUNCTIONS).include?(@choices[i][2].function)
+          pri+=3 if (PBStuff::HEALFUNCTIONS).include?(@choices[i][2].function) && !pixie_attack
         end
         if @battlers[i].hasWorkingAbility(:QUICKDRAW) && @battlers[i].turncount==1
           pri+=1
@@ -2485,116 +2893,84 @@ class PokeBattle_Battle
           pri+=1
         end
       end
-      for j in 0...4
+      active_indices.each do |j|
         if @battlers[j].ability == PBAbilities::HALCYON && pri>0
           pri=0
         end
       end
-      priorityarray[i][0]=pri
+      if @choices[i][0]==1 && @battlers[i].hasWorkingAbility(:LIMINAL) &&
+        @battlers[i].effects[PBEffects::LiminalStatusPriority] && @choices[i][2].basedamage==0
+        pri+=1
+      end
+      if @choices[i][0]==1 && @choices[i][2].isContactMove?
+        target=nil
+        if @choices[i][3] && @choices[i][3]>=0
+          target=@battlers[@choices[i][3]]
+        end
+        target=@battlers[i].pbPreferredOpposingTarget(nil,@choices[i][2]) if !target && @choices[i][2].target!=PBTargets::User
+        if target && target.hasWorkingAbility(:DEEPFREEZE) && pri>-1
+          pri=-1
+        end
+      end
+      priorityarray[-1][0]=pri
       #Item/stall priority (all items overwrite stall priority)
-      priorityarray[i][1] = -1 if !@battlers[i].abilitynulled && @battlers[i].ability == PBAbilities::STALL 
-      priorityarray[i][1] = 1 if @battlers[i].custap || (@battlers[i].itemWorks? && @battlers[i].item == PBItems::QUICKCLAW && (pbRandom(100)<20))
-      priorityarray[i][1] = -2 if (@battlers[i].itemWorks? && (@battlers[i].item == PBItems::LAGGINGTAIL || @battlers[i].item == PBItems::FULLINCENSE))
+      priorityarray[-1][1] = -1 if !@battlers[i].abilitynulled && @battlers[i].ability == PBAbilities::STALL
+      priorityarray[-1][1] = 1 if @battlers[i].custap || (@battlers[i].itemWorks? && @battlers[i].item == PBItems::QUICKCLAW && (pbRandom(100)<20))
+      priorityarray[-1][1] = -2 if (@battlers[i].itemWorks? && (@battlers[i].item == PBItems::LAGGINGTAIL || @battlers[i].item == PBItems::FULLINCENSE))
       #speed priority
-      priorityarray[i][2]    = @battlers[i].pbSpeed if @trickroom==0
-      priorityarray[i][2]    = -@battlers[i].pbSpeed if @trickroom>0
+      priorityarray[-1][2]    = @battlers[i].pbSpeed if @trickroom==0
+      priorityarray[-1][2]    = -@battlers[i].pbSpeed if @trickroom>0
     end
     priorityarray.sort!
     #Speed ties. Only works correctly if two pokemon speed tie
-    speedtie = []
-    for i in 0..2
-      for j in (i+1)..3
+    speedtie_limit = [priorityarray.length-1,0].max
+    for i in 0...speedtie_limit
+      for j in (i+1)...priorityarray.length
         if priorityarray[i][0]==priorityarray[j][0] && priorityarray[i][1]==priorityarray[j][1] && priorityarray[i][2]==priorityarray[j][2]
-          if pbRandom(2)==1 
+          if pbRandom(2)==1
             priorityarray[i],priorityarray[j] = priorityarray[j],priorityarray[i]
           end
         end
       end
     end
     priorityarray.reverse!
-    for i in 0..3
+    for i in 0...priorityarray.length
       @priority[i] = @battlers[priorityarray[i][3]]
     end
     @usepriority=true
     return @priority
   end
-  
+
 ##### KUROTSUNE - 011 - START
  # Makes target pokemon move last
   def pbMoveLast(target)
     priorityTarget = pbGetPriority(target)
     priority = @priority
-    case priorityTarget
-    when 0
-      # Opponent has likely already moved
-      return false
-    when 1
-      aux = priority[3]
-      priority[3] = target
-      priority[1] = aux
-      aux = priority[2]
-      priority[2] = priority[1]
-      priority[1] = aux
-      @priority = priority
-      return true
-    when 2
-      aux = priority[2]
-      priority[2] = priority[3]
-      priority[3] = aux
-      @priority = priority
-      return true
-    when 3
-      return false
-    end
+    return false if priorityTarget<0 || priorityTarget>=priority.length-1
+    battler = priority.delete_at(priorityTarget)
+    priority.push(battler)
+    @priority = priority
+    return true
   end
-  
-    
+
+
   # Makes the second pokemon move after the first.
   def pbMoveAfter(first, second)
     priorityFirst = pbGetPriority(first)
     priority = @priority
-    case priorityFirst
-    when 0
-      if second == priority[1] 
-        # Nothing to do here
-        return false
-      elsif second == priority[2]
-        aux = priority[1]
-        priority[1] = second
-        priority[2] = aux
-        @priority = priority
-        return true
-      elsif second == priority[3]
-        aux = priority[1]
-        priority[1] = second
-        priority[3] = aux
-        aux = priority[2]
-        priority[2] = priority[3]
-        priority[3] = aux
-        @priority = priority
-        return true
-      end
-    when 1
-      if second == priority[0] || second == priority[2]
-        # Nothing to do here
-        return false
-      elsif second == priority[3]
-        aux = priority[2]
-        priority[2] = priority[3]
-        priority[3] = aux
-        @priority = priority
-        return true
-      end
-    when 2
-      return false
-    when 3
-      return false
-    end
+    prioritySecond = pbGetPriority(second)
+    return false if priorityFirst<0 || prioritySecond<0
+    return false if prioritySecond==priorityFirst+1
+    battler = priority.delete_at(prioritySecond)
+    priorityFirst = priority.index(first)
+    priority.insert(priorityFirst+1,battler)
+    @priority = priority
+    return true
   end
 ##### KUROTSUNE - 011 - END
 
   def pbGetPriority(mon)
-    for i in 0..3
+    for i in 0...@priority.length
       if @priority[i] == mon
         return i
       end
@@ -2602,41 +2978,48 @@ class PokeBattle_Battle
     return -1
   end
 
-  
+
    def pbClearChoices(index)
     choices[index][0] = -1
     choices[index][1] = -1
     choices[index][2] = -1
     choices[index][3] = -1
-  end 
+  end
 ################################################################################
-# Switching Pokémon.
+# Switching PokÃ©mon.
 ################################################################################
   def pbCanSwitchLax?(idxPokemon,pkmnidxTo,showMessages)
+    if @battlers[idxPokemon].effects[PBEffects::Commandee]
+      pbDisplayPaused(_INTL("{1} can't be switched out!",@battlers[idxPokemon].pbThis)) if showMessages
+      return false
+    end
     if pkmnidxTo>=0
       party=pbParty(idxPokemon)
       return false if pkmnidxTo>=party.length
       return false if !party[pkmnidxTo]
       if party[pkmnidxTo].isEgg?
-        pbDisplayPaused(_INTL("An Egg can't battle!")) if showMessages 
+        pbDisplayPaused(_INTL("An Egg can't battle!")) if showMessages
         return false
       end
       if !pbIsOwner?(idxPokemon,pkmnidxTo)
         owner=pbPartyGetOwner(idxPokemon,pkmnidxTo)
-        pbDisplayPaused(_INTL("You can't switch {1}'s Pokémon with one of yours!",owner.name)) if showMessages 
+        pbDisplayPaused(_INTL("You can't switch {1}'s PokÃ©mon with one of yours!",owner.name)) if showMessages
         return false
       end
       if party[pkmnidxTo].hp<=0
-        pbDisplayPaused(_INTL("{1} has no energy left to battle!",party[pkmnidxTo].name)) if showMessages 
-        return false
-      end   
-      if @battlers[idxPokemon].pokemonIndex==pkmnidxTo
-        pbDisplayPaused(_INTL("{1} is already in battle!",party[pkmnidxTo].name)) if showMessages 
+        pbDisplayPaused(_INTL("{1} has no energy left to battle!",party[pkmnidxTo].name)) if showMessages
         return false
       end
-      if @battlers[idxPokemon].pbPartner.pokemonIndex==pkmnidxTo
-        pbDisplayPaused(_INTL("{1} is already in battle!",party[pkmnidxTo].name)) if showMessages 
+      if @battlers[idxPokemon].pokemonIndex==pkmnidxTo
+        pbDisplayPaused(_INTL("{1} is already in battle!",party[pkmnidxTo].name)) if showMessages
         return false
+      end
+      eachSameSideBattler(idxPokemon) do |battler|
+        next if battler.index==idxPokemon
+        if battler.pokemonIndex==pkmnidxTo
+          pbDisplayPaused(_INTL("{1} is already in battle!",party[pkmnidxTo].name)) if showMessages
+          return false
+        end
       end
     end
     return true
@@ -2647,7 +3030,15 @@ class PokeBattle_Battle
     return false if !pbCanSwitchLax?(idxPokemon,pkmnidxTo,showMessages)
     # UPDATE 11/16/2013
     # Ghost type can now escape from anything
-    if thispkmn.pbHasType?(:GHOST) && ($fefieldeffect!=38 || !(thispkmn.pbOpposing1.hasWorkingAbility(:SHADOWTAG) || thispkmn.pbOpposing2.hasWorkingAbility(:SHADOWTAG)) )
+    shadowTagFoe = false
+    eachOtherSideBattler(idxPokemon) do |battler|
+      next if battler.isFainted?
+      if battler.hasWorkingAbility(:SHADOWTAG)
+        shadowTagFoe = true
+        break
+      end
+    end
+    if thispkmn.pbHasType?(:GHOST) && ($fefieldeffect!=38 || !shadowTagFoe)
       return true
     end
     if thispkmn.hasWorkingAbility(:RUNAWAY)
@@ -2655,18 +3046,18 @@ class PokeBattle_Battle
     end
     isOpposing=pbIsOpposing?(idxPokemon)
     party=pbParty(idxPokemon)
-    for i in 0...4
+    eachActiveBattlerIndex do |i|
       next if isOpposing!=pbIsOpposing?(i)
       if choices[i][0]==2 && choices[i][1]==pkmnidxTo
-        pbDisplayPaused(_INTL("{1} has already been selected.",party[pkmnidxTo].name)) if showMessages 
+        pbDisplayPaused(_INTL("{1} has already been selected.",party[pkmnidxTo].name)) if showMessages
         return false
       end
     end
     return true if thispkmn.hasWorkingItem(:SHEDSHELL)
-    # Colosseum Field  
-    if $fefieldeffect == 44  
-      pbDisplayPaused(_INTL("{1} can't be switched out while on Colosseum Field!",thispkmn.pbThis)) if showMessages  
-      return false  
+    # Colosseum Field
+    if $fefieldeffect == 44
+      pbDisplayPaused(_INTL("{1} can't be switched out while on Colosseum Field!",thispkmn.pbThis)) if showMessages
+      return false
     end
     # Embargo
     if $fefieldeffect==38 && thispkmn.effects[PBEffects::Embargo]>0
@@ -2674,9 +3065,9 @@ class PokeBattle_Battle
       return false
     end
     # Multi-Turn Attacks/Mean Look
-    if thispkmn.effects[PBEffects::MultiTurn]>0 || 
-       thispkmn.effects[PBEffects::MeanLook]>=0 || 
-       (thispkmn.hasWorkingAbility(:MUMMY) && $fefieldeffect==40) || 
+    if thispkmn.effects[PBEffects::MultiTurn]>0 ||
+       thispkmn.effects[PBEffects::MeanLook]>=0 ||
+       (thispkmn.hasWorkingAbility(:MUMMY) && $fefieldeffect==40) ||
        field.effects[PBEffects::FairyLock]==1
       pbDisplayPaused(_INTL("{1} can't be switched out!",thispkmn.pbThis)) if showMessages
       return false
@@ -2691,20 +3082,20 @@ class PokeBattle_Battle
       pbDisplayPaused(_INTL("{1} can't be switched out!",thispkmn.pbThis)) if showMessages
       return false
     end
-    opp1=thispkmn.pbOpposing1
-    opp2=thispkmn.pbOpposing2
     opp=nil
-    if thispkmn.pbHasType?(:STEEL)
-      opp=opp1 if opp1.hasWorkingAbility(:MAGNETPULL)
-      opp=opp2 if opp2.hasWorkingAbility(:MAGNETPULL)
-    end
-    if !thispkmn.isAirborne?
-      opp=opp1 if opp1.hasWorkingAbility(:ARENATRAP)
-      opp=opp2 if opp2.hasWorkingAbility(:ARENATRAP)
-    end
-    if !thispkmn.hasWorkingAbility(:SHADOWTAG)
-      opp=opp1 if opp1.hasWorkingAbility(:SHADOWTAG)
-      opp=opp2 if opp2.hasWorkingAbility(:SHADOWTAG)
+    eachOtherSideBattler(idxPokemon) do |battler|
+      next if battler.isFainted?
+      if !opp && thispkmn.pbHasType?(:STEEL) && battler.hasWorkingAbility(:MAGNETPULL)
+        opp=battler
+        next
+      end
+      if !opp && !thispkmn.isAirborne? && battler.hasWorkingAbility(:ARENATRAP)
+        opp=battler
+        next
+      end
+      if !opp && !thispkmn.hasWorkingAbility(:SHADOWTAG) && battler.hasWorkingAbility(:SHADOWTAG)
+        opp=battler
+      end
     end
     if opp
       abilityname=PBAbilities.getName(opp.ability)
@@ -2724,8 +3115,9 @@ class PokeBattle_Battle
 
   def pbRegisterSwitch(idxPokemon,idxOther)
     return false if !pbCanSwitch?(idxPokemon,idxOther,false)
-    @choices[idxPokemon][0]=2          # "Switch Pokémon"
-    @choices[idxPokemon][1]=idxOther   # Index of other Pokémon to switch with
+    return false if !pbCanRegisterSwitchAction?(idxPokemon,false)
+    @choices[idxPokemon][0]=2          # "Switch PokÃ©mon"
+    @choices[idxPokemon][1]=idxOther   # Index of other PokÃ©mon to switch with
     @choices[idxPokemon][2]=nil
     side=(pbIsOpposing?(idxPokemon)) ? 1 : 0
     owner=pbGetOwnerIndex(idxPokemon)
@@ -2734,7 +3126,25 @@ class PokeBattle_Battle
     end
     if @zMove[side][owner]==idxPokemon
       @zMove[side][owner]=-1
-    end    
+    end
+    return true
+  end
+
+  def pbRegisterShift(idxPokemon,targetBattlerIndex)
+    return false if !pbCanShift?(idxPokemon,targetBattlerIndex,false)
+    targetBattler=@battlers[targetBattlerIndex]
+    @choices[idxPokemon][0]=2
+    @choices[idxPokemon][1]=targetBattler.pokemonIndex
+    @choices[idxPokemon][2]=:shift
+    @choices[idxPokemon][3]=targetBattlerIndex
+    side=(pbIsOpposing?(idxPokemon)) ? 1 : 0
+    owner=pbGetOwnerIndex(idxPokemon)
+    if @megaEvolution[side][owner]==idxPokemon
+      @megaEvolution[side][owner]=-1
+    end
+    if @zMove[side][owner]==idxPokemon
+      @zMove[side][owner]=-1
+    end
     return true
   end
 
@@ -2757,7 +3167,7 @@ class PokeBattle_Battle
       return if @decision>0
     end
   end
-  
+
   def pbSwitch(favorDraws=false)
     if !favorDraws
       return if @decision>0
@@ -2770,8 +3180,8 @@ class PokeBattle_Battle
     end
     firstbattlerhp=@battlers[0].hp
     switched=[]
-    for index in 0...4
-      next if (!@doublebattle && pbIsDoubleBattler?(index)) || (@sosbattle == 3 && index == 2)
+    activeBattlerIndices.each do |index|
+      next if @sosbattle == 3 && index == 2
       next if @battlers[index] && !@battlers[index].isFainted?
       next if !pbCanChooseNonActive?(index)
       if !pbOwnedByPlayer?(index)
@@ -2798,13 +3208,13 @@ class PokeBattle_Battle
               end
 #### JERICHO - 001 - END
             opponent=pbGetOwner(index)
-            if !@doublebattle && firstbattlerhp>0 && @shiftStyle && @opponent &&
+            if singleBattle? && firstbattlerhp>0 && @shiftStyle && @opponent &&
                 @internalbattle && pbCanChooseNonActive?(0) && pbIsOpposing?(index) &&
                 @battlers[0].effects[PBEffects::Outrage]==0
 #### JERICHO - 001 - START
                 pbDisplayPaused(_INTL("{1} is about to send in {2}.",opponent.fullname,newname)) #ILLUSION
 #### JERICHO - 001 - END
-              if pbDisplayConfirm(_INTL("Will {1} change Pokémon?",self.pbPlayer.name))
+              if pbDisplayConfirm(_INTL("Will {1} change PokÃ©mon?",self.pbPlayer.name))
                 newpoke=pbSwitchPlayer(0,true,true)
                 if newpoke>=0
                   pbDisplayBrief(_INTL("{1}, that's enough!  Come back!",@battlers[0].name))
@@ -2825,7 +3235,7 @@ class PokeBattle_Battle
         end
       else
         switch=false
-        if !pbDisplayConfirm(_INTL("Use next Pokémon?"))
+        if !pbDisplayConfirm(_INTL("Use next PokÃ©mon?"))
           switch=(pbRun(index,true)<=0)
         else
           switch=true
@@ -2852,7 +3262,7 @@ class PokeBattle_Battle
     @aiMoveMemory[1].clear if !pbIsOpposing?(index)
     pbSetSeen(pokemon)
     @peer.pbOnEnteringBattle(self,pokemon)
-    
+
     if isConst?(@battlers[index].species,PBSpecies,:MAGCARGO) &&
        isConst?(@battlers[index].item,PBItems,:MAGCREST)
       temp = @battlers[index].defense
@@ -2904,12 +3314,6 @@ class PokeBattle_Battle
        isConst?(@battlers[index].item,PBItems,:ARIACREST)
       @battlers[index].speed *= 1.5
     end
-    if isConst?(@battlers[index].species,PBSpecies,:TANGROWTH) &&
-       isConst?(@battlers[index].item,PBItems,:TANGROWTHCREST)
-      temp1 = @battlers[index].attack
-      @battlers[index].attack = @battlers[index].speed
-      @battlers[index].speed = temp1
-    end
     if isConst?(@battlers[index].ability,PBAbilities,:ILLUSORYSHROUD)
       temp = @battlers[index].defense
       @battlers[index].defense = @battlers[index].spdef
@@ -2920,7 +3324,7 @@ class PokeBattle_Battle
       temp1 = @battlers[index].attack
       @battlers[index].attack = @battlers[index].defense
       @battlers[index].defense = temp1
-      
+
       temp2 = @battlers[index].spatk
       @battlers[index].spatk = @battlers[index].spdef
       @battlers[index].spdef = temp2
@@ -2944,8 +3348,8 @@ class PokeBattle_Battle
         pbDisplay(_INTL("{1} gained strength from The Power of Friendship!",battlers[index].pbThis))
       end
     end
-    if pbIsOpposing?(index)   
-      #  in-battle text      
+    if pbIsOpposing?(index)
+      #  in-battle text
       @scene.pbTrainerSendOut(index,pokemon,@battlers[index])
       if isConst?(@battlers[index].species,PBSpecies,:PHIONE) &&
         isConst?(@battlers[index].item,PBItems,:PHIONECREST)
@@ -2982,14 +3386,14 @@ class PokeBattle_Battle
             pbDisplayPaused(_INTL("Cofagrigus' Attack, Defense and Sp. Def. rose!"))
           end
         end
-        if pbPokemonCount(@party2)==1 || (@doublebattle && pbPokemonCount(@party2)==2)
+        if pbPokemonCount(@party2) <= pbSideSize(1)
         # Define any trainers that you want to activate this script below
         # For each defined trainer, add the BELOW section for them
           if isConst?(trainertext.trainertype,PBTrainers,:POKEMONTRAINER_Kara)
             if $game_variables[226] == 0
               @scene.pbShowOpponent(0)
               pbDisplayPaused(_INTL("You're about to lose so bad!"))
-              @scene.pbHideOpponent 
+              @scene.pbHideOpponent
             elsif $game_variables[226] == 2
               @scene.pbShowOpponent(0)
               pbDisplayPaused(_INTL("Dammit, no way am I about to lose to you!"))
@@ -3007,191 +3411,191 @@ class PokeBattle_Battle
             if $game_variables[226] == 0
               @scene.pbShowOpponent(0)
               pbDisplayPaused(_INTL("I have to say, two battles in and I still don't enjoy it."))
-              @scene.pbHideOpponent 
+              @scene.pbHideOpponent
             end
           elsif isConst?(trainertext.trainertype,PBTrainers,:LUX)
             if $game_variables[226] == 0
               @scene.pbShowOpponent(0)
               pbDisplayPaused(_INTL("Now this is something else."))
-              @scene.pbHideOpponent 
+              @scene.pbHideOpponent
             end
           elsif isConst?(trainertext.trainertype,PBTrainers,:HANDMAIDEN)
             if $game_variables[226] == 0
               @scene.pbShowOpponent(0)
               pbDisplayPaused(_INTL("You may be talented, sure. But that means nothing."))
-              @scene.pbHideOpponent 
+              @scene.pbHideOpponent
             end
           elsif isConst?(trainertext.trainertype,PBTrainers,:HANDMAIDEN)
             if $game_variables[226] == 1
               @scene.pbShowOpponent(0)
               pbDisplayPaused(_INTL("Not again! I will not let this happen again!"))
-              @scene.pbHideOpponent 
+              @scene.pbHideOpponent
             end
           elsif isConst?(trainertext.trainertype,PBTrainers,:CONDUIT)
             if $game_variables[226] == 0
               @scene.pbShowOpponent(0)
               pbDisplayPaused(_INTL("How wonderful, being able to see my closest friend grow so much!"))
-              @scene.pbHideOpponent 
+              @scene.pbHideOpponent
             end
           elsif isConst?(trainertext.trainertype,PBTrainers,:ELDERCULTIST_Perrin)
             if $game_variables[226] == 0
               @scene.pbShowOpponent(0)
               pbBGMPlay("Battle! Elder Cultist",100,105)
               pbDisplayPaused(_INTL("What the hell is this?!"))
-              @scene.pbHideOpponent 
+              @scene.pbHideOpponent
             end
           elsif isConst?(trainertext.trainertype,PBTrainers,:ELDERCULTIST_Echo)
             if $game_variables[226] == 1
               @scene.pbShowOpponent(0)
               pbBGMPlay("Battle! Elder Cultist",100,105)
               pbDisplayPaused(_INTL("Maybe we can turn this one around?"))
-              @scene.pbHideOpponent 
+              @scene.pbHideOpponent
             end
           elsif isConst?(trainertext.trainertype,PBTrainers,:ELDERCULTIST_Doran)
             if $game_variables[226] == 0
               @scene.pbShowOpponent(0)
               pbBGMPlay("Battle! Elder Cultist",100,105)
               pbDisplayPaused(_INTL("Yeah, you lost any chance of me showin' you any mercy."))
-              @scene.pbHideOpponent 
+              @scene.pbHideOpponent
             end
           elsif isConst?(trainertext.trainertype,PBTrainers,:ELDERCULTIST_Hadien)
             if $game_variables[226] == 0
               @scene.pbShowOpponent(0)
               pbBGMPlay("Battle! Elder Cultist",100,105)
               pbDisplayPaused(_INTL("Now this brings a smile to my face."))
-              @scene.pbHideOpponent 
+              @scene.pbHideOpponent
             end
           elsif isConst?(trainertext.trainertype,PBTrainers,:MINERVA)
             if $game_variables[226] == 0
               @scene.pbShowOpponent(0)
               pbBGMPlay("Music - Don't Lose Hope!",100,100)
               pbDisplayPaused(_INTL("Oh, I might have just met my match."))
-              @scene.pbHideOpponent 
+              @scene.pbHideOpponent
             end
           elsif isConst?(trainertext.trainertype,PBTrainers,:AGRUS)
             if $game_variables[226] == 0
               @scene.pbShowOpponent(0)
               pbBGMPlay("Music - Don't Lose Hope!",100,100)
               pbDisplayPaused(_INTL("I ain't accepting a loss just yet!"))
-              @scene.pbHideOpponent 
+              @scene.pbHideOpponent
             end
           elsif isConst?(trainertext.trainertype,PBTrainers,:HYACINTH)
             if $game_variables[226] == 0
               @scene.pbShowOpponent(0)
               pbBGMPlay("Music - Don't Lose Hope!",100,100)
               pbDisplayPaused(_INTL("The end is within your grasp!"))
-              @scene.pbHideOpponent 
+              @scene.pbHideOpponent
             end
           elsif isConst?(trainertext.trainertype,PBTrainers,:LEADER_Four)
             if $game_variables[226] == 0
               @scene.pbShowOpponent(0)
               pbBGMPlay("Battle! Gym Leader",100,105)
               pbDisplayPaused(_INTL("Hold your applause, it's not over yet!"))
-              @scene.pbHideOpponent 
+              @scene.pbHideOpponent
             end
           elsif isConst?(trainertext.trainertype,PBTrainers,:LEADER_Five)
             if $game_variables[226] == 0
               @scene.pbShowOpponent(0)
               pbBGMPlay("Battle! Gym Leader",100,105)
               pbDisplayPaused(_INTL("The tides are dyin' down. Who's gonna be the one afloat?"))
-              @scene.pbHideOpponent 
+              @scene.pbHideOpponent
             end
           elsif isConst?(trainertext.trainertype,PBTrainers,:LEADER_Six)
             if $game_variables[226] == 0
               @scene.pbShowOpponent(0)
               pbBGMPlay("Battle! Gym Leader",100,105)
               pbDisplayPaused(_INTL("It's not too late for you to join us among the clouds."))
-              @scene.pbHideOpponent 
+              @scene.pbHideOpponent
             end
           elsif isConst?(trainertext.trainertype,PBTrainers,:LEADER_Seven)
             if $game_variables[226] == 0
               @scene.pbShowOpponent(0)
               pbBGMPlay("Battle! Elder Cultist",100,90)
               pbDisplayPaused(_INTL("Night falls. Is this the end?"))
-              @scene.pbHideOpponent 
+              @scene.pbHideOpponent
             end
           elsif isConst?(trainertext.trainertype,PBTrainers,:LEADER_Eight)
             if $game_variables[226] == 0
               @scene.pbShowOpponent(0)
               pbBGMPlay("Battle! Gym Leader",100,105)
               pbDisplayPaused(_INTL("How troublesome. I should've killed you when I had the chance."))
-              @scene.pbHideOpponent 
+              @scene.pbHideOpponent
             end
           elsif isConst?(trainertext.trainertype,PBTrainers,:LEADER_Nine)
             if $game_variables[226] == 0
               @scene.pbShowOpponent(0)
               pbBGMPlay("Battle! Gym Leader",100,105)
               pbDisplayPaused(_INTL("You've grown so much, old friend."))
-              @scene.pbHideOpponent 
+              @scene.pbHideOpponent
             end
           elsif isConst?(trainertext.trainertype,PBTrainers,:RESERVELEADER_1)
             if $game_variables[226] == 0
               @scene.pbShowOpponent(0)
               pbBGMPlay("Battle! Gym Leader",100,105)
               pbDisplayPaused(_INTL("What's happening to me?"))
-              @scene.pbHideOpponent 
+              @scene.pbHideOpponent
             end
           elsif isConst?(trainertext.trainertype,PBTrainers,:LEADER_Ten)
             if $game_variables[226] == 0
               @scene.pbShowOpponent(0)
               pbBGMPlay("Battle! Gym Leader",100,105)
               pbDisplayPaused(_INTL("Hah! I didn't think for a second that us old folk could shine a light to you kids."))
-              @scene.pbHideOpponent 
+              @scene.pbHideOpponent
             end
           elsif isConst?(trainertext.trainertype,PBTrainers,:RESERVELEADER_2)
             if $game_variables[226] == 0
               @scene.pbShowOpponent(0)
               pbBGMPlay("Battle! Gym Leader",100,105)
               pbDisplayPaused(_INTL("The future is changing. Can you feel it? How exciting, yet how harrowing it feels."))
-              @scene.pbHideOpponent 
+              @scene.pbHideOpponent
             end
           elsif isConst?(trainertext.trainertype,PBTrainers,:RESERVELEADER_3)
             if $game_variables[226] == 0
               @scene.pbShowOpponent(0)
               pbBGMPlay("Battle! Gym Leader",100,105)
               pbDisplayPaused(_INTL("Only one of us will be leaving here alive, and I don't intend to die just yet."))
-              @scene.pbHideOpponent 
+              @scene.pbHideOpponent
             end
           elsif isConst?(trainertext.trainertype,PBTrainers,:LEADER_ElevenA)
             if $game_variables[226] == 0
               @scene.pbShowOpponent(0)
               pbBGMPlay("Battle! Gym Leader",100,105)
               pbDisplayPaused(_INTL("Tch. The sun is nearly setting."))
-              @scene.pbHideOpponent 
+              @scene.pbHideOpponent
             end
           elsif isConst?(trainertext.trainertype,PBTrainers,:LEADER_ElevenB)
             if $game_variables[226] == 0
               @scene.pbShowOpponent(0)
               pbBGMPlay("Battle! Gym Leader",100,105)
               pbDisplayPaused(_INTL("Can you feel the moon's chill? This battle is nearing its end."))
-              @scene.pbHideOpponent 
+              @scene.pbHideOpponent
             end
           elsif isConst?(trainertext.trainertype,PBTrainers,:LEADER_Twelve)
             if $game_variables[226] == 0
               @scene.pbShowOpponent(0)
               pbBGMPlay("Battle! Gym Leader",100,105)
               pbDisplayPaused(_INTL("I do love a twist ending!"))
-              @scene.pbHideOpponent 
+              @scene.pbHideOpponent
             end
           elsif isConst?(trainertext.trainertype,PBTrainers,:MYRON2)
             if $game_variables[226] == 0
               @scene.pbShowOpponent(0)
               pbDisplayPaused(_INTL("This can't be happening, this can't be-"))
-              @scene.pbHideOpponent 
+              @scene.pbHideOpponent
             end
           elsif isConst?(trainertext.trainertype,PBTrainers,:CLOUDQUEEN)
             if $game_variables[226] == 0
               @scene.pbShowOpponent(0)
               pbDisplayPaused(_INTL("I've grown bored of this meaningless conflict."))
-              @scene.pbHideOpponent 
+              @scene.pbHideOpponent
             end
           elsif isConst?(trainertext.trainertype,PBTrainers,:ALCHEMIST)
             if $game_variables[226] == 0
               @scene.pbShowOpponent(0)
               pbDisplayPaused(_INTL("Damn, I said no hard feelings didn't I?"))
-              @scene.pbHideOpponent 
+              @scene.pbHideOpponent
             end
-          end 
+          end
         end
         # For each defined trainer, add the ABOVE section for them
       end
@@ -3285,7 +3689,7 @@ class PokeBattle_Battle
         end
       end
     end
-    @scene.partyBetweenKO2(!pbOwnedByPlayer?(index)) unless @doublebattle
+    @scene.partyBetweenKO2(!pbOwnedByPlayer?(index)) unless pbSideSize(index)>1
     return pbOnActiveOne(@battlers[index])
   end
 
@@ -3307,7 +3711,7 @@ class PokeBattle_Battle
           illusionpoke = party[party.length-1]
         end
       end #ILLUSION
-      newname = illusionpoke != nil ? illusionpoke.name : party[newpoke].name      
+      newname = illusionpoke != nil ? illusionpoke.name : party[newpoke].name
       opposing=@battlers[index].pbOppositeOpposing
       if opposing.hp<=0 || opposing.hp==opposing.totalhp
         pbDisplayBrief(_INTL("Go! {1}!",newname))
@@ -3318,7 +3722,7 @@ class PokeBattle_Battle
       else
         pbDisplayBrief(_INTL("Your foe's weak!\nGet 'em, {1}!",newname))
       end
-#### JERICHO - 001 - END      
+#### JERICHO - 001 - END
     else
 #     if !party[newpoke]
 #       p [index,newpoke,party[newpoke],pbAllFainted?(party)]
@@ -3328,7 +3732,7 @@ class PokeBattle_Battle
 #       end
 #       raise BattleAbortedException.new
 #     end
-#### JERICHO - 001 - START    
+#### JERICHO - 001 - START
       if isConst?(party[newpoke].ability,PBAbilities,:ILLUSION) #ILLUSION
         party2=party.find_all {|item| item && !item.egg? && item.hp>0 }
         if party2[party.length-1] != party[newpoke]
@@ -3340,9 +3744,9 @@ class PokeBattle_Battle
       else
         newname = illusionpoke != nil ? illusionpoke.name : party[newpoke].name #ILLUSION
       end
-      owner=pbGetOwner(index)      
+      owner=pbGetOwner(index)
       pbDisplayBrief(_INTL("{1} sent\r\nout {2}!",owner.fullname,newname)) #ILLUSION
-#### JERICHO - 001 - END      
+#### JERICHO - 001 - END
     end
   end
 
@@ -3370,11 +3774,8 @@ class PokeBattle_Battle
 
     # Adjust range for partner control
     if $game_switches[2030] && @player.is_a?(Array) && !pbIsOpposing?(index)
-      if index == 2
-        startIdx = pbSecondPartyBegin(index)
-      elsif index == 0
-        endIdx = pbSecondPartyBegin(0)
-      end
+      ownerIndex = pbGetOwnerIndexFromBattlerIndex(index)
+      startIdx,endIdx = pbOwnedPartyRangeForSideOwner(false,ownerIndex)
     end
 
     for i in startIdx...endIdx
@@ -3387,10 +3788,34 @@ class PokeBattle_Battle
     return -1
   end
 
+  def pbShiftBattlers(index1,index2)
+    return false if !pbCanShift?(index1,index2,false)
+    side=(pbIsOpposing?(index1)) ? 1 : 0
+    owner=pbGetOwnerIndex(index1)
+    if @megaEvolution[side][owner]==index1
+      @megaEvolution[side][owner]=index2
+    elsif @megaEvolution[side][owner]==index2
+      @megaEvolution[side][owner]=index1
+    end
+    if @zMove[side][owner]==index1
+      @zMove[side][owner]=index2
+    elsif @zMove[side][owner]==index2
+      @zMove[side][owner]=index1
+    end
+    @battlers[index1],@battlers[index2]=@battlers[index2],@battlers[index1]
+    @choices[index1],@choices[index2]=@choices[index2],@choices[index1]
+    @successStates[index1],@successStates[index2]=@successStates[index2],@successStates[index1]
+    @switchedOut[index1],@switchedOut[index2]=@switchedOut[index2],@switchedOut[index1]
+    @battlers[index1].instance_variable_set(:@index,index1)
+    @battlers[index2].instance_variable_set(:@index,index2)
+    @scene.pbShiftBattlers(index1,index2) if @scene && @scene.respond_to?(:pbShiftBattlers)
+    return true
+  end
+
 ################################################################################
 # Using an item.
 ################################################################################
-# Uses an item on a Pokémon in the player's party.
+# Uses an item on a PokÃ©mon in the player's party.
   def pbUseItemOnPokemon(item,pkmnIndex,userPkmn,scene)
     pokemon=@party1[pkmnIndex]
     battler=nil
@@ -3402,7 +3827,7 @@ class PokeBattle_Battle
     if pokemon.isEgg?
       pbDisplay(_INTL("But it had no effect!"))
     else
-      for i in 0...4
+      eachActiveBattlerIndex do |i|
         if !pbIsOpposing?(i) && @battlers[i].pokemonIndex==pkmnIndex
           battler=@battlers[i]
         end
@@ -3422,7 +3847,7 @@ class PokeBattle_Battle
     return ret
   end
 
-# Uses an item on an active Pokémon.
+# Uses an item on an active PokÃ©mon.
   def pbUseItemOnBattler(item,index,userPkmn,scene)
     PBDebug.log("[Player used #{PBItems.getName(item)}]")
     ret=ItemHandlers.triggerBattleUseOnBattler(item,@battlers[index],scene)
@@ -3445,7 +3870,7 @@ class PokeBattle_Battle
     if $game_switches[2030] && @player.is_a?(Array) && idxTarget
       secondPartyStart = pbSecondPartyBegin(idxPokemon)
       if idxTarget >= secondPartyStart
-        pbDisplay(_INTL("You can't use items on your partner's Pokémon!"))
+        pbDisplay(_INTL("You can't use items on your partner's PokÃ©mon!"))
         return false
       end
     end
@@ -3455,10 +3880,10 @@ class PokeBattle_Battle
         if ItemHandlers.triggerBattleUseOnBattler(idxItem,@battlers[idxPokemon],@scene)
           PBDebug.log("[BattleUseOnBattler returned true, calling UseInBattle]")
           ItemHandlers.triggerUseInBattle(idxItem,@battlers[idxPokemon],self)
-          if @doublebattle
+          if pbSideSize(0)>1
             @choices[idxPokemon+2][0]=3         # "Use an item"
             @choices[idxPokemon+2][1]=idxItem   # ID of item to be used
-            @choices[idxPokemon+2][2]=idxTarget # Index of Pokémon to use item on
+            @choices[idxPokemon+2][2]=idxTarget # Index of PokÃ©mon to use item on
           end
         else
           PBDebug.log("[BattleUseOnBattler returned false]")
@@ -3477,7 +3902,7 @@ class PokeBattle_Battle
     PBDebug.log("[Registering choice for Pokemon #{idxPokemon}]")
     @choices[idxPokemon][0]=3         # "Use an item"
     @choices[idxPokemon][1]=idxItem   # ID of item to be used
-    @choices[idxPokemon][2]=idxTarget # Index of Pokémon to use item on
+    @choices[idxPokemon][2]=idxTarget # Index of PokÃ©mon to use item on
     side=(pbIsOpposing?(idxPokemon)) ? 1 : 0
     owner=pbGetOwnerIndex(idxPokemon)
     if @megaEvolution[side][owner]==idxPokemon
@@ -3604,16 +4029,16 @@ class PokeBattle_Battle
       end
     elsif isConst?(item,PBItems,:REVIVE)
 #      battler.hp=(battler.totalhp/2).floor
-      pbDisplay(_INTL("{1} revived a fainted Pokémon!",opponent.fullname))
+      pbDisplay(_INTL("{1} revived a fainted PokÃ©mon!",opponent.fullname))
     elsif isConst?(item,PBItems,:MAXREVIVE) || isConst?(item,PBItems,:REVIVALHERB)
 #      battler.hp=battler.totalhp
-      pbDisplay(_INTL("{1} revived a fainted Pokémon!",opponent.fullname))
+      pbDisplay(_INTL("{1} revived a fainted PokÃ©mon!",opponent.fullname))
     elsif isConst?(item,PBItems,:SACREDASH)
 #      party=pbParty(1)
 #      for j in 0...party.length
 #        party[j].hp=party[j].totalhp if party[j].isFainted?
 #      end
-      pbDisplay(_INTL("{1} revived all fainted Pokémon!",opponent.fullname))
+      pbDisplay(_INTL("{1} revived all fainted PokÃ©mon!",opponent.fullname))
     end
   end
 
@@ -3636,7 +4061,7 @@ class PokeBattle_Battle
     if pbIsOpposing?(idxPokemon)
       return 0 if @opponent
       @choices[i][0]=5 # run
-      @choices[i][1]=0 
+      @choices[i][1]=0
       @choices[i][2]=nil
       return -1
     end
@@ -3681,13 +4106,13 @@ class PokeBattle_Battle
       return 0
     end
   if !$game_switches[1379] # Anti-running away switch.
-    if thispkmn.pbHasType?(:GHOST) 
+    if thispkmn.pbHasType?(:GHOST)
       pbSEPlay("Battle flee")
       pbDisplayPaused(_INTL("Got away safely!"))
       @decision=3
       return 1
     end
-    if thispkmn.hasWorkingItem(:SMOKEBALL) 
+    if thispkmn.hasWorkingItem(:SMOKEBALL)
       pbSEPlay("Battle flee")
       if duringBattle
         pbDisplayPaused(_INTL("Got away safely!"))
@@ -3716,12 +4141,12 @@ class PokeBattle_Battle
     speedPlayer=@battlers[idxPokemon].speed
     opposing=@battlers[idxPokemon].pbOppositeOpposing
     if opposing.isFainted?
-      opposing=opposing.pbPartner
+      opposing=@battlers[idxPokemon].opposingLivingBattlers[0]
     end
     if !opposing.isFainted?
       speedEnemy=opposing.speed
       if speedPlayer>speedEnemy
-        rate=256 
+        rate=256
       else
         speedEnemy=1 if speedEnemy<=0
         rate=speedPlayer*128/speedEnemy
@@ -3756,13 +4181,13 @@ class PokeBattle_Battle
     end
     return false if @battlers[index].hasmegad
     return false if (@battlers[index].isMega? && @battlers[index].hasmegad)
-    return false if !@battlers[index].hasMega? 
+    return false if !@battlers[index].hasMega?
     return false if !pbHasMegaRing(index)
-    if !@battlers[index].premega 
+    if !@battlers[index].premega
      side=(pbIsOpposing?(index)) ? 1 : 0
      owner=pbGetOwnerIndex(index)
      return false if @megaEvolution[side][owner]!=-1
-    end  
+    end
     return true
   end
 
@@ -3774,15 +4199,15 @@ class PokeBattle_Battle
       @battlers[index].effects[PBEffects::WillMega]=true
     end
   end
-  
+
   def pbCanMegaEvolveAI?(i,index)
     return false if $game_switches[NO_MEGA_EVOLUTION]
-    return false if !i.hasMegaForm? 
+    return false if !i.hasMegaForm?
     #return false if i.hasmegad
     return false if !pbHasMegaRing(index)
     side=1
     owner=pbGetOwnerIndex(index)
-    if !i.premega 
+    if !i.premega
       return false if @megaEvolution[side][owner]!=-1
     end
     return true
@@ -3795,7 +4220,7 @@ class PokeBattle_Battle
   #  return false if @megaEvolution[side][owner]!=-1
   #  return true
   #end
-  
+
   def pbMegaEvolve(index)
     return if !@battlers[index] || !@battlers[index].pokemon
     return if !(@battlers[index].hasMega? rescue false)
@@ -3810,13 +4235,13 @@ class PokeBattle_Battle
        ownername))
 #### KUROTSUNE - 005 - START
     elsif isConst?(@battlers[index].species, PBSpecies, :RAYQUAZA)
-      pbDisplay(_INTL("{1}'s fervent wish has reached {2}!",ownername,@battlers[index].pbThis))        
+      pbDisplay(_INTL("{1}'s fervent wish has reached {2}!",ownername,@battlers[index].pbThis))
 #### KUROTSUNE - 005 - END
     elsif ($Trainer.numbadges>=12 && $game_variables[:Difficulty_Mode] == 2) && !pbBelongsToPlayer?(index) # Intense Mode only. Allows for enemy megas to hold an item and still Mega Evolve.
-      pbDisplay(_INTL("{1} is reacting to {2}'s {3}!",@battlers[index].pbThis,ownername,pbGetMegaRingName(index)))        
+      pbDisplay(_INTL("{1} is reacting to {2}'s {3}!",@battlers[index].pbThis,ownername,pbGetMegaRingName(index)))
     else
       pbDisplay(_INTL("{1}'s {2} is reacting to {3}'s {4}!",@battlers[index].pbThis,PBItems.getName(@battlers[index].item),ownername,pbGetMegaRingName(index)))
-    end    
+    end
     if $game_switches[987] && @battlers[index].item==531
       pbCommonAnimation("PulseEvolution",@battlers[index],nil)
     else
@@ -3835,7 +4260,7 @@ class PokeBattle_Battle
       pbDisplay(_INTL("{1} was corrupted into {2}!",@battlers[index].pbThis,meganame))
     else
       pbDisplay(_INTL("{1} Mega Evolved into {2}!",@battlers[index].pbThis,meganame))
-    end     
+    end
     side=(pbIsOpposing?(index)) ? 1 : 0
     owner=pbGetOwnerIndex(index)
     @megaEvolution[side][owner]=-2
@@ -3846,7 +4271,7 @@ class PokeBattle_Battle
     #@battlers[index].wonderroom=false
 #### KUROTSUNE - 006 - END
     if !pbBelongsToPlayer?(index) && @bossfight &&
-     isBossPokemonInRiftForm?(@battlers[index]) && 
+     isBossPokemonInRiftForm?(@battlers[index]) &&
      !(@shieldCount>=0 || @shieldSetup>=0)
       @battlers[index].isBoss = true
       @shieldSetup = 1
@@ -3861,11 +4286,11 @@ end
 ################################################################################
   def pbCanZMove?(index)
     return false if $game_switches[NO_Z_MOVE]
-    return false if !@battlers[index].hasZMove? 
-    return false if !pbHasZRing(index) 
+    return false if !@battlers[index].hasZMove?
+    return false if !pbHasZRing(index)
     side=(pbIsOpposing?(index)) ? 1 : 0
     owner=pbGetOwnerIndex(index)
-    if @zMove[side][owner]!=-1 
+    if @zMove[side][owner]!=-1
       if (@zMove[side][owner]>=0 && @zMove[side][owner]==index)
         return true
       else
@@ -3882,7 +4307,7 @@ end
         for i in 0...4
           $backuparray.push(@battlers[index].moves[i])
           if @battlers[index].pbCompatibleZMoveFromMove?(@battlers[index].moves[i])
-            @battlers[index].moves[i]=PokeBattle_ZMoves.new(self,@battlers[index],@battlers[index].moves[i],@battlers[index].item,false,true,i)  
+            @battlers[index].moves[i]=PokeBattle_ZMoves.new(self,@battlers[index],@battlers[index].moves[i],@battlers[index].item,false,true,i)
           end
         end
         return $backuparray
@@ -3898,11 +4323,11 @@ end
     return if !(@battlers[index].hasZMove? rescue false)
     ownername=pbGetOwner(index).fullname
     ownername=pbGetOwner(index).name if pbBelongsToPlayer?(index)
-    pbDisplay(_INTL("{1} surrounded itself with its Z-Power!",@battlers[index].pbThis))         
-    pbCommonAnimation("ZPower",@battlers[index],nil)               
-    PokeBattle_ZMoves.new(self,@battlers[index],move,crystal,false,false,moveindex)  
+    pbDisplay(_INTL("{1} surrounded itself with its Z-Power!",@battlers[index].pbThis))
+    pbCommonAnimation("ZPower",@battlers[index],nil)
+    PokeBattle_ZMoves.new(self,@battlers[index],move,crystal,false,false,moveindex)
     side=(pbIsOpposing?(index)) ? 1 : 0
-    owner=pbGetOwnerIndex(index)   
+    owner=pbGetOwnerIndex(index)
     @zMove[side][owner]=-2
 end
 
@@ -3937,11 +4362,7 @@ end
     return if !@internalbattle
     return if $game_switches[1075]
     successbegin=true
-    for i in 0...4 # Not ordered by priority
-      if !@doublebattle && pbIsDoubleBattler?(i)
-        @battlers[i].participants=[]
-        next
-      end
+    eachActiveBattlerIndex do |i| # Not ordered by priority
       if pbIsOpposing?(i) && @battlers[i].participants.length>0 &&
          @battlers[i].isFainted?
         haveexpall=$PokemonSystem.expall
@@ -3955,7 +4376,7 @@ end
         if !haveexpall
           for j in 0...@party1.length
             next if !@party1[j] || !pbIsOwner?(0,j)
-            expshare+=1 if @party1[j].hp>0 && !@party1[j].isEgg? && 
+            expshare+=1 if @party1[j].hp>0 && !@party1[j].isEgg? &&
                            (isConst?(@party1[j].item,PBItems,:EXPSHARE) ||
                            isConst?(@party1[j].itemInitial,PBItems,:EXPSHARE))
           end
@@ -4037,18 +4458,18 @@ end
     #~ evgain-=thispoke.ev[k]+evgain-252 if thispoke.ev[k]+evgain>252
     #~ # Add EV gain
     #~ if k==4 #>>DemICE
-    #~ thispoke.ev[1]+=evgain          
+    #~ thispoke.ev[1]+=evgain
     #~ if thispoke.ev[1]>252
     #~ print "Single-stat EV limit 252 exceeded.\r\nStat: #{1}  EV gain: #{evgain}  EVs: #{thispoke.ev.inspect}"
     #~ thispoke.ev[1]=252
     #~ end
-    #~ else  
-    #~ thispoke.ev[k]+=evgain                      
+    #~ else
+    #~ thispoke.ev[k]+=evgain
     #~ if thispoke.ev[k]>252
     #~ print "Single-stat EV limit 252 exceeded.\r\nStat: #{k}  EV gain: #{evgain}  EVs: #{thispoke.ev.inspect}"
     #~ thispoke.ev[k]=252
     #~ end
-    #~ end  
+    #~ end
     #~ totalev+=evgain
     #~ if totalev>510
     #~ print "EV limit 510 exceeded.\r\nTotal EVs: #{totalev} EV gain: #{evgain}  EVs: #{thispoke.ev.inspect}"
@@ -4132,7 +4553,7 @@ end
       curlevel=thispoke.level
       if newlevel<curlevel
         debuginfo="#{thispoke.name}: #{thispoke.level}/#{newlevel} | #{thispoke.exp}/#{newexp} | gain: #{exp}"
-        raise RuntimeError.new(_INTL("The new level ({1}) is less than the Pokémon's\r\ncurrent level ({2}), which shouldn't happen.\r\n[Debug: {3}]",
+        raise RuntimeError.new(_INTL("The new level ({1}) is less than the PokÃ©mon's\r\ncurrent level ({2}), which shouldn't happen.\r\n[Debug: {3}]",
                                newlevel,curlevel,debuginfo))
         return
       end
@@ -4153,7 +4574,7 @@ end
           tempexp1=tempexp2
           curlevel+=1
           if curlevel>newlevel
-            thispoke.calcStats 
+            thispoke.calcStats
             battler.pbUpdate(false) if battler
             @scene.pbRefresh
             break
@@ -4181,15 +4602,15 @@ end
               pbLearnMove(index,k[1])
               thispoke.firstmoves.push(k[1])
             end
-          end               
+          end
         end
         evpool=80+thispoke.level*8
-        evpool=(evpool.div(4))*4      
-        evpool=512 if evpool>512    
+        evpool=(evpool.div(4))*4
+        evpool=512 if evpool>512
         evcap=40+thispoke.level*4
         evcap=(evcap.div(4))*4
         evcap=252 if evcap>252
-        evsum=thispoke.ev[0]+thispoke.ev[1]+thispoke.ev[2]+thispoke.ev[4]+thispoke.ev[5]+thispoke.ev[3]    
+        evsum=thispoke.ev[0]+thispoke.ev[1]+thispoke.ev[2]+thispoke.ev[4]+thispoke.ev[5]+thispoke.ev[3]
         if evsum>0 && evpool>evsum && thispoke.ev.max<evcap && thispoke.ev.max_nth(2)<evcap
           for i in 0..6
             if thispoke.ev[i]==thispoke.ev.max
@@ -4198,7 +4619,7 @@ end
               thispoke.ev[i]+=4 if thispoke.ev[i]<evcap
               thispoke.calcStats
             end
-          end  
+          end
           evsum=thispoke.ev[0]+thispoke.ev[1]+thispoke.ev[2]+thispoke.ev[4]+thispoke.ev[5]+thispoke.ev[3]
           if evpool>evsum
             for i in 0..6
@@ -4206,9 +4627,9 @@ end
                 thispoke.ev[i]+=4
                 thispoke.calcStats
               end
-            end  
-          end                            
-        end  
+            end
+          end
+        end
       end
     end
   end
@@ -4264,13 +4685,13 @@ end
 # Abilities.
 ################################################################################
   def pbOnActiveAll
-    for i in 0...4 # Currently unfainted participants will earn EXP even if they faint afterwards
+    eachActiveBattlerIndex do |i| # Currently unfainted participants will earn EXP even if they faint afterwards
       @battlers[i].pbUpdateParticipants if pbIsOpposing?(i)
       @amuletcoin=true if !pbIsOpposing?(i) &&
                           (isConst?(@battlers[i].item,PBItems,:AMULETCOIN) ||
                            isConst?(@battlers[i].item,PBItems,:LUCKINCENSE))
     end
-    for i in 0...4
+    eachActiveBattlerIndex do |i|
       if !@battlers[i].isFainted?
         if @battlers[i].isShadow? && pbIsOpposing?(i)
           pbCommonAnimation("Shadow",@battlers[i],nil)
@@ -4285,7 +4706,7 @@ end
       i.pbAbilitiesOnSwitchIn(true)
     end
     # Check forms are correct
-    for i in 0...4
+    eachActiveBattlerIndex do |i|
       next if @battlers[i].isFainted?
       @battlers[i].pbCheckForm
     end
@@ -4303,7 +4724,7 @@ end
     return false if pkmn.isFainted?
     pkmn.effects[PBEffects::BlinkEntryTurn]=@turncount if !onlyabilities
     if !onlyabilities
-      for i in 0...4 # Currently unfainted participants will earn EXP even if they faint afterwards
+      eachActiveBattlerIndex do |i| # Currently unfainted participants will earn EXP even if they faint afterwards
         @battlers[i].pbUpdateParticipants if pbIsOpposing?(i)
         @amuletcoin=true if !pbIsOpposing?(i) &&
                             (isConst?(@battlers[i].item,PBItems,:AMULETCOIN) ||
@@ -4329,9 +4750,9 @@ end
         pkmn.status=0
         pkmn.statusCount=0
         pkmn.pbIncreaseStat(PBStats::ATTACK, 1, true) if $fefieldeffect == 35 || $fefieldeffect == 34
-        pkmn.pbIncreaseStat(PBStats::DEFENSE, 1, true) if $fefieldeffect == 35 
+        pkmn.pbIncreaseStat(PBStats::DEFENSE, 1, true) if $fefieldeffect == 35
         pkmn.pbIncreaseStat(PBStats::SPATK, 1, true) if $fefieldeffect == 35 || $fefieldeffect == 34
-        pkmn.pbIncreaseStat(PBStats::SPDEF, 1, true) if $fefieldeffect == 35 
+        pkmn.pbIncreaseStat(PBStats::SPDEF, 1, true) if $fefieldeffect == 35
         pkmn.pbIncreaseStat(PBStats::SPEED, 1, true) if $fefieldeffect == 35
         pkmn.pbIncreaseStat(PBStats::ACCURACY, 1, true) if $fefieldeffect == 35
         pkmn.pbIncreaseStat(PBStats::EVASION, 1, true) if $fefieldeffect == 35
@@ -4346,7 +4767,7 @@ end
         pkmn.pbRecoverHP(pkmn.totalhp,false)
         pbDisplayPaused(_INTL("The Z-Power healed {1}!",pkmn.pbThis(true)))
         pkmn.effects[PBEffects::ZHeal]=false
-      end      
+      end
       # Spikes
       pkmn.pbOwnSide.effects[PBEffects::Spikes]=0 if $fefieldeffect == 21 ||
        $fefieldeffect == 26
@@ -4406,7 +4827,7 @@ end
           end
           eff=PBTypes.getCombinedEffectiveness(atype,pkmn.type1,pkmn.type2)
           if $fefieldeffect == 36
-            tempeff = 16 if eff == 0 
+            tempeff = 16 if eff == 0
             tempeff = 16 if eff == 1
             tempeff = 8 if eff == 2
             tempeff = 4 if eff == 4
@@ -4418,7 +4839,7 @@ end
             eff = 2
           end
           if eff>0
-            if $fefieldeffect == 14 || $fefieldeffect == 23 || 
+            if $fefieldeffect == 14 || $fefieldeffect == 23 ||
              ($fefieldeffect == 32 && basefield == 23)
               eff = eff*2
             end
@@ -4433,10 +4854,10 @@ end
         end
       end
       pkmn.pbFaint if pkmn.isFainted?
-      # Corrosive Field Entry    
-      if $fefieldeffect == 10       
-        if !pkmn.hasWorkingAbility(:MAGICGUARD) &&        
-         !pkmn.hasWorkingAbility(:POISONHEAL) &&      
+      # Corrosive Field Entry
+      if $fefieldeffect == 10
+        if !pkmn.hasWorkingAbility(:MAGICGUARD) &&
+         !pkmn.hasWorkingAbility(:POISONHEAL) &&
          !pkmn.hasWorkingAbility(:IMMUNITY) &&
          !pkmn.hasWorkingAbility(:WONDERGUARD) &&
          !pkmn.hasWorkingAbility(:TOXICBOOST) &&
@@ -4479,13 +4900,28 @@ end
           end
         end
       end
+      # Scorching Ground
+      if side.effects[PBEffects::ScorchingGround] > 0
+        if !pkmn.isAirborne? && !pkmn.hasWorkingAbility(:LIMBER) &&
+           !pkmn.hasWorkingAbility(:MAGICGUARD) &&
+           !(pkmn.hasWorkingAbility(:WONDERGUARD) && $fefieldeffect == 44)
+          atype=getConst(PBTypes,:FIRE) || 0
+          eff=PBTypes.getCombinedEffectiveness(atype,pkmn.type1,pkmn.type2)
+          if eff>0
+            @scene.pbDamageAnimation(pkmn,0)
+            pkmn.pbReduceHP([(pkmn.totalhp*eff/48).floor,1].max)
+            pbDisplay(_INTL("{1} was burned by the scorching ground!",pkmn.pbThis))
+          end
+        end
+      end
+      pkmn.pbFaint if pkmn.hp<=0
       # Sticky Web
       if pkmn.pbOwnSide.effects[PBEffects::StickyWeb]
         if !pkmn.isAirborne? && !pkmn.hasWorkingItem(:HEAVYDUTYBOOTS) && !pkmn.hasWorkingAbility(:LIMBER)
           pbDisplay(_INTL("{1} was caught in a sticky web!",pkmn.pbThis))
           pkmn.pbReduceStat(PBStats::SPEED, 1, true)
         end
-      end 
+      end
       # Poison Barbs (formerly Toxic Spikes)
       pkmn.pbOwnSide.effects[PBEffects::ToxicSpikes]=0 if $fefieldeffect == 21 ||
        $fefieldeffect == 26
@@ -4731,7 +5167,7 @@ end
       elsif $febackgroundstore == 26
         if $game_map.map_id==415
           backdrop="Water2"
-        else 
+        else
           backdrop = "MurkwaterSurface"
         end
       elsif $febackgroundstore == 27
@@ -4755,9 +5191,9 @@ end
       elsif $febackgroundstore == 36
         backdrop="Inverse"
       elsif $febackgroundstore == 37
-        backdrop="Psychic" 
+        backdrop="Psychic"
       elsif $febackgroundstore == 38
-        backdrop="Dimensional"                 
+        backdrop="Dimensional"
       elsif $febackgroundstore == 39
         backdrop="Angie"
       elsif $febackgroundstore == 40
@@ -4772,7 +5208,7 @@ end
         backdrop="ColosseumFieldPlaceholder"
       elsif $febackgroundstore == 45
         backdrop="InfernalFieldPlaceholder"
-      end  
+      end
       if backdrop.nil? || backdrop == ""
         backdrop = $febackup || "IndoorA"
       end
@@ -4959,23 +5395,23 @@ end
               when 0
                 pbApplySceneBG("battlebg","Graphics/Battlebacks/battlebgFlowerGarden0.png")
                 pbApplySceneBG("playerbase","Graphics/Battlebacks/playerbaseFlowerGarden0.png")
-                pbApplySceneBG("enemybase","Graphics/Battlebacks/enemybaseFlowerGarden0.png")               
+                pbApplySceneBG("enemybase","Graphics/Battlebacks/enemybaseFlowerGarden0.png")
               when 1
                 pbApplySceneBG("battlebg","Graphics/Battlebacks/battlebgFlowerGarden1.png")
                 pbApplySceneBG("playerbase","Graphics/Battlebacks/playerbaseFlowerGarden1.png")
-                pbApplySceneBG("enemybase","Graphics/Battlebacks/enemybaseFlowerGarden1.png")               
+                pbApplySceneBG("enemybase","Graphics/Battlebacks/enemybaseFlowerGarden1.png")
               when 2
                 pbApplySceneBG("battlebg","Graphics/Battlebacks/battlebgFlowerGarden2.png")
                 pbApplySceneBG("playerbase","Graphics/Battlebacks/playerbaseFlowerGarden2.png")
-                pbApplySceneBG("enemybase","Graphics/Battlebacks/enemybaseFlowerGarden2.png")               
+                pbApplySceneBG("enemybase","Graphics/Battlebacks/enemybaseFlowerGarden2.png")
               when 3
                 pbApplySceneBG("battlebg","Graphics/Battlebacks/battlebgFlowerGarden3.png")
                 pbApplySceneBG("playerbase","Graphics/Battlebacks/playerbaseFlowerGarden3.png")
-                pbApplySceneBG("enemybase","Graphics/Battlebacks/enemybaseFlowerGarden3.png")               
+                pbApplySceneBG("enemybase","Graphics/Battlebacks/enemybaseFlowerGarden3.png")
               when 4
                 pbApplySceneBG("battlebg","Graphics/Battlebacks/battlebgFlowerGarden4.png")
                 pbApplySceneBG("playerbase","Graphics/Battlebacks/playerbaseFlowerGarden4.png")
-                pbApplySceneBG("enemybase","Graphics/Battlebacks/enemybaseFlowerGarden4.png")               
+                pbApplySceneBG("enemybase","Graphics/Battlebacks/enemybaseFlowerGarden4.png")
             end
           when 34 # starlight field
                 pbApplySceneBG("battlebg","Graphics/Battlebacks/battlebgStarlight1.png")
@@ -4992,7 +5428,7 @@ end
           when 37 # psychic
                 pbApplySceneBG("battlebg","Graphics/Battlebacks/battlebgPsychic.png")
                 pbApplySceneBG("playerbase","Graphics/Battlebacks/playerbasePsychic.png")
-                pbApplySceneBG("enemybase","Graphics/Battlebacks/enemybasePsychic.png")                
+                pbApplySceneBG("enemybase","Graphics/Battlebacks/enemybasePsychic.png")
           when 38 # indoorA
                 pbApplySceneBG("battlebg","Graphics/Battlebacks/battlebgDimensional.png")
                 pbApplySceneBG("playerbase","Graphics/Battlebacks/playerbaseIndoorB.png")
@@ -5027,7 +5463,7 @@ end
                 pbApplySceneBG("enemybase","Graphics/Battlebacks/enemybaseGoldenArena.png")
   end
  end
-  
+
 ################################################################################
 # Battle core.
 ################################################################################
@@ -5044,18 +5480,18 @@ def pbStartBattle(canlose=false)
 
   def pbStartBattleCore(canlose)
     if !@fullparty1 && @party1.length>MAXPARTYSIZE
-      raise ArgumentError.new(_INTL("Party 1 has more than {1} Pokémon.",MAXPARTYSIZE))
+      raise ArgumentError.new(_INTL("Party 1 has more than {1} PokÃ©mon.",MAXPARTYSIZE))
     end
     if !@fullparty2 && @party2.length>MAXPARTYSIZE+10
-      raise ArgumentError.new(_INTL("Party 2 has more than {1} Pokémon.",MAXPARTYSIZE))
+      raise ArgumentError.new(_INTL("Party 2 has more than {1} PokÃ©mon.",MAXPARTYSIZE))
     end
     if !@opponent
 #========================
-# Initialize wild Pokémon
+# Initialize wild PokÃ©mon
 #========================
-      if @party2.length==1 
-        if @doublebattle && !$game_switches[1998]
-          raise _INTL("Only two wild Pokémon are allowed in double battles")
+      if @party2.length==1
+        if pbSideSize(1)>1 && !$game_switches[1998]
+          raise _INTL("Only two wild PokÃ©mon are allowed in double battles")
         end
         wildpoke=@party2[0]
         @battlers[1].pbInitialize(wildpoke,0,false)
@@ -5065,11 +5501,11 @@ def pbStartBattle(canlose=false)
         pbDisplayPaused(_INTL("Wild {1} appeared!",wildpoke.name)) if ($game_switches[1998]==false) && ($game_switches[290] == false)
         if ($game_switches[1998] == true) || ($game_switches[290] == true)
            if wildpoke.name == "Kyogre"
-              pbDisplayPaused(_INTL("Ancient Leviathan {1} attacked!",wildpoke.name)) 
+              pbDisplayPaused(_INTL("Ancient Leviathan {1} attacked!",wildpoke.name))
            elsif wildpoke.name == "Giratina"
-            pbDisplayPaused(_INTL("The Anachronism attacked!",wildpoke.name)) 
+            pbDisplayPaused(_INTL("The Anachronism attacked!",wildpoke.name))
           elsif wildpoke.name == "Regirock"
-            pbDisplayPaused(_INTL("Guardian Soldier {1} attacked!",wildpoke.name)) 
+            pbDisplayPaused(_INTL("Guardian Soldier {1} attacked!",wildpoke.name))
           elsif wildpoke.name == "Gardevoir"
             pbDisplayPaused(_INTL("Angel of Death {1} attacked!",wildpoke.name))
           elsif wildpoke.name == "Hippowdon"
@@ -5083,8 +5519,8 @@ def pbStartBattle(canlose=false)
           pbShieldEffects(@battlers[1],@battlers[1].onEntryEffects,true)
         end
       elsif @party2.length==2
-        if !@doublebattle
-          raise _INTL("Only one wild Pokémon is allowed in single battles")
+        if singleBattle?
+          raise _INTL("Only one wild PokÃ©mon is allowed in single battles")
         end
         @battlers[1].pbInitialize(@party2[0],0,false)
         @battlers[3].pbInitialize(@party2[1],0,false)
@@ -5103,72 +5539,44 @@ def pbStartBattle(canlose=false)
           pbShieldEffects(@battlers[3],@battlers[3].onEntryEffects,true)
         end
       else
-        raise _INTL("Only one or two wild Pokémon are allowed")
+        raise _INTL("Only one or two wild PokÃ©mon are allowed")
       end
-    elsif @doublebattle
+    elsif @opponent
 #=======================================
 # Initialize opponents in double battles
 #=======================================
       if @opponent.is_a?(Array)
         if @opponent.length==1
           @opponent=@opponent[0]
-        elsif @opponent.length!=2
+        elsif @opponent.length>2
           raise _INTL("Opponents with zero or more than two people are not allowed")
         end
       end
       if @player.is_a?(Array)
         if @player.length==1
           @player=@player[0]
-        elsif @player.length!=2
+        elsif @player.length>2
           raise _INTL("Player trainers with zero or more than two people are not allowed")
         end
       end
       @scene.pbStartBattle(self)
-      if @opponent.is_a?(Array)
+      if @opponent.is_a?(Array) && @opponent.length>=2
         pbDisplayBrief(_INTL("{1} and {2} want to battle!",@opponent[0].fullname,@opponent[1].fullname))
-        sendout1=pbFindNextUnfainted(@party2,0,pbSecondPartyBegin(1))
-        raise _INTL("Opponent 1 has no unfainted Pokémon") if sendout1<0
-        sendout2=pbFindNextUnfainted(@party2,pbSecondPartyBegin(1))
-        raise _INTL("Opponent 2 has no unfainted Pokémon") if sendout2<0
- #       pbDisplayBrief(_INTL("{1} sent\r\nout {2}!",@opponent[0].fullname,@party2[sendout1].name))
-#### JERICHO - 001 - START         
-        @battlers[1].pbInitialize(@party2[sendout1],sendout1,false)
-        @battlers[3].pbInitialize(@party2[sendout2],sendout2,false)
-        pbDisplayBrief(_INTL("{1} sent\r\nout {2}!",@opponent[0].fullname,@battlers[1].name)) #ILLUSION
-        pbSendOut(1,@party2[sendout1])
-        pbDisplayBrief(_INTL("{1} sent\r\nout {2}!",@opponent[1].fullname,@battlers[3].name)) #ILLUSION
-#### JERICHO - 001 - END
-        pbSendOut(3,@party2[sendout2])
       else
         pbDisplayBrief(_INTL("{1}\r\nwould like to battle!",@opponent.fullname))
-        sendout1=pbFindNextUnfainted(@party2,0)
-        sendout2=pbFindNextUnfainted(@party2,sendout1+1)
-        if sendout1<0 || sendout2<0
-#          raise _INTL("Opponent doesn't have two unfainted Pokémon")
-#        end
-          sendout2 = nil
-          pbDisplayBrief(_INTL("{1} sent\r\nout {2}!",@opponent.fullname,@party2[sendout1].name))
-          @battlers[1].pbInitialize(@party2[sendout1],sendout1,false)
-          @battlers[3].pbInitBlank
-          @battlers[3].fainted = true
-          pbSendOut(1,@party2[sendout1])
-        else
-#### JERICHO - 001 - START         
-          @battlers[1].pbInitialize(@party2[sendout1],sendout1,false) #ILLUSION
-          @battlers[3].pbInitialize(@party2[sendout2],sendout2,false)
-          pbDisplayBrief(_INTL("{1} sent\r\nout {2} and {3}!",
-             @opponent.fullname,@battlers[1].name,@battlers[3].name)) #ILLUSION
-#### JERICHO - 001 - END           
-          pbSendOut(1,@party2[sendout1])
-          pbSendOut(3,@party2[sendout2])
-        end
+      end
+      foeSendouts = pbPrepareTrainerSideSendOuts(true)
+      foeSendouts.each do |battlerIndex,partyIndex,owner|
+        ownerName = (owner && owner.respond_to?(:fullname)) ? owner.fullname : @opponent.fullname
+        pbDisplayBrief(_INTL("{1} sent\r\nout {2}!",ownerName,@battlers[battlerIndex].name))
+        pbSendOut(battlerIndex,@party2[partyIndex])
       end
     else
 #======================================
 # Initialize opponent in single battles
 #======================================
       sendout=pbFindNextUnfainted(@party2,0)
-      raise _INTL("Trainer has no unfainted Pokémon") if sendout<0
+      raise _INTL("Trainer has no unfainted PokÃ©mon") if sendout<0
       if @opponent.is_a?(Array)
         raise _INTL("Opponent trainer must be only one person in single battles") if @opponent.length!=1
         @opponent=@opponent[0]
@@ -5180,10 +5588,10 @@ def pbStartBattle(canlose=false)
       trainerpoke=@party2[sendout]
       @scene.pbStartBattle(self)
       pbDisplayBrief(_INTL("{1}\r\nwould like to battle!",@opponent.fullname))
-#### JERICHO - 001 - START      
-      @battlers[1].pbInitialize(trainerpoke,sendout,false) #ILLUSION 
+#### JERICHO - 001 - START
+      @battlers[1].pbInitialize(trainerpoke,sendout,false) #ILLUSION
       pbDisplayBrief(_INTL("{1} sent\r\nout {2}!",@opponent.fullname,PBSpecies.getName(@battlers[1].species)))
-#### JERICHO - 001 - END    
+#### JERICHO - 001 - END
       pbSendOut(1,trainerpoke)
     end
 #=====================================
@@ -5196,57 +5604,22 @@ def pbStartBattle(canlose=false)
         end
       end
     end
-    
-    if @doublebattle
-      if @player.is_a?(Array)
-        sendout1=pbFindNextUnfainted(@party1,0,pbSecondPartyBegin(0))
-        raise _INTL("Player 1 has no unfainted Pokémon") if sendout1<0
-        sendout2=pbFindNextUnfainted(@party1,pbSecondPartyBegin(0))
-        raise _INTL("Player 2 has no unfainted Pokémon") if sendout2<0
-#### JERICHO - 001 - START        
-        @battlers[0].pbInitialize(@party1[sendout1],sendout1,false) #ILLUSION 
-        @battlers[2].pbInitialize(@party1[sendout2],sendout2,false) 
-        pbDisplayBrief(_INTL("{1} sent\r\nout {2}!  Go! {3}!", 
-    @player[1].fullname,@battlers[2].name,@battlers[0].name))#ILLUSION
-#### JERICHO - 001 - END    
-        pbSetSeen(@party1[sendout1])
-        pbSetSeen(@party1[sendout2])
+
+    playerSendouts = pbPrepareTrainerSideSendOuts(false)
+    playerSendouts.each do |battlerIndex,partyIndex,owner|
+      if @player.is_a?(Array) && owner && owner!=@player[0]
+        pbDisplayBrief(_INTL("{1} sent\r\nout {2}!",owner.fullname,@battlers[battlerIndex].name))
       else
-        sendout1=pbFindNextUnfainted(@party1,0)
-        sendout2=pbFindNextUnfainted(@party1,sendout1+1)
-#### JERICHO - 001 - START        
-        @battlers[0].pbInitialize(@party1[sendout1],sendout1,false) #ILLUSION
-        @battlers[2].pbInitialize(@party1[sendout2],sendout2,false) unless sendout2==-1
-        if sendout2>-1
-          pbDisplayBrief(_INTL("Go! {1} and {2}!",@battlers[0].name,@battlers[2].name)) #ILLUSION 
-        else
-          pbDisplayBrief(_INTL("Go! {1}!",@battlers[0].name)) #ILLUSION  
-        end        
+        pbDisplayBrief(_INTL("Go! {1}!",@battlers[battlerIndex].name))
       end
-#### JERICHO - 001 - END      
-      pbSendOut(0,@party1[sendout1])
-      pbSendOut(2,@party1[sendout2]) unless sendout2==-1
-    else
-#====================================
-# Initialize player in single battles
-#====================================
-      sendout=pbFindNextUnfainted(@party1,0)
-      if sendout<0
-        raise _INTL("Player has no unfainted Pokémon")
-      end
-      playerpoke=@party1[sendout]
-#### JERICHO - 001 - START      
-      @battlers[0].pbInitialize(playerpoke,sendout,false) #Illusion 
-      pbDisplayBrief(_INTL("Go! {1}!",@battlers[0].name))
-#### JERICHO - 001 - END      
-      pbSendOut(0,playerpoke)
+      pbSendOut(battlerIndex,@party1[partyIndex])
     end
 #==================
 # Initialize battle
 #==================
-    case $fefieldeffect 
+    case $fefieldeffect
     when 43
-      for i in 0...4
+      eachActiveBattlerIndex do |i|
         if @battlers[i].hasWorkingAbility(:CLOUDNINE)
           @weather = 0
           pbDisplay(_INTL("All weathers effects are removed due to Cloud Nine!"))
@@ -5254,7 +5627,7 @@ def pbStartBattle(canlose=false)
         end
       end
     end
-      
+
     if @weather==PBWeather::SUNNYDAY
       pbCommonAnimation("Sunny",nil,nil)
       pbDisplay(_INTL("The sunlight is strong."))
@@ -5360,7 +5733,7 @@ def pbStartBattle(canlose=false)
       pbDisplay(_INTL("Seeds line the field."))
      when 34
       pbDisplay(_INTL("Starlight fills the battlefield."))
-      for i in 0...4
+      eachActiveBattlerIndex do |i|
         if @battlers[i].hasWorkingAbility(:WORLDOFNIGHTMARES)
           pbDisplay(_INTL("The dawn of a New World shines down upon the broken land."))
           break
@@ -5420,7 +5793,7 @@ def pbStartBattle(canlose=false)
         break
       end
     end
-  # END OF UPDATE 
+  # END OF UPDATE
     pbOnActiveAll   # Abilities
     @turncount=0
     if !opponent
@@ -5440,7 +5813,7 @@ def pbStartBattle(canlose=false)
       #PBDebug.log("#{@opponent.trainertype} - #{@opponent.name}") if $INTERNAL
       PBDebug.log("==============================") if $INTERNAL
     end
-    
+
     loop do   # Now begin the battle loop
       PBDebug.log("***Round #{@turncount+1}***") if $INTERNAL
       if @debug && @turncount>=100
@@ -5464,14 +5837,14 @@ def pbStartBattle(canlose=false)
       PBDebug.logonerr{
          pbEndOfRoundPhase
       }
-      for i in 0...4
+      eachActiveBattlerIndex do |i|
         if @battlers[i].hasWorkingAbility(:STALL) && @battlers[i].turncount>0
           pbDisplay(_INTL("{1} stalls for time.",@battlers[i].name))
           PBDebug.logonerr{
             pbEndOfRoundPhase
           }
-        end    
-      end 
+        end
+      end
       break if @decision>0
       @turncount+=1
     end
@@ -5506,7 +5879,7 @@ def pbStartBattle(canlose=false)
 #### SARDINES - v17 - START
 #    @scene.pbResetCommandIndices
 #### SARDINES - v17 - END
-    for i in 0...4   # Reset choices if commands can be shown
+    pbCommandPhaseBattlers.each do |i|   # Reset choices if commands can be shown
       if pbCanShowCommands?(i) || @battlers[i].isFainted?
         @choices[i][0]=0
         @choices[i][1]=0
@@ -5514,14 +5887,14 @@ def pbStartBattle(canlose=false)
         @choices[i][3]=-1
       else
         battler=@battlers[i]
-        unless !@doublebattle && pbIsDoubleBattler?(i)
+        unless singleBattle? && pbIsDoubleBattler?(i)
           PBDebug.log("[reusing commands for #{battler.pbThis(true)}]") if $INTERNAL
         end
       end
     end
 #### KUROTSUNE - 015 - START
     $randtype=0
-    for i in 0..3
+    for i in 0...@battlers.length
       @switchedOut[i] = false
     end
 #### KUROTSUNE - 015 - END
@@ -5537,13 +5910,8 @@ def pbStartBattle(canlose=false)
     end
     for i in 0...@zMove[1].length
       @zMove[1][i]=-1 if @zMove[1][i]>=0
-    end    
-    for i in 0...4
-      if i==1
-        i=2
-      elsif i==2
-        i=1
-      end
+    end
+    pbCommandPhaseBattlers.each do |i|
       if @field.effects[PBEffects::WonderRoom] > 0
         for m in @battlers
           if !m.wonderroom
@@ -5584,7 +5952,7 @@ def pbStartBattle(canlose=false)
                     end
                     if @zMove[side][owner]==i
                       @zMove[side][owner]=-1
-                    end                          
+                    end
                     break
                   end
                   if @battlers[i].moves[index].basedamage>0
@@ -5603,7 +5971,7 @@ def pbStartBattle(canlose=false)
                     @battlers[i].effects[PBEffects::AttackingTarget].push(@battlers[i].pbOppositeOpposing.index)
                   end
                   next if !pbRegisterMove(i,index)
-                  if @doublebattle
+                  if !singleBattle?
                     thismove=@battlers[i].moves[index]
                     target=@battlers[i].pbTarget(thismove)
                     if target==PBTargets::SingleNonUser # single non-user
@@ -5616,9 +5984,19 @@ def pbStartBattle(canlose=false)
                       next if target<0 || (target&1)!=(i&1)
                       pbRegisterTarget(i,target)
                     elsif target==PBTargets::AllOpposing
-                      @battlers[i].effects[PBEffects::AttackingTarget].push(@battlers[i].pbOppositeOpposing.index,@battlers[i].pbOppositeOpposing.pbPartner.index)
+                      eachOtherSideBattler(i) do |battler|
+                        next if battler.isFainted?
+                        @battlers[i].effects[PBEffects::AttackingTarget].push(battler.index)
+                      end
                     elsif target==PBTargets::AllNonUsers
-                      @battlers[i].effects[PBEffects::AttackingTarget].push(@battlers[i].pbOppositeOpposing,@battlers[i].pbOppositeOpposing.pbPartner.index,@battlers[i].pbPartner.index)
+                      eachOtherSideBattler(i) do |battler|
+                        next if battler.isFainted?
+                        @battlers[i].effects[PBEffects::AttackingTarget].push(battler.index)
+                      end
+                      eachSameSideBattler(i) do |battler|
+                        next if battler.index==i || battler.isFainted?
+                        @battlers[i].effects[PBEffects::AttackingTarget].push(battler.index)
+                      end
                     end
                   end
                   commandDone=true
@@ -5636,24 +6014,37 @@ def pbStartBattle(canlose=false)
                 item=pbItemMenu(i)
                 if item[0]>0
                   if pbRegisterItem(i,item[0],item[1])
-                    if (item[1]==@battlers[0].pokemonIndex || @doublebattle && item[1]==@battlers[2].pokemonIndex)
+                    activeTarget = false
+                    eachSameSideBattler(i) do |battler|
+                      next if battler.isFainted?
+                      if battler.pokemonIndex==item[1]
+                        activeTarget = true
+                        break
+                      end
+                    end
+                    if activeTarget
                       @battlers[i].effects[PBEffects::UsingItem]=[item[0],item[1]]
                     end
                     commandDone=true
                   end
                 end
               end
-            elsif cmd==2 # Pokémon
+            elsif cmd==2 # PokÃ©mon
               pkmn=pbSwitchPlayer(i,false,true)
-              if pkmn>=0
+              if pbShiftSelection?(pkmn)
+                shiftTarget=pbDecodeShiftSelection(pkmn)
+                if pbRegisterShift(i,shiftTarget)
+                  commandDone=true
+                end
+              elsif pkmn>=0
                 if pbRegisterSwitch(i,pkmn)
-                  commandDone=true 
+                  commandDone=true
                   @battlers[i].effects[PBEffects::Switching]=true
                   @battlers[i].effects[PBEffects::SwitchingTo]=pkmn
                 end
               end
             elsif cmd==3   # Run
-              run=pbRun(i) 
+              run=pbRun(i)
               if run>0
                 commandDone=true
                 return
@@ -5666,11 +6057,11 @@ def pbStartBattle(canlose=false)
                 end
                 if @zMove[side][owner]==i
                   @zMove[side][owner]=-1
-                end                
+                end
               end
             elsif cmd==4   # Call
               thispkmn=@battlers[i]
-              @choices[i][0]=4   # "Call Pokémon"
+              @choices[i][0]=4   # "Call PokÃ©mon"
               @choices[i][1]=0
               @choices[i][2]=nil
               side=(pbIsOpposing?(i)) ? 1 : 0
@@ -5683,7 +6074,7 @@ def pbStartBattle(canlose=false)
               @battlers[i].effects[PBEffects::Switching]=false
               if @zMove[side][owner]==i
                 @zMove[side][owner]=-1
-              end               
+              end
               commandDone=true
             elsif cmd==-1   # Go back to first battler's choice
               @battlers[i].effects[PBEffects::Attacking]=false
@@ -5691,13 +6082,21 @@ def pbStartBattle(canlose=false)
               @battlers[i].effects[PBEffects::Switching]=false
               @battlers[i].effects[PBEffects::SomethingCrazy]=nil
               @battlers[i].effects[PBEffects::AttackingTarget].clear
-              @megaEvolution[0][0]=-1 if @megaEvolution[0][0]>=0
-              @megaEvolution[1][0]=-1 if @megaEvolution[1][0]>=0
-              @zMove[0][0]=-1 if @zMove[0][0]>=0
-              @zMove[1][0]=-1 if @zMove[1][0]>=0              
-              # Restore the item the player's first Pokémon was due to use
-              if @choices[0][0]==3 && $PokemonBag && $PokemonBag.pbCanStore?(@choices[0][1])
-                $PokemonBag.pbStoreItem(@choices[0][1])
+              for side in 0...@megaEvolution.length
+                for owner in 0...@megaEvolution[side].length
+                  @megaEvolution[side][owner]=-1 if @megaEvolution[side][owner]>=0
+                end
+              end
+              for side in 0...@zMove.length
+                for owner in 0...@zMove[side].length
+                  @zMove[side][owner]=-1 if @zMove[side][owner]>=0
+                end
+              end
+              # Restore the item the player's first PokÃ©mon was due to use
+              pbActiveBattlerIndicesForSide(false).each do |battlerIndex|
+                if @choices[battlerIndex][0]==3 && $PokemonBag && $PokemonBag.pbCanStore?(@choices[battlerIndex][1])
+                  $PokemonBag.pbStoreItem(@choices[battlerIndex][1])
+                end
               end
               pbCommandPhase
               return
@@ -5714,7 +6113,7 @@ def pbStartBattle(canlose=false)
 ################################################################################
   def pbAttackPhase
     @scene.pbBeginAttackPhase
-    for i in 0...4
+    eachActiveBattlerIndex do |i|
       @successStates[i].clear
       if @choices[i][0]!=1 && @choices[i][0]!=2
         @battlers[i].effects[PBEffects::DestinyBond]=false
@@ -5725,6 +6124,17 @@ def pbStartBattle(canlose=false)
         @battlers[i].effects[PBEffects::ShieldLife]=shieldlife
       end
       @battlers[i].turncount+=1 if !@battlers[i].isFainted?
+      @battlers[i].effects[PBEffects::TributeDamageTaken] = 0
+      if !@battlers[i].isFainted? && @battlers[i].hasWorkingAbility(:TIMETWISTER)
+        timetwister_effects=Marshal.load(Marshal.dump(@battlers[i].effects.reject { |k,_| k==PBEffects::TimetwisterState }))
+        @battlers[i].effects[PBEffects::TimetwisterState]={
+          :hp=>@battlers[i].hp,
+          :status=>@battlers[i].status,
+          :statusCount=>@battlers[i].statusCount,
+          :stages=>@battlers[i].stages.clone,
+          :effects=>timetwister_effects
+        }
+      end
       @battlers[i].effects[PBEffects::Rage]=false if !pbChoseMove?(i,:RAGE)
       @battlers[i].effects[PBEffects::Round]=false
       @battlers[i].effects[PBEffects::Howl]=false
@@ -5738,14 +6148,14 @@ def pbStartBattle(canlose=false)
       end
     end
     # Prepare for Z Moves
-    for i in 0..3
+    eachActiveBattlerIndex do |i|
       next if @choices[i][0]!=1
       side=(pbIsOpposing?(i)) ? 1 : 0
       owner=pbGetOwnerIndex(i)
       if @zMove[side][owner]==i && @choices[i][0]==1 && @choices[i][2]
         @choices[i][2].zmove=true
       end
-    end    
+    end
     # Calculate priority at this time
     @usepriority=false
     priority=pbPriority
@@ -5777,6 +6187,7 @@ def pbStartBattle(canlose=false)
             if pbRandom(100) < addleffect
               move.pbAdditionalEffect(i,target)
             end
+            move.pbApplyTributeAdditionalEffect(i,target) if move.respond_to?(:pbApplyTributeAdditionalEffect)
             # Stench - first contact move against a target flinches
             if i.hasWorkingAbility(:STENCH) && move.isContactMove? && !target.effects[PBEffects::StenchUsed]
               if !target.hasWorkingAbility(:INNERFOCUS) &&
@@ -5838,18 +6249,29 @@ def pbStartBattle(canlose=false)
 #      end
 #    end
 #    priority=pbPriority(false,true)
-    # Call at Pokémon
+    # Call at PokÃ©mon
     for i in priority
       if @choices[i.index][0]==4
         pbCall(i.index)
       end
     end
-    # Switch out Pokémon
+    # Switch out PokÃ©mon
     @switching=true
     switched=[]
     for i in priority
       if @choices[i.index][0]==2
-        index=@choices[i.index][1] # party position of Pokémon to switch to
+        index=@choices[i.index][1] # party position of PokÃ©mon to switch to
+        if @choices[i.index][2]==:shift
+          targetIndex=@choices[i.index][3]
+          if targetIndex && targetIndex>=0 && !i.isFainted?
+            targetBattler=@battlers[targetIndex]
+            if targetBattler && !targetBattler.isFainted?
+              pbDisplayBrief(_INTL("{1} shifted lanes with {2}!",i.name,targetBattler.name))
+              pbShiftBattlers(i.index,targetIndex)
+            end
+          end
+          next
+        end
         self.lastMoveUser=i.index
         if !pbOwnedByPlayer?(i.index)
           owner=pbGetOwner(i.index)
@@ -5859,10 +6281,10 @@ def pbStartBattle(canlose=false)
         end
         if i.ability==PBAbilities::NEUTRALIZINGGAS
           i.effects[PBEffects::GastroAcid]=true
-          pbDisplayBrief(_INTL("The effects of the Neutralizing Gass wore off!"))          
+          pbDisplayBrief(_INTL("The effects of the Neutralizing Gass wore off!"))
           for j in @battlers
             j.pbAbilitiesOnSwitchIn(true)
-          end  
+          end
         end
         if @field.effects[PBEffects::WonderRoom]!=0
           if i.wonderroom==true
@@ -5890,7 +6312,7 @@ def pbStartBattle(canlose=false)
         if !pbRecallAndReplace(i.index,index)
           # If a forced switch somehow occurs here in single battles
           # the attack phase now ends
-          if !@doublebattle
+          if singleBattle?
             @switching=false
             return
           end
@@ -5906,7 +6328,7 @@ def pbStartBattle(canlose=false)
     end
     @switching=false
     @partnerswitch.clear
-    for i in 0...4
+    eachActiveBattlerIndex do |i|
        if !switched.include?(i)
          @battlers[i].pbCustapBerry
        end
@@ -5929,10 +6351,10 @@ def pbStartBattle(canlose=false)
               i.itemUsed2 = true
             end
           elsif usetype==2 || usetype==4
-            if !ItemHandlers.hasUseInBattle(item) # Poké Ball/Poké Doll used already
+            if !ItemHandlers.hasUseInBattle(item) # PokÃ© Ball/PokÃ© Doll used already
               pbUseItemOnBattler(item,@choices[i.index][2],i,@scene)
-               i.itemUsed = true 
-               i.itemUsed2 = true 
+               i.itemUsed = true
+               i.itemUsed2 = true
             end
           end
         end
@@ -5983,7 +6405,7 @@ def pbStartBattle(canlose=false)
         i.effects[PBEffects::ShellTrap]=true
         pbDisplay(_INTL("{1} set a shell trap!",i.pbThis))
       end
-    end     
+    end
     for i in priority
       # Skip battlers that have already moved this round (e.g., due to Round chaining)
       next if i.hasMovedThisRound?
@@ -6014,38 +6436,46 @@ def pbStartBattle(canlose=false)
           return if @decision>0
         end
       end
+      if @choices[i.index][0]==1 && @choices[i.index][2]
+        move = @choices[i.index][2]
+        tribute_chain = (move.respond_to?(:tribute_attack?) && move.tribute_attack?(i,:FISTTRIBUTE) && move.heroic_tribute?(i,:PASSIMIAN)) ||
+                        (move.respond_to?(:tribute_attack?) && move.tribute_attack?(i,:MINDTRIBUTE) && move.heroic_tribute?(i,:ORANGURU))
+        if tribute_chain
+          pbTriggerTributeChain(i,move)
+          return if @decision>0
+        end
+      end
 
       if symbiosis
         for s in symbiosis
           next if s.isFainted?
-          partner = s.pbPartner
-          next if !partner || partner.isFainted?
-          for stat in [PBStats::ATTACK,PBStats::DEFENSE,PBStats::SPEED,PBStats::SPATK,
-                       PBStats::SPDEF,PBStats::EVASION,PBStats::ACCURACY]
-            partner.stages[stat] = s.stages[stat]
+          s.sameSideLivingBattlers(false).each do |ally|
+            for stat in [PBStats::ATTACK,PBStats::DEFENSE,PBStats::SPEED,PBStats::SPATK,
+                         PBStats::SPDEF,PBStats::EVASION,PBStats::ACCURACY]
+              ally.stages[stat] = s.stages[stat]
+            end
+            pbDisplay(_INTL("{1} shared its stat changes with {2}!",s.pbThis,ally.pbThis(true)))
           end
-          pbDisplay(_INTL("{1} shared its stat changes with {2}!",s.pbThis,partner.pbThis(true)))
         end
       end
       return if @decision>0
     end
     pbWait(20)
   end
-  
+
   # Checks if anyone can share stat changes through Symbiosis
   def pbSymbiosisCheck(battlers)
       result = []
       for i in battlers
         next if i.pokemon.nil?
-        partner = i.pbPartner
-        next if !partner || partner.pokemon.nil?
         next if i.isFainted?
+        next if i.sameSideLivingBattlers(false).empty?
         result << i if i.hasWorkingAbility(:SYMBIOSIS)
       end
       return result if result.any?
       return false
     end
- 
+
     def pbShieldDamage(battler,damage,move=nil)
       if battler.effects[PBEffects::ShieldLife]>0
         if !(move.nil?)
@@ -6115,7 +6545,7 @@ def pbStartBattle(canlose=false)
 # End of round.
 ################################################################################
   def pbEndOfRoundPhase
-    for i in 0...4
+    eachActiveBattlerIndex do |i|
       @battlers[i].forcedSwitchEarlier = false
       @battlers[i].effects[PBEffects::Roost]=false
       @battlers[i].effects[PBEffects::Protect]=false
@@ -6133,6 +6563,8 @@ def pbStartBattle(canlose=false)
       @battlers[i].effects[PBEffects::EarlyBirdBoost]-=1 if @battlers[i].effects[PBEffects::EarlyBirdBoost]>0
       @battlers[i].effects[PBEffects::SpikyShield]=false
       @battlers[i].effects[PBEffects::BanefulBunker]=false
+      @battlers[i].effects[PBEffects::SilkTrap]=false
+      @battlers[i].effects[PBEffects::BurningBulwark]=false
       @battlers[i].effects[PBEffects::Obstruct]=false
       @battlers[i].effects[PBEffects::BeakBlast]=false
       @battlers[i].effects[PBEffects::ClangedScales]=false
@@ -6145,10 +6577,66 @@ def pbStartBattle(canlose=false)
       @battlers[i].effects[PBEffects::MeFirst] = false
       if @battlers[i].effects[PBEffects::ThroatChop]>0
         @battlers[i].effects[PBEffects::ThroatChop]-=1
-      end      
-#### KUROTSUNE - 032 - END      
+      end
+#### KUROTSUNE - 032 - END
       @battlers[i].itemUsed                    = false
-      @battlers[i].pbCheckFormRoundEnd  
+      @battlers[i].pbCheckFormRoundEnd
+    end
+    eachActiveBattlerIndex do |i|
+      battler = @battlers[i]
+      battler.effects[PBEffects::TributeProtection] = 0
+      if battler.effects[PBEffects::TributeTypeShift] > 0
+        battler.effects[PBEffects::TributeTypeShift] -= 1
+        if battler.effects[PBEffects::TributeTypeShift] <= 0
+          data = battler.effects[PBEffects::TributeTypeShiftData]
+          if data
+            battler.type1 = data[:type1] if data[:type1]
+            battler.type2 = data[:type2] if data[:type2]
+          end
+          battler.effects[PBEffects::TributeTypeShiftData] = nil
+        end
+      end
+      if battler.effects[PBEffects::TributeMukMystic]
+        battler.effects[PBEffects::TributeMukMystic][:turns] -= 1
+        turns = battler.effects[PBEffects::TributeMukMystic][:turns]
+        if turns >= 1
+          battler.pbRecoverHP((battler.totalhp/8).floor,true)
+        else
+          battler.pbReduceStat(PBStats::DEFENSE,3,false,nil,nil,true,false,false)
+          battler.pbReduceStat(PBStats::SPDEF,3,false,nil,nil,true,false,false)
+          battler.effects[PBEffects::TributeMukMystic] = nil
+        end
+      end
+      next if !battler.effects[PBEffects::TributeMoltresSwitch]
+      battler.effects[PBEffects::TributeMoltresSwitch] = false
+      battler.pbRecoverHP((battler.totalhp/2).floor,true)
+      next if !pbCanChooseNonActive?(battler.index)
+      pbDisplay(_INTL("{1} wheeled back to safety!",battler.pbThis))
+      newpoke = pbSwitchInBetween(battler.index,true,false)
+      pbMessagesOnReplace(battler.index,newpoke)
+      battler.vanished = false
+      battler.pbResetForm
+      pbReplace(battler.index,newpoke,false)
+      pbOnActiveOne(battler)
+      battler.pbAbilitiesOnSwitchIn(true)
+    end
+    if instance_variable_defined?(:@tributeMukRevival)
+      revivals = instance_variable_get(:@tributeMukRevival) || []
+      remaining = []
+      revivals.each do |entry|
+        entry[:turns] -= 1
+        if entry[:turns] <= 0
+          party = pbParty(entry[:side])
+          next if !party || !party[entry[:party_index]]
+          pokemon = party[entry[:party_index]]
+          next if pokemon.hp > 0
+          pokemon.hp = [(pokemon.totalhp/2).floor,1].max
+          pbDisplay(_INTL("{1} revived in reserve!",pokemon.name))
+        else
+          remaining << entry
+        end
+      end
+      instance_variable_set(:@tributeMukRevival, remaining)
     end
 #### KUROTSUNE - 013 - START
     @field.effects[PBEffects::IonDeluge]       = false
@@ -6167,7 +6655,7 @@ def pbStartBattle(canlose=false)
       next if i.isFainted?
       if isConst?(i.species,PBSpecies,:VESPIQUEN) && i.hasWorkingItem(:VESPICREST)
         mon = i
-        if mon.effects[PBEffects::VespiCrest] == 0 
+        if mon.effects[PBEffects::VespiCrest] == 0
            if (mon.totalhp != mon.hp)
             pbDisplay(_INTL("Vespiquen's swarm patched up her injuries!",i.pbThis)) if endmessage == false
             endmessage=true
@@ -6182,18 +6670,18 @@ def pbStartBattle(canlose=false)
       case $fefieldeffect
         when 2 # Grassy Field
           next if i.hp<=0
-          if !i.isAirborne? 
+          if !i.isAirborne?
             if i.effects[PBEffects::HealBlock]==0 && i.totalhp != i.hp
               pbDisplay(_INTL("The grassy terrain healed the Pokemon on the field.",i.pbThis)) if endmessage == false
               endmessage=true
               hpgain=(i.totalhp/16).floor
-              hpgain=(hpgain*1.3).floor if isConst?(i.item,PBItems,:BIGROOT) || isConst?(i.species,PBSpecies,:TANGROWTH) && i.hasWorkingItem(:TANGROWTHCREST)
+              hpgain=(hpgain*1.3).floor if isConst?(i.item,PBItems,:BIGROOT)
               hpgain=i.pbRecoverHP(hpgain,true)
             end
           end
         when 7 # Volcanic Field
           next if i.hp<=0
-          if !i.isAirborne?     
+          if !i.isAirborne?
             if isConst?(i.ability,PBAbilities,:FLASHFIRE)
               if !i.effects[PBEffects::FlashFire]
                 i.effects[PBEffects::FlashFire]=true
@@ -6238,16 +6726,16 @@ def pbStartBattle(canlose=false)
           end
         when 10 # Corrosive Field
           next if i.hp<=0
-          if i.hasWorkingAbility(:NATURALSHROUD)        
+          if i.hasWorkingAbility(:NATURALSHROUD)
             @scene.pbDamageAnimation(i,0)
             i.pbReduceHP((i.totalhp/8).floor)
             pbDisplay(_INTL("{1}'s Pelt was corroded!",i.pbThis)) if hpgain>0
             if i.hp<=0
               return if !i.pbFaint
             end
-          end 
+          end
           if i.hasWorkingAbility(:POISONHEAL)
-            if !i.isAirborne?     
+            if !i.isAirborne?
               if i.effects[PBEffects::HealBlock]==0
                 if i.hp<i.totalhp
                   pbCommonAnimation("Poison",i,nil)
@@ -6272,9 +6760,9 @@ def pbStartBattle(canlose=false)
               end
             end
           end
-        when 15 # Forest Field      
+        when 15 # Forest Field
           next if i.hp<=0
-          if i.hasWorkingAbility(:SAPSIPPER) && i.effects[PBEffects::HealBlock]==0        
+          if i.hasWorkingAbility(:SAPSIPPER) && i.effects[PBEffects::HealBlock]==0
             hpgain=(i.totalhp/16).floor
             hpgain=i.pbRecoverHP(hpgain,true)
             pbDisplay(_INTL("{1} drank tree sap to recover!",i.pbThis)) if hpgain>0
@@ -6288,17 +6776,17 @@ def pbStartBattle(canlose=false)
                i.hasWorkingAbility(:FLAREBOOST) || i.hasWorkingAbility(:BLAZE) ||
                i.hasWorkingAbility(:FLAMEBODY) || i.hasWorkingAbility(:SOLIDROCK) ||
                i.hasWorkingAbility(:STURDY) || i.hasWorkingAbility(:BATTLEARMOR) ||
-               isConst?(i.species,PBSpecies,:GIRATINA) || 
+               isConst?(i.species,PBSpecies,:GIRATINA) ||
                i.hasWorkingAbility(:SHELLARMOR) || i.hasWorkingAbility(:WATERBUBBLE) ||
                i.hasWorkingAbility(:MAGICGUARD) || i.hasWorkingAbility(:WONDERGUARD) ||
                i.hasWorkingAbility(:PRISMARMOR) || i.effects[PBEffects::AquaRing] ||
-               i.pbOwnSide.effects[PBEffects::WideGuard] || (i.pbOwnSide.effects[PBEffects::AreniteWall]>0) || 
+               i.pbOwnSide.effects[PBEffects::WideGuard] || (i.pbOwnSide.effects[PBEffects::AreniteWall]>0) ||
                SilvallyCheck(i,PBTypes::ROCK)
               pbDisplay(_INTL("{1} is immune to the eruption!",i.pbThis))
             else
               atype=getConst(PBTypes,:FIRE) || 0
               denominator = 4.0
-              denominator = 8.0 if PBTypes.isNormalEffective?(atype,i.type1,i.type2) 
+              denominator = 8.0 if PBTypes.isNormalEffective?(atype,i.type1,i.type2)
               denominator = 16.0 if PBTypes.isNotVeryEffective?(atype,i.type1,i.type2)
               denominator *= 2 if (i.hasWorkingAbility(:THICKFAT) || SilvallyCheck(i,PBTypes::ICE))
               denominator /= 1.25 if (i.effects[PBEffects::TarShot])
@@ -6354,14 +6842,14 @@ def pbStartBattle(canlose=false)
 # eruption check - insane, too much, but makes typh op, so i no question
         when 18 # Shortcircuit Field
           next if i.hp<=0
-          if i.hasWorkingAbility(:VOLTABSORB) && i.effects[PBEffects::HealBlock]==0       
+          if i.hasWorkingAbility(:VOLTABSORB) && i.effects[PBEffects::HealBlock]==0
             hpgain=(i.totalhp/16).floor
             hpgain=i.pbRecoverHP(hpgain,true)
             pbDisplay(_INTL("{1} absorbed stray electricity!",i.pbThis)) if hpgain>0
           end
         when 19 # Wasteland
           if i.hasWorkingAbility(:POISONHEAL)
-            if !i.isAirborne?     
+            if !i.isAirborne?
               if i.effects[PBEffects::HealBlock]==0
                 if i.hp<i.totalhp
                   pbCommonAnimation("Poison",i,nil)
@@ -6437,7 +6925,7 @@ def pbStartBattle(canlose=false)
             return if !i.pbFaint
           end
           if i.hasWorkingAbility(:POISONHEAL)
-            if !i.isAirborne?     
+            if !i.isAirborne?
               if i.effects[PBEffects::HealBlock]==0
                 if i.hp<i.totalhp
                   pbCommonAnimation("Poison",i,nil)
@@ -6448,7 +6936,7 @@ def pbStartBattle(canlose=false)
             end
           end
           if i.pbHasType?(:POISON) && (i.hasWorkingAbility(:WATERABSORB) || i.hasWorkingAbility(:DRYSKIN))
-            if !i.isAirborne?     
+            if !i.isAirborne?
               if i.effects[PBEffects::HealBlock]==0
                 if i.hp<i.totalhp
                   pbCommonAnimation("Poison",i,nil)
@@ -6479,9 +6967,9 @@ def pbStartBattle(canlose=false)
             if i.hp<=0
               return if !i.pbFaint
             end
-          end 
+          end
           if i.hasWorkingAbility(:POISONHEAL)
-            if !i.isAirborne?     
+            if !i.isAirborne?
               if i.effects[PBEffects::HealBlock]==0
                 if i.hp<i.totalhp
                   pbCommonAnimation("Poison",i,nil)
@@ -6509,9 +6997,9 @@ def pbStartBattle(canlose=false)
               if !(@field.effects[PBEffects::GrassyTerrain]>0)
                 hpgain=(i.totalhp/16).floor
               else
-                hpgain=(i.totalhp/8).floor 
+                hpgain=(i.totalhp/8).floor
               end
-              hpgain=(hpgain*1.3).floor if isConst?(i.item,PBItems,:BIGROOT) || isConst?(i.species,PBSpecies,:TANGROWTH) && i.hasWorkingItem(:TANGROWTHCREST)
+              hpgain=(hpgain*1.3).floor if isConst?(i.item,PBItems,:BIGROOT)
               hpgain=i.pbRecoverHP(hpgain,true)
             end
           end
@@ -6519,24 +7007,24 @@ def pbStartBattle(canlose=false)
             i.effects[PBEffects::TracedAbility]==30)
             i.status=0
           end
-        when 45 # Infernal Field  
-          next if i.hp<=0  
-          if !i.isAirborne?       
-            if i.effects[PBEffects::Torment]  
-              @scene.pbDamageAnimation(i,0)  
-              i.pbReduceHP((i.totalhp/8).floor)  
-              pbDisplay(_INTL("{1} was damaged by the torment!",i.pbThis))  
-              if i.hp<=0  
-                return if !i.pbFaint  
-              end  
-            end  
-            if isConst?(i.ability,PBAbilities,:FLASHFIRE)  
-              if !i.effects[PBEffects::FlashFire]  
-                i.effects[PBEffects::FlashFire]=true  
-                pbDisplay(_INTL("{1}'s {2} raised its Fire power!",  
-                i.pbThis,PBAbilities.getName(i.ability)))  
-              end  
-            end  
+        when 45 # Infernal Field
+          next if i.hp<=0
+          if !i.isAirborne?
+            if i.effects[PBEffects::Torment]
+              @scene.pbDamageAnimation(i,0)
+              i.pbReduceHP((i.totalhp/8).floor)
+              pbDisplay(_INTL("{1} was damaged by the torment!",i.pbThis))
+              if i.hp<=0
+                return if !i.pbFaint
+              end
+            end
+            if isConst?(i.ability,PBAbilities,:FLASHFIRE)
+              if !i.effects[PBEffects::FlashFire]
+                i.effects[PBEffects::FlashFire]=true
+                pbDisplay(_INTL("{1}'s {2} raised its Fire power!",
+                i.pbThis,PBAbilities.getName(i.ability)))
+              end
+            end
           end
       end
     end
@@ -6606,10 +7094,10 @@ def pbStartBattle(canlose=false)
       end
     end
   end
-#### AME - 003 - END # Weather    
+#### AME - 003 - END # Weather
     if $fefieldeffect != 22
       if @weather != PBWeather::HAIL && $fefieldeffect == 27
-        $fecounter = 0 
+        $fecounter = 0
       end
     # Tempest
   for i in priority
@@ -6646,13 +7134,14 @@ def pbStartBattle(canlose=false)
   end
     case @weather
       when PBWeather::SUNNYDAY
-        @weatherduration=@weatherduration-1 if @weatherduration>0
+        @weatherduration=@weatherduration-1 if @weatherduration>0 && !azureJetstreamWeatherExtended?
         if @weatherduration==0
           pbDisplay(_INTL("The sunlight faded."))
           @weather=0
+          @field.effects[PBEffects::HarshSunlight] = false
           #### DemICE - persistentweather - START
-          if @weatherbackup!=0  
-            pbCommonAnimation(@weatherbackupanim,nil,nil)                    
+          if @weatherbackup!=0
+            pbCommonAnimation(@weatherbackupanim,nil,nil)
             @weather=@weatherbackup
             @weatherduration=-1
             pbDisplay(_INTL("The initial weather took over again!"))
@@ -6667,7 +7156,7 @@ def pbStartBattle(canlose=false)
         else
           pbCommonAnimation("Sunny",nil,nil)
           if $fefieldeffect == 34 # Starlight Arena
-            if $fefieldeffect == $febackup 
+            if $fefieldeffect == $febackup
               $fefieldeffect = 0
             else
               $fefieldeffect = $febackup
@@ -6680,7 +7169,7 @@ def pbStartBattle(canlose=false)
 #          pbDisplay(_INTL("The sunlight is strong."));
           for i in priority
             next if i.isFainted?
-            if (i.hasWorkingAbility(:SOLARPOWER) || 
+            if (i.hasWorkingAbility(:SOLARPOWER) ||
                (isConst?(i.species,PBSpecies,:CASTFORM) && isConst?(i.item,PBItems,:CASTCREST) && i.form==1))
               pbDisplay(_INTL("{1} was hurt by the sunlight!",i.pbThis))
               @scene.pbDamageAnimation(i,0)
@@ -6702,17 +7191,18 @@ def pbStartBattle(canlose=false)
           end
         end
       when PBWeather::RAINDANCE
-        @weatherduration=@weatherduration-1 if @weatherduration>0
+        @weatherduration=@weatherduration-1 if @weatherduration>0 && !azureJetstreamWeatherExtended?
         if @weatherduration==0
           pbDisplay(_INTL("The rain stopped."))
           @weather=0
+          @field.effects[PBEffects::HeavyRain] = false
           #### DemICE  - persistentweather - START
-          if @weatherbackup!=0  
-            pbCommonAnimation(@weatherbackupanim,nil,nil)                    
+          if @weatherbackup!=0
+            pbCommonAnimation(@weatherbackupanim,nil,nil)
             @weather=@weatherbackup
             @weatherduration=-1
             pbDisplay(_INTL("The initial weather took over again!"))
-          end  
+          end
           #### DemICE
           if $febackup == 34
             $fefieldeffect = 34
@@ -6720,14 +7210,15 @@ def pbStartBattle(canlose=false)
             pbDisplay(_INTL("The starry sky shone through!"));
             seedCheck
           end
-        elsif $fefieldeffect == 45  
-          pbDisplay(_INTL("The rain evaporated away."))  
+        elsif $fefieldeffect == 45
+          pbDisplay(_INTL("The rain evaporated away."))
           @weather=0
+          @field.effects[PBEffects::HeavyRain] = false
         else
           pbCommonAnimation("Rain",nil,nil)
 #         pbDisplay(_INTL("Rain continues to fall."));
           if $fefieldeffect == 7 # Burning Field
-            if $fefieldeffect == $febackup 
+            if $fefieldeffect == $febackup
               $fefieldeffect = 23
             else
               $febackup = 7
@@ -6738,7 +7229,7 @@ def pbStartBattle(canlose=false)
             seedCheck
           end
           if $fefieldeffect == 34 # Starlight Arena
-            if $fefieldeffect == $febackup 
+            if $fefieldeffect == $febackup
               $fefieldeffect = 0
             else
               $fefieldeffect = $febackup
@@ -6750,13 +7241,13 @@ def pbStartBattle(canlose=false)
           end
         end
       when PBWeather::SANDSTORM
-        @weatherduration=@weatherduration-1 if @weatherduration>0
+        @weatherduration=@weatherduration-1 if @weatherduration>0 && !azureJetstreamWeatherExtended?
         if @weatherduration==0
           pbDisplay(_INTL("The sandstorm subsided."))
           @weather=0
           #### DemICE  - persistentweather - START
-          if @weatherbackup!=0  
-            pbCommonAnimation(@weatherbackupanim,nil,nil)                    
+          if @weatherbackup!=0
+            pbCommonAnimation(@weatherbackupanim,nil,nil)
             @weather=@weatherbackup
             @weatherduration=-1
             pbDisplay(_INTL("The initial weather took over again!"))
@@ -6772,7 +7263,7 @@ def pbStartBattle(canlose=false)
           pbCommonAnimation("Sandstorm",nil,nil)
 #         pbDisplay(_INTL("The sandstorm rages."))
           if $fefieldeffect == 7 # Burning Field
-            if $fefieldeffect == $febackup 
+            if $fefieldeffect == $febackup
               $fefieldeffect = 23
             else
               $febackup = 7
@@ -6798,7 +7289,7 @@ def pbStartBattle(canlose=false)
             seedCheck
           end
           if $fefieldeffect == 34 # Starlight Arena
-            if $fefieldeffect == $febackup 
+            if $fefieldeffect == $febackup
               $fefieldeffect = 0
             else
               $fefieldeffect = $febackup
@@ -6843,17 +7334,17 @@ def pbStartBattle(canlose=false)
           end
         end
       when PBWeather::HAIL
-        @weatherduration=@weatherduration-1 if @weatherduration>0
+        @weatherduration=@weatherduration-1 if @weatherduration>0 && !azureJetstreamWeatherExtended?
         if @weatherduration==0
           pbDisplay(_INTL("The hail stopped."))
           @weather=0
           #### DemICE - persistentweather - START
-          if @weatherbackup!=0  
-            pbCommonAnimation(@weatherbackupanim,nil,nil)                    
+          if @weatherbackup!=0
+            pbCommonAnimation(@weatherbackupanim,nil,nil)
             @weather=@weatherbackup
             @weatherduration=-1
             pbDisplay(_INTL("The initial weather took over again!"))
-          end  
+          end
           #### DemICE
           if $febackup == 34
             $fefieldeffect = 34
@@ -6864,30 +7355,30 @@ def pbStartBattle(canlose=false)
         elsif $fefieldeffect == 16 || $fefieldeffect == 7
           pbDisplay(_INTL("The hail melted away."))
           @weather=0
-          if @weatherbackup!=0  
-            pbCommonAnimation(@weatherbackupanim,nil,nil)                    
+          if @weatherbackup!=0
+            pbCommonAnimation(@weatherbackupanim,nil,nil)
             @weather=@weatherbackup
             @weatherduration=-1
             pbDisplay(_INTL("The initial weather took over again!"))
-          end  
+          end
         elsif $fefieldeffect == 32
-          pbDisplay(_INTL("The hail melted away."))  
+          pbDisplay(_INTL("The hail melted away."))
           @weather=0
-          if @weatherbackup!=0  
-            pbCommonAnimation(@weatherbackupanim,nil,nil)                    
+          if @weatherbackup!=0
+            pbCommonAnimation(@weatherbackupanim,nil,nil)
             @weather=@weatherbackup
             @weatherduration=-1
             pbDisplay(_INTL("The initial weather took over again!"))
-          end  
-        elsif $fefieldeffect == 45  
-          pbDisplay(_INTL("The hail melted away."))  
+          end
+        elsif $fefieldeffect == 45
+          pbDisplay(_INTL("The hail melted away."))
           @weather=0
-          if @weatherbackup!=0  
-            pbCommonAnimation(@weatherbackupanim,nil,nil)                    
+          if @weatherbackup!=0
+            pbCommonAnimation(@weatherbackupanim,nil,nil)
             @weather=@weatherbackup
             @weatherduration=-1
             pbDisplay(_INTL("The initial weather took over again!"))
-          end  
+          end
         else
           pbCommonAnimation("Hail",nil,nil)
 #         pbDisplay(_INTL("Hail continues to fall."))
@@ -6907,7 +7398,7 @@ def pbStartBattle(canlose=false)
             seedCheck
           end
           if $fefieldeffect == 34 # Starlight Arena
-            if $fefieldeffect == $febackup 
+            if $fefieldeffect == $febackup
               $fefieldeffect = 0
             else
               $fefieldeffect = $febackup
@@ -6961,13 +7452,19 @@ def pbStartBattle(canlose=false)
           end
         end
       when PBWeather::STRONGWINDS
+        @weatherduration=@weatherduration-1 if @weatherduration>0 && !azureJetstreamWeatherExtended?
+        if @weatherduration==0
+          pbDisplay(_INTL("The strong winds subsided."))
+          @weather=0
+        else
           pbCommonAnimation("Wind",nil,nil)
 #         pbDisplay(_INTL("The wind is strong."));
+        end
       end
     end
     # Shadow Sky weather
     if isConst?(@weather,PBWeather,:SHADOWSKY)
-      @weatherduration=@weatherduration-1 if @weatherduration>0
+      @weatherduration=@weatherduration-1 if @weatherduration>0 && !azureJetstreamWeatherExtended?
       if @weatherduration==0
         pbDisplay(_INTL("The shadow sky faded."))
         @weather=0
@@ -6977,7 +7474,7 @@ def pbStartBattle(canlose=false)
         if isConst?(pbWeather,PBWeather,:SHADOWSKY)
           for i in priority
             next if i.isFainted?
-            if !i.isShadow? && !i.hasWorkingAbility(:TEMPEST) 
+            if !i.isShadow? && !i.hasWorkingAbility(:TEMPEST)
               pbDisplay(_INTL("{1} was hurt by the shadow sky!",i.pbThis))
               @scene.pbDamageAnimation(i,0)
               if $fefieldeffect == 38 || $fefieldeffect == 39
@@ -6999,9 +7496,9 @@ def pbStartBattle(canlose=false)
       if i.hasWorkingAbility(:TEMPORALSHIFT)
         for j in priority
           next if j.isFainted?
-          if !(i==j || i.pbPartner==j || j.pbHasType?(:NORMAL)) && 
+          if !(i==j || i.sameSideBattlers(false).include?(j) || j.pbHasType?(:NORMAL)) &&
            j.effects[PBEffects::FutureSight]==0
-            j.effects[PBEffects::FutureSight]=3 
+            j.effects[PBEffects::FutureSight]=3
             j.effects[PBEffects::FutureSightMove]=179
             j.effects[PBEffects::FutureSightUser]=i.index
             pbDisplay(_INTL("{1} casts a hex!",i.pbThis))
@@ -7010,7 +7507,7 @@ def pbStartBattle(canlose=false)
         end
       end
     end
-    
+
     # Future Sight/Doom Desire
     for i in battlers   # not priority
       if i.isFainted? && i.effects[PBEffects::FutureSight]>0
@@ -7038,7 +7535,7 @@ def pbStartBattle(canlose=false)
           end
           pbDisplay(_INTL("{1} took the {2} attack!",i.pbThis,move.name))
           typemod = move.pbTypeModifierNonBattler(type,moveuser,i) # added
-          if i.isFainted? || move.pbAccuracyCheck(moveuser,i) && 
+          if i.isFainted? || move.pbAccuracyCheck(moveuser,i) &&
            !(i.hasWorkingAbility(:WONDERGUARD) && typemod<=4)
             i.damagestate.reset
             damage = nil
@@ -7071,9 +7568,9 @@ def pbStartBattle(canlose=false)
       next if i.isFainted?
       # Meganium + Meganium Crest
       if (isConst?(i.species,PBSpecies,:MEGANIUM) && i.hasWorkingItem(:MEGCREST)) ||
-       (isConst?(i.pbPartner.species,PBSpecies,:MEGANIUM) && i.pbPartner.hasWorkingItem(:MEGCREST))
+       i.sameSideLivingBattlers(false).any? { |ally| isConst?(ally.species,PBSpecies,:MEGANIUM) && ally.hasWorkingItem(:MEGCREST) }
         hpgain=i.pbRecoverHP((i.totalhp/16).floor,true)
-        pbDisplay(_INTL("The Meganium Crest restored {1}'s HP a little!",i.pbThis(true))) if hpgain>0       
+        pbDisplay(_INTL("The Meganium Crest restored {1}'s HP a little!",i.pbThis(true))) if hpgain>0
       end
       # Rain Dish
       if pbWeather==PBWeather::RAINDANCE && !i.hasWorkingItem(:UTILITYUMBRELLA) && (i.hasWorkingAbility(:RAINDISH) ||
@@ -7090,15 +7587,15 @@ def pbStartBattle(canlose=false)
       end
       # Caretaker
       if i.hasWorkingAbility(:CARETAKER)
-        partner=i.pbPartner
-        if partner && !partner.isFainted? && partner.effects[PBEffects::HealBlock]==0
-          hpgain=partner.pbRecoverHP((partner.totalhp/8).floor,true)
-          pbDisplay(_INTL("{1}'s Caretaker restored {2}'s HP!",i.pbThis,partner.pbThis(true))) if hpgain>0
+        i.sameSideLivingBattlers(false).each do |ally|
+          next if ally.effects[PBEffects::HealBlock]>0
+          hpgain=ally.pbRecoverHP((ally.totalhp/8).floor,true)
+          pbDisplay(_INTL("{1}'s Caretaker restored {2}'s HP!",i.pbThis,ally.pbThis(true))) if hpgain>0
         end
       end
       # Dry Skin
       if isConst?(i.ability,PBAbilities,:DRYSKIN)
-        if pbWeather==PBWeather::RAINDANCE && !i.hasWorkingItem(:UTILITYUMBRELLA) && i.effects[PBEffects::HealBlock]==0 
+        if pbWeather==PBWeather::RAINDANCE && !i.hasWorkingItem(:UTILITYUMBRELLA) && i.effects[PBEffects::HealBlock]==0
           hpgain=i.pbRecoverHP((i.totalhp/8).floor,true)
           pbDisplay(_INTL("{1}'s Dry Skin was healed by the rain!",i.pbThis)) if hpgain>0
         elsif pbWeather==PBWeather::SUNNYDAY && !i.hasWorkingItem(:UTILITYUMBRELLA)
@@ -7123,24 +7620,24 @@ def pbStartBattle(canlose=false)
           hpgain=(i.totalhp/16).floor
           hpgain=i.pbRecoverHP(hpgain,true)
           pbDisplay(_INTL("{1}'s Dry Skin was healed by the mist!",i.pbThis)) if hpgain>0
-        elsif ($fefieldeffect == 21 || $fefieldeffect == 22) && #Water fields 
-          i.effects[PBEffects::HealBlock]==0     
+        elsif ($fefieldeffect == 21 || $fefieldeffect == 22) && #Water fields
+          i.effects[PBEffects::HealBlock]==0
           hpgain=(i.totalhp/16).floor
           hpgain=i.pbRecoverHP(hpgain,true)
           pbDisplay(_INTL("{1}'s Dry Skin was healed by the water!",i.pbThis)) if hpgain>0
         elsif $fefieldeffect == 46
-          @scene.pbDamageAnimation(i,0)   
+          @scene.pbDamageAnimation(i,0)
           hploss=i.pbReduceHP((i.totalhp/8).floor)
           pbDisplay(_INTL("{1}'s Dry Skin was hurt by the saltwater!",i.pbThis)) if hploss>0
         end
       end
       # Druddigon Crest
       if isConst?(i.species,PBSpecies,:DRUDDIGON) && isConst?(i.item,PBItems,:DRUDDICREST)
-        if pbWeather==PBWeather::SUNNYDAY && i.effects[PBEffects::HealBlock]==0 
+        if pbWeather==PBWeather::SUNNYDAY && i.effects[PBEffects::HealBlock]==0
           hpgain=i.pbRecoverHP((i.totalhp/8).floor,true)
           pbDisplay(_INTL("{1} was replenished by the sunlight!",i.pbThis)) if hpgain>0
         elsif $fefieldeffect == 7 || $fefieldeffect == 16 || $fefieldeffect == 32  # Volcanic/Volcano Top Field/Dragon's Den
-          i.effects[PBEffects::HealBlock]==0     
+          i.effects[PBEffects::HealBlock]==0
           hpgain=(i.totalhp/16).floor
           hpgain=i.pbRecoverHP(hpgain,true)
           pbDisplay(_INTL("{1} was healed by the heat!",i.pbThis)) if hpgain>0
@@ -7159,6 +7656,11 @@ def pbStartBattle(canlose=false)
        i.hasWorkingAbility(:SUNBATHE) && i.effects[PBEffects::HealBlock]==0
         hpgain=i.pbRecoverHP((i.totalhp/8).floor,true)
         pbDisplay(_INTL("{1}'s Sunbathe restored its HP!",i.pbThis)) if hpgain>0
+      end
+      # Haste - lose a positive Speed stage each turn
+      if i.hasWorkingAbility(:HASTE) && i.stages[PBStats::SPEED] > 0
+        i.stages[PBStats::SPEED] -= 1
+        pbDisplay(_INTL("{1}'s {2} lowered its Speed stage!",i.pbThis,PBAbilities.getName(i.ability)))
       end
       if i.isFainted?
         return if !i.pbFaint
@@ -7266,15 +7768,15 @@ def pbStartBattle(canlose=false)
         end
       end
       # Steam Engine
-      if i.hasWorkingAbility(:STEAMENGINE) && ($fefieldeffect == 7 || 
-       $fefieldeffect == 16 || $fefieldeffect == 21 || $fefieldeffect == 22 ||  
+      if i.hasWorkingAbility(:STEAMENGINE) && ($fefieldeffect == 7 ||
+       $fefieldeffect == 16 || $fefieldeffect == 21 || $fefieldeffect == 22 ||
        $fefieldeffect == 45)
         if !i.pbTooHigh?(PBStats::SPEED)
           i.pbIncreaseStatBasic(PBStats::SPEED,1)
           pbCommonAnimation("StatUp",i,nil)
           pbDisplay(_INTL("{1}'s Steam Engine raised its Speed!",i.pbThis))
         end
-      end  
+      end
       # Wandering Spirit
       if i.hasWorkingAbility(:WANDERINGSPIRIT) && ($fefieldeffect == 12 ||
        $fefieldeffect == 40)
@@ -7308,8 +7810,8 @@ def pbStartBattle(canlose=false)
           end
         elsif i.effects[PBEffects::HealBlock]==0
           hpgain=(i.totalhp/16).floor
-          hpgain=(hpgain*1.3).floor if isConst?(i.item,PBItems,:BIGROOT) || isConst?(i.species,PBSpecies,:TANGROWTH) && i.hasWorkingItem(:TANGROWTHCREST)
-          hpgain=(hpgain*2).floor if $fefieldeffect == 3 || 
+          hpgain=(hpgain*1.3).floor if isConst?(i.item,PBItems,:BIGROOT)
+          hpgain=(hpgain*2).floor if $fefieldeffect == 3 ||
            $fefieldeffect == 8 || $fefieldeffect == 21 || $fefieldeffect == 22
           hpgain=i.pbRecoverHP(hpgain,true)
           pbDisplay(_INTL("{1}'s Aqua Ring restored its HP a little!",i.pbThis)) if hpgain>0
@@ -7330,14 +7832,14 @@ def pbStartBattle(canlose=false)
           end
         else
           if ($fefieldeffect == 33 && $fecounter >2)
-            hpgain=(i.totalhp/4).floor            
+            hpgain=(i.totalhp/4).floor
           elsif ($fefieldeffect == 15 || ($fefieldeffect == 33 && $fecounter >0))
             hpgain=(i.totalhp/8).floor
           elsif i.effects[PBEffects::HealBlock]==0
             hpgain=(i.totalhp/16).floor
           end
           if i.effects[PBEffects::HealBlock]==0
-            hpgain=(hpgain*1.3).floor if isConst?(i.item,PBItems,:BIGROOT) || isConst?(i.species,PBSpecies,:TANGROWTH) && i.hasWorkingItem(:TANGROWTHCREST)
+            hpgain=(hpgain*1.3).floor if isConst?(i.item,PBItems,:BIGROOT)
             hpgain=i.pbRecoverHP(hpgain,true)
             pbDisplay(_INTL("{1} absorbed nutrients with its roots!",i.pbThis)) if hpgain>0
           end
@@ -7348,7 +7850,7 @@ def pbStartBattle(canlose=false)
     for i in priority
       if i.hasWorkingAbility(:LIQUIDOOZE,true) && i.effects[PBEffects::LeechSeed]>=0
         recipient=@battlers[i.effects[PBEffects::LeechSeed]]
-        if recipient && !recipient.isFainted? 
+        if recipient && !recipient.isFainted?
           hploss = (i.totalhp/8).floor
 #          hploss = hploss * 2 if ($fefieldeffect == 19 || $fefieldeffect == 26 || $fefieldeffect == 41)
           pbCommonAnimation("LeechSeed",recipient,i)
@@ -7370,12 +7872,12 @@ def pbStartBattle(canlose=false)
           end
           if recipient.isFainted?
             return if !recipient.pbFaint
-          end  
-          next          
+          end
+          next
         end
       end
       next if i.isFainted?
-      if (i.effects[PBEffects::LeechSeed]>=0) 
+      if (i.effects[PBEffects::LeechSeed]>=0)
         recipient=@battlers[i.effects[PBEffects::LeechSeed]]
         if recipient && !recipient.isFainted?  && !i.hasWorkingAbility(:MAGICGUARD) &&  !(i.hasWorkingAbility(:WONDERGUARD) && $fefieldeffect == 44) # if recipient exists
           pbCommonAnimation("LeechSeed",recipient,i)
@@ -7395,11 +7897,11 @@ def pbStartBattle(canlose=false)
             end
             hploss= hploss / 2 if $fefieldeffect == 19 || $fefieldeffect == 26
           elsif recipient.effects[PBEffects::HealBlock]==0
-            hploss=(hploss*1.3).floor if recipient.hasWorkingItem(:BIGROOT) || isConst?(i.species,PBSpecies,:TANGROWTH) && i.hasWorkingItem(:TANGROWTHCREST)
+            hploss=(hploss*1.3).floor if recipient.hasWorkingItem(:BIGROOT)
             recipient.pbRecoverHP(hploss,true)
             pbDisplay(_INTL("{1}'s health was sapped by Leech Seed!",i.pbThis))
           end
-          if i.isFainted?          
+          if i.isFainted?
             return if !i.pbFaint
           end
           if recipient.isFainted?
@@ -7410,7 +7912,7 @@ def pbStartBattle(canlose=false)
     end
     for i in priority
       next if i.isFainted?
-      if (i.effects[PBEffects::Crushing]>=0) 
+      if (i.effects[PBEffects::Crushing]>=0)
         recipient=@battlers[i.effects[PBEffects::Crushing]]
         if recipient && !recipient.isFainted?  && !i.hasWorkingAbility(:MAGICGUARD) &&  !(i.hasWorkingAbility(:WONDERGUARD) && $fefieldeffect == 44) # if recipient exists
           pbCommonAnimation("Crushing",recipient,i)
@@ -7425,13 +7927,20 @@ def pbStartBattle(canlose=false)
           hploss=(hploss*1.3).floor if recipient.hasWorkingItem(:BIGROOT)
           recipient.pbRecoverHP(hploss,true)
           pbDisplay(_INTL("{1}'s health was drained by {2}!",i.pbThis,recipient.pbThis))
-          if i.isFainted?          
+          if i.isFainted?
             return if !i.pbFaint
           end
           if recipient.isFainted?
             return if !recipient.pbFaint
           end
         end
+      end
+    end
+    if @field.effects[PBEffects::VileMercy]>0
+      for battler in priority
+        next if battler.isFainted? || !battler.pbCanPoison?(false)
+        battler.pbPoison(battler)
+        pbDisplay(_INTL("{1} was poisoned by the vile miasma!",battler.pbThis))
       end
     end
     for i in priority
@@ -7466,10 +7975,10 @@ def pbStartBattle(canlose=false)
           elsif i.isBoss
             poisondamage=i.totalhp/16
             pbShieldDamage(i,poisondamage)
-          elsif (i.statusCount==0) 
+          elsif (i.statusCount==0)
             i.pbReduceHP((i.totalhp/8).floor)
-          else            
-            if !i.isBoss  
+          else
+            if !i.isBoss
               i.effects[PBEffects::Toxic]+=1
               i.effects[PBEffects::Toxic]=[15,i.effects[PBEffects::Toxic]].min
               i.pbReduceHP((i.totalhp/16).floor*i.effects[PBEffects::Toxic])
@@ -7509,6 +8018,42 @@ def pbStartBattle(canlose=false)
           i.pbReduceHP((i.totalhp/16).floor)
         end
       end
+      # Circadian Rhythm sleep-turn growth
+      if i.effects[PBEffects::CircadianRhythm]
+        if i.status==PBStatuses::SLEEP && !i.isFainted?
+          showanim=true
+          [PBStats::ATTACK,PBStats::SPATK,PBStats::SPEED].each do |stat|
+            next if !i.pbCanIncreaseStatStage?(stat,false)
+            i.pbIncreaseStat(stat,1,false,PBMoves::CIRCADIANRRHYTHM,i,showanim)
+            showanim=false
+          end
+        else
+          i.effects[PBEffects::CircadianRhythm]=false
+        end
+      end
+      # Molten Stance converts its defensive posture at the end of this turn.
+      if i.effects[PBEffects::MoltenStance]
+        i.effects[PBEffects::MoltenStance]=false
+        if !i.isFainted?
+          showanim=true
+          [PBStats::DEFENSE,PBStats::SPDEF].each do |stat|
+            next if !i.pbCanReduceStatStage?(stat,false)
+            i.pbReduceStat(stat,2,false,PBMoves::MOLTENSTANCE,i,showanim)
+            showanim=false
+          end
+          if i.pbCanIncreaseStatStage?(PBStats::SPEED,false)
+            i.pbIncreaseStat(PBStats::SPEED,2,false,PBMoves::MOLTENSTANCE,i,showanim)
+          end
+        end
+      end
+      # One embedded needle is consumed every end of round.
+      if i.effects[PBEffects::Needles]>0 && !i.isFainted?
+        i.azureConsumeNeedle
+        if i.isFainted?
+          return if !i.pbFaint
+          next
+        end
+      end
       # Wounds - saps 1/12 HP each turn
       if i.effects[PBEffects::Wounded]>0 && !i.hasWorkingAbility(:MAGICGUARD) && !(i.hasWorkingAbility(:WONDERGUARD) && $fefieldeffect == 44)
         pbDisplay(_INTL("{1} is hurt by its wounds!",i.pbThis))
@@ -7524,7 +8069,7 @@ def pbStartBattle(canlose=false)
       # Nightmare
       if i.effects[PBEffects::Nightmare] && !i.hasWorkingAbility(:MAGICGUARD) &&  !(i.hasWorkingAbility(:WONDERGUARD) && $fefieldeffect == 44) &&
         $fefieldeffect != 9
-        if i.status==PBStatuses::SLEEP || i.pbOpposing1.hasWorkingAbility(:WORLDOFNIGHTMARES) ||i.pbOpposing2.hasWorkingAbility(:WORLDOFNIGHTMARES)
+        if i.status==PBStatuses::SLEEP || !i.opposingAbilityHolder(:WORLDOFNIGHTMARES).nil?
           pbCommonAnimation("Nightmare",i,nil)
           pbDisplay(_INTL("{1} is locked in a nightmare!",i.pbThis))
           if i.effects[PBEffects::ShieldLife]>0
@@ -7533,7 +8078,7 @@ def pbStartBattle(canlose=false)
           elsif i.isBoss
             nightmaredamage=i.totalhp/8
             pbShieldDamage(i,nightmaredamage)
-          elsif $fefieldeffect == 40 
+          elsif $fefieldeffect == 40
             i.pbReduceHP((i.totalhp/3).floor,true)
           else
             i.pbReduceHP((i.totalhp/4).floor,true)
@@ -7559,7 +8104,7 @@ def pbStartBattle(canlose=false)
           !(i.hasWorkingAbility(:WONDERGUARD) && $fefieldeffect == 44)
           pbCommonAnimation("Curse",i,nil)
         pbDisplay(_INTL("{1} is afflicted by the curse!",i.pbThis))
-        if i.effects[PBEffects::ShieldLife]>0 
+        if i.effects[PBEffects::ShieldLife]>0
           cursedamage=i.totalhp/8
           pbShieldDamage(i,cursedamage)
         else
@@ -7570,6 +8115,95 @@ def pbStartBattle(canlose=false)
           end
         end
       end
+      if i.isFainted?
+        return if !i.pbFaint
+        next
+      end
+    end
+    # Lotus Bloom delayed hits. These counters live in the battler position's
+    # permanent-effect set, so a fainted target's replacement inherits them.
+    for target in battlers
+      next if target.effects[PBEffects::LotusBloom]<=0
+      if target.effects[PBEffects::LotusBloom]>1
+        target.effects[PBEffects::LotusBloom]-=1
+        next
+      end
+      next if target.isFainted? || !target.pokemon
+      moveid=target.effects[PBEffects::LotusBloomMove]
+      userindex=target.effects[PBEffects::LotusBloomUser]
+      userpkmnidx=target.effects[PBEffects::LotusBloomPkmnIdx]
+      target.effects[PBEffects::LotusBloom]=0
+      target.effects[PBEffects::LotusBloomMove]=0
+      target.effects[PBEffects::LotusBloomUser]=-1
+      target.effects[PBEffects::LotusBloomPkmnIdx]=-1
+      next if !moveid || moveid<=0 || !userindex || userindex<0
+      user=@battlers[userindex]
+      if user && user.pokemonIndex!=userpkmnidx
+        party=pbParty(userindex)
+        original=(party && userpkmnidx && userpkmnidx>=0) ? party[userpkmnidx] : nil
+        user=pbMakeFakeBattler(original,false,@battlers[userindex],true) if original
+      end
+      next if !user || !user.pokemon
+      move=PokeBattle_Move.pbFromPBMove(self,PBMove.new(moveid),user)
+      next if !move
+      move.instance_variable_set(:@azure_lotus_bloom_strike,true)
+      pbDisplay(_INTL("The lotus bloomed around {1}!",target.pbThis))
+      target.damagestate.reset
+      move.pbEffect(user,target,0,nil,true)
+      if target.isFainted?
+        return if !target.pbFaint
+      end
+    end
+    # Aftershock delayed hits
+    for target in priority
+      next if target.effects[PBEffects::Aftershock]<=0
+      moveid=target.effects[PBEffects::AftershockMove]
+      userindex=target.effects[PBEffects::AftershockUser]
+      target.effects[PBEffects::Aftershock]=0
+      target.effects[PBEffects::AftershockMove]=0
+      target.effects[PBEffects::AftershockUser]=-1
+      next if target.isFainted? || !moveid || moveid<=0
+      user=(userindex && userindex>=0) ? @battlers[userindex] : nil
+      next if !user || !user.pokemon
+      move=PokeBattle_Move.pbFromPBMove(self,PBMove.new(moveid),user)
+      next if !move
+      move.instance_variable_set(:@azure_aftershock_echo,true)
+      pbDisplay(_INTL("The aftershock struck {1}!",target.pbThis))
+      target.damagestate.reset
+      move.pbEffect(user,target,0,nil,true)
+      if target.damagestate.calcdamage>0 &&
+         !(user.hasWorkingAbility(:SHEERFORCE) || SilvallyCheck(user,PBTypes::GROUND)) &&
+         ((!target.hasWorkingAbility(:SHIELDDUST) || target.moldbroken) || move.hasFlags?("m")) &&
+         target.pbOwnSide.effects[PBEffects::LuckyChant]==0
+        chance=move.addlEffect
+        chance*=2 if user.hasWorkingAbility(:SERENEGRACE) || $fefieldeffect==9 ||
+          @field.effects[PBEffects::Rainbow]>0
+        move.pbAdditionalEffect(user,target) if pbRandom(100)<chance
+      end
+      if target.isFainted?
+        return if !target.pbFaint
+      end
+    end
+    # Counterpoise retains doubled Defense through delayed attacks, then swaps.
+    for battler in priority
+      next if battler.isFainted?
+      if battler.effects[PBEffects::CounterpoiseSwap]
+        battler.effects[PBEffects::PowerTrick]=!battler.effects[PBEffects::PowerTrick]
+        battler.effects[PBEffects::CounterpoiseSwap]=false
+        pbDisplay(_INTL("{1} swapped its Attack and Defense!",battler.pbThis))
+      end
+      battler.effects[PBEffects::CounterpoiseDouble]=false
+    end
+    # Salt Cure
+    for i in priority
+      next if i.isFainted? || !i.effects[PBEffects::SaltCure]
+      next if i.hasWorkingAbility(:MAGICGUARD)
+      next if i.hasWorkingAbility(:WONDERGUARD) && $fefieldeffect==44
+      divisor=(i.pbHasType?(:STEEL) || i.pbHasType?(:WATER)) ? 4 : 8
+      damage=[(i.totalhp/divisor).floor,1].max
+      pbCommonAnimation("SaltCure",i,nil)
+      pbDisplay(_INTL("{1} is hurt by Salt Cure!",i.pbThis))
+      i.pbReduceHP(damage,true)
       if i.isFainted?
         return if !i.pbFaint
         next
@@ -7645,7 +8279,7 @@ def pbStartBattle(canlose=false)
                   i.pbReduceHP((i.totalhp/4).floor)
                 when 4
                   i.pbReduceHP((i.totalhp/3).floor)
-              end 
+              end
           else
             i.pbReduceHP((i.totalhp/8).floor)
           end
@@ -7664,10 +8298,25 @@ def pbStartBattle(canlose=false)
             i.pbReduceStat(PBStats::ACCURACY,1,true)
           end
         end
-      end  
+      end
       if i.hp<=0
         return if !i.pbFaint
         next
+      end
+    end
+    # Syrup Bomb
+    for i in priority
+      next if i.isFainted? || i.effects[PBEffects::SyrupBombTurns]<=0
+      sourceindex=i.effects[PBEffects::SyrupBombUser]
+      source=(sourceindex && sourceindex>=0) ? @battlers[sourceindex] : nil
+      if i.pbCanReduceStatStage?(PBStats::SPEED,false)
+        pbCommonAnimation("StatDown",i,nil)
+        i.pbReduceStat(PBStats::SPEED,1,false,PBMoves::SYRUPBOMB,source,false,false)
+      end
+      i.effects[PBEffects::SyrupBombTurns]-=1
+      if i.effects[PBEffects::SyrupBombTurns]<=0
+        i.effects[PBEffects::SyrupBombTurns]=0
+        i.effects[PBEffects::SyrupBombUser]=-1
       end
     end
     # Taunt
@@ -7677,7 +8326,7 @@ def pbStartBattle(canlose=false)
         i.effects[PBEffects::Taunt]-=1
         if i.effects[PBEffects::Taunt]==0
           pbDisplay(_INTL("{1} recovered from the taunting!",i.pbThis))
-        end 
+        end
       end
     end
     # Encore
@@ -7693,7 +8342,7 @@ def pbStartBattle(canlose=false)
           if i.effects[PBEffects::Encore]==0 || i.moves[i.effects[PBEffects::EncoreIndex]].pp==0
             i.effects[PBEffects::Encore]=0
             pbDisplay(_INTL("{1}'s encore ended!",i.pbThis))
-          end 
+          end
         end
       end
     end
@@ -7846,7 +8495,7 @@ def pbStartBattle(canlose=false)
           pbDisplay(_INTL("The opposing team's Aurora Veil faded!")) if i==1
         end
       end
-    end    
+    end
     # Arenite Veil
     for i in 0...2
       if sides[i].effects[PBEffects::AreniteWall]>0
@@ -7856,7 +8505,7 @@ def pbStartBattle(canlose=false)
           pbDisplay(_INTL("The opposing team's Arenite Wall faded!")) if i==1
         end
       end
-    end    
+    end
     # Wide Guard
     for i in 0...2
       if sides[i].effects[PBEffects::WideGuard]>0
@@ -7903,6 +8552,57 @@ def pbStartBattle(canlose=false)
         pbDisplay(_INTL("The bonfire on the opposing side burned out!")) if i==1
       end
     end
+    # Sunfury residual damage
+    for battler in priority
+      next if battler.isFainted?
+      next if battler.pbOwnSide.effects[PBEffects::Sunfury]<=0
+      next if battler.hasWorkingAbility(:MAGICGUARD)
+      next if battler.hasWorkingAbility(:WONDERGUARD) && $fefieldeffect==44
+      atype=getConst(PBTypes,:FIRE) || 0
+      eff=PBTypes.getCombinedEffectiveness(atype,battler.type1,battler.type2)
+      next if eff<=0
+      @scene.pbDamageAnimation(battler,0)
+      battler.pbReduceHP([(battler.totalhp*eff/48).floor,1].max)
+      pbDisplay(_INTL("{1} was seared by Sunfury!",battler.pbThis))
+      if battler.isFainted?
+        return if !battler.pbFaint
+      end
+    end
+    for i in 0...2
+      next if sides[i].effects[PBEffects::Sunfury]<=0
+      sides[i].effects[PBEffects::Sunfury]-=1
+      if sides[i].effects[PBEffects::Sunfury]==0
+        pbDisplay(_INTL("The solar fire on your battlefield faded!")) if i==0
+        pbDisplay(_INTL("The solar fire on the opposing battlefield faded!")) if i==1
+      end
+    end
+    # Red Sun's Zenith stars. Stars expire independently and sustain ordinary
+    # Gravity while any orbit remains.
+    for i in 0...2
+      stars=sides[i].effects[PBEffects::RedSunStars]
+      next if !stars.is_a?(Array) || stars.length==0
+      oldlength=stars.length
+      stars=stars.collect { |turns| turns-1 }.find_all { |turns| turns>0 }
+      sides[i].effects[PBEffects::RedSunStars]=stars
+      if stars.length<oldlength
+        pbDisplay(_INTL("A red star above your battlefield disappeared.")) if i==0
+        pbDisplay(_INTL("A red star above the opposing battlefield disappeared.")) if i==1
+      end
+      if stars.length>0
+        @field.effects[PBEffects::Gravity]=[
+          @field.effects[PBEffects::Gravity],stars.max+1
+        ].max
+      end
+    end
+    # Scorching Ground
+    for i in 0...2
+      next if sides[i].effects[PBEffects::ScorchingGround] <= 0
+      sides[i].effects[PBEffects::ScorchingGround] -= 1
+      if sides[i].effects[PBEffects::ScorchingGround] == 0
+        pbDisplay(_INTL("The scorching ground on your side cooled off!")) if i==0
+        pbDisplay(_INTL("The scorching ground on the opposing side cooled off!")) if i==1
+      end
+    end
     # Safeguard
     for i in 0...2
       if sides[i].effects[PBEffects::Safeguard]>0
@@ -7926,7 +8626,7 @@ def pbStartBattle(canlose=false)
     # Tailwind
     for i in 0...2
       if sides[i].effects[PBEffects::Tailwind]>0
-        sides[i].effects[PBEffects::Tailwind]-=1
+        sides[i].effects[PBEffects::Tailwind]-=1 if !azureJetstreamForSide?(i)
         if sides[i].effects[PBEffects::Tailwind]==0
           pbDisplay(_INTL("Your team's tailwind stopped blowing!")) if i==0
           pbDisplay(_INTL("The opposing team's tailwind stopped blowing!")) if i==1
@@ -7970,6 +8670,30 @@ def pbStartBattle(canlose=false)
         end
       end
     end
+    # Pressure Plate
+    for i in 0...2
+      if sides[i].effects[PBEffects::PressurePlate]>0
+        sides[i].effects[PBEffects::PressurePlate]-=1
+        if sides[i].effects[PBEffects::PressurePlate]==0
+          pbDisplay(_INTL("The pressure plate beneath your team crumbled!")) if i==0
+          pbDisplay(_INTL("The pressure plate beneath the opposing team crumbled!")) if i==1
+        end
+      end
+    end
+    # Vile Mercy
+    if @field.effects[PBEffects::VileMercy]>0
+      @field.effects[PBEffects::VileMercy]-=1
+      if @field.effects[PBEffects::VileMercy]==0
+        pbDisplay(_INTL("The vile miasma dispersed."))
+      end
+    end
+    # Blue Shift
+    if @field.effects[PBEffects::BlueShift]>0
+      @field.effects[PBEffects::BlueShift]-=1
+      if @field.effects[PBEffects::BlueShift]==0
+        pbDisplay(_INTL("The type chart returned to normal."))
+      end
+    end
     # Mud Sport
     if @field.effects[PBEffects::MudSport]>0
       @field.effects[PBEffects::MudSport]-=1
@@ -8004,10 +8728,10 @@ def pbStartBattle(canlose=false)
       @field.effects[PBEffects::Splintered]-=1
       if @field.effects[PBEffects::Splintered]==0
         $fefieldeffect = $febackup
-        pbChangeBGSprite        
+        pbChangeBGSprite
         seedCheck
       end
-    end    
+    end
     if @field.effects[PBEffects::Terrain]>0
       terrain=[@field.effects[PBEffects::Terrain]].max
       terrain-=1
@@ -8021,7 +8745,7 @@ def pbStartBattle(canlose=false)
         pbDisplay(_INTL("The terrain returned to normal."))
         if $fefieldeffect>0
           pbRestoreFieldBack
-        else 
+        else
           pbChangeBGSprite
         end
         #pbChangeBGSprite
@@ -8062,36 +8786,36 @@ def pbStartBattle(canlose=false)
       if @field.effects[PBEffects::ElectricTerrain]==0
         pbDisplay(_INTL("The surging electricity dissipated."))
       end
-    end  
+    end
     if @field.effects[PBEffects::MistyTerrain]>0
       @field.effects[PBEffects::MistyTerrain]-=1
       if @field.effects[PBEffects::MistyTerrain]==0
         pbDisplay(_INTL("The surrounding mist dispersed."))
       end
-    end  
+    end
     if @field.effects[PBEffects::GrassyTerrain]>0
-      if $fefieldeffect==7 || $fefieldeffect==16 || $fefieldeffect==45  
+      if $fefieldeffect==7 || $fefieldeffect==16 || $fefieldeffect==45
         @field.effects[PBEffects::GrassyTerrain]=0
         pbDisplay(_INTL("The surrounding grass was burnt to a crisp!"))
-      else  
+      else
         @field.effects[PBEffects::GrassyTerrain]-=1
         if @field.effects[PBEffects::GrassyTerrain]==0
           pbDisplay(_INTL("The surrounding grass withered."))
         end
-      end  
-    end  
+      end
+    end
     if @field.effects[PBEffects::PsychicTerrain]>0
       @field.effects[PBEffects::PsychicTerrain]-=1
       if @field.effects[PBEffects::PsychicTerrain]==0
         pbDisplay(_INTL("The psychic energy left as mysteriously as it came."))
       end
-    end   
+    end
     if @field.effects[PBEffects::Rainbow]>0
       @field.effects[PBEffects::Rainbow]-=1
       if @field.effects[PBEffects::Rainbow]==0
         pbDisplay(_INTL("The rainbow disappeared."))
       end
-    end  
+    end
     # Fairy Lock
     if @field.effects[PBEffects::FairyLock]>0
       @field.effects[PBEffects::FairyLock]-=1
@@ -8116,7 +8840,7 @@ def pbStartBattle(canlose=false)
         if i.effects[PBEffects::Uproar]==0
           pbDisplay(_INTL("{1} calmed down.",i.pbThis))
         else
-          pbDisplay(_INTL("{1} is making an uproar!",i.pbThis)) 
+          pbDisplay(_INTL("{1} is making an uproar!",i.pbThis))
         end
       end
     end
@@ -8151,12 +8875,11 @@ def pbStartBattle(canlose=false)
               i.pbReduceHP([(i.totalhp*eff/16).floor,1].max)
             end
           end
-          partner=i.pbPartner
-          if partner && !partner.isFainted?
-            eff=PBTypes.getCombinedEffectiveness(atype,partner.type1,partner.type2)
+          i.sameSideLivingBattlers(false).each do |ally|
+            eff=PBTypes.getCombinedEffectiveness(atype,ally.type1,ally.type2)
             if eff>0
-              @scene.pbDamageAnimation(partner,0)
-              partner.pbReduceHP([(partner.totalhp*eff/16).floor,1].max)
+              @scene.pbDamageAnimation(ally,0)
+              ally.pbReduceHP([(ally.totalhp*eff/16).floor,1].max)
             end
           end
         end
@@ -8169,11 +8892,10 @@ def pbStartBattle(canlose=false)
             @scene.pbDamageAnimation(i,0)
             i.pbReduceHP([(i.totalhp/3).floor,1].max)
           end
-          partner=i.pbPartner
-          if partner && !partner.isFainted?
-            if !partner.isAirborne?
-              @scene.pbDamageAnimation(partner,0)
-              partner.pbReduceHP([(partner.totalhp/3).floor,1].max)
+          i.sameSideLivingBattlers(false).each do |ally|
+            if !ally.isAirborne?
+              @scene.pbDamageAnimation(ally,0)
+              ally.pbReduceHP([(ally.totalhp/3).floor,1].max)
             end
           end
         end
@@ -8190,19 +8912,18 @@ def pbStartBattle(canlose=false)
               i.status=PBStatuses::POISON
               i.statusCount=1
               i.effects[PBEffects::Toxic]=0
-              pbCommonAnimation("Poison",i,nil)  
-            end     
+              pbCommonAnimation("Poison",i,nil)
+            end
           end
-          partner=i.pbPartner
-          if partner && !partner.isFainted?
-            if !partner.isAirborne? &&
-             !partner.pbHasType?(:STEEL) && !partner.pbHasType?(:POISON)
-              @scene.pbDamageAnimation(partner,0)
-              partner.pbReduceHP([(partner.totalhp/8).floor,1].max)   
-              if partner.status==0 && partner.pbCanPoison?(false)
-                partner.status=PBStatuses::POISON
-                partner.statusCount=1
-                partner.effects[PBEffects::Toxic]=0
+          i.sameSideLivingBattlers(false).each do |ally|
+            if !ally.isAirborne? &&
+             !ally.pbHasType?(:STEEL) && !ally.pbHasType?(:POISON)
+              @scene.pbDamageAnimation(ally,0)
+              ally.pbReduceHP([(ally.totalhp/8).floor,1].max)
+              if ally.status==0 && ally.pbCanPoison?(false)
+                ally.status=PBStatuses::POISON
+                ally.statusCount=1
+                ally.effects[PBEffects::Toxic]=0
                 pbCommonAnimation("Poison",i,nil)
               end
             end
@@ -8218,16 +8939,15 @@ def pbStartBattle(canlose=false)
               i.pbReduceStatBasic(PBStats::SPEED,4)
               pbCommonAnimation("StatDown",i,nil)
               pbDisplay(_INTL("{1}'s Speed was severely lowered!",i.pbThis))
-            end 
+            end
           end
-          partner=i.pbPartner
-          if partner && !partner.isFainted?
-            if !partner.pbTooLow?(PBStats::SPEED)
-              partner.pbReduceStatBasic(PBStats::SPEED,4)
-              pbCommonAnimation("StatDown",partner,nil)
-              pbDisplay(_INTL("{1}'s Speed was severely lowered!",partner.pbThis))
-            end 
-          end        
+          i.sameSideLivingBattlers(false).each do |ally|
+            if !ally.pbTooLow?(PBStats::SPEED)
+              ally.pbReduceStatBasic(PBStats::SPEED,4)
+              pbCommonAnimation("StatDown",ally,nil)
+              pbDisplay(_INTL("{1}'s Speed was severely lowered!",ally.pbThis))
+            end
+          end
         end
         # Mystic Harvest Damage
         if i.pbOwnSide.effects[PBEffects::MysticTree]>0
@@ -8242,12 +8962,11 @@ def pbStartBattle(canlose=false)
               i.pbReduceHP([(i.totalhp*eff/24).floor,1].max)
             end
           end
-          partner=i.pbPartner
-          if partner && !partner.isFainted?
-            eff=PBTypes.getCombinedEffectiveness(atype,partner.type1,partner.type2)
+          i.sameSideLivingBattlers(false).each do |ally|
+            eff=PBTypes.getCombinedEffectiveness(atype,ally.type1,ally.type2)
             if eff>0
-              @scene.pbDamageAnimation(partner,0)
-              partner.pbReduceHP([(partner.totalhp*eff/24).floor,1].max)
+              @scene.pbDamageAnimation(ally,0)
+              ally.pbReduceHP([(ally.totalhp*eff/24).floor,1].max)
             end
           end
         end
@@ -8393,15 +9112,15 @@ def pbStartBattle(canlose=false)
         when 36
           protype = :NORMAL || 0
         when 37
-          protype = :PSYCHIC || 0 
+          protype = :PSYCHIC || 0
         when 38
-          protype = :DARK || 0   
+          protype = :DARK || 0
         when 39
-          protype = :ICE || 0  
+          protype = :ICE || 0
         when 40
-          protype = :GHOST || 0  
+          protype = :GHOST || 0
         when 41
-          protype = :POISON || 0  
+          protype = :POISON || 0
         when 42
           protype = :FAIRY || 0
         when 43
@@ -8414,7 +9133,7 @@ def pbStartBattle(canlose=false)
           protype = :GROUND || 0
         end
         prot1 = i.type1
-        prot2 = i.type2 
+        prot2 = i.type2
         camotype = getConst(PBTypes,protype) || 0
         if camotype>0 && (!i.pbHasType?(camotype) || (defined?(prot2) && prot1 != prot2))
           i.type1=camotype
@@ -8424,7 +9143,7 @@ def pbStartBattle(canlose=false)
         end
       end
       # Speed Boost
-      # A Pokémon's turncount is 0 if it became active after the beginning of a round
+      # A PokÃ©mon's turncount is 0 if it became active after the beginning of a round
       if i.turncount>0 && i.hasWorkingAbility(:SPEEDBOOST)
         if !i.pbTooHigh?(PBStats::SPEED)
           i.pbIncreaseStatBasic(PBStats::SPEED,1)
@@ -8481,8 +9200,8 @@ def pbStartBattle(canlose=false)
             hploss=i.pbReduceHP(hpdown,true)
           else
             hpdown = (i.totalhp/16).floor
-            hploss=i.pbReduceHP(hpdown,true)   
-          end  
+            hploss=i.pbReduceHP(hpdown,true)
+          end
         end
         pbDisplay(_INTL("{1}'s strength is sapped by the swamp!",i.pbThis)) if hploss>0
       end
@@ -8512,7 +9231,7 @@ def pbStartBattle(canlose=false)
     if i.status==PBStatuses::SLEEP
       if ($fefieldeffect == 9 || @field.effects[PBEffects::Rainbow]>0) && i.effects[PBEffects::HealBlock]==0#Rainbow Field
       hpgain=(i.totalhp/16).floor
-      hpgain=(hpgain*1.3).floor if isConst?(i.item,PBItems,:BIGROOT) || isConst?(i.species,PBSpecies,:TANGROWTH) && i.hasWorkingItem(:TANGROWTHCREST)
+      hpgain=(hpgain*1.3).floor if isConst?(i.item,PBItems,:BIGROOT)
       hpgain=i.pbRecoverHP(hpgain,true)
       pbDisplay(_INTL("{1} recovered health in its peaceful sleep!",i.pbThis))
       end
@@ -8533,12 +9252,11 @@ def pbStartBattle(canlose=false)
       $fefieldeffect == 31 &&
       isConst?(i.ability,PBAbilities,:INTIMIDATE2)
       hploss=i.pbReduceHP((i.totalhp/6).floor,true)
-      pbDisplay(_INTL("Melia harmed Gyarados from outside the rift!",i.pbThis)) if hploss>0 
+      pbDisplay(_INTL("Melia harmed Gyarados from outside the rift!",i.pbThis)) if hploss>0
     end
     #HauntedSleep
     if i.status==PBStatuses::SLEEP && !i.pbHasType?(:GHOST) && $fefieldeffect == 40 # Haunted
-      if i.pbOpposing1.hasWorkingAbility(:SHADOWTAG) ||
-        i.pbOpposing2.hasWorkingAbility(:SHADOWTAG)
+      if !i.opposingAbilityHolder(:SHADOWTAG).nil?
         if i.effects[PBEffects::ShieldLife]>0
           nightmaredamage=i.totalhp/16
           pbShieldDamage(i,nightmaredamage)
@@ -8554,14 +9272,14 @@ def pbStartBattle(canlose=false)
           hploss=i.pbReduceHP((i.totalhp/16).floor,true)
         end
       end
-      pbDisplay(_INTL("{1}'s dream is corrupted by the evil spirits!",i.pbThis)) if hploss>0 
+      pbDisplay(_INTL("{1}'s dream is corrupted by the evil spirits!",i.pbThis)) if hploss>0
     end
     if i.hp<=0
       return if !i.pbFaint
       next
     end
     #FairyRingSleep
-    if i.status==PBStatuses::SLEEP && 
+    if i.status==PBStatuses::SLEEP &&
      $fefieldeffect == 42 # Bewitched woods
       if i.effects[PBEffects::ShieldLife]>0
         nightmaredamage=i.totalhp/16
@@ -8575,7 +9293,7 @@ def pbStartBattle(canlose=false)
     if i.hp<=0
       return if !i.pbFaint
       next
-    end  
+    end
     #sleepycorro
     if i.status==PBStatuses::SLEEP && i.hasWorkingAbility(:MAGICGUARD) &&
      !i.hasWorkingAbility(:POISONHEAL) && !i.hasWorkingAbility(:TOXICBOOST) &&
@@ -8596,18 +9314,18 @@ def pbStartBattle(canlose=false)
     end
     # Water Compaction on Water-based Fields
     if i.hasWorkingAbility(:WATERCOMPACTION)
-      if $fefieldeffect==8 || $fefieldeffect==21 || $fefieldeffect==22 || 
+      if $fefieldeffect==8 || $fefieldeffect==21 || $fefieldeffect==22 ||
         $fefieldeffect==26 || $fefieldeffect == 46 # Swamp, Water Surface, Underwater, Murkwater
         if !i.pbTooHigh?(PBStats::DEFENSE)
           i.pbIncreaseStatBasic(PBStats::DEFENSE,2)
           pbCommonAnimation("StatUp",i,nil)
           pbDisplay(_INTL("{1}'s Water Compaction sharply raised its defense!",
-           i.pbThis))     
+           i.pbThis))
          end
        end
-     end
-    # World of Nightmares 
-    if i.pbOpposing1.hasWorkingAbility(:WORLDOFNIGHTMARES) || i.pbOpposing2.hasWorkingAbility(:WORLDOFNIGHTMARES)
+    end
+    # World of Nightmares
+    if !i.opposingAbilityHolder(:WORLDOFNIGHTMARES).nil?
         i.effects[PBEffects::WorldOfNightmares]+=1
         nightmarechip=[64,i.effects[PBEffects::WorldOfNightmares]].min
         if $fefieldeffect==35 # new world
@@ -8621,7 +9339,7 @@ def pbStartBattle(canlose=false)
        !isConst?(i.ability,PBAbilities,:MAGICGUARD) && !(isConst?(i.ability,PBAbilities,:WONDERGUARD) && $fefieldeffect == 44) &&
        $fefieldeffect != 9
       have_aura = false
-      for opp in [i.pbOpposing1, i.pbOpposing2]
+      for opp in i.opposingLivingBattlers
         next if !opp || opp.isFainted?
         have_aura = true if opp.effects[PBEffects::NightmareAura]
       end
@@ -8650,7 +9368,7 @@ def pbStartBattle(canlose=false)
       if firstberryletter=="A" || firstberryletter=="E" || firstberryletter=="I" ||
         firstberryletter=="O" || firstberryletter=="U"
             pbDisplay(_INTL("{1} harvested an {2}!",i.pbThis,PBItems.getName(i.item)))
-      else      
+      else
         pbDisplay(_INTL("{1} harvested a {2}!",i.pbThis,PBItems.getName(i.item)))
       end
       i.pbBerryCureCheck(true)
@@ -8663,7 +9381,7 @@ def pbStartBattle(canlose=false)
       randoms=[]
       loop do
         failsafe+=1
-        break if failsafe==1000        
+        break if failsafe==1000
         rand=1+self.pbRandom(5)
         if !i.pbTooHigh?(rand)
           randoms.push(rand)
@@ -8672,7 +9390,7 @@ def pbStartBattle(canlose=false)
       end
       statnames=[_INTL("Attack"),_INTL("Defense"),_INTL("Speed"),_INTL("Special Attack"),_INTL("Special Defense")]
       if failsafe!=1000
-        if i.effects[PBEffects::MultiTurnAttack] == PBMoves::BINDINGWORD # Stats suppressed by binding word     
+        if i.effects[PBEffects::MultiTurnAttack] == PBMoves::BINDINGWORD # Stats suppressed by binding word
           i.effects[PBEffects::StatChangeHolder][randoms[0]]+=1
           i.effects[PBEffects::StatChangeHolder][randoms[0]]=3 if i.effects[PBEffects::StatChangeHolder][randoms[0]]>3
         else
@@ -8681,9 +9399,9 @@ def pbStartBattle(canlose=false)
         end
         pbCommonAnimation("StatUp",i,nil)
         pbDisplay(_INTL("{1}'s Cloud Nine raised its {2}!",i.pbThis,statnames[randoms[0]-1]))
-      end     
+      end
     end
-    if !i.hasWorkingItem(:LEFTOVERS) && !i.hasWorkingItem(:BLACKSLUDGE) && 
+    if !i.hasWorkingItem(:LEFTOVERS) && !i.hasWorkingItem(:BLACKSLUDGE) &&
        !i.hasWorkingItem(:SPIRITCREST)  && !i.hasWorkingItem(:INFCREST)
       i.pbBerryCureCheck(true)
     end
@@ -8694,7 +9412,9 @@ def pbStartBattle(canlose=false)
       i.pokemon.itemInitial=pokeball
       PBDebug.log("[Ability triggered] #{i.pbThis}'s Ball Fetch found #{PBItems.getName(ball)}")
       pbDisplay(_INTL("{1} fetched a {2}!",i.pbThis,PBItems.getName(ball)))
-      i.pbPartner.effects[PBEffects::BallFetch]=0 if i.pbPartner.hasWorkingAbility(:BALLFETCH)
+      i.sameSideLivingBattlers(false).each do |ally|
+        ally.effects[PBEffects::BallFetch]=0 if ally.hasWorkingAbility(:BALLFETCH)
+      end
     end
     if i.hasWorkingAbility(:HONEYGATHER) && !i.isFainted?
       if !i.effects[PBEffects::DamagingMoveThisTurn] && i.effects[PBEffects::HealBlock]==0 && i.hp<i.totalhp
@@ -8717,7 +9437,7 @@ def pbStartBattle(canlose=false)
           pbDisplay(_INTL("{1} reignited its flame!",i.pbThis))
         end
       end
-    end   
+    end
     for i in priority
       next if i.isFainted?
       # Toxic Orb
@@ -8756,7 +9476,7 @@ def pbStartBattle(canlose=false)
         pbDisplay(_INTL("{1} was crushed by its {2}!",i.pbThis,PBItems.getName(i.item)))
       end
       # Sticky Barb
-      if i.hasWorkingItem(:STICKYBARB) && !i.hasWorkingAbility(:MAGICGUARD) &&  
+      if i.hasWorkingItem(:STICKYBARB) && !i.hasWorkingAbility(:MAGICGUARD) &&
          !(i.hasWorkingAbility(:WONDERGUARD) && $fefieldeffect == 44)
         pbDisplay(_INTL("{1} is hurt by its {2}!",i.pbThis,PBItems.getName(i.item)))
         @scene.pbDamageAnimation(i,0)
@@ -8769,10 +9489,26 @@ def pbStartBattle(canlose=false)
     end
 #### SARDINES - v17 - START
     # Slow Start's end message
-    for i in 0...4
+    eachActiveBattlerIndex do |i|
       if @battlers[i].hasWorkingAbility(:SLOWSTART) && @battlers[i].turncount==5
         pbDisplay(_INTL("{1} finally got its act together!", @battlers[i].name))
       end
+      next if @battlers[i].isFainted?
+      next if !@battlers[i].hasWorkingAbility(:TIMETWISTER)
+      next if @battlers[i].hp > (@battlers[i].totalhp/3).floor
+      snapshot=@battlers[i].effects[PBEffects::TimetwisterState]
+      next if !snapshot
+      oldhp=@battlers[i].hp
+      @battlers[i].hp=snapshot[:hp]
+      @battlers[i].status=snapshot[:status]
+      @battlers[i].statusCount=snapshot[:statusCount]
+      @battlers[i].stages=snapshot[:stages].clone
+      restored_effects=Marshal.load(Marshal.dump(snapshot[:effects]))
+      restored_effects[PBEffects::TimetwisterState]=nil
+      @battlers[i].effects=restored_effects
+      @scene.pbHPChanged(@battlers[i],oldhp,true) if oldhp!=@battlers[i].hp
+      @battlers[i].pbUpdate(true)
+      pbDisplay(_INTL("{1}'s {2} rewound it to the start of the turn!",@battlers[i].pbThis,PBAbilities.getName(@battlers[i].ability)))
     end
 #### SARDINES - v17 - END
     # Hunger Switch
@@ -8791,7 +9527,7 @@ def pbStartBattle(canlose=false)
 #### SAVAGERY - START
 #### SAVAGERY - END
     # Form checks
-    for i in 0...4
+    eachActiveBattlerIndex do |i|
       next if @battlers[i].isFainted?
       @battlers[i].pbCheckForm
     end
@@ -8799,28 +9535,27 @@ def pbStartBattle(canlose=false)
 ##### KUROTSUNE - 009 - START
     # Checks if a pokemon on either side has fainted on this turn
     # for retaliate
-    player   = priority[0]
-    opponent = priority[1]
-    if player.isFainted? || 
-      (@doublebattle && player.pbPartner.isFainted?)
-      player.pbOwnSide.effects[PBEffects::Retaliate] = true
-    else
-      # No pokemon has fainted in this side this turn
-      player.pbOwnSide.effects[PBEffects::Retaliate] = false
-    end
-    
-    if opponent.isFainted? || 
-      (@doublebattle && player.pbPartner.isFainted?)
-      opponent.pbOwnSide.effects[PBEffects::Retaliate] = true
-    else
-      opponent.pbOwnSide.effects[PBEffects::Retaliate] = false
+    [false,true].each do |opposing|
+      sideIndices = pbActiveBattlerIndicesForSide(opposing)
+      sideHasFainted = sideIndices.any? { |idx| @battlers[idx].isFainted? }
+      sideIndices.each do |idx|
+        @battlers[idx].pbOwnSide.effects[PBEffects::Retaliate] = sideHasFainted
+      end
     end
 ##### KUROTSUNE - 009 - END
     for i in priority
       next if i.isFainted?
       next if i.nil?
       next if @party2[0].nil?
-      if @field.effects[PBEffects::SosBuffer] == 0 && (@doublebattle && i.isbossmon && i.pbPartner.issossmon)
+      sameSideSOS = false
+      eachSameSideBattler(i.index) do |battler|
+        next if battler.index==i.index
+        if battler.issossmon
+          sameSideSOS = true
+          break
+        end
+      end
+      if @field.effects[PBEffects::SosBuffer] == 0 && i.isbossmon && sameSideSOS
         @field.effects[PBEffects::SosBuffer] = i.sosDetails && i.sosDetails[:sosBuffer] ? i.sosDetails[:sosBuffer] : 3
       end
     end
@@ -8839,7 +9574,7 @@ def pbStartBattle(canlose=false)
     end
     # Healing Wish/Lunar Dance - should go here
     # Spikes/Toxic Spikes/Stealth Rock - should go here (in order of their 1st use)
-    for i in 0...4
+    eachActiveBattlerIndex do |i|
       if @battlers[i].turncount>0 && @battlers[i].hasWorkingAbility(:TRUANT)
         @battlers[i].effects[PBEffects::Truant]=!@battlers[i].effects[PBEffects::Truant]
       end
@@ -8867,6 +9602,8 @@ def pbStartBattle(canlose=false)
       @battlers[i].effects[PBEffects::CounterTarget]=-1
       @battlers[i].effects[PBEffects::MirrorCoat]=-1
       @battlers[i].effects[PBEffects::MirrorCoatTarget]=-1
+      @battlers[i].effects[PBEffects::DamagingMoveThisTurn]=false
+      @battlers[i].azureStatsRaisedThisRound=false
     end
     # invalidate stored priority
     @usepriority=false
@@ -8960,7 +9697,7 @@ def pbStartBattle(canlose=false)
     ##### LOSE, DRAW #####
     when 2, 5
       if @internalbattle
-        pbDisplayPaused(_INTL("{1} is out of usable Pokémon!",self.pbPlayer.name))
+        pbDisplayPaused(_INTL("{1} is out of usable PokÃ©mon!",self.pbPlayer.name))
         moneylost=pbMaxLevelFromIndex(0)
         $game_switches[:No_Catch]=false
         $febackgroundstore=0
@@ -8999,7 +9736,7 @@ def pbStartBattle(canlose=false)
         PBDebug.log("***[Draw game]") if $INTERNAL
       end
     end
-    # Pass on Pokérus within the party
+    # Pass on PokÃ©rus within the party
     infected=[]
     for i in 0...$Trainer.party.length
       if $Trainer.party[i].pokerusStage==1
@@ -9020,6 +9757,10 @@ def pbStartBattle(canlose=false)
     @scene.pbEndBattle(@decision)
     for i in @battlers
       i.pbResetForm
+    end
+    ([*@party1, *@party2].compact.uniq).each do |pkmn|
+      pkmn.clearBeneficialStatus if pkmn.respond_to?(:clearBeneficialStatus)
+      pkmn.tributeDracoPP=nil if pkmn.respond_to?(:tributeDracoPP=)
     end
     for i in $Trainer.party
       i.setItem(i.itemInitial)

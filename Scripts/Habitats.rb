@@ -960,9 +960,7 @@ class HabitatDetailScene
     end
     setEncounter
 
-    pbRgssOpen("Data/townmap.dat", "rb") { |f|
-      @mapdata = Marshal.load(f)
-    }
+    @mapdata = pbLoadTownMapData
     @region = region
     @sprites["areamap"] = IconSprite.new(0, 0, @viewport)
     @sprites["areamap"].setBitmap("Graphics/Pictures/#{@mapdata[@region][1]}")

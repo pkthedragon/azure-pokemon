@@ -1,5 +1,6 @@
 Event YEET professional SP2
 Settings
+AzurePBSValidator
 ================~blank
 RGSS2Compatibility
 RPG__Sprite
@@ -46,6 +47,7 @@ TileDrawingHelper
 Interpreter
 PBEvent
 PBFile
+AzureDataCache
 PBIntl
 PBDebug
 ================~blank
@@ -71,7 +73,9 @@ PBTrainers
 PBMoves
 PBItems
 PBSpecies
+PBSpeciesData
 PBAbilities
+PBAbility
 PBMove
 PBStatuses
 PBTypesExtra
@@ -91,6 +95,7 @@ PokeBattle_Effects
 PokeBattle_Move
 PokeBattle_ZMoves
 PokeBattle_MoveEffects
+PokeBattle_MoveEffectCompatibility
 PokeBattle_Battle
 PokeBattle_AI
 PokeBattle_SceneConstants
@@ -138,6 +143,9 @@ PokemonStorage
 ================~blank
 PokemonBossBattle
 BossInfo
+FieldEffectInfo
+PokemonFieldEffectsManual
+PokemonTrainerIndex
 ================~blank
 PokemonPauseMenu
 PokemonPokedex

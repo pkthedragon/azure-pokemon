@@ -11,6 +11,7 @@ module Input
   F7     = 27
   F8     = 28
   F9     = 29
+  M      = 77  # For Field Manual in battle
   LeftMouseKey  = 38
   RightMouseKey = 40
   PAGEUP = L

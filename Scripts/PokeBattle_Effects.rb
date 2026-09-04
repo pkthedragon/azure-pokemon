@@ -15,12 +15,18 @@ class PokeBattle_Battler
       return false      
     end    
   end
+
+  def pbIcicleTributeBypassActive?
+    return false if !defined?(pbCurrentTributeMoveMatches?)
+    return pbCurrentTributeMoveMatches?(@battle,:ICICLETRIBUTE,true)
+  end
   # End of Minior streamlining
 
 #===============================================================================
 # Status
 #===============================================================================
   def pbCanStatus?(showMessages=true,selfsleep=false,ignorespritz=false)
+    return true if pbIcicleTributeBypassActive?
     if !selfsleep && pbOwnSide.effects[PBEffects::Safeguard]>0 && !(@battle.battlers[@battle.lastMoveUser]).hasWorkingAbility(:INFILTRATOR) && !(PBMoveData.new(@battle.lastMoveUsed).function==0x21B && @battle.battlers[@battle.lastMoveUser].hp < (0.5 * @battle.battlers[@battle.lastMoveUser].totalhp).floor)
       @battle.pbDisplay(_INTL("{1}'s team is protected by Safeguard!",pbThis)) if showMessages
       return false
@@ -52,44 +58,50 @@ class PokeBattle_Battler
 # Sleep
 #===============================================================================
   def pbCanSleep?(showMessages=true,selfsleep=false,ignorestatus=false)
+    tribute_icicle = pbIcicleTributeBypassActive?
     return false if isFainted?
-    return false if !pbCanStatus?(showMessages,selfsleep)
+    return false if !tribute_icicle && !pbCanStatus?(showMessages,selfsleep)
     if (!ignorestatus && status==PBStatuses::SLEEP) || (isConst?(ability,PBAbilities,:COMATOSE) && $fefieldeffect!=1)
       @battle.pbDisplay(_INTL("{1} is already asleep!",pbThis)) if showMessages
       return false
     end
-    if !selfsleep && (status!=0 || damagestate.substitute || (effects[PBEffects::Substitute]>0 && !PBMoveData.new(@battle.lastMoveUsed).isSoundBased?)) || pbShieldsUp?
+    if !selfsleep && !ignorestatus && status!=0
       @battle.pbDisplay(_INTL("But it failed!")) if showMessages
       return false
     end
-    if hasWorkingAbility(:WORLDOFNIGHTMARES)
+    if !tribute_icicle && ((!selfsleep && (status!=0 || damagestate.substitute || (effects[PBEffects::Substitute]>0 && !PBMoveData.new(@battle.lastMoveUsed).isSoundBased?))) || pbShieldsUp?)
+      @battle.pbDisplay(_INTL("But it failed!")) if showMessages
+      return false
+    end
+    if !tribute_icicle && hasWorkingAbility(:WORLDOFNIGHTMARES)
       @battle.pbDisplay(_INTL("{1}'s dreams jolted them right back up!",pbThis)) if showMessages
       return false
     end
-    if !hasWorkingAbility(:SOUNDPROOF)
-      for i in 0...4
+    if !tribute_icicle && !hasWorkingAbility(:SOUNDPROOF)
+      @battle.eachActiveBattlerIndex do |i|
         if @battle.battlers[i].effects[PBEffects::Uproar]>0 || @battle.battlers[i].effects[PBEffects::FeverPitch]==true
           @battle.pbDisplay(_INTL("But the uproar kept {1} awake!",pbThis(true))) if showMessages
           return false
         end
       end 
     end
-    if hasWorkingAbility(:INSOMNIA) ||
+    if !tribute_icicle && (hasWorkingAbility(:INSOMNIA) ||
        hasWorkingAbility(:SWEETVEIL) ||
       (isConst?(self.ability,PBAbilities,:LEAFGUARD) &&
       ((@battle.pbWeather==PBWeather::SUNNYDAY && !hasWorkingItem(:UTILITYUMBRELLA)) ||
        $fefieldeffect == 15 || ($fefieldeffect == 33 &&
-       $fecounter>0))) && !(self.moldbroken)
+       $fecounter>0))) && !(self.moldbroken))
          abilityname=PBAbilities.getName(self.ability)
          @battle.pbDisplay(_INTL("{1} stayed awake using its {2}!",pbThis,abilityname)) if showMessages
         return false
     end
-    if isConst?(pbPartner.ability,PBAbilities,:SWEETVEIL) && !(self.moldbroken)
-      abilityname=PBAbilities.getName(pbPartner.ability)
-      @battle.pbDisplay(_INTL("{1} stayed awake using its partner's {2}!",pbThis,abilityname)) if showMessages
+    sweet_veil_holder = tribute_icicle ? nil : otherSameSideAbilityHolder(:SWEETVEIL)
+    if sweet_veil_holder && !(self.moldbroken)
+      abilityname=PBAbilities.getName(sweet_veil_holder.ability)
+      @battle.pbDisplay(_INTL("{1} stayed awake using its ally's {2}!",pbThis,abilityname)) if showMessages
       return false
     end 
-    if $fefieldeffect == 1
+    if !tribute_icicle && $fefieldeffect == 1
       if !isAirborne?
         @battle.pbDisplay(_INTL("The electricity jolted {1} awake!",pbThis)) if showMessages
         return false
@@ -102,7 +114,7 @@ class PokeBattle_Battler
     return false if status!=0 || (isConst?(ability,PBAbilities,:COMATOSE) && $fefieldeffect!=1)
     return false if !pbCanStatus?()
     if !isConst?(ability,PBAbilities,:SOUNDPROOF)
-      for i in 0...4
+      @battle.eachActiveBattlerIndex do |i|
         return false if @battle.battlers[i].effects[PBEffects::Uproar]>0
         return false if @battle.battlers[i].effects[PBEffects::FeverPitch]==true
       end
@@ -116,9 +128,10 @@ class PokeBattle_Battler
        pbShieldsUp?
       return false
     end
-    if isConst?(pbPartner.ability,PBAbilities,:SWEETVEIL) && !(self.moldbroken)
-      abilityname=PBAbilities.getName(pbPartner.ability)
-      @battle.pbDisplay(_INTL("{1} stayed awake using its partner's {2}!",pbThis,abilityname))
+    sweet_veil_holder = otherSameSideAbilityHolder(:SWEETVEIL)
+    if sweet_veil_holder && !(self.moldbroken)
+      abilityname=PBAbilities.getName(sweet_veil_holder.ability)
+      @battle.pbDisplay(_INTL("{1} stayed awake using its ally's {2}!",pbThis,abilityname))
       return false
     end 
     if $fefieldeffect == 1 || @battle.field.effects[PBEffects::ElectricTerrain]>0
@@ -134,9 +147,7 @@ class PokeBattle_Battler
     self.status=PBStatuses::SLEEP
     self.statusCount=3
     if $fefieldeffect==40
-      opp=self.pbOppositeOpposing
-      opppartner=opp.pbPartner
-      if isConst?(opp.ability,PBAbilities,:SHADOWTAG) || isConst?(opp.pbPartner.ability,PBAbilities,:SHADOWTAG)
+      if opposingAbilityHolder(:SHADOWTAG)
         self.statusCount=4
       end
     end
@@ -183,32 +194,38 @@ class PokeBattle_Battler
 # Poison
 #===============================================================================
   def pbCanPoison?(showMessages=true,toxicorb=false)
+    tribute_icicle = pbIcicleTributeBypassActive?
     return false if isFainted?
-    return false if !pbCanStatus?(showMessages)
+    return false if !tribute_icicle && !pbCanStatus?(showMessages)
     if status==PBStatuses::POISON
       @battle.pbDisplay(_INTL("{1} is already poisoned.",pbThis)) if showMessages
       return false
     end
-    if self.status!=0 || damagestate.substitute && toxicorb==false || (effects[PBEffects::Substitute]>0 && toxicorb==false && !PBMoveData.new(@battle.lastMoveUsed).isSoundBased?) || (isConst?(ability,PBAbilities,:COMATOSE) && $fefieldeffect!=1) || pbShieldsUp?
+    if self.status!=0
       @battle.pbDisplay(_INTL("But it failed!")) if showMessages
       return false
     end
-    if ((pbHasType?(:POISON) || pbHasType?(:STEEL)) && !(self.corroded)) && !hasWorkingItem(:RINGTARGET)
+    if !tribute_icicle && (self.status!=0 || damagestate.substitute && toxicorb==false || (effects[PBEffects::Substitute]>0 && toxicorb==false && !PBMoveData.new(@battle.lastMoveUsed).isSoundBased?) || (isConst?(ability,PBAbilities,:COMATOSE) && $fefieldeffect!=1) || pbShieldsUp?)
+      @battle.pbDisplay(_INTL("But it failed!")) if showMessages
+      return false
+    end
+    if !tribute_icicle && ((pbHasType?(:POISON) || pbHasType?(:STEEL)) && !(self.corroded)) && !hasWorkingItem(:RINGTARGET)
       @battle.pbDisplay(_INTL("It doesn't affect {1}...",pbThis(true))) if showMessages
       return false
     end   
-    if hasWorkingAbility(:IMMUNITY) ||
+    if !tribute_icicle && ((hasWorkingAbility(:IMMUNITY) ||
       (hasWorkingAbility(:PASTELVEIL) && $fefieldeffect!=45) ||
       (hasWorkingAbility(:LEAFGUARD) &&
       ((@battle.pbWeather==PBWeather::SUNNYDAY && !hasWorkingItem(:UTILITYUMBRELLA)) ||
        $fefieldeffect == 15 || ($fefieldeffect == 33 &&
-       $fecounter>0))) && !(self.moldbroken)
+       $fecounter>0)))) && !(self.moldbroken))
         @battle.pbDisplay(_INTL("{1}'s {2} prevents poisoning!",pbThis,PBAbilities.getName(self.ability))) if showMessages
         return false
     end
-    if isConst?(pbPartner.ability,PBAbilities,:PASTELVEIL) && $fefieldeffect!=45 && !(self.moldbroken)
-      abilityname=PBAbilities.getName(pbPartner.ability)
-      @battle.pbDisplay(_INTL("{1} stayed healthy using its partner's {2}!",pbThis,abilityname)) if showMessages
+    pastel_veil_holder = tribute_icicle ? nil : otherSameSideAbilityHolder(:PASTELVEIL)
+    if pastel_veil_holder && $fefieldeffect!=45 && !(self.moldbroken)
+      abilityname=PBAbilities.getName(pastel_veil_holder.ability)
+      @battle.pbDisplay(_INTL("{1} stayed healthy using its ally's {2}!",pbThis,abilityname)) if showMessages
       return false
     end
     return true
@@ -273,15 +290,16 @@ class PokeBattle_Battler
 # Burn
 #===============================================================================
   def pbCanBurn?(showMessages=true)
+    tribute_icicle = pbIcicleTributeBypassActive?
     return false if isFainted?
-    return false if !pbCanStatus?(showMessages)
+    return false if !tribute_icicle && !pbCanStatus?(showMessages)
 #### KUROTSUNE - 028 - START  #### JERICHO - 002 - START    
-    if isConst?(ability,PBAbilities,:WATERBUBBLE) && !(self.moldbroken)
+    if !tribute_icicle && isConst?(ability,PBAbilities,:WATERBUBBLE) && !(self.moldbroken)
       @battle.pbDisplay(_INTL("{1} is protected by it's Water Bubble!",pbThis)) if showMessages
       return false
     end        
 #### KUROTSUNE - 028 - END  #### JERICHO - 002 - END
-    if hasWorkingItem(:THERMOSUIT)
+    if !tribute_icicle && hasWorkingItem(:THERMOSUIT)
       @battle.pbDisplay(_INTL("{1}'s {2} prevents burns!",pbThis,PBItems.getName(self.item))) if showMessages
       return false
     end
@@ -289,18 +307,22 @@ class PokeBattle_Battler
       @battle.pbDisplay(_INTL("{1} already has a burn.",pbThis)) if showMessages
       return false
     end
-    if self.status!=0 || damagestate.substitute || (effects[PBEffects::Substitute]>0 && !PBMoveData.new(@battle.lastMoveUsed).isSoundBased?) || (isConst?(ability,PBAbilities,:COMATOSE) && $fefieldeffect!=1) || pbShieldsUp?
+    if self.status!=0
       @battle.pbDisplay(_INTL("But it failed!")) if showMessages
       return false
     end
-    if pbHasType?(:FIRE) && !hasWorkingItem(:RINGTARGET)
+    if !tribute_icicle && (self.status!=0 || damagestate.substitute || (effects[PBEffects::Substitute]>0 && !PBMoveData.new(@battle.lastMoveUsed).isSoundBased?) || (isConst?(ability,PBAbilities,:COMATOSE) && $fefieldeffect!=1) || pbShieldsUp?)
+      @battle.pbDisplay(_INTL("But it failed!")) if showMessages
+      return false
+    end
+    if !tribute_icicle && pbHasType?(:FIRE) && !hasWorkingItem(:RINGTARGET)
        @battle.pbDisplay(_INTL("It doesn't affect {1}...",pbThis(true))) if showMessages
        return false
     end
-    if (hasWorkingAbility(:HEATPROOF) ||
+    if !tribute_icicle && ((hasWorkingAbility(:HEATPROOF) ||
       (hasWorkingAbility(:LEAFGUARD) && ((@battle.pbWeather==PBWeather::SUNNYDAY && !hasWorkingItem(:UTILITYUMBRELLA)) ||
        $fefieldeffect == 15 || ($fefieldeffect == 33 &&
-       $fecounter>0)))) && !(self.moldbroken)
+       $fecounter>0)))) && !(self.moldbroken))
       @battle.pbDisplay(_INTL("{1}'s {2} prevents burns!",pbThis,PBAbilities.getName(self.ability))) if showMessages
       return false
     end
@@ -391,9 +413,10 @@ class PokeBattle_Battler
 # Paralyze
 #===============================================================================
   def pbCanParalyze?(showMessages=true)
+    tribute_icicle = pbIcicleTributeBypassActive?
     return false if isFainted?
-    return false if !pbCanStatus?(showMessages)            
-    if pbHasType?(:ELECTRIC)
+    return false if !tribute_icicle && !pbCanStatus?(showMessages)            
+    if !tribute_icicle && pbHasType?(:ELECTRIC)
       @battle.pbDisplay(_INTL("But it failed!")) if showMessages
       return false
     end
@@ -401,15 +424,19 @@ class PokeBattle_Battler
       @battle.pbDisplay(_INTL("{1} is already paralyzed!",pbThis)) if showMessages
       return false
     end
-    if self.status!=0 || damagestate.substitute || (effects[PBEffects::Substitute]>0 && !PBMoveData.new(@battle.lastMoveUsed).isSoundBased?) || (isConst?(ability,PBAbilities,:COMATOSE) && $fefieldeffect!=1) || pbShieldsUp?
+    if self.status!=0
       @battle.pbDisplay(_INTL("But it failed!")) if showMessages
       return false
     end
-    if (hasWorkingAbility(:IMMUNITY) && !(self.moldbroken)) ||
+    if !tribute_icicle && (self.status!=0 || damagestate.substitute || (effects[PBEffects::Substitute]>0 && !PBMoveData.new(@battle.lastMoveUsed).isSoundBased?) || (isConst?(ability,PBAbilities,:COMATOSE) && $fefieldeffect!=1) || pbShieldsUp?)
+      @battle.pbDisplay(_INTL("But it failed!")) if showMessages
+      return false
+    end
+    if !tribute_icicle && (((hasWorkingAbility(:IMMUNITY)) ||
       (hasWorkingAbility(:LEAFGUARD) &&
       ((@battle.pbWeather==PBWeather::SUNNYDAY && !hasWorkingItem(:UTILITYUMBRELLA)) ||
        $fefieldeffect == 15 || ($fefieldeffect == 33 &&
-       $fecounter>0))) && !(self.moldbroken)
+       $fecounter>0)))) && !(self.moldbroken))
         @battle.pbDisplay(_INTL("{1}'s {2} prevents paralysis!",pbThis,PBAbilities.getName(self.ability))) if showMessages
         return false
     end
@@ -506,16 +533,20 @@ end
 # Freeze
 #===============================================================================
   def pbCanFreeze?(showMessages=true)
+    tribute_icicle = pbIcicleTributeBypassActive?
     return false if isFainted?
-    return false if !pbCanStatus?(showMessages)                   
-    if (@battle.pbWeather==PBWeather::SUNNYDAY && !hasWorkingItem(:UTILITYUMBRELLA)) || self.status!=0 || (isConst?(ability,PBAbilities,:COMATOSE) && $fefieldeffect!=1) ||
+    return false if !tribute_icicle && !pbCanStatus?(showMessages)                   
+    if self.status!=0
+      @battle.pbDisplay(_INTL("But it failed!")) if showMessages
+      return false
+    end
+    if !tribute_icicle && ((@battle.pbWeather==PBWeather::SUNNYDAY && !hasWorkingItem(:UTILITYUMBRELLA)) || self.status!=0 || (isConst?(ability,PBAbilities,:COMATOSE) && $fefieldeffect!=1) ||
       (hasWorkingAbility(:LEAFGUARD) && $fefieldeffect == 15 || 
       ($fefieldeffect == 33 && $fecounter>0)) ||
-       (hasWorkingAbility(:MAGMAARMOR) && $fefieldeffect!=39) ||
        hasWorkingItem(:THERMOSUIT) ||
        (pbOwnSide.effects[PBEffects::Safeguard]>0 && !(@battle.battlers[@battle.lastMoveUser]).hasWorkingAbility(:INFILTRATOR) && !(PBMoveData.new(@battle.lastMoveUsed).function==0x21B && @battle.battlers[@battle.lastMoveUser].hp < (0.5 * @battle.battlers[@battle.lastMoveUser].totalhp).floor)) ||
        damagestate.substitute || (effects[PBEffects::Substitute]>0 && !PBMoveData.new(@battle.lastMoveUsed).isSoundBased?) || $fefieldeffect == 7 ||
-      (pbHasType?(:ICE) && !hasWorkingItem(:RINGTARGET)) && !(self.moldbroken) || pbShieldsUp?
+      (pbHasType?(:ICE) && !hasWorkingItem(:RINGTARGET)) && !(self.moldbroken) || pbShieldsUp?)
         return false
     end
     return true
@@ -578,23 +609,24 @@ end
 # Confuse
 #===============================================================================
   def pbCanConfuse?(showMessages=true)
+    tribute_icicle = pbIcicleTributeBypassActive?
     return false if isFainted?
-    return false if !pbCanStatus?(showMessages,false,true)
+    return false if !tribute_icicle && !pbCanStatus?(showMessages,false,true)
     if effects[PBEffects::Confusion]>0
       @battle.pbDisplay(_INTL("{1} is already confused!",pbThis)) if showMessages
       return false
     end
-    if damagestate.substitute || (effects[PBEffects::Substitute]>0 && !PBMoveData.new(@battle.lastMoveUsed).isSoundBased?)
+    if !tribute_icicle && (damagestate.substitute || (effects[PBEffects::Substitute]>0 && !PBMoveData.new(@battle.lastMoveUsed).isSoundBased?))
       @battle.pbDisplay(_INTL("But it failed!")) if showMessages
       return false
     end
     # Oblivious prevents confusion
-    if hasWorkingAbility(:OBLIVIOUS) && !(self.moldbroken)
+    if !tribute_icicle && hasWorkingAbility(:OBLIVIOUS) && !(self.moldbroken)
       @battle.pbDisplay(_INTL("{1}'s {2} prevents confusion!",pbThis,
          PBAbilities.getName(self.ability))) if showMessages
       return false
     end
-    if $fefieldeffect == 20 && pbHasType?(:FIGHTING)
+    if !tribute_icicle && $fefieldeffect == 20 && pbHasType?(:FIGHTING)
       @battle.pbDisplay(_INTL("{1} broke through the confusion!",pbThis)) if showMessages
       return false
     end
@@ -806,8 +838,9 @@ end
 
   def pbCanIncreaseStatStage?(stat,showMessages=false)
     return false if isFainted?
+    tribute_icicle = pbIcicleTributeBypassActive?
     cn=@battle.pbCheckGlobalAbility(:CLOUDNINE)
-    if cn
+    if cn && !tribute_icicle
       abilityname=PBAbilities.getName(cn.ability)
       @battle.pbDisplay(_INTL("{1}'s {2} prevents stat boosts!",cn.pbThis,abilityname)) if showMessages
       return false
@@ -892,9 +925,7 @@ end
 # Added an extra parameter to determine if this was called from reduce stat
 # changed from: def pbIncreaseStat(stat,increment,showMessages,moveid=nil,attacker=nil,upanim=true)
   def pbIncreaseStat(stat,increment,showMessages1,moveid=nil,attacker=nil,upanim=true, cont_call=false, showMessages2=true)
-    if moveid && attacker && attacker.hasWorkingItem(:ZAPTRIBUTE) &&
-       attacker.moves && attacker.moves[0] && attacker.moves[0].id==moveid &&
-       attacker.moves[0].basedamage>0
+    if defined?(pbTributeMoveMatches?) && pbTributeMoveMatches?(attacker,:ZAPTRIBUTE,moveid)
       increment += 1
     end
     stat_source=pbStatChangeSourceKey(moveid)
@@ -951,7 +982,7 @@ end
       pbIncreaseStatBasic(stat,increment)
       # Big Pecks: foes gain Defense when an enemy raises its stats
       if attacker && attacker.pbIsOpposing?(self.index)
-        for foe in [pbOpposing1,pbOpposing2]
+        opposingLivingBattlers.each do |foe|
           next if foe.nil? || foe.isFainted?
           next if foe.moldbroken
           if foe.hasWorkingAbility(:BIGPECKS) && !foe.pbTooHigh?(PBStats::DEFENSE)
@@ -1013,7 +1044,8 @@ end
   # show certain messages twice which is undesirable.)
   def pbCanReduceStatStage?(stat,showMessages=false,selfreduce=false)
     return false if isFainted?
-    if !selfreduce    
+    tribute_icicle = pbIcicleTributeBypassActive?
+    if !selfreduce && !tribute_icicle
       if damagestate.substitute || (effects[PBEffects::Substitute]>0 && !PBMoveData.new(@battle.lastMoveUsed).isSoundBased?)
         @battle.pbDisplay(_INTL("But it failed!")) if showMessages
         return false
@@ -1120,9 +1152,7 @@ end
 # Added another parameter to determine if we called from within increase
 # changed from: def pbReduceStat(stat,increment,showMessages,moveid=nil,attacker=nil,downanim=true,selfreduce=false)
   def pbReduceStat(stat,increment,showMessages1=true,moveid=nil,attacker=nil,downanim=true,selfreduce=false, cont_call=false, showMessages2=true, mirrored=false)
-    if moveid && attacker && attacker.respond_to?(:hasWorkingItem) &&
-       attacker.hasWorkingItem(:DREADTRIBUTE) &&
-       attacker.moves && attacker.moves[0] && attacker.moves[0].id==moveid
+    if defined?(pbTributeMoveMatches?) && pbTributeMoveMatches?(attacker,:DREADTRIBUTE,moveid)
       increment += 1
     end
     stat_source=pbStatChangeSourceKey(moveid)
@@ -1138,13 +1168,10 @@ end
           return attacker.pbReduceStat(stat,increment,showMessages1,moveid=nil,self,downanim=true,selfreduce=false, cont_call=false, showMessages2=true, true)
         end
       else
-        mirrorOpp = self.pbOppositeOpposing
-        if mirrorOpp.hp!=0
+        mirrorTarget = pbPreferredOpposingTarget(self.pbOppositeOpposing)
+        if mirrorTarget && mirrorTarget.hp!=0
           @battle.pbDisplay(_INTL("{1}'s Mirror Armor reflected the stat drop!", pbThis))
-          return mirrorOpp.pbReduceStat(stat,increment,showMessages1,moveid=nil,self,downanim=true,selfreduce=false, cont_call=false, showMessages2=true, true)
-        elsif mirrorOpp.pbPartner.hp!=0
-          @battle.pbDisplay(_INTL("{1}'s Mirror Armor reflected the stat drop!", pbThis))
-          return mirrorOpp.pbPartner.pbReduceStat(stat,increment,showMessages1,moveid=nil,self,downanim=true,selfreduce=false, cont_call=false, showMessages2=true, true)
+          return mirrorTarget.pbReduceStat(stat,increment,showMessages1,moveid=nil,self,downanim=true,selfreduce=false, cont_call=false, showMessages2=true, true)
         end
       end
       @battle.pbDisplay(_INTL("{1}'s Mirror Armor blocked the stat drop!", pbThis))

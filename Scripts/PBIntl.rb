@@ -22,12 +22,12 @@ end
 def pbSetTextMessages
   Graphics.update
   begin
-    t = Time.now.to_i
+    t = Time.new.to_i
     texts=[]
     for script in $RGSS_SCRIPTS
       next if script[2] == nil
-      if Time.now.to_i - t >= 5
-        t = Time.now.to_i
+      if Time.new.to_i - t >= 5
+        t = Time.new.to_i
         Graphics.update
       end
       scr=Zlib::Inflate.inflate(script[2])
@@ -39,8 +39,8 @@ def pbSetTextMessages
     items=[]
     choices=[]
     for event in commonevents.compact
-      if Time.now.to_i - t >= 5
-        t = Time.now.to_i
+      if Time.new.to_i - t >= 5
+        t = Time.new.to_i
         Graphics.update
       end
       begin
@@ -89,23 +89,23 @@ def pbSetTextMessages
         end
       end
     end
-    if Time.now.to_i - t >= 5
-      t = Time.now.to_i
+    if Time.new.to_i - t >= 5
+      t = Time.new.to_i
       Graphics.update
     end
     items|=[]
     choices|=[]
     items.concat(choices)
     MessageTypes.setMapMessagesAsHash(0,items)
-    mapinfos = pbLoadRxData("Data/MapInfos")
+    mapinfos = pbCachedRxData("Data/MapInfos")
     mapnames=[]
     for id in mapinfos.keys
       mapnames[id]=mapinfos[id].name
     end
     MessageTypes.setMessages(MessageTypes::MapNames,mapnames)
     for id in mapinfos.keys
-      if Time.now.to_i - t >= 5
-        t = Time.now.to_i
+      if Time.new.to_i - t >= 5
+        t = Time.new.to_i
         Graphics.update
       end
       filename=sprintf("Data/Map%03d.%s",id,$RPGVX ? "rvdata" : "rxdata")
@@ -114,8 +114,8 @@ def pbSetTextMessages
       items=[]
       choices=[]
       for event in map.events.values
-        if Time.now.to_i - t >= 5
-          t = Time.now.to_i
+        if Time.new.to_i - t >= 5
+          t = Time.new.to_i
           Graphics.update
         end
         begin
@@ -166,16 +166,16 @@ def pbSetTextMessages
           end
         end
       end
-      if Time.now.to_i - t >= 5
-        t = Time.now.to_i
+      if Time.new.to_i - t >= 5
+        t = Time.new.to_i
         Graphics.update
       end
       items|=[]
       choices|=[]
       items.concat(choices)
       MessageTypes.setMapMessagesAsHash(id,items)
-      if Time.now.to_i - t >= 5
-        t = Time.now.to_i
+      if Time.new.to_i - t >= 5
+        t = Time.new.to_i
         Graphics.update
       end
     end

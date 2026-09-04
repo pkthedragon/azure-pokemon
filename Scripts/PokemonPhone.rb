@@ -259,7 +259,7 @@ end
 def pbEncounterSpecies(phonenum)
   return "" if !phonenum[6] || phonenum[6]==0
   begin
-    data=load_data("Data/encounters.dat")
+    data=pbCachedData("Data/encounters.dat")
     return "" if !data
     enctypes=data[phonenum[6]][1]
     rescue
@@ -276,18 +276,7 @@ def pbEncounterSpecies(phonenum)
 end
 
 def pbLoadTrainerData(trainerid,trainername,partyid=0)
-  ret=nil
-  $trainerdata=load_data("Data/trainers.dat") if !$trainerdata
-  for trainer in trainers
-    name=trainer[1]
-    thistrainerid=trainer[0]
-    thispartyid=trainer[4]
-    if trainerid==thistrainerid && name==trainername && partyid==thispartyid
-      ret=trainer
-      break
-    end
-  end
-  return ret
+  return AzureTrainerDataCache.record(trainerid,trainername,partyid)
 end
 
 def pbTrainerMapName(phonenum)

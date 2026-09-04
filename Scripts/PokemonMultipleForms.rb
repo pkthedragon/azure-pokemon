@@ -1867,34 +1867,6 @@ MultipleForms.register(:TANGROWTH,{
       next 0
     }
   })
-  
-MultipleForms.register(:MISMAGIUS,{
-    "ability"=>proc{|pokemon|
-      next if pokemon.form==0 # Normal
-      if ((pokemon.abilityIndex==1 || (pokemon.abilityflag && pokemon.abilityflag==1)) || (pokemon.abilityIndex==2 || (pokemon.abilityflag && pokemon.abilityflag==2)) || (pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0))) # Heroic
-        next getID(PBAbilities,:ILLUSORYSHROUD) 
-      end
-    },
-    "getForm"=>proc{|pokemon|
-      next 1  if isConst?(pokemon.item,PBItems,:MISTRIBUTE)
-      next 0
-    },
-    "onSetForm"=>proc{|pokemon,form|
-      pbSeenForm(pokemon)
-      moves=[
-        :POLYMORPHIZE
-      ]
-      moves.each{|move|
-        pbDeleteMoveByID(pokemon,getID(PBMoves,move))
-      }
-      if form>0
-        pokemon.pbLearnMove(moves[form-1])
-      end
-      if pokemon.moves.find_all{|i| i.id!=0}.length==0
-        pokemon.pbLearnMove(:HEX)
-      end
-    }
-  })
 ### Regional Variants ###
 MultipleForms.register(:RATTATA,{
     "dexEntry"=>proc{|pokemon|

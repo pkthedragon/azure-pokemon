@@ -2154,7 +2154,7 @@ Events.onMapChanging+=proc {|sender,e|
   newmapID = e[0]
   newmap   = e[1]
   if newmapID>0
-    mapinfos = ($RPGVX) ? load_data("Data/MapInfos.rvdata") : load_data("Data/MapInfos.rxdata")
+    mapinfos = pbCachedRxData("Data/MapInfos")
     oldweather = pbGetMetadata($game_map.map_id,MetadataWeather)
     if $game_map.name!=mapinfos[newmapID].name
       $game_screen.weather(0,0,0) if oldweather
@@ -2175,7 +2175,7 @@ Events.onMapChange+=proc {|sender,e|
   $PokemonGlobal.visitedMaps[$game_map.map_id] = true
   $strengthUsed = false
   if oldid!=0 && oldid!=$game_map.map_id
-    mapinfos = ($RPGVX) ? load_data("Data/MapInfos.rvdata") : load_data("Data/MapInfos.rxdata")
+    mapinfos = pbCachedRxData("Data/MapInfos")
     weather = pbGetMetadata($game_map.map_id,MetadataWeather)
     if $game_map.name!=mapinfos[oldid].name
       $game_screen.weather(weather[0],8,20) if weather && rand(100)<weather[1]
@@ -2235,7 +2235,7 @@ Events.onMapSceneChange+=proc{|sender,e|
           nosignpost = true if NOSIGNPOSTS[2*i+1]==$PokemonGlobal.mapTrail[1] && NOSIGNPOSTS[2*i]==$game_map.map_id
           break if nosignpost
         end
-        mapinfos = $RPGVX ? load_data("Data/MapInfos.rvdata") : load_data("Data/MapInfos.rxdata")
+        mapinfos = pbCachedRxData("Data/MapInfos")
         oldmapname = mapinfos[$PokemonGlobal.mapTrail[1]].name
         nosignpost = true if $game_map.name==oldmapname
       end

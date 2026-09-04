@@ -181,8 +181,7 @@ class PokemonGlobalMetadata
     @daycare              = [[nil,0],[nil,0]]
     @daycareEgg           = false
     @daycareEggSteps      = 0
-    numRegions = 0
-    pbRgssOpen("Data/regionals.dat","rb"){|f| numRegions = f.fgetw }
+    numRegions = AzureRegionalDexCache.num_regions
     @pokedexUnlocked      = []
     @pokedexViable        = []
     @pokedexDex           = (numRegions==0) ? -1 : 0
@@ -238,6 +237,7 @@ class PokemonTemp
   attr_accessor :flydata
   attr_accessor :surfJump
   attr_accessor :endSurf
+  attr_accessor :battleRules
   attr_accessor :forceSingleBattle
   attr_accessor :rematch_menu_lock
 
@@ -256,9 +256,78 @@ class PokemonTemp
     @flydata                = nil
     @surfJump               = nil
     @endSurf                = nil
+    @battleRules            = {}
     @forceSingleBattle      = false
 	@rematch_menu_lock		= false
   end
+
+  def clearBattleRules
+    @battleRules = {}
+  end
+
+  def addBattleRule(*args)
+    @battleRules ||= {}
+    args.flatten.each do |arg|
+      next if arg.nil?
+      rule = arg.to_s.strip
+      next if rule.length == 0
+      size_rule = pbNormalizeBattleSizeRule(rule)
+      if size_rule
+        @battleRules["size"] = size_rule
+      elsif rule.include?(":")
+        key, value = rule.split(":", 2)
+        @battleRules[key.strip.downcase] = value.strip
+      else
+        @battleRules[rule.downcase] = true
+      end
+    end
+  end
+end
+
+def pbNormalizeBattleSizeRule(mode)
+  return nil if !mode
+  size_rule = mode.to_s.strip.downcase
+  case size_rule
+  when "single", "1v1" then return "single"
+  when "double", "2v2" then return "double"
+  when "triple", "3v3" then return "triple"
+  when "1v2", "2v1", "1v3", "3v1", "2v3", "3v2" then return size_rule
+  end
+  return nil
+end
+
+def pbBattleSideSizeFromRule(size_rule, opposing = false)
+  normalized = pbNormalizeBattleSizeRule(size_rule)
+  return 1 if !normalized
+  case normalized
+  when "single" then return 1
+  when "double" then return 2
+  when "triple" then return 3
+  end
+  if normalized =~ /\A(\d+)v(\d+)\z/
+    return opposing ? $2.to_i : $1.to_i
+  end
+  return 1
+end
+
+def pbBattleRules
+  return {} if !$PokemonTemp
+  $PokemonTemp.battleRules ||= {}
+  return $PokemonTemp.battleRules
+end
+
+def pbClearBattleRules
+  return if !$PokemonTemp
+  $PokemonTemp.clearBattleRules
+end
+
+def pbAddBattleRule(*args)
+  return if !$PokemonTemp
+  $PokemonTemp.addBattleRule(*args)
+end
+
+def setBattleRule(*args)
+  pbAddBattleRule(*args)
 end
 
 
@@ -407,6 +476,210 @@ module PokemonMetadata
   }
 end
 
+# Immutable player profile stored inside global metadata row 0.
+class PBPlayerMetadataData
+  attr_reader :id,:trainer_type,:walk_charset,:cycle_charset,:surf_charset
+  attr_reader :run_charset,:dive_charset,:fish_charset,:surf_fish_charset
+
+  def initialize(id,row)
+    @id=id
+    @trainer_type=row[0]
+    @walk_charset=row[1]
+    @cycle_charset=row[2]
+    @surf_charset=row[3]
+    @run_charset=row[4]
+    @dive_charset=row[5]
+    @fish_charset=row[6]
+    @surf_fish_charset=row[7]
+  end
+end
+
+# Typed view of metadata row 0. Existing slot constants and arrays remain the
+# source of truth for events and save-compatible runtime code.
+class PBGlobalMetadataData
+  attr_reader :home,:wild_battle_bgm,:trainer_battle_bgm,:wild_victory_me
+  attr_reader :trainer_victory_me,:surf_bgm,:bicycle_bgm,:players
+
+  def initialize(source)
+    row=source[0] || []
+    @home=(row[MetadataHome] || []).clone.freeze
+    @wild_battle_bgm=row[MetadataWildBattleBGM]
+    @trainer_battle_bgm=row[MetadataTrainerBattleBGM]
+    @wild_victory_me=row[MetadataWildVictoryME]
+    @trainer_victory_me=row[MetadataTrainerVictoryME]
+    @surf_bgm=row[MetadataSurfBGM]
+    @bicycle_bgm=row[MetadataBicycleBGM]
+    profiles=[]
+    for index in 0..(MetadataPlayerY-MetadataPlayerA)
+      playerrow=row[MetadataPlayerA+index]
+      profiles[index]=PBPlayerMetadataData.new(index,playerrow) if playerrow
+    end
+    @players=profiles.freeze
+    @azure_source_row=row
+  end
+
+  def player(index); return @players[index]; end
+  def Home; return @home; end
+  def WildBattleBGM; return @wild_battle_bgm; end
+  def TrainerBattleBGM; return @trainer_battle_bgm; end
+  def WildVictoryME; return @wild_victory_me; end
+  def TrainerVictoryME; return @trainer_victory_me; end
+  def SurfBGM; return @surf_bgm; end
+  def BicycleBGM; return @bicycle_bgm; end
+
+  class << self
+    alias azure_uncached_new new
+
+    def get
+      source=pbLoadMetadata
+      row=source[0] || []
+      if !@azure_wrapper || @azure_source_id!=source.object_id ||
+         !@azure_wrapper.instance_variable_get(:@azure_source_row).equal?(row)
+        @azure_source_id=source.object_id
+        @azure_wrapper=azure_uncached_new(source)
+      end
+      return @azure_wrapper
+    end
+
+    def clear_cache
+      @azure_source_id=nil
+      @azure_wrapper=nil
+    end
+  end
+end
+
+# Typed map-specific metadata. Every field is the exact value stored in the
+# legacy numeric row; array fields are cloned/frozen for read-only authoring.
+class PBMapMetadataData
+  attr_reader :map_id,:outdoor,:show_area,:bicycle,:bicycle_always
+  attr_reader :healing_spot,:weather,:map_position,:dive_map,:dark_map
+  attr_reader :safari_map,:snap_edges,:dungeon,:battle_back
+  attr_reader :wild_battle_bgm,:trainer_battle_bgm,:wild_victory_me
+  attr_reader :trainer_victory_me,:map_size
+
+  def initialize(mapid)
+    @map_id=mapid
+    row=PBMapMetadataData.data[mapid]
+    @outdoor=row[MetadataOutdoor]
+    @show_area=row[MetadataShowArea]
+    @bicycle=row[MetadataBicycle]
+    @bicycle_always=row[MetadataBicycleAlways]
+    @healing_spot=PBMapMetadataData.immutable(row[MetadataHealingSpot])
+    @weather=PBMapMetadataData.immutable(row[MetadataWeather])
+    @map_position=PBMapMetadataData.immutable(row[MetadataMapPosition])
+    @dive_map=row[MetadataDiveMap]
+    @dark_map=row[MetadataDarkMap]
+    @safari_map=row[MetadataSafariMap]
+    @snap_edges=row[MetadataSnapEdges]
+    @dungeon=row[MetadataDungeon]
+    @battle_back=row[MetadataBattleBack]
+    @wild_battle_bgm=row[MetadataMapWildBattleBGM]
+    @trainer_battle_bgm=row[MetadataMapTrainerBattleBGM]
+    @wild_victory_me=row[MetadataMapWildVictoryME]
+    @trainer_victory_me=row[MetadataMapTrainerVictoryME]
+    @map_size=PBMapMetadataData.immutable(row[MetadataMapSize])
+    @azure_source_row=row
+  end
+
+  def mapid; return @map_id; end
+  def Outdoor; return @outdoor; end
+  def ShowArea; return @show_area; end
+  def Bicycle; return @bicycle; end
+  def BicycleAlways; return @bicycle_always; end
+  def HealingSpot; return @healing_spot; end
+  def Weather; return @weather; end
+  def MapPosition; return @map_position; end
+  def DiveMap; return @dive_map; end
+  def DarkMap; return @dark_map; end
+  def SafariMap; return @safari_map; end
+  def SnapEdges; return @snap_edges; end
+  def Dungeon; return @dungeon; end
+  def BattleBack; return @battle_back; end
+  def WildBattleBGM; return @wild_battle_bgm; end
+  def TrainerBattleBGM; return @trainer_battle_bgm; end
+  def WildVictoryME; return @wild_victory_me; end
+  def TrainerVictoryME; return @trainer_victory_me; end
+  def MapSize; return @map_size; end
+
+  class << self
+    alias azure_uncached_new new
+
+    def data; return pbLoadMetadata; end
+
+    def immutable(value)
+      return value.clone.freeze if value.is_a?(Array)
+      return value
+    end
+
+    def normalize_id(value)
+      return value.to_i if value.is_a?(Numeric) && value.to_i==value
+      return value.to_i if value.is_a?(String) && value[/^\d+$/]
+      return nil
+    end
+
+    def new(mapid)
+      id=normalize_id(mapid)
+      return azure_uncached_new(mapid) if id.nil?
+      source=data
+      return wrapper_for(id,source)
+    end
+
+    def wrapper_for(id,source)
+      if @azure_source_id!=source.object_id
+        @azure_source_id=source.object_id
+        @azure_cache=[]
+      end
+      row=source[id]
+      cached=@azure_cache[id] if @azure_cache && id>=0
+      if cached && cached.instance_variable_get(:@azure_source_row).equal?(row)
+        return cached
+      end
+      wrapper=azure_uncached_new(id)
+      @azure_cache[id]=wrapper if id>=0
+      return wrapper
+    end
+
+    def get(mapid)
+      id=normalize_id(mapid)
+      source=data
+      raise ArgumentError.new("Unknown map metadata #{mapid.inspect}") if id.nil? || id<=0 || !source[id]
+      return wrapper_for(id,source)
+    end
+
+    def try_get(mapid)
+      id=normalize_id(mapid)
+      return nil if id.nil? || id<=0
+      source=data
+      return nil if !source[id]
+      return wrapper_for(id,source)
+    end
+
+    def exists?(mapid)
+      return !try_get(mapid).nil?
+    end
+
+    def each
+      return enum_for(:each) if !block_given?
+      source=data
+      for mapid in 1...source.length
+        yield wrapper_for(mapid,source) if source[mapid]
+      end
+    end
+
+    def clear_cache
+      @azure_source_id=nil
+      @azure_cache=[]
+    end
+  end
+end
+
+def pbInvalidateMetadataData(replacement=nil)
+  AzureDataCache.clear("Data/metadata.dat") if defined?(AzureDataCache)
+  PBGlobalMetadataData.clear_cache if defined?(PBGlobalMetadataData)
+  PBMapMetadataData.clear_cache if defined?(PBMapMetadataData)
+  $PokemonTemp.pokemonMetadata=replacement if defined?($PokemonTemp) && $PokemonTemp
+end
+
 def pbClearData
   if $PokemonTemp
     $PokemonTemp.pokemonDexData=nil
@@ -443,12 +716,17 @@ def pbDexDataOffset(dexdata,species,offset)
   dexdata.pos=76*(species-1)+offset
 end
 
+def pbInvalidatePhoneData(replacement=nil)
+  AzureDataCache.clear("Data/phone.dat") if defined?(AzureDataCache)
+  if defined?($PokemonTemp) && $PokemonTemp
+    $PokemonTemp.pokemonPhoneData=replacement
+  end
+end
+
 def pbLoadPhoneData
   $PokemonTemp=PokemonTemp.new if !$PokemonTemp
   if !$PokemonTemp.pokemonPhoneData
-    pbRgssOpen("Data/phone.dat","rb"){|f|
-       $PokemonTemp.pokemonPhoneData=Marshal.load(f)
-    }
+    $PokemonTemp.pokemonPhoneData=pbLoadPhoneDataFile
   end
   return $PokemonTemp.pokemonPhoneData
 end
@@ -459,7 +737,7 @@ def pbLoadMetadata
     if !pbRgssExists?("Data/metadata.dat")
       $PokemonTemp.pokemonMetadata=[]
     else
-      $PokemonTemp.pokemonMetadata=load_data("Data/metadata.dat")
+      $PokemonTemp.pokemonMetadata=pbCachedData("Data/metadata.dat")
     end
   end
   return $PokemonTemp.pokemonMetadata
@@ -475,10 +753,12 @@ end
 
 module MapFactoryHelper
   @@MapConnections=nil
+  @@ConnectionsByMap=nil
   @@MapDims=nil
 
   def self.clear
     @@MapConnections=nil
+    @@ConnectionsByMap=nil
     @@MapDims=nil
   end
 
@@ -514,8 +794,15 @@ module MapFactoryHelper
   def self.getMapConnections
     if !@@MapConnections
       @@MapConnections=[]
+      @@ConnectionsByMap={}
       begin
-        conns=load_data("Data/connections.dat")
+        source=pbLoadConnectionData
+        conns=[]
+        for sourceConnection in source
+          # Edge markers are resolved below. Work on private records so the
+          # shared compiled-data cache always remains immutable.
+          conns.push(sourceConnection.clone)
+        end
       rescue
         conns=[]
       end
@@ -540,17 +827,24 @@ module MapFactoryHelper
           conn[4]=v
         end
         @@MapConnections.push(conn)
+        @@ConnectionsByMap[conn[0]]=[] if !@@ConnectionsByMap[conn[0]]
+        @@ConnectionsByMap[conn[0]].push(conn)
+        if conn[3]!=conn[0]
+          @@ConnectionsByMap[conn[3]]=[] if !@@ConnectionsByMap[conn[3]]
+          @@ConnectionsByMap[conn[3]].push(conn)
+        end
       end
     end
     return @@MapConnections
   end
 
+  def self.connectionsForMap(id)
+    getMapConnections if !@@MapConnections
+    return @@ConnectionsByMap[id] || []
+  end
+
   def self.hasConnections?(id)
-    conns=MapFactoryHelper.getMapConnections
-    for conn in conns
-      return true if conn[0]==id || conn[3]==id
-    end
-    return false
+    return MapFactoryHelper.connectionsForMap(id).length>0
   end
 
   def self.mapInRange?(map)
@@ -790,7 +1084,7 @@ class PokemonMapFactory
 
   def areConnected?(mapID1,mapID2)
     return true if mapID1==mapID2
-    conns=MapFactoryHelper.getMapConnections
+    conns=MapFactoryHelper.connectionsForMap(mapID1)
     for conn in conns
       if (conn[0]==mapID1 && conn[3]==mapID2) ||
          (conn[0]==mapID2 && conn[3]==mapID1)
@@ -802,7 +1096,7 @@ class PokemonMapFactory
 
   def getNewMap(playerX,playerY)
     id=$game_map.map_id
-    conns=MapFactoryHelper.getMapConnections
+    conns=MapFactoryHelper.connectionsForMap(id)
     for conn in conns
       next if conn[0]!=id && conn[3]!=id
       mapidB=nil
@@ -861,15 +1155,15 @@ class PokemonMapFactory
       # Both events share the same map
       return [otherX-thisX,otherY-thisY]
     end
-    conns=MapFactoryHelper.getMapConnections
+    conns=MapFactoryHelper.connectionsForMap(thisMapID)
     for conn in conns
-      if conn[0]==thisMapID && conn[1]==otherMapID
-        posX=(thisX+conn[4]-conn[1])+otherX
-        posY=(thisY+conn[5]-conn[2])+otherY
+      if conn[0]==thisMapID && conn[3]==otherMapID
+        posX=conn[1]-conn[4]+otherX-thisX
+        posY=conn[2]-conn[5]+otherY-thisY
         return [posX,posY]
-      elsif conn[1]==thisMapID && conn[0]==otherMapID
-        posX=(thisX+conn[1]-conn[4])+otherX
-        posY=(thisY+conn[2]-conn[5])+otherY
+      elsif conn[3]==thisMapID && conn[0]==otherMapID
+        posX=conn[4]-conn[1]+otherX-thisX
+        posY=conn[5]-conn[2]+otherY-thisY
         return [posX,posY]
       end
     end
@@ -902,7 +1196,7 @@ class PokemonMapFactory
   def getRealTilePos(mapID,x,y)
     id=mapID
     return [id,x,y] if getMapNoAdd(id).valid?(x,y)
-    conns=MapFactoryHelper.getMapConnections
+    conns=MapFactoryHelper.connectionsForMap(id)
     for conn in conns
       if conn[0]==id
         newX=(x+conn[4]-conn[1])
@@ -968,7 +1262,7 @@ class PokemonMapFactory
     return if @fixup
     @fixup=true
     id=$game_map.map_id
-    conns=MapFactoryHelper.getMapConnections
+    conns=MapFactoryHelper.connectionsForMap(id)
     for conn in conns
       if conn[0]==id
         mapA=getMap(conn[0])

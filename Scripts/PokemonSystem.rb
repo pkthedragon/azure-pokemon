@@ -24,6 +24,12 @@ def pbChooseLanguage
   return Kernel.pbShowCommands(nil,commands)
 end
 
+def pbApplyFrameSkipSetting(settings=$PokemonSystem)
+  return if !Graphics.respond_to?(:frameskip=)
+  enabled=settings && settings.respond_to?(:frameskip) && settings.frameskip==1
+  Graphics.frameskip=enabled
+end
+
 #############
 #############
 
@@ -86,6 +92,7 @@ def pbSetUpSystem(tempsave=0,autosave=nil)
   if !$INEDITOR
     $PokemonSystem=pokemonSystem
     $game_system=Game_System
+    pbApplyFrameSkipSetting($PokemonSystem)
     $ResizeOffsetX=0 #[0,0][$PokemonSystem.screensize]
     $ResizeOffsetY=0 #[0,0][$PokemonSystem.screensize]
     resizefactor=[0.5,1.0,2.0][$PokemonSystem.screensize]

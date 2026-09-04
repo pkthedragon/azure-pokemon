@@ -72,7 +72,8 @@ def pbShowBattleStats(pkmn)
   evacappos = pkmn.effects[PBEffects::StatCapPositive][PBStats::EVASION] || 0
   evacapneg = -(pkmn.effects[PBEffects::StatCapNegative][PBStats::EVASION] || 0)
 
-  if (pkmn == @battle.battlers[0] || pkmn == @battle.battlers[2]) || $INTERNAL==true
+  alliedBattler = pkmn.respond_to?(:index) && !@battle.pbIsOpposing?(pkmn.index)
+  if alliedBattler || $INTERNAL==true
     report.push(_INTL("Attack:        {1}   ({2}{3}) (+{4}/{5})",pkmn.pbCalcAttack(),atksbl,pkmn.stages[PBStats::ATTACK],atkcappos,atkcapneg),
                 _INTL("Defense:      {1}   ({2}{3}) (+{4}/{5})",pkmn.pbCalcDefense(),defsbl,pkmn.stages[PBStats::DEFENSE],defcappos,defcapneg),
                 _INTL("Sp.Attack:   {1}   ({2}{3}) (+{4}/{5})",pkmn.pbCalcSpAtk(),spasbl,pkmn.stages[PBStats::SPATK],spacappos,spacapneg),
@@ -118,13 +119,13 @@ def pbShowBattleStats(pkmn)
   else
     report.push(_INTL("Ability: {1}",pkmn.ability.nil? ? "Ability Negated" : PBAbilities.getName(pkmn.ability)))
   end
-  report.push(_INTL("Slow Start: {1} turns",(5-pkmn.turncount))) if pkmn.hasWorkingAbility(:SLOWSTART) && pkmn.turncount<=5 && (pkmn == @battle.battlers[0] || pkmn == @battle.battlers[2])
+  report.push(_INTL("Slow Start: {1} turns",(5-pkmn.turncount))) if pkmn.hasWorkingAbility(:SLOWSTART) && pkmn.turncount<=5 && alliedBattler
   report.push(_INTL("Throat Chop: {1} turns",pkmn.effects[PBEffects::ThroatChop])) if pkmn.effects[PBEffects::ThroatChop]!=0
-  report.push(_INTL("Unburdened")) if pkmn.unburdened && (pkmn == @battle.battlers[0] || pkmn == @battle.battlers[2]) && pkmn.hasWorkingAbility(:UNBURDEN)
+  report.push(_INTL("Unburdened")) if pkmn.unburdened && alliedBattler && pkmn.hasWorkingAbility(:UNBURDEN)
   report.push(_INTL("Speed Swap")) if pkmn.effects[PBEffects::SpeedSwap]!=0
   report.push(_INTL("Burn Up")) if pkmn.effects[PBEffects::BurnUp]
   report.push(_INTL("Uproar: {1} turns",pkmn.effects[PBEffects::Uproar])) if pkmn.effects[PBEffects::Uproar]!=0
-  report.push(_INTL("Truant")) if pkmn.effects[PBEffects::Truant] && (pkmn == @battle.battlers[0] || pkmn == @battle.battlers[2]) && pkmn.hasWorkingAbility(:TRUANT)
+  report.push(_INTL("Truant")) if pkmn.effects[PBEffects::Truant] && alliedBattler && pkmn.hasWorkingAbility(:TRUANT)
   report.push(_INTL("Toxic: {1} turns",pkmn.effects[PBEffects::Toxic])) if pkmn.effects[PBEffects::Toxic]!=0
   report.push(_INTL("Torment")) if pkmn.effects[PBEffects::Torment]
   report.push(_INTL("Miracle Eye")) if pkmn.effects[PBEffects::MiracleEye]
@@ -193,6 +194,7 @@ def pbShowBattleStats(pkmn)
   report.push(_INTL("Stealth Rock active")) if pkmn.pbOwnSide.effects[PBEffects::StealthRock]
   report.push(_INTL("Sticky Web active")) if pkmn.pbOwnSide.effects[PBEffects::StickyWeb]
   report.push(_INTL("Bonfire active")) if pkmn.pbOwnSide.effects[PBEffects::Bonfire] && pkmn.pbOwnSide.effects[PBEffects::Bonfire]>0
+  report.push(_INTL("Scorching Ground active")) if pkmn.pbOwnSide.effects[PBEffects::ScorchingGround] && pkmn.pbOwnSide.effects[PBEffects::ScorchingGround]>0
   report.push(_INTL("Caltrops active")) if pkmn.pbOwnSide.effects[PBEffects::Caltrops] && pkmn.pbOwnSide.effects[PBEffects::Caltrops]>0
   report.push(_INTL("Pressure Plate active")) if pkmn.pbOwnSide.effects[PBEffects::PressurePlate] && pkmn.pbOwnSide.effects[PBEffects::PressurePlate]>0
   report.push(_INTL("Undertow active")) if pkmn.pbOwnSide.effects[PBEffects::Undertow] && pkmn.pbOwnSide.effects[PBEffects::Undertow]>0
@@ -212,7 +214,93 @@ def pbShowBattleStats(pkmn)
   report.push(_INTL("Field effect: {1}", fieldnames[$fefieldeffect]))
   Kernel.pbMessage((_INTL"Inspecting {1}:",pkmn.name),report, report.length)
 end
-#DemICE left the chat>>>>    
+#DemICE left the chat>>>>
+
+# Battle Field Manual - Shows current field effect details
+def pbShowBattleFieldManual
+  field_id = $fefieldeffect
+
+  # If no field effect active
+  if field_id.nil? || field_id == 0
+    Kernel.pbMessage(_INTL("No field effect is currently active."))
+    return
+  end
+
+  # Get field data
+  data = pbGetFieldEffectData(field_id)
+
+  if data.nil?
+    Kernel.pbMessage(_INTL("Field effect data not available."))
+    return
+  end
+
+  report = []
+
+  # Header
+  report.push(_INTL("{1} ({2})", data[:name], data[:abbr]))
+  report.push(data[:message]) if data[:message]
+  report.push("")
+
+  # Passive effects
+  if data[:passiveEffects] && data[:passiveEffects].length > 0
+    report.push(_INTL("=== PASSIVE EFFECTS ==="))
+    data[:passiveEffects].each do |effect|
+      report.push("• #{effect}")
+    end
+    report.push("")
+  end
+
+  # Overlay effects
+  if data[:overlayEffects] && data[:overlayEffects][:effects] &&
+     data[:overlayEffects][:effects].length > 0
+    report.push(_INTL("=== {1} ===", data[:overlayEffects][:terrain].upcase))
+    data[:overlayEffects][:effects].each do |effect|
+      report.push("• #{effect}")
+    end
+    report.push("")
+  end
+
+  # Field damage
+  if data[:fieldDamage]
+    report.push(_INTL("=== FIELD DAMAGE ==="))
+    fd = data[:fieldDamage]
+    report.push("#{fd[:amount]}") if fd[:amount]
+    report.push("Timing: #{fd[:timing]}") if fd[:timing]
+    report.push("Affects: #{fd[:affects]}") if fd[:affects]
+    if fd[:immuneAbilities] && fd[:immuneAbilities].length > 0
+      report.push("Immune: #{fd[:immuneAbilities].join(', ')}")
+    end
+    report.push("")
+  end
+
+  # Move power boosts
+  if data[:moveEffects] && data[:moveEffects][:powerBoost] &&
+     data[:moveEffects][:powerBoost].keys.length > 0
+    report.push(_INTL("=== POWER BOOSTS ==="))
+    data[:moveEffects][:powerBoost].each do |multiplier, moves|
+      report.push("x#{multiplier}: #{moves.join(', ')}")
+    end
+    report.push("")
+  end
+
+  # Move power decreases
+  if data[:moveEffects] && data[:moveEffects][:powerDecrease] &&
+     data[:moveEffects][:powerDecrease].keys.length > 0
+    report.push(_INTL("=== POWER DECREASES ==="))
+    data[:moveEffects][:powerDecrease].each do |multiplier, moves|
+      report.push("x#{multiplier}: #{moves.join(', ')}")
+    end
+    report.push("")
+  end
+
+  # Additional info available message
+  report.push(_INTL("Press B to close, or check the"))
+  report.push(_INTL("Field Manual in your Pokegear"))
+  report.push(_INTL("for complete details!"))
+
+  # Display the report
+  Kernel.pbMessage(_INTL("Field Manual:"), report, report.length)
+end
 
 class Window_Pokemon < SpriteWindow_Base
   attr_reader :highlighted
@@ -377,7 +465,7 @@ class PokeBattle_DebugScene
 
   def pbFrameUpdate(cw=nil)
     cw.update if cw
-    for i in 0..3
+    for i in 0...@pkmnwindows.length
       @pkmnwindows[i].update if @pkmnwindows[i]
     end 
 #   @exceptwindow.text="Exceptions: #{$PBDebugExceptions}"
@@ -385,7 +473,7 @@ class PokeBattle_DebugScene
   end
 
   def pbRefresh
-    for i in 0..3
+    for i in 0...@pkmnwindows.length
       @pkmnwindows[i].refresh if @pkmnwindows[i]
     end 
 #   @exceptwindow.refresh
@@ -398,10 +486,10 @@ class PokeBattle_DebugScene
 # Called whenever the battle begins
   def pbStartBattle(battle)
     @battle=battle
-    @lastcmd=[0,0,0,0]
-    @lastmove=[0,0,0,0]
-    numwindows=battle.doublebattle ? 4 : 2
-    for i in 0...numwindows
+    activeIndices = battle.activeBattlerIndices
+    @lastcmd=Array.new(battle.battlers.length,0)
+    @lastmove=Array.new(battle.battlers.length,0)
+    for i in activeIndices
       @pkmnwindows[i]=Window_Pokemon.new(@battle.battlers[i])
       @pkmnwindows[i].y=i*64
     end
@@ -411,7 +499,7 @@ class PokeBattle_DebugScene
   end
 
   def pbEndBattle(result)
-    for i in 0..3
+    for i in 0...@pkmnwindows.length
       @pkmnwindows[i].dispose if @pkmnwindows[i]
     end
 #   @exceptwindow.dispose
@@ -539,33 +627,35 @@ class PokeBattle_DebugScene
   end
 
   def pbFirstTarget(index)
-    for i in 0...4
-      if i!=index && !@battle.battlers[i].isFainted?
-        return i
-      end  
+    @battle.eachOtherSideBattler(index) do |battler|
+      next if battler.isFainted?
+      return battler.index
     end
     return -1
   end
 
   def pbNextTarget(cur,index)
-    return -1 if cur>=3
-    for i in cur+1..3
-      if i!=index && !@battle.battlers[i].isFainted?
-        return i
-      end  
+    targets = []
+    @battle.eachOtherSideBattler(index) do |battler|
+      next if battler.isFainted?
+      targets.push(battler.index)
     end
-    return -1
+    return -1 if targets.length == 0
+    curindex = targets.index(cur) || -1
+    return -1 if curindex < 0 || curindex >= targets.length - 1
+    return targets[curindex + 1]
   end
 
   def pbPrevTarget(cur,index)
-    return -1 if cur<=0
-    ret=-1
-    for i in 0..cur-1
-      if i!=index && !@battle.battlers[i].isFainted?
-        ret=i
-      end  
+    targets = []
+    @battle.eachOtherSideBattler(index) do |battler|
+      next if battler.isFainted?
+      targets.push(battler.index)
     end
-    return ret
+    return -1 if targets.length == 0
+    curindex = targets.index(cur) || -1
+    return -1 if curindex <= 0
+    return targets[curindex - 1]
   end
 
 # Use this method to make the player choose a target 
@@ -575,8 +665,8 @@ class PokeBattle_DebugScene
     if curwindow==-1
       raise RuntimeError.new("No targets somehow...")
     end
-    numwindows=@battle.doublebattle ? 4 : 2
-    for i in 0...numwindows
+    numwindows=@battle.activeBattlerIndices
+    for i in numwindows
       @pkmnwindows[i].highlighted=(i==curwindow)
     end
     pbRefresh
@@ -588,7 +678,7 @@ class PokeBattle_DebugScene
         newwindow=pbNextTarget(curwindow,index)
         if newwindow>=0
           curwindow=newwindow
-          for i in 0...numwindows
+          for i in numwindows
             @pkmnwindows[i].highlighted=(i==curwindow)
           end
         end
@@ -597,20 +687,20 @@ class PokeBattle_DebugScene
         newwindow=pbPrevTarget(curwindow,index)
         if newwindow>=0
           curwindow=newwindow
-          for i in 0...numwindows
+          for i in numwindows
             @pkmnwindows[i].highlighted=(i==curwindow)
           end
         end
       end
       if Input.trigger?(Input::B)
-        for i in 0...numwindows
+        for i in numwindows
           @pkmnwindows[i].highlighted=false
           @pkmnwindows[i].update
         end
         return -1
       end
       if Input.trigger?(Input::C)
-        for i in 0...numwindows
+        for i in numwindows
           @pkmnwindows[i].highlighted=false
           @pkmnwindows[i].update
         end
@@ -625,7 +715,7 @@ class PokeBattle_DebugScene
     inactives=[1,1,1,1,1,1,1,1,1,1,1,1]  # Extended for larger parties
     partypos=[]
     activecmd=0
-    numactive=(@doublebattle)?2:1
+    numactive=@battle.pbSideSize(index)
 
     # Determine party range for partner control
     startIdx = 0
@@ -636,15 +726,7 @@ class PokeBattle_DebugScene
       endIdx = @battle.pbSecondPartyBegin(0) - 1
     end
 
-    battler=@battle.battlers[0]
-    if battler.pokemonIndex >= startIdx && battler.pokemonIndex <= endIdx
-      commands[commands.length]=pbPokemonString(party[battler.pokemonIndex])
-      activecmd=0 if battler.index==index
-      inactives[battler.pokemonIndex]=0
-      partypos[partypos.length]=battler.pokemonIndex
-    end
-    if @battle.doublebattle
-      battler=@battle.battlers[2]
+    @battle.eachSameSideBattler(index) do |battler|
       if battler.pokemonIndex >= startIdx && battler.pokemonIndex <= endIdx
         commands[commands.length]=pbPokemonString(party[battler.pokemonIndex])
         activecmd=commands.length-1 if battler.index==index
@@ -658,7 +740,7 @@ class PokeBattle_DebugScene
         partypos[partypos.length]=i
       end
     end
-    for i in 0..3
+    for i in 0...@pkmnwindows.length
       @pkmnwindows[i].visible=false if @pkmnwindows[i]
     end
     cw = Window_Command.new(480, commands)

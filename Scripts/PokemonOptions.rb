@@ -339,6 +339,15 @@ class PokemonSystem
   attr_accessor :autosave
   attr_accessor :turbospeed
 
+  def frameskip
+    return @frameskip ? @frameskip : 0
+  end
+
+  def frameskip=(value)
+    @frameskip=value.to_i==1 ? 1 : 0
+    pbApplyFrameSkipSetting(self)
+  end
+
   def language
     return (!@language) ? 0 : @language
   end
@@ -432,6 +441,7 @@ class PokemonSystem
     @backupNames = []
     @autosave    = 0
     @turbospeed  = 2
+    @frameskip   = 0
   end
 end
 
@@ -558,6 +568,10 @@ class PokemonOptionScene
 #             end
 #          }
 #       ),
+       EnumOption.new(_INTL("Frame Skip"),[_INTL("Off"),_INTL("On")],
+          proc { $PokemonSystem.frameskip },
+          proc {|value| $PokemonSystem.frameskip=value }
+       ),
        EnumOption.new(_INTL("Turbo Speed"),[_INTL("2x"),_INTL("2.5x"),_INTL("3x"),_INTL("4x")],
           proc { $PokemonSystem.turbospeed },
           proc {|value|  $PokemonSystem.turbospeed=value }

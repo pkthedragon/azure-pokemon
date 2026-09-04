@@ -8,6 +8,100 @@ ITEMBATTLEUSE = 6
 ITEMTYPE      = 7
 ITEMMACHINE   = 8
 
+# Typed, read-only view of Azure's existing item rows. New code can use the
+# symbolic registry API found in Rejuvenation without changing $ItemData,
+# PBItems numeric IDs, bags, held items, events, or save serialization.
+class PBItemData
+  attr_reader :id,:name,:pocket,:price,:description
+  attr_reader :field_use,:battle_use,:item_type,:move
+
+  def initialize(itemid)
+    @id=itemid
+    row=$ItemData[itemid]
+    @name=row[ITEMNAME]
+    @pocket=row[ITEMPOCKET]
+    @price=row[ITEMPRICE]
+    @description=row[ITEMDESC]
+    @field_use=row[ITEMUSE]
+    @battle_use=row[ITEMBATTLEUSE]
+    @item_type=row[ITEMTYPE]
+    @move=row[ITEMMACHINE]
+    @azure_source_row=row
+  end
+
+  # Rejuvenation-compatible names for the most common fields.
+  def item; return @id; end
+  def desc; return @description; end
+  def use; return @field_use; end
+  def type; return @item_type; end
+  def machine; return @move; end
+
+  class << self
+    alias azure_uncached_new new
+
+    def normalize_id(value)
+      return value if value.is_a?(Numeric)
+      begin
+        return nil if !value.is_a?(Symbol) && !value.is_a?(String)
+        key=value.to_sym
+        return nil if !PBItems.const_defined?(key)
+        return PBItems.const_get(key)
+      rescue
+        return nil
+      end
+    end
+
+    def new(itemid)
+      id=normalize_id(itemid)
+      return azure_uncached_new(itemid) if id.nil?
+      source=$ItemData
+      source_id=source ? source.object_id : nil
+      if @azure_source_id!=source_id
+        @azure_source_id=source_id
+        @azure_cache=[]
+      end
+      row=source ? source[id] : nil
+      cached=@azure_cache[id] if @azure_cache && id>=0
+      if cached && cached.instance_variable_get(:@azure_source_row).equal?(row)
+        return cached
+      end
+      data=azure_uncached_new(id)
+      @azure_cache[id]=data if id>=0
+      return data
+    end
+
+    def get(item)
+      id=normalize_id(item)
+      raise ArgumentError.new("Unknown item #{item.inspect}") if id.nil? ||
+        !$ItemData || !$ItemData[id]
+      return new(id)
+    end
+
+    def try_get(item)
+      id=normalize_id(item)
+      return nil if id.nil? || !$ItemData || !$ItemData[id]
+      return new(id)
+    end
+
+    def exists?(item)
+      return !try_get(item).nil?
+    end
+
+    def each
+      return enum_for(:each) if !block_given?
+      return if !$ItemData
+      for id in 0...$ItemData.length
+        yield new(id) if $ItemData[id]
+      end
+    end
+
+    def clear_cache
+      @azure_source_id=nil
+      @azure_cache=[]
+    end
+  end
+end
+
 def pbIsHiddenMove?(move)
   return false if !$ItemData
   for i in 0...$ItemData.length
@@ -2594,7 +2688,7 @@ def pbSpeciesCompatible?(species,move,pokemon)
         end
       end
   end    
-  data=load_data("Data/tm.dat")
+  data=pbCachedData("Data/tm.dat")
   return false if !data[move]
   return data[move].any? {|item| item==species }
 end

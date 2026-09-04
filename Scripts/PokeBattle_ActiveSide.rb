@@ -28,6 +28,9 @@ begin
       @effects[PBEffects::AuroraVeil]  = 0
       @effects[PBEffects::DuneDefense] = 0
       @effects[PBEffects::Bonfire]     = 0
+      @effects[PBEffects::ScorchingGround] = 0
+      @effects[PBEffects::RedSunStars] = []
+      @effects[PBEffects::Sunfury] = 0
       @effects[PBEffects::BattleCry]   = 0 
       @effects[PBEffects::MysticTree]  = 0
       @effects[PBEffects::Presents]  = 0
@@ -71,6 +74,8 @@ begin
       @effects[PBEffects::WaterSport]   = 0
       @effects[PBEffects::SosBuffer]    = 0
       @effects[PBEffects::PyroPreTarget]= -1
+      @effects[PBEffects::VileMercy]    = 0
+      @effects[PBEffects::BlueShift]    = 0
 #### KUROTSUNE - 001 - START
       @effects[PBEffects::HeavyRain]     = false
       @effects[PBEffects::HarshSunlight] = false

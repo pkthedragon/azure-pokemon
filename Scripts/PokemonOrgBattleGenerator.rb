@@ -1031,7 +1031,9 @@ def getTypes(species)
 end
 
 def pbTrainerInfo(pokemonlist,trfile,rules)
-  bttrainers=pbGetBTTrainers(trfile)
+  # This generator may add/sort trainers. Request an independent mutable load;
+  # gameplay callers retain the shared read-only cache.
+  bttrainers=pbGetBTTrainers(trfile,true)
   btpokemon=pbGetBTPokemon(trfile)
   trainertypes=load_data("Data/trainertypes.dat")
   if bttrainers.length==0
@@ -1199,6 +1201,7 @@ def pbTrainerInfo(pokemonlist,trfile,rules)
   end
   yield(nil) if block_given?
   save_data(trlists,"Data/trainerlists.dat")
+  AzureDataCache.clear("Data/trainerlists.dat") if defined?(AzureDataCache)
   yield(nil) if block_given?
   pbSaveTrainerLists()
   yield(nil) if block_given?

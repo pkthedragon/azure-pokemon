@@ -45,22 +45,18 @@ class TriadCard
   end
 
   def initialize(species)
-    dexdata=pbOpenDexData
+    speciesdata=PBSpeciesData.get(species)
     @species=species
-    pbDexDataOffset(dexdata,species,10)
-    dexdata.fgetb # HP
-    @west=baseStatToValue(dexdata.fgetb) # Attack
-    @east=baseStatToValue(dexdata.fgetb) # Defense
-    dexdata.fgetb # Speed
-    @north=baseStatToValue(dexdata.fgetb) # Special Attack
-    @south=baseStatToValue(dexdata.fgetb) # Special Defense
-    pbDexDataOffset(dexdata,species,8)
-    @type=dexdata.fgetb # Type
+    stats=speciesdata.base_stats
+    @west=baseStatToValue(stats[1]) # Attack
+    @east=baseStatToValue(stats[2]) # Defense
+    @north=baseStatToValue(stats[4]) # Special Attack
+    @south=baseStatToValue(stats[5]) # Special Defense
+    @type=speciesdata.type1
     if isConst?(@type,PBTypes,:NORMAL)
-      type2=dexdata.fgetb
+      type2=speciesdata.type2
       @type=type2 if !isConst?(type2,PBTypes,:NORMAL)
     end
-    dexdata.close
   end
 
   def self.createBack(type=-1,noback=false)

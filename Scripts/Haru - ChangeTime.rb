@@ -14,10 +14,10 @@ class Scene_Pokegear
     @cmdChangeTime=-1
     @cmdMap=-1
     @cmdTutor=-1
-    @cmdMagnet=-1
+    @cmdPokedex=-1
     @cmdPhone=-1
     @cmdJukebox=-1
-    @cmdOnline=-1    
+    @cmdOnline=-1
     @cmdPulse=-1
     @cmdRiftNotes=-1
     @cmdNotes=-1
@@ -36,7 +36,7 @@ class Scene_Pokegear
       commands[@cmdNotes=commands.length]=_INTL("Field Notes")
     end
     commands[@cmdTutor=commands.length]=_INTL("Tutor.net") if $game_switches[1492]==true
-    commands[@cmdMagnet=commands.length]=_INTL("PokeMagnet") if $game_switches[1437]==true
+    commands[@cmdPokedex=commands.length]=_INTL("Pokédex") if $Trainer.pokedex && $game_switches[1437]==true
     @viewport=Viewport.new(0,0,Graphics.width,Graphics.height)
     @viewport.z=99999
     @button=AnimatedBitmap.new("Graphics/Pictures/Pokegear/pokegearButton")
@@ -165,24 +165,54 @@ class Scene_Pokegear
         $scene = Scene_RiftNotes.new
       end
       
-      if @cmdMagnet>=0 && @sprites["command_window"].index==@cmdMagnet
-        if $game_variables[687]<2
-          $game_variables[687]+=1
-        else
-          $game_variables[687]=0
-        end
-        if $game_variables[687]==0
-          $game_switches[74]=false
-          $game_switches[75]=false
-          Kernel.pbMessage(_INTL("Now in neutral mode."))
-        elsif $game_variables[687]==1
-          $game_switches[74]=true
-          $game_switches[75]=false
-          Kernel.pbMessage(_INTL("Now in attract mode."))
-        elsif $game_variables[687]==2
-          $game_switches[74]=false
-          $game_switches[75]=true
-          Kernel.pbMessage(_INTL("Now in repel mode."))
+      if @cmdPokedex>=0 && @sprites["command_window"].index==@cmdPokedex
+        pbPlayDecisionSE()
+        # Show Pokedex submenu (Pokemagnet vs Atlas)
+        commands = []
+        commands.push(_INTL("PokéMagnet"))
+        commands.push(_INTL("Atlas"))
+        commands.push(_INTL("Cancel"))
+        choice = Kernel.pbMessage(_INTL("Which would you like to access?"), commands, -1)
+        if choice == 0  # PokeMagnet
+          if $game_variables[687]<2
+            $game_variables[687]+=1
+          else
+            $game_variables[687]=0
+          end
+          if $game_variables[687]==0
+            $game_switches[74]=false
+            $game_switches[75]=false
+            Kernel.pbMessage(_INTL("Now in neutral mode."))
+          elsif $game_variables[687]==1
+            $game_switches[74]=true
+            $game_switches[75]=false
+            Kernel.pbMessage(_INTL("Now in attract mode."))
+          elsif $game_variables[687]==2
+            $game_switches[74]=false
+            $game_switches[75]=true
+            Kernel.pbMessage(_INTL("Now in repel mode."))
+          end
+        elsif choice == 1  # Atlas (actual Pokedex)
+          pbSetViableDexes
+          if DEXDEPENDSONLOCATION
+            pbFadeOutIn(99999) {
+               scene=PokemonPokedexScene.new
+               screen=PokemonPokedex.new(scene)
+               screen.pbStartScreen
+            }
+          else
+            if $PokemonGlobal.pokedexViable.length==1
+              $PokemonGlobal.pokedexDex=$PokemonGlobal.pokedexViable[0]
+              $PokemonGlobal.pokedexDex=-1 if $PokemonGlobal.pokedexDex==$PokemonGlobal.pokedexUnlocked.length-1
+              pbFadeOutIn(99999) {
+                 scene=PokemonPokedexScene.new
+                 screen=PokemonPokedex.new(scene)
+                 screen.pbStartScreen
+              }
+            else
+              pbLoadRpgxpScene(Scene_PokedexMenu.new)
+            end
+          end
         end
       end
 

@@ -88,6 +88,8 @@ class Scene_Pokegear
     @cmdPulse=-1
     @cmdRiftNotes=-1
     @cmdNotes=-1
+    @cmdFieldManual=-1
+    @cmdTrainerIndex=-1
     @cmdRecords=-1
 #    @cmdNews=-1
     commands[@cmdMap=commands.length]=_INTL("Map")
@@ -105,6 +107,12 @@ class Scene_Pokegear
     end
     if $game_switches[1177]
       commands[@cmdNotes=commands.length]=_INTL("Field Notes")
+    end
+    if $game_switches[1178]
+      commands[@cmdFieldManual=commands.length]=_INTL("Field Manual")
+    end
+    if $game_switches[1179]
+      commands[@cmdTrainerIndex=commands.length]=_INTL("Trainer Index")
     end
     # if !($game_switches[1235]==true)  && ($game_switches[1408]==true)
     #   if !($game_variables[456]>34 && $game_variables[456]<70) &&  !($game_map.map_id == 94 || $game_map.map_id == 99 || $game_map.map_id == 160 || $game_map.map_id == 164 || $game_map.map_id == 66 || $game_map.map_id == 144 || $game_map.map_id == 33 || $game_map.map_id == 153)
@@ -220,6 +228,18 @@ class Scene_Pokegear
       if @cmdNotes>=0 && @sprites["command_window"].index==@cmdNotes
         pbPlayDecisionSE()
         $scene = Scene_FieldNotes.new
+      end
+      if @cmdFieldManual>=0 && @sprites["command_window"].index==@cmdFieldManual
+        pbPlayDecisionSE()
+        scene = Scene_FieldEffectsManual.new
+        screen = PokemonFieldEffectsManualScreen.new(scene)
+        pbFadeOutIn(99999) { screen.pbStartScreen }
+      end
+      if @cmdTrainerIndex>=0 && @sprites["command_window"].index==@cmdTrainerIndex
+        pbPlayDecisionSE()
+        scene = Scene_TrainerIndex.new
+        screen = PokemonTrainerIndexScreen.new(scene)
+        pbFadeOutIn(99999) { screen.pbStartScreen }
       end
       if @cmdRecords>=0 && @sprites["command_window"].index==@cmdRecords
         pbPlayDecisionSE()

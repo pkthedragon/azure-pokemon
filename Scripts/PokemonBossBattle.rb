@@ -4,7 +4,7 @@
 #===============================================================================
 class PokeBattle_Pokemon
   attr_accessor(:isbossmon)   # is a boss pokemon
-  attr_accessor(:shieldCount)   # number of shields 
+  attr_accessor(:shieldCount)   # number of shields
   attr_accessor(:bossId) # id of the boss idk
   attr_accessor(:sosmon) # is it a pokemon called by SOS
   @sosmon=false
@@ -51,7 +51,7 @@ class BossPokemonDataBox < SpriteWrapper
   HP_GAUGE_SIZE = 296
   HP_COLOR_RED = Color.new(248,88,40)
   TEXT_COLOR_GRAY = Color.new(225,225,225)
-  
+
   attr_reader :battler
   attr_accessor :selected
   attr_reader :animatingHP
@@ -81,13 +81,13 @@ class BossPokemonDataBox < SpriteWrapper
     @doublebattle = doublebattle
     @shieldCount = battler.shieldCount
     @shieldBreaking = -1
-    
+
     @statuses = AnimatedBitmap.new("Graphics/Pictures/Battle/bossbattleStatuses")
     @hpbox = Bitmap.new("Graphics/Pictures/Battle/boss_bar")
     if battler.barGraphic && battler.barGraphic != ""
       @hpbox = Bitmap.new("Graphics/Pictures/Battle/%s",battler.barGraphic)
     end
-    
+
     # @hpboxX = 0
     # @hpboxY = 10
     # @hpGaugeY = 36
@@ -126,7 +126,7 @@ class BossPokemonDataBox < SpriteWrapper
 #    if @battle.raidbattle
 #      pbUpdateShield(@shieldCount, self)
 #    end
-    
+
     refresh
   end
 
@@ -166,7 +166,7 @@ class BossPokemonDataBox < SpriteWrapper
 
   def refresh
     self.bitmap.clear
-    
+
     return if !@appeared
     hpgauge = @battler.totalhp==0 ? 0 : (self.hp*HP_GAUGE_SIZE/@battler.totalhp)
     hpgauge=2 if hpgauge==0 && self.hp>0
@@ -183,7 +183,7 @@ class BossPokemonDataBox < SpriteWrapper
     ]
 #    self.bitmap.fill_rect(@spritebaseX+hpGaugeX,hpGaugeY,hpgauge,2,hpcolors[hpzone*2])
 #    self.bitmap.fill_rect(@spritebaseX+hpGaugeX,hpGaugeY+2,hpgauge,4,hpcolors[hpzone*2+1])
-    
+
     self.bitmap.blt(@hpboxX, @hpboxY, @hpbox, Rect.new(0, 0, @hpbox.width, @hpbox.height))
     self.bitmap.fill_rect(@hpboxX + 6, @hpboxY + @hpGaugeY, hpgauge, 1, hpcolors[hpzone*2])
     self.bitmap.fill_rect(@hpboxX + 6, @hpboxY + @hpGaugeY+1, hpgauge, 3, hpcolors[hpzone*2+1])
@@ -222,7 +222,7 @@ class BossPokemonDataBox < SpriteWrapper
         break if count==@shieldCount
         end
       #end
-    end 
+    end
   end
 
   def update
@@ -277,6 +277,35 @@ end
 # def pbReduceHPDamage(damage,attacker,opponent)
 class PokeBattle_Battle
   attr_accessor :typesequence
+  def pbBossPlayerEffectTargets(battler)
+    return battler.opposingLivingBattlers.find_all { |target| target && !target.issossmon }
+  end
+
+  def pbApplyBossPlayerEffectTarget(source, target, effect, duration, animation, multiturnsymbols)
+    return if !target || target.isFainted? || target.issossmon
+    if multiturnsymbols.include?(effect)
+      target.effects[:MultiTurnAttack] = getConst(PBMoves,effect)
+      if target.effects[:MultiTurnAttack] == PBMoves::BINDINGWORD
+        for stat in [PBStats::ATTACK,PBStats::DEFENSE,PBStats::SPEED,PBStats::SPATK,PBStats::SPDEF,PBStats::ACCURACY,PBStats::EVASION]
+          target.effects[PBEffects::StatChangeHolder][stat] = target.stages[stat]
+          target.stages[stat] = 0
+        end
+      end
+      target.effects[:MultiTurn] = duration ? duration : 5
+      pbCommonAnimation(animation.to_s,target,nil) if animation
+    else
+      target.effects[effect] = duration
+      if effect == PBEffects::PerishSong
+        target.effects[PBEffects::PerishSongUser]=source.index
+      end
+      if effect == PBEffects::FutureSightMove
+        target.effects[PBEffects::FutureSightUser] = source.index
+        target.effects[PBEffects::FutureSightPkmnIdx] = source.pokemonIndex
+      end
+      pbAnimation(animation,target,nil) if animation
+    end
+  end
+
   def pbShieldDamage(battler,damage=0)
     shielddam = false
     hpthreshold = -1
@@ -307,7 +336,7 @@ class PokeBattle_Battle
     if shielddam == true
       @scene.sprites["battlebox#{self.index}"].fractureshield(self.shieldCount-1)
       battler.pbRecoverHP((battler.totalhp).floor,true)
-      pbShieldEffects(battler,onBreakdata) if onBreakdata 
+      pbShieldEffects(battler,onBreakdata) if onBreakdata
       battler.shieldCount-=1 if battler.shieldCount>0
       @scene.sprites["battlebox#{self.index}"].fractureshield(-1)
       @scene.pbUpdateShield(battler.shieldCount,battler.index)
@@ -317,14 +346,14 @@ class PokeBattle_Battle
 
   def pbShieldEffects(battler,onBreakdata,onEntry=false,delay=false)
     if battler.shieldsBroken[battler.shieldCount+1] && !onBreakdata[:delayedaction] && !pbAllFainted?(@party2)
-      return 
+      return
     end
     @scene.pbUnVanishSprite(battler) if battler.vanished
     if onBreakdata[:animation]
       pbAnimation(onBreakdata[:animation],battler,nil)
     end
     if onBreakdata[:message] && onBreakdata[:message] != ""
-      if onBreakdata[:message].start_with?("{1}") 
+      if onBreakdata[:message].start_with?("{1}")
         pbDisplayPaused(_INTL(onBreakdata[:message],battler.pbThis))
       else
         pbDisplayPaused(_INTL(onBreakdata[:message],battler.pbThis(true)))
@@ -355,7 +384,7 @@ class PokeBattle_Battle
             battler.effects[:MultiTurn] = onBreakdata[:bossEffectduration] ? onBreakdata[:bossEffectduration][i] : 5
             pbCommonAnimation(onBreakdata[:bossEffectanimation][i].to_s,battler,nil) if onBreakdata[:bossEffectanimation]
           else
-            battler.effects[onBreakdata[:bossEffect][i]] = onBreakdata[:bossEffectduration] ? onBreakdata[:bossEffectduration][i] : 5              
+            battler.effects[onBreakdata[:bossEffect][i]] = onBreakdata[:bossEffectduration] ? onBreakdata[:bossEffectduration][i] : 5
             pbAnimation(onBreakdata[:bossEffectanimation][i],battler,nil) if onBreakdata[:bossEffectanimation]
           end
         end
@@ -375,15 +404,15 @@ class PokeBattle_Battle
           pbAnimation(onBreakdata[:bossEffectanimation],battler,nil) if onBreakdata[:bossEffectanimation]
         end
       end
-      if onBreakdata[:bossEffectMessage] 
+      if onBreakdata[:bossEffectMessage]
         if onBreakdata[:bossEffectMessage].is_a?(Array)
-          if onBreakdata[:bossEffectMessage][i].start_with?("{1}") 
+          if onBreakdata[:bossEffectMessage][i].start_with?("{1}")
             pbDisplay(_INTL(onBreakdata[:bossEffectMessage][i],battler.pbThis)) if onBreakdata[:bossEffectMessage][i] != ""
           else
             pbDisplay(_INTL(onBreakdata[:bossEffectMessage][i],battler.pbThis(true))) if onBreakdata[:bossEffectMessage][i] != ""
           end
         else
-          if onBreakdata[:bossEffectMessage].start_with?("{1}") 
+          if onBreakdata[:bossEffectMessage].start_with?("{1}")
             pbDisplay(_INTL(onBreakdata[:bossEffectMessage],battler.pbThis)) if onBreakdata[:bossEffectMessage] != ""
           else
             pbDisplay(_INTL(onBreakdata[:bossEffectMessage],battler.pbThis(true))) if onBreakdata[:bossEffectMessage] != ""
@@ -391,107 +420,38 @@ class PokeBattle_Battle
         end
       end
     end
+    boss_player_targets = pbBossPlayerEffectTargets(battler)
     if onBreakdata[:playerEffects]
       if onBreakdata[:playerEffects].is_a?(Array)
         for i in 0...onBreakdata[:playerEffects].length
-          if multiturnsymbols.include?(onBreakdata[:playerEffects][i])
-            if !battler.pbOpposing1.isFainted?  && !battler.pbOpposing1.issossmon
-              battler.pbOpposing1.effects[:MultiTurnAttack] = getConst(PBMoves,onBreakdata[:playerEffects][i])
-              if battler.pbOpposing1.effects[:MultiTurnAttack] == PBMoves::BINDINGWORD
-                for i in [PBStats::ATTACK,PBStats::DEFENSE,PBStats::SPEED,PBStats::SPATK,PBStats::SPDEF,PBStats::ACCURACY,PBStats::EVASION]
-                  battler.pbOpposing1.effects[PBEffects::StatChangeHolder][i] = battler.pbOpposing1.stages[i]
-                  battler.pbOpposing1.stages[i] = 0
-                end
-              end
-              battler.pbOpposing1.effects[:MultiTurn] = onBreakdata[:playerEffectsduration] ?  onBreakdata[:playerEffectsduration][i] : 5
-              pbCommonAnimation(onBreakdata[:playerEffectsAnimation[i].to_s],battler.pbOpposing1,nil) if onBreakdata[:playerEffectsAnimation][i]
-            end
-            if !battler.pbOpposing2.isFainted?  && !battler.pbOpposing2.issossmon
-              battler.pbOpposing2.effects[:MultiTurnAttack] = getConst(PBMoves,onBreakdata[:playerEffects][i])
-              if battler.pbOpposing2.effects[:MultiTurnAttack] == PBMoves::BINDINGWORD
-                for i in [PBStats::ATTACK,PBStats::DEFENSE,PBStats::SPEED,PBStats::SPATK,PBStats::SPDEF,PBStats::ACCURACY,PBStats::EVASION]
-                  battler.pbOpposing2.effects[PBEffects::StatChangeHolder][i] = battler.pbOpposing2.stages[i]
-                  battler.pbOpposing2.stages[i] = 0
-                end
-              end
-              battler.pbOpposing2.effects[:MultiTurn] = onBreakdata[:playerEffectsduration] ?  onBreakdata[:playerEffectsduration][i] : 5
-              pbCommonAnimation(onBreakdata[:playerEffectsAnimation[i].to_s],battler.pbOpposing2,nil) if onBreakdata[:playerEffectsAnimation][i]
-            end
-          else
-            if !battler.pbOpposing1.isFainted?  && !battler.pbOpposing1.issossmon
-              battler.pbOpposing1.effects[onBreakdata[:playerEffects][i]] = onBreakdata[:playerEffectsduration][i]
-              if onBreakdata[:playerEffects].include?(PBEffects::PerishSong)
-                battler.pbOpposing1.effects[PBEffects::PerishSongUser]=battler.index
-              end
-              if onBreakdata[:playerEffects][i] == (PBEffects::FutureSightMove)
-                battler.pbOpposing1.effects[PBEffects::FutureSightUser] = battler.index
-                battler.pbOpposing1.effects[PBEffects::FutureSightPkmnIdx] = battler.pokemonIndex
-              end
-              pbAnimation(onBreakdata[:playerEffectsAnimation[i]],battler.pbOpposing1,nil) if onBreakdata[:playerEffectsAnimation][i]
-            end
-            if !battler.pbOpposing2.isFainted?  && !battler.pbOpposing2.issossmon
-              battler.pbOpposing2.effects[onBreakdata[:playerEffects][i]] = onBreakdata[:playerEffectsduration][i]
-              if onBreakdata[:playerEffects].include?(PBEffects::PerishSong)
-                battler.pbOpposing2.effects[PBEffects::PerishSongUser]=battler.index
-              end
-              if onBreakdata[:playerEffects][i] == (PBEffects::FutureSightMove)
-                battler.pbOpposing2.effects[PBEffects::FutureSightUser] = battler.index
-                battler.pbOpposing2.effects[PBEffects::FutureSightPkmnIdx] = battler.pokemonIndex
-              end
-              pbAnimation(onBreakdata[:playerEffectsAnimation][i],battler.pbOpposing2,nil) if onBreakdata[:playerEffectsAnimation][i]
-            end
+          effect = onBreakdata[:playerEffects][i]
+          duration = onBreakdata[:playerEffectsduration] ? onBreakdata[:playerEffectsduration][i] : nil
+          animation = onBreakdata[:playerEffectsAnimation] ? onBreakdata[:playerEffectsAnimation][i] : nil
+          boss_player_targets.each do |target|
+            pbApplyBossPlayerEffectTarget(battler,target,effect,duration,animation,multiturnsymbols)
           end
         end
       else
-        if multiturnsymbols.include?(onBreakdata[:playerEffects])
-          if !battler.pbOpposing1.isFainted? && !battler.pbOpposing1.issossmon
-            battler.pbOpposing1.effects[:MultiTurnAttack] = getConst(PBMoves,onBreakdata[:playerEffects][i])
-            if battler.pbOpposing1.effects[:MultiTurnAttack] == PBMoves::BINDINGWORD
-              for i in [PBStats::ATTACK,PBStats::DEFENSE,PBStats::SPEED,PBStats::SPATK,PBStats::SPDEF,PBStats::ACCURACY,PBStats::EVASION]
-                battler.pbOpposing1.effects[PBEffects::StatChangeHolder][i] = battler.pbOpposing1.stages[i]
-                battler.pbOpposing1.stages[i] = 0
-              end
-            end
-            battler.pbOpposing1.effects[:MultiTurn] = onBreakdata[:playerEffectsduration] ?  onBreakdata[:playerEffectsduration] : 5
-            pbCommonAnimation(onBreakdata[:playerEffectsAnimation].to_s,battler.pbOpposing1,nil) if onBreakdata[:playerEffectsAnimation]
-          end
-          if !battler.pbOpposing2.isFainted?  && !battler.pbOpposing2.issossmon
-            battler.pbOpposing2.effects[:MultiTurnAttack] = getConst(PBMoves,onBreakdata[:playerEffects][i])
-            if battler.pbOpposing2.effects[:MultiTurnAttack] == PBMoves::BINDINGWORD
-              for i in [PBStats::ATTACK,PBStats::DEFENSE,PBStats::SPEED,PBStats::SPATK,PBStats::SPDEF,PBStats::ACCURACY,PBStats::EVASION]
-                battler.pbOpposing2.effects[PBEffects::StatChangeHolder][i] = battler.pbOpposing2.stages[i]
-                battler.pbOpposing2.stages[i] = 0
-              end
-            end
-            battler.pbOpposing2.effects[:MultiTurn] = onBreakdata[:playerEffectsduration] ?  onBreakdata[:playerEffectsduration] : 5
-            pbCommonAnimation(onBreakdata[:playerEffectsAnimation].to_s,battler.pbOpposing2,nil) if onBreakdata[:playerEffectsAnimation]
-          end
-        else
-          if !battler.pbOpposing1.isFainted?  && !battler.pbOpposing1.issossmon
-            battler.pbOpposing1.effects[onBreakdata[:playerEffects]] = onBreakdata[:playerEffectsduration]
-            if onBreakdata[:playerEffects] == (PBEffects::PerishSong)
-              battler.pbOpposing1.effects[PBEffects::PerishSongUser]=battler.index
-            end
-            pbAnimation(onBreakdata[:playerEffectsAnimation],battler.pbOpposing1,nil) if onBreakdata[:playerEffectsAnimation]
-          end
-          if !battler.pbOpposing2.isFainted?  && !battler.pbOpposing2.issossmon
-            battler.pbOpposing2.effects[onBreakdata[:playerEffects]] = onBreakdata[:playerEffectsduration]
-            if onBreakdata[:playerEffects] == (PBEffects::PerishSong)
-              battler.pbOpposing2.effects[PBEffects::PerishSongUser]=battler.index
-            end
-            pbAnimation(onBreakdata[:playerEffectsAnimation],battler.pbOpposing2,nil) if onBreakdata[:playerEffectsAnimation]
-          end
+        boss_player_targets.each do |target|
+          pbApplyBossPlayerEffectTarget(
+             battler,
+             target,
+             onBreakdata[:playerEffects],
+             onBreakdata[:playerEffectsduration],
+             onBreakdata[:playerEffectsAnimation],
+             multiturnsymbols
+          )
         end
       end
       if onBreakdata[:playerEffectsMessage] && onBreakdata[:playerEffectsMessage] != ""
         if onBreakdata[:playerEffectsMessage].is_a?(Array)
-          if onBreakdata[:playerEffectsMessage][i].start_with?("{1}") 
+          if onBreakdata[:playerEffectsMessage][i].start_with?("{1}")
             pbDisplay(_INTL(onBreakdata[:playerEffectsMessage][i],battler.pbThis)) if onBreakdata[:playerEffectsMessage] != ""
           else
             pbDisplay(_INTL(onBreakdata[:playerEffectsMessage][i])) if onBreakdata[:playerEffectsMessage] != ""
           end
         else
-          if onBreakdata[:playerEffectsMessage].start_with?("{1}") 
+          if onBreakdata[:playerEffectsMessage].start_with?("{1}")
             pbDisplay(_INTL(onBreakdata[:playerEffectsMessage],battler.pbThis)) if onBreakdata[:playerEffectsMessage] != ""
           else
             pbDisplay(_INTL(onBreakdata[:playerEffectsMessage])) if onBreakdata[:playerEffectsMessage] != ""
@@ -508,7 +468,7 @@ class PokeBattle_Battle
     end
     if onBreakdata[:formchange]
       battler.pokemon.form=onBreakdata[:formchange]
-      battler.form = battler.pokemon.form 
+      battler.form = battler.pokemon.form
       pbAnimation(PBMoves::TRANSFORM,battler,nil)
       battler.pbUpdate(true)
       @scene.pbChangePokemon(battler,battler.pokemon)
@@ -536,16 +496,16 @@ class PokeBattle_Battle
         @weather=0
         @weatherduration=0
       elsif @weather==PBWeather::RAINDANCE && $fefieldeffect == 45
-        pbDisplay(_INTL("The rain evaporated away."))  
+        pbDisplay(_INTL("The rain evaporated away."))
         @weather=0
         @weatherduration=0
       end
-      if @weather==0 && @weatherbackup!=0  
-        pbCommonAnimation(@weatherbackupanim,nil,nil)                    
+      if @weather==0 && @weatherbackup!=0
+        pbCommonAnimation(@weatherbackupanim,nil,nil)
         @weather=@weatherbackup
         @weatherduration=-1
         pbDisplay(_INTL("The initial weather took over again!"))
-      end  
+      end
     end
     if onBreakdata[:statusCure]
       pbAnimation(PBMoves::REFRESH,battler,nil)
@@ -577,13 +537,13 @@ class PokeBattle_Battle
           end
         end
         if [PBEffects::LeechSeed,PBEffects::Crushing,PBEffects::Attract,PBEffects::MultiTurnUser].include?(i)
-          if battler.effects[i] != -1          
+          if battler.effects[i] != -1
             battler.effects[i] = -1
             animplay = true
           end
         end
         if [].include?(i) # For possible future effects
-          if battler.effects[i] != nil          
+          if battler.effects[i] != nil
             battler.effects[i] = nil
             animplay = true
           end
@@ -642,7 +602,7 @@ class PokeBattle_Battle
           if canstatus
             @battlers[i].status = onBreakdata[:playerSideStatusChanges][0]
             @battlers[i].statusCount=2 if onBreakdata[:playerSideStatusChanges][0] == PBStatuses::SLEEP
-            pbCommonAnimation(onBreakdata[:playerSideStatusChanges][1],@battlers[i]) 
+            pbCommonAnimation(onBreakdata[:playerSideStatusChanges][1],@battlers[i])
             pbDisplay(_INTL("{1} was afflicted with {2}!",@battlers[i].pbThis,statusname))
           end
         end
@@ -668,9 +628,9 @@ class PokeBattle_Battle
             canstatus = @battlers[i].pbCanFreeze?(false)
             statusname="freeze"
           end
-          if canstatus 
+          if canstatus
             @battlers[i].status = onBreakdata[:bossSideStatusChanges][0]
-            pbCommonAnimation(onBreakdata[:bossSideStatusChanges][1],@battlers[i]) 
+            pbCommonAnimation(onBreakdata[:bossSideStatusChanges][1],@battlers[i])
             pbDisplay(_INTL("{1} was afflicted with {2}!",@battlers[i].pbThis,statusname))
           end
         end
@@ -795,7 +755,7 @@ class PokeBattle_Battle
         for move in onBreakdata[:movesetUpdate]
           next if move.nil?
           battler.pokemon.moves[k]=PBMove.new(move)
-          if battler.level >=75 
+          if battler.level >=75
             battler.pokemon.moves[k].ppup=3
             battler.pokemon.moves[k].pp=battler.pokemon.moves[k].totalpp
           end
@@ -807,7 +767,7 @@ class PokeBattle_Battle
         end
       end
     end
-    if onBreakdata[:typeSequence] 
+    if onBreakdata[:typeSequence]
       if delay
         typeset =  onBreakdata[:typeSequence].values
         battler.type1 = typeset[@typesequence][:typeChange][0]
@@ -881,16 +841,45 @@ class PokeBattle_Battle
     end
   end
 
+  def pbBossPlayerEffectTargets(battler)
+    return battler.opposingLivingBattlers.find_all { |target| target && !target.issossmon }
+  end
+
+  def pbApplyBossPlayerEffectTarget(source,target,effect,duration=nil,animation=nil,multiturnsymbols=nil)
+    return if !target || target.isFainted? || target.issossmon
+    multiturnsymbols ||= []
+    if multiturnsymbols.include?(effect)
+      target.effects[:MultiTurnAttack] = getConst(PBMoves,effect)
+      if target.effects[:MultiTurnAttack] == PBMoves::BINDINGWORD
+        for stat in [PBStats::ATTACK,PBStats::DEFENSE,PBStats::SPEED,PBStats::SPATK,PBStats::SPDEF,PBStats::ACCURACY,PBStats::EVASION]
+          target.effects[PBEffects::StatChangeHolder][stat] = target.stages[stat]
+          target.stages[stat] = 0
+        end
+      end
+      target.effects[:MultiTurn] = duration ? duration : 5
+      pbCommonAnimation(animation.to_s,target,nil) if animation
+      return
+    end
+    target.effects[effect] = duration
+    if effect == PBEffects::PerishSong
+      target.effects[PBEffects::PerishSongUser] = source.index
+    elsif effect == PBEffects::FutureSightMove
+      target.effects[PBEffects::FutureSightUser] = source.index
+      target.effects[PBEffects::FutureSightPkmnIdx] = source.pokemonIndex
+    end
+    pbAnimation(animation,target,nil) if animation
+  end
+
   def pbBossSOS(battlers,shieldbreak=false,onEntry=false)
     for i in pbPriority
       next if !i.isbossmon
       next if !i.sosDetails
-      battler = i 
+      battler = i
       sosData = battler.sosDetails
       battlerIndex = battler.index
       if sosData[:refreshingRequirement]
         if (shieldbreak && !onEntry && @sosbattle > 2 && sosData[:refreshingRequirement].include?(battler.shieldCount-1))
-          variable = pbRefreshSOSPokemon(sosData) 
+          variable = pbRefreshSOSPokemon(sosData)
           return if variable == true
         end
       end
@@ -899,11 +888,16 @@ class PokeBattle_Battle
       end
       allowed = false
       allowed = (shieldbreak || onEntry)
-      if eval(sosData[:activationRequirement]) && @battlers[battlerIndex].pbPartner.isFainted?
-        if (@opponent && pbPokemonCount(@party2)==1) || !(@opponent)
-          if (allowed == true) 
-            if sosData[:totalMonCount] 
-              sosBattle(battler) if battler.currentSOS<sosData[:totalMonCount] 
+      target_side = pbIsOpposing?(battlerIndex) ? 1 : 0
+      side_anchor = pbBattlerIndex(target_side,0)
+      side_size = pbSideSize(side_anchor)
+      open_slot = pbFirstEmptySameSideBattlerIndex(battlerIndex)
+      can_expand_side = side_size < 3
+      if eval(sosData[:activationRequirement]) && (open_slot || can_expand_side)
+        if (@opponent && pbPokemonCount(@party2) <= side_size) || !(@opponent)
+          if (allowed == true)
+            if sosData[:totalMonCount]
+              sosBattle(battler) if battler.currentSOS<sosData[:totalMonCount]
             else
               sosBattle(battler)
             end
@@ -913,7 +907,7 @@ class PokeBattle_Battle
         end
       end
     end
-  end 
+  end
 
   def pbRefreshSOSPokemon(sosData)
     return false if @sosbattle != 3
@@ -925,7 +919,7 @@ class PokeBattle_Battle
     if sosmon.isFainted?
       pbCommonAnimation("ZPower",bossmon,nil)
       pbAnimation(PBMoves::HELPINGHAND,bossmon,sosmon)
-      sosBattle(bossmon) 
+      sosBattle(bossmon)
       return true
     end
     bossmon.currentSOS += 1
@@ -936,7 +930,7 @@ class PokeBattle_Battle
       pbAnimation(PBMoves::REFRESH,sosmon,nil)
       sosmon.pbRecoverHP(sosmon.totalhp,true) if sosmon.hp != sosmon.totalhp
       sosmon.status = 0 if sosmon.status != 0
-      sosmon.statusCount = 0 
+      sosmon.statusCount = 0
       sosmon.pokemon = pbLoadSOSMon(sosData[:moninfos][bossmon.currentSOS],sosmon)
       sosmon.species = sosmon.pokemon.species
       sosmon.form = sosmon.pokemon.form
@@ -963,7 +957,7 @@ class PokeBattle_Battle
   def sosBattle(battler)
     sosData = battler.sosDetails
     return sosBattleSpecial(battler) if (sosData[:playerMons] || sosData[:playerParty]) # currently unused
-    playerMon = battler.pbOppositeOpposing 
+    playerMon = battler.pbOppositeOpposing
     if sosData
       battler.currentSOS += 1
       if sosData[:moninfos][battler.currentSOS]
@@ -974,14 +968,24 @@ class PokeBattle_Battle
       end
       genwildpoke = pbLoadSOSMon(sosmon,battler)
       @party2.push(genwildpoke)
-      @doublebattle=true
-      if @opponent
-        sosIndex = battler.pbPartner.index
-      else
-        sosIndex = 3
+      side = pbIsOpposing?(battler.index) ? 1 : 0
+      player_side_size = pbSideSize(pbBattlerIndex(0,0))
+      opponent_side_size = pbSideSize(pbBattlerIndex(1,0))
+      sosIndex = pbFirstEmptySameSideBattlerIndex(battler.index)
+      if !sosIndex
+        new_side_size = [pbSideSize(battler.index) + 1, 3].min
+        if new_side_size > pbSideSize(battler.index)
+          if side == 0
+            setBattleMode("#{new_side_size}v#{opponent_side_size}")
+          else
+            setBattleMode("#{player_side_size}v#{new_side_size}")
+          end
+          sosIndex = pbFirstEmptySameSideBattlerIndex(battler.index)
+        end
       end
+      return false if !sosIndex
       @sosbattle = $PokemonGlobal.partner ? 4 : 3
-      @battlers[sosIndex].pbInitialize(@party2[-1],(@party2.length-1),false) 
+      @battlers[sosIndex].pbInitialize(@party2[-1],(@party2.length-1),false)
       @scene.pbIntroBoss(self,sosIndex)
       pbOnActiveOne(@battlers[sosIndex])
       @battlers[sosIndex].pbAbilitiesOnSwitchIn(true)
@@ -989,13 +993,13 @@ class PokeBattle_Battle
       # @ai.aimondata[sosIndex].skill = 100
       if sosData[:entryMessage]
         if sosData[:entryMessage].is_a?(Array)
-          if sosData[:entryMessage][battler.currentSOS-1].start_with?("{1}") 
+          if sosData[:entryMessage][battler.currentSOS-1].start_with?("{1}")
             pbDisplay(_INTL(sosData[:entryMessage][battler.currentSOS-1],battler.pbThis)) if sosData[:entryMessage] != ""
           else
             pbDisplay(_INTL(sosData[:entryMessage][battler.currentSOS-1])) if sosData[:entryMessage] != ""
           end
         else
-          if sosData[:entryMessage].start_with?("{1}") 
+          if sosData[:entryMessage].start_with?("{1}")
             pbDisplay(_INTL(sosData[:entryMessage],battler.pbThis)) if sosData[:entryMessage] != ""
           else
             pbDisplay(_INTL(sosData[:entryMessage])) if sosData[:entryMessage] != ""
@@ -1015,7 +1019,7 @@ def pbLoadWildBoss(poke,bossdata=$bosscache)
   poke = boss.moninfo
   species = poke[:species]
   level = poke[:level]
-  pokemon = PokeBattle_Pokemon.new(species,level,$Trainer,false) 
+  pokemon = PokeBattle_Pokemon.new(species,level,$Trainer,false)
   bossFunction(boss,bossid,pokemon)
   pokemon.setItem(poke[:item])
   if poke[:moves]
@@ -1059,7 +1063,7 @@ def pbLoadWildBoss(poke,bossdata=$bosscache)
   pokemon.ev[PBStats::SPEED] = 0 if iv==32 #TR team, just to make sure!
   pokemon.happiness=poke.fetch(:happiness,70)
   pokemon.name=poke[:name] if poke[:name]
-  if poke[:shadow]   # if this is a Shadow Pokémon
+  if poke[:shadow]   # if this is a Shadow PokÃ©mon
     pokemon.makeShadow rescue nil
     pokemon.pbUpdateShadowMoves(true) rescue nil
     pokemon.makeNotShiny
@@ -1073,7 +1077,7 @@ def pbLoadSOSMon(sosdata,boss)
   poke = sosdata
   species = poke[:species]
   level = poke[:level]
-  pokemon = PokeBattle_Pokemon.new(species,level,$Trainer,false) 
+  pokemon = PokeBattle_Pokemon.new(species,level,$Trainer,false)
   pokemon.setItem(poke[:item])
   if poke[:moves]
     k=0
@@ -1114,7 +1118,7 @@ def pbLoadSOSMon(sosdata,boss)
   pokemon.ev[PBStats::SPEED] = 0 if iv==32 #TR team, just to make sure!
   pokemon.happiness=poke.fetch(:happiness,70)
   pokemon.name=poke[:name] if poke[:name]
-  if poke[:shadow]   # if this is a Shadow Pokémon
+  if poke[:shadow]   # if this is a Shadow PokÃ©mon
     pokemon.makeShadow rescue nil
     pokemon.pbUpdateShadowMoves(true) rescue nil
     pokemon.makeNotShiny
@@ -1134,7 +1138,7 @@ class DataObject
     return @flags.fetch(flag,default)
   end
 end
-    
+
 class BossData < DataObject
     attr_accessor :mon
     attr_accessor :name
@@ -1150,12 +1154,12 @@ class BossData < DataObject
     attr_accessor :sosDetails
     attr_accessor :chargeAttack
     attr_accessor :randomSetChanges
-    
+
     def initialize(monsym,data)
       @flags = {}
       @mon              = monsym
       data.each do |key, value|
-        case key 
+        case key
           when :name            then @name            = value
           when :barGraphic      then @barGraphic      = value
           when :entryText       then @entryText       = value

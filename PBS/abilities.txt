@@ -1,366 +1,1896 @@
-1,STENCH,Stench,"The first contact move against a target makes it flinch."
-2,DRIZZLE,Drizzle,"The Pokémon makes it rain when it enters a battle."
-3,SPEEDBOOST,Speed Boost,"Its Speed stat is gradually boosted."
-4,BATTLEARMOR,Battle Armor,"The Pokémon takes 0.66x damage when moving last."
-5,STURDY,Sturdy,"It cannot be knocked out with one hit."
-6,DAMP,Damp,"The user is immune to Fire-type moves and explosive moves."
-7,LIMBER,Limber,"Takes 0.5x damage when switching in and to hazards"
-8,SANDVEIL,Sand Veil,"User has 1.5x defense during a Sandstorm."
-9,STATIC,Static,"When the user faints, if the attacker made contact, paralyze it."
-10,VOLTABSORB,Volt Absorb,"Restores HP if hit by an Electric-type move."
-11,WATERABSORB,Water Absorb,"Restores HP if hit by a Water-type move."
-12,OBLIVIOUS,Oblivious,"Immune to confusion, infatuation, taunt, torment, and move redirection."
-13,CLOUDNINE,Cloud Nine,"While the user is on the battlefield, nullifies all weather and prevents stat raising"
-14,COMPOUNDEYES,Compoundeyes,"The Pokémon's accuracy is boosted."
-15,INSOMNIA,Insomnia,"The user can't fall asleep and their two-turn moves charge instantly"
-16,COLORCHANGE,Color Change,"Uses Camouflage on entry."
-17,IMMUNITY,Immunity,"User cannot be poisoned or paralyzed."
-18,FLASHFIRE,Flash Fire,"It powers up Fire-type moves if it's hit by one."
-19,SHIELDDUST,Shield Dust,"Blocks the added effects of attacks taken."
-20,OWNTEMPO,Own Tempo,"Boosts the power of moves used in succession by 10% (stacks with metronome)."
-21,SUCTIONCUPS,Suction Cups,"Attaches on contact, dealing damage when foe switches."
-22,INTIMIDATE,Intimidate,"Lowers the foe's Attack stat."
-23,SHADOWTAG,Shadow Tag,"Prevents the foe from escaping."
-24,ROUGHSKIN,Rough Skin,"Inflicts damage to the foe on contact."
-25,WONDERGUARD,Wonder Guard,"Only super-effective moves will hit."
-26,LEVITATE,Levitate,"Gives full immunity to all Ground-type moves."
-27,EFFECTSPORE,Effect Spore,"When the user faints, if the attacker made contact, it becomes drowsy."
-28,SYNCHRONIZE,Synchronize,"Passes a burn, poison, or paralysis to the foe."
-29,CLEARBODY,Clear Body,"Prevents other Pokémon from lowering its stats."
-30,NATURALCURE,Natural Cure,"All status problems heal when it switches out."
-31,LIGHTNINGROD,Lightningrod,"Absorbs Electric-type moves, which raises offenses."
-32,SERENEGRACE,Serene Grace,"Boosts the likelihood of added effects appearing."
-33,SWIFTSWIM,Swift Swim,"Boosts the Pokémon's Speed in rain."
-34,CHLOROPHYLL,Chlorophyll,"Boosts the Pokémon's Speed in sunshine."
-35,ILLUMINATE,Illuminate,"Attracts wild Pokémon, raises accuracy on entry, user can't be blinded."
-36,TRACE,Trace,"The Pokémon copies a foe's Ability."
-37,HUGEPOWER,Huge Power,"Raises the Pokémon's Attack stat."
-38,POISONPOINT,Poison Point,"Poisons the enemy on any contact."
-39,INNERFOCUS,Inner Focus,"The user can't flinch and the user's moves cannot be redirected."
-40,MAGMAARMOR,Magma Armor,"Absorbs Water-type moves, which raises defenses"
-41,WATERVEIL,Water Veil,"User has 1.5x special defense during Rain"
-42,MAGNETPULL,Magnet Pull,"Prevents Steel-type Pokémon from escaping."
-43,SOUNDPROOF,Soundproof,"Gives full immunity to all sound-based moves."
-44,RAINDISH,Rain Dish,"The Pokémon gradually regains HP in rain."
-45,SANDSTREAM,Sand Stream,"The Pokémon summons a sandstorm in battle."
-46,PRESSURE,Pressure,"Enemy moves use up two PP, three during gravity or if the enemy is crushed."
-47,THICKFAT,Thick Fat,"Ups resistance to Fire- and Ice-type moves."
-48,EARLYBIRD,Early Bird,"2x speed the turn after waking up, charging, or recharging"
-49,FLAMEBODY,Flame Body,"When the user faints, if the attacker made contact, burn it."
-50,RUNAWAY,Run Away,"Immune to Pursuit and trapping moves and abilities, can always flee."
-51,KEENEYE,Keen Eye,"Ignores accuracy and evasion changes, and the user's accuracy can't be lowered."
-52,HYPERCUTTER,Hyper Cutter,"Attack can't be lowered. Damaging moves wound foes for 3 turns."
-53,PICKUP,Pickup,"Picks up the enemy's item upon fainting, can find items outside of battle"
-54,TRUANT,Truant,"Skips every other turn to heal 1/3rd max HP"
-55,HUSTLE,Hustle,"User has 1.5x attack but 0.5x defenses."
-56,CUTECHARM,Cute Charm,"Enemies damaging the user become infatuated."
-57,PLUS,Plus,"Sets Plus for three turns. Boosts offenses if Minus is active."
-58,MINUS,Minus,"Sets Minus for three turns. Boosts offenses if Plus is active."
-59,FORECAST,Forecast,"Transforms during weather or when holding a weather stone."
-60,STICKYHOLD,Sticky Hold,"Held items can't be removed, traps the enemy upon any contact"
-61,SHEDSKIN,Shed Skin,"The user sheds its first status condition"
-62,GUTS,Guts,"Boosts Attack if there is a status problem."
-63,MARVELSCALE,Marvel Scale,"Boosts Defense and Sp. Def. when statused or in certain terrains."
-64,LIQUIDOOZE,Liquid Ooze,"Wounds enemies that use a draining move and reverses the healing"
-65,OVERGROW,Overgrow,"Powers up Grass-type moves in a pinch."
-66,BLAZE,Blaze,"Powers up Fire-type moves in a pinch."
-67,TORRENT,Torrent,"Powers up Water-type moves in a pinch."
-68,SWARM,Swarm,"Powers up Bug-type moves in a pinch."
-69,ROCKHEAD,Rock Head,"Protects the Pokémon from recoil damage."
-70,DROUGHT,Drought,"The Pokémon summons harsh sunlight in battle."
-71,ARENATRAP,Arena Trap,"Prevents the foe from fleeing."
-72,VITALSPIRIT,Spirited,"Moves with unchecked accuracy deal 1.5x damage."
-73,WHITESMOKE,White Smoke,"Prevents other Pokémon from lowering its stats."
-74,PUREPOWER,Pure Power,"Raises the Pokémon's Attack stat."
-75,SHELLARMOR,Shell Armor,"The Pokémon is protected against critical hits and phasing."
-76,AIRLOCK,Air Lock,"Eliminates the effects of weather."
-77,TANGLEDFEET,Tangled Feet,"User has 1.5x speed but 0.5x defenses."
-78,MOTORDRIVE,Motor Drive,"Raises Speed if hit by an Electric-type move."
-79,RIVALRY,Rivalry,"Deals 1.25x damage to same gender, takes 0.75x otherwise."
-80,STEADFAST,Steadfast,"Raises Speed whenever the user would flinch, be immobilized, or have damage be prevented"
-81,SNOWCLOAK,Snow Veil,"User has 1.5x special defense during Hail"
-82,GLUTTONY,Gluttony,"Berries trigger at half HP, and healing effects restore 10% more HP."
-83,ANGERPOINT,Anger Point,"Moves deal 1.3x damage but the user cannot use status moves."
-84,UNBURDEN,Unburden,"Raises Speed if a held item is used."
-85,HEATPROOF,Heatproof,"The user cannot be burned and takes 0.5x damage from Fire-type moves."
-86,SIMPLE,Simple,"The Pokémon is prone to wild stat changes."
-87,DRYSKIN,Dry Skin,"Reduces HP if it is hot. Water restores HP."
-88,DOWNLOAD,Download,"Adjusts power according to a foe's defenses."
-89,IRONFIST,Iron Fist,"Boosts the power of punching moves."
-90,POISONHEAL,Poison Heal,"Restores HP if the Pokémon is poisoned."
-91,ADAPTABILITY,Adaptability,"Powers up moves of the same type."
-92,SKILLLINK,Skill Link,"Increases the frequency of multi-strike moves."
-93,HYDRATION,Hydration,"During Rain, clears the user's status conditions and negative stat changes each turn"
-94,SOLARPOWER,Solar Power,"In sunshine, Sp. Atk is boosted but HP decreases."
-95,QUICKFEET,Quick Feet,"Boosts Speed if there is a status problem."
-96,NORMALIZE,Normalize,"All the user's moves become the Normal type."
-97,SNIPER,Sniper,"Powers up critical hits."
-98,MAGICGUARD,Magic Guard,"The Pokémon only takes damage from attacks."
-99,NOGUARD,No Guard,"Moves used by or against the user ignore accuracy checks, and moves with 80 accuracy or lower deal 1.2x damage."
-100,STALL,Stall,"Makes an extra turn pass each turn, the user always moves last"
-101,TECHNICIAN,Technician,"Powers up the Pokémon's weaker moves."
-102,LEAFGUARD,Leaf Guard,"During Sun, clears the user's status conditions and negative stat changes each turn."
-103,KLUTZ,Klutz,"Held item effects are ignored on the first turn it enters battle."
-104,MOLDBREAKER,Mold Breaker,"Moves can be used regardless of Abilities."
-105,SUPERLUCK,Super Luck,"Heightens the critical-hit ratios of moves."
-106,AFTERMATH,Aftermath,"Damages the foe landing the finishing hit."
-107,ANTICIPATION,Anticipation,"User takes 0.5x damage from non-contact moves but 2x damage from Psychic-type attacks"
-108,FOREWARN,Forewarn,"Disables a foe's super-effective move on entry for one turn"
-109,UNAWARE,Unaware,"Ignores any stat changes in the Pokémon."
-110,TINTEDLENS,Tinted Lens,"Powers up \"not very effective\" moves."
-111,FILTER,Filter,"Reduces damage from supereffective attacks."
-112,SLOWSTART,Slow Start,"Halves Attack and Speed, raising each time the user is attacked or attacks."
-113,SCRAPPY,Scrappy,"Enables moves to hit Ghost-type Pokémon."
-114,STORMDRAIN,Storm Drain,"Absorbs Water-type moves, which raises offenses."
-115,ICEBODY,Ice Body,"The Pokémon gradually regains HP in hail."
-116,SOLIDROCK,Solid Rock,"Reduces damage from supereffective attacks."
-117,SNOWWARNING,Snow Warning,"The Pokémon summons a hailstorm in battle."
-118,HONEYGATHER,Honey Gather,"Restores 1/8th max HP each turn the user doesn't attack, finds honey outside of battle"
-119,FRISK,Frisk,"Peeks at the enemy held item and blocks its usage for one turn"
-120,RECKLESS,Reckless,"Powers up moves that have recoil damage."
-121,MULTITYPE,Multitype,"Changes type to match the held Plate."
-122,FLOWERGIFT,Flower Gift,"Powers up party Pokémon when it is sunny."
-123,BADDREAMS,Bad Dreams,"Uses Nightmare on entry"
-124,PICKPOCKET,Pickpocket,"Steals enemy item when dealt damage and sharply raises speed"
-125,SHEERFORCE,Sheer Force,"Removes added effects to increase move damage."
-126,CONTRARY,Contrary,"Makes stat changes have an opposite effect."
-127,UNNERVE,Unnerve,"Prevents the enemy from eating berries or leftovers, or using the move Swallow"
-128,DEFIANT,Defiant,"When a stat is lowered its Attack increases."
-129,DEFEATIST,Defeatist,"Lowers stats when HP becomes half or less."
-130,CURSEDBODY,Cursed Body,"The user disables the move that knocked it out."
-131,HEALER,Healer,"Healing moves are amplified 1.1x and cure the user's status."
-132,FRIENDGUARD,Friend Guard,"Reduces damage done to allies."
-133,WEAKARMOR,Weak Armor,"Physical attacks lower Def. and sharply raise Spd."
-134,HEAVYMETAL,Heavy Metal,"Doubles weight and boosts Defense during gravity."
-135,LIGHTMETAL,Light Metal,"Halves weight and doubles Speed during gravity."
-136,MULTISCALE,Multiscale,"Reduces damage when HP is full."
-137,TOXICBOOST,Toxic Boost,"Boosts move power 1.3x when poisoned, user does not take poison damage"
-138,FLAREBOOST,Flare Boost,"Powers up special attacks when burned."
-139,HARVEST,Harvest,"May create another Berry after one is used."
-140,TELEPATHY,Telepathy,"Moves used by the user or its allies do not hit allies."
-141,MOODY,Moody,"Nature stat modifiers are 3x"
-142,OVERCOAT,Overcoat,"Protects the Pokémon from damage from weather."
-143,QUICKDRAW,Quick Draw,"Gains +1 priority the first turn it enters battle."
-144,REGENERATOR,Regenerator,"Restores HP when withdrawn from battle."
-145,BIGPECKS,Big Pecks,"Raises user's defense each time an enemy raises its stats, the user's defense cannot be lowered."
-146,SANDRUSH,Sand Rush,"Boosts the Pokémon's Speed in a sandstorm."
-147,WONDERSKIN,Wonder Skin,"Damages attackers using special attacks 1/8 max HP"
-148,ANALYTIC,Analytic,"Boosts move power when the Pokémon moves last."
-149,ILLUSION,Illusion,"Comes out disguised as the Pokémon in back."
-150,IMPOSTER,Imposter,"Transforms itself into the foe it is facing."
-151,INFILTRATOR,Infiltrator,"Passes through the foe's barrier and strikes."
-152,MUMMY,Mummy,"Contact with this Pokémon spreads this Ability."
-153,MOXIE,Moxie,"Boosts Attack after knocking out any Pokémon."
-154,JUSTIFIED,Justified,"Absorbs Dark-type moves, which raises offenses"
-155,RATTLED,Rattled,"Some move types scare it and boost its Speed."
-156,MAGICBOUNCE,Magic Bounce,"Reflects status-changing moves."
-157,SAPSIPPER,Sap Sipper,"Absorbs Grass-type moves, which raises offenses"
-158,PRANKSTER,Prankster,"Gives priority to a status move."
-159,SANDFORCE,Sand Force,"Boosts certain moves' power in a sandstorm."
-160,IRONBARBS,Iron Barbs,"Inflicts damage to the Pokémon on contact."
-161,ZENMODE,Zen Mode,"Wakes up and transforms the user when put to sleep or when at half health"
-162,VICTORYSTAR,Victory Star,"Boosts the accuracy of its allies and itself."
-163,TURBOBLAZE,Turboblaze,"Moves can be used regardless of Abilities."
-164,TERAVOLT,Teravolt,"Moves can be used regardless of Abilities."
-165,AERILATE,Aerilate,"Normal-type moves become Flying-type moves."
-166,AROMAVEIL,Aroma Veil,"Protects allies from moves that effect their mind."
-167,AURABREAK,Aura Break,"The effects of Aura Abilities are reversed."
-168,BULLETPROOF,Bulletproof,"User is immune to ball, bomb, and cannon moves"
-169,CHEEKPOUCH,Cheek Pouch,"Restores HP when the Pokémon eats a Berry."
-170,COMPETITIVE,Competitive,"Boosts the Sp. Atk stat when a stat is lowered."
-171,DARKAURA,Dark Aura,"Powers up each Pokémon's Dark-type moves."
-172,FAIRYAURA,Fairy Aura,"Powers up each Pokémon's Fairy-type moves."
-173,FLOWERVEIL,Flower Veil,"User has 1.5x defense during Sun"
-174,FURCOAT,Fur Coat,"Halves damage from physical moves."
-175,GALEWINGS,Gale Wings,"Gives priority to Flying-type moves when HP is full."
-176,GOOEY,Gooey,"Contact lowers the foe's Speed stat."
-177,NATURALSHROUD,Natural Shroud,"Boosts defenses by 1.3x during terrain and powers up certain moves."
-178,MAGICIAN,Magician,"Steals enemy item upon attacking, deals 1.5x damage to itemless enemies."
-179,MEGALAUNCHER,Mega Launcher,"Boosts the power of pulse, aura, and cannon moves 1.5x"
-180,PARENTALBOND,Parental Bond,"Parent and child attack together."
-181,PIXILATE,Pixilate,"Normal-type moves become Fairy-type moves."
-182,PROTEAN,Protean,"Changes the Pokémon's type to its move used."
-183,REFRIGERATE,Refrigerate,"Normal-type moves become Ice-type moves."
-184,STANCECHANGE,Stance Change,"The Pokémon changes form depending on moves."
-185,STRONGJAW,Strong Jaw,"The power of biting moves is increased."
-186,SWEETVEIL,Sweet Veil,"Prevents ally Pokémon from falling asleep."
-187,SYMBIOSIS,Symbiosis,"Passes its stat changes to its ally."
-188,TOUGHCLAWS,Tough Claws,"Powers up moves that make direct contact."
-189,PRIMORDIALSEA,Primordial Sea,"Affects weather and nullifies any Fire-type attacks."
-190,DESOLATELAND,Desolate Land,"Affects weather and nullifies any Water-type attacks."
-191,DELTASTREAM,Delta Stream,"The Pokémon makes it very windy if it is in battle."
-192,BATTERY,Battery,"Powers up ally Pokémon's special moves."
-193,BEASTBOOST,Beast Boost,"Boosts highest stat after KO'ing a Pokémon."
-194,BERSERK,Berserk,"Raises offenses when damaged below 50% HP"
-195,COMATOSE,Comatose,"It's always asleep, and attacks without waking up."
-196,CORROSION,Corrosion,"Can Poison and damage Steel-types with Poison moves"
-197,DANCER,Dancer,"Dances with others, duplicating their moves."
-198,DAZZLING,Dazzling,"Prevents priority moves, any contact lowers evasion."
-199,ELECTRICSURGE,Electric Surge,"Electrifies the terrain on entry."
-200,EMERGENCYEXIT,EmergencyExit,"It retreats when its HP becomes half or less."
-201,FLUFFY,Fluffy,"Weakens contact moves, but doubles Fire damage."
-202,FULLMETALBODY,Full Metal Body,"Prevents other Pokémon from lowering its stats."
-203,GALVANIZE,Galvanize,"Normal-type moves become Electric-type moves."
-204,GRASSYSURGE,Grassy Surge,"Makes the terrain grassy on entry."
-205,INNARDSOUT,Innards Out,"Damages the attacker the same amount when fainted."
-206,LIQUIDVOICE,Liquid Voice,"All sound-based moves become Water-type moves."
-207,LONGREACH,Long Reach,"This Pokémon's moves do not make contact."
-208,MERCILESS,Merciless,"Moves critically hit statused or wounded targets."
-209,MISTYSURGE,Misty Surge,"Makes the terrain misty on entry."
-210,POWEROFALCHEMY,Alchemy,"Copies the ability of the most recently fainted enemy on entry or whenever an enemy faints"
-211,PRISMARMOR,Prism Armor,"Reduces damage from supereffective attacks."
-212,PSYCHICSURGE,Psychic Surge,"Makes the terrain mysterious on entry."
-213,QUEENLYMAJESTY,Majesty,"Takes 0.7x damage from spread moves."
-214,RECEIVER,Receiver,"Copies the ability of the most recently fainted ally on entry or whenever an ally faints"
-215,SHADOWSHIELD,Shadow Shield,"Reduces damage when HP is full."
-216,SLUSHRUSH,Slush Rush,"Boosts the Pokémon's Speed stat in a hailstorm."
-217,SOULHEART,Soul-heart,"Boosts its Sp. Atk every time a Pokémon faints."
-218,STAKEOUT,Stakeout,"Doubles damage to newly switched-in targets."
-219,STAMINA,Stamina,"Boosts the Defense stat when hit by an attack."
-220,STEELWORKER,Steelworker,"Steel-type moves gain STAB, takes 0.5x damage from Steel-type moves"
-221,SURGESURFER,Surge Surfer,"Doubles the Speed stat on Electric Terrain."
-222,TANGLINGHAIR,Tangling Hair,"Contact lowers the foe's Speed stat and traps them."
-223,TRIAGE,Triage,"Gives priority to a healing move."
-224,WATERBUBBLE,Water Bubble,"Stops burns, halves Fire damage and boosts Water." 
-225,WATERCOMPACTION,W. Compaction,"Water-type moves sharply raise Defense."
-226,WIMPOUT,Wimp Out,"It wimps out when its HP becomes half or less."
-227,SCHOOLING,Schooling,"As long as it has high HP, it can form a school."
-228,RKSSYSTEM,RKS System,"Changes type to match the held memory disc."
-229,SHIELDSDOWN,Shields Down,"This Pokémon is protected by its shell above half HP."
-230,DISGUISE,Disguise,"This Pokémon's shroud can protect it from one hit."
-231,POWERCONSTRUCT,Power Const.,"Enters Complete Form when HP is half or less."
-232,BALLFETCH,Ball Fetch,"Fetches the first failed Pokéball if no held item."
-233,COTTONDOWN,Cotton Down,"Lowers Speed of adjacent Pokémon when hit."
-234,DAUNTLESSSHIELD,Dauntless Shield,"Boosts the Pokémon's Defense stat upon entry."
-235,GORILLATACTICS,Gorilla Tactics,"Boosts the Pokémon's Attack stat; can only use the first selected move."
-236,GULPMISSILE,Gulp Missile,"Catches Pokémon with Surf and Dive, spits out when hit."
-237,HUNGERSWITCH,Hunger Switch,"Heals 1/8th max HP at the end of turn or has 1.5x speed based on form"
-238,ICEFACE,Ice Face,"Can take a physical attack once. Restored when it hails."
-239,ICESCALES,Ice Scales,"Ice scales halve the damage taken from special moves."
-240,INTREPIDSWORD,Intrepid Sword,"Boosts the Pokémon's Attack stat upon entry."
-241,LIBERO,Libero,"Changes the Pokémon's type to its move used."
-242,MIMICRY,Mimicry,"Changes the Pokémon's type depending on the terrain."
-243,MIRRORARMOR,Mirror Armor,"Bounces back stat-lowering effects that the Pokémon receives."
-244,NEUTRALIZINGGAS,Neutralizing Gas,"Effects of abilities are nullified or prevented."
-245,PASTELVEIL,Pastel Veil,"Protects the user and ally Pokémon from being poisoned."
-246,PERISHBODY,Perish Body,"User and attacker faint in 3 turns when hit by contact move."
-247,POWERSPOT,Power Spot,"Just being next to the Pokémon powers up moves."
-248,PROPELLERTAIL,Propeller Tail,"The user's momentum moves blow away hazards and trapping effects"
-249,AMPLIFY,Amplify,"Boosts damage of and halves damage taken from sound moves."
-250,RIPEN,Ripen,"Ripens Berries and doubles their effect."
-251,SANDSPIT,Sand Spit,"The Pokémon creates a sandstorm when it's hit by an attack."
-252,SCREENCLEANER,Screen Cleaner,"Removes protective screens for allies and opponents."
-253,STALWART,Stalwart,"Each time a move is used in succession against the user, the damage is lowered by 10%"
-254,STEAMENGINE,Steam Engine,"Fire- and Water-type moves boost Speed drastcally."
-255,STEELYSPIRIT,Steely Spirit,"Powers up ally Pokémon's Steel-type moves."
-256,WANDERINGSPIRIT,Wandering Spirit,"Swaps Abilities with attacker when hit with a contact move."
-257,NEUROFORCE,Neuroforce,"Powers up moves that are super effective."
-300,INTIMIDATE2,Intimidate,"Lowers the foe's Attack stat."
-301,SHIFT,Shift,"Adjusts the body to adapt to environments."
-302,SAVAGERY,Savagery,"Raises this Pokemon's attack stats depending on HP."
-303,ACCUMULATION,Accumulation,"Has 3 stacks of stockpile at all times."
-304,TEMPORALSHIFT,Temporal Shift,"Stats cannot be lowered and casts Hex in the future."
-305,EXECUTION,Execution,"This Pokémon hits harder the lower the target's health is."
-306,RESUSCITATION,Resuscitation,"Enters Zombie Form after being knocked out once."
-307,TEMPEST,Storm 9,"Randomly changes weather at the end of the turn."
-308,SOLARIDOL,Solar Idol,"STAB Fire moves. 50% ATK boost in Sun. Levitates."
-309,LUNARIDOL,Lunar Idol,"STAB on Ice moves. 50% SPATK boost in Hail. Levitates."
-310,WORLDOFNIGHTMARES,World of Nightmares,"End of turn damage on all foes. Changes field to New World over time. Allows use of Nightmare freely."
-311,MAENADSFERVOR,Maenad's Fervor,"This Pokemon's Defenses and Speed are raised when confused."
-312,ILLUSORYSHROUD,Illusory Shroud,"This Pokemon is immune to contact moves, but its Defenses are swapped."
-313,COTTONMOLT,Cotton Molt,"This Pokemon scatters cotton around when it attacks, lowering all other Pokemon's speed."
-314,AMBIDEXTROUS,Ambidextrous,"Non-STAB moves are boosted."
-315,ASSASSINATE,Assassinate,"This Pokémon deals more damage to Pokémon that haven't attacked it."
-316,HEADSTRONG,Headstrong,"All Pokémon ignore immunities."
-317,ERRATIC,Erratic,"The user's contact moves confuse for three turns."
-318,ELDRITCH,Eldritch,"Blinds opponents on entry."
-319,STALKER,Stalker,"Raises speed if enemy is faster."
-320,LACERATE,Lacerate,"Normal-type moves become Steel-type moves."
-321,IMMOLATE,Immolate,"Normal-type moves become Fire-type moves."
-322,ESOTERIC,Esoteric,"Raises the Pokémon's Speed stat."
-323,PERPETUAL,Perpetual,"Moves that have a duration now have a duration of 7."
-324,TANDEM,Tandem,"Attacks deal less damage but hit twice."
-325,AVENGER,Avenger,"Becomes stronger for each fainted ally."
-326,CARETAKER,Caretaker,"Restores ally HP each turn."
-327,IMPOSING,Imposing,"Moves below 100 power deal less damage."
-328,SADIST,Sadist,"Enemies take more damage outside of attacks."
-329,SUNBATHE,Sunbathe,"Restores 1/8th max HP each turn in Sun."
-330,ICEBREAKER,Icebreaker,"Boosts certain moves' power during hail."
-331,HYDROPLANE,Hydroplane,"In rain, Atk is boosted but HP decreases."
-332,BLOODTHIRSTY,Bloodthirsty,"Contact moves restore HP."
-333,FROSTPOINT,Frost Point,"Any contact has a 30% chance to freeze."
-334,IMPERVIOUS,Impervious,"User is immune to kicking, punching, and biting moves."
-335,HEATSINK,Heat Sink,"Restores HP if hit by a Fire-type move."
-336,SCAVENGER,Scavenger,"Restores HP after knocking out any Pokemon."
-337,GRENADIER,Grenadier,"Powers up ball, bomb, and explosion moves."
-338,RAPTUROUS,Rapturous,"Sound moves charm for three turns."
-339,BEACON,Beacon,"Powers up light and beam moves."
-340,HALCYON,Halcyon,"All moves with positive priority have zero priority."
-341,MANAECHOES,Mana Echoes,"The user's special attacks deal an additional 1/8th max HP damage."
-342,EXECUTIONER,Executioner,"Boosts attack if an enemy is below half HP."
-343,ASCETIC,Ascetic,"Powers up Grass-type moves, incoming Grass-type moves deal less damage."
-344,WATERLOGGED,Waterlogged,"Powers up Water-type moves, incoming Water-type moves deal less damage."
-345,INCENDIARY,Incendiary,"Powers up Fire-type moves, incoming Fire-type moves deal less damage."
-346,EVENTHORIZON,Event Horizon,"The Pokémon intensifies gravity when it enters a battle."
-347,OBELISK,Obelisk,"Becomes dormant when KOd. If knocked out dormant and all allies have fainted, revive."
-348,ANGERSHELL,Anger Shell,"Lowers defenses but raises offenses and Speed when hit below half health."
-349,ARMORTAIL,Armor Tail,"User takes 0.5x damage from priority and two-turn moves"
-350,BEADSOFRUIN,Beads of Ruin,"Lowers Sp.Def of all Pokemon but itself."
-351,COMMANDER,Commander,"Hides inside Dondozo and issues commands from there."
-352,COSTAR,Costar,"Copies ally stat changes on entry."
-353,CUDCHEW,Cud Chew,"Duplicates berry effect end of next turn when used."
-354,EARTHEATER,Earth Eater,"Restores HP if hit by a Ground-type move."
-355,ELECTROMORPHOSIS,Electromorphosis,"The Pokemon becomes charged when it takes damage."
-356,GOODASGOLD,Good as Gold,"The Pokemon has full immunity to Status moves."
-357,GUARDDOG,Guard Dog,"Raises Attack when intimidated, prevents phasing."
-358,HADRONENGINE,Hadron Engine,"Creates Electric Terrain and boosts Sp.Atk on it."
-359,LINGERINGAROMA,Lingering Aroma,"Contact with this Pokémon spreads this Ability."
-360,MYCELIUMMIGHT,Mycelium Might,"Status moves ignore abilities and immunities, but go last."
-361,OPPORTUNIST,Oppurtunist,"Copies foe stat boosts."
-362,ORICHALCUMPULSE,Orichalcum Pulse,"Creates Sunlight and boosts Attack while sunny."
-363,PURIFYINGSALT,Purifying,"Prevents status and halves Ghost damage."
-364,ROCKYPAYLOAD,Rocky Payload,"Rock-type moves gain STAB, takes 0.5x damage from Rock-type moves"
-365,SEEDSOWER,Seed Sower,"Starts Grassy Terrain when damaged."
-366,SHARPNESS,Sharpness,"Powers up slashing moves and allows them to ignore defenses."
-367,SUPREMEOVERLORD,Supreme Overlord,"Raises Attack for each fallen team member."
-368,SWORDOFRUIN,Sword of Ruin,"Lowers Defense of all Pokemon but itself."
-369,TABLETSOFRUIN,Tablets of Ruin,"Lowers Attack of all Pokemon but itself."
-370,THERMALEXCHANGE,Thermal Exchange,"Prevents Burn, draws in Fire-type moves to raise offenses."
-371,TOXICCHAIN,Toxic Chain,"Damaging a target may badly poison it."
-372,TOXICDEBRIS,Toxic Debris,"Lays poison barbs when damaged."
-373,VESSELOFRUIN,Vessel of Ruin,"Lowers Sp. Atk of all Pokemon but itself."
-374,WELLBAKEDBODY,Well-Baked Body,"Draws in Fire-type moves to sharply raise Defense."
-375,WINDPOWER,Wind Power,"Becomes charged when hit by a wind move or when tailwind is used."
-376,WINDRIDER,Wind Rider,"Draws in wind moves to raise offenses, using tailwind raises offenses."
-377,ZEROTOHERO,Zero to Hero,"Changes forms when switching out."
-378,SELFLESS,Selfless,"Protects incoming ally after switching out."
-379,PINPOINT,Pinpoint,"Powers up piercing moves."
-380,REVERB,Reverb,"Sound moves strike again at the beginning of the next turn at 0.25x power, still applying effects."
-381,VISIONARY,Visionary,"Uses special attack for physical moves."
-382,WALLOW,Wallow,"Sets Mud Sport on entry."
-383,INSULATED,Insulated,"Ups resistance to Electric- and Ice-type moves."
-384,PITCHBLACK,Pitch Black,"Absorbs Dark-type moves to raise defenses."
-385,UNSEENFIST,Unseen Fist,"Physical contact bypasses Protect and similar."
-386,CURIOUSMEDICINE,Curious Medicine,"Removes ally stat changes on entry."
-387,TRANSISTOR,Transistor,"Powers up Electric-type moves."
-388,DRAGONSMAW,Dragon's Maw,"Powers up Dragon-type moves."
-389,CHILLINGNEIGH,Chilling Neigh,"Boosts Attack when knocking out an opponent."
-390,GRIMNEIGH,Grim Neigh,"Boosts Sp. Atk when knocking out an opponent."
-391,ASONE,As One,"Combines abilities of fused Pokémon."
-392,QUARKDRIVE,Quark Drive,"Boosts highest stat on Electric Terrain or when holding Booster Energy."
-393,PROTOSYNTHESIS,Protosynthesis,"Boosts highest stat in harsh Sunlight or when holding Booster Energy."
-394,SUPERSWEETSYRUP,Supersweet Syrup,"Lowers evasion of opponents on entry."
-395,HOSPITALITY,Hospitality,"Restores partner HP on entry."
-396,TOXICCHAIN,Toxic Chain,"Damaging a target may badly poison it."
-397,MINDSEYE,Mind's Eye,"Scrappy + ignores evasion, acc can't be lowered."
-398,EMBODYASPECT,Embody Aspect,"Gains specific stat boosts depending on the mask."
-399,TERASHIFT,Tera Shift,"Changes to Tera forme in battle."
-400,TERASHELL,Tera Shell,"Damage taken is not very effective if at full HP."
-401,TERAFORMZERO,Teraform Z.,"Eliminates all weather and temporary fields."
-402,POISONPUPPETEER,Pois. Puppet.,"Poisoning a target will also confuse it."
-403,ABYSSAL,Abyssal,"The user cannot be crushed. The user's attacks crush during intense gravity."
-404,CARETAKER,Caretaker,"Heals allies for 1/8th max HP each turn."
-405,BLOODTHIRSTY,Bloodthirsty,"Restores HP when using contact moves."
-406,SCAVENGER,Scavenger,"User restores 25% max HP upon knocking out an enemy."
-407,EXECUTIONER,Executioner,"The user deals 1.5x damage to opponents with 50% or less HP."
-408,EVENTHORIZON,Event Horizon,"Intensifies Gravity on entry."
+﻿# Generated from the legacy ability CSV.
+#-------------------------------
+[STENCH]
+LegacyAbilityID = 1
+Name = Stench
+Description = The first contact move against a target makes it flinch.
+#-------------------------------
+[DRIZZLE]
+LegacyAbilityID = 2
+Name = Drizzle
+Description = The Pokémon makes it rain when it enters a battle.
+#-------------------------------
+[SPEEDBOOST]
+LegacyAbilityID = 3
+Name = Speed Boost
+Description = Its Speed stat is gradually boosted.
+#-------------------------------
+[BATTLEARMOR]
+LegacyAbilityID = 4
+Name = Battle Armor
+Description = The Pokémon takes 0.66x damage when moving last.
+#-------------------------------
+[STURDY]
+LegacyAbilityID = 5
+Name = Sturdy
+Description = It cannot be knocked out with one hit.
+#-------------------------------
+[DAMP]
+LegacyAbilityID = 6
+Name = Damp
+Description = The user is immune to Fire-type moves and explosive moves.
+#-------------------------------
+[LIMBER]
+LegacyAbilityID = 7
+Name = Limber
+Description = Takes 0.5x damage when switching in and to hazards
+#-------------------------------
+[SANDVEIL]
+LegacyAbilityID = 8
+Name = Sand Veil
+Description = User has 1.5x defense during a Sandstorm.
+#-------------------------------
+[STATIC]
+LegacyAbilityID = 9
+Name = Static
+Description = When the user faints, if the attacker made contact, paralyze it.
+#-------------------------------
+[VOLTABSORB]
+LegacyAbilityID = 10
+Name = Volt Absorb
+Description = Restores HP if hit by an Electric-type move.
+#-------------------------------
+[WATERABSORB]
+LegacyAbilityID = 11
+Name = Water Absorb
+Description = Restores HP if hit by a Water-type move.
+#-------------------------------
+[OBLIVIOUS]
+LegacyAbilityID = 12
+Name = Oblivious
+Description = Immune to confusion, infatuation, taunt, torment, and move redirection.
+#-------------------------------
+[CLOUDNINE]
+LegacyAbilityID = 13
+Name = Cloud Nine
+Description = While the user is on the battlefield, nullifies all weather and prevents stat raising
+#-------------------------------
+[COMPOUNDEYES]
+LegacyAbilityID = 14
+Name = Compoundeyes
+Description = The Pokémon's accuracy is boosted.
+#-------------------------------
+[INSOMNIA]
+LegacyAbilityID = 15
+Name = Insomnia
+Description = The user can't fall asleep and their two-turn moves charge instantly
+#-------------------------------
+[COLORCHANGE]
+LegacyAbilityID = 16
+Name = Color Change
+Description = Uses Camouflage on entry.
+#-------------------------------
+[IMMUNITY]
+LegacyAbilityID = 17
+Name = Immunity
+Description = User cannot be poisoned or paralyzed.
+#-------------------------------
+[FLASHFIRE]
+LegacyAbilityID = 18
+Name = Flash Fire
+Description = It powers up Fire-type moves if it's hit by one.
+#-------------------------------
+[SHIELDDUST]
+LegacyAbilityID = 19
+Name = Shield Dust
+Description = Blocks the added effects of attacks taken.
+#-------------------------------
+[OWNTEMPO]
+LegacyAbilityID = 20
+Name = Own Tempo
+Description = Boosts the power of moves used in succession by 10% (stacks with metronome).
+#-------------------------------
+[SUCTIONCUPS]
+LegacyAbilityID = 21
+Name = Suction Cups
+Description = Attaches on contact, dealing damage when foe switches.
+#-------------------------------
+[INTIMIDATE]
+LegacyAbilityID = 22
+Name = Intimidate
+Description = Lowers the foe's Attack stat.
+#-------------------------------
+[SHADOWTAG]
+LegacyAbilityID = 23
+Name = Shadow Tag
+Description = Prevents the foe from escaping.
+#-------------------------------
+[ROUGHSKIN]
+LegacyAbilityID = 24
+Name = Rough Skin
+Description = Inflicts damage to the foe on contact.
+#-------------------------------
+[WONDERGUARD]
+LegacyAbilityID = 25
+Name = Wonder Guard
+Description = Only super-effective moves will hit.
+#-------------------------------
+[LEVITATE]
+LegacyAbilityID = 26
+Name = Levitate
+Description = Gives full immunity to all Ground-type moves.
+#-------------------------------
+[EFFECTSPORE]
+LegacyAbilityID = 27
+Name = Effect Spore
+Description = When the user faints, if the attacker made contact, it becomes drowsy.
+#-------------------------------
+[SYNCHRONIZE]
+LegacyAbilityID = 28
+Name = Synchronize
+Description = Passes a burn, poison, or paralysis to the foe.
+#-------------------------------
+[CLEARBODY]
+LegacyAbilityID = 29
+Name = Clear Body
+Description = Prevents other Pokémon from lowering its stats.
+#-------------------------------
+[NATURALCURE]
+LegacyAbilityID = 30
+Name = Natural Cure
+Description = All status problems heal when it switches out.
+#-------------------------------
+[LIGHTNINGROD]
+LegacyAbilityID = 31
+Name = Lightningrod
+Description = Absorbs Electric-type moves, which raises offenses.
+#-------------------------------
+[SERENEGRACE]
+LegacyAbilityID = 32
+Name = Serene Grace
+Description = Boosts the likelihood of added effects appearing.
+#-------------------------------
+[SWIFTSWIM]
+LegacyAbilityID = 33
+Name = Swift Swim
+Description = Boosts the Pokémon's Speed in rain.
+#-------------------------------
+[CHLOROPHYLL]
+LegacyAbilityID = 34
+Name = Chlorophyll
+Description = Boosts the Pokémon's Speed in sunshine.
+#-------------------------------
+[ILLUMINATE]
+LegacyAbilityID = 35
+Name = Illuminate
+Description = Attracts wild Pokémon, raises accuracy on entry, user can't be blinded.
+#-------------------------------
+[TRACE]
+LegacyAbilityID = 36
+Name = Trace
+Description = The Pokémon copies a foe's Ability.
+#-------------------------------
+[HUGEPOWER]
+LegacyAbilityID = 37
+Name = Huge Power
+Description = Raises the Pokémon's Attack stat.
+#-------------------------------
+[POISONPOINT]
+LegacyAbilityID = 38
+Name = Poison Point
+Description = Poisons the enemy on any contact.
+#-------------------------------
+[INNERFOCUS]
+LegacyAbilityID = 39
+Name = Inner Focus
+Description = The user can't flinch and the user's moves cannot be redirected.
+#-------------------------------
+[MAGMAARMOR]
+LegacyAbilityID = 40
+Name = Magma Armor
+Description = Absorbs Water-type moves, which raises defenses
+#-------------------------------
+[WATERVEIL]
+LegacyAbilityID = 41
+Name = Water Veil
+Description = User has 1.5x special defense during Rain
+#-------------------------------
+[MAGNETPULL]
+LegacyAbilityID = 42
+Name = Magnet Pull
+Description = Prevents Steel-type Pokémon from escaping.
+#-------------------------------
+[SOUNDPROOF]
+LegacyAbilityID = 43
+Name = Soundproof
+Description = Gives full immunity to all sound-based moves.
+#-------------------------------
+[RAINDISH]
+LegacyAbilityID = 44
+Name = Rain Dish
+Description = The Pokémon gradually regains HP in rain.
+#-------------------------------
+[SANDSTREAM]
+LegacyAbilityID = 45
+Name = Sand Stream
+Description = The Pokémon summons a sandstorm in battle.
+#-------------------------------
+[PRESSURE]
+LegacyAbilityID = 46
+Name = Pressure
+Description = Enemy moves use up two PP, three during gravity or if the enemy is crushed.
+#-------------------------------
+[THICKFAT]
+LegacyAbilityID = 47
+Name = Thick Fat
+Description = Ups resistance to Fire- and Ice-type moves.
+#-------------------------------
+[EARLYBIRD]
+LegacyAbilityID = 48
+Name = Early Bird
+Description = 2x speed the turn after waking up, charging, or recharging
+#-------------------------------
+[FLAMEBODY]
+LegacyAbilityID = 49
+Name = Flame Body
+Description = When the user faints, if the attacker made contact, burn it.
+#-------------------------------
+[RUNAWAY]
+LegacyAbilityID = 50
+Name = Run Away
+Description = Immune to Pursuit and trapping moves and abilities, can always flee.
+#-------------------------------
+[KEENEYE]
+LegacyAbilityID = 51
+Name = Keen Eye
+Description = Uses Lock-On and Laser Focus on entry, and the user's accuracy can't be lowered.
+#-------------------------------
+[HYPERCUTTER]
+LegacyAbilityID = 52
+Name = Hyper Cutter
+Description = Attack can't be lowered, inflicts wounds when dealing damage.
+#-------------------------------
+[PICKUP]
+LegacyAbilityID = 53
+Name = Pickup
+Description = Picks up the enemy's item upon fainting, can find items outside of battle
+#-------------------------------
+[TRUANT]
+LegacyAbilityID = 54
+Name = Truant
+Description = Skips every other turn to heal 1/3rd max HP
+#-------------------------------
+[HUSTLE]
+LegacyAbilityID = 55
+Name = Hustle
+Description = User has 1.5x attack but 0.5x defenses.
+#-------------------------------
+[CUTECHARM]
+LegacyAbilityID = 56
+Name = Cute Charm
+Description = Enemies damaging the user become infatuated.
+#-------------------------------
+[PLUS]
+LegacyAbilityID = 57
+Name = Plus
+Description = Sets Plus for three turns. Boosts offenses if Minus is active.
+#-------------------------------
+[MINUS]
+LegacyAbilityID = 58
+Name = Minus
+Description = Sets Minus for three turns. Boosts offenses if Plus is active.
+#-------------------------------
+[FORECAST]
+LegacyAbilityID = 59
+Name = Forecast
+Description = Transforms during weather or when holding a weather stone.
+#-------------------------------
+[STICKYHOLD]
+LegacyAbilityID = 60
+Name = Sticky Hold
+Description = Held items can't be removed, traps the enemy upon any contact
+#-------------------------------
+[SHEDSKIN]
+LegacyAbilityID = 61
+Name = Shed Skin
+Description = The user sheds its first status condition
+#-------------------------------
+[GUTS]
+LegacyAbilityID = 62
+Name = Guts
+Description = Boosts Attack if there is a status problem.
+#-------------------------------
+[MARVELSCALE]
+LegacyAbilityID = 63
+Name = Marvel Scale
+Description = Boosts Defense and Sp. Def. when statused or in certain terrains.
+#-------------------------------
+[LIQUIDOOZE]
+LegacyAbilityID = 64
+Name = Liquid Ooze
+Description = Wounds enemies that use a draining move and reverses the healing
+#-------------------------------
+[OVERGROW]
+LegacyAbilityID = 65
+Name = Overgrow
+Description = Powers up Grass-type moves in a pinch.
+#-------------------------------
+[BLAZE]
+LegacyAbilityID = 66
+Name = Blaze
+Description = Powers up Fire-type moves in a pinch.
+#-------------------------------
+[TORRENT]
+LegacyAbilityID = 67
+Name = Torrent
+Description = Powers up Water-type moves in a pinch.
+#-------------------------------
+[SWARM]
+LegacyAbilityID = 68
+Name = Swarm
+Description = Powers up Bug-type moves in a pinch.
+#-------------------------------
+[ROCKHEAD]
+LegacyAbilityID = 69
+Name = Rock Head
+Description = Protects the Pokémon from recoil damage.
+#-------------------------------
+[DROUGHT]
+LegacyAbilityID = 70
+Name = Drought
+Description = The Pokémon summons harsh sunlight in battle.
+#-------------------------------
+[ARENATRAP]
+LegacyAbilityID = 71
+Name = Arena Trap
+Description = Prevents the foe from fleeing.
+#-------------------------------
+[VITALSPIRIT]
+LegacyAbilityID = 72
+Name = Spirited
+Description = Moves with unchecked accuracy deal 1.5x damage.
+#-------------------------------
+[WHITESMOKE]
+LegacyAbilityID = 73
+Name = White Smoke
+Description = Prevents other Pokémon from lowering its stats.
+#-------------------------------
+[PUREPOWER]
+LegacyAbilityID = 74
+Name = Pure Power
+Description = Raises the Pokémon's Attack stat.
+#-------------------------------
+[SHELLARMOR]
+LegacyAbilityID = 75
+Name = Shell Armor
+Description = The Pokémon is protected against critical hits and phasing.
+#-------------------------------
+[AIRLOCK]
+LegacyAbilityID = 76
+Name = Air Lock
+Description = Eliminates the effects of weather.
+#-------------------------------
+[TANGLEDFEET]
+LegacyAbilityID = 77
+Name = Tangled Feet
+Description = User has 1.5x speed but 0.5x defenses.
+#-------------------------------
+[MOTORDRIVE]
+LegacyAbilityID = 78
+Name = Motor Drive
+Description = Raises Speed if hit by an Electric-type move.
+#-------------------------------
+[RIVALRY]
+LegacyAbilityID = 79
+Name = Rivalry
+Description = Deals 1.25x damage to same gender, takes 0.75x otherwise.
+#-------------------------------
+[STEADFAST]
+LegacyAbilityID = 80
+Name = Steadfast
+Description = Raises Speed whenever the user would flinch, be immobilized, or have damage be prevented
+#-------------------------------
+[SNOWCLOAK]
+LegacyAbilityID = 81
+Name = Snow Veil
+Description = User has 1.5x special defense during Hail
+#-------------------------------
+[GLUTTONY]
+LegacyAbilityID = 82
+Name = Gluttony
+Description = Berries trigger at half HP, and healing effects restore 10% more HP.
+#-------------------------------
+[ANGERPOINT]
+LegacyAbilityID = 83
+Name = Anger Point
+Description = Moves deal 1.3x damage but the user cannot use status moves.
+#-------------------------------
+[UNBURDEN]
+LegacyAbilityID = 84
+Name = Unburden
+Description = Raises Speed if a held item is used.
+#-------------------------------
+[HEATPROOF]
+LegacyAbilityID = 85
+Name = Heatproof
+Description = The user cannot be burned and takes 0.5x damage from Fire-type moves.
+#-------------------------------
+[SIMPLE]
+LegacyAbilityID = 86
+Name = Simple
+Description = The Pokémon is prone to wild stat changes.
+#-------------------------------
+[DRYSKIN]
+LegacyAbilityID = 87
+Name = Dry Skin
+Description = Reduces HP if it is hot. Water restores HP.
+#-------------------------------
+[DOWNLOAD]
+LegacyAbilityID = 88
+Name = Download
+Description = Adjusts power according to a foe's defenses.
+#-------------------------------
+[IRONFIST]
+LegacyAbilityID = 89
+Name = Iron Fist
+Description = Boosts the power of punching moves.
+#-------------------------------
+[POISONHEAL]
+LegacyAbilityID = 90
+Name = Poison Heal
+Description = Restores HP if the Pokémon is poisoned.
+#-------------------------------
+[ADAPTABILITY]
+LegacyAbilityID = 91
+Name = Adaptability
+Description = Powers up moves of the same type.
+#-------------------------------
+[SKILLLINK]
+LegacyAbilityID = 92
+Name = Skill Link
+Description = Increases the frequency of multi-strike moves.
+#-------------------------------
+[HYDRATION]
+LegacyAbilityID = 93
+Name = Hydration
+Description = During Rain, clears the user's status conditions and negative stat changes each turn
+#-------------------------------
+[SOLARPOWER]
+LegacyAbilityID = 94
+Name = Solar Power
+Description = In sunshine, Sp. Atk is boosted but HP decreases.
+#-------------------------------
+[QUICKFEET]
+LegacyAbilityID = 95
+Name = Quick Feet
+Description = Boosts Speed if there is a status problem.
+#-------------------------------
+[NORMALIZE]
+LegacyAbilityID = 96
+Name = Normalize
+Description = All the user's moves become the Normal type.
+#-------------------------------
+[SNIPER]
+LegacyAbilityID = 97
+Name = Sniper
+Description = Powers up critical hits.
+#-------------------------------
+[MAGICGUARD]
+LegacyAbilityID = 98
+Name = Magic Guard
+Description = The Pokémon only takes damage from attacks.
+#-------------------------------
+[NOGUARD]
+LegacyAbilityID = 99
+Name = No Guard
+Description = Moves used by or against the user ignore accuracy checks, and moves with 80 accuracy or lower deal 1.2x damage.
+#-------------------------------
+[STALL]
+LegacyAbilityID = 100
+Name = Stall
+Description = Makes an extra turn pass each turn, the user always moves last
+#-------------------------------
+[TECHNICIAN]
+LegacyAbilityID = 101
+Name = Technician
+Description = Powers up the Pokémon's weaker moves.
+#-------------------------------
+[LEAFGUARD]
+LegacyAbilityID = 102
+Name = Leaf Guard
+Description = During Sun, clears the user's status conditions and negative stat changes each turn.
+#-------------------------------
+[KLUTZ]
+LegacyAbilityID = 103
+Name = Klutz
+Description = Held item effects are ignored on the first turn it enters battle.
+#-------------------------------
+[MOLDBREAKER]
+LegacyAbilityID = 104
+Name = Mold Breaker
+Description = Moves can be used regardless of Abilities.
+#-------------------------------
+[SUPERLUCK]
+LegacyAbilityID = 105
+Name = Super Luck
+Description = Heightens the critical-hit ratios of moves.
+#-------------------------------
+[AFTERMATH]
+LegacyAbilityID = 106
+Name = Aftermath
+Description = Damages the foe landing the finishing hit.
+#-------------------------------
+[ANTICIPATION]
+LegacyAbilityID = 107
+Name = Anticipation
+Description = User takes 0.5x damage from non-contact moves but 2x damage from Psychic-type attacks
+#-------------------------------
+[FOREWARN]
+LegacyAbilityID = 108
+Name = Forewarn
+Description = Disables a foe's super-effective move on entry for one turn
+#-------------------------------
+[UNAWARE]
+LegacyAbilityID = 109
+Name = Unaware
+Description = Ignores any stat changes in the Pokémon.
+#-------------------------------
+[TINTEDLENS]
+LegacyAbilityID = 110
+Name = Tinted Lens
+Description = Powers up "not very effective" moves.
+#-------------------------------
+[FILTER]
+LegacyAbilityID = 111
+Name = Filter
+Description = Reduces damage from supereffective attacks.
+#-------------------------------
+[SLOWSTART]
+LegacyAbilityID = 112
+Name = Slow Start
+Description = Halves Attack and Speed, raising each time the user is attacked or attacks.
+#-------------------------------
+[SCRAPPY]
+LegacyAbilityID = 113
+Name = Scrappy
+Description = Enables moves to hit Ghost-type Pokémon.
+#-------------------------------
+[STORMDRAIN]
+LegacyAbilityID = 114
+Name = Storm Drain
+Description = Absorbs Water-type moves, which raises offenses.
+#-------------------------------
+[ICEBODY]
+LegacyAbilityID = 115
+Name = Ice Body
+Description = The Pokémon gradually regains HP in hail.
+#-------------------------------
+[SOLIDROCK]
+LegacyAbilityID = 116
+Name = Solid Rock
+Description = Reduces damage from supereffective attacks.
+#-------------------------------
+[SNOWWARNING]
+LegacyAbilityID = 117
+Name = Snow Warning
+Description = The Pokémon summons a hailstorm in battle.
+#-------------------------------
+[HONEYGATHER]
+LegacyAbilityID = 118
+Name = Honey Gather
+Description = Restores 1/8th max HP each turn the user doesn't attack, finds honey outside of battle
+#-------------------------------
+[FRISK]
+LegacyAbilityID = 119
+Name = Frisk
+Description = Peeks at the enemy held item and blocks its usage for one turn
+#-------------------------------
+[RECKLESS]
+LegacyAbilityID = 120
+Name = Reckless
+Description = Powers up moves that have recoil damage.
+#-------------------------------
+[MULTITYPE]
+LegacyAbilityID = 121
+Name = Multitype
+Description = Changes type to match the held Plate.
+#-------------------------------
+[FLOWERGIFT]
+LegacyAbilityID = 122
+Name = Flower Gift
+Description = Powers up party Pokémon when it is sunny.
+#-------------------------------
+[BADDREAMS]
+LegacyAbilityID = 123
+Name = Bad Dreams
+Description = Uses Nightmare on entry
+#-------------------------------
+[PICKPOCKET]
+LegacyAbilityID = 124
+Name = Pickpocket
+Description = Steals enemy item when dealt damage and sharply raises speed
+#-------------------------------
+[SHEERFORCE]
+LegacyAbilityID = 125
+Name = Sheer Force
+Description = Removes added effects to increase move damage.
+#-------------------------------
+[CONTRARY]
+LegacyAbilityID = 126
+Name = Contrary
+Description = Makes stat changes have an opposite effect.
+#-------------------------------
+[UNNERVE]
+LegacyAbilityID = 127
+Name = Unnerve
+Description = Prevents the enemy from eating berries or leftovers, or using the move Swallow
+#-------------------------------
+[DEFIANT]
+LegacyAbilityID = 128
+Name = Defiant
+Description = When a stat is lowered its Attack increases.
+#-------------------------------
+[DEFEATIST]
+LegacyAbilityID = 129
+Name = Defeatist
+Description = Lowers stats when HP becomes half or less.
+#-------------------------------
+[CURSEDBODY]
+LegacyAbilityID = 130
+Name = Cursed Body
+Description = The user disables the move that knocked it out.
+#-------------------------------
+[HEALER]
+LegacyAbilityID = 131
+Name = Healer
+Description = The user's healing moves are amplified 1.1x and heal status conditions.
+#-------------------------------
+[FRIENDGUARD]
+LegacyAbilityID = 132
+Name = Friend Guard
+Description = Reduces damage done to allies.
+#-------------------------------
+[WEAKARMOR]
+LegacyAbilityID = 133
+Name = Weak Armor
+Description = Physical attacks lower Def. and sharply raise Spd.
+#-------------------------------
+[HEAVYMETAL]
+LegacyAbilityID = 134
+Name = Heavy Metal
+Description = Doubles weight and boosts Defense during gravity.
+#-------------------------------
+[LIGHTMETAL]
+LegacyAbilityID = 135
+Name = Light Metal
+Description = Halves weight and doubles Speed during gravity.
+#-------------------------------
+[MULTISCALE]
+LegacyAbilityID = 136
+Name = Multiscale
+Description = Reduces damage when HP is full.
+#-------------------------------
+[TOXICBOOST]
+LegacyAbilityID = 137
+Name = Toxic Boost
+Description = Boosts move power 1.3x when poisoned, user does not take poison damage
+#-------------------------------
+[FLAREBOOST]
+LegacyAbilityID = 138
+Name = Flare Boost
+Description = Powers up special attacks when burned.
+#-------------------------------
+[HARVEST]
+LegacyAbilityID = 139
+Name = Harvest
+Description = May create another Berry after one is used.
+#-------------------------------
+[TELEPATHY]
+LegacyAbilityID = 140
+Name = Telepathy
+Description = Moves used by the user or its allies do not hit allies.
+#-------------------------------
+[MOODY]
+LegacyAbilityID = 141
+Name = Moody
+Description = Nature stat modifiers are 3x
+#-------------------------------
+[OVERCOAT]
+LegacyAbilityID = 142
+Name = Overcoat
+Description = Protects the Pokémon from damage from weather.
+#-------------------------------
+[QUICKDRAW]
+LegacyAbilityID = 143
+Name = Quick Draw
+Description = Gains +1 priority the first turn it enters battle.
+#-------------------------------
+[REGENERATOR]
+LegacyAbilityID = 144
+Name = Regenerator
+Description = Restores HP when withdrawn from battle.
+#-------------------------------
+[BIGPECKS]
+LegacyAbilityID = 145
+Name = Big Pecks
+Description = Raises user's defense each time an enemy raises its stats, the user's defense cannot be lowered.
+#-------------------------------
+[SANDRUSH]
+LegacyAbilityID = 146
+Name = Sand Rush
+Description = Boosts the Pokémon's Speed in a sandstorm.
+#-------------------------------
+[WONDERSKIN]
+LegacyAbilityID = 147
+Name = Wonder Skin
+Description = Damages attackers using special attacks 1/8 max HP
+#-------------------------------
+[ANALYTIC]
+LegacyAbilityID = 148
+Name = Analytic
+Description = Boosts move power when the Pokémon moves last.
+#-------------------------------
+[ILLUSION]
+LegacyAbilityID = 149
+Name = Illusion
+Description = Comes out disguised as the Pokémon in back.
+#-------------------------------
+[IMPOSTER]
+LegacyAbilityID = 150
+Name = Imposter
+Description = Transforms itself into the foe it is facing.
+#-------------------------------
+[INFILTRATOR]
+LegacyAbilityID = 151
+Name = Infiltrator
+Description = Passes through the foe's barrier and strikes.
+#-------------------------------
+[MUMMY]
+LegacyAbilityID = 152
+Name = Mummy
+Description = Contact with this Pokémon spreads this Ability.
+#-------------------------------
+[MOXIE]
+LegacyAbilityID = 153
+Name = Moxie
+Description = Boosts Attack after knocking out any Pokémon.
+#-------------------------------
+[JUSTIFIED]
+LegacyAbilityID = 154
+Name = Justified
+Description = Absorbs Dark-type moves, which raises offenses
+#-------------------------------
+[RATTLED]
+LegacyAbilityID = 155
+Name = Rattled
+Description = Some move types scare it and boost its Speed.
+#-------------------------------
+[MAGICBOUNCE]
+LegacyAbilityID = 156
+Name = Magic Bounce
+Description = Reflects status-changing moves.
+#-------------------------------
+[SAPSIPPER]
+LegacyAbilityID = 157
+Name = Sap Sipper
+Description = Absorbs Grass-type moves, which raises offenses
+#-------------------------------
+[PRANKSTER]
+LegacyAbilityID = 158
+Name = Prankster
+Description = Gives priority to a status move.
+#-------------------------------
+[SANDFORCE]
+LegacyAbilityID = 159
+Name = Sand Force
+Description = Boosts certain moves' power in a sandstorm.
+#-------------------------------
+[IRONBARBS]
+LegacyAbilityID = 160
+Name = Iron Barbs
+Description = Inflicts damage to the Pokémon on contact.
+#-------------------------------
+[ZENMODE]
+LegacyAbilityID = 161
+Name = Zen Mode
+Description = Wakes up and transforms the user when put to sleep or when at half health
+#-------------------------------
+[VICTORYSTAR]
+LegacyAbilityID = 162
+Name = Victory Star
+Description = Boosts the accuracy of its allies and itself.
+#-------------------------------
+[TURBOBLAZE]
+LegacyAbilityID = 163
+Name = Turboblaze
+Description = Moves can be used regardless of Abilities.
+#-------------------------------
+[TERAVOLT]
+LegacyAbilityID = 164
+Name = Teravolt
+Description = Moves can be used regardless of Abilities.
+#-------------------------------
+[AERILATE]
+LegacyAbilityID = 165
+Name = Aerilate
+Description = Normal-type moves become Flying-type moves.
+#-------------------------------
+[AROMAVEIL]
+LegacyAbilityID = 166
+Name = Aroma Veil
+Description = Protects allies from moves that effect their mind.
+#-------------------------------
+[AURABREAK]
+LegacyAbilityID = 167
+Name = Aura Break
+Description = The effects of Aura Abilities are reversed.
+#-------------------------------
+[BULLETPROOF]
+LegacyAbilityID = 168
+Name = Bulletproof
+Description = User is immune to ball, bomb, and cannon moves
+#-------------------------------
+[CHEEKPOUCH]
+LegacyAbilityID = 169
+Name = Cheek Pouch
+Description = Restores HP when the Pokémon eats a Berry.
+#-------------------------------
+[COMPETITIVE]
+LegacyAbilityID = 170
+Name = Competitive
+Description = Boosts the Sp. Atk stat when a stat is lowered.
+#-------------------------------
+[DARKAURA]
+LegacyAbilityID = 171
+Name = Dark Aura
+Description = Powers up each Pokémon's Dark-type moves.
+#-------------------------------
+[FAIRYAURA]
+LegacyAbilityID = 172
+Name = Fairy Aura
+Description = Powers up each Pokémon's Fairy-type moves.
+#-------------------------------
+[FLOWERVEIL]
+LegacyAbilityID = 173
+Name = Flower Veil
+Description = User has 1.5x defense during Sun
+#-------------------------------
+[FURCOAT]
+LegacyAbilityID = 174
+Name = Fur Coat
+Description = Halves damage from physical moves.
+#-------------------------------
+[GALEWINGS]
+LegacyAbilityID = 175
+Name = Gale Wings
+Description = Gives priority to Flying-type moves when HP is full.
+#-------------------------------
+[GOOEY]
+LegacyAbilityID = 176
+Name = Gooey
+Description = Contact lowers the foe's Speed stat.
+#-------------------------------
+[NATURALSHROUD]
+LegacyAbilityID = 177
+Name = Natural Shroud
+Description = Raises defenses 1.5x during terrain.
+#-------------------------------
+[MAGICIAN]
+LegacyAbilityID = 178
+Name = Magician
+Description = Steals enemy item upon attacking, deals 1.5x damage to itemless enemies.
+#-------------------------------
+[MEGALAUNCHER]
+LegacyAbilityID = 179
+Name = Mega Launcher
+Description = Boosts the power of pulse, aura, and cannon moves 1.5x
+#-------------------------------
+[PARENTALBOND]
+LegacyAbilityID = 180
+Name = Parental Bond
+Description = Parent and child attack together.
+#-------------------------------
+[PIXILATE]
+LegacyAbilityID = 181
+Name = Pixilate
+Description = Normal-type moves become Fairy-type moves.
+#-------------------------------
+[PROTEAN]
+LegacyAbilityID = 182
+Name = Protean
+Description = Changes the Pokémon's type to its move used.
+#-------------------------------
+[REFRIGERATE]
+LegacyAbilityID = 183
+Name = Refrigerate
+Description = Normal-type moves become Ice-type moves.
+#-------------------------------
+[STANCECHANGE]
+LegacyAbilityID = 184
+Name = Stance Change
+Description = The Pokémon changes form depending on moves.
+#-------------------------------
+[STRONGJAW]
+LegacyAbilityID = 185
+Name = Strong Jaw
+Description = The power of biting moves is increased.
+#-------------------------------
+[SWEETVEIL]
+LegacyAbilityID = 186
+Name = Sweet Veil
+Description = Prevents ally Pokémon from falling asleep.
+#-------------------------------
+[SYMBIOSIS]
+LegacyAbilityID = 187
+Name = Symbiosis
+Description = Passes its stat changes to its ally.
+#-------------------------------
+[TOUGHCLAWS]
+LegacyAbilityID = 188
+Name = Tough Claws
+Description = Powers up moves that make direct contact.
+#-------------------------------
+[PRIMORDIALSEA]
+LegacyAbilityID = 189
+Name = Primordial Sea
+Description = Affects weather and nullifies any Fire-type attacks.
+#-------------------------------
+[DESOLATELAND]
+LegacyAbilityID = 190
+Name = Desolate Land
+Description = Affects weather and nullifies any Water-type attacks.
+#-------------------------------
+[DELTASTREAM]
+LegacyAbilityID = 191
+Name = Delta Stream
+Description = The Pokémon makes it very windy if it is in battle.
+#-------------------------------
+[BATTERY]
+LegacyAbilityID = 192
+Name = Battery
+Description = Powers up ally Pokémon's special moves.
+#-------------------------------
+[BEASTBOOST]
+LegacyAbilityID = 193
+Name = Beast Boost
+Description = Boosts highest stat after KO'ing a Pokémon.
+#-------------------------------
+[BERSERK]
+LegacyAbilityID = 194
+Name = Berserk
+Description = Raises offenses when damaged below 50% HP
+#-------------------------------
+[COMATOSE]
+LegacyAbilityID = 195
+Name = Comatose
+Description = It's always asleep, and attacks without waking up.
+#-------------------------------
+[CORROSION]
+LegacyAbilityID = 196
+Name = Corrosion
+Description = Can Poison and damage Steel-types with Poison moves
+#-------------------------------
+[DANCER]
+LegacyAbilityID = 197
+Name = Dancer
+Description = Dances with others, duplicating their moves.
+#-------------------------------
+[DAZZLING]
+LegacyAbilityID = 198
+Name = Dazzling
+Description = Prevents priority moves, any contact lowers evasion.
+#-------------------------------
+[ELECTRICSURGE]
+LegacyAbilityID = 199
+Name = Electric Surge
+Description = Electrifies the terrain on entry.
+#-------------------------------
+[EMERGENCYEXIT]
+LegacyAbilityID = 200
+Name = EmergencyExit
+Description = It retreats when its HP becomes half or less.
+#-------------------------------
+[FLUFFY]
+LegacyAbilityID = 201
+Name = Fluffy
+Description = Weakens contact moves, but doubles Fire damage.
+#-------------------------------
+[FULLMETALBODY]
+LegacyAbilityID = 202
+Name = Full Metal Body
+Description = Prevents other Pokémon from lowering its stats.
+#-------------------------------
+[GALVANIZE]
+LegacyAbilityID = 203
+Name = Galvanize
+Description = Normal-type moves become Electric-type moves.
+#-------------------------------
+[GRASSYSURGE]
+LegacyAbilityID = 204
+Name = Grassy Surge
+Description = Makes the terrain grassy on entry.
+#-------------------------------
+[INNARDSOUT]
+LegacyAbilityID = 205
+Name = Innards Out
+Description = Damages the attacker the same amount when fainted.
+#-------------------------------
+[LIQUIDVOICE]
+LegacyAbilityID = 206
+Name = Liquid Voice
+Description = All sound-based moves become Water-type moves.
+#-------------------------------
+[LONGREACH]
+LegacyAbilityID = 207
+Name = Long Reach
+Description = This Pokémon's moves do not make contact.
+#-------------------------------
+[MERCILESS]
+LegacyAbilityID = 208
+Name = Merciless
+Description = Moves critically hit statused or wounded targets.
+#-------------------------------
+[MISTYSURGE]
+LegacyAbilityID = 209
+Name = Misty Surge
+Description = Makes the terrain misty on entry.
+#-------------------------------
+[POWEROFALCHEMY]
+LegacyAbilityID = 210
+Name = Alchemy
+Description = Copies the ability of the most recently fainted enemy on entry or whenever an enemy faints
+#-------------------------------
+[PRISMARMOR]
+LegacyAbilityID = 211
+Name = Prism Armor
+Description = Reduces damage from supereffective attacks.
+#-------------------------------
+[PSYCHICSURGE]
+LegacyAbilityID = 212
+Name = Psychic Surge
+Description = Makes the terrain mysterious on entry.
+#-------------------------------
+[QUEENLYMAJESTY]
+LegacyAbilityID = 213
+Name = Majesty
+Description = Takes 0.7x damage from spread moves.
+#-------------------------------
+[RECEIVER]
+LegacyAbilityID = 214
+Name = Receiver
+Description = Copies the ability of the most recently fainted ally on entry or whenever an ally faints
+#-------------------------------
+[SHADOWSHIELD]
+LegacyAbilityID = 215
+Name = Shadow Shield
+Description = Reduces damage when HP is full.
+#-------------------------------
+[SLUSHRUSH]
+LegacyAbilityID = 216
+Name = Slush Rush
+Description = Boosts the Pokémon's Speed stat in a hailstorm.
+#-------------------------------
+[SOULHEART]
+LegacyAbilityID = 217
+Name = Soul-heart
+Description = Boosts its Sp. Atk every time a Pokémon faints.
+#-------------------------------
+[STAKEOUT]
+LegacyAbilityID = 218
+Name = Stakeout
+Description = Doubles damage to newly switched-in targets.
+#-------------------------------
+[STAMINA]
+LegacyAbilityID = 219
+Name = Stamina
+Description = Boosts the Defense stat when hit by an attack.
+#-------------------------------
+[STEELWORKER]
+LegacyAbilityID = 220
+Name = Steelworker
+Description = Steel-type moves deal 1.5x damage, takes 0.5x damage from Steel-type moves
+#-------------------------------
+[SURGESURFER]
+LegacyAbilityID = 221
+Name = Surge Surfer
+Description = Doubles the Speed stat on Electric Terrain.
+#-------------------------------
+[TANGLINGHAIR]
+LegacyAbilityID = 222
+Name = Tangling Hair
+Description = Contact lowers the foe's Speed stat and traps them.
+#-------------------------------
+[TRIAGE]
+LegacyAbilityID = 223
+Name = Triage
+Description = Gives priority to a healing move.
+#-------------------------------
+[WATERBUBBLE]
+LegacyAbilityID = 224
+Name = Water Bubble
+Description = Stops burns, halves Fire damage and boosts Water.
+#-------------------------------
+[WATERCOMPACTION]
+LegacyAbilityID = 225
+Name = W. Compaction
+Description = Water-type moves sharply raise Defense.
+#-------------------------------
+[WIMPOUT]
+LegacyAbilityID = 226
+Name = Wimp Out
+Description = It wimps out when its HP becomes half or less.
+#-------------------------------
+[SCHOOLING]
+LegacyAbilityID = 227
+Name = Schooling
+Description = As long as it has high HP, it can form a school.
+#-------------------------------
+[RKSSYSTEM]
+LegacyAbilityID = 228
+Name = RKS System
+Description = Changes type to match the held memory disc.
+#-------------------------------
+[SHIELDSDOWN]
+LegacyAbilityID = 229
+Name = Shields Down
+Description = This Pokémon is protected by its shell above half HP.
+#-------------------------------
+[DISGUISE]
+LegacyAbilityID = 230
+Name = Disguise
+Description = This Pokémon's shroud can protect it from one hit.
+#-------------------------------
+[POWERCONSTRUCT]
+LegacyAbilityID = 231
+Name = Power Const.
+Description = Enters Complete Form when HP is half or less.
+#-------------------------------
+[BALLFETCH]
+LegacyAbilityID = 232
+Name = Ball Fetch
+Description = Fetches the first failed Pokéball if no held item.
+#-------------------------------
+[COTTONDOWN]
+LegacyAbilityID = 233
+Name = Cotton Down
+Description = Lowers Speed of adjacent Pokémon when hit.
+#-------------------------------
+[DAUNTLESSSHIELD]
+LegacyAbilityID = 234
+Name = Dauntless Shield
+Description = Boosts the Pokémon's Defense stat upon entry.
+#-------------------------------
+[GORILLATACTICS]
+LegacyAbilityID = 235
+Name = Gorilla Tactics
+Description = Boosts the Pokémon's Attack stat; can only use the first selected move.
+#-------------------------------
+[GULPMISSILE]
+LegacyAbilityID = 236
+Name = Gulp Missile
+Description = Catches Pokémon with Surf and Dive, spits out when hit.
+#-------------------------------
+[HUNGERSWITCH]
+LegacyAbilityID = 237
+Name = Hunger Switch
+Description = Heals 1/8th max HP at the end of turn or has 1.5x speed based on form
+#-------------------------------
+[ICEFACE]
+LegacyAbilityID = 238
+Name = Ice Face
+Description = Can take a physical attack once. Restored when it hails.
+#-------------------------------
+[ICESCALES]
+LegacyAbilityID = 239
+Name = Ice Scales
+Description = Ice scales halve the damage taken from special moves.
+#-------------------------------
+[INTREPIDSWORD]
+LegacyAbilityID = 240
+Name = Intrepid Sword
+Description = Boosts the Pokémon's Attack stat upon entry.
+#-------------------------------
+[LIBERO]
+LegacyAbilityID = 241
+Name = Libero
+Description = Changes the Pokémon's type to its move used.
+#-------------------------------
+[MIMICRY]
+LegacyAbilityID = 242
+Name = Mimicry
+Description = Changes the Pokémon's type depending on the terrain.
+#-------------------------------
+[MIRRORARMOR]
+LegacyAbilityID = 243
+Name = Mirror Armor
+Description = Bounces back stat-lowering effects that the Pokémon receives.
+#-------------------------------
+[NEUTRALIZINGGAS]
+LegacyAbilityID = 244
+Name = Neutralizing Gas
+Description = Effects of abilities are nullified or prevented.
+#-------------------------------
+[PASTELVEIL]
+LegacyAbilityID = 245
+Name = Pastel Veil
+Description = Protects the user and ally Pokémon from being poisoned.
+#-------------------------------
+[PERISHBODY]
+LegacyAbilityID = 246
+Name = Perish Body
+Description = User and attacker faint in 3 turns when hit by contact move.
+#-------------------------------
+[POWERSPOT]
+LegacyAbilityID = 247
+Name = Power Spot
+Description = Just being next to the Pokémon powers up moves.
+#-------------------------------
+[PROPELLERTAIL]
+LegacyAbilityID = 248
+Name = Propeller Tail
+Description = The user's momentum moves blow away hazards and trapping effects
+#-------------------------------
+[AMPLIFY]
+LegacyAbilityID = 249
+Name = Amplify
+Description = Boosts damage of and halves damage taken from sound moves.
+#-------------------------------
+[RIPEN]
+LegacyAbilityID = 250
+Name = Ripen
+Description = Ripens Berries and doubles their effect.
+#-------------------------------
+[SANDSPIT]
+LegacyAbilityID = 251
+Name = Sand Spit
+Description = The Pokémon creates a sandstorm when it's hit by an attack.
+#-------------------------------
+[SCREENCLEANER]
+LegacyAbilityID = 252
+Name = Screen Cleaner
+Description = Removes protective screens for allies and opponents.
+#-------------------------------
+[STALWART]
+LegacyAbilityID = 253
+Name = Stalwart
+Description = Each time a move is used in succession against the user, the damage is lowered by 10%
+#-------------------------------
+[STEAMENGINE]
+LegacyAbilityID = 254
+Name = Steam Engine
+Description = Fire- and Water-type moves boost Speed drastcally.
+#-------------------------------
+[STEELYSPIRIT]
+LegacyAbilityID = 255
+Name = Steely Spirit
+Description = Powers up ally Pokémon's Steel-type moves.
+#-------------------------------
+[WANDERINGSPIRIT]
+LegacyAbilityID = 256
+Name = Wandering Spirit
+Description = Swaps Abilities with attacker when hit with a contact move.
+#-------------------------------
+[NEUROFORCE]
+LegacyAbilityID = 257
+Name = Neuroforce
+Description = Powers up moves that are super effective.
+#-------------------------------
+[INTIMIDATE2]
+LegacyAbilityID = 300
+Name = Intimidate
+Description = Lowers the foe's Attack stat.
+#-------------------------------
+[SHIFT]
+LegacyAbilityID = 301
+Name = Shift
+Description = Adjusts the body to adapt to environments.
+#-------------------------------
+[SAVAGERY]
+LegacyAbilityID = 302
+Name = Savagery
+Description = Raises this Pokemon's attack stats depending on HP.
+#-------------------------------
+[ACCUMULATION]
+LegacyAbilityID = 303
+Name = Accumulation
+Description = Has 3 stacks of stockpile at all times.
+#-------------------------------
+[TEMPORALSHIFT]
+LegacyAbilityID = 304
+Name = Temporal Shift
+Description = Stats cannot be lowered and casts Hex in the future.
+#-------------------------------
+[EXECUTION]
+LegacyAbilityID = 305
+Name = Execution
+Description = This Pokémon hits harder the lower the target's health is.
+#-------------------------------
+[RESUSCITATION]
+LegacyAbilityID = 306
+Name = Resuscitation
+Description = Enters Zombie Form after being knocked out once.
+#-------------------------------
+[TEMPEST]
+LegacyAbilityID = 307
+Name = Storm 9
+Description = Randomly changes weather at the end of the turn.
+#-------------------------------
+[SOLARIDOL]
+LegacyAbilityID = 308
+Name = Solar Idol
+Description = STAB Fire moves. 50% ATK boost in Sun. Levitates.
+#-------------------------------
+[LUNARIDOL]
+LegacyAbilityID = 309
+Name = Lunar Idol
+Description = STAB on Ice moves. 50% SPATK boost in Hail. Levitates.
+#-------------------------------
+[WORLDOFNIGHTMARES]
+LegacyAbilityID = 310
+Name = World of Nightmares
+Description = End of turn damage on all foes. Changes field to New World over time. Allows use of Nightmare freely.
+#-------------------------------
+[MAENADSFERVOR]
+LegacyAbilityID = 311
+Name = Maenad's Fervor
+Description = This Pokemon's Defenses and Speed are raised when confused.
+#-------------------------------
+[ILLUSORYSHROUD]
+LegacyAbilityID = 312
+Name = Illusory Shroud
+Description = This Pokemon is immune to contact moves, but its Defenses are swapped.
+#-------------------------------
+[COTTONMOLT]
+LegacyAbilityID = 313
+Name = Cotton Molt
+Description = This Pokemon scatters cotton around when it attacks, lowering all other Pokemon's speed.
+#-------------------------------
+[AMBIDEXTROUS]
+LegacyAbilityID = 314
+Name = Ambidextrous
+Description = Non-STAB moves are boosted 1.3x.
+#-------------------------------
+[ASSASSINATE]
+LegacyAbilityID = 315
+Name = Assassinate
+Description = This Pokémon deals more damage to Pokémon that haven't attacked it.
+#-------------------------------
+[HEADSTRONG]
+LegacyAbilityID = 316
+Name = Headstrong
+Description = All Pokémon ignore immunities.
+#-------------------------------
+[ERRATIC]
+LegacyAbilityID = 317
+Name = Erratic
+Description = The user's attacks confuse the target.
+#-------------------------------
+[ELDRITCH]
+LegacyAbilityID = 318
+Name = Eldritch
+Description = Blinds all other Pokemon on entry.
+#-------------------------------
+[STALKER]
+LegacyAbilityID = 319
+Name = Stalker
+Description = Raises speed if enemy is faster.
+#-------------------------------
+[LACERATE]
+LegacyAbilityID = 320
+Name = Lacerate
+Description = Normal-type moves become Steel-type and receive a boost.
+#-------------------------------
+[IMMOLATE]
+LegacyAbilityID = 321
+Name = Immolate
+Description = Normal-type moves become Fire-type and receive a boost.
+#-------------------------------
+[ESOTERIC]
+LegacyAbilityID = 322
+Name = Esoteric
+Description = Doubles Special Attack.
+#-------------------------------
+[PERPETUAL]
+LegacyAbilityID = 323
+Name = Perpetual
+Description = Moves that have a duration now have a duration of 7.
+#-------------------------------
+[TANDEM]
+LegacyAbilityID = 324
+Name = Tandem
+Description = Attacks deal less damage but hit twice.
+#-------------------------------
+[AVENGER]
+LegacyAbilityID = 325
+Name = Avenger
+Description = Becomes stronger for each fainted ally.
+#-------------------------------
+[CARETAKER]
+LegacyAbilityID = 326
+Name = Caretaker
+Description = Heals allies for 1/8th max HP each turn.
+#-------------------------------
+[IMPOSING]
+LegacyAbilityID = 327
+Name = Imposing
+Description = Moves below 100 power deal less damage.
+#-------------------------------
+[SADIST]
+LegacyAbilityID = 328
+Name = Sadist
+Description = Enemies take more damage outside of attacks.
+#-------------------------------
+[SUNBATHE]
+LegacyAbilityID = 329
+Name = Sunbathe
+Description = Restores 1/8th max HP each turn in Sun.
+#-------------------------------
+[ICEBREAKER]
+LegacyAbilityID = 330
+Name = Icebreaker
+Description = Raises the power of Ice- and Fighting-type moves by 1.3x during Hail.
+#-------------------------------
+[HYDROPLANE]
+LegacyAbilityID = 331
+Name = Hydroplane
+Description = Boosts Attack 1.5x and loses 1/8th max HP each turn during Rain.
+#-------------------------------
+[BLOODTHIRSTY]
+LegacyAbilityID = 332
+Name = Bloodthirsty
+Description = Restores HP when using contact moves.
+#-------------------------------
+[FROSTPOINT]
+LegacyAbilityID = 333
+Name = Frost Point
+Description = When the user faints, if the attacker made contact, freeze it.
+#-------------------------------
+[IMPERVIOUS]
+LegacyAbilityID = 334
+Name = Impervious
+Description = User is immune to kicking, punching, and biting moves.
+#-------------------------------
+[HEATSINK]
+LegacyAbilityID = 335
+Name = Heat Sink
+Description = Restores HP if hit by a Fire-type move.
+#-------------------------------
+[SCAVENGER]
+LegacyAbilityID = 336
+Name = Scavenger
+Description = User restores 25% max HP upon knocking out an enemy.
+#-------------------------------
+[GRENADIER]
+LegacyAbilityID = 337
+Name = Grenadier
+Description = Boosts the power of ball, bomb, and explosion moves 1.5x.
+#-------------------------------
+[RAPTUROUS]
+LegacyAbilityID = 338
+Name = Rapturous
+Description = Sound moves charm for three turns.
+#-------------------------------
+[BEACON]
+LegacyAbilityID = 339
+Name = Beacon
+Description = Boosts the power of light and beam moves 1.5x.
+#-------------------------------
+[HALCYON]
+LegacyAbilityID = 340
+Name = Halcyon
+Description = All moves with positive priority have zero priority.
+#-------------------------------
+[MANAECHOES]
+LegacyAbilityID = 341
+Name = Mana Echoes
+Description = The user's special attacks deal an additional 1/8th max HP damage.
+#-------------------------------
+[EXECUTIONER]
+LegacyAbilityID = 342
+Name = Executioner
+Description = The user deals 1.5x damage to opponents with 50% or less HP.
+#-------------------------------
+[ASCETIC]
+LegacyAbilityID = 343
+Name = Ascetic
+Description = Powers up Grass-type moves, incoming Grass-type moves deal less damage.
+#-------------------------------
+[WATERLOGGED]
+LegacyAbilityID = 344
+Name = Waterlogged
+Description = Powers up Water-type moves, incoming Water-type moves deal less damage.
+#-------------------------------
+[INCENDIARY]
+LegacyAbilityID = 345
+Name = Incendiary
+Description = Powers up Fire-type moves, incoming Fire-type moves deal less damage.
+#-------------------------------
+[EVENTHORIZON]
+LegacyAbilityID = 346
+Name = Event Horizon
+Description = Intensifies Gravity on entry.
+#-------------------------------
+[OBELISK]
+LegacyAbilityID = 347
+Name = Obelisk
+Description = Becomes dormant when KOd. If knocked out dormant and all allies have fainted, revive.
+#-------------------------------
+[ANGERSHELL]
+LegacyAbilityID = 348
+Name = Anger Shell
+Description = Lowers defenses but raises offenses and Speed when hit below half health.
+#-------------------------------
+[ARMORTAIL]
+LegacyAbilityID = 349
+Name = Armor Tail
+Description = User is immune to priority and two-turn moves.
+#-------------------------------
+[BEADSOFRUIN]
+LegacyAbilityID = 350
+Name = Beads of Ruin
+Description = Lowers Sp.Def of all Pokemon but itself.
+#-------------------------------
+[COMMANDER]
+LegacyAbilityID = 351
+Name = Commander
+Description = Hides inside Dondozo and issues commands from there.
+#-------------------------------
+[COSTAR]
+LegacyAbilityID = 352
+Name = Costar
+Description = Copies ally stat changes on entry.
+#-------------------------------
+[CUDCHEW]
+LegacyAbilityID = 353
+Name = Cud Chew
+Description = Duplicates berry effect end of next turn when used.
+#-------------------------------
+[EARTHEATER]
+LegacyAbilityID = 354
+Name = Earth Eater
+Description = Restores HP if hit by a Ground-type move.
+#-------------------------------
+[ELECTROMORPHOSIS]
+LegacyAbilityID = 355
+Name = Electromorphosis
+Description = The Pokemon becomes charged when it takes damage.
+#-------------------------------
+[GOODASGOLD]
+LegacyAbilityID = 356
+Name = Good as Gold
+Description = The Pokemon has full immunity to Status moves.
+#-------------------------------
+[GUARDDOG]
+LegacyAbilityID = 357
+Name = Guard Dog
+Description = Raises Attack when intimidated, prevents phasing.
+#-------------------------------
+[HADRONENGINE]
+LegacyAbilityID = 358
+Name = Hadron Engine
+Description = Creates Electric Terrain and boosts Sp.Atk on it.
+#-------------------------------
+[LINGERINGAROMA]
+LegacyAbilityID = 359
+Name = Lingering Aroma
+Description = Contact with this Pokémon spreads this Ability.
+#-------------------------------
+[MYCELIUMMIGHT]
+LegacyAbilityID = 360
+Name = Mycelium Might
+Description = Status moves ignore abilities and immunities, but go last.
+#-------------------------------
+[OPPORTUNIST]
+LegacyAbilityID = 361
+Name = Oppurtunist
+Description = Copies foe stat boosts.
+#-------------------------------
+[ORICHALCUMPULSE]
+LegacyAbilityID = 362
+Name = Orichalcum Pulse
+Description = Creates Sunlight and boosts Attack while sunny.
+#-------------------------------
+[PURIFYINGSALT]
+LegacyAbilityID = 363
+Name = Purifying
+Description = Prevents status and halves Ghost damage.
+#-------------------------------
+[ROCKYPAYLOAD]
+LegacyAbilityID = 364
+Name = Rocky Payload
+Description = Rock-type moves deal 1.5x damage, takes 0.5x damage from Rock-type moves
+#-------------------------------
+[SEEDSOWER]
+LegacyAbilityID = 365
+Name = Seed Sower
+Description = Starts Grassy Terrain when damaged.
+#-------------------------------
+[SHARPNESS]
+LegacyAbilityID = 366
+Name = Sharpness
+Description = Powers up slashing moves and allows them to ignore defenses.
+#-------------------------------
+[SUPREMEOVERLORD]
+LegacyAbilityID = 367
+Name = Supreme Overlord
+Description = Raises Attack for each fallen team member.
+#-------------------------------
+[SWORDOFRUIN]
+LegacyAbilityID = 368
+Name = Sword of Ruin
+Description = Lowers Defense of all Pokemon but itself.
+#-------------------------------
+[TABLETSOFRUIN]
+LegacyAbilityID = 369
+Name = Tablets of Ruin
+Description = Lowers Attack of all Pokemon but itself.
+#-------------------------------
+[THERMALEXCHANGE]
+LegacyAbilityID = 370
+Name = Thermal Exchange
+Description = Prevents Burn, draws in Fire-type moves to raise offenses.
+#-------------------------------
+[TOXICCHAIN]
+LegacyAbilityID = 371
+Name = Toxic Chain
+Description = Damaging a target may badly poison it.
+#-------------------------------
+[TOXICDEBRIS]
+LegacyAbilityID = 372
+Name = Toxic Debris
+Description = Lays poison barbs when damaged.
+#-------------------------------
+[VESSELOFRUIN]
+LegacyAbilityID = 373
+Name = Vessel of Ruin
+Description = Lowers Sp. Atk of all Pokemon but itself.
+#-------------------------------
+[WELLBAKEDBODY]
+LegacyAbilityID = 374
+Name = Well-Baked Body
+Description = Draws in Fire-type moves to sharply raise Defense.
+#-------------------------------
+[WINDPOWER]
+LegacyAbilityID = 375
+Name = Wind Power
+Description = Becomes charged when hit by a wind move or when tailwind is used.
+#-------------------------------
+[WINDRIDER]
+LegacyAbilityID = 376
+Name = Wind Rider
+Description = Draws in wind moves to raise offenses, using tailwind raises offenses.
+#-------------------------------
+[ZEROTOHERO]
+LegacyAbilityID = 377
+Name = Zero to Hero
+Description = Changes forms when switching out.
+#-------------------------------
+[SELFLESS]
+LegacyAbilityID = 378
+Name = Selfless
+Description = Protects incoming ally after switching out.
+#-------------------------------
+[PINPOINT]
+LegacyAbilityID = 379
+Name = Pinpoint
+Description = Boosts the power of piercing moves 1.5x.
+#-------------------------------
+[REVERB]
+LegacyAbilityID = 380
+Name = Reverb
+Description = Sound moves strike again at the beginning of the next turn at 0.25x power, still applying effects.
+#-------------------------------
+[VISIONARY]
+LegacyAbilityID = 381
+Name = Visionary
+Description = The user's physical attacks use the user's Special Attack stat.
+#-------------------------------
+[WALLOW]
+LegacyAbilityID = 382
+Name = Wallow
+Description = Sets Mud Sport on entry.
+#-------------------------------
+[INSULATED]
+LegacyAbilityID = 383
+Name = Insulated
+Description = The user takes halved damage from Electric- and Ice-type moves.
+#-------------------------------
+[PITCHBLACK]
+LegacyAbilityID = 384
+Name = Pitch Black
+Description = Absorbs Dark-type moves, which raises this Pokemon's defenses.
+#-------------------------------
+[UNSEENFIST]
+LegacyAbilityID = 385
+Name = Unseen Fist
+Description = Physical contact bypasses Protect and similar.
+#-------------------------------
+[CURIOUSMEDICINE]
+LegacyAbilityID = 386
+Name = Curious Medicine
+Description = Removes ally stat changes on entry.
+#-------------------------------
+[TRANSISTOR]
+LegacyAbilityID = 387
+Name = Transistor
+Description = Powers up Electric-type moves.
+#-------------------------------
+[DRAGONSMAW]
+LegacyAbilityID = 388
+Name = Dragon's Maw
+Description = Powers up Dragon-type moves.
+#-------------------------------
+[CHILLINGNEIGH]
+LegacyAbilityID = 389
+Name = Chilling Neigh
+Description = Boosts Attack when knocking out an opponent.
+#-------------------------------
+[GRIMNEIGH]
+LegacyAbilityID = 390
+Name = Grim Neigh
+Description = Boosts Sp. Atk when knocking out an opponent.
+#-------------------------------
+[ASONE]
+LegacyAbilityID = 391
+Name = As One
+Description = Combines abilities of fused Pokémon.
+#-------------------------------
+[QUARKDRIVE]
+LegacyAbilityID = 392
+Name = Quark Drive
+Description = Boosts highest stat on Electric Terrain or when holding Booster Energy.
+#-------------------------------
+[PROTOSYNTHESIS]
+LegacyAbilityID = 393
+Name = Protosynthesis
+Description = Boosts highest stat in harsh Sunlight or when holding Booster Energy.
+#-------------------------------
+[SUPERSWEETSYRUP]
+LegacyAbilityID = 394
+Name = Supersweet Syrup
+Description = Lowers evasion of opponents on entry.
+#-------------------------------
+[HOSPITALITY]
+LegacyAbilityID = 395
+Name = Hospitality
+Description = Restores partner HP on entry.
+#-------------------------------
+[TOXICCHAIN]
+LegacyAbilityID = 396
+Name = Toxic Chain
+Description = Damaging a target may badly poison it.
+#-------------------------------
+[MINDSEYE]
+LegacyAbilityID = 397
+Name = Mind's Eye
+Description = Scrappy + ignores evasion, acc can't be lowered.
+#-------------------------------
+[EMBODYASPECT]
+LegacyAbilityID = 398
+Name = Embody Aspect
+Description = Gains specific stat boosts depending on the mask.
+#-------------------------------
+[TERASHIFT]
+LegacyAbilityID = 399
+Name = Tera Shift
+Description = Changes to Tera forme in battle.
+#-------------------------------
+[TERASHELL]
+LegacyAbilityID = 400
+Name = Tera Shell
+Description = Damage taken is not very effective if at full HP.
+#-------------------------------
+[TERAFORMZERO]
+LegacyAbilityID = 401
+Name = Teraform Z.
+Description = Eliminates all weather and temporary fields.
+#-------------------------------
+[POISONPUPPETEER]
+LegacyAbilityID = 402
+Name = Pois. Puppet.
+Description = Poisoning a target will also confuse it.
+#-------------------------------
+[ABYSSAL]
+LegacyAbilityID = 403
+Name = Abyssal
+Description = The user cannot be crushed. The user's attacks crush during intense gravity.
+#-------------------------------
+[CARETAKER]
+LegacyAbilityID = 404
+Name = Caretaker
+Description = Heals allies for 1/8th max HP each turn.
+#-------------------------------
+[BLOODTHIRSTY]
+LegacyAbilityID = 405
+Name = Bloodthirsty
+Description = Restores HP when using contact moves.
+#-------------------------------
+[SCAVENGER]
+LegacyAbilityID = 406
+Name = Scavenger
+Description = User restores 25% max HP upon knocking out an enemy.
+#-------------------------------
+[EXECUTIONER]
+LegacyAbilityID = 407
+Name = Executioner
+Description = The user deals 1.5x damage to opponents with 50% or less HP.
+#-------------------------------
+[EVENTHORIZON]
+LegacyAbilityID = 408
+Name = Event Horizon
+Description = Intensifies Gravity on entry.
+#-------------------------------
+[BRUTALIZE]
+LegacyAbilityID = 409
+Name = Brutalize
+Description = Normal-type moves become Fighting-type and receive a boost.
+#-------------------------------
+[BIGBODY]
+LegacyAbilityID = 410
+Name = Big Body
+Description = User takes 0.5x damage from attacks and from recoil.
+#-------------------------------
+[HASTE]
+LegacyAbilityID = 411
+Name = Haste
+Description = Sharply raises Speed on entry, and loses a positive Speed stage each turn.
+#-------------------------------
+[LIMINAL]
+LegacyAbilityID = 412
+Name = Liminal
+Description = Status moves boost the user's next attack, and attacking moves raise the priority of the user's next status move.
+#-------------------------------
+[SERAPHIC]
+LegacyAbilityID = 413
+Name = Seraphic
+Description = The user takes 0.7x damage from moves with less than 100 power.
+#-------------------------------
+[HYPNOTIC]
+LegacyAbilityID = 414
+Name = Hypnotic
+Description = Confuses and infatuates enemies on entry.
+#-------------------------------
+[STONYSPIRIT]
+LegacyAbilityID = 415
+Name = Stony Spirit
+Description = Increases the power of the user and allies' Rock-type moves by 1.5x.
+#-------------------------------
+[WARPOET]
+LegacyAbilityID = 416
+Name = War Poet
+Description = The user's sound moves use its Attack stat and all offensive stat stages.
+#-------------------------------
+[TIMETWISTER]
+LegacyAbilityID = 417
+Name = Timetwister
+Description = At the end of turn, if the user is at 1/3 max HP or lower, it rewinds to the start of the turn.
+#-------------------------------
+[DIVINEWINDS]
+LegacyAbilityID = 418
+Name = Divine Winds
+Description = Flying-type moves become Dragon-type and receive a boost.
+#-------------------------------
+[DEEPFREEZE]
+LegacyAbilityID = 419
+Name = Deep Freeze
+Description = Contact moves used against this Pokemon have negative priority.
+#-------------------------------
+[HARVESTMOON]
+LegacyAbilityID = 420
+Name = Harvest Moon
+Description = Sets Grassy Terrain on entry and boosts Attack during Grassy Terrain.
+#-------------------------------
+[DUSTDEVIL]
+LegacyAbilityID = 421
+Name = Dust Devil
+Description = Sets Sandstorm on entry and boosts Special Attack during Sandstorm.

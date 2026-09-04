@@ -32,6 +32,257 @@ TPSPAOB       = 30
 TPSPDOB       = 31
 TPDEFAULTS = [0,10,0,0,0,0,0,nil,nil,0,false,nil,10,70,nil,false,0,17,0,0,0,0,0,0,false,nil,0,0,0,0,0,0]
 
+# Immutable typed view of one legacy trainer-Pokemon row. The full row remains
+# available through named fields without changing its compiled array layout.
+class PBTrainerPokemonData
+  attr_reader :species,:level,:item,:moves,:ability,:gender,:form,:shiny
+  attr_reader :nature,:iv,:happiness,:name,:shadow,:ball,:hidden_power
+  attr_reader :evs,:premega,:boss,:offsets
+
+  def initialize(row)
+    @species=row[TSPECIES]
+    @level=row[TPLEVEL]
+    @item=row[TPITEM]
+    @moves=[row[TPMOVE1],row[TPMOVE2],row[TPMOVE3],row[TPMOVE4]].freeze
+    @ability=row[TPABILITY]
+    @gender=row[TPGENDER]
+    @form=row[TPFORM]
+    @shiny=row[TPSHINY]
+    @nature=row[TPNATURE]
+    @iv=row[TPIV]
+    @happiness=row[TPHAPPINESS]
+    @name=row[TPNAME].is_a?(String) ? row[TPNAME].clone.freeze : row[TPNAME]
+    @shadow=row[TPSHADOW]
+    @ball=row[TPBALL]
+    @hidden_power=row[TPHIDDENPOWER]
+    @evs=[row[TPHPEV],row[TPATKEV],row[TPDEFEV],row[TPSPEEV],row[TPSPAEV],row[TPSPDEV]].freeze
+    @premega=row[TPPREMEGA]
+    @boss=row[TPBOSS]
+    @offsets=[row[TPHPOB],row[TPATKOB],row[TPDEFOB],row[TPSPEOB],row[TPSPAOB],row[TPSPDOB]].freeze
+    freeze
+  end
+end
+
+# Rejuvenation-style TeamData adapter over Azure's five-field trainer record.
+# It is deliberately read-only; editors use AzureTrainerTeamEditorData below.
+class PBTrainerTeamData
+  attr_reader :index,:name,:trainer_type,:party_id,:items,:party
+
+  def initialize(index,row)
+    @index=index
+    @trainer_type=row[0]
+    @name=row[1].is_a?(String) ? row[1].clone.freeze : row[1]
+    @items=(row[2] || []).clone.freeze
+    pokemon=[]
+    for entry in (row[3] || [])
+      pokemon.push(PBTrainerPokemonData.new(entry))
+    end
+    @party=pokemon.freeze
+    @party_id=row[4] || 0
+    @azure_source_row=row
+    freeze
+  end
+
+  def trainerType; return @trainer_type; end
+  def partyID; return @party_id; end
+  def teamid; return [@name,@trainer_type,@party_id].freeze; end
+  def key; return [@trainer_type,@name,@party_id].freeze; end
+end
+
+# Rejuvenation stores trainer teams in a nested keyed registry. Keep Azure's
+# compiled array format (and therefore its editor/save compatibility), but
+# build the equivalent lookup index once instead of scanning every trainer for
+# each battle, rematch, debug check, or Trainer Index page.
+module AzureTrainerDataCache
+  def self.normalize_type(value)
+    return value.to_i if value.is_a?(Numeric) && value.to_i==value
+    if value.is_a?(String) || value.is_a?(Symbol)
+      return nil if !hasConst?(PBTrainers,value)
+      return getID(PBTrainers,value)
+    end
+    return nil
+  end
+
+  def self.data
+    $trainerdata=load_data("Data/trainers.dat") if !$trainerdata
+    sync($trainerdata)
+    return $trainerdata
+  end
+
+  def self.sync(records)
+    source_id=records ? records.object_id : nil
+    source_length=records ? records.length : 0
+    return if @source_id==source_id && @source_length==source_length && @index
+    @source_id=source_id
+    @source_length=source_length
+    @index={}
+    @positions={}
+    @teams={}
+    return if !records
+    for position in 0...records.length
+      trainer=records[position]
+      next if !trainer
+      key=[trainer[0],trainer[1],trainer[4]]
+      # The old linear lookup selected the first duplicate. Preserve that
+      # behavior while the audit reports duplicate authoring mistakes.
+      if !@index.has_key?(key)
+        @index[key]=trainer
+        @positions[key]=position
+      end
+    end
+  end
+
+  def self.record(trainerid,trainername,partyid=0)
+    records=data
+    return nil if !records
+    trainerid=normalize_type(trainerid)
+    return nil if trainerid.nil?
+    return @index[[trainerid,trainername,partyid]]
+  end
+
+  def self.team(trainerid,trainername,partyid=0)
+    trainerid=normalize_type(trainerid)
+    return nil if trainerid.nil?
+    records=data
+    key=[trainerid,trainername,partyid]
+    row=@index[key]
+    return nil if !row
+    cached=@teams[key] if @teams
+    if cached && cached.instance_variable_get(:@azure_source_row).equal?(row)
+      return cached
+    end
+    cached=PBTrainerTeamData.new(@positions[key],row)
+    @teams[key]=cached
+    return cached
+  end
+
+  def self.exists?(trainerid,trainername,partyid=0)
+    return !record(trainerid,trainername,partyid).nil?
+  end
+
+  def self.free_party_id(trainerid,trainername,limit=256)
+    trainerid=normalize_type(trainerid)
+    return -1 if trainerid.nil?
+    data
+    for partyid in 0...limit
+      return partyid if !@index.has_key?([trainerid,trainername,partyid])
+    end
+    return -1
+  end
+
+  def self.each_team
+    return enum_for(:each_team) if !block_given?
+    records=data
+    for index in 0...records.length
+      row=records[index]
+      next if !row
+      key=[row[0],row[1],row[4]]
+      next if @positions[key]!=index
+      yield team(row[0],row[1],row[4])
+    end
+  end
+
+  def self.replace(records)
+    $trainerdata=records
+    clear
+    sync(records)
+    return records
+  end
+
+  def self.clear
+    @source_id=nil
+    @source_length=nil
+    @index=nil
+    @positions=nil
+    @teams=nil
+  end
+end
+
+# Mutable keyed view used by the in-game trainer editor. It owns an independent
+# load_data array, keeps keys synchronized after every mutation, and commits the
+# exact legacy array back to trainers.dat.
+class AzureTrainerTeamEditorData
+  attr_reader :records
+
+  def self.load
+    return self.new(load_data("Data/trainers.dat"))
+  end
+
+  def initialize(records)
+    @records=records || []
+    rebuild
+  end
+
+  def key_for(record)
+    return [record[0],record[1],record[4] || 0]
+  end
+
+  def rebuild
+    @index={}
+    for index in 0...@records.length
+      record=@records[index]
+      next if !record
+      key=key_for(record)
+      @index[key]=index if !@index.has_key?(key)
+    end
+  end
+
+  def each
+    return enum_for(:each) if !block_given?
+    for index in 0...@records.length
+      yield index,@records[index] if @records[index]
+    end
+  end
+
+  def record_at(index); return @records[index]; end
+  def index_for(trainerid,trainername,partyid=0)
+    trainerid=AzureTrainerDataCache.normalize_type(trainerid)
+    return nil if trainerid.nil?
+    return @index[[trainerid,trainername,partyid]]
+  end
+  def exists?(trainerid,trainername,partyid=0)
+    return !index_for(trainerid,trainername,partyid).nil?
+  end
+  def free_party_id(trainerid,trainername,limit=256)
+    trainerid=AzureTrainerDataCache.normalize_type(trainerid)
+    return -1 if trainerid.nil?
+    for partyid in 0...limit
+      return partyid if !@index.has_key?([trainerid,trainername,partyid])
+    end
+    return -1
+  end
+  def conflicting_index(record,except_index=nil)
+    index=@index[key_for(record)]
+    return nil if index.nil? || index==except_index
+    return index
+  end
+  def add(record)
+    return nil if conflicting_index(record)
+    @records.push(record)
+    rebuild
+    return @records.length-1
+  end
+  def replace_at(index,record)
+    return false if index<0 || index>=@records.length
+    return false if conflicting_index(record,index)
+    @records[index]=record
+    rebuild
+    return true
+  end
+  def delete_at(index)
+    return nil if index<0 || index>=@records.length
+    record=@records.delete_at(index)
+    rebuild
+    return record
+  end
+  def commit
+    rebuild
+    save_data(@records,"Data/trainers.dat")
+    AzureTrainerDataCache.replace(@records)
+    return @records
+  end
+end
+
 def pbLoadTrainerDifficult(trainerid,trainername,partyid=0,procedure=nil)
   if trainerid.is_a?(String) || trainerid.is_a?(Symbol)
     if !hasConst?(PBTrainers,trainerid)
@@ -43,12 +294,11 @@ def pbLoadTrainerDifficult(trainerid,trainername,partyid=0,procedure=nil)
   items=[]
   party=[]
   opponent=nil
-  $trainerdata=load_data("Data/trainers.dat") if !$trainerdata
-  for trainer in $trainerdata
+  trainer=AzureTrainerDataCache.record(trainerid,trainername,partyid)
+  if trainer
     name=trainer[1]
     thistrainerid=trainer[0]
     thispartyid=trainer[4]
-    next if trainerid!=thistrainerid || name!=trainername || partyid!=thispartyid
     items=trainer[2].clone
     name=pbGetMessageFromHash(MessageTypes::TrainerNames,name)
     for i in RIVALNAMES
@@ -185,7 +435,6 @@ def pbLoadTrainerDifficult(trainerid,trainername,partyid=0,procedure=nil)
       party.push(pokemon)
     end
     success=true
-    break
   end
   return success ? [opponent,items,party] : nil
 end
@@ -210,7 +459,7 @@ def pbConvertTrainerData
   pbSaveTrainerBattles()
 end
 
-def pbNewTrainer(trainerid,trainername,trainerparty)
+def pbNewTrainer(trainerid,trainername,trainerparty,editorData=nil)
   pokemon=[]
   level=TPDEFAULTS[TPLEVEL]
   for i in 1..6
@@ -245,9 +494,14 @@ def pbNewTrainer(trainerid,trainername,trainerparty)
     end
   end
   trainer=[trainerid,trainername,[],pokemon,trainerparty]
-  data=load_data("Data/trainers.dat")
-  data.push(trainer)
-  data=save_data(data,"Data/trainers.dat")
+  editorData=AzureTrainerTeamEditorData.load if !editorData
+  conflict=editorData.conflicting_index(trainer)
+  if conflict
+    Kernel.pbMessage(_INTL("A Trainer battle with this type, name, and ID already exists at index {1}.",conflict))
+    return nil
+  end
+  editorData.add(trainer)
+  editorData.commit
   pbConvertTrainerData
   Kernel.pbMessage(_INTL("The Trainer's data was added to the list of battles and at PBS/trainers.txt."))
   return trainer
@@ -273,12 +527,9 @@ def pbTrainerTypeCheck(symbol)
   return ret
 end
 
-def pbGetFreeTrainerParty(trainerid,trainername)
-  for i in 0...256
-    trainer=pbLoadTrainer(trainerid,trainername,i)
-    return i if !trainer
-  end
-  return -1
+def pbGetFreeTrainerParty(trainerid,trainername,editorData=nil)
+  return editorData.free_party_id(trainerid,trainername) if editorData
+  return AzureTrainerDataCache.free_party_id(trainerid,trainername)
 end
 
 def pbTrainerCheck(trainerid,trainername,maxbattles,startBattleId=0)
@@ -542,25 +793,82 @@ ensure
 end
 
 
+def pbPartnerAblePokemonCount
+  return 0 if !$PokemonGlobal || !$PokemonGlobal.partner
+  party = $PokemonGlobal.partner[3] rescue nil
+  return 0 if !party
+  ret = 0
+  for i in party
+    next if !i
+    ret += 1 if i.hp > 0 && !i.isEgg?
+  end
+  return ret
+end
+
+def pbCanDoubleBattle?
+  return false if !$Trainer
+  return false if $PokemonTemp && $PokemonTemp.forceSingleBattle
+  return ($Trainer.ablePokemonCount + pbPartnerAblePokemonCount) >= 2
+end
+
+def pbCanTripleBattle?
+  return false if !$Trainer
+  return false if $PokemonTemp && $PokemonTemp.forceSingleBattle
+  return ($Trainer.ablePokemonCount + pbPartnerAblePokemonCount) >= 3
+end
+
+def pbBattleSizeAllowed?(size_rule)
+  normalized = pbNormalizeBattleSizeRule(size_rule)
+  return true if !normalized
+  needed = pbBattleSideSizeFromRule(normalized, false)
+  return true if needed <= 1
+  return pbCanDoubleBattle? if needed == 2
+  return pbCanTripleBattle?
+end
+
+def pbFallbackBattleSizeRule(size_rule)
+  normalized = pbNormalizeBattleSizeRule(size_rule)
+  normalized = "single" if !normalized
+  return "single" if $PokemonTemp && $PokemonTemp.forceSingleBattle
+  return normalized if pbBattleSizeAllowed?(normalized)
+  needed = pbBattleSideSizeFromRule(normalized, false)
+  return "double" if needed >= 3 && pbCanDoubleBattle?
+  return "single"
+end
+
+def pbResolveTrainerBattleSizeRule(size_rule = nil, foe_trainer_count = 1, legacy_doublebattle = false)
+  normalized = pbNormalizeBattleSizeRule(size_rule)
+  if !normalized
+    normalized = legacy_doublebattle ? "double" : "#{foe_trainer_count}v#{foe_trainer_count}"
+    normalized = pbNormalizeBattleSizeRule(normalized)
+  end
+  return pbFallbackBattleSizeRule(normalized)
+end
+
+
 
 
 def pbDoubleTrainerBattle(trainerid1, trainername1, trainerparty1, endspeech1,
                           trainerid2, trainername2, trainerparty2, endspeech2, 
                           canlose=false,variable=nil)
+  size_rule = pbResolveTrainerBattleSizeRule(pbBattleRules["size"], 2, true)
+  player_side_size = pbBattleSideSizeFromRule(size_rule, false)
   trainer1=pbLoadTrainer(trainerid1,trainername1,trainerparty1)
   Events.onTrainerPartyLoad.trigger(nil,trainer1)
   if !trainer1
     pbMissingTrainer(trainerid1,trainername1,trainerparty1)
+    pbClearBattleRules
   end
   trainer2=pbLoadTrainer(trainerid2,trainername2,trainerparty2)
   Events.onTrainerPartyLoad.trigger(nil,trainer2)
   if !trainer2
     pbMissingTrainer(trainerid2,trainername2,trainerparty2)
+    pbClearBattleRules
   end
   if !trainer1 || !trainer2
     return false
   end
-  if $PokemonGlobal.partner
+  if $PokemonGlobal.partner && player_side_size > 1
     othertrainer=PokeBattle_Trainer.new($PokemonGlobal.partner[1],
                                         $PokemonGlobal.partner[0])
     othertrainer.id=$PokemonGlobal.partner[2]
@@ -592,10 +900,10 @@ def pbDoubleTrainerBattle(trainerid1, trainername1, trainerparty1, endspeech1,
   trainerbgm=pbGetTrainerBattleBGM([trainer1[0],trainer2[0]])
   battle.fullparty1=fullparty1
   battle.fullparty2=true
-  battle.doublebattle=battle.pbDoubleBattleAllowed?()
+  battle.setBattleMode(size_rule)
   battle.endspeech=endspeech1
   battle.endspeech2=endspeech2
-  if $PokemonGlobal.partner
+  if fullparty1 && $PokemonGlobal.partner
     battle.items=[trainer1[1],trainer2[1],$PokemonGlobal.partner[4]] rescue battle.items=[trainer1[1],trainer2[1]]
   else 
     battle.items=[trainer1[1],trainer2[1]]
@@ -605,6 +913,7 @@ def pbDoubleTrainerBattle(trainerid1, trainername1, trainerparty1, endspeech1,
     Kernel.pbMessage(_INTL("AFTER LOSING..."))
     Kernel.pbMessage(battle.endspeech)
     Kernel.pbMessage(battle.endspeech2) if battle.endspeech2 && battle.endspeech2!=""
+    pbClearBattleRules
     return true
   end
   Events.onStartBattle.trigger(nil,nil)
@@ -616,6 +925,10 @@ def pbDoubleTrainerBattle(trainerid1, trainername1, trainerparty1, endspeech1,
      pbSceneStandby {
         decision=battle.pbStartBattle(canlose)
      }
+     # Register trainer encounter for Trainer Index (regardless of win/loss)
+     pbRegisterTrainerEncounter(trainer1[0].trainertype,trainer1[0].name,trainerparty1)
+     pbRegisterTrainerEncounter(trainer2[0].trainertype,trainer2[0].name,trainerparty2)
+
      Achievements.incrementProgress("MOVES_USED",$game_variables[530])
      Achievements.incrementProgress("ITEMS_USED",$game_variables[536])
      Achievements.incrementProgress("ITEMS_USED_IN_BATTLE",$game_variables[536])
@@ -678,6 +991,7 @@ def pbDoubleTrainerBattle(trainerid1, trainername1, trainerparty1, endspeech1,
     pbRegisterTrainerRematch(trainerid1,trainername1,trainerparty1,"double",
                              trainerid2,trainername2,trainerparty2)
   end
+  pbClearBattleRules
   return (decision==1)
 end
 
@@ -701,6 +1015,7 @@ def pbTrainerBattle(trainerid,trainername,endspeech,
       Events.onTrainerPartyLoad.trigger(nil,trainer)
       if !trainer
         pbMissingTrainer(trainerid,trainername,trainerparty)
+        pbClearBattleRules
         return false
       end
       if trainer[2].length<=6 # 3
@@ -714,9 +1029,13 @@ def pbTrainerBattle(trainerid,trainername,endspeech,
   Events.onTrainerPartyLoad.trigger(nil,trainer)
   if !trainer
     pbMissingTrainer(trainerid,trainername,trainerparty)
+    pbClearBattleRules
     return false
   end
-  if $PokemonGlobal.partner && ($PokemonTemp.waitingTrainer || doublebattle)
+  foe_trainer_count = $PokemonTemp.waitingTrainer ? 2 : 1
+  size_rule = pbResolveTrainerBattleSizeRule(pbBattleRules["size"], foe_trainer_count, doublebattle)
+  player_side_size = pbBattleSideSizeFromRule(size_rule, false)
+  if $PokemonGlobal.partner && player_side_size > 1
     othertrainer=PokeBattle_Trainer.new(
        $PokemonGlobal.partner[1],$PokemonGlobal.partner[0])
     othertrainer.id=$PokemonGlobal.partner[2]
@@ -730,7 +1049,6 @@ def pbTrainerBattle(trainerid,trainername,endspeech,
     end
     fullparty1=true
     playertrainer=[$Trainer,othertrainer]
-    doublebattle=true
   else
     playerparty=$Trainer.party
     playertrainer=$Trainer
@@ -770,15 +1088,19 @@ def pbTrainerBattle(trainerid,trainername,endspeech,
        [$PokemonTemp.waitingTrainer[0][0],trainer[0]])
     battle.fullparty1=fullparty1
     battle.fullparty2=fullparty2
-    battle.doublebattle=battle.pbDoubleBattleAllowed?()
+    battle.setBattleMode(size_rule)
     battle.endspeech=$PokemonTemp.waitingTrainer[2]
     battle.endspeech2=endspeech
-    battle.items=[$PokemonTemp.waitingTrainer[0][1],trainer[1],$PokemonGlobal.partner[4]] rescue [$PokemonTemp.waitingTrainer[0][1],trainer[1]]
+    if fullparty1 && $PokemonGlobal.partner
+      battle.items=[$PokemonTemp.waitingTrainer[0][1],trainer[1],$PokemonGlobal.partner[4]] rescue [$PokemonTemp.waitingTrainer[0][1],trainer[1]]
+    else
+      battle.items=[$PokemonTemp.waitingTrainer[0][1],trainer[1]]
+    end
   else
     scene=pbNewBattleScene
     battle=PokeBattle_Battle.new(scene,playerparty,trainer[2],playertrainer,trainer[0])
     battle.fullparty1=fullparty1
-    battle.doublebattle=doublebattle #? battle.pbDoubleBattleAllowed?() : false
+    battle.setBattleMode(size_rule)
     battle.endspeech=endspeech
     if $PokemonGlobal.partner
       battle.items=trainer[1]
@@ -796,6 +1118,7 @@ def pbTrainerBattle(trainerid,trainername,endspeech,
       pbMapInterpreter.pbSetSelfSwitch($PokemonTemp.waitingTrainer[1],"A",true)
       $PokemonTemp.waitingTrainer=nil
     end
+    pbClearBattleRules
     return true
   end
   Events.onStartBattle.trigger(nil,nil)
@@ -808,6 +1131,16 @@ def pbTrainerBattle(trainerid,trainername,endspeech,
     pbSceneStandby {
       decision=battle.pbStartBattle(canlose)
     }
+    # Register trainer encounter for Trainer Index (regardless of win/loss)
+    if $PokemonTemp.waitingTrainer
+      pbRegisterTrainerEncounter($PokemonTemp.waitingTrainer[0][0].trainertype,
+                                 $PokemonTemp.waitingTrainer[0][0].name,
+                                 $PokemonTemp.waitingTrainer[5])
+      pbRegisterTrainerEncounter(trainer[0].trainertype,trainer[0].name,trainerparty)
+    else
+      pbRegisterTrainerEncounter(trainer[0].trainertype,trainer[0].name,trainerparty)
+    end
+
     Achievements.incrementProgress("MOVES_USED",$game_variables[530])
     Achievements.incrementProgress("ITEMS_USED",$game_variables[536])
     Achievements.incrementProgress("ITEMS_USED_IN_BATTLE",$game_variables[536])
@@ -890,5 +1223,6 @@ def pbTrainerBattle(trainerid,trainername,endspeech,
   end
   $PokemonTemp.waitingTrainer=nil
   Achievements.incrementProgress("TRAINER_BATTLES",1)
+  pbClearBattleRules
   return (decision==1)
 end

@@ -1,8 +1,4 @@
 def pbGetEvolvedFormData(species,pokemon=nil)
-  ret=[]
-  _EVOTYPEMASK=0x3F
-  _EVODATAMASK=0xC0
-  _EVONEXTFORM=0x00
   # Alternate evo methods for forms 
   if pokemon!=nil
     formcheck = MultipleForms.call("getEvo",pokemon)
@@ -10,24 +6,10 @@ def pbGetEvolvedFormData(species,pokemon=nil)
       return formcheck
     end
   end  
-  pbRgssOpen("Data/evolutions.dat","rb"){|f|
-     f.pos=(species-1)*8
-     offset=f.fgetdw
-     length=f.fgetdw
-     if length>0
-       f.pos=offset
-       i=0; loop do break unless i<length
-         evo=f.fgetb
-         evonib=evo&_EVOTYPEMASK
-         level=f.fgetw
-         poke=f.fgetw
-         if (evo&_EVODATAMASK)==_EVONEXTFORM
-           ret.push([evonib,level,poke])
-         end
-         i+=5
-       end
-     end
-  }
+  ret=[]
+  for record in AzureEvolutionDataCache.forward(species)
+    ret.push(record.clone)
+  end
   return ret
 end
 
@@ -61,87 +43,33 @@ def pbEvoDebug()
 end
 
 def pbGetPreviousForm(species)
-  _EVOTYPEMASK=0x3F
-  _EVODATAMASK=0xC0
-  _EVOPREVFORM=0x40
-  pbRgssOpen("Data/evolutions.dat","rb"){|f|
-     f.pos=(species-1)*8
-     offset=f.fgetdw
-     length=f.fgetdw
-     if length>0
-       f.pos=offset
-       i=0; loop do break unless i<length
-         evo=f.fgetb
-         evonib=evo&_EVOTYPEMASK
-         level=f.fgetw
-         poke=f.fgetw
-         if (evo&_EVODATAMASK)==_EVOPREVFORM
-           return poke
-         end
-         i+=5
-       end
-     end
-  }
-  return species
+  record=AzureEvolutionDataCache.previous_record(species)
+  return record ? record[2] : species
 end
 
 def pbGetMinimumLevel(species)
   ret=-1
-  _EVOTYPEMASK=0x3F
-  _EVODATAMASK=0xC0
-  _EVOPREVFORM=0x40
-  pbRgssOpen("Data/evolutions.dat","rb"){|f|
-    f.pos=(species-1)*8
-    offset=f.fgetdw
-    length=f.fgetdw
-    if length>0
-      f.pos=offset
-      i=0; loop do break unless i<length
-        evo=f.fgetb
-        evonib=evo&_EVOTYPEMASK
-        level=f.fgetw
-        poke=f.fgetw
-        if poke<=PBSpecies.maxValue && 
-           (evo&_EVODATAMASK)==_EVOPREVFORM && # evolved from
-           [PBEvolution::Level,PBEvolution::LevelMale,
-           PBEvolution::LevelFemale,PBEvolution::AttackGreater,
-           PBEvolution::AtkDefEqual,PBEvolution::DefenseGreater,
-           PBEvolution::Silcoon,PBEvolution::Cascoon,
-           PBEvolution::Ninjask,PBEvolution::Shedinja].include?(evonib)
-          ret=(ret==-1) ? level : [ret,level].min
-          break
-        end
-        i+=5
-      end
+  for record in AzureEvolutionDataCache.records(species)
+    evonib=record[0]
+    level=record[1]
+    poke=record[2]
+    if poke<=PBSpecies.maxValue && record[3]==AzureEvolutionDataCache::EVOPREVFORM &&
+       [PBEvolution::Level,PBEvolution::LevelMale,
+       PBEvolution::LevelFemale,PBEvolution::AttackGreater,
+       PBEvolution::AtkDefEqual,PBEvolution::DefenseGreater,
+       PBEvolution::Silcoon,PBEvolution::Cascoon,
+       PBEvolution::Ninjask,PBEvolution::Shedinja].include?(evonib)
+      ret=(ret==-1) ? level : [ret,level].min
+      break
     end
-  }
+  end
   return (ret==-1) ? 1 : ret
 end
 
 def pbGetBabySpecies(species)
   ret=species
-  _EVOTYPEMASK=0x3F
-  _EVODATAMASK=0xC0
-  _EVOPREVFORM=0x40
-  pbRgssOpen("Data/evolutions.dat","rb"){|f|
-     f.pos=(species-1)*8
-     offset=f.fgetdw
-     length=f.fgetdw
-     if length>0
-       f.pos=offset
-       i=0; loop do break unless i<length
-         evo=f.fgetb
-         evonib=evo&_EVOTYPEMASK
-         level=f.fgetw
-         poke=f.fgetw
-         if poke<=PBSpecies.maxValue && (evo&_EVODATAMASK)==_EVOPREVFORM # evolved from
-           ret=poke
-           break
-         end
-         i+=5
-       end
-     end
-  }
+  record=AzureEvolutionDataCache.previous_record(species)
+  ret=record[2] if record && record[2]<=PBSpecies.maxValue
   if ret!=species
     ret=pbGetBabySpecies(ret)
   end
@@ -150,28 +78,8 @@ end
 
 def pbGetLessBabySpecies(species)
   ret=species
-  _EVOTYPEMASK=0x3F
-  _EVODATAMASK=0xC0
-  _EVOPREVFORM=0x40
-  pbRgssOpen("Data/evolutions.dat","rb"){|f|
-     f.pos=(species-1)*8
-     offset=f.fgetdw
-     length=f.fgetdw
-     if length>0
-       f.pos=offset
-       i=0; loop do break unless i<length
-         evo=f.fgetb
-         evonib=evo&_EVOTYPEMASK
-         level=f.fgetw
-         poke=f.fgetw
-         if poke<=PBSpecies.maxValue && (evo&_EVODATAMASK)==_EVOPREVFORM # evolved from
-           ret=poke
-           break
-         end
-         i+=5
-       end
-     end
-  }
+  record=AzureEvolutionDataCache.previous_record(species)
+  ret=record[2] if record && record[2]<=PBSpecies.maxValue
  # if ret!=species
  #   ret=pbGetBabySpecies(ret)
  # end

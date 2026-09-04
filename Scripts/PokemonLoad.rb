@@ -481,6 +481,7 @@ class PokemonLoad
           Kernel.pbMessage(_INTL("The save file was deleted."))
         end
       end
+      pbApplyFrameSkipSetting($PokemonSystem)
       if showContinue
         if !haveBackup
           begin; File.delete(savefile+".bak"); rescue; end

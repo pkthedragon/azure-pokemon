@@ -124,7 +124,7 @@ Events.onWildPokemonCreate+=proc {|sender,e|
     #     pokemon.pbLearnMove(:INGRAIN)
     #     pokemon.pbLearnMove(:ANCIENTPOWER)
     #     pokemon.pbLearnMove(:AMNESIA)
-    #     pokemon.item = PBItems::TANTRIBUTE
+    #     pokemon.item = PBItems::MEADOWTRIBUTE
     #     pokemon.setNature(PBNatures::TIMID)    
     #     for i in 0...6
     #       pokemon.ev[i]=(20)

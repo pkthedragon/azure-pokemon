@@ -113,7 +113,8 @@ class PokemonMenu
       end
       return
     end
-    commands[cmdPokedex=commands.length]=_INTL("Pokédex") if $Trainer.pokedex && $PokemonGlobal.pokedexViable.length>0
+    # Pokedex moved to CyberNav
+    # commands[cmdPokedex=commands.length]=_INTL("Pokédex") if $Trainer.pokedex && $PokemonGlobal.pokedexViable.length>0
     commands[cmdPokemon=commands.length]=_INTL("Pokémon") if $Trainer.party.length>0 && $game_switches[986]==false
     commands[cmdBag=commands.length]=_INTL("Bag") if !pbInBugContest?
     commands[cmdPokegear=commands.length]=_INTL("CyberNav") if $Trainer.pokegear
@@ -144,29 +145,30 @@ class PokemonMenu
     commands[cmdEndGame=commands.length]=_INTL("Quit Game")
     loop do
       command=@scene.pbShowCommands(commands)
-      if cmdPokedex>=0 && command==cmdPokedex
-        if DEXDEPENDSONLOCATION
-          pbFadeOutIn(99999) {
-             scene=PokemonPokedexScene.new
-             screen=PokemonPokedex.new(scene)
-             screen.pbStartScreen
-             @scene.pbRefresh
-          }
-        else
-          if $PokemonGlobal.pokedexViable.length==1
-            $PokemonGlobal.pokedexDex=$PokemonGlobal.pokedexViable[0]
-            $PokemonGlobal.pokedexDex=-1 if $PokemonGlobal.pokedexDex==$PokemonGlobal.pokedexUnlocked.length-1
-            pbFadeOutIn(99999) {
-               scene=PokemonPokedexScene.new
-               screen=PokemonPokedex.new(scene)
-               screen.pbStartScreen
-               @scene.pbRefresh
-            }
-          else
-            pbLoadRpgxpScene(Scene_PokedexMenu.new)
-          end
-        end
-      elsif cmdPokegear>=0 && command==cmdPokegear
+      # Pokedex moved to CyberNav
+      # if cmdPokedex>=0 && command==cmdPokedex
+      #   if DEXDEPENDSONLOCATION
+      #     pbFadeOutIn(99999) {
+      #        scene=PokemonPokedexScene.new
+      #        screen=PokemonPokedex.new(scene)
+      #        screen.pbStartScreen
+      #        @scene.pbRefresh
+      #     }
+      #   else
+      #     if $PokemonGlobal.pokedexViable.length==1
+      #       $PokemonGlobal.pokedexDex=$PokemonGlobal.pokedexViable[0]
+      #       $PokemonGlobal.pokedexDex=-1 if $PokemonGlobal.pokedexDex==$PokemonGlobal.pokedexUnlocked.length-1
+      #       pbFadeOutIn(99999) {
+      #          scene=PokemonPokedexScene.new
+      #          screen=PokemonPokedex.new(scene)
+      #          screen.pbStartScreen
+      #          @scene.pbRefresh
+      #       }
+      #     else
+      #       pbLoadRpgxpScene(Scene_PokedexMenu.new)
+      #     end
+      #   end
+      if cmdPokegear>=0 && command==cmdPokegear
         pbFadeOutIn(99999){
           pbLoadRpgxpScene(Scene_Pokegear.new)
         }

@@ -547,17 +547,8 @@ def pbGetPlayerTrainerType
 end 
 
 def pbGetTrainerTypeGender(trainertype)
-  ret=2 # 2 = gender unknown
-  pbRgssOpen("Data/trainertypes.dat","rb"){|f|
-     trainertypes=Marshal.load(f)
-     if !trainertypes[trainertype]
-       ret=2
-     else
-       ret=trainertypes[trainertype][7]
-       ret=2 if !ret
-     end
-  }
-  return ret
+  data=PBTrainerTypeData.try_get(trainertype)
+  return (data && data.gender) ? data.gender : 2
 end
 
 def pbTrainerName(name=nil)
@@ -975,21 +966,33 @@ def pbHideVisibleObjects
      end
   }
   ObjectSpace.each_object(Plane){|o|
-     if !o.disposed? && o.visible
-       visibleObjects.push(o)
-       o.visible=false
+     begin
+       if !o.disposed? && o.visible
+         visibleObjects.push(o)
+         o.visible=false
+       end
+     rescue RGSSError
+       # Object was disposed during iteration, skip it
      end
   }
   ObjectSpace.each_object(Tilemap){|o|
-     if !o.disposed? && o.visible
-       visibleObjects.push(o)
-       o.visible=false
+     begin
+       if !o.disposed? && o.visible
+         visibleObjects.push(o)
+         o.visible=false
+       end
+     rescue RGSSError
+       # Object was disposed during iteration, skip it
      end
   }
   ObjectSpace.each_object(Window){|o|
-     if !o.disposed? && o.visible
-       visibleObjects.push(o)
-       o.visible=false
+     begin
+       if !o.disposed? && o.visible
+         visibleObjects.push(o)
+         o.visible=false
+       end
+     rescue RGSSError
+       # Object was disposed during iteration, skip it
      end
   }
   return visibleObjects
@@ -1610,17 +1613,15 @@ def pbGetWildVictoryME
 end
 
 def pbPlayTrainerIntroME(trainertype)
-  pbRgssOpen("Data/trainertypes.dat","rb"){|f|
-     trainertypes=Marshal.load(f)
-     if trainertypes[trainertype]
-       bgm=trainertypes[trainertype][6]
-       if bgm && bgm!=""
-         bgm=pbStringToAudioFile(bgm)
-         pbMEPlay(bgm)
-         return
-       end
-     end
-  }
+  data=PBTrainerTypeData.try_get(trainertype)
+  if data
+    bgm=data.intro_bgm
+    if bgm && bgm!=""
+      bgm=pbStringToAudioFile(bgm)
+      pbMEPlay(bgm)
+      return
+    end
+  end
 end
 
 def pbGetTrainerBattleBGM(trainer) # can be a PokeBattle_Trainer or an array of PokeBattle_Trainer  
@@ -1628,20 +1629,16 @@ def pbGetTrainerBattleBGM(trainer) # can be a PokeBattle_Trainer or an array of 
     return $PokemonGlobal.nextBattleBGM.clone
   end
   music=nil
-  pbRgssOpen("Data/trainertypes.dat","rb"){|f|
-     trainertypes=Marshal.load(f)
-     if !trainer.is_a?(Array)
-       trainerarray=[trainer]
-     else
-       trainerarray=trainer
-     end
-     for i in 0...trainerarray.length
-       trainertype=trainerarray[i].trainertype
-       if trainertypes[trainertype]
-         music=trainertypes[trainertype][4]
-       end
-     end
-  }
+  if !trainer.is_a?(Array)
+    trainerarray=[trainer]
+  else
+    trainerarray=trainer
+  end
+  for i in 0...trainerarray.length
+    trainertype=trainerarray[i].trainertype
+    data=PBTrainerTypeData.try_get(trainertype)
+    music=data.battle_bgm if data
+  end
   ret=nil
   if music && music!=""
     ret=pbStringToAudioFile(music)
@@ -1669,12 +1666,8 @@ def pbGetTrainerBattleBGMFromType(trainertype)
     return $PokemonGlobal.nextBattleBGM.clone
   end
   music=nil
-  pbRgssOpen("Data/trainertypes.dat","rb"){|f|
-    trainertypes=Marshal.load(f)
-    if trainertypes[trainertype]
-      music=trainertypes[trainertype][4]
-    end
-  }  
+  data=PBTrainerTypeData.try_get(trainertype)
+  music=data.battle_bgm if data
   ret=nil
   if music && music!=""
     ret=pbStringToAudioFile(music)
@@ -1747,20 +1740,16 @@ def pbGetTrainerVictoryME(trainer) # can be a PokeBattle_Trainer or an array of 
     return $PokemonGlobal.nextBattleME.clone
   end
   music=nil
-  pbRgssOpen("Data/trainertypes.dat","rb"){|f|
-     trainertypes=Marshal.load(f)
-     if !trainer.is_a?(Array)
-       trainerarray=[trainer]
-     else
-       trainerarray=trainer
-     end
-     for i in 0...trainerarray.length
-       trainertype=(trainerarray[i].trainertype).to_i
-       if trainertypes[trainertype]
-         music=trainertypes[trainertype][5]
-       end
-     end
-  }
+  if !trainer.is_a?(Array)
+    trainerarray=[trainer]
+  else
+    trainerarray=trainer
+  end
+  for i in 0...trainerarray.length
+    trainertype=(trainerarray[i].trainertype).to_i
+    data=PBTrainerTypeData.try_get(trainertype)
+    music=data.victory_bgm if data
+  end
   ret=nil
   if music && music!=""
     ret=pbStringToAudioFile(music)
@@ -2550,35 +2539,14 @@ def pbGetRegionalNumber(region, nationalSpecies)
     # Return 0 if national species is outside range
     return 0
   end
-  pbRgssOpen("Data/regionals.dat","rb"){|f|
-     numRegions=f.fgetw
-     numDexDatas=f.fgetw
-     if region>=0 && region<numRegions
-       f.pos=4+region*numDexDatas*2
-       f.pos+=nationalSpecies*2
-       return f.fgetw
-    end
-  }
-  return 0
+  return AzureRegionalDexCache.regional_number(region,nationalSpecies)
 end
 
 # Gets the National Pokédex number of the specified species and region.  The
 # parameter "region" is zero-based.  For example, if two regions are defined,
 # they would each be specified as 0 and 1.
 def pbGetNationalNumber(region, regionalSpecies)
-  pbRgssOpen("Data/regionals.dat","rb"){|f|
-     numRegions=f.fgetw
-     numDexDatas=f.fgetw
-     if region>=0 && region<numRegions
-       f.pos=4+region*numDexDatas*2
-       # "i" specifies the national species
-       for i in 0...numDexDatas
-         regionalNum=f.fgetw
-         return i if regionalNum==regionalSpecies
-       end
-     end
-  }
-  return 0
+  return AzureRegionalDexCache.national_number(region,regionalSpecies)
 end
 
 # Gets an array of all national species within the given Regional Dex, sorted by
@@ -2587,25 +2555,7 @@ end
 # to be empty.  The parameter "region" is zero-based.  For example, if two
 # regions are defined, they would each be specified as 0 and 1.
 def pbAllRegionalSpecies(region)
-  ret=[0]
-  pbRgssOpen("Data/regionals.dat","rb"){|f|
-     numRegions=f.fgetw
-     numDexDatas=f.fgetw
-     if region>=0 && region<numRegions
-       f.pos=4+region*numDexDatas*2
-       # "i" specifies the national species
-       for i in 0...numDexDatas
-         regionalNum=f.fgetw
-         ret[regionalNum]=i if regionalNum!=0
-       end
-       # Replace unspecified regional
-       # numbers with zeros
-       for i in 0...ret.length
-         ret[i]=0 if !ret[i]
-       end
-     end
-  }
-  return ret
+  return AzureRegionalDexCache.all_species(region).clone
 end
 
 # Gets the ID number for the current region based on the player's current

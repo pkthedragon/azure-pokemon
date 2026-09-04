@@ -552,8 +552,8 @@ def pbSaveTrainerTypes()
   }
 end
 
-def pbSaveTrainerBattles()
-  data=load_data("Data/trainers.dat") rescue nil
+def pbSaveTrainerBattles(data=nil)
+  data=load_data("Data/trainers.dat") rescue nil if !data
   return if !data
   File.open("PBS/trainers.txt","wb"){|f|
      f.write(0xEF.chr)
@@ -657,31 +657,42 @@ end
 
 def pbSerializeConnectionData(conndata,mapinfos)
   File.open("PBS/connections.txt","wb"){|f|
+     f.write("# Map connections use named sections. Each point is either an edge and offset\r\n")
+     f.write("# (for example North,12) or an absolute X,Y coordinate.\r\n")
+     connectionNumber=0
      for conn in conndata
        if mapinfos
          # Skip if map no longer exists
          next if !mapinfos[conn[0]] || !mapinfos[conn[3]]
+       end
+       connectionNumber+=1
+       if mapinfos
          f.write(sprintf("# %s (%d) - %s (%d)\r\n",
             mapinfos[conn[0]] ? mapinfos[conn[0]].name : "???",conn[0],
             mapinfos[conn[3]] ? mapinfos[conn[3]].name : "???",conn[3]))
-         end
-         if conn[1].is_a?(String) || conn[4].is_a?(String)
-           f.write(sprintf("%d,%s,%d,%d,%s,%d\r\n",conn[0],conn[1],
-              conn[2],conn[3],conn[4],conn[5]))
-         else
-           ret=normalizeConnectionPoint(conn)
-           f.write(writeConnectionPoint(
-              ret[0],
-              ret[1],
-              ret[2],
-              ret[3],
-              ret[4],
-              ret[5]
-           ))
-         end
        end
+       ret=conn.clone
+       point1=nil
+       point2=nil
+       if ret[1].is_a?(String) || ret[4].is_a?(String)
+         point1=pbConnectionPointText(ret[1],ret[2])
+         point2=pbConnectionPointText(ret[4],ret[5])
+       else
+         # Visual-editor coordinates are already a complete connection. Keep
+         # them verbatim so saving and recompiling cannot shift stored fields.
+         point1=pbConnectionPointText(ret[1],ret[2])
+         point2=pbConnectionPointText(ret[4],ret[5])
+       end
+       f.write(sprintf("[Connection_%03d]\r\n",connectionNumber))
+       f.write(sprintf("Map1 = %d\r\n",ret[0]))
+       f.write(sprintf("Map1Point = %s\r\n",point1))
+       f.write(sprintf("Map2 = %d\r\n",ret[3]))
+       f.write(sprintf("Map2Point = %s\r\n\r\n",point2))
+     end
   }
   save_data(conndata,"Data/connections.dat")
+  AzureDataCache.clear("Data/connections.dat") if defined?(AzureDataCache)
+  MapFactoryHelper.clear if defined?(MapFactoryHelper) && MapFactoryHelper.respond_to?(:clear)
 end
 
 def pbSaveMetadata
@@ -690,9 +701,72 @@ def pbSaveMetadata
   pbSerializeMetadata(data,pbLoadRxData("Data/MapInfos"))
 end
 
+class AzurePBSStringWriter
+  attr_reader :string
+  def initialize; @string=""; end
+  def write(value); @string+=value.to_s; end
+end
+
+def pbMetadataCsvString(record,schema)
+  writer=AzurePBSStringWriter.new
+  pbWriteCsvRecord(record,writer,schema)
+  return writer.string
+end
+
+def pbSerializeSplitMetadataPBS(metadata,mapinfos)
+  globalLines=[]
+  globalFields=[]
+  globalRow=metadata[0] || []
+  globalNames={"WildVictoryME"=>"WildVictoryBGM","TrainerVictoryME"=>"TrainerVictoryBGM"}
+  for key in PokemonMetadata::GlobalTypes.keys
+    next if key[/^Player/]
+    schema=PokemonMetadata::GlobalTypes[key]
+    record=globalRow[schema[0]]
+    next if record==nil
+    outputKey=globalNames[key] || key
+    globalFields.push([outputKey,pbMetadataCsvString(record,schema)])
+  end
+  pbAltPBSAppendSection(globalLines,"0",globalFields,nil)
+  playerFields=["TrainerType","WalkCharset","CycleCharset","SurfCharset",
+                "RunCharset","DiveCharset","FishCharset","SurfFishCharset"]
+  for index in 0..(MetadataPlayerY-MetadataPlayerA)
+    record=globalRow[MetadataPlayerA+index]
+    next if !record
+    fields=[["LegacyPlayerSlot","Player#{(65+index).chr}"]]
+    trainerName=(getConstantName(PBTrainers,record[0]) rescue pbGetTrainerConst(record[0]))
+    fields.push([playerFields[0],trainerName])
+    for fieldIndex in 1...playerFields.length
+      fields.push([playerFields[fieldIndex],record[fieldIndex]])
+    end
+    pbAltPBSAppendSection(globalLines,(index+1).to_s,fields,nil)
+  end
+
+  mapLines=[]
+  mapNames={"WildVictoryME"=>"WildVictoryBGM","TrainerVictoryME"=>"TrainerVictoryBGM"}
+  for mapid in 1...metadata.length
+    row=metadata[mapid]
+    next if !row
+    fields=[]
+    fields.push(["Name",mapinfos[mapid].name]) if mapinfos && mapinfos[mapid]
+    for key in PokemonMetadata::NonGlobalTypes.keys
+      schema=PokemonMetadata::NonGlobalTypes[key]
+      record=row[schema[0]]
+      next if record==nil
+      outputKey=mapNames[key] || key
+      fields.push([outputKey,pbMetadataCsvString(record,schema)])
+    end
+    pbAltPBSAppendSection(mapLines,sprintf("%03d",mapid),fields,nil)
+  end
+  pbAltPBSWriteText("PBS/metadata.txt",globalLines)
+  pbAltPBSWriteText("PBS/map_metadata.txt",mapLines)
+end
+
 def pbSerializeMetadata(metadata,mapinfos)
-  save_data(metadata,"Data/metadata.dat")
-  File.open("PBS/metadata.txt","wb"){|f|
+  splitFormat=pbUsesSplitMetadataPBS("PBS/metadata.txt","PBS/map_metadata.txt")
+  if splitFormat
+    pbSerializeSplitMetadataPBS(metadata,mapinfos)
+  else
+    File.open("PBS/metadata.txt","wb"){|f|
      f.write(0xEF.chr)
      f.write(0xBB.chr)
      f.write(0xBF.chr)
@@ -716,7 +790,10 @@ def pbSerializeMetadata(metadata,mapinfos)
          f.write(sprintf("\r\n"))
        end
     end
-  }
+    }
+  end
+  save_data(metadata,"Data/metadata.dat")
+  pbInvalidateMetadataData(metadata) if defined?(pbInvalidateMetadataData)
 end
 
 def pbSaveEncounterData()
@@ -779,28 +856,28 @@ def pbSaveTownMap()
   }
 end
 
-def pbSavePhoneData
-  data=load_data("Data/phone.dat") rescue nil
+def pbSavePhoneData(sourceOutput="PBS/phone.txt",dataInput="Data/phone.dat")
+  data=load_data(dataInput) rescue nil
   return if !data
-  File.open("PBS/phone.txt","wb"){|f|
+  File.open(sourceOutput,"wb"){|f|
      f.write(0xEF.chr)
      f.write(0xBB.chr)
      f.write(0xBF.chr)
-     f.write("[<Generics>]\r\n")
-     f.write(data.generics.join("\r\n")+"\r\n")
-     f.write("[<BattleRequests>]\r\n")
-     f.write(data.battleRequests.join("\r\n")+"\r\n")
-     f.write("[<GreetingsMorning>]\r\n")
-     f.write(data.greetingsMorning.join("\r\n")+"\r\n")
-     f.write("[<GreetingsEvening>]\r\n")
-     f.write(data.greetingsEvening.join("\r\n")+"\r\n")
-     f.write("[<Greetings>]\r\n")
-     f.write(data.greetings.join("\r\n")+"\r\n")
-     f.write("[<Bodies1>]\r\n")
-     f.write(data.bodies1.join("\r\n")+"\r\n")
-     f.write("[<Bodies2>]\r\n")
-     f.write(data.bodies2.join("\r\n")+"\r\n")
+     sections=[
+       ["<Generics>",:generics],
+       ["<BattleRequests>",:battleRequests],
+       ["<GreetingsMorning>",:greetingsMorning],
+       ["<GreetingsEvening>",:greetingsEvening],
+       ["<Greetings>",:greetings],
+       ["<Bodies1>",:bodies1],
+       ["<Bodies2>",:bodies2]
+     ]
+     for section in sections
+       f.write("[#{section[0]}]\r\n")
+       f.write(data.send(section[1]).join("\r\n")+"\r\n")
+     end
   }
+  return data
 end
 
 def pbSaveTrainerLists()
@@ -2519,7 +2596,7 @@ end
 # Trainer editor
 ################################################################################
 class TrainerBattleLister
-  def initialize(selection,includeNew)
+  def initialize(selection,includeNew,editorData=nil)
     @sprite=IconSprite.new
     @sprite.bitmap=nil
     @sprite.z=2
@@ -2527,6 +2604,7 @@ class TrainerBattleLister
     @commands=[]
     @ids=[]
     @includeNew=includeNew
+    @editorData=editorData
     @trainers=nil
     @index=0
   end
@@ -2542,7 +2620,8 @@ class TrainerBattleLister
   def commands
     @commands.clear
     @ids.clear
-    @trainers=load_data("Data/trainers.dat")
+    @editorData=AzureTrainerTeamEditorData.load if !@editorData
+    @trainers=@editorData.records
     if @includeNew
       @commands.push(_ISPRINTF("[NEW TRAINER BATTLE]"))
       @ids.push(-1)
@@ -2659,31 +2738,30 @@ end
 
 def pbTrainerBattleEditor
   selection=0
-  trainers=load_data("Data/trainers.dat")
+  editorData=AzureTrainerTeamEditorData.load
   trainertypes=load_data("Data/trainertypes.dat")
   modified=false
-  for trainer in trainers
+  editorData.each {|index,trainer|
     trtype=trainer[0]
     if !trainertypes || !trainertypes[trtype]
       trainer[0]=0
       modified=true
     end
-  end
+  }
   if modified
-    save_data(trainers,"Data/trainers.dat")
+    editorData.commit
     pbConvertTrainerData
   end
-  pbListScreenBlock(_INTL("Trainer Battles"),TrainerBattleLister.new(selection,true)){|button,trtype|
+  pbListScreenBlock(_INTL("Trainer Battles"),TrainerBattleLister.new(selection,true,editorData)){|button,trtype|
      if trtype
        index=trtype[0]
        trainerdata=trtype[1]
        if button==Input::A
          if index>=0
-           if Kernel.pbConfirmMessageSerious("Delete this trainer battle?")
-             data=load_data("Data/trainers.dat")
-             data.delete_at(index)
-             save_data(data,"Data/trainers.dat")
-             pbConvertTrainerData
+            if Kernel.pbConfirmMessageSerious("Delete this trainer battle?")
+              editorData.delete_at(index)
+              editorData.commit
+              pbConvertTrainerData
              Kernel.pbMessage(_INTL("The Trainer battle was deleted."))
            end
          end
@@ -2708,13 +2786,13 @@ def pbTrainerBattleEditor
            end
            trainername=Kernel.pbMessageFreeText(_INTL("Now enter the trainer's name."),"",false,32)
            next  if trainername==""
-           trainerparty=pbGetFreeTrainerParty(trainertype,trainername)
+           trainerparty=pbGetFreeTrainerParty(trainertype,trainername,editorData)
            if trainerparty<0
              Kernel.pbMessage(_INTL("There is no room to create a trainer of that type and name."))
              next 
            end
            ###############
-           pbNewTrainer(trainertype,trainername,trainerparty)
+           pbNewTrainer(trainertype,trainername,trainerparty,editorData)
          else
            data=[
               trainerdata[0],      # Trainer type
@@ -2748,21 +2826,23 @@ def pbTrainerBattleEditor
                ]
                if trainerdata[3].length==0
                  Kernel.pbMessage(_INTL("Can't save.  The Pokémon list is empty."))
-               elsif !trainerdata[1] || trainerdata[1].length==0
-                 Kernel.pbMessage(_INTL("Can't save.  No name was entered."))
-               else
+                elsif !trainerdata[1] || trainerdata[1].length==0
+                  Kernel.pbMessage(_INTL("Can't save.  No name was entered."))
+                elsif editorData.conflicting_index(trainerdata,index)
+                  conflict=editorData.conflicting_index(trainerdata,index)
+                  Kernel.pbMessage(_INTL("Can't save. Another Trainer battle with this type, name, and ID exists at index {1}.",conflict))
+                else
                  save=true
                  break
                end
              else
                break
              end
-           end
-           if save
-             data=load_data("Data/trainers.dat")
-             data[index]=trainerdata
-             save_data(data,"Data/trainers.dat")
-             pbConvertTrainerData
+            end
+            if save
+              editorData.replace_at(index,trainerdata)
+              editorData.commit
+              pbConvertTrainerData
            end
          end
        end
@@ -4009,6 +4089,7 @@ GLOBALMETADATA=[
           serializeConnectionData
           serializeMetadata
           save_data(@encdata,"Data/encounters.dat")
+          pbInvalidateEncounterData if defined?(pbInvalidateEncounterData)
           pbSaveEncounterData()
           pbClearData
         end

@@ -1,5 +1,5 @@
 def getBattleSpriteMetricOffset(species,index,metrics=nil)
-  metrics=load_data("Data/metrics.dat") if !metrics
+  metrics=pbCachedData("Data/metrics.dat") if !metrics
   ret=0
   if index==1 || index==3   # Foe Pokémon
     ret+=(metrics[1][species] || 0)*2 # enemy Y

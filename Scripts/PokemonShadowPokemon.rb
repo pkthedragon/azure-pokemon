@@ -400,7 +400,7 @@ class PokeBattle_Pokemon
     self.savedev=[0,0,0,0,0,0]
     self.shadowmoves=[0,0,0,0,0,0,0,0]
     # Retrieve shadow moves
-    moves=load_data("Data/shadowmoves.dat") rescue []
+    moves=pbCachedData("Data/shadowmoves.dat") rescue []
     if moves[self.species] && moves[self.species].length>0
       for i in 0...[4,moves[self.species].length].min
         self.shadowmoves[i]=moves[self.species][i]

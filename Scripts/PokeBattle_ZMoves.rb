@@ -21,7 +21,7 @@ class PokeBattle_ZMoves < PokeBattle_Move
   attr_reader(:status)
   attr_reader(:oldname)
   attr_accessor(:zmove)
-  
+
   ################################################################################
   # Z Move data
   ################################################################################
@@ -113,7 +113,7 @@ class PokeBattle_ZMoves < PokeBattle_Move
       end
     end
   end
-  
+
   ZMOVENAMES = ["Breakneck Blitz","All-Out Pummeling","Supersonic Skystrike","Acid Downpour","Tectonic Rage",
     "Continental Crush","Savage Spin-Out","Never-Ending Nightmare","Corkscrew Crash","Inferno Overdrive",
     "Hydro Vortex","Bloom Doom","Gigavolt Havoc","Shattered Psyche","Subzero Slammer",
@@ -122,14 +122,14 @@ class PokeBattle_ZMoves < PokeBattle_Move
     "Genesis Supernova","Guardian of Alola","Soul-Stealing 7-Star Strike","Clangorous Soulblaze","Splintered Stormshards",
     "Let's Snuggle Forever","Searing Sunraze Smash","Menacing Moonraze Maelstrom","Light That Burns The Sky","Dash","Shield",
     "Illusion","Strike"]
-  
+
   ZMOVEFLAGS = ["f","f","f","f","f","f","f","f","f","f","f","f","f","f","f","f","f","f","f","f","af","f","","","af","af","","af","kf","f","f","f","f","f","f","f","f","f"] #good luck
-  
+
   ################################################################################
   # Creating a z move
   ################################################################################
-  def initialize(battle,battler,move,crystal,simplechoice=false,setup=false,moveindex=0) 
-    # added 2 arguments here, setup is for making z-moves display in the fightbox, moveindex is the 
+  def initialize(battle,battler,move,crystal,simplechoice=false,setup=false,moveindex=0)
+    # added 2 arguments here, setup is for making z-moves display in the fightbox, moveindex is the
     if !(crystal == PBItems::INTERCEPTZ2)
       @status     = !(move.pbIsPhysical?(move.type) || move.pbIsSpecial?(move.type))
       @oldmove    = move
@@ -162,12 +162,12 @@ class PokeBattle_ZMoves < PokeBattle_Move
       if setup==false
         battler.pbBeginTurn(self)
         @battle.pbDisplayBrief(_INTL("{1} unleashed its full force Z-Move!",battler.pbThis))
-        @battle.pbDisplayBrief(_INTL("{1}!",@name))   
+        @battle.pbDisplayBrief(_INTL("{1}!",@name))
         zchoice=@battle.choices[battler.index] #[0,0,move,move.target]
         if simplechoice!=false
           zchoice=simplechoice
-        end   
-      end  
+        end
+      end
     else
       @status     = (moveindex==1 || moveindex==2)
       @oldmove    = move
@@ -220,18 +220,20 @@ class PokeBattle_ZMoves < PokeBattle_Move
       if setup==false
         battler.pbBeginTurn(self)
         @battle.pbDisplayBrief(_INTL("{1} unleashed its full force Z-Move!",battler.pbThis))
-        @battle.pbDisplayBrief(_INTL("{1}!",@name))   
+        @battle.pbDisplayBrief(_INTL("{1}!",@name))
         zchoice=@battle.choices[battler.index] #[0,0,move,move.target]
         if simplechoice!=false
           zchoice=simplechoice
-        end   
+        end
       end
-    end   
+    end
     if setup==false
       ztargets=[]
       user=battler.pbFindUser(zchoice,ztargets)
       if @thismove.target==PBTargets::AllOpposing && crystal==PBItems::KOMMONIUMZ2 && ztargets.length!=0
-        user.pbAddTarget(ztargets,ztargets[0].pbPartner)
+        ztargets[0].sameSideLivingBattlers(false).each do |ally|
+          user.pbAddTarget(ztargets,ally)
+        end
       end
       if user.hasWorkingAbility(:MOLDBREAKER) || user.hasWorkingAbility(:TERAVOLT) || user.hasWorkingAbility(:TURBOBLAZE)
         for battlers in ztargets
@@ -241,7 +243,7 @@ class PokeBattle_ZMoves < PokeBattle_Move
         for battlers in ztargets
           battlers.moldbroken = false
         end
-      end 
+      end
       ###
       for target in ztargets
         target.damagestate.reset
@@ -259,19 +261,19 @@ class PokeBattle_ZMoves < PokeBattle_Move
       if isConst?(battler.ability,PBAbilities,:PROTEAN) ||
         isConst?(battler.ability,PBAbilities,:LIBERO)
         prot1 = battler.type1
-        prot2 = battler.type2 
+        prot2 = battler.type2
         if !battler.pbHasType?(protype) || (defined?(prot2) && prot1 != prot2)
           battler.type1=protype
           battler.type2=protype
           typename=PBTypes.getName(protype)
           @battle.pbDisplay(_INTL("{1} had its type changed to {3}!",battler.pbThis,PBAbilities.getName(battler.ability),typename))
         end
-      end 
+      end
       if isConst?(battler.ability, PBAbilities, :STANCECHANGE)
         battler.pbCheckForm(self)
       end
       ###
-      if ztargets.length==0 && !(crystal == PBItems::INTERCEPTZ2)    
+      if ztargets.length==0 && !(crystal == PBItems::INTERCEPTZ2)
         if @thismove.target==PBTargets::SingleNonUser ||
           @thismove.target==PBTargets::RandomOpposing ||
           @thismove.target==PBTargets::AllOpposing ||
@@ -279,17 +281,17 @@ class PokeBattle_ZMoves < PokeBattle_Move
           @thismove.target==PBTargets::Partner ||
           @thismove.target==PBTargets::UserOrPartner ||
           @thismove.target==PBTargets::SingleOpposing ||
-          @thismove.target==PBTargets::OppositeOpposing 
+          @thismove.target==PBTargets::OppositeOpposing
           @battle.pbDisplay(_INTL("But there was no target..."))
         else
           #selftarget status moves here
-          pbZStatus(@id,battler)    
-          if !(crystal == PBItems::INTERCEPTZ2)    
+          pbZStatus(@id,battler)
+          if !(crystal == PBItems::INTERCEPTZ2)
             zchoice[2].name = @name
             battler.pbUseMove(zchoice)
             @oldmove.name = @oldname
           end
-        end      
+        end
       else
         if @status
           #targeted status Z's here
@@ -406,20 +408,20 @@ class PokeBattle_ZMoves < PokeBattle_Move
           battler.pbEndTurn(zchoice)
           @battle.pbJudgeSwitch
         end
-      end  
-    end  
+      end
+    end
   end
-  
+
   def pbZMoveName(oldmove,id,crystal)
     if (crystal == PBItems::INTERCEPTZ2)
       PokeBattle_ZMoves::ZMOVENAMES[@id-10001]
-    elsif @status 
+    elsif @status
       return "Z-" + oldmove.name
     else
       PokeBattle_ZMoves::ZMOVENAMES[@id-10001]
     end
   end
-  
+
   def pbZMoveFunction(oldmove,crystal,moveindex)
     if @status && !(crystal == PBItems::INTERCEPTZ2)
       return oldmove.function
@@ -431,9 +433,9 @@ class PokeBattle_ZMoves < PokeBattle_Move
       end
     else
       "Z"
-    end 
+    end
   end
-  
+
   def pbZMoveBaseDamage(oldmove,crystal,moveindex=0,id=oldmove.id)
     if @status
       return 0
@@ -568,7 +570,7 @@ class PokeBattle_ZMoves < PokeBattle_Move
       end
     end
   end
-  
+
   def pbZMoveAccuracy(oldmove,crystal)
     if @status
       return oldmove.accuracy
@@ -576,8 +578,8 @@ class PokeBattle_ZMoves < PokeBattle_Move
       return 0 #Z Moves can't miss
     end
   end
-  
-  
+
+
   def pbZMoveFlags(oldmove,id,crystal)
     if @status && !(crystal == PBItems::INTERCEPTZ2)
       return oldmove.flags
@@ -603,7 +605,7 @@ class PokeBattle_ZMoves < PokeBattle_Move
       return flaglist
     end
   end
-  
+
   ################################################################################
   # About the move
   ################################################################################
@@ -626,7 +628,7 @@ class PokeBattle_ZMoves < PokeBattle_Move
     end
     return true
   end
-  
+
   ################################################################################
   # PokeBattle_Move Features needed for move use
   ################################################################################
@@ -640,27 +642,27 @@ class PokeBattle_ZMoves < PokeBattle_Move
       return damagemult
     end
   end
-  
+
   def pbZMoveEffects(attacker,opponent)
     if @id == PBMoves::STOKEDSPARKSURFER
       if opponent.pbCanParalyze?(false)
         opponent.pbParalyze(attacker)
         @battle.pbDisplay(_INTL("{1} is paralyzed! It may be unable to move!",opponent.pbThis))
       end
-      if $fefieldeffect!=1 && $fefieldeffect!=35 
-        if $febackup>0 && $febackup<51 && @battle.field.effects[PBEffects::Splintered]==0 
+      if $fefieldeffect!=1 && $fefieldeffect!=35
+        if $febackup>0 && $febackup<51 && @battle.field.effects[PBEffects::Splintered]==0
           if @battle.field.effects[PBEffects::ElectricTerrain]==0
             @battle.field.effects[PBEffects::ElectricTerrain]=3
             @battle.pbDisplay(_INTL("The terrain became electrified!"))
-          end  
-        else          
-          $fetempfield = 1 
+          end
+        else
+          $fetempfield = 1
           $fefieldeffect = $fetempfield
           @battle.pbChangeBGSprite
           @battle.field.effects[PBEffects::Terrain]=3
-          @battle.field.effects[PBEffects::ElectricTerrain]=3 
+          @battle.field.effects[PBEffects::ElectricTerrain]=3
           @battle.pbDisplay(_INTL("The terrain became electrified!"))
-        end  
+        end
         @battle.seedCheck
       end
     elsif @id == PBMoves::TECTONICRAGE # Tectonic Rage
@@ -679,7 +681,7 @@ class PokeBattle_ZMoves < PokeBattle_Move
         $febackup = 23
         @battle.pbChangeBGSprite
         @battle.pbDisplay(_INTL("The dark crystals were shattered!"))
-        @battle.seedCheck    
+        @battle.seedCheck
       elsif $fefieldeffect == 13 # Icy Field
         if $fefieldeffect == $febackup
           $fefieldeffect = 23
@@ -806,12 +808,12 @@ class PokeBattle_ZMoves < PokeBattle_Move
             end
           end
           $fecounter = 0
-        end       
+        end
       elsif $fefieldeffect == 25 # Crystal Cavern
         $fefieldeffect = 23
         @battle.pbChangeBGSprite
         @battle.pbDisplay(_INTL("The crystals were broken up!"))
-        @battle.seedCheck             
+        @battle.seedCheck
       elsif $fefieldeffect == 30 # Mirror Arena
         @battle.pbDisplay(_INTL("The mirror arena shattered!"))
         for i in 0...4
@@ -832,9 +834,9 @@ class PokeBattle_ZMoves < PokeBattle_Move
           @battle.battlers[i].pbFaint if @battle.battlers[i].isFainted?
           $fefieldeffect = 0
           $febackup = 0
-          @battle.pbChangeBGSprite           
-          @battle.seedCheck            
-        end 
+          @battle.pbChangeBGSprite
+          @battle.seedCheck
+        end
       end
     elsif @id == PBMoves::BLOOMDOOM
       if $fefieldeffect!=2 && $fefieldeffect!=35
@@ -842,37 +844,37 @@ class PokeBattle_ZMoves < PokeBattle_Move
           if @battle.field.effects[PBEffects::GrassyTerrain]==0
             @battle.field.effects[PBEffects::GrassyTerrain]=3
             @battle.pbDisplay(_INTL("The terrain became grassy!"))
-          end  
-        else           
+          end
+        else
           $fetempfield = 2
           $fefieldeffect = $fetempfield
           @battle.pbChangeBGSprite
-          @battle.field.effects[PBEffects::Terrain]=3 
+          @battle.field.effects[PBEffects::Terrain]=3
           @battle.field.effects[PBEffects::GrassyTerrain]=3
           @battle.pbDisplay(_INTL("The terrain became grassy!"))
-        end  
-        @battle.seedCheck        
-      end          
+        end
+        @battle.seedCheck
+      end
       if $fefieldeffect==33
         if $fecounter<4
           $fecounter+=1
           @battle.pbChangeBGSprite
           @battle.pbDisplay(_INTL("Bloom Doom grew the garden a little!"))
-        end  
-      end        
+        end
+      end
     elsif @id == PBMoves::ACIDDOWNPOUR
       if $fefieldeffect==2  # Grassy
         $fetempfield = 10
         $fefieldeffect = $fetempfield
         @battle.pbChangeBGSprite
         @battle.pbDisplay(_INTL("The grassy terrain was corroded!"))
-        @battle.seedCheck     
-      elsif $fefieldeffect==3 # Misty 
+        @battle.seedCheck
+      elsif $fefieldeffect==3 # Misty
         $fetempfield = 11
         $fefieldeffect = $fetempfield
         @battle.pbChangeBGSprite
         @battle.pbDisplay(_INTL("Poison spread through the mist!"))
-        @battle.seedCheck   
+        @battle.seedCheck
       elsif $fefieldeffect==19 # Wasteland
         if ((!opponent.pbHasType?(:POISON) && !opponent.pbHasType?(:STEEL)) || opponent.corroded) &&
           !(opponent.ability == PBAbilities::TOXICBOOST) &&
@@ -919,18 +921,18 @@ class PokeBattle_ZMoves < PokeBattle_Move
         end
       end
     elsif @id == PBMoves::GENESISSUPERNOVA && $fefieldeffect!=37 && $fefieldeffect!=35 && $fefieldeffect!=22 && $fefieldeffect!=38 && $fefieldeffect!=39
-      if $febackup>0 && $febackup<38 && @battle.field.effects[PBEffects::Splintered]==0 
+      if $febackup>0 && $febackup<38 && @battle.field.effects[PBEffects::Splintered]==0
         if @battle.field.effects[PBEffects::PsychicTerrain]==0
           @battle.field.effects[PBEffects::PsychicTerrain]=5
           @battle.pbDisplay(_INTL("The terrain became mysterious!"))
-        end  
-      else      
+        end
+      else
         $fetempfield = 37
         $fefieldeffect = $fetempfield
         @battle.pbChangeBGSprite
         @battle.field.effects[PBEffects::Terrain]=5
         @battle.pbDisplay(_INTL("The terrain became mysterious!"))
-      end   
+      end
       @battle.seedCheck
     elsif @id == PBMoves::INFERNOOVERDRIVE # Inferno Overdrive
       if $fefieldeffect==13  # Icy Field
@@ -941,7 +943,7 @@ class PokeBattle_ZMoves < PokeBattle_Move
         end
         @battle.pbChangeBGSprite
         @battle.pbDisplay(_INTL("The ice melted away!"))
-        @battle.seedCheck  
+        @battle.seedCheck
       elsif $fefieldeffect == 11 # Corrosive Mist Field
         dampcheck=0
         for i in 0...4
@@ -967,7 +969,7 @@ class PokeBattle_ZMoves < PokeBattle_Move
           end
         else
           @battle.pbDisplay(_INTL("A Pokemon's Damp ability prevented a complete explosion!"))
-        end        
+        end
         if $fefieldeffect == $febackup
           $fefieldeffect = 0
         else
@@ -976,24 +978,24 @@ class PokeBattle_ZMoves < PokeBattle_Move
         @battle.pbChangeBGSprite
         @battle.pbDisplay(_INTL("The toxic mist combusted!"))
         @battle.field.effects[PBEffects::Terrain]=0
-        @battle.seedCheck 
+        @battle.seedCheck
       elsif $fefieldeffect == 27 # Mountain
         $fefieldeffect = 16
         @battle.pbChangeBGSprite
         @battle.pbDisplay(_INTL("The mountain erupted!"))
-        @battle.seedCheck 
+        @battle.seedCheck
       elsif $fefieldeffect == 28 # Snowy Mountain
         $fefieldeffect = 27
         @battle.pbChangeBGSprite
         @battle.pbDisplay(_INTL("The snow melted away!"))
-        @battle.seedCheck 
+        @battle.seedCheck
       elsif $fefieldeffect==33 # Flower Garden Field
         if $fecounter>0
           $fefieldeffect = 7
           @battle.pbChangeBGSprite
           @battle.pbDisplay(_INTL("The garden caught fire!"))
           @battle.seedCheck
-        end 
+        end
       end
     elsif @id == PBMoves::CONTINENTALCRUSH # Continental Crush
       if $fefieldeffect == 7 # Volcanic Field
@@ -1087,7 +1089,7 @@ class PokeBattle_ZMoves < PokeBattle_Move
           end
           $fecounter = 0
         end
-      end   
+      end
     elsif @id == PBMoves::SUBZEROSLAMMER # Subzero Slammer
       if $fefieldeffect == 16 # Volcanic Top Field
         if $fefieldeffect == $febackup
@@ -1111,13 +1113,13 @@ class PokeBattle_ZMoves < PokeBattle_Move
         $fefieldeffect = 13
         @battle.pbChangeBGSprite
         @battle.pbDisplay(_INTL("The toxic water froze over!"))
-        @battle.seedCheck     
+        @battle.seedCheck
       elsif $fefieldeffect == 27 # Mountain
         $fefieldeffect = 28
         @battle.pbChangeBGSprite
         @battle.pbDisplay(_INTL("The mountain was covered in snow!"))
-        @battle.seedCheck                   
-      end  
+        @battle.seedCheck
+      end
     elsif @id == PBMoves::HYDROVORTEX # Hydro Vortex
       if $fefieldeffect == 7 # Burning Field
         if $fefieldeffect == $febackup
@@ -1140,22 +1142,22 @@ class PokeBattle_ZMoves < PokeBattle_Move
             @battle.pbCommonAnimation("StatDown",@battle.battlers[i],nil)
             @battle.pbDisplay(_INTL("{1}'s Accuracy fell!",@battle.battlers[i].pbThis))
           end
-        end                     
-      end     
+        end
+      end
     elsif @id == PBMoves::GIGAVOLTHAVOC # Gigavolt Havoc
       if $fefieldeffect==17 # Factory Field
         $fefieldeffect = 18
         $febackup = 18
         @battle.pbChangeBGSprite
         @battle.pbDisplay(_INTL("The field shorted out!"))
-        @battle.seedCheck     
+        @battle.seedCheck
       elsif $fefieldeffect==18 # Short-Circuit Field
         $fefieldeffect = 17
         $febackup = 17
         @battle.pbChangeBGSprite
         @battle.pbDisplay(_INTL("SYSTEM ONLINE."))
-        @battle.seedCheck       
-      end       
+        @battle.seedCheck
+      end
     elsif @id == PBMoves::OCEANICOPERETTA # Oceanic Operetta
       if $fefieldeffect == 7 # Volcanic Field
         if $fefieldeffect == $febackup
@@ -1178,8 +1180,8 @@ class PokeBattle_ZMoves < PokeBattle_Move
             @battle.pbCommonAnimation("StatDown",@battle.battlers[i],nil)
             @battle.pbDisplay(_INTL("{1}'s Accuracy fell!",@battle.battlers[i].pbThis))
           end
-        end    
-      end     
+        end
+      end
     elsif @id == PBMoves::SUPERSONICSKYSTRIKE # Supersonic Skystrike
       if $fefieldeffect == 3 # Misty Terrain
         if $fefieldeffect == $febackup
@@ -1201,7 +1203,7 @@ class PokeBattle_ZMoves < PokeBattle_Move
         @battle.pbDisplay(_INTL("The mist was blown away!"))
         @battle.field.effects[PBEffects::Terrain]=0
         @battle.seedCheck
-      end     
+      end
     elsif @id == PBMoves::DEVASTATINGDRAKE
       if $fefieldeffect == 23 # Cave Field
         # Cave Field transformation removed - field is now stable
@@ -1226,7 +1228,7 @@ class PokeBattle_ZMoves < PokeBattle_Move
   end
 ################################################################################
 # PokeBattle_ActualScene Feature for playing animation (based on common anims)
-################################################################################    
+################################################################################
 
 def pbShowAnimation(movename,user,target,hitnum=0,alltargets=nil,showanimation=true)
   if @battle.battlescene
@@ -1248,7 +1250,7 @@ def pbShowAnimation(movename,user,target,hitnum=0,alltargets=nil,showanimation=t
           @battle.scene.pbAnimationCore(animations[i],user,(target!=nil) ? target : user)
           return
         end
-      end 
+      end
       i-=1
     end
   end
@@ -1298,8 +1300,8 @@ def pbZStatus(move,attacker)
     sublife=[(attacker.totalhp/4).floor,1].max
     if attacker.hp<=sublife
       @battle.pbDisplay(_INTL("It was too weak to make a substitute!"))
-      return -1  
-    end    
+      return -1
+    end
     #@battle.scene.pbSubstituteSprite(attacker,attacker.pbIsOpposing?(1))
     attacker.effects[PBEffects::MultiTurn]=0
     if attacker.effects[PBEffects::MultiTurnAttack] == PBMoves::BINDINGWORD
@@ -1314,7 +1316,7 @@ def pbZStatus(move,attacker)
   elsif protectmove.include?(move)
     attacker.effects[PBEffects::Protect]=true
     attacker.effects[PBEffects::ProtectRate]*=2
-    @battle.pbDisplayBrief(_INTL("{1} protected itself!",attacker.pbThis)) 
+    @battle.pbDisplayBrief(_INTL("{1} protected itself!",attacker.pbThis))
   elsif atk1.include?(move)
     if attacker.pbCanIncreaseStatStage?(PBStats::ATTACK,false)
       attacker.pbIncreaseStat(PBStats::ATTACK,1,false,nil,nil,false,true,false)
@@ -1492,12 +1494,12 @@ def pbZStatus(move,attacker)
     attacker.effects[PBEffects::ZHeal]=true
   elsif centre.include?(move)
     attacker.effects[PBEffects::FollowMe]=true
-    if !attacker.pbPartner.isFainted?
-      attacker.pbPartner.effects[PBEffects::FollowMe]=false
-      attacker.pbPartner.effects[PBEffects::RagePowder]=false  
-      @battle.pbDisplayBrief(_INTL("{1}'s Z-Power made it the centre of attention!",attacker.pbThis))
+    attacker.sameSideLivingBattlers(false).each do |ally|
+      ally.effects[PBEffects::FollowMe]=false
+      ally.effects[PBEffects::RagePowder]=false
     end
-  end    
+    @battle.pbDisplayBrief(_INTL("{1}'s Z-Power made it the centre of attention!",attacker.pbThis))
+  end
 end
 
 end

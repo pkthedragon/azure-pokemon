@@ -118,4 +118,125 @@ module PokeBattle_SceneConstants
   FOCUSUSER_Y   = 224   # 188
   FOCUSTARGET_X = 384   # 352
   FOCUSTARGET_Y = 96    # 108, 98
+
+  def self.pbSidePosition(index)
+    return index / 2
+  end
+
+  def self.pbBattlerPosition(index, sideSize = 1)
+    sideSize = 1 if !sideSize || sideSize < 1
+    position = pbSidePosition(index)
+    opposing = (index & 1) == 1
+    if opposing
+      case sideSize
+      when 1
+        return [FOEBATTLER_X, FOEBATTLER_Y]
+      when 2
+        positions = [
+          [FOEBATTLERD1_X, FOEBATTLERD1_Y],
+          [FOEBATTLERD2_X, FOEBATTLERD2_Y]
+        ]
+      else
+        positions = [
+          [FOEBATTLER_X + 72, FOEBATTLER_Y],
+          [FOEBATTLER_X,      FOEBATTLER_Y - 16],
+          [FOEBATTLER_X - 72, FOEBATTLER_Y - 32]
+        ]
+      end
+    else
+      case sideSize
+      when 1
+        return [PLAYERBATTLER_X, PLAYERBATTLER_Y]
+      when 2
+        positions = [
+          [PLAYERBATTLERD1_X, PLAYERBATTLERD1_Y],
+          [PLAYERBATTLERD2_X, PLAYERBATTLERD2_Y]
+        ]
+      else
+        positions = [
+          [PLAYERBATTLER_X - 72, PLAYERBATTLER_Y - 12],
+          [PLAYERBATTLER_X,      PLAYERBATTLER_Y],
+          [PLAYERBATTLER_X + 72, PLAYERBATTLER_Y + 16]
+        ]
+      end
+    end
+    return positions[position] || positions[-1]
+  end
+
+  def self.pbTrainerPosition(opposing, trainerIndex = 0, sideSize = 1)
+    if opposing
+      case sideSize
+      when 1
+        return [FOETRAINER_X, FOETRAINER_Y]
+      when 2
+        positions = [
+          [FOETRAINERD1_X, FOETRAINERD1_Y],
+          [FOETRAINERD2_X, FOETRAINERD2_Y]
+        ]
+      else
+        positions = [
+          [FOETRAINER_X + 52, FOETRAINER_Y],
+          [FOETRAINER_X - 12, FOETRAINER_Y - 18],
+          [FOETRAINER_X - 76, FOETRAINER_Y - 36]
+        ]
+      end
+    else
+      case sideSize
+      when 1
+        return [PLAYERTRAINER_X, PLAYERTRAINER_Y]
+      when 2
+        positions = [
+          [PLAYERTRAINERD1_X, PLAYERTRAINERD1_Y],
+          [PLAYERTRAINERD2_X, PLAYERTRAINERD2_Y]
+        ]
+      else
+        positions = [
+          [PLAYERTRAINER_X - 52, PLAYERTRAINER_Y - 6],
+          [PLAYERTRAINER_X,      PLAYERTRAINER_Y],
+          [PLAYERTRAINER_X + 52, PLAYERTRAINER_Y + 8]
+        ]
+      end
+    end
+    return positions[trainerIndex] || positions[0]
+  end
+
+  def self.pbDataBoxPosition(index, sideSize = 1)
+    sideSize = 1 if !sideSize || sideSize < 1
+    position = pbSidePosition(index)
+    opposing = (index & 1) == 1
+    if opposing
+      case sideSize
+      when 1
+        return [FOEBOX_X, FOEBOX_Y]
+      when 2
+        positions = [
+          [FOEBOXD1_X, FOEBOXD1_Y],
+          [FOEBOXD2_X, FOEBOXD2_Y]
+        ]
+      else
+        positions = [
+          [FOEBOXD1_X + 8, FOEBOX_Y],
+          [FOEBOX_X + 4,   FOEBOX_Y + 46],
+          [FOEBOXD2_X,     FOEBOX_Y + 92]
+        ]
+      end
+    else
+      case sideSize
+      when 1
+        return [PLAYERBOX_X, PLAYERBOX_Y]
+      when 2
+        positions = [
+          [PLAYERBOXD1_X, PLAYERBOXD1_Y],
+          [PLAYERBOXD2_X, PLAYERBOXD2_Y]
+        ]
+      else
+        positions = [
+          [PLAYERBOXD1_X - 8, PLAYERBOX_Y - 52],
+          [PLAYERBOX_X - 4,   PLAYERBOX_Y - 2],
+          [PLAYERBOXD2_X,     PLAYERBOX_Y + 48]
+        ]
+      end
+    end
+    return positions[position] || positions[-1]
+  end
 end

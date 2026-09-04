@@ -283,6 +283,11 @@ def pbDebugMenu
   commands.add("compiletrainers", _INTL("Compile Trainers"))
   commands.add("compileitems", _INTL("Compile Items"))
   commands.add("compilemoves", _INTL("Compile Moves"))
+  commands.add("validatepbs", _INTL("Validate PBS Data"))
+  commands.add("compilechanged", _INTL("Compile Changed Data"))
+  commands.add("exportnamedpbs", _INTL("Export Named PBS Snapshot"))
+  commands.add("restorepbs", _INTL("Restore PBS Backup"))
+  commands.add("datacachestats", _INTL("Compiled Data Cache Stats"))
   commands.add("compilemostdata", _INTL("Compile Data (no maps)"))
   commands.add("compiledata",_INTL("Compile Data"))
   commands.add("mapconnections",_INTL("Map Connections"))
@@ -712,6 +717,7 @@ def pbDebugMenu
         pbEncounterEditorMap(encdata,map)
       end
       save_data(encdata,"Data/encounters.dat")
+      pbInvalidateEncounterData if defined?(pbInvalidateEncounterData)
       pbSaveEncounterData()
       pbClearData()
     elsif cmd=="setmetadata"
@@ -811,6 +817,66 @@ def pbDebugMenu
     elsif cmd=="compilemoves"
       pbCompileMoves
       Kernel.pbMessage(_INTL("Moves have been compiled."))
+    elsif cmd=="validatepbs"
+      msgwindow=Kernel.pbCreateMessageWindow
+      Kernel.pbMessageDisplay(msgwindow,_INTL("Validating PBS data without compiling..."),false)
+      result=pbValidateAzureProject
+      Kernel.pbDisposeMessageWindow(msgwindow)
+      if result[:ok]
+        Kernel.pbMessage(_INTL("PBS validation passed.\n\n{1}\n\nFull log: {2}",result[:summary],result[:log]))
+      else
+        Kernel.pbMessage(_INTL("PBS validation failed.\n\n{1}\n\nFull log: {2}",result[:summary],result[:log]))
+      end
+    elsif cmd=="compilechanged"
+      compileplan=pbPBSCompilePlan
+      if compileplan.length==0
+        Kernel.pbMessage(_INTL("All compiled PBS data is current."))
+      else
+        labels=[]
+        for entry in compileplan; labels.push(entry[:step][:label]); end
+        summary=_INTL("The following data will be compiled:\n\n{1}\n\nMaps will not be modified. Continue?",labels.join(", "))
+        if Kernel.pbConfirmMessage(summary)
+          msgwindow=Kernel.pbCreateMessageWindow
+          pbCompileChangedData(compileplan) {|msg| Kernel.pbMessageDisplay(msgwindow,msg,false) }
+          Kernel.pbMessageDisplay(msgwindow,_INTL("Changed data was compiled. Restart the game before playtesting changed IDs."))
+          Kernel.pbDisposeMessageWindow(msgwindow)
+        end
+      end
+    elsif cmd=="exportnamedpbs"
+      outputDir=pbExportNamedPBSSnapshot
+      Kernel.pbMessage(_INTL("A named PBS snapshot was exported to {1}. The active PBS files were not changed.",outputDir))
+    elsif cmd=="restorepbs"
+      backups=pbAvailablePBSBackups
+      if backups.length==0
+        Kernel.pbMessage(_INTL("No PBS backups were found."))
+      else
+        labels=[]
+        for backup in backups
+          labels.push(File.basename(backup[0])+"/"+File.basename(backup[1]))
+        end
+        choice=Kernel.pbShowCommands(nil,labels,-1)
+        if choice>=0 && Kernel.pbConfirmMessageSerious(_INTL("Restore {1}? The current active PBS files will be saved to RestoreBackup first.",labels[choice]))
+          safetyDir=pbRestorePBSBackup(backups[choice][1],"PBS",backups[choice][0])
+          Kernel.pbMessage(_INTL("PBS files were restored. The previous files are in {1}. Run Compile Changed Data, then restart before playtesting.",safetyDir))
+        end
+      end
+    elsif cmd=="datacachestats"
+      rows=AzureDataCache.stats
+      if rows.length==0
+        Kernel.pbMessage(_INTL("No compiled-data cache activity has been recorded in this debug session."))
+      else
+        lines=[]
+        totalHits=0
+        totalLoads=0
+        for row in rows
+          totalHits+=row[1]
+          totalLoads+=row[2]
+          lines.push(_INTL("{1}: {2} hits, {3} loads, {4} reloads",row[0],row[1],row[2],row[3]))
+        end
+        requests=totalHits+totalLoads
+        hitRate=(requests>0) ? totalHits*100/requests : 0
+        Kernel.pbMessage(_INTL("Compiled-data cache: {1}% hit rate ({2}/{3}).\n\n{4}",hitRate,totalHits,requests,lines.join("\n")))
+      end
     elsif cmd=="compilemostdata"
       msgwindow=Kernel.pbCreateMessageWindow
       pbCompileAllData(true,true) {|msg| Kernel.pbMessageDisplay(msgwindow,msg,false) }

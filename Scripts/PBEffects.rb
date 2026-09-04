@@ -183,8 +183,7 @@ begin
     FriskLock         = 210
     ForewarnDisable   = 211
     ForewarnDisableMove = 212
-    TempShieldHP      = 213
-    TempShieldTurns   = 214
+    # 213-214 reserved for retired legacy tribute shield effects
     KingsRockGuardUsed = 215
     HeartLocketUsed   = 216
     TrickRoomOnEntry  = 217
@@ -204,6 +203,40 @@ begin
     ShedSkinUsed      = 231
     StenchUsed        = 233
     LeerBlock         = 232
+    LiminalAttackBoost = 235
+    LiminalAttackThisMove = 236
+    LiminalStatusPriority = 237
+    TimetwisterState  = 238
+    TributePendingShield = 239
+    TributeDamageTaken = 240
+    TributeFlameRefresh = 241
+    TributeMoltresSwitch = 242
+    TributeRoostBoost = 243
+    TributeProtection = 244
+    TributeRampardosPriority = 245
+    TributeGolemSturdy = 246
+    TributeMukMystic = 247
+    TributeSpookyPig = 248
+    TributeSpookyPigData = 249
+    TributeTypeShift = 250
+    TributeTypeShiftData = 251
+    TributeEmpoleonGuard = 252
+    TributeOrthwormShedHP = 253
+    SaltCure          = 254
+    SyrupBombTurns    = 255
+    SyrupBombUser     = 256
+    SilkTrap          = 257
+    BurningBulwark    = 258
+    Commander         = 259
+    Commandee         = 260
+    TalesEndBlades    = 261
+    LotusBloom        = 262
+    LotusBloomMove    = 263
+    LotusBloomUser    = 264
+    LotusBloomPkmnIdx = 265
+    CircadianRhythm   = 266
+    Needles           = 267
+    MoltenStance      = 268
     StallEntry        = 705
     # These effects apply to a side - starts from 300
     LightScreen   = 300
@@ -240,6 +273,9 @@ begin
     StatCapNegative = 330
     StatCapContributors = 331
     StatCapPendingMessages = 332
+    ScorchingGround = 333
+    RedSunStars    = 334
+    Sunfury        = 335
     # These effects apply to the battle (i.e. both sides) - starts from 400
     Gravity       = 400
     MagicRoom     = 401
@@ -255,6 +291,8 @@ begin
     WaterSport    = 410
     SosBuffer     = 411
     PyroPreTarget = 412
+    VileMercy     = 413
+    BlueShift     = 414
     # V13 + Overlay Terrains - Grassy/Electric/Misty/Psychic
     GrassyTerrain = 501
     MistyTerrain = 502

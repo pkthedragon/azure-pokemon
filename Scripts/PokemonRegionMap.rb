@@ -91,9 +91,11 @@ class PokemonRegionMapScene
     @viewport=Viewport.new(0,0,Graphics.width,Graphics.height)
     @viewport.z=99999
     @sprites={}
-    pbRgssOpen("Data/townmap.dat","rb"){|f|
-       @mapdata=Marshal.load(f)
-    }
+    if aseditor
+      pbRgssOpen("Data/townmap.dat","rb"){|f| @mapdata=Marshal.load(f) }
+    else
+      @mapdata=pbLoadTownMapData
+    end
     playerpos=!$game_map ? nil : pbGetMetadata($game_map.map_id,MetadataMapPosition)
     if !playerpos
       mapindex=0

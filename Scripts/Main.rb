@@ -59,11 +59,27 @@ end
 
 def mainFunctionDebug #:nodoc:
   begin
+    migrationFlag = "PBS/migrate_to_alt_pbs.txt"
+    migrationLog  = "PBS/alt_migration_startup.log"
+    if safeExists?(migrationFlag)
+      File.open(migrationLog,"ab"){|f| f.write("[#{Time.new}] migration flag detected\r\n") }
+      File.delete(migrationFlag) rescue nil
+      begin
+        backupDir=pbMigratePBSFilesToAltFormat("PBS","PBS/LegacyBackup",true)
+        File.open(migrationLog,"ab"){|f| f.write("[#{Time.new}] migration completed backup=#{backupDir}\r\n") }
+      rescue Exception
+        File.open(migrationLog,"ab"){|f|
+          f.write("[#{Time.new}] migration failed #{($!.class rescue Exception)}: #{($!.message rescue '')}\r\n")
+          f.write("#{$!.backtrace.join("\r\n")}\r\n") if $! && $!.backtrace
+        }
+        raise
+      end
+    end
     $data_animations    = pbLoadRxData("Data/Animations")
     $data_tilesets      = pbLoadRxData("Data/Tilesets")
     $data_common_events = pbLoadRxData("Data/CommonEvents")
     $data_system        = pbLoadRxData("Data/System")
-    $mapinfos           = load_data("Data/MapInfos.rxdata")
+    $mapinfos           = pbCachedRxData("Data/MapInfos")
     $game_system        = Game_System.new
 
     #Game data preloading

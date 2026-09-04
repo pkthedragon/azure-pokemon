@@ -1,3 +1,104 @@
+# Typed, read-only view of Azure's existing trainer-type rows. The compiled
+# array, PBTrainers numeric constants, events, trainer objects, and saves remain
+# the storage/API boundary for legacy code.
+class PBTrainerTypeData
+  attr_reader :id,:internal_name,:raw_name,:base_money
+  attr_reader :battle_bgm,:victory_bgm,:intro_bgm,:gender,:skill_level
+
+  def initialize(trainertype)
+    @id=trainertype
+    row=PBTrainerTypeData.data[trainertype]
+    @internal_name=row[1]
+    @raw_name=row[2]
+    @base_money=row[3]
+    @battle_bgm=row[4]
+    @victory_bgm=row[5]
+    @intro_bgm=row[6]
+    @gender=row[7]
+    @skill_level=row[8]
+    @azure_source_row=row
+  end
+
+  def name; return PBTrainers.getName(@id); end
+  def money; return @base_money; end
+  def skill; return @skill_level; end
+
+  class << self
+    alias azure_uncached_new new
+
+    def data
+      return pbCachedData("Data/trainertypes.dat")
+    end
+
+    def normalize_id(value)
+      return value if value.is_a?(Numeric)
+      begin
+        return nil if !value.is_a?(Symbol) && !value.is_a?(String)
+        key=value.to_sym
+        return nil if !PBTrainers.const_defined?(key)
+        return PBTrainers.const_get(key)
+      rescue
+        return nil
+      end
+    end
+
+    def new(trainertype)
+      id=normalize_id(trainertype)
+      return azure_uncached_new(trainertype) if id.nil?
+      source=data
+      return wrapper_for(id,source)
+    end
+
+    def wrapper_for(id,source)
+      source_id=source.object_id
+      if @azure_source_id!=source_id
+        @azure_source_id=source_id
+        @azure_cache=[]
+      end
+      row=source[id]
+      cached=@azure_cache[id] if @azure_cache && id>=0
+      if cached && cached.instance_variable_get(:@azure_source_row).equal?(row)
+        return cached
+      end
+      wrapper=azure_uncached_new(id)
+      @azure_cache[id]=wrapper if id>=0
+      return wrapper
+    end
+
+    def get(trainertype)
+      id=normalize_id(trainertype)
+      source=data
+      raise ArgumentError.new("Unknown trainer type #{trainertype.inspect}") if id.nil? || !source[id]
+      return wrapper_for(id,source)
+    end
+
+    def try_get(trainertype)
+      id=normalize_id(trainertype)
+      return nil if id.nil?
+      source=data
+      return nil if !source[id]
+      return wrapper_for(id,source)
+    end
+
+    def exists?(trainertype)
+      return !try_get(trainertype).nil?
+    end
+
+    def each
+      return enum_for(:each) if !block_given?
+      source=data
+      for id in 0...source.length
+        yield wrapper_for(id,source) if source[id]
+      end
+    end
+
+    def clear_cache
+      @azure_source_id=nil
+      @azure_cache=[]
+    end
+  end
+end
+
 class PokeBattle_Trainer
   attr_accessor(:name)
   attr_accessor(:id)
@@ -78,23 +179,13 @@ class PokeBattle_Trainer
   end
 
   def moneyEarned   # Money won when trainer is defeated
-    ret=0
-    pbRgssOpen("Data/trainertypes.dat","rb"){|f|
-       trainertypes=Marshal.load(f)
-       return 30 if !trainertypes[@trainertype]
-       ret=trainertypes[@trainertype][3]
-    }
-    return ret
+    data=PBTrainerTypeData.try_get(@trainertype)
+    return data ? data.base_money : 30
   end
 
   def skill   # Skill level (for AI)
-    ret=0
-    pbRgssOpen("Data/trainertypes.dat","rb"){|f|
-       trainertypes=Marshal.load(f)
-       return 30 if !trainertypes[@trainertype]
-       ret=trainertypes[@trainertype][8]
-    }
-    return ret
+    data=PBTrainerTypeData.try_get(@trainertype)
+    return data ? data.skill_level : 30
   end
 
   def numbadges   # Number of badges
@@ -106,17 +197,8 @@ class PokeBattle_Trainer
   end
 
   def gender
-    ret=2   # 2 = gender unknown
-    pbRgssOpen("Data/trainertypes.dat","rb"){|f|
-       trainertypes=Marshal.load(f)
-       if !trainertypes[trainertype]
-         ret=2
-       else
-         ret=trainertypes[trainertype][7]
-         ret=2 if !ret
-       end
-    }
-    return ret
+    data=PBTrainerTypeData.try_get(trainertype)
+    return (data && data.gender) ? data.gender : 2
   end
 
   def isMale?; return self.gender==0; end

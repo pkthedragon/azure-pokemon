@@ -52,6 +52,200 @@ module EncounterTypes
   EnctypeCompileDens=[1,2,3,0,0,0,0,0,0,1,1,1,1,3,3]
 end
 
+# Immutable slot view over Azure's existing [species,min_level,max_level] rows.
+class PBEncounterSlotData
+  attr_reader :slot,:species,:min_level,:max_level,:weight
+
+  def initialize(slot,row,weight)
+    @slot=slot
+    @species=row[0]
+    @min_level=row[1]
+    @max_level=row[2]
+    @weight=weight
+    freeze
+  end
+end
+
+# Typed encounter-type view. The legacy encounter table remains available as
+# a deeply frozen array so existing runtime selection code keeps its layout.
+class PBEncounterTypeData
+  attr_reader :id,:name,:density,:encounters,:slots,:chances
+
+  def initialize(typeid,density,encounters)
+    @id=typeid
+    @name=EncounterTypes::Names[typeid]
+    @density=density
+    @encounters=encounters
+    @chances=(EncounterTypes::EnctypeChances[typeid] || []).clone.freeze
+    slots=[]
+    for index in 0...encounters.length
+      row=encounters[index]
+      slots.push(PBEncounterSlotData.new(index,row,@chances[index])) if row
+    end
+    @slots=slots.freeze
+    freeze
+  end
+
+  def type; return @id; end
+  def internal_name; return @name; end
+end
+
+# Rejuvenation-style typed access over Azure's map-keyed encounters.dat. Map
+# IDs and compiled arrays are unchanged; symbolic lookup applies to encounter
+# type names such as :Land, :WaterNight, and :HeadbuttHigh.
+class PBEncounterData
+  attr_reader :map_id,:densities,:encounters,:encounter_types
+
+  def initialize(mapid)
+    @map_id=mapid
+    row=PBEncounterData.data[mapid]
+    @densities=(row[0] || []).clone.freeze
+    @encounters=PBEncounterData.immutable_encounters(row[1] || [])
+    types=[]
+    for typeid in 0...@encounters.length
+      table=@encounters[typeid]
+      next if !table
+      types[typeid]=PBEncounterTypeData.new(typeid,@densities[typeid],table)
+    end
+    @encounter_types=types.freeze
+    @azure_source_row=row
+    freeze
+  end
+
+  def mapid; return @map_id; end
+  def density(type); data=try_get(type); return data ? data.density : nil; end
+  def has_type?(type); return !try_get(type).nil?; end
+  def get(type)
+    id=PBEncounterData.normalize_type(type)
+    data=(id && id>=0) ? @encounter_types[id] : nil
+    raise ArgumentError.new("Unknown encounter type #{type.inspect}") if !data
+    return data
+  end
+  def try_get(type)
+    id=PBEncounterData.normalize_type(type)
+    return nil if id.nil? || id<0
+    return @encounter_types[id]
+  end
+  def exists?(type); return !try_get(type).nil?; end
+  def each
+    return enum_for(:each) if !block_given?
+    for data in @encounter_types
+      yield data if data
+    end
+  end
+
+  # Rejuvenation-compatible named table readers over Azure's numeric arrays.
+  def Land; return @encounters[EncounterTypes::Land]; end
+  def Cave; return @encounters[EncounterTypes::Cave]; end
+  def Water; return @encounters[EncounterTypes::Water]; end
+  def RockSmash; return @encounters[EncounterTypes::RockSmash]; end
+  def OldRod; return @encounters[EncounterTypes::OldRod]; end
+  def GoodRod; return @encounters[EncounterTypes::GoodRod]; end
+  def SuperRod; return @encounters[EncounterTypes::SuperRod]; end
+  def HeadbuttLow; return @encounters[EncounterTypes::HeadbuttLow]; end
+  def HeadbuttHigh; return @encounters[EncounterTypes::HeadbuttHigh]; end
+  def LandMorning; return @encounters[EncounterTypes::LandMorning]; end
+  def LandDay; return @encounters[EncounterTypes::LandDay]; end
+  def LandNight; return @encounters[EncounterTypes::LandNight]; end
+  def BugContest; return @encounters[EncounterTypes::BugContest]; end
+  def WaterDay; return @encounters[EncounterTypes::WaterDay]; end
+  def WaterNight; return @encounters[EncounterTypes::WaterNight]; end
+
+  class << self
+    alias azure_uncached_new new
+
+    def data; return pbCachedData("Data/encounters.dat"); end
+
+    def normalize_id(value)
+      return value.to_i if value.is_a?(Numeric) && value.to_i==value
+      return value.to_i if value.is_a?(String) && value[/^\d+$/]
+      return nil
+    end
+
+    def normalize_type(value)
+      return value.to_i if value.is_a?(Numeric) && value.to_i==value
+      return value.to_i if value.is_a?(String) && value[/^\d+$/]
+      return nil if !value.is_a?(String) && !value.is_a?(Symbol)
+      token=value.to_s.gsub(/[^A-Za-z0-9]/,"").upcase
+      for index in 0...EncounterTypes::Names.length
+        name=EncounterTypes::Names[index].to_s.gsub(/[^A-Za-z0-9]/,"").upcase
+        return index if name==token
+      end
+      return nil
+    end
+
+    def immutable_encounters(source)
+      tables=[]
+      for typeid in 0...source.length
+        table=source[typeid]
+        next if !table
+        rows=[]
+        for row in table
+          rows.push((row || []).clone.freeze)
+        end
+        tables[typeid]=rows.freeze
+      end
+      return tables.freeze
+    end
+
+    def new(mapid)
+      id=normalize_id(mapid)
+      return azure_uncached_new(mapid) if id.nil?
+      source=data
+      return wrapper_for(id,source)
+    end
+
+    def wrapper_for(id,source)
+      if @azure_source_id!=source.object_id
+        @azure_source_id=source.object_id
+        @azure_cache={}
+      end
+      row=source[id]
+      cached=@azure_cache[id] if @azure_cache
+      if cached && cached.instance_variable_get(:@azure_source_row).equal?(row)
+        return cached
+      end
+      wrapper=azure_uncached_new(id)
+      @azure_cache[id]=wrapper
+      return wrapper
+    end
+
+    def get(mapid)
+      id=normalize_id(mapid)
+      source=data
+      raise ArgumentError.new("Unknown map encounters #{mapid.inspect}") if id.nil? || id<=0 || !source[id]
+      return wrapper_for(id,source)
+    end
+
+    def try_get(mapid)
+      id=normalize_id(mapid)
+      return nil if id.nil? || id<=0
+      source=data
+      return nil if !source[id]
+      return wrapper_for(id,source)
+    end
+
+    def exists?(mapid); return !try_get(mapid).nil?; end
+    def each
+      return enum_for(:each) if !block_given?
+      source=data
+      for mapid in source.keys.sort
+        yield wrapper_for(mapid,source) if source[mapid]
+      end
+    end
+
+    def clear_cache
+      @azure_source_id=nil
+      @azure_cache={}
+    end
+  end
+end
+
+def pbInvalidateEncounterData
+  AzureDataCache.clear("Data/encounters.dat") if defined?(AzureDataCache)
+  PBEncounterData.clear_cache if defined?(PBEncounterData)
+end
+
 
 
 class PokemonEncounters
@@ -168,10 +362,10 @@ class PokemonEncounters
     @stepcount=0
     @enctypes=[]
     begin
-      data=load_data("Data/encounters.dat")
-      if data.is_a?(Hash) && data[mapID]
-        @density=data[mapID][0]
-        @enctypes=data[mapID][1]
+      data=PBEncounterData.try_get(mapID)
+      if data
+        @density=data.densities
+        @enctypes=data.encounters
       else
         @density=nil
         @enctypes=[]
@@ -183,27 +377,18 @@ class PokemonEncounters
   end
 
   def pbMapHasEncounter?(mapID,enctype)
-    data=load_data("Data/encounters.dat")
-    if data.is_a?(Hash) && data[mapID]
-      enctypes=data[mapID][1]
-      density=data[mapID][0]
-    else
-      return false
-    end
-    return false if density==nil || enctype<0
-    return enctypes[enctype] ? true : false  
+    data=PBEncounterData.try_get(mapID)
+    return false if !data || enctype<0
+    return data.has_type?(enctype)
   end
 
   def pbMapEncounter(mapID,enctype)
     if enctype<0 || enctype>EncounterTypes::EnctypeChances.length
       raise ArgumentError.new(_INTL("Encounter type out of range"))
     end
-    data=load_data("Data/encounters.dat")
-    if data.is_a?(Hash) && data[mapID]
-      enctypes=data[mapID][1]
-    else
-      return nil
-    end
+    data=PBEncounterData.try_get(mapID)
+    return nil if !data
+    enctypes=data.encounters
     return nil if enctypes[enctype]==nil
     chances=EncounterTypes::EnctypeChances[enctype]
     chancetotal=0
@@ -264,7 +449,8 @@ class PokemonEncounters
       raise ArgumentError.new(_INTL("Encounter type out of range"))
     end
     return nil if @enctypes[enctype]==nil
-    chances=EncounterTypes::EnctypeChances[enctype]
+    # Ability weighting is per roll. Never mutate the shared constants.
+    chances=EncounterTypes::EnctypeChances[enctype].clone
 # UPDATE 11/18/2013
 # I assumed multiple abilities would change the encounter rate.
 # (Apparently it's only Magnet Pull)
@@ -309,7 +495,7 @@ class PokemonEncounters
   end  
   if aArr.length > 0
     chosenpkmn = aArr[rand(aArr.length)]
-    encounter = @enctypes[enctype][chosenpkmn]
+    encounter = @enctypes[enctype][chosenpkmn].clone
   else
     #####/MODDED
     chancetotal=0
@@ -328,7 +514,7 @@ class PokemonEncounters
         break
       end
     end
-    encounter=@enctypes[enctype][chosenpkmn]
+    encounter=@enctypes[enctype][chosenpkmn].clone
   end #####MODDED
   return nil if !encounter
 # UPDATE 11/19/2013
@@ -409,6 +595,10 @@ class PokemonEncounters
           encount=(encount*2)
         end
       end
+    end
+    # PokeMagnet attract mode doubles encounter rate
+    if $game_switches[74]  # Attract mode
+      encount=(encount*2)
     end
     return nil if rand(180*16)>=encount
     encpoke=pbEncounteredPokemon(enctype)
