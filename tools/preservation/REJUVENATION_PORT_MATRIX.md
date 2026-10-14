@@ -378,6 +378,21 @@ events, the focused check proved exact event and page order. On the 281-event
 approximately 770,207 allocations to 385,104 and from 0.478 to 0.259 seconds.
 Evidence is under `tools/preservation/runtime_performance/`.
 
+### Allocation-free map spriteset reconciliation
+
+`Scene_Map#updateSpritesets` runs after every normal and mini map update. It
+previously materialized the spriteset hash's keys and cloned that array before
+updating active maps, disposing removed maps, and creating newly connected map
+spritesets. It now uses `Hash#delete_if`, which retains hash insertion order,
+updates and disposes in the same order, safely removes the current entry, and
+leaves missing-map creation in its original second pass.
+
+The focused matrix covered stable maps, middle removal, addition, simultaneous
+removal/addition, and a nil removed entry. All five scenarios retained checksum
+`2035679682`. Across 20,000 four-spriteset reconciliations, runtime fell from
+approximately 0.0780 to 0.0286 seconds and allocations from 60,002 to 2. The
+preservation audit requires the allocation-free reconciliation structure.
+
 ### Allocation-light encounter selection
 
 The fixed totals for Azure's 15 encounter-weight tables are now calculated
@@ -1227,6 +1242,17 @@ for the active runtime work.
 5. **Close Phase 3.** Rerun all stored runtime fixtures, the seeded AI decision
    closeout, the full preservation audit, and a 15-second cold startup. Record
    aggregate results and remove every temporary fixture from the script order.
+
+The initial Step 1 inventory is recorded in
+`tools/preservation/runtime_performance/sprite_ui_inventory.status.txt`.
+`Scene_Map#updateSpritesets` ranked first because it reconciles collections on
+every map frame; that target is now optimized and verified. The next target is
+the ten `Game_Player`/`Game_Character` event-value scans, grouped and tested by
+trainer/counter discovery, facing lookup, passability, and touch-trigger
+behavior before any mechanical rewrite. `Scene_Map#spriteset`, transient
+window flashes, and particle/setup boundary scans follow in that order only if
+their measured call frequency justifies a change. Menu command arrays are
+excluded because those collections are returned to or retained by the UI.
 
 ### Phase 4 ordered steps
 

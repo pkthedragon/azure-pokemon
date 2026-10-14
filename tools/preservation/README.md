@@ -16,10 +16,11 @@ The startup check watches both the project log and mkxp-z's active Windows
 `Saved Games/<Game.ini Title>/errorlog.txt`; a newly written error in either
 location fails the check even if the game process remains alive.
 
-The check temporarily advances the `Scripts/!script_order.csv` timestamp and
-restores it afterward. Every invocation therefore exercises the external-script
-loader's cold import path, which catches parse errors that a warm launch of the
-existing script archive can miss.
+The check temporarily advances the `Scripts/!script_order.csv` timestamp with
+a five-minute cache/skew margin and restores it afterward. Every invocation
+therefore exercises the external-script loader's cold import path, including
+on filesystems with coarse or future-skewed timestamps, and catches parse
+errors that a warm launch of the existing script archive can miss.
 
 The audit verifies the current Azure source of truth rather than comparing it
 with Rejuvenation. It checks:

@@ -1,0 +1,9 @@
+result=PASS
+mode=optimized_delete_if
+scenarios=5
+matrix_checksum=2035679682
+matrix_exact=true
+benchmark_calls=20000
+benchmark_checksum=200000
+benchmark_seconds=0.028584600004251115
+benchmark_allocations=2

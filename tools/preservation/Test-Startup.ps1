@@ -59,7 +59,14 @@ try {
   # original timestamp in finally.
   if (Test-Path -LiteralPath $scriptOrderPath -PathType Leaf) {
     $scriptOrderWriteTime = (Get-Item -LiteralPath $scriptOrderPath).LastWriteTimeUtc
-    [System.IO.File]::SetLastWriteTimeUtc($scriptOrderPath, [DateTime]::UtcNow.AddSeconds(2))
+    # The external-script cache and synchronized filesystems can use coarse or
+    # slightly future-skewed timestamps. A two-second advance can therefore
+    # leave a warm archive looking newer than the manifest. Move the manifest
+    # five minutes ahead for the launch, then restore its exact timestamp in
+    # finally, so edited external scripts are reliably imported.
+    $futureBase = [DateTime]::UtcNow
+    if ($scriptOrderWriteTime -gt $futureBase) { $futureBase = $scriptOrderWriteTime }
+    [System.IO.File]::SetLastWriteTimeUtc($scriptOrderPath, $futureBase.AddMinutes(5))
     $coldScriptImportForced = $true
   }
   $process = Start-Process -FilePath $gamePath -WorkingDirectory $Root -WindowStyle Hidden -PassThru

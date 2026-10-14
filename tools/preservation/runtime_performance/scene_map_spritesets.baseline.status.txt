@@ -1,0 +1,9 @@
+result=PASS
+mode=baseline_keys_clone
+scenarios=5
+matrix_checksum=2035679682
+matrix_exact=true
+benchmark_calls=20000
+benchmark_checksum=200000
+benchmark_seconds=0.07801779999863356
+benchmark_allocations=60002

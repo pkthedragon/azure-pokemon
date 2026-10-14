@@ -44,14 +44,13 @@ class Scene_Map
 
   def updateSpritesets
     @spritesets={} if !@spritesets
-    keys=@spritesets.keys.clone
-    for i in keys
-      if !$MapFactory.hasMap?(i)
-        @spritesets[i].dispose if @spritesets[i]
-        @spritesets[i]=nil
-        @spritesets.delete(i)
+    @spritesets.delete_if do |map_id,spriteset|
+      if !$MapFactory.hasMap?(map_id)
+        spriteset.dispose if spriteset
+        true
       else
-        @spritesets[i].update
+        spriteset.update
+        false
       end
     end
 #    @spritesetglobal.update
