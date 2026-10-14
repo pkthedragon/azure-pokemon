@@ -1,0 +1,11 @@
+result=PASS
+mode=optimized_direct_lookup_with_each_value_fallback
+static_call_sites=14
+per_frame_call_sites=0
+scenarios=5
+matrix_signature=first=1|middle=3|missing=1|empty=nil|nil_first=NoMethodError
+matrix_exact=true
+benchmark_iterations=1000000
+benchmark_checksum=3000000
+benchmark_seconds=1.0089020999876084
+benchmark_allocations=1

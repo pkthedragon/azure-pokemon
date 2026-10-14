@@ -75,16 +75,12 @@ def mainFunctionDebug #:nodoc:
         raise
       end
     end
-    $data_common_events = pbLoadRxData("Data/CommonEvents")
     $data_system        = pbLoadRxData("Data/System")
     $mapinfos           = pbCachedRxData("Data/MapInfos")
     $game_system        = Game_System.new
 
-    #Game data preloading
-    $pkmn_dex           = load_data("Data/dexdata.dat")
-    $pkmn_move          = load_data("Data/moves.dat")
-    $pkmn_egg           = load_data("Data/eggEmerald.dat")
-    
+    # Common events and the immutable gameplay databases are loaded only after
+    # the player chooses Continue, New Game, or Mystery Gift.
     setScreenBorderName("border") # Sets image file for the border
     Graphics.update
     Graphics.freeze

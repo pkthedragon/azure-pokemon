@@ -513,7 +513,7 @@ class AdvancedPokedexScene
   end
 
   def getLevelMoves
-    $pkmn_moves = load_data("Data/attacksRS.rxdata") if !$pkmn_moves
+    $pkmn_moves = pbCachedData("Data/attacksRS.rxdata") if !$pkmn_moves
     return $pkmn_moves[@species].map{|moveData|
       _ISPRINTF(
         "{1:02d} {2:s}",moveData[0],PBMoves.getName(moveData[1])
@@ -527,7 +527,7 @@ class AdvancedPokedexScene
     else
       eggMoveSpecies = @species
     end
-    $pkmn_egg = load_data("Data/eggEmerald.dat") if !$pkmn_egg
+    $pkmn_egg = pbCachedData("Data/eggEmerald.dat") if !$pkmn_egg
     movelist=[]
     for moves in [$pkmn_egg[pbGetBabySpecies(@species)],$pkmn_egg[pbGetLessBabySpecies(@species)],$pkmn_egg[@species]]
       if moves

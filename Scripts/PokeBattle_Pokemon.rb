@@ -473,7 +473,7 @@ class PokeBattle_Pokemon
 # Returns the list of moves this Pokémon can learn by levelling up.
   def getMoveList
     movelist=[]
-    $pkmn_moves = load_data("Data/attacksRS.rxdata") if !$pkmn_moves
+    $pkmn_moves = pbCachedData("Data/attacksRS.rxdata") if !$pkmn_moves
     for k in 0...$pkmn_moves[@species].length
       movelist.push([$pkmn_moves[@species][k][0],$pkmn_moves[@species][k][1]])
     end
@@ -483,7 +483,7 @@ class PokeBattle_Pokemon
 # Returns the list of this pokemon's possible eggmoves
   def getEggMoveList
     movelist=[]
-    $pkmn_egg = load_data("Data/eggEmerald.dat") if !$pkmn_egg
+    $pkmn_egg = pbCachedData("Data/eggEmerald.dat") if !$pkmn_egg
     moves = $pkmn_egg[pbGetBabySpecies(@species)]
     for i in moves
       movelist.push(i)
@@ -1125,7 +1125,7 @@ class PokeBattle_Pokemon
     @obtainMode=4 if $game_switches && $game_switches[FATEFUL_ENCOUNTER_SWITCH]
     @hatchedMap=0
     if withMoves
-      $pkmn_moves = load_data("Data/attacksRS.rxdata") if !$pkmn_moves
+      $pkmn_moves = pbCachedData("Data/attacksRS.rxdata") if !$pkmn_moves
       # Generating move list
       movelist=[]
       for k in 0...$pkmn_moves[species].length

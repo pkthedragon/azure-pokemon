@@ -1,0 +1,11 @@
+result=DEFERRED
+reason=no_direct_callers_and_active-flash-only_cost
+static_sprite_window_flash_call_sites=0
+scenarios=4
+matrix_signature=active=true:1,2,3,1,2,3,1,2,3:0|inactive=true::0|disposed=true::3|nil_sprite=NoMethodError
+matrix_exact=true
+active_sprite_count=16
+benchmark_active_frames=100000
+baseline_seconds=0.779996500001289
+baseline_allocations=100001
+estimated_allocations_per_active_frame=1.00001

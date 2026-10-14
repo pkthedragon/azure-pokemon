@@ -5,10 +5,17 @@
 #===============================================================================
 class Scene_Map
   def spriteset
-    for i in @spritesets.values
-      return i if i.map==$game_map
+    if $game_map && $game_map.respond_to?(:map_id)
+      current_spriteset=@spritesets[$game_map.map_id]
+      return current_spriteset if current_spriteset && current_spriteset.map==$game_map
     end
-    return @spritesets.values[0]
+    @spritesets.each_value do |spriteset|
+      return spriteset if spriteset.map==$game_map
+    end
+    @spritesets.each_value do |spriteset|
+      return spriteset
+    end
+    return nil
   end
 
   def disposeSpritesets

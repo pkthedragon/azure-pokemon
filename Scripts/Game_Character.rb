@@ -117,7 +117,7 @@ class Game_Character
       return false unless self.map.passable?(x, y, d, self)
       return false unless self.map.passable?(new_x, new_y, 10 - d, self)
     end
-    for event in self.map.events.values
+    self.map.events.each_value do |event|
       if event.x == new_x and event.y == new_y
         unless event.through
           return false if self != $game_player || event.character_name != ""

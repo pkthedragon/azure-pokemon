@@ -1,0 +1,11 @@
+result=PASS
+mode=baseline_values
+behavior_groups=4
+scan_sites=10
+matrix_signature=trainers=2|counters=6|facing=11|counter_facing=13|running_facing=nil|character_blocked=false|character_through=true|player_blank=true|player_visible=false|player_collision=false|water_blocked=false|water_clear=true|here=true:20,21|there=true:30,31|counter_there=true:40,41|touch=true:50,52
+matrix_exact=true
+benchmark_events=281
+benchmark_iterations=20000
+benchmark_checksum=786800000
+benchmark_seconds=2.5724731999944197
+benchmark_allocations=20002

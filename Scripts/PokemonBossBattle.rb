@@ -1178,5 +1178,3 @@ class BossData < DataObject
       end
     end
 end
-
-$bosscache = load_data("Data/bossdata.dat") if !$bosscache

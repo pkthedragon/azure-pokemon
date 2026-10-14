@@ -1,0 +1,16 @@
+result=DEFERRED
+phase=3_step_2_boundary_review
+candidates=3
+particle_event_scan_call_sites=1
+particle_event_scan_frequency=once_per_particle_engine_first_update
+spriteset_event_key_sort_call_sites=1
+spriteset_event_key_sort_frequency=once_per_spriteset_creation
+particle_bitmap_scan_call_sites=1
+particle_bitmap_scan_frequency=once_per_particle_effect_disposal
+maps_reviewed=145
+events_reviewed=3851
+largest_map_events=281
+steady_state_per_frame_candidates=0
+ordering_constraint=Spriteset_Map event keys remain sorted to preserve event-ID sprite construction and draw order
+decision=retain current setup and disposal code until profiling identifies material boundary cost
+next_target=Phase 3 Step 3 title-time data ownership audit

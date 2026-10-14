@@ -16,6 +16,8 @@ if ([string]::IsNullOrWhiteSpace($Root)) {
 
 $script:Errors = [System.Collections.Generic.List[string]]::new()
 $script:Warnings = [System.Collections.Generic.List[string]]::new()
+$script:AcceptedWarnings = [System.Collections.Generic.List[string]]::new()
+$script:AcceptedWarningCounts = [ordered]@{}
 $script:Checks = [System.Collections.Generic.List[string]]::new()
 
 function Add-AuditError([string]$Message) {
@@ -28,6 +30,104 @@ function Add-AuditWarning([string]$Message) {
 
 function Add-AuditCheck([string]$Message) {
   $script:Checks.Add($Message)
+}
+
+function Resolve-AcceptedWarnings {
+  $statusRelativePath = "tools\preservation\release_validation\phase_5_step_2_warning_acceptance.status.txt"
+  $statusPath = Resolve-ProjectPath $statusRelativePath
+  $documentRelativePath = "tools\preservation\release_validation\WARNING_ACCEPTANCE.md"
+  $documentPath = Resolve-ProjectPath $documentRelativePath
+
+  if (!(Test-Path -LiteralPath $statusPath -PathType Leaf)) {
+    Add-AuditError "Warning-acceptance evidence is missing: $statusRelativePath."
+    return
+  }
+  if (!(Test-Path -LiteralPath $documentPath -PathType Leaf)) {
+    Add-AuditError "Warning-acceptance rationale is missing: $documentRelativePath."
+    return
+  }
+
+  $policies = @(
+    [pscustomobject]@{
+      Name = "duplicate_generated_constants"
+      Expected = 22
+      Pattern = '^Scripts\\(?:PBMoves\.rb assigns (?:ORIGINPULSE|PRECIPICEBLADES|DRAGONASCENT|THOUSANDARROWS|THOUSANDWAVES|DIAMONDSTORM|STEAMERUPTION|DISHEARTEN|EPHEMERATE|ANTICLINE)|PBSpecies\.rb assigns IRONMOTH|PBItems\.rb assigns (?:GREENKEY|TM115|TM116)|PBAbilities\.rb assigns (?:TOXICCHAIN|CARETAKER|BLOODTHIRSTY|SCAVENGER|EXECUTIONER|EVENTHORIZON)|PBTrainers\.rb assigns (?:SCHOOLKID_F|HADIEN)) more than once; Ruby keeps the last assignment\.$'
+    },
+    [pscustomobject]@{
+      Name = "duplicate_pbs_sections"
+      Expected = 20
+      Pattern = '^PBS\\(?:moves\.txt has duplicate section \[(?:ORIGINPULSE|PRECIPICEBLADES|DRAGONASCENT|THOUSANDARROWS|THOUSANDWAVES|DIAMONDSTORM|STEAMERUPTION|DISHEARTEN|EPHEMERATE|ANTICLINE)\]|pokemon\.txt has duplicate section \[IRONMOTH\]|abilities\.txt has duplicate section \[(?:TOXICCHAIN|CARETAKER|BLOODTHIRSTY|SCAVENGER|EXECUTIONER|EVENTHORIZON)\]|trainer_types\.txt has duplicate section \[(?:SCHOOLKID_F|HADIEN)\]|pokemon_metrics\.txt has duplicate section \[IRONMOTH\]) at lines \d+ and \d+; the later definition is the effective symbol mapping\.$'
+    },
+    [pscustomobject]@{
+      Name = "shared_legacy_numeric_ids"
+      Expected = 3
+      Pattern = '^(?:Moves legacy ID (?:318 is shared by (?:\[SPIKECANNON\] and \[BONECLUB\]|\[BONECLUB\] and \[SPIKECANNON\])|680 is shared by (?:\[DIMZAP\] and \[DIMPULSE\]|\[DIMPULSE\] and \[DIMZAP\]))|Pokémon legacy ID 306 is shared by (?:\[AGGRON\] and \[DEOXYS\]|\[DEOXYS\] and \[AGGRON\])); preserve this alias until an explicit ID migration exists\.$'
+    },
+    [pscustomobject]@{
+      Name = "repeated_item_definitions"
+      Expected = 3
+      Pattern = '^PBS\\items\.txt defines (?:GREENKEY|TM115|TM116) 2 times; the last numeric mapping is effective\.$'
+    },
+    [pscustomobject]@{
+      Name = "unresolved_optional_abilities"
+      Expected = 6
+      Pattern = "^Ruby scripts contain a pre-existing unresolved PBAbilities symbol '(?:CUTEINFATUATE|PURIFYING|SEGUE|AFTERLIFE|FLAMEEATER|KEYHOLDER)'; the related optional form remains unavailable until its intended ability data and behavior are authored\.$"
+    },
+    [pscustomobject]@{
+      Name = "shadowmove_legacy_rows"
+      Expected = 5
+      Pattern = "^PBS\\shadowmoves\.txt (?:line \d+ references unknown move '(?:SHADOWSHEAD|SHADOWAVE)'; the permissive legacy parser drops it\.|defines (?:VANILLITE|ARCHEN|TOXICROAK) again at line \d+; the last row containing a valid move is effective over line \d+\.)$"
+    }
+  )
+
+  $remaining = [System.Collections.Generic.List[string]]::new()
+  foreach ($policy in $policies) {
+    $script:AcceptedWarningCounts[$policy.Name] = 0
+  }
+
+  foreach ($warning in $script:Warnings) {
+    $matches = @($policies | Where-Object { $warning -match $_.Pattern })
+    if ($matches.Count -eq 1) {
+      $policy = $matches[0]
+      $script:AcceptedWarnings.Add($warning)
+      $script:AcceptedWarningCounts[$policy.Name]++
+    } else {
+      $remaining.Add($warning)
+      if ($matches.Count -gt 1) {
+        Add-AuditError "Warning matches multiple acceptance categories: $warning"
+      }
+    }
+  }
+  $script:Warnings = $remaining
+
+  foreach ($policy in $policies) {
+    $actual = $script:AcceptedWarningCounts[$policy.Name]
+    if ($actual -ne $policy.Expected) {
+      Add-AuditError "Accepted warning category '$($policy.Name)' expected $($policy.Expected) entries but found $actual."
+    }
+  }
+
+  $statusContent = [System.IO.File]::ReadAllText($statusPath)
+  foreach ($required in @(
+    '(?m)^result=PASS\r?$',
+    '(?m)^phase=5_step_2_warning_review\r?$',
+    '(?m)^accepted_categories=6\r?$',
+    '(?m)^accepted_warnings=59\r?$',
+    '(?m)^unaccepted_warnings=0\r?$',
+    '(?m)^duplicate_generated_constants=22\r?$',
+    '(?m)^duplicate_pbs_sections=20\r?$',
+    '(?m)^shared_legacy_numeric_ids=3\r?$',
+    '(?m)^repeated_item_definitions=3\r?$',
+    '(?m)^unresolved_optional_abilities=6\r?$',
+    '(?m)^shadowmove_legacy_rows=5\r?$',
+    '(?m)^warnings_as_errors=PASS\r?$'
+  )) {
+    if ($statusContent -notmatch $required) {
+      Add-AuditError "Warning-acceptance evidence is missing required result '$required'."
+    }
+  }
+
+  Add-AuditCheck "Warning acceptance: 59 reviewed legacy warnings match six exact categories; all new or changed warnings remain release-blocking."
 }
 
 function Resolve-ProjectPath([string]$RelativePath) {
@@ -2047,11 +2147,18 @@ function Test-FeatureContracts {
     @{ Name = "Character animation loader routing"; File = "Scripts\Sprite_Character.rb"; Pattern = 'animation\s*=\s*pbLoadRPGAnimations\[@character\.animation_id\]' },
     @{ Name = "Shadow animation loader routing"; File = "Scripts\Shadow.rb"; Pattern = 'animation\s*=\s*pbLoadRPGAnimations\[@character\.animation_id\]' },
     @{ Name = "One-shot map transfer handoff"; File = "Scripts\AzureDataCache.rb"; Pattern = '(?s)module\s+AzureMapTransferHandoff.*def\s+self\.preload\(map_id\).*clear.*@map_id=map_id.*@map=pbLoadRxData\(sprintf\("Data/Map%03d",map_id\)\).*def\s+self\.take\(map_id\).*@map\s*&&\s*@map_id==map_id.*map=@map.*clear.*return\s+map.*clear.*return\s+pbLoadRxData\(sprintf\("Data/Map%03d",map_id\)\).*def\s+self\.clear.*@map_id=nil.*@map=nil' },
+    @{ Name = "Editor-owned mutable map isolation"; File = "Scripts\Compiler.rb"; Pattern = '(?s)class\s+MapData.*def\s+initialize.*@maps=\[\].*def\s+getMap\(mapID\).*@maps\[mapID\]=load_data\(mapFilename\(mapID\)\).*def\s+saveMap\(mapID\).*save_data\(getMap\(mapID\),mapFilename\(mapID\)\)' },
+    @{ Name = "Independent connected-map runtime wrappers"; File = "Scripts\PokemonMap.rb"; Pattern = '(?s)class\s+PokemonMapFactory.*def\s+getMap\(id\).*map=Game_Map\.new\s+map\.setup\(id\)\s+@maps\.push\(map\).*def\s+getMapNoAdd\(id\).*map=Game_Map\.new\s+map\.setup\(id\)\s+return\s+map' },
     @{ Name = "Map setup transfer ownership"; File = "Scripts\Game_Map_.rb"; Pattern = '(?s)def\s+setup\(map_id\).*@map=AzureMapTransferHandoff\.take\(map_id\).*tileset\s*=\s*pbLoadTilesetData\[@map\.tileset_id\]' },
     @{ Name = "Map autofade transfer preload and clear"; File = "Scripts\Scene_Map.rb"; Pattern = '(?s)def\s+autofade\(mapid\).*map=AzureMapTransferHandoff\.preload\(mapid\).*def\s+transfer_player.*if\s+\$game_map\.map_id!=\$game_temp\.player_new_map_id.*\$MapFactory\.setup\(\$game_temp\.player_new_map_id\).*else\s+AzureMapTransferHandoff\.clear' },
     @{ Name = "Allocation-free map refresh iteration"; File = "Scripts\Game_Map_.rb"; Pattern = '(?s)def\s+refresh.*@events\.each_value\s+do\s+\|event\|.*event\.refresh.*@common_events\.each_value\s+do\s+\|common_event\|.*common_event\.refresh' },
     @{ Name = "Allocation-free map update iteration"; File = "Scripts\Game_Map_.rb"; Pattern = '(?s)def\s+update.*@events\.each_value\s+do\s+\|event\|.*event\.update.*@common_events\.each_value\s+do\s+\|common_event\|.*common_event\.update' },
     @{ Name = "Allocation-free map spriteset reconciliation"; File = "Scripts\Scene_Map.rb"; Pattern = '(?s)def\s+updateSpritesets.*@spritesets\.delete_if\s+do\s+\|map_id,spriteset\|.*if\s+!\$MapFactory\.hasMap\?\(map_id\).*spriteset\.dispose\s+if\s+spriteset.*true.*else.*spriteset\.update.*false.*for\s+map\s+in\s+\$MapFactory\.maps.*@spritesets\[map\.map_id\]=Spriteset_Map\.new\(map\)' },
+    @{ Name = "Direct current-map spriteset lookup with ordered fallback"; File = "Scripts\Scene_Map.rb"; Pattern = '(?s)def\s+spriteset.*\$game_map\.respond_to\?\(:map_id\).*current_spriteset=@spritesets\[\$game_map\.map_id\].*return\s+current_spriteset\s+if\s+current_spriteset\s+&&\s+current_spriteset\.map==\$game_map.*@spritesets\.each_value\s+do\s+\|spriteset\|.*return\s+spriteset\s+if\s+spriteset\.map==\$game_map.*@spritesets\.each_value\s+do\s+\|spriteset\|.*return\s+spriteset.*return\s+nil' },
+    @{ Name = "Allocation-free character passability event scan"; File = "Scripts\Game_Character.rb"; Pattern = '(?s)def\s+passableEx\?.*self\.map\.events\.each_value\s+do\s+\|event\|.*event\.x\s*==\s*new_x.*event\.y\s*==\s*new_y.*return\s+false\s+if\s+self\s*!=\s*\$game_player' },
+    @{ Name = "Allocation-free trainer counter and facing scans"; File = "Scripts\Game_Player_.rb"; Pattern = '(?s)def\s+pbTriggeredTrainerEvents.*\$game_map\.events\.each_value\s+do\s+\|event\|.*def\s+pbTriggeredCounterEvents.*\$game_map\.events\.each_value\s+do\s+\|event\|.*def\s+pbFacingEvent.*\$game_map\.events\.each_value\s+do\s+\|event\|.*\$game_map\.counter\?\(new_x,\s*new_y\).*\$game_map\.events\.each_value\s+do\s+\|event\|' },
+    @{ Name = "Allocation-free swim landing event scan"; File = "Scripts\Game_Player_.rb"; Pattern = '(?s)# Block landing on non-through character events.*\$game_map\.events\.each_value\s+do\s+\|event\|.*next\s+unless\s+event\.x\s*==\s*new_x\s*&&\s*event\.y\s*==\s*new_y.*return\s+false\s+if\s+event\.character_name' },
+    @{ Name = "Allocation-free player event trigger scans"; File = "Scripts\Game_Player_.rb"; Pattern = '(?s)def\s+check_event_trigger_here.*\$game_map\.events\.each_value\s+do\s+\|event\|.*def\s+check_event_trigger_there.*\$game_map\.events\.each_value\s+do\s+\|event\|.*if\s+result\s*==\s*false.*\$game_map\.events\.each_value\s+do\s+\|event\|.*def\s+check_event_trigger_touch.*\$game_map\.events\.each_value\s+do\s+\|event\|' },
     @{ Name = "Allocation-free event page scan"; File = "Scripts\Game_Event_.rb"; Pattern = '(?s)def\s+refresh.*@event\.pages\.reverse_each\s+do\s+\|page\|.*new_page\s*=\s*page.*break' },
     @{ Name = "Allocation-free connected-map collision iteration"; File = "Scripts\PokemonMap.rb"; Pattern = '(?s)def\s+isPassableStrict\?.*map\.events\.each_value\s+do\s+\|event\|.*def\s+isPassable\?.*map\.events\.each_value\s+do\s+\|event\|' },
     @{ Name = "Allocation-free sprite hash updates"; File = "Scripts\SpriteWindow.rb"; Pattern = '(?s)def\s+pbUpdateSpriteHash\(windows\)\s*windows\.each_value\s+do\s+\|window\|.*window\.respond_to\?\(:update\).*rescue\s+RGSSError' },
@@ -2079,11 +2186,18 @@ function Test-FeatureContracts {
     @{ Name = "Opt-in renderer frame skipping"; File = "Scripts\PokemonOptions.rb"; Pattern = '(?s)def\s+frameskip.*@frameskip.*def\s+frameskip=\(value\).*pbApplyFrameSkipSetting.*EnumOption\.new\(_INTL\("Frame Skip"\).*\[_INTL\("Off"\),_INTL\("On"\)\]' },
     @{ Name = "Dependency-aware incremental PBS compiler"; File = "Scripts\Compiler.rb"; Pattern = '(?s)AZURE_PBS_COMPILE_STEPS=.*:dependencies=>\[\].*def\s+pbAzurePBSCompileStepStatus.*File\.mtime\(latestSource\)>File\.mtime\(oldestOutput\).*def\s+pbPBSCompilePlan.*:reason=>:dependency.*pbCompileTrainerEvents.*belongs to Compile All Data.*def\s+pbCompileChangedData.*MessageTypes\.saveMessages.*pbRefreshAzureCompiledData' },
     @{ Name = "Explicit Compile Changed Data command"; File = "Scripts\PokemonDebug.rb"; Pattern = '(?s)commands\.add\("compilechanged",\s*_INTL\("Compile Changed Data"\)\).*elsif\s+cmd=="compilechanged".*pbPBSCompilePlan.*Maps will not be modified\. Continue\?.*pbCompileChangedData' },
-    @{ Name = "Read-only PBS validation runner"; File = "Scripts\AzurePBSValidator.rb"; Pattern = '(?s)module\s+AzurePBSValidator.*AUDIT_PATH="tools/preservation/Audit-Azure\.ps1".*LOG_PATH="tools/preservation/pbs_validation\.log".*def\s+self\.run\(root=Dir\.pwd\).*IO\.popen\(command,"rb"\).*:ok=>\(exitCode==0\).*def\s+pbValidateAzureProject\(root=Dir\.pwd\)' },
-    @{ Name = "Explicit Validate PBS Data command"; File = "Scripts\PokemonDebug.rb"; Pattern = '(?s)commands\.add\("validatepbs",\s*_INTL\("Validate PBS Data"\)\).*elsif\s+cmd=="validatepbs".*Validating PBS data without compiling.*pbValidateAzureProject.*result\[:ok\].*Full log' },
+    @{ Name = "Read-only PBS validation runner"; File = "Scripts\AzurePBSValidator.rb"; Lazy = $true; Pattern = '(?s)module\s+AzurePBSValidator.*AUDIT_PATH="tools/preservation/Audit-Azure\.ps1".*LOG_PATH="tools/preservation/pbs_validation\.log".*def\s+self\.run\(root=Dir\.pwd\).*IO\.popen\(command,"rb"\).*:ok=>\(exitCode==0\).*def\s+pbValidateAzureProject\(root=Dir\.pwd\)' },
+    @{ Name = "Optional developer-tool loader"; File = "Scripts\PokemonSystem.rb"; Pattern = '(?s)module\s+AzureDeveloperTools.*def\s+self\.present\?.*def\s+self\.load\(scriptName,constantName\).*eval\(code,TOPLEVEL_BINDING,toolPath\).*triggerex\?\(:F10\)\s+&&\s+\$DEBUG.*AzureDeveloperTools\.load\("Profiler\.rb",:CP_Profiler\).*triggerex\?\(:F11\)\s+&&\s+\$DEBUG' },
+    @{ Name = "Removable profiler developer tool"; File = "Scripts\Profiler.rb"; Lazy = $true; Pattern = '(?s)module\s+CP_Profiler.*OUTPUT_PATH="tools/preservation/profiler_latest\.txt".*set_trace_func.*File\.open\(OUTPUT_PATH,\s*''w''\)' },
+    @{ Name = "Explicit Validate PBS Data command"; File = "Scripts\PokemonDebug.rb"; Pattern = '(?s)commands\.add\("validatepbs",\s*_INTL\("Validate PBS Data"\)\)\s+if\s+AzureDeveloperTools\.present\?.*elsif\s+cmd=="validatepbs".*AzureDeveloperTools\.load\("AzurePBSValidator\.rb",:AzurePBSValidator\).*Validating PBS data without compiling.*pbValidateAzureProject.*result\[:ok\].*Full log' },
     @{ Name = "Recoverable named PBS authoring tools"; File = "Scripts\Compiler.rb"; Pattern = '(?s)AZURE_PBS_TRACKED_FILES=.*types\.txt.*tm\.txt.*trainerlists\.txt.*def\s+pbExportNamedPBSSnapshot.*pbExportAltPBSFiles.*def\s+pbAvailablePBSBackups.*PBS/RestoreBackup.*def\s+pbBackupCurrentPBS.*def\s+pbRestorePBSBackup.*File\.dirname\(sourceDir\).*safetyDir=pbBackupCurrentPBS.*File\.delete\(destination\).*pbLogPBSTool' },
     @{ Name = "Explicit named PBS export and restore commands"; File = "Scripts\PokemonDebug.rb"; Pattern = '(?s)commands\.add\("exportnamedpbs",\s*_INTL\("Export Named PBS Snapshot"\)\).*commands\.add\("restorepbs",\s*_INTL\("Restore PBS Backup"\)\).*elsif\s+cmd=="exportnamedpbs".*pbExportNamedPBSSnapshot.*elsif\s+cmd=="restorepbs".*pbAvailablePBSBackups.*pbConfirmMessageSerious.*pbRestorePBSBackup' },
     @{ Name = "Compiled-data cache statistics command"; File = "Scripts\PokemonDebug.rb"; Pattern = '(?s)commands\.add\("datacachestats",\s*_INTL\("Compiled Data Cache Stats"\)\).*elsif\s+cmd=="datacachestats".*AzureDataCache\.stats.*totalHits.*totalLoads.*hit rate' },
+    @{ Name = "Post-selection runtime data ownership loader"; File = "Scripts\AzureDataCache.rb"; Pattern = '(?s)def\s+pbLoadAzureRuntimeData.*\$data_common_events=pbLoadRxData\("Data/CommonEvents"\)\s+if\s+!\$data_common_events.*\$pkmn_dex=pbCachedData\("Data/dexdata\.dat"\)\s+if\s+!\$pkmn_dex.*\$pkmn_move=pbCachedData\("Data/moves\.dat"\)\s+if\s+!\$pkmn_move.*\$pkmn_egg=pbCachedData\("Data/eggEmerald\.dat"\)\s+if\s+!\$pkmn_egg.*\$ItemData=pbCachedData\("Data/pokmanitems\.rxdata"\)\s+if\s+!\$ItemData.*\$bosscache=pbCachedData\("Data/bossdata\.dat"\)\s+if\s+!\$bosscache.*return\s+true' },
+    @{ Name = "Minimal title-time data bootstrap"; File = "Scripts\Main.rb"; Pattern = '(?s)\$data_system\s*=\s*pbLoadRxData\("Data/System"\).*\$mapinfos\s*=\s*pbCachedRxData\("Data/MapInfos"\).*\$game_system\s*=\s*Game_System\.new.*setScreenBorderName\("border"\).*\$scene\s*=\s*pbCallTitle' },
+    @{ Name = "Post-selection gameplay data activation"; File = "Scripts\PokemonLoad.rb"; Pattern = '(?s)cmdContinue>=0\s+&&\s+command==cmdContinue.*@scene\.pbEndScene\s+pbLoadAzureRuntimeData.*cmdNewGame>=0\s+&&\s+command==cmdNewGame.*@scene\.pbEndScene\s+pbLoadAzureRuntimeData.*cmdMysteryGift>=0\s+&&\s+command==cmdMysteryGift\s+pbLoadAzureRuntimeData\s+pbFadeOutIn' },
+    @{ Name = "Compiled item and boss whole-object replacement"; File = "Scripts\Compiler.rb"; Pattern = '(?s)def\s+pbCompileItems.*if\s+installRuntime\s+\$ItemData=records\s+AzureDataCache\.clear\("Data/pokmanitems\.rxdata"\).*PBItemData\.clear_cache.*def\s+pbCompileBosses.*save_data\(bossdata,"Data/bossdata\.dat"\).*AzureDataCache\.clear\("Data/bossdata\.dat"\).*\$bosscache\s*=\s*bossdata' },
+    @{ Name = "Shared title system windowskin lookup"; File = "Scripts\SpriteWindow.rb"; Pattern = '(?s)def\s+self\.pbDefaultWindowskin\s+system=\(defined\?\(\$data_system\)\s*&&\s*\$data_system\)\s*\?\s*\$data_system\s*:\s*pbLoadRxData\("Data/System"\)' },
     @{ Name = "Deterministic legacy duplicate compiler policy"; File = "Scripts\Compiler.rb"; Pattern = '(?s)AZURE_LEGACY_DUPLICATE_SYMBOLS\s*=.*AZURE_LEGACY_DUPLICATE_IDS\s*=.*def\s+pbValidateAzureLegacyDuplicates.*allowedSymbols.*allowedIDs.*pbValidateAzureLegacyDuplicates\(:items.*pbValidateAzureLegacyDuplicates\(:moves.*pbValidateAzureLegacyDuplicates\(:abilities.*pbValidateAzureLegacyDuplicates\(:trainer_types.*pbValidateAzureLegacyDuplicates\(:pokemon' }
   )
 
@@ -2100,7 +2214,10 @@ function Test-FeatureContracts {
       Add-AuditError "$($contract.Name) contract is missing expected API '$($contract.Pattern)' in $($contract.File)."
     }
     $scriptName = [System.IO.Path]::GetFileNameWithoutExtension($contract.File)
-    if ($orderEntries -notcontains $scriptName) {
+    $isLazy = $contract.ContainsKey("Lazy") -and $contract.Lazy
+    if ($isLazy -and $orderEntries -contains $scriptName) {
+      Add-AuditError "$($contract.Name) must remain removable, but '$scriptName' is present in Scripts\!script_order.csv."
+    } elseif (!$isLazy -and $orderEntries -notcontains $scriptName) {
       Add-AuditError "$($contract.Name) exists but '$scriptName' is absent from Scripts\!script_order.csv."
     }
   }
@@ -2145,16 +2262,52 @@ function Test-FeatureContracts {
     }
   }
   $mainContent = [System.IO.File]::ReadAllText((Resolve-ProjectPath "Scripts\Main.rb"))
-  foreach ($deferredData in @("Tilesets", "Animations")) {
+  foreach ($deferredData in @("Tilesets", "Animations", "CommonEvents")) {
     if ($mainContent -match ('pbLoadRxData\("Data/{0}"\)' -f $deferredData)) {
       Add-AuditError "Scripts\Main.rb eagerly loads deferred Data/$deferredData before its runtime boundary."
     }
   }
-  foreach ($iterationFile in @("Scripts\Game_Map_.rb", "Scripts\PokemonMap.rb")) {
+  foreach ($deferredData in @("dexdata.dat", "moves.dat", "eggEmerald.dat", "pokmanitems.rxdata", "bossdata.dat")) {
+    if ($mainContent -match ('(?:pbCachedData|load_data)\("Data/{0}"\)' -f [regex]::Escape($deferredData))) {
+      Add-AuditError "Scripts\Main.rb eagerly loads deferred Data/$deferredData before its runtime boundary."
+    }
+  }
+  $sceneIntroContent = [System.IO.File]::ReadAllText((Resolve-ProjectPath "Scripts\Scene_Intro.rb"))
+  if ($sceneIntroContent -match 'pbLoadRxData\("Data/System"\)') {
+    Add-AuditError "Scripts\Scene_Intro.rb reintroduced a redundant title-time System reload."
+  }
+  $bossContent = [System.IO.File]::ReadAllText((Resolve-ProjectPath "Scripts\PokemonBossBattle.rb"))
+  if ($bossContent -match '(?:load_data|pbCachedData)\("Data/bossdata\.dat"\)') {
+    Add-AuditError "Scripts\PokemonBossBattle.rb eagerly loads boss data while scripts are being evaluated."
+  }
+  $loadScreenContent = [System.IO.File]::ReadAllText((Resolve-ProjectPath "Scripts\PokemonLoad.rb"))
+  if ($loadScreenContent -match 'load_data\("Data/pokmanitems\.rxdata"\)' -or
+      $loadScreenContent -match '\$data_system\s*=\s*pbLoadRxData\("Data/System"\)') {
+    Add-AuditError "Scripts\PokemonLoad.rb bypasses the shared post-selection data or title System ownership boundary."
+  }
+  foreach ($immutableConsumer in @("Scripts\Advanced Pokedex.rb", "Scripts\PokeBattle_Pokemon.rb", "Scripts\PokemonOrgBattleGenerator.rb")) {
+    $immutableContent = [System.IO.File]::ReadAllText((Resolve-ProjectPath $immutableConsumer))
+    if ($immutableContent -match 'load_data\("Data/(?:attacksRS\.rxdata|eggEmerald\.dat)"\)') {
+      Add-AuditError "$immutableConsumer bypasses AzureDataCache for an immutable compiled move table."
+    }
+  }
+  $compilerContent = [System.IO.File]::ReadAllText((Resolve-ProjectPath "Scripts\Compiler.rb"))
+  if ($compilerContent -match '\$ItemData\s*=\s*load_data\("Data/pokmanitems\.rxdata"\)') {
+    Add-AuditError "Scripts\Compiler.rb re-reads item data after installing the compiler's whole-object replacement."
+  }
+  $dataCacheContent = [System.IO.File]::ReadAllText((Resolve-ProjectPath "Scripts\AzureDataCache.rb"))
+  if ($dataCacheContent -match 'pbCached(?:Rx)?Data\(sprintf\("Data/Map%03d"') {
+    Add-AuditError "Scripts\AzureDataCache.rb introduced a persistent shared cache for mutable RPG::Map records."
+  }
+  foreach ($iterationFile in @("Scripts\Game_Map_.rb", "Scripts\PokemonMap.rb", "Scripts\Game_Character.rb", "Scripts\Game_Player_.rb")) {
     $iterationContent = [System.IO.File]::ReadAllText((Resolve-ProjectPath $iterationFile))
     if ($iterationContent -match '(?:@?events|@common_events)\.values') {
       Add-AuditError "$iterationFile reintroduced an allocating Hash#values loop in a hot map path."
     }
+  }
+  $sceneMapContent = [System.IO.File]::ReadAllText((Resolve-ProjectPath "Scripts\Scene_Map.rb"))
+  if ($sceneMapContent -match '@spritesets\.values') {
+    Add-AuditError "Scripts\Scene_Map.rb reintroduced an allocating spriteset Hash#values lookup."
   }
   Add-AuditCheck "Azure feature contracts: $($contracts.Count) required systems are present and ordered for loading."
 }
@@ -2308,6 +2461,594 @@ function Test-CompiledDataFreshness {
   Add-AuditCheck "Compiled-data presence and timestamps were checked."
 }
 
+function Read-RuntimeEvidenceStatus {
+  param([Parameter(Mandatory)][string]$Name)
+  $relativePath = "tools\preservation\runtime_performance\$Name"
+  $path = Resolve-ProjectPath $relativePath
+  if (!(Test-Path -LiteralPath $path -PathType Leaf)) {
+    Add-AuditError "Runtime performance evidence is missing: $relativePath."
+    return $null
+  }
+  $fields = @{}
+  $lines = @([System.IO.File]::ReadAllLines($path))
+  foreach ($line in $lines) {
+    $separator = $line.IndexOf('=')
+    if ($separator -gt 0) {
+      $fields[$line.Substring(0, $separator)] = $line.Substring($separator + 1)
+    }
+  }
+  $fields['__first'] = if ($lines.Count -gt 0) { $lines[0] } else { '' }
+  return $fields
+}
+
+function Test-RuntimePerformanceEvidence {
+  $directory = Resolve-ProjectPath "tools\preservation\runtime_performance"
+  if (!(Test-Path -LiteralPath $directory -PathType Container)) {
+    Add-AuditError "Runtime performance evidence directory is missing."
+    return
+  }
+  $files = @(Get-ChildItem -LiteralPath $directory -Filter "*.status.txt" -File)
+  if ($files.Count -lt 57) {
+    Add-AuditError "Runtime performance evidence has only $($files.Count) status files; expected at least 57."
+  }
+  $allowedDeferred = @(
+    "sprite_ui_boundary_scans.deferred.status.txt",
+    "sprite_window_flash.deferred.status.txt"
+  )
+  $legacyBaselines = @(
+    "rpg_animation.baseline.status.txt",
+    "tileset.baseline.status.txt"
+  )
+  $passCount = 0
+  $deferredCount = 0
+  foreach ($file in $files) {
+    $content = [System.IO.File]::ReadAllText($file.FullName)
+    if ($content -match '(?m)^(?:result=)?(?:FAIL|ERROR)\r?$') {
+      Add-AuditError "Runtime performance evidence reports failure: $($file.Name)."
+      continue
+    }
+    if ($content -match '(?m)^(?:result=PASS|PASS)\r?$') {
+      $passCount++
+    } elseif ($content -match '(?m)^result=DEFERRED\r?$') {
+      $deferredCount++
+      if ($allowedDeferred -notcontains $file.Name) {
+        Add-AuditError "Unexpected deferred runtime evidence: $($file.Name)."
+      }
+    } elseif ($legacyBaselines -contains $file.Name -and
+              $content -match '(?m)^fingerprint=[0-9a-f]+\r?$') {
+      # These two original baselines predate the result field but retain an
+      # exact serialized fingerprint matched by their optimized captures.
+      $passCount++
+    } else {
+      Add-AuditError "Runtime performance evidence has no recognized result: $($file.Name)."
+    }
+  }
+  if ($deferredCount -ne 2) {
+    Add-AuditError "Runtime performance evidence has $deferredCount deferred decisions; expected exactly 2 reviewed deferrals."
+  }
+
+  $parityPairs = @(
+    @{ Base="ai_ally_iterator.baseline.status.txt"; Opt="ai_ally_iterator.optimized.status.txt"; Keys=@("matrix_cases","matrix_checksum","predicate_checksum") },
+    @{ Base="ai_damage_normalization.baseline.status.txt"; Opt="ai_damage_normalization.optimized.status.txt"; Keys=@("decision_checksum","benchmark_checksum") },
+    @{ Base="ai_foe_speed_scan.baseline.status.txt"; Opt="ai_foe_speed_scan.optimized.status.txt"; Keys=@("matrix_cases","matrix_checksum","predicate_checksum") },
+    @{ Base="ai_memory_predicates.baseline.status.txt"; Opt="ai_memory_predicates.optimized.status.txt"; Keys=@("decision_checksum","matrix_scenarios","predicate_checksum") },
+    @{ Base="ai_move_query_groups.baseline.status.txt"; Opt="ai_move_query_groups.optimized.status.txt"; Keys=@("matrix_scenarios","matrix_checksum","predicate_checksum") },
+    @{ Base="ai_ordered_foe_iterator.baseline.status.txt"; Opt="ai_ordered_foe_iterator.optimized.status.txt"; Keys=@("ordering_cases","ordering_checksum","helper_checksum","predicate_checksum") },
+    @{ Base="ai_query_arguments.baseline.status.txt"; Opt="ai_query_arguments.optimized.status.txt"; Keys=@("helper_scenarios","helper_checksum","predicate_checksum") },
+    @{ Base="ai_query_helpers.baseline.status.txt"; Opt="ai_query_helpers.optimized.status.txt"; Keys=@("decision_checksum","cache_checksum","foes_checksum") },
+    @{ Base="ai_rough_stat.baseline.status.txt"; Opt="ai_rough_stat.optimized.status.txt"; Keys=@("scenarios","matrix_checksum","benchmark_checksum") },
+    @{ Base="ai_same_side_target.baseline.status.txt"; Opt="ai_same_side_target.optimized.status.txt"; Keys=@("matrix_cases","matrix_checksum","predicate_checksum") },
+    @{ Base="ai_single_move_queries.baseline.status.txt"; Opt="ai_single_move_queries.optimized.status.txt"; Keys=@("matrix_scenarios","matrix_checksum","predicate_checksum") },
+    @{ Base="ai_static_membership.baseline.status.txt"; Opt="ai_static_membership.optimized.status.txt"; Keys=@("matrix_cases","matrix_checksum","predicate_checksum") },
+    @{ Base="animation.baseline.status.txt"; Opt="animation.optimized.status.txt"; Keys=@("file_bytes","container_class","records","named_records","selected","first_name","last_name") },
+    @{ Base="battle_animation_lookup.baseline.status.txt"; Opt="battle_animation_lookup.optimized.status.txt"; Keys=@("records","named_records","distinct_names","checksum") },
+    @{ Base="encounter_selection.baseline.status.txt"; Opt="encounter_selection.optimized.status.txt"; Keys=@("maps","encounter_tables","encounter_slots","checksum") },
+    @{ Base="event_iteration.baseline.status.txt"; Opt="event_iteration.optimized.status.txt"; Keys=@("maps","events","hash_checksum","page_checksum") },
+    @{ Base="game_character_event_scans.baseline.status.txt"; Opt="game_character_event_scans.optimized.status.txt"; Keys=@("matrix_signature","benchmark_events","benchmark_checksum") },
+    @{ Base="party_menu.baseline.status.txt"; Opt="party_menu.optimized.status.txt"; Keys=@("sprite_entries","sprite_updates","changeling_updates") },
+    @{ Base="rpg_animation.baseline.status.txt"; Opt="rpg_animation.optimized.status.txt"; Keys=@("records","serialized_bytes","fingerprint") },
+    @{ Base="scene_map_spriteset_lookup.baseline.status.txt"; Opt="scene_map_spriteset_lookup.optimized.status.txt"; Keys=@("scenarios","matrix_signature","benchmark_checksum") },
+    @{ Base="scene_map_spritesets.baseline.status.txt"; Opt="scene_map_spritesets.optimized.status.txt"; Keys=@("scenarios","matrix_checksum","benchmark_checksum") },
+    @{ Base="tileset.baseline.status.txt"; Opt="tileset.optimized.status.txt"; Keys=@("records","serialized_bytes","fingerprint") }
+  )
+  foreach ($pair in $parityPairs) {
+    $baseline = Read-RuntimeEvidenceStatus $pair.Base
+    $optimized = Read-RuntimeEvidenceStatus $pair.Opt
+    if (!$baseline -or !$optimized) { continue }
+    foreach ($key in $pair.Keys) {
+      if (!$baseline.ContainsKey($key) -or !$optimized.ContainsKey($key) -or
+          $baseline[$key] -ne $optimized[$key]) {
+        Add-AuditError "Runtime evidence parity mismatch for $key between $($pair.Base) and $($pair.Opt)."
+      }
+    }
+  }
+
+  $aiCloseout = Read-RuntimeEvidenceStatus "ai_decision.closeout.status.txt"
+  if ($aiCloseout -and
+      ($aiCloseout['decision_checksum'] -ne '2062664973' -or
+       $aiCloseout['expected_checksum'] -ne '2062664973' -or
+       $aiCloseout['decisions_exact'] -ne 'true')) {
+    Add-AuditError "Seeded AI decision closeout no longer records the preserved checksum 2062664973."
+  }
+  $mapDecision = Read-RuntimeEvidenceStatus "map_cache_decision.status.txt"
+  if ($mapDecision -and
+      ($mapDecision['decision'] -ne 'retain_one_shot_handoff_reject_persistent_mutable_map_cache' -or
+       $mapDecision['repeated_graph_exact'] -ne 'true' -or
+       $mapDecision['post_consumption_mutation_isolated'] -ne 'true' -or
+       $mapDecision['persistent_cache_safe'] -ne 'false')) {
+    Add-AuditError "Map-cache closeout does not preserve the measured one-shot ownership decision."
+  }
+  $titleDecision = Read-RuntimeEvidenceStatus "title_time_data_ownership.status.txt"
+  if ($titleDecision -and
+      ($titleDecision['title_ownership_exact'] -ne 'true' -or
+       $titleDecision['deferred_boundary_idempotent'] -ne 'true' -or
+       $titleDecision['runtime_data_present_after_boundary'] -ne 'true')) {
+    Add-AuditError "Title-time data ownership evidence is incomplete or failed."
+  }
+  $scriptOrder = [System.IO.File]::ReadAllText((Resolve-ProjectPath "Scripts\!script_order.csv"))
+  if ($scriptOrder -match '(?im)^.*Fixture.*$') {
+    Add-AuditError "Scripts\!script_order.csv still contains a temporary runtime fixture."
+  }
+  Add-AuditCheck "Runtime evidence: $($files.Count) captures reconcile, including $passCount passes, $deferredCount reviewed deferrals, and AI checksum 2062664973."
+}
+
+function Test-EngineCompatibilityEvidence {
+  $relativePath = "tools\preservation\engine_test\ruby31_compatibility.status.txt"
+  $path = Resolve-ProjectPath $relativePath
+  if (!(Test-Path -LiteralPath $path -PathType Leaf)) {
+    Add-AuditError "Ruby 3.1 engine compatibility evidence is missing: $relativePath."
+    return
+  }
+  $content = [System.IO.File]::ReadAllText($path)
+  foreach ($required in @(
+    '(?m)^result=PASS\r?$',
+    '(?m)^candidate_engine=mkxp-z 2\.4\.2\r?$',
+    '(?m)^candidate_ruby=3\.1\.3p185\r?$',
+    '(?m)^script_import=true\r?$',
+    '(?m)^graphics_render=true\r?$',
+    '(?m)^font_render=true\r?$',
+    '(?m)^input_update=true\r?$',
+    '(?m)^audio_decode=true\r?$',
+    '(?m)^native_win32_call=true\r?$',
+    '(?m)^video_mci_bridge=true\r?$',
+    '(?m)^network_hostname=true\r?$',
+    '(?m)^openssl=true\r?$',
+    '(?m)^marshal_save_objects=16\r?$',
+    '(?m)^production_save_changed=false\r?$',
+    '(?m)^production_runtime_changed=false\r?$'
+  )) {
+    if ($content -notmatch $required) {
+      Add-AuditError "Ruby 3.1 engine compatibility evidence is missing required result '$required'."
+    }
+  }
+  $toolFiles = @(
+    "tools\preservation\Build-EngineTestPackage.ps1",
+    "tools\preservation\Test-EnginePackage.ps1",
+    "tools\preservation\engine_test\AzureEngineTestBootstrap.rb",
+    "tools\preservation\engine_test\AzureTimingFixture.rb",
+    "tools\preservation\engine_test\AzureDeveloperToolsFixture.rb"
+  )
+  foreach ($toolFile in $toolFiles) {
+    if (!(Test-Path -LiteralPath (Resolve-ProjectPath $toolFile) -PathType Leaf)) {
+      Add-AuditError "Engine compatibility tool is missing: $toolFile."
+    }
+  }
+  $productionHashes = @{
+    "Game.exe" = "59A477804595AB188A5B12FD27CB1C522B174F198F306F271B83FC3A179307B4"
+    "x64-msvcrt-ruby300.dll" = "EBF848D9B0F1D00AEED8739B1C0121F5B47AFEB73BDFEC1DC9C223FF4F4E69DF"
+    "Game.ini" = "E72B1C095F6FA9B60C6502882EAF3968E76ECA85EADC4410AE8E0A29582E6289"
+    "mkxp.json" = "AB5AFA103CA2AB280AA14A78D6D5E7F90E14887B667C8E32E23F46B01EF82519"
+  }
+  foreach ($relative in $productionHashes.Keys) {
+    $actual = (Get-FileHash -LiteralPath (Resolve-ProjectPath $relative) -Algorithm SHA256).Hash
+    if ($actual -ne $productionHashes[$relative]) {
+      Add-AuditError "Production runtime file changed during the reversible engine evaluation: $relative."
+    }
+  }
+  Add-AuditCheck "Ruby 3.1 engine package: mkxp-z 2.4.2 passed isolated script, rendering, input, audio, native, network, and 16-object save-load probes."
+
+  $timingRelativePath = "tools\preservation\engine_test\frame_skip_timing.status.txt"
+  $timingPath = Resolve-ProjectPath $timingRelativePath
+  if (!(Test-Path -LiteralPath $timingPath -PathType Leaf)) {
+    Add-AuditError "Frame-skip/turbo timing evidence is missing: $timingRelativePath."
+    return
+  }
+  $timingContent = [System.IO.File]::ReadAllText($timingPath)
+  foreach ($required in @(
+    '(?m)^result=PASS\r?$',
+    '(?m)^scenarios=10\r?$',
+    '(?m)^rates=44,88,110,132,176\r?$',
+    '(?m)^frameskip_modes=off,on\r?$',
+    '(?m)^movement_updates=8\r?$',
+    '(?m)^animation_updates=5\r?$',
+    '(?m)^animation_remaining_duration=0\r?$',
+    '(?m)^movement_animation_exact=true\r?$',
+    '(?m)^logical_rate_parity=true\r?$',
+    '(?m)^frameskip_logical_parity=true\r?$',
+    '(?m)^second_scaled_timers_exact=true\r?$',
+    '(?m)^paced_updates_valid=true\r?$',
+    '(?m)^frame_skip_scope=render_scheduling_only\r?$',
+    '(?m)^turbo_scope=intentional_simulation_speed_multiplier\r?$',
+    '(?m)^fixed_44_playtime_policy=preserved\r?$',
+    '(?m)^production_save_changed=false\r?$',
+    '(?m)^error_logs_changed=false\r?$'
+  )) {
+    if ($timingContent -notmatch $required) {
+      Add-AuditError "Frame-skip/turbo timing evidence is missing required result '$required'."
+    }
+  }
+  Add-AuditCheck "Frame-skip/turbo timing: 10 Ruby 3.1 scenarios preserve logic, movement, animation, second-scaled timers, and the intentional Azure turbo policy."
+
+  $threadRelativePath = "tools\preservation\engine_test\thread_safety_inventory.status.txt"
+  $threadPath = Resolve-ProjectPath $threadRelativePath
+  if (!(Test-Path -LiteralPath $threadPath -PathType Leaf)) {
+    Add-AuditError "Thread-safety inventory evidence is missing: $threadRelativePath."
+    return
+  }
+  $threadContent = [System.IO.File]::ReadAllText($threadPath)
+  foreach ($required in @(
+    '(?m)^result=PASS\r?$',
+    '(?m)^decision=REJECT_THREADLOADER_PORT\r?$',
+    '(?m)^thread_loader_ported=false\r?$',
+    '(?m)^background_loading_eligible=false\r?$',
+    '(?m)^rejuvenation_thread_workers=3\r?$',
+    '(?m)^rejuvenation_background_scripts=181\r?$',
+    '(?m)^rejuvenation_main_menu_cache_calls=3\r?$',
+    '(?m)^rejuvenation_runtime_cache_calls=22\r?$',
+    '(?m)^rejuvenation_runtime_direct_loads=2\r?$',
+    '(?m)^rejuvenation_compile_capable_cache_methods=18\r?$',
+    '(?m)^azure_external_scripts=201\r?$',
+    '(?m)^azure_thread_loader_present=false\r?$',
+    '(?m)^azure_thread_start_sites=1\r?$',
+    '(?m)^azure_thread_start_scope=font_install_restart_process_only\r?$',
+    '(?m)^azure_runtime_global_assignments=6\r?$',
+    '(?m)^azure_runtime_mutable_collections=1\r?$',
+    '(?m)^azure_cache_synchronized=false\r?$',
+    '(?m)^engine_load_data_thread_contract=unproven\r?$',
+    '(?m)^production_code_changed=false\r?$',
+    '(?m)^functionality_preserved=true\r?$'
+  )) {
+    if ($threadContent -notmatch $required) {
+      Add-AuditError "Thread-safety inventory evidence is missing required result '$required'."
+    }
+  }
+
+  $inventoryDocument = Resolve-ProjectPath "tools\preservation\engine_test\THREAD_SAFETY_INVENTORY.md"
+  if (!(Test-Path -LiteralPath $inventoryDocument -PathType Leaf)) {
+    Add-AuditError "Detailed thread-safety inventory is missing: tools\preservation\engine_test\THREAD_SAFETY_INVENTORY.md."
+  }
+  $threadStarts = 0
+  $threadLoaderFound = $false
+  foreach ($scriptFile in Get-ChildItem -LiteralPath (Resolve-ProjectPath "Scripts") -Filter "*.rb" -File) {
+    $scriptContent = [System.IO.File]::ReadAllText($scriptFile.FullName)
+    $threadStarts += [regex]::Matches($scriptContent,'\bThread\s*\.\s*(?:new|start|fork)\b').Count
+    if ($scriptContent -match '\bThreadLoader\b') { $threadLoaderFound = $true }
+  }
+  if ($threadLoaderFound) {
+    Add-AuditError "Production scripts contain ThreadLoader after the Step 3 rejection."
+  }
+  if ($threadStarts -ne 1) {
+    Add-AuditError "Production thread-start inventory changed: expected only the font restart site, found $threadStarts sites."
+  }
+  $loadSource = [System.IO.File]::ReadAllText((Resolve-ProjectPath "Scripts\PokemonLoad.rb"))
+  if ($loadSource -notmatch "Thread\.new\s*\{\s*system\('Game'\)\s*\}") {
+    Add-AuditError "The sole permitted Azure thread is no longer the font-install restart process."
+  }
+  Add-AuditCheck "Thread-safety inventory: Rejuvenation's three worker scopes fail Azure's immutable/private-work gate, so production remains synchronous with one process-restart thread."
+
+  $toolingRelativePath = "tools\preservation\engine_test\developer_tooling_menu_registry.status.txt"
+  $toolingPath = Resolve-ProjectPath $toolingRelativePath
+  if (!(Test-Path -LiteralPath $toolingPath -PathType Leaf)) {
+    Add-AuditError "Developer-tooling/menu-registry evidence is missing: $toolingRelativePath."
+    return
+  }
+  $toolingContent = [System.IO.File]::ReadAllText($toolingPath)
+  foreach ($required in @(
+    '(?m)^result=PASS\r?$',
+    '(?m)^candidate_startup_seconds=25\r?$',
+    '(?m)^developer_tools_preloaded=false\r?$',
+    '(?m)^developer_tools_in_script_order=0\r?$',
+    '(?m)^profiler_lazy_load=true\r?$',
+    '(?m)^validator_lazy_load=true\r?$',
+    '(?m)^profiler_debug_hotkeys_only=true\r?$',
+    '(?m)^profiler_output=tools/preservation/profiler_latest\.txt\r?$',
+    '(?m)^profiler_output_outside_data=true\r?$',
+    '(?m)^validator_read_only=true\r?$',
+    '(?m)^optional_tool_omission_guarded=true\r?$',
+    '(?m)^candidate_profiler_loaded=true\r?$',
+    '(?m)^candidate_validator_loaded=true\r?$',
+    '(?m)^candidate_error_logs_changed=false\r?$',
+    '(?m)^production_save_changed=false\r?$',
+    '(?m)^menu_registry_decision=REJECT_BROAD_PORT\r?$',
+    '(?m)^debug_command_mapping=RETAIN_KEYED_COMMANDLIST\r?$',
+    '(?m)^debug_command_count=57\r?$',
+    '(?m)^pause_active_command_ids=10\r?$',
+    '(?m)^title_active_command_ids=8\r?$',
+    '(?m)^pokegear_active_command_ids=9\r?$',
+    '(?m)^party_dynamic_move_slots=4\r?$',
+    '(?m)^party_custom_actions=5\r?$',
+    '(?m)^pause_menu_changed=false\r?$',
+    '(?m)^party_menu_changed=false\r?$',
+    '(?m)^title_menu_changed=false\r?$',
+    '(?m)^pokegear_menu_changed=false\r?$',
+    '(?m)^functionality_preserved=true\r?$',
+    '(?m)^phase_4_complete=true\r?$'
+  )) {
+    if ($toolingContent -notmatch $required) {
+      Add-AuditError "Developer-tooling/menu-registry evidence is missing required result '$required'."
+    }
+  }
+  $menuDocument = Resolve-ProjectPath "tools\preservation\engine_test\MENU_REGISTRY_EVALUATION.md"
+  if (!(Test-Path -LiteralPath $menuDocument -PathType Leaf)) {
+    Add-AuditError "Detailed menu-registry evaluation is missing: tools\preservation\engine_test\MENU_REGISTRY_EVALUATION.md."
+  }
+
+  $orderText = [System.IO.File]::ReadAllText((Resolve-ProjectPath "Scripts\!script_order.csv"))
+  if ($orderText -match '(?m)^(?:Profiler|AzurePBSValidator)\r?$') {
+    Add-AuditError "Removable developer tools were restored to production script order."
+  }
+  $debugSource = [System.IO.File]::ReadAllText((Resolve-ProjectPath "Scripts\PokemonDebug.rb"))
+  $pauseSource = [System.IO.File]::ReadAllText((Resolve-ProjectPath "Scripts\PokemonPauseMenu.rb"))
+  $loadMenuSource = [System.IO.File]::ReadAllText((Resolve-ProjectPath "Scripts\PokemonLoad.rb"))
+  $pokegearSource = [System.IO.File]::ReadAllText((Resolve-ProjectPath "Scripts\Haru - ChangeTime.rb"))
+  $partySource = [System.IO.File]::ReadAllText((Resolve-ProjectPath "Scripts\PokemonParty.rb"))
+  if ([regex]::Matches($debugSource,'(?m)^\s*commands\.add\("[^"]+"').Count -ne 57) {
+    Add-AuditError "The keyed debug command inventory changed from 57 entries."
+  }
+  if ([regex]::Matches($pauseSource,'(?m)^\s*commands\[(cmd\w+)=commands\.length\]').Groups.Count -eq 0 -or
+      ([regex]::Matches($pauseSource,'(?m)^\s*commands\[(cmd\w+)=commands\.length\]') | ForEach-Object { $_.Groups[1].Value } | Sort-Object -Unique).Count -ne 10) {
+    Add-AuditError "The preserved pause-menu command inventory changed from 10 active identities."
+  }
+  if (([regex]::Matches($loadMenuSource,'(?m)^\s*commands\[(cmd\w+)=commands\.length\]') | ForEach-Object { $_.Groups[1].Value } | Sort-Object -Unique).Count -ne 8) {
+    Add-AuditError "The preserved title/load-menu command inventory changed from 8 active identities."
+  }
+  if (([regex]::Matches($pokegearSource,'(?m)^\s*commands\[(@cmd\w+)=commands\.length\]') | ForEach-Object { $_.Groups[1].Value } | Sort-Object -Unique).Count -ne 9) {
+    Add-AuditError "The preserved CyberNav command inventory changed from 9 active identities."
+  }
+  if ($partySource -notmatch 'cmdMoves=\[-1,-1,-1,-1\]' -or
+      $partySource -notmatch 'commands\[cmdNature\s*=\s*commands\.length\].*Change Nature' -or
+      $partySource -notmatch 'commands\[cmdAbility\s*=\s*commands\.length\].*Change Ability' -or
+      $partySource -notmatch 'commands\[cmdHiddenPower\s*=\s*commands\.length\].*Change Hidden Power' -or
+      $partySource -notmatch 'commands\[cmdRemind\s*=\s*commands\.length\].*Move Reminder' -or
+      $partySource -notmatch 'commands\[cmdRename\s*=\s*commands\.length\].*Rename') {
+    Add-AuditError "The preserved party-menu dynamic/custom command inventory changed."
+  }
+  Add-AuditCheck "Developer tooling/menu registry: optional tools lazy-load outside release startup, while 57 keyed debug commands and all gameplay-menu conditions remain in their Azure implementations."
+}
+
+function Test-ReleaseValidationEvidence {
+  $relativePath = "tools\preservation\release_validation\phase_5_step_1_clean_compile.status.txt"
+  $path = Resolve-ProjectPath $relativePath
+  if (!(Test-Path -LiteralPath $path -PathType Leaf)) {
+    Add-AuditError "Clean isolated compile evidence is missing: $relativePath."
+    return
+  }
+  $content = [System.IO.File]::ReadAllText($path)
+  foreach ($required in @(
+    '(?m)^result=PASS\r?$',
+    '(?m)^phase=5_step_1_clean_isolated_compile\r?$',
+    '(?m)^candidate_engine=mkxp-z 2\.4\.2\r?$',
+    '(?m)^candidate_ruby=3\.1\.3p185\r?$',
+    '(?m)^authoring_sources=21\r?$',
+    '(?m)^authoring_sources_unchanged=true\r?$',
+    '(?m)^generated_outputs=29\r?$',
+    '(?m)^byte_identical_outputs=26\r?$',
+    '(?m)^semantic_identical_outputs=3\r?$',
+    '(?m)^semantic_paths=Data/pokmanitems\.rxdata,Data/trainerlists\.dat,Data/messages\.dat\r?$',
+    '(?m)^mismatched_outputs=0\r?$',
+    '(?m)^missing_before=0\r?$',
+    '(?m)^missing_after=0\r?$',
+    '(?m)^messages_saved=true\r?$',
+    '(?m)^production_install=false\r?$',
+    '(?m)^production_data_changed=false\r?$',
+    '(?m)^production_pbs_changed=false\r?$',
+    '(?m)^production_scripts_changed=false\r?$',
+    '(?m)^production_save_changed=false\r?$',
+    '(?m)^candidate_error_logs_changed=false\r?$',
+    '(?m)^probe_errors=none\r?$'
+  )) {
+    if ($content -notmatch $required) {
+      Add-AuditError "Clean isolated compile evidence is missing required result '$required'."
+    }
+  }
+  foreach ($toolFile in @(
+    "tools\preservation\Test-ReleaseCompilePackage.ps1",
+    "tools\preservation\engine_test\AzureReleaseCompileFixture.rb"
+  )) {
+    if (!(Test-Path -LiteralPath (Resolve-ProjectPath $toolFile) -PathType Leaf)) {
+      Add-AuditError "Clean isolated compile tool is missing: $toolFile."
+    }
+  }
+  $builderSource = [System.IO.File]::ReadAllText((Resolve-ProjectPath "tools\preservation\Build-EngineTestPackage.ps1"))
+  if ($builderSource -notmatch '\[switch\]\$ReleaseCompile' -or
+      $builderSource -notmatch 'AzureReleaseCompileFixture') {
+    Add-AuditError "The engine package builder no longer exposes the isolated release-compile fixture."
+  }
+  Add-AuditCheck "Release compile: 21 isolated sources produced 29 equivalent outputs (26 byte-identical, 3 Marshal-semantic) without touching production data or saves."
+}
+
+function Test-ReleaseSmokeEvidence {
+  $relativePath = "tools\preservation\release_validation\phase_5_step_3_release_smoke.status.txt"
+  $path = Resolve-ProjectPath $relativePath
+  if (!(Test-Path -LiteralPath $path -PathType Leaf)) {
+    Add-AuditError "Release interaction smoke evidence is missing: $relativePath."
+    return
+  }
+  $content = [System.IO.File]::ReadAllText($path)
+  foreach ($required in @(
+    '(?m)^result=PASS\r?$',
+    '(?m)^phase=5_step_3_release_interaction_smoke\r?$',
+    '(?m)^production_startup_seconds=15\r?$',
+    '(?m)^production_startup_alive=true\r?$',
+    '(?m)^production_cold_script_import=true\r?$',
+    '(?m)^production_error_logs_changed=false\r?$',
+    '(?m)^candidate_engine=mkxp-z 2\.4\.2\r?$',
+    '(?m)^candidate_ruby=3\.1\.3p185\r?$',
+    '(?m)^candidate_supporting_gates=PASS\r?$',
+    '(?m)^old_save_fixture=true\r?$',
+    '(?m)^old_save_objects=16\r?$',
+    '(?m)^save_roundtrip=true\r?$',
+    '(?m)^save_roundtrip_objects=16\r?$',
+    '(?m)^save_write_scope=isolated_package_only\r?$',
+    '(?m)^new_game_setup=true\r?$',
+    '(?m)^load_panel_render=true\r?$',
+    '(?m)^pause_menu=true\r?$',
+    '(?m)^debug_menu_render=true\r?$',
+    '(?m)^debug_registry_identity=true\r?$',
+    '(?m)^map_transfer=true\r?$',
+    '(?m)^map_transfer_same_object=true\r?$',
+    '(?m)^map_transfer_handoff_cleared=true\r?$',
+    '(?m)^single_battle=true\r?$',
+    '(?m)^single_battle_decision=[125]\r?$',
+    '(?m)^double_battle=true\r?$',
+    '(?m)^double_battle_decision=[125]\r?$',
+    '(?m)^cached_move_reads=1000\r?$',
+    '(?m)^seeded_ai_decision_checksum=2062664973\r?$',
+    '(?m)^seeded_ai_single_double_exact=true\r?$',
+    '(?m)^production_data_changed=false\r?$',
+    '(?m)^production_pbs_changed=false\r?$',
+    '(?m)^production_scripts_changed=false\r?$',
+    '(?m)^production_save_changed=false\r?$',
+    '(?m)^candidate_error_logs_changed=false\r?$',
+    '(?m)^probe_errors=none\r?$',
+    '(?m)^functionality_preserved=true\r?$'
+  )) {
+    if ($content -notmatch $required) {
+      Add-AuditError "Release interaction smoke evidence is missing required result '$required'."
+    }
+  }
+  foreach ($toolFile in @(
+    "tools\preservation\Test-ReleaseSmokePackage.ps1",
+    "tools\preservation\engine_test\AzureReleaseSmokeFixture.rb",
+    "tools\preservation\release_validation\RELEASE_SMOKE_MATRIX.md"
+  )) {
+    if (!(Test-Path -LiteralPath (Resolve-ProjectPath $toolFile) -PathType Leaf)) {
+      Add-AuditError "Release interaction smoke asset is missing: $toolFile."
+    }
+  }
+  $builderSource = [System.IO.File]::ReadAllText((Resolve-ProjectPath "tools\preservation\Build-EngineTestPackage.ps1"))
+  if ($builderSource -notmatch '\[switch\]\$ReleaseSmoke' -or
+      $builderSource -notmatch 'AzureReleaseSmokeFixture') {
+    Add-AuditError "The engine package builder no longer exposes the release interaction fixture."
+  }
+  Add-AuditCheck "Release interactions: production cold-start plus isolated old-save, round-trip, new-game, map, menu/debug, single/double battle, and cache smoke scenarios passed without production or error-log changes."
+}
+
+function Test-ReleaseReadinessEvidence {
+  $relativePath = "tools\preservation\release_validation\phase_5_step_4_release_readiness.status.txt"
+  $path = Resolve-ProjectPath $relativePath
+  if (!(Test-Path -LiteralPath $path -PathType Leaf)) {
+    Add-AuditError "Release-readiness evidence is missing: $relativePath."
+    return
+  }
+  $content = [System.IO.File]::ReadAllText($path)
+  foreach ($required in @(
+    '(?m)^result=PASS\r?$',
+    '(?m)^phase=5_step_4_release_readiness\r?$',
+    '(?m)^candidate_engine=mkxp-z 2\.4\.2\r?$',
+    '(?m)^candidate_ruby=3\.1\.3p185\r?$',
+    '(?m)^save_files=117\r?$',
+    '(?m)^save_files_passed=117\r?$',
+    '(?m)^save_files_failed=0\r?$',
+    '(?m)^marshal_objects=1872\r?$',
+    '(?m)^pokemon_checked=234\r?$',
+    '(?m)^numeric_references_resolved=true\r?$',
+    '(?m)^roundtrip_scope=isolated_package_only\r?$',
+    '(?m)^roundtrip_class_sequences_exact=true\r?$',
+    '(?m)^moves_id_count=1079\r?$',
+    '(?m)^moves_id_sha256=0698488654ADE273CB354A5474C0D52DA42B0598734C02DA921560297347D0CC\r?$',
+    '(?m)^species_id_count=1034\r?$',
+    '(?m)^species_id_sha256=BF299CCB7DA6862918DFA9E505062AA42A2DAAACF893488B162059EFBF0C45F2\r?$',
+    '(?m)^items_id_count=1114\r?$',
+    '(?m)^items_id_sha256=75A18582607BDE884C9BE2C6E8EBCFDCA600A565B9BB500C09FC1FE04914ED7B\r?$',
+    '(?m)^abilities_id_count=376\r?$',
+    '(?m)^abilities_id_sha256=BCA84D9F2B26D63657A4D74DCA4AF1CB48E773B95D457A420304C3C57D0FA5C8\r?$',
+    '(?m)^types_id_count=21\r?$',
+    '(?m)^types_id_sha256=1DBED5B28B1DB112973E749FA04C4D56B2DFA0E4D74E9C0BF365E3C31B44DE49\r?$',
+    '(?m)^trainer_types_id_count=278\r?$',
+    '(?m)^trainer_types_id_sha256=D4FC0484BE9DA081D698EC39336E202ECCB434AB32298EE008EBB3525F30CD7F\r?$',
+    '(?m)^evidence_manifest=PASS\r?$',
+    '(?m)^production_data_changed=false\r?$',
+    '(?m)^production_pbs_changed=false\r?$',
+    '(?m)^production_scripts_changed=false\r?$',
+    '(?m)^production_save_changed=false\r?$',
+    '(?m)^candidate_error_logs_changed=false\r?$',
+    '(?m)^probe_errors=none\r?$',
+    '(?m)^functionality_preserved=true\r?$',
+    '(?m)^phase_5_complete=true\r?$',
+    '(?m)^release_ready=true\r?$'
+  )) {
+    if ($content -notmatch $required) {
+      Add-AuditError "Release-readiness evidence is missing required result '$required'."
+    }
+  }
+
+  foreach ($toolFile in @(
+    "tools\preservation\Test-ReleaseCompatibilityPackage.ps1",
+    "tools\preservation\New-ReleaseEvidenceManifest.ps1",
+    "tools\preservation\engine_test\AzureReleaseCompatibilityFixture.rb",
+    "tools\preservation\release_validation\RELEASE_READINESS.md"
+  )) {
+    if (!(Test-Path -LiteralPath (Resolve-ProjectPath $toolFile) -PathType Leaf)) {
+      Add-AuditError "Release-readiness asset is missing: $toolFile."
+    }
+  }
+  $builderSource = [System.IO.File]::ReadAllText((Resolve-ProjectPath "tools\preservation\Build-EngineTestPackage.ps1"))
+  if ($builderSource -notmatch '\[switch\]\$ReleaseCompatibility' -or
+      $builderSource -notmatch 'AzureReleaseCompatibilityFixture') {
+    Add-AuditError "The engine package builder no longer exposes the all-save compatibility fixture."
+  }
+
+  $manifestRelativePath = "tools\preservation\release_validation\RELEASE_EVIDENCE.sha256"
+  $manifestPath = Resolve-ProjectPath $manifestRelativePath
+  $manifestCount = 0
+  $manifestEntries = @{}
+  if (!(Test-Path -LiteralPath $manifestPath -PathType Leaf)) {
+    Add-AuditError "Release evidence manifest is missing: $manifestRelativePath."
+  } else {
+    foreach ($line in [System.IO.File]::ReadAllLines($manifestPath)) {
+      if ([string]::IsNullOrWhiteSpace($line)) { continue }
+      $manifestCount++
+      if ($line -notmatch '^([0-9A-F]{64})  (.+)$') {
+        Add-AuditError "Release evidence manifest has an invalid row: '$line'."
+        continue
+      }
+      $expectedHash=$Matches[1]
+      $relative=$Matches[2]
+      if ($relative -match '(^|/)\.\.(/|$)' -or $manifestEntries.ContainsKey($relative)) {
+        Add-AuditError "Release evidence manifest has an unsafe or duplicate path: '$relative'."
+        continue
+      }
+      $manifestEntries[$relative]=$true
+      $evidencePath=Resolve-ProjectPath ($relative.Replace('/','\'))
+      if (!(Test-Path -LiteralPath $evidencePath -PathType Leaf)) {
+        Add-AuditError "Release evidence file is missing: $relative."
+        continue
+      }
+      $inputBytes=[System.IO.File]::ReadAllBytes($evidencePath)
+      $normalized=[System.IO.MemoryStream]::new($inputBytes.Length)
+      try {
+        for ($i=0; $i -lt $inputBytes.Length; $i++) {
+          if ($inputBytes[$i] -eq 13 -and $i+1 -lt $inputBytes.Length -and $inputBytes[$i+1] -eq 10) { continue }
+          $normalized.WriteByte($inputBytes[$i])
+        }
+        $sha=[System.Security.Cryptography.SHA256]::Create()
+        try { $hashBytes=$sha.ComputeHash($normalized.ToArray()) } finally { $sha.Dispose() }
+        $actualHash=([BitConverter]::ToString($hashBytes)).Replace('-','')
+      } finally {
+        $normalized.Dispose()
+      }
+      if ($actualHash -cne $expectedHash) {
+        Add-AuditError "Release evidence hash changed: $relative."
+      }
+    }
+    if ($manifestCount -lt 80) {
+      Add-AuditError "Release evidence manifest has only $manifestCount entries; expected at least 80."
+    }
+  }
+  Add-AuditCheck "Release readiness: 117 Azure saves (1,872 objects, 234 Pokémon) round-trip on Ruby 3.1, six numeric-ID maps are hash-locked, and $manifestCount archived evidence files verify."
+}
+
 $requiredFiles = @(
   "Scripts\!script_order.csv",
   "Scripts\PBMoves.rb",
@@ -2389,14 +3130,25 @@ if ($script:Errors.Count -eq 0) {
   Test-FeatureContracts
   Test-MoveCompatibilitySemantics
   Test-CompiledDataFreshness
+  Test-RuntimePerformanceEvidence
+  Test-EngineCompatibilityEvidence
+  Test-ReleaseValidationEvidence
+  Test-ReleaseSmokeEvidence
+  Test-ReleaseReadinessEvidence
 }
+
+Resolve-AcceptedWarnings
 
 Write-Host "Azure preservation audit"
 Write-Host "Root: $Root"
 foreach ($check in $script:Checks) { Write-Host "  PASS  $check" -ForegroundColor Green }
+foreach ($category in $script:AcceptedWarningCounts.Keys) {
+  Write-Host "  ACCEPT  $category`: $($script:AcceptedWarningCounts[$category]) reviewed warnings" -ForegroundColor DarkYellow
+}
 foreach ($warning in $script:Warnings) { Write-Host "  WARN  $warning" -ForegroundColor Yellow }
 foreach ($failure in $script:Errors) { Write-Host "  FAIL  $failure" -ForegroundColor Red }
 Write-Host "Summary: $($script:Checks.Count) checks, $($script:Warnings.Count) warnings, $($script:Errors.Count) failures."
+Write-Host "Accepted warnings: $($script:AcceptedWarnings.Count) across $($script:AcceptedWarningCounts.Count) reviewed categories."
 
 if ($script:Errors.Count -gt 0 -or ($WarningsAsErrors -and $script:Warnings.Count -gt 0)) {
   exit 1

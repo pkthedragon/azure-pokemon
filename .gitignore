@@ -1,2 +1,7 @@
 
 Data/debuglog.txt
+tools/engine_test/package-ruby31/
+tools/engine_test/package-ruby31-step4/
+tools/engine_test/package-ruby31-release*/
+tools/engine_test/package-ruby31-smoke*/
+tools/engine_test/package-ruby31-compatibility*/

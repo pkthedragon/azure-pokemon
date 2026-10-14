@@ -32,8 +32,23 @@ with Rejuvenation. It checks:
 - the presence and script-order registration of Azure-exclusive systems;
 - the presence and freshness of key compiled data outputs.
 
-Warnings report compiled outputs that may need regeneration. Use
-`-WarningsAsErrors` for a release gate after compiling the PBS data.
+The 59 reviewed legacy warnings are classified by exact symbol/ID allowlists
+and counts. Use `-WarningsAsErrors` for the release gate; it fails on every
+unaccepted warning while requiring the accepted set to remain exact.
+
+Phase 5 release gates are reproducible with the package builder and the three
+focused runners:
+
+```powershell
+pwsh -NoProfile -File tools/preservation/Test-ReleaseCompilePackage.ps1
+pwsh -NoProfile -File tools/preservation/Test-ReleaseSmokePackage.ps1
+pwsh -NoProfile -File tools/preservation/Test-ReleaseCompatibilityPackage.ps1
+pwsh -NoProfile -File tools/preservation/New-ReleaseEvidenceManifest.ps1 -Verify
+```
+
+The generated packages stay under ignored `tools/engine_test/` directories;
+their fixtures use package-local save paths and never install outputs into the
+working game.
 
 This is a preservation gate, not proof that every graphical or event-driven
 path works. Each migration task should also run a focused smoke test for the

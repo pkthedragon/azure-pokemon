@@ -72,7 +72,7 @@ $tmMoves         = nil
 def pbGetLegalMoves2(species,maxlevel)
   moves=[]
   return moves if !species || species<=0
-  $pkmn_moves = load_data("Data/attacksRS.rxdata") if !$pkmn_moves
+  $pkmn_moves = pbCachedData("Data/attacksRS.rxdata") if !$pkmn_moves
   # Generating move list
   movelist=[]
   for k in 0...$pkmn_moves[species].length

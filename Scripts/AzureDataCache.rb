@@ -240,6 +240,20 @@ def pbCachedRxData(path)
   return pbCachedData(path+extension)
 end
 
+# Load the gameplay databases only after the player chooses an action that
+# needs the runtime. RPG Maker's CommonEvents collection stays under its
+# mutable engine global; the compiled Pokemon tables are read-only at runtime
+# and share AzureDataCache entries with their typed registry adapters.
+def pbLoadAzureRuntimeData
+  $data_common_events=pbLoadRxData("Data/CommonEvents") if !$data_common_events
+  $pkmn_dex=pbCachedData("Data/dexdata.dat") if !$pkmn_dex
+  $pkmn_move=pbCachedData("Data/moves.dat") if !$pkmn_move
+  $pkmn_egg=pbCachedData("Data/eggEmerald.dat") if !$pkmn_egg
+  $ItemData=pbCachedData("Data/pokmanitems.rxdata") if !$ItemData
+  $bosscache=pbCachedData("Data/bossdata.dat") if !$bosscache
+  return true
+end
+
 # Tilesets are intentionally kept outside AzureDataCache. The tileset editor
 # replaces this mutable collection at runtime, so retain the legacy global as
 # the single source of truth while deferring its initial load until a map needs

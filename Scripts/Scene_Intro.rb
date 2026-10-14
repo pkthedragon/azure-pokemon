@@ -8,7 +8,6 @@ class IntroEventScene < EventScene
     @pic2=addImage(0,322,"") # flashing "Press Enter" picture
     @pic2.moveOpacity(0,0,0)
     @index=0
-    data_system = pbLoadRxData("Data/System")
     pbBGMPlay("Music - Drowned Secrets")
     openPic(self,nil)
   end

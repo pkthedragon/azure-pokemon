@@ -1,4 +1,5 @@
 module CP_Profiler
+  OUTPUT_PATH="tools/preservation/profiler_latest.txt"
   @@stacks = {}
   @@maps = {}
   def self.begin
@@ -40,7 +41,7 @@ module CP_Profiler
     data = totals.values
     data = data.sort_by{ |x| -x[0] }
     sum = 0
-    File.open('Data/Profiler.txt', 'w') do |file|
+    File.open(OUTPUT_PATH, 'w') do |file|
       text = sprintf  "call time  cumulative   self        calls\n"
       file.print(text)
       text = sprintf  "     ms   seconds   seconds           name\n"
@@ -52,7 +53,7 @@ module CP_Profiler
         d[0]/d[1]*1000, sum, d[0], d[1], d[2]
         file.print(text)
       end
-      Kernel.pbMessage("Results printed to profiler.txt.")
+      Kernel.pbMessage("Results printed to #{OUTPUT_PATH}.")
     end
   end
 end

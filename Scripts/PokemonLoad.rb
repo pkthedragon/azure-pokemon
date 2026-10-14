@@ -436,7 +436,7 @@ class PokemonLoad
     end
     #savefile = RTP.getSaveFileName("Game.rxdata")
     FontInstaller.install if !$MKXP
-    data_system = pbLoadRxData("Data/System")
+    data_system = $data_system || pbLoadRxData("Data/System")
     mapfile=$RPGVX ? sprintf("Data/Map%03d.rvdata",data_system.start_map_id) :
                      sprintf("Data/Map%03d.rxdata",data_system.start_map_id)
     if data_system.start_map_id==0 || !pbRgssExists?(mapfile)
@@ -532,6 +532,7 @@ class PokemonLoad
           next
         end
         @scene.pbEndScene
+        pbLoadAzureRuntimeData
         metadata = nil
         File.open(savefile){|f|
           Marshal.load(f) # Trainer already loaded
@@ -549,7 +550,6 @@ class PokemonLoad
           $game_player         = Marshal.load(f)
           $PokemonGlobal       = Marshal.load(f)
           metadata             = Marshal.load(f)
-          $ItemData            = load_data("Data/pokmanitems.rxdata")
           $PokemonBag          = Marshal.load(f)
           $PokemonStorage      = Marshal.load(f)
           $achievements        = Marshal.load(f)
@@ -704,6 +704,7 @@ class PokemonLoad
         return
       elsif cmdNewGame>=0 && command==cmdNewGame
         @scene.pbEndScene
+        pbLoadAzureRuntimeData
         if $game_map && $game_map.events
           for event in $game_map.events.values
             event.clear_starting
@@ -718,7 +719,6 @@ class PokemonLoad
         $game_self_switches  = Game_SelfSwitches.new
         $game_screen         = Game_Screen.new
         $game_player         = Game_Player.new
-        $ItemData            = load_data("Data/pokmanitems.rxdata")
         $PokemonMap          = PokemonMapMetadata.new
         $PokemonGlobal       = PokemonGlobalMetadata.new
         $PokemonStorage      = PokemonStorage.new
@@ -726,7 +726,6 @@ class PokemonLoad
         $strengthUsed        = false
         Achievements.resetAchievements
         $PokemonTemp.begunNewGame=true
-        $data_system         = pbLoadRxData("Data/System")
         $MapFactory          = PokemonMapFactory.new($data_system.start_map_id) # calls setMapChanged
         $game_player.moveto($data_system.start_x, $data_system.start_y)
         $game_player.refresh
@@ -752,6 +751,7 @@ class PokemonLoad
         pbStoredLastPlayed($game_variables[542],auto)
         return
       elsif cmdMysteryGift>=0 && command==cmdMysteryGift
+        pbLoadAzureRuntimeData
         pbFadeOutIn(99999){
            trainer=pbDownloadMysteryGift(trainer)
         }

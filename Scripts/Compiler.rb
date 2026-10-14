@@ -1850,6 +1850,9 @@ def pbCompileItems(dataOutput="Data/pokmanitems.rxdata",
     Marshal.dump(records,file)
   }
   if installRuntime
+    $ItemData=records
+    AzureDataCache.clear("Data/pokmanitems.rxdata") if defined?(AzureDataCache)
+    PBItemData.clear_cache if defined?(PBItemData)
     MessageTypes.setMessages(MessageTypes::Items,itemnames)
     MessageTypes.setMessages(MessageTypes::ItemDescriptions,itemdescs)
   end
@@ -2881,7 +2884,8 @@ def pbCompileBosses
   }
   save_data(bossdata,"Data/bossdata.dat")
   puts "Boss data saved to Data/bossdata.dat (#{File.size("Data/bossdata.dat")} bytes)"
-  $bosscache = load_data("Data/bossdata.dat")
+  AzureDataCache.clear("Data/bossdata.dat") if defined?(AzureDataCache)
+  $bosscache = bossdata
 end
 
 def removeConstantValue(mod,value)
@@ -5780,7 +5784,6 @@ def pbRefreshAzureCompiledData(plan)
   end
   AzureTrainerDataCache.clear if ids.include?(:trainers) && defined?(AzureTrainerDataCache)
   pbInvalidateBTTrainerLists if ids.include?(:battle_facility) && defined?(pbInvalidateBTTrainerLists)
-  $ItemData=load_data("Data/pokmanitems.rxdata") if ids.include?(:items) && defined?($ItemData)
   $tmData=nil if ids.include?(:machines) && defined?($tmData)
   if ids.include?(:animations)
     pbInvalidateBattleAnimationIndex if defined?(pbInvalidateBattleAnimationIndex)

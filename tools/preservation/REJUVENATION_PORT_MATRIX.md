@@ -239,7 +239,8 @@ Current consumers include:
 - trainer-type money, skill, gender, intro music, battle music, and victory
   music;
 - Shadow move lists;
-- `MapInfos` lookups used by transitions, roaming, messages, and map names.
+- `MapInfos` lookups used by transitions, roaming, messages, and map names;
+- species, level-up move, egg-move, move, item, and boss runtime tables;
 - battle-facility trainer and rental-Pokemon lists used throughout challenge
   setup, opponent generation, and battle speech.
 
@@ -253,6 +254,34 @@ cannot mutate live cached gameplay data.
 In debug builds the cache now counts hits, loads, and signature-triggered
 reloads per file. `Compiled Data Cache Stats` in the debug menu reports the
 session hit rate and per-file counts; release builds pay no statistics cost.
+
+### Title-time data ownership boundary
+
+The title bootstrap now loads only `System` and cached `MapInfos`, the two
+collections required before the player chooses an action. The former remains
+the mutable RPG Maker engine global, while the latter is an immutable compiled
+lookup. `Scene_Intro` and the window-skin lookup reuse that shared `System`
+object instead of unmarshalling it again.
+
+Continue, New Game, and Mystery Gift now cross one explicit
+`pbLoadAzureRuntimeData` boundary. It loads mutable `CommonEvents` into its
+engine-owned global and obtains the read-only species, move, egg-move, item,
+and boss tables through `AzureDataCache`. The species level-up-move and
+egg-move fallbacks also use the same cache. Item, move, species, and boss
+compilers still install complete newly compiled objects and invalidate typed
+and file-cache entries, so editor/debug replacement cannot leave a stale
+runtime view. Tilesets and both animation collections remain separately
+deferred and mutable/editor-owned.
+
+The focused real-startup fixture preserved the exact title ownership signature
+and verified that the gameplay boundary is idempotent and leaves all six
+runtime collections present. On the test machine, the measured main-to-title
+segment fell from approximately 0.07565 seconds and 25,498 allocations to
+0.01116 seconds and 3,827 allocations. The deferred gameplay boundary took
+approximately 0.15007 seconds and 25,318 allocations once. The benchmark
+fixture was removed from the production script order after both captures;
+evidence and the ownership classification are under
+`tools/preservation/runtime_performance/`.
 
 ### Deferred battle-animation loading
 
@@ -361,6 +390,18 @@ across all maps, including 0.673 seconds in the immediately repeated loads; the
 one-pass optimized run took approximately 0.331 seconds with the filesystem
 already warm. Evidence is under `tools/preservation/runtime_performance/`.
 
+The Phase 3 cache-decision closeout therefore rejects a persistent bounded map
+cache. Five fresh-load passes covered 725 loads and 4,415,227 serialized bytes
+per pass in approximately 5.938 seconds, with exact graphs and distinct
+objects throughout. Mutating the 281-event `Map034` after setup did not affect
+the next load; the editor's `MapData` copy was independent; explicit clear and
+mismatched-ID paths discarded pending state; and `onMapCreate` fired once with
+the exact handoff object. Azure currently defines no connected-map records, so
+the mismatch path was also exercised as the synthetic neighboring-map case and
+the dimension-only helper cache was cleared and rebuilt. These ownership costs
+are required for correctness, while the already implemented one-shot handoff
+removes the only proven duplicate read without retaining mutable state.
+
 ### Allocation-free event and map iteration
 
 Azure's most frequent map loops no longer create temporary `Hash#values`
@@ -392,6 +433,37 @@ removal/addition, and a nil removed entry. All five scenarios retained checksum
 `2035679682`. Across 20,000 four-spriteset reconciliations, runtime fell from
 approximately 0.0780 to 0.0286 seconds and allocations from 60,002 to 2. The
 preservation audit requires the allocation-free reconciliation structure.
+
+### Direct current-map spriteset lookup
+
+`Scene_Map#spriteset` had 14 static callers in animation, radar, darkness,
+location-window, achievement, and contest paths. None is a per-frame caller,
+but every lookup still created a values array and a missing-map fallback made
+a second one. The method now checks the map-ID-keyed entry directly, validates
+its map object, and retains ordered `each_value` scans for stale-key and
+first-entry fallback compatibility.
+
+The focused matrix preserved first and middle hits, a missing-map fallback,
+an empty hash, and the legacy nil-entry error. Across one million current-map
+lookups, runtime fell from approximately 3.2827 to 1.0089 seconds and
+allocations from 2,000,001 to 1. The audit rejects `@spritesets.values` and
+requires both the direct lookup and ordered fallbacks.
+
+### Allocation-free player and character event scans
+
+Ten movement, collision, and interaction paths in `Game_Character` and
+`Game_Player` previously materialized `Hash#values` arrays while checking map
+events. They now use `Hash#each_value`, retaining insertion order, early
+returns, multi-event start behavior, trainer/counter filters, jumping and
+over-trigger rules, swim-to-land collision handling, and counter fallback.
+
+The focused engine matrix exercised 16 outcomes across trainer/counter
+discovery, direct and counter-facing lookup, character and swimming
+passability, and here/there/touch triggers. The complete signature matched
+before and after the rewrite. Across 20,000 scans of 281 events, runtime fell
+from approximately 2.5725 to 2.3172 seconds and allocations from 20,002 to 2.
+The preservation audit guards all four behavior groups and rejects a
+reintroduced `events.values` scan in either class.
 
 ### Allocation-light encounter selection
 
@@ -427,6 +499,36 @@ entries, the shared update loop fell from approximately 2.144 to 1.342 seconds
 and from 3,100,002 allocations to 2. Thirteen party-style bitmap helpers fell
 from approximately 1.509 to 1.302 seconds and from 1,300,002 allocations to 1.
 Evidence is under `tools/preservation/runtime_performance/`.
+
+### Deferred transient window-flash scan
+
+`SpriteWindow#update` still materializes `@sprites.values` while a window flash
+is active. Azure has no direct `SpriteWindow#flash` caller, and the scan does
+not run during ordinary window updates when `@flash` is zero. A focused matrix
+preserved insertion-order updates, exact duration countdown, disposed and
+inactive behavior, and the legacy nil-sprite error. Forcing 100,000 active
+frames across the normal 16-sprite window structure took approximately 0.7800
+seconds and allocated 100,001 objects, about one array per forced frame.
+
+Because the measured cost has no active Azure call path, this candidate is
+documented and deferred rather than adding an unneeded production change. It
+should be reconsidered only if a future feature begins calling
+`SpriteWindow#flash` or runtime profiling observes the path.
+
+### Deferred sprite and particle boundary scans
+
+The remaining ranked collection candidates are lifecycle-bound rather than
+steady-state hot paths. `Particle_Engine` materializes map event values only on
+its first update, `Spriteset_Map` sorts event IDs only while constructing a
+spriteset, and particle bitmap values are copied only during effect disposal.
+There are no per-frame candidates in this group after initialization.
+
+Across the 145-map, 3,851-event inventory, the largest one-time event set is
+281 entries. The sorted spriteset keys intentionally preserve event-ID sprite
+construction and draw order. These sites remain unchanged unless runtime
+profiling later identifies meaningful setup or disposal cost; removing a few
+lifecycle arrays does not justify weakening ordering clarity. Evidence is in
+`sprite_ui_boundary_scans.deferred.status.txt`.
 
 ### Allocation-free AI rough-stat scaling
 
@@ -1201,21 +1303,21 @@ runtime produces a visible failure result instead of being treated as success.
 
 ## Execution plan from the current checkpoint
 
-The project is currently in **Phase 3: runtime and performance**. The
-preservation/discovery work in Phase 1 is complete, and Phase 2's core PBS,
-compiler, typed-adapter, and authoring-tool migrations are implemented. The
-deterministic Battle AI subphase is also complete: the accumulated single- and
-double-battle closeout retained checksum `2062664973`. Remaining Phase 2 ideas
-are bounded extensions for data types Azure actually uses, not prerequisites
-for the active runtime work.
+The project has completed **Phase 4: engine and tooling evaluation** and all
+four gates of **Phase 5: release validation**. The preservation and
+runtime work in Phases 1 through 3 is complete, and the deterministic Battle
+AI closeout retains checksum `2062664973`. Remaining Phase 2 ideas are bounded
+extensions for data types Azure actually uses, not prerequisites for release
+work. The automated migration and release-readiness plan is complete; future
+work is an extended human playtest or a newly scoped optional port.
 
 | Phase | Status | Exit condition |
 | --- | --- | --- |
 | 1. Preservation and comparison | Complete | Azure-only systems are inventoried and guarded by the audit. |
 | 2. PBS and data tooling | Core complete | Existing named formats, isolated compilers, caches, round trips, and developer commands remain green; optional schemas are added only for used Azure features. |
-| 3. Runtime and performance | Active | Remaining measured hot paths and startup ownership are resolved, then the aggregate performance and behavior suite passes. |
-| 4. Engine and tooling evaluation | Pending | A separate engine package and developer-only tooling pass compatibility tests without changing the production executable prematurely. |
-| 5. Release validation | Pending | Clean-data, startup, focused interaction, save compatibility, and extended playtest gates all pass from a release candidate. |
+| 3. Runtime and performance | Complete | Measured hot paths, title ownership, and map ownership are resolved; the aggregate performance and behavior suite passes. |
+| 4. Engine and tooling evaluation | Complete | The isolated Ruby 3.1 package, timing matrix, threading decision, and removable-tool/menu decisions pass their automated gates. |
+| 5. Release validation | Complete | Clean-data, strict audit, startup, focused interaction, all-save/numeric compatibility, and evidence archive gates pass from a release candidate. |
 
 ### Phase 3 ordered steps
 
@@ -1245,14 +1347,23 @@ for the active runtime work.
 
 The initial Step 1 inventory is recorded in
 `tools/preservation/runtime_performance/sprite_ui_inventory.status.txt`.
-`Scene_Map#updateSpritesets` ranked first because it reconciles collections on
-every map frame; that target is now optimized and verified. The next target is
-the ten `Game_Player`/`Game_Character` event-value scans, grouped and tested by
-trainer/counter discovery, facing lookup, passability, and touch-trigger
-behavior before any mechanical rewrite. `Scene_Map#spriteset`, transient
-window flashes, and particle/setup boundary scans follow in that order only if
-their measured call frequency justifies a change. Menu command arrays are
-excluded because those collections are returned to or retained by the UI.
+`Scene_Map#updateSpritesets`, `Scene_Map#spriteset`, and the ten
+`Game_Player`/`Game_Character` event-value scans are now optimized and
+verified. The transient window-flash collection and particle/setup boundary
+scans were measured or reviewed and deferred because they have no active Azure
+caller or do not run in the steady-state frame path. Menu command arrays remain
+excluded because those collections are returned to or retained by the UI. The
+ranked sprite/UI collection pass is complete. The title-time ownership audit is
+also complete: only `System` and `MapInfos` remain at the title boundary, and
+all gameplay collections retain explicit cache, compiler replacement, or
+mutable-engine ownership. The Step 4 map-cache decision is also complete: the
+one-shot transfer handoff is the final design, and a persistent mutable-map
+cache is rejected. The Step 5 closeout reconciles all 57 stored runtime
+captures (55 passes and two reviewed deferrals), retains seeded AI checksum
+`2062664973`, passes 176 feature contracts inside the 27-check preservation
+audit, and passes a 15-second cold startup without changing either error log.
+No temporary fixture remains in the production script order. Phase 3 is
+complete.
 
 ### Phase 4 ordered steps
 
@@ -1270,6 +1381,129 @@ excluded because those collections are returned to or retained by the UI.
 4. Package profiling and validation as removable developer tooling, then
    evaluate registry-driven menu commands only where they reduce merge cost
    while preserving every Azure visibility and enable condition.
+
+Phase 4 Step 1 now has a reproducible isolated package builder and startup
+gate. The supplied Rejuvenation runtime provides mkxp-z 2.4.2 and Ruby 3.1.3,
+compared with production mkxp-z 2.1.1 and Ruby 3.0.0. The generated package
+copies `Data`, external scripts, PBS, and fonts; redirects saves to a local
+test directory; and uses read-only junctions only for the large Audio and
+Graphics trees. Production executable, runtime DLL, configuration, compiled
+data, and save files remain unchanged.
+
+The candidate run passed cold script import, bitmap/sprite rendering,
+font measurement and drawing, input update, silent audio decoding, Win32API and
+MCI bridge resolution, local hostname resolution, zlib/OpenSSL loading, and a
+16-object copied-save Marshal load. Azure has no movie content or active
+`Scene_Movie` call site, so the dormant video path is covered at its native MCI
+boundary. The updater executable and configuration are bit-identical copies
+and are not launched because doing so would perform an external download; the
+engine swap does not participate in that updater process. The production save
+tree and both candidate error-log locations were unchanged. Step 1's automated
+compatibility gate is complete.
+
+Phase 4 Step 2 is also complete. The deterministic candidate-engine fixture
+ran frame skip both off and on at Azure's base rate of 44 FPS and all four
+existing turbo rates (88, 110, 132, and 176 FPS), for ten scenarios total.
+Frame skip changed only render scheduling: screen tone/flash/shake/weather,
+pictures, timers, character waits, eight-step movement interpolation, and the
+five-even-frame animation cadence produced identical logical outcomes. Timers
+expressed in the active frame rate expired after one wall-clock second,
+quarter/full-second message waits and the eight-second credits slide retained
+their intended wall duration, and actual paced `Graphics.update` calls stayed
+inside the test tolerance.
+
+Azure's deliberate turbo semantics are preserved rather than silently
+normalized: fixed-frame waits accelerate with turbo, and recorded play time
+continues to divide by the fixed 44 FPS base, advancing at the selected turbo
+multiplier. The isolated package remained alive for the 25-second gate, loaded
+the copied old-save fixture, left production saves and error logs unchanged,
+and passed the permanent audit evidence. Step 3 is the thread-safety inventory;
+no background loader is eligible until that inventory proves its work is pure
+file/data processing with no RGSS or mutable-global access.
+
+Phase 4 Step 3 is complete and closes with a rejection of the `ThreadLoader`
+port. Rejuvenation's three workers evaluate 181 live scripts, publish three
+main-menu datasets directly into a shared cache, and publish 22 runtime cache
+loads plus two direct engine loads. Eighteen referenced cache methods can invoke
+compilers when output is missing, while the runtime group also includes mutable
+tilesets, animations, and common events. There is no private result object,
+mutex-protected publication, or documented cross-thread contract for the engine
+`load_data` API.
+
+Azure's corresponding work is not eligible either. Its 201 scripts perform
+ordered structural Ruby mutations; its remaining title boundary is only 11 ms;
+and its 150 ms post-selection activation writes six globals through an
+unsynchronized cache, including mutable CommonEvents. The only existing Azure
+thread starts a replacement process after confirmed font installation and does
+not publish live game data. The complete inventory and narrowly permitted future
+worker design are recorded in `engine_test/THREAD_SAFETY_INVENTORY.md`. No
+production behavior changed. Step 4 is removable profiling/validation tooling
+and the evidence-driven menu-registry evaluation.
+
+Phase 4 Step 4 is complete. `Profiler.rb` and `AzurePBSValidator.rb` are no
+longer imported by production script order; `AzureDeveloperTools` loads them on
+the main thread only when requested and handles an omitted optional file. F10
+and F11 profiling are debug-only, profiler output moved out of active `Data` to
+`tools/preservation/profiler_latest.txt`, and the validator retains its
+read-only separate-process audit. The Ruby 3.1 package proved both tools were
+absent from initial import, then loaded both successfully during a 25-second
+gate without changing error logs or production saves.
+
+The registry evaluation rejects a broad `MenuHandlers` port. Azure's title,
+pause, party, and final CyberNav override have non-equivalent save branches,
+story switches, Achievements, Safari/Bug Contest behavior, dynamic hidden-move
+returns, customization actions, and load-order ownership. Those four menus are
+unchanged. The 57-command debug menu retains its existing stable string-keyed
+`CommandList`, which already provides the useful identity mapping without a
+Proc-backed gameplay rewrite. Detailed preserved conditions and the future
+extension threshold are recorded in `engine_test/MENU_REGISTRY_EVALUATION.md`.
+Phase 4 is complete.
+
+Phase 5 Step 1 is complete. A fresh Ruby 3.1 package copied all production
+inputs, then compiled the complete PBS/data pipeline inside the package without
+installing over the working game. All 21 present authoring sources remained
+byte-identical. All 29 generated outputs matched the pre-compile package state:
+26 were byte-identical, while `pokmanitems.rxdata`, `trainerlists.dat`, and
+`messages.dat` were decoded-object equivalent despite Ruby Marshal encoding
+metadata differences. There were no missing or mismatched outputs. The compile
+finished in 5.76 seconds, and SHA-256 snapshots proved production `Data`, `PBS`,
+`Scripts`, saves, and both candidate error logs were unchanged.
+
+Phase 5 Step 2 is complete. All 59 pre-existing audit warnings were reviewed
+and placed into six exact compatibility categories: 22 generated constant
+duplicates, 20 duplicate PBS sections, three shared legacy numeric IDs, three
+repeated item definitions, six unresolved optional-form abilities, and five
+legacy Shadow-move rows. Acceptance requires both an explicit symbol/ID
+allowlist and the exact category count. New, renamed, removed, or otherwise
+changed warnings remain release-blocking. `Audit-Azure.ps1 -WarningsAsErrors`
+now passes with 33 checks, zero unaccepted warnings, zero failures, and all 59
+accepted warnings accounted for. The rationale and removal criteria are in
+`release_validation/WARNING_ACCEPTANCE.md`.
+
+Phase 5 Step 3 is complete. Production passed a forced 15-second cold startup
+without changing either error log. The isolated Ruby 3.1 candidate hydrated a
+real 16-object Azure save, round-tripped it only inside the package, initialized
+a new game at map 39 `(24,10)`, rendered the load and debug UI paths, preserved
+the six expected pause-menu commands for the test state, and consumed the exact
+one-shot transfer object for map 1. Full deterministic noninteractive 1v1 and
+2v2 battle cores both ended with decision 1 after one turn. The existing seeded
+AI checksum remained `2062664973`, and 1,000 cached move reads completed in
+approximately 0.0004 seconds. Production `Data`, `PBS`, `Scripts`, saves, and
+candidate error logs were unchanged. The complete scenario map and repeatable
+commands are in `release_validation/RELEASE_SMOKE_MATRIX.md`. Phase 5 Step 4 is
+the final old-save/numeric-ID compatibility archive and release-readiness gate.
+
+Phase 5 Step 4 is complete. The Ruby 3.1 candidate loaded and package-locally
+round-tripped all 117 available Azure saves and historical backups: 1,872
+Marshal objects, 234 stored Pokémon, and 14 distinct saved map IDs. All stored
+species, item, move, and explicit ability references resolved. Full effective
+symbol-to-number tables are now locked by count and SHA-256 for moves, species,
+items, abilities, types, and trainer types, complementing the compiler's exact
+legacy-collision policy. The preservation tools, fixtures, status captures,
+and decision documents are archived by `release_validation/RELEASE_EVIDENCE.sha256`.
+Production trees, saves, and candidate error logs remained unchanged. Phase 5
+and the planned Rejuvenation-to-Azure modernization program are complete;
+extended manual content playtesting remains a separate release activity.
 
 ### Phase 5 release steps
 
@@ -1344,10 +1578,10 @@ instead of carrying speculative complexity forward.
    tileset collection is deferred to first map setup. RPG Maker animations are
    deferred to the first map/event visual effect. Continue auditing other
    title-time data before attempting Rejuvenation's threaded loader.
-3. **One-shot transfer handoff implemented.** Autofade and map setup now share
-   one destination object without retaining it after setup. A persistent
-   bounded map cache remains deferred until cached `RPG::Map` records can be
-   proven immutable and editor-safe.
+3. **One-shot transfer handoff finalized.** Autofade and map setup share one
+   destination object without retaining it after setup. The measured ownership
+   closeout rejects a persistent bounded cache because `RPG::Map` event graphs
+   are mutable and editor-owned; fresh loads are required to isolate changes.
 4. **Map setup, event iteration, encounter selection, party-menu updates,
    battle startup, and deterministic AI decisions benchmarked.** The measured
    encounter hot path avoids three ordinary-roll arrays while retaining the
@@ -1370,19 +1604,24 @@ instead of carrying speculative complexity forward.
 
 ### Priority 4: engine/tooling migrations
 
-1. Test a Ruby 3.1/current mkxp-z executable as a separate engine package.
-   Validate Win32API shims, audio, input, fonts, videos, save Marshal loading,
-   updater behavior, and every native DLL before replacing Azure's executable.
-2. Add frame-skip/turbo timing tests so messages, timers, weather, credits, and
-   play time remain based on intended game time.
-3. Evaluate Rejuvenation's asynchronous `ThreadLoader` only after all data
-   loaders are thread-safe and no RGSS graphics or message APIs are called off
-   the main thread.
-4. Add profiler and validator developer builds. Profiling must be removable
-   from release builds and validation must never mutate game data.
-5. Adopt registry-driven menu/pause/party commands where it reduces merge
-   conflicts, while retaining every Azure command and its enable/visibility
-   conditions.
+1. **Reversible Ruby 3.1/current mkxp-z package implemented and gated.** The
+   production runtime and save path remain untouched while the isolated package
+   validates scripts, native bridges, rendering, input/audio, networking, and
+   old-save Marshal loading.
+2. **Frame-skip/turbo timing matrix implemented and gated.** Ten scenarios
+   cover messages, movement, timers, weather, pictures, credits, animations,
+   play time, render scheduling, and Azure's intentional turbo acceleration.
+3. **Thread-safety inventory complete; `ThreadLoader` port rejected.** Script
+   evaluation, shared cache/global publication, compiler fallbacks, mutable RGSS
+   data, and undocumented engine loader behavior fail the worker-safety gate.
+   Reconsider only a private immutable-byte worker with main-thread publication
+   if future profiling proves a material stall.
+4. **Profiler and validator packaged as removable developer tools.** Neither is
+   in release startup order; both lazy-load on demand, profiling is debug-only,
+   output stays outside active data, and validation remains read-only.
+5. **Registry evaluation complete; broad gameplay-menu port rejected.** Azure's
+   four gameplay menu implementations and all visibility/action conditions are
+   preserved. The debug menu retains its 57 stable string-keyed commands.
 
 ## Ports intentionally deferred or excluded
 
@@ -1396,8 +1635,9 @@ instead of carrying speculative complexity forward.
   migration exists.
 - Direct reuse of cached mutable map objects is deferred because Azure contains
   runtime map-editing tools and event utilities.
-- Background script/data loading is deferred because a startup smoke test
-  cannot prove thread safety.
+- Background script/data loading is rejected by the completed thread-safety
+  inventory; script evaluation, shared globals/cache state, compiler fallbacks,
+  mutable RGSS data, and the undocumented engine loader contract fail the gate.
 - A full data-object/save-format replacement is deferred; it has a much larger
   compatibility surface than the performance benefit justifies.
 
@@ -1415,6 +1655,6 @@ instead of carrying speculative complexity forward.
 6. Re-run the full audit after the focused scenario and record any new known
    warnings.
 
-The current audit has 59 known warnings, all from documented duplicate or
-aliased legacy IDs and sections. All tracked compiled outputs are current with
-their active PBS sources.
+The current audit has zero unaccepted warnings and 59 explicitly accepted
+legacy warnings across six locked categories. All tracked compiled outputs are
+current with their active PBS sources.

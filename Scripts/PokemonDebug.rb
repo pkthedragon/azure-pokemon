@@ -283,7 +283,7 @@ def pbDebugMenu
   commands.add("compiletrainers", _INTL("Compile Trainers"))
   commands.add("compileitems", _INTL("Compile Items"))
   commands.add("compilemoves", _INTL("Compile Moves"))
-  commands.add("validatepbs", _INTL("Validate PBS Data"))
+  commands.add("validatepbs", _INTL("Validate PBS Data")) if AzureDeveloperTools.present?("AzurePBSValidator.rb")
   commands.add("compilechanged", _INTL("Compile Changed Data"))
   commands.add("exportnamedpbs", _INTL("Export Named PBS Snapshot"))
   commands.add("restorepbs", _INTL("Restore PBS Backup"))
@@ -818,14 +818,18 @@ def pbDebugMenu
       pbCompileMoves
       Kernel.pbMessage(_INTL("Moves have been compiled."))
     elsif cmd=="validatepbs"
-      msgwindow=Kernel.pbCreateMessageWindow
-      Kernel.pbMessageDisplay(msgwindow,_INTL("Validating PBS data without compiling..."),false)
-      result=pbValidateAzureProject
-      Kernel.pbDisposeMessageWindow(msgwindow)
-      if result[:ok]
-        Kernel.pbMessage(_INTL("PBS validation passed.\n\n{1}\n\nFull log: {2}",result[:summary],result[:log]))
+      if !AzureDeveloperTools.load("AzurePBSValidator.rb",:AzurePBSValidator)
+        Kernel.pbMessage(_INTL("The optional PBS validation tool could not be loaded."))
       else
-        Kernel.pbMessage(_INTL("PBS validation failed.\n\n{1}\n\nFull log: {2}",result[:summary],result[:log]))
+        msgwindow=Kernel.pbCreateMessageWindow
+        Kernel.pbMessageDisplay(msgwindow,_INTL("Validating PBS data without compiling..."),false)
+        result=pbValidateAzureProject
+        Kernel.pbDisposeMessageWindow(msgwindow)
+        if result[:ok]
+          Kernel.pbMessage(_INTL("PBS validation passed.\n\n{1}\n\nFull log: {2}",result[:summary],result[:log]))
+        else
+          Kernel.pbMessage(_INTL("PBS validation failed.\n\n{1}\n\nFull log: {2}",result[:summary],result[:log]))
+        end
       end
     elsif cmd=="compilechanged"
       compileplan=pbPBSCompilePlan

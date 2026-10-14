@@ -1,0 +1,11 @@
+result=PASS
+mode=baseline_values
+static_call_sites=14
+per_frame_call_sites=0
+scenarios=5
+matrix_signature=first=1|middle=3|missing=1|empty=nil|nil_first=NoMethodError
+matrix_exact=true
+benchmark_iterations=1000000
+benchmark_checksum=3000000
+benchmark_seconds=3.2826523999974597
+benchmark_allocations=2000001

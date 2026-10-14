@@ -153,7 +153,7 @@ class Game_Player < Game_Character
       return result
     end
     # All event loops
-    for event in $game_map.events.values
+    $game_map.events.each_value do |event|
       next if !event.name[/^Trainer\((\d+)\)$/]
       distance=$~[1].to_i
       # If event coordinates and triggers are consistent
@@ -174,7 +174,7 @@ class Game_Player < Game_Character
       return result
     end
     # All event loops
-    for event in $game_map.events.values
+    $game_map.events.each_value do |event|
       next if !event.name[/^Counter\((\d+)\)$/]
       distance=$~[1].to_i
       # If event coordinates and triggers are consistent
@@ -207,7 +207,7 @@ class Game_Player < Game_Character
     end
     new_x = @x + (@direction == 6 ? 1 : @direction == 4 ? -1 : 0)
     new_y = @y + (@direction == 2 ? 1 : @direction == 8 ? -1 : 0)
-    for event in $game_map.events.values
+    $game_map.events.each_value do |event|
       if event.x == new_x and event.y == new_y
         if not event.jumping? and not event.over_trigger?
           return event
@@ -217,7 +217,7 @@ class Game_Player < Game_Character
     if $game_map.counter?(new_x, new_y)
       new_x += (@direction == 6 ? 1 : @direction == 4 ? -1 : 0)
       new_y += (@direction == 2 ? 1 : @direction == 8 ? -1 : 0)
-      for event in $game_map.events.values
+      $game_map.events.each_value do |event|
         if event.x == new_x and event.y == new_y
           if not event.jumping? and not event.over_trigger?
             return event
@@ -321,7 +321,7 @@ class Game_Player < Game_Character
       end
       return true if $DEBUG and Input.press?(Input::CTRL)
       # Block landing on non-through character events even if swimming is passable
-      for event in $game_map.events.values
+      $game_map.events.each_value do |event|
         next unless event.x == new_x && event.y == new_y
         next if event.through
         next if event.tile_id && event.tile_id > 0
@@ -402,7 +402,7 @@ class Game_Player < Game_Character
       return result
     end
     # All event loops
-    for event in $game_map.events.values
+    $game_map.events.each_value do |event|
       # If event coordinates and triggers are consistent
       if event.x == @x and event.y == @y and triggers.include?(event.trigger)
         # If starting determinant is same position event (other than jumping)
@@ -427,7 +427,7 @@ class Game_Player < Game_Character
     new_x = @x + (@direction == 6 ? 1 : @direction == 4 ? -1 : 0)
     new_y = @y + (@direction == 2 ? 1 : @direction == 8 ? -1 : 0)
     # All event loops
-    for event in $game_map.events.values
+    $game_map.events.each_value do |event|
       # If event coordinates and triggers are consistent
       if event.x == new_x and event.y == new_y and
          triggers.include?(event.trigger)
@@ -446,7 +446,7 @@ class Game_Player < Game_Character
         new_x += (@direction == 6 ? 1 : @direction == 4 ? -1 : 0)
         new_y += (@direction == 2 ? 1 : @direction == 8 ? -1 : 0)
         # All event loops
-        for event in $game_map.events.values
+        $game_map.events.each_value do |event|
           # If event coordinates and triggers are consistent
           if event.x == new_x and event.y == new_y and
              triggers.include?(event.trigger)
@@ -494,7 +494,7 @@ class Game_Player < Game_Character
       return result
     end
     # All event loops
-    for event in $game_map.events.values
+    $game_map.events.each_value do |event|
       if event.name[/^Trainer\((\d+)\)$/]
         distance=$~[1].to_i
         next if !pbEventCanReachPlayer?(event,self,distance)

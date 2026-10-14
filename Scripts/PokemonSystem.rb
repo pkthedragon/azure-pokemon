@@ -119,6 +119,36 @@ def pbSetUpSystem(tempsave=0,autosave=nil)
   end
 end
 
+module AzureDeveloperTools
+  def self.path(scriptName)
+    return File.expand_path(File.join("Scripts",scriptName),Dir.pwd)
+  end
+
+  def self.present?(scriptName)
+    return File.exist?(path(scriptName))
+  end
+
+  # Developer tools are intentionally absent from !script_order.csv. Loading
+  # them on demand keeps release startup free of profiling/validation code and
+  # lets a release package omit the files without changing gameplay scripts.
+  def self.load(scriptName,constantName)
+    symbol=constantName.to_sym
+    return true if Object.const_defined?(symbol)
+    toolPath=path(scriptName)
+    return false if !File.exist?(toolPath)
+    code=File.open(toolPath,"rb") {|file| file.read }
+    eval(code,TOPLEVEL_BINDING,toolPath)
+    return Object.const_defined?(symbol)
+  rescue Exception
+    if defined?(pbPrintException)
+      pbPrintException($!)
+    else
+      puts "Unable to load developer tool #{scriptName}: #{($!.message rescue '')}"
+    end
+    return false
+  end
+end
+
 module Input
   unless defined?(update_KGC_ScreenCapture)
     class << Input
@@ -137,14 +167,18 @@ module Input
     if triggerex?(:F)
       pbTurbo()
     end
-    if triggerex?(:F10)
+    if triggerex?(:F10) && $DEBUG
       if $is_profile != true
-        $is_profile = true
-        Kernel.pbMessage("Begin profiling")
-        CP_Profiler.begin
+        if AzureDeveloperTools.load("Profiler.rb",:CP_Profiler)
+          $is_profile = true
+          Kernel.pbMessage("Begin profiling")
+          CP_Profiler.begin
+        else
+          Kernel.pbMessage("The optional profiler tool is not installed.")
+        end
       end
     end
-    if triggerex?(:F11)
+    if triggerex?(:F11) && $DEBUG && $is_profile==true && defined?(CP_Profiler)
       CP_Profiler.print
       $is_profile = false
     end
