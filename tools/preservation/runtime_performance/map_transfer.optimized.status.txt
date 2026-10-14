@@ -1,0 +1,12 @@
+result=PASS
+maps=145
+map_loads=145
+legacy_map_loads=290
+loads_eliminated=145
+same_object_handoff=preserved
+game_map_setup=preserved
+post_consumption_cache=absent
+mismatch_discard=preserved
+direct_setup_fallback=preserved
+map_graph=exact
+optimized_transfer_load_total_seconds=0.3312327

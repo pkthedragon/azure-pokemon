@@ -1,0 +1,10 @@
+result=PASS
+mode=baseline_literal_groups
+query_groups=16
+matrix_scenarios=128
+matrix_checksum=1958265408
+matrix_exact=true
+predicate_calls=1000000
+predicate_checksum=0
+predicate_seconds=2.8253464000008535
+predicate_allocations=1000002

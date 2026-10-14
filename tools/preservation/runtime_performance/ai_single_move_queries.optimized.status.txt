@@ -1,0 +1,12 @@
+result=PASS
+mode=optimized_scalar_id
+matrix_scenarios=2154
+matrix_checksum=886775334
+matrix_exact=true
+scalar_checksum=886775334
+scalar_exact=true
+nature_power_exact=true
+predicate_calls=1000000
+predicate_checksum=0
+predicate_seconds=2.0680773000058252
+predicate_allocations=2

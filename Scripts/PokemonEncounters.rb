@@ -48,6 +48,13 @@ module EncounterTypes
      [60,30,5,4,1],
      [60,30,5,4,1]
   ]
+  # These tables are fixed encounter weights. Cache their totals once instead
+  # of summing the same small arrays for every wild encounter roll.
+  EnctypeChanceTotals=EnctypeChances.map {|chances|
+    total=0
+    chances.each {|chance| total+=chance}
+    total
+  }.freeze
   EnctypeDensities=[25,10,10,0,0,0,0,0,0,25,25,25,25,10,10]
   EnctypeCompileDens=[1,2,3,0,0,0,0,0,0,1,1,1,1,3,3]
 end
@@ -391,8 +398,7 @@ class PokemonEncounters
     enctypes=data.encounters
     return nil if enctypes[enctype]==nil
     chances=EncounterTypes::EnctypeChances[enctype]
-    chancetotal=0
-    chances.each {|a| chancetotal+=a}
+    chancetotal=EncounterTypes::EnctypeChanceTotals[enctype]
     rnd=rand(chancetotal)
     chosenpkmn=0
     chance=0
@@ -449,8 +455,10 @@ class PokemonEncounters
       raise ArgumentError.new(_INTL("Encounter type out of range"))
     end
     return nil if @enctypes[enctype]==nil
-    # Ability weighting is per roll. Never mutate the shared constants.
-    chances=EncounterTypes::EnctypeChances[enctype].clone
+    # Most rolls use the immutable base weights directly. Copy them only when
+    # an encounter-attracting ability needs to alter this roll's weights.
+    basechances=EncounterTypes::EnctypeChances[enctype]
+    chances=basechances
 # UPDATE 11/18/2013
 # I assumed multiple abilities would change the encounter rate.
 # (Apparently it's only Magnet Pull)
@@ -459,30 +467,37 @@ class PokemonEncounters
     if !$Trainer.party[0].egg?
       abl = $Trainer.party[0].ability
       if isConst?(abl,PBAbilities,:MAGNETPULL)
+        chances=basechances.clone
         chances = shiftChances(chances, enctype, :STEEL, 1.5)
       end
       if isConst?(abl,PBAbilities,:FLASHFIRE)
+        chances=basechances.clone
         chances = shiftChances(chances, enctype, :FIRE, 1.5)
       end
       if isConst?(abl,PBAbilities,:HARVEST)
+        chances=basechances.clone
         chances = shiftChances(chances, enctype, :GRASS, 1.5)
       end
       if isConst?(abl,PBAbilities,:LIGHTNINGROD)
+        chances=basechances.clone
         chances = shiftChances(chances, enctype, :ELECTRIC, 1.5)
       end
       if isConst?(abl,PBAbilities,:STATIC)
+        chances=basechances.clone
         chances = shiftChances(chances, enctype, :ELECTRIC, 1.5)
       end
       if isConst?(abl,PBAbilities,:STORMDRAIN)
+        chances=basechances.clone
         chances = shiftChances(chances, enctype, :WATER, 1.5)
       end
     end
 # end of update
 # pkedit
   #####MODDED
-  aArr = []
+  aArr = nil
   if !$Trainer.party[0].egg? #Should also check for $Trainer.party[0].hp > 0 by logic, but then it wouldn't be in line with the other overworld party leader checks
     if $game_switches[74]
+      aArr = []
       for i in 0...chances.length
         aEnc = @enctypes[enctype][i]        
         if !(aEnc == nil)
@@ -493,13 +508,17 @@ class PokemonEncounters
       end
     end
   end  
-  if aArr.length > 0
+  if aArr && aArr.length > 0
     chosenpkmn = aArr[rand(aArr.length)]
-    encounter = @enctypes[enctype][chosenpkmn].clone
+    encounter = @enctypes[enctype][chosenpkmn]
   else
     #####/MODDED
-    chancetotal=0
-    chances.each {|a| chancetotal+=a}
+    if chances.equal?(basechances)
+      chancetotal=EncounterTypes::EnctypeChanceTotals[enctype]
+    else
+      chancetotal=0
+      chances.each {|a| chancetotal+=a}
+    end
     rnd=0
     tries.times do
       r=rand(chancetotal)
@@ -514,9 +533,10 @@ class PokemonEncounters
         break
       end
     end
-    encounter=@enctypes[enctype][chosenpkmn].clone
+    encounter=@enctypes[enctype][chosenpkmn]
   end #####MODDED
   return nil if !encounter
+  minlevel=encounter[1]
 # UPDATE 11/19/2013
 # pressure, hustle and vital spirit will now have a 150% chance of
 # finding higher leveled pokemon in encounters
@@ -527,11 +547,11 @@ class PokemonEncounters
        isConst?(abl, PBAbilities, :VITALSPIRIT)) &&
        rand(2) == 0
 # increase the lower bound to half way in-between lower and upper
-        encounter[1] += (encounter[2] - encounter[1]) / 2
+        minlevel += (encounter[2] - minlevel) / 2
       end
     end
 # end of update
-    level=encounter[1]+rand(1+encounter[2]-encounter[1])
+    level=minlevel+rand(1+encounter[2]-minlevel)
     return [encounter[0],level]
   end
 

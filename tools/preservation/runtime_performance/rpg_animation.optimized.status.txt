@@ -1,0 +1,13 @@
+result=PASS
+records=151
+serialized_bytes=137648
+fingerprint=5a1222e3
+initial_loads=1
+cached_loads=0
+nil_invalidation_loads=1
+preassigned_global=preserved
+marshal_graph=exact
+main_eager_load=absent
+consumer_routes=3
+first_load_seconds=0.0093937
+cached_call_seconds=0.0000059

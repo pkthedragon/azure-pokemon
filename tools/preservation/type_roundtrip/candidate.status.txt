@@ -1,0 +1,11 @@
+ok=true
+source_types=21
+effective_symbols=21
+max_value=20
+chart_cells=441
+non_neutral_cells=144
+pseudotypes=9
+specialtypes=10,11,12,13,14,15,16,17,18,19,20
+type_message_differences=0
+non_type_message_differences=0
+runtime_isolated=true

@@ -1,0 +1,8 @@
+ok=true
+trainer_type_rows=280
+trainer_type_slots=287
+trainer_type_max=286
+teams=162
+team_keys=162
+pokemon=630
+trainer_names=162

@@ -1,0 +1,14 @@
+byte_identical=true
+townmap_length=761
+townmap_sha256=393ADA7C544A61FC2808DCCA9EEC1D4DE5F024AB30A4C803E1ED5A57C26DB3F9
+messages_length=1618294
+messages_sha256=2E2727E8CEAF66E0755D3A5362D17AFB7F4E9A365DA4D3FE31627FD217E6218D
+regions=1
+points=19
+healing_points=4
+hidden_points=2
+unique_place_names=10
+unique_place_descriptions=6
+preserved_format=numeric region and point arrays
+rejuv_symbol_keyed_townmap_adopted=false
+rejuv_shared_runtime_cache_adopted=true

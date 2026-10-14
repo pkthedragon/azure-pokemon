@@ -1,0 +1,120 @@
+﻿# Generated from legacy metadata.txt.
+#-------------------------------
+[0]
+Home = 3,5,7,0
+WildBattleBGM = Battle! Wild
+TrainerBattleBGM = Battle! Trainer
+WildVictoryBGM = Victory! Wild
+TrainerVictoryBGM = Victory! Trainer
+SurfBGM = Surf.ogg
+BicycleBGM = Bicycle.mid
+#-------------------------------
+[1]
+LegacyPlayerSlot = PlayerA
+TrainerType = POKEMONTRAINER_Troy
+WalkCharset = trchar250
+CycleCharset = troy_bike
+SurfCharset = troy_surf
+RunCharset = troy_run
+DiveCharset = troy_surf
+FishCharset = troy_fish_offset
+SurfFishCharset = xxx
+#-------------------------------
+[2]
+LegacyPlayerSlot = PlayerB
+TrainerType = POKEMONTRAINER_Calian
+WalkCharset = trchar251
+CycleCharset = calian_bike
+SurfCharset = calian_surf
+RunCharset = calian_run
+DiveCharset = calian_surf
+FishCharset = calian_fish_offset
+SurfFishCharset = xxx
+#-------------------------------
+[3]
+LegacyPlayerSlot = PlayerC
+TrainerType = POKEMONTRAINER_NullOne
+WalkCharset = trchar252
+CycleCharset = nullone_bike
+SurfCharset = nullone_surf
+RunCharset = nullone_run
+DiveCharset = nullone_surf
+FishCharset = nullone_fish_offset
+SurfFishCharset = xxx
+#-------------------------------
+[4]
+LegacyPlayerSlot = PlayerD
+TrainerType = POKEMONTRAINER_Ellis
+WalkCharset = trchar253
+CycleCharset = ellis_bike
+SurfCharset = ellis_surf
+RunCharset = ellis_run
+DiveCharset = ellis_surf
+FishCharset = ellis_fish_offset
+SurfFishCharset = xxx
+#-------------------------------
+[5]
+LegacyPlayerSlot = PlayerE
+TrainerType = POKEMONTRAINER_Ophelia
+WalkCharset = trchar254
+CycleCharset = ophelia_bike
+SurfCharset = ophelia_surf
+RunCharset = ophelia_run
+DiveCharset = ophelia_surf
+FishCharset = ophelia_fish_offset
+SurfFishCharset = xxx
+#-------------------------------
+[6]
+LegacyPlayerSlot = PlayerF
+TrainerType = POKEMONTRAINER_NullTwo
+WalkCharset = trchar255
+CycleCharset = nulltwo_bike
+SurfCharset = nulltwo_surf
+RunCharset = nulltwo_run
+DiveCharset = nulltwo_surf
+FishCharset = nulltwo_fish_offset
+SurfFishCharset = xxx
+#-------------------------------
+[7]
+LegacyPlayerSlot = PlayerG
+TrainerType = POKEMONTRAINER_Key
+WalkCharset = trchar256
+CycleCharset = key_bike
+SurfCharset = key_surf
+RunCharset = key_run
+DiveCharset = key_surf
+FishCharset = key_fish_offset
+SurfFishCharset = xxx
+#-------------------------------
+[8]
+LegacyPlayerSlot = PlayerH
+TrainerType = POKEMONTRAINER_Nira
+WalkCharset = trchar257
+CycleCharset = nira_bike
+SurfCharset = nira_surf
+RunCharset = nira_run
+DiveCharset = nira_surf
+FishCharset = nira_fish_offset
+SurfFishCharset = xxx
+#-------------------------------
+[9]
+LegacyPlayerSlot = PlayerI
+TrainerType = POKEMONTRAINER_NullThree
+WalkCharset = trchar258
+CycleCharset = nullthree_bike
+SurfCharset = nullthree_surf
+RunCharset = nullthree_run
+DiveCharset = nullthree_surf
+FishCharset = nullthree_fish_offset
+SurfFishCharset = xxx
+#-------------------------------
+[10]
+LegacyPlayerSlot = PlayerJ
+TrainerType = MYRON
+WalkCharset = Myron
+CycleCharset = Myron
+SurfCharset = Myron
+RunCharset = Myron
+DiveCharset = Myron
+FishCharset = Myron
+SurfFishCharset = xxx

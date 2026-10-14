@@ -1,0 +1,8 @@
+pbCompilePokemonData=nil
+pbAltPBSBuildLegacyPokemonSections=nil
+pbUsesAltPokemonPBS=nil
+AzurePBSValidation=nil
+SignedWordArray=nil
+PBEvolution=nil
+PBSpecies=nil
+MessageTypes="constant"

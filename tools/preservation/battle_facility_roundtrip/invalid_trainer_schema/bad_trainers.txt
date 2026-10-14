@@ -1,0 +1,7 @@
+[000]
+Type=YOUNGSTER
+Name=Tester
+BeginSpeech=Hi
+EndSpeechWin=Win
+EndSpeechLose=Lose
+Unknown=1

@@ -1,0 +1,10 @@
+result=PASS
+mode=optimized_ally_iteration
+matrix_cases=5
+matrix_checksum=2016156807
+matrix_exact=true
+helpers_exact=true
+predicate_calls=1000000
+predicate_checksum=0
+predicate_seconds=3.122170599992387
+predicate_allocations=2

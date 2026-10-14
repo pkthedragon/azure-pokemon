@@ -1,0 +1,5 @@
+ok=true
+populated_dex_records=1033
+checked_messages=3099
+regional_words=1037
+evolution_bytes=13082

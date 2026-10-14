@@ -1,0 +1,13 @@
+result=PASS
+maps=32
+encounter_tables=103
+encounter_slots=890
+iterations=250000
+checksum=1223096097
+sequence_hash=14707797926192231482
+rng_sequence=exact
+behavior_scenarios=12
+behavior_match=exact
+optimized_seconds=1.0458415
+optimized_allocations=1280539
+encounter_graph_unchanged=true

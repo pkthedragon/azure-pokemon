@@ -1,0 +1,14 @@
+ok=true
+categories=7
+messages=19
+preserved_phone_hash_entries=19
+phone_candidate_exact=true
+messages_candidate_exact=true
+candidate_runtime_isolated=true
+editor_roundtrip_exact=true
+invalid_fixtures_rejected=4
+localized_lookup_exact=true
+cache_reused=true
+cache_invalidated=true
+installed_phone_exact=true
+installed_messages_exact=true

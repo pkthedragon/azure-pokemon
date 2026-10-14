@@ -1,0 +1,12 @@
+ok=true
+regions=1
+points=19
+healing_points=4
+hidden_points=2
+unique_place_names=10
+unique_place_descriptions=6
+result_matches_candidate=true
+candidate_matches_live=true
+town_messages_exact=true
+non_town_messages_exact=true
+runtime_isolated=true

@@ -12,6 +12,15 @@ Run the reusable load/startup check after the audit:
 pwsh -NoProfile -File tools/preservation/Test-Startup.ps1
 ```
 
+The startup check watches both the project log and mkxp-z's active Windows
+`Saved Games/<Game.ini Title>/errorlog.txt`; a newly written error in either
+location fails the check even if the game process remains alive.
+
+The check temporarily advances the `Scripts/!script_order.csv` timestamp and
+restores it afterward. Every invocation therefore exercises the external-script
+loader's cold import path, which catches parse errors that a warm launch of the
+existing script archive can miss.
+
 The audit verifies the current Azure source of truth rather than comparing it
 with Rejuvenation. It checks:
 
@@ -30,5 +39,5 @@ path works. Each migration task should also run a focused smoke test for the
 subsystem it changes.
 
 See `REJUVENATION_PORT_MATRIX.md` for the implemented Rejuvenation-inspired
-ports, compatibility constraints, staged roadmap, and intentionally deferred
-engine migrations.
+ports, compatibility constraints, current phase, ordered next-step checklist,
+completion gates, and intentionally deferred engine migrations.

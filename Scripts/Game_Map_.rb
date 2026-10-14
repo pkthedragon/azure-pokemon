@@ -31,8 +31,8 @@ class Game_Map
 
   def setup(map_id)
     @map_id = map_id
-    @map=load_data(sprintf("Data/Map%03d.%s", map_id,$RPGVX ? "rvdata" : "rxdata"))
-    tileset = $data_tilesets[@map.tileset_id]
+    @map=AzureMapTransferHandoff.take(map_id)
+    tileset = pbLoadTilesetData[@map.tileset_id]
     @tileset_name = tileset.tileset_name
     @autotile_names = tileset.autotile_names
     @panorama_name = tileset.panorama_name
@@ -138,10 +138,10 @@ class Game_Map
 
   def refresh
     if @map_id > 0
-      for event in @events.values
+      @events.each_value do |event|
         event.refresh
       end
-      for common_event in @common_events.values
+      @common_events.each_value do |common_event|
         common_event.refresh
       end
     end
@@ -175,7 +175,7 @@ class Game_Map
   def passable?(x, y, d, self_event = nil)
     return false if !valid?(x, y)
     bit = (1 << (d / 2 - 1)) & 0x0f
-    for event in events.values
+    events.each_value do |event|
       if event.tile_id >= 0 and event != self_event and
          event.x == x and event.y == y and not event.through
         return false if @passages[event.tile_id] & bit != 0
@@ -302,7 +302,7 @@ class Game_Map
 
   def passableStrict?(x, y, d, self_event = nil)
     return false if !valid?(x, y)
-    for event in events.values
+    events.each_value do |event|
       if event.tile_id >= 0 and event != self_event and
          event.x == x and event.y == y and not event.through
         return false if @passages[event.tile_id] & 0x0f !=0
@@ -363,7 +363,7 @@ class Game_Map
   end
 
   def check_event(x, y)
-    for event in self.events.values
+    self.events.each_value do |event|
       return event.id if event.x == x and event.y == y
     end
   end
@@ -437,13 +437,13 @@ class Game_Map
       end
       @scroll_rest -= distance
     end
-    for event in @events.values
+    @events.each_value do |event|
       #if in_range?(event) or event.trigger == 3 or event.trigger == 4
         event.update
         event.need_update=true
       #end
     end
-    for common_event in @common_events.values
+    @common_events.each_value do |common_event|
       common_event.update
     end
     @fog_ox -= @fog_sx / 8.0

@@ -1,0 +1,5 @@
+[WrongSides]
+Map1 = 2
+Map1Point = North,3
+Map2 = 4
+Map2Point = East,5

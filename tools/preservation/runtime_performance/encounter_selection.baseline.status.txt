@@ -1,0 +1,10 @@
+result=PASS
+maps=32
+encounter_tables=103
+encounter_slots=890
+iterations=250000
+checksum=1223096097
+sequence_hash=14707797926192231482
+legacy_seconds=2.0808794
+legacy_allocations=2030539
+encounter_graph_unchanged=true

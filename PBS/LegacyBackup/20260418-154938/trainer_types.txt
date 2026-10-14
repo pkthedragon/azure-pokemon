@@ -1,0 +1,1860 @@
+﻿# Generated from the legacy trainer type CSV.
+#-------------------------------
+[TESTER]
+LegacyTrainerTypeID = 286
+Name = Tester
+BaseMoney = 100
+BattleBGM = Battle! Dream
+Gender = Mixed
+SkillLevel = 255
+#-------------------------------
+[CONDUIT]
+LegacyTrainerTypeID = 0
+Name = Conduit
+BaseMoney = 100
+BattleBGM = Battle! Dream
+Gender = Female
+SkillLevel = 255
+#-------------------------------
+[CONDUIT1]
+LegacyTrainerTypeID = 1
+Name = Conduit
+BaseMoney = 100
+Gender = Female
+SkillLevel = 255
+#-------------------------------
+[POKEMONTRAINER_Troy]
+LegacyTrainerTypeID = 250
+Name = Pokémon Trainer
+BaseMoney = 60
+Gender = Mixed
+SkillLevel = 255
+#-------------------------------
+[POKEMONTRAINER_Calian]
+LegacyTrainerTypeID = 251
+Name = Pokémon Trainer
+BaseMoney = 60
+Gender = Mixed
+SkillLevel = 255
+#-------------------------------
+[POKEMONTRAINER_NullOne]
+LegacyTrainerTypeID = 252
+Name = Pokémon Trainer
+BaseMoney = 60
+Gender = Mixed
+SkillLevel = 255
+#-------------------------------
+[POKEMONTRAINER_Ellis]
+LegacyTrainerTypeID = 253
+Name = Pokémon Trainer
+BaseMoney = 255
+Gender = Mixed
+SkillLevel = 255
+#-------------------------------
+[POKEMONTRAINER_Ophelia]
+LegacyTrainerTypeID = 254
+Name = Pokémon Trainer
+BaseMoney = 60
+Gender = Mixed
+SkillLevel = 255
+#-------------------------------
+[POKEMONTRAINER_NullTwo]
+LegacyTrainerTypeID = 255
+Name = Pokémon Trainer
+BaseMoney = 60
+Gender = Mixed
+SkillLevel = 255
+#-------------------------------
+[POKEMONTRAINER_Key]
+LegacyTrainerTypeID = 256
+Name = Pokémon Trainer
+BaseMoney = 60
+Gender = Mixed
+SkillLevel = 255
+#-------------------------------
+[POKEMONTRAINER_Nira]
+LegacyTrainerTypeID = 257
+Name = Pokémon Trainer
+BaseMoney = 60
+Gender = Mixed
+SkillLevel = 255
+#-------------------------------
+[POKEMONTRAINER_NullThree]
+LegacyTrainerTypeID = 258
+Name = Pokémon Trainer
+BaseMoney = 60
+Gender = Mixed
+SkillLevel = 255
+#-------------------------------
+[POKEMONTRAINER_Kara]
+LegacyTrainerTypeID = 179
+Name = Wishmaker
+BaseMoney = 60
+BattleBGM = Battle! Kara
+Gender = Female
+SkillLevel = 255
+#-------------------------------
+[POKEMONTRAINER_Percy]
+LegacyTrainerTypeID = 180
+Name = Assistant
+BaseMoney = 60
+BattleBGM = Battle! Percy
+Gender = Male
+SkillLevel = 255
+#-------------------------------
+[ALCHEMIST]
+LegacyTrainerTypeID = 244
+Name = Alchemist
+BaseMoney = 100
+Gender = Male
+SkillLevel = 255
+#-------------------------------
+[ULTRARECON]
+LegacyTrainerTypeID = 245
+Name = ???
+BaseMoney = 60
+BattleBGM = Battle! Ultra Recon
+Gender = Mixed
+SkillLevel = 255
+#-------------------------------
+[ZOSSIE]
+LegacyTrainerTypeID = 246
+Name = Space Jockey
+BaseMoney = 100
+BattleBGM = Battle! Ultra Recon
+Gender = Female
+SkillLevel = 255
+#-------------------------------
+[DATA]
+LegacyTrainerTypeID = 247
+Name = Jumper
+BaseMoney = 100
+BattleBGM = Battle! Ultra Recon
+Gender = Male
+SkillLevel = 255
+#-------------------------------
+[LUX]
+LegacyTrainerTypeID = 249
+Name = Mysterious Figure
+BaseMoney = 60
+BattleBGM = Battle! Lux
+Gender = Female
+SkillLevel = 255
+#-------------------------------
+[HANDMAIDEN]
+LegacyTrainerTypeID = 260
+Name = Handmaiden
+BaseMoney = 60
+BattleBGM = Battle! Church Good
+Gender = Female
+SkillLevel = 255
+#-------------------------------
+[SOULMATE]
+LegacyTrainerTypeID = 261
+Name = Soulmate
+BaseMoney = 60
+BattleBGM = Battle! Eon
+Gender = Female
+SkillLevel = 255
+#-------------------------------
+[PARAGON]
+LegacyTrainerTypeID = 262
+Name = Paragon
+BaseMoney = 60
+BattleBGM = Battle! Eon
+Gender = Male
+SkillLevel = 255
+#-------------------------------
+[KODA]
+LegacyTrainerTypeID = 267
+Name = Fatedancer
+BaseMoney = 60
+Gender = Male
+SkillLevel = 255
+#-------------------------------
+[POKEMONTRAINER_RIVAL]
+LegacyTrainerTypeID = 2
+Name = Pokémon Trainer
+BaseMoney = 60
+Gender = Male
+#-------------------------------
+[POKEMONTRAINER_RIVALM]
+LegacyTrainerTypeID = 3
+Name = Pokémon Trainer
+BaseMoney = 60
+Gender = Female
+#-------------------------------
+[POKEMONTRAINER_RIVALF]
+LegacyTrainerTypeID = 4
+Name = Pokémon Trainer
+BaseMoney = 60
+Gender = Male
+#-------------------------------
+[YOUNGSTER]
+LegacyTrainerTypeID = 5
+Name = Youngster
+BaseMoney = 16
+Gender = Male
+#-------------------------------
+[YOUNGSTER2]
+LegacyTrainerTypeID = 6
+Name = Youngster
+BaseMoney = 16
+Gender = Male
+#-------------------------------
+[YOUNGSTER3]
+LegacyTrainerTypeID = 7
+Name = Youngster
+BaseMoney = 16
+Gender = Male
+#-------------------------------
+[LASS]
+LegacyTrainerTypeID = 8
+Name = Lass
+BaseMoney = 16
+Gender = Female
+#-------------------------------
+[LASS2]
+LegacyTrainerTypeID = 9
+Name = Lass
+BaseMoney = 16
+Gender = Female
+#-------------------------------
+[LASS3]
+LegacyTrainerTypeID = 10
+Name = Lass
+BaseMoney = 16
+Gender = Female
+#-------------------------------
+[SCHOOLKID_M]
+LegacyTrainerTypeID = 11
+Name = School Kid
+BaseMoney = 20
+Gender = Male
+#-------------------------------
+[SCHOOLKID_M2]
+LegacyTrainerTypeID = 12
+Name = School Kid
+BaseMoney = 20
+Gender = Male
+#-------------------------------
+[SCHOOLKID_M3]
+LegacyTrainerTypeID = 13
+Name = School Kid
+BaseMoney = 20
+Gender = Male
+#-------------------------------
+[SCHOOLKID_F]
+LegacyTrainerTypeID = 14
+Name = School Kid
+BaseMoney = 20
+Gender = Female
+#-------------------------------
+[SCHOOLKID_F]
+LegacyTrainerTypeID = 15
+Name = School Kid
+BaseMoney = 20
+Gender = Female
+#-------------------------------
+[BUGCATCHER]
+LegacyTrainerTypeID = 16
+Name = Bug Catcher
+BaseMoney = 16
+Gender = Male
+#-------------------------------
+[BUGCATCHER2]
+LegacyTrainerTypeID = 17
+Name = Bug Catcher
+BaseMoney = 16
+Gender = Male
+#-------------------------------
+[CAMPER]
+LegacyTrainerTypeID = 18
+Name = Camper
+BaseMoney = 16
+Gender = Male
+#-------------------------------
+[PICNICKER]
+LegacyTrainerTypeID = 19
+Name = Picnicker
+BaseMoney = 16
+Gender = Female
+#-------------------------------
+[NINJABOY]
+LegacyTrainerTypeID = 20
+Name = Ninja Boy
+BaseMoney = 8
+Gender = Male
+#-------------------------------
+[POKEKID]
+LegacyTrainerTypeID = 21
+Name = Poké Kid
+BaseMoney = 8
+Gender = Female
+#-------------------------------
+[PRESCHOOLER_M]
+LegacyTrainerTypeID = 22
+Name = Preschooler
+BaseMoney = 20
+Gender = Male
+#-------------------------------
+[PRESCHOOLER_F]
+LegacyTrainerTypeID = 23
+Name = Preschooler
+BaseMoney = 20
+Gender = Female
+#-------------------------------
+[TUBER_M]
+LegacyTrainerTypeID = 24
+Name = Tuber
+BaseMoney = 4
+Gender = Male
+#-------------------------------
+[TUBER_F]
+LegacyTrainerTypeID = 25
+Name = Tuber
+BaseMoney = 4
+Gender = Female
+#-------------------------------
+[SWIMMER_M]
+LegacyTrainerTypeID = 26
+Name = Swimmer
+BaseMoney = 16
+Gender = Male
+#-------------------------------
+[SWIMMER_M2]
+LegacyTrainerTypeID = 27
+Name = Swimmer
+BaseMoney = 16
+Gender = Male
+#-------------------------------
+[SWIMMER_M3]
+LegacyTrainerTypeID = 28
+Name = Swimmer
+BaseMoney = 16
+Gender = Male
+#-------------------------------
+[SWIMMER_F]
+LegacyTrainerTypeID = 29
+Name = Swimmer
+BaseMoney = 16
+Gender = Female
+#-------------------------------
+[SWIMMER_F2]
+LegacyTrainerTypeID = 30
+Name = Swimmer
+BaseMoney = 16
+Gender = Female
+#-------------------------------
+[SWIMMER_F3]
+LegacyTrainerTypeID = 31
+Name = Swimmer
+BaseMoney = 16
+Gender = Female
+#-------------------------------
+[FISHERMAN]
+LegacyTrainerTypeID = 32
+Name = Fisherman
+BaseMoney = 32
+Gender = Male
+#-------------------------------
+[FISHERMAN2]
+LegacyTrainerTypeID = 33
+Name = Fisherman
+BaseMoney = 32
+Gender = Male
+#-------------------------------
+[BLACKBELT]
+LegacyTrainerTypeID = 34
+Name = Black Belt
+BaseMoney = 24
+Gender = Male
+#-------------------------------
+[BLACKBELT2]
+LegacyTrainerTypeID = 35
+Name = Black Belt
+BaseMoney = 24
+Gender = Male
+#-------------------------------
+[BLACKBELT3]
+LegacyTrainerTypeID = 36
+Name = Black Belt
+BaseMoney = 24
+Gender = Male
+#-------------------------------
+[BATTLEGIRL]
+LegacyTrainerTypeID = 37
+Name = Battle Girl
+BaseMoney = 16
+Gender = Female
+#-------------------------------
+[BATTLEGIRL2]
+LegacyTrainerTypeID = 38
+Name = Battle Girl
+BaseMoney = 16
+Gender = Female
+#-------------------------------
+[JOGGER]
+LegacyTrainerTypeID = 39
+Name = Jogger
+BaseMoney = 32
+Gender = Male
+#-------------------------------
+[CYCLIST_M]
+LegacyTrainerTypeID = 40
+Name = Cyclist
+BaseMoney = 32
+Gender = Male
+#-------------------------------
+[CYCLIST_M2]
+LegacyTrainerTypeID = 41
+Name = Cyclist
+BaseMoney = 32
+Gender = Male
+#-------------------------------
+[CYCLIST_F]
+LegacyTrainerTypeID = 42
+Name = Cyclist
+BaseMoney = 32
+Gender = Female
+#-------------------------------
+[CYCLIST_F2]
+LegacyTrainerTypeID = 43
+Name = Cyclist
+BaseMoney = 32
+Gender = Female
+#-------------------------------
+[HIKER]
+LegacyTrainerTypeID = 44
+Name = Hiker
+BaseMoney = 32
+Gender = Male
+#-------------------------------
+[HIKER2]
+LegacyTrainerTypeID = 45
+Name = Hiker
+BaseMoney = 32
+Gender = Male
+#-------------------------------
+[BACKPACKER_M]
+LegacyTrainerTypeID = 46
+Name = Backpacker
+BaseMoney = 32
+Gender = Male
+#-------------------------------
+[BACKPACKER_F]
+LegacyTrainerTypeID = 47
+Name = Backpacker
+BaseMoney = 32
+Gender = Female
+#-------------------------------
+[SCIENTIST_M]
+LegacyTrainerTypeID = 48
+Name = Scientist
+BaseMoney = 32
+Gender = Male
+#-------------------------------
+[SCIENTIST_M2]
+LegacyTrainerTypeID = 49
+Name = Scientist
+BaseMoney = 32
+Gender = Male
+#-------------------------------
+[SCIENTIST_M3]
+LegacyTrainerTypeID = 50
+Name = Scientist
+BaseMoney = 32
+Gender = Male
+#-------------------------------
+[SCIENTIST_F]
+LegacyTrainerTypeID = 51
+Name = Scientist
+BaseMoney = 32
+Gender = Male
+#-------------------------------
+[COLLECTOR]
+LegacyTrainerTypeID = 52
+Name = Collector
+BaseMoney = 64
+Gender = Male
+#-------------------------------
+[SUPERNERD]
+LegacyTrainerTypeID = 53
+Name = Super Nerd
+BaseMoney = 24
+Gender = Male
+#-------------------------------
+[PSYCHIC_M]
+LegacyTrainerTypeID = 54
+Name = Psychic
+BaseMoney = 32
+Gender = Male
+#-------------------------------
+[PSYCHIC_M2]
+LegacyTrainerTypeID = 55
+Name = Psychic
+BaseMoney = 32
+Gender = Male
+#-------------------------------
+[PSYCHIC_F]
+LegacyTrainerTypeID = 56
+Name = Psychic
+BaseMoney = 32
+Gender = Female
+#-------------------------------
+[PSYCHIC_F2]
+LegacyTrainerTypeID = 57
+Name = Psychic
+BaseMoney = 32
+Gender = Female
+#-------------------------------
+[SAGE]
+LegacyTrainerTypeID = 58
+Name = Sage
+BaseMoney = 48
+Gender = Male
+#-------------------------------
+[ELDER]
+LegacyTrainerTypeID = 59
+Name = Elder
+BaseMoney = 120
+Gender = Male
+#-------------------------------
+[MEDIUM]
+LegacyTrainerTypeID = 60
+Name = Medium
+BaseMoney = 48
+Gender = Female
+#-------------------------------
+[KIMONOGIRL]
+LegacyTrainerTypeID = 61
+Name = Kimono Girl
+BaseMoney = 120
+Gender = Female
+#-------------------------------
+[BEAUTY]
+LegacyTrainerTypeID = 62
+Name = Beauty
+BaseMoney = 56
+Gender = Female
+#-------------------------------
+[BEAUTY2]
+LegacyTrainerTypeID = 63
+Name = Beauty
+BaseMoney = 56
+Gender = Female
+#-------------------------------
+[BEAUTY3]
+LegacyTrainerTypeID = 64
+Name = Beauty
+BaseMoney = 56
+Gender = Female
+#-------------------------------
+[CAMERAMAN]
+LegacyTrainerTypeID = 65
+Name = Cameraman
+BaseMoney = 32
+Gender = Male
+#-------------------------------
+[REPORTER]
+LegacyTrainerTypeID = 66
+Name = Reporter
+BaseMoney = 40
+Gender = Female
+#-------------------------------
+[TEACHER]
+LegacyTrainerTypeID = 67
+Name = Teacher
+BaseMoney = 48
+Gender = Female
+#-------------------------------
+[NURSERYAIDE]
+LegacyTrainerTypeID = 68
+Name = Nursery Aide
+BaseMoney = 48
+Gender = Female
+#-------------------------------
+[RICHBOY]
+LegacyTrainerTypeID = 69
+Name = Rich Boy
+BaseMoney = 160
+Gender = Male
+#-------------------------------
+[RICHBOY2]
+LegacyTrainerTypeID = 70
+Name = Rich Boy
+BaseMoney = 160
+Gender = Male
+#-------------------------------
+[LADY]
+LegacyTrainerTypeID = 71
+Name = Lady
+BaseMoney = 160
+Gender = Female
+#-------------------------------
+[LADY2]
+LegacyTrainerTypeID = 72
+Name = Lady
+BaseMoney = 160
+Gender = Female
+#-------------------------------
+[PARASOLLADY]
+LegacyTrainerTypeID = 73
+Name = Parasol Lady
+BaseMoney = 32
+Gender = Female
+#-------------------------------
+[PARASOLLADY2]
+LegacyTrainerTypeID = 74
+Name = Parasol Lady
+BaseMoney = 32
+Gender = Female
+#-------------------------------
+[HOOPSTER]
+LegacyTrainerTypeID = 75
+Name = Hoopster
+BaseMoney = 32
+Gender = Male
+#-------------------------------
+[LINEBACKER]
+LegacyTrainerTypeID = 76
+Name = Linebacker
+BaseMoney = 32
+Gender = Male
+#-------------------------------
+[STRIKER]
+LegacyTrainerTypeID = 77
+Name = Striker
+BaseMoney = 32
+Gender = Male
+#-------------------------------
+[INFIELDER]
+LegacyTrainerTypeID = 78
+Name = Infielder
+BaseMoney = 32
+Gender = Male
+#-------------------------------
+[SMASHER]
+LegacyTrainerTypeID = 79
+Name = Smasher
+BaseMoney = 32
+Gender = Female
+#-------------------------------
+[SKIER_M]
+LegacyTrainerTypeID = 80
+Name = Skier
+BaseMoney = 32
+Gender = Male
+#-------------------------------
+[BOARDER]
+LegacyTrainerTypeID = 81
+Name = Boarder
+BaseMoney = 32
+Gender = Male
+#-------------------------------
+[SKIER_F]
+LegacyTrainerTypeID = 82
+Name = Skier
+BaseMoney = 32
+Gender = Female
+#-------------------------------
+[SKIER_F2]
+LegacyTrainerTypeID = 83
+Name = Skier
+BaseMoney = 32
+Gender = Female
+#-------------------------------
+[GUITARIST]
+LegacyTrainerTypeID = 84
+Name = Guitarist
+BaseMoney = 24
+Gender = Male
+#-------------------------------
+[GUITARIST2]
+LegacyTrainerTypeID = 85
+Name = Guitarist
+BaseMoney = 24
+Gender = Male
+#-------------------------------
+[DANCER]
+LegacyTrainerTypeID = 86
+Name = Dancer
+BaseMoney = 24
+Gender = Male
+#-------------------------------
+[IDOL]
+LegacyTrainerTypeID = 87
+Name = Idol
+BaseMoney = 72
+Gender = Female
+#-------------------------------
+[CLOWN]
+LegacyTrainerTypeID = 88
+Name = Clown
+BaseMoney = 24
+Gender = Male
+#-------------------------------
+[JUGGLER]
+LegacyTrainerTypeID = 89
+Name = Juggler
+BaseMoney = 32
+Gender = Male
+#-------------------------------
+[HARLEQUIN]
+LegacyTrainerTypeID = 90
+Name = Harlequin
+BaseMoney = 32
+Gender = Male
+#-------------------------------
+[FIREBREATHER]
+LegacyTrainerTypeID = 91
+Name = Firebreather
+BaseMoney = 32
+Gender = Male
+#-------------------------------
+[ARTIST]
+LegacyTrainerTypeID = 92
+Name = Artist
+BaseMoney = 48
+Gender = Male
+#-------------------------------
+[ARTIST2]
+LegacyTrainerTypeID = 93
+Name = Artist
+BaseMoney = 48
+Gender = Male
+#-------------------------------
+[BAKER]
+LegacyTrainerTypeID = 94
+Name = Baker
+BaseMoney = 32
+Gender = Female
+#-------------------------------
+[WAITER]
+LegacyTrainerTypeID = 95
+Name = Waiter
+BaseMoney = 32
+Gender = Male
+#-------------------------------
+[WAITER2]
+LegacyTrainerTypeID = 96
+Name = Waiter
+BaseMoney = 32
+Gender = Male
+#-------------------------------
+[WAITRESS]
+LegacyTrainerTypeID = 97
+Name = Waitress
+BaseMoney = 32
+Gender = Female
+#-------------------------------
+[WAITRESS2]
+LegacyTrainerTypeID = 98
+Name = Waitress
+BaseMoney = 32
+Gender = Female
+#-------------------------------
+[MAID]
+LegacyTrainerTypeID = 99
+Name = Maid
+BaseMoney = 40
+Gender = Female
+#-------------------------------
+[MAID2]
+LegacyTrainerTypeID = 100
+Name = Maid
+BaseMoney = 40
+Gender = Female
+#-------------------------------
+[WORKER]
+LegacyTrainerTypeID = 101
+Name = Worker
+BaseMoney = 40
+Gender = Male
+#-------------------------------
+[WORKER2]
+LegacyTrainerTypeID = 102
+Name = Worker
+BaseMoney = 40
+Gender = Male
+#-------------------------------
+[WORKER3]
+LegacyTrainerTypeID = 103
+Name = Worker
+BaseMoney = 40
+Gender = Male
+#-------------------------------
+[POLICEMAN]
+LegacyTrainerTypeID = 104
+Name = Policeman
+BaseMoney = 40
+Gender = Male
+#-------------------------------
+[POLICEMAN2]
+LegacyTrainerTypeID = 105
+Name = Policeman
+BaseMoney = 40
+Gender = Male
+#-------------------------------
+[BURGLAR]
+LegacyTrainerTypeID = 106
+Name = Burglar
+BaseMoney = 16
+Gender = Male
+#-------------------------------
+[GAMBLER]
+LegacyTrainerTypeID = 107
+Name = Gambler
+BaseMoney = 120
+Gender = Male
+#-------------------------------
+[ROUGHNECK]
+LegacyTrainerTypeID = 108
+Name = Roughneck
+BaseMoney = 24
+Gender = Male
+#-------------------------------
+[ROUGHNECK2]
+LegacyTrainerTypeID = 109
+Name = Roughneck
+BaseMoney = 24
+Gender = Male
+#-------------------------------
+[BIKER]
+LegacyTrainerTypeID = 110
+Name = Biker
+BaseMoney = 16
+Gender = Male
+#-------------------------------
+[BIKER2]
+LegacyTrainerTypeID = 111
+Name = Biker
+BaseMoney = 16
+Gender = Male
+#-------------------------------
+[JANITOR]
+LegacyTrainerTypeID = 112
+Name = Janitor
+BaseMoney = 24
+Gender = Male
+#-------------------------------
+[CLERK_M]
+LegacyTrainerTypeID = 113
+Name = Clerk
+BaseMoney = 24
+Gender = Male
+#-------------------------------
+[CLERK_M2]
+LegacyTrainerTypeID = 114
+Name = Clerk
+BaseMoney = 24
+Gender = Male
+#-------------------------------
+[CLERK_F]
+LegacyTrainerTypeID = 115
+Name = Clerk
+BaseMoney = 24
+Gender = Female
+#-------------------------------
+[POKEMANIAC]
+LegacyTrainerTypeID = 116
+Name = Poké Maniac
+BaseMoney = 64
+Gender = Male
+#-------------------------------
+[DRAGONTAMER]
+LegacyTrainerTypeID = 117
+Name = Dragon Tamer
+BaseMoney = 32
+Gender = Male
+#-------------------------------
+[POKEMONBREEDER_M]
+LegacyTrainerTypeID = 118
+Name = Pokémon Breeder
+BaseMoney = 16
+Gender = Male
+#-------------------------------
+[POKEMONBREEDER_M2]
+LegacyTrainerTypeID = 119
+Name = Pokémon Breeder
+BaseMoney = 16
+Gender = Male
+#-------------------------------
+[POKEMONBREEDER_F]
+LegacyTrainerTypeID = 120
+Name = Pokémon Breeder
+BaseMoney = 16
+Gender = Female
+#-------------------------------
+[POKEMONBREEDER_F2]
+LegacyTrainerTypeID = 121
+Name = Pokémon Breeder
+BaseMoney = 16
+Gender = Female
+#-------------------------------
+[DEPOTAGENT]
+LegacyTrainerTypeID = 122
+Name = Depot Agent
+BaseMoney = 32
+Gender = Male
+#-------------------------------
+[PILOT]
+LegacyTrainerTypeID = 123
+Name = Pilot
+BaseMoney = 40
+Gender = Male
+#-------------------------------
+[POKEMONRANGER_M]
+LegacyTrainerTypeID = 124
+Name = Pokémon Ranger
+BaseMoney = 60
+Gender = Male
+#-------------------------------
+[POKEMONRANGER_M2]
+LegacyTrainerTypeID = 125
+Name = Pokémon Ranger
+BaseMoney = 60
+Gender = Male
+#-------------------------------
+[POKEMONRANGER_F]
+LegacyTrainerTypeID = 126
+Name = Pokémon Ranger
+BaseMoney = 60
+Gender = Female
+#-------------------------------
+[POKEMONRANGER_F2]
+LegacyTrainerTypeID = 127
+Name = Pokémon Ranger
+BaseMoney = 60
+Gender = Female
+#-------------------------------
+[AROMALADY]
+LegacyTrainerTypeID = 128
+Name = Aroma Lady
+BaseMoney = 32
+Gender = Female
+#-------------------------------
+[RUINMANIAC]
+LegacyTrainerTypeID = 129
+Name = Ruin Maniac
+BaseMoney = 48
+Gender = Male
+#-------------------------------
+[BIRDKEEPER_M]
+LegacyTrainerTypeID = 130
+Name = Bird Keeper
+BaseMoney = 32
+Gender = Male
+#-------------------------------
+[BIRDKEEPER_F]
+LegacyTrainerTypeID = 131
+Name = Bird Keeper
+BaseMoney = 32
+Gender = Female
+#-------------------------------
+[RANCHER]
+LegacyTrainerTypeID = 132
+Name = Rancher
+BaseMoney = 40
+Gender = Male
+#-------------------------------
+[COWGIRL]
+LegacyTrainerTypeID = 133
+Name = Cowgirl16
+IntroBGM = Female
+Gender = Mixed
+#-------------------------------
+[POKEFAN_M]
+LegacyTrainerTypeID = 134
+Name = Poké Fan
+BaseMoney = 64
+Gender = Male
+#-------------------------------
+[POKEFAN_M2]
+LegacyTrainerTypeID = 135
+Name = Poké Fan
+BaseMoney = 64
+Gender = Male
+#-------------------------------
+[POKEFAN_F]
+LegacyTrainerTypeID = 136
+Name = Poké Fan
+BaseMoney = 64
+Gender = Female
+#-------------------------------
+[POKEFAN_F2]
+LegacyTrainerTypeID = 137
+Name = Poké Fan
+BaseMoney = 64
+Gender = Female
+#-------------------------------
+[DOCTOR]
+LegacyTrainerTypeID = 138
+Name = Doctor
+BaseMoney = 60
+Gender = Male
+#-------------------------------
+[NURSE]
+LegacyTrainerTypeID = 139
+Name = Nurse
+BaseMoney = 60
+Gender = Female
+#-------------------------------
+[SAILOR]
+LegacyTrainerTypeID = 140
+Name = Sailor
+BaseMoney = 32
+Gender = Male
+#-------------------------------
+[GENTLEMAN]
+LegacyTrainerTypeID = 141
+Name = Gentleman
+BaseMoney = 200
+Gender = Male
+#-------------------------------
+[GENTLEMAN2]
+LegacyTrainerTypeID = 142
+Name = Gentleman
+BaseMoney = 200
+Gender = Male
+#-------------------------------
+[GENTLEMAN3]
+LegacyTrainerTypeID = 143
+Name = Gentleman
+BaseMoney = 200
+Gender = Male
+#-------------------------------
+[SOCIALITE]
+LegacyTrainerTypeID = 144
+Name = Socialite
+BaseMoney = 200
+Gender = Female
+#-------------------------------
+[SOCIALITE2]
+LegacyTrainerTypeID = 145
+Name = Socialite
+BaseMoney = 200
+Gender = Female
+#-------------------------------
+[VETERANM]
+LegacyTrainerTypeID = 146
+Name = Veteran
+BaseMoney = 80
+Gender = Male
+#-------------------------------
+[VETERANM_2]
+LegacyTrainerTypeID = 147
+Name = Veteran
+BaseMoney = 80
+Gender = Male
+#-------------------------------
+[VETERAN_F]
+LegacyTrainerTypeID = 148
+Name = Veteran
+BaseMoney = 80
+Gender = Female
+#-------------------------------
+[COOLTRAINER_M]
+LegacyTrainerTypeID = 149
+Name = Cooltrainer
+BaseMoney = 60
+Gender = Male
+#-------------------------------
+[COOLTRAINER_M2]
+LegacyTrainerTypeID = 150
+Name = Cooltrainer
+BaseMoney = 60
+Gender = Male
+#-------------------------------
+[COOLTRAINER_M3]
+LegacyTrainerTypeID = 151
+Name = Cooltrainer
+BaseMoney = 60
+Gender = Male
+#-------------------------------
+[COOLTRAINER_M4]
+LegacyTrainerTypeID = 152
+Name = Cooltrainer
+BaseMoney = 60
+Gender = Male
+#-------------------------------
+[COOLTRAINER_F]
+LegacyTrainerTypeID = 153
+Name = Cooltrainer
+BaseMoney = 60
+Gender = Female
+#-------------------------------
+[COOLTRAINER_F2]
+LegacyTrainerTypeID = 154
+Name = Cooltrainer
+BaseMoney = 60
+Gender = Female
+#-------------------------------
+[COOLTRAINER_F3]
+LegacyTrainerTypeID = 155
+Name = Cooltrainer
+BaseMoney = 60
+Gender = Female
+#-------------------------------
+[COOLTRAINER_F4]
+LegacyTrainerTypeID = 156
+Name = Cooltrainer
+BaseMoney = 60
+Gender = Female
+#-------------------------------
+[TEAMROCKET_M]
+LegacyTrainerTypeID = 157
+Name = Team Rocket
+BaseMoney = 24
+Gender = Male
+#-------------------------------
+[TEAMROCKET_F]
+LegacyTrainerTypeID = 158
+Name = Team Rocket
+BaseMoney = 24
+Gender = Female
+#-------------------------------
+[EXECUTIVE]
+LegacyTrainerTypeID = 159
+Name = Executive
+BaseMoney = 40
+Gender = Male
+#-------------------------------
+[EXECUTIVE2]
+LegacyTrainerTypeID = 160
+Name = Executive
+BaseMoney = 40
+Gender = Male
+#-------------------------------
+[EXECUTIVE3]
+LegacyTrainerTypeID = 161
+Name = Executive
+BaseMoney = 64
+Gender = Male
+#-------------------------------
+[EXECUTIVE_F]
+LegacyTrainerTypeID = 162
+Name = Executive
+BaseMoney = 64
+Gender = Female
+#-------------------------------
+[TEAMROCKETBOSS]
+LegacyTrainerTypeID = 163
+Name = BOSS
+BaseMoney = 64
+Gender = Male
+#-------------------------------
+[CHAMPION_M]
+LegacyTrainerTypeID = 164
+Name = Champion
+BaseMoney = 60
+Gender = Male
+#-------------------------------
+[CHAMPION_F]
+LegacyTrainerTypeID = 165
+Name = Champion
+BaseMoney = 60
+Gender = Female
+#-------------------------------
+[BACKERS_M]
+LegacyTrainerTypeID = 166
+Name = Backers
+BaseMoney = 128
+Gender = Mixed
+#-------------------------------
+[BACKERS_F]
+LegacyTrainerTypeID = 167
+Name = Backers
+BaseMoney = 128
+Gender = Mixed
+#-------------------------------
+[BELLEANDPA]
+LegacyTrainerTypeID = 168
+Name = Belle & Pa
+BaseMoney = 64
+Gender = Mixed
+#-------------------------------
+[DOUBLETEAM]
+LegacyTrainerTypeID = 169
+Name = Double Team
+BaseMoney = 128
+Gender = Mixed
+#-------------------------------
+[DOUBLETEAM2]
+LegacyTrainerTypeID = 170
+Name = Double Team
+BaseMoney = 128
+Gender = Mixed
+#-------------------------------
+[HOOLIGANS]
+LegacyTrainerTypeID = 171
+Name = Hooligans
+BaseMoney = 128
+Gender = Mixed
+#-------------------------------
+[INTERVIEWERS]
+LegacyTrainerTypeID = 172
+Name = Interviewers
+BaseMoney = 128
+Gender = Mixed
+#-------------------------------
+[SISANDBRO]
+LegacyTrainerTypeID = 173
+Name = Sis and Bro
+BaseMoney = 64
+Gender = Mixed
+#-------------------------------
+[TWINS]
+LegacyTrainerTypeID = 174
+Name = Twins
+BaseMoney = 32
+Gender = Mixed
+#-------------------------------
+[TWINS2]
+LegacyTrainerTypeID = 175
+Name = Twins
+BaseMoney = 32
+Gender = Mixed
+#-------------------------------
+[TWINS3]
+LegacyTrainerTypeID = 176
+Name = Twins
+BaseMoney = 32
+Gender = Mixed
+#-------------------------------
+[YOUNGCOUPLE]
+LegacyTrainerTypeID = 177
+Name = Young Couple
+BaseMoney = 128
+Gender = Mixed
+#-------------------------------
+[YOUNGCOUPLE2]
+LegacyTrainerTypeID = 178
+Name = Young Couple
+BaseMoney = 128
+Gender = Mixed
+#-------------------------------
+[GHOSTLADY]
+LegacyTrainerTypeID = 236
+Name = Lingering Entity
+BaseMoney = 32
+BattleBGM = Battle! Spooky
+Gender = Female
+SkillLevel = 175
+#-------------------------------
+[GHOSTMAN]
+LegacyTrainerTypeID = 237
+Name = Lingering Entity
+BaseMoney = 32
+BattleBGM = Battle! Spooky
+Gender = Male
+SkillLevel = 175
+#-------------------------------
+[BERITH]
+LegacyTrainerTypeID = 238
+Name = Lingering Entity
+BaseMoney = 32
+BattleBGM = Battle! Insanity
+Gender = Female
+SkillLevel = 255
+#-------------------------------
+[GHOSTCHILDM]
+LegacyTrainerTypeID = 239
+Name = Lingering Entity
+BaseMoney = 32
+BattleBGM = Battle! Spooky
+Gender = Male
+SkillLevel = 175
+#-------------------------------
+[GHOSTCHILDF]
+LegacyTrainerTypeID = 275
+Name = Lingering Entity
+BaseMoney = 32
+BattleBGM = Battle! Spooky
+Gender = Female
+SkillLevel = 175
+#-------------------------------
+[GHOSTMAID]
+LegacyTrainerTypeID = 276
+Name = Lingering Entity
+BaseMoney = 32
+BattleBGM = Battle! Spooky
+Gender = Female
+SkillLevel = 175
+#-------------------------------
+[LINSEY]
+LegacyTrainerTypeID = 277
+Name = Lingering Entity
+BaseMoney = 32
+BattleBGM = Battle! Spooky
+Gender = Female
+SkillLevel = 200
+#-------------------------------
+[VERARITTE]
+LegacyTrainerTypeID = 278
+Name = Lingering Entities
+BaseMoney = 32
+BattleBGM = Battle! Spooky
+Gender = Female
+SkillLevel = 200
+#-------------------------------
+[VINCENT]
+LegacyTrainerTypeID = 279
+Name = Lingering Entity
+BaseMoney = 32
+BattleBGM = Battle! Spooky
+Gender = Male
+SkillLevel = 200
+#-------------------------------
+[KAINE]
+LegacyTrainerTypeID = 280
+Name = Lingering Entity
+BaseMoney = 32
+BattleBGM = Battle! Spooky
+Gender = Male
+SkillLevel = 200
+#-------------------------------
+[MINERVA]
+LegacyTrainerTypeID = 181
+Name = Head Librarian
+BaseMoney = 100
+BattleBGM = Battle! Pantheon Minerva
+Gender = Female
+SkillLevel = 255
+#-------------------------------
+[AGRUS]
+LegacyTrainerTypeID = 182
+Name = Wandering Ranger
+BaseMoney = 100
+BattleBGM = Battle! Pantheon Agrus
+Gender = Male
+SkillLevel = 255
+#-------------------------------
+[HYACINTH]
+LegacyTrainerTypeID = 263
+Name = Paragon
+BaseMoney = 100
+BattleBGM = Battle! Pantheon Hyacinth
+Gender = Male
+SkillLevel = 255
+#-------------------------------
+[VULCAN]
+LegacyTrainerTypeID = 183
+Name = Stone Justice
+BaseMoney = 100
+BattleBGM = Battle! Gym Leader
+Gender = Male
+SkillLevel = 255
+#-------------------------------
+[MARCUS]
+LegacyTrainerTypeID = 184
+Name = Gladiator
+BaseMoney = 100
+BattleBGM = Battle! Gym Leader
+Gender = Male
+SkillLevel = 255
+#-------------------------------
+[ALICE]
+LegacyTrainerTypeID = 196
+Name = Tinkerer
+BaseMoney = 100
+BattleBGM = Battle! Gym Leader
+Gender = Female
+SkillLevel = 255
+#-------------------------------
+[KIRAN]
+LegacyTrainerTypeID = 185
+Name = Mariner
+BaseMoney = 100
+BattleBGM = Battle! Gym Leader
+Gender = Male
+SkillLevel = 255
+#-------------------------------
+[SELENE]
+LegacyTrainerTypeID = 264
+Name = Snow Angel
+BaseMoney = 100
+BattleBGM = Battle! Gym Leader
+Gender = Female
+SkillLevel = 255
+#-------------------------------
+[JAY]
+LegacyTrainerTypeID = 186
+Name = Pinnacle
+BaseMoney = 100
+BattleBGM = Battle! Gym Leader
+Gender = Female
+SkillLevel = 255
+#-------------------------------
+[SPIRIA]
+LegacyTrainerTypeID = 188
+Name = Witch Doctor
+BaseMoney = 100
+BattleBGM = Battle! Gym Leader
+Gender = Female
+SkillLevel = 255
+#-------------------------------
+[SHAGO]
+LegacyTrainerTypeID = 265
+Name = Relic Sage
+BaseMoney = 100
+BattleBGM = Battle! Gym Leader
+Gender = Male
+SkillLevel = 255
+#-------------------------------
+[HADIEN]
+LegacyTrainerTypeID = 187
+Name = Sin of Greed
+BaseMoney = 100
+BattleBGM = Battle! Elder Cultist
+Gender = Male
+SkillLevel = 255
+#-------------------------------
+[OLGA]
+LegacyTrainerTypeID = 190
+Name = Archbishop
+BaseMoney = 100
+BattleBGM = Battle! Gym Leader
+Gender = Female
+SkillLevel = 255
+#-------------------------------
+[JUNO]
+LegacyTrainerTypeID = 191
+Name = Forgotten Mage
+BaseMoney = 100
+BattleBGM = Battle! Gym Leader
+Gender = Female
+SkillLevel = 255
+#-------------------------------
+[HELIAN]
+LegacyTrainerTypeID = 192
+Name = Sun Duke
+BaseMoney = 100
+BattleBGM = Battle! Gym Leader
+Gender = Male
+SkillLevel = 255
+#-------------------------------
+[LUNA]
+LegacyTrainerTypeID = 193
+Name = Sand Duchess
+BaseMoney = 100
+BattleBGM = Battle! Gym Leader
+Gender = Female
+SkillLevel = 255
+#-------------------------------
+[LISAMARIE]
+LegacyTrainerTypeID = 194
+Name = Lost Princess
+BaseMoney = 100
+BattleBGM = Battle! Gym Leader
+Gender = Female
+SkillLevel = 255
+#-------------------------------
+[ELITEFOUR_Polina]
+LegacyTrainerTypeID = 200
+Name = Traveler
+BaseMoney = 100
+BattleBGM = Battle! Governor
+Gender = Female
+SkillLevel = 255
+#-------------------------------
+[ELITEFOUR_Lawrence]
+LegacyTrainerTypeID = 201
+Name = Timetwister
+BaseMoney = 100
+BattleBGM = Battle! Governor
+Gender = Female
+SkillLevel = 255
+#-------------------------------
+[ELITEFOUR_Nicholas]
+LegacyTrainerTypeID = 202
+Name = Empath
+BaseMoney = 100
+BattleBGM = Battle! Governor
+Gender = Male
+SkillLevel = 255
+#-------------------------------
+[ELITEFOUR_Alexandre]
+LegacyTrainerTypeID = 203
+Name = Celebrant
+BaseMoney = 100
+BattleBGM = Battle! Governor
+Gender = Male
+SkillLevel = 255
+#-------------------------------
+[CHAMPION]
+LegacyTrainerTypeID = 204
+Name = King
+BaseMoney = 100
+BattleBGM = Battle! King Joseph
+Gender = Male
+SkillLevel = 255
+#-------------------------------
+[CULTISTM]
+LegacyTrainerTypeID = 205
+Name = Doctrine Laity
+BaseMoney = 32
+BattleBGM = Battle! Cultist
+Gender = Male
+SkillLevel = 200
+#-------------------------------
+[CULTISTF]
+LegacyTrainerTypeID = 206
+Name = Doctrine Laity
+BaseMoney = 32
+BattleBGM = Battle! Cultist
+Gender = Female
+SkillLevel = 200
+#-------------------------------
+[CULTISTDUO]
+LegacyTrainerTypeID = 207
+Name = Doctrine Laities
+BaseMoney = 70
+BattleBGM = Battle! Cultist
+Gender = Mixed
+SkillLevel = 200
+#-------------------------------
+[KNIGHTM]
+LegacyTrainerTypeID = 208
+Name = Doctrine Knight
+BaseMoney = 32
+BattleBGM = Battle! Cultist
+Gender = Male
+SkillLevel = 230
+#-------------------------------
+[KNIGHTF]
+LegacyTrainerTypeID = 209
+Name = Doctrine Knight
+BaseMoney = 32
+BattleBGM = Battle! Cultist
+Gender = Female
+SkillLevel = 230
+#-------------------------------
+[ELDERCULTIST_Perrin]
+LegacyTrainerTypeID = 210
+Name = Doctrine Elder
+BaseMoney = 100
+BattleBGM = Battle! Elder Cultist
+Gender = Male
+SkillLevel = 255
+#-------------------------------
+[ELDERCULTIST_Aya]
+LegacyTrainerTypeID = 211
+Name = Doctrine Elder
+BaseMoney = 100
+BattleBGM = Battle! Elder Cultist
+Gender = Female
+SkillLevel = 255
+#-------------------------------
+[ELDERCULTIST_Echo]
+LegacyTrainerTypeID = 212
+Name = Doctrine Elder
+BaseMoney = 100
+BattleBGM = Battle! Elder Cultist
+Gender = Female
+SkillLevel = 255
+#-------------------------------
+[ELDERCULTIST_Toph]
+LegacyTrainerTypeID = 213
+Name = Doctrine Elder
+BaseMoney = 100
+BattleBGM = Battle! Elder Cultist
+Gender = Male
+SkillLevel = 255
+#-------------------------------
+[ELDERCULTIST_Hadien]
+LegacyTrainerTypeID = 214
+Name = Doctrine Elder
+BaseMoney = 100
+BattleBGM = Battle! Elder Cultist
+Gender = Male
+SkillLevel = 255
+#-------------------------------
+[ELDERCULTIST_Doran]
+LegacyTrainerTypeID = 215
+Name = Doctrine Elder
+BaseMoney = 100
+BattleBGM = Battle! Elder Cultist
+Gender = Male
+SkillLevel = 255
+#-------------------------------
+[ELDERCULTIST_Phobius]
+LegacyTrainerTypeID = 216
+Name = Doctrine Elder
+BaseMoney = 100
+BattleBGM = Battle! Elder Cultist
+Gender = Male
+SkillLevel = 255
+#-------------------------------
+[PERRIN]
+LegacyTrainerTypeID = 217
+Name = Doctrine Elder
+BaseMoney = 100
+BattleBGM = Battle! Elder Cultist
+Gender = Male
+SkillLevel = 255
+#-------------------------------
+[AYA]
+LegacyTrainerTypeID = 218
+Name = Doctrine Elder
+BaseMoney = 100
+BattleBGM = Battle! Elder Cultist
+Gender = Female
+SkillLevel = 255
+#-------------------------------
+[ECHO]
+LegacyTrainerTypeID = 219
+Name = Doctrine Elder
+BaseMoney = 100
+BattleBGM = Battle! Elder Cultist
+Gender = Female
+SkillLevel = 255
+#-------------------------------
+[TOPH]
+LegacyTrainerTypeID = 220
+Name = Doctrine Elder
+BaseMoney = 100
+BattleBGM = Battle! Elder Cultist
+Gender = Male
+SkillLevel = 255
+#-------------------------------
+[HADIEN]
+LegacyTrainerTypeID = 221
+Name = Doctrine Elder
+BaseMoney = 100
+BattleBGM = Battle! Elder Cultist
+Gender = Male
+SkillLevel = 255
+#-------------------------------
+[DORAN]
+LegacyTrainerTypeID = 222
+Name = Doctrine Elder
+BaseMoney = 100
+BattleBGM = Battle! Elder Cultist
+Gender = Male
+SkillLevel = 255
+#-------------------------------
+[PHOBIUS]
+LegacyTrainerTypeID = 223
+Name = Doctrine Elder
+BaseMoney = 100
+BattleBGM = Battle! Elder Cultist
+Gender = Male
+SkillLevel = 255
+#-------------------------------
+[DREAMER]
+LegacyTrainerTypeID = 224
+Name = Dreamer
+BaseMoney = 100
+BattleBGM = Battle! Elder Cultist
+Gender = Male
+SkillLevel = 255
+#-------------------------------
+[LAITYM]
+LegacyTrainerTypeID = 225
+Name = Church Laity
+BaseMoney = 32
+BattleBGM = Battle! Church
+Gender = Male
+SkillLevel = 230
+#-------------------------------
+[LAITYF]
+LegacyTrainerTypeID = 226
+Name = Church Laity
+BaseMoney = 32
+BattleBGM = Battle! Church
+Gender = Female
+SkillLevel = 230
+#-------------------------------
+[BISHOP_1]
+LegacyTrainerTypeID = 227
+Name = Bishop
+BaseMoney = 100
+Gender = Female
+#-------------------------------
+[BISHOP_2]
+LegacyTrainerTypeID = 228
+Name = Bishop
+BaseMoney = 100
+Gender = Female
+#-------------------------------
+[BISHOP_3]
+LegacyTrainerTypeID = 229
+Name = Bishop
+BaseMoney = 100
+Gender = Male
+#-------------------------------
+[BISHOP_4]
+LegacyTrainerTypeID = 230
+Name = Bishop
+BaseMoney = 100
+Gender = Male
+#-------------------------------
+[BISHOP_5]
+LegacyTrainerTypeID = 231
+Name = Bishop
+BaseMoney = 100
+Gender = Female
+#-------------------------------
+[BISHOP_6]
+LegacyTrainerTypeID = 232
+Name = Bishop
+BaseMoney = 100
+Gender = Female
+#-------------------------------
+[BISHOP_7]
+LegacyTrainerTypeID = 233
+Name = Bishop
+BaseMoney = 100
+Gender = Female
+#-------------------------------
+[ARCHBISHOP_Olga]
+LegacyTrainerTypeID = 234
+Name = Archbishop
+BaseMoney = 100
+BattleBGM = Battle! Olga
+Gender = Female
+SkillLevel = 255
+#-------------------------------
+[GUARDIAN]
+LegacyTrainerTypeID = 235
+Name = Guardian
+BaseMoney = 100
+BattleBGM = Battle! Totem
+Gender = Mixed
+SkillLevel = 255
+#-------------------------------
+[MYRON]
+LegacyTrainerTypeID = 240
+Name = Doctrine Elder
+BaseMoney = 100
+BattleBGM = Battle! Elder Cultist
+Gender = Male
+SkillLevel = 255
+#-------------------------------
+[MYRON2]
+LegacyTrainerTypeID = 241
+Name = Lingering Insanity
+BaseMoney = 100
+BattleBGM = Battle! Myron
+Gender = Male
+SkillLevel = 255
+#-------------------------------
+[ELMIN]
+LegacyTrainerTypeID = 266
+Name = Sin of Wrath
+BaseMoney = 100
+BattleBGM = Battle! Elder Cultist
+Gender = Male
+SkillLevel = 255
+#-------------------------------
+[POKEMONGANG]
+LegacyTrainerTypeID = 242
+Name = A horde of
+BaseMoney = 100
+BattleBGM = Battle! Mini Boss
+Gender = Mixed
+SkillLevel = 200
+#-------------------------------
+[POKEMONTWO]
+LegacyTrainerTypeID = 269
+Name = The
+BaseMoney = 100
+BattleBGM = Battle! Mini Boss
+Gender = Mixed
+SkillLevel = 200
+#-------------------------------
+[LISTIS]
+LegacyTrainerTypeID = 243
+Name = Pokémon Thief
+BaseMoney = 100
+BattleBGM = Battle! Mini Boss
+Gender = Male
+SkillLevel = 255
+#-------------------------------
+[XEVON]
+LegacyTrainerTypeID = 283
+Name = Doctrine Mercenary
+BaseMoney = 100
+BattleBGM = Battle! Xevon
+Gender = Male
+SkillLevel = 255
+#-------------------------------
+[TEMPLAR1]
+LegacyTrainerTypeID = 248
+Name = Templar
+BaseMoney = 100
+BattleBGM = Battle! Church Good
+Gender = Mixed
+SkillLevel = 255
+#-------------------------------
+[AURORA]
+LegacyTrainerTypeID = 270
+Name = League Founder
+BaseMoney = 100
+BattleBGM = Battle! League
+Gender = Mixed
+SkillLevel = 255
+#-------------------------------
+[RYOU]
+LegacyTrainerTypeID = 271
+Name = League Founder
+BaseMoney = 100
+BattleBGM = Battle! League
+Gender = Mixed
+SkillLevel = 255
+#-------------------------------
+[TRENT]
+LegacyTrainerTypeID = 272
+Name = Tidepsalm
+BaseMoney = 100
+BattleBGM = Battle! Faux
+Gender = Mixed
+SkillLevel = 255
+#-------------------------------
+[PAX]
+LegacyTrainerTypeID = 284
+Name = Pax
+BaseMoney = 100
+BattleBGM = Battle! Faux
+Gender = Mixed
+SkillLevel = 255
+#-------------------------------
+[JOLLY]
+LegacyTrainerTypeID = 281
+Name = Ashen One
+BaseMoney = 100
+BattleBGM = Battle! Faux
+Gender = Mixed
+SkillLevel = 255
+#-------------------------------
+[NODE]
+LegacyTrainerTypeID = 282
+Name = Dark Leader
+BaseMoney = 100
+BattleBGM = Battle! Faux
+Gender = Mixed
+SkillLevel = 255
+#-------------------------------
+[GOLEM]
+LegacyTrainerTypeID = 273
+Name = Golem
+BaseMoney = 0
+BattleBGM = Battle! Mini Boss
+Gender = Mixed
+SkillLevel = 255
+#-------------------------------
+[ATEN]
+LegacyTrainerTypeID = 274
+Name = Archive Guardian
+BaseMoney = 200
+BattleBGM = Battle! Archives
+Gender = Male
+SkillLevel = 255
+#-------------------------------
+[BROCK]
+LegacyTrainerTypeID = 268
+Name = TRAINER
+BaseMoney = 0
+Gender = Male
+SkillLevel = 255

@@ -1,0 +1,13 @@
+byte_identical=true
+length=1671
+sha256=02F9B7681F5B32E483649881471B70DA0177486DD68A3CEB2E04983A4254EC35
+source_rows=97
+effective_species=94
+move_slots=226
+minimum_moves=1
+maximum_moves=4
+maximum_species_id=666
+duplicate_species=VANILLITE,ARCHEN,TOXICROAK
+dropped_legacy_tokens=SHADOWSHEAD,SHADOWAVE
+preserved_format=species-indexed numeric Data/shadowmoves.dat arrays
+rejuv_embedded_species_shadowmoves_adopted=false

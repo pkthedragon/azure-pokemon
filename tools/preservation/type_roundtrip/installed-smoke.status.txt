@@ -1,0 +1,12 @@
+ok=true
+source_types=21
+typed_records=21
+chart_cells=441
+data_exact=true
+messages_exact=true
+constants_exact=true
+chart_exact=true
+wrappers_exact=true
+cache_reused=true
+immutable=true
+custom_types_exact=true

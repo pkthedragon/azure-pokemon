@@ -1,0 +1,11 @@
+[Forward]
+Map1 = 2
+Map1Point = East,3
+Map2 = 4
+Map2Point = West,5
+
+[Reverse]
+Map1 = 4
+Map1Point = West,5
+Map2 = 2
+Map2Point = East,3

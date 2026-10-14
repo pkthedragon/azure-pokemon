@@ -1,0 +1,7 @@
+[000]
+Type=YOUNGSTER
+Name=Facility Tester
+BeginSpeech=Ready!
+EndSpeechWin=I won!
+EndSpeechLose=I lost!
+PokemonNos=0

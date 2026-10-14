@@ -1,0 +1,11 @@
+ok=true
+maps=32
+encounter_types=103
+slots=890
+unique_species=71
+minimum_level=3
+maximum_level=35
+empty_maps=31,32
+semantic_differences=0
+byte_identical=true
+encounters_sha256=4E5D8579FE8F2F34D7615C4DB0E9ED185E23E929EC2D8C202B12B987C89A3CAC

@@ -1,0 +1,16 @@
+PASS
+phase=battle_boundary_load
+file_bytes=10052540
+container_class=PBAnimations
+records=1250
+named_records=1137
+selected=11
+first_name=Common:HealthUp
+last_name=Move:EARTHQUAKE
+first_load_seconds=1.162251700006891
+cached_load_seconds=1.0599964298307896e-05
+title_and_load_screen_calls=0
+first_call_loads=1
+cached_call_loads=0
+nil_invalidation_loads=1
+reloaded_graph_exact=true

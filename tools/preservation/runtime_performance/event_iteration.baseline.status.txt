@@ -1,0 +1,13 @@
+result=PASS
+maps=145
+events=3851
+largest_map=Data/Map034.rxdata
+largest_map_events=281
+hash_iterations=20000
+hash_checksum=796060000
+legacy_hash_values_seconds=1.2066460
+legacy_hash_values_allocations=20009
+page_iterations=100
+page_checksum=1368700
+legacy_pages_reverse_seconds=0.4784471
+legacy_pages_reverse_allocations=770207

@@ -1,0 +1,6 @@
+ok=true
+move_slots=1056
+move_records=1050
+named_moves=1049
+function_codes=541
+tackle_cache_reused=true

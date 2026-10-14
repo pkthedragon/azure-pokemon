@@ -1,0 +1,12 @@
+ok=true
+source_rows=379
+effective_symbols=373
+populated_names=379
+populated_descriptions=379
+max_value=421
+aliases_exact=true
+generated_aliases_exact=true
+ability_message_differences=2
+non_ability_message_differences=0
+ability_name_difference_ids=409,410,411,412,413,414,415,416,417,418,419,420,421
+ability_description_difference_ids=51,52,131,177,220,314,317,318,320,321,322,326,330,331,332,333,336,337,339,342,346,349,364,379,381,383,384,409,410,411,412,413,414,415,416,417,418,419,420,421

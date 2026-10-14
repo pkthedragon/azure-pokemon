@@ -1,0 +1,10 @@
+ok=true
+species=94
+move_slots=226
+data_exact=true
+numeric_ids_exact=true
+assignment_exact=true
+legacy_effective_rows_exact=true
+fallback_constant_exact=true
+cache_invalidated=true
+cache_reused=true

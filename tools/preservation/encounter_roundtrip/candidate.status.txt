@@ -1,0 +1,11 @@
+ok=true
+maps=32
+encounter_types=103
+slots=890
+unique_species=71
+minimum_level=3
+maximum_level=35
+empty_maps=31,32
+result_matches_candidate=true
+candidate_matches_live=true
+runtime_isolated=true

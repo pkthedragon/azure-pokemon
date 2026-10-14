@@ -1,0 +1,7 @@
+﻿[DefaultTrainerList]
+Trainers=default_trainers.txt
+Pokemon=default_pokemon.txt
+[TrainerList]
+Trainers=fixture_trainers.txt
+Pokemon=fixture_pokemon.txt
+Challenges=fixture_single,fixture_double

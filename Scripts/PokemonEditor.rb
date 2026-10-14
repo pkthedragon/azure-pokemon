@@ -880,10 +880,12 @@ def pbSavePhoneData(sourceOutput="PBS/phone.txt",dataInput="Data/phone.dat")
   return data
 end
 
-def pbSaveTrainerLists()
-  trainerlists=load_data("Data/trainerlists.dat") rescue nil
+def pbSaveTrainerLists(sourceOutput="PBS/trainerlists.txt",
+                       dataInput="Data/trainerlists.dat",sourceDir=nil)
+  trainerlists=load_data(dataInput) rescue nil
   return if !trainerlists
-  File.open("PBS/trainerlists.txt","wb"){|f|
+  sourceDir=File.dirname(sourceOutput) if !sourceDir
+  File.open(sourceOutput,"wb"){|f|
      f.write(0xEF.chr)
      f.write(0xBB.chr)
      f.write(0xBF.chr)
@@ -894,10 +896,13 @@ def pbSaveTrainerLists()
        if !tr[5]
          f.write("Challenges="+tr[2].join(",")+"\r\n")
        end
-       pbSaveBTTrainers(tr[0],"PBS/"+tr[3])
-       pbSaveBattlePokemon(tr[1],"PBS/"+tr[4])
+       trainerOutput=(sourceDir=="." || sourceDir=="") ? tr[3] : sourceDir+"/"+tr[3]
+       pokemonOutput=(sourceDir=="." || sourceDir=="") ? tr[4] : sourceDir+"/"+tr[4]
+       pbSaveBTTrainers(tr[0],trainerOutput)
+       pbSaveBattlePokemon(tr[1],pokemonOutput)
      end
   }
+  return trainerlists
 end
 
 def pbSaveBTTrainers(bttrainers,filename)
@@ -931,8 +936,9 @@ def pbSaveBTTrainers(bttrainers,filename)
          end
          f.write(sprintf("\r\n"))
        end
-     end
- }
+      end
+  }
+  return bttrainers
 end
 
 def pbSaveBattlePokemon(btpokemon,filename)
@@ -947,8 +953,9 @@ def pbSaveBattlePokemon(btpokemon,filename)
        pkmn=btpokemon[i]
        f.write(pbFastInspect(pkmn,moves,species,items,natures))
        f.write("\r\n")
-     end
+      end
   }
+  return btpokemon
 end
 
 def pbFastInspect(pkmn,moves,species,items,natures)

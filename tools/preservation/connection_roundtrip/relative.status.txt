@@ -1,0 +1,4 @@
+ok=true
+forward=[1, 0]
+reverse=[-1, 0]
+installed_binary_exact=true

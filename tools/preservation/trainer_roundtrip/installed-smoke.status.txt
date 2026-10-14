@@ -1,0 +1,8 @@
+ok=true
+trainer_types=280
+teams=162
+team_keys=162
+pokemon=630
+myron_item=1150
+myron_form=0
+myron_type_name=Lingering Insanity

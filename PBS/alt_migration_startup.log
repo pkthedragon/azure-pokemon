@@ -1,0 +1,38 @@
+[2026-04-18 15:54:33 -0500] migration flag detected
+[2026-04-18 15:54:36 -0500] migration failed RuntimeError: Duplicate Pokemon species ID 306 in alt-format pokemon.txt.
+Compiler:4535:in `block in pbAltPBSBuildLegacyPokemonSections'
+Compiler:4526:in `each'
+Compiler:4526:in `pbAltPBSBuildLegacyPokemonSections'
+Compiler:2492:in `pbCompilePokemonData'
+Compiler:4146:in `pbCompileAllData'
+Compiler:5324:in `pbMigratePBSFilesToAltFormat'
+Main:68:in `mainFunctionDebug'
+Main:55:in `mainFunction'
+Main:105:in `block (2 levels) in <main>'
+Main:104:in `loop'
+Main:104:in `block in <main>'
+Section000:336:in `eval'
+Section000:336:in `block in <main>'
+Section000:333:in `each'
+Section000:333:in `each_with_index'
+Section000:333:in `<main>'
+-e:in `eval'
+[2026-04-18 15:56:18 -0500] migration flag detected
+[2026-04-18 15:56:34 -0500] migration failed NoMethodError: undefined method `aGetTime' for nil:NilClass
+SWM - UnrealTime:214:in `now'
+PBIntl:25:in `pbSetTextMessages'
+Compiler:4181:in `pbCompileAllData'
+Compiler:5321:in `pbMigratePBSFilesToAltFormat'
+Main:68:in `mainFunctionDebug'
+Main:55:in `mainFunction'
+Main:105:in `block (2 levels) in <main>'
+Main:104:in `loop'
+Main:104:in `block in <main>'
+Section000:336:in `eval'
+Section000:336:in `block in <main>'
+Section000:333:in `each'
+Section000:333:in `each_with_index'
+Section000:333:in `<main>'
+-e:in `eval'
+[2026-04-18 15:57:46 -0500] migration flag detected
+[2026-04-18 15:58:02 -0500] migration completed backup=PBS/LegacyBackup/20260418-155746

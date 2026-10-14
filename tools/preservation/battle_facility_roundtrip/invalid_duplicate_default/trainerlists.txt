@@ -1,0 +1,6 @@
+[DefaultTrainerList]
+Trainers=a.txt
+Pokemon=b.txt
+[DefaultTrainerList]
+Trainers=c.txt
+Pokemon=d.txt

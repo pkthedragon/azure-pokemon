@@ -1,0 +1,10 @@
+class=Array
+records=151
+populated=150
+first_index=1
+first_name=Grass rustle
+last_index=150
+last_name=
+serialized_bytes=137648
+fingerprint=5a1222e3
+eager_load_seconds=0.0119626

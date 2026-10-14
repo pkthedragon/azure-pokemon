@@ -1,0 +1,14 @@
+result=PASS
+mode=optimized_ordered_foe_iterator
+ordering_cases=7
+ordering_checksum=149169694
+ordering_exact=true
+iterator_checksum=149169694
+iterator_exact=true
+helper_scenarios=8
+helper_checksum=1933839760
+helpers_exact=true
+predicate_calls=1000000
+predicate_checksum=0
+predicate_seconds=4.579338999988977
+predicate_allocations=1000002

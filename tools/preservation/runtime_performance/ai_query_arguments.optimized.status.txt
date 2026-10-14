@@ -1,0 +1,9 @@
+result=PASS
+mode=optimized_scalar_or_collection_queries
+helper_scenarios=24
+helper_checksum=900000016
+helpers_exact=true
+predicate_calls=1000000
+predicate_checksum=0
+predicate_seconds=3.5734235999989323
+predicate_allocations=2

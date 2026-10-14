@@ -146,8 +146,10 @@ encounter types accept numeric values or symbolic names such as `:Land`,
 the cached wrapper's frozen legacy-shape arrays, and compiler/editor writes
 explicitly invalidate them.
 
-Ability-adjusted encounter weights and high-level ability rolls now work on
-per-roll clones. This preserves their intended one-roll effect without
+Ability-adjusted encounter weights and high-level ability rolls now use
+per-roll local state. Weight arrays are copied only for an attraction ability,
+and Pressure/Hustle/Vital Spirit adjust a local minimum-level value rather than
+the compiled row. This preserves their intended one-roll effect without
 progressively modifying `EncounterTypes::EnctypeChances` or a compiled
 `[species,min,max]` slot shared by later encounters.
 
@@ -251,6 +253,372 @@ cannot mutate live cached gameplay data.
 In debug builds the cache now counts hits, loads, and signature-triggered
 reloads per file. `Compiled Data Cache Stats` in the debug menu reports the
 session hit rate and per-file counts; release builds pay no statistics cost.
+
+### Deferred battle-animation loading
+
+Azure no longer unmarshals `Data/PkmnAnimations.rxdata` while constructing the
+title scene or entering the save-selection screen. The file is 10,052,540
+bytes, and the prior title-boundary load took approximately 1.284 seconds on
+the test machine. `pbLoadBattleAnimations` now loads the same mutable
+`PBAnimations` object at `PokeBattle_Scene#pbStartBattle`, before the battle
+scene constructs its sprites. Common animations, move animations, capture
+animations, and Z-Moves retain nil-safe calls to the same helper.
+
+The collection deliberately does not use `AzureDataCache`: the animation
+editor mutates and replaces it, while animation compilation already
+invalidates it by assigning `nil`. This preserves those ownership rules and
+avoids sharing an editor-mutated object through a read-only cache. The focused
+engine check preserved 1,250 records, 1,137 named records, selection 11, and
+the complete reloaded Marshal object graph. The first battle-boundary load took
+approximately 1.162 seconds, a cached helper call approximately 0.000011
+seconds, and explicit nil invalidation performed exactly one fresh load.
+Evidence is under `tools/preservation/runtime_performance/`.
+
+This ports Rejuvenation's useful principle of keeping title startup focused on
+title data without adopting its asynchronous loader. The cost moves to the
+battle transition, where the data is first required, and remains synchronous
+on the RGSS main thread.
+
+### Indexed battle-animation name lookup
+
+Common effects and capture ball bursts no longer scan all 1,250 battle
+animation records every time they play. A derived name index is created on the
+first name lookup after the deferred collection loads. It records the first
+index for each name, preserving the legacy result for all 41 duplicate names,
+and is cleared when the editor mutates or replaces its collection and when the
+compiler invalidates animation data. Collection replacement and length changes
+also rebuild the index automatically.
+
+The focused engine check compared all 1,096 distinct names with the legacy
+linear search, plus a missing name, explicit in-place invalidation, collection
+replacement, and append-driven invalidation. All results and the complete
+Marshal graph remained exact. Across 50,000 common-animation queries, the
+lookup time fell from approximately 11.409 to 0.115 seconds and allocations
+from 274,935 to 175,896; the one-time index build took approximately 0.0022
+seconds. The cold 10 MB animation load remains deferred and unchanged.
+Evidence is under `tools/preservation/runtime_performance/`.
+
+### Deferred mutable tileset loading
+
+Azure no longer unmarshals `Data/Tilesets.rxdata` in `mainFunctionDebug` before
+the title scene. The 1,261,971-byte file now loads through
+`pbLoadTilesetData` at the first `Game_Map#setup` call. Passability minimaps and
+live map tileset refreshes use the same helper, while `pbClearData` deliberately
+uses `pbReloadTilesetData` to retain its previous forced-refresh behavior.
+
+The collection remains in `$data_tilesets` and outside `AzureDataCache` because
+the tileset editor replaces the array at runtime. The focused engine check
+preserved all 53 array entries (52 populated records), the exact 1,262,151-byte
+Marshal graph and fingerprint, every tested `Map002` tileset attribute, the
+map-create callback object, editor-style replacement, and forced reload. The
+old eager load took approximately 0.0108 seconds on the test machine; the first
+deferred helper call took approximately 0.0042 seconds and a cached call took
+approximately 0.000008 seconds. Evidence is under
+`tools/preservation/runtime_performance/`.
+
+For startup reliability, the same cold-import pass also corrected two existing
+Ruby parse hazards: the field manual now uses a method-local switch mapping,
+and trainer-record indices are class constants rather than dynamic constant
+assignments inside a method. The repaired Battle AI conditional is covered by
+a preservation contract as well as the executable startup gate.
+
+### Deferred RPG animation loading
+
+Azure's RPG Maker animation table, `Data/Animations.rxdata`, is now loaded on
+the first requested map or event visual effect rather than in
+`mainFunctionDebug`. `AnimationSprite`, character sprites, and shadow sprites
+all route through `pbLoadRPGAnimations`. This table remains separate from the
+10 MB `PkmnAnimations` battle-animation collection and preserves the existing
+`$data_animations` global, including preassigned replacement and explicit nil
+invalidation behavior.
+
+The focused engine check preserved all 151 array entries (150 populated), the
+exact 137,648-byte Marshal graph, and all three consumer routes. The old eager
+load took approximately 0.0120 seconds on the test machine; the first deferred
+load took approximately 0.0094 seconds and a cached helper call approximately
+0.000006 seconds. This is a modest title-path improvement, retained because the
+ownership boundary is narrow and fully covered. Evidence is under
+`tools/preservation/runtime_performance/`.
+
+### One-shot map transfer handoff
+
+Cross-map transfers with active BGM or BGS previously deserialized the
+destination in `Scene_Map#autofade` for audio comparison and then immediately
+deserialized the same file again in `Game_Map#setup`. The first read now enters
+`AzureMapTransferHandoff`; setup takes ownership of that exact object and clears
+the handoff. Direct setup without autofade still performs one normal load,
+mismatched IDs discard the pending object, and same-map transfers explicitly
+clear it.
+
+This is deliberately not a mutable-map cache. No `RPG::Map` survives after
+setup consumes it, so live event-page state, editor writes, connected maps, and
+later transfers cannot inherit stale mutations. The focused engine check
+covered all 145 maps (4,307,628 source bytes, 3,851 events, 5,505 pages, and
+37,750 event commands), reduced the simulated transfer path from 290 loads to
+145, preserved object identity at setup, and proved that the consumed object is
+not reused. The legacy two-pass benchmark spent approximately 4.574 seconds
+across all maps, including 0.673 seconds in the immediately repeated loads; the
+one-pass optimized run took approximately 0.331 seconds with the filesystem
+already warm. Evidence is under `tools/preservation/runtime_performance/`.
+
+### Allocation-free event and map iteration
+
+Azure's most frequent map loops no longer create temporary `Hash#values`
+arrays. Map refresh, per-frame event/common-event updates, tile-event
+passability, event lookup, and connected-map collision checks now use
+`each_value`. Event page selection uses `reverse_each` instead of copying every
+page array with `reverse` on every refresh.
+
+This does not narrow refresh dispatch: every event and common event is still
+visited in the same order, which preserves Azure's dynamic `s:` switch
+expressions and script-driven page conditions. Across all 145 maps and 3,851
+events, the focused check proved exact event and page order. On the 281-event
+`Map034`, 20,000 hash iterations fell from approximately 20,009 allocations to
+7 and from 1.207 to 1.083 seconds. One hundred all-event page scans fell from
+approximately 770,207 allocations to 385,104 and from 0.478 to 0.259 seconds.
+Evidence is under `tools/preservation/runtime_performance/`.
+
+### Allocation-light encounter selection
+
+The fixed totals for Azure's 15 encounter-weight tables are now calculated
+once when `EncounterTypes` is defined. Ordinary wild rolls read the shared
+weights without cloning them, the unowned-species candidate array is created
+only while switch 74 is active, and selected compiled rows remain read-only.
+Attraction abilities still receive an independent mutable weight array, while
+Pressure, Hustle, and Vital Spirit change only a local minimum level.
+
+The focused engine check covered all 32 encounter maps, 103 type tables, and
+890 slots. A deterministic 250,000-roll test retained the exact checksum and
+RNG-sequence hash, and direct legacy-versus-optimized comparisons matched 12
+scenarios: ordinary selection, all six attraction abilities, all three
+higher-level abilities, switch 74, and an egg party leader. The compiled graph
+was unchanged. On the test machine, the ordinary selection benchmark fell
+from approximately 2.088 to 1.046 seconds and from 2,030,539 to 1,280,539
+allocations. Evidence is under `tools/preservation/runtime_performance/`.
+
+### Allocation-free party-menu sprite iteration
+
+The shared sprite-hash updater now walks values directly and uses a symbol for
+the `update` capability check. Party-menu `ChangelingSprite` objects likewise
+walk their bitmap hashes directly during frame updates and disposal. In a full
+party this removes the temporary arrays created every frame by the six panel
+ball/item helpers plus the cancel control; the shared helper also benefits
+summary, bag, storage, and other sprite-hash screens.
+
+The focused engine check preserved insertion-order updates, nil entries,
+`RGSSError` suppression, exact update counts, party bitmap update order, and
+disposal of every bitmap. Across 100,000 simulated frames with 15 active sprite
+entries, the shared update loop fell from approximately 2.144 to 1.342 seconds
+and from 3,100,002 allocations to 2. Thirteen party-style bitmap helpers fell
+from approximately 1.509 to 1.302 seconds and from 1,300,002 allocations to 1.
+Evidence is under `tools/preservation/runtime_performance/`.
+
+### Allocation-free AI rough-stat scaling
+
+AI move scoring and switch evaluation call `pbRoughStat` from 532 source
+locations. The method previously constructed the same multiplier and divisor
+arrays for every nontrivial call. Those immutable stage tables are now frozen
+class constants, leaving the stat, skill-tier, stage, floating-point, and
+rounding calculations unchanged and consuming no battle RNG.
+
+The focused engine check compared all five calculated stats at every stage
+from -6 through +6 across six AI skill thresholds: 390 exact scenarios with
+the same matrix checksum. Across one million deterministic calls, runtime fell
+from approximately 1.985 to 1.785 seconds and allocations from 1,800,011 to 3.
+Evidence is under `tools/preservation/runtime_performance/`.
+
+### Deterministic AI decisions and rough-damage scaling
+
+A seeded, end-to-end battle fixture now covers both single and double AI move
+scoring, target selection, switch evaluation, command selection, and every AI
+and battle RNG draw. It records the complete result signature so a performance
+change cannot silently alter scores, targets, choices, or random-call order.
+The two scenarios retain checksum `2062664973`; their focused regression checks
+also prove normal move availability, both opposing Imprison slots, and that
+each initialized battle move is bound to its active battler.
+
+Building this fixture exposed two existing runtime faults in ordinary AI
+scoring. `pbCanChooseMove?` used its two Imprison opponents without assigning
+them, and `pbInitPokemon` gave each runtime move the underlying Pokemon as its
+user even though move helpers require battler state. The opponent slots are now
+bound before availability checks and initialized moves receive their battler;
+the fixture exercises both repairs directly.
+
+`pbRoughDamage` also rebuilt the same stage multiplier and divisor arrays on
+every call. It now shares the frozen tables already used by `pbRoughStat`.
+Across 5,000 deterministic Surf estimates, all damage results and RNG activity
+were exact while allocations fell from 1,172,303 to 1,162,303, removing exactly
+two short-lived arrays per estimate. Wall-clock variance at this scale was
+larger than the timing difference, so this is recorded as a measured allocation
+and GC-pressure improvement rather than a claimed direct speedup. Evidence is
+under `tools/preservation/runtime_performance/`.
+
+Ordinary rough-damage estimates also stopped rebuilding `PBMove` and
+`PokeBattle_Move` objects when the supplied move is already canonical, belongs
+to the current battle, and is bound to the evaluated battler. Normalization is
+still mandatory for all eight weather, item, attacker, or field-sensitive move
+families and whenever type, power, flags, name, battle, or user ownership can
+change the legacy result. Struggle's special constructor and Glacial Slam's
+compatibility function override retain their established behavior.
+
+The focused routing matrix covered all 1,049 compiled move records plus
+mutated power/type/flags/name, wrong-user, wrong-battle, Struggle, Glacial Slam,
+and all eight context-sensitive cases. In a same-process comparison of 5,000
+Surf estimates, canonical reuse preserved the exact damage checksum and zero
+RNG calls while reducing runtime from approximately 2.792 to 2.740 seconds and
+allocations from 982,303 to 942,304. The full seeded single/double decision
+signature remained `2062664973`.
+
+Two frequently repeated AI query helpers now avoid redundant container work.
+`checkAIdamage` encodes its four battler slots and hard-switch flag into one
+collision-free integer cache key instead of allocating and hashing a
+three-element array on every lookup. `pbAIOrderedFoes` returns its constructed
+list directly because its iterator already rejects nil/fainted battlers and
+the primary target is explicitly excluded by index before remaining foes are
+appended.
+
+The focused check proved all 32 cache-key combinations are unique and compared
+100 single/double, preferred-target, same-side, and fainted-battler ordering
+scenarios with the legacy `compact.uniq` result. One million cache hits retained
+damage `103`, checksum `266152896`, and zero RNG calls while runtime fell from
+approximately 7.009 to 2.368 seconds and allocations from 6,454,037 to
+3,454,037. Across 250,000 ordered-foe queries, order `[2,0]` and checksum
+`372187424` remained exact while runtime fell from approximately 2.138 to 1.710
+seconds and allocations from 2,977,719 to 2,227,719.
+
+Single-pass ordered-foe checks now use a yielding iterator instead of first
+materializing that same ordered list. The public `pbAIOrderedFoes` array helper
+is retained for callers that store, combine, or revisit the targets, while
+move, ability, memory, readiness, screen-damage, status-reflection, and switch
+checks that scan once consume the iterator directly. Preferred-target
+validation, primary-target fallback, fainted filtering, battler order, and
+short-circuit behavior are unchanged.
+
+The focused check covered seven single/double layouts with valid, invalid,
+same-side, and fainted preferred targets. The iterator and retained array API
+both produced ordering checksum `149169694`; eight move, ability, memory, and
+readiness queries retained helper checksum `1933839760`. Across one million
+two-foe move misses, runtime fell from approximately 5.241 to 4.579 seconds and
+allocations from 2,000,002 to 1,000,002. The remaining allocation is the
+existing variable-argument move list, not a foe collection.
+
+That final query allocation is now removed as well. The six foe/ally move,
+ability, memory, and readiness predicates accept either one numeric/symbolic
+ID or an existing collection instead of Ruby variable arguments. All scalar
+callers pass their ID directly; the four multi-value scoring patterns use
+frozen redirection, screen-break, electric-immunity, and allied spread-damage
+groups, while the existing `PBStuff::SCREENBREAKERMOVE` collection is passed
+without splatting.
+
+The focused check compared scalar hits/misses and collection hits/misses for
+all six helpers, including sleeping-foe readiness and self-inclusive versus
+other-ally ability scans. All 24 results retained checksum `900000016`.
+Across one million two-foe scalar misses, runtime fell from approximately
+4.668 to 3.573 seconds and allocations from 1,000,002 to 2.
+
+Single-pass same-side queries likewise use the existing filtered battler
+iterator instead of materializing `pbAIAllies` arrays. Dedicated helpers cover
+existence/condition checks and preferred-index-or-first selection; stored ally
+lists and the Magnetic Flux/Gear Up filtered collections retain arrays because
+they are revisited. Helping Hand now performs one scan instead of a `find`
+allocation followed by a second fallback allocation, and ally KO, protection,
+Mud Sport, Water Sport, Ion Deluge, and immunity checks consume the iterator.
+
+The focused check covered five layouts with no partner, self inclusion,
+fainted partners, non-index ordering, a matching preferred index, and a missing
+preferred index. Array and iterator results retained checksum `2016156807`.
+Across one million two-ally failed predicates, runtime fell from approximately
+3.453 to 3.122 seconds and allocations from 1,000,002 to 2. The preservation
+audit rejects reintroduced `any?`, `empty?`, or `find` calls on materialized
+`pbAIAllies` results.
+
+Three ally-target scoring branches no longer allocate a mapped speed array to
+find the maximum opposing speed. They retain the nonempty guard and instead
+test that the candidate is strictly faster than every foe, which preserves the
+legacy false result for empty lists and speed ties. The focused matrix covered
+eight empty, singleton, faster, slower, tied, mixed-order, and negative-speed
+cases with checksum `1751308814`. Across one million four-foe comparisons,
+runtime fell from approximately 1.610 to 1.294 seconds and allocations from
+1,000,002 to 2. The audit requires exactly three allocation-free scans and
+rejects reintroduced `map.max` speed arrays.
+
+Nineteen same-side target branches now scan `eachSameSideBattler` directly
+instead of allocating `sameSideBattlers(false)` and then calling `include?`.
+The helper intentionally uses the engine enumerator rather than index parity,
+so it preserves active-slot membership, nil handling, self exclusion, fainted
+battler inclusion, ordering, and rejection of same-parity objects that are not
+actually present in the battle.
+
+The focused check covered eight partner, self, opponent, nil-slot, fainted,
+absent, reordered, and include-self cases with checksum `1123836486`. Across
+one million absent-target checks, runtime fell from approximately 2.443 to
+2.043 seconds and allocations from 1,000,002 to 3. The audit requires all 19
+scoring sites to use the membership scan and rejects the allocating form.
+
+Six immutable terrain, move-function, and Ability membership groups are now
+shared as frozen AI constants instead of being rebuilt at nine scoring sites.
+The values and exact `Array#include?` semantics are unchanged, including the
+non-contiguous terrain IDs and move-function boundaries; only ownership and
+allocation timing changed.
+
+The focused check covered all members plus adjacent or representative misses
+across 46 cases and retained checksum `1603738730`. Across one million failed
+terrain lookups, runtime fell from approximately 0.565 to 0.314 seconds and
+allocations from 1,000,002 to 2. The audit verifies every frozen group, requires
+the exact nine uses, and rejects reintroduced literal membership arrays.
+
+AI move-memory predicates now compare remembered IDs directly instead of
+reconstructing a complete battle move for every requested-ID/memory pair.
+Nature Power remains the sole exception because `pbChangeMove` replaces its ID
+with the current field's move; accuracy checks likewise rebuild Nature Power
+but read every ordinary move's already initialized accuracy, preserving
+Struggle's special constructor behavior. Reversing the membership scan also
+normalizes Nature Power at most once per remembered move rather than once per
+requested ID. This benefits 219 `checkAImoves` call sites as well as
+`checkAIHas?` and `checkAIaccuracy`.
+
+The focused check compared all three predicates with their legacy
+implementations across fields 0 through 45, five query shapes, ordinary moves,
+Nature Power, and attacker-owned moves: all 506 results and RNG activity were
+exact. Across 100,000 worst-case four-ID/four-memory misses, runtime fell from
+approximately 20.727 to 0.472 seconds, allocations from 12,800,005 to 4, and
+full move normalizations from 1,600,000 to zero. The seeded single/double
+decision signature remained unchanged.
+
+The same predicates now also accept a bare numeric move ID, so 88 one-move
+queries no longer allocate a temporary one-element array while multi-move and
+shared move-group queries retain their collection behavior. A focused matrix
+covered both memory and attacker predicates for every numeric `PBMoves`
+constant: all 2,154 collection results and the scalar equivalents retained
+checksum `886775334`. A separate Nature Power case confirmed that both scalar
+predicates still compare its field-resolved move rather than its source ID.
+Across one million four-move misses, runtime fell from approximately 2.510 to
+2.068 seconds and allocations from 1,000,002 to 2. The preservation audit also
+rejects any reintroduced `[PBMoves::MOVE]` singleton call site.
+
+The remaining 62 literal multi-move queries now reuse 16 frozen semantic
+groups. This includes 36 Clear Smog/Haze checks and the repeated hazard
+control, sleep-use, weather-accuracy, spread-move, weight-based, item, and
+status groups. Reversed Sleep Talk/Snore and Low Kick/Grass Knot spellings were
+merged because the predicate performs membership testing and never observes
+query order. Dynamic queries and the existing shared `PBStuff` groups are
+unchanged.
+
+The focused check exercised first-member, last-member, miss, and empty-memory
+cases through both memory and attacker predicates for all 16 groups. All 128
+results retained checksum `1958265408`, and every shared group was frozen.
+Across one million four-move misses, runtime fell from approximately 2.825 to
+2.643 seconds and allocations from 1,000,002 to 2. The preservation audit now
+rejects any reintroduced literal `PBMoves` query array.
+
+After all AI allocation changes above, the seeded end-to-end closeout reran
+both battle layouts from fresh deterministic state. The single battle retained
+scores `[86, 28, 24, 30, 0]`, no explicit targets, no switch, Surf selection,
+and AI draws `4:2,4:3`. The double battle retained scores
+`[50, 44, 21, 30, 0]`, targets `[0, 2, 0, 2, -1]`, no switch, Surf targeting
+slot 0, and draws `4:3,4:0,4:1,4:2,4:3,4:0,10:5`. Neither scenario consumed
+battle RNG, every recorded field matched exactly, and the accumulated decision
+checksum remained `2062664973`.
 
 ### Deterministic duplicate policy
 
@@ -733,6 +1101,53 @@ cache reuse, post-compile cache replacement, and both installed binary hashes.
 Evidence and recoverable pre-activation binaries are under
 `tools/preservation/phone_roundtrip/`.
 
+### Controlled battle-facility data activation
+
+Azure's organized-battle storage remains authoritative. Each compiled list is
+still the exact six-field array `[trainers, pokemon, challenges,
+trainer_filename, pokemon_filename, default]`; each Trainer remains the
+six-field array `[type, name, begin_speech, win_speech, lose_speech,
+pokemon_numbers]`; and each rental entry remains a `PBPokemon`. Challenge IDs
+continue to select the first matching non-default list and otherwise fall back
+to the one required default list.
+
+The compiler now validates list sections and their optional referenced files
+before replacing output. It rejects unknown or duplicate properties, missing
+required filenames, multiple/missing defaults, duplicate challenge routes,
+unsafe paths, unknown Trainer/Pokemon/item/nature/move constants, malformed EV
+or move lists, duplicate `PokemonNos`, and indices outside the referenced
+Pokemon pool. Azure's ten currently absent pool files remain intentionally
+valid: all five declarations compile them as empty arrays, preserving the live
+behavior of the default plus eight challenge routes. Incremental compilation
+tracks any referenced pools that are later authored, and named export,
+backup, and restore discover those files from `trainerlists.txt` rather than
+using a stale hard-coded list.
+
+Compilation and editor export accept isolated paths, return their compiled
+objects, and update runtime messages or caches only when explicitly installing.
+Both generator write paths now invalidate the shared facility cache. Read-only
+runtime requests reuse the cached list object, while generator/editor calls can
+still request an independent mutable copy.
+
+The installed 344-byte legacy `trainerlists.dat` remains unchanged with
+SHA-256 `362F5D7DFD2859708A5628637F884F52362085767E9FA3526219C11530D39208`.
+Ruby 3's isolated compile produces a 435-byte Marshal file because it records
+string-encoding metadata, but its complete decoded object graph equals the
+installed file. The isolated and editor-generated message databases are
+byte-identical to the installed 1,618,294-byte file with SHA-256
+`2E2727E8CEAF66E0755D3A5362D17AFB7F4E9A365DA4D3FE31627FD217E6218D`.
+A non-empty fixture proved every Trainer and `PBPokemon` field plus editor
+round-tripping; five invalid fixtures proved failure-before-write behavior; and
+focused cache checks proved reuse, mutable isolation, and invalidation.
+Evidence is under `tools/preservation/battle_facility_roundtrip/`.
+
+Rejuvenation 14 retains a disabled version of this older compiler alongside
+newer game-specific `bttrainers.rb` and `btpokemon.rb` object formats. Those
+typed objects and their incompatible save/data boundary were not ported. The
+portable improvements are strict source validation, dependency-aware builds,
+isolated compilation, recoverable authoring files, and cache invalidation—all
+adapted around Azure's numeric IDs, public methods, and Marshal layouts.
+
 ### Renderer frame skipping
 
 Rejuvenation exposes mkxp's renderer frame-skip capability. Azure now has the
@@ -768,6 +1183,86 @@ command validates schemas, symbols, references, feature contracts, duplicate
 policies, and compiled-data freshness without invoking a compiler or modifying
 active PBS and compiled data. A missing audit script or unavailable PowerShell
 runtime produces a visible failure result instead of being treated as success.
+
+## Execution plan from the current checkpoint
+
+The project is currently in **Phase 3: runtime and performance**. The
+preservation/discovery work in Phase 1 is complete, and Phase 2's core PBS,
+compiler, typed-adapter, and authoring-tool migrations are implemented. The
+deterministic Battle AI subphase is also complete: the accumulated single- and
+double-battle closeout retained checksum `2062664973`. Remaining Phase 2 ideas
+are bounded extensions for data types Azure actually uses, not prerequisites
+for the active runtime work.
+
+| Phase | Status | Exit condition |
+| --- | --- | --- |
+| 1. Preservation and comparison | Complete | Azure-only systems are inventoried and guarded by the audit. |
+| 2. PBS and data tooling | Core complete | Existing named formats, isolated compilers, caches, round trips, and developer commands remain green; optional schemas are added only for used Azure features. |
+| 3. Runtime and performance | Active | Remaining measured hot paths and startup ownership are resolved, then the aggregate performance and behavior suite passes. |
+| 4. Engine and tooling evaluation | Pending | A separate engine package and developer-only tooling pass compatibility tests without changing the production executable prematurely. |
+| 5. Release validation | Pending | Clean-data, startup, focused interaction, save compatibility, and extended playtest gates all pass from a release candidate. |
+
+### Phase 3 ordered steps
+
+1. **Inventory and rank remaining sprite/UI hot paths.** Inspect per-frame
+   sprite, window, battle-scene, map-scene, and menu collections for temporary
+   arrays, reflection, repeated lookups, or duplicated work. Capture call
+   counts, time, and allocations in representative scenes before editing. Do
+   not port a Rejuvenation implementation solely because its filename or class
+   has a matching Azure counterpart.
+2. **Optimize one measured collection at a time.** Start with the highest
+   verified cost and preserve iteration order, nil/disposed-object handling,
+   visibility rules, callbacks, rescue behavior, and bitmap ownership. Each
+   change gets a focused baseline/optimized fixture and its own audit contract.
+3. **Finish the title-time data ownership audit.** Identify remaining compiled
+   datasets loaded before title/save selection, classify each as immutable,
+   mutable-runtime, or editor-owned, and extend `AzureDataCache` only for
+   proven-read-only data. Mutable collections must retain explicit reload or
+   invalidation behavior.
+4. **Resolve the map-cache decision with evidence.** Benchmark repeated map
+   loads and test event mutation, connected maps, editor/debug replacement,
+   transfer callbacks, and cache invalidation. Add a small bounded cache only
+   if records can be isolated safely; otherwise document the one-shot transfer
+   handoff as the final design.
+5. **Close Phase 3.** Rerun all stored runtime fixtures, the seeded AI decision
+   closeout, the full preservation audit, and a 15-second cold startup. Record
+   aggregate results and remove every temporary fixture from the script order.
+
+### Phase 4 ordered steps
+
+1. Build a **separate, reversible** Ruby 3.1/current mkxp-z test package. Keep
+   the production executable and save path unchanged while validating script
+   import, native DLLs, Win32API shims, graphics, input, audio, fonts, video,
+   networking/updater behavior, and Marshal save loading.
+2. Add deterministic frame-skip/turbo timing tests for messages, movement,
+   timers, weather, credits, animations, play time, and any logic coupled to
+   rendered frames. Frame skip remains opt-in until these tests pass.
+3. Perform a thread-safety inventory before considering `ThreadLoader`.
+   Background loading is eligible only for pure file/data work; RGSS graphics,
+   input, message, editor, and mutable global operations stay on the main
+   thread. A failed inventory closes this item without a port.
+4. Package profiling and validation as removable developer tooling, then
+   evaluate registry-driven menu commands only where they reduce merge cost
+   while preserving every Azure visibility and enable condition.
+
+### Phase 5 release steps
+
+1. Compile from a clean copy of the active PBS sources and run every round-trip
+   comparison without installing temporary outputs over user data.
+2. Run the audit with zero failures, review the documented warning set, and use
+   `-WarningsAsErrors` after intended duplicate cleanup or explicit acceptance.
+3. Run cold startup, new-game/load-save, map transfer, editor/debug, menu,
+   single/double battle, and performance smoke scenarios on the release
+   candidate and the candidate engine package.
+4. Verify old saves and numeric IDs, archive benchmark/audit evidence, update
+   this matrix, and only then prepare the requested commit or push.
+
+For every numbered step, the required local gate is: focused behavior parity,
+focused performance evidence where applicable, `Audit-Azure.ps1` with zero
+failures, `Test-Startup.ps1 -Seconds 15` with no error-log change, and an exact
+restoration of `Scripts/!script_order.csv`. If a measured change is not faster
+or cannot prove Azure behavior parity, revert that change and record the result
+instead of carrying speculative complexity forward.
 
 ## Rejuvenation improvements still suitable for staged ports
 
@@ -818,19 +1313,34 @@ runtime produces a visible failure result instead of being treated as success.
 
 1. Expand `AzureDataCache` to other proven-read-only compiled datasets. Debug
    hit/load/reload instrumentation is implemented.
-2. Preload title-screen data first and defer nonessential runtime data until a
-   save is selected. This should be staged before attempting Rejuvenation's
-   threaded loader.
-3. Add a bounded map cache only after proving cached `RPG::Map` records are
-   immutable. A safe design must invalidate edited maps and must not preserve
-   transient event-page mutations across transfers.
-4. Benchmark map setup, event refresh, encounter generation, party menus,
-   battle startup, and AI turns before optimizing. Port measured bottlenecks,
-   not file-name-equivalent Rejuvenation code.
-5. Audit large per-frame event loops and sprite allocations. Preserve callback
-   order and event timing when introducing indexes or object reuse.
-6. Consider cached battle animation and tileset objects only with explicit
-   ownership/refcount tests; Azure already has a weak bitmap cache.
+2. **Partially implemented.** The 10 MB mutable battle-animation collection is
+   deferred from title/save selection to battle startup, and the mutable
+   tileset collection is deferred to first map setup. RPG Maker animations are
+   deferred to the first map/event visual effect. Continue auditing other
+   title-time data before attempting Rejuvenation's threaded loader.
+3. **One-shot transfer handoff implemented.** Autofade and map setup now share
+   one destination object without retaining it after setup. A persistent
+   bounded map cache remains deferred until cached `RPG::Map` records can be
+   proven immutable and editor-safe.
+4. **Map setup, event iteration, encounter selection, party-menu updates,
+   battle startup, and deterministic AI decisions benchmarked.** The measured
+   encounter hot path avoids three ordinary-roll arrays while retaining the
+   exact RNG sequence and special ability/switch behavior. Party and shared UI
+   sprite iteration no longer constructs per-frame hash arrays or reflection
+   strings. Battle-animation loading remains deferred, while repeated
+   common-effect lookup uses an editor-aware first-match index. AI stat and
+   rough-damage scaling now reuse immutable stage tables, while seeded single-
+   and double-battle fixtures preserve scores, targets, commands, switching,
+   and RNG order. Continue from the measured scoring profile and port measured
+   bottlenecks, not file-name-equivalent Rejuvenation code.
+5. **Partially implemented.** Hot map/event loops avoid temporary values and
+   reversed-page arrays while preserving callback order and refresh scope.
+   Shared sprite-hash updates and party bitmap helpers now avoid per-frame
+   iteration allocations. Continue auditing other sprite collections.
+6. **Mutable runtime ownership audited.** Battle animations, RPG Maker
+   animations, and tilesets are deferred and globally reused. Mutable editor
+   collections remain outside the immutable data cache so replacement remains
+   safe. Azure already has a weak bitmap cache.
 
 ### Priority 4: engine/tooling migrations
 

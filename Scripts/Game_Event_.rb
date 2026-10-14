@@ -179,7 +179,7 @@ class Game_Event < Game_Character
   def refresh
     new_page = nil
     unless @erased
-      for page in @event.pages.reverse
+      @event.pages.reverse_each do |page|
         c = page.condition
         if c.switch1_valid
           if !switchIsOn?(c.switch1_id)

@@ -914,10 +914,10 @@ class PokeBattle_Battler
     @pokemonIndex = pkmnIndex
     @participants = [] # Participants will earn Exp. Points if this battler is defeated
     @moves        = [
-      PokeBattle_Move.pbFromPBMove(@battle,pkmn.moves[0],pkmn),
-      PokeBattle_Move.pbFromPBMove(@battle,pkmn.moves[1],pkmn),
-      PokeBattle_Move.pbFromPBMove(@battle,pkmn.moves[2],pkmn),
-      PokeBattle_Move.pbFromPBMove(@battle,pkmn.moves[3],pkmn)
+      PokeBattle_Move.pbFromPBMove(@battle,pkmn.moves[0],self),
+      PokeBattle_Move.pbFromPBMove(@battle,pkmn.moves[1],self),
+      PokeBattle_Move.pbFromPBMove(@battle,pkmn.moves[2],self),
+      PokeBattle_Move.pbFromPBMove(@battle,pkmn.moves[3],self)
     ]
     @beneficialStatus = pkmn.beneficialStatus
     @beneficialStatusData = pkmn.beneficialStatusData

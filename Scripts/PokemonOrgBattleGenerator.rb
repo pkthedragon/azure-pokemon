@@ -1201,7 +1201,7 @@ def pbTrainerInfo(pokemonlist,trfile,rules)
   end
   yield(nil) if block_given?
   save_data(trlists,"Data/trainerlists.dat")
-  AzureDataCache.clear("Data/trainerlists.dat") if defined?(AzureDataCache)
+  pbInvalidateBTTrainerLists
   yield(nil) if block_given?
   pbSaveTrainerLists()
   yield(nil) if block_given?
@@ -1449,6 +1449,7 @@ def pbWriteCup(id,rules)
         trlists[cmd][2].push(id)
       end
       save_data(trlists,"Data/trainerlists.dat")
+      pbInvalidateBTTrainerLists
       Graphics.update
       pbSaveTrainerLists()
       Graphics.update

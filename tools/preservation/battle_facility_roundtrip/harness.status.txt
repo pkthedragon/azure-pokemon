@@ -1,0 +1,8 @@
+PASS
+current_lists=5
+current_data_semantic_exact=true
+current_messages_semantic_exact=true
+editor_roundtrip_exact=true
+fixture_roundtrip_exact=true
+invalid_cases_rejected=5
+cache_contract=true

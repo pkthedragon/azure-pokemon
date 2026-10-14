@@ -1,0 +1,13 @@
+ok=true
+source_rows=379
+effective_symbols=373
+populated_names=379
+populated_descriptions=379
+max_value=421
+generated_constant_content_differences=0
+generated_aliases=SPIRITED:72,SNOWVEIL:81,MAJESTY:213
+last_definition_aliases=TOXICCHAIN:396,CARETAKER:404,BLOODTHIRSTY:405,SCAVENGER:406,EXECUTIONER:407,EVENTHORIZON:408
+new_name_ids=409-421
+revised_existing_description_count=26
+non_ability_message_differences=0
+pre_existing_unresolved_optional_form_symbols=CUTEINFATUATE,PURIFYING,SEGUE,AFTERLIFE,FLAMEEATER,KEYHOLDER

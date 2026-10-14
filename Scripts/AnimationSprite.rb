@@ -14,7 +14,7 @@ class AnimationSprite < RPG::Sprite
     self.x=((@tileX*Game_Map.realResX)-@map.display_x+3)/4+(Game_Map::TILEWIDTH/2)
     self.y=((@tileY*Game_Map.realResY)-@map.display_y+3)/4+(Game_Map::TILEHEIGHT)
     pbDayNightTint(self) if tinting
-    self.animation($data_animations[animID],true)
+    self.animation(pbLoadRPGAnimations[animID],true)
   end
 
   def dispose

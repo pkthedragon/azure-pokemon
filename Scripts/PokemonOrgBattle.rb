@@ -224,6 +224,10 @@ end
 
 
 
+def pbInvalidateBTTrainerLists
+  AzureDataCache.clear("Data/trainerlists.dat") if defined?(AzureDataCache)
+end
+
 def pbLoadBTTrainerLists(mutable=false)
   return (load_data("Data/trainerlists.dat") rescue []) if mutable
   return (pbCachedData("Data/trainerlists.dat") rescue [])

@@ -1419,46 +1419,125 @@ def pbValidateAzureLegacyDuplicates(dataset,pairs)
   end
 end
 
-def pbCompileBTTrainers(filename)
-  sections=[]
-  btTrainersRequiredTypes={
-     "Type"=>[0,"e",PBTrainers],
-     "Name"=>[1,"s"],
-     "BeginSpeech"=>[2,"s"],
-     "EndSpeechWin"=>[3,"s"],
-     "EndSpeechLose"=>[4,"s"],
-     "PokemonNos"=>[5,"*u"]
-  }
-  requiredtypes=btTrainersRequiredTypes
-  trainernames=[]
-  beginspeech=[]
-  endspeechwin=[]
-  endspeechlose=[]
-  if safeExists?(filename)
-    File.open(filename,"rb"){|f|
-       FileLineData.file=filename
-       pbEachFileSectionEx(f){|section,name|
-          rsection=[]
-          for key in section.keys
-            FileLineData.setSection(name,key,section[key])
-            schema=requiredtypes[key]
-            next if !schema
-            record=pbGetCsvRecord(section[key],0,schema)
-            rsection[schema[0]]=record
-          end
-          trainernames.push(rsection[1])
-          beginspeech.push(rsection[2])
-          endspeechwin.push(rsection[3])
-          endspeechlose.push(rsection[4])
-          sections.push(rsection)
-       }
-    }
+AZURE_BT_TRAINER_PROPERTIES=[
+  "Type","Name","BeginSpeech","EndSpeechWin","EndSpeechLose","PokemonNos"
+] if !defined?(AZURE_BT_TRAINER_PROPERTIES)
+
+AZURE_BT_POKEMON_EV_STATS=["HP","ATK","DEF","SPD","SA","SD"] if !defined?(AZURE_BT_POKEMON_EV_STATS)
+
+def pbBattleFacilityConstantID(mod,value,label,allowBlank=false)
+  text=value.nil? ? "" : value.to_s.strip
+  return 0 if allowBlank && text==""
+  AzurePBSValidation.required(text,label)
+  if !text[/^[A-Z][A-Za-z0-9_]*$/] || !(mod.const_defined?(text) rescue false)
+    AzurePBSValidation.error(_INTL("Unknown {1} {2}.",label,text))
   end
-  MessageTypes.addMessagesAsHash(MessageTypes::TrainerNames,trainernames)
-  MessageTypes.addMessagesAsHash(MessageTypes::BeginSpeech,beginspeech)
-  MessageTypes.addMessagesAsHash(MessageTypes::EndSpeechWin,endspeechwin)
-  MessageTypes.addMessagesAsHash(MessageTypes::EndSpeechLose,endspeechlose)
-  return sections
+  return mod.const_get(text.to_sym)
+end
+
+# Reads one optional facility-Trainer source into Azure's historical six-field
+# arrays. Missing files intentionally remain empty because Azure ships list
+# declarations for facilities whose generated pools have never been authored.
+def pbReadBTTrainerSource(filename)
+  result={:records=>[],:names=>[],:begin_speech=>[],:win_speech=>[],
+          :lose_speech=>[],:record_lines=>[]}
+  return result if !safeExists?(filename)
+  FileLineData.file=filename
+  sectionKeys={}
+  for section in pbAltPBSParseLegacySections(filename)
+    AzurePBSValidation.source(section)
+    sectionID=AzurePBSValidation.required(section[:id],"battle-facility Trainer section ID").to_s
+    AzurePBSValidation.unique(sectionKeys,sectionID,"battle-facility Trainer section",section[:lineno])
+    AzurePBSValidation.properties(section,AZURE_BT_TRAINER_PROPERTIES,
+      _INTL("battle-facility Trainer section [{1}]",sectionID))
+    data=pbAltPBSFieldHash(section)
+    required=["Type","Name","BeginSpeech","EndSpeechWin","EndSpeechLose"]
+    for key in required
+      AzurePBSValidation.source(section,key)
+      AzurePBSValidation.required(data[key],_INTL("{1} in battle-facility Trainer [{2}]",key,sectionID))
+    end
+    record=[]
+    AzurePBSValidation.source(section,"Type")
+    record[0]=pbBattleFacilityConstantID(PBTrainers,data["Type"],"Trainer type")
+    record[1]=data["Name"].to_s
+    record[2]=data["BeginSpeech"].to_s
+    record[3]=data["EndSpeechWin"].to_s
+    record[4]=data["EndSpeechLose"].to_s
+    record[5]=[]
+    if data["PokemonNos"] && data["PokemonNos"].to_s.strip!=""
+      AzurePBSValidation.source(section,"PokemonNos")
+      seenNumbers={}
+      values=data["PokemonNos"].to_s.split(",",-1)
+      for value in values
+        number=AzurePBSValidation.integer(value,"PokemonNos entry",0)
+        AzurePBSValidation.unique(seenNumbers,number,"PokemonNos entry",section[:lineno])
+        record[5].push(number)
+      end
+    end
+    result[:records].push(record)
+    result[:names].push(record[1])
+    result[:begin_speech].push(record[2])
+    result[:win_speech].push(record[3])
+    result[:lose_speech].push(record[4])
+    result[:record_lines].push(section[:lineno])
+  end
+  return result
+end
+
+# Validates one optional facility-Pokemon source before converting each row to
+# the PBPokemon object stored in trainerlists.dat.
+def pbReadBTPokemonSource(filename)
+  records=[]
+  recordLines=[]
+  return {:records=>records,:record_lines=>recordLines} if !safeExists?(filename)
+  FileLineData.file=filename
+  for rawline in pbAltPBSReadLines(filename)
+    line=rawline[1]
+    next if line[/^\s*#/] || line[/^\s*$/]
+    FileLineData.setLine(line,rawline[0])
+    pieces=line.strip.split(";",-1)
+    if pieces.length!=5
+      AzurePBSValidation.error(_INTL("Battle-facility Pokemon rows must contain exactly five semicolon-separated fields; found {1}.",pieces.length))
+    end
+    pbBattleFacilityConstantID(PBSpecies,pieces[0],"Pokemon species")
+    pbBattleFacilityConstantID(PBItems,pieces[1],"held item",true)
+    pbBattleFacilityConstantID(PBNatures,pieces[2],"nature")
+    seenStats={}
+    if pieces[3].to_s.strip!=""
+      for stat in pieces[3].split(",",-1)
+        stat=stat.to_s.strip.upcase
+        if !AZURE_BT_POKEMON_EV_STATS.include?(stat)
+          AzurePBSValidation.error(_INTL("Unknown battle-facility EV stat {1}; expected one of {2}.",stat,AZURE_BT_POKEMON_EV_STATS.join(", ")))
+        end
+        AzurePBSValidation.unique(seenStats,stat,"battle-facility EV stat",rawline[0])
+      end
+    end
+    moveNames=pieces[4].split(",",-1)
+    while moveNames.length>0 && moveNames[moveNames.length-1].to_s.strip==""
+      moveNames.pop
+    end
+    AzurePBSValidation.count(moveNames,"battle-facility move list",1,4)
+    seenMoves={}
+    for moveName in moveNames
+      moveName=moveName.to_s.strip
+      pbBattleFacilityConstantID(PBMoves,moveName,"move")
+      AzurePBSValidation.unique(seenMoves,moveName,"battle-facility move",rawline[0])
+    end
+    records.push(PBPokemon.fromInspected(line))
+    recordLines.push(rawline[0])
+  end
+  return {:records=>records,:record_lines=>recordLines}
+end
+
+def pbCompileBTTrainers(filename,installMessages=true)
+  result=pbReadBTTrainerSource(filename)
+  if installMessages
+    MessageTypes.addMessagesAsHash(MessageTypes::TrainerNames,result[:names])
+    MessageTypes.addMessagesAsHash(MessageTypes::BeginSpeech,result[:begin_speech])
+    MessageTypes.addMessagesAsHash(MessageTypes::EndSpeechWin,result[:win_speech])
+    MessageTypes.addMessagesAsHash(MessageTypes::EndSpeechLose,result[:lose_speech])
+  end
+  return result[:records]
 end
 
 def pbCompileTownMap(dataOutput="Data/townmap.dat",installRuntime=true,
@@ -3197,71 +3276,191 @@ def pbEachSection(f)
   end
 end
 
-def pbCompileTrainerLists
-  btTrainersRequiredTypes={
-     "Trainers"=>[0,"s"],
-     "Pokemon"=>[1,"s"],
-     "Challenges"=>[2,"*s"]
-  }
-  if !safeExists?("PBS/trainerlists.txt")
-    File.open("PBS/trainerlists.txt","wb"){|f|
-       f.write(0xEF.chr)
-       f.write(0xBB.chr)
-       f.write(0xBF.chr)
-       f.write("[DefaultTrainerList]\nTrainers=bttrainers.txt\nPokemon=btpokemon.txt\n")
-    }
+AZURE_TRAINER_LIST_PROPERTIES=["Trainers","Pokemon","Challenges"] if !defined?(AZURE_TRAINER_LIST_PROPERTIES)
+
+def pbBattleFacilityRelativeFilename(value,label)
+  filename=AzurePBSValidation.required(value,label).to_s.strip.gsub("\\","/")
+  if filename[/^\//] || filename[/^[A-Za-z]:/] || filename.split("/").include?("..")
+    AzurePBSValidation.error(_INTL("{1} must be a relative path inside the PBS directory; got {2}.",label,filename))
   end
-  database=[]
+  AzurePBSValidation.error(_INTL("{1} cannot name a directory.",label)) if filename[/\/$/]
+  return filename
+end
+
+def pbBattleFacilitySourcePath(sourceDir,filename)
+  base=sourceDir.to_s.gsub("\\","/").sub(/\/$/,"")
+  return base=="" || base=="." ? filename : base+"/"+filename
+end
+
+def pbValidateTrainerLists(sourceFile="PBS/trainerlists.txt",sourceDir=nil)
+  sourceDir=File.dirname(sourceFile) if !sourceDir
+  FileLineData.file=sourceFile
+  rawSections=pbAltPBSParseLegacySections(sourceFile)
+  if rawSections.length==0
+    FileLineData.setLine(nil,0)
+    AzurePBSValidation.error("Battle-facility trainer lists must contain at least one section.")
+  end
+  lists=[]
+  defaultLine=nil
+  challengeKeys={}
+  for section in rawSections
+    FileLineData.file=sourceFile
+    AzurePBSValidation.source(section)
+    name=section[:id].to_s
+    if name!="DefaultTrainerList" && name!="TrainerList"
+      AzurePBSValidation.error(_INTL("Unknown battle-facility list section [{1}].",name))
+    end
+    if name=="DefaultTrainerList"
+      if defaultLine
+        AzurePBSValidation.error(_INTL("Duplicate DefaultTrainerList; the first definition is at line {1}.",defaultLine))
+      end
+      defaultLine=section[:lineno]
+    end
+    AzurePBSValidation.properties(section,AZURE_TRAINER_LIST_PROPERTIES,
+      _INTL("battle-facility list section [{1}]",name))
+    data=pbAltPBSFieldHash(section)
+    AzurePBSValidation.source(section,"Trainers")
+    trainerFile=pbBattleFacilityRelativeFilename(data["Trainers"],"Trainers file")
+    AzurePBSValidation.source(section,"Pokemon")
+    pokemonFile=pbBattleFacilityRelativeFilename(data["Pokemon"],"Pokemon file")
+    challenges=[]
+    if name!="DefaultTrainerList" && data["Challenges"]
+      AzurePBSValidation.source(section,"Challenges")
+      for challenge in data["Challenges"].to_s.split(",",-1)
+        challenge=challenge.to_s.strip
+        next if challenge==""
+        AzurePBSValidation.unique(challengeKeys,challenge,"battle-facility challenge",section[:lineno])
+        challenges.push(challenge)
+      end
+    end
+    trainerPath=pbBattleFacilitySourcePath(sourceDir,trainerFile)
+    pokemonPath=pbBattleFacilitySourcePath(sourceDir,pokemonFile)
+    trainerResult=pbReadBTTrainerSource(trainerPath)
+    pokemonResult=pbReadBTPokemonSource(pokemonPath)
+    for trainerIndex in 0...trainerResult[:records].length
+      for number in trainerResult[:records][trainerIndex][5]
+        next if number<pokemonResult[:records].length
+        FileLineData.file=trainerPath
+        FileLineData.setLine("PokemonNos=#{trainerResult[:records][trainerIndex][5].join(',')}",
+          trainerResult[:record_lines][trainerIndex])
+        AzurePBSValidation.error(_INTL("PokemonNos entry {1} is outside the Pokemon dataset, which contains {2} records.",number,pokemonResult[:records].length))
+      end
+    end
+    lists.push({
+      :default=>(name=="DefaultTrainerList"),:lineno=>section[:lineno],
+      :trainers_file=>trainerFile,:pokemon_file=>pokemonFile,
+      :trainers_path=>trainerPath,:pokemon_path=>pokemonPath,
+      :challenges=>challenges,:trainer_data=>trainerResult,
+      :pokemon_data=>pokemonResult
+    })
+  end
+  if !defaultLine
+    FileLineData.file=sourceFile
+    FileLineData.setLine(nil,0)
+    AzurePBSValidation.error("Battle-facility trainer lists require exactly one DefaultTrainerList section.")
+  end
+  return lists
+end
+
+def pbTrainerListReferencedSources(sourceFile="PBS/trainerlists.txt",sourceDir=nil)
+  return [] if !safeExists?(sourceFile)
+  sourceDir=File.dirname(sourceFile) if !sourceDir
+  ret=[]
+  for section in pbAltPBSParseLegacySections(sourceFile)
+    next if section[:id]!="DefaultTrainerList" && section[:id]!="TrainerList"
+    data=pbAltPBSFieldHash(section)
+    for pair in [["Trainers",data["Trainers"]],["Pokemon",data["Pokemon"]]]
+      next if !pair[1] || pair[1].to_s.strip==""
+      AzurePBSValidation.source(section,pair[0])
+      filename=pbBattleFacilityRelativeFilename(pair[1],_INTL("{1} file",pair[0]))
+      path=pbBattleFacilitySourcePath(sourceDir,filename)
+      ret.push(path) if !ret.include?(path)
+    end
+  end
+  return ret
+end
+
+def pbBattleFacilityMessageHash(messages,current=nil)
+  ret=OrderedHash.new
+  for message in messages
+    next if !message
+    key=Messages.stringToKey(message)
+    value=(current && current[key] && current[key]==message) ? current[key] : message
+    ret[key]=value
+  end
+  return ret
+end
+
+def pbMergeBattleFacilityMessageHash(messages,current)
+  current=OrderedHash.new if !current
+  for message in messages
+    next if !message
+    key=Messages.stringToKey(message)
+    current[key]=message if !current[key] || current[key]!=message
+  end
+  return current
+end
+
+def pbCompileTrainerLists(dataOutput="Data/trainerlists.dat",installRuntime=true,
+                          messagesOutput=nil,sourceFile="PBS/trainerlists.txt",
+                          sourceDir=nil)
+  if !safeExists?(sourceFile)
+    if sourceFile=="PBS/trainerlists.txt"
+      File.open(sourceFile,"wb"){|f|
+        f.write(0xEF.chr); f.write(0xBB.chr); f.write(0xBF.chr)
+        f.write("[DefaultTrainerList]\nTrainers=bttrainers.txt\nPokemon=btpokemon.txt\n")
+      }
+    else
+      FileLineData.file=sourceFile
+      FileLineData.setLine(nil,0)
+      AzurePBSValidation.error(_INTL("Battle-facility list source {1} does not exist.",sourceFile))
+    end
+  end
+  lists=pbValidateTrainerLists(sourceFile,sourceDir)
   sections=[]
-  MessageTypes.setMessagesAsHash(MessageTypes::BeginSpeech,[])
-  MessageTypes.setMessagesAsHash(MessageTypes::EndSpeechWin,[])
-  MessageTypes.setMessagesAsHash(MessageTypes::EndSpeechLose,[])
-  File.open("PBS/trainerlists.txt","rb"){|f|
-     pbEachFileSectionEx(f){|section,name|
-        next if name!="DefaultTrainerList" && name!="TrainerList"
-        rsection=[]
-        for key in section.keys
-          FileLineData.setSection(name,key,section[key])
-          schema=btTrainersRequiredTypes[key]
-          next if key=="Challenges" && name=="DefaultTrainerList"
-          next if !schema
-          record=pbGetCsvRecord(section[key],0,schema)
-          rsection[schema[0]]=record
-        end
-        if !rsection[0]
-          raise _INTL("No trainer data file given in section {1}\n{2}",name,FileLineData.linereport)
-        end
-        if !rsection[1]
-          raise _INTL("No trainer data file given in section {1}\n{2}",name,FileLineData.linereport)
-        end
-        rsection[3]=rsection[0]
-        rsection[4]=rsection[1]
-        rsection[5]=(name=="DefaultTrainerList")
-        if safeExists?("PBS/"+rsection[0])
-          rsection[0]=pbCompileBTTrainers("PBS/"+rsection[0])
-        else
-          rsection[0]=[]
-        end
-        if safeExists?("PBS/"+rsection[1])
-          filename="PBS/"+rsection[1]
-          rsection[1]=[]
-          pbCompilerEachCommentedLine(filename){|line,lineno|
-             rsection[1].push(PBPokemon.fromInspected(line))
-          }
-        else
-          rsection[1]=[]
-        end
-        if !rsection[2]
-          rsection[2]=[]
-        end
-        while rsection[2].include?("")
-          rsection[2].delete("")
-        end
-        rsection[2].compact!
-        sections.push(rsection)
-     }
-  }
-  save_data(sections,"Data/trainerlists.dat")
+  names=[]
+  beginSpeech=[]
+  winSpeech=[]
+  loseSpeech=[]
+  for list in lists
+    trainers=list[:trainer_data][:records]
+    pokemon=list[:pokemon_data][:records]
+    sections.push([trainers,pokemon,list[:challenges],list[:trainers_file],
+                   list[:pokemon_file],list[:default]])
+    names.concat(list[:trainer_data][:names])
+    beginSpeech.concat(list[:trainer_data][:begin_speech])
+    winSpeech.concat(list[:trainer_data][:win_speech])
+    loseSpeech.concat(list[:trainer_data][:lose_speech])
+  end
+  # Validation and reference checks finish before either compiled output is
+  # replaced, so malformed authoring data cannot partially install.
+  save_data(sections,dataOutput)
+  if installRuntime
+    MessageTypes.addMessagesAsHash(MessageTypes::TrainerNames,names)
+    MessageTypes.setMessagesAsHash(MessageTypes::BeginSpeech,beginSpeech)
+    MessageTypes.setMessagesAsHash(MessageTypes::EndSpeechWin,winSpeech)
+    MessageTypes.setMessagesAsHash(MessageTypes::EndSpeechLose,loseSpeech)
+    if defined?(pbInvalidateBTTrainerLists)
+      pbInvalidateBTTrainerLists
+    elsif defined?(AzureDataCache)
+      AzureDataCache.clear("Data/trainerlists.dat")
+    end
+  end
+  if messagesOutput
+    messageDatabase=load_data("Data/messages.dat")
+    messageDatabase[MessageTypes::TrainerNames]=pbMergeBattleFacilityMessageHash(
+      names,messageDatabase[MessageTypes::TrainerNames])
+    messageDatabase[MessageTypes::BeginSpeech]=pbBattleFacilityMessageHash(
+      beginSpeech,messageDatabase[MessageTypes::BeginSpeech])
+    messageDatabase[MessageTypes::EndSpeechWin]=pbBattleFacilityMessageHash(
+      winSpeech,messageDatabase[MessageTypes::EndSpeechWin])
+    messageDatabase[MessageTypes::EndSpeechLose]=pbBattleFacilityMessageHash(
+      loseSpeech,messageDatabase[MessageTypes::EndSpeechLose])
+    File.open(messagesOutput,"wb"){|file| Marshal.dump(messageDatabase,file) }
+  end
+  return {:lists=>sections,:source_lists=>lists,:names=>names,
+          :begin_speech=>beginSpeech,:win_speech=>winSpeech,
+          :lose_speech=>loseSpeech}
 end
 
 AZURE_PHONE_SECTIONS=[
@@ -5422,6 +5621,11 @@ AZURE_PBS_COMPILE_STEPS=[
    :sources=>["PBS/trainertypes.txt","PBS/trainer_types.txt","PBS/trainers.txt"],
    :outputs=>["Data/trainertypes.dat","Data/trainers.dat","Scripts/PBTrainers.rb"],
    :dependencies=>[:abilities,:moves,:items,:pokemon]},
+  {:id=>:battle_facility,
+   :label=>"battle-facility Trainer data",
+   :sources=>["PBS/trainerlists.txt"],
+   :outputs=>["Data/trainerlists.dat"],
+   :dependencies=>[:trainers,:pokemon,:moves,:items]},
   {:id=>:phone,
    :label=>"phone data",
    :sources=>["PBS/phone.txt"],
@@ -5470,6 +5674,8 @@ def pbAzurePBSCompileSources(step)
     if !pbUsesSplitMetadataPBS("PBS/metadata.txt","PBS/map_metadata.txt")
       sources.delete("PBS/map_metadata.txt")
     end
+  when :battle_facility
+    sources.concat(pbTrainerListReferencedSources("PBS/trainerlists.txt"))
   end
   return sources
 end
@@ -5546,6 +5752,7 @@ def pbRunAzurePBSCompileStep(id)
   when :pokemon;       pbCompilePokemonData
   when :machines;      pbCompileMachines
   when :trainers;      pbCompileTrainers
+  when :battle_facility; pbCompileTrainerLists
   when :phone;         pbCompilePhoneData
   when :metadata;      pbCompileMetadata
   when :encounters;    pbCompileEncounters
@@ -5572,9 +5779,13 @@ def pbRefreshAzureCompiledData(plan)
     PBMapMetadataData.clear_cache if defined?(PBMapMetadataData)
   end
   AzureTrainerDataCache.clear if ids.include?(:trainers) && defined?(AzureTrainerDataCache)
+  pbInvalidateBTTrainerLists if ids.include?(:battle_facility) && defined?(pbInvalidateBTTrainerLists)
   $ItemData=load_data("Data/pokmanitems.rxdata") if ids.include?(:items) && defined?($ItemData)
   $tmData=nil if ids.include?(:machines) && defined?($tmData)
-  $pkmn_animations=nil if ids.include?(:animations) && defined?($pkmn_animations)
+  if ids.include?(:animations)
+    pbInvalidateBattleAnimationIndex if defined?(pbInvalidateBattleAnimationIndex)
+    $pkmn_animations=nil if defined?($pkmn_animations)
+  end
   if ids.include?(:types) && PBTypes.respond_to?(:class_variable_set)
     PBTypes.class_variable_set(:@@TypeData,nil) rescue nil
     PBTypeData.clear_cache if defined?(PBTypeData)
@@ -5663,7 +5874,7 @@ def pbCompileAllData(mustcompile,notrainers=false)
     pbCompileMetadata
     # Depends on PBTrainers
     yield(_INTL("Compiling battle Trainer data"))
-    #pbCompileTrainerLists
+    pbCompileTrainerLists
     # Depends on PBSpecies
     yield(_INTL("Compiling encounter data"))
     pbCompileEncounters
@@ -6909,6 +7120,17 @@ AZURE_PBS_TRACKED_FILES=[
   "trainers.txt","trainertypes.txt","trainer_types.txt","README.txt"
 ] if !defined?(AZURE_PBS_TRACKED_FILES)
 
+def pbAzurePBSTrackedFiles(sourceDir="PBS")
+  files=AZURE_PBS_TRACKED_FILES.clone
+  listSource=sourceDir+"/trainerlists.txt"
+  if safeExists?(listSource)
+    for filename in pbTrainerListReferencedSources(listSource,"")
+      files.push(filename) if !files.include?(filename)
+    end
+  end
+  return files
+end
+
 def pbExportAltPBSFiles(outputDir="PBS/AltMigration",sourceDir="PBS")
   pbAltPBSEnsureDirectory(outputDir)
   pbExportAltPokemonPBS(outputDir,sourceDir)
@@ -6930,6 +7152,11 @@ def pbExportAltPBSFiles(outputDir="PBS/AltMigration",sourceDir="PBS")
     source=sourceDir+"/"+filename
     pbAltPBSCopyFile(source,outputDir+"/"+filename) if safeExists?(source)
   end
+  for filename in pbAzurePBSTrackedFiles(sourceDir)
+    next if AZURE_PBS_TRACKED_FILES.include?(filename)
+    source=sourceDir+"/"+filename
+    pbAltPBSCopyFile(source,outputDir+"/"+filename) if safeExists?(source)
+  end
   notes=[]
   notes.push("# Generated by pbExportAltPBSFiles.")
   notes.push("# Alternate forms remain in Scripts/PokemonMultipleForms.rb for now.")
@@ -6943,7 +7170,7 @@ def pbInstallAltPBSFiles(targetDir="PBS",backupRoot="PBS/LegacyBackup")
   backupDir=backupRoot+"/"+timestamp
   pbAltPBSEnsureDirectory(targetDir)
   pbAltPBSEnsureDirectory(backupDir)
-  for filename in AZURE_PBS_TRACKED_FILES
+  for filename in pbAzurePBSTrackedFiles(targetDir)
     source=targetDir+"/"+filename
     next if !safeExists?(source)
     pbAltPBSCopyFile(source,backupDir+"/"+filename)
@@ -7004,7 +7231,7 @@ end
 def pbBackupCurrentPBS(targetDir="PBS",backupRoot="PBS/RestoreBackup")
   backupDir=pbUniqueTimestampedPBSDirectory(backupRoot)
   pbAltPBSEnsureDirectory(backupDir)
-  for filename in AZURE_PBS_TRACKED_FILES
+  for filename in pbAzurePBSTrackedFiles(targetDir)
     source=targetDir+"/"+filename
     pbAltPBSCopyFile(source,backupDir+"/"+filename) if safeExists?(source)
   end
@@ -7021,7 +7248,11 @@ def pbRestorePBSBackup(backupDir,targetDir="PBS",backupRoot="PBS/LegacyBackup")
     raise _INTL("The selected PBS backup is outside {1}.",backupRoot)
   end
   safetyDir=pbBackupCurrentPBS(targetDir,"PBS/RestoreBackup")
-  for filename in AZURE_PBS_TRACKED_FILES
+  trackedFiles=pbAzurePBSTrackedFiles(targetDir)
+  for filename in pbAzurePBSTrackedFiles(sourceDir)
+    trackedFiles.push(filename) if !trackedFiles.include?(filename)
+  end
+  for filename in trackedFiles
     source=sourceDir+"/"+filename
     destination=targetDir+"/"+filename
     if safeExists?(source)

@@ -86,6 +86,33 @@ module AzureDataCache
   end
 end
 
+# A transfer used to deserialize its destination once for audio fade decisions
+# and again immediately in Game_Map#setup. Keep that exact object only until
+# setup consumes it; this is a one-shot ownership handoff, not a map cache.
+module AzureMapTransferHandoff
+  def self.preload(map_id)
+    clear
+    @map_id=map_id
+    @map=pbLoadRxData(sprintf("Data/Map%03d",map_id))
+    return @map
+  end
+
+  def self.take(map_id)
+    if @map && @map_id==map_id
+      map=@map
+      clear
+      return map
+    end
+    clear
+    return pbLoadRxData(sprintf("Data/Map%03d",map_id))
+  end
+
+  def self.clear
+    @map_id=nil
+    @map=nil
+  end
+end
+
 # Parses Azure's fixed-width evolution file once while retaining its on-disk
 # layout for the compiler, editors, and packaged-data compatibility.
 module AzureEvolutionDataCache
@@ -211,4 +238,25 @@ end
 def pbCachedRxData(path)
   extension=$RPGVX ? ".rvdata" : ".rxdata"
   return pbCachedData(path+extension)
+end
+
+# Tilesets are intentionally kept outside AzureDataCache. The tileset editor
+# replaces this mutable collection at runtime, so retain the legacy global as
+# the single source of truth while deferring its initial load until a map needs
+# it.
+def pbLoadTilesetData
+  $data_tilesets=pbLoadRxData("Data/Tilesets") if !$data_tilesets
+  return $data_tilesets
+end
+
+def pbReloadTilesetData
+  $data_tilesets=pbLoadRxData("Data/Tilesets")
+  return $data_tilesets
+end
+
+# RPG Maker animations are distinct from PkmnAnimations and are only required
+# when a map/event visual effect is actually requested.
+def pbLoadRPGAnimations
+  $data_animations=pbLoadRxData("Data/Animations") if !$data_animations
+  return $data_animations
 end

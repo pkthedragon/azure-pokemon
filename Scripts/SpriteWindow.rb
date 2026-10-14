@@ -1226,8 +1226,7 @@ def pbDoEnsureBitmap(bitmap,dwidth,dheight)
 end
 
 def pbUpdateSpriteHash(windows)
-  for i in windows
-    window=i[1]
+  windows.each_value do |window|
     if window 
       if window.is_a?(Sprite) || window.is_a?(Window)
         window.update if !pbDisposed?(window)
@@ -1236,7 +1235,7 @@ def pbUpdateSpriteHash(windows)
           window.update if !window.disposed?
         rescue NoMethodError
         end
-      elsif window.respond_to?("update")
+      elsif window.respond_to?(:update)
         begin
           window.update
         rescue RGSSError

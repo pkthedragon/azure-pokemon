@@ -11030,3 +11030,2467 @@ Item use turned off.
 [Prefer Energy Ball]
 [No Z-Move.]
 [The ally Shieldon lost 23 HP, now has 24 HP]
+Player Pokemon Charizard is faster than Blastoise.
+Player Pokemon Charizard is faster than Blastoise.
+Surf: initial score: 71
+Player Pokemon Charizard is faster than Blastoise.
+Surf: initial score: 71
+Surf: final score: 71
+ 
+Ice Beam: initial score: 23
+Ice Beam: final score: 23
+ 
+Dark Pulse: initial score: 20
+Dark Pulse: final score: 20
+ 
+Protect: initial score: 30
+Priority Check End
+Protect: final score: 30
+ 
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (0)
+Initial switchscore building: Healing (0)
+Initial switchscore building: fsteak (0)
+Initial switchscore building: Specific Switches (0)
+Initial switchscore building: Typing (0)
+Blastoise: initial switchscore: -20
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+Blastoise: initial noswitchscore: 66
+ 
+{
+ 
+}
+ 
+Blastoise: highest move score: 71
+Blastoise: final switching score: -143
+71 > -143, will not switch
+ 
+[The foe Blastoise: Surf=71, Ice Beam=23, Dark Pulse=20, Protect=30]
+[Prefer Surf]
+[No Z-Move.]
+Player Pokemon Charizard is faster than Blastoise.
+Player Pokemon Venusaur is faster than Blastoise.
+Player Pokemon Charizard is faster than Blastoise.
+Surf: initial score: 78
+Surf: final score: 78
+ 
+Ice Beam: initial score: 25
+Ice Beam: final score: 25
+ 
+Dark Pulse: initial score: 23
+Dark Pulse: final score: 23
+ 
+Protect: initial score: 30
+Priority Check End
+Protect: final score: 30
+ 
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (0)
+Initial switchscore building: Healing (0)
+Initial switchscore building: fsteak (0)
+Initial switchscore building: Specific Switches (0)
+Initial switchscore building: Typing (0)
+Blastoise: initial switchscore: -20
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+Blastoise: initial noswitchscore: 66
+ 
+{
+ 
+}
+ 
+Blastoise: highest move score: 78
+Blastoise: final switching score: -143
+78 > -143, will not switch
+ 
+[The foe Blastoise: Surf=78, Ice Beam=25, Dark Pulse=23, Protect=30]
+[Prefer Surf]
+[No Z-Move.]
+Player Pokemon Charizard is faster than Blastoise.
+AI Pokemon Blastoise is faster than Venusaur.
+ 
+ 
+Surf: initial score: 59
+Surf: final score: 59
+ 
+Surf: initial score: 12
+Surf: final score: 12
+ 
+Surf: initial score: 25
+Surf: final score: 25
+ 
+Surf: Final Score after Multi-Target Adjustment: 53
+
+Surf: Final Score after Doubles-Target Adjustment: 53
+Surf: Final Score after Doubles-Target Adjustment: 53
+
+Ice Beam: initial score: 25
+Ice Beam: final score: 25
+ 
+Ice Beam: initial score: 44
+Ice Beam: final score: 44
+ 
+Ice Beam: Final Score after Doubles-Target Adjustment: 25
+Ice Beam: Final Score after Doubles-Target Adjustment: 44
+
+Dark Pulse: initial score: 23
+Dark Pulse: final score: 23
+ 
+Dark Pulse: initial score: 19
+Dark Pulse: final score: 19
+ 
+Dark Pulse: Final Score after Doubles-Target Adjustment: 23
+Dark Pulse: Final Score after Doubles-Target Adjustment: 19
+
+Protect: initial score: 30
+Priority Check End
+Protect: final score: 6
+ 
+Protect: initial score: 30
+Priority Check End
+Protect: final score: 30
+ 
+Protect: Final Score after Status-Target Adjustment: 6
+Protect: Final Score after Status-Target Adjustment: 30
+
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (0)
+Initial switchscore building: Healing (0)
+Initial switchscore building: fsteak (0)
+Initial switchscore building: Specific Switches (0)
+Initial switchscore building: Typing (0)
+Blastoise: initial switchscore: 0
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+Blastoise: initial noswitchscore: 116
+ 
+{
+ 
+}
+ 
+Blastoise: highest move score: 53
+Blastoise: final switching score: -158
+53 > -158, will not switch
+ 
+[The foe Blastoise: Surf=53, Ice Beam=44, Dark Pulse=23, Protect=30]
+[Prefer Surf]
+[No Z-Move.]
+Player Pokemon Charizard is faster than Blastoise.
+Surf: initial score: 86
+Surf: final score: 86
+ 
+Ice Beam: initial score: 28
+Ice Beam: final score: 28
+ 
+Dark Pulse: initial score: 25
+Dark Pulse: final score: 25
+ 
+Protect: initial score: 30
+Priority Check End
+Protect: final score: 30
+ 
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (0)
+Initial switchscore building: Healing (0)
+Initial switchscore building: fsteak (0)
+Initial switchscore building: Specific Switches (0)
+Initial switchscore building: Typing (0)
+Blastoise: initial switchscore: -20
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+Blastoise: initial noswitchscore: 66
+ 
+{
+ 
+}
+ 
+Blastoise: highest move score: 86
+Blastoise: final switching score: -143
+86 > -143, will not switch
+ 
+[The foe Blastoise: Surf=86, Ice Beam=28, Dark Pulse=25, Protect=30]
+[Prefer Surf]
+[No Z-Move.]
+Player Pokemon Charizard is faster than Blastoise.
+Player Pokemon Venusaur is faster than Blastoise.
+ 
+ 
+Surf: initial score: 59
+Surf: final score: 59
+ 
+Surf: initial score: 11
+Surf: final score: 11
+ 
+Surf: initial score: 25
+Surf: final score: 25
+ 
+Surf: Final Score after Multi-Target Adjustment: 52
+
+Surf: Final Score after Doubles-Target Adjustment: 52
+Surf: Final Score after Doubles-Target Adjustment: 52
+
+Ice Beam: initial score: 25
+Ice Beam: final score: 25
+ 
+Ice Beam: initial score: 40
+Ice Beam: final score: 40
+ 
+Ice Beam: Final Score after Doubles-Target Adjustment: 25
+Ice Beam: Final Score after Doubles-Target Adjustment: 40
+
+Dark Pulse: initial score: 23
+Dark Pulse: final score: 23
+ 
+Dark Pulse: initial score: 17
+Dark Pulse: final score: 17
+ 
+Dark Pulse: Final Score after Doubles-Target Adjustment: 23
+Dark Pulse: Final Score after Doubles-Target Adjustment: 17
+
+Protect: initial score: 30
+Priority Check End
+Protect: final score: 6
+ 
+Protect: initial score: 30
+Priority Check End
+Protect: final score: 30
+ 
+Protect: Final Score after Status-Target Adjustment: 6
+Protect: Final Score after Status-Target Adjustment: 30
+
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (0)
+Initial switchscore building: Healing (0)
+Initial switchscore building: fsteak (0)
+Initial switchscore building: Specific Switches (0)
+Initial switchscore building: Typing (0)
+Blastoise: initial switchscore: 0
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+Blastoise: initial noswitchscore: 116
+ 
+{
+ 
+}
+ 
+Blastoise: highest move score: 52
+Blastoise: final switching score: -158
+52 > -158, will not switch
+ 
+[The foe Blastoise: Surf=52, Ice Beam=40, Dark Pulse=23, Protect=30]
+[Prefer Surf]
+[No Z-Move.]
+Player Pokemon Charizard is faster than Blastoise.
+Surf: initial score: 86
+Surf: final score: 86
+ 
+Ice Beam: initial score: 28
+Ice Beam: final score: 28
+ 
+Dark Pulse: initial score: 24
+Dark Pulse: final score: 24
+ 
+Protect: initial score: 30
+Priority Check End
+Protect: final score: 30
+ 
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (0)
+Initial switchscore building: Healing (0)
+Initial switchscore building: fsteak (0)
+Initial switchscore building: Specific Switches (0)
+Initial switchscore building: Typing (0)
+Blastoise: initial switchscore: -20
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+Blastoise: initial noswitchscore: 66
+ 
+{
+ 
+}
+ 
+Blastoise: highest move score: 86
+Blastoise: final switching score: -143
+86 > -143, will not switch
+ 
+[The foe Blastoise: Surf=86, Ice Beam=28, Dark Pulse=24, Protect=30]
+[Prefer Surf]
+[No Z-Move.]
+Player Pokemon Charizard is faster than Blastoise.
+Player Pokemon Venusaur is faster than Blastoise.
+ 
+ 
+Surf: initial score: 55
+Surf: final score: 55
+ 
+Surf: initial score: 12
+Surf: final score: 12
+ 
+Surf: initial score: 25
+Surf: final score: 25
+ 
+Surf: Final Score after Multi-Target Adjustment: 50
+
+Surf: Final Score after Doubles-Target Adjustment: 50
+Surf: Final Score after Doubles-Target Adjustment: 50
+
+Ice Beam: initial score: 23
+Ice Beam: final score: 23
+ 
+Ice Beam: initial score: 44
+Ice Beam: final score: 44
+ 
+Ice Beam: Final Score after Doubles-Target Adjustment: 23
+Ice Beam: Final Score after Doubles-Target Adjustment: 44
+
+Dark Pulse: initial score: 21
+Dark Pulse: final score: 21
+ 
+Dark Pulse: initial score: 19
+Dark Pulse: final score: 19
+ 
+Dark Pulse: Final Score after Doubles-Target Adjustment: 21
+Dark Pulse: Final Score after Doubles-Target Adjustment: 19
+
+Protect: initial score: 30
+Priority Check End
+Protect: final score: 6
+ 
+Protect: initial score: 30
+Priority Check End
+Protect: final score: 30
+ 
+Protect: Final Score after Status-Target Adjustment: 6
+Protect: Final Score after Status-Target Adjustment: 30
+
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (0)
+Initial switchscore building: Healing (0)
+Initial switchscore building: fsteak (0)
+Initial switchscore building: Specific Switches (0)
+Initial switchscore building: Typing (0)
+Blastoise: initial switchscore: 0
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+Blastoise: initial noswitchscore: 116
+ 
+{
+ 
+}
+ 
+Blastoise: highest move score: 50
+Blastoise: final switching score: -158
+50 > -158, will not switch
+ 
+[The foe Blastoise: Surf=50, Ice Beam=44, Dark Pulse=21, Protect=30]
+[Prefer Surf]
+[No Z-Move.]
+Player Pokemon Charizard is faster than Blastoise.
+Surf: initial score: 86
+Surf: final score: 86
+ 
+Ice Beam: initial score: 28
+Ice Beam: final score: 28
+ 
+Dark Pulse: initial score: 24
+Dark Pulse: final score: 24
+ 
+Protect: initial score: 30
+Priority Check End
+Protect: final score: 30
+ 
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (0)
+Initial switchscore building: Healing (0)
+Initial switchscore building: fsteak (0)
+Initial switchscore building: Specific Switches (0)
+Initial switchscore building: Typing (0)
+Blastoise: initial switchscore: -20
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+Blastoise: initial noswitchscore: 66
+ 
+{
+ 
+}
+ 
+Blastoise: highest move score: 86
+Blastoise: final switching score: -143
+86 > -143, will not switch
+ 
+[The foe Blastoise: Surf=86, Ice Beam=28, Dark Pulse=24, Protect=30]
+[Prefer Surf]
+[No Z-Move.]
+Player Pokemon Charizard is faster than Blastoise.
+Player Pokemon Venusaur is faster than Blastoise.
+ 
+ 
+Surf: initial score: 55
+Surf: final score: 55
+ 
+Surf: initial score: 12
+Surf: final score: 12
+ 
+Surf: initial score: 25
+Surf: final score: 25
+ 
+Surf: Final Score after Multi-Target Adjustment: 50
+
+Surf: Final Score after Doubles-Target Adjustment: 50
+Surf: Final Score after Doubles-Target Adjustment: 50
+
+Ice Beam: initial score: 23
+Ice Beam: final score: 23
+ 
+Ice Beam: initial score: 44
+Ice Beam: final score: 44
+ 
+Ice Beam: Final Score after Doubles-Target Adjustment: 23
+Ice Beam: Final Score after Doubles-Target Adjustment: 44
+
+Dark Pulse: initial score: 21
+Dark Pulse: final score: 21
+ 
+Dark Pulse: initial score: 19
+Dark Pulse: final score: 19
+ 
+Dark Pulse: Final Score after Doubles-Target Adjustment: 21
+Dark Pulse: Final Score after Doubles-Target Adjustment: 19
+
+Protect: initial score: 30
+Priority Check End
+Protect: final score: 6
+ 
+Protect: initial score: 30
+Priority Check End
+Protect: final score: 30
+ 
+Protect: Final Score after Status-Target Adjustment: 6
+Protect: Final Score after Status-Target Adjustment: 30
+
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (0)
+Initial switchscore building: Healing (0)
+Initial switchscore building: fsteak (0)
+Initial switchscore building: Specific Switches (0)
+Initial switchscore building: Typing (0)
+Blastoise: initial switchscore: 0
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+Blastoise: initial noswitchscore: 116
+ 
+{
+ 
+}
+ 
+Blastoise: highest move score: 50
+Blastoise: final switching score: -158
+50 > -158, will not switch
+ 
+[The foe Blastoise: Surf=50, Ice Beam=44, Dark Pulse=21, Protect=30]
+[Prefer Surf]
+[No Z-Move.]
+Player Pokemon Charizard is faster than Blastoise.
+Surf: initial score: 86
+Surf: final score: 86
+ 
+Ice Beam: initial score: 28
+Ice Beam: final score: 28
+ 
+Dark Pulse: initial score: 24
+Dark Pulse: final score: 24
+ 
+Protect: initial score: 30
+Priority Check End
+Protect: final score: 30
+ 
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (0)
+Initial switchscore building: Healing (0)
+Initial switchscore building: fsteak (0)
+Initial switchscore building: Specific Switches (0)
+Initial switchscore building: Typing (0)
+Blastoise: initial switchscore: -20
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+Blastoise: initial noswitchscore: 66
+ 
+{
+ 
+}
+ 
+Blastoise: highest move score: 86
+Blastoise: final switching score: -143
+86 > -143, will not switch
+ 
+[The foe Blastoise: Surf=86, Ice Beam=28, Dark Pulse=24, Protect=30]
+[Prefer Surf]
+[No Z-Move.]
+Player Pokemon Charizard is faster than Blastoise.
+Player Pokemon Venusaur is faster than Blastoise.
+ 
+ 
+Surf: initial score: 55
+Surf: final score: 55
+ 
+Surf: initial score: 12
+Surf: final score: 12
+ 
+Surf: initial score: 25
+Surf: final score: 25
+ 
+Surf: Final Score after Multi-Target Adjustment: 50
+
+Surf: Final Score after Doubles-Target Adjustment: 50
+Surf: Final Score after Doubles-Target Adjustment: 50
+
+Ice Beam: initial score: 23
+Ice Beam: final score: 23
+ 
+Ice Beam: initial score: 44
+Ice Beam: final score: 44
+ 
+Ice Beam: Final Score after Doubles-Target Adjustment: 23
+Ice Beam: Final Score after Doubles-Target Adjustment: 44
+
+Dark Pulse: initial score: 21
+Dark Pulse: final score: 21
+ 
+Dark Pulse: initial score: 19
+Dark Pulse: final score: 19
+ 
+Dark Pulse: Final Score after Doubles-Target Adjustment: 21
+Dark Pulse: Final Score after Doubles-Target Adjustment: 19
+
+Protect: initial score: 30
+Priority Check End
+Protect: final score: 6
+ 
+Protect: initial score: 30
+Priority Check End
+Protect: final score: 30
+ 
+Protect: Final Score after Status-Target Adjustment: 6
+Protect: Final Score after Status-Target Adjustment: 30
+
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (0)
+Initial switchscore building: Healing (0)
+Initial switchscore building: fsteak (0)
+Initial switchscore building: Specific Switches (0)
+Initial switchscore building: Typing (0)
+Blastoise: initial switchscore: 0
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+Blastoise: initial noswitchscore: 116
+ 
+{
+ 
+}
+ 
+Blastoise: highest move score: 50
+Blastoise: final switching score: -158
+50 > -158, will not switch
+ 
+[The foe Blastoise: Surf=50, Ice Beam=44, Dark Pulse=21, Protect=30]
+[Prefer Surf]
+[No Z-Move.]
+Player Pokemon Charizard is faster than Blastoise.
+Surf: initial score: 86
+Surf: final score: 86
+ 
+Ice Beam: initial score: 28
+Ice Beam: final score: 28
+ 
+Dark Pulse: initial score: 24
+Dark Pulse: final score: 24
+ 
+Protect: initial score: 30
+Priority Check End
+Protect: final score: 30
+ 
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (0)
+Initial switchscore building: Healing (0)
+Initial switchscore building: fsteak (0)
+Initial switchscore building: Specific Switches (0)
+Initial switchscore building: Typing (0)
+Blastoise: initial switchscore: -20
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+Blastoise: initial noswitchscore: 66
+ 
+{
+ 
+}
+ 
+Blastoise: highest move score: 86
+Blastoise: final switching score: -143
+86 > -143, will not switch
+ 
+[The foe Blastoise: Surf=86, Ice Beam=28, Dark Pulse=24, Protect=30]
+[Prefer Surf]
+[No Z-Move.]
+Player Pokemon Charizard is faster than Blastoise.
+Player Pokemon Venusaur is faster than Blastoise.
+ 
+ 
+Surf: initial score: 55
+Surf: final score: 55
+ 
+Surf: initial score: 12
+Surf: final score: 12
+ 
+Surf: initial score: 25
+Surf: final score: 25
+ 
+Surf: Final Score after Multi-Target Adjustment: 50
+
+Surf: Final Score after Doubles-Target Adjustment: 50
+Surf: Final Score after Doubles-Target Adjustment: 50
+
+Ice Beam: initial score: 23
+Ice Beam: final score: 23
+ 
+Ice Beam: initial score: 44
+Ice Beam: final score: 44
+ 
+Ice Beam: Final Score after Doubles-Target Adjustment: 23
+Ice Beam: Final Score after Doubles-Target Adjustment: 44
+
+Dark Pulse: initial score: 21
+Dark Pulse: final score: 21
+ 
+Dark Pulse: initial score: 19
+Dark Pulse: final score: 19
+ 
+Dark Pulse: Final Score after Doubles-Target Adjustment: 21
+Dark Pulse: Final Score after Doubles-Target Adjustment: 19
+
+Protect: initial score: 30
+Priority Check End
+Protect: final score: 6
+ 
+Protect: initial score: 30
+Priority Check End
+Protect: final score: 30
+ 
+Protect: Final Score after Status-Target Adjustment: 6
+Protect: Final Score after Status-Target Adjustment: 30
+
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (0)
+Initial switchscore building: Healing (0)
+Initial switchscore building: fsteak (0)
+Initial switchscore building: Specific Switches (0)
+Initial switchscore building: Typing (0)
+Blastoise: initial switchscore: 0
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+Blastoise: initial noswitchscore: 116
+ 
+{
+ 
+}
+ 
+Blastoise: highest move score: 50
+Blastoise: final switching score: -158
+50 > -158, will not switch
+ 
+[The foe Blastoise: Surf=50, Ice Beam=44, Dark Pulse=21, Protect=30]
+[Prefer Surf]
+[No Z-Move.]
+Player Pokemon Charizard is faster than Blastoise.
+Surf: initial score: 86
+Surf: final score: 86
+ 
+Ice Beam: initial score: 28
+Ice Beam: final score: 28
+ 
+Dark Pulse: initial score: 24
+Dark Pulse: final score: 24
+ 
+Protect: initial score: 30
+Priority Check End
+Protect: final score: 30
+ 
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (0)
+Initial switchscore building: Healing (0)
+Initial switchscore building: fsteak (0)
+Initial switchscore building: Specific Switches (0)
+Initial switchscore building: Typing (0)
+Blastoise: initial switchscore: -20
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+Blastoise: initial noswitchscore: 66
+ 
+{
+ 
+}
+ 
+Blastoise: highest move score: 86
+Blastoise: final switching score: -143
+86 > -143, will not switch
+ 
+[The foe Blastoise: Surf=86, Ice Beam=28, Dark Pulse=24, Protect=30]
+[Prefer Surf]
+[No Z-Move.]
+Player Pokemon Charizard is faster than Blastoise.
+Player Pokemon Venusaur is faster than Blastoise.
+ 
+ 
+Surf: initial score: 55
+Surf: final score: 55
+ 
+Surf: initial score: 12
+Surf: final score: 12
+ 
+Surf: initial score: 25
+Surf: final score: 25
+ 
+Surf: Final Score after Multi-Target Adjustment: 50
+
+Surf: Final Score after Doubles-Target Adjustment: 50
+Surf: Final Score after Doubles-Target Adjustment: 50
+
+Ice Beam: initial score: 23
+Ice Beam: final score: 23
+ 
+Ice Beam: initial score: 44
+Ice Beam: final score: 44
+ 
+Ice Beam: Final Score after Doubles-Target Adjustment: 23
+Ice Beam: Final Score after Doubles-Target Adjustment: 44
+
+Dark Pulse: initial score: 21
+Dark Pulse: final score: 21
+ 
+Dark Pulse: initial score: 19
+Dark Pulse: final score: 19
+ 
+Dark Pulse: Final Score after Doubles-Target Adjustment: 21
+Dark Pulse: Final Score after Doubles-Target Adjustment: 19
+
+Protect: initial score: 30
+Priority Check End
+Protect: final score: 6
+ 
+Protect: initial score: 30
+Priority Check End
+Protect: final score: 30
+ 
+Protect: Final Score after Status-Target Adjustment: 6
+Protect: Final Score after Status-Target Adjustment: 30
+
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (0)
+Initial switchscore building: Healing (0)
+Initial switchscore building: fsteak (0)
+Initial switchscore building: Specific Switches (0)
+Initial switchscore building: Typing (0)
+Blastoise: initial switchscore: 0
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+Blastoise: initial noswitchscore: 116
+ 
+{
+ 
+}
+ 
+Blastoise: highest move score: 50
+Blastoise: final switching score: -158
+50 > -158, will not switch
+ 
+[The foe Blastoise: Surf=50, Ice Beam=44, Dark Pulse=21, Protect=30]
+[Prefer Surf]
+[No Z-Move.]
+Player Pokemon Charizard is faster than Blastoise.
+Surf: initial score: 86
+Surf: final score: 86
+ 
+Ice Beam: initial score: 28
+Ice Beam: final score: 28
+ 
+Dark Pulse: initial score: 24
+Dark Pulse: final score: 24
+ 
+Protect: initial score: 30
+Priority Check End
+Protect: final score: 30
+ 
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (0)
+Initial switchscore building: Healing (0)
+Initial switchscore building: fsteak (0)
+Initial switchscore building: Specific Switches (0)
+Initial switchscore building: Typing (0)
+Blastoise: initial switchscore: -20
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+Blastoise: initial noswitchscore: 66
+ 
+{
+ 
+}
+ 
+Blastoise: highest move score: 86
+Blastoise: final switching score: -143
+86 > -143, will not switch
+ 
+[The foe Blastoise: Surf=86, Ice Beam=28, Dark Pulse=24, Protect=30]
+[Prefer Surf]
+[No Z-Move.]
+Player Pokemon Charizard is faster than Blastoise.
+Player Pokemon Venusaur is faster than Blastoise.
+ 
+ 
+Surf: initial score: 55
+Surf: final score: 55
+ 
+Surf: initial score: 12
+Surf: final score: 12
+ 
+Surf: initial score: 25
+Surf: final score: 25
+ 
+Surf: Final Score after Multi-Target Adjustment: 50
+
+Surf: Final Score after Doubles-Target Adjustment: 50
+Surf: Final Score after Doubles-Target Adjustment: 50
+
+Ice Beam: initial score: 23
+Ice Beam: final score: 23
+ 
+Ice Beam: initial score: 44
+Ice Beam: final score: 44
+ 
+Ice Beam: Final Score after Doubles-Target Adjustment: 23
+Ice Beam: Final Score after Doubles-Target Adjustment: 44
+
+Dark Pulse: initial score: 21
+Dark Pulse: final score: 21
+ 
+Dark Pulse: initial score: 19
+Dark Pulse: final score: 19
+ 
+Dark Pulse: Final Score after Doubles-Target Adjustment: 21
+Dark Pulse: Final Score after Doubles-Target Adjustment: 19
+
+Protect: initial score: 30
+Priority Check End
+Protect: final score: 6
+ 
+Protect: initial score: 30
+Priority Check End
+Protect: final score: 30
+ 
+Protect: Final Score after Status-Target Adjustment: 6
+Protect: Final Score after Status-Target Adjustment: 30
+
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (0)
+Initial switchscore building: Healing (0)
+Initial switchscore building: fsteak (0)
+Initial switchscore building: Specific Switches (0)
+Initial switchscore building: Typing (0)
+Blastoise: initial switchscore: 0
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+Blastoise: initial noswitchscore: 116
+ 
+{
+ 
+}
+ 
+Blastoise: highest move score: 50
+Blastoise: final switching score: -158
+50 > -158, will not switch
+ 
+[The foe Blastoise: Surf=50, Ice Beam=44, Dark Pulse=21, Protect=30]
+[Prefer Surf]
+[No Z-Move.]
+Player Pokemon Charizard is faster than Blastoise.
+Surf: initial score: 86
+Surf: final score: 86
+ 
+Ice Beam: initial score: 28
+Ice Beam: final score: 28
+ 
+Dark Pulse: initial score: 24
+Dark Pulse: final score: 24
+ 
+Protect: initial score: 30
+Priority Check End
+Protect: final score: 30
+ 
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (0)
+Initial switchscore building: Healing (0)
+Initial switchscore building: fsteak (0)
+Initial switchscore building: Specific Switches (0)
+Initial switchscore building: Typing (0)
+Blastoise: initial switchscore: -20
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+Blastoise: initial noswitchscore: 66
+ 
+{
+ 
+}
+ 
+Blastoise: highest move score: 86
+Blastoise: final switching score: -143
+86 > -143, will not switch
+ 
+[The foe Blastoise: Surf=86, Ice Beam=28, Dark Pulse=24, Protect=30]
+[Prefer Surf]
+[No Z-Move.]
+Player Pokemon Charizard is faster than Blastoise.
+Player Pokemon Venusaur is faster than Blastoise.
+ 
+ 
+Surf: initial score: 55
+Surf: final score: 55
+ 
+Surf: initial score: 12
+Surf: final score: 12
+ 
+Surf: initial score: 25
+Surf: final score: 25
+ 
+Surf: Final Score after Multi-Target Adjustment: 50
+
+Surf: Final Score after Doubles-Target Adjustment: 50
+Surf: Final Score after Doubles-Target Adjustment: 50
+
+Ice Beam: initial score: 23
+Ice Beam: final score: 23
+ 
+Ice Beam: initial score: 44
+Ice Beam: final score: 44
+ 
+Ice Beam: Final Score after Doubles-Target Adjustment: 23
+Ice Beam: Final Score after Doubles-Target Adjustment: 44
+
+Dark Pulse: initial score: 21
+Dark Pulse: final score: 21
+ 
+Dark Pulse: initial score: 19
+Dark Pulse: final score: 19
+ 
+Dark Pulse: Final Score after Doubles-Target Adjustment: 21
+Dark Pulse: Final Score after Doubles-Target Adjustment: 19
+
+Protect: initial score: 30
+Priority Check End
+Protect: final score: 6
+ 
+Protect: initial score: 30
+Priority Check End
+Protect: final score: 30
+ 
+Protect: Final Score after Status-Target Adjustment: 6
+Protect: Final Score after Status-Target Adjustment: 30
+
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (0)
+Initial switchscore building: Healing (0)
+Initial switchscore building: fsteak (0)
+Initial switchscore building: Specific Switches (0)
+Initial switchscore building: Typing (0)
+Blastoise: initial switchscore: 0
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+Blastoise: initial noswitchscore: 116
+ 
+{
+ 
+}
+ 
+Blastoise: highest move score: 50
+Blastoise: final switching score: -158
+50 > -158, will not switch
+ 
+[The foe Blastoise: Surf=50, Ice Beam=44, Dark Pulse=21, Protect=30]
+[Prefer Surf]
+[No Z-Move.]
+Player Pokemon Charizard is faster than Blastoise.
+Surf: initial score: 86
+Surf: final score: 86
+ 
+Ice Beam: initial score: 28
+Ice Beam: final score: 28
+ 
+Dark Pulse: initial score: 24
+Dark Pulse: final score: 24
+ 
+Protect: initial score: 30
+Priority Check End
+Protect: final score: 30
+ 
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (0)
+Initial switchscore building: Healing (0)
+Initial switchscore building: fsteak (0)
+Initial switchscore building: Specific Switches (0)
+Initial switchscore building: Typing (0)
+Blastoise: initial switchscore: -20
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+Blastoise: initial noswitchscore: 66
+ 
+{
+ 
+}
+ 
+Blastoise: highest move score: 86
+Blastoise: final switching score: -143
+86 > -143, will not switch
+ 
+[The foe Blastoise: Surf=86, Ice Beam=28, Dark Pulse=24, Protect=30]
+[Prefer Surf]
+[No Z-Move.]
+Player Pokemon Charizard is faster than Blastoise.
+Player Pokemon Venusaur is faster than Blastoise.
+ 
+ 
+Surf: initial score: 55
+Surf: final score: 55
+ 
+Surf: initial score: 12
+Surf: final score: 12
+ 
+Surf: initial score: 25
+Surf: final score: 25
+ 
+Surf: Final Score after Multi-Target Adjustment: 50
+
+Surf: Final Score after Doubles-Target Adjustment: 50
+Surf: Final Score after Doubles-Target Adjustment: 50
+
+Ice Beam: initial score: 23
+Ice Beam: final score: 23
+ 
+Ice Beam: initial score: 44
+Ice Beam: final score: 44
+ 
+Ice Beam: Final Score after Doubles-Target Adjustment: 23
+Ice Beam: Final Score after Doubles-Target Adjustment: 44
+
+Dark Pulse: initial score: 21
+Dark Pulse: final score: 21
+ 
+Dark Pulse: initial score: 19
+Dark Pulse: final score: 19
+ 
+Dark Pulse: Final Score after Doubles-Target Adjustment: 21
+Dark Pulse: Final Score after Doubles-Target Adjustment: 19
+
+Protect: initial score: 30
+Priority Check End
+Protect: final score: 6
+ 
+Protect: initial score: 30
+Priority Check End
+Protect: final score: 30
+ 
+Protect: Final Score after Status-Target Adjustment: 6
+Protect: Final Score after Status-Target Adjustment: 30
+
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (0)
+Initial switchscore building: Healing (0)
+Initial switchscore building: fsteak (0)
+Initial switchscore building: Specific Switches (0)
+Initial switchscore building: Typing (0)
+Blastoise: initial switchscore: 0
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+Blastoise: initial noswitchscore: 116
+ 
+{
+ 
+}
+ 
+Blastoise: highest move score: 50
+Blastoise: final switching score: -158
+50 > -158, will not switch
+ 
+[The foe Blastoise: Surf=50, Ice Beam=44, Dark Pulse=21, Protect=30]
+[Prefer Surf]
+[No Z-Move.]
+Player Pokemon Charizard is faster than Blastoise.
+Surf: initial score: 86
+Surf: final score: 86
+ 
+Ice Beam: initial score: 28
+Ice Beam: final score: 28
+ 
+Dark Pulse: initial score: 24
+Dark Pulse: final score: 24
+ 
+Protect: initial score: 30
+Priority Check End
+Protect: final score: 30
+ 
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (0)
+Initial switchscore building: Healing (0)
+Initial switchscore building: fsteak (0)
+Initial switchscore building: Specific Switches (0)
+Initial switchscore building: Typing (0)
+Blastoise: initial switchscore: -20
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+Blastoise: initial noswitchscore: 66
+ 
+{
+ 
+}
+ 
+Blastoise: highest move score: 86
+Blastoise: final switching score: -143
+86 > -143, will not switch
+ 
+[The foe Blastoise: Surf=86, Ice Beam=28, Dark Pulse=24, Protect=30]
+[Prefer Surf]
+[No Z-Move.]
+Player Pokemon Charizard is faster than Blastoise.
+Player Pokemon Venusaur is faster than Blastoise.
+ 
+ 
+Surf: initial score: 55
+Surf: final score: 55
+ 
+Surf: initial score: 12
+Surf: final score: 12
+ 
+Surf: initial score: 25
+Surf: final score: 25
+ 
+Surf: Final Score after Multi-Target Adjustment: 50
+
+Surf: Final Score after Doubles-Target Adjustment: 50
+Surf: Final Score after Doubles-Target Adjustment: 50
+
+Ice Beam: initial score: 23
+Ice Beam: final score: 23
+ 
+Ice Beam: initial score: 44
+Ice Beam: final score: 44
+ 
+Ice Beam: Final Score after Doubles-Target Adjustment: 23
+Ice Beam: Final Score after Doubles-Target Adjustment: 44
+
+Dark Pulse: initial score: 21
+Dark Pulse: final score: 21
+ 
+Dark Pulse: initial score: 19
+Dark Pulse: final score: 19
+ 
+Dark Pulse: Final Score after Doubles-Target Adjustment: 21
+Dark Pulse: Final Score after Doubles-Target Adjustment: 19
+
+Protect: initial score: 30
+Priority Check End
+Protect: final score: 6
+ 
+Protect: initial score: 30
+Priority Check End
+Protect: final score: 30
+ 
+Protect: Final Score after Status-Target Adjustment: 6
+Protect: Final Score after Status-Target Adjustment: 30
+
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (0)
+Initial switchscore building: Healing (0)
+Initial switchscore building: fsteak (0)
+Initial switchscore building: Specific Switches (0)
+Initial switchscore building: Typing (0)
+Blastoise: initial switchscore: 0
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+Blastoise: initial noswitchscore: 116
+ 
+{
+ 
+}
+ 
+Blastoise: highest move score: 50
+Blastoise: final switching score: -158
+50 > -158, will not switch
+ 
+[The foe Blastoise: Surf=50, Ice Beam=44, Dark Pulse=21, Protect=30]
+[Prefer Surf]
+[No Z-Move.]
+Player Pokemon Charizard is faster than Blastoise.
+Surf: initial score: 86
+Surf: final score: 86
+ 
+Ice Beam: initial score: 28
+Ice Beam: final score: 28
+ 
+Dark Pulse: initial score: 24
+Dark Pulse: final score: 24
+ 
+Protect: initial score: 30
+Priority Check End
+Protect: final score: 30
+ 
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (0)
+Initial switchscore building: Healing (0)
+Initial switchscore building: fsteak (0)
+Initial switchscore building: Specific Switches (0)
+Initial switchscore building: Typing (0)
+Blastoise: initial switchscore: -20
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+Blastoise: initial noswitchscore: 66
+ 
+{
+ 
+}
+ 
+Blastoise: highest move score: 86
+Blastoise: final switching score: -143
+86 > -143, will not switch
+ 
+[The foe Blastoise: Surf=86, Ice Beam=28, Dark Pulse=24, Protect=30]
+[Prefer Surf]
+[No Z-Move.]
+Player Pokemon Charizard is faster than Blastoise.
+Player Pokemon Venusaur is faster than Blastoise.
+ 
+ 
+Surf: initial score: 55
+Surf: final score: 55
+ 
+Surf: initial score: 12
+Surf: final score: 12
+ 
+Surf: initial score: 25
+Surf: final score: 25
+ 
+Surf: Final Score after Multi-Target Adjustment: 50
+
+Surf: Final Score after Doubles-Target Adjustment: 50
+Surf: Final Score after Doubles-Target Adjustment: 50
+
+Ice Beam: initial score: 23
+Ice Beam: final score: 23
+ 
+Ice Beam: initial score: 44
+Ice Beam: final score: 44
+ 
+Ice Beam: Final Score after Doubles-Target Adjustment: 23
+Ice Beam: Final Score after Doubles-Target Adjustment: 44
+
+Dark Pulse: initial score: 21
+Dark Pulse: final score: 21
+ 
+Dark Pulse: initial score: 19
+Dark Pulse: final score: 19
+ 
+Dark Pulse: Final Score after Doubles-Target Adjustment: 21
+Dark Pulse: Final Score after Doubles-Target Adjustment: 19
+
+Protect: initial score: 30
+Priority Check End
+Protect: final score: 6
+ 
+Protect: initial score: 30
+Priority Check End
+Protect: final score: 30
+ 
+Protect: Final Score after Status-Target Adjustment: 6
+Protect: Final Score after Status-Target Adjustment: 30
+
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (0)
+Initial switchscore building: Healing (0)
+Initial switchscore building: fsteak (0)
+Initial switchscore building: Specific Switches (0)
+Initial switchscore building: Typing (0)
+Blastoise: initial switchscore: 0
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+Blastoise: initial noswitchscore: 116
+ 
+{
+ 
+}
+ 
+Blastoise: highest move score: 50
+Blastoise: final switching score: -158
+50 > -158, will not switch
+ 
+[The foe Blastoise: Surf=50, Ice Beam=44, Dark Pulse=21, Protect=30]
+[Prefer Surf]
+[No Z-Move.]
+Player Pokemon Charizard is faster than Blastoise.
+Surf: initial score: 86
+Surf: final score: 86
+ 
+Ice Beam: initial score: 28
+Ice Beam: final score: 28
+ 
+Dark Pulse: initial score: 24
+Dark Pulse: final score: 24
+ 
+Protect: initial score: 30
+Priority Check End
+Protect: final score: 30
+ 
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (0)
+Initial switchscore building: Healing (0)
+Initial switchscore building: fsteak (0)
+Initial switchscore building: Specific Switches (0)
+Initial switchscore building: Typing (0)
+Blastoise: initial switchscore: -20
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+Blastoise: initial noswitchscore: 66
+ 
+{
+ 
+}
+ 
+Blastoise: highest move score: 86
+Blastoise: final switching score: -143
+86 > -143, will not switch
+ 
+[The foe Blastoise: Surf=86, Ice Beam=28, Dark Pulse=24, Protect=30]
+[Prefer Surf]
+[No Z-Move.]
+Player Pokemon Charizard is faster than Blastoise.
+Player Pokemon Venusaur is faster than Blastoise.
+ 
+ 
+Surf: initial score: 55
+Surf: final score: 55
+ 
+Surf: initial score: 12
+Surf: final score: 12
+ 
+Surf: initial score: 25
+Surf: final score: 25
+ 
+Surf: Final Score after Multi-Target Adjustment: 50
+
+Surf: Final Score after Doubles-Target Adjustment: 50
+Surf: Final Score after Doubles-Target Adjustment: 50
+
+Ice Beam: initial score: 23
+Ice Beam: final score: 23
+ 
+Ice Beam: initial score: 44
+Ice Beam: final score: 44
+ 
+Ice Beam: Final Score after Doubles-Target Adjustment: 23
+Ice Beam: Final Score after Doubles-Target Adjustment: 44
+
+Dark Pulse: initial score: 21
+Dark Pulse: final score: 21
+ 
+Dark Pulse: initial score: 19
+Dark Pulse: final score: 19
+ 
+Dark Pulse: Final Score after Doubles-Target Adjustment: 21
+Dark Pulse: Final Score after Doubles-Target Adjustment: 19
+
+Protect: initial score: 30
+Priority Check End
+Protect: final score: 6
+ 
+Protect: initial score: 30
+Priority Check End
+Protect: final score: 30
+ 
+Protect: Final Score after Status-Target Adjustment: 6
+Protect: Final Score after Status-Target Adjustment: 30
+
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (0)
+Initial switchscore building: Healing (0)
+Initial switchscore building: fsteak (0)
+Initial switchscore building: Specific Switches (0)
+Initial switchscore building: Typing (0)
+Blastoise: initial switchscore: 0
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+Blastoise: initial noswitchscore: 116
+ 
+{
+ 
+}
+ 
+Blastoise: highest move score: 50
+Blastoise: final switching score: -158
+50 > -158, will not switch
+ 
+[The foe Blastoise: Surf=50, Ice Beam=44, Dark Pulse=21, Protect=30]
+[Prefer Surf]
+[No Z-Move.]
+Player Pokemon Charizard is faster than Blastoise.
+Surf: initial score: 86
+Surf: final score: 86
+ 
+Ice Beam: initial score: 28
+Ice Beam: final score: 28
+ 
+Dark Pulse: initial score: 24
+Dark Pulse: final score: 24
+ 
+Protect: initial score: 30
+Priority Check End
+Protect: final score: 30
+ 
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (0)
+Initial switchscore building: Healing (0)
+Initial switchscore building: fsteak (0)
+Initial switchscore building: Specific Switches (0)
+Initial switchscore building: Typing (0)
+Blastoise: initial switchscore: -20
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+Blastoise: initial noswitchscore: 66
+ 
+{
+ 
+}
+ 
+Blastoise: highest move score: 86
+Blastoise: final switching score: -143
+86 > -143, will not switch
+ 
+[The foe Blastoise: Surf=86, Ice Beam=28, Dark Pulse=24, Protect=30]
+[Prefer Surf]
+[No Z-Move.]
+Player Pokemon Charizard is faster than Blastoise.
+Player Pokemon Venusaur is faster than Blastoise.
+ 
+ 
+Surf: initial score: 55
+Surf: final score: 55
+ 
+Surf: initial score: 12
+Surf: final score: 12
+ 
+Surf: initial score: 25
+Surf: final score: 25
+ 
+Surf: Final Score after Multi-Target Adjustment: 50
+
+Surf: Final Score after Doubles-Target Adjustment: 50
+Surf: Final Score after Doubles-Target Adjustment: 50
+
+Ice Beam: initial score: 23
+Ice Beam: final score: 23
+ 
+Ice Beam: initial score: 44
+Ice Beam: final score: 44
+ 
+Ice Beam: Final Score after Doubles-Target Adjustment: 23
+Ice Beam: Final Score after Doubles-Target Adjustment: 44
+
+Dark Pulse: initial score: 21
+Dark Pulse: final score: 21
+ 
+Dark Pulse: initial score: 19
+Dark Pulse: final score: 19
+ 
+Dark Pulse: Final Score after Doubles-Target Adjustment: 21
+Dark Pulse: Final Score after Doubles-Target Adjustment: 19
+
+Protect: initial score: 30
+Priority Check End
+Protect: final score: 6
+ 
+Protect: initial score: 30
+Priority Check End
+Protect: final score: 30
+ 
+Protect: Final Score after Status-Target Adjustment: 6
+Protect: Final Score after Status-Target Adjustment: 30
+
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (0)
+Initial switchscore building: Healing (0)
+Initial switchscore building: fsteak (0)
+Initial switchscore building: Specific Switches (0)
+Initial switchscore building: Typing (0)
+Blastoise: initial switchscore: 0
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+Blastoise: initial noswitchscore: 116
+ 
+{
+ 
+}
+ 
+Blastoise: highest move score: 50
+Blastoise: final switching score: -158
+50 > -158, will not switch
+ 
+[The foe Blastoise: Surf=50, Ice Beam=44, Dark Pulse=21, Protect=30]
+[Prefer Surf]
+[No Z-Move.]
+Player Pokemon Charizard is faster than Blastoise.
+Surf: initial score: 86
+Surf: final score: 86
+ 
+Ice Beam: initial score: 28
+Ice Beam: final score: 28
+ 
+Dark Pulse: initial score: 24
+Dark Pulse: final score: 24
+ 
+Protect: initial score: 30
+Priority Check End
+Protect: final score: 30
+ 
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (0)
+Initial switchscore building: Healing (0)
+Initial switchscore building: fsteak (0)
+Initial switchscore building: Specific Switches (0)
+Initial switchscore building: Typing (0)
+Blastoise: initial switchscore: -20
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+Blastoise: initial noswitchscore: 66
+ 
+{
+ 
+}
+ 
+Blastoise: highest move score: 86
+Blastoise: final switching score: -143
+86 > -143, will not switch
+ 
+[The foe Blastoise: Surf=86, Ice Beam=28, Dark Pulse=24, Protect=30]
+[Prefer Surf]
+[No Z-Move.]
+Player Pokemon Charizard is faster than Blastoise.
+Player Pokemon Venusaur is faster than Blastoise.
+ 
+ 
+Surf: initial score: 55
+Surf: final score: 55
+ 
+Surf: initial score: 12
+Surf: final score: 12
+ 
+Surf: initial score: 25
+Surf: final score: 25
+ 
+Surf: Final Score after Multi-Target Adjustment: 50
+
+Surf: Final Score after Doubles-Target Adjustment: 50
+Surf: Final Score after Doubles-Target Adjustment: 50
+
+Ice Beam: initial score: 23
+Ice Beam: final score: 23
+ 
+Ice Beam: initial score: 44
+Ice Beam: final score: 44
+ 
+Ice Beam: Final Score after Doubles-Target Adjustment: 23
+Ice Beam: Final Score after Doubles-Target Adjustment: 44
+
+Dark Pulse: initial score: 21
+Dark Pulse: final score: 21
+ 
+Dark Pulse: initial score: 19
+Dark Pulse: final score: 19
+ 
+Dark Pulse: Final Score after Doubles-Target Adjustment: 21
+Dark Pulse: Final Score after Doubles-Target Adjustment: 19
+
+Protect: initial score: 30
+Priority Check End
+Protect: final score: 6
+ 
+Protect: initial score: 30
+Priority Check End
+Protect: final score: 30
+ 
+Protect: Final Score after Status-Target Adjustment: 6
+Protect: Final Score after Status-Target Adjustment: 30
+
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (0)
+Initial switchscore building: Healing (0)
+Initial switchscore building: fsteak (0)
+Initial switchscore building: Specific Switches (0)
+Initial switchscore building: Typing (0)
+Blastoise: initial switchscore: 0
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+Blastoise: initial noswitchscore: 116
+ 
+{
+ 
+}
+ 
+Blastoise: highest move score: 50
+Blastoise: final switching score: -158
+50 > -158, will not switch
+ 
+[The foe Blastoise: Surf=50, Ice Beam=44, Dark Pulse=21, Protect=30]
+[Prefer Surf]
+[No Z-Move.]
+Player Pokemon Charizard is faster than Blastoise.
+Surf: initial score: 86
+Surf: final score: 86
+ 
+Ice Beam: initial score: 28
+Ice Beam: final score: 28
+ 
+Dark Pulse: initial score: 24
+Dark Pulse: final score: 24
+ 
+Protect: initial score: 30
+Priority Check End
+Protect: final score: 30
+ 
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (0)
+Initial switchscore building: Healing (0)
+Initial switchscore building: fsteak (0)
+Initial switchscore building: Specific Switches (0)
+Initial switchscore building: Typing (0)
+Blastoise: initial switchscore: -20
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+Blastoise: initial noswitchscore: 66
+ 
+{
+ 
+}
+ 
+Blastoise: highest move score: 86
+Blastoise: final switching score: -143
+86 > -143, will not switch
+ 
+[The foe Blastoise: Surf=86, Ice Beam=28, Dark Pulse=24, Protect=30]
+[Prefer Surf]
+[No Z-Move.]
+Player Pokemon Charizard is faster than Blastoise.
+Player Pokemon Venusaur is faster than Blastoise.
+ 
+ 
+Surf: initial score: 55
+Surf: final score: 55
+ 
+Surf: initial score: 12
+Surf: final score: 12
+ 
+Surf: initial score: 25
+Surf: final score: 25
+ 
+Surf: Final Score after Multi-Target Adjustment: 50
+
+Surf: Final Score after Doubles-Target Adjustment: 50
+Surf: Final Score after Doubles-Target Adjustment: 50
+
+Ice Beam: initial score: 23
+Ice Beam: final score: 23
+ 
+Ice Beam: initial score: 44
+Ice Beam: final score: 44
+ 
+Ice Beam: Final Score after Doubles-Target Adjustment: 23
+Ice Beam: Final Score after Doubles-Target Adjustment: 44
+
+Dark Pulse: initial score: 21
+Dark Pulse: final score: 21
+ 
+Dark Pulse: initial score: 19
+Dark Pulse: final score: 19
+ 
+Dark Pulse: Final Score after Doubles-Target Adjustment: 21
+Dark Pulse: Final Score after Doubles-Target Adjustment: 19
+
+Protect: initial score: 30
+Priority Check End
+Protect: final score: 6
+ 
+Protect: initial score: 30
+Priority Check End
+Protect: final score: 30
+ 
+Protect: Final Score after Status-Target Adjustment: 6
+Protect: Final Score after Status-Target Adjustment: 30
+
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (0)
+Initial switchscore building: Healing (0)
+Initial switchscore building: fsteak (0)
+Initial switchscore building: Specific Switches (0)
+Initial switchscore building: Typing (0)
+Blastoise: initial switchscore: 0
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+Blastoise: initial noswitchscore: 116
+ 
+{
+ 
+}
+ 
+Blastoise: highest move score: 50
+Blastoise: final switching score: -158
+50 > -158, will not switch
+ 
+[The foe Blastoise: Surf=50, Ice Beam=44, Dark Pulse=21, Protect=30]
+[Prefer Surf]
+[No Z-Move.]
+Player Pokemon Charizard is faster than Blastoise.
+Surf: initial score: 86
+Surf: final score: 86
+ 
+Ice Beam: initial score: 28
+Ice Beam: final score: 28
+ 
+Dark Pulse: initial score: 24
+Dark Pulse: final score: 24
+ 
+Protect: initial score: 30
+Priority Check End
+Protect: final score: 30
+ 
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (0)
+Initial switchscore building: Healing (0)
+Initial switchscore building: fsteak (0)
+Initial switchscore building: Specific Switches (0)
+Initial switchscore building: Typing (0)
+Blastoise: initial switchscore: -20
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+Blastoise: initial noswitchscore: 66
+ 
+{
+ 
+}
+ 
+Blastoise: highest move score: 86
+Blastoise: final switching score: -143
+86 > -143, will not switch
+ 
+[The foe Blastoise: Surf=86, Ice Beam=28, Dark Pulse=24, Protect=30]
+[Prefer Surf]
+[No Z-Move.]
+Player Pokemon Charizard is faster than Blastoise.
+Player Pokemon Venusaur is faster than Blastoise.
+ 
+ 
+Surf: initial score: 55
+Surf: final score: 55
+ 
+Surf: initial score: 12
+Surf: final score: 12
+ 
+Surf: initial score: 25
+Surf: final score: 25
+ 
+Surf: Final Score after Multi-Target Adjustment: 50
+
+Surf: Final Score after Doubles-Target Adjustment: 50
+Surf: Final Score after Doubles-Target Adjustment: 50
+
+Ice Beam: initial score: 23
+Ice Beam: final score: 23
+ 
+Ice Beam: initial score: 44
+Ice Beam: final score: 44
+ 
+Ice Beam: Final Score after Doubles-Target Adjustment: 23
+Ice Beam: Final Score after Doubles-Target Adjustment: 44
+
+Dark Pulse: initial score: 21
+Dark Pulse: final score: 21
+ 
+Dark Pulse: initial score: 19
+Dark Pulse: final score: 19
+ 
+Dark Pulse: Final Score after Doubles-Target Adjustment: 21
+Dark Pulse: Final Score after Doubles-Target Adjustment: 19
+
+Protect: initial score: 30
+Priority Check End
+Protect: final score: 6
+ 
+Protect: initial score: 30
+Priority Check End
+Protect: final score: 30
+ 
+Protect: Final Score after Status-Target Adjustment: 6
+Protect: Final Score after Status-Target Adjustment: 30
+
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (0)
+Initial switchscore building: Healing (0)
+Initial switchscore building: fsteak (0)
+Initial switchscore building: Specific Switches (0)
+Initial switchscore building: Typing (0)
+Blastoise: initial switchscore: 0
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+Blastoise: initial noswitchscore: 116
+ 
+{
+ 
+}
+ 
+Blastoise: highest move score: 50
+Blastoise: final switching score: -158
+50 > -158, will not switch
+ 
+[The foe Blastoise: Surf=50, Ice Beam=44, Dark Pulse=21, Protect=30]
+[Prefer Surf]
+[No Z-Move.]
+Player Pokemon Charizard is faster than Blastoise.
+Surf: initial score: 86
+Surf: final score: 86
+ 
+Ice Beam: initial score: 28
+Ice Beam: final score: 28
+ 
+Dark Pulse: initial score: 24
+Dark Pulse: final score: 24
+ 
+Protect: initial score: 30
+Priority Check End
+Protect: final score: 30
+ 
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (0)
+Initial switchscore building: Healing (0)
+Initial switchscore building: fsteak (0)
+Initial switchscore building: Specific Switches (0)
+Initial switchscore building: Typing (0)
+Blastoise: initial switchscore: -20
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+Blastoise: initial noswitchscore: 66
+ 
+{
+ 
+}
+ 
+Blastoise: highest move score: 86
+Blastoise: final switching score: -143
+86 > -143, will not switch
+ 
+[The foe Blastoise: Surf=86, Ice Beam=28, Dark Pulse=24, Protect=30]
+[Prefer Surf]
+[No Z-Move.]
+Player Pokemon Charizard is faster than Blastoise.
+Player Pokemon Venusaur is faster than Blastoise.
+ 
+ 
+Surf: initial score: 55
+Surf: final score: 55
+ 
+Surf: initial score: 12
+Surf: final score: 12
+ 
+Surf: initial score: 25
+Surf: final score: 25
+ 
+Surf: Final Score after Multi-Target Adjustment: 50
+
+Surf: Final Score after Doubles-Target Adjustment: 50
+Surf: Final Score after Doubles-Target Adjustment: 50
+
+Ice Beam: initial score: 23
+Ice Beam: final score: 23
+ 
+Ice Beam: initial score: 44
+Ice Beam: final score: 44
+ 
+Ice Beam: Final Score after Doubles-Target Adjustment: 23
+Ice Beam: Final Score after Doubles-Target Adjustment: 44
+
+Dark Pulse: initial score: 21
+Dark Pulse: final score: 21
+ 
+Dark Pulse: initial score: 19
+Dark Pulse: final score: 19
+ 
+Dark Pulse: Final Score after Doubles-Target Adjustment: 21
+Dark Pulse: Final Score after Doubles-Target Adjustment: 19
+
+Protect: initial score: 30
+Priority Check End
+Protect: final score: 6
+ 
+Protect: initial score: 30
+Priority Check End
+Protect: final score: 30
+ 
+Protect: Final Score after Status-Target Adjustment: 6
+Protect: Final Score after Status-Target Adjustment: 30
+
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (0)
+Initial switchscore building: Healing (0)
+Initial switchscore building: fsteak (0)
+Initial switchscore building: Specific Switches (0)
+Initial switchscore building: Typing (0)
+Blastoise: initial switchscore: 0
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+Blastoise: initial noswitchscore: 116
+ 
+{
+ 
+}
+ 
+Blastoise: highest move score: 50
+Blastoise: final switching score: -158
+50 > -158, will not switch
+ 
+[The foe Blastoise: Surf=50, Ice Beam=44, Dark Pulse=21, Protect=30]
+[Prefer Surf]
+[No Z-Move.]
+Player Pokemon Charizard is faster than Blastoise.
+Surf: initial score: 86
+Surf: final score: 86
+ 
+Ice Beam: initial score: 28
+Ice Beam: final score: 28
+ 
+Dark Pulse: initial score: 24
+Dark Pulse: final score: 24
+ 
+Protect: initial score: 30
+Priority Check End
+Protect: final score: 30
+ 
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (0)
+Initial switchscore building: Healing (0)
+Initial switchscore building: fsteak (0)
+Initial switchscore building: Specific Switches (0)
+Initial switchscore building: Typing (0)
+Blastoise: initial switchscore: -20
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+Blastoise: initial noswitchscore: 66
+ 
+{
+ 
+}
+ 
+Blastoise: highest move score: 86
+Blastoise: final switching score: -143
+86 > -143, will not switch
+ 
+[The foe Blastoise: Surf=86, Ice Beam=28, Dark Pulse=24, Protect=30]
+[Prefer Surf]
+[No Z-Move.]
+Player Pokemon Charizard is faster than Blastoise.
+Player Pokemon Venusaur is faster than Blastoise.
+ 
+ 
+Surf: initial score: 55
+Surf: final score: 55
+ 
+Surf: initial score: 12
+Surf: final score: 12
+ 
+Surf: initial score: 25
+Surf: final score: 25
+ 
+Surf: Final Score after Multi-Target Adjustment: 50
+
+Surf: Final Score after Doubles-Target Adjustment: 50
+Surf: Final Score after Doubles-Target Adjustment: 50
+
+Ice Beam: initial score: 23
+Ice Beam: final score: 23
+ 
+Ice Beam: initial score: 44
+Ice Beam: final score: 44
+ 
+Ice Beam: Final Score after Doubles-Target Adjustment: 23
+Ice Beam: Final Score after Doubles-Target Adjustment: 44
+
+Dark Pulse: initial score: 21
+Dark Pulse: final score: 21
+ 
+Dark Pulse: initial score: 19
+Dark Pulse: final score: 19
+ 
+Dark Pulse: Final Score after Doubles-Target Adjustment: 21
+Dark Pulse: Final Score after Doubles-Target Adjustment: 19
+
+Protect: initial score: 30
+Priority Check End
+Protect: final score: 6
+ 
+Protect: initial score: 30
+Priority Check End
+Protect: final score: 30
+ 
+Protect: Final Score after Status-Target Adjustment: 6
+Protect: Final Score after Status-Target Adjustment: 30
+
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (0)
+Initial switchscore building: Healing (0)
+Initial switchscore building: fsteak (0)
+Initial switchscore building: Specific Switches (0)
+Initial switchscore building: Typing (0)
+Blastoise: initial switchscore: 0
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+Blastoise: initial noswitchscore: 116
+ 
+{
+ 
+}
+ 
+Blastoise: highest move score: 50
+Blastoise: final switching score: -158
+50 > -158, will not switch
+ 
+[The foe Blastoise: Surf=50, Ice Beam=44, Dark Pulse=21, Protect=30]
+[Prefer Surf]
+[No Z-Move.]
+Player Pokemon Charizard is faster than Blastoise.
+Surf: initial score: 86
+Surf: final score: 86
+ 
+Ice Beam: initial score: 28
+Ice Beam: final score: 28
+ 
+Dark Pulse: initial score: 24
+Dark Pulse: final score: 24
+ 
+Protect: initial score: 30
+Priority Check End
+Protect: final score: 30
+ 
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (0)
+Initial switchscore building: Healing (0)
+Initial switchscore building: fsteak (0)
+Initial switchscore building: Specific Switches (0)
+Initial switchscore building: Typing (0)
+Blastoise: initial switchscore: -20
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+Blastoise: initial noswitchscore: 66
+ 
+{
+ 
+}
+ 
+Blastoise: highest move score: 86
+Blastoise: final switching score: -143
+86 > -143, will not switch
+ 
+[The foe Blastoise: Surf=86, Ice Beam=28, Dark Pulse=24, Protect=30]
+[Prefer Surf]
+[No Z-Move.]
+Player Pokemon Charizard is faster than Blastoise.
+Player Pokemon Venusaur is faster than Blastoise.
+ 
+ 
+Surf: initial score: 55
+Surf: final score: 55
+ 
+Surf: initial score: 12
+Surf: final score: 12
+ 
+Surf: initial score: 25
+Surf: final score: 25
+ 
+Surf: Final Score after Multi-Target Adjustment: 50
+
+Surf: Final Score after Doubles-Target Adjustment: 50
+Surf: Final Score after Doubles-Target Adjustment: 50
+
+Ice Beam: initial score: 23
+Ice Beam: final score: 23
+ 
+Ice Beam: initial score: 44
+Ice Beam: final score: 44
+ 
+Ice Beam: Final Score after Doubles-Target Adjustment: 23
+Ice Beam: Final Score after Doubles-Target Adjustment: 44
+
+Dark Pulse: initial score: 21
+Dark Pulse: final score: 21
+ 
+Dark Pulse: initial score: 19
+Dark Pulse: final score: 19
+ 
+Dark Pulse: Final Score after Doubles-Target Adjustment: 21
+Dark Pulse: Final Score after Doubles-Target Adjustment: 19
+
+Protect: initial score: 30
+Priority Check End
+Protect: final score: 6
+ 
+Protect: initial score: 30
+Priority Check End
+Protect: final score: 30
+ 
+Protect: Final Score after Status-Target Adjustment: 6
+Protect: Final Score after Status-Target Adjustment: 30
+
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (0)
+Initial switchscore building: Healing (0)
+Initial switchscore building: fsteak (0)
+Initial switchscore building: Specific Switches (0)
+Initial switchscore building: Typing (0)
+Blastoise: initial switchscore: 0
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+Blastoise: initial noswitchscore: 116
+ 
+{
+ 
+}
+ 
+Blastoise: highest move score: 50
+Blastoise: final switching score: -158
+50 > -158, will not switch
+ 
+[The foe Blastoise: Surf=50, Ice Beam=44, Dark Pulse=21, Protect=30]
+[Prefer Surf]
+[No Z-Move.]
+Player Pokemon Charizard is faster than Blastoise.
+Surf: initial score: 86
+Surf: final score: 86
+ 
+Ice Beam: initial score: 28
+Ice Beam: final score: 28
+ 
+Dark Pulse: initial score: 24
+Dark Pulse: final score: 24
+ 
+Protect: initial score: 30
+Priority Check End
+Protect: final score: 30
+ 
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (0)
+Initial switchscore building: Healing (0)
+Initial switchscore building: fsteak (0)
+Initial switchscore building: Specific Switches (0)
+Initial switchscore building: Typing (0)
+Blastoise: initial switchscore: -20
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+Blastoise: initial noswitchscore: 66
+ 
+{
+ 
+}
+ 
+Blastoise: highest move score: 86
+Blastoise: final switching score: -143
+86 > -143, will not switch
+ 
+[The foe Blastoise: Surf=86, Ice Beam=28, Dark Pulse=24, Protect=30]
+[Prefer Surf]
+[No Z-Move.]
+Player Pokemon Charizard is faster than Blastoise.
+Player Pokemon Venusaur is faster than Blastoise.
+Player Pokemon Charizard is faster than Blastoise.
+Surf: initial score: 86
+Surf: final score: 86
+ 
+Ice Beam: initial score: 28
+Ice Beam: final score: 28
+ 
+Dark Pulse: initial score: 24
+Dark Pulse: final score: 24
+ 
+Protect: initial score: 30
+Priority Check End
+Protect: final score: 30
+ 
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (0)
+Initial switchscore building: Healing (0)
+Initial switchscore building: fsteak (0)
+Initial switchscore building: Specific Switches (0)
+Initial switchscore building: Typing (0)
+Blastoise: initial switchscore: -20
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+Blastoise: initial noswitchscore: 66
+ 
+{
+ 
+}
+ 
+Blastoise: highest move score: 86
+Blastoise: final switching score: -143
+86 > -143, will not switch
+ 
+[The foe Blastoise: Surf=86, Ice Beam=28, Dark Pulse=24, Protect=30]
+[Prefer Surf]
+[No Z-Move.]
+Player Pokemon Charizard is faster than Blastoise.
+Player Pokemon Venusaur is faster than Blastoise.
+ 
+ 
+Surf: initial score: 55
+Surf: final score: 55
+ 
+Surf: initial score: 12
+Surf: final score: 12
+Player Pokemon Charizard is faster than Blastoise.
+Surf: initial score: 86
+Surf: final score: 86
+ 
+Ice Beam: initial score: 28
+Ice Beam: final score: 28
+ 
+Dark Pulse: initial score: 24
+Dark Pulse: final score: 24
+ 
+Protect: initial score: 30
+Priority Check End
+Protect: final score: 30
+ 
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (0)
+Initial switchscore building: Healing (0)
+Initial switchscore building: fsteak (0)
+Initial switchscore building: Specific Switches (0)
+Initial switchscore building: Typing (0)
+Blastoise: initial switchscore: -20
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+Blastoise: initial noswitchscore: 66
+ 
+{
+ 
+}
+ 
+Blastoise: highest move score: 86
+Blastoise: final switching score: -143
+86 > -143, will not switch
+ 
+[The foe Blastoise: Surf=86, Ice Beam=28, Dark Pulse=24, Protect=30]
+[Prefer Surf]
+[No Z-Move.]
+Player Pokemon Charizard is faster than Blastoise.
+Player Pokemon Venusaur is faster than Blastoise.
+ 
+ 
+Surf: initial score: 55
+Surf: final score: 55
+ 
+Surf: initial score: 12
+Surf: final score: 12
+ 
+Surf: initial score: 25
+Surf: final score: 25
+ 
+Surf: Final Score after Multi-Target Adjustment: 50
+
+Surf: Final Score after Doubles-Target Adjustment: 50
+Surf: Final Score after Doubles-Target Adjustment: 50
+
+Ice Beam: initial score: 23
+Ice Beam: final score: 23
+ 
+Ice Beam: initial score: 44
+Ice Beam: final score: 44
+ 
+Ice Beam: Final Score after Doubles-Target Adjustment: 23
+Ice Beam: Final Score after Doubles-Target Adjustment: 44
+
+Dark Pulse: initial score: 21
+Dark Pulse: final score: 21
+ 
+Dark Pulse: initial score: 19
+Dark Pulse: final score: 19
+ 
+Dark Pulse: Final Score after Doubles-Target Adjustment: 21
+Dark Pulse: Final Score after Doubles-Target Adjustment: 19
+
+Protect: initial score: 30
+Priority Check End
+Protect: final score: 6
+ 
+Protect: initial score: 30
+Priority Check End
+Protect: final score: 30
+ 
+Protect: Final Score after Status-Target Adjustment: 6
+Protect: Final Score after Status-Target Adjustment: 30
+
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (0)
+Initial switchscore building: Healing (0)
+Initial switchscore building: fsteak (0)
+Initial switchscore building: Specific Switches (0)
+Initial switchscore building: Typing (0)
+Blastoise: initial switchscore: 0
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+Blastoise: initial noswitchscore: 116
+ 
+{
+ 
+}
+ 
+Blastoise: highest move score: 50
+Blastoise: final switching score: -158
+50 > -158, will not switch
+ 
+[The foe Blastoise: Surf=50, Ice Beam=44, Dark Pulse=21, Protect=30]
+[Prefer Surf]
+[No Z-Move.]

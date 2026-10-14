@@ -1,0 +1,10 @@
+ok=true
+source_rows=379
+effective_symbols=373
+typed_records=379
+messages_exact=true
+constants_exact=true
+aliases_exact=true
+wrappers_exact=true
+cache_reused=true
+new_names_exact=true

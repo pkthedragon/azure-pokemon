@@ -75,8 +75,6 @@ def mainFunctionDebug #:nodoc:
         raise
       end
     end
-    $data_animations    = pbLoadRxData("Data/Animations")
-    $data_tilesets      = pbLoadRxData("Data/Tilesets")
     $data_common_events = pbLoadRxData("Data/CommonEvents")
     $data_system        = pbLoadRxData("Data/System")
     $mapinfos           = pbCachedRxData("Data/MapInfos")

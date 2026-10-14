@@ -1,0 +1,10 @@
+result=PASS
+scenarios=390
+matrix_checksum=4031508
+all_results=exact
+constant_tables=frozen
+benchmark_calls=1000000
+benchmark_checksum=321198779
+rng_calls=0
+optimized_seconds=1.7847458000178449
+optimized_allocations=3

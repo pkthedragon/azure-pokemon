@@ -1,0 +1,11 @@
+result=PASS
+mode=optimized_frozen_groups
+query_groups=16
+groups_frozen=true
+matrix_scenarios=128
+matrix_checksum=1958265408
+matrix_exact=true
+predicate_calls=1000000
+predicate_checksum=0
+predicate_seconds=2.6430483000003733
+predicate_allocations=2

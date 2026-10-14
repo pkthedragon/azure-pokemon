@@ -1,0 +1,10 @@
+result=PASS
+mode=optimized_same_side_membership_scan
+matrix_cases=8
+matrix_checksum=1123836486
+matrix_exact=true
+helper_exact=true
+predicate_calls=1000000
+predicate_checksum=0
+predicate_seconds=2.0429677999927662
+predicate_allocations=3

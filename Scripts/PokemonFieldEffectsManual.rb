@@ -78,7 +78,7 @@ class Scene_FieldEffectsManual
 
     # Map field IDs to their unlock switches
     # Only includes the 20 field effects in the game
-    FIELD_ID_TO_SWITCH = {
+    field_id_to_switch = {
       1 => 600,   # Electric Terrain
       2 => 601,   # Grassy Terrain
       3 => 602,   # Misty Terrain
@@ -103,7 +103,7 @@ class Scene_FieldEffectsManual
 
     @field_id_map = []  # Store the mapping for index -> field_id
 
-    FIELD_ID_TO_SWITCH.each do |field_id, switch_id|
+    field_id_to_switch.each do |field_id, switch_id|
       if $game_switches[switch_id]
         name = pbGetFieldEffectName(field_id)
         fields.push(name)

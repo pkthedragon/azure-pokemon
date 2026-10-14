@@ -1233,8 +1233,7 @@ class PokeBattle_ZMoves < PokeBattle_Move
 def pbShowAnimation(movename,user,target,hitnum=0,alltargets=nil,showanimation=true)
   if @battle.battlescene
     animname=movename.delete(" ").delete("-").upcase
-    $pkmn_animations = load_data_anim("Data/PkmnAnimations.rxdata") if !$pkmn_animations
-    animations=$pkmn_animations
+    animations=pbLoadBattleAnimations
     i = animations.length
     until i == 0 do
       if @battle.pbBelongsToPlayer?(user.index)

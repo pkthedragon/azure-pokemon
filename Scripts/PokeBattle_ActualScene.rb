@@ -2757,6 +2757,7 @@ class PokeBattle_Scene
 
   def pbStartBattle(battle)
     # Called whenever the battle begins
+    pbLoadBattleAnimations
     @battle=battle
     @lastcmd=Array.new(battle.maxBattlerIndex+1,0)
     @lastmove=Array.new(battle.maxBattlerIndex+1,0)
@@ -4594,22 +4595,17 @@ end
     unless defined?(target.vanished).nil?
       return if target.vanished
     end
-    $pkmn_animations = load_data_anim("Data/PkmnAnimations.rxdata") if !$pkmn_animations
-    animations=$pkmn_animations #load_data("Data/PkmnAnimations.rxdata")
-    for i in 0...animations.length
-      if animations[i] && animations[i].name=="Common:"+animname
-        pbAnimationCore(animations[i],user,(target!=nil) ? target : user)
-        return
-      end
-    end
+    animations=pbLoadBattleAnimations
+    index=pbFindBattleAnimationByName("Common:"+animname,animations)
+    return if !index
+    pbAnimationCore(animations[index],user,(target!=nil) ? target : user)
   end
 
   def pbAnimation(moveid,user,target,hitnum=0)
     animid=pbFindAnimation(moveid,user.index,hitnum)
     return if !animid
     anim=animid[0]
-    $pkmn_animations = load_data_anim("Data/PkmnAnimations.rxdata") if !$pkmn_animations
-    animations=$pkmn_animations #load_data("Data/PkmnAnimations.rxdata")
+    animations=pbLoadBattleAnimations
     pbSaveShadows {
        if animid[1] # On opposing side and using OppMove animation
          pbAnimationCore(animations[anim],target,user,true)
@@ -4720,18 +4716,11 @@ end
   def pbThrow(ball,shakes,critical,critsuccess,targetBattler,showplayer=false)
     @briefmessage=false
     burst=-1
-    $pkmn_animations = load_data_anim("Data/PkmnAnimations.rxdata") if !$pkmn_animations
-    animations=$pkmn_animations #load_data("Data/PkmnAnimations.rxdata")
+    animations=pbLoadBattleAnimations
     for i in 0...2
       t=(i==0) ? ball : 0
-      for j in 0...animations.length
-        if animations[j]
-          if animations[j].name=="Common:BallBurst#{t}"
-            burst=t if burst<0
-            break
-          end
-        end
-      end
+      index=pbFindBattleAnimationByName("Common:BallBurst#{t}",animations)
+      burst=t if index && burst<0
       break if burst>=0
     end
     pokeballThrow(ball,shakes,critical,critsuccess,targetBattler,self,@battle.battlers[targetBattler],burst,showplayer)

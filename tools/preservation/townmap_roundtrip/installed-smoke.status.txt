@@ -1,0 +1,12 @@
+ok=true
+regions=1
+points=19
+healing_points=4
+hidden_points=2
+data_exact=true
+messages_exact=true
+fields_exact=true
+localized_lookup_exact=true
+editor_isolated=true
+cache_invalidated=true
+cache_reused=true

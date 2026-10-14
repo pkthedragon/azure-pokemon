@@ -1,0 +1,10 @@
+PASS
+phase=legacy_title_preload
+file_bytes=10052540
+container_class=PBAnimations
+records=1250
+named_records=1137
+selected=11
+first_name=Common:HealthUp
+last_name=Move:EARTHQUAKE
+load_seconds=1.2838424000074156

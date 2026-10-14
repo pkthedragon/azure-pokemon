@@ -1,0 +1,10 @@
+class=Array
+records=53
+populated=52
+first_index=1
+first_name=Tiles For Outside
+last_index=52
+last_name=
+serialized_bytes=1262151
+fingerprint=b41857c0
+eager_load_seconds=0.0108160

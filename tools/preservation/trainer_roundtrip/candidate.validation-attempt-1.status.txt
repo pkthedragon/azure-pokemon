@@ -1,0 +1,18 @@
+ok=false
+error=RuntimeError: Trainer type symbol for section [POKEMONTRAINER_Troy] must begin with an uppercase letter and contain only uppercase letters, digits, and underscores; got POKEMONTRAINER_Troy.
+File PBS/trainer_types.txt, line 26
+[POKEMONTRAINER_Troy]
+
+(eval):118:in `error'
+(eval):699:in `constant_symbol'
+(eval):722:in `trainer_type'
+(eval):2361:in `block in pbCompileTrainers'
+(eval):2349:in `each'
+(eval):2349:in `pbCompileTrainers'
+Trainer Roundtrip Candidate Temp:8:in `block in <main>'
+Section000:336:in `eval'
+Section000:336:in `block in <main>'
+Section000:333:in `each'
+Section000:333:in `each_with_index'
+Section000:333:in `<main>'
+-e:in `eval'

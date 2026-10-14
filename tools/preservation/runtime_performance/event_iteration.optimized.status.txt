@@ -1,0 +1,15 @@
+result=PASS
+maps=145
+events=3851
+largest_map=Data/Map034.rxdata
+largest_map_events=281
+event_iteration_order=exact
+page_iteration_order=exact
+hash_iterations=20000
+hash_checksum=796060000
+optimized_each_value_seconds=1.0832441
+optimized_each_value_allocations=7
+page_iterations=100
+page_checksum=1368700
+optimized_pages_reverse_each_seconds=0.2588158
+optimized_pages_reverse_each_allocations=385104

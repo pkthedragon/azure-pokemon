@@ -690,12 +690,7 @@ def pbClearData
   if $game_map && $PokemonEncounters
     $PokemonEncounters.setup($game_map.map_id)
   end
-  if pbRgssExists?("Data/Tilesets.rxdata")
-    $data_tilesets=load_data("Data/Tilesets.rxdata")
-  end
-  if pbRgssExists?("Data/Tilesets.rvdata")
-    $data_tilesets=load_data("Data/Tilesets.rvdata")
-  end
+  pbReloadTilesetData
 end
 
 def pbOpenDexData
@@ -871,7 +866,7 @@ end
 
 class Game_Map
   def updateTileset
-    tileset = $data_tilesets[@map.tileset_id]
+    tileset = pbLoadTilesetData[@map.tileset_id]
     @tileset_name = tileset.tileset_name
     @autotile_names = tileset.autotile_names
     @panorama_name = tileset.panorama_name
@@ -994,7 +989,7 @@ class PokemonMapFactory
     else
       return false unless map.passableStrict?(x,y,0,thisEvent)
     end
-    for event in map.events.values
+    map.events.each_value do |event|
       if event!=thisEvent && event.x == x and event.y == y
         return false if !event.through && (event.character_name!="")
       end
@@ -1014,7 +1009,7 @@ class PokemonMapFactory
     else
       return false unless map.passable?(x,y,0,thisEvent)
     end
-    for event in map.events.values
+    map.events.each_value do |event|
       if event.x == x and event.y == y
         return false if !event.through && (event.character_name!="")
       end

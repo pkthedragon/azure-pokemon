@@ -1,0 +1,14 @@
+ok=true
+source_types=21
+effective_symbols=21
+max_value=20
+chart_cells=441
+non_neutral_cells=144
+pseudotypes=9
+specialtypes=10,11,12,13,14,15,16,17,18,19,20
+type_data_byte_identical=true
+generated_constants_byte_identical=true
+messages_byte_identical=true
+type_data_sha256=78C4A2C64B6B4D90FD3FD835AD4626DCB2263440732EACB6BC404EB0F454F86E
+generated_constants_sha256=B944AAD03B98437615528E10998544D5C8BED900E3D94E7A9BCD23D06ABB0060
+messages_sha256=2E2727E8CEAF66E0755D3A5362D17AFB7F4E9A365DA4D3FE31627FD217E6218D

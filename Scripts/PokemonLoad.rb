@@ -398,7 +398,6 @@ class PokemonLoad
 
 
   def pbStartLoadScreen(savenum=0,auto=nil,savename="Save Slot 1")
-    $pkmn_animations = load_data_anim("Data/PkmnAnimations.rxdata") if !$pkmn_animations
     $PokemonTemp   = PokemonTemp.new
     $game_temp     = Game_Temp.new
     $game_system   = Game_System.new

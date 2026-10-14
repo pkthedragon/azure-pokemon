@@ -1,0 +1,12 @@
+ok=true
+active_records=0
+synthetic_records=2
+named_legacy_exact=true
+named_export_exact=true
+editor_roundtrip_exact=true
+invalid_direction_rejected=true
+symmetric_duplicate_rejected=true
+cache_source_immutable=true
+per_map_index_exact=true
+compiler_invalidation_exact=true
+installed_binary_exact=true

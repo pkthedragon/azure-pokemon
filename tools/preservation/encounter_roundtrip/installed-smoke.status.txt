@@ -1,0 +1,10 @@
+ok=true
+maps=32
+encounter_types=103
+slots=890
+data_exact=true
+wrappers_exact=true
+immutable=true
+legacy_rolls_exact=true
+empty_maps_exact=true
+cache_invalidated=true

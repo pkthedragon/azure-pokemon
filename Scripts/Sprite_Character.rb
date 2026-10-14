@@ -153,7 +153,7 @@ class Sprite_Character < RPG::Sprite
     self.blend_type = @character.blend_type
 #    self.bush_depth = @character.bush_depth
     if @character.animation_id != 0
-      animation = $data_animations[@character.animation_id]
+      animation = pbLoadRPGAnimations[@character.animation_id]
       animation(animation, true)
       @character.animation_id = 0
     end

@@ -1,0 +1,16 @@
+[<Unknown>]
+Unknown
+[<Generics>]
+Generic
+[<BattleRequests>]
+Battle
+[<GreetingsMorning>]
+Morning
+[<GreetingsEvening>]
+Evening
+[<Greetings>]
+Greeting
+[<Bodies1>]
+Body one
+[<Bodies2>]
+Body two

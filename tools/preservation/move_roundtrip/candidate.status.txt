@@ -1,0 +1,10 @@
+ok=true
+source_rows=1051
+effective_symbols=1041
+numeric_slots=1056
+numeric_records=1050
+function_codes=541
+max_value=1055
+move_semantic_differences=0
+message_semantic_differences=0
+non_move_message_differences=0

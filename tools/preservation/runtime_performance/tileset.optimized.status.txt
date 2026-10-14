@@ -1,0 +1,13 @@
+result=PASS
+records=53
+serialized_bytes=1262151
+fingerprint=b41857c0
+initial_loads=1
+cached_loads=0
+forced_reload_loads=1
+map_setup=preserved
+editor_replacement=preserved
+marshal_graph=exact
+main_eager_load=absent
+first_load_seconds=0.0041565
+cached_call_seconds=0.0000080

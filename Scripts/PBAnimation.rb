@@ -412,6 +412,55 @@ end
 
 
 
+# Common-animation playback historically searched the entire animation list by
+# name every time. Keep a small derived index beside the mutable editor-owned
+# collection. The first occurrence is retained to exactly match the old scan
+# when duplicate names exist.
+module AzureBattleAnimationIndex
+  def self.clear
+    @animations=nil
+    @length=nil
+    @indices=nil
+  end
+
+  def self.index_for(animations,name)
+    if !@animations.equal?(animations) || @length!=animations.length || !@indices
+      @animations=animations
+      @length=animations.length
+      @indices={}
+      for i in 0...animations.length
+        animation=animations[i]
+        next if !animation || !animation.name
+        @indices[animation.name]=i if !@indices.has_key?(animation.name)
+      end
+    end
+    return @indices[name]
+  end
+end
+
+def pbInvalidateBattleAnimationIndex
+  AzureBattleAnimationIndex.clear
+end
+
+# Battle animations deliberately stay outside AzureDataCache. Load the original
+# PBAnimations object once at the battle boundary instead of unmarshaling its
+# 10 MB source before the title screen. The animation editor can replace the
+# global and the compiler can set it to nil using their existing contracts.
+def pbLoadBattleAnimations
+  if !defined?($pkmn_animations) || !$pkmn_animations
+    pbInvalidateBattleAnimationIndex
+    $pkmn_animations=load_data_anim("Data/PkmnAnimations.rxdata")
+  end
+  return $pkmn_animations
+end
+
+def pbFindBattleAnimationByName(name,animations=nil)
+  animations=pbLoadBattleAnimations if !animations
+  return AzureBattleAnimationIndex.index_for(animations,name)
+end
+
+
+
 def pbConvertRPGAnimation(animation)
   pbanim=PBAnimation.new
   pbanim.id=animation.id

@@ -1,0 +1,9 @@
+result=PASS
+mode=baseline_map_max_speed_scan
+matrix_cases=8
+matrix_checksum=1751308814
+matrix_exact=true
+predicate_calls=1000000
+predicate_checksum=1000000
+predicate_seconds=1.6097336999955587
+predicate_allocations=1000002

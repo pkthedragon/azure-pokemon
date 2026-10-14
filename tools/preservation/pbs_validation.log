@@ -1,0 +1,76 @@
+Azure PBS validation 2026-08-31 21:23:19 -0500
+Command: "C:\WINDOWS/System32/WindowsPowerShell/v1.0/powershell.exe" -NoLogo -NoProfile -NonInteractive -ExecutionPolicy Bypass -WindowStyle Hidden -File "C:/Users/prana/OneDrive/Desktop/GitHub/azure-pokemon/tools/preservation/Audit-Azure.ps1" -Root "C:/Users/prana/OneDrive/Desktop/GitHub/azure-pokemon" 2>&1
+
+Azure preservation audit
+Root: C:\Users\prana\OneDrive\Desktop\GitHub\azure-pokemon
+  PASS  Pokémon schema: 1035 species rows, 1035 metric rows, and 120 regional entries are structurally valid.
+  PASS  Moves: 1041 effective source symbols agree with generated constants.
+  PASS  Pokémon: 1034 effective source symbols agree with generated constants.
+  PASS  Abilities: 373 effective source symbols agree with generated constants.
+  PASS  Trainer types: 278 effective source symbols agree with generated constants.
+  PASS  Abilities: 379 source rows satisfy the named schema.
+  PASS  Trainer types: 280 source rows satisfy the named schema.
+  PASS  Types: 21 source records and 144 type-chart relationships satisfy the named schema.
+  PASS  Moves: 1051 source rows satisfy the named schema, numeric semantics, flag policy, type references, and executor coverage.
+  PASS  Items: 1115 source rows satisfy the schema and 1112 effective symbols agree with generated constants.
+  PASS  Pokémon: type, ability, move, and evolution references are valid.
+  PASS  Trainers: unique team keys and species, item, and move references are valid.
+  PASS  Metadata: 11 global/player sections and 94 map sections satisfy the split schema.
+  PASS  Encounters: 32 maps, 103 encounter types, and 890 slots satisfy the named schema.
+  PASS  TM compatibility: 309 source sections merge into 303 numeric moves and 52657 unique pairs; 1260 redundant entries are deduplicated and the preservation hash matches.
+  PASS  Legacy duplicate policy: 22 symbolic and 4 numeric compatibility aliases match exactly.
+  PASS  Azure feature contracts: 87 required systems are present and ordered for loading.
+  PASS  Move compatibility semantics: 89 adapters and behaviors were checked.
+  PASS  Compiled-data presence and timestamps were checked.
+  WARN  Scripts\PBMoves.rb assigns ORIGINPULSE more than once; Ruby keeps the last assignment.
+  WARN  Scripts\PBMoves.rb assigns PRECIPICEBLADES more than once; Ruby keeps the last assignment.
+  WARN  Scripts\PBMoves.rb assigns DRAGONASCENT more than once; Ruby keeps the last assignment.
+  WARN  Scripts\PBMoves.rb assigns THOUSANDARROWS more than once; Ruby keeps the last assignment.
+  WARN  Scripts\PBMoves.rb assigns THOUSANDWAVES more than once; Ruby keeps the last assignment.
+  WARN  Scripts\PBMoves.rb assigns DIAMONDSTORM more than once; Ruby keeps the last assignment.
+  WARN  Scripts\PBMoves.rb assigns STEAMERUPTION more than once; Ruby keeps the last assignment.
+  WARN  Scripts\PBMoves.rb assigns DISHEARTEN more than once; Ruby keeps the last assignment.
+  WARN  Scripts\PBMoves.rb assigns EPHEMERATE more than once; Ruby keeps the last assignment.
+  WARN  Scripts\PBMoves.rb assigns ANTICLINE more than once; Ruby keeps the last assignment.
+  WARN  Scripts\PBSpecies.rb assigns IRONMOTH more than once; Ruby keeps the last assignment.
+  WARN  Scripts\PBItems.rb assigns GREENKEY more than once; Ruby keeps the last assignment.
+  WARN  Scripts\PBItems.rb assigns TM115 more than once; Ruby keeps the last assignment.
+  WARN  Scripts\PBItems.rb assigns TM116 more than once; Ruby keeps the last assignment.
+  WARN  Scripts\PBAbilities.rb assigns TOXICCHAIN more than once; Ruby keeps the last assignment.
+  WARN  Scripts\PBAbilities.rb assigns CARETAKER more than once; Ruby keeps the last assignment.
+  WARN  Scripts\PBAbilities.rb assigns BLOODTHIRSTY more than once; Ruby keeps the last assignment.
+  WARN  Scripts\PBAbilities.rb assigns SCAVENGER more than once; Ruby keeps the last assignment.
+  WARN  Scripts\PBAbilities.rb assigns EXECUTIONER more than once; Ruby keeps the last assignment.
+  WARN  Scripts\PBAbilities.rb assigns EVENTHORIZON more than once; Ruby keeps the last assignment.
+  WARN  Scripts\PBTrainers.rb assigns SCHOOLKID_F more than once; Ruby keeps the last assignment.
+  WARN  Scripts\PBTrainers.rb assigns HADIEN more than once; Ruby keeps the last assignment.
+  WARN  PBS\moves.txt has duplicate section [ORIGINPULSE] at lines 9810 and 9960; the later definition is the effective symbol mapping.
+  WARN  PBS\moves.txt has duplicate section [PRECIPICEBLADES] at lines 9825 and 9975; the later definition is the effective symbol mapping.
+  WARN  PBS\moves.txt has duplicate section [DRAGONASCENT] at lines 9840 and 9990; the later definition is the effective symbol mapping.
+  WARN  PBS\moves.txt has duplicate section [THOUSANDARROWS] at lines 9855 and 10005; the later definition is the effective symbol mapping.
+  WARN  PBS\moves.txt has duplicate section [THOUSANDWAVES] at lines 9870 and 10020; the later definition is the effective symbol mapping.
+  WARN  PBS\moves.txt has duplicate section [DIAMONDSTORM] at lines 9885 and 10035; the later definition is the effective symbol mapping.
+  WARN  PBS\moves.txt has duplicate section [STEAMERUPTION] at lines 9915 and 10065; the later definition is the effective symbol mapping.
+  WARN  PBS\moves.txt has duplicate section [DISHEARTEN] at lines 15353 and 15592; the later definition is the effective symbol mapping.
+  WARN  PBS\moves.txt has duplicate section [EPHEMERATE] at lines 15368 and 15607; the later definition is the effective symbol mapping.
+  WARN  PBS\moves.txt has duplicate section [ANTICLINE] at lines 15383 and 15622; the later definition is the effective symbol mapping.
+  WARN  PBS\pokemon.txt has duplicate section [IRONMOTH] at lines 21956 and 24166; the later definition is the effective symbol mapping.
+  WARN  PBS\abilities.txt has duplicate section [TOXICCHAIN] at lines 1643 and 1768; the later definition is the effective symbol mapping.
+  WARN  PBS\abilities.txt has duplicate section [CARETAKER] at lines 1418 and 1808; the later definition is the effective symbol mapping.
+  WARN  PBS\abilities.txt has duplicate section [BLOODTHIRSTY] at lines 1448 and 1813; the later definition is the effective symbol mapping.
+  WARN  PBS\abilities.txt has duplicate section [SCAVENGER] at lines 1468 and 1818; the later definition is the effective symbol mapping.
+  WARN  PBS\abilities.txt has duplicate section [EXECUTIONER] at lines 1498 and 1823; the later definition is the effective symbol mapping.
+  WARN  PBS\abilities.txt has duplicate section [EVENTHORIZON] at lines 1518 and 1828; the later definition is the effective symbol mapping.
+  WARN  PBS\trainer_types.txt has duplicate section [SCHOOLKID_F] at lines 247 and 253; the later definition is the effective symbol mapping.
+  WARN  PBS\trainer_types.txt has duplicate section [HADIEN] at lines 1405 and 1621; the later definition is the effective symbol mapping.
+  WARN  PBS\pokemon_metrics.txt has duplicate section [IRONMOTH] at lines 4528 and 4825; the later definition is the effective symbol mapping.
+  WARN  Moves legacy ID 680 is shared by [DIMZAP] and [DIMPULSE]; preserve this alias until an explicit ID migration exists.
+  WARN  Moves legacy ID 318 is shared by [SPIKECANNON] and [BONECLUB]; preserve this alias until an explicit ID migration exists.
+  WARN  Pokémon legacy ID 306 is shared by [AGGRON] and [DEOXYS]; preserve this alias until an explicit ID migration exists.
+  WARN  PBS\items.txt defines GREENKEY 2 times; the last numeric mapping is effective.
+  WARN  PBS\items.txt defines TM115 2 times; the last numeric mapping is effective.
+  WARN  PBS\items.txt defines TM116 2 times; the last numeric mapping is effective.
+  WARN  Data\dexdata.dat is older than PBS\pokemon.txt; recompile before release testing.
+  WARN  Scripts\PBItems.rb is older than PBS\items.txt; recompile before release testing.
+  WARN  Data\trainers.dat is older than PBS\trainers.txt; recompile before release testing.
+Summary: 19 checks, 51 warnings, 0 failures.

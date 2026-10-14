@@ -1,0 +1,9 @@
+ok=true
+species=94
+move_slots=226
+minimum_moves=1
+maximum_moves=4
+maximum_species_id=666
+result_matches_candidate=true
+candidate_matches_live=true
+runtime_isolated=true

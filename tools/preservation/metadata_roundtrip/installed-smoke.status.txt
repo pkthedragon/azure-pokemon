@@ -1,0 +1,9 @@
+ok=true
+player_profiles=10
+map_sections=94
+data_exact=true
+typed_fields_exact=true
+legacy_access_exact=true
+immutable=true
+lookup_exact=true
+cache_invalidated=true

@@ -17,6 +17,27 @@ end
 # Main List Scene - Shows all encountered trainers
 #===============================================================================
 class Scene_TrainerIndex
+  # Indices in Azure's compiled trainer Pokemon record.
+  TSPECIES = 0
+  TPLEVEL = 1
+  TPITEM = 2
+  TPMOVE1 = 3
+  TPMOVE2 = 4
+  TPMOVE3 = 5
+  TPMOVE4 = 6
+  TPABILITY = 7
+  TPGENDER = 8
+  TPFORM = 9
+  TPSHINY = 10
+  TPNATURE = 11
+  TPIV = 12
+  TPSHADOW = 13
+  TPNICKNAME = 14
+  TPBALL = 15
+  TPEV = 16
+  TPHAPPINESS = 17
+  TPBOSS = 18
+
   def pbStartScene
     @sprites = {}
     @viewport = Viewport.new(0, 0, Graphics.width, Graphics.height)
@@ -231,27 +252,6 @@ class Scene_TrainerIndex_Info
 
   def pbFormatPokemonInfo(poke)
     text = ""
-
-    # Constants for trainer pokemon data structure
-    TSPECIES = 0
-    TPLEVEL = 1
-    TPITEM = 2
-    TPMOVE1 = 3
-    TPMOVE2 = 4
-    TPMOVE3 = 5
-    TPMOVE4 = 6
-    TPABILITY = 7
-    TPGENDER = 8
-    TPFORM = 9
-    TPSHINY = 10
-    TPNATURE = 11
-    TPIV = 12
-    TPSHADOW = 13
-    TPNICKNAME = 14
-    TPBALL = 15
-    TPEV = 16
-    TPHAPPINESS = 17
-    TPBOSS = 18
 
     # Species and Level
     species = poke[TSPECIES]

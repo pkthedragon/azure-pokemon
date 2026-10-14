@@ -1443,6 +1443,88 @@ function Test-TownMapSources {
   Add-AuditCheck "Town map: $($regions.Count) regions and $pointCount points satisfy the numeric array schema."
 }
 
+function Test-BattleFacilitySources {
+  $relativePath = "PBS\trainerlists.txt"
+  $path = Resolve-ProjectPath $relativePath
+  $sections = [System.Collections.Generic.List[object]]::new()
+  $current = $null
+  $lineNumber = 0
+  foreach ($rawLine in [System.IO.File]::ReadLines($path)) {
+    $lineNumber++
+    $line = $rawLine.Trim()
+    if (!$line -or $line.StartsWith("#")) { continue }
+    if ($line -match '^\[\s*(.+?)\s*\]$') {
+      $name = $Matches[1]
+      if ($name -notin @("DefaultTrainerList", "TrainerList")) {
+        Add-AuditError "$relativePath line $lineNumber has unknown section [$name]."
+      }
+      $current = [pscustomobject]@{
+        Name = $name
+        Line = $lineNumber
+        Fields = @{}
+        FieldLines = @{}
+      }
+      $sections.Add($current)
+      continue
+    }
+    if ($null -eq $current) {
+      Add-AuditError "$relativePath line $lineNumber appears before a list section."
+      continue
+    }
+    if ($line -notmatch '^([^=]+?)\s*=\s*(.*)$') {
+      Add-AuditError "$relativePath line $lineNumber must use Property = Value syntax."
+      continue
+    }
+    $key = $Matches[1].Trim()
+    $value = $Matches[2].Trim()
+    if ($key -notin @("Trainers", "Pokemon", "Challenges")) {
+      Add-AuditError "$relativePath line $lineNumber has unknown property '$key'."
+      continue
+    }
+    if ($current.Fields.ContainsKey($key)) {
+      Add-AuditError "$relativePath line $lineNumber duplicates property '$key' from line $($current.FieldLines[$key])."
+      continue
+    }
+    $current.Fields[$key] = $value
+    $current.FieldLines[$key] = $lineNumber
+  }
+
+  $defaultSections = @($sections | Where-Object { $_.Name -eq "DefaultTrainerList" })
+  if ($defaultSections.Count -ne 1) {
+    Add-AuditError "$relativePath must contain exactly one DefaultTrainerList section; found $($defaultSections.Count)."
+  }
+  $challengeLines = @{}
+  $referenceCount = 0
+  $presentReferenceCount = 0
+  foreach ($section in $sections) {
+    foreach ($key in @("Trainers", "Pokemon")) {
+      if (!$section.Fields.ContainsKey($key) -or [string]::IsNullOrWhiteSpace([string]$section.Fields[$key])) {
+        Add-AuditError "$relativePath section at line $($section.Line) is missing required property '$key'."
+        continue
+      }
+      $filename = ([string]$section.Fields[$key]).Replace("\", "/")
+      if ($filename.StartsWith("/") -or $filename -match '^[A-Za-z]:' -or @($filename -split '/') -contains ".." -or $filename.EndsWith("/")) {
+        Add-AuditError "$relativePath line $($section.FieldLines[$key]) has unsafe $key path '$filename'."
+        continue
+      }
+      $referenceCount++
+      $referencePath = Resolve-ProjectPath ("PBS\" + $filename.Replace("/", "\"))
+      if (Test-Path -LiteralPath $referencePath -PathType Leaf) { $presentReferenceCount++ }
+    }
+    if ($section.Name -eq "DefaultTrainerList") { continue }
+    if (!$section.Fields.ContainsKey("Challenges")) { continue }
+    foreach ($challenge in @(([string]$section.Fields["Challenges"]) -split ',' | ForEach-Object { $_.Trim() } | Where-Object { $_ })) {
+      if ($challengeLines.ContainsKey($challenge)) {
+        Add-AuditError "$relativePath line $($section.FieldLines['Challenges']) repeats challenge '$challenge' from line $($challengeLines[$challenge])."
+      } else {
+        $challengeLines[$challenge] = $section.FieldLines["Challenges"]
+      }
+    }
+  }
+  $missingReferenceCount = $referenceCount - $presentReferenceCount
+  Add-AuditCheck "Battle facilities: $($sections.Count) lists and $($challengeLines.Count) challenge routes satisfy the six-field legacy schema; $missingReferenceCount optional referenced datasets are absent and compile as empty arrays."
+}
+
 function Test-PhoneSources {
   $relativePath = "PBS\phone.txt"
   $path = Resolve-ProjectPath $relativePath
@@ -1897,13 +1979,20 @@ function Test-FeatureContracts {
     @{ Name = "Cached Pokedex nest town-map routing"; File = "Scripts\PokemonNestAndForm.rb"; Pattern = '@mapdata\s*=\s*pbLoadTownMapData' },
     @{ Name = "Split metadata editor serialization"; File = "Scripts\PokemonEditor.rb"; Pattern = '(?s)class\s+AzurePBSStringWriter.*def\s+pbMetadataCsvString.*pbWriteCsvRecord.*def\s+pbSerializeSplitMetadataPBS.*WildVictoryBGM.*TrainerType.*LegacyPlayerSlot.*PokemonMetadata::NonGlobalTypes.*pbAltPBSWriteText\("PBS/metadata\.txt".*pbAltPBSWriteText\("PBS/map_metadata\.txt".*def\s+pbSerializeMetadata.*pbUsesSplitMetadataPBS.*pbSerializeSplitMetadataPBS.*save_data\(metadata,"Data/metadata\.dat"\).*pbInvalidateMetadataData\(metadata\)' },
     @{ Name = "Typed cached immutable encounter registry"; File = "Scripts\PokemonEncounters.rb"; Pattern = '(?s)class\s+PBEncounterSlotData.*attr_reader\s+:slot,:species,:min_level,:max_level,:weight.*class\s+PBEncounterTypeData.*attr_reader\s+:id,:name,:density,:encounters,:slots,:chances.*class\s+PBEncounterData.*attr_reader\s+:map_id,:densities,:encounters,:encounter_types.*def\s+get\(type\).*def\s+try_get\(type\).*def\s+exists\?\(type\).*def\s+each.*def\s+Land.*def\s+WaterNight.*def\s+data.*pbCachedData\("Data/encounters\.dat"\).*def\s+normalize_type.*EncounterTypes::Names.*def\s+immutable_encounters.*clone\.freeze.*def\s+get\(mapid\).*def\s+try_get\(mapid\).*def\s+exists\?\(mapid\).*def\s+clear_cache.*def\s+pbInvalidateEncounterData.*AzureDataCache\.clear\("Data/encounters\.dat"\)' },
-    @{ Name = "Encounter adapter routing and per-roll mutation isolation"; File = "Scripts\PokemonEncounters.rb"; Pattern = '(?s)def\s+setup\(mapID\).*PBEncounterData\.try_get\(mapID\).*@density=data\.densities.*@enctypes=data\.encounters.*def\s+pbMapHasEncounter\?.*PBEncounterData\.try_get.*data\.has_type\?.*def\s+pbMapEncounter.*PBEncounterData\.try_get.*enctypes=data\.encounters.*def\s+pbEncounteredPokemon.*chances=EncounterTypes::EnctypeChances\[enctype\]\.clone.*encounter\s*=\s*@enctypes\[enctype\]\[chosenpkmn\]\.clone.*encounter=@enctypes\[enctype\]\[chosenpkmn\]\.clone' },
+    @{ Name = "Encounter adapter routing and allocation-safe per-roll isolation"; File = "Scripts\PokemonEncounters.rb"; Pattern = '(?s)EnctypeChanceTotals=EnctypeChances\.map.*def\s+setup\(mapID\).*PBEncounterData\.try_get\(mapID\).*@density=data\.densities.*@enctypes=data\.encounters.*def\s+pbMapHasEncounter\?.*PBEncounterData\.try_get.*data\.has_type\?.*def\s+pbMapEncounter.*PBEncounterData\.try_get.*enctypes=data\.encounters.*chancetotal=EncounterTypes::EnctypeChanceTotals\[enctype\].*def\s+pbEncounteredPokemon.*basechances=EncounterTypes::EnctypeChances\[enctype\].*chances=basechances.*chances=basechances\.clone.*aArr\s*=\s*nil.*aArr\s*=\s*\[\].*chances\.equal\?\(basechances\).*minlevel=encounter\[1\].*minlevel\s*\+=\s*\(encounter\[2\]\s*-\s*minlevel\)\s*/\s*2.*level=minlevel\+rand' },
     @{ Name = "Signature-aware cached binary species auxiliaries"; File = "Scripts\AzureDataCache.rb"; Pattern = '(?s)def\s+self\.fetch\(path\).*entry\s*&&\s*\(!defined\?\(\$DEBUG\)\s*\|\|\s*!\$DEBUG\).*signature=file_signature\(path\).*data=yield\(path\).*module\s+AzureEvolutionDataCache.*EVOTYPEMASK.*Data/evolutions\.dat.*def\s+self\.parse.*entries\.push.*EVODATAMASK.*def\s+self\.forward.*def\s+self\.previous_record.*module\s+AzureRegionalDexCache.*Data/regionals\.dat.*def\s+self\.parse.*:num_regions.*reverse\[number\]=species\s+if\s+number!=0\s+&&\s+reverse\[number\]\.nil\?.*def\s+self\.regional_number.*def\s+self\.national_number.*def\s+self\.all_species' },
     @{ Name = "Cached evolution and regional-dex helper routing"; File = "Scripts\PokemonEvolutionHelper.rb"; Pattern = '(?s)def\s+pbGetEvolvedFormData.*MultipleForms\.call\("getEvo",pokemon\).*AzureEvolutionDataCache\.forward\(species\).*record\.clone.*def\s+pbGetPreviousForm.*AzureEvolutionDataCache\.previous_record.*def\s+pbGetMinimumLevel.*AzureEvolutionDataCache\.records.*PBEvolution::Level.*def\s+pbGetBabySpecies.*AzureEvolutionDataCache\.previous_record.*pbGetBabySpecies\(ret\).*def\s+pbGetLessBabySpecies.*AzureEvolutionDataCache\.previous_record' },
     @{ Name = "Typed cached trainer-type registry"; File = "Scripts\PokeBattle_Trainer.rb"; Pattern = '(?s)class\s+PBTrainerTypeData.*attr_reader\s+:id,:internal_name,:raw_name,:base_money.*attr_reader\s+:battle_bgm,:victory_bgm,:intro_bgm,:gender,:skill_level.*def\s+data.*pbCachedData\("Data/trainertypes\.dat"\).*def\s+normalize_id.*PBTrainers\.const_defined\?.*def\s+new\(trainertype\).*@azure_source_id.*@azure_source_row.*def\s+get\(trainertype\).*def\s+try_get\(trainertype\).*def\s+exists\?\(trainertype\).*def\s+each.*def\s+clear_cache.*class\s+PokeBattle_Trainer.*def\s+moneyEarned.*PBTrainerTypeData\.try_get.*def\s+skill.*PBTrainerTypeData\.try_get.*def\s+gender.*PBTrainerTypeData\.try_get' },
     @{ Name = "Trainer-type helper registry routing"; File = "Scripts\PokemonUtilities.rb"; Pattern = '(?s)def\s+pbGetTrainerTypeGender.*PBTrainerTypeData\.try_get.*def\s+pbPlayTrainerIntroME.*data\.intro_bgm.*def\s+pbGetTrainerBattleBGM.*data\.battle_bgm.*def\s+pbGetTrainerBattleBGMFromType.*data\.battle_bgm.*def\s+pbGetTrainerVictoryME.*data\.victory_bgm' },
-    @{ Name = "Read-only cached battle-facility lists"; File = "Scripts\PokemonOrgBattle.rb"; Pattern = '(?s)def\s+pbLoadBTTrainerLists\(mutable=false\).*load_data\("Data/trainerlists\.dat"\).*if\s+mutable.*pbCachedData\("Data/trainerlists\.dat"\).*def\s+pbGetBTTrainers\(challengeID,mutable=false\).*pbLoadBTTrainerLists\(mutable\).*def\s+pbGetBTPokemon\(challengeID,mutable=false\)' },
-    @{ Name = "Mutable battle-facility generator isolation"; File = "Scripts\PokemonOrgBattleGenerator.rb"; Pattern = '(?s)def\s+pbTrainerInfo.*independent mutable load.*pbGetBTTrainers\(trfile,true\).*save_data\(trlists,"Data/trainerlists\.dat"\).*AzureDataCache\.clear\("Data/trainerlists\.dat"\)' },
+    @{ Name = "Read-only cached battle-facility lists"; File = "Scripts\PokemonOrgBattle.rb"; Pattern = '(?s)def\s+pbInvalidateBTTrainerLists.*AzureDataCache\.clear\("Data/trainerlists\.dat"\).*def\s+pbLoadBTTrainerLists\(mutable=false\).*load_data\("Data/trainerlists\.dat"\).*if\s+mutable.*pbCachedData\("Data/trainerlists\.dat"\).*def\s+pbGetBTTrainers\(challengeID,mutable=false\).*pbLoadBTTrainerLists\(mutable\).*def\s+pbGetBTPokemon\(challengeID,mutable=false\)' },
+    @{ Name = "Mutable battle-facility generator isolation"; File = "Scripts\PokemonOrgBattleGenerator.rb"; Pattern = '(?s)def\s+pbTrainerInfo.*independent mutable load.*pbGetBTTrainers\(trfile,true\).*save_data\(trlists,"Data/trainerlists\.dat"\).*pbInvalidateBTTrainerLists.*def\s+pbWriteCup.*save_data\(trlists,"Data/trainerlists\.dat"\).*pbInvalidateBTTrainerLists' },
+    @{ Name = "Battle-facility Trainer schema reader"; File = "Scripts\Compiler.rb"; Pattern = 'def\s+pbReadBTTrainerSource\(filename\)' },
+    @{ Name = "Battle-facility Pokemon schema reader"; File = "Scripts\Compiler.rb"; Pattern = 'def\s+pbReadBTPokemonSource\(filename\)' },
+    @{ Name = "Source-aware battle-facility list validation"; File = "Scripts\Compiler.rb"; Pattern = 'def\s+pbValidateTrainerLists\(sourceFile="PBS/trainerlists\.txt",sourceDir=nil\)' },
+    @{ Name = "Isolated battle-facility compiler"; File = "Scripts\Compiler.rb"; Pattern = 'def\s+pbCompileTrainerLists\(dataOutput="Data/trainerlists\.dat",installRuntime=true,' },
+    @{ Name = "Isolated battle-facility PBS serializer"; File = "Scripts\PokemonEditor.rb"; Pattern = 'def\s+pbSaveTrainerLists\(sourceOutput="PBS/trainerlists\.txt",' },
+    @{ Name = "Dependency-aware battle-facility compilation"; File = "Scripts\Compiler.rb"; Pattern = ':id=>:battle_facility,' },
+    @{ Name = "Recoverable battle-facility source-file tracking"; File = "Scripts\Compiler.rb"; Pattern = 'def\s+pbAzurePBSTrackedFiles\(sourceDir="PBS"\)' },
     @{ Name = "Keyed cached trainer data registry"; File = "Scripts\PokemonTrainers.rb"; Pattern = '(?s)module\s+AzureTrainerDataCache.*def\s+self\.sync.*if\s+!@index\.has_key\?\(key\).*@index\[key\]=trainer.*def\s+self\.record.*def\s+self\.replace.*def\s+self\.clear.*trainer=AzureTrainerDataCache\.record' },
     @{ Name = "Typed keyed trainer TeamData adapters"; File = "Scripts\PokemonTrainers.rb"; Pattern = '(?s)class\s+PBTrainerPokemonData.*attr_reader\s+:species,:level,:item,:moves,:ability,:gender,:form,:shiny.*@evs=.*freeze.*@offsets=.*freeze.*class\s+PBTrainerTeamData.*attr_reader\s+:index,:name,:trainer_type,:party_id,:items,:party.*PBTrainerPokemonData\.new.*def\s+trainerType.*def\s+partyID.*def\s+teamid.*module\s+AzureTrainerDataCache.*@positions=.*@teams=.*def\s+self\.team.*PBTrainerTeamData\.new.*def\s+self\.exists\?.*def\s+self\.free_party_id.*def\s+self\.each_team' },
     @{ Name = "Mutable keyed trainer editor with legacy-array commits"; File = "Scripts\PokemonTrainers.rb"; Pattern = '(?s)class\s+AzureTrainerTeamEditorData.*attr_reader\s+:records.*load_data\("Data/trainers\.dat"\).*def\s+key_for.*def\s+rebuild.*@index\[key\]=index\s+if\s+!@index\.has_key\?\(key\).*def\s+index_for.*def\s+free_party_id.*def\s+conflicting_index.*def\s+add.*def\s+replace_at.*def\s+delete_at.*def\s+commit.*save_data\(@records,"Data/trainers\.dat"\).*AzureTrainerDataCache\.replace\(@records\).*def\s+pbNewTrainer\(trainerid,trainername,trainerparty,editorData=nil\).*editorData\.conflicting_index.*editorData\.commit.*def\s+pbGetFreeTrainerParty\(trainerid,trainername,editorData=nil\).*AzureTrainerDataCache\.free_party_id' },
@@ -1942,6 +2031,46 @@ function Test-FeatureContracts {
     @{ Name = "Exact legacy Nidoran constant spellings"; File = "Scripts\Compiler.rb"; Pattern = '(?s)def\s+self\.constant_symbol.*legacyNidoran=\(symbol=="NIDORANfE"\s*\|\|\s*symbol=="NIDORANmA"\).*if\s+!legacyNidoran\s+&&\s+!symbol\[/\^\[A-Z\]' },
     @{ Name = "Union-preserving TM compiler validation"; File = "Scripts\Compiler.rb"; Pattern = '(?s)module\s+AzurePBSValidation.*def\s+self\.csv_values.*trailing empty CSV entry.*def\s+self\.tm_species_list.*constant_symbol.*def\s+pbCompileMachines\(outputFile="Data/tm\.dat"\).*sectionSymbols=.*speciesSeen=.*pbAltPBSReadLines\("PBS/tm\.txt"\).*resolve to the same numeric move ID.*sections\[sectionname\]=WordArray\.new\s+if\s+!sections\[sectionname\].*AzurePBSValidation\.tm_species_list.*next\s+if\s+speciesSeen\[sectionname\]\[species\].*save_data\(sections,outputFile\).*return\s+sections' },
     @{ Name = "File-aware compiled runtime cache"; File = "Scripts\AzureDataCache.rb"; Pattern = '(?s)module\s+AzureDataCache.*def\s+self\.file_signature.*File\.mtime.*File\.size.*def\s+self\.load.*Packaged/release data is immutable.*entry\s*&&\s*\(!defined\?\(\$DEBUG\)\s*\|\|\s*!\$DEBUG\).*signature=file_signature\(path\).*entry\[0\]==signature.*record_stat\(key,:hits\).*record_stat\(key,:loads\).*data=load_data\(path\).*def\s+self\.clear.*def\s+self\.stats.*def\s+self\.reset_stats.*def\s+pbCachedData.*def\s+pbCachedRxData' },
+    @{ Name = "Deferred mutable battle-animation loader"; File = "Scripts\PBAnimation.rb"; Pattern = '(?s)def\s+pbLoadBattleAnimations.*defined\?\(\$pkmn_animations\).*load_data_anim\("Data/PkmnAnimations\.rxdata"\).*return\s+\$pkmn_animations' },
+    @{ Name = "First-match battle-animation name index"; File = "Scripts\PBAnimation.rb"; Pattern = '(?s)module\s+AzureBattleAnimationIndex.*def\s+self\.clear.*@animations=nil.*@indices=nil.*def\s+self\.index_for\(animations,name\).*!@animations\.equal\?\(animations\).*@length!=animations\.length.*@indices\[animation\.name\]=i\s+if\s+!@indices\.has_key\?\(animation\.name\).*return\s+@indices\[name\].*def\s+pbInvalidateBattleAnimationIndex.*AzureBattleAnimationIndex\.clear.*def\s+pbFindBattleAnimationByName\(name,animations=nil\).*AzureBattleAnimationIndex\.index_for\(animations,name\)' },
+    @{ Name = "Indexed common and capture animation routing"; File = "Scripts\PokeBattle_ActualScene.rb"; Pattern = '(?s)def\s+pbCommonAnimation\(animname.*animations=pbLoadBattleAnimations.*index=pbFindBattleAnimationByName\("Common:"\+animname,animations\).*return\s+if\s+!index.*pbAnimationCore\(animations\[index\].*def\s+pbThrow\(ball.*animations=pbLoadBattleAnimations.*index=pbFindBattleAnimationByName\("Common:BallBurst#\{t\}",animations\).*burst=t\s+if\s+index' },
+    @{ Name = "Battle-animation editor index invalidation"; File = "Scripts\PokemonAnimEditor.rb"; Pattern = '(?s)save_data\(animation,"Data/PkmnAnimations\.rxdata"\).*\$pkmn_animations\s*=\s*animation.*pbInvalidateBattleAnimationIndex.*animationEditorMain\(animation\).*pbInvalidateBattleAnimationIndex.*save_data\(list,"Data/PkmnAnimations\.rxdata"\).*\$pkmn_animations\s*=\s*list.*pbInvalidateBattleAnimationIndex.*\$pkmn_animations\s*=\s*animations\s+if\s+count>0.*pbInvalidateBattleAnimationIndex\s+if\s+count>0' },
+    @{ Name = "Battle-animation compiler index invalidation"; File = "Scripts\Compiler.rb"; Pattern = '(?s)if\s+ids\.include\?\(:animations\).*pbInvalidateBattleAnimationIndex\s+if\s+defined\?\(pbInvalidateBattleAnimationIndex\).*\$pkmn_animations=nil\s+if\s+defined\?\(\$pkmn_animations\)' },
+    @{ Name = "Battle-boundary animation preload"; File = "Scripts\PokeBattle_ActualScene.rb"; Pattern = 'def\s+pbStartBattle\(battle\)\s*\r?\n\s*# Called whenever the battle begins\s*\r?\n\s*pbLoadBattleAnimations' },
+    @{ Name = "Z-Move animation loader routing"; File = "Scripts\PokeBattle_ZMoves.rb"; Pattern = 'animations=pbLoadBattleAnimations' },
+    @{ Name = "Deferred mutable tileset loader"; File = "Scripts\AzureDataCache.rb"; Pattern = '(?s)def\s+pbLoadTilesetData.*\$data_tilesets=pbLoadRxData\("Data/Tilesets"\)\s+if\s+!\$data_tilesets.*return\s+\$data_tilesets.*def\s+pbReloadTilesetData.*\$data_tilesets=pbLoadRxData\("Data/Tilesets"\).*return\s+\$data_tilesets' },
+    @{ Name = "Map-boundary tileset loading"; File = "Scripts\Game_Map_.rb"; Pattern = '(?s)def\s+setup\(map_id\).*tileset\s*=\s*pbLoadTilesetData\[@map\.tileset_id\].*Events\.onMapCreate\.trigger\(self,map_id,\s*@map,\s*tileset\)' },
+    @{ Name = "Tileset refresh ownership routing"; File = "Scripts\PokemonMap.rb"; Pattern = '(?s)def\s+pbClearData.*pbReloadTilesetData.*class\s+Game_Map.*def\s+updateTileset.*tileset\s*=\s*pbLoadTilesetData\[@map\.tileset_id\]' },
+    @{ Name = "Minimap tileset loading"; File = "Scripts\PerspectiveTilemap.rb"; Pattern = '(?s)def\s+getPassabilityMinimap\(mapid\).*tileset=pbLoadTilesetData\[map\.tileset_id\]' },
+    @{ Name = "Deferred RPG animation loader"; File = "Scripts\AzureDataCache.rb"; Pattern = '(?s)def\s+pbLoadRPGAnimations.*\$data_animations=pbLoadRxData\("Data/Animations"\)\s+if\s+!\$data_animations.*return\s+\$data_animations' },
+    @{ Name = "User animation loader routing"; File = "Scripts\AnimationSprite.rb"; Pattern = 'self\.animation\(pbLoadRPGAnimations\[animID\],true\)' },
+    @{ Name = "Character animation loader routing"; File = "Scripts\Sprite_Character.rb"; Pattern = 'animation\s*=\s*pbLoadRPGAnimations\[@character\.animation_id\]' },
+    @{ Name = "Shadow animation loader routing"; File = "Scripts\Shadow.rb"; Pattern = 'animation\s*=\s*pbLoadRPGAnimations\[@character\.animation_id\]' },
+    @{ Name = "One-shot map transfer handoff"; File = "Scripts\AzureDataCache.rb"; Pattern = '(?s)module\s+AzureMapTransferHandoff.*def\s+self\.preload\(map_id\).*clear.*@map_id=map_id.*@map=pbLoadRxData\(sprintf\("Data/Map%03d",map_id\)\).*def\s+self\.take\(map_id\).*@map\s*&&\s*@map_id==map_id.*map=@map.*clear.*return\s+map.*clear.*return\s+pbLoadRxData\(sprintf\("Data/Map%03d",map_id\)\).*def\s+self\.clear.*@map_id=nil.*@map=nil' },
+    @{ Name = "Map setup transfer ownership"; File = "Scripts\Game_Map_.rb"; Pattern = '(?s)def\s+setup\(map_id\).*@map=AzureMapTransferHandoff\.take\(map_id\).*tileset\s*=\s*pbLoadTilesetData\[@map\.tileset_id\]' },
+    @{ Name = "Map autofade transfer preload and clear"; File = "Scripts\Scene_Map.rb"; Pattern = '(?s)def\s+autofade\(mapid\).*map=AzureMapTransferHandoff\.preload\(mapid\).*def\s+transfer_player.*if\s+\$game_map\.map_id!=\$game_temp\.player_new_map_id.*\$MapFactory\.setup\(\$game_temp\.player_new_map_id\).*else\s+AzureMapTransferHandoff\.clear' },
+    @{ Name = "Allocation-free map refresh iteration"; File = "Scripts\Game_Map_.rb"; Pattern = '(?s)def\s+refresh.*@events\.each_value\s+do\s+\|event\|.*event\.refresh.*@common_events\.each_value\s+do\s+\|common_event\|.*common_event\.refresh' },
+    @{ Name = "Allocation-free map update iteration"; File = "Scripts\Game_Map_.rb"; Pattern = '(?s)def\s+update.*@events\.each_value\s+do\s+\|event\|.*event\.update.*@common_events\.each_value\s+do\s+\|common_event\|.*common_event\.update' },
+    @{ Name = "Allocation-free event page scan"; File = "Scripts\Game_Event_.rb"; Pattern = '(?s)def\s+refresh.*@event\.pages\.reverse_each\s+do\s+\|page\|.*new_page\s*=\s*page.*break' },
+    @{ Name = "Allocation-free connected-map collision iteration"; File = "Scripts\PokemonMap.rb"; Pattern = '(?s)def\s+isPassableStrict\?.*map\.events\.each_value\s+do\s+\|event\|.*def\s+isPassable\?.*map\.events\.each_value\s+do\s+\|event\|' },
+    @{ Name = "Allocation-free sprite hash updates"; File = "Scripts\SpriteWindow.rb"; Pattern = '(?s)def\s+pbUpdateSpriteHash\(windows\)\s*windows\.each_value\s+do\s+\|window\|.*window\.respond_to\?\(:update\).*rescue\s+RGSSError' },
+    @{ Name = "Allocation-free party bitmap iteration"; File = "Scripts\PokemonParty.rb"; Pattern = '(?s)class\s+ChangelingSprite.*def\s+dispose.*@bitmaps\.each_value\s+\{\|bm\|\s*bm\.dispose\}.*def\s+update.*@bitmaps\.each_value\s+\{\|bm\|\s*bm\.update\}' },
+    @{ Name = "Allocation-free AI rough-stat scaling"; File = "Scripts\PokeBattle_AI.rb"; Pattern = '(?s)AI_ROUGH_STAT_STAGE_MULTIPLIERS=\[2,2,2,2,2,2,2,3,4,5,6,7,8\]\.freeze.*AI_ROUGH_STAT_STAGE_DIVISORS=\[8,7,6,5,4,3,2,2,2,2,2,2,2\]\.freeze.*def\s+pbRoughStat\(battler,stat,skill\).*return\s+battler\.pbSpeed.*stage=battler\.stages\[stat\]\+6.*AI_ROUGH_STAT_STAGE_MULTIPLIERS\[stage\]/AI_ROUGH_STAT_STAGE_DIVISORS\[stage\]' },
+    @{ Name = "Allocation-free AI rough-damage stage scaling"; File = "Scripts\PokeBattle_AI.rb"; Pattern = '(?s)def\s+pbRoughDamage\(move,attacker,opponent,skill,basedamage,hardswitch=false\).*AI_ROUGH_STAT_STAGE_MULTIPLIERS\[gl3\]/AI_ROUGH_STAT_STAGE_DIVISORS\[gl3\].*AI_ROUGH_STAT_STAGE_MULTIPLIERS\[gl4\]/AI_ROUGH_STAT_STAGE_DIVISORS\[gl4\]' },
+    @{ Name = "Canonical AI damage-move reuse"; File = "Scripts\PokeBattle_AI.rb"; Pattern = '(?s)AI_CONTEXT_SENSITIVE_DAMAGE_MOVES=\{.*PBMoves::WEATHERBALL=>true.*PBMoves::JUDGMENT=>true.*PBMoves::MULTIATTACK=>true.*PBMoves::TECHNOBLAST=>true.*PBMoves::HIDDENPOWER=>true.*PBMoves::GILDEDARROW=>true.*PBMoves::GILDEDARROWS=>true.*PBMoves::NATUREPOWER=>true.*\}\.freeze.*def\s+pbAIDamageMoveNeedsNormalization\?\(move,attacker\).*move\.battle\.equal\?\(self\).*move\.id==PBMoves::STRUGGLE.*move\.user\.equal\?\(attacker\).*move\.basedamage!=data\[1\].*move\.type!=data\[2\].*move\.flags!=data\[9\].*move\.id==PBMoves::THOUSANDARROWS.*def\s+pbRoughDamage\(move,attacker,opponent,skill,basedamage,hardswitch=false\).*pbAIDamageMoveNeedsNormalization\?\(move,attacker\)\s*move\s*=\s*pbChangeMove\(move,attacker\)' },
+    @{ Name = "Allocation-light AI cache keys and ordered foe iteration"; File = "Scripts\PokeBattle_AI.rb"; Pattern = '(?s)def\s+each_ordered_foe_battler_for_ai\(attacker, preferred_target = nil\).*preferred\.respond_to\?\(:index\).*primary = pbAIPrimaryTarget\(attacker, preferred\).*yield primary if primary && !primary\.isFainted\?.*next if primary && foe\.index == primary\.index.*yield foe.*def\s+pbAIOrderedFoes\(attacker, preferred_target = nil\).*each_ordered_foe_battler_for_ai\(attacker, preferred_target\)\s*\{\s*\|foe\|\s*foes << foe\s*\}.*def\s+pbAIAnyOrderedFoe\?.*return true if yield foe.*def\s+pbAIAnyFoeHasMove\?.*each_ordered_foe_battler_for_ai.*def\s+pbAIAnyFoeHasWorkingAbility\?.*each_ordered_foe_battler_for_ai.*def\s+pbAIAnyFoeMoveMemoryMatches\?.*each_ordered_foe_battler_for_ai.*def\s+checkAIdamage\(memory,attacker,opponent,skill,shutup=false,movename=false,hardswitch=false\).*cacheKey=nil.*cacheKey=\(\(attacker\.index\*@battlers\.length\+opponent\.index\)\*2\)\+\s*\(hardswitch \? 1 : 0\).*@aiDamageCache\.has_key\?\(cacheKey\).*@aiDamageCache\[cacheKey\] = maxdam' },
+    @{ Name = "Allocation-free AI ally query iteration"; File = "Scripts\PokeBattle_AI.rb"; Pattern = '(?s)def\s+pbAIAllies\(attacker, include_self = false\).*each_same_side_battler_for_ai.*def\s+pbAIAnyAlly\?\(attacker, include_self = false\).*if block_given\?.*return true if yield ally.*each_same_side_battler_for_ai\(attacker, include_self\)\s*\{\s*\|ally\|\s*return true\s*\}.*def\s+pbAIFirstAlly\(attacker, preferred_index = nil, include_self = false\).*first=ally if !first.*return ally if !preferred_index\.nil\? && ally\.index==preferred_index.*def\s+pbAIAnyAllyCanKOAnyFoe\?.*each_same_side_battler_for_ai\(attacker\).*ally_target = pbAIFirstAlly\(attacker,opponent \? opponent\.index : nil\).*electric_weak = pbAIAnyAlly\?\(attacker, true\).*fire_weak = pbAIAnyAlly\?\(attacker, true\)' },
+    @{ Name = "Allocation-free AI same-side membership"; File = "Scripts\PokeBattle_AI.rb"; Pattern = '(?s)def\s+pbAISameSideBattler\?\(attacker, target, include_self = false\).*return false if !attacker \|\| !target.*eachSameSideBattler\(attacker\.index\).*next if !battler.*next if !include_self && battler\.index==attacker\.index.*return true if battler==target.*return false' },
+    @{ Name = "Allocation-free AI foe speed maxima"; File = "Scripts\PokeBattle_AI.rb"; Pattern = 'if\s+!foes\.empty\?\s+&&\s+foes\.all\?\s*\{\s*\|foe\|\s*opponent\.pbSpeed\s*>\s*foe\.pbSpeed\s*\}' },
+    @{ Name = "Allocation-free scalar-or-collection AI query arguments"; File = "Scripts\PokeBattle_AI.rb"; Pattern = '(?s)def\s+pbAIAnyFoeHasMove\?\(attacker, preferred_target = nil, move_ids = nil\).*multiple=move_ids\.is_a\?\(Array\).*def\s+pbAIAnyFoeHasWorkingAbility\?\(attacker, preferred_target = nil, abilities = nil\).*multiple=abilities\.is_a\?\(Array\).*def\s+pbAIAnyFoeMoveMemoryMatches\?\(attacker, preferred_target = nil, move_ids = nil\).*multiple=move_ids\.is_a\?\(Array\).*def\s+pbAIAnyAllyHasWorkingAbility\?\(attacker, abilities\).*multiple=abilities\.is_a\?\(Array\).*def\s+pbAIAnyOtherAllyHasWorkingAbility\?\(attacker, abilities\).*multiple=abilities\.is_a\?\(Array\).*def\s+pbAIAnyReadyFoeHasMove\?\(attacker, preferred_target = nil, move_ids = nil\).*multiple=move_ids\.is_a\?\(Array\).*AI_REDIRECTION_MOVES=\[PBMoves::FOLLOWME,PBMoves::RAGEPOWDER\]\.freeze.*AI_SCREEN_BREAK_MEMORY_MOVES=\[PBMoves::BRICKBREAK,PBMoves::PSYCHICFANGS,PBMoves::DEFOG\]\.freeze.*AI_ELECTRIC_IMMUNITY_ABILITIES=.*\.freeze.*AI_ALLY_SPREAD_IMMUNITY_ABILITIES=.*\.freeze' },
+    @{ Name = "Frozen AI move-query groups"; File = "Scripts\PokeBattle_AI.rb"; Pattern = '(?s)AI_SLEEP_TALK_MOVES=\[PBMoves::SLEEPTALK,PBMoves::SNORE\]\.freeze.*AI_STAT_RESET_MOVES=\[PBMoves::CLEARSMOG,PBMoves::HAZE\]\.freeze.*AI_WEIGHT_BASED_MOVES=.*AI_HEAVY_WEIGHT_MOVES=.*AI_HEATED_FIELD_MOVES=.*AI_GROUND_SPREAD_MOVES=.*AI_SOUND_SPREAD_MOVES=.*AI_RAIN_ACCURATE_MOVES=.*AI_SLEEP_PUNISH_MOVES=.*AI_ESCAPE_MOVES=.*AI_HAZARD_CONTROL_MOVES=.*AI_BERRY_DESTROY_MOVES=.*AI_ITEM_STEAL_MOVES=.*AI_COMMON_STATUS_MOVES=.*AI_HAZARD_CLEAR_MOVES=.*AI_SLEEP_TALK_EXTENDED_MOVES=\[PBMoves::SLEEPTALK,PBMoves::SNORE,PBMoves::HOTTEMPO\]\.freeze' },
+    @{ Name = "Frozen AI static membership groups"; File = "Scripts\PokeBattle_AI.rb"; Pattern = '(?s)AI_TERRAIN_FIELD_IDS=\[1,2,3,18,21,22,26,37\]\.freeze.*AI_SUCCESSIVE_USE_FUNCTIONS=\[0x91,0x92,0xD3,0x247\]\.freeze.*AI_CRITICAL_ABILITIES=\[PBAbilities::SUPERLUCK,PBAbilities::SNIPER\]\.freeze.*AI_PHYSICAL_STAT_DROP_FUNCTIONS=\[0x43,0x44,0x45,0x46,0x47\]\.freeze.*AI_SPECIAL_STAT_DROP_FUNCTIONS=\[0x48,0x49,0x4A,0x4B,0x4C\]\.freeze.*AI_SEMI_INVULNERABLE_FUNCTIONS=\[0xC9,0xCA,0xCB,0xCC,0xCD,0xCE\]\.freeze' },
+    @{ Name = "Scalar-aware allocation-free AI move-memory predicates"; File = "Scripts\PokeBattle_AI.rb"; Pattern = '(?s)def\s+pbAIEffectiveMemoryMoveID\(move\).*move\.id==PBMoves::NATUREPOWER.*return move\.id.*def\s+checkAImoves\(moveID,memory\).*singleMove=moveID\.is_a\?\(Integer\).*for j in memory.*effective_id=pbAIEffectiveMemoryMoveID\(j\).*if singleMove.*moveID==effective_id.*else.*moveID\.include\?\(effective_id\).*def\s+checkAIaccuracy\(memory\).*j\.id==PBMoves::NATUREPOWER.*pbChangeMove\(j,nil\)\.accuracy==0.*return true if j\.accuracy==0.*def\s+checkAIHas\?\(moveID,attacker\).*singleMove=moveID\.is_a\?\(Integer\).*for j in attacker\.moves.*effective_id=pbAIEffectiveMemoryMoveID\(j\).*if singleMove.*moveID==effective_id.*else.*moveID\.include\?\(effective_id\)' },
+    @{ Name = "Move availability opposing-battler binding"; File = "Scripts\PokeBattle_Battle.rb"; Pattern = '(?s)def\s+pbCanChooseMove\?\(idxPokemon,idxMove,showMessages,sleeptalk=false\).*opp1=thispkmn\.pbOpposing1\s*opp2=thispkmn\.pbOpposing2.*opp1\.effects\[PBEffects::Imprison\].*opp2\.effects\[PBEffects::Imprison\]' },
+    @{ Name = "Battler-owned initialized battle moves"; File = "Scripts\PokeBattle_Battler.rb"; Pattern = '(?s)def\s+pbInitPokemon\(pkmn,pkmnIndex,wonderroom=false\).*@moves\s*=\s*\[\s*PokeBattle_Move\.pbFromPBMove\(@battle,pkmn\.moves\[0\],self\),\s*PokeBattle_Move\.pbFromPBMove\(@battle,pkmn\.moves\[1\],self\),\s*PokeBattle_Move\.pbFromPBMove\(@battle,pkmn\.moves\[2\],self\),\s*PokeBattle_Move\.pbFromPBMove\(@battle,pkmn\.moves\[3\],self\)' },
+    @{ Name = "Cold-import-safe field manual mapping"; File = "Scripts\PokemonFieldEffectsManual.rb"; Pattern = '(?s)def\s+pbFieldEffectsSeen.*field_id_to_switch\s*=\s*\{.*field_id_to_switch\.each\s+do' },
+    @{ Name = "Cold-import-safe trainer record indices"; File = "Scripts\PokemonTrainerIndex.rb"; Pattern = '(?s)class\s+Scene_TrainerIndex\s+.*TSPECIES\s*=\s*0.*TPBOSS\s*=\s*18.*def\s+pbFormatPokemonInfo\(poke\)' },
+    @{ Name = "Outrage AI skill branch structure"; File = "Scripts\PokeBattle_AI.rb"; Pattern = 'if\s+skill>=PBTrainerAI\.highSkill\s*\r?\n\s*if\s+\$fefieldeffect==16\s+# Superheated Field\s*\r?\n\s*score\*=0\.8\s*\r?\n\s*end\s*\r?\n\s*else\s*\r?\n\s*score\s*\*=\s*1\.2' },
     @{ Name = "Dual-format named item PBS compiler"; File = "Scripts\Compiler.rb"; Pattern = '(?s)def\s+pbCompileItems.*pbIsSectionedPBSFile\("PBS/items\.txt"\).*LegacyItemID.*FieldUse.*BattleUse.*sourceRecords.*def\s+pbExportAltItemsPBS.*pbAltPBSWriteText\(outputDir\+"/items\.txt".*pbExportAltItemsPBS\(outputDir,sourceDir\)' },
     @{ Name = "Dual-format named Shadow move PBS compiler"; File = "Scripts\Compiler.rb"; Pattern = '(?s)def\s+pbCompileShadowMoves.*pbIsSectionedPBSFile\("PBS/shadowmoves\.txt"\).*Unknown Shadow move property.*missing Moves.*at most 4 are supported.*Preserve the original parser.*def\s+pbExportAltShadowMovesPBS.*\[\["Moves",moves\]\].*pbExportAltShadowMovesPBS\(outputDir,sourceDir\)' },
     @{ Name = "Isolated Shadow move compiler output"; File = "Scripts\Compiler.rb"; Pattern = '(?s)def\s+pbCompileShadowMoves\(outputFile="Data/shadowmoves\.dat",installRuntime=true\).*save_data\(sections,outputFile\).*AzureDataCache\.clear\("Data/shadowmoves\.dat"\)\s+if\s+installRuntime.*return\s+sections' },
@@ -1972,6 +2101,58 @@ function Test-FeatureContracts {
     $scriptName = [System.IO.Path]::GetFileNameWithoutExtension($contract.File)
     if ($orderEntries -notcontains $scriptName) {
       Add-AuditError "$($contract.Name) exists but '$scriptName' is absent from Scripts\!script_order.csv."
+    }
+  }
+  $aiContent = [System.IO.File]::ReadAllText((Resolve-ProjectPath "Scripts\PokeBattle_AI.rb"))
+  if ($aiContent -match 'checkAI(?:moves|Has\?)\(\[(?:PBMoves::[A-Z0-9_]+\s*,?\s*)+\]') {
+    Add-AuditError "AI move predicates still allocate literal PBMoves query arrays."
+  }
+  if ($aiContent -match 'pbAIAllies\([^\r\n]*\)\.(?:any\?|empty\?|find)') {
+    Add-AuditError "Single-pass AI ally queries still materialize temporary ally arrays."
+  }
+  $foeSpeedScans = [regex]::Matches($aiContent, 'if\s+!foes\.empty\?\s+&&\s+foes\.all\?\s*\{\s*\|foe\|\s*opponent\.pbSpeed\s*>\s*foe\.pbSpeed\s*\}')
+  if ($foeSpeedScans.Count -ne 3 -or $aiContent -match 'foes\.map\s*\{\s*\|foe\|\s*foe\.pbSpeed\s*\}\.max') {
+    Add-AuditError "The three AI foe-speed comparisons must use allocation-free all? scans."
+  }
+  $sameSideTargetScans = [regex]::Matches($aiContent, 'pbAISameSideBattler\?\(attacker,opponent\)')
+  if ($sameSideTargetScans.Count -ne 19 -or $aiContent -match 'attacker\.sameSideBattlers\(false\)\.include\?\(opponent\)') {
+    Add-AuditError "The 19 AI same-side target checks must use allocation-free membership scans."
+  }
+  $staticMembershipUseCounts = @{
+    'AI_TERRAIN_FIELD_IDS\.include\?' = 1
+    'AI_SUCCESSIVE_USE_FUNCTIONS\.include\?' = 1
+    'AI_CRITICAL_ABILITIES\.include\?' = 2
+    'AI_PHYSICAL_STAT_DROP_FUNCTIONS\.include\?' = 2
+    'AI_SPECIAL_STAT_DROP_FUNCTIONS\.include\?' = 2
+    'AI_SEMI_INVULNERABLE_FUNCTIONS\.include\?' = 1
+  }
+  foreach ($membershipPattern in $staticMembershipUseCounts.Keys) {
+    $expectedCount = $staticMembershipUseCounts[$membershipPattern]
+    $actualCount = [regex]::Matches($aiContent, $membershipPattern).Count
+    if ($actualCount -ne $expectedCount) {
+      Add-AuditError "AI static membership group '$membershipPattern' has $actualCount uses; expected $expectedCount."
+    }
+  }
+  $staticMembershipLiterals = '\[(?:1,\s*2,\s*3,\s*18,\s*21,\s*22,\s*26,\s*37|0x91,\s*0x92,\s*0xD3,\s*0x247|PBAbilities::SUPERLUCK,\s*PBAbilities::SNIPER|0x43,\s*0x44,\s*0x45,\s*0x46,\s*0x47|0x48,\s*0x49,\s*0x4A,\s*0x4B,\s*0x4C|0xC9,\s*0xCA,\s*0xCB,\s*0xCC,\s*0xCD,\s*0xCE)\]\.include\?'
+  if ($aiContent -match $staticMembershipLiterals) {
+    Add-AuditError "AI scoring still rebuilds a static membership array at an evaluation site."
+  }
+  foreach ($deferredFile in @("Scripts\Scene_Intro.rb", "Scripts\PokemonLoad.rb")) {
+    $deferredContent = [System.IO.File]::ReadAllText((Resolve-ProjectPath $deferredFile))
+    if ($deferredContent -match 'PkmnAnimations\.rxdata|pbLoadBattleAnimations') {
+      Add-AuditError "$deferredFile eagerly loads battle animations before the battle boundary."
+    }
+  }
+  $mainContent = [System.IO.File]::ReadAllText((Resolve-ProjectPath "Scripts\Main.rb"))
+  foreach ($deferredData in @("Tilesets", "Animations")) {
+    if ($mainContent -match ('pbLoadRxData\("Data/{0}"\)' -f $deferredData)) {
+      Add-AuditError "Scripts\Main.rb eagerly loads deferred Data/$deferredData before its runtime boundary."
+    }
+  }
+  foreach ($iterationFile in @("Scripts\Game_Map_.rb", "Scripts\PokemonMap.rb")) {
+    $iterationContent = [System.IO.File]::ReadAllText((Resolve-ProjectPath $iterationFile))
+    if ($iterationContent -match '(?:@?events|@common_events)\.values') {
+      Add-AuditError "$iterationFile reintroduced an allocating Hash#values loop in a hot map path."
     }
   }
   Add-AuditCheck "Azure feature contracts: $($contracts.Count) required systems are present and ordered for loading."
@@ -2106,6 +2287,7 @@ function Test-CompiledDataFreshness {
     @{ Source = "PBS\townmap.txt"; Output = "Data\townmap.dat" },
     @{ Source = "PBS\connections.txt"; Output = "Data\connections.dat" },
     @{ Source = "PBS\phone.txt"; Output = "Data\phone.dat" },
+    @{ Source = "PBS\trainerlists.txt"; Output = "Data\trainerlists.dat" },
     @{ Source = "PBS\encounters.txt"; Output = "Data\encounters.dat" },
     @{ Source = "PBS\shadowmoves.txt"; Output = "Data\shadowmoves.dat" },
     @{ Source = "PBS\tm.txt"; Output = "Data\tm.dat" }
@@ -2143,6 +2325,7 @@ $requiredFiles = @(
   "PBS\townmap.txt",
   "PBS\connections.txt",
   "PBS\phone.txt",
+  "PBS\trainerlists.txt",
   "PBS\encounters.txt",
   "PBS\shadowmoves.txt",
   "PBS\metadata.txt",
@@ -2196,6 +2379,7 @@ if ($script:Errors.Count -eq 0) {
   Test-TownMapSources
   Test-ConnectionSources
   Test-PhoneSources
+  Test-BattleFacilitySources
   Test-MetadataSources $trainerTypeConstants
   Test-EncounterReferences $speciesSymbols
   Test-ShadowMoveReferences $speciesSymbols $moveSymbols

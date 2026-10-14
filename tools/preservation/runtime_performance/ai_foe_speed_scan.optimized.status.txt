@@ -1,0 +1,9 @@
+result=PASS
+mode=optimized_all_speed_scan
+matrix_cases=8
+matrix_checksum=1751308814
+matrix_exact=true
+predicate_calls=1000000
+predicate_checksum=1000000
+predicate_seconds=1.2943683000048622
+predicate_allocations=2

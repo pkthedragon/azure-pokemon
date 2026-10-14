@@ -1,0 +1,9 @@
+result=PASS
+mode=baseline_array_literal
+matrix_scenarios=0
+matrix_checksum=0
+matrix_exact=true
+predicate_calls=1000000
+predicate_checksum=0
+predicate_seconds=2.3978063999966253
+predicate_allocations=1000005

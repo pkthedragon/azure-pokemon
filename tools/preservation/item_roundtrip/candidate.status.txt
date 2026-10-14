@@ -1,0 +1,16 @@
+ok=true
+source_rows=1117
+array_length=1159
+populated_records=1117
+constant_rows=1117
+effective_constants=1114
+name_messages=1159
+description_messages=1159
+new_records_vs_live=12
+removed_records_vs_live=0
+changed_fields_vs_live=4
+stale_name_messages_vs_source=12
+stale_description_messages_vs_source=16
+new_record_ids=1147,1148,1149,1150,1151,1152,1153,1154,1155,1156,1157,1158
+removed_record_ids=
+changed_item_fields=1111:4,1115:4,1116:4,1117:4

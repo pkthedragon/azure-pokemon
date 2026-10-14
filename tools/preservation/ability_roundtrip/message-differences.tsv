@@ -1,0 +1,54 @@
+table	id	live	candidate
+name	409		Brutalize
+name	410		Big Body
+name	411		Haste
+name	412		Liminal
+name	413		Seraphic
+name	414		Hypnotic
+name	415		Stony Spirit
+name	416		War Poet
+name	417		Timetwister
+name	418		Divine Winds
+name	419		Deep Freeze
+name	420		Harvest Moon
+name	421		Dust Devil
+description	51	Ignores accuracy and evasion changes, and the user's accuracy can't be lowered.	Uses Lock-On and Laser Focus on entry, and the user's accuracy can't be lowered.
+description	52	Attack can't be lowered. Damaging moves wound foes for 3 turns.	Attack can't be lowered, inflicts wounds when dealing damage.
+description	131	Healing moves are amplified 1.1x and cure the user's status.	The user's healing moves are amplified 1.1x and heal status conditions.
+description	177	Boosts defenses by 1.3x during terrain and powers up certain moves.	Raises defenses 1.5x during terrain.
+description	220	Steel-type moves gain STAB, takes 0.5x damage from Steel-type moves	Steel-type moves deal 1.5x damage, takes 0.5x damage from Steel-type moves
+description	314	Non-STAB moves are boosted.	Non-STAB moves are boosted 1.3x.
+description	317	The user's contact moves confuse for three turns.	The user's attacks confuse the target.
+description	318	Blinds opponents on entry.	Blinds all other Pokemon on entry.
+description	320	Normal-type moves become Steel-type moves.	Normal-type moves become Steel-type and receive a boost.
+description	321	Normal-type moves become Fire-type moves.	Normal-type moves become Fire-type and receive a boost.
+description	322	Raises the Pokémon's Speed stat.	Doubles Special Attack.
+description	326	Restores ally HP each turn.	Heals allies for 1/8th max HP each turn.
+description	330	Boosts certain moves' power during hail.	Raises the power of Ice- and Fighting-type moves by 1.3x during Hail.
+description	331	In rain, Atk is boosted but HP decreases.	Boosts Attack 1.5x and loses 1/8th max HP each turn during Rain.
+description	332	Contact moves restore HP.	Restores HP when using contact moves.
+description	333	Any contact has a 30% chance to freeze.	When the user faints, if the attacker made contact, freeze it.
+description	336	Restores HP after knocking out any Pokemon.	User restores 25% max HP upon knocking out an enemy.
+description	337	Powers up ball, bomb, and explosion moves.	Boosts the power of ball, bomb, and explosion moves 1.5x.
+description	339	Powers up light and beam moves.	Boosts the power of light and beam moves 1.5x.
+description	342	Boosts attack if an enemy is below half HP.	The user deals 1.5x damage to opponents with 50% or less HP.
+description	346	The Pokémon intensifies gravity when it enters a battle.	Intensifies Gravity on entry.
+description	349	User takes 0.5x damage from priority and two-turn moves	User is immune to priority and two-turn moves.
+description	364	Rock-type moves gain STAB, takes 0.5x damage from Rock-type moves	Rock-type moves deal 1.5x damage, takes 0.5x damage from Rock-type moves
+description	379	Powers up piercing moves.	Boosts the power of piercing moves 1.5x.
+description	381	Uses special attack for physical moves.	The user's physical attacks use the user's Special Attack stat.
+description	383	Ups resistance to Electric- and Ice-type moves.	The user takes halved damage from Electric- and Ice-type moves.
+description	384	Absorbs Dark-type moves to raise defenses.	Absorbs Dark-type moves, which raises this Pokemon's defenses.
+description	409		Normal-type moves become Fighting-type and receive a boost.
+description	410		User takes 0.5x damage from attacks and from recoil.
+description	411		Sharply raises Speed on entry, and loses a positive Speed stage each turn.
+description	412		Status moves boost the user's next attack, and attacking moves raise the priority of the user's next status move.
+description	413		The user takes 0.7x damage from moves with less than 100 power.
+description	414		Confuses and infatuates enemies on entry.
+description	415		Increases the power of the user and allies' Rock-type moves by 1.5x.
+description	416		The user's sound moves use its Attack stat and all offensive stat stages.
+description	417		At the end of turn, if the user is at 1/3 max HP or lower, it rewinds to the start of the turn.
+description	418		Flying-type moves become Dragon-type and receive a boost.
+description	419		Contact moves used against this Pokemon have negative priority.
+description	420		Sets Grassy Terrain on entry and boosts Attack during Grassy Terrain.
+description	421		Sets Sandstorm on entry and boosts Special Attack during Sandstorm.

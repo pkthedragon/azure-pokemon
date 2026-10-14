@@ -1,0 +1,11 @@
+﻿[Connection_001]
+Map1 = 2
+Map1Point = East,3
+Map2 = 4
+Map2Point = West,5
+#-------------------------------
+[Connection_002]
+Map1 = 31
+Map1Point = 12,-4
+Map2 = 34
+Map2Point = -8,9

@@ -1,0 +1,9 @@
+ok=true
+global_sections=1
+player_profiles=10
+map_sections=94
+map_fields=298
+maximum_map_id=142
+result_matches_candidate=true
+candidate_matches_live=true
+runtime_isolated=true

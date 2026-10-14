@@ -1,0 +1,11 @@
+result=PASS
+frames=100000
+sprite_entries=16
+sprite_updates=1500000
+sprite_order=exact
+legacy_sprite_seconds=2.1438933
+legacy_sprite_allocations=3100002
+changeling_instances=13
+changeling_updates=2600000
+legacy_changeling_seconds=1.5093801
+legacy_changeling_allocations=1300002

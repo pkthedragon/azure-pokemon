@@ -224,10 +224,11 @@ class Scene_Map
   end
 
   def autofade(mapid)
+    AzureMapTransferHandoff.clear
     playingBGS=$game_system.playing_bgs
     playingBGM=$game_system.playing_bgm
     return if !playingBGM && !playingBGS
-    map=pbLoadRxData(sprintf("Data/Map%03d", mapid))
+    map=AzureMapTransferHandoff.preload(mapid)
     if playingBGM && map.autoplay_bgm
       if (PBDayNight.isNight?(pbGetTimeNow) rescue false)
         if playingBGM.name!=map.bgm.name && playingBGM.name!=map.bgm.name+"n"
@@ -256,6 +257,8 @@ class Scene_Map
 #    pbBridgeOff
     if $game_map.map_id!=$game_temp.player_new_map_id
       $MapFactory.setup($game_temp.player_new_map_id)
+    else
+      AzureMapTransferHandoff.clear
     end
     $game_player.moveto($game_temp.player_new_x, $game_temp.player_new_y)
     case $game_temp.player_new_direction

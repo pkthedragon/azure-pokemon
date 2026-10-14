@@ -1,0 +1,22 @@
+result=PASS
+decision_checksum=2062664973
+focused_checks={:opposing_slots=>true, :move_users_bound=>true, :ordinary_move_available=>true, :unrelated_imprison_available=>true, :opposing_one_imprisons=>true, :opposing_two_imprisons=>true}
+single_scores=[86, 28, 24, 30, 0]
+single_targets=[]
+single_switch=false
+single_choice=[1, 0, 538, -1]
+single_ai_rng=4:2,4:3
+single_battle_rng=
+single_profile=EndofTurnHPChanges:2:0.000705,checkAIdamage:18:0.071211,checkAIhealing:1:0.000005,checkAImoves:2:0.000010,hasgreatmoves:2:0.000043,pbAIAllies:5:0.000066,pbAICritRate:179:0.004467,pbAIOrderedFoes:9:0.000186,pbAISecondaryTargets:4:0.000117,pbBetterBaseDamage:60:0.000264,pbBuildMoveScores:1:0.309948,pbChangeMove:83:0.002970,pbGetMonRole:13:0.004081,pbGetMoveScore:4:0.305966,pbRoughAccuracy:4:0.000443,pbRoughDamage:83:0.059953,pbRoughStat:287:0.009732,pbShouldSwitch?:1:0.802540,pbTypeModNoMessages:99:0.014353,pbTypeModifierAI:99:0.004149,statchangecounter:1:0.000017
+double_scores=[50, 44, 21, 30, 0]
+double_targets=[0, 2, 0, 2, -1]
+double_switch=false
+double_choice=[1, 0, 538, 0]
+double_ai_rng=4:3,4:0,4:1,4:2,4:3,4:0,10:5
+double_battle_rng=
+double_profile=EndofTurnHPChanges:4:0.000651,checkAIdamage:58:0.110904,checkAIhealing:4:0.000006,checkAImoves:6:0.000010,hasbadmoves:2:0.000008,hasgreatmoves:14:0.000117,pbAIAllies:13:0.000094,pbAICritRate:448:0.006006,pbAIOrderedFoes:24:0.000254,pbAISecondaryTargets:11:0.000170,pbBetterBaseDamage:151:0.000349,pbBuildMoveScores:2:0.766530,pbChangeMove:233:0.004251,pbGetMonRole:23:0.003221,pbGetMoveScore:11:0.487310,pbRoughAccuracy:13:0.001630,pbRoughDamage:233:0.111285,pbRoughStat:724:0.013055,pbShouldSwitch?:1:0.830198,pbTypeModNoMessages:229:0.025019,pbTypeModifierAI:229:0.004789,setupminiscore:2:0.013491,statchangecounter:2:0.000011
+benchmark_calls=5000
+benchmark_checksum=1606600424
+benchmark_rng_calls=0
+benchmark_seconds=2.700567499996396
+benchmark_allocations=1172303

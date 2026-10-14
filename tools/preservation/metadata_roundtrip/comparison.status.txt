@@ -1,0 +1,10 @@
+byte_identical=true
+length=4169
+sha256=A1AEAE8AE94DB43B31AED0ED6BE698EE72F13AED067889AAE435F08A1C169162
+global_sections=1
+player_profiles=10
+map_sections=94
+map_fields=298
+maximum_map_id=142
+preserved_format=combined numeric Data/metadata.dat arrays
+rejuv_symbol_keyed_meta_maps_adopted=false

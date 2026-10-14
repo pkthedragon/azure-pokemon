@@ -1,0 +1,8 @@
+result=PASS
+scenarios=390
+matrix_checksum=4031508
+benchmark_calls=1000000
+benchmark_checksum=321198779
+rng_calls=0
+legacy_seconds=1.985019599989755
+legacy_allocations=1800011

@@ -15,27 +15,71 @@ if ([string]::IsNullOrWhiteSpace($Root)) {
 }
 
 $gamePath = Join-Path $Root "Game.exe"
-$logPath = Join-Path $Root "errorlog.txt"
 if (!(Test-Path -LiteralPath $gamePath -PathType Leaf)) {
   throw "Game executable not found: $gamePath"
 }
 
-$beforeExists = Test-Path -LiteralPath $logPath -PathType Leaf
-$beforeLength = if ($beforeExists) { (Get-Item -LiteralPath $logPath).Length } else { -1 }
-$beforeWrite = if ($beforeExists) { (Get-Item -LiteralPath $logPath).LastWriteTimeUtc.Ticks } else { -1 }
+$logPaths = [System.Collections.Generic.List[string]]::new()
+$logPaths.Add((Join-Path $Root "errorlog.txt"))
+$gameIniPath = Join-Path $Root "Game.ini"
+if (Test-Path -LiteralPath $gameIniPath -PathType Leaf) {
+  $titleMatch = [regex]::Match(
+    [System.IO.File]::ReadAllText($gameIniPath),
+    '(?m)^Title\s*=\s*(.+?)\s*$'
+  )
+  if ($titleMatch.Success -and $env:USERPROFILE) {
+    $gameTitle = $titleMatch.Groups[1].Value.Trim()
+    $savedLog = Join-Path $env:USERPROFILE ("Saved Games\{0}\errorlog.txt" -f $gameTitle)
+    if (!$logPaths.Contains($savedLog)) { $logPaths.Add($savedLog) }
+  }
+}
+
+function Get-ErrorLogState {
+  param([Parameter(Mandatory)][string]$Path)
+  $exists = Test-Path -LiteralPath $Path -PathType Leaf
+  [pscustomobject]@{
+    Path = $Path
+    Exists = $exists
+    Length = if ($exists) { (Get-Item -LiteralPath $Path).Length } else { -1 }
+    WriteTicks = if ($exists) { (Get-Item -LiteralPath $Path).LastWriteTimeUtc.Ticks } else { -1 }
+  }
+}
+
+$beforeLogs = @{}
+foreach ($path in $logPaths) { $beforeLogs[$path] = Get-ErrorLogState -Path $path }
 $process = $null
+$scriptOrderPath = Join-Path $Root "Scripts\!script_order.csv"
+$scriptOrderWriteTime = $null
+$coldScriptImportForced = $false
 
 try {
+  # A warm launch can reuse the previously imported script archive and miss
+  # syntax errors in edited external scripts. Advance the manifest timestamp
+  # for this run so the loader evaluates every source file, then restore the
+  # original timestamp in finally.
+  if (Test-Path -LiteralPath $scriptOrderPath -PathType Leaf) {
+    $scriptOrderWriteTime = (Get-Item -LiteralPath $scriptOrderPath).LastWriteTimeUtc
+    [System.IO.File]::SetLastWriteTimeUtc($scriptOrderPath, [DateTime]::UtcNow.AddSeconds(2))
+    $coldScriptImportForced = $true
+  }
   $process = Start-Process -FilePath $gamePath -WorkingDirectory $Root -WindowStyle Hidden -PassThru
   Start-Sleep -Seconds $Seconds
   $alive = !$process.HasExited
   $exitCode = if ($alive) { $null } else { $process.ExitCode }
 
-  $afterExists = Test-Path -LiteralPath $logPath -PathType Leaf
-  $afterLength = if ($afterExists) { (Get-Item -LiteralPath $logPath).Length } else { -1 }
-  $afterWrite = if ($afterExists) { (Get-Item -LiteralPath $logPath).LastWriteTimeUtc.Ticks } else { -1 }
-  $logChanged = ($beforeExists -ne $afterExists) -or
-    ($beforeLength -ne $afterLength) -or ($beforeWrite -ne $afterWrite)
+  $afterLogs = @{}
+  $changedLogs = [System.Collections.Generic.List[string]]::new()
+  foreach ($path in $logPaths) {
+    $before = $beforeLogs[$path]
+    $after = Get-ErrorLogState -Path $path
+    $afterLogs[$path] = $after
+    if (($before.Exists -ne $after.Exists) -or
+        ($before.Length -ne $after.Length) -or
+        ($before.WriteTicks -ne $after.WriteTicks)) {
+      $changedLogs.Add($path)
+    }
+  }
+  $logChanged = $changedLogs.Count -gt 0
 
   [pscustomobject]@{
     ProcessId = $process.Id
@@ -43,20 +87,26 @@ try {
     Seconds = $Seconds
     ExitCode = $exitCode
     ErrorLogChanged = $logChanged
-    ErrorLogLengthBefore = $beforeLength
-    ErrorLogLengthAfter = $afterLength
+    ColdScriptImportForced = $coldScriptImportForced
+    ErrorLogsChecked = $logPaths -join "; "
+    ChangedErrorLogs = $changedLogs -join "; "
   } | Format-List
 
   if (!$alive -or $logChanged) {
-    if ($logChanged -and $afterExists) {
-      Write-Host "Latest error log output:" -ForegroundColor Red
-      Get-Content -LiteralPath $logPath -Tail 100
+    foreach ($path in $changedLogs) {
+      if ($afterLogs[$path].Exists) {
+        Write-Host "Latest error log output from ${path}:" -ForegroundColor Red
+        Get-Content -LiteralPath $path -Tail 100
+      }
     }
     exit 1
   }
 } finally {
   if ($process -and !$process.HasExited) {
     Stop-Process -Id $process.Id -Force
+  }
+  if ($scriptOrderWriteTime) {
+    [System.IO.File]::SetLastWriteTimeUtc($scriptOrderPath, $scriptOrderWriteTime)
   }
 }
 

@@ -1,0 +1,11 @@
+result=PASS
+mode=optimized_frozen_static_membership
+group_count=6
+matrix_cases=46
+matrix_checksum=1603738730
+matrix_exact=true
+groups_frozen=true
+predicate_calls=1000000
+predicate_checksum=0
+predicate_seconds=0.31358979997457936
+predicate_allocations=2

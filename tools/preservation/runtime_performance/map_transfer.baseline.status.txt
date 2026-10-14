@@ -1,0 +1,12 @@
+result=PASS
+maps=145
+total_file_bytes=4307628
+events=3851
+pages=5505
+commands=37750
+duplicate_graphs=exact
+first_load_total_seconds=3.9004582
+duplicate_load_total_seconds=0.6732650
+legacy_transfer_load_total_seconds=4.5737232
+slowest_path=Data/Map050.rxdata
+slowest_single_load_seconds=0.1775114

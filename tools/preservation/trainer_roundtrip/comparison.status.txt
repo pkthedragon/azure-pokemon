@@ -1,0 +1,5 @@
+trainer_semantic_differences=2
+message_semantic_differences=0
+non_trainer_message_differences=0
+trainer_diff=trainers[153][3][5][2]: 1037 != 1150
+trainer_diff=trainers[153][3][5][9]: 1 != 0

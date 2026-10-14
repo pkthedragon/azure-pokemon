@@ -1,0 +1,14 @@
+result=PASS
+frames=100000
+sprite_entries=16
+sprite_updates=1500000
+sprite_order=exact
+sprite_error_handling=exact
+optimized_sprite_seconds=1.3416274
+optimized_sprite_allocations=2
+changeling_instances=13
+changeling_updates=2600000
+changeling_order=exact
+changeling_disposal=exact
+optimized_changeling_seconds=1.3019916
+optimized_changeling_allocations=1

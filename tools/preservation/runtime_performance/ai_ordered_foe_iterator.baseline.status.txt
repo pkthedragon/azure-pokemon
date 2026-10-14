@@ -1,0 +1,12 @@
+result=PASS
+mode=baseline_ordered_foe_array
+ordering_cases=7
+ordering_checksum=149169694
+ordering_exact=true
+helper_scenarios=8
+helper_checksum=1933839760
+helpers_exact=true
+predicate_calls=1000000
+predicate_checksum=0
+predicate_seconds=5.240910799999256
+predicate_allocations=2000002

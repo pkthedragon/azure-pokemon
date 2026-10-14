@@ -2599,6 +2599,11 @@ class PokeBattle_Battle
     if !thismove||thismove.id==0
       return false
     end
+    # Imprison checks both opposing battler slots below. These references must
+    # be established for every ordinary move-availability query, including AI
+    # scoring, or the check raises before any move can be selected.
+    opp1=thispkmn.pbOpposing1
+    opp2=thispkmn.pbOpposing2
     tribute_icicle_status = defined?(pbTributeMoveMatches?) &&
       pbTributeMoveMatches?(thispkmn,:ICICLETRIBUTE,thismove.id) && thismove.basedamage<=0
     pixie_tribute_attack = thismove.respond_to?(:pixie_tribute_power) &&

@@ -1,0 +1,15 @@
+result=PASS
+records=1250
+named_records=1137
+distinct_names=1096
+duplicate_names=41
+distinct_common_names=51
+query_variants=52
+query_count=50000
+checksum=1394482046
+cached_identity=exact
+graph_unchanged=yes
+first_load_seconds=1.4086866000143345
+cached_load_seconds=1.170000177808106e-05
+legacy_lookup_seconds=11.409252999990713
+legacy_lookup_allocations=274935

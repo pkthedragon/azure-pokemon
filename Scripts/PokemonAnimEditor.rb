@@ -4000,6 +4000,7 @@ def animationEditorMain(animation)
       if Kernel.pbConfirmMessage(_INTL("Save changes?"))
         save_data(animation,"Data/PkmnAnimations.rxdata")
         $pkmn_animations = animation
+        pbInvalidateBattleAnimationIndex
       end
       if Kernel.pbConfirmMessage(_INTL("Exit from the editor?"))
         Graphics.resize_screen(DEFAULTSCREENWIDTH + 2*$ResizeOffsetX,DEFAULTSCREENHEIGHT+2*$ResizeOffsetY)
@@ -4191,6 +4192,7 @@ def pbAnimationEditor
     animation[0].graphic=""
   end
   animationEditorMain(animation)
+  pbInvalidateBattleAnimationIndex
   $game_map.autoplay if $game_map
 end
 
@@ -4266,6 +4268,7 @@ def pbAnimationsOrganiser
           # Save animations here
           save_data(list,"Data/PkmnAnimations.rxdata")
           $pkmn_animations = list
+          pbInvalidateBattleAnimationIndex
           Kernel.pbMessage(_INTL("Data saved."))
         end
         break
@@ -4330,6 +4333,7 @@ def pbConvertAnimsToNewFormat
     count+=1 if ret
   end
   save_data(animations,"Data/PkmnAnimations.rxdata") if count>0
-  $pkmn_animations = animation if count>0
+  $pkmn_animations = animations if count>0
+  pbInvalidateBattleAnimationIndex if count>0
   Kernel.pbMessage(_INTL("{1} animations converted to new format.",count))
 end
