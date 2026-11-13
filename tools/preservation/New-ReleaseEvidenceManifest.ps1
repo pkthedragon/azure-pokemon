@@ -39,7 +39,7 @@ function Get-EvidenceFiles {
   )) {
     $files.Add((Get-Item -LiteralPath $path))
   }
-  foreach ($pattern in @("*.ps1")) {
+  foreach ($pattern in @("*.ps1","*.rb")) {
     foreach ($file in Get-ChildItem -LiteralPath $preservationRoot -File -Filter $pattern) { $files.Add($file) }
   }
   foreach ($directory in @("runtime_performance","engine_test","release_validation")) {

@@ -1342,7 +1342,7 @@ work is an extended human playtest or a newly scoped optional port.
    if records can be isolated safely; otherwise document the one-shot transfer
    handoff as the final design.
 5. **Close Phase 3.** Rerun all stored runtime fixtures, the seeded AI decision
-   closeout, the full preservation audit, and a 15-second cold startup. Record
+   closeout, the full preservation audit, and the tokenized four-pass startup gate. Record
    aggregate results and remove every temporary fixture from the script order.
 
 The initial Step 1 inventory is recorded in
@@ -1361,7 +1361,8 @@ one-shot transfer handoff is the final design, and a persistent mutable-map
 cache is rejected. The Step 5 closeout reconciles all 57 stored runtime
 captures (55 passes and two reviewed deferrals), retains seeded AI checksum
 `2062664973`, passes 176 feature contracts inside the 27-check preservation
-audit, and passes a 15-second cold startup without changing either error log.
+audit, and passes the tokenized cold/warm/invalidation startup gate without
+changing either error log.
 No temporary fixture remains in the production script order. Phase 3 is
 complete.
 
@@ -1480,8 +1481,10 @@ now passes with 33 checks, zero unaccepted warnings, zero failures, and all 59
 accepted warnings accounted for. The rationale and removal criteria are in
 `release_validation/WARNING_ACCEPTANCE.md`.
 
-Phase 5 Step 3 is complete. Production passed a forced 15-second cold startup
-without changing either error log. The isolated Ruby 3.1 candidate hydrated a
+Phase 5 Step 3 is complete. Its original process-liveness startup result was
+later found insufficient because a watchdog dialog also leaves the process
+alive; the tokenized title-bootstrap gate described below supersedes that
+historical result. The isolated Ruby 3.1 candidate hydrated a
 real 16-object Azure save, round-tripped it only inside the package, initialized
 a new game at map 39 `(24,10)`, rendered the load and debug UI paths, preserved
 the six expected pause-menu commands for the test state, and consumed the exact
@@ -1505,6 +1508,19 @@ Production trees, saves, and candidate error logs remained unchanged. Phase 5
 and the planned Rejuvenation-to-Azure modernization program are complete;
 extended manual content playtesting remains a separate release activity.
 
+Post-release startup hardening is complete. The apparent RGSS hang had two
+independent causes: mkxp-z indexed the full OneDrive-backed asset tree before
+executing Ruby, and the external loader evaluated every source inside one
+long-running embedded script. Azure now explicitly selects RGSS1, disables the
+redundant Windows path index, yields to `Graphics.update` during import and
+evaluation, and retains top-level lexical scope for every external script. A
+compressed cache fingerprints the manifest and every referenced file's size
+and modification time. The replacement startup gate requires an explicit
+marker after `Main` creates the title scene and runs forced-cold, warm-hit,
+edited-script invalidation, and restored-cache passes. The first complete run
+reached that boundary in 6.26, 5.24, 5.77, and 5.36 seconds respectively, with
+both error logs unchanged.
+
 ### Phase 5 release steps
 
 1. Compile from a clean copy of the active PBS sources and run every round-trip
@@ -1519,8 +1535,8 @@ extended manual content playtesting remains a separate release activity.
 
 For every numbered step, the required local gate is: focused behavior parity,
 focused performance evidence where applicable, `Audit-Azure.ps1` with zero
-failures, `Test-Startup.ps1 -Seconds 15` with no error-log change, and an exact
-restoration of `Scripts/!script_order.csv`. If a measured change is not faster
+failures, all four `Test-Startup.ps1` passes with title markers and no error-log
+change, and an exact restoration of `Scripts/!script_order.csv`. If a measured change is not faster
 or cannot prove Azure behavior parity, revert that change and record the result
 instead of carrying speculative complexity forward.
 
@@ -1647,8 +1663,9 @@ instead of carrying speculative complexity forward.
    effects before editing.
 2. Add a focused preservation contract or data/reference check.
 3. Run `tools/preservation/Audit-Azure.ps1` and require zero failures.
-4. Start `Game.exe`, keep it alive for at least 10 seconds, and require no
-   `errorlog.txt` change.
+4. Run `Test-Startup.ps1`; require cold-miss, warm-hit, edited-script miss, and
+   restored-cache hit markers after the title bootstrap, with neither error log
+   changed.
 5. Run a focused interactive or automated scenario for the subsystem (battle,
    map transfer, save/load, editor round trip, menu, etc.). A startup check is
    not sufficient proof for an interaction-heavy feature.

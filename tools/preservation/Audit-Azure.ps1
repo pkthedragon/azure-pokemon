@@ -2637,7 +2637,7 @@ function Test-EngineCompatibilityEvidence {
     "Game.exe" = "59A477804595AB188A5B12FD27CB1C522B174F198F306F271B83FC3A179307B4"
     "x64-msvcrt-ruby300.dll" = "EBF848D9B0F1D00AEED8739B1C0121F5B47AFEB73BDFEC1DC9C223FF4F4E69DF"
     "Game.ini" = "E72B1C095F6FA9B60C6502882EAF3968E76ECA85EADC4410AE8E0A29582E6289"
-    "mkxp.json" = "AB5AFA103CA2AB280AA14A78D6D5E7F90E14887B667C8E32E23F46B01EF82519"
+    "mkxp.json" = "99BBA8268F2399E7768CFA31857A1A32F6A4EB897C38113F233FC6C0BAE8E950"
   }
   foreach ($relative in $productionHashes.Keys) {
     $actual = (Get-FileHash -LiteralPath (Resolve-ProjectPath $relative) -Algorithm SHA256).Hash
@@ -2878,9 +2878,12 @@ function Test-ReleaseSmokeEvidence {
   foreach ($required in @(
     '(?m)^result=PASS\r?$',
     '(?m)^phase=5_step_3_release_interaction_smoke\r?$',
-    '(?m)^production_startup_seconds=15\r?$',
-    '(?m)^production_startup_alive=true\r?$',
-    '(?m)^production_cold_script_import=true\r?$',
+    '(?m)^production_startup_gate=title_bootstrap_probe\r?$',
+    '(?m)^production_startup_passes=4\r?$',
+    '(?m)^production_cold_cache=miss\r?$',
+    '(?m)^production_warm_cache=hit\r?$',
+    '(?m)^production_invalidated_cache=miss\r?$',
+    '(?m)^production_restored_cache=hit\r?$',
     '(?m)^production_error_logs_changed=false\r?$',
     '(?m)^candidate_engine=mkxp-z 2\.4\.2\r?$',
     '(?m)^candidate_ruby=3\.1\.3p185\r?$',
@@ -3049,7 +3052,61 @@ function Test-ReleaseReadinessEvidence {
   Add-AuditCheck "Release readiness: 117 Azure saves (1,872 objects, 234 Pokémon) round-trip on Ruby 3.1, six numeric-ID maps are hash-locked, and $manifestCount archived evidence files verify."
 }
 
+function Test-ExternalScriptBootstrap {
+  $bootstrapRelative = "tools\preservation\AzureExternalScriptBootstrap.rb"
+  $builderRelative = "tools\preservation\Build-ScriptBootstrap.ps1"
+  $startupRelative = "tools\preservation\Test-Startup.ps1"
+  foreach ($relative in @($bootstrapRelative,$builderRelative,$startupRelative,"Data\Scripts.rxdata")) {
+    if (!(Test-Path -LiteralPath (Resolve-ProjectPath $relative) -PathType Leaf)) {
+      Add-AuditError "External-script startup asset is missing: $relative."
+      return
+    }
+  }
+
+  $bootstrap = [System.IO.File]::ReadAllText((Resolve-ProjectPath $bootstrapRelative))
+  foreach ($required in @(
+    'CACHE_PATH="Data/AzureExternalScripts\.cache"',
+    'stat\.size,stat\.mtime\.to_f',
+    'Graphics\.update if index%stride==0',
+    'eval\(script\[3\],TOPLEVEL_BINDING,script\[1\]\)',
+    'AZURE_SCRIPT_CACHE_NO_WRITE'
+  )) {
+    if ($bootstrap -notmatch $required) {
+      Add-AuditError "External-script bootstrap is missing required behavior '$required'."
+    }
+  }
+
+  $startup = [System.IO.File]::ReadAllText((Resolve-ProjectPath $startupRelative))
+  foreach ($required in @(
+    'title_bootstrap_reached=true',
+    'ValidateSet\("Cold", "Warm", "Invalidated"\)',
+    'SetLastWriteTimeUtc',
+    'ScriptCacheMatched',
+    'ErrorLogChanged'
+  )) {
+    if ($startup -notmatch $required) {
+      Add-AuditError "Startup gate is missing required behavior '$required'."
+    }
+  }
+
+  $mkxp = [System.IO.File]::ReadAllText((Resolve-ProjectPath "mkxp.json"))
+  if ($mkxp -notmatch '(?m)^\s*"rgssVersion"\s*:\s*1\s*,') {
+    Add-AuditError "mkxp.json does not explicitly select Azure's RGSS1 runtime."
+  }
+  if ($mkxp -notmatch '(?m)^\s*"pathCache"\s*:\s*false\s*,') {
+    Add-AuditError "mkxp.json re-enabled the redundant Windows asset-tree path index."
+  }
+
+  $builder = Resolve-ProjectPath $builderRelative
+  $verifyOutput = & pwsh -NoProfile -File $builder -Root $Root -Verify 2>&1
+  if ($LASTEXITCODE -ne 0) {
+    Add-AuditError "Data/Scripts.rxdata does not match the tracked bootstrap source: $($verifyOutput -join ' ')"
+  }
+  Add-AuditCheck "External-script startup: generated bootstrap verified, title probe is mandatory, cache invalidation is gated, and redundant Windows path indexing is disabled."
+}
+
 $requiredFiles = @(
+  "Data\Scripts.rxdata",
   "Scripts\!script_order.csv",
   "Scripts\PBMoves.rb",
   "Scripts\PBSpecies.rb",
@@ -3072,7 +3129,10 @@ $requiredFiles = @(
   "PBS\shadowmoves.txt",
   "PBS\metadata.txt",
   "PBS\map_metadata.txt",
-  "PBS\tm.txt"
+  "PBS\tm.txt",
+  "tools\preservation\AzureExternalScriptBootstrap.rb",
+  "tools\preservation\Build-ScriptBootstrap.ps1",
+  "tools\preservation\Test-Startup.ps1"
 )
 
 foreach ($relativePath in $requiredFiles) {
@@ -3128,6 +3188,7 @@ if ($script:Errors.Count -eq 0) {
   Test-TMReferences $speciesSymbols $moveSymbols $speciesConstants $moveConstants
   Test-LegacyDuplicatePolicy $moves $pokemon $abilities $trainerTypes $items
   Test-FeatureContracts
+  Test-ExternalScriptBootstrap
   Test-MoveCompatibilitySemantics
   Test-CompiledDataFreshness
   Test-RuntimePerformanceEvidence

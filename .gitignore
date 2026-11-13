@@ -1,5 +1,7 @@
 
 Data/debuglog.txt
+Data/AzureExternalScripts.cache
+Data/AzureExternalScripts.cache.*.tmp
 tools/engine_test/package-ruby31/
 tools/engine_test/package-ruby31-step4/
 tools/engine_test/package-ruby31-release*/

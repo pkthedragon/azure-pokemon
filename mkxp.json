@@ -18,7 +18,7 @@
     // If this fails, the version defaults to 1.
     // (default: 0)
     //
-    // "rgssVersion": 1,
+    "rgssVersion": 1,
 
     // Create a debug context and log
     // OpenGL debug information to the console
@@ -218,7 +218,10 @@
     // (emulates windows case insensitivity)
     // (default: enabled)
     //
-    // "pathCache": true,
+    // Azure ships for Windows, whose filesystem lookup is already case
+    // insensitive. Building this index scanned the full OneDrive-backed asset
+    // tree before Ruby startup and could trigger mkxp-z's stuck-script warning.
+    "pathCache": false,
 
     // In some versions of Essentials, overworld code
     // requests the player's sprite texture from disk

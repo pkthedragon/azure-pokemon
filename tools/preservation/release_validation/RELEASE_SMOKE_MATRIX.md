@@ -3,9 +3,9 @@
 ## Result
 
 The production runtime and the isolated mkxp-z 2.4.2/Ruby 3.1 candidate passed
-their release interaction gates. Production completed a forced cold script
-import, stayed alive for 15 seconds, and changed neither error log. The
-candidate ran the normal engine, timing, and removable-developer-tool probes
+their release interaction gates. Production completed forced-cold, warm-cache,
+edited-script invalidation, and restored-cache launches; every launch reached
+the title bootstrap and changed neither error log. The candidate ran the normal engine, timing, and removable-developer-tool probes
 before a candidate-only interaction fixture. The fixture wrote only to its
 package-local save directory. SHA-256 snapshots showed no change to production
 `Data`, `PBS`, `Scripts`, or saves, and neither candidate error log changed.
@@ -14,7 +14,7 @@ package-local save directory. SHA-256 snapshots showed no change to production
 
 | Scenario | Production/release evidence | Candidate interaction | Result |
 | --- | --- | --- | --- |
-| Cold startup | Forced `!script_order.csv` reimport; alive after 15 seconds; error logs unchanged | Candidate scripts imported on Ruby 3.1 and process remained alive after all fixtures | PASS |
+| Startup/cache | Cold miss, warm hit, edited-script miss, and restored-cache hit all reached the title bootstrap; error logs unchanged | Candidate scripts imported on Ruby 3.1 and process remained alive after all fixtures | PASS |
 | Old-save load | Existing Azure save copied read-only into the isolated package | Header validation and complete hydration of all 16 sequential Marshal objects; saved map 44 restored | PASS |
 | Save round trip | Production save tree hash remained unchanged | All 16 objects written and reloaded inside the package; class order, trainer name, and map ID preserved | PASS |
 | New game | Exact production branch constructors and start data used | Fresh runtime globals, map factory, player, storage, bag, encounters, and achievements initialized at map 39 `(24,10)` | PASS |

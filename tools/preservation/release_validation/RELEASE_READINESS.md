@@ -54,7 +54,8 @@ Release readiness requires all of the following at the same revision:
 - clean isolated PBS compilation with 29 equivalent generated outputs;
 - strict audit with zero failures and zero unaccepted warnings;
 - exactly 59 reviewed warnings in six locked compatibility categories;
-- production cold startup with unchanged error logs;
+- production cold, warm, edited-script invalidation, and restored-cache
+  startup passes with explicit title-bootstrap markers and unchanged error logs;
 - candidate runtime, timing, tooling, interaction, and save-compatibility gates;
 - deterministic single/double Battle AI checksum `2062664973`;
 - unchanged production `Data`, `PBS`, `Scripts`, and save trees;

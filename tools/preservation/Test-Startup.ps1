@@ -1,8 +1,8 @@
 [CmdletBinding()]
 param(
   [string]$Root,
-  [ValidateRange(1, 120)]
-  [int]$Seconds = 10
+  [ValidateRange(5, 120)]
+  [int]$Seconds = 45
 )
 
 Set-StrictMode -Version Latest
@@ -45,76 +45,150 @@ function Get-ErrorLogState {
   }
 }
 
-$beforeLogs = @{}
-foreach ($path in $logPaths) { $beforeLogs[$path] = Get-ErrorLogState -Path $path }
-$process = $null
-$scriptOrderPath = Join-Path $Root "Scripts\!script_order.csv"
-$scriptOrderWriteTime = $null
-$coldScriptImportForced = $false
+function Invoke-StartupPass {
+  param(
+    [Parameter(Mandatory)][ValidateSet("Cold", "Warm", "Invalidated")][string]$Mode
+  )
 
-try {
-  # A warm launch can reuse the previously imported script archive and miss
-  # syntax errors in edited external scripts. Advance the manifest timestamp
-  # for this run so the loader evaluates every source file, then restore the
-  # original timestamp in finally.
-  if (Test-Path -LiteralPath $scriptOrderPath -PathType Leaf) {
-    $scriptOrderWriteTime = (Get-Item -LiteralPath $scriptOrderPath).LastWriteTimeUtc
-    # The external-script cache and synchronized filesystems can use coarse or
-    # slightly future-skewed timestamps. A two-second advance can therefore
-    # leave a warm archive looking newer than the manifest. Move the manifest
-    # five minutes ahead for the launch, then restore its exact timestamp in
-    # finally, so edited external scripts are reliably imported.
-    $futureBase = [DateTime]::UtcNow
-    if ($scriptOrderWriteTime -gt $futureBase) { $futureBase = $scriptOrderWriteTime }
-    [System.IO.File]::SetLastWriteTimeUtc($scriptOrderPath, $futureBase.AddMinutes(5))
-    $coldScriptImportForced = $true
+  $token = [Guid]::NewGuid().ToString("N")
+  $probePath = Join-Path ([IO.Path]::GetTempPath()) "PokemonAzureStartup-$token.status"
+  $tracePath = Join-Path ([IO.Path]::GetTempPath()) "PokemonAzureLoader-$token.status"
+  $beforeLogs = @{}
+  foreach ($path in $logPaths) { $beforeLogs[$path] = Get-ErrorLogState -Path $path }
+
+  $previousProbe = [Environment]::GetEnvironmentVariable("AZURE_STARTUP_PROBE_TOKEN", "Process")
+  $previousBypass = [Environment]::GetEnvironmentVariable("AZURE_SCRIPT_CACHE_BYPASS", "Process")
+  $previousNoWrite = [Environment]::GetEnvironmentVariable("AZURE_SCRIPT_CACHE_NO_WRITE", "Process")
+  $process = $null
+  $stopwatch = [Diagnostics.Stopwatch]::StartNew()
+  $probeReached = $false
+  $probeContent = ""
+
+  try {
+    [Environment]::SetEnvironmentVariable("AZURE_STARTUP_PROBE_TOKEN", $token, "Process")
+    [Environment]::SetEnvironmentVariable(
+      "AZURE_SCRIPT_CACHE_BYPASS",
+      $(if ($Mode -eq "Cold") { "1" } else { $null }),
+      "Process"
+    )
+    [Environment]::SetEnvironmentVariable(
+      "AZURE_SCRIPT_CACHE_NO_WRITE",
+      $(if ($Mode -eq "Invalidated") { "1" } else { $null }),
+      "Process"
+    )
+    $process = Start-Process -FilePath $gamePath -WorkingDirectory $Root -WindowStyle Hidden -PassThru
+  } finally {
+    [Environment]::SetEnvironmentVariable("AZURE_STARTUP_PROBE_TOKEN", $previousProbe, "Process")
+    [Environment]::SetEnvironmentVariable("AZURE_SCRIPT_CACHE_BYPASS", $previousBypass, "Process")
+    [Environment]::SetEnvironmentVariable("AZURE_SCRIPT_CACHE_NO_WRITE", $previousNoWrite, "Process")
   }
-  $process = Start-Process -FilePath $gamePath -WorkingDirectory $Root -WindowStyle Hidden -PassThru
-  Start-Sleep -Seconds $Seconds
-  $alive = !$process.HasExited
-  $exitCode = if ($alive) { $null } else { $process.ExitCode }
 
-  $afterLogs = @{}
-  $changedLogs = [System.Collections.Generic.List[string]]::new()
-  foreach ($path in $logPaths) {
-    $before = $beforeLogs[$path]
-    $after = Get-ErrorLogState -Path $path
-    $afterLogs[$path] = $after
-    if (($before.Exists -ne $after.Exists) -or
-        ($before.Length -ne $after.Length) -or
-        ($before.WriteTicks -ne $after.WriteTicks)) {
-      $changedLogs.Add($path)
+  try {
+    $deadline = [DateTime]::UtcNow.AddSeconds($Seconds)
+    while ([DateTime]::UtcNow -lt $deadline -and !$process.HasExited) {
+      if (Test-Path -LiteralPath $probePath -PathType Leaf) {
+        try {
+          $probeContent = [System.IO.File]::ReadAllText($probePath)
+          $probeReached = (
+            $probeContent -match "(?m)^token=$([regex]::Escape($token))\r?$" -and
+            $probeContent -match '(?m)^title_bootstrap_reached=true\r?$'
+          )
+        } catch [System.IO.IOException] {
+          $probeReached = $false
+        }
+        if ($probeReached) { break }
+      }
+      Start-Sleep -Milliseconds 100
+      $process.Refresh()
     }
-  }
-  $logChanged = $changedLogs.Count -gt 0
 
-  [pscustomobject]@{
-    ProcessId = $process.Id
-    AliveAfterSeconds = $alive
-    Seconds = $Seconds
-    ExitCode = $exitCode
-    ErrorLogChanged = $logChanged
-    ColdScriptImportForced = $coldScriptImportForced
-    ErrorLogsChecked = $logPaths -join "; "
-    ChangedErrorLogs = $changedLogs -join "; "
-  } | Format-List
+    $process.Refresh()
+    $alive = !$process.HasExited
+    $exitCode = if ($alive) { $null } else { $process.ExitCode }
+    $expectedCacheState = if ($Mode -eq "Warm") { "hit" } else { "miss" }
+    $cacheStateReached = $probeContent -match "(?m)^script_cache=$expectedCacheState\r?$"
 
-  if (!$alive -or $logChanged) {
-    foreach ($path in $changedLogs) {
-      if ($afterLogs[$path].Exists) {
-        Write-Host "Latest error log output from ${path}:" -ForegroundColor Red
-        Get-Content -LiteralPath $path -Tail 100
+    $afterLogs = @{}
+    $changedLogs = [System.Collections.Generic.List[string]]::new()
+    foreach ($path in $logPaths) {
+      $before = $beforeLogs[$path]
+      $after = Get-ErrorLogState -Path $path
+      $afterLogs[$path] = $after
+      if (($before.Exists -ne $after.Exists) -or
+          ($before.Length -ne $after.Length) -or
+          ($before.WriteTicks -ne $after.WriteTicks)) {
+        $changedLogs.Add($path)
       }
     }
-    exit 1
-  }
-} finally {
-  if ($process -and !$process.HasExited) {
-    Stop-Process -Id $process.Id -Force
-  }
-  if ($scriptOrderWriteTime) {
-    [System.IO.File]::SetLastWriteTimeUtc($scriptOrderPath, $scriptOrderWriteTime)
+    $logChanged = $changedLogs.Count -gt 0
+    $passed = $alive -and $probeReached -and $cacheStateReached -and !$logChanged
+
+    $summary = [pscustomobject]@{
+      Mode = $Mode
+      ProcessId = $process.Id
+      TitleBootstrapReached = $probeReached
+      ScriptCacheExpected = $expectedCacheState
+      ScriptCacheMatched = $cacheStateReached
+      ElapsedSeconds = [math]::Round($stopwatch.Elapsed.TotalSeconds, 2)
+      TimeoutSeconds = $Seconds
+      AliveAtProbe = $alive
+      ExitCode = $exitCode
+      ErrorLogChanged = $logChanged
+      ErrorLogsChecked = $logPaths -join "; "
+      ChangedErrorLogs = $changedLogs -join "; "
+      Passed = $passed
+    }
+    Write-Host ($summary | Format-List | Out-String)
+
+    if (!$passed) {
+      if (!$probeReached) {
+        Write-Host "$Mode startup never reached the title bootstrap." -ForegroundColor Red
+        if (Test-Path -LiteralPath $tracePath -PathType Leaf) {
+          Write-Host "Latest loader checkpoint: $([IO.File]::ReadAllText($tracePath).Trim())" -ForegroundColor Red
+        }
+      } elseif (!$cacheStateReached) {
+        Write-Host "$Mode startup reported an unexpected script-cache state:" -ForegroundColor Red
+        Write-Host $probeContent
+      }
+      foreach ($path in $changedLogs) {
+        if ($afterLogs[$path].Exists) {
+          Write-Host "Latest error log output from ${path}:" -ForegroundColor Red
+          Write-Host ((Get-Content -LiteralPath $path -Tail 100) -join [Environment]::NewLine)
+        }
+      }
+      return $false
+    }
+    return $true
+  } finally {
+    if ($process -and !$process.HasExited) {
+      Stop-Process -Id $process.Id -Force
+    }
+    if (Test-Path -LiteralPath $probePath -PathType Leaf) {
+      Remove-Item -LiteralPath $probePath -Force
+    }
+    if (Test-Path -LiteralPath $tracePath -PathType Leaf) {
+      Remove-Item -LiteralPath $tracePath -Force
+    }
   }
 }
 
+$coldOutput = @(Invoke-StartupPass -Mode Cold)
+$coldPassed = $coldOutput.Count -gt 0 -and $coldOutput[-1] -eq $true
+$warmOutput = @(Invoke-StartupPass -Mode Warm)
+$warmPassed = $warmOutput.Count -gt 0 -and $warmOutput[-1] -eq $true
+$invalidationTarget = Join-Path $Root "Scripts\Settings.rb"
+$originalInvalidationTime = (Get-Item -LiteralPath $invalidationTarget).LastWriteTimeUtc
+$invalidationPassed = $false
+try {
+  [System.IO.File]::SetLastWriteTimeUtc($invalidationTarget, [DateTime]::UtcNow.AddMinutes(5))
+  $invalidationOutput = @(Invoke-StartupPass -Mode Invalidated)
+  $invalidationPassed = $invalidationOutput.Count -gt 0 -and $invalidationOutput[-1] -eq $true
+} finally {
+  [System.IO.File]::SetLastWriteTimeUtc($invalidationTarget, $originalInvalidationTime)
+}
+$restoredWarmOutput = @(Invoke-StartupPass -Mode Warm)
+$restoredWarmPassed = $restoredWarmOutput.Count -gt 0 -and $restoredWarmOutput[-1] -eq $true
+if (!$coldPassed -or !$warmPassed -or !$invalidationPassed -or !$restoredWarmPassed) { exit 1 }
+
+Write-Host "Cold, warm, invalidated, and restored-cache startup passes all reached the title bootstrap."
 exit 0

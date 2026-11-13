@@ -16,11 +16,26 @@ The startup check watches both the project log and mkxp-z's active Windows
 `Saved Games/<Game.ini Title>/errorlog.txt`; a newly written error in either
 location fails the check even if the game process remains alive.
 
-The check temporarily advances the `Scripts/!script_order.csv` timestamp with
-a five-minute cache/skew margin and restores it afterward. Every invocation
-therefore exercises the external-script loader's cold import path, including
-on filesystems with coarse or future-skewed timestamps, and catches parse
-errors that a warm launch of the existing script archive can miss.
+The startup check performs four bounded launches: a forced cold miss, a warm
+hit, an edited-script invalidation miss, and a restored-source warm hit. Every
+launch must write a tokenized probe only after `Main` reaches the title
+bootstrap, remain alive, and leave both error logs unchanged. A live process
+or watchdog dialog without the title probe is a failure. The invalidation pass
+temporarily changes only `Scripts/Settings.rb`'s timestamp, prevents that pass
+from replacing the good cache, and restores the exact timestamp in `finally`.
+
+`Data/Scripts.rxdata` is generated from the tracked
+`AzureExternalScriptBootstrap.rb`. The runtime loader fingerprints the script
+manifest plus every referenced source file's size and modification time,
+caches unchanged source in `Data/AzureExternalScripts.cache`, and calls
+`Graphics.update` at bounded intervals while importing and evaluating scripts
+so mkxp-z never mistakes a cold import for a hung RGSS thread. Rebuild or verify
+the embedded bootstrap with:
+
+```powershell
+pwsh -NoProfile -File tools/preservation/Build-ScriptBootstrap.ps1
+pwsh -NoProfile -File tools/preservation/Build-ScriptBootstrap.ps1 -Verify
+```
 
 The audit verifies the current Azure source of truth rather than comparing it
 with Rejuvenation. It checks:

@@ -57,6 +57,19 @@ def mainFunction #:nodoc:
   return 1
 end
 
+def pbWriteAzureStartupProbe
+  token=ENV["AZURE_STARTUP_PROBE_TOKEN"]
+  return if !token || token !~ /\A[0-9a-f]{32}\z/i
+  temp=ENV["TEMP"] || ENV["TMP"] || "."
+  path=File.join(temp,"PokemonAzureStartup-#{token}.status")
+  cache_state=defined?($AZURE_SCRIPT_CACHE_STATE) ? $AZURE_SCRIPT_CACHE_STATE : :unknown
+  File.open(path,"wb") {|file|
+    file.write("token=#{token}\r\n")
+    file.write("title_bootstrap_reached=true\r\n")
+    file.write("script_cache=#{cache_state}\r\n")
+  }
+end
+
 def mainFunctionDebug #:nodoc:
   begin
     migrationFlag = "PBS/migrate_to_alt_pbs.txt"
@@ -85,6 +98,7 @@ def mainFunctionDebug #:nodoc:
     Graphics.update
     Graphics.freeze
     $scene = pbCallTitle
+    pbWriteAzureStartupProbe
     while $scene != nil
       $scene.main
     end
