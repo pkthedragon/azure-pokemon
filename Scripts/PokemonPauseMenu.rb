@@ -274,9 +274,7 @@ class PokemonMenu
         if Kernel.pbConfirmMessage(_INTL("Are you sure you want to quit the game?"))
           scene=PokemonSaveScene.new
           screen=PokemonSave.new(scene)
-          if screen.pbSaveScreen
-            @scene.pbEndScene
-          end
+          screen.pbSaveScreen
           @scene.pbEndScene
           $scene=nil
           return

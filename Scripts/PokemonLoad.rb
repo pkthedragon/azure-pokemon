@@ -303,15 +303,19 @@ class PokemonLoadScene
 
   def pbSetParty(trainer)
     return if !trainer || !trainer.party
+    # Party icons look up species data before the player can choose Continue.
+    PBSpeciesData.data if !trainer.party.empty?
     meta=pbGetMetadata(0,MetadataPlayerA+trainer.metaID)
-    if meta
+    if meta && meta[1] && !meta[1].empty?
       filename=pbGetPlayerCharset(meta,1,trainer)
-      @sprites["player"]=TrainerWalkingCharSprite.new(filename,@viewport)
-      charwidth=@sprites["player"].bitmap.width
-      charheight=@sprites["player"].bitmap.height
-      @sprites["player"].x = 56*2 - charwidth/8
-      @sprites["player"].y = 56*2 - charheight/8
-      @sprites["player"].src_rect = Rect.new(0,0,charwidth/4,charheight/4)
+      player=TrainerWalkingCharSprite.new(filename,@viewport)
+      if player.bitmap
+        player.x = 56*2 - player.bitmap.width/8
+        player.y = 56*2 - player.bitmap.height/8
+        @sprites["player"]=player
+      else
+        player.dispose
+      end
     end
     for i in 0...trainer.party.length
       @sprites["party#{i}"]=PokemonIconSprite.new(trainer.party[i],@viewport)
