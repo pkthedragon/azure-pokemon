@@ -25,6 +25,9 @@ module AzureAbilityFixture
     def pbTrainerSendOut(_index,_pokemon,_battler)
     end
 
+    def partyBetweenKO2(_opposing=true)
+    end
+
     def method_missing(name,*args)
       return nil if name.to_s.start_with?("pb")
       super

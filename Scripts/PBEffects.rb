@@ -3,14 +3,9 @@ begin
     # These effects apply to a battler - starts from 0
     AquaRing          = 0
     Attract           = 1
-    Bide              = 2
-    BideDamage        = 3
-    BideTarget        = 4
     Charge            = 5
     ChoiceBand        = 6
     Confusion         = 7
-    Counter           = 8
-    CounterTarget     = 9
     Curse             = 10
     DefenseCurl       = 11
     DestinyBond       = 12
@@ -50,13 +45,9 @@ begin
     Metronome         = 46
     Minimize          = 47
     MiracleEye        = 48
-    MirrorCoat        = 49
-    MirrorCoatTarget  = 50
-#    MudSport          = 51
     MultiTurn         = 52 # Trapping move
     MultiTurnAttack   = 53
     MultiTurnUser     = 54
-    Nightmare         = 55
     Outrage           = 56
     PerishSong        = 57
     PerishSongUser    = 58
@@ -87,7 +78,6 @@ begin
     Truant            = 82
     TwoTurnAttack     = 83
     Uproar            = 84
-#    WaterSport        = 85
     WeightMultiplier  = 86
     Wish              = 87
     WishAmount        = 88
@@ -135,7 +125,7 @@ begin
     ThunderRaidHit    = 140
     ThunderRaidStat   = 141
     TarShot           = 142
-    KinesisBoost      = 143
+    TelekinesisBoost  = 143
     SusCrit           = 144
     Obstruct          = 145
     Octolock          = 146
@@ -195,8 +185,7 @@ begin
     Mimic             = 224
     StrengthSap       = 225
     SapSipper         = 226
-    CounterpoiseSwap  = 227
-    CounterpoiseDouble = 228
+    Counterpoise      = 227
     Resusitated       = 229
     FutureSightDamage = 230
     ShedSkinUsed      = 231
@@ -240,6 +229,10 @@ begin
     UsedAttackThisTurn = 270
     HealerWish        = 271
     MultiTurnBindingBand = 272
+    AttractTurns       = 273
+    FocusEnergyGuard  = 274
+    HardenGuard       = 275
+    LockOnMove        = 276
     # These effects apply to a side - starts from 300
     LightScreen   = 300
     LuckyChant    = 301
@@ -287,8 +280,6 @@ begin
     # Additional weather effects
     HarshSunlight = 407
     HeavyRain     = 408
-    MudSport      = 409
-    WaterSport    = 410
     SosBuffer     = 411
     PyroPreTarget = 412
     VileMercy     = 413
@@ -300,8 +291,6 @@ begin
     PsychicTerrain = 504
     Splintered = 505
     Rainbow = 506
-    DampTerrain  = 410
-    MuddyTerrain = 411
     # These effects apply to the usage of a move
     SpecialUsage = 701
     PassedTrying = 702

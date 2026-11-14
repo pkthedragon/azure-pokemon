@@ -45,7 +45,6 @@ Electric Terrain:
 (The following moves change this field):
 *	These moves will terminate this field effect:
                 Tectonic Rage
-*       Mud Sport disables the field for as long as it's active.
 (The following abilities are affected by this field):
 *       Galvanize boosts attacks to 1.5 instead of 1.2
 *       Surge Surfer is activated
@@ -82,7 +81,6 @@ Grassy Terrain:
 		Muddy Water		Surf	Earthquake		Magnitude
 		Bulldoze
 *	The base accuracy of these moves becomes 80:
-		Grass Whistle
 *	These moves gain double their normal stat-changing effects:
 		Growth			Coil
 		(This boost will not stack with Growth's Sun boost)
@@ -232,7 +230,7 @@ Klutz		Defeatist
 (The stat changing effect of these moves is affected by this field):
 *	These moves gain double their normal stat-changing effects:
 		Calm Mind	  Nasty Plot
-*   Kinesis and Telekinesis double the damage of Chess Attacks after use.	
+*   Telekinesis doubles the damage of Chess Attacks after use.
 (The following items are affected by this field):
 *       Synthetic Seed boosts Sp.Atk and applies Magic Coat to the user
 
@@ -325,7 +323,7 @@ Feather Dance
 (The following moves change this field):
 *	These moves will change this field into a Cave field
 		Surf			Muddy Water		Gust			Whirlwind
-Razor Wind		Defog			Sand Tomb		Water Sport	Water Pledge		Hurricane	    	Water Spout		Tailwind    Sparkling Aria  Continental Crush
+Razor Wind		Defog			Sand Tomb		Water Pledge		Hurricane	    	Water Spout		Tailwind    Sparkling Aria  Continental Crush
 		Hydro Vortex    Oceanic Operetta        Blizzard
 *   Sand and Rain weather effects change the field into Cave field.
 (The following items are affected by this field):
@@ -775,7 +773,7 @@ Razor Wind		Defog			Sand Tomb		Water Sport	Water Pledge		Hurricane	    	Water Sp
 		Twister			Fire Spin		Leaf Tornado
 Razor Wind		Whirlpool
 *	The following moves' stat-boosting effect is amplified:
-		Calm Mind		Sand Attack		Kinesis		
+		Calm Mind		Sand Attack
 Meditate
 *	Sandstorm and Sand Stream last for 8 turns
 *	Psych-up cures the user's status		
@@ -943,7 +941,7 @@ Focus Blast
 		Dragon Pulse(Two uses)		Draco Meteor 
 		Devastating Drake
 *	These moves transform this field into a Volcanic Field(Two uses):
-		Fever Pitch		Magma Drift		Eruption		Lava Plume
+		Hot Tempo		Magma Drift		Eruption		Lava Plume
 		Heat Wave		Overheat		
 		Fusion Flare    
 *	These moves transform the field into a Corrupted Cave:
@@ -1590,7 +1588,6 @@ Psychic Terrain:
 *	Hex, Magical Leaf, Mystical Fire, Moonblast and Aura Sphere damage increased x1.5
 *	The effect of the following stat-altering moves is increased:
 		Nasty Plot	Calm Mind	Cosmic Power		Meditate
-		Kinesis
 *	These moves increase in base power x1.5:
 		Mystical Fire	Magical Leaf   Aura Sphere
 		Hex             Moonblast      Mind Blown
@@ -1601,7 +1598,6 @@ Psychic Terrain:
 *	Camouflage becomes Psychic
 *	Psych Up, Meditate, Mind Reader and Miracle Eye additionally boost Sp.Atk two stages on use
 *	Hypnosis' accuracy is increased to 90
-*	Kinesis additionally lowers its target's Attack and Sp.Atk two stages
 *	Telekinesis additional lowers its target's Defense and Sp.Def two stages
 *	Gravity, Trick Room, Magic Room and Wonder Room last 8 turns
 *	Shattered Psyche additionally confuses its target
@@ -1746,7 +1742,7 @@ Lava Plume 		Inferno Overdrive
 *	The following moves gain a 1.5x boost in power:
 		Hex             Mystical Fire	Spirit Break
 *	The following moves accuracy has been increased to 80:
-		Sleep Powder		Grass Whistle
+		Sleep Powder
 		Hypnosis
 *	The following moves accuracy has been increased to 90:
 		Poison Powder	Stun Spore
@@ -1970,7 +1966,6 @@ all Pokemon unless they are Rock- or Electric-type
 *	Mimicry changes the user's type to Electric
 (The following moves change this field):
 *	Tectonic Rage will transform the field into a Cave
-*	Mud Sport temporarily transforms the field into a Cave
 
 (The following items are affected by this field):
 *	Telluric Seed raises Defense and Special Defense and paralyzes the holder

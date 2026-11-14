@@ -123,12 +123,14 @@ def pbShowBattleStats(pkmn)
   report.push(_INTL("Throat Chop: {1} turns",pkmn.effects[PBEffects::ThroatChop])) if pkmn.effects[PBEffects::ThroatChop]!=0
   report.push(_INTL("Unburdened")) if pkmn.unburdened && alliedBattler && pkmn.hasWorkingAbility(:UNBURDEN)
   report.push(_INTL("Speed Swap")) if pkmn.effects[PBEffects::SpeedSwap]!=0
-  report.push(_INTL("Burn Up")) if pkmn.effects[PBEffects::BurnUp]
+  report.push(_INTL("Burn Up")) if pkmn.pbBurnedOut?
+  report.push(_INTL("Lock-On")) if pkmn.effects[PBEffects::LockOnMove]
   report.push(_INTL("Uproar: {1} turns",pkmn.effects[PBEffects::Uproar])) if pkmn.effects[PBEffects::Uproar]!=0
   report.push(_INTL("Truant")) if pkmn.effects[PBEffects::Truant] && alliedBattler && pkmn.hasWorkingAbility(:TRUANT)
   report.push(_INTL("Toxic: {1} turns",pkmn.effects[PBEffects::Toxic])) if pkmn.effects[PBEffects::Toxic]!=0
   report.push(_INTL("Torment")) if pkmn.effects[PBEffects::Torment]
   report.push(_INTL("Miracle Eye")) if pkmn.effects[PBEffects::MiracleEye]
+  report.push(_INTL("Nightmare Aura")) if pkmn.effects[PBEffects::NightmareAura]
   report.push(_INTL("Charge")) if pkmn.effects[PBEffects::Charge]
   report.push(_INTL("Rebuild")) if pkmn.effects[PBEffects::Rebuild]
   report.push(_INTL("Spritzed")) if pkmn.effects[PBEffects::Spritz]!=0
@@ -147,7 +149,6 @@ def pbShowBattleStats(pkmn)
   report.push(_INTL("Leech Seed")) if pkmn.effects[PBEffects::LeechSeed]>-1
   report.push(_INTL("Gastro Acid")) if pkmn.effects[PBEffects::GastroAcid]
   report.push(_INTL("Curse")) if pkmn.effects[PBEffects::Curse]
-  report.push(_INTL("Nightmare")) if pkmn.effects[PBEffects::Nightmare]
   report.push(_INTL("Confused")) if pkmn.effects[PBEffects::Confusion]!=0
   report.push(_INTL("Aqua Ring")) if pkmn.effects[PBEffects::AquaRing]
   report.push(_INTL("Ingrain")) if pkmn.effects[PBEffects::Ingrain]
@@ -186,8 +187,6 @@ def pbShowBattleStats(pkmn)
   report.push(_INTL("Rainbow: {1} turns",@battle.field.effects[PBEffects::Rainbow])) if @battle.field.effects[PBEffects::Rainbow]>0
   report.push(_INTL("Magic Room: {1} turns",@battle.field.effects[PBEffects::MagicRoom])) if @battle.field.effects[PBEffects::MagicRoom]>0
   report.push(_INTL("Wonder Room: {1} turns",@battle.field.effects[PBEffects::WonderRoom])) if @battle.field.effects[PBEffects::WonderRoom]>0
-  report.push(_INTL("Water Sport: {1} turns",@battle.field.effects[PBEffects::WaterSport])) if @battle.field.effects[PBEffects::WaterSport]>0
-  report.push(_INTL("Mud Sport: {1} turns",@battle.field.effects[PBEffects::MudSport])) if @battle.field.effects[PBEffects::MudSport]>0
   report.push(_INTL("Spikes: {1} layers",pkmn.pbOwnSide.effects[PBEffects::Spikes])) if pkmn.pbOwnSide.effects[PBEffects::Spikes]>0
   report.push(_INTL("Mystical Tree: {1} planted",pkmn.pbOwnSide.effects[PBEffects::MysticTree])) if pkmn.pbOwnSide.effects[PBEffects::MysticTree]>0
   report.push(_INTL("Poison Barbs active")) if pkmn.pbOwnSide.effects[PBEffects::ToxicSpikes]>0

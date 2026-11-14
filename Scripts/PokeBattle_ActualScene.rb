@@ -757,7 +757,7 @@ class PokemonDataBox < SpriteWrapper
   def aGetStage(i)
     if i == 3
       return -6 if @battler.pbOpposingSide.effects[PBEffects::LuckyChant] > 0
-      return 6 if @battler.effects[PBEffects::LaserFocus]
+      return 6 if @battler.effects[PBEffects::LaserFocus]>0 || @battler.effects[PBEffects::LockOnMove]
       return @battler.effects[PBEffects::FocusEnergy]
     else
       case i
@@ -4101,6 +4101,9 @@ end
   end
 
   def pbSceneSelectableMoveTargets(index,move)
+    if move && move.id==PBMoves::MINIMIZE
+      return [index]+pbSceneAvailableTargets(index,false,false,move)
+    end
     mode=@battle.battlers[index].pbTarget(move) if move
     targets=pbSceneAvailableTargets(index,mode==PBTargets::Partner,false,move)
     targets.concat(pbSceneAvailableTargets(index,true,false,move)) if mode==PBTargets::SingleNonUser

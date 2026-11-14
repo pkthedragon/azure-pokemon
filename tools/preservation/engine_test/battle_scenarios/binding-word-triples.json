@@ -1,0 +1,36 @@
+{
+  "title": "Simultaneous Binding Word traps with and without Binding Band",
+  "format": "triple",
+  "seed": 150,
+  "max_turns": 2,
+  "player": {
+    "party": [
+      { "species": "PIKACHU", "ability": "NOGUARD", "item": "BINDINGBAND", "moves": ["BINDINGWORD", "UTURN"] },
+      { "species": "EEVEE", "ability": "NOGUARD", "moves": ["BINDINGWORD", "PROTECT"] },
+      { "species": "RATTATA", "moves": ["PROTECT"] },
+      { "species": "PIDGEY", "moves": ["PROTECT"] }
+    ]
+  },
+  "opponent": {
+    "party": [
+      { "species": "BLISSEY", "ability": "BALLFETCH", "item": "LEFTOVERS", "moves": ["CELEBRATE"] },
+      { "species": "WEEZING", "ability": "NEUTRALIZINGGAS", "item": "LEFTOVERS", "moves": ["CELEBRATE"] },
+      { "species": "GASTRODON", "moves": ["CELEBRATE"] }
+    ]
+  },
+  "actions": [
+    { "turn": 1, "slot": 0, "move": "BINDINGWORD", "target": 1 },
+    { "turn": 1, "slot": 2, "move": "BINDINGWORD", "target": 3 },
+    { "turn": 2, "slot": 0, "switch": 3 },
+    { "turn": 2, "slot": 2, "move": "PROTECT" }
+  ],
+  "expect": [
+    "The effects of the Neutralizing Gas wore off!",
+    "HP [3] Weezing 117 -> 101/132 (-16)",
+    "HP [1] Blissey 312 -> 259/322 (-53)",
+    "trap=Binding Word turns=4 source=0 binding_band=true",
+    "trap=Binding Word turns=4 source=2 binding_band=false",
+    "Blissey's Leftovers restored its HP",
+    "trap=Binding Word turns=3 source=2 binding_band=false"
+  ]
+}

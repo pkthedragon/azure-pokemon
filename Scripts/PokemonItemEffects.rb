@@ -4092,7 +4092,7 @@ ItemHandlers::BattleUseOnPokemon.add(:MAXELIXIR,proc{|item,pokemon,battler,scene
 
 ItemHandlers::BattleUseOnPokemon.add(:REDFLUTE,proc{|item,pokemon,battler,scene|
    if battler && battler.effects[PBEffects::Attract]>=0
-     battler.effects[PBEffects::Attract]=-1
+     battler.pbCureAttract
      scene.pbDisplay(_INTL("{1} got over its infatuation.",pokemon.name))
      next true # :consumed:
    else

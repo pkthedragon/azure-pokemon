@@ -1,5 +1,68 @@
 # Azure preservation audit
 
+## Command-line battle simulation
+
+On Windows with PowerShell 7.2 or later, run a scenario from the project root.
+
+```powershell
+pwsh -NoProfile -File tools/preservation/Invoke-BattleSimulation.ps1 `
+  -Scenario tools/preservation/engine_test/battle_scenarios/ai-triples.json `
+  -Report "$env:TEMP/azure-battle.txt"
+```
+
+The runner starts the bundled battle engine on a private Windows desktop with
+no visible game window. It uses an isolated runtime and save directory. The
+real engine resolves moves, switching, abilities, held items, field effects,
+and damage. The production trainer AI controls both teams, with optional
+scripted commands for specific turns. Trainer bag items and overworld
+progression are outside the simulation.
+
+Omit `-Report` to print the transcript to the terminal. Use `-Seed 150` to
+override the scenario seed, or `-TimeoutSeconds 180` to extend the process
+timeout. Repeat the same scenario and seed on the same build to compare logs.
+
+The [example scenarios](engine_test/battle_scenarios) include a single-battle
+faint and reserve send-out, Wide Guard and Gravity in doubles, an AI-vs-AI
+triple, simultaneous Binding Word traps, and a Commander lane shift that
+cancels Tatsugiri's queued attack. Copy an example and edit its JSON to build
+another scenario.
+
+- Set `format` to `single`, `double`, or `triple`. Give each team's `party`
+  enough Pokémon for its starting lanes. Additional Pokémon start on the
+  bench. Pokémon use uppercase PBS identifiers for `species` and `moves`.
+  Optional fields include `ability`, `item`, `level`, `form`, and starting `hp`.
+- Set `seed`, `max_turns`, numeric `field`, or named `weather` as needed. The
+  defaults are seed 1, 50 turns, no field effect, and no weather.
+- In `actions`, specify a one-based `turn` and a zero-based battler `slot`.
+  Player lanes are 0, 2, and 4. Opponent lanes are 1, 3, and 5. Give each
+  action one of `move` (with optional `target` slot), `switch` (zero-based
+  party index), or `shift` (allied battler slot). The AI chooses any action
+  you leave unspecified.
+- Use `expect` for ordered, case-sensitive log fragments and `reject` for
+  fragments that must never occur. Invalid or unused scripted commands and
+  failed assertions make the runner exit with a nonzero status.
+
+`CHOOSE` records what was queued. `TARGET` records a target the engine actually
+processed, and `HP` shows the resulting change. `STATE` includes HP, stat
+stages, abilities, held items, active traps, and Commander links. The final
+`result=PASS` means the scenario and its assertions completed. The separate
+`OUTCOME` line identifies a win, draw, or turn limit.
+
+Run the full ability regression suite with:
+
+```powershell
+pwsh -NoProfile -File tools/preservation/Test-Abilities.ps1
+```
+
+Run the 150 individual move checks and four shared mechanics regressions
+without opening a game window. The report prints a result for each move.
+
+```powershell
+pwsh -NoProfile -File tools/preservation/Invoke-BattleSimulation.ps1 -MoveRegressions
+```
+
+## Preservation checks
+
 Run the audit from the project root before and after each modernization task:
 
 ```powershell

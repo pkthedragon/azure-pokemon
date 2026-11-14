@@ -147,15 +147,6 @@ end
 
 
 
-class PokeBattle_Move_070 # OHKO moves
-  def pbMoveFailed(attacker,opponent)
-    return true if @battle.rules["ohkoclause"]
-    return false
-  end
-end
-
-
-
 class PokeBattle_Move_0E0 # Selfdestruct
   unless @__clauses__aliased
     alias __clauses__pbOnStartUse pbOnStartUse

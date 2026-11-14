@@ -1,0 +1,25 @@
+{
+  "title": "Single-battle faint and reserve send-out",
+  "format": "single",
+  "seed": 150,
+  "max_turns": 1,
+  "player": {
+    "party": [
+      { "species": "NIDOKING", "ability": "NOGUARD", "moves": ["POISONSTING"] }
+    ]
+  },
+  "opponent": {
+    "party": [
+      { "species": "BLISSEY", "hp": 1, "moves": ["CELEBRATE"] },
+      { "species": "PIDGEY", "moves": ["CELEBRATE"] }
+    ]
+  },
+  "actions": [
+    { "turn": 1, "slot": 0, "move": "POISONSTING", "target": 1 }
+  ],
+  "expect": [
+    "TARGET [0] Nidoking Poison Sting -> [1] Blissey",
+    "FAINT [1] Blissey",
+    "SEND [1] Pidgey party[1]"
+  ]
+}

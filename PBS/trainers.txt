@@ -3103,7 +3103,7 @@ Pokemon = SHUCKLE,21
     Moves = STRUGGLEBUG,ROLLOUT,SAFEGUARD,REST
     AbilityIndex = 2
 Pokemon = SNOVER,21
-    Moves = ICYWIND,RAZORLEAF,GRASSWHISTLE,SWAGGER
+    Moves = ICYWIND,RAZORLEAF,SLEEPPOWDER,SWAGGER
     AbilityIndex = 2
 #-------------------------------
 [POKEMONRANGER_M,Juan,200]
@@ -3136,7 +3136,7 @@ Pokemon = SIMIPOUR,22
     Moves = SCALD,RAINDANCE,ACROBATICS,SWAGGER
     AbilityIndex = 2
 Pokemon = POLIWAG,22
-    Moves = HYPNOSIS,BUBBLE,MUDSHOT,WATERSPORT
+    Moves = HYPNOSIS,BUBBLE,MUDSHOT,WATERGUN
     AbilityIndex = 2
 Pokemon = NINJASK,22
     Moves = AERIALACE,FURYCUTTER,DOUBLETEAM,SANDATTACK
@@ -3479,7 +3479,7 @@ Pokemon = SPOINK,25
     Moves = ZENHEADBUTT,MAGICCOAT,FUTURESIGHT,MAGICCOAT
     AbilityIndex = 0
 Pokemon = ROSELIA,26
-    Moves = MAGICALLEAF,GRASSWHISTLE,LEECHSEED,GIGADRAIN
+    Moves = MAGICALLEAF,SLEEPPOWDER,LEECHSEED,GIGADRAIN
     AbilityIndex = 0
 #-------------------------------
 [POKEMONRANGER_M,Deschutes,200]
@@ -4176,7 +4176,7 @@ Pokemon = RIBOMBEE,35
     SpecialDefenseEV = 0
 Pokemon = LUCARIO,34
     Item = LUMBERRY
-    Moves = CONDESCEND,BULLDOZE,SMARTSTRIKE,GRASSWHISTLE
+    Moves = CONDESCEND,BULLDOZE,SMARTSTRIKE,SLEEPPOWDER
     AbilityIndex = 2
     Gender = female
     Form = 1
@@ -4192,7 +4192,7 @@ Pokemon = LUCARIO,34
     SpecialDefenseEV = 0
 Pokemon = WHIMSICOTT,34
     Item = FOCUSSASH
-    Moves = GRASSWHISTLE,NATUREPOWER,GIGADRAIN,ENCORE
+    Moves = SLEEPPOWDER,NATUREPOWER,GIGADRAIN,ENCORE
     AbilityIndex = 0
     Gender = female
     Shiny = true

@@ -514,11 +514,11 @@ class PokeBattle_Battle
       pbDisplayBrief(_INTL("{1} recovered from its status!",battler.pbThis))
     end
     animplay = false
-    negativeEffects = [PBEffects::Curse,PBEffects::GastroAcid,PBEffects::Imprison,PBEffects::Nightmare,PBEffects::TarShot,PBEffects::SmackDown,PBEffects::Encore,PBEffects::ThroatChop,
+    negativeEffects = [PBEffects::Curse,PBEffects::GastroAcid,PBEffects::Imprison,PBEffects::TarShot,PBEffects::SmackDown,PBEffects::Encore,PBEffects::ThroatChop,
     PBEffects::HealBlock,PBEffects::Octolock,PBEffects::MultiTurn,PBEffects::LeechSeed,PBEffects::Crushing,PBEffects::Attract,PBEffects::MultiTurnUser,PBEffects::Torment,PBEffects::Taunt,PBEffects::Confusion]
     if onBreakdata[:effectClear]
       for i in negativeEffects
-        if [PBEffects::Curse,PBEffects::GastroAcid,PBEffects::Imprison,PBEffects::Nightmare,PBEffects::TarShot,PBEffects::SmackDown,PBEffects::Octolock,PBEffects::Torment].include?(i)
+        if [PBEffects::Curse,PBEffects::GastroAcid,PBEffects::Imprison,PBEffects::TarShot,PBEffects::SmackDown,PBEffects::Octolock,PBEffects::Torment].include?(i)
           if battler.effects[i] != false
             battler.effects[i] = false
             animplay = true

@@ -95,33 +95,50 @@ class PBMoveData
 end
 
 class PBMove
-  attr_reader(:id)       # Gets this move's ID.
+  # Migrate retired numeric move IDs when Pokémon from an older save are read.
+  RETIRED_MOVE_REPLACEMENTS={
+    215=>:SLEEPPOWDER,
+    237=>:MUDSLAP,
+    481=>:SANDATTACK,
+    558=>:WATERGUN
+  }.freeze
+
+  def self.current_id(moveid)
+    replacement=RETIRED_MOVE_REPLACEMENTS[moveid]
+    return replacement ? PBMoves.const_get(replacement) : moveid
+  end
+
+  def id
+    @id=PBMove.current_id(@id)
+  end
+
   attr_accessor(:pp)     # Gets the number of PP remaining for this move.
   attr_accessor(:ppup)   # Gets the number of PP Ups used for this move.
   attr_accessor(:totalpp)# Gets the total number of PP this move can have.
 
 # Gets this move's type.
   def type
-    return $pkmn_move[@id][2]
+    return $pkmn_move[id][2]
   end
 
 # Gets the maximum PP for this move.
   def totalpp
     return @totalpp if defined?(@totalpp)
-    return 0 if @id==0 || !$pkmn_move[@id]
-    tpp=$pkmn_move[@id][5]
+    moveid=id
+    return 0 if moveid==0 || !$pkmn_move[moveid]
+    tpp=$pkmn_move[moveid][5]
     return 0 if !tpp
     return tpp+(tpp*@ppup/5).floor
   end
 
 # Gets basedamage for this move
   def basedamage
-    return $pkmn_move[@id][1]
+    return $pkmn_move[id][1]
   end
   
 # Initializes this object to the specified move ID.
   def initialize(moveid)
-    @id=moveid
+    @id=PBMove.current_id(moveid)
     @ppup=0
     @pp=totalpp
   end

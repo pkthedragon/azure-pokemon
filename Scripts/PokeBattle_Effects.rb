@@ -455,7 +455,7 @@ def pbCanCrush?(showMessages=true)
     @battle.pbDisplay(_INTL("{1}'s team is protected by Safeguard!",pbThis)) if showMessages
     return false
   end
-  if ($fefieldeffect == 3 || @battle.field.effects[PBEffects::MistyTerrain]>0  && !$fefieldeffect==40) && !isAirborne? # Misty Field
+  if ($fefieldeffect == 3 || ($fefieldeffect != 40 && @battle.field.effects[PBEffects::MistyTerrain]>0)) && !isAirborne?
     @battle.pbDisplay(_INTL("Misty Terrain prevents {1} from being inflicted by status!",pbThis)) if showMessages
     return false
   end
@@ -540,7 +540,6 @@ end
   def pbCureStatus(showMessages=true)
     oldstatus=self.status
     if self.status==PBStatuses::SLEEP
-      self.effects[PBEffects::Nightmare]=false
     end
     self.status=0
     self.statusCount=0
@@ -642,6 +641,27 @@ end
     @battle.pbCommonAnimation("Attract",self,nil)
     @battle.pbDisplayBrief(_INTL("{1} is enchanted by {2}!",
        pbThis,seducer.pbThis(true)))
+  end
+
+  def pbApplyTimedAttract(attacker,reflected=false)
+    @effects[PBEffects::Attract]=attacker.index
+    @effects[PBEffects::AttractTurns]=3
+    @battle.pbCommonAnimation("Attract",self,nil)
+    if reflected
+      @battle.pbDisplay(_INTL("{1}'s {2} infatuated {3}!",attacker.pbThis,
+        PBItems.getName(attacker.item),pbThis(true)))
+      return
+    end
+    @battle.pbDisplay(_INTL("{1} became enchanted!",pbThis))
+    if hasWorkingItem(:DESTINYKNOT) && attacker.pbCanAttract?(self,false) &&
+       !@battle.pbCheckSideAbility(:AROMAVEIL,attacker)
+      attacker.pbApplyTimedAttract(self,true)
+    end
+  end
+
+  def pbCureAttract
+    @effects[PBEffects::Attract]=-1
+    @effects[PBEffects::AttractTurns]=0
   end
 
   def pbContinueAttract

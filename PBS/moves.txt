@@ -388,7 +388,7 @@ Priority = 1
 Description = Increased priority. Punching.
 LegacyFunctionCode = 0
 LegacyTarget = 0
-LegacyFlags = abef
+LegacyFlags = abefj
 #-------------------------------
 [NIGHTSLASH]
 LegacyMoveID = 27
@@ -575,7 +575,7 @@ Name = Dark Void
 Type = DARK
 Category = Status
 Power = 0
-Accuracy = 0
+Accuracy = 100
 TotalPP = 5
 EffectChance = 0
 Priority = -1
@@ -620,7 +620,7 @@ Name = Flatter
 Type = DARK
 Category = Status
 Power = 0
-Accuracy = 0
+Accuracy = 100
 TotalPP = 15
 EffectChance = 0
 Priority = 0
@@ -906,7 +906,7 @@ Category = Special
 Power = 40
 Accuracy = 100
 TotalPP = 15
-EffectChance = 20
+EffectChance = 0
 Priority = 0
 Description = Spread move. 2x damage to airborne targets. Wind.
 LegacyFunctionCode = 120
@@ -1044,7 +1044,7 @@ TotalPP = 10
 EffectChance = 10
 Priority = 0
 Description = 25% recoil. 10% chance to paralyze.
-LegacyFunctionCode = 253
+LegacyFunctionCode = 3002
 LegacyTarget = 0
 LegacyFlags = abef
 #-------------------------------
@@ -1116,7 +1116,7 @@ Category = Physical
 Power = 65
 Accuracy = 95
 TotalPP = 15
-EffectChance = 20
+EffectChance = 10
 Priority = 0
 Description = 10% chance to paralyze. 10% chance to lower defense. Bite.
 LegacyFunctionCode = 9
@@ -1449,7 +1449,7 @@ TotalPP = 10
 EffectChance = 10
 Priority = 0
 Description = 25% recoil. 10% chance to crush. Pinning.
-LegacyFunctionCode = 573
+LegacyFunctionCode = 3001
 LegacyTarget = 0
 LegacyFlags = abef
 #-------------------------------
@@ -1569,7 +1569,7 @@ TotalPP = 15
 EffectChance = 30
 Priority = 0
 Description = 30% chance to paralyze the target. This move is super-effective against targets weak to the Electric-type during heavy rain. Kicking.
-LegacyFunctionCode = 7
+LegacyFunctionCode = 689
 LegacyTarget = 0
 LegacyFlags = abefk
 #-------------------------------
@@ -2120,7 +2120,7 @@ Category = Physical
 Power = 65
 Accuracy = 95
 TotalPP = 15
-EffectChance = 20
+EffectChance = 10
 Priority = 0
 Description = 10% chance to burn. 10% chance to lower defense. Bite.
 LegacyFunctionCode = 11
@@ -2374,7 +2374,7 @@ Category = Special
 Power = 75
 Accuracy = 95
 TotalPP = 15
-EffectChance = 30
+EffectChance = 0
 Priority = 0
 Description = High critical hit ratio. Slashing. Wind.
 LegacyFunctionCode = 0
@@ -2746,7 +2746,7 @@ Name = Confuse Ray
 Type = GHOST
 Category = Status
 Power = 0
-Accuracy = 0
+Accuracy = 100
 TotalPP = 10
 EffectChance = 0
 Priority = 0
@@ -3202,21 +3202,6 @@ LegacyFunctionCode = 77
 LegacyTarget = 0
 LegacyFlags = bce
 #-------------------------------
-[GRASSWHISTLE]
-LegacyMoveID = 215
-Name = Grass Whistle
-Type = GRASS
-Category = Status
-Power = 0
-Accuracy = 0
-TotalPP = 5
-EffectChance = 0
-Priority = 0
-Description = Puts target to sleep. Sound.
-LegacyFunctionCode = 3
-LegacyTarget = 0
-LegacyFlags = bcek
-#-------------------------------
 [INGRAIN]
 LegacyMoveID = 216
 Name = Ingrain
@@ -3383,7 +3368,7 @@ LegacyTarget = 0
 LegacyFlags = abefh
 #-------------------------------
 [BONECLUB]
-LegacyMoveID = 318
+LegacyMoveID = 1056
 Name = Bone Club
 Type = GROUND
 Category = Physical
@@ -3531,20 +3516,6 @@ Description = The user looses a ground-shaking quake around the user. Its power 
 LegacyFunctionCode = 149
 LegacyTarget = 8
 LegacyFlags = bef
-#-------------------------------
-[MUDSPORT]
-LegacyMoveID = 237
-Name = Mud Sport
-Type = GROUND
-Category = Status
-Power = 0
-Accuracy = 0
-TotalPP = 10
-EffectChance = 0
-Priority = 0
-Description = The user covers itself with mud. It weakens Electric-type moves in battle.
-LegacyFunctionCode = 157
-LegacyTarget = 64
 #-------------------------------
 [SANDATTACK]
 LegacyMoveID = 238
@@ -3704,7 +3675,7 @@ Category = Physical
 Power = 65
 Accuracy = 95
 TotalPP = 15
-EffectChance = 20
+EffectChance = 10
 Priority = 0
 Description = 10% chance to freeze. 10% chance to lower defense. Bite.
 LegacyFunctionCode = 14
@@ -3990,7 +3961,7 @@ TotalPP = 5
 EffectChance = 0
 Priority = 0
 Description = Critical hits do 2x damage. Kicking.
-LegacyFunctionCode = 669
+LegacyFunctionCode = 3000
 LegacyTarget = 0
 LegacyFlags = abefl
 #-------------------------------
@@ -4020,7 +3991,7 @@ TotalPP = 10
 EffectChance = 0
 Priority = 0
 Description = Can target allies. Restoring 50% max HP (boosted by Grenadier to 75%). Bomb.
-LegacyFunctionCode = 167
+LegacyFunctionCode = 688
 LegacyTarget = 0
 LegacyFlags = abef
 #-------------------------------
@@ -4080,7 +4051,7 @@ TotalPP = 10
 EffectChance = 0
 Priority = 0
 Description = User loses 50% max HP on a miss. Scaling.
-LegacyFunctionCode = 0
+LegacyFunctionCode = 267
 LegacyTarget = 0
 LegacyFlags = abefl
 #-------------------------------
@@ -4185,7 +4156,7 @@ TotalPP = 10
 EffectChance = 0
 Priority = 0
 Description = Critical hits do 2x damage. Punching.
-LegacyFunctionCode = 669
+LegacyFunctionCode = 3000
 LegacyTarget = 0
 LegacyFlags = abefj
 #-------------------------------
@@ -4665,7 +4636,7 @@ TotalPP = 15
 EffectChance = 100
 Priority = 0
 Description = Can only be used while asleep. 100% chance to lower special defense. Sound.
-LegacyFunctionCode = 70
+LegacyFunctionCode = 17
 LegacyTarget = 0
 LegacyFlags = befk
 #-------------------------------
@@ -4726,7 +4697,7 @@ EffectChance = 0
 Priority = 3
 Description = The user raises its offenses if it's hit this turn. The user's next variable power move deals the maximum amount of damage.
 LegacyFunctionCode = 147
-LegacyTarget = 0
+LegacyTarget = 16
 LegacyFlags = d
 #-------------------------------
 [RAPIDSPIN]
@@ -4889,8 +4860,8 @@ Accuracy = 100
 TotalPP = 10
 EffectChance = 0
 Priority = -4
-Description = Inflicts double the damage if the user has been hurt by the opponent in the same turn. Momentum.
-LegacyFunctionCode = 129
+Description = Doubles in power if the user took damage this turn. Momentum.
+LegacyFunctionCode = 769
 LegacyTarget = 0
 LegacyFlags = abef
 #-------------------------------
@@ -5026,7 +4997,7 @@ EffectChance = 0
 Priority = 0
 Description = An entry hazard that stacks up to three times. Scatters presents on the user's battlefield that heal 1/3rd max HP per stack and get consumed.
 LegacyFunctionCode = 148
-LegacyTarget = 0
+LegacyTarget = 32
 LegacyFlags = be
 #-------------------------------
 [RETURN]
@@ -5167,7 +5138,7 @@ Name = Enchant
 Type = FAIRY
 Category = Status
 Power = 0
-Accuracy = 0
+Accuracy = 90
 TotalPP = 10
 EffectChance = 0
 Priority = 0
@@ -5437,7 +5408,7 @@ Accuracy = 0
 TotalPP = 20
 EffectChance = 0
 Priority = 0
-Description = Raises the user's critical hit rate and they cannot flinch or be immobilized next turn.
+Description = Sharply raises the user's critical-hit rate. The user cannot flinch or be immobilized on the next turn.
 LegacyFunctionCode = 35
 LegacyTarget = 16
 LegacyFlags = d
@@ -6160,11 +6131,11 @@ Name = Supersonic
 Type = NORMAL
 Category = Status
 Power = 0
-Accuracy = 0
+Accuracy = 100
 TotalPP = 10
 EffectChance = 0
 Priority = 0
-Description = Confuses target. Sound.
+Description = Confuses for three turns. Sound.
 LegacyFunctionCode = 19
 LegacyTarget = 0
 LegacyFlags = bcek
@@ -6205,7 +6176,7 @@ Name = Sweet Kiss
 Type = FAIRY
 Category = Status
 Power = 0
-Accuracy = 0
+Accuracy = 80
 TotalPP = 10
 EffectChance = 0
 Priority = 0
@@ -6358,9 +6329,9 @@ Accuracy = 0
 TotalPP = 5
 EffectChance = 0
 Priority = 0
-Description = Affects all Pokemon on the battlefield.
+Description = Makes all Pokémon on the battlefield drowsy. They fall asleep next turn for one turn.
 LegacyFunctionCode = 4
-LegacyTarget = 8
+LegacyTarget = 64
 LegacyFlags = bce
 #-------------------------------
 [GUNKSHOT]
@@ -6491,7 +6462,7 @@ Category = Physical
 Power = 65
 Accuracy = 95
 TotalPP = 15
-EffectChance = 20
+EffectChance = 10
 Priority = 0
 Description = 10% chance to poison. 10% chance to lower defense. Bite.
 LegacyFunctionCode = 685
@@ -7170,21 +7141,6 @@ LegacyFunctionCode = 184
 LegacyTarget = 16
 LegacyFlags = d
 #-------------------------------
-[KINESIS]
-LegacyMoveID = 481
-Name = Kinesis
-Type = PSYCHIC
-Category = Status
-Power = 0
-Accuracy = 0
-TotalPP = 15
-EffectChance = 0
-Priority = 0
-Description = The user distracts the target by bending a spoon. It lowers the target's accuracy.
-LegacyFunctionCode = 71
-LegacyTarget = 0
-LegacyFlags = bce
-#-------------------------------
 [LIGHTSCREEN]
 LegacyMoveID = 482
 Name = Light Screen
@@ -7399,7 +7355,7 @@ Name = Telekinesis
 Type = PSYCHIC
 Category = Status
 Power = 0
-Accuracy = 0
+Accuracy = 100
 TotalPP = 15
 EffectChance = 0
 Priority = 0
@@ -8318,20 +8274,6 @@ Description = The user shoots a torrent of water at the target and changes the t
 LegacyFunctionCode = 97
 LegacyTarget = 0
 LegacyFlags = bce
-#-------------------------------
-[WATERSPORT]
-LegacyMoveID = 558
-Name = Water Sport
-Type = WATER
-Category = Status
-Power = 0
-Accuracy = 0
-TotalPP = 20
-EffectChance = 0
-Priority = 0
-Description = The user soaks itself with water. The move weakens Fire-type moves while the user is in the battle.
-LegacyFunctionCode = 158
-LegacyTarget = 32
 #-------------------------------
 [WITHDRAW]
 LegacyMoveID = 559
@@ -9464,7 +9406,7 @@ LegacyFlags = be
 #-------------------------------
 [HOTTEMPO]
 LegacyMoveID = 638
-Name = Fever Pitch
+Name = Hot Tempo
 Type = FIRE
 Category = Special
 Power = 1
@@ -11206,10 +11148,10 @@ Accuracy = 100
 TotalPP = 5
 EffectChance = 30
 Priority = 0
-Description = 30% chance to lower defense. Bludgeoning. Punching. Pinning.
-LegacyFunctionCode = 10
+Description = Hits twice. Each hit has a 30% chance to lower Defense. Bludgeoning. Punching. Pinning.
+LegacyFunctionCode = 768
 LegacyTarget = 0
-LegacyFlags = bej
+LegacyFlags = abej
 #-------------------------------
 [HEXDUMMY]
 LegacyMoveID = 754
@@ -13808,7 +13750,7 @@ Category = Physical
 Power = 100
 Accuracy = 85
 TotalPP = 5
-EffectChance = 30
+EffectChance = 0
 Priority = 0
 Description = High critical hit ratio.
 LegacyFunctionCode = 0
@@ -14047,9 +13989,9 @@ Power = 0
 Accuracy = 0
 TotalPP = 10
 EffectChance = 0
-Priority = 1
-Description = The user's defense is doubled with priority until the end of turn. And then the user's attack and defense swap.
-LegacyFunctionCode = 548
+Priority = 2
+Description = The user doubles its Defense until the end of the turn, then swaps its Attack and Defense. +2 priority.
+LegacyFunctionCode = 681
 LegacyTarget = 16
 LegacyFlags = d
 #-------------------------------
@@ -15152,7 +15094,7 @@ TotalPP = 5
 EffectChance = 0
 Priority = 0
 Description = User loses 50% max HP on miss. Pinning.
-LegacyFunctionCode = 0
+LegacyFunctionCode = 267
 LegacyTarget = 0
 LegacyFlags = abef
 #-------------------------------

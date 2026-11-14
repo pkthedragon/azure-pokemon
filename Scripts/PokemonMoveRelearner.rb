@@ -109,6 +109,7 @@ def pbGetRelearnableMoves(pokemon, exclude_level1=false)
   tmoves=[]
   if pokemon.firstmoves
     for i in pokemon.firstmoves
+      i=PBMove.current_id(i)
       # Skip Hidden Power if Pokemon already knows any Hidden Power variant
       next if pbIsHiddenPowerMove?(i) && knowsHiddenPower
       tmoves.push(i) if !pokemon.knowsMove?(i) && !moves.include?(i)
@@ -155,6 +156,7 @@ def pbGetCompatibleMoves(pokemon)
   tmoves=[]
   if pokemon.firstmoves
     for i in pokemon.firstmoves
+      i=PBMove.current_id(i)
       tmoves.push(i) if !pokemon.knowsMove?(i) && !moves.include?(i)
     end
   end

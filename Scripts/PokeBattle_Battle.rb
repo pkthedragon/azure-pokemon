@@ -741,6 +741,7 @@ class PokeBattle_Battle
 
   def pbMoveIgnoresTripleLanes?(move, attacker, target = nil)
     return false if !tripleBattle? || !move || !attacker
+    return true if move.id==PBMoves::SANDATTACK
     resolved_type = move.type
     if move.respond_to?(:pbType)
       begin
@@ -2568,7 +2569,6 @@ class PokeBattle_Battle
     return false if thispkmn.effects[PBEffects::Outrage]>0
     return false if thispkmn.effects[PBEffects::Rage]==true && $fefieldeffect == 24
     return false if thispkmn.effects[PBEffects::Uproar]>0
-    return false if thispkmn.effects[PBEffects::Bide]>0
 #### KUROTSUNE - 022 - START
     #return false if thispkmn.effects[PBEffects::SkyDrop]
 #### KUROTSUNE - 022 - END
@@ -2754,7 +2754,10 @@ class PokeBattle_Battle
 		@choices[idxPokemon][2]=enc_move
 		@choices[idxPokemon][3]=-1
 	  end
-      if !singleBattle?
+      if enc_move && enc_move.id==PBMoves::MINIMIZE && pbOwnedByPlayer?(idxPokemon) && !@controlPlayer
+        target=@scene.pbChooseTarget(idxPokemon)
+        pbRegisterTarget(idxPokemon,target) if target>=0
+      elsif !singleBattle?
         thismove=enc_move
         target=thispkmn.pbTarget(thismove)
         if target==PBTargets::SingleNonUser #&& ($fefieldeffect != 33 ||
@@ -3676,6 +3679,7 @@ class PokeBattle_Battle
   end
 
   def pbReplace(index,newpoke,batonpass=false)
+    @switchedOut[index]=true
     party=pbParty(index)
     old_gas=@battlers[index].hasWorkingAbility(:NEUTRALIZINGGAS)
     if pbOwnedByPlayer?(index)
@@ -3722,7 +3726,6 @@ class PokeBattle_Battle
       @battlers[index].unburdened=false
       @battlers[index].speed/=2
     end
-    @switchedOut[index] = true
     pbClearChoices(index)
     @battlers[index].pbResetForm
     if !@battlers[index].isFainted?
@@ -3839,9 +3842,9 @@ class PokeBattle_Battle
   # These effects reference an established battler. Move selections and pending
   # Reverb targets instead refer to lanes, so a shift leaves them in place.
   SHIFTED_BATTLER_EFFECTS = [
-    PBEffects::Attract, PBEffects::BideTarget, PBEffects::CounterTarget,
+    PBEffects::Attract,
     PBEffects::FutureSightUser, PBEffects::LeechSeed, PBEffects::LockOnPos,
-    PBEffects::MeanLook, PBEffects::MirrorCoatTarget, PBEffects::MultiTurnUser,
+    PBEffects::MeanLook, PBEffects::MultiTurnUser,
     PBEffects::PerishSongUser, PBEffects::Crushing, PBEffects::JawLockUser,
     PBEffects::AftershockUser, PBEffects::SyrupBombUser, PBEffects::LotusBloomUser
   ].freeze
@@ -4791,7 +4794,8 @@ end
     return false if !battler || battler.isFainted?
     party_index=battler.pokemonIndex
     return false if party_index<0
-    pbRecallAndReplace(battler.index,party_index,false)
+    return false if !pbRecallAndReplace(battler.index,party_index,false)
+    battler.pbAbilitiesOnSwitchIn(true)
     return true
   end
 
@@ -4871,7 +4875,7 @@ end
       if side.effects[PBEffects::Presents] > 0 && !battler.isFainted? &&
          !pkmn.isAirborne? && !pkmn.hasWorkingItem(:HEAVYDUTYBOOTS)
         stacks = side.effects[PBEffects::Presents]
-        heal_frac = (battler.totalhp/3.0).floor * stacks
+        heal_frac = battler.totalhp*stacks/3
         heal_frac = [heal_frac, battler.totalhp - battler.hp].min
         if heal_frac > 0
           battler.pbRecoverHP(heal_frac,true)
@@ -6022,7 +6026,11 @@ def pbStartBattle(canlose=false)
                       PBTargets::AllOpposing,PBTargets::AllNonUsers].include?(target)
                     @battlers[i].effects[PBEffects::AttackingTarget].push(@battlers[i].pbOppositeOpposing.index)
                   end
-                  if !singleBattle?
+                  if thismove.id==PBMoves::MINIMIZE
+                    target=@scene.pbChooseTarget(i)
+                    next if target<0
+                    pbRegisterTarget(i,target)
+                  elsif !singleBattle?
                     if [PBTargets::SingleNonUser,PBTargets::SingleOpposing,PBTargets::Partner].include?(target)
                       target=@scene.pbChooseTarget(i)
                       next if target<0
@@ -6746,7 +6754,7 @@ def pbStartBattle(canlose=false)
                i.hasWorkingAbility(:SHELLARMOR) || i.hasWorkingAbility(:WATERBUBBLE) ||
                i.hasWorkingAbility(:MAGICGUARD) || i.hasWorkingAbility(:WONDERGUARD) ||
                i.hasWorkingAbility(:PRISMARMOR) || i.effects[PBEffects::AquaRing] ||
-               i.pbOwnSide.effects[PBEffects::WideGuard] || (i.pbOwnSide.effects[PBEffects::AreniteWall]>0) ||
+               (i.pbOwnSide.effects[PBEffects::AreniteWall]>0) ||
                SilvallyCheck(i,PBTypes::ROCK)
               pbDisplay(_INTL("{1} is immune to the eruption!",i.pbThis))
             else
@@ -7984,27 +7992,6 @@ def pbStartBattle(canlose=false)
         i.effects[PBEffects::Wounded]-=1
         pbDisplay(_INTL("{1}'s wounds healed!",i.pbThis)) if i.effects[PBEffects::Wounded]<=0
       end
-      # Nightmare
-      if i.effects[PBEffects::Nightmare] && !i.hasWorkingAbility(:MAGICGUARD) &&  !(i.hasWorkingAbility(:WONDERGUARD) && $fefieldeffect == 44) &&
-        $fefieldeffect != 9
-        if i.status==PBStatuses::SLEEP || !i.opposingAbilityHolder(:WORLDOFNIGHTMARES).nil?
-          pbCommonAnimation("Nightmare",i,nil)
-          pbDisplay(_INTL("{1} is locked in a nightmare!",i.pbThis))
-          if i.effects[PBEffects::ShieldLife]>0
-            nightmaredamage=i.totalhp/16
-            pbShieldDamage(i,nightmaredamage)
-          elsif i.isBoss
-            nightmaredamage=i.totalhp/8
-            pbShieldDamage(i,nightmaredamage)
-          elsif $fefieldeffect == 40
-            i.pbReduceHP((i.totalhp/3).floor,true)
-          else
-            i.pbReduceHP((i.totalhp/4).floor,true)
-          end
-        else
-          i.effects[PBEffects::Nightmare]=false
-        end
-      end
       if i.isFainted?
         return if !i.pbFaint
         next
@@ -8096,7 +8083,9 @@ def pbStartBattle(canlose=false)
         chance=move.addlEffect
         chance*=2 if user.hasWorkingAbility(:SERENEGRACE) || $fefieldeffect==9 ||
           @field.effects[PBEffects::Rainbow]>0
-        move.pbAdditionalEffect(user,target) if pbRandom(100)<chance
+        pbWithStatChangeSource([:move,move.id]) do
+          move.pbApplyAdditionalEffects(user,target,chance)
+        end
       end
       if target.isFainted?
         return if !target.pbFaint
@@ -8104,13 +8093,10 @@ def pbStartBattle(canlose=false)
     end
     # Counterpoise retains doubled Defense through delayed attacks, then swaps.
     for battler in priority
-      next if battler.isFainted?
-      if battler.effects[PBEffects::CounterpoiseSwap]
-        battler.effects[PBEffects::PowerTrick]=!battler.effects[PBEffects::PowerTrick]
-        battler.effects[PBEffects::CounterpoiseSwap]=false
-        pbDisplay(_INTL("{1} swapped its Attack and Defense!",battler.pbThis))
-      end
-      battler.effects[PBEffects::CounterpoiseDouble]=false
+      next if battler.isFainted? || !battler.effects[PBEffects::Counterpoise]
+      battler.effects[PBEffects::Counterpoise]=false
+      battler.effects[PBEffects::PowerTrick]=!battler.effects[PBEffects::PowerTrick]
+      pbDisplay(_INTL("{1} swapped its Attack and Defense!",battler.pbThis))
     end
     # Salt Cure
     for i in priority
@@ -8152,8 +8138,6 @@ def pbStartBattle(canlose=false)
             pbCommonAnimation("Wrap",i,nil)
           elsif isConst?(i.effects[PBEffects::MultiTurnAttack],PBMoves,:INFESTATION)
             pbCommonAnimation("Infestation",i,nil)
-          elsif isConst?(i.effects[PBEffects::MultiTurnAttack],PBMoves,:ATTACKORDER)
-            pbCommonAnimation("AttackOrder",i,nil)
           elsif isConst?(i.effects[PBEffects::MultiTurnAttack],PBMoves,:WHIRLPOOL)
             pbCommonAnimation("Whirlpool",i,nil)
           elsif isConst?(i.effects[PBEffects::MultiTurnAttack],PBMoves,:QUICKSILVERSPEAR)
@@ -8235,6 +8219,15 @@ def pbStartBattle(canlose=false)
       if i.effects[PBEffects::SyrupBombTurns]<=0
         i.effects[PBEffects::SyrupBombTurns]=0
         i.effects[PBEffects::SyrupBombUser]=-1
+      end
+    end
+    # Timed infatuation
+    for i in priority
+      next if i.isFainted? || i.effects[PBEffects::AttractTurns]<=0
+      i.effects[PBEffects::AttractTurns]-=1
+      if i.effects[PBEffects::Attract]>=0 && i.effects[PBEffects::AttractTurns]==0
+        i.pbCureAttract
+        pbDisplay(_INTL("{1}'s infatuation wore off!",i.pbThis))
       end
     end
     # Taunt
@@ -8612,20 +8605,6 @@ def pbStartBattle(canlose=false)
         pbDisplay(_INTL("The type chart returned to normal."))
       end
     end
-    # Mud Sport
-    if @field.effects[PBEffects::MudSport]>0
-      @field.effects[PBEffects::MudSport]-=1
-      if @field.effects[PBEffects::MudSport]==0
-        pbDisplay(_INTL("The effects of Mud Sport faded."))
-      end
-    end
-    # Water Sport
-    if @field.effects[PBEffects::WaterSport]>0
-      @field.effects[PBEffects::WaterSport]-=1
-      if @field.effects[PBEffects::WaterSport]==0
-        pbDisplay(_INTL("The effects of Water Sport faded."))
-      end
-    end
     # Gravity
     if @field.effects[PBEffects::Gravity]>0 && $fefieldeffect!=39
       @field.effects[PBEffects::Gravity]-=1
@@ -8748,7 +8727,6 @@ def pbStartBattle(canlose=false)
       if i.effects[PBEffects::Uproar]>0
         for j in priority
           if !j.isFainted? && j.status==PBStatuses::SLEEP && !j.hasWorkingAbility(:SOUNDPROOF) && j.effects[PBEffects::Spritz] != 1
-            j.effects[PBEffects::Nightmare]=false
             j.status=0
             j.statusCount=0
             pbDisplay(_INTL("{1} woke up in the uproar!",j.pbThis))
@@ -8768,7 +8746,6 @@ def pbStartBattle(canlose=false)
       if i.effects[PBEffects::FeverPitch]==true
         for j in priority
           if !j.isFainted? && j.status==PBStatuses::SLEEP && !j.hasWorkingAbility(:SOUNDPROOF) && j.effects[PBEffects::Spritz] != 1
-            j.effects[PBEffects::Nightmare]=false
             j.status=0
             j.statusCount=0
             pbDisplay(_INTL("{1} woke up in the uproar!",j.pbThis))
@@ -9253,20 +9230,11 @@ def pbStartBattle(canlose=false)
         pbDisplay(_INTL("{1}'s nightmares are becoming a reality!",i.pbThis)) if hploss>0
     end
     # Nightmare Aura
-    if (i.status==PBStatuses::SLEEP || isConst?(i.ability,PBAbilities,:COMATOSE) && $fefieldeffect!=1) &&
-       !isConst?(i.ability,PBAbilities,:MAGICGUARD) && !(isConst?(i.ability,PBAbilities,:WONDERGUARD) && $fefieldeffect == 44) &&
-       $fefieldeffect != 9
-      have_aura = false
-      for opp in i.opposingLivingBattlers
-        next if !opp || opp.isFainted?
-        have_aura = true if opp.effects[PBEffects::NightmareAura]
-      end
-      if have_aura
-        if i.status==PBStatuses::SLEEP
-          hploss = i.pbReduceHP((i.totalhp/8).floor,true)
-          pbDisplay(_INTL("{1} is writhing having a bad dream!",i.pbThis)) if hploss>0
-        end
-      end
+    if i.status==PBStatuses::SLEEP && !i.hasWorkingAbility(:MAGICGUARD) &&
+       !(i.hasWorkingAbility(:WONDERGUARD) && $fefieldeffect==44) && $fefieldeffect!=9 &&
+       i.opposingLivingBattlers.any? { |foe| foe.effects[PBEffects::NightmareAura] }
+      hploss=i.pbReduceHP([i.totalhp/8,1].max,true)
+      pbDisplay(_INTL("{1} is writhing having a bad dream!",i.pbThis)) if hploss>0
     end
     if i.isFainted?
       return if !i.pbFaint
@@ -9317,17 +9285,10 @@ def pbStartBattle(canlose=false)
   end
     for i in priority
       next if i.isFainted?
-      if i.effects[PBEffects::BurnUp]
-        if $fefieldeffect==7 || $fefieldeffect==16 || $fefieldeffect==45
-          itype1=i.type1
-          itype2=i.type2
-          if isConst?(itype1,PBTypes,:QMARKS)
-            itype1=getConst(PBTypes,:FIRE) || 0
-          end
-          itype2=getConst(PBTypes,:FIRE) || 0
-          i.effects[PBEffects::BurnUp] = false
-          pbDisplay(_INTL("{1} reignited its flame!",i.pbThis))
-        end
+      expiry=i.effects[PBEffects::BurnUp]
+      if expiry && @turncount+1>=expiry
+        i.effects[PBEffects::BurnUp]=false
+        pbDisplay(_INTL("{1} reignited its flame!",i.pbThis))
       end
     end
     for i in priority
@@ -9475,11 +9436,8 @@ def pbStartBattle(canlose=false)
 #### KUROTSUNE - 024 - END
       @battlers[i].lastHPLost=0
       @battlers[i].lastAttacker=-1
-      @battlers[i].effects[PBEffects::Counter]=-1
-      @battlers[i].effects[PBEffects::CounterTarget]=-1
-      @battlers[i].effects[PBEffects::MirrorCoat]=-1
-      @battlers[i].effects[PBEffects::MirrorCoatTarget]=-1
       @battlers[i].effects[PBEffects::DamagingMoveThisTurn]=false
+      @battlers[i].effects[PBEffects::TributeDamageTaken]=0
       @battlers[i].effects[PBEffects::UsedAttackThisTurn]=false
       @battlers[i].azureStatsRaisedThisRound=false
     end

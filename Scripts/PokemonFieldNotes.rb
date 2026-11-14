@@ -1183,7 +1183,7 @@ class Scene_FieldNotes_Info
                 when 1
                   Kernel.pbMessage(_INTL("Magnet Bomb"))
                 when 5
-                  Kernel.pbMessage(_INTL("Mud Sport, Tectonic Rage"))
+                  Kernel.pbMessage(_INTL("Tectonic Rage"))
               end
             when 2
               case @sprites["command_window"].index #Which line was selected
@@ -1213,7 +1213,7 @@ class Scene_FieldNotes_Info
                 when 1
                   Kernel.pbMessage(_INTL("Coil, Growth"))
                 when 4
-                  Kernel.pbMessage(_INTL("...when Eruption, Flame Burst, Fire Pledge, Heat Wave, Inferno Overdrive, Lava Plume, or Searing Shot is used in the absence of Rain or Water Sport."))
+                  Kernel.pbMessage(_INTL("...when Eruption, Flame Burst, Fire Pledge, Heat Wave, Inferno Overdrive, Lava Plume, or Searing Shot is used in the absence of Rain."))
                 when 5
                   Kernel.pbMessage(_INTL("...when Sludge Wave or Acid Downpour is used."))
               end
@@ -1350,7 +1350,7 @@ class Scene_FieldNotes_Info
             when 1
               case @sprites["command_window"].index #Which line was selected
                 when 0
-                  Kernel.pbMessage(_INTL("Continental Crush, Defog, Fust, Hurricane, Hydro Vortex, Muddy Water, Oceanic Operetta, Razor Wind, Sand Tomb, Sludge Wave, Sparkling Aria, Surf, Tailwind, Water Pledge, Water Sport, Water Spout, Whirlwind"))
+                  Kernel.pbMessage(_INTL("Continental Crush, Defog, Fust, Hurricane, Hydro Vortex, Muddy Water, Oceanic Operetta, Razor Wind, Sand Tomb, Sludge Wave, Sparkling Aria, Surf, Tailwind, Water Pledge, Water Spout, Whirlwind"))
                 when 2
                   Kernel.pbMessage(_INTL("Blaze, Flare Boost, Flash Fire"))
                 when 6
@@ -1566,7 +1566,7 @@ class Scene_FieldNotes_Info
             when 2
               case @sprites["command_window"].index #Which line was selected
                 when 0
-                  Kernel.pbMessage(_INTL("...when Eruption, Fire Pledge, Flame Burst, Heat Wave, Inferno Overdrive, Lava Plume, or Searing Shot is used in the absence of Rain or Water Sport."))
+                  Kernel.pbMessage(_INTL("...when Eruption, Fire Pledge, Flame Burst, Heat Wave, Inferno Overdrive, Lava Plume, or Searing Shot is used in the absence of Rain."))
                 when 4
                   Kernel.pbMessage(_INTL("Boosts Attack and applies Spiky Shield to the user."))
         end
@@ -1578,11 +1578,11 @@ class Scene_FieldNotes_Info
                 when 4
                   Kernel.pbMessage(_INTL("Muddy Water, Surf, Water Pledge, Water Spout"))
                 when 5
-                  Kernel.pbMessage(_INTL("Hydro Vortex, Muddy Water, Oceanic Operetta, Sparkling Aria, Surf, Water Pledge, Water Sport, and Water Spout generate steam, lowering all active Pokemon's Accuracy."))
+                  Kernel.pbMessage(_INTL("Hydro Vortex, Muddy Water, Oceanic Operetta, Sparkling Aria, Surf, Water Pledge, and Water Spout generate steam, lowering all active Pokemon's Accuracy."))
                 when 6
                   Kernel.pbMessage(_INTL("Scald, Steam Eruption"))
                 when 7
-                  Kernel.pbMessage(_INTL("...when Eruption, Fire Pledge, Flame Burst, Heat Wave, Lava Plume, or Searing Shot is used in the absence of Rain or Water Sport."))
+                  Kernel.pbMessage(_INTL("...when Eruption, Fire Pledge, Flame Burst, Heat Wave, Lava Plume, or Searing Shot is used in the absence of Rain."))
               end
             when 1
               case @sprites["command_window"].index #Which line was selected
@@ -1686,7 +1686,7 @@ class Scene_FieldNotes_Info
                 when 4
                   Kernel.pbMessage(_INTL("Sand Force, Sand Rush, Sand Veil"))
                 when 5
-                  Kernel.pbMessage(_INTL("Calm Mind, Kinesis, Meditate, Sand Attack"))
+                  Kernel.pbMessage(_INTL("Calm Mind, Meditate, Sand Attack"))
               end
             when 1
               case @sprites["command_window"].index #Which line was selected
@@ -1979,7 +1979,7 @@ class Scene_FieldNotes_Info
                 when 1
                   Kernel.pbMessage(_INTL("...when an attack is successfully bounced."))
                 when 4
-                  Kernel.pbMessage(_INTL("Mirror Coat increases Evasion, Defense and SpDef on successful use."))
+                  Kernel.pbMessage(_INTL("Mirror Coat gives incoming special attacks one-quarter recoil for five turns."))
                 when 5
                   Kernel.pbMessage(_INTL("Mirror Move increases Accuracy, Attack and SpAtk on successful use."))
               end
@@ -2069,7 +2069,7 @@ class Scene_FieldNotes_Info
             when 0
               case @sprites["command_window"].index #Which line was selected
                 when 2
-                  Kernel.pbMessage(_INTL("Bloom Doom, Growth, Rain Dance, Rototiller, Sunny Day, Water Sport"))
+                  Kernel.pbMessage(_INTL("Bloom Doom, Growth, Rain Dance, Rototiller, Sunny Day"))
                   Kernel.pbMessage(_INTL("Additionally, these abilities Grow the field one stage on switch-in: Drizzle, Drought, Flower Gift, Flower Veil"))
                 when 4
                   Kernel.pbMessage(_INTL("Flower Gift, Swarm"))
@@ -2089,7 +2089,7 @@ class Scene_FieldNotes_Info
                 when 5
                   Kernel.pbMessage(_INTL("Flower Veil passively reduces damage x0.5 to its user and allied Grass types."))
                 when 6
-                  Kernel.pbMessage(_INTL("...when Eruption, Fire Pledge, Flame Burst, Heat Wave, Inferno Overdrive, Lava Plume, or Searing Shot is used in the absence of Rain or Water Sport."))
+                  Kernel.pbMessage(_INTL("...when Eruption, Fire Pledge, Flame Burst, Heat Wave, Inferno Overdrive, Lava Plume, or Searing Shot is used in the absence of Rain."))
               end
             when 2
               case @sprites["command_window"].index #Which line was selected
@@ -2208,7 +2208,7 @@ class Scene_FieldNotes_Info
             when 1
               case @sprites["command_window"].index #Which line was selected
                 when 5
-                  Kernel.pbMessage(_INTL("Calm Mind, Cosmic Power, Kinesis, Meditate, Nasty Plot"))
+                  Kernel.pbMessage(_INTL("Calm Mind, Cosmic Power, Meditate, Nasty Plot"))
                 when 6
                   Kernel.pbMessage(_INTL("Mind Reader, Miracle Eye, Psych Up boost Sp.Atk two stages"))
                 when 5

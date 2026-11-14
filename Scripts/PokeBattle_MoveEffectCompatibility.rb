@@ -3,18 +3,6 @@
 # LegacyFunctionCode to hexadecimal, so these are the constants it actually asks
 # Ruby to resolve at runtime.
 
-# Heal Order (base-36 29G == decimal 2932 == hexadecimal B74).
-class PokeBattle_Move_B74 < PokeBattle_Move_29G
-end
-
-# Razor Wind (base-36 29H == decimal 2933 == hexadecimal B75).
-class PokeBattle_Move_B75 < PokeBattle_Move_29H
-end
-
-# Poison Tail (base-36 25Z == decimal 2807 == hexadecimal AF7).
-class PokeBattle_Move_AF7 < PokeBattle_Move_25Z
-end
-
 # Snuff Out's authored effect class was named after its move ID (897), rather
 # than its hexadecimal function code (27B). Keep the implementation in one
 # place and expose it under the constant the move factory resolves.
@@ -432,8 +420,7 @@ class PokeBattle_Move_235 < PokeBattle_Move
   def azureTemporaryTerrains
     return [
       PBEffects::ElectricTerrain,PBEffects::GrassyTerrain,
-      PBEffects::MistyTerrain,PBEffects::PsychicTerrain,
-      PBEffects::DampTerrain,PBEffects::MuddyTerrain
+      PBEffects::MistyTerrain,PBEffects::PsychicTerrain
     ]
   end
 
@@ -934,16 +921,6 @@ class PokeBattle_Battler
   attr_accessor :azureStatsRaisedThisRound
   attr_accessor :azureJetstream
 
-  # Counterpoise's temporary doubling is deliberately exposed through the
-  # normal Defense reader, so every physical damage path sees the same value.
-  def defense
-    value=@defense
-    if @effects && @effects[PBEffects::CounterpoiseDouble]
-      value*=2
-    end
-    return value
-  end
-
   def azureHitsTaken
     counts=@battle.instance_variable_get(:@azure_hits_taken) || {}
     return counts[@pokemon.object_id] || 0
@@ -1238,30 +1215,20 @@ class PokeBattle_Move_238 < PokeBattle_Move
   end
 end
 
-# Triple Arrows's authored 30% Speed drop is handled by Azure's standard
-# additional-effect roll. Its independent 50% Defense drop mirrors the same
-# Shield Dust, Lucky Chant, Sheer Force, Serene Grace and terrain rules.
+# Triple Arrows rolls independently for its 30% Speed and 50% Defense drops.
 class PokeBattle_Move_229 < PokeBattle_Move
   def pbAdditionalEffect(attacker,opponent)
     return false if !opponent.pbCanReduceStatStage?(PBStats::SPEED,false)
     return opponent.pbReduceStat(PBStats::SPEED,1,false,@id,attacker)
   end
 
-  def pbEffect(attacker,opponent,hitnum=0,alltargets=nil,showanimation=true)
-    ret=super(attacker,opponent,hitnum,alltargets,showanimation)
-    return ret if opponent.damagestate.calcdamage<=0 || opponent.damagestate.substitute
-    return ret if attacker.grazed || opponent.damagestate.partialhit
-    return ret if attacker.hasWorkingAbility(:SHEERFORCE) || @battle.SilvallyCheck(attacker,PBTypes::GROUND)
-    return ret if opponent.hasWorkingAbility(:SHIELDDUST) && !opponent.moldbroken && !hasFlags?("m")
-    return ret if opponent.pbOwnSide.effects[PBEffects::LuckyChant]>0
-    chance=50
-    chance*=2 if attacker.hasWorkingAbility(:SERENEGRACE) || $fefieldeffect==9 ||
-      @battle.field.effects[PBEffects::Rainbow]>0
-    chance=100 if chance>100 || ($DEBUG && Input.press?(Input::CTRL))
-    if @battle.pbRandom(100)<chance && opponent.pbCanReduceStatStage?(PBStats::DEFENSE,false)
+  def pbApplyAdditionalEffects(attacker,opponent,chance)
+    return if opponent.damagestate.substitute
+    super
+    defense_chance=chance*50/30
+    if @battle.pbRandom(100)<defense_chance && opponent.pbCanReduceStatStage?(PBStats::DEFENSE,false)
       opponent.pbReduceStat(PBStats::DEFENSE,1,false,@id,attacker)
     end
-    return ret
   end
 end
 
@@ -1554,10 +1521,7 @@ class PokeBattle_Move_282 < PokeBattle_Move
   end
 end
 
-# Function 224 is shared by Pierce the Veil and Counterpoise (PBS symbol
-# POWERSHIFT). Both use Azure's established Power Trick state for the lasting
-# Attack/Defense swap. Counterpoise also grants its authored +1 Defense and
-# doubles Defense until the end-of-round hook performs the swap.
+# Pierce the Veil swaps Attack and Defense once per use after dealing damage.
 class PokeBattle_Move_224 < PokeBattle_Move
   def pbOnStartUse(attacker)
     @azure_pierce_swap_applied=false
@@ -1565,16 +1529,6 @@ class PokeBattle_Move_224 < PokeBattle_Move
   end
 
   def pbEffect(attacker,opponent,hitnum=0,alltargets=nil,showanimation=true)
-    if @id==PBMoves::POWERSHIFT
-      pbShowAnimation(@id,attacker,nil,hitnum,alltargets,showanimation)
-      if attacker.pbCanIncreaseStatStage?(PBStats::DEFENSE,false)
-        attacker.pbIncreaseStat(PBStats::DEFENSE,1,false,@id,attacker)
-      end
-      attacker.effects[PBEffects::CounterpoiseDouble]=true
-      attacker.effects[PBEffects::CounterpoiseSwap]=true
-      @battle.pbDisplay(_INTL("{1} steadied its counterpoise!",attacker.pbThis))
-      return 0
-    end
     ret=super(attacker,opponent,hitnum,alltargets,showanimation)
     if !@azure_pierce_swap_applied && opponent.damagestate.calcdamage>0
       @azure_pierce_swap_applied=true

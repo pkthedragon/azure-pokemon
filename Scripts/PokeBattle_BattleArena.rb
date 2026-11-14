@@ -90,10 +90,6 @@ class PokeBattle_BattleArena < PokeBattle_Battle
        move.function==0x12    # Fake Out
       return -1
     end
-    if move.function==0x71 || # Counter
-       move.function==0x72    # Mirror Coat
-      return 0
-    end
     if move.basedamage==0
       return 0
     else

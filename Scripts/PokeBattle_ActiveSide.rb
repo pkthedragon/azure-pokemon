@@ -70,8 +70,6 @@ begin
 #### KUROTSUNE - 013 - END
       #@effects[PBEffects::TrickRoom]   = 0
       @effects[PBEffects::WonderRoom]   = 0
-      @effects[PBEffects::MudSport]     = 0
-      @effects[PBEffects::WaterSport]   = 0
       @effects[PBEffects::SosBuffer]    = 0
       @effects[PBEffects::PyroPreTarget]= -1
       @effects[PBEffects::VileMercy]    = 0

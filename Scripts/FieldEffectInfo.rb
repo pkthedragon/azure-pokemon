@@ -523,7 +523,7 @@ FIELDEFFECTDATA = {
       :additionalDamageType => {
         "Fighting/Psychic" => ["Strength"]
       },
-      :statEffectAmplified => ["Calm Mind", "Sand Attack", "Kinesis", "Meditate"],
+      :statEffectAmplified => ["Calm Mind", "Sand Attack", "Meditate"],
       :durationChange => {
         "Sandstorm" => 8,
         "Sand Stream" => 8,
@@ -773,7 +773,6 @@ FIELDEFFECTDATA = {
       :special => [
         "Psych Up, Meditate, Mind Reader and Miracle Eye additionally boost Sp.Atk two stages on use",
         "Hypnosis puts the target to sleep for two turns",
-        "Kinesis additionally lowers its target's Attack and Sp.Atk two stages",
         "Telekinesis additionally lowers its target's Defense and Sp.Def two stages",
         "Shattered Psyche additionally confuses its target",
         "Secret Power may confuse its target",
@@ -878,7 +877,7 @@ FIELDEFFECTDATA = {
         1.3 => ["Fairy-type moves", "Dark-type moves", "Magical Leaf", "Dark Pulse", "Night Daze", "Moonblast", "Dream Eater", "Night Slash"]
       },
       :accuracyChange => {
-        80 => ["Sleep Powder", "Grass Whistle", "Hypnosis"],
+        80 => ["Sleep Powder", "Hypnosis"],
         90 => ["Poison Powder", "Stun Spore", "Will-O-Wisp"]
       },
       :special => [
