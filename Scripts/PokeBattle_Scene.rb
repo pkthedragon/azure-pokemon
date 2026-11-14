@@ -132,7 +132,7 @@ def pbShowBattleStats(pkmn)
   report.push(_INTL("Miracle Eye")) if pkmn.effects[PBEffects::MiracleEye]
   report.push(_INTL("Nightmare Aura")) if pkmn.effects[PBEffects::NightmareAura]
   report.push(_INTL("Charge")) if pkmn.effects[PBEffects::Charge]
-  report.push(_INTL("Rebuild")) if pkmn.effects[PBEffects::Rebuild]
+  report.push(_INTL("Rebuild")) if pkmn.effects[PBEffects::Rebuild]>0
   report.push(_INTL("Spritzed")) if pkmn.effects[PBEffects::Spritz]!=0
   report.push(_INTL("Fertilize")) if pkmn.effects[PBEffects::Fertilize]
   report.push(_INTL("Minimized")) if pkmn.effects[PBEffects::Minimize]

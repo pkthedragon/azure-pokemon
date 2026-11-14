@@ -217,11 +217,8 @@ begin
     BurningBulwark    = 258
     Commander         = 259
     Commandee         = 260
-    TalesEndBlades    = 261
-    LotusBloom        = 262
-    LotusBloomMove    = 263
-    LotusBloomUser    = 264
-    LotusBloomPkmnIdx = 265
+    PsychicTypeLoss   = 261
+    WaterTypeLoss     = 262
     CircadianRhythm   = 266
     Needles           = 267
     MoltenStance      = 268
@@ -233,6 +230,13 @@ begin
     FocusEnergyGuard  = 274
     HardenGuard       = 275
     LockOnMove        = 276
+    PierceTheVeil     = 277
+    CarapaceShed      = 278
+    CarapaceGift      = 279
+    AbsoluteZeroTurn  = 284
+    RiteOfSpring      = 285
+    Inquisition       = 286
+    ConsumableItemDose = 287
     # These effects apply to a side - starts from 300
     LightScreen   = 300
     LuckyChant    = 301
@@ -267,8 +271,9 @@ begin
     StatCapContributors = 331
     StatCapPendingMessages = 332
     ScorchingGround = 333
-    RedSunStars    = 334
-    Sunfury        = 335
+    EtherealCloak  = 337
+    DoubleDose     = 338
+    MiracleGuard   = 336
     # These effects apply to the battle (i.e. both sides) - starts from 400
     Gravity       = 400
     MagicRoom     = 401

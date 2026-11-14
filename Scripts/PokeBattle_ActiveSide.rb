@@ -29,14 +29,14 @@ begin
       @effects[PBEffects::DuneDefense] = 0
       @effects[PBEffects::Bonfire]     = 0
       @effects[PBEffects::ScorchingGround] = 0
-      @effects[PBEffects::RedSunStars] = []
-      @effects[PBEffects::Sunfury] = 0
       @effects[PBEffects::BattleCry]   = 0 
       @effects[PBEffects::MysticTree]  = 0
       @effects[PBEffects::Presents]  = 0
       @effects[PBEffects::Caltrops]  = 0
       @effects[PBEffects::PressurePlate] = 0
       @effects[PBEffects::Undertow] = 0
+      @effects[PBEffects::EtherealCloak] = 0
+      @effects[PBEffects::DoubleDose] = 0
       @effects[PBEffects::ManaBond] = 0
       @effects[PBEffects::PlusSignal]  = 0
       @effects[PBEffects::MinusSignal] = 0

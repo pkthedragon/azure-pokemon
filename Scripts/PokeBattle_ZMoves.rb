@@ -250,9 +250,6 @@ class PokeBattle_ZMoves < PokeBattle_Move
         if target.hasWorkingItem(:FOCUSBAND) && @battle.pbRandom(10)==0
           target.damagestate.focusband=true
         end
-        if target.hasWorkingItem(:FOCUSSASH)
-          target.damagestate.focussash=true
-        end
         if target.hasWorkingItem(:RAMPCREST) && target.pokemon.species == PBSpecies::RAMPARDOS
           target.damagestate.rampcrest=true
         end
@@ -303,6 +300,7 @@ class PokeBattle_ZMoves < PokeBattle_Move
           end
         else
           movesucceeded=false
+          @thismove.gem_item_used=nil
           turneffects=[]
           turneffects[PBEffects::SpecialUsage]=false
           turneffects[PBEffects::PassedTrying]=false
@@ -322,6 +320,7 @@ class PokeBattle_ZMoves < PokeBattle_Move
             hitcheck = battler.pbProcessMoveAgainstTarget(@thismove,user,ztargets[0],1,turneffects,false,nil,true)
             movesucceeded = true if hitcheck && hitcheck > 0
           end
+          @thismove.pbConsumeUsedGem(user)
           if movesucceeded
             if @id==PBMoves::THEOLIASTRIKE
               if battler.pbOpposingSide.effects[PBEffects::Reflect]>0

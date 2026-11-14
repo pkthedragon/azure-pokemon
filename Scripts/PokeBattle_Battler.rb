@@ -740,14 +740,14 @@ class PokeBattle_Battler
     return pbShieldHP>0
   end
 
-  def pbSetShieldHP(value)
+  def pbSetShieldHP(value,cocon=0)
     value=[value.to_i,0].max
     if value<=0
       pbClearBeneficialStatus
       return 0
     end
     self.beneficialStatus=:SHIELD
-    self.beneficialStatusData={ :hp => value }
+    self.beneficialStatusData={ :hp => value, :cocon => [cocon,value].min }
     return value
   end
 
@@ -755,7 +755,7 @@ class PokeBattle_Battler
     return false if shieldhp.nil? || shieldhp<=0
     shieldhp=[shieldhp.to_i,1].max
     total=[pbShieldHP+shieldhp,totalhp].min
-    pbSetShieldHP(total)
+    pbSetShieldHP(total,pbCoconShieldHP)
     @battle.pbDisplay(message) if message && @battle
     return true
   end
@@ -766,11 +766,30 @@ class PokeBattle_Battler
     return amount if shieldhp<=0
     absorbed=[amount,shieldhp].min
     remaining=shieldhp-absorbed
-    pbSetShieldHP(remaining)
+    pbSetShieldHP(remaining,[pbCoconShieldHP-absorbed,0].max)
     if remaining<=0 && @battle
       @battle.pbDisplay(_INTL("{1}'s shield shattered!",pbThis))
     end
     return amount-absorbed
+  end
+
+  def pbCoconShieldHP
+    return 0 if beneficialStatus!=:SHIELD
+    return (beneficialStatusData || {})[:cocon].to_i
+  end
+
+  def pbApplyCoconBerryShield(dose)
+    shieldhp=pbShieldHP
+    added=[totalhp-shieldhp,totalhp*dose/3].min
+    return false if added<=0
+    pbSetShieldHP(shieldhp+added,pbCoconShieldHP+added)
+    @battle.pbDisplay(_INTL("{1} shielded itself with the {2}!",pbThis,PBItems.getName(PBItems::COCONBERRY)))
+    return true
+  end
+
+  def pbExpireCoconBerryShield
+    cocon=pbCoconShieldHP
+    pbSetShieldHP(pbShieldHP-cocon) if cocon>0
   end
 
   def pbHasDracoTributeMove?
@@ -817,6 +836,7 @@ class PokeBattle_Battler
   attr_reader :item
 
   def item=(value)
+    @effects[PBEffects::ConsumableItemDose]=nil if @effects && @item!=value
     # UPDATE 11/19/2013
     # Initial pass for implementing UNBURDEN
     # pokemon has lost their item
@@ -828,6 +848,16 @@ class PokeBattle_Battler
     # end update
     @item=value
     @pokemon.item=value if @pokemon
+  end
+
+  def pbSwapHeldItems(other)
+    own_item,other_item=item,other.item
+    own_dose=@effects[PBEffects::ConsumableItemDose]
+    other_dose=other.effects[PBEffects::ConsumableItemDose]
+    self.item=other_item
+    other.item=own_item
+    @effects[PBEffects::ConsumableItemDose]=other_dose
+    other.effects[PBEffects::ConsumableItemDose]=own_dose
   end
 
   def weight
@@ -886,6 +916,8 @@ class PokeBattle_Battler
   end
 
   def pbInitPokemon(pkmn,pkmnIndex,wonderroom=false)
+    pbExpireCoconBerryShield
+    pbDiscardConsumableHeldItemDose
     @faintAbilitySource=nil
     @faintCopiedAbility=nil
     @name         = pkmn.name
@@ -982,10 +1014,6 @@ class PokeBattle_Battler
     @effects[PBEffects::FutureSightMove]   = 0
     @effects[PBEffects::FutureSightUser]   = -1
     @effects[PBEffects::FutureSightPkmnIdx] = -1
-    @effects[PBEffects::LotusBloom]        = 0
-    @effects[PBEffects::LotusBloomMove]    = 0
-    @effects[PBEffects::LotusBloomUser]    = -1
-    @effects[PBEffects::LotusBloomPkmnIdx] = -1
     @effects[PBEffects::Forebode]          = [false,-1,-1] # Active, user idx, party idx
     @effects[PBEffects::HealingWish]       = false
     @effects[PBEffects::LunarDance]        = false
@@ -1000,6 +1028,10 @@ class PokeBattle_Battler
   end
 
   def pbInitEffects(batonpass,illusion=true,effectnegate=false,fakebattler=false)
+    if isFainted?
+      pbExpireCoconBerryShield
+      pbDiscardConsumableHeldItemDose
+    end
     if !batonpass
       # These effects are retained if Baton Pass is used
       @stages[PBStats::ATTACK]   = 0
@@ -1083,6 +1115,7 @@ class PokeBattle_Battler
     @faintingMove   = nil
     @lastHPLost     = 0
     @lastMoveUsed   = -1
+    @moveHistory    = []
     @lastRoundMoved = -1
     @itemUsed       = false
     @itemUsed2      = false
@@ -1115,14 +1148,15 @@ class PokeBattle_Battler
     @effects[PBEffects::Disguise]         = true if self.species==778 && self.form==0 # Mimikyu
     @effects[PBEffects::IceFace]          = true if self.species==875 && self.form==0 # Eiscue
     @effects[PBEffects::Endure]           = false
+    @effects[PBEffects::MiracleGuard]     = false
     @effects[PBEffects::FairyLockRate]    = false
     @effects[PBEffects::Fertilize]        = false
     @effects[PBEffects::FlashFire]        = false
-    @effects[PBEffects::FlameWreath]      = false
+    @effects[PBEffects::FlameWreath]      = 0
     @effects[PBEffects::Flinch]           = false
     @effects[PBEffects::FollowMe]         = false
     @effects[PBEffects::RagePowder]       = false
-    @effects[PBEffects::Rebuild]          = false
+    @effects[PBEffects::Rebuild]          = 0
     @effects[PBEffects::Foresight]        = false
     @effects[PBEffects::FuryCutter]       = 0
     @effects[PBEffects::Grudge]           = false
@@ -1135,6 +1169,9 @@ class PokeBattle_Battler
     @effects[PBEffects::Blinded]          = -1
     @effects[PBEffects::Confusion]        = 0
     @effects[PBEffects::Wounded]          = 0
+    @effects[PBEffects::AbsoluteZeroTurn] = -1
+    @effects[PBEffects::RiteOfSpring]     = nil
+    @effects[PBEffects::Inquisition]      = false
     if !effectnegate
       @battle.eachActiveBattlerIndex do |i|
         next if !@battle.battlers[i] || fakebattler
@@ -1192,7 +1229,8 @@ class PokeBattle_Battler
     @effects[PBEffects::SaltCure]         = false
     @effects[PBEffects::SyrupBombTurns]   = 0
     @effects[PBEffects::SyrupBombUser]    = -1
-    @effects[PBEffects::TalesEndBlades]   = 0
+    @effects[PBEffects::PsychicTypeLoss] = 0
+    @effects[PBEffects::WaterTypeLoss]   = 0
     @effects[PBEffects::CircadianRhythm]  = false
     @effects[PBEffects::Needles]          = 0
     @effects[PBEffects::MoltenStance]     = false
@@ -1290,6 +1328,9 @@ class PokeBattle_Battler
     @effects[PBEffects::AftershockUser]   = -1
     @effects[PBEffects::MudBath]          = 0
     @effects[PBEffects::NaturalOrder]     = 0
+    @effects[PBEffects::CarapaceShed]     = nil
+    @effects[PBEffects::CarapaceGift]     = nil
+    @effects[PBEffects::PierceTheVeil]    = false
     @effects[PBEffects::DamagingMoveThisTurn] = false
     @effects[PBEffects::UsedAttackThisTurn] = false
     @effects[PBEffects::KingsRockGuardUsed] = false
@@ -1341,6 +1382,10 @@ class PokeBattle_Battler
           aux = @pokemon.spdef
           @spdef = @pokemon.defense
           @defense = aux
+        end
+        if @effects[PBEffects::PierceTheVeil]
+          @attack,@defense=@defense,@attack
+          @spatk,@spdef=@spdef,@spatk
         end
         if fullchange
           @ability = PBAbilityData.canonical_id(@pokemon.ability)
@@ -1446,14 +1491,27 @@ class PokeBattle_Battler
   end
 
   def type1
-    return @type1 unless @type1==PBTypes::FIRE && pbBurnedOut?
-    return @type2 unless @type2==PBTypes::FIRE
-    return PBTypes::QMARKS
+    return pbCurrentTypes[0]
   end
 
   def type2
-    return @type2 unless @type2==PBTypes::FIRE && pbBurnedOut?
-    return type1
+    return pbCurrentTypes[1]
+  end
+
+  def pbCurrentTypes
+    gift=@effects[PBEffects::CarapaceGift]
+    shed=@effects[PBEffects::CarapaceShed]
+    burned_out=pbBurnedOut?
+    lost_psychic=@battle.turncount<@effects[PBEffects::PsychicTypeLoss].to_i
+    lost_water=@battle.turncount<@effects[PBEffects::WaterTypeLoss].to_i
+    return [@type1,@type2] if !gift && !shed && !burned_out && !lost_psychic && !lost_water
+    types=gift ? [gift[0]] : [@type1,@type2].uniq
+    types.delete(shed[0]) if shed
+    types.delete(PBTypes::FIRE) if burned_out
+    types.delete(PBTypes::PSYCHIC) if lost_psychic
+    types.delete(PBTypes::WATER) if lost_water
+    primary=types[0] || PBTypes::QMARKS
+    return [primary,types[1] || primary]
   end
 
   def hasType?(type) # for typemod non-battler ease
@@ -2252,8 +2310,22 @@ class PokeBattle_Battler
     return amt
   end
 
+  def pbRiteOfSpringSource
+    source,pokemon=@effects[PBEffects::RiteOfSpring]
+    return source if source && source.pokemon.equal?(pokemon) && !source.isFainted?
+    @effects[PBEffects::RiteOfSpring]=nil
+    return nil
+  end
+
+  def pbApplyGrievousWounds(turns)
+    return false if isFainted? || pbOwnSide.effects[PBEffects::EtherealCloak]>0
+    @effects[PBEffects::Wounded]=[turns,@effects[PBEffects::Wounded]].max
+    return true
+  end
+
   def pbRecoverHP(amt,anim=false)
     return 0 if amt.nil?
+    amt=amt*3/2 if pbOwnSide.effects[PBEffects::EtherealCloak]>0
     requested = amt
     # Wounds halve healing
     if @effects[PBEffects::Wounded]>0
@@ -2446,8 +2518,7 @@ class PokeBattle_Battler
          !@battle.pbIsUnlosableItem(self,self.item) && !@battle.pbIsUnlosableItem(i,self.item) &&
          (@battle.opponent || !@battle.pbIsOpposing?(i.index))
         stolenitem=self.item
-        self.item=0
-        i.item=stolenitem
+        pbSwapHeldItems(i)
          if @battle.pbIsWild? && i.pokemon.itemInitial==0 && self.pokemon.itemInitial==stolenitem
            i.pokemon.itemInitial=stolenitem
            self.pokemon.itemInitial=0
@@ -2479,6 +2550,7 @@ class PokeBattle_Battler
       end
     end
     @fainted=true
+    @battle.azureReleaseJetstream(self) if @azureJetstream
     # reset choice
     @battle.choices[@index]=[0,0,nil,-1]
     @battle.pbDisplay(_INTL("{1} fainted!",pbThis)) if showMessage
@@ -4487,8 +4559,7 @@ class PokeBattle_Battler
        target.item==0 && user.item>0 && !user.hasWorkingAbility(:STICKYHOLD,true) &&
        !@battle.pbIsUnlosableItem(user,user.item) && !@battle.pbIsUnlosableItem(target,user.item) &&
        (@battle.opponent || !@battle.pbIsOpposing?(target.index))
-      target.item=user.item
-      user.item=0
+      user.pbSwapHeldItems(target)
       user.effects[PBEffects::ChoiceBand]=-1
       if @battle.pbIsWild? && target.pokemon.itemInitial==0 &&
          user.pokemon.itemInitial==target.item
@@ -4505,8 +4576,7 @@ class PokeBattle_Battler
       !(user.hasWorkingItem(:PROTECTIVEPADS) || target.hasWorkingItem(:PROTECTIVEPADS))
       if !target.damagestate.substitute
         if target.hasWorkingItem(:STICKYBARB,true) && user.item==0 && !user.isFainted?
-          user.item=target.item
-          target.item=0
+          user.pbSwapHeldItems(target)
           if !@battle.opponent && !@battle.pbIsOpposing?(user.index)
             if user.pokemon.itemInitial==0 && target.pokemon.itemInitial==user.item
               user.pokemon.itemInitial=user.item
@@ -4858,8 +4928,7 @@ class PokeBattle_Battler
           elsif !@battle.pbIsUnlosableItem(target,target.item) &&
                 !@battle.pbIsUnlosableItem(user,target.item)
             itemname=PBItems.getName(target.item)
-            user.item=target.item
-            target.item=0
+            user.pbSwapHeldItems(target)
             target.effects[PBEffects::ChoiceBand]=-1
             if @battle.pbIsWild? && # In a wild battle
               user.pokemon.itemInitial==0 &&
@@ -4994,164 +5063,40 @@ class PokeBattle_Battler
           @battle.pbDisplay(_INTL("{1}'s accuracy fell!",user.pbThis))
         end
       end
-      if target.hasWorkingItem(:AIRBALLOON,true)
-        target.pokemon.itemRecycle=target.item
-        target.pokemon.itemInitial=0 if target.pokemon.itemInitial==target.item
-        target.item=0
+      if !target.damagestate.substitute && target.hasWorkingItem(:AIRBALLOON,true)
         @battle.pbDisplay(_INTL("{1}'s Air Balloon popped!",target.pbThis))
+        target.pbUseConsumableHeldItem
       end
-      if target.hasWorkingItem(:ABSORBBULB) && isConst?(movetype,PBTypes,:WATER)
-        if target.pbCanIncreaseStatStage?(PBStats::SPATK)
-          target.pbIncreaseStatBasic(PBStats::SPATK,1)
-          @battle.pbCommonAnimation("StatUp",target,nil)
-          @battle.pbDisplay(_INTL("{1}'s {2} raised its Special Attack!",
-              target.pbThis,PBItems.getName(target.item)))
-          target.pokemon.itemRecycle=target.item
-          target.pokemon.itemInitial=0 if target.pokemon.itemInitial==target.item
-          target.item=0
+      if !target.damagestate.substitute
+        [[:ABSORBBULB,PBTypes::WATER,PBStats::SPATK],
+         [:CELLBATTERY,PBTypes::ELECTRIC,PBStats::ATTACK],
+         [:SNOWBALL,PBTypes::ICE,PBStats::ATTACK],
+         [:LUMINOUSMOSS,PBTypes::WATER,PBStats::SPDEF]].each do |item,type,stat|
+          target.pbUseHitStatItem(item,[stat]) if movetype==type
+        end
+        if move.pbIsPhysical?(movetype)
+          target.pbUseHitStatItem(:KEEBERRY,[PBStats::DEFENSE])
+          target.pbUseHitDamageBerry(:JABOCABERRY,user)
+        elsif move.pbIsSpecial?(movetype)
+          target.pbUseHitStatItem(:MARANGABERRY,[PBStats::SPDEF])
+          target.pbUseHitDamageBerry(:ROWAPBERRY,user)
+        end
+        if target.damagestate.typemod>4
+          target.pbUseHitStatItem(:WEAKNESSPOLICY,[PBStats::ATTACK,PBStats::SPATK],2)
         end
       end
-      if target.hasWorkingItem(:CELLBATTERY) && isConst?(movetype,PBTypes,:ELECTRIC)
-        if target.pbCanIncreaseStatStage?(PBStats::ATTACK)
-          target.pbIncreaseStatBasic(PBStats::ATTACK,1)
-          @battle.pbCommonAnimation("StatUp",target,nil)
-          @battle.pbDisplay(_INTL("{1}'s {2} raised its Attack!",
-              target.pbThis,PBItems.getName(target.item)))
-          target.pokemon.itemRecycle=target.item
-          target.pokemon.itemInitial=0 if target.pokemon.itemInitial==target.item
-          target.item=0
-        end
-      end
-      if target.hasWorkingItem(:SNOWBALL) &&
-        isConst?(movetype,PBTypes,:ICE)
-        if target.pbCanIncreaseStatStage?(PBStats::ATTACK)
-          target.pbIncreaseStatBasic(PBStats::ATTACK,1)
-          @battle.pbCommonAnimation("StatUp",target,nil)
-          @battle.pbDisplay(_INTL("{1}'s {2} raised its Attack!",
-              target.pbThis,PBItems.getName(target.item)))
-          target.pokemon.itemRecycle=target.item
-          target.pokemon.itemInitial=0 if target.pokemon.itemInitial==target.item
-          target.item=0
-        end
-      end
-      if target.hasWorkingItem(:LUMINOUSMOSS) &&
-        isConst?(movetype,PBTypes,:WATER)
-        if target.pbCanIncreaseStatStage?(PBStats::SPDEF)
-          target.pbIncreaseStatBasic(PBStats::SPDEF,1)
-          @battle.pbCommonAnimation("StatUp",target,nil)
-          @battle.pbDisplay(_INTL("{1}'s {2} raised its Special Defense!",
-              target.pbThis,PBItems.getName(target.item)))
-          target.pokemon.itemRecycle=target.item
-          target.pokemon.itemInitial=0 if target.pokemon.itemInitial==target.item
-          target.item=0
-        end
-      end
-      #### JERICHO - 007 - START
-      if target.hasWorkingItem(:KEEBERRY) && move.pbIsPhysical?(movetype)
-        #### JERICHO - 007 - END
-        if target.pbCanIncreaseStatStage?(PBStats::DEFENSE)
-          target.pbIncreaseStatBasic(PBStats::DEFENSE,1)
-          @battle.pbCommonAnimation("StatUp",target,nil)
-          @battle.pbDisplay(_INTL("{1}'s {2} raised its Defense!",
-              target.pbThis,PBItems.getName(target.item)))
-          berryconsumed = true
-          $belch=true
-          target.pokemon.itemRecycle=target.item
-          target.pokemon.itemInitial=0 if target.pokemon.itemInitial==target.item
-          target.item=0
-        end
-      end
-      #### JERICHO - 007 - START
-      if target.hasWorkingItem(:MARANGABERRY) && move.pbIsSpecial?(movetype)
-        #### JERICHO - 007 - END
-        if target.pbCanIncreaseStatStage?(PBStats::SPDEF)
-          target.pbIncreaseStatBasic(PBStats::SPDEF,1)
-          @battle.pbCommonAnimation("StatUp",target,nil)
-          @battle.pbDisplay(_INTL("{1}'s {2} raised its Special Defense!",
-              target.pbThis,PBItems.getName(target.item)))
-          berryconsumed = true
-          $belch=true
-          target.pokemon.itemRecycle=target.item
-          target.pokemon.itemInitial=0 if target.pokemon.itemInitial==target.item
-          target.item=0
-        end
-      end
-      #### JERICHO - 012 - START
-      if target.hasWorkingItem(:JABOCABERRY,true) && !user.isFainted? && move.pbIsPhysical?(movetype) &&
-        @battle.scene.pbDamageAnimation(user,0)
-        if target.hasWorkingAbility(:RIPEN)
-          user.pbReduceHP((user.totalhp/4).floor)
-        else
-          user.pbReduceHP((user.totalhp/8).floor)
-        end
-        @battle.pbDisplay(_INTL("{1} was hurt by the {2}!",user.pbThis,
-            PBItems.getName(target.item)))
-        berryconsumed = true
-        $belch=true
-        target.pokemon.itemRecycle=target.item
-        target.pokemon.itemInitial=0 if target.pokemon.itemInitial==target.item
-        target.item=0
-      end
-      if target.hasWorkingItem(:ROWAPBERRY,true) && !user.isFainted? && move.pbIsSpecial?(movetype) &&
-        @battle.scene.pbDamageAnimation(user,0)
-        if target.hasWorkingAbility(:RIPEN)
-          user.pbReduceHP((user.totalhp/4).floor)
-        else
-          user.pbReduceHP((user.totalhp/8).floor)
-        end
-        @battle.pbDisplay(_INTL("{1} was hurt by the {2}!",user.pbThis,
-            PBItems.getName(target.item)))
-        berryconsumed = true
-        $belch=true
-        target.pokemon.itemRecycle=target.item
-        target.pokemon.itemInitial=0 if target.pokemon.itemInitial==target.item
-        target.item=0
-      end
-      #### JERICHO - 012 - END
-      if target.hasWorkingItem(:WEAKNESSPOLICY) && target.damagestate.typemod>4
-        if target.pbCanIncreaseStatStage?(PBStats::ATTACK)
-          target.pbIncreaseStatBasic(PBStats::ATTACK,2)
-          @battle.pbCommonAnimation("StatUp",target,nil)
-          @battle.pbDisplay(_INTL("{1}'s {2} sharply raised its Attack!",
-              target.pbThis,PBItems.getName(target.item)))
-          target.pokemon.itemRecycle=target.item
-          target.pokemon.itemInitial=0 if target.pokemon.itemInitial==target.item
-          target.item=0
-        end
-        if target.pbCanIncreaseStatStage?(PBStats::SPATK)
-          target.pbIncreaseStatBasic(PBStats::SPATK,2)
-          @battle.pbCommonAnimation("StatUp",target,nil)
-          @battle.pbDisplay(_INTL("{1}'s Weakness Policy sharply raised its Special Attack!",
-              target.pbThis,PBItems.getName(target.item)))
-          target.pokemon.itemRecycle=target.item
-          target.pokemon.itemInitial=0 if target.pokemon.itemInitial==target.item
-          target.item=0
-        end
-      end
-      if target.hasWorkingItem(:REDCARD) && !target.damagestate.substitute &&
+      if target.hasWorkingItem(:REDCARD) && !target.damagestate.substitute && !user.isFainted? &&
         !(@battle.pbIsWild? && (@battle.pbParty(user.index) == @battle.party2))
-        choices = []
         party=@battle.pbParty(user.index)
-        for i in 0...party.length
-          choices[choices.length]=i if @battle.pbCanSwitchLax?(user.index,i,false)
-        end
-        if choices.length!=0
+        if party.each_index.any? { |i| @battle.pbCanSwitchLax?(user.index,i,false) }
           @battle.pbDisplay(_INTL("#{target.pbThis}'s Red Card activates!"))
-          target.pokemon.itemRecycle=target.item
-          target.pokemon.itemInitial=0 if target.pokemon.itemInitial==target.item
-          target.item=0
+          target.pbUseConsumableHeldItem
           if user.hasWorkingAbility(:SUCTIONCUPS)
             @battle.pbDisplay(_INTL("{1} anchored itself with {2}!",user.pbThis,PBAbilities.getName(user.ability)))
           elsif user.effects[PBEffects::Ingrain]
             @battle.pbDisplay(_INTL("{1} anchored itself with its roots!",user.pbThis))
           else
             user.forcedSwitch = true
-            # newpoke=choices[@battle.pbRandom(choices.length)]
-            # user.pbResetForm
-            # @battle.pbReplace(user.index,newpoke,false)
-            # @battle.pbDisplay(_INTL("{1} was dragged out!",user.pbThis))
-            # @battle.pbOnActiveOne(user)
-            # user.pbAbilitiesOnSwitchIn(true)
           end
         end
       end
@@ -5159,23 +5104,11 @@ class PokeBattle_Battler
         if !target.isFainted? && @battle.pbCanChooseNonActive?(target.index) &&
           !@battle.pbAllFainted?(@battle.pbParty(target.index))
           @battle.pbDisplay(_INTL("#{target.pbThis}'s Eject Button activates!"))
-          target.pokemon.itemRecycle=target.item
-          target.pokemon.itemInitial=0 if target.pokemon.itemInitial==target.item
-          target.item=0
-          # @battle.pbDisplay(_INTL("{1} went back to {2}!",target.pbThis,@battle.pbGetOwner(target.index).name))
+          target.pbUseConsumableHeldItem
           @battle.pbClearChoices(target.index)
           target.userSwitch = true
-          # newpoke=0
-          # newpoke=@battle.pbSwitchInBetween(target.index,true,false)
-          # @battle.pbMessagesOnReplace(target.index,newpoke)
-          # @battle.pbRecallAndReplace(target.index,newpoke,true)
-          # target.pbResetForm
-          # @battle.pbOnActiveOne(target)
-          # target.pbAbilitiesOnSwitchIn(true)
         end
       end
-      # Record that Red Card/Eject Button triggered
-      # Knock Off's effect(?)
     end
     user.pbAbilityCureCheck
     target.pbAbilityCureCheck
@@ -5208,6 +5141,32 @@ class PokeBattle_Battler
             sbattler.pbThis,PBAbilities.getName(sbattler.ability),tbattler.pbThis(true)))
       end
     end
+  end
+
+  def pbUseHitStatItem(symbol,stats,stages=1)
+    return false if !hasWorkingItem(symbol)
+    raised=@battle.pbWithStatChangeSource([:item,item]) do
+      eligible=stats.select { |stat| pbCanIncreaseStatStage?(stat) }
+      eligible.each { |stat| pbIncreaseStatBasic(stat,stages*pbHeldItemDose) }
+      !eligible.empty?
+    end
+    return false unless raised
+    @battle.pbCommonAnimation("StatUp",self,nil)
+    @battle.pbDisplay(_INTL("{1}'s {2} raised its stats!",pbThis,PBItems.getName(item)))
+    $belch=true if pbIsBerry?(item)
+    return pbUseConsumableHeldItem
+  end
+
+  def pbUseHitDamageBerry(symbol,attacker)
+    return false if !hasWorkingItem(symbol,true) || attacker.isFainted?
+    return false if attacker.hasWorkingAbility(:MAGICGUARD) ||
+      (attacker.hasWorkingAbility(:WONDERGUARD) && $fefieldeffect==44)
+    fraction=hasWorkingAbility(:RIPEN,true) ? 4 : 8
+    @battle.scene.pbDamageAnimation(attacker,0)
+    attacker.pbReduceHP([attacker.totalhp*pbHeldItemDose/fraction,1].max)
+    @battle.pbDisplay(_INTL("{1} was hurt by the {2}!",attacker.pbThis,PBItems.getName(item)))
+    $belch=true
+    return pbUseConsumableHeldItem
   end
 
   def pbAbilityCureCheck
@@ -5246,13 +5205,77 @@ class PokeBattle_Battler
     @pokemon.harvestBerry=berry
   end
 
-  berryconsumed = false
+  def pbHeldItemDose
+    return pbOwnSide.effects[PBEffects::DoubleDose]>0 ? 2 : 1
+  end
+
+  def pbConsumableHeldItemRepeat?(symbol,ignorefainted=false)
+    return @effects[PBEffects::ConsumableItemDose]==item && pbHeldItemDose>1 &&
+           hasWorkingItem(symbol,ignorefainted)
+  end
+
+  def pbUseConsumableHeldItem(repeat: false)
+    used_item=item
+    return false if !@pokemon || !used_item || used_item<=0
+    if repeat && pbHeldItemDose>1 && @effects[PBEffects::ConsumableItemDose]!=used_item
+      @effects[PBEffects::ConsumableItemDose]=used_item
+    else
+      pbDiscardConsumableHeldItem
+      $belch=true if pbIsBerry?(used_item)
+    end
+    pbApplyDoubleDosePoison
+    return true
+  end
+
+  def pbDiscardConsumableHeldItemDose
+    return unless @effects && @item && @item>0 && @effects[PBEffects::ConsumableItemDose]==@item
+    pbDiscardConsumableHeldItem
+  end
+
+  def pbDiscardConsumableHeldItem
+    return unless @pokemon && @item && @item>0
+    pbRecordHarvestBerry(@item)
+    @pokemon.itemRecycle=@item
+    @pokemon.itemInitial=0 if @pokemon.itemInitial==@item
+    self.item=0
+  end
+
+  def pbFinishHeldBerryUse(became_consumed)
+    return unless became_consumed && item==0 && hasWorkingAbility(:CHEEKPOUCH) &&
+                  @effects[PBEffects::HealBlock]==0
+    pbRecoverHP(totalhp/3,true)
+    @battle.pbDisplay(_INTL("{1}'s {2} restored health!",pbThis,PBAbilities.getName(ability)))
+  end
+
+  def pbRestoreAllMovesPP(amount)
+    restored=0
+    @moves.each do |move|
+      next unless move && move.id>0 && move.pp>=0 && move.pp<move.totalpp
+      previous=move.pp
+      pbSetPP(move,[previous+amount,move.totalpp].min)
+      restored+=move.pp-previous
+    end
+    return restored
+  end
+
+  def pbApplyDoubleDosePoison
+    return if pbHeldItemDose==1
+    moldbroken_before=moldbroken
+    self.moldbroken=false
+    if pbCanPoison?(false,true)
+      pbPoison(self)
+      @battle.pbDisplay(_INTL("{1} was poisoned by the double dose!",pbThis))
+    end
+  ensure
+    self.moldbroken=moldbroken_before unless moldbroken_before.nil?
+  end
+
   def pbConfusionBerry(symbol,flavor,message1,message2)
-    if isConst?(self.item,PBItems,symbol) && ((self.hasWorkingAbility(:GLUTTONY) && self.hp<=(self.totalhp/2).floor) || self.hp<=(self.totalhp/4).floor)
+    if hasWorkingItem(symbol) && @effects[PBEffects::HealBlock]==0 && ((self.hasWorkingAbility(:GLUTTONY) && self.hp<=(self.totalhp/2).floor) || self.hp<=(self.totalhp/4).floor)
       if self.hasWorkingAbility(:RIPEN)
-        pbRecoverHP(((2*self.totalhp)/3).floor,true)
+        pbRecoverHP(2*self.totalhp*pbHeldItemDose/3,true)
       else
-        pbRecoverHP((self.totalhp/3).floor,true)
+        pbRecoverHP(self.totalhp*pbHeldItemDose/3,true)
       end
       @battle.pbDisplay(message1)
       if (self.nature%5) == flavor && (self.nature/5).floor != (self.nature%5)
@@ -5263,10 +5286,7 @@ class PokeBattle_Battler
           @battle.pbDisplay(_INTL("{1} became confused!",pbThis))
         end
       end
-      pbRecordHarvestBerry(self.item)
-      @pokemon.itemRecycle=self.item
-      @pokemon.itemInitial=0 if @pokemon.itemInitial==self.item
-      self.item=0
+      pbUseConsumableHeldItem
     end
   end
 
@@ -5276,166 +5296,103 @@ class PokeBattle_Battler
         self.hp<=(self.totalhp/4).floor
         raised=@battle.pbWithStatChangeSource([:item,item]) do
           next false if !pbCanIncreaseStatStage?(stat)
-          pbIncreaseStatBasic(stat,hasWorkingAbility(:RIPEN) ? 2 : 1)
+          pbIncreaseStatBasic(stat,(hasWorkingAbility(:RIPEN) ? 2 : 1)*pbHeldItemDose)
         end
         return if !raised
         @battle.pbCommonAnimation("StatUp",self,nil)
         @battle.pbDisplay(message)
-        pbRecordHarvestBerry(self.item)
-        @pokemon.itemRecycle=self.item
-        $belch=true
-        @pokemon.itemInitial=0 if @pokemon.itemInitial==self.item
-        self.item=0
+        pbUseConsumableHeldItem
       end
     end
   end
 
   def pbBerryCureCheck(hpcure=false)
     return if self.isFainted?
+    starting_berry=pbIsBerry?(item)
     unnerver=(opposingBattlers.any? { |battler| battler.hasWorkingAbility(:UNNERVE) } ||
       @effects[PBEffects::LeerBlock]>0)
     itemname=(self.item==0) ? "" : PBItems.getName(self.item)
     if self.hasWorkingItem(:BERRYJUICE) && self.hp<=(self.totalhp/2).floor &&
       @effects[PBEffects::HealBlock]==0
-      self.pbRecoverHP(20,true)
+      self.pbRecoverHP(20*pbHeldItemDose,true)
       @battle.pbDisplay(_INTL("{1}'s {2} restored health!",pbThis,itemname))
-      @pokemon.itemRecycle=self.item
-      $belch=true
-      @pokemon.itemInitial=0 if @pokemon.itemInitial==self.item
-      self.item=0
+      pbUseConsumableHeldItem
     end
     if !unnerver
+      if hasWorkingItem(:COCONBERRY) && pbApplyCoconBerryShield(pbHeldItemDose)
+        pbUseConsumableHeldItem
+      end
       if self.hasWorkingItem(:ORANBERRY) && self.hp<=(self.totalhp/2).floor &&
         @effects[PBEffects::HealBlock]==0
-        berryconsumed = true
+
         if self.hasWorkingAbility(:RIPEN)
-          self.pbRecoverHP(20,true)
+          self.pbRecoverHP(20*pbHeldItemDose,true)
         else
-          self.pbRecoverHP(10,true)
+          self.pbRecoverHP(10*pbHeldItemDose,true)
         end
         @battle.pbDisplay(_INTL("{1}'s {2} restored health!",pbThis,itemname))
-        pbRecordHarvestBerry(self.item)
-        @pokemon.itemRecycle=self.item
-        $belch=true
-        @pokemon.itemInitial=0 if @pokemon.itemInitial==self.item
-        self.item=0
+        pbUseConsumableHeldItem
       end
       if self.hasWorkingItem(:SITRUSBERRY) && self.hp<=(self.totalhp/2).floor &&
         @effects[PBEffects::HealBlock]==0
-        berryconsumed = true
+
         if self.hasWorkingAbility(:RIPEN)
-          self.pbRecoverHP((self.totalhp/2).floor,true)
+          self.pbRecoverHP(self.totalhp*pbHeldItemDose/2,true)
         else
-          self.pbRecoverHP((self.totalhp/4).floor,true)
+          self.pbRecoverHP(self.totalhp*pbHeldItemDose/4,true)
         end
         @battle.pbDisplay(_INTL("{1}'s {2} restored health!",pbThis,itemname))
-        pbRecordHarvestBerry(self.item)
-        @pokemon.itemRecycle=self.item
-        $belch=true
-        @pokemon.itemInitial=0 if @pokemon.itemInitial==self.item
-        self.item=0
+        pbUseConsumableHeldItem
       end
       #### JERICHO - 014 - START
       if self.hasWorkingItem(:ENIGMABERRY) && self.damagestate.typemod>4 &&
         @effects[PBEffects::HealBlock]==0
-        berryconsumed = true
+
         if self.hasWorkingAbility(:RIPEN)
-          self.pbRecoverHP((self.totalhp/2).floor,true)
+          self.pbRecoverHP(self.totalhp*pbHeldItemDose/2,true)
         else
-          self.pbRecoverHP((self.totalhp/4).floor,true)
+          self.pbRecoverHP(self.totalhp*pbHeldItemDose/4,true)
         end
         @battle.pbDisplay(_INTL("{1}'s {2} restored health!",pbThis,itemname))
-        pbRecordHarvestBerry(self.item)
-        @pokemon.itemRecycle=self.item
-        $belch=true
-        @pokemon.itemInitial=0 if @pokemon.itemInitial==self.item
-        self.item=0
+        pbUseConsumableHeldItem
       end
       #### JERICHO - 014 - END
-      if self.hasWorkingItem(:CHERIBERRY) && self.status==PBStatuses::PARALYSIS
-        berryconsumed = true
-        self.status=0
-        @battle.pbDisplay(_INTL("{1}'s {2} cured its paralysis problem!",pbThis,itemname))
-        pbRecordHarvestBerry(self.item)
-        @pokemon.itemRecycle=self.item
-        $belch=true
-        @pokemon.itemInitial=0 if @pokemon.itemInitial==self.item
-        self.item=0
-      end
-      if self.hasWorkingItem(:CHESTOBERRY) && self.status==PBStatuses::SLEEP
-        berryconsumed = true
-        self.status=0
-        @battle.pbDisplay(_INTL("{1}'s {2} cured its sleep problem!",pbThis,itemname))
-        pbRecordHarvestBerry(self.item)
-        @pokemon.itemRecycle=self.item
-        $belch=true
-        @pokemon.itemInitial=0 if @pokemon.itemInitial==self.item
-        self.item=0
-      end
-      if self.hasWorkingItem(:PECHABERRY) && self.status==PBStatuses::POISON
-        berryconsumed = true
-        self.status=0
-        @battle.pbDisplay(_INTL("{1}'s {2} cured its poison problem!",pbThis,itemname))
-        pbRecordHarvestBerry(self.item)
-        @pokemon.itemRecycle=self.item
-        $belch=true
-        @pokemon.itemInitial=0 if @pokemon.itemInitial==self.item
-        self.item=0
-      end
-      if self.hasWorkingItem(:RAWSTBERRY) && self.status==PBStatuses::BURN
-        berryconsumed = true
-        self.status=0
-        @battle.pbDisplay(_INTL("{1}'s {2} cured its burn problem!",pbThis,itemname))
-        pbRecordHarvestBerry(self.item)
-        @pokemon.itemRecycle=self.item
-        $belch=true
-        @pokemon.itemInitial=0 if @pokemon.itemInitial==self.item
-        self.item=0
-      end
-      if self.hasWorkingItem(:ASPEARBERRY) && self.status==PBStatuses::FROZEN
-        berryconsumed = true
-        self.status=0
-        @battle.pbDisplay(_INTL("{1}'s {2} cured its ice problem!",pbThis,itemname))
-        pbRecordHarvestBerry(self.item)
-        @pokemon.itemRecycle=self.item
-        $belch=true
-        @pokemon.itemInitial=0 if @pokemon.itemInitial==self.item
-        self.item=0
+      cures={ CHERIBERRY: PBStatuses::PARALYSIS, CHESTOBERRY: PBStatuses::SLEEP,
+              PECHABERRY: PBStatuses::POISON, RAWSTBERRY: PBStatuses::BURN,
+              ASPEARBERRY: PBStatuses::FROZEN, LEVIABERRY: PBStatuses::CRUSHED }
+      cures.each do |berry,status|
+        next unless hasWorkingItem(berry) && self.status==status &&
+                    @effects[PBEffects::Spritz]!=1
+        pbCureStatus(false)
+        @battle.pbDisplay(_INTL("{1}'s {2} cured its status condition!",pbThis,itemname))
+        pbUseConsumableHeldItem(repeat: true)
       end
       if self.hasWorkingItem(:LEPPABERRY)
-        berryconsumed = true
+
         for i in 0...@pokemon.moves.length
           pokemove=@pokemon.moves[i]
           battlermove=self.moves[i]
           if pokemove.pp==0 && pokemove.id!=0
             movename=PBMoves.getName(pokemove.id)
-            pokemove.pp=10
+            pokemove.pp=10*pbHeldItemDose
             pokemove.pp=pokemove.totalpp if pokemove.pp>pokemove.totalpp
             battlermove.pp=pokemove.pp
             @battle.pbDisplay(_INTL("{1}'s {2} restored {3}'s PP!",pbThis,itemname,movename))
-            pbRecordHarvestBerry(self.item)
-            @pokemon.itemRecycle=self.item
-            $belch=true
-            @pokemon.itemInitial=0 if @pokemon.itemInitial==self.item
-            self.item=0
+            pbUseConsumableHeldItem
             break
           end
         end
       end
       if self.hasWorkingItem(:PERSIMBERRY) && @effects[PBEffects::Confusion]>0
-        berryconsumed = true
+
         @effects[PBEffects::Confusion]=0
         @battle.pbDisplay(_INTL("{1}'s {2} cured its confusion problem!",pbThis,itemname))
-        pbRecordHarvestBerry(self.item)
-        @pokemon.itemRecycle=self.item
-        $belch=true
-        @pokemon.itemInitial=0 if @pokemon.itemInitial==self.item
-        self.item=0
+        pbUseConsumableHeldItem(repeat: true)
       end
-      if self.hasWorkingItem(:LUMBERRY) && (self.status>0 || @effects[PBEffects::Confusion]>0)
-        berryconsumed = true
+      if self.hasWorkingItem(:LUMBERRY) && ((self.status>0 && @effects[PBEffects::Spritz]!=1) || @effects[PBEffects::Confusion]>0)
+
         st=self.status; conf=@effects[PBEffects::Confusion]
-        self.status=0
+        pbCureStatus(false) if @effects[PBEffects::Spritz]!=1
         @effects[PBEffects::Confusion]=0
         if conf>0
           @battle.pbDisplay(_INTL("{1}'s {2} cured its confusion problem!",pbThis,itemname))
@@ -5453,11 +5410,7 @@ class PokeBattle_Battler
             @battle.pbDisplay(_INTL("{1}'s {2} cured its frozen problem!",pbThis,itemname))
           end
         end
-        pbRecordHarvestBerry(self.item)
-        @pokemon.itemRecycle=self.item
-        $belch=true
-        @pokemon.itemInitial=0 if @pokemon.itemInitial==self.item
-        self.item=0
+        pbUseConsumableHeldItem(repeat: true)
       end
       pbConfusionBerry(:FIGYBERRY,0,
         _INTL("{1}'s {2} restored health!",pbThis,itemname),
@@ -5485,50 +5438,18 @@ class PokeBattle_Battler
       pbStatIncreasingBerry(:APICOTBERRY,PBStats::SPDEF,
         _INTL("Using its {1}, the Special Defense of {2} rose!",itemname,pbThis(true)))
       if self.hasWorkingItem(:LANSATBERRY) && @effects[PBEffects::FocusEnergy]==0
-        berryconsumed = true
+
         if (self.hasWorkingAbility(:GLUTTONY) && self.hp<=(self.totalhp/2).floor) ||
           (self.hp<=(self.totalhp/4).floor)
           @battle.pbDisplay(_INTL("{1} used its {2} to get pumped!",pbThis,itemname))
-          @effects[PBEffects::FocusEnergy]=2
-          pbRecordHarvestBerry(self.item)
-          @pokemon.itemRecycle=self.item
-          $belch=true
-          @pokemon.itemInitial=0 if @pokemon.itemInitial==self.item
-          self.item=0
+          @effects[PBEffects::FocusEnergy]=2*pbHeldItemDose
+          pbUseConsumableHeldItem
         end
       end
-      if self.hasWorkingItem(:STARFBERRY)
-        berryconsumed = true
-        if (self.hasWorkingAbility(:GLUTTONY) &&
-            self.hp<=(self.totalhp/2).floor) || (self.hp<=(self.totalhp/4).floor)
-          stats=[]
-          messages=[]
-          messages[PBStats::ATTACK]=_INTL("Using {1}, the Attack of {2} rose sharply!",itemname,pbThis(true))
-          messages[PBStats::DEFENSE]=_INTL("Using {1}, the Defense of {2} rose sharply!",itemname,pbThis(true))
-          messages[PBStats::SPEED]=_INTL("Using {1}, the Speed of {2} rose sharply!",itemname,pbThis(true))
-          messages[PBStats::SPATK]=_INTL("Using {1}, the Special Attack of {2} rose sharply!",itemname,pbThis(true))
-          messages[PBStats::SPDEF]=_INTL("Using {1}, the Special Defense of {2} rose sharply!",itemname,pbThis(true))
-          for i in [PBStats::ATTACK,PBStats::DEFENSE,PBStats::SPEED,PBStats::SPATK,PBStats::SPDEF]
-            stats[stats.length]=i if !pbTooHigh?(i)
-          end
-          if stats.length>0
-            stat=stats[@battle.pbRandom(stats.length)]
-            pbIncreaseStatBasic(stat,2)
-            @battle.pbDisplay(messages[stat])
-            pbRecordHarvestBerry(self.item)
-            @pokemon.itemRecycle=self.item
-            $belch=true
-            @pokemon.itemInitial=0 if @pokemon.itemInitial==self.item
-            self.item=0
-          end
-        end
+      if hasWorkingItem(:STARFBERRY) && hp<=totalhp/(hasWorkingAbility(:GLUTTONY) ? 2 : 4)
+        pbUseConsumableHeldItem if pbApplyStarfBerry(pbHeldItemDose)
       end
-      if berryconsumed && self.hasWorkingAbility(:CHEEKPOUCH) &&
-        @effects[PBEffects::HealBlock]==0
-        self.pbRecoverHP((self.totalhp/3).floor,true)
-        @battle.pbDisplay(_INTL("{1}'s {2} restored health!",pbThis,PBAbilities.getName(self.ability)))
-        berryconsumed = false
-      end
+      pbFinishHeldBerryUse(starting_berry)
     end
     if self.hasWorkingItem(:WHITEHERB)
       reducedstats=false
@@ -5541,9 +5462,7 @@ class PokeBattle_Battler
       end
       if reducedstats
         @battle.pbDisplay(_INTL("{1}'s {2} restored its status!",pbThis,itemname))
-        @pokemon.itemRecycle=self.item
-        @pokemon.itemInitial=0 if @pokemon.itemInitial==self.item
-        self.item=0
+        pbUseConsumableHeldItem(repeat: true)
       end
     end
     if self.hasWorkingItem(:MENTALHERB) &&
@@ -5564,9 +5483,7 @@ class PokeBattle_Battler
       @effects[PBEffects::EncoreIndex]=0
       @effects[PBEffects::Torment]=false
       @effects[PBEffects::Disable]=0
-      @pokemon.itemRecycle=self.item
-      @pokemon.itemInitial=0 if @pokemon.itemInitial==self.item
-      self.item=0
+      pbUseConsumableHeldItem(repeat: true)
     end
     if hpcure && self.hp!=self.totalhp && @effects[PBEffects::HealBlock]==0
       # Check for Unnerve/LeerBlock blocking Leftovers
@@ -5602,148 +5519,98 @@ class PokeBattle_Battler
     end
   end
 
-  def pbSpecialBerryUse(berry)
-    berryconsumed=false
-    if berry == 398
-      berryconsumed=true
-      pbItemRestoreHP(self,self.totalhp/4)
-      @battle.pbDisplay(_INTL("{1} restored its HP!",pbThis))
-    elsif berry == 397 && self.status!=0
-      self.status=0
-      self.statusCount=0
-      @battle.pbDisplay(_INTL("{1} became healthy.",pbThis))
-    elsif berry == 389 && self.status!=PBStatuses::PARALYSIS
-      berryconsumed=true
-      self.status=0
-      self.statusCount=0
-      @battle.pbDisplay(_INTL("{1} was cured of paralysis.",pbThis))
-    elsif berry == 390 && self.status!=PBStatuses::SLEEP
-      berryconsumed=true
-      self.status=0
-      self.statusCount=0
-      @battle.pbDisplay(_INTL("{1} woke up.",pbThis))
-    elsif berry == 391 && self.status!=PBStatuses::POISON
-      berryconsumed=true
-      self.status=0
-      self.statusCount=0
-      @battle.pbDisplay(_INTL("{1} was cured of its poisoning.",pbThis))
-    elsif berry == 392 && self.status!=PBStatuses::BURN
-      berryconsumed=true
-      self.status=0
-      self.statusCount=0
-      @battle.pbDisplay(_INTL("{1}'s burn was healed.",pbThis))
-    elsif berry == 393 && self.status!=PBStatuses::FROZEN
-      berryconsumed=true
-      self.status=0
-      self.statusCount=0
-      @battle.pbDisplay(_INTL("{1} was thawed out.",pbThis))
-    elsif berry == 395
-      berryconsumed=true
-      pbItemRestoreHP(self,10)
-      @battle.pbDisplay(_INTL("{1} restored its HP!",pbThis))
-    elsif berry == 396 && self.effects[PBEffects::Confusion]>0
-      berryconsumed=true
-      self.effects[PBEffects::Confusion]=0
-      @battle.pbDisplay(_INTL("{1} snapped out of confusion.",pbThis))
-    elsif berry == 399
-      berryconsumed=true
-      pbConfusionBerry(:FIGYBERRY,0,
-        _INTL("{1} restored health!",pbThis),
-        _INTL("For {1}, the {2} was too spicy!",pbThis(true),PBItems.getName(berry)))
-    elsif berry == 400
-      berryconsumed=true
-      pbConfusionBerry(:WIKIBERRY,3,
-        _INTL("{1} restored health!",pbThis),
-        _INTL("For {1}, the {2} was too dry!",pbThis(true),PBItems.getName(berry)))
-    elsif berry == 401
-      berryconsumed=true
-      pbConfusionBerry(:MAGOBERRY,2,
-        _INTL("{1} restored health!",pbThis),
-        _INTL("For {1}, the {2} was too sweet!",pbThis(true),PBItems.getName(berry)))
-    elsif berry == 402
-      berryconsumed=true
-      pbConfusionBerry(:AGUAVBERRY,4,
-        _INTL("{1} restored health!",pbThis),
-        _INTL("For {1}, the {2} was too bitter!",pbThis(true),PBItems.getName(berry)))
-    elsif berry == 403
-      berryconsumed=true
-      pbConfusionBerry(:IAPAPABERRY,1,
-        _INTL("{1} restored health!",pbThis),
-        _INTL("For {1}, the {2} was too sour!",pbThis(true),PBItems.getName(berry)))
-    elsif berry == 441 && self.pbCanIncreaseStatStage?(PBStats::ATTACK)
-      berryconsumed=true
-      self.pbIncreaseStatBasic(PBStats::ATTACK,1)
-      @battle.pbCommonAnimation("StatUp",self,nil)
-      @battle.pbDisplay(_INTL("{1} raised its Attack!",pbThis))
-    elsif berry == 442 && self.pbCanIncreaseStatStage?(PBStats::DEFENSE)
-      berryconsumed=true
-      self.pbIncreaseStatBasic(PBStats::DEFENSE,1)
-      @battle.pbCommonAnimation("StatUp",self,nil)
-      @battle.pbDisplay(_INTL("{1} raised its Defense!",pbThis))
-    elsif berry == 443 && self.pbCanIncreaseStatStage?(PBStats::SPEED)
-      berryconsumed=true
-      self.pbIncreaseStatBasic(PBStats::SPEED,1)
-      @battle.pbCommonAnimation("StatUp",self,nil)
-      @battle.pbDisplay(_INTL("{1} raised its Speed!",pbThis))
-    elsif berry == 444 && self.pbCanIncreaseStatStage?(PBStats::SPATK)
-      berryconsumed=true
-      self.pbIncreaseStatBasic(PBStats::SPATK,1)
-      @battle.pbCommonAnimation("StatUp",self,nil)
-      @battle.pbDisplay(_INTL("{1} raised its Special Attack!",pbThis))
-    elsif berry == 445 && self.pbCanIncreaseStatStage?(PBStats::SPDEF)
-      berryconsumed=true
-      self.pbIncreaseStatBasic(PBStats::SPDEF,1)
-      @battle.pbCommonAnimation("StatUp",self,nil)
-      @battle.pbDisplay(_INTL("{1} raised its Special Defense!",pbThis))
-    elsif berry == 446 && @effects[PBEffects::FocusEnergy]==0
-      berryconsumed=true
-      @effects[PBEffects::FocusEnergy]=1
-      @battle.pbDisplay(_INTL("{1} is getting pumped!",pbThis))
-    elsif berry == 447
-      berryconsumed=true
-      stats=[]
-      messages=[]
-      messages[PBStats::ATTACK]=_INTL("{1}'s Attack rose sharply!",pbThis)
-      messages[PBStats::DEFENSE]=_INTL("{1}'s Defense rose sharply!",pbThis)
-      messages[PBStats::SPEED]=_INTL("{1}'s Speed rose sharply!",pbThis)
-      messages[PBStats::SPATK]=_INTL("{1}'s Special Attack rose sharply!",pbThis)
-      messages[PBStats::SPDEF]=_INTL("{1}'s Special Defense rose sharply!",pbThis)
-      for i in [PBStats::ATTACK,PBStats::DEFENSE,PBStats::SPEED,PBStats::SPATK,PBStats::SPDEF]
-        stats[stats.length]=i if !pbTooHigh?(i)
+  def pbEatHeldBerry
+    return false if !itemWorks? || !pbIsBerry?(item)
+    berry=item
+    @battle.pbDisplay(_INTL("{1} ate its {2}!",pbThis,PBItems.getName(berry)))
+    pbSpecialBerryUse(berry,pbHeldItemDose)
+    pbUseConsumableHeldItem
+    return true
+  end
+
+  def pbApplyStarfBerry(dose)
+    @battle.pbWithStatChangeSource([:item,PBItems::STARFBERRY]) do
+      stats=[PBStats::ATTACK,PBStats::DEFENSE,PBStats::SPEED,PBStats::SPATK,PBStats::SPDEF].select do |stat|
+        pbCanIncreaseStatStage?(stat)
       end
-      if stats.length>0
-        stat=stats[@battle.pbRandom(stats.length)]
-        pbIncreaseStatBasic(stat,2)
-        @battle.pbCommonAnimation("StatUp",self,nil)
-        @battle.pbDisplay(messages[stat])
-      end
+      next false if stats.empty?
+      pbIncreaseStat(stats[@battle.pbRandom(stats.length)],2*dose,true)
     end
-    pbRecordHarvestBerry(berry) if berryconsumed
-    if berryconsumed and self.hasWorkingAbility(:CHEEKPOUCH)
-      self.pbRecoverHP((self.totalhp/3).floor,true)
-      @battle.pbDisplay(_INTL("{1}'s {2} restored health!",pbThis,PBAbilities.getName(self.ability)))
-      berryconsumed = false
+  end
+
+  def pbSpecialBerryUse(berry,dose=1)
+    return if isFainted?
+    strength=dose*(hasWorkingAbility(:RIPEN) ? 2 : 1)
+    stat=nil
+    recovery=0
+    itemname=PBItems.getName(berry)
+    case berry
+    when PBItems::SITRUSBERRY,PBItems::ENIGMABERRY then recovery=totalhp*strength/4
+    when PBItems::ORANBERRY then recovery=10*strength
+    when PBItems::FIGYBERRY,PBItems::WIKIBERRY,PBItems::MAGOBERRY,PBItems::AGUAVBERRY,PBItems::IAPAPABERRY
+      recovery=totalhp*strength/3
+      flavor=[0,3,2,4,1][berry-PBItems::FIGYBERRY]
+      pbConfuseSelf if nature%5==flavor && nature/5!=flavor
+    when PBItems::CHERIBERRY then pbCureStatus if status==PBStatuses::PARALYSIS
+    when PBItems::CHESTOBERRY then pbCureStatus if status==PBStatuses::SLEEP
+    when PBItems::PECHABERRY then pbCureStatus if status==PBStatuses::POISON
+    when PBItems::RAWSTBERRY then pbCureStatus if status==PBStatuses::BURN
+    when PBItems::ASPEARBERRY then pbCureStatus if status==PBStatuses::FROZEN
+    when PBItems::LEVIABERRY then pbCureStatus if status==PBStatuses::CRUSHED
+    when PBItems::PERSIMBERRY
+      pbCureConfusion if @effects[PBEffects::Confusion]>0
+    when PBItems::LUMBERRY
+      pbCureStatus if status>0
+      pbCureConfusion if @effects[PBEffects::Confusion]>0
+    when PBItems::LEPPABERRY
+      known=moves.find { |attack| attack && attack.totalpp>0 && attack.pp<attack.totalpp }
+      pbSetPP(known,[known.pp+10*dose,known.totalpp].min) if known
+    when PBItems::HOPOBERRY then pbRestoreAllMovesPP(2*dose)
+    when PBItems::COCONBERRY then pbApplyCoconBerryShield(dose)
+    when PBItems::LIECHIBERRY then stat=PBStats::ATTACK
+    when PBItems::GANLONBERRY then stat=PBStats::DEFENSE
+    when PBItems::SALACBERRY then stat=PBStats::SPEED
+    when PBItems::PETAYABERRY then stat=PBStats::SPATK
+    when PBItems::APICOTBERRY then stat=PBStats::SPDEF
+    when PBItems::LANSATBERRY
+      if @effects[PBEffects::FocusEnergy]==0
+        @effects[PBEffects::FocusEnergy]=2*dose
+        @battle.pbDisplay(_INTL("{1} is getting pumped!",pbThis))
+      end
+    when PBItems::STARFBERRY
+      pbApplyStarfBerry(dose)
+    end
+    if recovery>0 && @effects[PBEffects::HealBlock]==0 && pbRecoverHP(recovery,true)>0
+      @battle.pbDisplay(_INTL("{1} restored its HP with the {2}!",pbThis,itemname))
+    end
+    if stat
+      @battle.pbWithStatChangeSource([:item,berry]) { pbIncreaseStat(stat,strength,true) }
+    end
+    pbRecordHarvestBerry(berry)
+    $belch=true
+    if hasWorkingAbility(:CHEEKPOUCH) && @effects[PBEffects::HealBlock]==0
+      pbRecoverHP(totalhp/3,true)
+      @battle.pbDisplay(_INTL("{1}'s {2} restored health!",pbThis,PBAbilities.getName(ability)))
     end
   end
 
   def pbCustapBerry
-    if self.hasWorkingItem(:CUSTAPBERRY)
-      if (self.hasWorkingAbility(:GLUTTONY) && self.hp<=(self.totalhp/2).floor) ||
-        (self.hp<=(self.totalhp/4).floor)
-        @custap = true
-        @battle.pbDisplay(_INTL("{1} ate its Custap berry to move first!",pbThis))
-        pbRecordHarvestBerry(self.item)
-        @pokemon.itemRecycle=self.item
-        $belch=true
-        @pokemon.itemInitial=0 if @pokemon.itemInitial==self.item
-        self.item=0
-        if self.hasWorkingAbility(:CHEEKPOUCH)
-          self.pbRecoverHP((self.totalhp/3).floor,true)
-          @battle.pbDisplay(_INTL("{1}'s {2} restored health!",pbThis,PBAbilities.getName(self.ability)))
-        end
-      end
-    else
-      @custap = false
+    @custap=false
+    return false unless hasWorkingItem(:CUSTAPBERRY)
+    return false if opposingAbilityHolder(:UNNERVE) || @effects[PBEffects::LeerBlock]>0
+    return false unless hp<=totalhp/(hasWorkingAbility(:GLUTTONY) ? 2 : 4)
+    return false if @battle.choices[index][0]!=1
+    @custap=true
+    @battle.pbDisplay(_INTL("{1} ate its Custap berry to move first!",pbThis))
+    pbUseConsumableHeldItem(repeat: true)
+    pbFinishHeldBerryUse(true)
+    return true
+  end
+
+  def pbUseBlunderPolicy
+    return unless missAcc && hasWorkingItem(:BLUNDERPOLICY)
+    @battle.pbWithStatChangeSource([:item,item]) do
+      pbUseConsumableHeldItem if pbIncreaseStat(PBStats::SPEED,2*pbHeldItemDose,true)
     end
   end
 
@@ -5764,6 +5631,18 @@ class PokeBattle_Battler
       end
     end
     user=self   # Normally, the user is self
+    if moveid==PBMoves::PYROCLASM
+      ring=@battle.activeBattlerIndices.sort_by do |index|
+        side=@battle.pbIsOpposing?(index) ? 1 : 0
+        lane=@battle.pbSidePosition(index)
+        [side,side==0 ? lane : -lane]
+      end
+      ring.rotate(ring.index(@index)+1).each do |index|
+        battler=@battle.battlers[index]
+        targets.push(battler) unless battler.isFainted?
+      end
+      return user
+    end
     if moveid==PBMoves::MINIMIZE
       selected=target>=0 ? @battle.battlers[target] : self
       if selected && (selected==self || pbIsOpposing?(selected.index))
@@ -5912,6 +5791,7 @@ class PokeBattle_Battler
     if move.respond_to?(:pixie_tribute_target)
       target=move.pixie_tribute_target(self)
     end
+    target=move.pbRefractingTarget(self) if move.id==PBMoves::REFRACTINGSTRIKE
     target=PBTargets::User if move.id==PBMoves::TOXIC && !pbHasType?(:POISON) &&
       (!move.respond_to?(:pixie_tribute_power) || move.pixie_tribute_power(self)<=0)
     if move.function==0x10D && pbHasType?(:GHOST) # Curse
@@ -6428,6 +6308,17 @@ class PokeBattle_Battler
         end
         return false
       end
+      if target.effects[PBEffects::Stormhold] && !target.effects[PBEffects::ProtectNegation] && thismove.canProtectAgainst?
+        @battle.pbDisplay(_INTL("{1} protected itself!",target.pbThis))
+        @battle.successStates[user.index].protected=true
+        user.pbTriggerSteadfastBoost if thismove.basedamage>0
+        if thismove.isContactMove? && !user.hasWorkingAbility(:LONGREACH) &&
+           !user.hasWorkingItem(:PROTECTIVEPADS) && user.pbCanParalyze?(false)
+          user.pbParalyze(target)
+          @battle.pbDisplay(_INTL("{1}'s Stormhold paralyzed {2}!",target.pbThis,user.pbThis(true)))
+        end
+        return false
+      end
       # Baneful Bunker
       if target.effects[PBEffects::BanefulBunker] &&
         ((thismove.basedamage > 0)) &&
@@ -6481,7 +6372,7 @@ class PokeBattle_Battler
         (invulmiss=true)                 unless thismove.function==0x76 || # Earthquake
         thismove.function==0x95 || # Magnitude
         (thismove.function==0x10D && !user.pbHasType?(:GHOST)) # Curse
-      when 0xCB # Dive
+      when 0xCB,0x23C # Dive, Swan Dive
         (invulmiss=true)                 unless thismove.function==0x75 || # Surf
         thismove.function==0xD0 || # Whirlpool
         (thismove.function==0x10D && !user.pbHasType?(:GHOST)) # Curse
@@ -6574,7 +6465,7 @@ class PokeBattle_Battler
         @battle.pbDisplay(_INTL("{1} avoided damage with Wonder Guard!",target.pbThis))
         return false
       end
-      if !headstrong && typemod==0 && thismove.function!=0x111 # Future Sight handled elsewhere
+      if !headstrong && typemod==0 && thismove.function!=0x111 && thismove.id!=PBMoves::OVERCHARGE
         @battle.pbDisplay(_INTL("It doesn't affect\r\n{1}...",target.pbThis(true)))
         return false
       end
@@ -6824,7 +6715,7 @@ class PokeBattle_Battler
       end
     end
     #### AME - 004 - END
-    if @effects[PBEffects::Confusion]>0 && !@simplemove
+    if @effects[PBEffects::Confusion]>0 && !@simplemove && thismove.id!=PBMoves::CALMINGWAKE
       @effects[PBEffects::Confusion]-=1
       if @effects[PBEffects::Confusion]<=0
         pbCureConfusion
@@ -6875,10 +6766,14 @@ class PokeBattle_Battler
     # Two-turn attacks, Magic Coat and Future Sight are handled
   end
 
+  def pbCanActivateFocusSash?
+    return hasWorkingItem(:FOCUSSASH) &&
+      (hp==totalhp || pbConsumableHeldItemRepeat?(:FOCUSSASH))
+  end
+
   def pbPrepareMoveDamageState
     damagestate.reset
     damagestate.focusband=hasWorkingItem(:FOCUSBAND) && @battle.pbRandom(10)==0
-    damagestate.focussash=hasWorkingItem(:FOCUSSASH)
     damagestate.rampcrest=isConst?(species,PBSpecies,:RAMPARDOS) && hasWorkingItem(:RAMPCREST) &&
       !effects[PBEffects::RampCrestUsage]
   end
@@ -6901,7 +6796,6 @@ class PokeBattle_Battler
       @battle.pbDisplay(_INTL("{1}'s {2} echoed back!",pbThis,move.name))
       turneffects=[]
       turneffects[PBEffects::TotalDamage]=0
-      echo_gem=nil
       targets.each_with_index do |target,index|
         break if isFainted? || @battle.decision!=0
         next if target.isFainted?
@@ -6919,17 +6813,14 @@ class PokeBattle_Battler
           @battle.lastMoveUsed=move_id
           @battle.lastMoveUser=@index
           target.pbPrepareMoveDamageState
-          $takegem=0
           pbProcessMoveAgainstTarget(move,self,target,1,turneffects,false,target_indices,index==0)
-          echo_gem=item if $takegem==1 && pbIsTypeGem?(item)
         ensure
           counters.zip(old_counters).each { |effect,value| @effects[effect]=value }
           @battle.lastMoveUsed=old_move
           @battle.lastMoveUser=old_user
-          $takegem=0
         end
       end
-      self.item=0 if echo_gem && item==echo_gem
+      move.pbConsumeUsedGem(self)
     end
   end
 
@@ -6981,7 +6872,8 @@ class PokeBattle_Battler
         !pbSuccessCheck(thismove,user,target,!thismove.reverbEcho && (i==0 || thismove.function==0xBF)) # Triple Kick
         if thismove.function==0xBF && realnumhits>0   # Triple Kick
           break   # Considered a success if Triple Kick hits at least once
-        elsif thismove.function==0x10B && (!thismove.pbCrashOnAccuracyMiss? || user.missAcc)
+        elsif (thismove.pbCrashOnAccuracyMiss? && user.missAcc) ||
+              (thismove.function==0x10B && !thismove.pbCrashOnAccuracyMiss?)
           #TODO: Not shown if message is "It doesn't affect XXX..."
           @battle.pbDisplay(_INTL("{1} kept going and crashed!",user.pbThis))
           damage=[1,(user.totalhp/2).floor].max
@@ -7022,16 +6914,7 @@ class PokeBattle_Battler
           end
           user.pbFaint if user.isFainted?
         end
-        if user.hasWorkingItem(:BLUNDERPOLICY) && user.missAcc
-          if user.pbCanIncreaseStatStage?(PBStats::SPEED)
-            user.pbIncreaseStatBasic(PBStats::SPEED,1)
-            @battle.pbCommonAnimation("StatUp",user,nil)
-            @battle.pbDisplay(_INTL("The Blunder Policy raised #{user.pbThis}'s Speed!"))
-            user.pokemon.itemRecycle=user.item
-            user.pokemon.itemInitial=0 if user.pokemon.itemInitial==user.item
-            user.item=0
-          end
-        end
+        user.pbUseBlunderPolicy
 
         user.effects[PBEffects::Tantrum]=true
         user.effects[PBEffects::Outrage]=0 if thismove.function==0xD2 # Outrage
@@ -7039,10 +6922,10 @@ class PokeBattle_Battler
         user.effects[PBEffects::FuryCutter]=0 if thismove.function==0x91 # Fury Cutter
         user.effects[PBEffects::EchoedVoice]+=1 if thismove.function==0x92 # Echoed Voice
         user.effects[PBEffects::EchoedVoice]=0 if thismove.function!=0x92 # Not Echoed Voice
-        user.effects[PBEffects::CellSplitter]=0 if thismove.function!=0x247 # Not Cell Splitter
         user.effects[PBEffects::Stockpile]=0 if thismove.function==0x113 # Spit Up
         return 0
       end
+      user.pbUseBlunderPolicy if user.grazed
       if thismove.function==0x91 # Fury Cutter
         #### JERICHO - 011 - START
         user.effects[PBEffects::FuryCutter]+=1 if user.effects[PBEffects::FuryCutter]<3
@@ -7057,8 +6940,6 @@ class PokeBattle_Battler
       end
       if thismove.function==0x247 # Cell Splitter
         user.effects[PBEffects::CellSplitter]+=2 if i==0 # Only increment once per turn, not per hit
-      else
-        user.effects[PBEffects::CellSplitter]=0
       end
       if $fefieldeffect == 5
         if thismove.function==0x171 || thismove.id==53 || thismove.id==268
@@ -7298,14 +7179,7 @@ class PokeBattle_Battler
       end
       # gen8 items
       if user.hasWorkingItem(:THROATSPRAY) && thismove.isSoundBased? && user.hp>0
-        if user.pbCanIncreaseStatStage?(PBStats::SPATK)
-          user.pbIncreaseStatBasic(PBStats::SPATK,1)
-          @battle.pbCommonAnimation("StatUp",user,nil)
-          @battle.pbDisplay(_INTL("The Throat Spray raised #{user.pbThis}'s Sp.Atk!"))
-          user.pokemon.itemRecycle=user.item
-          user.pokemon.itemInitial=0 if user.pokemon.itemInitial==user.item
-          user.item=0
-        end
+        user.pbUseHitStatItem(:THROATSPRAY,[PBStats::SPATK])
       end
       # Reverb - Sound moves strike again next turn at 0.25x power
       if !thismove.reverbEcho && user.hasWorkingAbility(:REVERB) &&
@@ -7319,9 +7193,7 @@ class PokeBattle_Battler
         if !target.isFainted? && @battle.pbCanChooseNonActive?(target.index) &&
           !@battle.pbAllFainted?(@battle.pbParty(target.index))
           @battle.pbDisplay(_INTL("#{target.pbThis}'s Eject Pack activates!"))
-          target.pokemon.itemRecycle=target.item
-          target.pokemon.itemInitial=0 if target.pokemon.itemInitial==target.item
-          target.item=0
+          target.pbUseConsumableHeldItem
           @battle.pbClearChoices(target.index)
           target.userSwitch = true
         end
@@ -7353,8 +7225,8 @@ class PokeBattle_Battler
           target.pbCureStatus
         end
         if user.hasWorkingAbility(:HYPERCUTTER) && target.hp>0 &&
-           target.effects[PBEffects::Wounded] == 0 && !target.damagestate.substitute
-          target.effects[PBEffects::Wounded]=3
+           target.effects[PBEffects::Wounded]==0 && !target.damagestate.substitute &&
+           target.pbApplyGrievousWounds(3)
           @battle.pbDisplay(_INTL("{1} was wounded!",target.pbThis))
         end
         # Fever Pitch
@@ -7375,7 +7247,7 @@ class PokeBattle_Battler
       target.pbUpdateTargetedMove(thismove,user)
       break if target.damagestate.calcdamage<=0
     end
-    recklessfunctions = [0xFA,0xFB,0xFC,0xFD,0xFE,0x10B,0x130,0xBB9,0xBBA]
+    recklessfunctions = [0xFA,0xFB,0xFC,0xFD,0xFE,0x10B,0x130,0x3CD,0xBB9,0xBBA]
     if user.grazed && recklessfunctions.include?(thismove.function)
       @battle.pbDisplay(_INTL("{1} kept going and crashed!",user.pbThis))
       damage=[1,(user.totalhp/2).floor].max
@@ -7434,8 +7306,8 @@ class PokeBattle_Battler
       end
     end
     # Berry check
-    for j in 0...4
-      @battle.battlers[j].pbBerryCureCheck
+    @battle.eachActiveBattlerIndex do |index|
+      @battle.battlers[index].pbBerryCureCheck
     end
     target.pbUpdateTargetedMove(thismove,user)
     if realnumhits != numhits && (thismove.name=="Thunder Raid")
@@ -7467,8 +7339,7 @@ class PokeBattle_Battler
     amount*=2 if [19,26,41].include?($fefieldeffect)
     pbReduceHP(amount,true)
     @battle.pbDisplay(_INTL("{1} sucked up the liquid ooze!",pbThis))
-    if !isFainted? && @effects[PBEffects::Wounded]==0
-      @effects[PBEffects::Wounded]=3
+    if @effects[PBEffects::Wounded]==0 && pbApplyGrievousWounds(3)
       @battle.pbDisplay(_INTL("{1} was wounded!",pbThis))
     end
   end
@@ -7740,7 +7611,8 @@ class PokeBattle_Battler
     @battle.successStates[user.index].typemod=4
     # Check whether Selfdestruct works
     selffaint=(thismove.function==0xE0) # Selfdestruct
-    if !thismove.pbOnStartUse(user) # Only Selfdestruct can return false here
+    thismove.azureInquisitionBoost=false
+    if !thismove.pbOnStartUse(user) # Some moves fail before targeting.
       user.lastMoveUsed=thismove.id
       if !turneffects[PBEffects::SpecialUsage]
         user.lastMoveUsedSketch=thismove.id if user.effects[PBEffects::TwoTurnAttack]==0
@@ -7753,7 +7625,33 @@ class PokeBattle_Battler
       # Might pbEndTurn need to be called here?
       return
     end
+    if !turneffects[PBEffects::SpecialUsage]
+      move_type=targets.empty? ? thismove.type : thismove.pbType(thismove.type,user,targets.first)
+      user.moveHistory.push([@battle.turncount,thismove.id,move_type])
+      user.moveHistory.shift if user.moveHistory.length>PBMoves.maxValue
+    end
+    thismove.natural_order_boost=false
+    thismove.fertilize_boost=false
+    if thismove.basedamage>0 && !targets.empty?
+      thismove.natural_order_boost=user.effects[PBEffects::NaturalOrder]>0
+      user.effects[PBEffects::NaturalOrder]=0
+      if user.effects[PBEffects::Fertilize] &&
+         targets.any? { |target| thismove.pbType(thismove.type,user,target)==PBTypes::GRASS }
+        thismove.fertilize_boost=true
+        user.effects[PBEffects::Fertilize]=false
+      end
+    end
+    thismove.gem_item_used=nil
     thismove.defense_curl_boost=false
+    thismove.battle_cry_boost=false
+    if thismove.basedamage>0 && user.effects[PBEffects::TwoTurnAttack]==0 &&
+       user.pbOwnSide.effects[PBEffects::BattleCry]>0
+      thismove.battle_cry_boost=true
+      user.pbOwnSide.effects[PBEffects::BattleCry]=0
+    end
+    if thismove.function!=0x247
+      user.effects[PBEffects::CellSplitter]=0
+    end
     thismove.lock_on_boost=user.effects[PBEffects::LockOnMove]
     user.effects[PBEffects::LockOnMove]=false
     if thismove.basedamage>0 && PBStuff::MOMENTUMMOVE.include?(thismove.id) && user.effects[PBEffects::DefenseCurl]
@@ -7774,6 +7672,10 @@ class PokeBattle_Battler
       $game_variables[530] += 1
     end
     user.lastMoveUsed=thismove.id
+    if thismove.basedamage>0 && thismove.isContactMove? && user.effects[PBEffects::Inquisition]
+      thismove.azureInquisitionBoost=true
+      user.effects[PBEffects::Inquisition]=false
+    end
     if !turneffects[PBEffects::SpecialUsage]
       user.lastMoveUsedSketch=thismove.id
       user.lastRegularMoveUsed=thismove.id
@@ -8031,7 +7933,17 @@ class PokeBattle_Battler
         target.pbPrepareMoveDamageState
 
         # Use move against the current target
-        hitcheck = pbProcessMoveAgainstTarget(thismove,user,target,numhits,turneffects,false,alltargets,showanimation)
+        if thismove.id==PBMoves::PYROCLASM
+          @battle.field.effects[PBEffects::PyroPreTarget]=i>0 ? targets[i-1].index : user.index
+          begin
+            thismove.pbDisplayUseMessage(user,target)
+            hitcheck=pbProcessMoveAgainstTarget(thismove,user,target,1,turneffects,!user.pbIsOpposing?(target.index),alltargets,true)
+          ensure
+            @battle.field.effects[PBEffects::PyroPreTarget]=-1
+          end
+        else
+          hitcheck = pbProcessMoveAgainstTarget(thismove,user,target,numhits,turneffects,false,alltargets,showanimation)
+        end
         break if user.isFainted? && !selffaint
         showanimation=false unless (hitcheck==0 && (thismove.pbIsSpecial?(thismove.type) || thismove.pbIsPhysical?(thismove.type)))
         if thismove.function==0x15E && hitcheck>0
@@ -9092,6 +9004,7 @@ class PokeBattle_Battler
         pbDancerMoveCheck(thismove.id) unless danced
       end
       thismove.pbApplyTributeAfterMove(user,targets,turneffects[PBEffects::TotalDamage],tribute_pre_stages) if thismove.respond_to?(:pbApplyTributeAfterMove)
+      thismove.pbConsumeUsedGem(user)
       # Switch moves
       for i in @battle.battlers
         if i.userSwitch == true
@@ -9163,6 +9076,9 @@ class PokeBattle_Battler
     end
     thismove.defense_curl_boost=false
     thismove.lock_on_boost=false
+    thismove.fertilize_boost=false
+    thismove.natural_order_boost=false
+    thismove.pbFinishRedSunZenith(user) if thismove.respond_to?(:pbFinishRedSunZenith)
     if PokeBattle_Move_093::MAXIMIZED_FUNCTIONS.include?(thismove.function)
       user.effects[PBEffects::FeverPitchBoost]=false
     end
@@ -9248,6 +9164,7 @@ class PokeBattle_Battler
   end
 
   def pbEndTurn(choice)
+    @battle.pbResolveMirrorHerbs
     @effects[PBEffects::LiminalAttackThisMove]=false
     if @liminal_status_this_move
       @effects[PBEffects::LiminalStatusPriority]=false
@@ -9273,19 +9190,6 @@ class PokeBattle_Battler
       battler.pbAbilitiesOnSwitchIn(false)
       battler.pbCheckForm
     end
-    #### JERICHO - 013 - START
-    if !self.missed && $takegem == 1 && (self.isConst?(item,PBItems,:NORMALGEM) || self.isConst?(item,PBItems,:FIGHTINGGEM) ||
-        self.isConst?(item,PBItems,:FLYINGGEM) || self.isConst?(item,PBItems,:POISONGEM) ||
-        self.isConst?(item,PBItems,:GROUNDGEM) || self.isConst?(item,PBItems,:ROCKGEM) ||
-        self.isConst?(item,PBItems,:BUGGEM) || self.isConst?(item,PBItems,:GHOSTGEM) ||
-        self.isConst?(item,PBItems,:STEELGEM) || self.isConst?(item,PBItems,:FIREGEM) ||
-        self.isConst?(item,PBItems,:WATERGEM) || self.isConst?(item,PBItems,:GRASSGEM) ||
-        self.isConst?(item,PBItems,:ELECTRICGEM) || self.isConst?(item,PBItems,:PSYCHICGEM) ||
-        self.isConst?(item,PBItems,:ICEGEM) || self.isConst?(item,PBItems,:DRAGONGEM) ||
-        self.isConst?(item,PBItems,:DARKGEM)) || self.isConst?(item,PBItems,:FAIRYGEM)
-      self.item=0
-    end
-    #### JERICHO - 013 - END
     @effects[PBEffects::ThunderRaidHit]=0
     @effects[PBEffects::ThunderRaidStat]=[0,0,0,0,0]
     self.missed = true

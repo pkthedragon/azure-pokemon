@@ -3,21 +3,21 @@
 ## Result
 
 The Phase 5 audit reviewed 59 warnings in six compatibility categories. The
-current audit retains those categories and accepts 56 warnings. The audit removes a
+current audit retains those categories and accepts 50 warnings. The audit removes a
 warning from the release-blocking set only when its message matches a known
 category, its symbol or ID is explicitly allowlisted, and every category has
 the expected count. A new symbol, changed alias, new warning type, missing
 accepted warning, or count drift produces an audit failure.
 
 `Audit-Azure.ps1 -WarningsAsErrors` therefore means "fail on every unaccepted
-warning." It passes only while all 56 accepted warnings continue to match the
+warning." It passes only while all 50 accepted warnings continue to match the
 reviewed policy and the unaccepted count remains zero.
 
 ## Accepted categories
 
-### Generated constant duplicates: 22
+### Generated constant duplicates: 19
 
-The generated Ruby constant modules contain ten move, one species, three item,
+The generated Ruby constant modules contain seven move, one species, three item,
 six ability, and two trainer-type duplicate assignments. Ruby's last
 assignment is Azure's established effective mapping. The compiler's
 `AZURE_LEGACY_DUPLICATE_SYMBOLS` contract independently rejects any new,
@@ -28,10 +28,10 @@ compatibility.
 Exit criterion: replace this acceptance only as part of an explicit ID
 migration that updates all persisted and event-script consumers.
 
-### PBS duplicate sections: 20
+### PBS duplicate sections: 17
 
 The source PBS files contain the source counterparts of the reviewed constant
-duplicates: ten moves, Iron Moth in both species and metrics, six abilities,
+duplicates: seven moves, Iron Moth in both species and metrics, six abilities,
 and two trainer types. The legacy compiler uses the later section for the
 effective symbolic mapping. Their symbol allowlist and total are fixed by the
 audit, while line numbers may move when unrelated source rows are edited.
@@ -86,6 +86,6 @@ fixture that confirms the intended effective species-to-move table.
 
 The standard audit summary reports only unaccepted warnings. A separate
 accepted-warning line reports the reviewed total and category count. Release
-validation requires zero failures, zero unaccepted warnings, exactly 56
+validation requires zero failures, zero unaccepted warnings, exactly 50
 accepted warnings across the six categories above, and a successful
 `-WarningsAsErrors` execution.

@@ -357,8 +357,8 @@ class PokeBattle_Battle
   attr_reader(:sides)             # Effects common to each side of a battle
   attr_reader(:field)             # Effects common to the whole of a battle
   attr_accessor(:environment)     # Battle surroundings
-  attr_accessor(:weather)         # Current weather, custom methods should use pbWeather instead
-  attr_accessor(:weatherduration) # Duration of current weather, or -1 if indefinite
+  attr_reader(:weather)         # Current weather, custom methods should use pbWeather instead
+  attr_reader(:weatherduration) # Duration of current weather, or -1 if indefinite
   attr_accessor(:weatherbackup)    # The original weather of the area, if it exists.  #### DemICE - persistentweather
   attr_accessor(:weatherbackupanim)# Easy loading for original weather's animation.  #### DemICE - persistentweather
   attr_reader(:switching)         # True if during the switching phase of the round
@@ -430,6 +430,31 @@ class PokeBattle_Battle
     yield
   ensure
     @statChangeSource=previous_source
+  end
+
+  def pbRecordMirrorHerbBoost(source,stat,amount)
+    return if amount<=0 || @statChangeSource==[:item,PBItems::MIRRORHERB]
+    source.opposingLivingBattlers.each do |holder|
+      next unless holder.hasWorkingItem(:MIRRORHERB)
+      @mirrorHerbBoosts||={}
+      boosts=@mirrorHerbBoosts[[holder,holder.pokemon]]||={}
+      boosts[stat]=boosts.fetch(stat,0)+amount
+    end
+  end
+
+  def pbResolveMirrorHerbs
+    return if !@mirrorHerbBoosts
+    pending=@mirrorHerbBoosts
+    @mirrorHerbBoosts=nil
+    pending.each do |(holder,pokemon),boosts|
+      next unless holder.pokemon==pokemon && holder.hasWorkingItem(:MIRRORHERB)
+      consumed=pbWithStatChangeSource([:item,PBItems::MIRRORHERB]) do
+        boosts.map do |stat,amount|
+          holder.pbIncreaseStat(stat,amount*holder.pbHeldItemDose,false)
+        end.any?
+      end
+      holder.pbUseConsumableHeldItem if consumed
+    end
   end
 
   def isOnline?
@@ -862,6 +887,16 @@ class PokeBattle_Battle
     return nil
   end
 
+  def weather=(weather)
+    azureInvalidateJetstreamWeather
+    @weather=weather
+  end
+
+  def weatherduration=(duration)
+    azureInvalidateJetstreamWeather
+    @weatherduration=duration
+  end
+
   def pbWeather
     for i in 0..maxBattlerIndex
       if @battlers[i].hasWorkingAbility(:CLOUDNINE) ||
@@ -873,14 +908,32 @@ class PokeBattle_Battle
     return @weather
   end
 
+  def pbCanChangeFieldSeedStat?(battler,stat,increase=true)
+    pbWithStatChangeSource([:item,battler.item]) do
+      increase ? !battler.pbTooHigh?(stat) : !battler.pbTooLow?(stat)
+    end
+  end
+
+  def pbChangeFieldSeedStat(battler,stat,increment)
+    dose=battler.pbHeldItemDose
+    pbWithStatChangeSource([:item,battler.item]) do
+      if increment>0
+        battler.pbIncreaseStatBasic(stat,increment*dose)
+      else
+        battler.pbReduceStatBasic(stat,-increment*dose)
+      end
+    end
+  end
+
   def seedCheck
     for battler in @battlers
-      next if battler.hp==0
+      next if !battler.itemWorks? || battler.item<=0
+      dose=battler.pbHeldItemDose
       if isConst?(battler.item, PBItems, :ELEMENTALSEED)
         case $fefieldeffect
         when 1 #Electric Terrain
-          if !battler.pbTooHigh?(PBStats::DEFENSE)
-            battler.pbIncreaseStatBasic(PBStats::DEFENSE,1)
+          if pbCanChangeFieldSeedStat?(battler,PBStats::DEFENSE)
+            pbChangeFieldSeedStat(battler,PBStats::DEFENSE,1)
             pbCommonAnimation("StatUp",battler,nil)
             pbDisplay(_INTL("{1}'s Elemental Seed boosted its Defense!",
               battler.pbThis))
@@ -888,12 +941,10 @@ class PokeBattle_Battle
           battler.effects[PBEffects::Charge]=true
           pbAnimation(81,battler,nil) # Charge Animation
           pbDisplay(_INTL("{1} began charging power!",battler.pbThis))
-          battler.pokemon.itemRecycle=battler.item
-          battler.pokemon.itemInitial=0 if battler.pokemon.itemInitial==battler.item
-          battler.item=0
+          battler.pbUseConsumableHeldItem
         when 2 #Grassy Terrain
-          if !battler.pbTooHigh?(PBStats::DEFENSE)
-            battler.pbIncreaseStatBasic(PBStats::DEFENSE,1)
+          if pbCanChangeFieldSeedStat?(battler,PBStats::DEFENSE)
+            pbChangeFieldSeedStat(battler,PBStats::DEFENSE,1)
             pbCommonAnimation("StatUp",battler,nil)
             pbDisplay(_INTL("{1}'s Elemental Seed boosted its Defense!",
               battler.pbThis))
@@ -901,12 +952,10 @@ class PokeBattle_Battle
           battler.effects[PBEffects::Ingrain]=true
           pbAnimation(216,battler,nil) # Ingrain Animation
           pbDisplay(_INTL("{1} planted its roots!",battler.pbThis))
-          battler.pokemon.itemRecycle=battler.item
-          battler.pokemon.itemInitial=0 if battler.pokemon.itemInitial==battler.item
-          battler.item=0
+          battler.pbUseConsumableHeldItem
         when 3 #Misty Terrain
-          if !battler.pbTooHigh?(PBStats::SPDEF)
-            battler.pbIncreaseStatBasic(PBStats::SPDEF,1)
+          if pbCanChangeFieldSeedStat?(battler,PBStats::SPDEF)
+            pbChangeFieldSeedStat(battler,PBStats::SPDEF,1)
             pbCommonAnimation("StatUp",battler,nil)
             pbDisplay(_INTL("{1}'s Elemental Seed boosted its Special Defense!",
               battler.pbThis))
@@ -915,23 +964,21 @@ class PokeBattle_Battle
           battler.status=0
           battler.statusCount=0
           pbDisplayPaused(_INTL("The healing wish came true for {1}!",battler.pbThis(true)))
-          battler.pokemon.itemRecycle=battler.item
-          battler.pokemon.itemInitial=0 if battler.pokemon.itemInitial==battler.item
-          battler.item=0
+          battler.pbUseConsumableHeldItem
         when 7 #Burning Field
           boost=false
-          if !battler.pbTooHigh?(PBStats::SPATK)
-            battler.pbIncreaseStatBasic(PBStats::SPATK,1)
+          if pbCanChangeFieldSeedStat?(battler,PBStats::SPATK)
+            pbChangeFieldSeedStat(battler,PBStats::SPATK,1)
             pbCommonAnimation("StatUp",battler,nil) if !boost
             boost=true
           end
-          if !battler.pbTooHigh?(PBStats::ATTACK)
-            battler.pbIncreaseStatBasic(PBStats::ATTACK,1)
+          if pbCanChangeFieldSeedStat?(battler,PBStats::ATTACK)
+            pbChangeFieldSeedStat(battler,PBStats::ATTACK,1)
             pbCommonAnimation("StatUp",battler,nil) if !boost
             boost=true
           end
-          if !battler.pbTooHigh?(PBStats::SPEED)
-            battler.pbIncreaseStatBasic(PBStats::SPEED,1)
+          if pbCanChangeFieldSeedStat?(battler,PBStats::SPEED)
+            pbChangeFieldSeedStat(battler,PBStats::SPEED,1)
             pbCommonAnimation("StatUp",battler,nil) if !boost
             boost=true
           end
@@ -939,23 +986,21 @@ class PokeBattle_Battle
             pbDisplay(_INTL("{1}'s Elemental Seed boosted its Special Attack, Attack, and Speed!",
               battler.pbThis))
           end
-          battler.effects[PBEffects::MultiTurn]=4
+          battler.effects[PBEffects::MultiTurn]=4*dose
           battler.effects[PBEffects::MultiTurnAttack]=147
           battler.effects[PBEffects::MultiTurnUser]=battler.index
           pbAnimation(147,battler,nil) # Fire Spin Animation
           pbDisplayPaused(_INTL("{1} was trapped in the vortex!",battler.pbThis(true)))
-          battler.pokemon.itemRecycle=battler.item
-          battler.pokemon.itemInitial=0 if battler.pokemon.itemInitial==battler.item
-          battler.item=0
+          battler.pbUseConsumableHeldItem
         when 11 #Corrosive Mist Field
           boost=false
-          if !battler.pbTooHigh?(PBStats::SPATK)
-            battler.pbIncreaseStatBasic(PBStats::SPATK,1)
+          if pbCanChangeFieldSeedStat?(battler,PBStats::SPATK)
+            pbChangeFieldSeedStat(battler,PBStats::SPATK,1)
             pbCommonAnimation("StatUp",battler,nil) if !boost
             boost=true
           end
-          if !battler.pbTooHigh?(PBStats::ATTACK)
-            battler.pbIncreaseStatBasic(PBStats::ATTACK,1)
+          if pbCanChangeFieldSeedStat?(battler,PBStats::ATTACK)
+            pbChangeFieldSeedStat(battler,PBStats::ATTACK,1)
             pbCommonAnimation("StatUp",battler,nil) if !boost
             boost=true
           end
@@ -967,22 +1012,18 @@ class PokeBattle_Battle
             battler.pbPoison(battler,true)
             pbDisplayPaused(_INTL("{1} was badly poisoned!",battler.pbThis(true)))
           end
-          battler.pokemon.itemRecycle=battler.item
-          battler.pokemon.itemInitial=0 if battler.pokemon.itemInitial==battler.item
-          battler.item=0
+          battler.pbUseConsumableHeldItem
         when 13 #Icy Field
-          if !battler.pbTooHigh?(PBStats::SPEED)
-            battler.pbIncreaseStatBasic(PBStats::SPEED,2)
+          if pbCanChangeFieldSeedStat?(battler,PBStats::SPEED)
+            pbChangeFieldSeedStat(battler,PBStats::SPEED,2)
             pbCommonAnimation("StatUp",battler,nil)
             pbDisplay(_INTL("{1}'s Elemental Seed sharply boosted its Speed!",
               battler.pbThis))
-            battler.pokemon.itemRecycle=battler.item
-            battler.pokemon.itemInitial=0 if battler.pokemon.itemInitial==battler.item
-            battler.item=0
+            battler.pbUseConsumableHeldItem
           end
         when 21 #Water Surface
-          if !battler.pbTooHigh?(PBStats::SPDEF)
-            battler.pbIncreaseStatBasic(PBStats::SPDEF,1)
+          if pbCanChangeFieldSeedStat?(battler,PBStats::SPDEF)
+            pbChangeFieldSeedStat(battler,PBStats::SPDEF,1)
             pbCommonAnimation("StatUp",battler,nil)
             pbDisplay(_INTL("{1}'s Elemental Seed boosted its Special Defense!",
               battler.pbThis))
@@ -990,12 +1031,10 @@ class PokeBattle_Battle
           battler.effects[PBEffects::AquaRing]=true
           pbAnimation(555,battler,nil) # Aqua Ring animation
           pbDisplay(_INTL("{1} surrounded itself with a veil of water!",battler.pbThis))
-          battler.pokemon.itemRecycle=battler.item
-          battler.pokemon.itemInitial=0 if battler.pokemon.itemInitial==battler.item
-          battler.item=0
+          battler.pbUseConsumableHeldItem
         when 22 #Underwater
-          if !battler.pbTooHigh?(PBStats::SPEED)
-            battler.pbIncreaseStatBasic(PBStats::SPEED,1)
+          if pbCanChangeFieldSeedStat?(battler,PBStats::SPEED)
+            pbChangeFieldSeedStat(battler,PBStats::SPEED,1)
             pbCommonAnimation("StatUp",battler,nil)
             pbDisplay(_INTL("{1}'s Elemental Seed boosted its Speed!",
               battler.pbThis))
@@ -1008,15 +1047,13 @@ class PokeBattle_Battle
             pbAnimation(557,battler,nil) # Soak animation
             pbDisplay(_INTL("{1} transformed into the {2} type!",battler.pbThis,typename))
           end
-          battler.pokemon.itemRecycle=battler.item
-          battler.pokemon.itemInitial=0 if battler.pokemon.itemInitial==battler.item
-          battler.item=0
+          battler.pbUseConsumableHeldItem
         when 26 #Murkwater Surface
           battler.effects[PBEffects::AquaRing]=true
           pbAnimation(555,battler,nil) # Aqua Ring animation
           pbDisplay(_INTL("{1} surrounded itself with a veil of water!",battler.pbThis))
-          if !battler.pbTooHigh?(PBStats::SPEED)
-            battler.pbIncreaseStatBasic(PBStats::SPEED,1)
+          if pbCanChangeFieldSeedStat?(battler,PBStats::SPEED)
+            pbChangeFieldSeedStat(battler,PBStats::SPEED,1)
             pbCommonAnimation("StatUp",battler,nil)
             pbDisplay(_INTL("{1}'s Elemental Seed boosted its Speed!",
               battler.pbThis))
@@ -1025,12 +1062,10 @@ class PokeBattle_Battle
             battler.pbPoison(battler,true)
             pbDisplayPaused(_INTL("{1} was badly poisoned!",battler.pbThis(true)))
           end
-          battler.pokemon.itemRecycle=battler.item
-          battler.pokemon.itemInitial=0 if battler.pokemon.itemInitial==battler.item
-          battler.item=0
+          battler.pbUseConsumableHeldItem
         when 32 #Dragon's Den
-          if !battler.pbTooHigh?(PBStats::SPATK)
-            battler.pbIncreaseStatBasic(PBStats::SPATK,1)
+          if pbCanChangeFieldSeedStat?(battler,PBStats::SPATK)
+            pbChangeFieldSeedStat(battler,PBStats::SPATK,1)
             pbCommonAnimation("StatUp",battler,nil)
             pbDisplay(_INTL("{1}'s Elemental Seed boosted its Special Attack!",
               battler.pbThis))
@@ -1038,12 +1073,10 @@ class PokeBattle_Battle
           battler.effects[PBEffects::FlashFire]=true
           #pbAnimation(555,battler,nil) # Aqua Ring animation
           pbDisplay(_INTL("{1} raised its Fire power!",battler.pbThis))
-          battler.pokemon.itemRecycle=battler.item
-          battler.pokemon.itemInitial=0 if battler.pokemon.itemInitial==battler.item
-          battler.item=0
+          battler.pbUseConsumableHeldItem
         when 39 #Frozen Dimensional Field
-          if !battler.pbTooHigh?(PBStats::SPEED)
-            battler.pbIncreaseStatBasic(PBStats::SPEED,2)
+          if pbCanChangeFieldSeedStat?(battler,PBStats::SPEED)
+            pbChangeFieldSeedStat(battler,PBStats::SPEED,2)
             pbCommonAnimation("StatUp",battler,nil)
             pbDisplay(_INTL("{1}'s Elemental Seed boosted its Speed!",
               battler.pbThis))
@@ -1053,18 +1086,16 @@ class PokeBattle_Battle
             pbDisplay(_INTL("{1} was subjected to torment!",
               battler.pbThis))
           end
-          battler.pokemon.itemRecycle=battler.item
-          battler.pokemon.itemInitial=0 if battler.pokemon.itemInitial==battler.item
-          battler.item=0
+          battler.pbUseConsumableHeldItem
         when 43 #Sky Field
           boost=false
-          if !battler.pbTooLow?(PBStats::SPDEF)
-            battler.pbReduceStatBasic(PBStats::SPDEF,1)
+          if pbCanChangeFieldSeedStat?(battler,PBStats::SPDEF,false)
+            pbChangeFieldSeedStat(battler,PBStats::SPDEF,-1)
             pbCommonAnimation("StatDown",battler,nil)
             boost=true
           end
-          if !battler.pbTooLow?(PBStats::DEFENSE)
-            battler.pbReduceStatBasic(PBStats::DEFENSE,1)
+          if pbCanChangeFieldSeedStat?(battler,PBStats::DEFENSE,false)
+            pbChangeFieldSeedStat(battler,PBStats::DEFENSE,-1)
             pbCommonAnimation("StatDown",battler,nil)
             boost=true
           end
@@ -1072,25 +1103,23 @@ class PokeBattle_Battle
             pbDisplay(_INTL("{1}'s Elemental Seed lowered its Defense and Special Defense!",
               battler.pbThis))
           end
-          battler.pbOwnSide.effects[PBEffects::Tailwind]=8
+          battler.pbOwnSide.effects[PBEffects::Tailwind]=8*dose
           pbAnimation(173,battler,nil) # Tailwind Animation
           pbDisplay(_INTL("The tailwind blew from behind {1}'s team!",battler.pbThis))
           # if @weather!=PBWeather::STRONGWINDS
           #   @weather=PBWeather::STRONGWINDS
           #   @weatherduration=-1
           # end
-          battler.pokemon.itemRecycle=battler.item
-          battler.pokemon.itemInitial=0 if battler.pokemon.itemInitial==battler.item
-          battler.item=0
+          battler.pbUseConsumableHeldItem
         when 45 #Infernal Field
           boost=false
-          if !battler.pbTooHigh?(PBStats::SPATK)
-            battler.pbIncreaseStatBasic(PBStats::SPATK,1)
+          if pbCanChangeFieldSeedStat?(battler,PBStats::SPATK)
+            pbChangeFieldSeedStat(battler,PBStats::SPATK,1)
             pbCommonAnimation("StatUp",battler,nil) if !boost
             boost=true
           end
-          if !battler.pbTooHigh?(PBStats::ATTACK)
-            battler.pbIncreaseStatBasic(PBStats::ATTACK,1)
+          if pbCanChangeFieldSeedStat?(battler,PBStats::ATTACK)
+            pbChangeFieldSeedStat(battler,PBStats::ATTACK,1)
             pbCommonAnimation("StatUp",battler,nil) if !boost
             boost=true
           end
@@ -1101,15 +1130,13 @@ class PokeBattle_Battle
           battler.effects[PBEffects::MeanLook]=battler.index
           pbAnimation(379,battler,nil) # Mean Look Animation
           pbDisplayPaused(_INTL("{1} was trapped in the field!",battler.pbThis(true)))
-          battler.pokemon.itemRecycle=battler.item
-          battler.pokemon.itemInitial=0 if battler.pokemon.itemInitial==battler.item
-          battler.item=0
+          battler.pbUseConsumableHeldItem
         end
       elsif isConst?(battler.item, PBItems, :MAGICALSEED)
         case $fefieldeffect
         when 4 #Dark Crystal Cavern
-          if !battler.pbTooHigh?(PBStats::SPDEF)
-            battler.pbIncreaseStatBasic(PBStats::SPDEF,1)
+          if pbCanChangeFieldSeedStat?(battler,PBStats::SPDEF)
+            pbChangeFieldSeedStat(battler,PBStats::SPDEF,1)
             pbCommonAnimation("StatUp",battler,nil)
             pbDisplay(_INTL("{1}'s Magical Seed boosted its Special Defense!",
               battler.pbThis))
@@ -1117,12 +1144,10 @@ class PokeBattle_Battle
           battler.effects[PBEffects::MagicCoat]=true
           pbAnimation(484,battler,nil) # Magic Coat Animation
           pbDisplay(_INTL("{1} shrouded itself with Magic Coat!",battler.pbThis))
-          battler.pokemon.itemRecycle=battler.item
-          battler.pokemon.itemInitial=0 if battler.pokemon.itemInitial==battler.item
-          battler.item=0
+          battler.pbUseConsumableHeldItem
         when 9 #Rainbow Field
-          if !battler.pbTooHigh?(PBStats::SPATK)
-            battler.pbIncreaseStatBasic(PBStats::SPATK,1)
+          if pbCanChangeFieldSeedStat?(battler,PBStats::SPATK)
+            pbChangeFieldSeedStat(battler,PBStats::SPATK,1)
             pbCommonAnimation("StatUp",battler,nil)
             pbDisplay(_INTL("{1}'s Magical Seed boosted its Special Attack!",
               battler.pbThis))
@@ -1131,12 +1156,10 @@ class PokeBattle_Battle
           battler.status=0
           battler.statusCount=0
           pbDisplayPaused(_INTL("The healing wish came true for {1}!",battler.pbThis(true)))
-          battler.pokemon.itemRecycle=battler.item
-          battler.pokemon.itemInitial=0 if battler.pokemon.itemInitial==battler.item
-          battler.item=0
+          battler.pbUseConsumableHeldItem
         when 25 #Crystal Cavern
-          if !battler.pbTooHigh?(PBStats::SPATK)
-            battler.pbIncreaseStatBasic(PBStats::SPATK,1)
+          if pbCanChangeFieldSeedStat?(battler,PBStats::SPATK)
+            pbChangeFieldSeedStat(battler,PBStats::SPATK,1)
             pbCommonAnimation("StatUp",battler,nil)
             pbDisplay(_INTL("{1}'s Magical Seed boosted its Special Attack!",
               battler.pbThis))
@@ -1144,12 +1167,10 @@ class PokeBattle_Battle
           battler.effects[PBEffects::MagicCoat]=true
           pbAnimation(484,battler,nil) # Magic Coat Animation
           pbDisplay(_INTL("{1} shrouded itself with Magic Coat!",battler.pbThis))
-          battler.pokemon.itemRecycle=battler.item
-          battler.pokemon.itemInitial=0 if battler.pokemon.itemInitial==battler.item
-          battler.item=0
+          battler.pbUseConsumableHeldItem
         when 29 #Holy Field
-          if !battler.pbTooHigh?(PBStats::SPATK)
-            battler.pbIncreaseStatBasic(PBStats::SPATK,1)
+          if pbCanChangeFieldSeedStat?(battler,PBStats::SPATK)
+            pbChangeFieldSeedStat(battler,PBStats::SPATK,1)
             pbCommonAnimation("StatUp",battler,nil)
             pbDisplay(_INTL("{1}'s Magical Seed boosted its Special Attack!",
               battler.pbThis))
@@ -1157,12 +1178,10 @@ class PokeBattle_Battle
           battler.effects[PBEffects::MagicCoat]=true
           pbAnimation(484,battler,nil) # Magic Coat Animation
           pbDisplay(_INTL("{1} shrouded itself with Magic Coat!",battler.pbThis))
-          battler.pokemon.itemRecycle=battler.item
-          battler.pokemon.itemInitial=0 if battler.pokemon.itemInitial==battler.item
-          battler.item=0
+          battler.pbUseConsumableHeldItem
         when 31 #Fairy Tale Field
-          if !battler.pbTooHigh?(PBStats::ATTACK)
-            battler.pbIncreaseStatBasic(PBStats::ATTACK,1)
+          if pbCanChangeFieldSeedStat?(battler,PBStats::ATTACK)
+            pbChangeFieldSeedStat(battler,PBStats::ATTACK,1)
             pbCommonAnimation("StatUp",battler,nil)
             pbDisplay(_INTL("{1}'s Magical Seed boosted its Attack!",
               battler.pbThis))
@@ -1170,13 +1189,11 @@ class PokeBattle_Battle
           battler.effects[PBEffects::KingsShield]=true
           pbAnimation(584,battler,nil) # King's Shield Animation
           pbDisplay(_INTL("{1} shielded itself against damage!",battler.pbThis))
-          battler.pokemon.itemRecycle=battler.item
-          battler.pokemon.itemInitial=0 if battler.pokemon.itemInitial==battler.item
-          battler.item=0
+          battler.pbUseConsumableHeldItem
         when 34 #Starlight Arena
           next if isConst?(battler.ability,PBAbilities,:WORLDOFNIGHTMARES)
-          if !battler.pbTooHigh?(PBStats::SPATK)
-            battler.pbIncreaseStatBasic(PBStats::SPATK,1)
+          if pbCanChangeFieldSeedStat?(battler,PBStats::SPATK)
+            pbChangeFieldSeedStat(battler,PBStats::SPATK,1)
             pbCommonAnimation("StatUp",battler,nil)
             pbDisplay(_INTL("{1}'s Magical Seed boosted its Special Attack!",
               battler.pbThis))
@@ -1185,33 +1202,31 @@ class PokeBattle_Battle
           battler.status=0
           battler.statusCount=0
           pbDisplayPaused(_INTL("{1} became cloaked in mystical moonlight!!",battler.pbThis(true)))
-          battler.pokemon.itemRecycle=battler.item
-          battler.pokemon.itemInitial=0 if battler.pokemon.itemInitial==battler.item
-          battler.item=0
+          battler.pbUseConsumableHeldItem
         when 35 #New World
           boost=false
-          if !battler.pbTooHigh?(PBStats::SPDEF)
-            battler.pbIncreaseStatBasic(PBStats::SPDEF,1)
+          if pbCanChangeFieldSeedStat?(battler,PBStats::SPDEF)
+            pbChangeFieldSeedStat(battler,PBStats::SPDEF,1)
             pbCommonAnimation("StatUp",battler,nil) if !boost
             boost=true
           end
-          if !battler.pbTooHigh?(PBStats::DEFENSE)
-            battler.pbIncreaseStatBasic(PBStats::DEFENSE,1)
+          if pbCanChangeFieldSeedStat?(battler,PBStats::DEFENSE)
+            pbChangeFieldSeedStat(battler,PBStats::DEFENSE,1)
             pbCommonAnimation("StatUp",battler,nil) if !boost
             boost=true
           end
-          if !battler.pbTooHigh?(PBStats::SPEED)
-            battler.pbIncreaseStatBasic(PBStats::SPEED,1)
+          if pbCanChangeFieldSeedStat?(battler,PBStats::SPEED)
+            pbChangeFieldSeedStat(battler,PBStats::SPEED,1)
             pbCommonAnimation("StatUp",battler,nil) if !boost
             boost=true
           end
-          if !battler.pbTooHigh?(PBStats::ATTACK)
-            battler.pbIncreaseStatBasic(PBStats::ATTACK,1)
+          if pbCanChangeFieldSeedStat?(battler,PBStats::ATTACK)
+            pbChangeFieldSeedStat(battler,PBStats::ATTACK,1)
             pbCommonAnimation("StatUp",battler,nil) if !boost
             boost=true
           end
-          if !battler.pbTooHigh?(PBStats::SPATK)
-            battler.pbIncreaseStatBasic(PBStats::SPATK,1)
+          if pbCanChangeFieldSeedStat?(battler,PBStats::SPATK)
+            pbChangeFieldSeedStat(battler,PBStats::SPATK,1)
             pbCommonAnimation("StatUp",battler,nil) if !boost
             boost=true
           end
@@ -1219,11 +1234,9 @@ class PokeBattle_Battle
             pbDisplay(_INTL("{1}'s Magical Seed boosted all of its stats!",
               battler.pbThis))
           end
-          battler.effects[PBEffects::HyperBeam]=1
+          battler.effects[PBEffects::HyperBeam]=1*dose
           pbDisplay(_INTL("{1} must recharge!",battler.pbThis))
-          battler.pokemon.itemRecycle=battler.item
-          battler.pokemon.itemInitial=0 if battler.pokemon.itemInitial==battler.item
-          battler.item=0
+          battler.pbUseConsumableHeldItem
         when 36 #Inverse Field
           if !battler.pbHasType?(:NORMAL)
             newtype=getConst(PBTypes,:NORMAL) || 0
@@ -1238,18 +1251,16 @@ class PokeBattle_Battle
             pbDisplay(_INTL("{1}'s Magical Seed Normalized it!",
               battler.pbThis))
           end
-          battler.pokemon.itemRecycle=battler.item
-          battler.pokemon.itemInitial=0 if battler.pokemon.itemInitial==battler.item
-          battler.item=0
+          battler.pbUseConsumableHeldItem
         when 37 #Psychic Terrain
           boost=false
-          if !battler.pbTooHigh?(PBStats::SPDEF)
-            battler.pbIncreaseStatBasic(PBStats::SPDEF,1)
+          if pbCanChangeFieldSeedStat?(battler,PBStats::SPDEF)
+            pbChangeFieldSeedStat(battler,PBStats::SPDEF,1)
             pbCommonAnimation("StatUp",battler,nil) if !boost
             boost=true
           end
-          if !battler.pbTooHigh?(PBStats::SPATK)
-            battler.pbIncreaseStatBasic(PBStats::SPATK,1)
+          if pbCanChangeFieldSeedStat?(battler,PBStats::SPATK)
+            pbChangeFieldSeedStat(battler,PBStats::SPATK,1)
             pbCommonAnimation("StatUp",battler,nil) if !boost
             boost=true
           end
@@ -1258,22 +1269,20 @@ class PokeBattle_Battle
               battler.pbThis))
           end
           if battler.pbCanConfuse?(false)
-            battler.effects[PBEffects::Confusion]=3
+            battler.effects[PBEffects::Confusion]=3*dose
             pbCommonAnimation("Confusion",battler,nil)
             pbDisplay(_INTL("{1} became confused!",battler.pbThis))
           end
-          battler.pokemon.itemRecycle=battler.item
-          battler.pokemon.itemInitial=0 if battler.pokemon.itemInitial==battler.item
-          battler.item=0
+          battler.pbUseConsumableHeldItem
         when 38 #Dimensional Field
-          if !battler.pbTooHigh?(PBStats::DEFENSE)
-            battler.pbIncreaseStatBasic(PBStats::DEFENSE,1)
+          if pbCanChangeFieldSeedStat?(battler,PBStats::DEFENSE)
+            pbChangeFieldSeedStat(battler,PBStats::DEFENSE,1)
             pbCommonAnimation("StatUp",battler,nil)
             pbDisplay(_INTL("{1}'s Magical Seed boosted its Defense!",
               battler.pbThis))
           end
           if @trickroom == 0
-            @trickroom=5
+            @trickroom=5*dose
             pbAnimation(499,battler,nil) # Trick Room Animation
             pbDisplay(_INTL("{1} twisted the dimensions!",battler.pbThis))
           else
@@ -1281,18 +1290,16 @@ class PokeBattle_Battle
             pbAnimation(499,battler,nil) # Trick Room Animation
             pbDisplay(_INTL("The twisted dimensions returned to normal!",battler.pbThis))
           end
-          battler.pokemon.itemRecycle=battler.item
-          battler.pokemon.itemInitial=0 if battler.pokemon.itemInitial==battler.item
-          battler.item=0
+          battler.pbUseConsumableHeldItem
         when 40 #Haunted Field
           boost=false
-          if !battler.pbTooHigh?(PBStats::SPDEF)
-            battler.pbIncreaseStatBasic(PBStats::SPDEF,1)
+          if pbCanChangeFieldSeedStat?(battler,PBStats::SPDEF)
+            pbChangeFieldSeedStat(battler,PBStats::SPDEF,1)
             pbCommonAnimation("StatUp",battler,nil) if !boost
             boost=true
           end
-          if !battler.pbTooHigh?(PBStats::DEFENSE)
-            battler.pbIncreaseStatBasic(PBStats::DEFENSE,1)
+          if pbCanChangeFieldSeedStat?(battler,PBStats::DEFENSE)
+            pbChangeFieldSeedStat(battler,PBStats::DEFENSE,1)
             pbCommonAnimation("StatUp",battler,nil) if !boost
             boost=true
           end
@@ -1304,12 +1311,10 @@ class PokeBattle_Battle
             battler.pbBurn(battler)
             pbDisplayPaused(_INTL("{1} was burned!",battler.pbThis(true)))
           end
-          battler.pokemon.itemRecycle=battler.item
-          battler.pokemon.itemInitial=0 if battler.pokemon.itemInitial==battler.item
-          battler.item=0
+          battler.pbUseConsumableHeldItem
         when 42 #Bewitched Woods
-          if !battler.pbTooHigh?(PBStats::SPDEF)
-            battler.pbIncreaseStatBasic(PBStats::SPDEF,1)
+          if pbCanChangeFieldSeedStat?(battler,PBStats::SPDEF)
+            pbChangeFieldSeedStat(battler,PBStats::SPDEF,1)
             pbCommonAnimation("StatUp",battler,nil)
             pbDisplay(_INTL("{1}'s Magical Seed boosted its Special Defense!",
               battler.pbThis))
@@ -1317,15 +1322,13 @@ class PokeBattle_Battle
           battler.effects[PBEffects::Ingrain]=true
           pbAnimation(216,battler,nil) # Ingrain Animation
           pbDisplay(_INTL("{1} planted its roots!",battler.pbThis))
-          battler.pokemon.itemRecycle=battler.item
-          battler.pokemon.itemInitial=0 if battler.pokemon.itemInitial==battler.item
-          battler.item=0
+          battler.pbUseConsumableHeldItem
         end
       elsif isConst?(battler.item, PBItems, :SYNTHETICSEED)
         case $fefieldeffect
         when 5 #Chess Board
-          if !battler.pbTooHigh?(PBStats::SPATK)
-            battler.pbIncreaseStatBasic(PBStats::SPATK,1)
+          if pbCanChangeFieldSeedStat?(battler,PBStats::SPATK)
+            pbChangeFieldSeedStat(battler,PBStats::SPATK,1)
             pbCommonAnimation("StatUp",battler,nil)
             pbDisplay(_INTL("{1}'s Synthetic Seed boosted its Special Attack!",
               battler.pbThis))
@@ -1333,12 +1336,10 @@ class PokeBattle_Battle
           battler.effects[PBEffects::MagicCoat]=true
           pbAnimation(484,battler,nil) # Magic Coat Animation
           pbDisplay(_INTL("{1} shrouded itself with Magic Coat!",battler.pbThis))
-          battler.pokemon.itemRecycle=battler.item
-          battler.pokemon.itemInitial=0 if battler.pokemon.itemInitial==battler.item
-          battler.item=0
+          battler.pbUseConsumableHeldItem
         when 6 #Big Top
-          if !battler.pbTooHigh?(PBStats::ATTACK)
-            battler.pbIncreaseStatBasic(PBStats::ATTACK,1)
+          if pbCanChangeFieldSeedStat?(battler,PBStats::ATTACK)
+            pbChangeFieldSeedStat(battler,PBStats::ATTACK,1)
             pbCommonAnimation("StatUp",battler,nil)
             pbDisplay(_INTL("{1}'s Synthetic Seed boosted its Attack!",
               battler.pbThis))
@@ -1346,44 +1347,38 @@ class PokeBattle_Battle
           battler.effects[PBEffects::HelpingHand]=true
           # pbAnimation(372,battler,nil) # Helping Hand Animation
           pbDisplay(_INTL("{1} accepts the crowd's help!",battler.pbThis))
-          battler.pokemon.itemRecycle=battler.item
-          battler.pokemon.itemInitial=0 if battler.pokemon.itemInitial==battler.item
-          battler.item=0
+          battler.pbUseConsumableHeldItem
         when 17 #Factory
-          if !battler.pbTooHigh?(PBStats::SPATK)
-            battler.pbIncreaseStatBasic(PBStats::SPATK,1)
+          if pbCanChangeFieldSeedStat?(battler,PBStats::SPATK)
+            pbChangeFieldSeedStat(battler,PBStats::SPATK,1)
             pbCommonAnimation("StatUp",battler,nil)
             pbDisplay(_INTL("{1}'s Synthetic Seed boosted its Special Attack!",
               battler.pbThis))
           end
-          battler.effects[PBEffects::LaserFocus]=2
+          battler.effects[PBEffects::LaserFocus]=2*dose
           pbAnimation(658,battler,nil) # Laser Focus Animation
           pbDisplay(_INTL("{1} is focused!",battler.pbThis))
-          battler.pokemon.itemRecycle=battler.item
-          battler.pokemon.itemInitial=0 if battler.pokemon.itemInitial==battler.item
-          battler.item=0
+          battler.pbUseConsumableHeldItem
         when 18 #Short-Circuit
-          if !battler.pbTooHigh?(PBStats::SPDEF)
-            battler.pbIncreaseStatBasic(PBStats::SPDEF,1)
+          if pbCanChangeFieldSeedStat?(battler,PBStats::SPDEF)
+            pbChangeFieldSeedStat(battler,PBStats::SPDEF,1)
             pbCommonAnimation("StatUp",battler,nil)
             pbDisplay(_INTL("{1}'s Synthetic Seed boosted its Special Defense!",
               battler.pbThis))
           end
-          battler.effects[PBEffects::MagnetRise]=8
+          battler.effects[PBEffects::MagnetRise]=8*dose
           pbAnimation(82,battler,nil) # Magnet Rise Animation
           pbDisplay(_INTL("{1} levitated with electromagnetism!",battler.pbThis))
-          battler.pokemon.itemRecycle=battler.item
-          battler.pokemon.itemInitial=0 if battler.pokemon.itemInitial==battler.item
-          battler.item=0
+          battler.pbUseConsumableHeldItem
         when 24 #Glitch
           boost=false
-          if !battler.pbTooHigh?(PBStats::DEFENSE)
-            battler.pbIncreaseStatBasic(PBStats::DEFENSE,1)
+          if pbCanChangeFieldSeedStat?(battler,PBStats::DEFENSE)
+            pbChangeFieldSeedStat(battler,PBStats::DEFENSE,1)
             pbCommonAnimation("StatUp",battler,nil) if !boost
             boost=true
           end
-          if !battler.pbTooHigh?(PBStats::SPDEF)
-            battler.pbIncreaseStatBasic(PBStats::SPDEF,1)
+          if pbCanChangeFieldSeedStat?(battler,PBStats::SPDEF)
+            pbChangeFieldSeedStat(battler,PBStats::SPDEF,1)
             pbCommonAnimation("StatUp",battler,nil) if !boost
             boost=true
           end
@@ -1399,22 +1394,18 @@ class PokeBattle_Battle
            #No anim? pbAnimation(557,battler,nil) # Soak animation
             pbDisplay(_INTL("{1}.TYPE = GETCONST(PBTYPES,:QMARKS)",battler.pbThis.upcase,typename))
           end
-          battler.pokemon.itemRecycle=battler.item
-          battler.pokemon.itemInitial=0 if battler.pokemon.itemInitial==battler.item
-          battler.item=0
+          battler.pbUseConsumableHeldItem
         when 30 #Mirror Arena
-          if !battler.pbTooHigh?(PBStats::EVASION)
-            battler.pbIncreaseStatBasic(PBStats::EVASION,2)
+          if pbCanChangeFieldSeedStat?(battler,PBStats::EVASION)
+            pbChangeFieldSeedStat(battler,PBStats::EVASION,2)
             pbCommonAnimation("StatUp",battler,nil)
             pbDisplay(_INTL("{1}'s Synthetic Seed sharply boosted its Evasion!",
               battler.pbThis))
-            battler.pokemon.itemRecycle=battler.item
-            battler.pokemon.itemInitial=0 if battler.pokemon.itemInitial==battler.item
-            battler.item=0
+            battler.pbUseConsumableHeldItem
           end
         when 33 #Flower Garden
-          if !battler.pbTooHigh?(PBStats::SPDEF)
-            battler.pbIncreaseStatBasic(PBStats::SPDEF,1)
+          if pbCanChangeFieldSeedStat?(battler,PBStats::SPDEF)
+            pbChangeFieldSeedStat(battler,PBStats::SPDEF,1)
             pbCommonAnimation("StatUp",battler,nil)
             pbDisplay(_INTL("{1}'s Synthetic Seed boosted its Special Defense!",
               battler.pbThis))
@@ -1422,12 +1413,10 @@ class PokeBattle_Battle
           battler.effects[PBEffects::Ingrain]=true
           pbAnimation(216,battler,nil) # Ingrain Animation
           pbDisplay(_INTL("{1} planted its roots!",battler.pbThis))
-          battler.pokemon.itemRecycle=battler.item
-          battler.pokemon.itemInitial=0 if battler.pokemon.itemInitial==battler.item
-          battler.item=0
+          battler.pbUseConsumableHeldItem
         when 41 #Corrupted Cave
-          if !battler.pbTooHigh?(PBStats::DEFENSE)
-            battler.pbIncreaseStatBasic(PBStats::DEFENSE,2)
+          if pbCanChangeFieldSeedStat?(battler,PBStats::DEFENSE)
+            pbChangeFieldSeedStat(battler,PBStats::DEFENSE,2)
             pbCommonAnimation("StatUp",battler,nil) if !boost
             pbDisplay(_INTL("{1}'s Synthetic Seed boosted its Defense!",
               battler.pbThis))
@@ -1436,45 +1425,39 @@ class PokeBattle_Battle
             battler.pbPoison(battler,true)
             pbDisplayPaused(_INTL("{1} was poisoned!",battler.pbThis(true)))
           end
-          battler.pokemon.itemRecycle=battler.item
-          battler.pokemon.itemInitial=0 if battler.pokemon.itemInitial==battler.item
-          battler.item=0
+          battler.pbUseConsumableHeldItem
         when 44 #Colosseum Field
-          if !battler.pbTooHigh?(PBStats::ATTACK)
-            battler.pbIncreaseStatBasic(PBStats::ATTACK,2)
+          if pbCanChangeFieldSeedStat?(battler,PBStats::ATTACK)
+            pbChangeFieldSeedStat(battler,PBStats::ATTACK,2)
             pbCommonAnimation("StatUp",battler,nil) if !boost
             pbDisplay(_INTL("{1}'s Synthetic Seed boosted its Attack!",
               battler.pbThis))
           end
           if battler.effects[PBEffects::Taunt]==0
             pbAnimation(49,battler,nil) # Taunt Animation
-            battler.effects[PBEffects::Taunt]=4
+            battler.effects[PBEffects::Taunt]=4*dose
             pbDisplayPaused(_INTL("{1} feels taunted!",battler.pbThis(true)))
           end
-          battler.pokemon.itemRecycle=battler.item
-          battler.pokemon.itemInitial=0 if battler.pokemon.itemInitial==battler.item
-          battler.item=0
+          battler.pbUseConsumableHeldItem
         when 50 # Library Field
           if battler.effects[PBEffects::FocusEnergy] < 3
-            battler.effects[PBEffects::FocusEnergy]=3
+            battler.effects[PBEffects::FocusEnergy]=3*dose
             pbCommonAnimation("StatUp",battler,nil)
             pbDisplay(_INTL("{1}'s Synthetic Seed sharpened its focus!",battler.pbThis))
           end
-          battler.pokemon.itemRecycle=battler.item
-          battler.pokemon.itemInitial=0 if battler.pokemon.itemInitial==battler.item
-          battler.item=0
+          battler.pbUseConsumableHeldItem
         end
       elsif isConst?(battler.item, PBItems, :TELLURICSEED)
         case $fefieldeffect
         when 8 #Swamp Field
           boost=false
-          if !battler.pbTooHigh?(PBStats::SPDEF)
-            battler.pbIncreaseStatBasic(PBStats::SPDEF,1)
+          if pbCanChangeFieldSeedStat?(battler,PBStats::SPDEF)
+            pbChangeFieldSeedStat(battler,PBStats::SPDEF,1)
             pbCommonAnimation("StatUp",battler,nil) if !boost
             boost=true
           end
-          if !battler.pbTooHigh?(PBStats::DEFENSE)
-            battler.pbIncreaseStatBasic(PBStats::DEFENSE,1)
+          if pbCanChangeFieldSeedStat?(battler,PBStats::DEFENSE)
+            pbChangeFieldSeedStat(battler,PBStats::DEFENSE,1)
             pbCommonAnimation("StatUp",battler,nil) if !boost
             boost=true
           end
@@ -1485,12 +1468,10 @@ class PokeBattle_Battle
           battler.effects[PBEffects::Ingrain]=true
           pbAnimation(216,battler,nil) # Ingrain Animation
           pbDisplay(_INTL("{1} planted its roots!",battler.pbThis))
-          battler.pokemon.itemRecycle=battler.item
-          battler.pokemon.itemInitial=0 if battler.pokemon.itemInitial==battler.item
-          battler.item=0
+          battler.pbUseConsumableHeldItem
         when 10 #Corrosive Field
-          if !battler.pbTooHigh?(PBStats::ATTACK)
-            battler.pbIncreaseStatBasic(PBStats::ATTACK,1)
+          if pbCanChangeFieldSeedStat?(battler,PBStats::ATTACK)
+            pbChangeFieldSeedStat(battler,PBStats::ATTACK,1)
             pbCommonAnimation("StatUp",battler,nil)
             pbDisplay(_INTL("{1}'s Telluric Seed boosted its Attack!",
               battler.pbThis))
@@ -1498,23 +1479,21 @@ class PokeBattle_Battle
           battler.effects[PBEffects::BanefulBunker]=true
           pbAnimation(693,battler,nil) # Baneful Bunker Animation
           pbDisplay(_INTL("{1} shielded itself against damage!",battler.pbThis))
-          battler.pokemon.itemRecycle=battler.item
-          battler.pokemon.itemInitial=0 if battler.pokemon.itemInitial==battler.item
-          battler.item=0
+          battler.pbUseConsumableHeldItem
         when 12 #Desert Field
           boost=false
-          if !battler.pbTooHigh?(PBStats::SPDEF)
-            battler.pbIncreaseStatBasic(PBStats::SPDEF,1)
+          if pbCanChangeFieldSeedStat?(battler,PBStats::SPDEF)
+            pbChangeFieldSeedStat(battler,PBStats::SPDEF,1)
             pbCommonAnimation("StatUp",battler,nil) if !boost
             boost=true
           end
-          if !battler.pbTooHigh?(PBStats::DEFENSE)
-            battler.pbIncreaseStatBasic(PBStats::DEFENSE,1)
+          if pbCanChangeFieldSeedStat?(battler,PBStats::DEFENSE)
+            pbChangeFieldSeedStat(battler,PBStats::DEFENSE,1)
             pbCommonAnimation("StatUp",battler,nil) if !boost
             boost=true
           end
-          if !battler.pbTooHigh?(PBStats::SPEED)
-            battler.pbIncreaseStatBasic(PBStats::SPEED,1)
+          if pbCanChangeFieldSeedStat?(battler,PBStats::SPEED)
+            pbChangeFieldSeedStat(battler,PBStats::SPEED,1)
             pbCommonAnimation("StatUp",battler,nil) if !boost
             boost=true
           end
@@ -1522,23 +1501,21 @@ class PokeBattle_Battle
             pbDisplay(_INTL("{1}'s Telluric Seed boosted its Special Defense, Defense, and Speed!",
               battler.pbThis))
           end
-          battler.effects[PBEffects::MultiTurn]=4
+          battler.effects[PBEffects::MultiTurn]=4*dose
           battler.effects[PBEffects::MultiTurnAttack]=232
           battler.effects[PBEffects::MultiTurnUser]=battler.index
           pbAnimation(232,battler,nil) # Sand Tomb Animation
           pbDisplayPaused(_INTL("{1} was trapped by Sand Tomb!",battler.pbThis(true)))
-          battler.pokemon.itemRecycle=battler.item
-          battler.pokemon.itemInitial=0 if battler.pokemon.itemInitial==battler.item
-          battler.item=0
+          battler.pbUseConsumableHeldItem
         when 14 #Rocky Field
           boost=false
-          if !battler.pbTooHigh?(PBStats::SPDEF)
-            battler.pbIncreaseStatBasic(PBStats::SPDEF,1)
+          if pbCanChangeFieldSeedStat?(battler,PBStats::SPDEF)
+            pbChangeFieldSeedStat(battler,PBStats::SPDEF,1)
             pbCommonAnimation("StatUp",battler,nil) if !boost
             boost=true
           end
-          if !battler.pbTooHigh?(PBStats::DEFENSE)
-            battler.pbIncreaseStatBasic(PBStats::DEFENSE,1)
+          if pbCanChangeFieldSeedStat?(battler,PBStats::DEFENSE)
+            pbChangeFieldSeedStat(battler,PBStats::DEFENSE,1)
             pbCommonAnimation("StatUp",battler,nil) if !boost
             boost=true
           end
@@ -1552,17 +1529,15 @@ class PokeBattle_Battle
             if eff>0
               eff = eff*2
               @scene.pbDamageAnimation(battler,0)
-              battler.pbReduceHP([(battler.totalhp*eff/32).floor,1].max)
+              battler.pbReduceHP([(battler.totalhp*eff*dose/32).floor,1].max)
               pbDisplay(_INTL("{1} was hurt by stealth rocks!",battler.pbThis))
               battler.pbFaint if battler.isFainted?
             end
           end
-          battler.pokemon.itemRecycle=battler.item
-          battler.pokemon.itemInitial=0 if battler.pokemon.itemInitial==battler.item
-          battler.item=0
+          battler.pbUseConsumableHeldItem
         when 15 #Forest Field
-          if !battler.pbTooHigh?(PBStats::ATTACK)
-            battler.pbIncreaseStatBasic(PBStats::ATTACK,1)
+          if pbCanChangeFieldSeedStat?(battler,PBStats::ATTACK)
+            pbChangeFieldSeedStat(battler,PBStats::ATTACK,1)
             pbCommonAnimation("StatUp",battler,nil)
             pbDisplay(_INTL("{1}'s Telluric Seed boosted its Attack!",
               battler.pbThis))
@@ -1570,12 +1545,10 @@ class PokeBattle_Battle
           battler.effects[PBEffects::SpikyShield]=true
           pbAnimation(603,battler,nil) # Spiky Shield Animation
           pbDisplay(_INTL("{1} shielded itself against damage!",battler.pbThis))
-          battler.pokemon.itemRecycle=battler.item
-          battler.pokemon.itemInitial=0 if battler.pokemon.itemInitial==battler.item
-          battler.item=0
+          battler.pbUseConsumableHeldItem
         when 16 #Superheated Field
-          if !battler.pbTooHigh?(PBStats::DEFENSE)
-            battler.pbIncreaseStatBasic(PBStats::DEFENSE,1)
+          if pbCanChangeFieldSeedStat?(battler,PBStats::DEFENSE)
+            pbChangeFieldSeedStat(battler,PBStats::DEFENSE,1)
             pbCommonAnimation("StatUp",battler,nil)
             pbDisplay(_INTL("{1}'s Telluric Seed boosted its Defense!",
               battler.pbThis))
@@ -1583,18 +1556,16 @@ class PokeBattle_Battle
           battler.effects[PBEffects::ShellTrap]=true
           pbCommonAnimation("ShellTrap",battler,nil) # Shell Trap Animation
           pbDisplay(_INTL("{1} primed a trap!",battler.pbThis))
-          battler.pokemon.itemRecycle=battler.item
-          battler.pokemon.itemInitial=0 if battler.pokemon.itemInitial==battler.item
-          battler.item=0
+          battler.pbUseConsumableHeldItem
         when 19 #Wasteland
           boost=false
-          if !battler.pbTooHigh?(PBStats::ATTACK)
-            battler.pbIncreaseStatBasic(PBStats::ATTACK,1)
+          if pbCanChangeFieldSeedStat?(battler,PBStats::ATTACK)
+            pbChangeFieldSeedStat(battler,PBStats::ATTACK,1)
             pbCommonAnimation("StatUp",battler,nil) if !boost
             boost=true
           end
-          if !battler.pbTooHigh?(PBStats::SPATK)
-            battler.pbIncreaseStatBasic(PBStats::SPATK,1)
+          if pbCanChangeFieldSeedStat?(battler,PBStats::SPATK)
+            pbChangeFieldSeedStat(battler,PBStats::SPATK,1)
             pbCommonAnimation("StatUp",battler,nil) if !boost
             boost=true
           end
@@ -1605,38 +1576,38 @@ class PokeBattle_Battle
           rnd=pbRandom(4)
           case rnd
           when 0
-            break if !battler.pbCanBurn?(false)
-            battler.pbBurn(battler)
-            pbDisplay(_INTL("{1} was burned!",battler.pbThis))
+            if battler.pbCanBurn?(false)
+              battler.pbBurn(battler)
+              pbDisplay(_INTL("{1} was burned!",battler.pbThis))
+            end
           when 1
-            break if !battler.pbCanFreeze?(false)
-            battler.pbFreeze
-            pbDisplay(_INTL("{1} was frozen solid!",battler.pbThis))
+            if battler.pbCanFreeze?(false)
+              battler.pbFreeze
+              pbDisplay(_INTL("{1} was frozen solid!",battler.pbThis))
+            end
           when 2
-            break if !battler.pbCanParalyze?(false)
-            battler.pbParalyze(battler)
-            pbDisplay(_INTL("{1} is paralyzed! It may be unable to move!",battler.pbThis))
+            if battler.pbCanParalyze?(false)
+              battler.pbParalyze(battler)
+              pbDisplay(_INTL("{1} is paralyzed! It may be unable to move!",battler.pbThis))
+            end
           when 3
-            break if !battler.pbCanPoison?(false)
-            battler.pbPoison(battler)
-            pbDisplay(_INTL("{1} was poisoned!",battler.pbThis))
+            if battler.pbCanPoison?(false)
+              battler.pbPoison(battler)
+              pbDisplay(_INTL("{1} was poisoned!",battler.pbThis))
+            end
           end
-          battler.pokemon.itemRecycle=battler.item
-          battler.pokemon.itemInitial=0 if battler.pokemon.itemInitial==battler.item
-          battler.item=0
+          battler.pbUseConsumableHeldItem
         when 20 #Ashen Beach
           if !(battler.effects[PBEffects::FocusEnergy]>=2)
-            battler.effects[PBEffects::FocusEnergy]=3
+            battler.effects[PBEffects::FocusEnergy]=3*dose
             pbAnimation(364,battler,nil) # Focus Energy Animation
             pbDisplay(_INTL("{1}'s Telluric Seed is getting it pumped!",
               battler.pbThis))
           end
-          battler.pokemon.itemRecycle=battler.item
-          battler.pokemon.itemInitial=0 if battler.pokemon.itemInitial==battler.item
-          battler.item=0
+          battler.pbUseConsumableHeldItem
         when 23 #Cave Field
-          if !battler.pbTooHigh?(PBStats::DEFENSE)
-            battler.pbIncreaseStatBasic(PBStats::DEFENSE,2) # Sharply boost Defense
+          if pbCanChangeFieldSeedStat?(battler,PBStats::DEFENSE)
+            pbChangeFieldSeedStat(battler,PBStats::DEFENSE,2) # Sharply boost Defense
             pbCommonAnimation("StatUp",battler,nil)
             pbDisplay(_INTL("{1}'s Telluric Seed sharply boosted its Defense!",
               battler.pbThis))
@@ -1646,50 +1617,44 @@ class PokeBattle_Battle
             battler.pbCrush(battler)
             pbDisplay(_INTL("{1} was crushed!",battler.pbThis))
           end
-          battler.pokemon.itemRecycle=battler.item
-          battler.pokemon.itemInitial=0 if battler.pokemon.itemInitial==battler.item
-          battler.item=0
+          battler.pbUseConsumableHeldItem
         when 27 #Mountain
-          if !battler.pbTooHigh?(PBStats::ATTACK)
-            battler.pbIncreaseStatBasic(PBStats::ATTACK,1)
+          if pbCanChangeFieldSeedStat?(battler,PBStats::ATTACK)
+            pbChangeFieldSeedStat(battler,PBStats::ATTACK,1)
             pbCommonAnimation("StatUp",battler,nil)
             pbDisplay(_INTL("{1}'s Telluric Seed boosted its Attack!",
               battler.pbThis))
           end
-          if !battler.pbTooLow?(PBStats::ACCURACY)
-            battler.pbReduceStatBasic(PBStats::ACCURACY,1)
+          if pbCanChangeFieldSeedStat?(battler,PBStats::ACCURACY,false)
+            pbChangeFieldSeedStat(battler,PBStats::ACCURACY,-1)
             pbCommonAnimation("StatDown",battler,nil)
             pbDisplay(_INTL("{1}'s Telluric Seed lowered its Accuracy!",
               battler.pbThis))
           end
-          battler.pokemon.itemRecycle=battler.item
-          battler.pokemon.itemInitial=0 if battler.pokemon.itemInitial==battler.item
-          battler.item=0
+          battler.pbUseConsumableHeldItem
         when 28 #Snowy Mountain
-          if !battler.pbTooHigh?(PBStats::SPATK)
-            battler.pbIncreaseStatBasic(PBStats::SPATK,1)
+          if pbCanChangeFieldSeedStat?(battler,PBStats::SPATK)
+            pbChangeFieldSeedStat(battler,PBStats::SPATK,1)
             pbCommonAnimation("StatUp",battler,nil)
             pbDisplay(_INTL("{1}'s Telluric Seed boosted its Special Attack!",
               battler.pbThis))
           end
-          if !battler.pbTooLow?(PBStats::ACCURACY)
-            battler.pbIncreaseStatBasic(PBStats::ACCURACY,1)
+          if pbCanChangeFieldSeedStat?(battler,PBStats::ACCURACY,false)
+            pbChangeFieldSeedStat(battler,PBStats::ACCURACY,-1)
             pbCommonAnimation("StatDown",battler,nil)
             pbDisplay(_INTL("{1}'s Telluric Seed lowered its Accuracy!",
               battler.pbThis))
           end
-          battler.pokemon.itemRecycle=battler.item
-          battler.pokemon.itemInitial=0 if battler.pokemon.itemInitial==battler.item
-          battler.item=0
+          battler.pbUseConsumableHeldItem
         when 46 #Beach Field
           boost=false
-          if !battler.pbTooHigh?(PBStats::SPEED)
-            battler.pbIncreaseStatBasic(PBStats::SPEED,1)
+          if pbCanChangeFieldSeedStat?(battler,PBStats::SPEED)
+            pbChangeFieldSeedStat(battler,PBStats::SPEED,1)
             pbCommonAnimation("StatUp",battler,nil) if !boost
             boost=true
           end
-          if !battler.pbTooHigh?(PBStats::ACCURACY)
-            battler.pbIncreaseStatBasic(PBStats::ACCURACY,1)
+          if pbCanChangeFieldSeedStat?(battler,PBStats::ACCURACY)
+            pbChangeFieldSeedStat(battler,PBStats::ACCURACY,1)
             pbCommonAnimation("StatUp",battler,nil) if !boost
             boost=true
           end
@@ -1697,16 +1662,15 @@ class PokeBattle_Battle
             pbDisplay(_INTL("{1}'s Telluric Seed boosted its Speed and Accuracy!",
               battler.pbThis))
           end
-          battler.effects[PBEffects::MultiTurn]=4
+          battler.effects[PBEffects::MultiTurn]=4*dose
           battler.effects[PBEffects::MultiTurnAttack]=232
           battler.effects[PBEffects::MultiTurnUser]=battler.index
           pbAnimation(232,battler,nil) # Sand Tomb Animation
           pbDisplayPaused(_INTL("{1} was trapped by Sand Tomb!",battler.pbThis(true)))
-          battler.pokemon.itemRecycle=battler.item
-          battler.pokemon.itemInitial=0 if battler.pokemon.itemInitial==battler.item
-          battler.item=0
+          battler.pbUseConsumableHeldItem
         end
       elsif isConst?(battler.item, PBItems, :RIFTSEED)
+        next if $fefieldeffect!=38 && $fefieldeffect!=39
         if $fefieldeffect==38 || $fefieldeffect==39 #Dimensional/Frozen Dim Field
           increment = 1
           increment = 2 if $fefieldeffect == 38
@@ -1718,40 +1682,38 @@ class PokeBattle_Battle
           boostStat = [aBoost,dBoost,saBoost,sdBoost,spdBoost].max
           case boostStat
           when aBoost
-            if !battler.pbTooHigh?(PBStats::ATTACK)
+            if pbCanChangeFieldSeedStat?(battler,PBStats::ATTACK)
               pbCommonAnimation("StatUp",battler,nil)
-              battler.pbIncreaseStatBasic(PBStats::ATTACK,increment)
+              pbChangeFieldSeedStat(battler,PBStats::ATTACK,increment)
               pbDisplay(_INTL("{1}'s Rift Seed boosted its Attack!",battler.pbThis))
             end
           when dBoost
-            if !battler.pbTooHigh?(PBStats::DEFENSE)
+            if pbCanChangeFieldSeedStat?(battler,PBStats::DEFENSE)
               pbCommonAnimation("StatUp",battler,nil)
-              battler.pbIncreaseStatBasic(PBStats::DEFENSE,increment)
+              pbChangeFieldSeedStat(battler,PBStats::DEFENSE,increment)
               pbDisplay(_INTL("{1}'s Rift Seed boosted its Defense!",battler.pbThis))
             end
           when saBoost
-            if !battler.pbTooHigh?(PBStats::SPATK)
+            if pbCanChangeFieldSeedStat?(battler,PBStats::SPATK)
               pbCommonAnimation("StatUp",battler,nil)
-              battler.pbIncreaseStatBasic(PBStats::SPATK,increment)
+              pbChangeFieldSeedStat(battler,PBStats::SPATK,increment)
               pbDisplay(_INTL("{1}'s Rift Seed boosted its Special Attack!",battler.pbThis))
             end
           when sdBoost
-            if !battler.pbTooHigh?(PBStats::SPDEF)
+            if pbCanChangeFieldSeedStat?(battler,PBStats::SPDEF)
               pbCommonAnimation("StatUp",battler,nil)
-              battler.pbIncreaseStatBasic(PBStats::SPDEF,increment)
+              pbChangeFieldSeedStat(battler,PBStats::SPDEF,increment)
               pbDisplay(_INTL("{1}'s Rift Seed boosted its Special Defense!",battler.pbThis))
             end
           when spdBoost
-            if !battler.pbTooHigh?(PBStats::SPEED)
+            if pbCanChangeFieldSeedStat?(battler,PBStats::SPEED)
               pbCommonAnimation("StatUp",battler,nil)
-              battler.pbIncreaseStatBasic(PBStats::SPEED,increment)
+              pbChangeFieldSeedStat(battler,PBStats::SPEED,increment)
               pbDisplay(_INTL("{1}'s Rift Seed boosted its Speed!",battler.pbThis))
             end
           end
         end
-        battler.pokemon.itemRecycle=battler.item
-        battler.pokemon.itemInitial=0 if battler.pokemon.itemInitial==battler.item
-        battler.item=0
+        battler.pbUseConsumableHeldItem
       end
     end
   end
@@ -2971,6 +2933,9 @@ class PokeBattle_Battle
       # Held item priority breaks ties within the same move priority.
       priorityarray[-1][1] = 1 if @battlers[i].custap || (@battlers[i].itemWorks? && @battlers[i].item == PBItems::QUICKCLAW && (pbRandom(100)<20))
       priorityarray[-1][1] = -2 if (@battlers[i].itemWorks? && (@battlers[i].item == PBItems::LAGGINGTAIL || @battlers[i].item == PBItems::FULLINCENSE))
+      if @choices[i][0]==1 && @battlers[i].effects[PBEffects::AbsoluteZeroTurn]==@turncount
+        priorityarray[-1][1]=-3
+      end
       #speed priority
       priorityarray[-1][2]    = @battlers[i].pbSpeed if @trickroom==0
       priorityarray[-1][2]    = -@battlers[i].pbSpeed if @trickroom>0
@@ -3119,7 +3084,7 @@ class PokeBattle_Battle
       return false
     end
     # Multi-Turn Attacks/Mean Look
-    if thispkmn.effects[PBEffects::MultiTurn]>0 ||
+    if thispkmn.effects[PBEffects::MultiTurn]>0 || thispkmn.pbRiteOfSpringSource ||
        thispkmn.effects[PBEffects::MeanLook]>=0 ||
        (thispkmn.hasWorkingAbility(:MUMMY) && $fefieldeffect==40) ||
        field.effects[PBEffects::FairyLock]==1
@@ -3846,7 +3811,7 @@ class PokeBattle_Battle
     PBEffects::FutureSightUser, PBEffects::LeechSeed, PBEffects::LockOnPos,
     PBEffects::MeanLook, PBEffects::MultiTurnUser,
     PBEffects::PerishSongUser, PBEffects::Crushing, PBEffects::JawLockUser,
-    PBEffects::AftershockUser, PBEffects::SyrupBombUser, PBEffects::LotusBloomUser
+    PBEffects::AftershockUser, PBEffects::SyrupBombUser
   ].freeze
 
   def pbShiftBattlers(index1,index2)
@@ -4803,6 +4768,10 @@ end
     return false if pkmn.isFainted?
     pkmn.effects[PBEffects::BlinkEntryTurn]=@turncount if !onlyabilities
     if !onlyabilities
+      if pkmn.pbHasType?(:FIRE) && pkmn.pbOwnSide.effects[PBEffects::Bonfire]>0
+        pkmn.pbOwnSide.effects[PBEffects::Bonfire]+=1
+        pbDisplay(_INTL("{1} stoked its team's bonfire!",pkmn.pbThis))
+      end
       eachActiveBattlerIndex do |i| # Currently unfainted participants will earn EXP even if they faint afterwards
         @battlers[i].pbUpdateParticipants if pbIsOpposing?(i)
         @amuletcoin=true if !pbIsOpposing?(i) &&
@@ -4847,6 +4816,33 @@ end
         pbDisplayPaused(_INTL("The Z-Power healed {1}!",pkmn.pbThis(true)))
         pkmn.effects[PBEffects::ZHeal]=false
       end
+      pbApplyEntryHazards(pkmn)
+    end
+    # Pre-paralyzed Pokemon in intense mode (Minerva's Ponyta-Galar)
+    owner = pbGetOwner(pkmn.index) if pbIsOpposing?(pkmn.index)
+    if !onlyabilities && pbIsOpposing?(pkmn.index) &&
+       owner && owner.trainertype && isConst?(owner.trainertype,PBTrainers,:MINERVA) &&
+       $game_variables && $game_variables[:Difficulty_Mode] == 2
+      if isConst?(pkmn.species,PBSpecies,:PONYTA) && pkmn.form == 1 && pkmn.status == 0
+        pkmn.status = PBStatuses::PARALYSIS
+        pkmn.statusCount = 0
+        pbDisplay(_INTL("{1} entered the battle paralyzed!",pkmn.pbThis))
+      end
+    end
+    pkmn.pbAbilityCureCheck
+    if pkmn.isFainted?
+      pbGainEXP
+      pbSwitch if @faintswitch
+      return false
+    end
+    if !onlyabilities
+      pkmn.pbCheckForm
+      pkmn.pbBerryCureCheck
+    end
+    return true
+  end
+
+  def pbApplyEntryHazards(pkmn)
       # Spikes
       pkmn.pbOwnSide.effects[PBEffects::Spikes]=0 if $fefieldeffect == 21 ||
        $fefieldeffect == 26
@@ -4863,13 +4859,20 @@ end
       pkmn.pbFaint if pkmn.isFainted?
       side = pkmn.pbOwnSide
       battler = pkmn
+      if side.effects[PBEffects::Undertow]>0 && !battler.isFainted? &&
+         !battler.hasWorkingItem(:HEAVYDUTYBOOTS) && battler.pbCanCrush?(false)
+        side.effects[PBEffects::Undertow]-=1
+        battler.pbCrush(battler)
+        pbDisplay(_INTL("{1} was crushed by the undertow!",battler.pbThis))
+      end
       # Caltrops
       if pkmn.pbOwnSide.effects[PBEffects::Caltrops]>0 &&
          !pkmn.isAirborne? && !pkmn.hasWorkingItem(:HEAVYDUTYBOOTS) && !pkmn.hasWorkingAbility(:LIMBER)
         stacks = pkmn.pbOwnSide.effects[PBEffects::Caltrops]
-        pkmn.effects[PBEffects::Wounded] = stacks
-        @scene.pbDamageAnimation(pkmn,0)
-        pbDisplay(_INTL("{1} was wounded by caltrops!",pkmn.pbThis))
+        if pkmn.pbApplyGrievousWounds(stacks)
+          @scene.pbDamageAnimation(pkmn,0)
+          pbDisplay(_INTL("{1} was wounded by caltrops!",pkmn.pbThis))
+        end
       end
       # Presents
       if side.effects[PBEffects::Presents] > 0 && !battler.isFainted? &&
@@ -4979,6 +4982,11 @@ end
           end
         end
       end
+      trees=pkmn.pbOpposingSide.effects[PBEffects::MysticTree]
+      if trees>0 && !pkmn.isFainted? && pkmn.pbHasType?(:GRASS)
+        recovered=pkmn.pbRecoverHP(pkmn.totalhp*trees/12,true)
+        pbDisplay(_INTL("{1} was healed by the mystical trees!",pkmn.pbThis)) if recovered>0
+      end
       # Scorching Ground
       if side.effects[PBEffects::ScorchingGround] > 0
         if !pkmn.isAirborne? && !pkmn.hasWorkingAbility(:LIMBER) &&
@@ -5022,30 +5030,6 @@ end
           end
         end
       end
-    end
-    # Pre-paralyzed Pokemon in intense mode (Minerva's Ponyta-Galar)
-    owner = pbGetOwner(pkmn.index) if pbIsOpposing?(pkmn.index)
-    if !onlyabilities && pbIsOpposing?(pkmn.index) &&
-       owner && owner.trainertype && isConst?(owner.trainertype,PBTrainers,:MINERVA) &&
-       $game_variables && $game_variables[:Difficulty_Mode] == 2
-      if isConst?(pkmn.species,PBSpecies,:PONYTA) && pkmn.form == 1 && pkmn.status == 0
-        pkmn.status = PBStatuses::PARALYSIS
-        pkmn.statusCount = 0
-        pbDisplay(_INTL("{1} entered the battle paralyzed!",pkmn.pbThis))
-      end
-    end
-    pkmn.pbAbilityCureCheck
-    if pkmn.isFainted?
-      pbGainEXP
-      pbSwitch if @faintswitch
-      return false
-    end
-    #pkmn.pbAbilitiesOnSwitchIn(true)
-    if !onlyabilities
-      pkmn.pbCheckForm
-      pkmn.pbBerryCureCheck
-    end
-    return true
   end
 
 ################################################################################
@@ -6169,6 +6153,29 @@ def pbStartBattle(canlose=false)
 ################################################################################
 # Attack phase.
 ################################################################################
+  def pbResolveForebode(priority)
+    priority.each do |target|
+      due_turn,source_index,source_party_index=target.effects[PBEffects::Forebode]
+      next if !due_turn || due_turn>@turncount || target.isFainted? || target.effects[PBEffects::Commander]
+      target.effects[PBEffects::Forebode]=[false,-1,-1]
+      source=@battlers[source_index]
+      original=pbParty(source_index)[source_party_index]
+      source=pbMakeFakeBattler(original,false,source,true) if original &&
+        (source.isFainted? || source.pokemonIndex!=source_party_index)
+      next if !source.pokemon
+      move=PokeBattle_Move.pbFromPBMove(self,PBMove.new(PBMoves::FOREBODE),source)
+      move.forebode_strike=true
+      pbDisplay(_INTL("{1}'s grim fate came to pass!",target.pbThis))
+      target.pbPrepareMoveDamageState
+      damage=move.pbEffect(source,target)
+      if target.isFainted?
+        target.pbFaint
+      elsif damage>0 && !target.damagestate.substitute && !target.hasWorkingAbility(:INNERFOCUS)
+        target.effects[PBEffects::Flinch]=true
+      end
+    end
+  end
+
   def pbAttackPhase
     @scene.pbBeginAttackPhase
     eachActiveBattlerIndex do |i|
@@ -6346,6 +6353,8 @@ def pbStartBattle(canlose=false)
       end
     end
     priority=pbPriority(false,true)    #Turn order recalc from Gen VII
+    pbResolveForebode(priority)
+    return if @decision!=0
 #### KUROTSUNE - 014 - START
 #### KUROTSUNE - 014 - END
 # Crest Stat Check
@@ -6362,7 +6371,7 @@ def pbStartBattle(canlose=false)
     end
 # Use Attacks
     for i in priority
-      if pbChoseMoveFunctionCode?(i.index,0x115) # Focus Punch
+      if pbChoseMoveFunctionCode?(i.index,0x115) && @choices[i.index][2].id!=PBMoves::UNSTABLEMATTER
         pbCommonAnimation("FocusPunch",i,nil)
         pbDisplay(_INTL("{1} is tightening its focus!",i.pbThis))
       end
@@ -6529,6 +6538,7 @@ def pbStartBattle(canlose=false)
 
   def pbEndOfRoundPhase
     eachActiveBattlerIndex do |i|
+      @battlers[i].pbExpireCoconBerryShield
       @battlers[i].forcedSwitchEarlier = false
       @battlers[i].effects[PBEffects::Roost]=false
       @battlers[i].effects[PBEffects::Protect]=false
@@ -6545,6 +6555,7 @@ def pbStartBattle(canlose=false)
       # Decrement Early Bird boost counter
       @battlers[i].effects[PBEffects::EarlyBirdBoost]-=1 if @battlers[i].effects[PBEffects::EarlyBirdBoost]>0
       @battlers[i].effects[PBEffects::SpikyShield]=false
+      @battlers[i].effects[PBEffects::Stormhold]=false
       @battlers[i].effects[PBEffects::BanefulBunker]=false
       @battlers[i].effects[PBEffects::SilkTrap]=false
       @battlers[i].effects[PBEffects::BurningBulwark]=false
@@ -7496,6 +7507,48 @@ def pbStartBattle(canlose=false)
       if i.effects[PBEffects::FutureSight]>0
         i.effects[PBEffects::FutureSight]-=1
         if i.effects[PBEffects::FutureSight]==0
+          if i.effects[PBEffects::FutureSightMove]==PBMoves::PERFORATE
+            source_index=i.effects[PBEffects::FutureSightUser]
+            party_index=i.effects[PBEffects::FutureSightPkmnIdx]
+            source=@battlers[source_index]
+            i.effects[PBEffects::FutureSightMove]=0
+            i.effects[PBEffects::FutureSightDamage]=0
+            i.effects[PBEffects::FutureSightUser]=-1
+            i.effects[PBEffects::FutureSightPkmnIdx]=-1
+            source=allSameSideBattlers(source_index).find { |battler| battler.pokemonIndex==party_index } || source
+            if source.pokemonIndex!=party_index || source.isFainted?
+              pokemon=pbParty(source_index)[party_index]
+              next unless pokemon
+              source=pbMakeFakeBattler(pokemon,false,source,true)
+            end
+            move=PokeBattle_Move.pbFromPBMove(self,PBMove.new(PBMoves::PERFORATE),source)
+            pbDisplay(_INTL("{1} took the {2} attack!",i.pbThis,move.name))
+            i.pbPrepareMoveDamageState
+            saved_moldbreaker=i.moldbroken
+            begin
+              i.moldbroken=source.pbBypassesTargetAbility?(move)
+              type=move.pbType(move.type,source,i)
+              effectiveness=move.pbTypeModifier(type,source,i)
+              if !pbCheckGlobalAbility(:HEADSTRONG) && i.hasWorkingAbility(:WONDERGUARD) &&
+                 !i.moldbroken && effectiveness<=4
+                pbDisplay(_INTL("{1} avoided damage with Wonder Guard!",i.pbThis))
+                next
+              end
+              if !pbCheckGlobalAbility(:HEADSTRONG) && effectiveness==0
+                pbDisplay(_INTL("It doesn't affect {1}...",i.pbThis(true)))
+                next
+              end
+              damage=move.pbCalcDamage(source,i)
+              next if damage<=0
+              pbAnimation(move.id,source,i) unless source.isFainted?
+              move.pbReduceHPDamage(damage,source,i)
+              move.pbEffectMessages(source,i)
+            ensure
+              i.moldbroken=saved_moldbreaker
+            end
+            return if i.isFainted? && !i.pbFaint
+            next
+          end
           moveuser=@battlers[i.effects[PBEffects::FutureSightUser]]
           if i.effects[PBEffects::FutureSightMove] == 516 #DoomDesire
             move=PokeBattle_Move.pbFromPBMove(self,PBMove.new(741),moveuser) #DoomDummy
@@ -7944,6 +7997,21 @@ def pbStartBattle(canlose=false)
           i.pbReduceHP((i.totalhp/16).floor)
         end
       end
+      if i.effects[PBEffects::FlameWreath]>0
+        i.effects[PBEffects::FlameWreath]-=1
+      end
+      if i.effects[PBEffects::MudBath]>0
+        pbWithStatChangeSource([:move,PBMoves::MUDBATH,i.effects[PBEffects::MudBath]]) do
+          [PBStats::DEFENSE,PBStats::SPDEF].each do |stat|
+            i.pbIncreaseStat(stat,1,false,PBMoves::MUDBATH,i)
+          end
+        end
+        i.effects[PBEffects::MudBath]-=1
+      end
+      [PBEffects::CarapaceShed,PBEffects::CarapaceGift].each do |effect|
+        overlay=i.effects[effect]
+        i.effects[effect]=nil if overlay && @turncount+1>=overlay[1]
+      end
       # Circadian Rhythm sleep-turn growth
       if i.effects[PBEffects::CircadianRhythm]
         if i.status==PBStatuses::SLEEP && !i.isFainted?
@@ -8025,40 +8093,6 @@ def pbStartBattle(canlose=false)
         next
       end
     end
-    # Lotus Bloom delayed hits. These counters live in the battler position's
-    # permanent-effect set, so a fainted target's replacement inherits them.
-    for target in battlers
-      next if target.effects[PBEffects::LotusBloom]<=0
-      if target.effects[PBEffects::LotusBloom]>1
-        target.effects[PBEffects::LotusBloom]-=1
-        next
-      end
-      next if target.isFainted? || !target.pokemon
-      moveid=target.effects[PBEffects::LotusBloomMove]
-      userindex=target.effects[PBEffects::LotusBloomUser]
-      userpkmnidx=target.effects[PBEffects::LotusBloomPkmnIdx]
-      target.effects[PBEffects::LotusBloom]=0
-      target.effects[PBEffects::LotusBloomMove]=0
-      target.effects[PBEffects::LotusBloomUser]=-1
-      target.effects[PBEffects::LotusBloomPkmnIdx]=-1
-      next if !moveid || moveid<=0 || !userindex || userindex<0
-      user=@battlers[userindex]
-      if user && user.pokemonIndex!=userpkmnidx
-        party=pbParty(userindex)
-        original=(party && userpkmnidx && userpkmnidx>=0) ? party[userpkmnidx] : nil
-        user=pbMakeFakeBattler(original,false,@battlers[userindex],true) if original
-      end
-      next if !user || !user.pokemon
-      move=PokeBattle_Move.pbFromPBMove(self,PBMove.new(moveid),user)
-      next if !move
-      move.instance_variable_set(:@azure_lotus_bloom_strike,true)
-      pbDisplay(_INTL("The lotus bloomed around {1}!",target.pbThis))
-      target.damagestate.reset
-      move.pbEffect(user,target,0,nil,true)
-      if target.isFainted?
-        return if !target.pbFaint
-      end
-    end
     # Aftershock delayed hits
     for target in priority
       next if target.effects[PBEffects::Aftershock]<=0
@@ -8117,6 +8151,14 @@ def pbStartBattle(canlose=false)
     for i in priority
       next if i.isFainted?
       if i.effects[PBEffects::MultiTurn]>0
+        if i.effects[PBEffects::MultiTurnAttack]==PBMoves::TOUGHLOVE
+          source_index=i.effects[PBEffects::MultiTurnUser]
+          source=source_index>=0 ? @battlers[source_index] : nil
+          if source && !source.isFainted? && source.effects[PBEffects::HealBlock]==0
+            restored=source.pbRecoverHP([source.totalhp/8,1].max,true)
+            pbDisplay(_INTL("{1}'s HP was restored by Tough Love!",source.pbThis)) if restored>0
+          end
+        end
         i.effects[PBEffects::MultiTurn]-=1
         movename=PBMoves.getName(i.effects[PBEffects::MultiTurnAttack])
         if i.effects[PBEffects::MultiTurn]==0
@@ -8463,48 +8505,6 @@ def pbStartBattle(canlose=false)
         pbDisplay(_INTL("The bonfire on the opposing side burned out!")) if i==1
       end
     end
-    # Sunfury residual damage
-    for battler in priority
-      next if battler.isFainted?
-      next if battler.pbOwnSide.effects[PBEffects::Sunfury]<=0
-      next if battler.hasWorkingAbility(:MAGICGUARD)
-      next if battler.hasWorkingAbility(:WONDERGUARD) && $fefieldeffect==44
-      atype=getConst(PBTypes,:FIRE) || 0
-      eff=PBTypes.getCombinedEffectiveness(atype,battler.type1,battler.type2)
-      next if eff<=0
-      @scene.pbDamageAnimation(battler,0)
-      battler.pbReduceHP([(battler.totalhp*eff/48).floor,1].max)
-      pbDisplay(_INTL("{1} was seared by Sunfury!",battler.pbThis))
-      if battler.isFainted?
-        return if !battler.pbFaint
-      end
-    end
-    for i in 0...2
-      next if sides[i].effects[PBEffects::Sunfury]<=0
-      sides[i].effects[PBEffects::Sunfury]-=1
-      if sides[i].effects[PBEffects::Sunfury]==0
-        pbDisplay(_INTL("The solar fire on your battlefield faded!")) if i==0
-        pbDisplay(_INTL("The solar fire on the opposing battlefield faded!")) if i==1
-      end
-    end
-    # Red Sun's Zenith stars. Stars expire independently and sustain ordinary
-    # Gravity while any orbit remains.
-    for i in 0...2
-      stars=sides[i].effects[PBEffects::RedSunStars]
-      next if !stars.is_a?(Array) || stars.length==0
-      oldlength=stars.length
-      stars=stars.collect { |turns| turns-1 }.find_all { |turns| turns>0 }
-      sides[i].effects[PBEffects::RedSunStars]=stars
-      if stars.length<oldlength
-        pbDisplay(_INTL("A red star above your battlefield disappeared.")) if i==0
-        pbDisplay(_INTL("A red star above the opposing battlefield disappeared.")) if i==1
-      end
-      if stars.length>0
-        @field.effects[PBEffects::Gravity]=[
-          @field.effects[PBEffects::Gravity],stars.max+1
-        ].max
-      end
-    end
     # Scorching Ground
     for i in 0...2
       next if sides[i].effects[PBEffects::ScorchingGround] <= 0
@@ -8571,16 +8571,6 @@ def pbStartBattle(canlose=false)
         end
       end
     end
-    # Battle Cry
-    for i in 0...2
-      if sides[i].effects[PBEffects::BattleCry] > 0
-        sides[i].effects[PBEffects::BattleCry] = (sides[i].effects[PBEffects::BattleCry]/2).floor
-        if sides[i].effects[PBEffects::BattleCry] == 0
-          pbDisplay(_INTL("The effects of your team's Battle Cry faded!")) if i==0
-          pbDisplay(_INTL("The effects of the opposing team's Battle Cry faded!")) if i==1
-        end
-      end
-    end
     # Pressure Plate
     for i in 0...2
       if sides[i].effects[PBEffects::PressurePlate]>0
@@ -8603,6 +8593,17 @@ def pbStartBattle(canlose=false)
       @field.effects[PBEffects::BlueShift]-=1
       if @field.effects[PBEffects::BlueShift]==0
         pbDisplay(_INTL("The type chart returned to normal."))
+      end
+    end
+    @sides.each_with_index do |side,index|
+      expiring=side.effects[PBEffects::DoubleDose]==1
+      [PBEffects::EtherealCloak,PBEffects::DoubleDose].each do |effect|
+        side.effects[effect]-=1 if side.effects[effect]>0
+      end
+      if expiring
+        activeBattlerIndices.each do |slot|
+          @battlers[slot].pbDiscardConsumableHeldItemDose if (slot%2)==index
+        end
       end
     end
     # Gravity
@@ -8868,14 +8869,6 @@ def pbStartBattle(canlose=false)
         if i.hp<=0
           return if !i.pbFaint
           next
-        end
-        # Mystic Harvest Healing
-        if i.pbOpposingSide.effects[PBEffects::MysticTree]>0 && i.pbHasType?(:GRASS) && i.hp != i.totalhp
-          if i.effects[PBEffects::HealBlock]==0
-            hpgain = (i.totalhp/6).floor
-            hpgain *= i.pbOpposingSide.effects[PBEffects::MysticTree]
-            hpgain = i.pbRecoverHP(hpgain,true) if hpgain > 0
-          end
         end
       end
     end
@@ -9439,8 +9432,11 @@ def pbStartBattle(canlose=false)
       @battlers[i].effects[PBEffects::DamagingMoveThisTurn]=false
       @battlers[i].effects[PBEffects::TributeDamageTaken]=0
       @battlers[i].effects[PBEffects::UsedAttackThisTurn]=false
+      @battlers[i].effects[PBEffects::Spritz]=0
+      pbResolveRebuild(@battlers[i])
       @battlers[i].azureStatsRaisedThisRound=false
     end
+    pbResolveMirrorHerbs
     # invalidate stored priority
     @usepriority=false
     @eruption=false
@@ -9449,6 +9445,28 @@ def pbStartBattle(canlose=false)
       @shieldSetup = -1
       @shieldCount = -1
     end
+  end
+
+  def pbResolveRebuild(battler)
+    turns=battler.effects[PBEffects::Rebuild]
+    return if battler.isFainted? || turns<=0
+    battler.effects[PBEffects::Rebuild]-=1
+    return unless turns==1
+    stages=battler.stages
+    if battler.effects[PBEffects::MultiTurnAttack]==PBMoves::BINDINGWORD
+      stages=battler.effects[PBEffects::StatChangeHolder]
+    end
+    boosts=0
+    stages.each_with_index do |stage,stat|
+      next if !stage || stage<=0
+      boosts+=stage
+      stages[stat]=0
+    end
+    return if boosts==0
+    move=PokeBattle_Move.pbFromPBMove(self,PBMove.new(PBMoves::REBUILD),battler)
+    amount=move.apply_tribute_healing(battler,battler.totalhp*boosts/5,battler)
+    recovered=move.pbRecoverMoveHP(battler,battler,amount)
+    pbDisplay(_INTL("{1} restored its HP by rebuilding!",battler.pbThis)) if recovered>0
   end
 
 ################################################################################
@@ -9597,6 +9615,9 @@ def pbStartBattle(canlose=false)
     ([*@party1, *@party2].compact.uniq).each do |pkmn|
       pkmn.clearBeneficialStatus if pkmn.respond_to?(:clearBeneficialStatus)
       pkmn.tributeDracoPP=nil if pkmn.respond_to?(:tributeDracoPP=)
+    end
+    eachActiveBattlerIndex do |index|
+      @battlers[index].pbDiscardConsumableHeldItemDose
     end
     for i in $Trainer.party
       i.setItem(i.itemInitial)

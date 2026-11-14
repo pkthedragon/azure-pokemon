@@ -889,6 +889,7 @@ end
       @stages[stat]+=increment
       @stages[stat]=cap if @stages[stat]>cap
     end
+    @battle.pbRecordMirrorHerbBoost(self,stat,@stages[stat]-oldStage) if @stages[stat]>oldStage
     if triggerBigPecks && @stages[stat]>oldStage
       opposingLivingBattlers.each do |foe|
         next if !foe.hasWorkingAbility(:BIGPECKS)
@@ -1250,11 +1251,9 @@ end
             oppabilityname,pbThis(true)))  
       end   
       if hasWorkingItem(:ADRENALINEORB) && pbCanIncreaseStatStage?(PBStats::SPEED,false)
-        pbIncreaseStat(PBStats::SPEED,1,false,nil,nil,true,false,false)
+        pbIncreaseStat(PBStats::SPEED,pbHeldItemDose,false,nil,nil,true,false,false)
         @battle.pbDisplay(_INTL("{1}'s Adrenaline orb boosts its Speed!",pbThis(true))) 
-        self.pokemon.itemRecycle=self.item
-        self.pokemon.itemInitial=0 if self.pokemon.itemInitial==self.item
-        self.item=0           
+        pbUseConsumableHeldItem
       end
       if hasWorkingAbility(:RATTLED)
         if pbCanIncreaseStatStage?(PBStats::SPEED)
@@ -1277,9 +1276,7 @@ end
         if reducedstats
           itemname=(self.item==0) ? "" : PBItems.getName(self.item)
           @battle.pbDisplay(_INTL("{1}'s {2} restored its status!",pbThis,itemname))
-          self.pokemon.itemRecycle=self.item
-          self.pokemon.itemInitial=0 if self.pokemon.itemInitial==self.item
-          self.item=0
+          pbUseConsumableHeldItem(repeat: true)
         end
       end
       return true

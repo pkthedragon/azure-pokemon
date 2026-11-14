@@ -3,12 +3,9 @@
 # LegacyFunctionCode to hexadecimal, so these are the constants it actually asks
 # Ruby to resolve at runtime.
 
-# Snuff Out's authored effect class was named after its move ID (897), rather
-# than its hexadecimal function code (27B). Keep the implementation in one
-# place and expose it under the constant the move factory resolves.
-class PokeBattle_Move_27B < PokeBattle_Move_897
+class PokeBattle_Move_275 < PokeBattle_Move
+  # Skyscraper's critical condition uses the shared critical-hit checks.
 end
-
 
 # Shared canonical critical-hit behavior for moves which always crit. This keeps
 # Azure's Shell Armor and Lucky Chant protections, which are checked before the
@@ -764,7 +761,8 @@ class PokeBattle_Move_259 < PokeBattle_Move
     hazardactive=@battle.sides.any? do |side|
       side.effects[PBEffects::StealthRock] || side.effects[PBEffects::StickyWeb] ||
         side.effects[PBEffects::Spikes]>0 || side.effects[PBEffects::ToxicSpikes]>0 ||
-        side.effects[PBEffects::Caltrops]>0 || side.effects[PBEffects::MysticTree]>0
+        side.effects[PBEffects::Caltrops]>0 || side.effects[PBEffects::MysticTree]>0 ||
+        side.effects[PBEffects::Undertow]>0 || side.effects[PBEffects::Presents]>0
     end
     stats=[PBStats::ATTACK,PBStats::SPEED]
     canraise=stats.any? { |stat| attacker.pbCanIncreaseStatStage?(stat,false) }
@@ -786,6 +784,8 @@ class PokeBattle_Move_259 < PokeBattle_Move
       side.effects[PBEffects::ToxicSpikes]=0
       side.effects[PBEffects::Caltrops]=0
       side.effects[PBEffects::MysticTree]=0
+      side.effects[PBEffects::Undertow]=0
+      side.effects[PBEffects::Presents]=0
     end
     @battle.pbDisplay(_INTL("Tidying up complete!")) if substituteactive || hazardactive
     showanim=true
@@ -873,6 +873,10 @@ class PokeBattle_Move_256 < PokeBattle_Move
       side.effects[PBEffects::MysticTree]=0
       @battle.pbDisplay(_INTL("{1} cleared away the mystical trees!",attacker.pbThis))
     end
+    if side.effects[PBEffects::Undertow]>0
+      side.effects[PBEffects::Undertow]=0
+      @battle.pbDisplay(_INTL("The undertow dispersed!"))
+    end
   end
 end
 
@@ -930,10 +934,11 @@ class PokeBattle_Battler
     alias azure_move_compat_pbInitialize pbInitialize
     def pbInitialize(pkmn,index,batonpass)
       azureReleaseCommander
+      @battle.azureReleaseJetstream(self) if @azureJetstream && !@fakebattler
       azure_move_compat_pbInitialize(pkmn,index,batonpass)
       @azureGlaiveRush=false
       @azureStatsRaisedThisRound=false
-      @azureJetstream=false
+      @azureJetstream=nil
     end
   end
 
@@ -1062,21 +1067,71 @@ class PokeBattle_Battler
        !(hasWorkingAbility(:WONDERGUARD) && $fefieldeffect==44)
       pbReduceHP([(@totalhp/8).floor,1].max)
     end
-    @effects[PBEffects::Wounded]=[@effects[PBEffects::Wounded],3].max
-    @battle.pbDisplay(_INTL("A needle tore into {1} and left grievous wounds!",pbThis(true)))
+    @battle.pbDisplay(_INTL("A needle tore into {1}!",pbThis(true)))
     return true
   end
 end
 
 class PokeBattle_Battle
+  def azureInvalidateJetstreamWeather
+    @battlers.each { |battler| battler.azureJetstream&.delete(:weather) }
+  end
+
   def azureJetstreamWeatherExtended?
-    return @battlers.any? { |battler| battler && !battler.isFainted? && battler.azureJetstream }
+    return @weatherduration>0 && @battlers.any? do |battler|
+      battler && !battler.isFainted? && battler.azureJetstream &&
+        battler.azureJetstream[:weather]==[@weather,@weatherduration]
+    end
   end
 
   def azureJetstreamForSide?(side)
+    tailwind=@sides[side].effects[PBEffects::Tailwind]
+    return false if tailwind<=0
     return @battlers.any? do |battler|
       battler && !battler.isFainted? && battler.azureJetstream &&
-        (pbIsOpposing?(battler.index) ? 1 : 0)==side
+        battler.index%2==side && battler.azureJetstream[:tailwind]==tailwind
+    end
+  end
+
+  def azureExtendJetstream(battler)
+    state={}
+    state[:weather]=[@weather,@weatherduration] if @weather!=0 && @weatherduration>0
+    tailwind=battler.pbOwnSide.effects[PBEffects::Tailwind]
+    state[:tailwind]=tailwind if tailwind>0
+    return false if state.empty?
+    battler.azureJetstream=state
+    return true
+  end
+
+  def azureReleaseJetstream(battler)
+    state=battler.azureJetstream
+    battler.azureJetstream=nil
+    return if !state
+    side=battler.index%2
+    effects=@sides[side].effects
+    if state[:tailwind] && state[:tailwind]==effects[PBEffects::Tailwind] && !azureJetstreamForSide?(side)
+      effects[PBEffects::Tailwind]=0
+      message=side==0 ? "Your team's tailwind stopped blowing!" : "The opposing team's tailwind stopped blowing!"
+      pbDisplay(_INTL(message))
+    end
+    return if state[:weather]!=[@weather,@weatherduration] || azureJetstreamWeatherExtended?
+    restore_climate=[PBWeather::SUNNYDAY,PBWeather::RAINDANCE,PBWeather::SANDSTORM,PBWeather::HAIL].include?(@weather)
+    @weather=0
+    @weatherduration=0
+    @field.effects[PBEffects::HarshSunlight]=false
+    @field.effects[PBEffects::HeavyRain]=false
+    pbDisplay(_INTL("The weather sustained by Jetstream ended!"))
+    if restore_climate && @weatherbackup!=0
+      @weather=@weatherbackup
+      @weatherduration=-1
+      pbCommonAnimation(@weatherbackupanim,nil,nil)
+      pbDisplay(_INTL("The initial weather took over again!"))
+    end
+    if restore_climate && $febackup==34
+      $fefieldeffect=34
+      pbChangeBGSprite
+      pbDisplay(_INTL("The starry sky shone through!"))
+      seedCheck
     end
   end
 end
@@ -1086,6 +1141,12 @@ class PokeBattle_Move
     alias azure_move_compat_pbOnDamageLost pbOnDamageLost
     def pbOnDamageLost(damage,attacker,opponent)
       azure_move_compat_pbOnDamageLost(damage,attacker,opponent)
+      if damage>0 && opponent && !opponent.damagestate.substitute
+        source=opponent.pbRiteOfSpringSource
+        if source && source.effects[PBEffects::HealBlock]==0
+          pbRecoverMoveHP(source,source,[damage*3/10,1].max)
+        end
+      end
       if damage>0 && attacker && opponent && attacker.index!=opponent.index && opponent.pokemon
         opponent.effects[PBEffects::DamagingMoveThisTurn]=true
         counts=@battle.instance_variable_get(:@azure_hits_taken) || {}
@@ -1096,11 +1157,11 @@ class PokeBattle_Move
       if damage>0 && attacker && opponent && isContactMove? &&
          !attacker.hasWorkingAbility(:LONGREACH) &&
          !attacker.hasWorkingItem(:PROTECTIVEPADS)
-        attacker.azureConsumeNeedle if attacker.effects[PBEffects::Needles]>0
-        if !attacker.isFainted? && opponent.effects[PBEffects::MoltenStance] &&
+        if !attacker.isFainted? &&
+           (opponent.effects[PBEffects::MoltenStance] || opponent.effects[PBEffects::FlameWreath]>0) &&
            attacker.pbCanBurn?(false)
           attacker.pbBurn(opponent)
-          @battle.pbDisplay(_INTL("{1}'s molten stance burned {2}!",opponent.pbThis,attacker.pbThis(true)))
+          @battle.pbDisplay(_INTL("Contact with {1} burned {2}!",opponent.pbThis,attacker.pbThis(true)))
         end
       end
     end
@@ -1334,14 +1395,12 @@ class PokeBattle_Move_270 < PokeBattle_Move
   end
 end
 
-# Foul Gambit restores three quarters of the damage it dealt, but only when
-# that hit actually knocks out the target. This is recovery rather than a
-# draining effect, so Liquid Ooze and Big Root intentionally do not alter it.
+# Foul Gambit restores the damage dealt on a knockout.
 class PokeBattle_Move_21F < PokeBattle_Move
   def pbEffect(attacker,opponent,hitnum=0,alltargets=nil,showanimation=true)
     ret=super(attacker,opponent,hitnum,alltargets,showanimation)
     if opponent.isFainted? && opponent.damagestate.hplost>0 && !attacker.isFainted?
-      hpgain=[(opponent.damagestate.hplost*3/4.0).floor,1].max
+      hpgain=opponent.damagestate.hplost
       hpgain=apply_tribute_healing(attacker,hpgain,attacker) if defined?(apply_tribute_healing)
       recovered=pbRecoverMoveHP(attacker,attacker,hpgain)
       @battle.pbDisplay(_INTL("{1}'s gambit restored its HP!",attacker.pbThis)) if recovered>0
@@ -1350,9 +1409,15 @@ class PokeBattle_Move_21F < PokeBattle_Move
   end
 end
 
-# Sweltering Strike is explicitly marked "Placeholder" in Azure's PBS. It is
-# therefore a normal damaging move until its designers assign another effect.
 class PokeBattle_Move_22C < PokeBattle_Move
+  def pbEffect(attacker,opponent,hitnum=0,alltargets=nil,showanimation=true)
+    ret=super
+    if ret>0 && !opponent.isFainted? && opponent.pbHasType?(:WATER)
+      opponent.effects[PBEffects::WaterTypeLoss]=@battle.turncount+2
+      @battle.pbDisplay(_INTL("{1} lost its Water typing!",opponent.pbThis))
+    end
+    return ret
+  end
 end
 
 # Ergo Proxy copies the target's original types to the user and changes the
@@ -1403,20 +1468,11 @@ class PokeBattle_Move_22E < PokeBattle_Move
   end
 end
 
-# Coral Burst halves its base power against a resistant target, then pivots the
-# user after a successful resisted hit. Its high critical ratio remains driven
-# by the PBS flag and the engine's standard critical-hit pipeline.
+# Coral Burst pivots after a successful hit against a resistant target.
 class PokeBattle_Move_24A < PokeBattle_Move
-  def pbBaseDamage(basedmg,attacker,opponent)
-    type=pbType(@type,attacker,opponent)
-    typemod=pbTypeModifier(type,attacker,opponent)
-    @azure_coral_burst_resisted=(typemod>0 && typemod<4)
-    return @azure_coral_burst_resisted ? [basedmg/2,1].max : basedmg
-  end
-
   def pbEffect(attacker,opponent,hitnum=0,alltargets=nil,showanimation=true)
     ret=super(attacker,opponent,hitnum,alltargets,showanimation)
-    if @azure_coral_burst_resisted && opponent.damagestate.calcdamage>0 &&
+    if opponent.damagestate.typemod.between?(1,3) && opponent.damagestate.calcdamage>0 &&
        !attacker.isFainted? && @battle.pbCanChooseNonActive?(attacker.index) &&
        !@battle.pbAllFainted?(@battle.pbParty(opponent.index)) &&
        !(attacker.hasWorkingAbility(:PARENTALBOND) && hitnum==0)
@@ -1429,19 +1485,27 @@ class PokeBattle_Move_24A < PokeBattle_Move
   end
 end
 
-# Pestilence uses Azure's standard half-damage drain behavior and doubles in
-# power if the target had already taken direct move damage during this round.
+# Pestilence doubles if its target already lost HP earlier in the round.
 class PokeBattle_Move_24F < PokeBattle_Move_0DD
+  def pbEffect(attacker,opponent,hitnum=0,alltargets=nil,showanimation=true)
+    if hitnum==0 || !defined?(@pestilence_prior_damage)
+      @pestilence_prior_damage=opponent.effects[PBEffects::TributeDamageTaken]>0
+    end
+    @pestilence_calculating=true
+    return super
+  ensure
+    @pestilence_calculating=false
+  end
+
   def pbBaseDamage(basedmg,attacker,opponent)
-    return opponent.effects[PBEffects::DamagingMoveThisTurn] ? basedmg*2 : basedmg
+    damaged=@pestilence_calculating ? @pestilence_prior_damage : opponent.effects[PBEffects::TributeDamageTaken]>0
+    return damaged ? basedmg*2 : basedmg
   end
 end
 
-# Glacial Slam uses the established Jump Kick crash path on both a full miss
-# and a grazing miss. Its PBS 10% additional-effect roll supplies the freeze.
 class PokeBattle_Move_26F < PokeBattle_Move
-  def function
-    return 0x10B
+  def pbCrashOnAccuracyMiss?
+    return true
   end
 
   def pbAdditionalEffect(attacker,opponent)
@@ -1466,25 +1530,10 @@ class PokeBattle_Move_278 < PokeBattle_Move
   end
 end
 
-# Function 277 is shared by Azure's Jetstream and Battle Cry. Jetstream keeps
-# finite weather and the user's side of Tailwind from counting down while its
-# user remains active. Battle Cry reuses Azure's pre-existing two-round bitmask:
-# 2 means queued for next round, 1 means the 1.3x boost is currently active.
 class PokeBattle_Move_277 < PokeBattle_Move
   def pbEffect(attacker,opponent,hitnum=0,alltargets=nil,showanimation=true)
-    ret=super(attacker,opponent,hitnum,alltargets,showanimation)
-    return ret if opponent.damagestate.calcdamage<=0
-    if @id==PBMoves::BATTLECRY
-      if attacker.pbOwnSide.effects[PBEffects::BattleCry]<2
-        attacker.pbOwnSide.effects[PBEffects::BattleCry]+=2
-        if !@battle.pbIsOpposing?(attacker.index)
-          @battle.pbDisplay(_INTL("{1} invigorated your team!",attacker.pbThis))
-        else
-          @battle.pbDisplay(_INTL("{1} invigorated the opposing team!",attacker.pbThis))
-        end
-      end
-    else
-      attacker.azureJetstream=true
+    ret=super
+    if ret>0 && @battle.azureExtendJetstream(attacker)
       @battle.pbDisplay(_INTL("{1}'s jetstream sustained the wind and weather!",attacker.pbThis))
     end
     return ret
@@ -1532,8 +1581,15 @@ class PokeBattle_Move_224 < PokeBattle_Move
     ret=super(attacker,opponent,hitnum,alltargets,showanimation)
     if !@azure_pierce_swap_applied && opponent.damagestate.calcdamage>0
       @azure_pierce_swap_applied=true
-      attacker.effects[PBEffects::PowerTrick]=!attacker.effects[PBEffects::PowerTrick]
-      @battle.pbDisplay(_INTL("{1} swapped its Attack and Defense!",attacker.pbThis))
+      attacker.effects[PBEffects::PierceTheVeil]=!attacker.effects[PBEffects::PierceTheVeil]
+      attacker.attack,attacker.defense=attacker.defense,attacker.attack
+      attacker.spatk,attacker.spdef=attacker.spdef,attacker.spatk
+      stages=attacker.effects[PBEffects::MultiTurnAttack]==PBMoves::BINDINGWORD ?
+        attacker.effects[PBEffects::StatChangeHolder] : attacker.stages
+      [ [PBStats::ATTACK,PBStats::DEFENSE], [PBStats::SPATK,PBStats::SPDEF] ].each do |offense,defense|
+        stages[offense],stages[defense]=stages[defense],stages[offense]
+      end
+      @battle.pbDisplay(_INTL("{1} swapped its offenses and defenses!",attacker.pbThis))
     end
     return ret
   end
@@ -1612,134 +1668,73 @@ class PokeBattle_Move_22B < PokeBattle_Move
   end
 end
 
-# Each successful Tale's End embeds one blade, up to four. The target is
-# executed only when its remaining HP is strictly below the accumulated
-# 1/16-per-blade threshold, as specified by Azure's PBS description.
 class PokeBattle_Move_23A < PokeBattle_Move
   def pbEffect(attacker,opponent,hitnum=0,alltargets=nil,showanimation=true)
+    hp_before_hit=opponent.hp
     ret=super(attacker,opponent,hitnum,alltargets,showanimation)
-    if opponent.damagestate.calcdamage>0 && !opponent.damagestate.substitute &&
-       !opponent.isFainted?
-      opponent.effects[PBEffects::TalesEndBlades]=[
-        opponent.effects[PBEffects::TalesEndBlades]+1,4
-      ].min
-      blades=opponent.effects[PBEffects::TalesEndBlades]
-      threshold=(opponent.totalhp*blades/16.0).floor
-      if opponent.hp<threshold
-        @battle.pbDisplay(_INTL("The blades brought {1}'s tale to an end!",opponent.pbThis(true)))
-        opponent.pbReduceHP(opponent.hp)
+    if ret>0 && !opponent.isFainted? && opponent.hp*4<=opponent.totalhp
+      @battle.pbDisplay(_INTL("{1}'s tale came to an end!",opponent.pbThis))
+      extra_damage=opponent.pbReduceHP(opponent.hp)
+      if opponent.isFainted?
+        opponent.damagestate.hplost+=extra_damage
+        opponent.faintingMove=[attacker,self,hp_before_hit]
+        ret+=extra_damage
       end
     end
     return ret
   end
 end
 
-# Lotus Bloom is Azure's slot-persistent delayed attack. Its counters are
-# permanent battler-position effects, so a replacement inherits the seed if
-# the original target faints. The delayed strike flag bypasses rescheduling.
 class PokeBattle_Move_21E < PokeBattle_Move
   def pbEffect(attacker,opponent,hitnum=0,alltargets=nil,showanimation=true)
-    return super if @azure_lotus_bloom_strike
-    if opponent.effects[PBEffects::LotusBloom]>0
-      @battle.pbDisplay(_INTL("But it failed!"))
-      return -1
+    ret=super
+    if ret>0 && (opponent.isFainted? ||
+       (@battle.pbWeather==PBWeather::SUNNYDAY && @battle.field.effects[PBEffects::HarshSunlight])) &&
+       @battle.field.effects[PBEffects::GrassyTerrain]<=0 && $fefieldeffect!=2 && $fefieldeffect!=35
+      @battle.field.effects[PBEffects::GrassyTerrain]=pbMoveDuration(attacker,5)
+      @battle.pbDisplay(_INTL("The terrain became grassy!"))
+      @battle.seedCheck
     end
-    pbShowAnimation(@id,attacker,nil,hitnum,alltargets,showanimation)
-    opponent.effects[PBEffects::LotusBloom]=3
-    opponent.effects[PBEffects::LotusBloomMove]=@id
-    opponent.effects[PBEffects::LotusBloomUser]=attacker.index
-    opponent.effects[PBEffects::LotusBloomPkmnIdx]=attacker.pokemonIndex
-    @battle.pbDisplay(_INTL("A lotus seed was planted around {1}!",opponent.pbThis(true)))
-    return 0
+    return ret
   end
 end
 
-# Sunfury charges normally, but fires immediately in usable sunshine (and with
-# the engine's established two-turn bypasses). A successful strike clears all
-# entry hazards from the user's side and scorches the opposing side for three
-# end-of-round Fire-type damage ticks.
 class PokeBattle_Move_22F < PokeBattle_Move
-  def pbTwoTurnAttack(attacker,checking=false)
-    @immediate=false
-    if attacker.effects[PBEffects::TwoTurnAttack]==0
-      @immediate=true if @battle.pbWeather==PBWeather::SUNNYDAY &&
-                         !attacker.hasWorkingItem(:UTILITYUMBRELLA)
-    end
-    if !@immediate
-      if attacker.hasWorkingAbility(:INSOMNIA)
-        @immediate=true
-      elsif attacker.hasWorkingItem(:POWERHERB)
-        @immediate=true
-        if !checking
-          itemname=PBItems.getName(attacker.item)
-          attacker.pokemon.itemRecycle=attacker.item
-          attacker.pokemon.itemInitial=0 if attacker.pokemon.itemInitial==attacker.item
-          attacker.item=0
-          @battle.pbDisplay(_INTL("{1} consumed its {2}!",attacker.pbThis,itemname))
-        end
-      end
-    end
-    return false if @immediate
-    return attacker.effects[PBEffects::TwoTurnAttack]==0
-  end
-
   def pbEffect(attacker,opponent,hitnum=0,alltargets=nil,showanimation=true)
-    if attacker.effects[PBEffects::TwoTurnAttack]>0
-      @battle.pbDisplay(_INTL("{1} gathered the fury of the sun!",attacker.pbThis))
-      return 0
-    end
-    ret=super(attacker,opponent,hitnum,alltargets,showanimation)
-    if opponent.damagestate.calcdamage>0
-      side=attacker.pbOwnSide
-      cleared=side.effects[PBEffects::StealthRock] || side.effects[PBEffects::StickyWeb] ||
-              side.effects[PBEffects::Spikes]>0 || side.effects[PBEffects::ToxicSpikes]>0 ||
-              side.effects[PBEffects::Caltrops]>0 || side.effects[PBEffects::MysticTree]>0
-      side.effects[PBEffects::StealthRock]=false
-      side.effects[PBEffects::StickyWeb]=false
-      side.effects[PBEffects::Spikes]=0
-      side.effects[PBEffects::ToxicSpikes]=0
-      side.effects[PBEffects::Caltrops]=0
-      side.effects[PBEffects::MysticTree]=0
-      @battle.pbDisplay(_INTL("{1} burned away the hazards!",attacker.pbThis)) if cleared
-      opponent.pbOwnSide.effects[PBEffects::Sunfury]=3
-      @battle.pbDisplay(_INTL("The opposing battlefield was engulfed in solar fire!")) if !@battle.pbIsOpposing?(attacker.index)
-      @battle.pbDisplay(_INTL("Your battlefield was engulfed in solar fire!")) if @battle.pbIsOpposing?(attacker.index)
+    ret=super
+    if ret>0 && @battle.pbWeather==PBWeather::SUNNYDAY && @battle.field.effects[PBEffects::HarshSunlight]
+      tribute_set_scorching_ground(opponent.pbOwnSide,pbMoveDuration(attacker,5))
     end
     return ret
   end
 end
 
-# Red Sun's Zenith stores independently expiring stars on the target's side.
-# The third-star attack is tripled and consumes the user, while every new star
-# keeps the engine's ordinary Gravity effect active for its five-turn orbit.
+# Every third use by this Pokémon triples the attack and costs its remaining HP.
 class PokeBattle_Move_23F < PokeBattle_Move
-  def pbBaseDamage(basedmg,attacker,opponent)
-    stars=opponent.pbOwnSide.effects[PBEffects::RedSunStars]
-    stars=[] if !stars.is_a?(Array)
-    stars=stars.find_all { |turns| turns>0 }
-    @azure_red_sun_triple=(stars.length>=2)
-    return @azure_red_sun_triple ? basedmg*3 : basedmg
+  def pbRedSunUseCount(attacker)
+    uses=@battle.instance_variable_get(:@red_sun_uses)
+    return uses ? uses[attacker.pokemon] : 0
   end
 
-  def pbEffect(attacker,opponent,hitnum=0,alltargets=nil,showanimation=true)
-    ret=super(attacker,opponent,hitnum,alltargets,showanimation)
-    if opponent.damagestate.calcdamage>0
-      side=opponent.pbOwnSide
-      stars=side.effects[PBEffects::RedSunStars]
-      stars=[] if !stars.is_a?(Array)
-      stars=stars.find_all { |turns| turns>0 }
-      stars.push(6) if stars.length<3
-      side.effects[PBEffects::RedSunStars]=stars
-      @battle.field.effects[PBEffects::Gravity]=[
-        @battle.field.effects[PBEffects::Gravity],6
-      ].max
-      @battle.pbDisplay(_INTL("A red star began orbiting above {1}'s battlefield!",opponent.pbThis(true)))
-      if @azure_red_sun_triple && !attacker.isFainted?
-        @battle.pbDisplay(_INTL("The three stars reached their zenith!"))
-        attacker.pbReduceHP(attacker.hp)
-      end
-    end
-    return ret
+  def pbOnStartUse(attacker)
+    uses=@battle.instance_variable_get(:@red_sun_uses) || Hash.new(0).compare_by_identity
+    @battle.instance_variable_set(:@red_sun_uses,uses)
+    uses[attacker.pokemon]+=1
+    @red_sun_zenith=(uses[attacker.pokemon] % 3)==0
+    return true
+  end
+
+  def pbBaseDamage(basedmg,attacker,opponent)
+    return @red_sun_zenith ? basedmg*3 : basedmg
+  end
+
+  def pbFinishRedSunZenith(attacker)
+    return if !@red_sun_zenith || attacker.isFainted?
+    @battle.pbDisplay(_INTL("The red sun reached its zenith!"))
+    old_hp=attacker.hp
+    attacker.hp=0
+    @battle.scene.pbHPChanged(attacker,old_hp,true)
+    attacker.pbFaint
   end
 end
 
@@ -1751,29 +1746,26 @@ class PokeBattle_Move_249 < PokeBattle_Move
     pbShowAnimation(@id,attacker,nil,hitnum,alltargets,showanimation)
     @battle.field.effects[PBEffects::BlueShift]=2
     @battle.pbDisplay(_INTL("The type chart was shifted into reverse!"))
-    attacker.pbReduceHP(attacker.hp)
+    old_hp=attacker.hp
+    attacker.hp=0
+    @battle.scene.pbHPChanged(attacker,old_hp,true)
     return 0
   end
 end
 
-# Circadian Rhythm is self-targeted in Azure's PBS. It sleeps the user and
-# marks it to gain one stage in both offenses and Speed at each sleeping EOR.
+# The sleeping target gains a stage in both offenses and Speed each round.
 class PokeBattle_Move_24B < PokeBattle_Move
   def pbEffect(attacker,opponent,hitnum=0,alltargets=nil,showanimation=true)
-    if !attacker.pbCanSleep?(true)
-      @battle.pbDisplay(_INTL("But it failed!"))
-      return -1
-    end
-    pbShowAnimation(@id,attacker,nil,hitnum,alltargets,showanimation)
-    attacker.pbSleep
-    attacker.effects[PBEffects::CircadianRhythm]=true
-    @battle.pbDisplay(_INTL("{1} fell into a powerful circadian rhythm!",attacker.pbThis))
+    return -1 if !opponent.pbCanSleep?(true)
+    pbShowAnimation(@id,attacker,opponent,hitnum,alltargets,showanimation)
+    opponent.pbSleep
+    opponent.effects[PBEffects::CircadianRhythm]=true
+    @battle.pbDisplay(_INTL("{1} fell into a powerful circadian rhythm!",opponent.pbThis))
     return 0
   end
 end
 
-# Needle Blast records one embedded needle for every damaging hit. Needles are
-# consumed by the shared contact hook or by the end-of-round processor.
+# Needle Blast embeds one needle per hit for the end-of-round processor.
 class PokeBattle_Move_24D < PokeBattle_Move
   def pbIsMultiHit
     return true
@@ -1810,5 +1802,231 @@ class PokeBattle_Move_24E < PokeBattle_Move
     attacker.effects[PBEffects::MoltenStance]=true
     @battle.pbDisplay(_INTL("{1} assumed a molten stance!",attacker.pbThis))
     return 0
+  end
+end
+
+# Absolute Zero orders the target last within its priority bracket next turn.
+class PokeBattle_Move_3F2 < PokeBattle_Move
+  def pbEffect(attacker,opponent,hitnum=0,alltargets=nil,showanimation=true)
+    damage=super
+    if damage>0 && !opponent.isFainted? && !opponent.damagestate.substitute
+      opponent.effects[PBEffects::AbsoluteZeroTurn]=@battle.turncount+1
+      @battle.pbDisplay(_INTL("{1} was slowed to a standstill!",opponent.pbThis))
+    end
+    return damage
+  end
+end
+
+# Mass Hysteria lowers both of the user's defenses and confuses its target.
+class PokeBattle_Move_3F3 < PokeBattle_Move
+  def pbEffect(attacker,opponent,hitnum=0,alltargets=nil,showanimation=true)
+    damage=super
+    if damage>0
+      [PBStats::DEFENSE,PBStats::SPDEF].each do |stat|
+        attacker.pbReduceStat(stat,1,false,@id,attacker,true,true)
+      end
+    end
+    return damage
+  end
+
+  def pbAdditionalEffect(attacker,opponent)
+    return false unless opponent.pbCanConfuse?(false)
+    opponent.effects[PBEffects::Confusion]=pbMoveDuration(attacker,3)
+    @battle.pbCommonAnimation("Confusion",opponent,nil)
+    @battle.pbDisplay(_INTL("{1} became confused!",opponent.pbThis))
+    return true
+  end
+end
+
+class PokeBattle_Move_3F4 < PokeBattle_Move
+  def pbEffect(attacker,opponent,hitnum=0,alltargets=nil,showanimation=true)
+    side=attacker.pbOwnSide
+    return -1 if side.effects[PBEffects::EtherealCloak]>0
+    pbShowAnimation(@id,attacker,nil,hitnum,alltargets,showanimation)
+    side.effects[PBEffects::EtherealCloak]=5
+    @battle.eachSameSideBattler(attacker.index) { |ally| ally.effects[PBEffects::Wounded]=0 }
+    @battle.pbDisplay(_INTL("An ethereal cloak sheltered {1}'s team!",attacker.pbThis))
+    return 0
+  end
+end
+
+class PokeBattle_Move_3F5 < PokeBattle_Move
+  def pbEffect(attacker,opponent,hitnum=0,alltargets=nil,showanimation=true)
+    full_hp=opponent.hp==opponent.totalhp
+    damage=super
+    if damage>0 && !opponent.damagestate.substitute
+      if opponent.isFainted?
+        pbRecoverMoveHP(attacker,attacker,attacker.totalhp*2/3)
+      elsif full_hp && !opponent.effects[PBEffects::Curse]
+        opponent.effects[PBEffects::Curse]=true
+        @battle.pbDisplay(_INTL("{1} was cursed!",opponent.pbThis))
+      end
+    end
+    return damage
+  end
+end
+
+class PokeBattle_Move_3F6 < PokeBattle_Move
+  def pbAdditionalEffect(attacker,opponent)
+    stats=attacker.status==PBStatuses::POISON ? [PBStats::DEFENSE,PBStats::SPDEF] : [PBStats::SPEED]
+    stats.each do |stat|
+      if opponent.pbReduceStat(stat,1,false,@id,attacker)
+        attacker.pbIncreaseStat(stat,1,false,@id,attacker)
+      end
+    end
+  end
+end
+
+class PokeBattle_Move_3F7 < PokeBattle_Move
+  def pbEffect(attacker,opponent,hitnum=0,alltargets=nil,showanimation=true)
+    return -1 if opponent.pbRiteOfSpringSource || opponent.effects[PBEffects::Substitute]>0
+    pbShowAnimation(@id,attacker,opponent,hitnum,alltargets,showanimation)
+    opponent.effects[PBEffects::RiteOfSpring]=[attacker,attacker.pokemon]
+    @battle.pbDisplay(_INTL("{1} was bound by the Rite of Spring!",opponent.pbThis))
+    return 0
+  end
+end
+
+class PokeBattle_Move_3F8 < PokeBattle_Move
+  def pbEffect(attacker,opponent,hitnum=0,alltargets=nil,showanimation=true)
+    damage=super
+    attacker.pbReduceStat(PBStats::DEFENSE,1,false,@id,attacker,true,true) if damage>0
+    return damage
+  end
+
+  def pbAdditionalEffect(attacker,opponent)
+    opponent.pbReduceStat(PBStats::SPDEF,1,false,@id,attacker)
+  end
+end
+
+class PokeBattle_Move_3F9 < PokeBattle_Move_295
+  def pbEffect(attacker,opponent,hitnum=0,alltargets=nil,showanimation=true)
+    damage=super
+    if damage>0 && !attacker.isFainted? && !attacker.hasWorkingAbility(:ROCKHEAD) &&
+       !attacker.hasWorkingAbility(:MAGICGUARD) &&
+       !(attacker.hasWorkingAbility(:WONDERGUARD) && $fefieldeffect==44)
+      recoil=attacker.pbAdjustAbilityRecoilCrashDamage([damage/4,1].max)
+      if recoil>0
+        attacker.pbReduceHP(recoil)
+        @battle.pbDisplay(_INTL("{1} is damaged by the recoil!",attacker.pbThis))
+      end
+    end
+    return damage
+  end
+end
+
+class PokeBattle_Move_3FA < PokeBattle_Move
+  SCREENS=[PBEffects::Reflect,PBEffects::LightScreen,PBEffects::AuroraVeil,
+           PBEffects::DuneDefense,PBEffects::WideGuard,PBEffects::QuickGuard].freeze
+
+  def pbRefractingTarget(attacker)
+    screens=@battle.sides.any? { |side| SCREENS.any? { |effect| side.effects[effect].to_i>0 } }
+    return screens ? PBTargets::AllOpposing : PBTargets::SingleNonUser
+  end
+
+  def pbBaseDamage(power,attacker,opponent)
+    return pbRefractingTarget(attacker)==PBTargets::AllOpposing ? power*3/2 : power
+  end
+end
+
+class PokeBattle_Move_3FB < PokeBattle_Move
+  def pbAdditionalEffect(attacker,opponent)
+    return false unless opponent.status==PBStatuses::POISON
+    poison_count=opponent.statusCount
+    opponent.status=0
+    unless opponent.pbCanParalyze?(false)
+      opponent.status=PBStatuses::POISON
+      opponent.statusCount=poison_count
+      return false
+    end
+    opponent.pbParalyze(attacker)
+    @battle.pbDisplay(_INTL("{1}'s poison turned into paralysis!",opponent.pbThis))
+    return true
+  end
+end
+
+class PokeBattle_Move_3FC < PokeBattle_Move
+  def pbDisplayUseMessage(attacker)
+    if attacker.effects[PBEffects::Confusion]==0 && attacker.effects[PBEffects::DamagingMoveThisTurn]
+      @battle.pbDisplay(_INTL("{1} flinched and couldn't move!",attacker.pbThis))
+      return -1
+    end
+    return super
+  end
+
+  def pbOnStartUse(attacker)
+    if attacker.effects[PBEffects::Confusion]>0
+      attacker.effects[PBEffects::Confusion]=0
+      @battle.pbDisplay(_INTL("{1} snapped out of its confusion!",attacker.pbThis))
+    end
+    return true
+  end
+end
+
+class PokeBattle_Move_3FD < PokeBattle_Move
+  def pbEffect(attacker,opponent,hitnum=0,alltargets=nil,showanimation=true)
+    side=attacker.pbOwnSide
+    return -1 if side.effects[PBEffects::DoubleDose]>0
+    pbShowAnimation(@id,attacker,nil,hitnum,alltargets,showanimation)
+    side.effects[PBEffects::DoubleDose]=5
+    @battle.pbDisplay(_INTL("{1}'s side prepared a double dose!",attacker.pbThis))
+    return 0
+  end
+end
+
+class PokeBattle_Move_3FE < PokeBattle_Move
+  def pbEffect(attacker,opponent,hitnum=0,alltargets=nil,showanimation=true)
+    side=attacker.pbOpposingSide
+    return -1 if side.effects[PBEffects::Undertow]>=3
+    pbShowAnimation(@id,attacker,nil,hitnum,alltargets,showanimation)
+    side.effects[PBEffects::Undertow]+=1
+    @battle.pbDisplay(_INTL("An undertow formed around the opposing team!"))
+    return 0
+  end
+end
+
+class PokeBattle_Move_3FF < PokeBattle_Move
+  def pbEffect(attacker,opponent,hitnum=0,alltargets=nil,showanimation=true)
+    damage=super
+    if damage>0
+      [PBStats::DEFENSE,PBStats::SPDEF].each do |stat|
+        attacker.pbReduceStat(stat,1,false,@id,attacker,true,true)
+      end
+    end
+    return damage
+  end
+end
+
+class PokeBattle_Move_400 < PokeBattle_Move
+  def pbEffect(attacker,opponent,hitnum=0,alltargets=nil,showanimation=true)
+    return -1 if opponent.effects[PBEffects::Substitute]>0
+    pbShowAnimation(@id,attacker,opponent,hitnum,alltargets,showanimation)
+    if opponent.pbReduceStat(PBStats::SPDEF,1,false,@id,attacker)
+      attacker.pbIncreaseStat(PBStats::SPDEF,1,false,@id,attacker)
+    end
+    attacker.effects[PBEffects::Inquisition]=true
+    return 0
+  end
+end
+
+class PokeBattle_Move_401 < PokeBattle_Move
+  def pbUsesHigherOffensiveStat?
+    return true
+  end
+
+  def pbIsPhysical?(type)
+    return super unless @user
+    return pbHigherOffensiveStatWithCategory(@user).last==PBStats::ATTACK
+  end
+
+  def pbIsSpecial?(type)
+    return !pbIsPhysical?(type)
+  end
+
+  def pbAdditionalEffect(attacker,opponent)
+    stat=pbHigherOffensiveStatWithCategory(opponent).last
+    if opponent.pbReduceStat(stat,1,false,@id,attacker)
+      attacker.pbIncreaseStat(stat,1,false,@id,attacker)
+    end
   end
 end

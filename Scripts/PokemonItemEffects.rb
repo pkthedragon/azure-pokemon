@@ -3749,13 +3749,11 @@ ItemHandlers::BattleUseOnPokemon.add(:LEVIABERRY,proc{|item,pokemon,battler,scen
 })
 
 ItemHandlers::BattleUseOnPokemon.add(:COCONBERRY,proc{|item,pokemon,battler,scene|
-   itemname=PBItems.getName(item)
    if !battler || battler.isFainted?
      scene.pbDisplay(_INTL("But it had no effect!"))
      next false
    end
-   shieldhp=(battler.totalhp/3).floor
-   if battler.pbApplyShield(shieldhp,_INTL("{1} shielded itself with the {2}!",battler.pbThis,itemname))
+   if battler.pbApplyCoconBerryShield(1)
      next true
    end
    scene.pbDisplay(_INTL("But it had no effect!"))

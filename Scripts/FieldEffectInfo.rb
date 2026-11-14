@@ -344,7 +344,7 @@ FIELDEFFECTDATA = {
     :fieldTransformations => {
       :transformsTo => {
         "Water Surface" => ["Heat Wave", "Flame Burst", "Lava Plume", "Eruption", "Searing Shot",
-                            "Fire Pledge", "Inferno Overdrive", "Magma Drift", "Earthquake",
+                            "Fire Pledge", "Inferno Overdrive", "Lava Surf", "Earthquake",
                             "Magnitude", "Bulldoze", "Tectonic Rage", "Dive"]
       }
     },

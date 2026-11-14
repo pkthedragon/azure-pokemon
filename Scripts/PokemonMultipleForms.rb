@@ -590,6 +590,16 @@ def pbSpindaSpots(pokemon,bitmap)
   end
 end
 
+MultipleForms.register(:FURFROU,{
+    "type2"=>proc { |pokemon|
+      types=[:NORMAL,:PSYCHIC,:FAIRY,:GROUND,:DARK,:POISON,:GRASS,:WATER,:FIRE,:DRAGON]
+      next PBTypes.const_get(types.fetch(pokemon.form,:NORMAL))
+    },
+    "onSetForm"=>proc { |pokemon,form|
+      pbSeenForm(pokemon)
+    }
+  })
+
 MultipleForms.register(:UNOWN,{
     "getFormOnCreation"=>proc{|pokemon|
       next rand(28)

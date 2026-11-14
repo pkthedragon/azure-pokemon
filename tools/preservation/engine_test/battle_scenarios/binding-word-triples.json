@@ -28,9 +28,9 @@
     "The effects of the Neutralizing Gas wore off!",
     "HP [3] Weezing 117 -> 101/132 (-16)",
     "HP [1] Blissey 312 -> 259/322 (-53)",
-    "trap=Binding Word turns=4 source=0 binding_band=true",
-    "trap=Binding Word turns=4 source=2 binding_band=false",
+    "trap=Binding Word turns=5 source=0 binding_band=true",
+    "trap=Binding Word turns=5 source=2 binding_band=false",
     "Blissey's Leftovers restored its HP",
-    "trap=Binding Word turns=3 source=2 binding_band=false"
+    "trap=Binding Word turns=4 source=2 binding_band=false"
   ]
 }

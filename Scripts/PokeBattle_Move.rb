@@ -19,6 +19,7 @@ end
 
 class PokeBattle_Move
   attr_accessor(:id)
+  attr_accessor(:azureInquisitionBoost)
   attr_reader(:battle)
 # Changed from immutable to mutable to allow for Z-status moves
 # changed from: attr_reader(:name)
@@ -39,6 +40,9 @@ class PokeBattle_Move
   attr_accessor(:totalpp)
   attr_accessor(:zmove)
   attr_reader(:user)
+  attr_accessor :gem_item_used
+  attr_accessor(:battle_cry_boost)
+  attr_accessor :fertilize_boost, :natural_order_boost
 
   NOTYPE          = 0x01
   IGNOREPKMNTYPES = 0x02
@@ -1205,7 +1209,9 @@ class PokeBattle_Move
   def pbScaleTargetDamage(damage,attacker,opponent)
     spread=pbSpreadMove?(attacker)
     if spread && (@battle.tripleBattle? || pbTargetsAll?(attacker))
-      unless tribute_attack?(attacker,:EARTHTRIBUTE) && heroic_tribute?(attacker,:SANDSLASH)
+      full_power=(id==PBMoves::REFRACTINGSTRIKE && @battle.field.effects[PBEffects::HarshSunlight] &&
+                  @battle.pbWeather==PBWeather::SUNNYDAY)
+      unless full_power || (tribute_attack?(attacker,:EARTHTRIBUTE) && heroic_tribute?(attacker,:SANDSLASH))
         if @battle.tripleBattle?
           damage=(damage*0.5).round
         elsif !attacker.hasWorkingItem(:KINGSROCK)
@@ -1299,6 +1305,18 @@ class PokeBattle_Move
       end
     end
     return false
+  end
+
+  def pbUsePowerHerb(attacker,checking)
+    return false if attacker.effects[PBEffects::TwoTurnAttack]!=0 || !attacker.hasWorkingItem(:POWERHERB)
+    return true if checking
+    return false unless attacker.pbUseConsumableHeldItem(repeat: true)
+    if attacker.item==PBItems::POWERHERB
+      @battle.pbDisplay(_INTL("{1} took a dose from its Power Herb!",attacker.pbThis))
+    else
+      @battle.pbDisplay(_INTL("{1} consumed its Power Herb!",attacker.pbThis))
+    end
+    return true
   end
 
   def pbAdditionalEffect(attacker,opponent)
@@ -1957,6 +1975,9 @@ class PokeBattle_Move
     if id == PBMoves::FREEZEDRY && opponent.pbHasType?(PBTypes::WATER)
       typemod *= 4
     end
+    if id==PBMoves::SWELTERINGSTRIKE && type==PBTypes::WATER && opponent.pbHasType?(:WATER)
+      typemod*=4
+    end
     if id == PBMoves::NATURESCALL && (opponent.pbHasType?(PBTypes::STEEL))
       typemod*= 4
     end
@@ -2092,12 +2113,14 @@ class PokeBattle_Move
         @battle.pbDisplay(_INTL("It doesn't affect {1}...",opponent.pbThis(true)))
       end      
     end
-    # Horizon Focus
-    if id == PBMoves::HORIZONFOCUS && (@battle.pbWeather==PBWeather::SUNNYDAY) && typemod <= 4 && typemod > 0 && type == PBTypes::FLYING
-      firemod = pbTypeModNoMessages(PBTypes::FIRE,attacker,opponent,self,100)
-      if firemod >= 8
-        typemod = 8
-      end
+    return pbHorizonFocusTypeModifier(type,attacker,opponent,typemod)
+  end
+
+  def pbHorizonFocusTypeModifier(type,attacker,opponent,typemod)
+    if id==PBMoves::HORIZONFOCUS && @battle.field.effects[PBEffects::HarshSunlight] &&
+       @battle.pbWeather==PBWeather::SUNNYDAY && typemod<=4 && typemod>0 && type==PBTypes::FLYING &&
+       pbTypeModifier(PBTypes::FIRE,attacker,opponent)>=8
+      return 8
     end
     return typemod
   end
@@ -2640,10 +2663,8 @@ class PokeBattle_Move
     if attacker.hasWorkingItem(:MICLEBERRY)
       if (attacker.hasWorkingAbility(:GLUTTONY) && attacker.hp<=(attacker.totalhp/2).floor) ||
          attacker.hp<=(attacker.totalhp/4).floor
-        accuracy*=1.2
-        attacker.pokemon.itemRecycle=attacker.item
-        attacker.pokemon.itemInitial=0 if attacker.pokemon.itemInitial==attacker.item
-        attacker.item=0
+        accuracy*=1.0+0.2*attacker.pbHeldItemDose
+        attacker.pbUseConsumableHeldItem
       end
     end
     if attacker.hasWorkingAbility(:VICTORYSTAR)
@@ -2689,6 +2710,29 @@ class PokeBattle_Move
     return false
   end
 
+  def pbConsumeUsedGem(attacker)
+    return if !@gem_item_used || attacker.item!=@gem_item_used
+    @gem_item_used=nil
+    attacker.pbUseConsumableHeldItem
+  end
+
+  RESISTANCE_BERRY_TYPES={
+    CORNNBERRY: [:WATER,:GRASS], MAGOSTBERRY: [:NORMAL,:PSYCHIC],
+    RABUTABERRY: [:STEEL,:ELECTRIC], NOMELBERRY: [:FLYING,:ICE],
+    SPELONBERRY: [:DRAGON,:FIRE], PAMTREBERRY: [:POISON,:GROUND],
+    WATMELBERRY: [:BUG,:FAIRY], DURINBERRY: [:FIGHTING,:ROCK],
+    BELUEBERRY: [:DARK,:GHOST]
+  }.freeze
+
+  def pbExtraResistanceBerryMultiplier(holder,type)
+    applicable=RESISTANCE_BERRY_TYPES.any? do |berry,types|
+      holder.hasWorkingItem(berry) && types.any? { |candidate| isConst?(type,PBTypes,candidate) }
+    end
+    return 1.0 if !applicable
+    base=holder.hasWorkingAbility(:RIPEN) ? 0.5 : 0.75
+    return base**holder.pbHeldItemDose
+  end
+
 ################################################################################
 # Damage calculation and modifiers
 ################################################################################
@@ -2702,6 +2746,7 @@ class PokeBattle_Move
     end
 #### KUROTSUNE - 029 - END      
     return false if opponent.pbOwnSide.effects[PBEffects::LuckyChant]>0
+    return true if @function==0x275 && opponent.hp*2<=opponent.totalhp # Skyscraper
     return true if lock_on_boost
     if attacker.effects[PBEffects::LaserFocus]>0
       attacker.effects[PBEffects::LaserFocus]-=1
@@ -2787,6 +2832,10 @@ class PokeBattle_Move
   end
 
   def pbHigherOffensiveStat(attacker)
+    return pbHigherOffensiveStatWithCategory(attacker).first(2)
+  end
+
+  def pbHigherOffensiveStatWithCategory(attacker)
     attack=attacker.attack
     attack_stage=attacker.stages[PBStats::ATTACK]
     if attacker.effects[PBEffects::PowerTrick]
@@ -2797,9 +2846,9 @@ class PokeBattle_Move
     special_attack_stage=attacker.stages[PBStats::SPATK]
     scale=lambda { |stat,stage| stat*(stage>=0 ? (2+stage)/2.0 : 2.0/(2-stage)) }
     if scale.call(attack,attack_stage)>scale.call(special_attack,special_attack_stage)
-      return attack,attack_stage
+      return attack,attack_stage,PBStats::ATTACK
     end
-    return special_attack,special_attack_stage
+    return special_attack,special_attack_stage,PBStats::SPATK
   end
 
   def pbBaseDamageMultiplier(damagemult,attacker,opponent)
@@ -2980,7 +3029,7 @@ class PokeBattle_Move
     if attacker.hasWorkingAbility(:RECKLESS)
       if [0xFA,0xBB9,0xBBA].include?(@function) || # 1/4 recoil
          @function==0xFB ||  # Double-Edge, etc.
-         @function==0xFC ||  # Head Smash
+         [0xFC,0x3CD].include?(@function) ||  # Head Smash, Barrel Burst
          @function==0xFD ||  # Volt Tackle
          @function==0xFE ||  # Flare Blitz
          @function==0x10B || # Jump Kick, Hi Jump Kick
@@ -3107,15 +3156,11 @@ class PokeBattle_Move
        (attacker.hasWorkingItem(:DRAGONGEM) && isConst?(type,PBTypes,:DRAGON)) ||
        (attacker.hasWorkingItem(:DARKGEM) && isConst?(type,PBTypes,:DARK)) ||
        (attacker.hasWorkingItem(:FAIRYGEM) && isConst?(type,PBTypes,:FAIRY))
-      damagemult=(damagemult*1.3).round
-      attacker.pokemon.itemRecycle=attacker.item
-      attacker.pokemon.itemInitial=0 if attacker.pokemon.itemInitial==attacker.item
-  #### JERICHO - 013 - START
-      @battle.pbDisplayPaused(_INTL("The {1} strengthened {2}'s power!",PBItems.getName(attacker.pokemon.itemRecycle),self.name))      
-      $takegem=1
-    else
-      $takegem=0  
-  #### JERICHO - 013 - END  
+      damagemult=(damagemult*(1.0+0.3*attacker.pbHeldItemDose)).round
+      if @gem_item_used!=attacker.item
+        @gem_item_used=attacker.item
+        @battle.pbDisplayPaused(_INTL("The {1} strengthened {2}'s power!",PBItems.getName(attacker.item),self.name))
+      end
     end
     if attacker.hasWorkingItem(:ROCKINCENSE) && isConst?(type,PBTypes,:ROCK)
       damagemult=(damagemult*1.2).round
@@ -3159,6 +3204,7 @@ class PokeBattle_Move
       damagemult=(damagemult*1.2).round
     end    
     damagemult=pbBaseDamageMultiplier(damagemult,attacker,opponent)
+    damagemult*=2 if @azureInquisitionBoost
     #if move was called using Me First
     #  damagemult=(damagemult*1.5).round
     #end
@@ -3169,10 +3215,10 @@ class PokeBattle_Move
       helpmult = ($fefieldeffect == 50) ? 2.0 : 1.5
       damagemult=(damagemult*helpmult).round
     end
-    if attacker.pbOwnSide.effects[PBEffects::BattleCry] % 2 == 1
+    if battle_cry_boost
       damagemult=(damagemult*1.3).round
     end
-    if attacker.effects[PBEffects::Fertilize] && isConst?(type,PBTypes,:GRASS)
+    if @fertilize_boost && isConst?(type,PBTypes,:GRASS)
       damagemult=(damagemult*1.5).round
     end
     if isConst?(type,PBTypes,:NORMAL) &&
@@ -4743,10 +4789,6 @@ class PokeBattle_Move
     if !(@battle.pbOwnedByPlayer?(attacker.index)) && @battle.pbPlayer.numbadges>=12 && $game_variables[:Difficulty_Mode]==2
       atkmult=(atkmult*1.1).round
     end
-    if (attacker.effects[PBEffects::NaturalOrder] || 0) > 0 && opponent.pbHasType?(:GRASS)
-      atkmult = (atkmult * 0.75).round
-      attacker.effects[PBEffects::NaturalOrder] = 0
-    end  
     flower_gift_ally = attacker.sameSideLivingBattlers(false).find { |ally| ally.hasWorkingItem(:CHERCREST) && isConst?(ally.species,PBSpecies,:CHERRIM) }
     flower_gift_holder = attacker.otherSameSideAbilityHolder(:FLOWERGIFT)
     if ((@battle.pbWeather==PBWeather::SUNNYDAY && !attacker.hasWorkingItem(:UTILITYUMBRELLA)) || $fefieldeffect == 33 ||
@@ -6109,6 +6151,9 @@ class PokeBattle_Move
     if opponent.otherSameSideAbilityHolder(:FRIENDGUARD) && !(opponent.moldbroken)
       finaldamagemult=(finaldamagemult*0.75).round
     end
+    if @natural_order_boost && opponent.pbHasType?(:GRASS)
+      finaldamagemult=(finaldamagemult*0.75).round
+    end
     finaldamagemult=(finaldamagemult*pbCustomDamageAbilityMultiplier(attacker,opponent,type,unboosted_power)).round
     if opponent.hasWorkingAbility(:RIVALRY) && !opponent.moldbroken &&
        opponent.gender!=attacker.gender
@@ -6179,16 +6224,11 @@ class PokeBattle_Move
     end
     if attacker.hasWorkingItem(:DURIABERRY) && opponent.damagestate.typemod>0 &&
        opponent.damagestate.typemod<4
-      if attacker.hasWorkingAbility(:RIPEN)
-        finaldamagemult=(finaldamagemult*4.0).round
-      else
-        finaldamagemult=(finaldamagemult*2.0).round
-      end
-      attacker.pbRecordHarvestBerry(attacker.item)
-      attacker.pokemon.itemRecycle=attacker.item
-      attacker.pokemon.itemInitial=0 if attacker.pokemon.itemInitial==attacker.item
-      attacker.item=0
-      @battle.pbDisplayPaused(_INTL("The {1} strengthened {2}'s power!",PBItems.getName(attacker.pokemon.itemRecycle),self.name))
+      activations=(attacker.hasWorkingAbility(:RIPEN) ? 2 : 1)*attacker.pbHeldItemDose
+      finaldamagemult*=2**activations
+      item_name=PBItems.getName(attacker.item)
+      @battle.pbDisplayPaused(_INTL("The {1} strengthened {2}'s power!",item_name,self.name))
+      attacker.pbUseConsumableHeldItem
     end
     if (attacker.ability == (PBAbilities::NEUROFORCE)) && (!attacker.abilitynulled && opponent.damagestate.typemod>4)
       finaldamagemult=(finaldamagemult*1.25).round
@@ -6215,29 +6255,23 @@ class PokeBattle_Move
        (opponent.hasWorkingItem(:HABANBERRY) && isConst?(type,PBTypes,:DRAGON)) ||
        (opponent.hasWorkingItem(:COLBURBERRY) && isConst?(type,PBTypes,:DARK)) ||
        (opponent.hasWorkingItem(:ROSELIBERRY) && isConst?(type,PBTypes,:FAIRY))
-        if opponent.hasWorkingAbility(:RIPEN)
-          finaldamagemult=(finaldamagemult*0.25).round
-        else
-          finaldamagemult=(finaldamagemult*0.5).round
-        end
-        opponent.pokemon.itemRecycle=opponent.item
-        opponent.pokemon.itemInitial=0 if opponent.pokemon.itemInitial==opponent.item
-        opponent.item=0
+        activations=(opponent.hasWorkingAbility(:RIPEN) ? 2 : 1)*opponent.pbHeldItemDose
+        finaldamagemult=(finaldamagemult.to_f/(2**activations)).round
+         item_name=PBItems.getName(opponent.item)
 #### JERICHO - 008 - START      
         if !@battle.pbIsOpposing?(attacker.index)
-          @battle.pbDisplay(_INTL("{2}'s {1} weakened the damage from the attack!",PBItems.getName(opponent.pokemon.itemRecycle),opponent.pbThis))
+           @battle.pbDisplay(_INTL("{2}'s {1} weakened the damage from the attack!",item_name,opponent.pbThis))
         else
-          @battle.pbDisplay(_INTL("The {1} weakened the damage to {2}!",PBItems.getName(opponent.pokemon.itemRecycle),opponent.pbThis))
+           @battle.pbDisplay(_INTL("The {1} weakened the damage to {2}!",item_name,opponent.pbThis))
         end
 #### JERICHO - 008 - END  
+         opponent.pbUseConsumableHeldItem
       end  
     end
     if opponent.hasWorkingItem(:CHILANBERRY) && isConst?(type,PBTypes,:NORMAL) &&
        (options&IGNOREPKMNTYPES)==0
-      finaldamagemult=(finaldamagemult*0.5).round
-      opponent.pokemon.itemRecycle=opponent.item
-      opponent.pokemon.itemInitial=0 if opponent.pokemon.itemInitial==opponent.item
-      opponent.item=0
+      finaldamagemult=(finaldamagemult.to_f/(2**opponent.pbHeldItemDose)).round
+      opponent.pbUseConsumableHeldItem
     end
     ally_meganium = opponent.sameSideLivingBattlers(false).find { |ally| isConst?(ally.species,PBSpecies,:MEGANIUM) && ally.hasWorkingItem(:MEGCREST) }
     if (isConst?(opponent.species,PBSpecies,:MEGANIUM) && opponent.hasWorkingItem(:MEGCREST)) || ally_meganium
@@ -6255,32 +6289,16 @@ class PokeBattle_Move
       end
     end
     if (options&IGNOREPKMNTYPES)==0
-      berry_reducers = {
-        :CORNNBERRY => [:WATER,:GRASS],
-        :MAGOSTBERRY => [:NORMAL,:PSYCHIC],
-        :RABUTABERRY => [:STEEL,:ELECTRIC],
-        :NOMELBERRY => [:FLYING,:ICE],
-        :SPELONBERRY => [:DRAGON,:FIRE],
-        :PAMTREBERRY => [:POISON,:GROUND],
-        :WATMELBERRY => [:BUG,:FAIRY],
-        :DURINBERRY => [:FIGHTING,:ROCK],
-        :BELUEBERRY => [:DARK,:GHOST]
-      }
-      for berry in berry_reducers.keys
-        next if !opponent.hasWorkingItem(berry)
-        types = berry_reducers[berry]
-        next if !types || !types.any? { |t| isConst?(type,PBTypes,t) }
-        mult = opponent.hasWorkingAbility(:RIPEN) ? 0.5 : 0.75
+      mult=pbExtraResistanceBerryMultiplier(opponent,type)
+      if mult<1.0
         finaldamagemult=(finaldamagemult*mult).round
-        opponent.pokemon.itemRecycle=opponent.item
-        opponent.pokemon.itemInitial=0 if opponent.pokemon.itemInitial==opponent.item
-        opponent.item=0
+        item_name=PBItems.getName(opponent.item)
         if !@battle.pbIsOpposing?(attacker.index)
-          @battle.pbDisplay(_INTL("{2}'s {1} softened the blow!",PBItems.getName(opponent.pokemon.itemRecycle),opponent.pbThis))
+          @battle.pbDisplay(_INTL("{2}'s {1} softened the blow!",item_name,opponent.pbThis))
         else
-          @battle.pbDisplay(_INTL("The {1} softened the damage to {2}!",PBItems.getName(opponent.pokemon.itemRecycle),opponent.pbThis))
+          @battle.pbDisplay(_INTL("The {1} softened the damage to {2}!",item_name,opponent.pbThis))
         end
-        break
+        opponent.pbUseConsumableHeldItem
       end
     end
     # Glancing Blow
@@ -6328,7 +6346,7 @@ class PokeBattle_Move
     end
     if opponent.effects[PBEffects::Substitute]>0 && (!attacker || attacker.index!=opponent.index) &&
      !attacker.hasWorkingAbility(:INFILTRATOR) && !isSoundBased? && @id!=677 && $fefieldeffect!=14 &&
-     !(@function==0x21B && attacker.hp < (0.5 * attacker.totalhp).floor) # Showstopper
+     !(@function==0x21B && attacker.hp*2<=attacker.totalhp) # Showstopper
       damage=opponent.effects[PBEffects::Substitute] if damage>opponent.effects[PBEffects::Substitute]
       opponent.effects[PBEffects::Substitute]-=damage
       opponent.damagestate.substitute=true
@@ -6367,10 +6385,7 @@ class PokeBattle_Move
 	        if !unnerver
 	          itemname=PBItems.getName(opponent.item)
 	          @battle.pbDisplay(_INTL("{1}'s {2} blocked the priority attack!",opponent.pbThis,itemname))
-	          opponent.pokemon.itemRecycle=opponent.item
-	          $belch=true
-	          opponent.pokemon.itemInitial=0 if opponent.pokemon.itemInitial==opponent.item
-	          opponent.item=0
+	          opponent.pbUseConsumableHeldItem(repeat: true)
 	          opponent.damagestate.calcdamage=0
 	          damage=0
 	        end
@@ -6382,22 +6397,22 @@ class PokeBattle_Move
 	          @battle.pbDisplay(_INTL("{1} was crushed by the steel whip!",opponent.pbThis))
 	        end
 	      end
-	      if damage>=opponent.hp
+      damage=opponent.pbConsumeShield(damage) if damage>0 && opponent.pbCoconShieldHP>0
+      miracle=damage>0 && attacker && attacker!=opponent && opponent.effects[PBEffects::MiracleGuard]
+      opponent.effects[PBEffects::MiracleGuard]=false if miracle
+      if damage>=opponent.hp
 	        damage=opponent.hp
 	        if @function==0xE9 # False Swipe
 	          damage=damage-1
-	        elsif opponent.effects[PBEffects::Endure]
+	        elsif miracle || opponent.effects[PBEffects::Endure]
           damage=damage-1
           opponent.damagestate.endured=true
         elsif opponent.hasWorkingAbility(:STURDY) && damage==opponent.totalhp && !(opponent.moldbroken)
           opponent.damagestate.sturdy=true
           damage=damage-1                
-        elsif opponent.damagestate.focussash && damage==opponent.totalhp
+        elsif opponent.pbCanActivateFocusSash? && opponent.pbUseConsumableHeldItem(repeat: true)
           opponent.damagestate.focussashused=true
           damage=damage-1
-          opponent.pokemon.itemRecycle=opponent.item
-          opponent.pokemon.itemInitial=0 if opponent.pokemon.itemInitial==opponent.item
-          opponent.item=0
         elsif opponent.damagestate.focusband
           opponent.damagestate.focusbandused=true
           damage=damage-1
@@ -6465,6 +6480,7 @@ class PokeBattle_Move
       opponent.damagestate.sturdy=false
     elsif opponent.damagestate.focussashused
       @battle.pbDisplay(_INTL("{1} hung on using its Focus Sash!",opponent.pbThis))
+      opponent.damagestate.focussashused=false
     elsif opponent.damagestate.focusbandused
       @battle.pbDisplay(_INTL("{1} hung on using its Focus Band!",opponent.pbThis))
     elsif opponent.damagestate.rampcrestused

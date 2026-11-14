@@ -562,7 +562,7 @@ Razor Wind		Defog			Sand Tomb		Water Pledge		Hurricane	    	Water Spout		Tailwin
 (The following moves change this field):
 *	These moves will transform this field into the Water Surface. If the field was originally Cave it returns to that instead.
 		Heat Wave		Flame Burst		Lava Plume		Eruption		Searing Shot
-		Fire Pledge		Inferno Overdrive       Magma Drift  
+		Fire Pledge		Inferno Overdrive       Lava Surf
 *	These moves will transform this field to the Cave Field. If the field was originally Water or Murkwater Surface, it returns to those instead.
 		Earthquake		Magnitude		Bulldoze	Tectonic Rage
 *   If a field exists beneath the Icy Field, and that field is either Water Surface or Murkwater Surface then these moves transform this field:
@@ -941,7 +941,7 @@ Focus Blast
 		Dragon Pulse(Two uses)		Draco Meteor 
 		Devastating Drake
 *	These moves transform this field into a Volcanic Field(Two uses):
-		Hot Tempo		Magma Drift		Eruption		Lava Plume
+		Hot Tempo		Lava Surf		Eruption		Lava Plume
 		Heat Wave		Overheat		
 		Fusion Flare    
 *	These moves transform the field into a Corrupted Cave:
@@ -1130,7 +1130,7 @@ Focus Blast
 *	These moves transform this field into a Snowy Mountain:
 		Blizzard		Subzero Slammer
 *	These moves transform this field into a Volcanic Top Field:
-		Lava Plume            Magma Drift             Eruption		Inferno Overdrive
+		Lava Plume            Lava Surf             Eruption		Inferno Overdrive
  
 (The following items are affected by this field):
 *	Telluric Seed boosts Attack and lowers Accuracy
@@ -1183,7 +1183,7 @@ Focus Blast
 		Heat Wave		Flame Burst		Lava Plume		Searing Shot       
 		Fire Pledge		Inferno Overdrive       
 *	These moves will transform the field into Volcanic Top:
-		Eruption                Magma Drift
+		Eruption                Lava Surf
  
 (The following items are affected by this field):
 *       Telluric Seed boosts Sp.Atk and lowers Accuracy
@@ -1326,7 +1326,7 @@ Mirror Armor		Pastel Veil
 		  Stomping Tantrum        Earth Power             
 		  Diamond Storm           Matrix Shot             
 		  Shell Trap              Power Gem
-		  Magma Drift             Lava Plume
+		  Lava Surf             Lava Plume
 *   The base accuracy of these moves becomes 100:
 		  Dragon Rush
 *   Fly and Bounce each last only one turn

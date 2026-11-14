@@ -5,6 +5,10 @@ param(
   [string]$Scenario,
   [Parameter(Mandatory, ParameterSetName = 'MoveRegressions')]
   [switch]$MoveRegressions,
+  [Parameter(Mandatory, ParameterSetName = 'CustomMoves')]
+  [switch]$CustomMoves,
+  [Parameter(Mandatory, ParameterSetName = 'DoubleDose')]
+  [switch]$DoubleDose,
   [string]$Report,
   [Parameter(ParameterSetName = 'Scenario')]
   [int]$Seed,
@@ -46,7 +50,7 @@ function Write-ScenarioValue([Text.Json.JsonElement]$Value, [IO.TextWriter]$Writ
 }
 
 $scenarioFile = $null
-if (!$MoveRegressions) {
+if (!$MoveRegressions -and !$CustomMoves -and !$DoubleDose) {
   $scenarioFile = Get-Item -LiteralPath $Scenario
   if ($scenarioFile.PSIsContainer) { throw "Scenario must be a JSON file." }
 }
@@ -106,6 +110,8 @@ try {
     AZURE_BATTLE_SIMULATION_REPORT = $runtimeReport
     AZURE_BATTLE_SIMULATION_SEED = $null
     AZURE_BATTLE_MOVE_REGRESSIONS = $(if ($MoveRegressions) { '1' })
+    AZURE_BATTLE_CUSTOM_MOVES = $(if ($CustomMoves) { '1' })
+    AZURE_BATTLE_DOUBLE_DOSE = $(if ($DoubleDose) { '1' })
   }
   if ($PSBoundParameters.ContainsKey("Seed")) {
     $childEnvironment.AZURE_BATTLE_SIMULATION_SEED = $Seed.ToString([Globalization.CultureInfo]::InvariantCulture)

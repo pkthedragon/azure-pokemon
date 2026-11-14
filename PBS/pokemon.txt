@@ -16503,6 +16503,7 @@ Legacytoobig = true
 [FURFROU]
 LegacySpeciesID = 676
 Name = Furfrou
+LegacyFormNames = Natural,Heart Trim,Star Trim,Diamond Trim,Debutante Trim,Matron Trim,Dandy Trim,La Reine Trim,Kabuki Trim,Pharaoh Trim
 Types = NORMAL
 BaseStats = 75,80,60,102,65,90
 GenderRatio = Female50Percent

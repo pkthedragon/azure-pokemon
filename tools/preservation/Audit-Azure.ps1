@@ -50,13 +50,13 @@ function Resolve-AcceptedWarnings {
   $policies = @(
     [pscustomobject]@{
       Name = "duplicate_generated_constants"
-      Expected = 22
-      Pattern = '^Scripts\\(?:PBMoves\.rb assigns (?:ORIGINPULSE|PRECIPICEBLADES|DRAGONASCENT|THOUSANDARROWS|THOUSANDWAVES|DIAMONDSTORM|STEAMERUPTION|DISHEARTEN|EPHEMERATE|ANTICLINE)|PBSpecies\.rb assigns IRONMOTH|PBItems\.rb assigns (?:GREENKEY|TM115|TM116)|PBAbilities\.rb assigns (?:TOXICCHAIN|CARETAKER|BLOODTHIRSTY|SCAVENGER|EXECUTIONER|EVENTHORIZON)|PBTrainers\.rb assigns (?:SCHOOLKID_F|HADIEN)) more than once; Ruby keeps the last assignment\.$'
+      Expected = 19
+      Pattern = '^Scripts\\(?:PBMoves\.rb assigns (?:ORIGINPULSE|PRECIPICEBLADES|DRAGONASCENT|THOUSANDARROWS|THOUSANDWAVES|DIAMONDSTORM|STEAMERUPTION)|PBSpecies\.rb assigns IRONMOTH|PBItems\.rb assigns (?:GREENKEY|TM115|TM116)|PBAbilities\.rb assigns (?:TOXICCHAIN|CARETAKER|BLOODTHIRSTY|SCAVENGER|EXECUTIONER|EVENTHORIZON)|PBTrainers\.rb assigns (?:SCHOOLKID_F|HADIEN)) more than once; Ruby keeps the last assignment\.$'
     },
     [pscustomobject]@{
       Name = "duplicate_pbs_sections"
-      Expected = 20
-      Pattern = '^PBS\\(?:moves\.txt has duplicate section \[(?:ORIGINPULSE|PRECIPICEBLADES|DRAGONASCENT|THOUSANDARROWS|THOUSANDWAVES|DIAMONDSTORM|STEAMERUPTION|DISHEARTEN|EPHEMERATE|ANTICLINE)\]|pokemon\.txt has duplicate section \[IRONMOTH\]|abilities\.txt has duplicate section \[(?:TOXICCHAIN|CARETAKER|BLOODTHIRSTY|SCAVENGER|EXECUTIONER|EVENTHORIZON)\]|trainer_types\.txt has duplicate section \[(?:SCHOOLKID_F|HADIEN)\]|pokemon_metrics\.txt has duplicate section \[IRONMOTH\]) at lines \d+ and \d+; the later definition is the effective symbol mapping\.$'
+      Expected = 17
+      Pattern = '^PBS\\(?:moves\.txt has duplicate section \[(?:ORIGINPULSE|PRECIPICEBLADES|DRAGONASCENT|THOUSANDARROWS|THOUSANDWAVES|DIAMONDSTORM|STEAMERUPTION)\]|pokemon\.txt has duplicate section \[IRONMOTH\]|abilities\.txt has duplicate section \[(?:TOXICCHAIN|CARETAKER|BLOODTHIRSTY|SCAVENGER|EXECUTIONER|EVENTHORIZON)\]|trainer_types\.txt has duplicate section \[(?:SCHOOLKID_F|HADIEN)\]|pokemon_metrics\.txt has duplicate section \[IRONMOTH\]) at lines \d+ and \d+; the later definition is the effective symbol mapping\.$'
     },
     [pscustomobject]@{
       Name = "shared_legacy_numeric_ids"
@@ -1196,9 +1196,6 @@ function Test-LegacyDuplicatePolicy(
     "Moves|THOUSANDWAVES" = "665,675"
     "Moves|DIAMONDSTORM" = "666,676"
     "Moves|STEAMERUPTION" = "668,678"
-    "Moves|DISHEARTEN" = "1033,1049"
-    "Moves|EPHEMERATE" = "1034,1050"
-    "Moves|ANTICLINE" = "1035,1051"
     "Pokemon|IRONMOTH" = "994,994"
     "Abilities|TOXICCHAIN" = "371,396"
     "Abilities|CARETAKER" = "326,404"
@@ -2061,10 +2058,6 @@ function Test-FeatureContracts {
     @{ Name = "Pressure Plate duration"; File = "Scripts\PokeBattle_Battle.rb"; Pattern = '(?s)# Pressure Plate.*PBEffects::PressurePlate\]-=1.*pressure plate beneath' },
     @{ Name = "Vile Mercy poison and duration"; File = "Scripts\PokeBattle_Battle.rb"; Pattern = '(?s)PBEffects::VileMercy\]>0.*pbCanPoison\?.*vile miasma.*# Vile Mercy.*PBEffects::VileMercy\]-=1' },
     @{ Name = "Vile Mercy field initialization"; File = "Scripts\PokeBattle_ActiveSide.rb"; Pattern = 'PBEffects::VileMercy\]\s*=\s*0' },
-    @{ Name = "Lotus Bloom permanent slot initialization"; File = "Scripts\PokeBattle_Battler.rb"; Pattern = '(?s)PBEffects::LotusBloom\]\s*=\s*0.*PBEffects::LotusBloomMove\]\s*=\s*0.*PBEffects::LotusBloomUser\]\s*=\s*-1.*PBEffects::LotusBloomPkmnIdx\]\s*=\s*-1' },
-    @{ Name = "Lotus Bloom delayed round execution"; File = "Scripts\PokeBattle_Battle.rb"; Pattern = '(?s)# Lotus Bloom delayed hits.*PBEffects::LotusBloom\]-=1.*pbMakeFakeBattler.*@azure_lotus_bloom_strike.*move\.pbEffect' },
-    @{ Name = "Sunfury and Red Sun side initialization"; File = "Scripts\PokeBattle_ActiveSide.rb"; Pattern = '(?s)PBEffects::RedSunStars\]\s*=\s*\[\].*PBEffects::Sunfury\]\s*=\s*0' },
-    @{ Name = "Sunfury and Red Sun round processing"; File = "Scripts\PokeBattle_Battle.rb"; Pattern = '(?s)# Sunfury residual damage.*totalhp\*eff/48.*PBEffects::Sunfury\]-=1.*# Red Sun''s Zenith stars.*turns-1.*stars\.max\+1' },
     @{ Name = "Final Azure move-state initialization"; File = "Scripts\PokeBattle_Battler.rb"; Pattern = '(?s)PBEffects::CircadianRhythm\]\s*=\s*false.*PBEffects::Needles\]\s*=\s*0.*PBEffects::MoltenStance\]\s*=\s*false' },
     @{ Name = "Blue Shift field initialization"; File = "Scripts\PokeBattle_ActiveSide.rb"; Pattern = 'PBEffects::BlueShift\]\s*=\s*0' },
     @{ Name = "Blue Shift type inversion"; File = "Scripts\PokeBattle_Move.rb"; Pattern = '(?s)def\s+azure_inverse_type_matchup.*PBEffects::BlueShift.*typemod=azure_inverse_type_matchup.*when 36 # Inverse Field.*PBEffects::BlueShift' },
@@ -2325,7 +2318,7 @@ function Test-MoveCompatibilitySemantics {
   }
   $content = [System.IO.File]::ReadAllText($path)
   $contracts = @(
-    @{ Name = "Snuff Out adapter"; Pattern = '(?m)^class\s+PokeBattle_Move_27B\s*<\s*PokeBattle_Move_897\b' },
+    @{ Name = "Snuff Out half-HP cutoff"; File = "Scripts\PokeBattle_MoveEffects.rb"; Pattern = '(?ms)^class\s+PokeBattle_Move_27B\b(?:(?!^class\s).)*?def\s+pbAccuracyCheck(?:(?!^class\s).)*?opponent\.hp\*2<opponent\.totalhp' },
     @{ Name = "Surging Strikes hit and critical rules"; Pattern = '(?ms)^class\s+PokeBattle_Move_231\b(?:(?!^class\s).)*?include\s+AzureAlwaysCriticalMove(?:(?!^class\s).)*?def\s+pbNumHits\b(?:(?!^class\s).)*?return\s+3\b' },
     @{ Name = "Flower Trick critical rule"; Pattern = '(?ms)^class\s+PokeBattle_Move_28B\b(?:(?!^class\s).)*?include\s+AzureAlwaysCriticalMove' },
     @{ Name = "Triple Dive hit rule"; Pattern = '(?ms)^class\s+PokeBattle_Move_250\b(?:(?!^class\s).)*?def\s+pbNumHits\b(?:(?!^class\s).)*?return\s+3\b' },
@@ -2386,35 +2379,37 @@ function Test-MoveCompatibilitySemantics {
     @{ Name = "Shed Tail HP cost and pivot handoff"; Pattern = '(?ms)^class\s+PokeBattle_Move_265\b(?:(?!^class\s).)*?totalhp/2\.0\)\.ceil(?:(?!^class\s).)*?pbCanChooseNonActive\?(?:(?!^class\s).)*?PBEffects::Substitute(?:(?!^class\s).)*?totalhp/4\.0\)\.floor(?:(?!^class\s).)*?@tributeOrthwormShedHP(?:(?!^class\s).)*?userSwitch=true' },
     @{ Name = "Commander activation and lifecycle"; Pattern = '(?ms)^class\s+PokeBattle_Battler\b(?:(?!^class\s).)*?def\s+azureReleaseCommander(?:(?!^class\s).)*?PBEffects::Commander(?:(?!^class\s).)*?def\s+azureCommanderCheck(?:(?!^class\s).)*?PBSpecies,:TATSUGIRI(?:(?!^class\s).)*?PBSpecies,:DONDOZO(?:(?!^class\s).)*?hasWorkingAbility\(:COMMANDER\)(?:(?!^class\s).)*?PBEffects::Commandee\]=tatsugiri(?:(?!^class\s).)*?pbIncreaseStat\(stat,2(?:(?!^class\s).)*?azure_move_compat_pbFaint' },
     @{ Name = "Order Up Commander-dependent boost"; Pattern = '(?ms)^class\s+PokeBattle_Move_270\b(?:(?!^class\s).)*?azure_order_up_boost_applied(?:(?!^class\s).)*?PBEffects::Commandee(?:(?!^class\s).)*?PBEffects::Commander(?:(?!^class\s).)*?PBStats::ATTACK,PBStats::DEFENSE,PBStats::SPEED(?:(?!^class\s).)*?pbIncreaseStat\(stat,1' },
-    @{ Name = "Foul Gambit knockout recovery"; Pattern = '(?ms)^class\s+PokeBattle_Move_21F\b(?:(?!^class\s).)*?opponent\.isFainted\?(?:(?!^class\s).)*?damagestate\.hplost\*3/4\.0(?:(?!^class\s).)*?pbRecoverMoveHP' },
-    @{ Name = "Sweltering Strike authored placeholder"; Pattern = '(?m)^class\s+PokeBattle_Move_22C\s*<\s*PokeBattle_Move\b' },
+    @{ Name = "Foul Gambit knockout recovery"; Pattern = '(?ms)^class\s+PokeBattle_Move_21F\b(?:(?!^class\s).)*?opponent\.isFainted\?(?:(?!^class\s).)*?damagestate\.hplost(?:(?!^class\s).)*?pbRecoverMoveHP' },
+    @{ Name = "Sweltering Strike Water type loss"; Pattern = '(?ms)^class\s+PokeBattle_Move_22C\b(?:(?!^class\s).)*?PBEffects::WaterTypeLoss' },
     @{ Name = "Ergo Proxy reciprocal type changes"; Pattern = '(?ms)^class\s+PokeBattle_Move_22D\b(?:(?!^class\s).)*?copiedtype1=opponent\.type1(?:(?!^class\s).)*?attacker\.type1=copiedtype1(?:(?!^class\s).)*?opponent\.type1=PBTypes::GHOST' },
     @{ Name = "Dust Bowl weather accuracy and trapping"; Pattern = '(?ms)^class\s+PokeBattle_Move_22E\b(?:(?!^class\s).)*?PBWeather::SANDSTORM(?:(?!^class\s).)*?PBEffects::MultiTurn\]=pbMoveDuration\(attacker,5\)(?:(?!^class\s).)*?PBEffects::MultiTurnAttack\]=@id' },
-    @{ Name = "Coral Burst resisted pivot"; Pattern = '(?ms)^class\s+PokeBattle_Move_24A\b(?:(?!^class\s).)*?typemod>0\s*&&\s*typemod<4(?:(?!^class\s).)*?basedmg/2(?:(?!^class\s).)*?pbCanChooseNonActive\?(?:(?!^class\s).)*?userSwitch=true' },
+    @{ Name = "Coral Burst resisted pivot"; Pattern = '(?ms)^class\s+PokeBattle_Move_24A\b(?:(?!^class\s).)*?typemod\.between\?\(1,3\)(?:(?!^class\s).)*?pbCanChooseNonActive\?(?:(?!^class\s).)*?userSwitch=true' },
     @{ Name = "Direct-damage round signal"; Pattern = '(?ms)^class\s+PokeBattle_Move\b(?:(?!^class\s).)*?azure_move_compat_pbOnDamageLost(?:(?!^class\s).)*?DamagingMoveThisTurn\]=true' },
-    @{ Name = "Pestilence prior-damage power and drain"; Pattern = '(?ms)^class\s+PokeBattle_Move_24F\s*<\s*PokeBattle_Move_0DD\b(?:(?!^class\s).)*?DamagingMoveThisTurn(?:(?!^class\s).)*?basedmg\*2' },
-    @{ Name = "Glacial Slam crash and freeze"; Pattern = '(?ms)^class\s+PokeBattle_Move_26F\b(?:(?!^class\s).)*?return\s+0x10B(?:(?!^class\s).)*?pbCanFreeze\?(?:(?!^class\s).)*?pbFreeze' },
+    @{ Name = "Pestilence prior-damage power and drain"; Pattern = '(?ms)^class\s+PokeBattle_Move_24F\s*<\s*PokeBattle_Move_0DD\b(?:(?!^class\s).)*?basedmg\*2' },
+    @{ Name = "Glacial Slam crash and freeze"; Pattern = '(?ms)^class\s+PokeBattle_Move_26F\b(?:(?!^class\s).)*?def\s+pbCrashOnAccuracyMiss\?(?:(?!^class\s).)*?pbCanFreeze\?(?:(?!^class\s).)*?pbFreeze' },
     @{ Name = "Spirit Fist Special Defense targeting"; Pattern = '(?ms)^class\s+PokeBattle_Move_278\b(?:(?!^class\s).)*?oldfunction=@function(?:(?!^class\s).)*?@function=0x205(?:(?!^class\s).)*?ensure(?:(?!^class\s).)*?@function=oldfunction' },
-    @{ Name = "Jetstream and Battle Cry dispatch"; Pattern = '(?ms)^class\s+PokeBattle_Move_277\b(?:(?!^class\s).)*?PBMoves::BATTLECRY(?:(?!^class\s).)*?PBEffects::BattleCry\]\+=2(?:(?!^class\s).)*?azureJetstream=true' },
+    @{ Name = "Jetstream effect dispatch"; Pattern = '(?ms)^class\s+PokeBattle_Move_277\b(?:(?!^class\s).)*?azureExtendJetstream' },
     @{ Name = "Vile Mercy and Bellow dispatch"; Pattern = '(?ms)^class\s+PokeBattle_Move_282\b(?:(?!^class\s).)*?PBMoves::BELLOW(?:(?!^class\s).)*?PBEffects::VileMercy\]=4(?:(?!^class\s).)*?PBStats::ATTACK,PBStats::DEFENSE,PBStats::SPEED,PBStats::SPATK,PBStats::SPDEF' },
-    @{ Name = "Pierce the Veil Attack and Defense swap"; Pattern = '(?ms)^class\s+PokeBattle_Move_224\b(?:(?!^class\s).)*?damagestate\.calcdamage>0(?:(?!^class\s).)*?PBEffects::PowerTrick\]=!' },
+    @{ Name = "Pierce the Veil offensive and defensive stat swap"; Pattern = '(?ms)^class\s+PokeBattle_Move_224\b(?:(?!^class\s).)*?damagestate\.calcdamage>0(?:(?!^class\s).)*?attacker\.attack,attacker\.defense=attacker\.defense,attacker\.attack(?:(?!^class\s).)*?attacker\.spatk,attacker\.spdef' },
     @{ Name = "Aftershock delayed-hit scheduling"; Pattern = '(?ms)^class\s+PokeBattle_Move_27D\b(?:(?!^class\s).)*?@azure_aftershock_echo(?:(?!^class\s).)*?PBEffects::Aftershock\]=1(?:(?!^class\s).)*?PBEffects::AftershockMove\]=@id(?:(?!^class\s).)*?pbParalyze' },
     @{ Name = "Pressure Plate power and PP rules"; Pattern = '(?ms)(?=.*^class\s+PokeBattle_Battler\b.*?azure_move_compat_pbReducePP.*?PBEffects::PressurePlate.*?pbSetPP\(move,move\.pp-1\))(?=.*^class\s+PokeBattle_Move\b.*?damage\*1\.2)(?=.*^class\s+PokeBattle_Move_281\b.*?PBEffects::PressurePlate\]=5)' },
     @{ Name = "Vile Mercy global damage reduction"; Pattern = '(?ms)^class\s+PokeBattle_Move\b(?:(?!^class\s).)*?PBEffects::VileMercy(?:(?!^class\s).)*?damage\*0\.8' },
     @{ Name = "Gilded Bargain Dragon conversion and shared HP"; Pattern = '(?ms)^class\s+PokeBattle_Move_22B\b(?:(?!^class\s).)*?PBTypes,:DRAGON(?:(?!^class\s).)*?sharedhp=\(\(attacker\.hp\+opponent\.hp\)/2\)\.floor(?:(?!^class\s).)*?pbHPChanged\(attacker,olda\)(?:(?!^class\s).)*?pbHPChanged\(opponent,oldo\)' },
-    @{ Name = "Tale's End blade cap and execution threshold"; Pattern = '(?ms)^class\s+PokeBattle_Move_23A\b(?:(?!^class\s).)*?PBEffects::TalesEndBlades\]\+1,4(?:(?!^class\s).)*?totalhp\*blades/16\.0(?:(?!^class\s).)*?opponent\.hp<threshold(?:(?!^class\s).)*?pbReduceHP\(opponent\.hp\)' },
-    @{ Name = "Lotus Bloom delayed slot-persistent strike"; Pattern = '(?ms)^class\s+PokeBattle_Move_21E\b(?:(?!^class\s).)*?@azure_lotus_bloom_strike(?:(?!^class\s).)*?PBEffects::LotusBloom\]=3(?:(?!^class\s).)*?PBEffects::LotusBloomPkmnIdx' },
-    @{ Name = "Sunfury charge hazard clear and three damage ticks"; Pattern = '(?ms)^class\s+PokeBattle_Move_22F\b(?:(?!^class\s).)*?pbTwoTurnAttack(?:(?!^class\s).)*?PBWeather::SUNNYDAY(?:(?!^class\s).)*?PBEffects::StealthRock\]=false(?:(?!^class\s).)*?PBEffects::Sunfury\]=3' },
-    @{ Name = "Red Sun star buildup gravity and third-star sacrifice"; Pattern = '(?ms)^class\s+PokeBattle_Move_23F\b(?:(?!^class\s).)*?stars\.length>=2(?:(?!^class\s).)*?basedmg\*3(?:(?!^class\s).)*?stars\.push\(6\)(?:(?!^class\s).)*?PBEffects::Gravity(?:(?!^class\s).)*?attacker\.pbReduceHP\(attacker\.hp\)' },
-    @{ Name = "Blue Shift sacrifice and duration"; Pattern = '(?ms)^class\s+PokeBattle_Move_249\b(?:(?!^class\s).)*?PBEffects::BlueShift\]=2(?:(?!^class\s).)*?attacker\.pbReduceHP\(attacker\.hp\)' },
-    @{ Name = "Circadian Rhythm sleep marking"; Pattern = '(?ms)^class\s+PokeBattle_Move_24B\b(?:(?!^class\s).)*?pbCanSleep\?\(true\)(?:(?!^class\s).)*?attacker\.pbSleep(?:(?!^class\s).)*?PBEffects::CircadianRhythm\]=true' },
+    @{ Name = "Tale's End quarter-HP threshold"; Pattern = '(?ms)^class\s+PokeBattle_Move_23A\b(?:(?!^class\s).)*?opponent\.hp\*4<=opponent\.totalhp(?:(?!^class\s).)*?pbReduceHP\(opponent\.hp\)' },
+    @{ Name = "Lotus Bloom terrain from harsh sun or knockout"; Pattern = '(?ms)^class\s+PokeBattle_Move_21E\b(?:(?!^class\s).)*?opponent\.isFainted\?(?:(?!^class\s).)*?PBEffects::HarshSunlight(?:(?!^class\s).)*?PBEffects::GrassyTerrain' },
+    @{ Name = "Sunfury harsh-sun Scorching Ground"; Pattern = '(?ms)^class\s+PokeBattle_Move_22F\b(?:(?!^class\s).)*?PBEffects::HarshSunlight(?:(?!^class\s).)*?tribute_set_scorching_ground' },
+    @{ Name = "Red Sun third-use sacrifice"; Pattern = '(?ms)^class\s+PokeBattle_Move_23F\b(?:(?!^class\s).)*?%\s*3(?:(?!^class\s).)*?basedmg\s*\*\s*3(?:(?!^class\s).)*?attacker\.hp=0(?:(?!^class\s).)*?attacker\.pbFaint' },
+    @{ Name = "Blue Shift sacrifice and duration"; Pattern = '(?ms)^class\s+PokeBattle_Move_249\b(?:(?!^class\s).)*?PBEffects::BlueShift\]=2(?:(?!^class\s).)*?attacker\.hp=0' },
+    @{ Name = "Circadian Rhythm sleep marking"; Pattern = '(?ms)^class\s+PokeBattle_Move_24B\b(?:(?!^class\s).)*?opponent\.pbCanSleep\?(?:(?!^class\s).)*?opponent\.pbSleep(?:(?!^class\s).)*?PBEffects::CircadianRhythm\]=true' },
     @{ Name = "Needle Blast hits and stored needles"; Pattern = '(?ms)^class\s+PokeBattle_Move_24D\b(?:(?!^class\s).)*?\[2,2,3,3,4,5\](?:(?!^class\s).)*?PBEffects::Needles\]\+=1' },
-    @{ Name = "Needle contact consumption and Molten retaliation"; Pattern = '(?ms)^class\s+PokeBattle_Move\b(?:(?!^class\s).)*?isContactMove\?(?:(?!^class\s).)*?azureConsumeNeedle(?:(?!^class\s).)*?PBEffects::MoltenStance(?:(?!^class\s).)*?pbBurn' },
+    @{ Name = "Molten Stance contact retaliation"; Pattern = '(?ms)^class\s+PokeBattle_Move\b(?:(?!^class\s).)*?isContactMove\?(?:(?!^class\s).)*?PBEffects::MoltenStance(?:(?!^class\s).)*?pbBurn' },
     @{ Name = "Molten Stance defensive setup"; Pattern = '(?ms)^class\s+PokeBattle_Move_24E\b(?:(?!^class\s).)*?PBStats::DEFENSE,PBStats::SPDEF(?:(?!^class\s).)*?pbIncreaseStat\(stat,1(?:(?!^class\s).)*?PBEffects::MoltenStance\]=true' }
   )
   foreach ($contract in $contracts) {
-    if ($content -notmatch $contract.Pattern) {
-      Add-AuditError "$($contract.Name) is missing or no longer matches its preservation contract in $relativePath."
+    $contractPath = if ($contract.ContainsKey('File')) { $contract.File } else { $relativePath }
+    $contractContent = if ($contractPath -eq $relativePath) { $content } else { [IO.File]::ReadAllText((Resolve-ProjectPath $contractPath)) }
+    if ($contractContent -notmatch $contract.Pattern) {
+      Add-AuditError "$($contract.Name) is missing or no longer matches its preservation contract in $contractPath."
     }
   }
   $orderEntries = @([System.IO.File]::ReadLines((Resolve-ProjectPath "Scripts\!script_order.csv")) | ForEach-Object { $_.Trim() })

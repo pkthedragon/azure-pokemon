@@ -100,7 +100,10 @@ class PBMove
     215=>:SLEEPPOWDER,
     237=>:MUDSLAP,
     481=>:SANDATTACK,
-    558=>:WATERGUN
+    558=>:WATERGUN,
+    1033=>:DISHEARTEN,
+    1034=>:EPHEMERATE,
+    1035=>:ANTICLINE
   }.freeze
 
   def self.current_id(moveid)

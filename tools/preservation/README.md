@@ -61,6 +61,22 @@ without opening a game window. The report prints a result for each move.
 pwsh -NoProfile -File tools/preservation/Invoke-BattleSimulation.ps1 -MoveRegressions
 ```
 
+Run the custom move specification checks and battle effect cases with:
+
+```powershell
+pwsh -NoProfile -File tools/preservation/Invoke-BattleSimulation.ps1 -CustomMoves
+```
+
+Run the Double Dose held item regressions with:
+
+```powershell
+pwsh -NoProfile -File tools/preservation/Invoke-BattleSimulation.ps1 -DoubleDose
+```
+
+The report includes individual items, item suppression, ally and opponent
+interactions, and the second activations of Focus Sash and Power Herb. Repeat
+activations expire when the holder switches out or the side effect ends.
+
 ## Preservation checks
 
 Run the audit from the project root before and after each modernization task:
