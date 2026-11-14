@@ -301,8 +301,7 @@ class PokeBattle_Move_232 < PokeBattle_Move
       if target.hp<target.totalhp
         hpgain=((target.totalhp+1)/4).floor
         hpgain=apply_tribute_healing(attacker,hpgain,target) if defined?(apply_tribute_healing)
-        hpgain=(hpgain*1.1).floor if attacker.hasWorkingAbility(:HEALER)
-        target.pbRecoverHP(hpgain,true)
+        pbRecoverMoveHP(attacker,target,hpgain)
         @battle.pbDisplay(_INTL("{1}'s HP was restored.",target.pbThis))
       end
       azureCureStatus(target)
@@ -532,7 +531,7 @@ class PokeBattle_Move_240 < PokeBattle_Move
     return nil
   end
 
-  def pbType(type,attacker,opponent)
+  def pbTypeBeforeAbilityConversion(type,attacker,opponent)
     terrain_type=azureTerrainPulseType
     return terrain_type if terrain_type
     return type
@@ -646,7 +645,7 @@ end
 # Psychic Noise: its guaranteed secondary effect prevents healing for two turns.
 class PokeBattle_Move_287 < PokeBattle_Move
   def pbAdditionalEffect(attacker,opponent)
-    opponent.effects[PBEffects::HealBlock]=2
+    opponent.effects[PBEffects::HealBlock]=pbMoveDuration(attacker,2)
     @battle.pbDisplay(_INTL("{1} was prevented from healing!",opponent.pbThis))
     return true
   end
@@ -660,7 +659,12 @@ class PokeBattle_Move_289 < PokeBattle_Move
     return true if @battle.switchedOut[opponent.index] || opponent.itemUsed
     choice=@battle.choices[opponent.index]
     chosenmove=(choice && choice[0]==1) ? choice[2] : nil
-    return true if !chosenmove || chosenmove.priority<=0
+    return true if !chosenmove
+    chosen_target=choice[3]
+    if chosen_target.is_a?(Integer)
+      chosen_target=chosen_target>=0 ? @battle.battlers[chosen_target] : nil
+    end
+    return true if @battle.pbMovePriority(opponent,chosenmove,chosen_target)<=0
     return false
   end
 
@@ -710,7 +714,7 @@ end
 # Raging Bull uses Azure's complete Brick Break behavior, including Aurora Veil
 # and Dune Defense, and selects its type from Paldean Tauros's battle form.
 class PokeBattle_Move_258 < PokeBattle_Move_10A
-  def pbType(type,attacker,opponent)
+  def pbTypeBeforeAbilityConversion(type,attacker,opponent)
     if isConst?(attacker.species,PBSpecies,:TAUROS)
       return PBTypes::FIGHTING if attacker.form==1
       return PBTypes::FIRE     if attacker.form==2
@@ -810,7 +814,7 @@ end
 # Ivy Cudgel follows the held mask directly, with form-based fallbacks for maps
 # or scripted battlers which already initialize Ogerpon in a mask form.
 class PokeBattle_Move_272 < PokeBattle_Move
-  def pbType(type,attacker,opponent)
+  def pbTypeBeforeAbilityConversion(type,attacker,opponent)
     return type if !isConst?(attacker.species,PBSpecies,:OGERPON)
     return PBTypes::WATER if isConst?(attacker.item,PBItems,:WELLSPRINGMASK) || [1,5].include?(attacker.form)
     return PBTypes::FIRE  if isConst?(attacker.item,PBItems,:HEARTHFLAMEMASK) || [2,6].include?(attacker.form)
@@ -851,16 +855,7 @@ class PokeBattle_Move_256 < PokeBattle_Move
       mtuser=@battle.battlers[attacker.effects[PBEffects::MultiTurnUser]]
       @battle.pbDisplay(_INTL("{1} got free of {2}'s {3}!",attacker.pbThis,
         mtuser.pbThis(true),mtattack))
-      attacker.effects[PBEffects::MultiTurn]=0
-      if attacker.effects[PBEffects::MultiTurnAttack]==PBMoves::BINDINGWORD
-        [PBStats::ATTACK,PBStats::DEFENSE,PBStats::SPEED,PBStats::SPATK,
-         PBStats::SPDEF,PBStats::ACCURACY,PBStats::EVASION].each do |stat|
-          attacker.stages[stat]=attacker.effects[PBEffects::StatChangeHolder][stat]
-          attacker.effects[PBEffects::StatChangeHolder][stat]=0
-        end
-      end
-      attacker.effects[PBEffects::MultiTurnAttack]=0
-      attacker.effects[PBEffects::MultiTurnUser]=-1
+      attacker.pbClearMultiTurn
     end
     if attacker.effects[PBEffects::LeechSeed]>=0
       attacker.effects[PBEffects::LeechSeed]=-1
@@ -965,18 +960,13 @@ class PokeBattle_Battler
     end
   end
 
-  def azureReleaseCommander
-    return if !@battle || !@effects
-    commander=@effects[PBEffects::Commander]
-    commandee=@effects[PBEffects::Commandee]
-    return if !commander && !commandee
-    partner=pbPartner
-    if commandee && partner && partner.effects[PBEffects::Commander]
-      partner.effects[PBEffects::Commander]=false
-      partner.vanished=false
-      @battle.scene.pbUnVanishSprite(partner)
-    elsif commander && partner && partner.effects[PBEffects::Commandee]
-      partner.effects[PBEffects::Commandee]=false
+  def azureReleaseCommander(dondozo=@effects[PBEffects::Commander],tatsugiri=@effects[PBEffects::Commandee])
+    if tatsugiri && tatsugiri.effects[PBEffects::Commander]==self
+      tatsugiri.effects[PBEffects::Commander]=false
+      tatsugiri.vanished=false
+      @battle.scene.pbUnVanishSprite(tatsugiri) if !tatsugiri.isFainted?
+    elsif dondozo && dondozo.effects[PBEffects::Commandee]==self
+      dondozo.effects[PBEffects::Commandee]=false
     end
     @effects[PBEffects::Commander]=false
     @effects[PBEffects::Commandee]=false
@@ -984,19 +974,30 @@ class PokeBattle_Battler
 
   def azureCommanderCheck
     return if isFainted? || !@battle.doublebattle
-    partner=pbPartner
-    return if !partner || partner==self || partner.isFainted?
-    return if @battle.pbGetOwnerIndex(index)!=@battle.pbGetOwnerIndex(partner.index)
-    if isConst?(species,PBSpecies,:TATSUGIRI) && isConst?(partner.species,PBSpecies,:DONDOZO)
-      tatsugiri=self; dondozo=partner
-    elsif isConst?(species,PBSpecies,:DONDOZO) && isConst?(partner.species,PBSpecies,:TATSUGIRI)
-      tatsugiri=partner; dondozo=self
+    return if @effects[PBEffects::Commander] || @effects[PBEffects::Commandee]
+    return if @effects[PBEffects::TwoTurnAttack]>0
+    if isConst?(species,PBSpecies,:TATSUGIRI)
+      return if !hasWorkingAbility(:COMMANDER)
+      partner_species=PBSpecies::DONDOZO
+    elsif isConst?(species,PBSpecies,:DONDOZO)
+      partner_species=PBSpecies::TATSUGIRI
     else
       return
     end
-    return if !tatsugiri.hasWorkingAbility(:COMMANDER)
-    return if tatsugiri.effects[PBEffects::Commander] || dondozo.effects[PBEffects::Commandee]
-    return if [tatsugiri,dondozo].any? { |battler| battler.effects[PBEffects::TwoTurnAttack]>0 }
+    partner=@battle.allSameSideBattlers(index).find do |other|
+      other.species==partner_species && !other.isFainted? &&
+        @battle.nearBattlers?(index,other.index) &&
+        @battle.pbGetOwnerIndex(index)==@battle.pbGetOwnerIndex(other.index) &&
+        !other.effects[PBEffects::Commander] && !other.effects[PBEffects::Commandee] &&
+        other.effects[PBEffects::TwoTurnAttack]==0 &&
+        (partner_species==PBSpecies::DONDOZO || other.hasWorkingAbility(:COMMANDER))
+    end
+    return if !partner
+    if partner_species==PBSpecies::DONDOZO
+      tatsugiri=self; dondozo=partner
+    else
+      tatsugiri=partner; dondozo=self
+    end
     if tatsugiri.effects[PBEffects::Substitute]>0
       tatsugiri.effects[PBEffects::Substitute]=0
       @battle.scene.pbUnSubstituteSprite(tatsugiri,tatsugiri.pbIsOpposing?(1))
@@ -1005,20 +1006,22 @@ class PokeBattle_Battler
     tatsugiri.vanished=true
     @battle.pbDisplay(_INTL("{1} was swallowed by {2} and became its commander!",
       tatsugiri.pbThis,dondozo.pbThis(true)))
-    @battle.pbClearChoices(tatsugiri.index)
+    @battle.choices[tatsugiri.index]=[0,0,nil,-1]
     tatsugiri.pbCancelMoves
-    tatsugiri.effects[PBEffects::Commander]=true
-    dondozo.effects[PBEffects::Commandee]=true
-    [PBStats::ATTACK,PBStats::DEFENSE,PBStats::SPEED,PBStats::SPATK,PBStats::SPDEF].each do |stat|
-      next if !dondozo.pbCanIncreaseStatStage?(stat,false)
-      dondozo.pbIncreaseStat(stat,2,false,:ABILITY,dondozo)
+    # The battler objects follow their Pokemon through lane shifts.
+    tatsugiri.effects[PBEffects::Commander]=dondozo
+    dondozo.effects[PBEffects::Commandee]=tatsugiri
+    @battle.pbWithStatChangeSource([:ability,PBAbilities::COMMANDER]) do
+      [PBStats::ATTACK,PBStats::DEFENSE,PBStats::SPEED,PBStats::SPATK,PBStats::SPDEF].each do |stat|
+        dondozo.pbIncreaseStat(stat,2,false,:ABILITY,dondozo)
+      end
     end
   end
 
   unless method_defined?(:azure_move_compat_pbAbilitiesOnSwitchIn)
     alias azure_move_compat_pbAbilitiesOnSwitchIn pbAbilitiesOnSwitchIn
-    def pbAbilitiesOnSwitchIn(onactive,megad=false)
-      ret=azure_move_compat_pbAbilitiesOnSwitchIn(onactive,megad)
+    def pbAbilitiesOnSwitchIn(onactive,megad=false,gas_ended=false)
+      ret=azure_move_compat_pbAbilitiesOnSwitchIn(onactive,megad,gas_ended)
       azureCommanderCheck
       return ret
     end
@@ -1027,19 +1030,10 @@ class PokeBattle_Battler
   unless method_defined?(:azure_move_compat_pbFaint)
     alias azure_move_compat_pbFaint pbFaint
     def pbFaint(showMessage=true)
-      wascommander=@effects[PBEffects::Commander]
-      wascommandee=@effects[PBEffects::Commandee]
-      partner=pbPartner
+      dondozo=@effects[PBEffects::Commander]
+      tatsugiri=@effects[PBEffects::Commandee]
       ret=azure_move_compat_pbFaint(showMessage)
-      if ret && partner
-        if wascommandee && partner.effects[PBEffects::Commander]
-          partner.effects[PBEffects::Commander]=false
-          partner.vanished=false
-          @battle.scene.pbUnVanishSprite(partner)
-        elsif wascommander && partner.effects[PBEffects::Commandee]
-          partner.effects[PBEffects::Commandee]=false
-        end
-      end
+      azureReleaseCommander(dondozo,tatsugiri) if ret && isFainted? && (dondozo || tatsugiri)
       return ret
     end
   end
@@ -1054,11 +1048,11 @@ class PokeBattle_Battler
 
   unless method_defined?(:azure_move_compat_pbIncreaseStatBasic)
     alias azure_move_compat_pbIncreaseStatBasic pbIncreaseStatBasic
-    def pbIncreaseStatBasic(stat,increment)
+    def pbIncreaseStatBasic(stat,increment,triggerBigPecks=true)
       beforestage=@stages[stat]
       holder=@effects[PBEffects::StatChangeHolder]
       beforestored=holder ? holder[stat] : nil
-      ret=azure_move_compat_pbIncreaseStatBasic(stat,increment)
+      ret=azure_move_compat_pbIncreaseStatBasic(stat,increment,triggerBigPecks)
       holder=@effects[PBEffects::StatChangeHolder]
       if @stages[stat]>beforestage ||
          (holder && !beforestored.nil? && holder[stat]>beforestored)
@@ -1358,10 +1352,9 @@ class PokeBattle_Move_270 < PokeBattle_Move
 
   def pbEffect(attacker,opponent,hitnum=0,alltargets=nil,showanimation=true)
     ret=super(attacker,opponent,hitnum,alltargets,showanimation)
-    partner=attacker.pbPartner
+    partner=attacker.effects[PBEffects::Commandee]
     if !@azure_order_up_boost_applied && opponent.damagestate.calcdamage>0 &&
-       attacker.effects[PBEffects::Commandee] && partner &&
-       partner.effects[PBEffects::Commander]
+       partner && partner.effects[PBEffects::Commander]==attacker
       stat=[PBStats::ATTACK,PBStats::DEFENSE,PBStats::SPEED][partner.form]
       if stat && attacker.pbCanIncreaseStatStage?(stat,false)
         @azure_order_up_boost_applied=true
@@ -1381,7 +1374,7 @@ class PokeBattle_Move_21F < PokeBattle_Move
     if opponent.isFainted? && opponent.damagestate.hplost>0 && !attacker.isFainted?
       hpgain=[(opponent.damagestate.hplost*3/4.0).floor,1].max
       hpgain=apply_tribute_healing(attacker,hpgain,attacker) if defined?(apply_tribute_healing)
-      recovered=attacker.pbRecoverHP(hpgain,true)
+      recovered=pbRecoverMoveHP(attacker,attacker,hpgain)
       @battle.pbDisplay(_INTL("{1}'s gambit restored its HP!",attacker.pbThis)) if recovered>0
     end
     return ret
@@ -1430,13 +1423,13 @@ class PokeBattle_Move_22E < PokeBattle_Move
   def pbAdditionalEffect(attacker,opponent)
     return false if opponent.isFainted? || opponent.damagestate.substitute
     return false if opponent.effects[PBEffects::MultiTurn]>0
-    opponent.effects[PBEffects::MultiTurn]=5
-    opponent.effects[PBEffects::MultiTurn]=7 if attacker.hasWorkingItem(:GRIPCLAW)
-    opponent.effects[PBEffects::MultiTurn]=8 if $fefieldeffect==46
+    opponent.effects[PBEffects::MultiTurn]=pbMoveDuration(attacker,5)
+    opponent.effects[PBEffects::MultiTurn]=pbMoveDuration(attacker,7) if attacker.hasWorkingItem(:GRIPCLAW)
+    opponent.effects[PBEffects::MultiTurn]=pbMoveDuration(attacker,8) if $fefieldeffect==46
     opponent.effects[PBEffects::MultiTurnAttack]=@id
     opponent.effects[PBEffects::MultiTurnUser]=attacker.index
+    opponent.effects[PBEffects::MultiTurnBindingBand]=attacker.hasWorkingItem(:BINDINGBAND)
     @battle.pbDisplay(_INTL("{1} was trapped in a raging Dust Bowl!",opponent.pbThis))
-    $bindingband=attacker.hasWorkingItem(:BINDINGBAND) ? 1 : 0
     return true
   end
 end

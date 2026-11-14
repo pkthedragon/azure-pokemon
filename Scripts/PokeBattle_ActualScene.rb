@@ -333,6 +333,10 @@ class FightMenuDisplay
 
   def refresh
     return if !@battler
+    target=@battler.pbPreferredOpposingTarget
+    @move_types=@battler.moves.first(4).map do |move|
+      move && move.id!=0 ? move.pbType(move.type,@battler,target) : nil
+    end
     commands=[]
     for i in 0...4
       break if @battler.moves[i].id==0
@@ -340,7 +344,7 @@ class FightMenuDisplay
     end
     @window.commands=commands
     selmove=@battler.moves[@index]
-    movetype=PBTypes.getName(selmove.type)
+    movetype=PBTypes.getName(@move_types[@index] || selmove.type)
     if selmove.totalpp==0
       @info.text=_ISPRINTF("{1:s}PP: ---<br>TYPE/{2:s}",@ctag,movetype)
     else
@@ -355,7 +359,7 @@ class FightMenuDisplay
     @display.update if @display
     if @buttons
       moves=@battler ? @battler.moves : nil
-      @buttons.update(self.index,moves,@megaButton,@zButton)
+      @buttons.update(self.index,moves,@megaButton,@zButton,@move_types)
     end
   end
 end
@@ -384,11 +388,11 @@ class FightMenuButtons < BitmapSprite
     super
   end
 
-  def update(index=0,moves=nil,megaButton=0,zButton=0)
-    refresh(index,moves,megaButton,zButton)
+  def update(index=0,moves=nil,megaButton=0,zButton=0,move_types=nil)
+    refresh(index,moves,megaButton,zButton,move_types)
   end
 
-  def refresh(index,moves,megaButton,zButton)
+  def refresh(index,moves,megaButton,zButton,move_types=nil)
     return if !moves
     self.bitmap.clear
     textpos=[]
@@ -399,7 +403,8 @@ class FightMenuButtons < BitmapSprite
         x=((i%2)==0) ? 4 : 192
         y=((i/2)==0) ? 6 : 48
         y+=UPPERGAP
-        self.bitmap.blt(x,y,@buttonbitmap.bitmap,Rect.new(0,moves[i].type*46,192,46))
+        type_id=(move_types && move_types[i]) || moves[i].type
+        self.bitmap.blt(x,y,@buttonbitmap.bitmap,Rect.new(0,type_id*46,192,46))
         textpos.push([moves[i].name,x+96,y+8,2,
            PokeBattle_SceneConstants::MENUBASECOLOR,PokeBattle_SceneConstants::MENUSHADOWCOLOR])
       end
@@ -416,8 +421,9 @@ class FightMenuButtons < BitmapSprite
         x=((i%2)==0) ? 4 : 192
         y=((i/2)==0) ? 6 : 48
         y+=UPPERGAP
-        self.bitmap.blt(x,y,@buttonbitmap.bitmap,Rect.new(192,moves[i].type*46,192,46))
-        self.bitmap.blt(416,20+UPPERGAP,@typebitmap.bitmap,Rect.new(0,moves[i].type*28,64,28))
+        type_id=(move_types && move_types[i]) || moves[i].type
+        self.bitmap.blt(x,y,@buttonbitmap.bitmap,Rect.new(192,type_id*46,192,46))
+        self.bitmap.blt(416,20+UPPERGAP,@typebitmap.bitmap,Rect.new(0,type_id*28,64,28))
         textpos.push([moves[i].name,x+96,y+8,2,
            PokeBattle_SceneConstants::MENUBASECOLOR,PokeBattle_SceneConstants::MENUSHADOWCOLOR])
         if moves[i].totalpp>0
@@ -433,7 +439,8 @@ class FightMenuButtons < BitmapSprite
         x=((i%2)==0) ? 4 : 192
         y=((i/2)==0) ? 6 : 48
         y+=UPPERGAP
-        self.bitmap.blt(x,y,@buttonbitmap.bitmap,Rect.new(0,moves[i].type*46,192,46))
+        type_id=(move_types && move_types[i]) || moves[i].type
+        self.bitmap.blt(x,y,@buttonbitmap.bitmap,Rect.new(0,type_id*46,192,46))
         textpos.push([moves[i].name,x+96,y+12,2,
            PokeBattle_SceneConstants::MENUBASECOLOR,PokeBattle_SceneConstants::MENUSHADOWCOLOR])
       end
@@ -450,8 +457,9 @@ class FightMenuButtons < BitmapSprite
         x=((i%2)==0) ? 4 : 192
         y=((i/2)==0) ? 6 : 48
         y+=UPPERGAP
-        self.bitmap.blt(x,y,@buttonbitmap.bitmap,Rect.new(192,moves[i].type*46,192,46))
-        self.bitmap.blt(416,20+UPPERGAP,@typebitmap.bitmap,Rect.new(0,moves[i].type*28,64,28))
+        type_id=(move_types && move_types[i]) || moves[i].type
+        self.bitmap.blt(x,y,@buttonbitmap.bitmap,Rect.new(192,type_id*46,192,46))
+        self.bitmap.blt(416,20+UPPERGAP,@typebitmap.bitmap,Rect.new(0,type_id*28,64,28))
         textpos.push([moves[i].name,x+96,y+12,2,
            PokeBattle_SceneConstants::MENUBASECOLOR,PokeBattle_SceneConstants::MENUSHADOWCOLOR])
         if moves[i].totalpp>0
@@ -4062,8 +4070,7 @@ end
 # for certain moves in double battles.
   def pbChooseTarget(index)
     pbShowWindow(FIGHTBOX)
-    currentMove=@battle.choices[index][2]
-    targets = pbSceneAvailableTargets(index,false,false,currentMove)
+    targets=pbSceneSelectableMoveTargets(index,@battle.choices[index][2])
     if targets.length == 0
       return -1
     end
@@ -4091,6 +4098,13 @@ end
         end
       end
     end
+  end
+
+  def pbSceneSelectableMoveTargets(index,move)
+    mode=@battle.battlers[index].pbTarget(move) if move
+    targets=pbSceneAvailableTargets(index,mode==PBTargets::Partner,false,move)
+    targets.concat(pbSceneAvailableTargets(index,true,false,move)) if mode==PBTargets::SingleNonUser
+    return targets
   end
 
 #>>>>DemICE entered the chat    

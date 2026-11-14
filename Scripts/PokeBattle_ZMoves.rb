@@ -779,7 +779,7 @@ class PokeBattle_ZMoves < PokeBattle_Move
             if battler.hasWorkingAbility(:BATTLEARMOR) || battler.hasWorkingAbility(:SHELLARMOR) ||
                battler.hasWorkingAbility(:SOLIDROCK) || battler.hasWorkingAbility(:PRISMARMOR) ||
                battler.hasWorkingAbility(:BULLETPROOF) || battler.hasWorkingAbility(:ROCKHEAD) ||
-               battler.hasWorkingAbility(:STALWART) || @battle.SilvallyCheck(battler,PBTypes::ROCK)
+               @battle.SilvallyCheck(battler,PBTypes::ROCK)
               next
             end
 
@@ -1059,7 +1059,7 @@ class PokeBattle_ZMoves < PokeBattle_Move
             if battler.hasWorkingAbility(:BATTLEARMOR) || battler.hasWorkingAbility(:SHELLARMOR) ||
                battler.hasWorkingAbility(:SOLIDROCK) || battler.hasWorkingAbility(:PRISMARMOR) ||
                battler.hasWorkingAbility(:BULLETPROOF) || battler.hasWorkingAbility(:ROCKHEAD) ||
-               battler.hasWorkingAbility(:STALWART) || @battle.SilvallyCheck(battler,PBTypes::ROCK)
+               @battle.SilvallyCheck(battler,PBTypes::ROCK)
               next
             end
 
@@ -1302,14 +1302,7 @@ def pbZStatus(move,attacker)
       return -1
     end
     #@battle.scene.pbSubstituteSprite(attacker,attacker.pbIsOpposing?(1))
-    attacker.effects[PBEffects::MultiTurn]=0
-    if attacker.effects[PBEffects::MultiTurnAttack] == PBMoves::BINDINGWORD
-      for i in [PBStats::ATTACK,PBStats::DEFENSE,PBStats::SPEED,PBStats::SPATK,PBStats::SPDEF,PBStats::ACCURACY,PBStats::EVASION]
-        attacker.stages[i] = attacker.effects[PBEffects::StatChangeHolder][i]
-        attacker.effects[PBEffects::StatChangeHolder][i] = 0
-      end
-    end
-    attacker.effects[PBEffects::MultiTurnAttack]=0
+    attacker.pbClearMultiTurn
     attacker.effects[PBEffects::Substitute]=sublife
     @battle.pbDisplayBrief(_INTL("{1} put in a substitute!",attacker.pbThis))
   elsif protectmove.include?(move)

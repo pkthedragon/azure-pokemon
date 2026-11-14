@@ -170,7 +170,6 @@ begin
     AftershockUser    = 174
     EarlyBirdBoost    = 175
     Shelter           = 176
-    Stench            = 200
     MudBath           = 201
     NaturalOrder      = 202
     FeverPitchBoost   = 203
@@ -237,7 +236,10 @@ begin
     CircadianRhythm   = 266
     Needles           = 267
     MoltenStance      = 268
-    StallEntry        = 705
+    ZenModeSleep      = 269
+    UsedAttackThisTurn = 270
+    HealerWish        = 271
+    MultiTurnBindingBand = 272
     # These effects apply to a side - starts from 300
     LightScreen   = 300
     LuckyChant    = 301
@@ -264,9 +266,7 @@ begin
     Undertow      = 321
     Presents      = 322
     ManaBond      = 323
-    ReverbEcho    = 324 # Stores the move ID for Reverb ability
-    ReverbTarget  = 327 # Stores the target index for Reverb ability
-    ReverbUser    = 328 # Stores the user index for Reverb ability
+    ReverbEcho    = 324 # Maps each pending move to its target slots
     PlusSignal    = 325
     MinusSignal   = 326
     StatCapPositive = 329

@@ -3,7 +3,7 @@
 [STENCH]
 LegacyAbilityID = 1
 Name = Stench
-Description = The first contact move against a target makes it flinch.
+Description = The user's first contact move against a target flinches.
 #-------------------------------
 [DRIZZLE]
 LegacyAbilityID = 2
@@ -18,7 +18,7 @@ Description = Its Speed stat is gradually boosted.
 [BATTLEARMOR]
 LegacyAbilityID = 4
 Name = Battle Armor
-Description = The Pokémon takes 0.66x damage when moving last.
+Description = User takes 0.66x damage when moving last.
 #-------------------------------
 [STURDY]
 LegacyAbilityID = 5
@@ -33,7 +33,7 @@ Description = The user is immune to Fire-type moves and explosive moves.
 [LIMBER]
 LegacyAbilityID = 7
 Name = Limber
-Description = Takes 0.5x damage when switching in and to hazards
+Description = Takes 0.5x damage when switching in and is immune to hazards.
 #-------------------------------
 [SANDVEIL]
 LegacyAbilityID = 8
@@ -63,7 +63,7 @@ Description = Immune to confusion, infatuation, taunt, torment, and move redirec
 [CLOUDNINE]
 LegacyAbilityID = 13
 Name = Cloud Nine
-Description = While the user is on the battlefield, nullifies all weather and prevents stat raising
+Description = While the user is on the battlefield, nullifies all weather and prevents stat raising.
 #-------------------------------
 [COMPOUNDEYES]
 LegacyAbilityID = 14
@@ -73,7 +73,7 @@ Description = The Pokémon's accuracy is boosted.
 [INSOMNIA]
 LegacyAbilityID = 15
 Name = Insomnia
-Description = The user can't fall asleep and their two-turn moves charge instantly
+Description = The user can't fall asleep and their two-turn moves charge instantly.
 #-------------------------------
 [COLORCHANGE]
 LegacyAbilityID = 16
@@ -152,7 +152,7 @@ Description = All status problems heal when it switches out.
 #-------------------------------
 [LIGHTNINGROD]
 LegacyAbilityID = 31
-Name = Lightningrod
+Name = Lightning Rod
 Description = Absorbs Electric-type moves, which raises offenses.
 #-------------------------------
 [SERENEGRACE]
@@ -198,12 +198,12 @@ Description = The user can't flinch and the user's moves cannot be redirected.
 [MAGMAARMOR]
 LegacyAbilityID = 40
 Name = Magma Armor
-Description = Absorbs Water-type moves, which raises defenses
+Description = Absorbs Water-type moves, which raises defenses.
 #-------------------------------
 [WATERVEIL]
 LegacyAbilityID = 41
 Name = Water Veil
-Description = User has 1.5x special defense during Rain
+Description = User has 1.5x special defense during Rain.
 #-------------------------------
 [MAGNETPULL]
 LegacyAbilityID = 42
@@ -238,7 +238,7 @@ Description = Ups resistance to Fire- and Ice-type moves.
 [EARLYBIRD]
 LegacyAbilityID = 48
 Name = Early Bird
-Description = 2x speed the turn after waking up, charging, or recharging
+Description = 2x speed the turn after waking up, charging, or recharging.
 #-------------------------------
 [FLAMEBODY]
 LegacyAbilityID = 49
@@ -253,7 +253,7 @@ Description = Immune to Pursuit and trapping moves and abilities, can always fle
 [KEENEYE]
 LegacyAbilityID = 51
 Name = Keen Eye
-Description = Uses Lock-On and Laser Focus on entry, and the user's accuracy can't be lowered.
+Description = Uses Lock-On and Laser Focus on entry, the user's accuracy can't be lowered.
 #-------------------------------
 [HYPERCUTTER]
 LegacyAbilityID = 52
@@ -262,13 +262,13 @@ Description = Attack can't be lowered, inflicts wounds when dealing damage.
 #-------------------------------
 [PICKUP]
 LegacyAbilityID = 53
-Name = Pickup
-Description = Picks up the enemy's item upon fainting, can find items outside of battle
+Name = Pick Up
+Description = Picks up the enemy's item upon fainting, can find items outside of battle.
 #-------------------------------
 [TRUANT]
 LegacyAbilityID = 54
 Name = Truant
-Description = Skips every other turn to heal 1/3rd max HP
+Description = Skips every other turn to heal 1/3rd max HP.
 #-------------------------------
 [HUSTLE]
 LegacyAbilityID = 55
@@ -298,12 +298,12 @@ Description = Transforms during weather or when holding a weather stone.
 [STICKYHOLD]
 LegacyAbilityID = 60
 Name = Sticky Hold
-Description = Held items can't be removed, traps the enemy upon any contact
+Description = Held items can't be removed, traps the enemy upon any contact.
 #-------------------------------
 [SHEDSKIN]
 LegacyAbilityID = 61
 Name = Shed Skin
-Description = The user sheds its first status condition
+Description = The user sheds its first status condition.
 #-------------------------------
 [GUTS]
 LegacyAbilityID = 62
@@ -313,12 +313,12 @@ Description = Boosts Attack if there is a status problem.
 [MARVELSCALE]
 LegacyAbilityID = 63
 Name = Marvel Scale
-Description = Boosts Defense and Sp. Def. when statused or in certain terrains.
+Description = Boosts both defenses while statused or during Misty Terrain.
 #-------------------------------
 [LIQUIDOOZE]
 LegacyAbilityID = 64
 Name = Liquid Ooze
-Description = Wounds enemies that use a draining move and reverses the healing
+Description = Wounds enemies that use a draining move and reverses the healing.
 #-------------------------------
 [OVERGROW]
 LegacyAbilityID = 65
@@ -358,7 +358,7 @@ Description = Prevents the foe from fleeing.
 [VITALSPIRIT]
 LegacyAbilityID = 72
 Name = Spirited
-Description = Moves with unchecked accuracy deal 1.5x damage.
+Description = Moves that skip accuracy checks deal 1.5x damage.
 #-------------------------------
 [WHITESMOKE]
 LegacyAbilityID = 73
@@ -398,22 +398,22 @@ Description = Deals 1.25x damage to same gender, takes 0.75x otherwise.
 [STEADFAST]
 LegacyAbilityID = 80
 Name = Steadfast
-Description = Raises Speed whenever the user would flinch, be immobilized, or have damage be prevented
+Description = Raises Speed whenever the user would flinch, be immobilized, or have damage be prevented.
 #-------------------------------
 [SNOWCLOAK]
 LegacyAbilityID = 81
 Name = Snow Veil
-Description = User has 1.5x special defense during Hail
+Description = User has 1.5x special defense during Hail.
 #-------------------------------
 [GLUTTONY]
 LegacyAbilityID = 82
 Name = Gluttony
-Description = Berries trigger at half HP, and healing effects restore 10% more HP.
+Description = Encourages early use of berries, effects that heal the user restore 10% more HP.
 #-------------------------------
 [ANGERPOINT]
 LegacyAbilityID = 83
 Name = Anger Point
-Description = Moves deal 1.3x damage but the user cannot use status moves.
+Description = User's moves deal 1.3x damage but the user cannot use status moves.
 #-------------------------------
 [UNBURDEN]
 LegacyAbilityID = 84
@@ -423,7 +423,7 @@ Description = Raises Speed if a held item is used.
 [HEATPROOF]
 LegacyAbilityID = 85
 Name = Heatproof
-Description = The user cannot be burned and takes 0.5x damage from Fire-type moves.
+Description = User cannot be burned and takes 0.5x damage from Fire-type moves.
 #-------------------------------
 [SIMPLE]
 LegacyAbilityID = 86
@@ -463,7 +463,7 @@ Description = Increases the frequency of multi-strike moves.
 [HYDRATION]
 LegacyAbilityID = 93
 Name = Hydration
-Description = During Rain, clears the user's status conditions and negative stat changes each turn
+Description = During Rain, clears the user's status conditions and negative stat changes each turn.
 #-------------------------------
 [SOLARPOWER]
 LegacyAbilityID = 94
@@ -493,12 +493,12 @@ Description = The Pokémon only takes damage from attacks.
 [NOGUARD]
 LegacyAbilityID = 99
 Name = No Guard
-Description = Moves used by or against the user ignore accuracy checks, and moves with 80 accuracy or lower deal 1.2x damage.
+Description = The user's and moves against the user ignore accuracy checks, and deal 1.2x damage if 80 accuracy or below.
 #-------------------------------
 [STALL]
 LegacyAbilityID = 100
 Name = Stall
-Description = Makes an extra turn pass each turn, the user always moves last
+Description = Makes an extra turn pass each turn, the user always moves last.
 #-------------------------------
 [TECHNICIAN]
 LegacyAbilityID = 101
@@ -513,7 +513,7 @@ Description = During Sun, clears the user's status conditions and negative stat 
 [KLUTZ]
 LegacyAbilityID = 103
 Name = Klutz
-Description = Held item effects are ignored on the first turn it enters battle.
+Description = Ignores held item effects the first turn sent in.
 #-------------------------------
 [MOLDBREAKER]
 LegacyAbilityID = 104
@@ -533,12 +533,12 @@ Description = Damages the foe landing the finishing hit.
 [ANTICIPATION]
 LegacyAbilityID = 107
 Name = Anticipation
-Description = User takes 0.5x damage from non-contact moves but 2x damage from Psychic-type attacks
+Description = User takes 0.5x damage from non-contact moves but 2x damage from Psychic-type attacks.
 #-------------------------------
 [FOREWARN]
 LegacyAbilityID = 108
 Name = Forewarn
-Description = Disables a foe's super-effective move on entry for one turn
+Description = Disables a foe's super-effective move on entry for one turn.
 #-------------------------------
 [UNAWARE]
 LegacyAbilityID = 109
@@ -588,12 +588,12 @@ Description = The Pokémon summons a hailstorm in battle.
 [HONEYGATHER]
 LegacyAbilityID = 118
 Name = Honey Gather
-Description = Restores 1/8th max HP each turn the user doesn't attack, finds honey outside of battle
+Description = Restores 1/8th max HP each turn the user doesn't attack, finds honey outside of battle.
 #-------------------------------
 [FRISK]
 LegacyAbilityID = 119
 Name = Frisk
-Description = Peeks at the enemy held item and blocks its usage for one turn
+Description = Peeks at the enemy held item and blocks its usage for one turn.
 #-------------------------------
 [RECKLESS]
 LegacyAbilityID = 120
@@ -613,12 +613,12 @@ Description = Powers up party Pokémon when it is sunny.
 [BADDREAMS]
 LegacyAbilityID = 123
 Name = Bad Dreams
-Description = Uses Nightmare on entry
+Description = Uses Nightmare on entry.
 #-------------------------------
 [PICKPOCKET]
 LegacyAbilityID = 124
 Name = Pickpocket
-Description = Steals enemy item when dealt damage and sharply raises speed
+Description = Steals enemy item when dealt damage and sharply raises speed.
 #-------------------------------
 [SHEERFORCE]
 LegacyAbilityID = 125
@@ -633,7 +633,7 @@ Description = Makes stat changes have an opposite effect.
 [UNNERVE]
 LegacyAbilityID = 127
 Name = Unnerve
-Description = Prevents the enemy from eating berries or leftovers, or using the move Swallow
+Description = Prevents the enemy from eating berries or leftovers, or using the move Swallow.
 #-------------------------------
 [DEFIANT]
 LegacyAbilityID = 128
@@ -668,12 +668,12 @@ Description = Physical attacks lower Def. and sharply raise Spd.
 [HEAVYMETAL]
 LegacyAbilityID = 134
 Name = Heavy Metal
-Description = Doubles weight and boosts Defense during gravity.
+Description = Doubles weight and boosts both defenses during Gravity.
 #-------------------------------
 [LIGHTMETAL]
 LegacyAbilityID = 135
 Name = Light Metal
-Description = Halves weight and doubles Speed during gravity.
+Description = Halves weight and doubles speed during gravity.
 #-------------------------------
 [MULTISCALE]
 LegacyAbilityID = 136
@@ -683,7 +683,7 @@ Description = Reduces damage when HP is full.
 [TOXICBOOST]
 LegacyAbilityID = 137
 Name = Toxic Boost
-Description = Boosts move power 1.3x when poisoned, user does not take poison damage
+Description = Boosts move power 1.3x when poisoned, user does not take poison damage.
 #-------------------------------
 [FLAREBOOST]
 LegacyAbilityID = 138
@@ -698,12 +698,12 @@ Description = May create another Berry after one is used.
 [TELEPATHY]
 LegacyAbilityID = 140
 Name = Telepathy
-Description = Moves used by the user or its allies do not hit allies.
+Description = Attacks used by the user or allies do not hit the user or allied Pokémon.
 #-------------------------------
 [MOODY]
 LegacyAbilityID = 141
 Name = Moody
-Description = Nature stat modifiers are 3x
+Description = Nature stat modifiers are 3x.
 #-------------------------------
 [OVERCOAT]
 LegacyAbilityID = 142
@@ -713,7 +713,7 @@ Description = Protects the Pokémon from damage from weather.
 [QUICKDRAW]
 LegacyAbilityID = 143
 Name = Quick Draw
-Description = Gains +1 priority the first turn it enters battle.
+Description = The user has +1 priority the first turn they enter battle.
 #-------------------------------
 [REGENERATOR]
 LegacyAbilityID = 144
@@ -733,7 +733,7 @@ Description = Boosts the Pokémon's Speed in a sandstorm.
 [WONDERSKIN]
 LegacyAbilityID = 147
 Name = Wonder Skin
-Description = Damages attackers using special attacks 1/8 max HP
+Description = Damages attackers using special attacks 1/8 max HP.
 #-------------------------------
 [ANALYTIC]
 LegacyAbilityID = 148
@@ -768,7 +768,7 @@ Description = Boosts Attack after knocking out any Pokémon.
 [JUSTIFIED]
 LegacyAbilityID = 154
 Name = Justified
-Description = Absorbs Dark-type moves, which raises offenses
+Description = Absorbs Dark-type moves, which raises offenses.
 #-------------------------------
 [RATTLED]
 LegacyAbilityID = 155
@@ -783,7 +783,7 @@ Description = Reflects status-changing moves.
 [SAPSIPPER]
 LegacyAbilityID = 157
 Name = Sap Sipper
-Description = Absorbs Grass-type moves, which raises offenses
+Description = Absorbs Grass-type moves, which raises offenses.
 #-------------------------------
 [PRANKSTER]
 LegacyAbilityID = 158
@@ -803,7 +803,7 @@ Description = Inflicts damage to the Pokémon on contact.
 [ZENMODE]
 LegacyAbilityID = 161
 Name = Zen Mode
-Description = Wakes up and transforms the user when put to sleep or when at half health
+Description = Wakes up and transforms the user when put to sleep or when at half health.
 #-------------------------------
 [VICTORYSTAR]
 LegacyAbilityID = 162
@@ -838,7 +838,7 @@ Description = The effects of Aura Abilities are reversed.
 [BULLETPROOF]
 LegacyAbilityID = 168
 Name = Bulletproof
-Description = User is immune to ball, bomb, and cannon moves
+Description = User is immune to ball, bomb, and cannon moves.
 #-------------------------------
 [CHEEKPOUCH]
 LegacyAbilityID = 169
@@ -863,7 +863,7 @@ Description = Powers up each Pokémon's Fairy-type moves.
 [FLOWERVEIL]
 LegacyAbilityID = 173
 Name = Flower Veil
-Description = User has 1.5x defense during Sun
+Description = User has 1.5x defense during Sun.
 #-------------------------------
 [FURCOAT]
 LegacyAbilityID = 174
@@ -893,7 +893,7 @@ Description = Steals enemy item upon attacking, deals 1.5x damage to itemless en
 [MEGALAUNCHER]
 LegacyAbilityID = 179
 Name = Mega Launcher
-Description = Boosts the power of pulse, aura, and cannon moves 1.5x
+Description = Boosts the power of pulse, aura, and cannon moves 1.5x.
 #-------------------------------
 [PARENTALBOND]
 LegacyAbilityID = 180
@@ -933,7 +933,7 @@ Description = Prevents ally Pokémon from falling asleep.
 [SYMBIOSIS]
 LegacyAbilityID = 187
 Name = Symbiosis
-Description = Passes its stat changes to its ally.
+Description = The user passes its stat changes to allies.
 #-------------------------------
 [TOUGHCLAWS]
 LegacyAbilityID = 188
@@ -968,7 +968,7 @@ Description = Boosts highest stat after KO'ing a Pokémon.
 [BERSERK]
 LegacyAbilityID = 194
 Name = Berserk
-Description = Raises offenses when damaged below 50% HP
+Description = Raises offenses when damaged below 50% HP.
 #-------------------------------
 [COMATOSE]
 LegacyAbilityID = 195
@@ -978,7 +978,7 @@ Description = It's always asleep, and attacks without waking up.
 [CORROSION]
 LegacyAbilityID = 196
 Name = Corrosion
-Description = Can Poison and damage Steel-types with Poison moves
+Description = Can Poison and damage Steel-types with Poison moves.
 #-------------------------------
 [DANCER]
 LegacyAbilityID = 197
@@ -1038,7 +1038,7 @@ Description = This Pokémon's moves do not make contact.
 [MERCILESS]
 LegacyAbilityID = 208
 Name = Merciless
-Description = Moves critically hit statused or wounded targets.
+Description = The user's attacks critically hit if the target has a status condition or wounds.
 #-------------------------------
 [MISTYSURGE]
 LegacyAbilityID = 209
@@ -1047,8 +1047,8 @@ Description = Makes the terrain misty on entry.
 #-------------------------------
 [POWEROFALCHEMY]
 LegacyAbilityID = 210
-Name = Alchemy
-Description = Copies the ability of the most recently fainted enemy on entry or whenever an enemy faints
+Name = Power of Alchemy
+Description = Copies the ability of the most recently fainted enemy on entry or whenever an enemy faints.
 #-------------------------------
 [PRISMARMOR]
 LegacyAbilityID = 211
@@ -1068,7 +1068,7 @@ Description = Takes 0.7x damage from spread moves.
 [RECEIVER]
 LegacyAbilityID = 214
 Name = Receiver
-Description = Copies the ability of the most recently fainted ally on entry or whenever an ally faints
+Description = Copies the ability of the most recently fainted ally on entry or whenever an ally faints.
 #-------------------------------
 [SHADOWSHIELD]
 LegacyAbilityID = 215
@@ -1098,7 +1098,7 @@ Description = Boosts the Defense stat when hit by an attack.
 [STEELWORKER]
 LegacyAbilityID = 220
 Name = Steelworker
-Description = Steel-type moves deal 1.5x damage, takes 0.5x damage from Steel-type moves
+Description = Steel-type moves deal 1.5x damage, takes 0.5x damage from Steel-type moves.
 #-------------------------------
 [SURGESURFER]
 LegacyAbilityID = 221
@@ -1183,7 +1183,7 @@ Description = Catches Pokémon with Surf and Dive, spits out when hit.
 [HUNGERSWITCH]
 LegacyAbilityID = 237
 Name = Hunger Switch
-Description = Heals 1/8th max HP at the end of turn or has 1.5x speed based on form
+Description = Heals 1/8th max HP at the end of turn or has 1.5x speed based on form.
 #-------------------------------
 [ICEFACE]
 LegacyAbilityID = 238
@@ -1238,7 +1238,7 @@ Description = Just being next to the Pokémon powers up moves.
 [PROPELLERTAIL]
 LegacyAbilityID = 248
 Name = Propeller Tail
-Description = The user's momentum moves blow away hazards and trapping effects
+Description = The user's momentum moves blow away hazards and trapping effects.
 #-------------------------------
 [AMPLIFY]
 LegacyAbilityID = 249
@@ -1263,7 +1263,7 @@ Description = Removes protective screens for allies and opponents.
 [STALWART]
 LegacyAbilityID = 253
 Name = Stalwart
-Description = Each time a move is used in succession against the user, the damage is lowered by 10%
+Description = Each time a move is used in succession against the user, the damage is lowered by 10%.
 #-------------------------------
 [STEAMENGINE]
 LegacyAbilityID = 254
@@ -1368,7 +1368,7 @@ Description = This Pokémon deals more damage to Pokémon that haven't attacked 
 [HEADSTRONG]
 LegacyAbilityID = 316
 Name = Headstrong
-Description = All Pokémon ignore immunities.
+Description = All Pokemon ignore immunities.
 #-------------------------------
 [ERRATIC]
 LegacyAbilityID = 317
@@ -1388,17 +1388,17 @@ Description = Raises speed if enemy is faster.
 [LACERATE]
 LegacyAbilityID = 320
 Name = Lacerate
-Description = Normal-type moves become Steel-type and receive a boost.
+Description = Normal-type moves become Steel-type and are boosted by 1.2x.
 #-------------------------------
 [IMMOLATE]
 LegacyAbilityID = 321
 Name = Immolate
-Description = Normal-type moves become Fire-type and receive a boost.
+Description = Normal-type moves become Fire-type and are boosted by 1.2x.
 #-------------------------------
 [ESOTERIC]
 LegacyAbilityID = 322
 Name = Esoteric
-Description = Doubles Special Attack.
+Description = Doubles special attack.
 #-------------------------------
 [PERPETUAL]
 LegacyAbilityID = 323
@@ -1438,12 +1438,12 @@ Description = Restores 1/8th max HP each turn in Sun.
 [ICEBREAKER]
 LegacyAbilityID = 330
 Name = Icebreaker
-Description = Raises the power of Ice- and Fighting-type moves by 1.3x during Hail.
+Description = Raises the power of Ice-type moves and Fighting-type moves by 1.3x during Hail.
 #-------------------------------
 [HYDROPLANE]
 LegacyAbilityID = 331
 Name = Hydroplane
-Description = Boosts Attack 1.5x and loses 1/8th max HP each turn during Rain.
+Description = Boosts attack 1.5x and loses 1/8th max HP each turn during Rain.
 #-------------------------------
 [BLOODTHIRSTY]
 LegacyAbilityID = 332
@@ -1463,7 +1463,7 @@ Description = User is immune to kicking, punching, and biting moves.
 [HEATSINK]
 LegacyAbilityID = 335
 Name = Heat Sink
-Description = Restores HP if hit by a Fire-type move.
+Description = Restores HP when hit by a Fire-type move.
 #-------------------------------
 [SCAVENGER]
 LegacyAbilityID = 336
@@ -1488,12 +1488,12 @@ Description = Boosts the power of light and beam moves 1.5x.
 [HALCYON]
 LegacyAbilityID = 340
 Name = Halcyon
-Description = All moves with positive priority have zero priority.
+Description = Sets the priority of all moves with positive priority to 0.
 #-------------------------------
 [MANAECHOES]
 LegacyAbilityID = 341
 Name = Mana Echoes
-Description = The user's special attacks deal an additional 1/8th max HP damage.
+Description = The user's special attacks deal extra damage equal to 1/8 of its own max HP.
 #-------------------------------
 [EXECUTIONER]
 LegacyAbilityID = 342
@@ -1503,17 +1503,17 @@ Description = The user deals 1.5x damage to opponents with 50% or less HP.
 [ASCETIC]
 LegacyAbilityID = 343
 Name = Ascetic
-Description = Powers up Grass-type moves, incoming Grass-type moves deal less damage.
+Description = Grass-type moves deal 1.5x damage, takes 0.5x damage from Grass-type moves.
 #-------------------------------
 [WATERLOGGED]
 LegacyAbilityID = 344
 Name = Waterlogged
-Description = Powers up Water-type moves, incoming Water-type moves deal less damage.
+Description = Water-type moves deal 1.5x damage, takes 0.5x damage from Water-type moves.
 #-------------------------------
 [INCENDIARY]
 LegacyAbilityID = 345
 Name = Incendiary
-Description = Powers up Fire-type moves, incoming Fire-type moves deal less damage.
+Description = Fire-type moves deal 1.5x damage, takes 0.5x damage from Fire-type moves.
 #-------------------------------
 [EVENTHORIZON]
 LegacyAbilityID = 346
@@ -1608,7 +1608,7 @@ Description = Prevents status and halves Ghost damage.
 [ROCKYPAYLOAD]
 LegacyAbilityID = 364
 Name = Rocky Payload
-Description = Rock-type moves deal 1.5x damage, takes 0.5x damage from Rock-type moves
+Description = Rock-type moves deal 1.5x damage, takes 0.5x damage from Rock-type moves.
 #-------------------------------
 [SEEDSOWER]
 LegacyAbilityID = 365
@@ -1693,7 +1693,7 @@ Description = Sound moves strike again at the beginning of the next turn at 0.25
 [VISIONARY]
 LegacyAbilityID = 381
 Name = Visionary
-Description = The user's physical attacks use the user's Special Attack stat.
+Description = The user's physical attacks use the user's special attack stat.
 #-------------------------------
 [WALLOW]
 LegacyAbilityID = 382
@@ -1833,7 +1833,7 @@ Description = Intensifies Gravity on entry.
 [BRUTALIZE]
 LegacyAbilityID = 409
 Name = Brutalize
-Description = Normal-type moves become Fighting-type and receive a boost.
+Description = Normal-type moves become Fighting-type and are boosted by 1.2x.
 #-------------------------------
 [BIGBODY]
 LegacyAbilityID = 410
@@ -1843,12 +1843,12 @@ Description = User takes 0.5x damage from attacks and from recoil.
 [HASTE]
 LegacyAbilityID = 411
 Name = Haste
-Description = Sharply raises Speed on entry, and loses a positive Speed stage each turn.
+Description = Sharply raises speed on entry, the user loses a positive speed stage each turn.
 #-------------------------------
 [LIMINAL]
 LegacyAbilityID = 412
 Name = Liminal
-Description = Status moves boost the user's next attack, and attacking moves raise the priority of the user's next status move.
+Description = Status moves boost the next attack by 1.5x. Attacks give the next status move +1 priority.
 #-------------------------------
 [SERAPHIC]
 LegacyAbilityID = 413
@@ -1868,29 +1868,39 @@ Description = Increases the power of the user and allies' Rock-type moves by 1.5
 [WARPOET]
 LegacyAbilityID = 416
 Name = War Poet
-Description = The user's sound moves use its Attack stat and all offensive stat stages.
+Description = The user's sound moves use its attack stat and use all offensive stat stages.
 #-------------------------------
 [TIMETWISTER]
 LegacyAbilityID = 417
 Name = Timetwister
-Description = At the end of turn, if the user is at 1/3 max HP or lower, it rewinds to the start of the turn.
+Description = At the end of the turn, if the user has 1/3 HP or less, rewinds its HP, status, and stat changes.
 #-------------------------------
 [DIVINEWINDS]
 LegacyAbilityID = 418
 Name = Divine Winds
-Description = Flying-type moves become Dragon-type and receive a boost.
+Description = Flying-type moves become Dragon-type and are boosted by 1.2x.
 #-------------------------------
 [DEEPFREEZE]
 LegacyAbilityID = 419
 Name = Deep Freeze
-Description = Contact moves used against this Pokemon have negative priority.
+Description = Contact moves used against this Pokémon have negative priority.
 #-------------------------------
 [HARVESTMOON]
 LegacyAbilityID = 420
 Name = Harvest Moon
-Description = Sets Grassy Terrain on entry and boosts Attack during Grassy Terrain.
+Description = Sets Grassy Terrain on entry and boosts Attack by 1.5x during Grassy Terrain.
 #-------------------------------
 [DUSTDEVIL]
 LegacyAbilityID = 421
 Name = Dust Devil
-Description = Sets Sandstorm on entry and boosts Special Attack during Sandstorm.
+Description = Sets Sandstorm on entry and boosts Special Attack by 1.5x during Sandstorm.
+#-------------------------------
+[AFTERLIFE]
+LegacyAbilityID = 422
+Name = Afterlife
+Description = If knocked out above half HP, lowers the attacker's defenses. Otherwise, paralyzes the attacker.
+#-------------------------------
+[KEYHOLDER]
+LegacyAbilityID = 423
+Name = Keyholder
+Description = Uses Imprison on entry.

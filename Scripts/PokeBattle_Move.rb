@@ -329,15 +329,7 @@ class PokeBattle_Move
     return 0 if fraction<=0
     hpgain = (damage*fraction).floor
     return 0 if hpgain<=0
-    if opponent.hasWorkingAbility(:LIQUIDOOZE,true)
-      attacker.pbReduceHP(hpgain,true)
-      @battle.pbDisplay(_INTL("{1} sucked up the liquid ooze!",attacker.pbThis))
-      if attacker.effects[PBEffects::Wounded] == 0
-        attacker.effects[PBEffects::Wounded]=3
-        @battle.pbDisplay(_INTL("{1} was wounded!",attacker.pbThis))
-      end
-      return 0
-    end
+    return 0 if pbReverseDrain(attacker,opponent,hpgain)
     restored = attacker.pbRecoverHP(hpgain,true)
     @battle.pbDisplay(_INTL("{1} had its energy drained!",opponent.pbThis)) if restored>0
     if restored>0 && tribute_attack?(attacker,:SPLASHTRIBUTE)
@@ -356,6 +348,13 @@ class PokeBattle_Move
       end
     end
     return restored
+  end
+
+  def pbReverseDrain(attacker,opponent,amount)
+    return false if !opponent.hasWorkingAbility(:LIQUIDOOZE,true) || opponent.moldbroken
+    return false if amount<=0
+    attacker.pbTakeLiquidOozeDamage(amount)
+    return true
   end
 
   def pbApplyTributeSelectionEffect(attacker,targets)
@@ -851,7 +850,7 @@ class PokeBattle_Move
         applied = true
       end
       if heroic_tribute?(attacker,:SUDOWOODO) && totaldamage>0 && !attacker.hasWorkingAbility(:ROCKHEAD)
-        recoil = [(totaldamage*0.3).floor,1].max
+        recoil=attacker.pbAdjustAbilityRecoilCrashDamage([(totaldamage*0.3).floor,1].max)
         attacker.pbReduceHP(recoil,true)
         @battle.pbDisplay(_INTL("{1} was hurt by recoil!",attacker.pbThis))
         applied = true
@@ -1046,6 +1045,60 @@ class PokeBattle_Move
   end
 
   def pbType(type,attacker,opponent)
+    return pbAbilityConvertedType(pbTypeBeforeAbilityConversion(type,attacker,opponent),attacker)
+  end
+
+  def pbAbilityConvertedType(type,attacker)
+    return type if !attacker
+    if type==PBTypes::NORMAL
+      return PBTypes::STEEL if attacker.hasWorkingAbility(:LACERATE)
+      return PBTypes::FIRE if attacker.hasWorkingAbility(:IMMOLATE)
+      return PBTypes::FIGHTING if attacker.hasWorkingAbility(:BRUTALIZE)
+    elsif type==PBTypes::FLYING && attacker.hasWorkingAbility(:DIVINEWINDS)
+      return PBTypes::DRAGON
+    end
+    return type
+  end
+
+  attr_accessor :reverbEcho
+
+  def pbMoveDuration(attacker,turns)
+    return attacker.hasWorkingAbility(:PERPETUAL) ? 7 : turns
+  end
+
+  def pbAbilityMovePowerMultiplier(attacker)
+    if attacker.hasWorkingAbility(:PINPOINT) && PBStuff::PIERCINGMOVE.include?(id)
+      return 1.5
+    end
+    if attacker.hasWorkingAbility(:BEACON) && (PBStuff::LIGHTMOVE.include?(id) || PBStuff::BEAMMOVE.include?(id))
+      return 1.5
+    end
+    if attacker.hasWorkingAbility(:GRENADIER) &&
+       (PBStuff::BALLMOVE.include?(id) || PBStuff::BOMBMOVE.include?(id) || PBStuff::EXPLOSIVEMOVE.include?(id))
+      return 1.5
+    end
+    if attacker.hasWorkingAbility(:MEGALAUNCHER) &&
+       (PBStuff::AURAPULSEMOVE.include?(id) || PBStuff::CANNONMOVE.include?(id))
+      return 1.5
+    end
+    return 1.0
+  end
+
+  def pbImperviousMove?
+    return PBStuff::PUNCHINGMOVE.include?(id) || PBStuff::KICKINGMOVE.include?(id) || PBStuff::BITEMOVE.include?(id)
+  end
+
+  def pbCustomMoveImmunity(type,attacker,opponent)
+    return nil if opponent.moldbroken
+    return :impervious if opponent.hasWorkingAbility(:IMPERVIOUS) && pbImperviousMove?
+    if opponent.hasWorkingAbility(:HEATSINK) &&
+       (type==PBTypes::FIRE || FieldTypeChange(attacker,opponent,1,true)==PBTypes::FIRE)
+      return :heat_sink
+    end
+    return nil
+  end
+
+  def pbTypeBeforeAbilityConversion(type,attacker,opponent)
     if type>=0 && attacker
       if tribute_has?(attacker, :BLANKTRIBUTE)
         if heroic_tribute?(attacker,:HELIOLISK)
@@ -1132,13 +1185,44 @@ class PokeBattle_Move
     end
   end
 
+  attr_accessor :spread_target_count
+
+  def pbSpreadMove?(attacker)
+    return [PBTargets::AllOpposing,PBTargets::AllNonUsers].include?(attacker.pbTarget(self))
+  end
+
   def pbTargetsAll?(attacker)
-    if @target==PBTargets::AllOpposing 
-      return attacker.opposingLivingBattlers.length>1
-    elsif @target==PBTargets::AllNonUsers
-      return (attacker.opposingLivingBattlers.length + attacker.sameSideLivingBattlers(false).length)>1
+    targeting=attacker.pbTarget(self)
+    return false unless [PBTargets::AllOpposing,PBTargets::AllNonUsers].include?(targeting)
+    return spread_target_count>1 if spread_target_count
+    targets=attacker.opposingLivingBattlers
+    targets+=attacker.sameSideLivingBattlers(false) if targeting==PBTargets::AllNonUsers
+    return targets.count { |target| @battle.pbMoveCanTargetInTriple?(attacker,target,self) }>1
+  end
+
+  def pbScaleTargetDamage(damage,attacker,opponent)
+    spread=pbSpreadMove?(attacker)
+    if spread && (@battle.tripleBattle? || pbTargetsAll?(attacker))
+      unless tribute_attack?(attacker,:EARTHTRIBUTE) && heroic_tribute?(attacker,:SANDSLASH)
+        if @battle.tripleBattle?
+          damage=(damage*0.5).round
+        elsif !attacker.hasWorkingItem(:KINGSROCK)
+          damage=(damage*0.75).round
+        end
+      end
+    elsif @battle.tripleBattle?
+      damage=(damage*@battle.pbTripleLaneDamageMultiplier(attacker,opponent,self)).round
     end
-    return false
+    if spread && opponent.hasWorkingAbility(:MAJESTY) && !opponent.moldbroken
+      damage=(damage*0.7).round
+    end
+    return damage
+  end
+
+  def pbWideGuardMultiplier(attacker,opponent)
+    return 0.5 if @basedamage>0 && opponent.pbOwnSide.effects[PBEffects::WideGuard]>0 &&
+      pbSpreadMove?(attacker)
+    return 1.0
   end
 
   def pbSortedOpposingTargets(attacker)
@@ -1282,6 +1366,29 @@ class PokeBattle_Move
     return false
   end
 
+  def pbTelepathyBlocks?(attacker,opponent)
+    return false if @basedamage==0 || attacker==opponent || attacker.pbIsOpposing?(opponent.index)
+    return attacker.hasWorkingAbility(:TELEPATHY) || opponent.sameSideAbilityHolder(:TELEPATHY)
+  end
+
+  def pbRecoverMoveHP(user,target,amount)
+    healer=user.hasWorkingAbility(:HEALER)
+    recovered=target.pbRecoverHP(healer ? (amount*1.1).floor : amount,true) if amount>0
+    target.pbCureStatus if healer && target.status>0 && target.effects[PBEffects::Spritz]!=1
+    return recovered || 0
+  end
+
+  def pbCanHealMoveTarget?(user,target)
+    return target.hp<target.totalhp ||
+           (user.hasWorkingAbility(:HEALER) && target.status>0 && target.effects[PBEffects::Spritz]!=1)
+  end
+
+  def pbArmorTailBlocks?(attacker,opponent,first_turn=(attacker.turncount==1))
+    return false if attacker==opponent || !opponent.hasWorkingAbility(:ARMORTAIL) || opponent.moldbroken
+    return true if @battle.pbMovePriority(attacker,self,opponent,first_turn)>0
+    return method(:pbTwoTurnAttack).owner!=PokeBattle_Move
+  end
+
 ################################################################################
 # This move's type effectiveness
 ################################################################################
@@ -1354,10 +1461,6 @@ class PokeBattle_Move
       mod1=2 if mod1==0
       mod2=2 if mod2==0
     end
-    if attacker.hasWorkingAbility(:HEADSTRONG) || opponent.hasWorkingAbility(:HEADSTRONG)
-      mod1=2 if mod1==0
-      mod2=2 if mod2==0
-    end 
     if attacker.hasWorkingAbility(:SCRAPPY) || opponent.effects[PBEffects::Foresight] || (@battle.SilvallyCheck(opponent,PBTypes::NORMAL) rescue nil)
       mod1=2 if isConst?(otype1,PBTypes,:GHOST) &&
         (isConst?(atype,PBTypes,:NORMAL) || isConst?(atype,PBTypes,:FIGHTING))
@@ -1384,8 +1487,6 @@ class PokeBattle_Move
      attacker.hasWorkingAbility(:AERILATE) || 
      attacker.hasWorkingAbility(:REFRIGERATE) ||
      attacker.hasWorkingAbility(:GALVANIZE) ||
-     attacker.hasWorkingAbility(:LACERATE) ||
-     attacker.hasWorkingAbility(:IMMOLATE) ||	 
      (attacker.hasWorkingAbility(:LIQUIDVOICE) && isSoundBased?)
       mod1=2 if isConst?(otype1,PBTypes,:GHOST) && isConst?(atype,PBTypes,:NORMAL)
       mod2=2 if isConst?(otype2,PBTypes,:GHOST) && isConst?(atype,PBTypes,:NORMAL)
@@ -1430,6 +1531,10 @@ class PokeBattle_Move
       mod1 = tribute_inverse_effectiveness(mod1)
       mod2 = tribute_inverse_effectiveness(mod2)
     end
+    if @battle.pbCheckGlobalAbility(:HEADSTRONG)
+      mod1=2 if mod1==0
+      mod2=2 if mod2==0
+    end
     typemod=mod1*mod2
     if @battle && @battle.field.effects[PBEffects::BlueShift]>0
       typemod=azure_inverse_type_matchup(typemod)
@@ -1454,10 +1559,6 @@ class PokeBattle_Move
       mod1=2 if mod1==0
       mod2=2 if mod2==0
     end
-    if isConst?(attacker.ability,PBAbilities,:HEADSTRONG) || isConst?(opponent.ability,PBAbilities,:HEADSTRONG)
-      mod1=2 if mod1==0
-      mod2=2 if mod2==0
-    end    
     if isConst?(attacker.ability,PBAbilities,:SCRAPPY) || @battle.SilvallyCheck(attacker,PBTypes::NORMAL)
       mod1=2 if isConst?(otype1,PBTypes,:GHOST) &&
         (isConst?(atype,PBTypes,:NORMAL) || isConst?(atype,PBTypes,:FIGHTING))
@@ -1480,8 +1581,6 @@ class PokeBattle_Move
      isConst?(attacker.ability,PBAbilities,:AERILATE) || 
      isConst?(attacker.ability,PBAbilities,:REFRIGERATE) ||
      isConst?(attacker.ability,PBAbilities,:GALVANIZE) ||
-     isConst?(attacker.ability,PBAbilities,:LACERATE) ||
-     isConst?(attacker.ability,PBAbilities,:IMMOLATE) ||
      (isConst?(attacker.ability,PBAbilities,:LIQUIDVOICE) && isSoundBased?)
       mod1=2 if isConst?(otype1,PBTypes,:GHOST) && isConst?(atype,PBTypes,:NORMAL)
       mod2=2 if isConst?(otype2,PBTypes,:GHOST) && isConst?(atype,PBTypes,:NORMAL)
@@ -1515,6 +1614,10 @@ class PokeBattle_Move
       mod1 = tribute_inverse_effectiveness(mod1)
       mod2 = tribute_inverse_effectiveness(mod2)
     end
+    if @battle.pbCheckGlobalAbility(:HEADSTRONG)
+      mod1=2 if mod1==0
+      mod2=2 if mod2==0
+    end
     typemod=mod1*mod2
     if @battle && @battle.field.effects[PBEffects::BlueShift]>0
       typemod=azure_inverse_type_matchup(typemod)
@@ -1522,64 +1625,102 @@ class PokeBattle_Move
     return typemod
   end
   
+  TYPE_ABSORB_ABILITIES={
+    PBAbilities::SAPSIPPER=>[:SAPSIPPER,PBTypes::GRASS,:offenses],
+    PBAbilities::STORMDRAIN=>[:STORMDRAIN,PBTypes::WATER,:offenses],
+    PBAbilities::LIGHTNINGROD=>[:LIGHTNINGROD,PBTypes::ELECTRIC,:offenses],
+    PBAbilities::JUSTIFIED=>[:JUSTIFIED,PBTypes::DARK,:offenses],
+    PBAbilities::MAGMAARMOR=>[:MAGMAARMOR,PBTypes::WATER,:defenses],
+    PBAbilities::PITCHBLACK=>[:PITCHBLACK,PBTypes::DARK,:defenses]
+  }.freeze
+
+  # Pure query shared by damage, status moves, and AI prediction.
+  def pbTypeAbsorption(type,attacker,opponent)
+    return nil if type<0 || opponent.moldbroken || attacker==opponent
+    if opponent.hasWorkingAbility(:DAMP) &&
+       (PBStuff::EXPLOSIVEMOVE.include?(id) || type==PBTypes::FIRE ||
+        FieldTypeChange(attacker,opponent,1,true)==PBTypes::FIRE)
+      return :immune
+    end
+    ability,absorbed_type,stats=TYPE_ABSORB_ABILITIES[opponent.ability]
+    return nil if !ability || !opponent.hasWorkingAbility(ability)
+    return stats if type==absorbed_type || FieldTypeChange(attacker,opponent,1,true)==absorbed_type
+    return nil
+  end
+
+  def pbApplyTypeAbsorption(type,attacker,opponent)
+    absorption=pbTypeAbsorption(type,attacker,opponent)
+    return false if !absorption
+    abilityname=PBAbilities.getName(opponent.ability)
+    stats=case absorption
+    when :offenses then [PBStats::ATTACK,PBStats::SPATK]
+    when :defenses then [PBStats::DEFENSE,PBStats::SPDEF]
+    else []
+    end
+    raised=false
+    @battle.statChangeSource=[:ability,opponent.ability]
+    begin
+      stats.each do |stat|
+        next if !opponent.pbCanIncreaseStatStage?(stat)
+        opponent.pbIncreaseStatBasic(stat,1)
+        raised=true
+      end
+    ensure
+      @battle.statChangeSource=nil
+    end
+    if raised
+      @battle.pbCommonAnimation("StatUp",opponent,nil)
+      if absorption==:offenses
+        @battle.pbDisplay(_INTL("{1}'s {2} raised its offenses!",opponent.pbThis,abilityname))
+      else
+        @battle.pbDisplay(_INTL("{1}'s {2} raised its defenses!",opponent.pbThis,abilityname))
+      end
+    else
+      @battle.pbDisplay(_INTL("{1}'s {2} made {3} ineffective!",opponent.pbThis,abilityname,self.name))
+    end
+    return true
+  end
+
   def pbTypeModMessages(type,attacker,opponent)
     return 4 if type<0
-    if opponent.hasWorkingAbility(:ARMORTAIL) && !opponent.moldbroken && @basedamage>0
-      if self.priority>0 || attacker.effects[PBEffects::TwoTurnAttack]>0
-        @battle.pbDisplay(_INTL("{1}'s {2} made {3} ineffective!",opponent.pbThis,PBAbilities.getName(opponent.ability),self.name))
-        return 0
-      end
-    end
-    if opponent.hasWorkingAbility(:DAMP) && !(opponent.moldbroken)
-      if isConst?(type,PBTypes,:FIRE) || FieldTypeChange(attacker,opponent,1,true)==PBTypes::FIRE ||
-         PBStuff::EXPLOSIVEMOVE.include?(id)
-        @battle.pbDisplay(_INTL("{1}'s {2} made {3} ineffective!",opponent.pbThis,PBAbilities.getName(opponent.ability),self.name))
-        return 0
-      end
-    end
-    if (opponent.hasWorkingAbility(:SAPSIPPER) && (isConst?(type,PBTypes,:GRASS) || FieldTypeChange(attacker,opponent,1,true)==PBTypes::GRASS)) && 
-       !(opponent.moldbroken)
-      raised=false
-      if opponent.pbCanIncreaseStatStage?(PBStats::ATTACK)
-        opponent.pbIncreaseStatBasic(PBStats::ATTACK,1)
-        raised=true
-      end
-      if opponent.pbCanIncreaseStatStage?(PBStats::SPATK)
-        opponent.pbIncreaseStatBasic(PBStats::SPATK,1)
-        raised=true
-      end
-      if raised
-        @battle.pbCommonAnimation("StatUp",opponent,nil)
-        @battle.pbDisplay(_INTL("{1}'s {2} raised its offenses!",
-           opponent.pbThis,PBAbilities.getName(opponent.ability)))
-      else
-        @battle.pbDisplay(_INTL("{1}'s {2} made {3} ineffective!",
-           opponent.pbThis,PBAbilities.getName(opponent.ability),self.name))
-      end
+    if !@battle.pbCheckGlobalAbility(:HEADSTRONG) && pbMoveTypeImmune?(type,attacker,opponent)
       return 0
     end
-    if ((opponent.hasWorkingAbility(:STORMDRAIN) && (isConst?(type,PBTypes,:WATER) || FieldTypeChange(attacker,opponent,1,true)==PBTypes::WATER)) ||
-       (opponent.hasWorkingAbility(:LIGHTNINGROD) && (isConst?(type,PBTypes,:ELECTRIC) || FieldTypeChange(attacker,opponent,1,true)==PBTypes::ELECTRIC))) &&
-       !(opponent.moldbroken)
-      raised=false
-      if opponent.pbCanIncreaseStatStage?(PBStats::ATTACK)
-        opponent.pbIncreaseStatBasic(PBStats::ATTACK,1)
-        raised=true
-      end
-      if opponent.pbCanIncreaseStatStage?(PBStats::SPATK)
-        opponent.pbIncreaseStatBasic(PBStats::SPATK,1)
-        raised=true
-      end
-      if raised
-        @battle.pbCommonAnimation("StatUp",opponent,nil)
-        @battle.pbDisplay(_INTL("{1}'s {2} raised its offenses!",
-           opponent.pbThis,PBAbilities.getName(opponent.ability)))
+    return pbTypeModWithField(type,attacker,opponent)
+  end
+
+  def pbApplyCustomMoveImmunity(type,attacker,opponent)
+    case pbCustomMoveImmunity(type,attacker,opponent)
+    when :impervious
+      @battle.pbDisplay(_INTL("{1}'s {2} made it immune to the attack!",opponent.pbThis,PBAbilities.getName(opponent.ability)))
+      return true
+    when :heat_sink
+      if opponent.effects[PBEffects::HealBlock]==0 && opponent.pbRecoverHP((opponent.totalhp/4).floor,true)>0
+        @battle.pbDisplay(_INTL("{1}'s {2} restored its HP!",opponent.pbThis,PBAbilities.getName(opponent.ability)))
       else
-        @battle.pbDisplay(_INTL("{1}'s {2} made {3} ineffective!",
-           opponent.pbThis,PBAbilities.getName(opponent.ability),self.name))
+        @battle.pbDisplay(_INTL("{1}'s {2} made {3} useless!",opponent.pbThis,PBAbilities.getName(opponent.ability),@name))
       end
-      return 0
+      return true
     end
+    return false
+  end
+
+  def pbMoveTypeImmune?(type,attacker,opponent)
+    return true if pbApplyCustomMoveImmunity(type,attacker,opponent)
+    return pbOtherMoveImmunity?(type,attacker,opponent)
+  end
+
+  def pbOtherMoveImmunity?(type,attacker,opponent)
+    if opponent.hasWorkingAbility(:BULLETPROOF) && isBulletproofMove? && !opponent.moldbroken
+      @battle.pbDisplay(_INTL("{1}'s {2} made it immune to the attack!",opponent.pbThis,PBAbilities.getName(opponent.ability)))
+      return true
+    end
+    if pbTelepathyBlocks?(attacker,opponent)
+      @battle.pbDisplay(_INTL("{1} avoided the attack with {2}!",opponent.pbThis,
+          PBAbilities.getName(PBAbilities::TELEPATHY)))
+      return true
+    end
+    return true if pbApplyTypeAbsorption(type,attacker,opponent)
     if ((isConst?(opponent.ability,PBAbilities,:MOTORDRIVE)) || opponent.hasWorkingItem(:SHOCKDRIVE) && (opponent.pokemon.species == PBSpecies::GENESECT) && $fefieldeffect==24) &&
       (isConst?(type,PBTypes,:ELECTRIC) || FieldTypeChange(attacker,opponent,1,true)==PBTypes::ELECTRIC) &&
       !(opponent.moldbroken) 
@@ -1599,30 +1740,8 @@ class PokeBattle_Move
         @battle.pbDisplay(_INTL("{1}'s {2} made {3} ineffective!",
         opponent.pbThis,PBAbilities.getName(opponent.ability),self.name))
       end
-      return 0
+      return true
     end    
-    if opponent.hasWorkingAbility(:JUSTIFIED) &&
-      (isConst?(type,PBTypes,:DARK) || FieldTypeChange(attacker,opponent,1,true)==PBTypes::DARK) &&
-      !(opponent.moldbroken)
-      raised=false
-      if opponent.pbCanIncreaseStatStage?(PBStats::ATTACK)
-        opponent.pbIncreaseStatBasic(PBStats::ATTACK,1)
-        raised=true
-      end
-      if opponent.pbCanIncreaseStatStage?(PBStats::SPATK)
-        opponent.pbIncreaseStatBasic(PBStats::SPATK,1)
-        raised=true
-      end
-      if raised
-        @battle.pbCommonAnimation("StatUp",opponent,nil)
-        @battle.pbDisplay(_INTL("{1}'s {2} raised its offenses!",
-           opponent.pbThis,PBAbilities.getName(opponent.ability)))
-      else
-        @battle.pbDisplay(_INTL("{1}'s {2} made {3} ineffective!",
-           opponent.pbThis,PBAbilities.getName(opponent.ability),self.name))
-      end
-      return 0
-    end
     if isConst?(opponent.species,PBSpecies,:SKUNTANK) && opponent.hasWorkingItem(:SKUNCREST) && 
       (isConst?(type,PBTypes,:GROUND) || FieldTypeChange(attacker,opponent,1,true)==PBTypes::GROUND) &&
       !(opponent.moldbroken) 
@@ -1635,7 +1754,7 @@ class PokeBattle_Move
         @battle.pbDisplay(_INTL("{1}'s Crest made {2} ineffective!",
         opponent.pbThis,self.name))
       end
-      return 0
+      return true
     end
     if isConst?(opponent.species,PBSpecies,:WHISCASH) && opponent.hasWorkingItem(:WHISCREST) && 
       (isConst?(type,PBTypes,:GRASS) || FieldTypeChange(attacker,opponent,1,true)==PBTypes::GRASS) &&
@@ -1649,55 +1768,10 @@ class PokeBattle_Move
         @battle.pbDisplay(_INTL("{1}'s Crest made {2} ineffective!",
         opponent.pbThis,self.name))
       end
-      return 0
-    end
-    if opponent.hasWorkingAbility(:MAGMAARMOR) &&
-      (isConst?(type,PBTypes,:WATER) || FieldTypeChange(attacker,opponent,1,true)==PBTypes::WATER) &&
-      !(opponent.moldbroken)
-      raised=false
-      if opponent.pbCanIncreaseStatStage?(PBStats::DEFENSE)
-        opponent.pbIncreaseStatBasic(PBStats::DEFENSE,1)
-        raised=true
-      end
-      if opponent.pbCanIncreaseStatStage?(PBStats::SPDEF)
-        opponent.pbIncreaseStatBasic(PBStats::SPDEF,1)
-        raised=true
-      end
-      if raised
-        @battle.pbCommonAnimation("StatUp",opponent,nil)
-        @battle.pbDisplay(_INTL("{1}'s {2} raised its defenses!",
-           opponent.pbThis,PBAbilities.getName(opponent.ability)))
-      else
-        @battle.pbDisplay(_INTL("{1}'s {2} made {3} ineffective!",
-           opponent.pbThis,PBAbilities.getName(opponent.ability),self.name))
-      end
-      return 0
-    end
-    if opponent.hasWorkingAbility(:PITCHBLACK) &&
-      (isConst?(type,PBTypes,:DARK) || FieldTypeChange(attacker,opponent,1,true)==PBTypes::DARK) &&
-      !(opponent.moldbroken)
-      raised=false
-      if opponent.pbCanIncreaseStatStage?(PBStats::DEFENSE)
-        opponent.pbIncreaseStatBasic(PBStats::DEFENSE,1)
-        raised=true
-      end
-      if opponent.pbCanIncreaseStatStage?(PBStats::SPDEF)
-        opponent.pbIncreaseStatBasic(PBStats::SPDEF,1)
-        raised=true
-      end
-      if raised
-        @battle.pbCommonAnimation("StatUp",opponent,nil)
-        @battle.pbDisplay(_INTL("{1}'s {2} raised its defenses!",
-           opponent.pbThis,PBAbilities.getName(opponent.ability)))
-      else
-        @battle.pbDisplay(_INTL("{1}'s {2} made {3} ineffective!",
-           opponent.pbThis,PBAbilities.getName(opponent.ability),self.name))
-      end
-      return 0
+      return true
     end
     if ((opponent.hasWorkingAbility(:DRYSKIN) && !(opponent.moldbroken)) && (isConst?(type,PBTypes,:WATER) || FieldTypeChange(attacker,opponent,1,true)==PBTypes::WATER)) ||
        (opponent.hasWorkingAbility(:VOLTABSORB) && !(opponent.moldbroken) && (isConst?(type,PBTypes,:ELECTRIC) || FieldTypeChange(attacker,opponent,1,true)==PBTypes::ELECTRIC)) ||
-	   (opponent.hasWorkingAbility(:HEATSINK) && !(opponent.moldbroken) && (isConst?(type,PBTypes,:FIRE) || FieldTypeChange(attacker,opponent,1,true)==PBTypes::FIRE)) ||
        (opponent.hasWorkingAbility(:WATERABSORB) && !(opponent.moldbroken) && (isConst?(type,PBTypes,:WATER) || FieldTypeChange(attacker,opponent,1,true)==PBTypes::WATER)) ||
        (isConst?(opponent.species,PBSpecies,:DRUDDIGON) && opponent.hasWorkingItem(:DRUDDICREST) && !(opponent.moldbroken) && (isConst?(type,PBTypes,:FIRE) || FieldTypeChange(attacker,opponent,1,true)==PBTypes::FIRE))
        if opponent.effects[PBEffects::HealBlock]==0
@@ -1708,7 +1782,7 @@ class PokeBattle_Move
           @battle.pbDisplay(_INTL("{1}'s {2} made {3} useless!",
           opponent.pbThis,PBAbilities.getName(opponent.ability),@name))
         end
-        return 0
+        return true
       end
     end
     if isConst?(opponent.ability,PBAbilities,:ILLUSORYSHROUD) && !(opponent.moldbroken) && isContactMove?
@@ -1716,7 +1790,7 @@ class PokeBattle_Move
         if opponent.pbReduceHP((opponent.totalhp/6).floor,true)>0
           @battle.pbDisplay(_INTL("{1}'s {2} sapped its HP!",opponent.pbThis,PBAbilities.getName(opponent.ability)))
         end
-        return 0
+        return true
     end
     if $fefieldeffect == 14 && (opponent.effects[PBEffects::Substitute]>0 ||
      opponent.stages[PBStats::EVASION] > 0)
@@ -1733,7 +1807,7 @@ class PokeBattle_Move
        id == PBMoves::ZAPCANNON || id == PBMoves::BEAKBLAST)
         @battle.pbDisplay(_INTL("{1} hid behind a rock to dodge the attack!",
         opponent.pbThis,PBAbilities.getName(opponent.ability),self.name))
-        return 0
+        return true
       end
     end
     if opponent.hasWorkingAbility(:FLASHFIRE) && !(opponent.moldbroken) && $fefieldeffect!=39 &&
@@ -1746,7 +1820,7 @@ class PokeBattle_Move
         @battle.pbDisplay(_INTL("{1}'s {2} made {3} ineffective!",
            opponent.pbThis,PBAbilities.getName(opponent.ability),self.name))
       end
-      return 0
+      return true
     end
     if opponent.hasWorkingItem(:BURNDRIVE) && (opponent.pokemon.species == PBSpecies::GENESECT) && $fefieldeffect==24 &&
        (isConst?(type,PBTypes,:FIRE) || FieldTypeChange(attacker,opponent,1,true)==PBTypes::FIRE)
@@ -1758,7 +1832,7 @@ class PokeBattle_Move
         @battle.pbDisplay(_INTL("{1}'s {2} made {3} ineffective!",
            opponent.pbThis,PBItems.getName(opponent.item),self.name))
       end
-      return 0
+      return true
     end
     if opponent.hasWorkingItem(:CHILLDRIVE) && (opponent.pokemon.species == PBSpecies::GENESECT) && $fefieldeffect==24 &&
       (isConst?(type,PBTypes,:ICE) || FieldTypeChange(attacker,opponent,1,true)==PBTypes::ICE)
@@ -1770,9 +1844,9 @@ class PokeBattle_Move
           @battle.pbDisplay(_INTL("{1}'s {2} made {3} useless!",
           opponent.pbThis,PBItems.getName(opponent.item),self.name))
         end
-        return 0
+        return true
       end
-     return 0
+     return true
     end
     if opponent.hasWorkingItem(:DOUSEDRIVE) && (opponent.pokemon.species == PBSpecies::GENESECT) && $fefieldeffect==24 &&
       (isConst?(type,PBTypes,:ICE) || FieldTypeChange(attacker,opponent,1,true)==PBTypes::WATER)
@@ -1784,19 +1858,23 @@ class PokeBattle_Move
           @battle.pbDisplay(_INTL("{1}'s {2} made {3} useless!",
           opponent.pbThis,PBItems.getName(opponent.item),self.name))
         end
-        return 0
+        return true
       end
-     return 0
+     return true
     end
     if ($fefieldeffect == 21 || $fefieldeffect == 26) &&
       (isConst?(type,PBTypes,:GROUND) || FieldTypeChange(attacker,opponent,1,true)==PBTypes::GROUND)
       @battle.pbDisplay(_INTL("...But there was no solid ground to attack from!"))
-      return 0
+      return true
     end
     if $fefieldeffect == 22 && (isConst?(type,PBTypes,:FIRE) || FieldTypeChange(attacker,opponent,1,true)==PBTypes::FIRE)
       @battle.pbDisplay(_INTL("...But the attack was doused instantly!"))
-      return 0
+      return true
     end
+    return false
+  end
+
+  def pbTypeModWithField(type,attacker,opponent)
     # UPDATE Implementing Flying Press + Freeze Dry
     typemod=pbTypeModifier(type,attacker,opponent)
     typemod2= nil
@@ -1977,6 +2055,7 @@ class PokeBattle_Move
         typemod=typemod3
       end
     end
+    typemod=4 if typemod==0 && @battle.pbCheckGlobalAbility(:HEADSTRONG)
     if typemod==0
       if @function==0x111
         return 1
@@ -2756,14 +2835,12 @@ class PokeBattle_Move
     end
     stagemul=[2.0,1.0,2.0,1.0,3.0,2.0,5.0]
     stagediv=[5.0,2.0,3.0,1.0,2.0,1.0,2.0]
-    if (options&NOTYPE)==0
-      type=pbType(@type,attacker,opponent)
-    else
-      type=-1 # Will be treated as physical
-    end
+    original_type = (options&NOTYPE)==0 ? pbTypeBeforeAbilityConversion(@type,attacker,opponent) : -1
+    type=pbAbilityConvertedType(original_type,attacker)
     ##### Calcuate base power of move #####
     basedmg=(pixie_power>0) ? pixie_power : @basedamage # From PBS file / tribute conversion
     basedmg=pbBaseDamage(basedmg,attacker,opponent) # Some function codes alter base power
+    unboosted_power=basedmg
     if tribute_attack?(attacker,:ZAPTRIBUTE) && heroic_tribute?(attacker,:ZEBSTRIKA)
       speed_ratio = (attacker.pbSpeed/[opponent.pbSpeed,1].max.to_f).floor
       basedmg = 40
@@ -2773,7 +2850,8 @@ class PokeBattle_Move
       basedmg = 150 if speed_ratio>=4
     end
     damagemult=0x1000
-    if instance_variable_defined?(:@reverbEcho) && @reverbEcho
+    damagemult=(damagemult*1.2).round if type!=original_type
+    if reverbEcho
       damagemult=(damagemult*0.25).round
     end
 	if @battle.field.effects[PBEffects::Gravity]>0 && basedmg>0
@@ -2835,16 +2913,7 @@ class PokeBattle_Move
         damagemult=(damagemult*1.5).round
       end
     end
-    if isConst?(attacker.ability,PBAbilities,:PINPOINT)
-      if (PBStuff::PIERCINGMOVE).include?(id)
-        damagemult=(damagemult*1.5).round
-      end
-    end
-    if isConst?(attacker.ability,PBAbilities,:BEACON)
-      if (PBStuff::LIGHTMOVE).include?(id) || (PBStuff::BEAMMOVE).include?(id)
-        damagemult=(damagemult*1.5).round
-      end
-    end
+    damagemult=(damagemult*pbAbilityMovePowerMultiplier(attacker)).round
     if isConst?(attacker.species,PBSpecies,:FERALIGATR) && attacker.hasWorkingItem(:FERACREST)
       if (PBStuff::BITEMOVE).include?(id)
         damagemult=(damagemult*1.5).round
@@ -2888,9 +2957,7 @@ class PokeBattle_Move
       $fefieldeffect == 7 || $fefieldeffect == 45) && pbIsSpecial?(type)
       damagemult=(damagemult*1.5).round
     end
-    if attacker.hasWorkingAbility(:TOXICBOOST) &&(attacker.status==PBStatuses::POISON || 
-     $fefieldeffect == 10 || $fefieldeffect == 11 ||
-     $fefieldeffect == 19 || $fefieldeffect == 26) && pbIsPhysical?(type)
+    if attacker.hasWorkingAbility(:TOXICBOOST) && attacker.status==PBStatuses::POISON
       damagemult=(damagemult*1.3).round
     end
     if attacker.hasWorkingAbility(:ANGERPOINT)
@@ -2903,13 +2970,9 @@ class PokeBattle_Move
     #   move isn't Future Sight/Doom Desire && target has already moved this turn
     #  damagemult=(damagemult*1.3).round
     #end
-    if attacker.hasWorkingAbility(:RIVALRY) &&
-       attacker.gender!=2 && opponent.gender!=2
-      if attacker.gender==opponent.gender
-        damagemult=(damagemult*1.25).round
-      else
-        damagemult=(damagemult*0.75).round
-      end
+    if attacker.hasWorkingAbility(:RIVALRY) && attacker.gender!=2 &&
+       attacker.gender==opponent.gender
+      damagemult=(damagemult*1.25).round
     end
     if attacker.hasWorkingAbility(:SANDFORCE) &&
      (@battle.pbWeather==PBWeather::SANDSTORM ||
@@ -2930,15 +2993,6 @@ class PokeBattle_Move
     if (opponent.hasWorkingAbility(:HEATPROOF) || @battle.SilvallyCheck(opponent,PBTypes::STEEL)) && !(opponent.moldbroken) && isConst?(type,PBTypes,:FIRE)
       damagemult=(damagemult*0.5).round
     end
-    if (opponent.hasWorkingAbility(:ASCETIC) && !(opponent.moldbroken) && isConst?(type,PBTypes,:GRASS))
-      damagemult=(damagemult*0.5).round
-    end
-    if (opponent.hasWorkingAbility(:WATERLOGGED) && !(opponent.moldbroken) && isConst?(type,PBTypes,:WATER))
-      damagemult=(damagemult*0.5).round
-    end
-    if (opponent.hasWorkingAbility(:INCENDIARY) && !(opponent.moldbroken) && isConst?(type,PBTypes,:FIRE))
-      damagemult=(damagemult*0.5).round
-    end
 #### KUROTSUNE - 003 START
     if attacker.hasWorkingAbility(:ANALYTIC) && opponent.hasMovedThisRound?
       mult = ($fefieldeffect == 50) ? 1.5 : 1.3
@@ -2949,7 +3003,7 @@ class PokeBattle_Move
     end
 #### KUROTSUNE - 003 END
     # Spirited (Vital Spirit) - 1.5x damage for moves with unchecked accuracy
-    if attacker.hasWorkingAbility(:VITALSPIRIT) && @accuracy==0
+    if attacker.hasWorkingAbility(:SPIRITED) && @accuracy==0
       damagemult = (damagemult*1.5).round
     end
     if opponent.hasWorkingAbility(:DRYSKIN) && !(opponent.moldbroken) && isConst?(type,PBTypes,:FIRE)
@@ -3113,34 +3167,6 @@ class PokeBattle_Move
         damagemult=(damagemult*1.2).round
       end
     end
-    if isConst?(type,PBTypes,:NORMAL) &&
-     isConst?(attacker.ability,PBAbilities,:IMMOLATE)
-      type=PBTypes::FIRE
-      if $fefieldeffect==16 || $fefieldeffect==27 || $fefieldeffect==28 || $fefieldeffect == 43 # Mountain and Sky Fields
-        damagemult=(damagemult*1.5).round
-      else
-        damagemult=(damagemult*1.2).round
-      end
-    end
-    if isConst?(type,PBTypes,:NORMAL) &&
-     isConst?(attacker.ability,PBAbilities,:LACERATE)
-      type=PBTypes::STEEL
-      if $fefieldeffect==16 || $fefieldeffect==27 || $fefieldeffect==28 || $fefieldeffect == 43 # Mountain and Sky Fields
-        damagemult=(damagemult*1.5).round
-      else
-        damagemult=(damagemult*1.2).round
-      end
-    end
-    if isConst?(type,PBTypes,:NORMAL) &&
-     isConst?(attacker.ability,PBAbilities,:BRUTALIZE)
-      type=PBTypes::FIGHTING
-      damagemult=(damagemult*1.2).round
-    end
-    if isConst?(type,PBTypes,:FLYING) &&
-     isConst?(attacker.ability,PBAbilities,:DIVINEWINDS)
-      type=PBTypes::DRAGON
-      damagemult=(damagemult*1.2).round
-    end
     if isSoundBased? &&
      isConst?(attacker.ability,PBAbilities,:LIQUIDVOICE)
       if $fefieldeffect==13
@@ -3232,16 +3258,6 @@ class PokeBattle_Move
        damagemult=(damagemult*1.5).round
     end
     # End Knockoff
-    if isConst?(attacker.ability,PBAbilities,:MEGALAUNCHER)
-      if PBStuff::AURAPULSEMOVE.include?(id) || PBStuff::CANNONMOVE.include?(id)
-        damagemult=(damagemult*1.5).round
-      end
-    end
-    if isConst?(attacker.ability,PBAbilities,:GRENADIER)
-	  if PBStuff::BALLMOVE.include?(id) || PBStuff::BOMBMOVE.include?(id) || PBStuff::EXPLOSIVEMOVE.include?(id)
-        damagemult=(damagemult*1.5).round
-	  end
-    end
     if @battle.field.effects[PBEffects::ElectricTerrain]>0 && $fefieldeffect!=1 # Electric Terrain
       # Explosive moves deal 1.3x damage
       if PBStuff::EXPLOSIVEMOVE.include?(id)
@@ -4409,23 +4425,23 @@ class PokeBattle_Move
       atkstage=attacker.stages[PBStats::SPDEF]+3
     end
     if @function==0x175 || @function==0x25E || @function==0x0F6 || @function==0x02D # Photon Geyser 
-      atk=attacker.spatk
+      atk=attacker.pbAbilitySpecialAttack
       atkstage=attacker.stages[PBStats::SPATK]+3  
-      if attacker.attack > attacker.spatk
+      if attacker.attack > attacker.pbAbilitySpecialAttack
         atk=attacker.attack
         atkstage=attacker.stages[PBStats::ATTACK]+3
       end
     end
     usesHigherOffensiveStat = (@function==0x175 || @function==0x25E || @function==0x0F6 || @function==0x02D)
     if type>=0 && (pbIsSpecial?(type) || (isConst?(attacker.species,PBSpecies,:CRYOGONAL) && attacker.hasWorkingItem(:CRYCREST))) && !usesHigherOffensiveStat
-      atk=attacker.spatk
+      atk=attacker.pbAbilitySpecialAttack
       atkstage=attacker.stages[PBStats::SPATK]+3
 #      if @function==0x121 # Foul Play
 #        atk=opponent.spatk
 #        atkstage=opponent.stages[PBStats::SPATK]+3
 #      end
       if @function==0x273   # Faerie Fib
-        atk      = opponent.spatk
+        atk      = opponent.pbAbilitySpecialAttack
         atkstage = opponent.stages[PBStats::SPATK]+3
 	  end
       if @function==0x27A   # Hallucinate
@@ -4461,14 +4477,12 @@ class PokeBattle_Move
         dssBoost = 2 if attacker.hasWorkingItem(:DEEPSEASCALE) && isConst?(attacker.species,PBSpecies,:CLAMPERL)        
         mpBoost = 1.5 if attacker.hasWorkingItem(:METALPOWDER) && isConst?(attacker.species,PBSpecies,:DITTO)
         fbBoost = 1.5 if attacker.hasWorkingAbility(:FLAREBOOST) && attacker.status==PBStatuses::BURN
-        minusboost = 1.5 if attacker.hasWorkingAbility(:MINUS) && attacker.otherSameSideAbilityHolder(:PLUS)
-        plusboost = 1.5 if attacker.hasWorkingAbility(:PLUS) && attacker.otherSameSideAbilityHolder(:MINUS)
         solarBoost = 1.5 if (attacker.hasWorkingAbility(:SOLARPOWER) || (isConst?(attacker.species,PBSpecies,:CASTFORM) && isConst?(attacker.item,PBItems,:CASTCREST) && attacker.form==1) ) && @battle.pbWeather==PBWeather::SUNNYDAY && !attacker.hasWorkingItem(:UTILITYUMBRELLA)
-        hydroBoost = 1.5 if (opponent.hasWorkingAbility(:HYDROPLANE) && (@battle.pbWeather==PBWeather::RAINDANCE || $fefieldeffect == 21) && !opponent.hasWorkingItem(:UTILITYUMBRELLA)) ||
+        hydroBoost = 1.5 if
           (isConst?(opponent.species,PBSpecies,:CASTFORM) && @battle.pbWeather==PBWeather::RAINDANCE && !opponent.hasWorkingItem(:UTILITYUMBRELLA))
 		fgBoost = 1.5 if attacker.hasWorkingAbility(:FLOWERGIFT) && @battle.pbWeather==PBWeather::SUNNYDAY && !attacker.hasWorkingItem(:UTILITYUMBRELLA)
         batteryBoost = 1.3 if attacker.otherSameSideAbilityHolder(:BATTERY)
-        gl1 = attacker.spatk
+        gl1 = attacker.pbAbilitySpecialAttack
         gl2 = attacker.spdef
         gl3 = attacker.stages[PBStats::SPDEF]+3
         gl4 = attacker.stages[PBStats::SPATK]+3
@@ -4505,6 +4519,7 @@ class PokeBattle_Move
       atk=(atk*1.0*stagemul[atkstage]/stagediv[atkstage]).floor
       if attacker.hasWorkingAbility(:WARPOET) && isSoundBased?
         warpoetstage=attacker.stages[PBStats::SPATK]+3
+        warpoetstage=3 if opponent.damagestate.critical && warpoetstage<3
         atk=(atk*1.0*stagemul[warpoetstage]/stagediv[warpoetstage]).floor
       end
     end
@@ -4568,10 +4583,6 @@ class PokeBattle_Move
        (isConst?(type,PBTypes,:ICE) || isConst?(type,PBTypes,:FIRE)) && !(opponent.moldbroken)
       atkmult=(atkmult*0.5).round
     end
-    if opponent.hasWorkingAbility(:INSULATED) &&
-       (isConst?(type,PBTypes,:ICE) || isConst?(type,PBTypes,:ELECTRIC)) && !(opponent.moldbroken)
-      atkmult=(atkmult*0.5).round
-    end
     if opponent.hasWorkingAbility(:PURIFYINGSALT) && isConst?(type,PBTypes,:GHOST) && !(opponent.moldbroken)
       atkmult=(atkmult*0.5).round
     end
@@ -4580,23 +4591,6 @@ class PokeBattle_Move
     end
     if opponent.hasWorkingAbility(:ROCKYPAYLOAD) && isConst?(type,PBTypes,:ROCK) && !(opponent.moldbroken)
       atkmult=(atkmult*0.5).round
-    end
-    if opponent.hasWorkingAbility(:BULLETPROOF) && isBulletproofMove? && !(opponent.moldbroken)
-      atkmult=0
-      @battle.pbDisplay(_INTL("{1}'s {2} made it immune to the attack!",opponent.pbThis,PBAbilities.getName(opponent.ability)))
-    end
-    if opponent.hasWorkingAbility(:IMPERVIOUS) && !(opponent.moldbroken)
-      if PBStuff::PUNCHINGMOVE.include?(id) || PBStuff::KICKINGMOVE.include?(id) || PBStuff::BITEMOVE.include?(id)
-        atkmult=0
-        @battle.pbDisplay(_INTL("{1}'s {2} made it immune to the attack!",opponent.pbThis,PBAbilities.getName(opponent.ability)))
-      end
-    end
-    # Telepathy - user and allies dodge attacks from user and allies
-    if opponent.hasWorkingAbility(:TELEPATHY) && !(opponent.moldbroken)
-      if (attacker.index & 1) == (opponent.index & 1)
-        atkmult=0
-        @battle.pbDisplay(_INTL("{1} avoided the attack with {2}!",opponent.pbThis,PBAbilities.getName(opponent.ability)))
-      end
     end
     if (opponent.hasWorkingAbility(:PASTELVEIL) || opponent.otherSameSideAbilityHolder(:PASTELVEIL)) &&
        ($fefieldeffect==3 || $fefieldeffect==9) && isConst?(type,PBTypes,:POISON) && !(opponent.moldbroken)
@@ -4609,15 +4603,11 @@ class PokeBattle_Move
         atkmult=(atkmult*1.3).round
       end
     end
-    if isConst?(type,PBTypes,:ROCK) &&
-      (attacker.hasWorkingAbility(:STONYSPIRIT) || attacker.otherSameSideAbilityHolder(:STONYSPIRIT))
-      atkmult=(atkmult*1.5).round
-    end
     if attacker.hasWorkingAbility(:SHARPNESS) && PBStuff::SLASHINGMOVE.include?(id)
       atkmult=(atkmult*1.5).round
     end
     if attacker.hasWorkingAbility(:ICEBREAKER) &&
-       (@battle.pbWeather==PBWeather::HAIL || $fefieldeffect == 13 || $fefieldeffect == 39 || $fefieldeffect == 28) &&
+       @battle.pbWeather==PBWeather::HAIL &&
        (isConst?(type,PBTypes,:ICE) || isConst?(type,PBTypes,:FIGHTING))
       atkmult=(atkmult*1.3).round
     end
@@ -4670,14 +4660,8 @@ class PokeBattle_Move
       attacker.status!=0 && pbIsPhysical?(type)
       atkmult=(atkmult*1.5).round
     end
-    if (attacker.hasWorkingAbility(:PLUS) || attacker.hasWorkingAbility(:MINUS)) &&
-      pbIsSpecial?(type)
-      partner=attacker.otherSameSideAbilityHolder(:PLUS,:MINUS)
-      if partner && (partner.hasWorkingAbility(:PLUS) || partner.hasWorkingAbility(:MINUS))
-        atkmult=(atkmult*1.5).round
-      elsif $fefieldeffect == 18
-        atkmult=(atkmult*1.5).round
-      end
+    if attacker.pbPlusMinusBoost?
+      atkmult=(atkmult*1.3).round
     end
     if attacker.otherSameSideAbilityHolder(:BATTERY) && pbIsSpecial?(type)
       atkmult=(atkmult*1.3).round
@@ -4712,7 +4696,7 @@ class PokeBattle_Move
        $fefieldeffect!=39 && @battle.pbWeather==PBWeather::SUNNYDAY && !attacker.hasWorkingItem(:UTILITYUMBRELLA) && pbIsSpecial?(type)
       atkmult=(atkmult*1.5).round
     end
-    if attacker.hasWorkingAbility(:HYDROPLANE) && (@battle.pbWeather==PBWeather::RAINDANCE || $fefieldeffect == 21) && !attacker.hasWorkingItem(:UTILITYUMBRELLA) && pbIsPhysical?(type)
+    if attacker.pbHydroplaneActive? && pbIsPhysical?(type)
       atkmult=(atkmult*1.5).round
     end
     if attacker.hasWorkingAbility(:FLASHFIRE) && $fefieldeffect!=39 &&
@@ -4812,15 +4796,25 @@ class PokeBattle_Move
       modifier = (allyfainted * 0.2) + 1.0
       atkmult=(atkmult*modifier).round
     end
+    if attacker.hasWorkingAbility(:HARVESTMOON) && pbIsPhysical?(type) &&
+       (@battle.field.effects[PBEffects::GrassyTerrain]>0 || $fefieldeffect==2)
+      atkmult=(atkmult*1.5).round
+    end
+    if attacker.hasWorkingAbility(:DUSTDEVIL) && pbIsSpecial?(type) && @battle.pbWeather==PBWeather::SANDSTORM
+      atkmult=(atkmult*1.5).round
+    end
     atk=(atk*atkmult*1.0/0x1000).round
     ##### Calculate opponent's defense stat #####
+    defense_stat=PBStats::DEFENSE
     defense=opponent.defense
     defstage=opponent.stages[PBStats::DEFENSE]+3
     if @function==0x205 # Matrix Shot
+      defense_stat=PBStats::SPDEF
       defense=opponent.spdef
       defstage=opponent.stages[PBStats::SPDEF]+3
     end
     if opponent.effects[PBEffects::PowerTrick]
+      defense_stat=PBStats::ATTACK
       defense=opponent.attack
       defstage=opponent.stages[PBStats::ATTACK]+3
     end    
@@ -4831,6 +4825,7 @@ class PokeBattle_Move
     gl3 = 0
     gl4 = 0  
     if type>=0 && pbIsSpecial?(type) && @function!=0x122 # Psyshock
+      defense_stat=PBStats::SPDEF
       defense=opponent.spdef
       defstage=opponent.stages[PBStats::SPDEF]+3
       if $fefieldeffect == 24      
@@ -4859,10 +4854,8 @@ class PokeBattle_Move
         dssBoost = 2 if opponent.hasWorkingItem(:DEEPSEASCALE) && isConst?(opponent.species,PBSpecies,:CLAMPERL)        
         mpBoost = 1.5 if opponent.hasWorkingItem(:METALPOWDER) && isConst?(opponent.species,PBSpecies,:DITTO)
         fbBoost = 1.5 if opponent.hasWorkingAbility(:FLAREBOOST) && opponent.status==PBStatuses::BURN
-        minusboost = 1.5 if opponent.hasWorkingAbility(:MINUS) && opponent.otherSameSideAbilityHolder(:PLUS)
-        plusboost = 1.5 if opponent.hasWorkingAbility(:PLUS) && opponent.otherSameSideAbilityHolder(:MINUS)
         solarBoost = 1.5 if (opponent.hasWorkingAbility(:SOLARPOWER) || (isConst?(opponent.species,PBSpecies,:CASTFORM) && isConst?(opponent.item,PBItems,:CASTCREST) && opponent.form==1) ) && @battle.pbWeather==PBWeather::SUNNYDAY && !opponent.hasWorkingItem(:UTILITYUMBRELLA)
-        hydroBoost = 1.5 if (opponent.hasWorkingAbility(:HYDROPLANE) && (@battle.pbWeather==PBWeather::RAINDANCE || $fefieldeffect == 21) && !opponent.hasWorkingItem(:UTILITYUMBRELLA)) ||
+        hydroBoost = 1.5 if
           (isConst?(opponent.species,PBSpecies,:CASTFORM) && @battle.pbWeather==PBWeather::RAINDANCE && !opponent.hasWorkingItem(:UTILITYUMBRELLA))
         fgBoost = 1.5 if opponent.hasWorkingAbility(:FLOWERGIFT) && @battle.pbWeather==PBWeather::SUNNYDAY && !opponent.hasWorkingItem(:UTILITYUMBRELLA)
         batteryBoost = 1.3 if opponent.otherSameSideAbilityHolder(:BATTERY)
@@ -4881,6 +4874,7 @@ class PokeBattle_Move
     end
     if @function==0x208
       if opponent.defense > opponent.spdef
+        defense_stat=PBStats::SPDEF
         defense=opponent.spdef
         defstage=opponent.stages[PBStats::SPDEF]+3
       end
@@ -4901,6 +4895,9 @@ class PokeBattle_Move
       defense=(defense*1.5).round
     end
     defmult=0x1000
+    if opponent.hasWorkingAbility(:NATURALSHROUD) && !opponent.moldbroken && opponent.pbTerrainActive?
+      defmult=(defmult*1.5).round
+    end
     if opponent.hasWorkingItem(:CHOICESPECS) && $fefieldeffect == 24
       if gl1 > gl2   
         defmult=(defmult*1.5).round
@@ -4930,18 +4927,6 @@ class PokeBattle_Move
         defmult=(defmult*1.5).round
       end
     end  
-    if opponent.hasWorkingAbility(:MINUS) && 
-    opponent.otherSameSideAbilityHolder(:PLUS) && $fefieldeffect == 24
-      if gl1 > gl2   
-        defmult=(defmult*1.5).round
-      end
-    end      
-    if opponent.hasWorkingAbility(:PLUS) && 
-      opponent.otherSameSideAbilityHolder(:MINUS) && $fefieldeffect == 24
-      if gl1 > gl2   
-        defmult=(defmult*1.5).round
-      end
-    end      
     if opponent.otherSameSideAbilityHolder(:BATTERY) &&
       $fefieldeffect == 24
       if gl1 > gl2   
@@ -4966,16 +4951,11 @@ class PokeBattle_Move
     if $fefieldeffect == 24 && @function==0xE0
       defmult=(defmult*0.5).round
     end
-    if (opponent.hasWorkingAbility(:MARVELSCALE) || @battle.SilvallyCheck(opponent,PBTypes::WATER)) &&
-     pbIsPhysical?(type) &&
-     (opponent.status>0 || $fefieldeffect == 9 || @battle.field.effects[PBEffects::Rainbow]>0 || @battle.field.effects[PBEffects::MistyTerrain]>0 ||
-      $fefieldeffect == 31 || $fefieldeffect == 32 || $fefieldeffect == 34) && !(opponent.moldbroken)
-      defmult=(defmult*1.5).round
-    end
-    if (opponent.hasWorkingAbility(:MARVELSCALE) || @battle.SilvallyCheck(opponent,PBTypes::WATER)) &&
-     pbIsSpecial?(type) &&
-     (opponent.status>0 || $fefieldeffect == 9 || @battle.field.effects[PBEffects::Rainbow]>0 || @battle.field.effects[PBEffects::MistyTerrain]>0 ||
-      $fefieldeffect == 31 || $fefieldeffect == 32 || $fefieldeffect == 34) && !(opponent.moldbroken)
+    if !opponent.moldbroken &&
+       ((opponent.hasWorkingAbility(:MARVELSCALE) && opponent.pbMarvelScaleActive?) ||
+        (@battle.SilvallyCheck(opponent,PBTypes::WATER) &&
+         (opponent.pbMarvelScaleActive? || @battle.field.effects[PBEffects::Rainbow]>0 ||
+          [9,31,32,34].include?($fefieldeffect))))
       defmult=(defmult*1.5).round
     end
     # Forest Field - Grass and Bug-type Defense boost
@@ -4994,17 +4974,12 @@ class PokeBattle_Move
     if opponent.hasWorkingAbility(:FURCOAT) && pbIsPhysical?(type) && !(opponent.moldbroken)
       defmult=(defmult*2).round
     end
-    # Sand Veil - 1.5x defense in sandstorm
-    if opponent.hasWorkingAbility(:SANDVEIL) && !(opponent.moldbroken) &&
-       (@battle.pbWeather==PBWeather::SANDSTORM || $fefieldeffect == 12 || $fefieldeffect == 20 || $fefieldeffect == 46)
-      defmult=(defmult*1.5).round
-    end
+    defmult=(defmult*opponent.pbWeatherDefenseMultiplier(defense_stat)).round
     # Hustle - 0.5x defenses
     if opponent.hasWorkingAbility(:HUSTLE) && !(opponent.moldbroken)
       defmult=(defmult*0.5).round
     end
-    # Tangled Feet - 0.5x defenses when confused
-    if opponent.hasWorkingAbility(:TANGLEDFEET) && opponent.effects[PBEffects::Confusion]>0 && !(opponent.moldbroken)
+    if opponent.hasWorkingAbility(:TANGLEDFEET) && !opponent.moldbroken
       defmult=(defmult*0.5).round
     end
     # Heavy Metal - increase defenses during gravity
@@ -5080,27 +5055,7 @@ class PokeBattle_Move
     ##### Main damage calculation #####
     damage=(((2.0*attacker.level/5+2).floor*basedmg*atk/defense).floor/50).floor+2
     # Multi-targeting and lane-based damage in triples
-    spreadMove = false
-    if attacker.respond_to?(:pbTarget)
-      chosenTarget = attacker.pbTarget(self)
-      spreadMove = (chosenTarget == PBTargets::AllOpposing || chosenTarget == PBTargets::AllNonUsers)
-    end
-    if pbTargetsAll?(attacker) || (@battle.tripleBattle? && spreadMove)
-      if tribute_attack?(attacker,:EARTHTRIBUTE) && heroic_tribute?(attacker,:SANDSLASH)
-        # Sandslash's earth tribute ignores the default spread damage penalty.
-      elsif @battle.tripleBattle?
-        damage=(damage*0.5).round
-      elsif !attacker.hasWorkingItem(:KINGSROCK)
-        # King's Rock ignores the default spread move damage nerf
-        damage=(damage*0.75).round
-      end
-      if opponent.hasWorkingAbility(:QUEENLYMAJESTY) && !opponent.moldbroken
-        damage=(damage*0.7).round
-      end
-    elsif @battle.tripleBattle?
-      laneMult=@battle.pbTripleLaneDamageMultiplier(attacker,opponent,self)
-      damage=(damage*laneMult).round if laneMult!=1.0
-    end
+    damage=pbScaleTargetDamage(damage,attacker,opponent)
     # Custom Overlay Terrains
     if isConst?(type,PBTypes,:ELECTRIC) && @battle.field.effects[PBEffects::ElectricTerrain]>0 && $fefieldeffect!=1 && $fefieldeffect!=18
       isgrounded=pbTypeModifier(PBTypes::GROUND,opponent,attacker)
@@ -5991,9 +5946,6 @@ class PokeBattle_Move
     if attacker.hasWorkingAbility(:WATERBUBBLE) && type == PBTypes::WATER
       damage=(damage*=2).round
     end
-    if attacker.hasWorkingAbility(:AMBIDEXTROUS) && !attacker.hasType?(type)
-      damage=(damage*=1.3).round
-    end
     # STAB
     tribute_stab = false
     tribute_stab = true if tribute_attack?(attacker,:BLANKTRIBUTE) && heroic_tribute?(attacker,:HELIOLISK)
@@ -6001,9 +5953,6 @@ class PokeBattle_Move
                            (@battle.pbWeather==PBWeather::SUNNYDAY || @battle.field.effects[PBEffects::HarshSunlight])
     if (attacker.pbHasType?(type) || tribute_stab ||
         attacker.isShadow? && (type==attacker.pokemon.type1 || type==attacker.pokemon.type2) ||
-		  (attacker.hasWorkingAbility(:ASCETIC) && type==PBTypes::GRASS) ||
-		  (attacker.hasWorkingAbility(:WATERLOGGED) && type==PBTypes::WATER) ||
-		  (attacker.hasWorkingAbility(:INCENDIARY) && type==PBTypes::FIRE) ||
 		  (attacker.hasWorkingAbility(:STEELWORKER) && type==PBTypes::STEEL) ||
 		  (attacker.hasWorkingAbility(:ROCKYPAYLOAD) && type==PBTypes::ROCK) ||
       (isConst?(attacker.species,PBSpecies,:EMPOLEON) && attacker.hasWorkingItem(:EMPCREST) && type==PBTypes::ICE) ||
@@ -6024,7 +5973,9 @@ class PokeBattle_Move
           damage=(damage*1.2).round
         end
       end
-    end  
+    elsif (options&IGNOREPKMNTYPES)==0 && attacker.hasWorkingAbility(:AMBIDEXTROUS) && type>=0
+      damage=(damage*1.3).round
+    end
     # Type effectiveness
     if (options&IGNOREPKMNTYPES)==0
       typemod=pbTypeModMessages(type,attacker,opponent)
@@ -6090,12 +6041,11 @@ class PokeBattle_Move
         end
       end	  
     end
-    if opponent.pbOwnSide.effects[PBEffects::QuickGuard] > 0 &&  self.priority >= 1 && @basedamage > 0
+    if opponent.pbOwnSide.effects[PBEffects::QuickGuard]>0 && @basedamage>0 &&
+      @battle.pbMovePriority(attacker,self,opponent)>0
       finaldamagemult=(finaldamagemult*0.5).round
     end
-    if opponent.pbOwnSide.effects[PBEffects::WideGuard] > 0 && pbTargetsAll?(attacker) && @basedamage > 0
-      finaldamagemult=(finaldamagemult*0.5).round
-    end
+    finaldamagemult=(finaldamagemult*pbWideGuardMultiplier(attacker,opponent)).round
     if opponent.effects[PBEffects::TributeProtection].is_a?(Numeric) &&
        opponent.effects[PBEffects::TributeProtection] > 0
       finaldamagemult=(finaldamagemult*opponent.effects[PBEffects::TributeProtection]).round
@@ -6139,16 +6089,10 @@ class PokeBattle_Move
     if opponent.otherSameSideAbilityHolder(:FRIENDGUARD) && !(opponent.moldbroken)
       finaldamagemult=(finaldamagemult*0.75).round
     end
-    if opponent.hasWorkingAbility(:BIGBODY) && !(opponent.moldbroken) && @basedamage>0
-      finaldamagemult=(finaldamagemult*0.5).round
-    end
-    if opponent.hasWorkingAbility(:SERAPHIC) && !(opponent.moldbroken) && basedmg<100
-      finaldamagemult=(finaldamagemult*0.7).round
-    end
-    if opponent.hasWorkingAbility(:RIVALRY) && opponent.gender!=2 && attacker.gender!=2
-      if opponent.gender!=attacker.gender
-        finaldamagemult=(finaldamagemult*0.75).round
-      end
+    finaldamagemult=(finaldamagemult*pbCustomDamageAbilityMultiplier(attacker,opponent,type,unboosted_power)).round
+    if opponent.hasWorkingAbility(:RIVALRY) && !opponent.moldbroken &&
+       opponent.gender!=attacker.gender
+      finaldamagemult=(finaldamagemult*0.75).round
     end
     if opponent.hasWorkingAbility(:BATTLEARMOR) && !(opponent.moldbroken)
       prio=@battle.pbPriority
@@ -6192,10 +6136,7 @@ class PokeBattle_Move
     if attacker.hasWorkingAbility(:STAKEOUT) && @battle.switchedOut[opponent.index]
       finaldamagemult=(finaldamagemult*2.0).round
     end
-    if attacker.hasWorkingAbility(:EXECUTIONER) && opponent.hp <= (opponent.totalhp/2).floor
-      finaldamagemult=(finaldamagemult*1.5).round
-    end
-    if attacker.effects[PBEffects::LiminalAttackThisMove]
+    if attacker.hasWorkingAbility(:LIMINAL) && attacker.effects[PBEffects::LiminalAttackThisMove]
       finaldamagemult=(finaldamagemult*1.5).round
     end
     # No Guard - 1.2x damage if move has 80 accuracy or below
@@ -6211,19 +6152,8 @@ class PokeBattle_Move
         finaldamagemult=(finaldamagemult*0.5).round
       end
     end
-    if attacker.hasWorkingAbility(:OWNTEMPO) && attacker.effects[PBEffects::Metronome]>0
-      met=1.0+(attacker.effects[PBEffects::Metronome]*0.1)
-      met=2.0 if met>2.0
-      finaldamagemult=(finaldamagemult*met).round
-    end
-    if attacker.hasWorkingItem(:METRONOME)
-      if attacker.effects[PBEffects::Metronome]>4
-        finaldamagemult=(finaldamagemult*2.0).round
-      else
-        met=1.0+attacker.effects[PBEffects::Metronome]*0.2
-        finaldamagemult=(finaldamagemult*met).round
-      end
-    end
+    finaldamagemult=(finaldamagemult*
+      attacker.pbRepeatDamageMultiplier(attacker.effects[PBEffects::Metronome])).round
     if attacker.hasWorkingItem(:EXPERTBELT) && opponent.damagestate.typemod>4
       finaldamagemult=(finaldamagemult*1.2).round
     end
@@ -6343,6 +6273,23 @@ class PokeBattle_Move
     return damage
   end
 
+  ELEMENTAL_DAMAGE_ABILITIES={PBTypes::GRASS=>:ASCETIC, PBTypes::WATER=>:WATERLOGGED, PBTypes::FIRE=>:INCENDIARY}.freeze
+
+  def pbCustomDamageAbilityMultiplier(attacker,opponent,type,base_power)
+    elemental_ability=ELEMENTAL_DAMAGE_ABILITIES[type]
+    multiplier=1.0
+    multiplier*=1.5 if elemental_ability && attacker.hasWorkingAbility(elemental_ability)
+    multiplier*=1.5 if type==PBTypes::ROCK &&
+      (attacker.hasWorkingAbility(:STONYSPIRIT) || attacker.otherSameSideAbilityHolder(:STONYSPIRIT))
+    multiplier*=1.5 if attacker.hasWorkingAbility(:EXECUTIONER) && opponent.hp*2<=opponent.totalhp
+    return multiplier if opponent.moldbroken
+    multiplier*=0.5 if elemental_ability && opponent.hasWorkingAbility(elemental_ability)
+    multiplier*=0.5 if [PBTypes::ICE,PBTypes::ELECTRIC].include?(type) && opponent.hasWorkingAbility(:INSULATED)
+    multiplier*=0.5 if opponent.hasWorkingAbility(:BIGBODY)
+    multiplier*=0.7 if base_power && base_power<100 && opponent.hasWorkingAbility(:SERAPHIC)
+    return multiplier
+  end
+
   def pbReduceHPDamage(damage,attacker,opponent,hitnum=0)
     endure=false
     if [PBMoves::FUTUREDUMMY, PBMoves::DOOMDUMMY].include?(@id)
@@ -6444,6 +6391,9 @@ class PokeBattle_Move
       return @battle.pbShieldDamage(opponent,damage) if opponent.isbossmon
       oldhp=opponent.hp
       opponent.hp-=damage
+      if attacker && attacker!=opponent && oldhp>0 && opponent.isFainted?
+        opponent.faintingMove=[attacker,self,oldhp]
+      end
       effectiveness=0
       if opponent.damagestate.typemod<4
         effectiveness=1   # "Not very effective"
@@ -6513,6 +6463,9 @@ class PokeBattle_Move
     opponent.damagestate.calcdamage=0
     opponent.damagestate.hplost=0
     if typemod!=0
+      damage=(damage*pbCustomDamageAbilityMultiplier(attacker,opponent,type,nil)).round
+      damage=(damage*1.5).round if attacker.hasWorkingAbility(:LIMINAL) &&
+        attacker.effects[PBEffects::LiminalAttackThisMove]
       opponent.damagestate.calcdamage=damage
       opponent.damagestate.typemod=4
       pbShowAnimation(@id,attacker,opponent,hitnum,alltargets,showanimation)

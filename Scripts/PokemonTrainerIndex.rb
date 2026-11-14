@@ -265,9 +265,8 @@ class Scene_TrainerIndex_Info
     end
 
     # Ability
-    if poke[TPABILITY] && poke[TPABILITY] > 0
-      ability_name = PBAbilities.getName(poke[TPABILITY]) rescue poke[TPABILITY].to_s
-      text << "Ability: #{ability_name}\n"
+    if poke[TPABILITY]
+      text << _INTL("Ability slot: {1}",poke[TPABILITY]) << "\n"
     end
 
     # Held Item

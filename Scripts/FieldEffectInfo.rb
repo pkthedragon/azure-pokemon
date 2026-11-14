@@ -289,7 +289,6 @@ FIELDEFFECTDATA = {
       "Prism Armor: Pokemon take x0.5 decreased damage",
       "Soul Heart: additionally boosts Sp. Def on use",
       "Pastel Veil: halves damage from Poison type attacks",
-      "Cloud Nine: will randomly boost one stat at end of each turn",
       "Marvel Scale: is activated",
       "Mimicry: changes the user's type to Dragon",
       "Wonderskin: will evade all status moves (from 50%)"

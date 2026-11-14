@@ -381,15 +381,17 @@ DIVINEWINDS=418
 DEEPFREEZE=419
 HARVESTMOON=420
 DUSTDEVIL=421
+AFTERLIFE=422
+KEYHOLDER=423
 
 def self.getName(id)
 return pbGetMessage(MessageTypes::Abilities,id)
 end
 def self.getCount
-return 421
+return 423
 end
 
 def self.maxValue
-return 421
+return 423
 end
 end

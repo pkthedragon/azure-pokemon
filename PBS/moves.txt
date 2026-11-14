@@ -12507,7 +12507,7 @@ TotalPP = 15
 EffectChance = 0
 Priority = 0
 Description = Traps the target for four to five turns, dealing 1/8th max HP damage each turn and suppressing the target's held items, stat stages, and ability for the duration.
-LegacyFunctionCode = 584
+LegacyFunctionCode = 207
 LegacyTarget = 0
 LegacyFlags = bef
 #-------------------------------

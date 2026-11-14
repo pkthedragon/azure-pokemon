@@ -70,8 +70,8 @@ function Resolve-AcceptedWarnings {
     },
     [pscustomobject]@{
       Name = "unresolved_optional_abilities"
-      Expected = 6
-      Pattern = "^Ruby scripts contain a pre-existing unresolved PBAbilities symbol '(?:CUTEINFATUATE|PURIFYING|SEGUE|AFTERLIFE|FLAMEEATER|KEYHOLDER)'; the related optional form remains unavailable until its intended ability data and behavior are authored\.$"
+      Expected = 4
+      Pattern = "^Ruby scripts contain a pre-existing unresolved PBAbilities symbol '(?:CUTEINFATUATE|PURIFYING|SEGUE|FLAMEEATER)'; the related optional form remains unavailable until its intended ability data and behavior are authored\.$"
     },
     [pscustomobject]@{
       Name = "shadowmove_legacy_rows"
@@ -127,7 +127,8 @@ function Resolve-AcceptedWarnings {
     }
   }
 
-  Add-AuditCheck "Warning acceptance: 59 reviewed legacy warnings match six exact categories; all new or changed warnings remain release-blocking."
+  $expectedWarnings = ($policies | Measure-Object -Property Expected -Sum).Sum
+  Add-AuditCheck "Warning acceptance: $expectedWarnings reviewed legacy warnings match six exact categories."
 }
 
 function Resolve-ProjectPath([string]$RelativePath) {
@@ -2229,12 +2230,12 @@ function Test-FeatureContracts {
     Add-AuditError "Single-pass AI ally queries still materialize temporary ally arrays."
   }
   $foeSpeedScans = [regex]::Matches($aiContent, 'if\s+!foes\.empty\?\s+&&\s+foes\.all\?\s*\{\s*\|foe\|\s*opponent\.pbSpeed\s*>\s*foe\.pbSpeed\s*\}')
-  if ($foeSpeedScans.Count -ne 3 -or $aiContent -match 'foes\.map\s*\{\s*\|foe\|\s*foe\.pbSpeed\s*\}\.max') {
-    Add-AuditError "The three AI foe-speed comparisons must use allocation-free all? scans."
+  if ($foeSpeedScans.Count -ne 2 -or $aiContent -match 'foes\.map\s*\{\s*\|foe\|\s*foe\.pbSpeed\s*\}\.max') {
+    Add-AuditError "The two AI foe-speed comparisons must use allocation-free all? scans."
   }
   $sameSideTargetScans = [regex]::Matches($aiContent, 'pbAISameSideBattler\?\(attacker,opponent\)')
-  if ($sameSideTargetScans.Count -ne 19 -or $aiContent -match 'attacker\.sameSideBattlers\(false\)\.include\?\(opponent\)') {
-    Add-AuditError "The 19 AI same-side target checks must use allocation-free membership scans."
+  if ($sameSideTargetScans.Count -ne 18 -or $aiContent -match 'attacker\.sameSideBattlers\(false\)\.include\?\(opponent\)') {
+    Add-AuditError "The 18 AI same-side target checks must use allocation-free membership scans."
   }
   $staticMembershipUseCounts = @{
     'AI_TERRAIN_FIELD_IDS\.include\?' = 1
@@ -2360,8 +2361,8 @@ function Test-MoveCompatibilitySemantics {
     @{ Name = "Double Shock Fire-removal adapter"; Pattern = '(?m)^class\s+PokeBattle_Move_264\s*<\s*PokeBattle_Move_15E\b' },
     @{ Name = "Mighty Cleave protection bypass"; Pattern = '(?ms)^class\s+PokeBattle_Move_285\b(?:(?!^class\s).)*?def\s+canProtectAgainst\?(?:(?!^class\s).)*?return\s+false' },
     @{ Name = "Dragon Cheer critical-stage boost"; Pattern = '(?ms)^class\s+PokeBattle_Move_286\b(?:(?!^class\s).)*?PBEffects::FocusEnergy(?:(?!^class\s).)*?pbHasType\?\(:DRAGON\)\s*\?\s*2\s*:\s*1' },
-    @{ Name = "Psychic Noise Heal Block"; Pattern = '(?ms)^class\s+PokeBattle_Move_287\b(?:(?!^class\s).)*?PBEffects::HealBlock\]=2' },
-    @{ Name = "Upper Hand priority and flinch rules"; Pattern = '(?ms)^class\s+PokeBattle_Move_289\b(?:(?!^class\s).)*?chosenmove\.priority<=0(?:(?!^class\s).)*?PBEffects::Flinch\]=true' },
+    @{ Name = "Psychic Noise Heal Block"; Pattern = '(?ms)^class\s+PokeBattle_Move_287\b(?:(?!^class\s).)*?PBEffects::HealBlock\]=pbMoveDuration\(attacker,2\)' },
+    @{ Name = "Upper Hand priority and flinch rules"; Pattern = '(?ms)^class\s+PokeBattle_Move_289\b(?:(?!^class\s).)*?pbMovePriority\(opponent,chosenmove,chosen_target\)<=0(?:(?!^class\s).)*?PBEffects::Flinch\]=true' },
     @{ Name = "Matcha Gotcha drain and burn adapter"; Pattern = '(?ms)^class\s+PokeBattle_Move_28C\s*<\s*PokeBattle_Move_0DD\b(?:(?!^class\s).)*?pbBurn' },
     @{ Name = "Corrosive Gas item suppression"; Pattern = '(?ms)^class\s+PokeBattle_Move_244\b(?:(?!^class\s).)*?PBEffects::Substitute(?:(?!^class\s).)*?pbIsUnlosableItem(?:(?!^class\s).)*?STICKYHOLD(?:(?!^class\s).)*?opponent\.item=0' },
     @{ Name = "Raging Bull type and screen adapter"; Pattern = '(?ms)^class\s+PokeBattle_Move_258\s*<\s*PokeBattle_Move_10A\b(?:(?!^class\s).)*?PBSpecies,:TAUROS(?:(?!^class\s).)*?PBTypes::FIGHTING(?:(?!^class\s).)*?PBTypes::FIRE(?:(?!^class\s).)*?PBTypes::WATER' },
@@ -2383,12 +2384,12 @@ function Test-MoveCompatibilitySemantics {
     @{ Name = "Silk Trap effect adapter"; Pattern = '(?ms)^class\s+PokeBattle_Move_252\b(?:(?!^class\s).)*?include\s+AzureReactiveProtectMove(?:(?!^class\s).)*?PBEffects::SilkTrap' },
     @{ Name = "Burning Bulwark effect adapter"; Pattern = '(?ms)^class\s+PokeBattle_Move_283\b(?:(?!^class\s).)*?include\s+AzureReactiveProtectMove(?:(?!^class\s).)*?PBEffects::BurningBulwark' },
     @{ Name = "Shed Tail HP cost and pivot handoff"; Pattern = '(?ms)^class\s+PokeBattle_Move_265\b(?:(?!^class\s).)*?totalhp/2\.0\)\.ceil(?:(?!^class\s).)*?pbCanChooseNonActive\?(?:(?!^class\s).)*?PBEffects::Substitute(?:(?!^class\s).)*?totalhp/4\.0\)\.floor(?:(?!^class\s).)*?@tributeOrthwormShedHP(?:(?!^class\s).)*?userSwitch=true' },
-    @{ Name = "Commander activation and lifecycle"; Pattern = '(?ms)^class\s+PokeBattle_Battler\b(?:(?!^class\s).)*?def\s+azureReleaseCommander(?:(?!^class\s).)*?PBEffects::Commander(?:(?!^class\s).)*?def\s+azureCommanderCheck(?:(?!^class\s).)*?PBSpecies,:TATSUGIRI(?:(?!^class\s).)*?PBSpecies,:DONDOZO(?:(?!^class\s).)*?hasWorkingAbility\(:COMMANDER\)(?:(?!^class\s).)*?PBEffects::Commandee\]=true(?:(?!^class\s).)*?pbIncreaseStat\(stat,2(?:(?!^class\s).)*?azure_move_compat_pbFaint' },
+    @{ Name = "Commander activation and lifecycle"; Pattern = '(?ms)^class\s+PokeBattle_Battler\b(?:(?!^class\s).)*?def\s+azureReleaseCommander(?:(?!^class\s).)*?PBEffects::Commander(?:(?!^class\s).)*?def\s+azureCommanderCheck(?:(?!^class\s).)*?PBSpecies,:TATSUGIRI(?:(?!^class\s).)*?PBSpecies,:DONDOZO(?:(?!^class\s).)*?hasWorkingAbility\(:COMMANDER\)(?:(?!^class\s).)*?PBEffects::Commandee\]=tatsugiri(?:(?!^class\s).)*?pbIncreaseStat\(stat,2(?:(?!^class\s).)*?azure_move_compat_pbFaint' },
     @{ Name = "Order Up Commander-dependent boost"; Pattern = '(?ms)^class\s+PokeBattle_Move_270\b(?:(?!^class\s).)*?azure_order_up_boost_applied(?:(?!^class\s).)*?PBEffects::Commandee(?:(?!^class\s).)*?PBEffects::Commander(?:(?!^class\s).)*?PBStats::ATTACK,PBStats::DEFENSE,PBStats::SPEED(?:(?!^class\s).)*?pbIncreaseStat\(stat,1' },
-    @{ Name = "Foul Gambit knockout recovery"; Pattern = '(?ms)^class\s+PokeBattle_Move_21F\b(?:(?!^class\s).)*?opponent\.isFainted\?(?:(?!^class\s).)*?damagestate\.hplost\*3/4\.0(?:(?!^class\s).)*?pbRecoverHP' },
+    @{ Name = "Foul Gambit knockout recovery"; Pattern = '(?ms)^class\s+PokeBattle_Move_21F\b(?:(?!^class\s).)*?opponent\.isFainted\?(?:(?!^class\s).)*?damagestate\.hplost\*3/4\.0(?:(?!^class\s).)*?pbRecoverMoveHP' },
     @{ Name = "Sweltering Strike authored placeholder"; Pattern = '(?m)^class\s+PokeBattle_Move_22C\s*<\s*PokeBattle_Move\b' },
     @{ Name = "Ergo Proxy reciprocal type changes"; Pattern = '(?ms)^class\s+PokeBattle_Move_22D\b(?:(?!^class\s).)*?copiedtype1=opponent\.type1(?:(?!^class\s).)*?attacker\.type1=copiedtype1(?:(?!^class\s).)*?opponent\.type1=PBTypes::GHOST' },
-    @{ Name = "Dust Bowl weather accuracy and trapping"; Pattern = '(?ms)^class\s+PokeBattle_Move_22E\b(?:(?!^class\s).)*?PBWeather::SANDSTORM(?:(?!^class\s).)*?PBEffects::MultiTurn\]=5(?:(?!^class\s).)*?PBEffects::MultiTurnAttack\]=@id' },
+    @{ Name = "Dust Bowl weather accuracy and trapping"; Pattern = '(?ms)^class\s+PokeBattle_Move_22E\b(?:(?!^class\s).)*?PBWeather::SANDSTORM(?:(?!^class\s).)*?PBEffects::MultiTurn\]=pbMoveDuration\(attacker,5\)(?:(?!^class\s).)*?PBEffects::MultiTurnAttack\]=@id' },
     @{ Name = "Coral Burst resisted pivot"; Pattern = '(?ms)^class\s+PokeBattle_Move_24A\b(?:(?!^class\s).)*?typemod>0\s*&&\s*typemod<4(?:(?!^class\s).)*?basedmg/2(?:(?!^class\s).)*?pbCanChooseNonActive\?(?:(?!^class\s).)*?userSwitch=true' },
     @{ Name = "Direct-damage round signal"; Pattern = '(?ms)^class\s+PokeBattle_Move\b(?:(?!^class\s).)*?azure_move_compat_pbOnDamageLost(?:(?!^class\s).)*?DamagingMoveThisTurn\]=true' },
     @{ Name = "Pestilence prior-damage power and drain"; Pattern = '(?ms)^class\s+PokeBattle_Move_24F\s*<\s*PokeBattle_Move_0DD\b(?:(?!^class\s).)*?DamagingMoveThisTurn(?:(?!^class\s).)*?basedmg\*2' },

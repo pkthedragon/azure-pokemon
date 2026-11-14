@@ -2,6 +2,20 @@
 # PBAbilities numeric constants and localized MessageTypes remain authoritative,
 # so events, Pokemon objects, battles, translations, and saves are unchanged.
 class PBAbilityData
+  # Older encounter data and saves can still contain the original IDs.
+  LEGACY_IDS = {
+    326 => PBAbilities::CARETAKER,
+    332 => PBAbilities::BLOODTHIRSTY,
+    336 => PBAbilities::SCAVENGER,
+    342 => PBAbilities::EXECUTIONER,
+    346 => PBAbilities::EVENTHORIZON,
+    371 => PBAbilities::TOXICCHAIN
+  }.freeze
+
+  def self.canonical_id(id)
+    return LEGACY_IDS.fetch(id,id)
+  end
+
   attr_reader :id
 
   def initialize(abilityid)

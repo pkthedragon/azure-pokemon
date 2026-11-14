@@ -402,7 +402,6 @@ Razor Wind		Defog			Sand Tomb		Water Sport	Water Pledge		Hurricane	    	Water Sp
 *	Prism Armor Pokemon take x0.5 decreased damage
 *   Soul Heart additionally boosts Sp. Def on use
 *   Pastel Veil halves damage from Poison type attacks.
-*	Cloud Nine will randomly boost one stat at the end of each turn
 * 	The ability Marvel Scale is activated
 *   Mimicry changes the user's type to Dragon.
 *	Wonderskin will evade all status moves (from 50%)
@@ -1813,7 +1812,7 @@ Icy Wind		Ominous Wind	Silver Wind		Razor Wind	Fairy Wind		Aeroblast		Sky Upperc
 *   	Mimicry changes the user's type to Flying.
 *	Aerilate's base power boost becomes x1.5 (from x1.2)
 *	Levitate additionally boosts Speed upon switch-in
-*	Cloud Nine removes weather
+*	Cloud Nine suppresses weather effects while its user is active
  
 (The following moves change this field):
 *	Two uses of these moves will turn the field into Mountain Field:

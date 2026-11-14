@@ -86,11 +86,7 @@ class PokeBattle_Battler
       end 
     end
     if !tribute_icicle && (hasWorkingAbility(:INSOMNIA) ||
-       hasWorkingAbility(:SWEETVEIL) ||
-      (isConst?(self.ability,PBAbilities,:LEAFGUARD) &&
-      ((@battle.pbWeather==PBWeather::SUNNYDAY && !hasWorkingItem(:UTILITYUMBRELLA)) ||
-       $fefieldeffect == 15 || ($fefieldeffect == 33 &&
-       $fecounter>0))) && !(self.moldbroken))
+       hasWorkingAbility(:SWEETVEIL)) && !self.moldbroken
          abilityname=PBAbilities.getName(self.ability)
          @battle.pbDisplay(_INTL("{1} stayed awake using its {2}!",pbThis,abilityname)) if showMessages
         return false
@@ -119,13 +115,8 @@ class PokeBattle_Battler
         return false if @battle.battlers[i].effects[PBEffects::FeverPitch]==true
       end
     end
-    if isConst?(ability,PBAbilities,:INSOMNIA) ||
-      isConst?(ability,PBAbilities,:SWEETVEIL) ||
-     (isConst?(ability,PBAbilities,:LEAFGUARD) &&
-     ((@battle.pbWeather==PBWeather::SUNNYDAY && !hasWorkingItem(:UTILITYUMBRELLA)) ||
-      $fefieldeffect == 15 || ($fefieldeffect == 33 &&
-       $fecounter>0))) && !(self.moldbroken) ||
-       pbShieldsUp?
+    if ((hasWorkingAbility(:INSOMNIA) || hasWorkingAbility(:SWEETVEIL)) &&
+        !self.moldbroken) || pbShieldsUp?
       return false
     end
     sweet_veil_holder = otherSameSideAbilityHolder(:SWEETVEIL)
@@ -153,18 +144,7 @@ class PokeBattle_Battler
     end
     pbCancelMoves
     @battle.pbCommonAnimation("Sleep",self,nil)
-    if isConst?(self.species,PBSpecies,:DARMANITAN) && self.hasWorkingAbility(:ZENMODE)
-      oldform=self.form
-      if self.form==0
-        self.form=1
-      elsif self.form==2
-        self.form=3
-      end
-      if oldform!=self.form
-        pbCureStatus(false)
-        @battle.pbDisplay(_INTL("{1}'s Zen Mode roused it!",pbThis))
-      end
-    end
+    pbCheckZenModeOnSleep
   end
 
   def pbSleepSelf(duration=-1)
@@ -176,18 +156,20 @@ class PokeBattle_Battler
     end
     pbCancelMoves
     @battle.pbCommonAnimation("Sleep",self,nil)
-    if isConst?(self.species,PBSpecies,:DARMANITAN) && self.hasWorkingAbility(:ZENMODE)
-      oldform=self.form
-      if self.form==0
-        self.form=1
-      elsif self.form==2
-        self.form=3
-      end
-      if oldform!=self.form
-        pbCureStatus(false)
-        @battle.pbDisplay(_INTL("{1}'s Zen Mode roused it!",pbThis))
-      end
+    pbCheckZenModeOnSleep
+  end
+
+  def pbCheckZenModeOnSleep
+    return if !isConst?(species,PBSpecies,:DARMANITAN) || !hasWorkingAbility(:ZENMODE)
+    firstTransformation=(form==0 || form==2)
+    pbCureStatus(false)
+    if firstTransformation
+      self.form+=1
+      @effects[PBEffects::ZenModeSleep]=true
+      pbUpdate(false)
+      @battle.scene.pbChangePokemon(self,pokemon)
     end
+    @battle.pbDisplay(_INTL("{1}'s Zen Mode roused it!",pbThis))
   end
 
 #===============================================================================
@@ -213,12 +195,8 @@ class PokeBattle_Battler
       @battle.pbDisplay(_INTL("It doesn't affect {1}...",pbThis(true))) if showMessages
       return false
     end   
-    if !tribute_icicle && ((hasWorkingAbility(:IMMUNITY) ||
-      (hasWorkingAbility(:PASTELVEIL) && $fefieldeffect!=45) ||
-      (hasWorkingAbility(:LEAFGUARD) &&
-      ((@battle.pbWeather==PBWeather::SUNNYDAY && !hasWorkingItem(:UTILITYUMBRELLA)) ||
-       $fefieldeffect == 15 || ($fefieldeffect == 33 &&
-       $fecounter>0)))) && !(self.moldbroken))
+    if !tribute_icicle && (hasWorkingAbility(:IMMUNITY) ||
+       (hasWorkingAbility(:PASTELVEIL) && $fefieldeffect!=45)) && !self.moldbroken
         @battle.pbDisplay(_INTL("{1}'s {2} prevents poisoning!",pbThis,PBAbilities.getName(self.ability))) if showMessages
         return false
     end
@@ -241,11 +219,7 @@ class PokeBattle_Battler
     end   
     return false if self.status!=0 || (isConst?(ability,PBAbilities,:COMATOSE) && $fefieldeffect!=1)
     return false if pbShieldsUp?
-    if hasWorkingAbility(:IMMUNITY) || hasWorkingAbility(:PASTELVEIL) ||
-       (hasWorkingAbility(:LEAFGUARD) &&
-       ((@battle.pbWeather==PBWeather::SUNNYDAY && !hasWorkingItem(:UTILITYUMBRELLA))||
-        $fefieldeffect == 15 || ($fefieldeffect == 33 &&
-       $fecounter>0)))
+    if hasWorkingAbility(:IMMUNITY) || hasWorkingAbility(:PASTELVEIL)
           @battle.pbDisplay(_INTL("{1}'s {2} prevents {3}'s {4} from working!",
           pbThis,PBAbilities.getName(self.ability),
           opponent.pbThis(true),PBAbilities.getName(opponent.ability)))
@@ -261,10 +235,6 @@ class PokeBattle_Battler
     return false if hasWorkingAbility(:IMMUNITY)
     return false if hasWorkingAbility(:PASTELVEIL)
     return false if pbShieldsUp?
-    return false if hasWorkingAbility(:LEAFGUARD) &&
-                   ((@battle.pbWeather==PBWeather::SUNNYDAY && !hasWorkingItem(:UTILITYUMBRELLA)) ||
-                    $fefieldeffect == 15 || ($fefieldeffect == 33 &&
-                    $fecounter>0))
     return false if pbOwnSide.effects[PBEffects::Safeguard]>0 && !(@battle.battlers[@battle.lastMoveUser]).hasWorkingAbility(:INFILTRATOR)    
     return false if ($fefieldeffect == 3 || @battle.field.effects[PBEffects::MistyTerrain]>0)
     return true
@@ -319,10 +289,7 @@ class PokeBattle_Battler
        @battle.pbDisplay(_INTL("It doesn't affect {1}...",pbThis(true))) if showMessages
        return false
     end
-    if !tribute_icicle && ((hasWorkingAbility(:HEATPROOF) ||
-      (hasWorkingAbility(:LEAFGUARD) && ((@battle.pbWeather==PBWeather::SUNNYDAY && !hasWorkingItem(:UTILITYUMBRELLA)) ||
-       $fefieldeffect == 15 || ($fefieldeffect == 33 &&
-       $fecounter>0)))) && !(self.moldbroken))
+    if !tribute_icicle && hasWorkingAbility(:HEATPROOF) && !self.moldbroken
       @battle.pbDisplay(_INTL("{1}'s {2} prevents burns!",pbThis,PBAbilities.getName(self.ability))) if showMessages
       return false
     end
@@ -363,9 +330,7 @@ class PokeBattle_Battler
       @battle.pbDisplay(_INTL("It doesn't affect {1}...",pbThis(true))) if showMessages
       return false
     end
-    if (hasWorkingAbility(:HEATPROOF) ||
-        (hasWorkingAbility(:LEAFGUARD) && ((@battle.pbWeather==PBWeather::SUNNYDAY && !hasWorkingItem(:UTILITYUMBRELLA)) ||
-        $fefieldeffect == 15 || ($fefieldeffect == 33 && $fecounter>0)))) && !(self.moldbroken)
+    if hasWorkingAbility(:HEATPROOF) && !self.moldbroken
       @battle.pbDisplay(_INTL("{1}'s {2} prevents burns!",pbThis,PBAbilities.getName(self.ability))) if showMessages
       return false
     end
@@ -388,14 +353,13 @@ class PokeBattle_Battler
           opponent.pbThis,PBAbilities.getName(opponent.ability),pbThis(true)))
        return false
     end   
-    if (hasWorkingAbility(:LEAFGUARD) && ((@battle.pbWeather==PBWeather::SUNNYDAY && !hasWorkingItem(:UTILITYUMBRELLA)) ||
-       $fefieldeffect == 15 || ($fefieldeffect == 33 &&
-       $fecounter>0)))
+    if hasWorkingAbility(:HEATPROOF)
       @battle.pbDisplay(_INTL("{1}'s {2} prevents {3}'s {4} from working!",
       pbThis,PBAbilities.getName(self.ability),
       opponent.pbThis(true),PBAbilities.getName(opponent.ability)))
       return false
     end
+    return true
   end
 
   def pbBurn(attacker)
@@ -432,11 +396,7 @@ class PokeBattle_Battler
       @battle.pbDisplay(_INTL("But it failed!")) if showMessages
       return false
     end
-    if !tribute_icicle && (((hasWorkingAbility(:IMMUNITY)) ||
-      (hasWorkingAbility(:LEAFGUARD) &&
-      ((@battle.pbWeather==PBWeather::SUNNYDAY && !hasWorkingItem(:UTILITYUMBRELLA)) ||
-       $fefieldeffect == 15 || ($fefieldeffect == 33 &&
-       $fecounter>0)))) && !(self.moldbroken))
+    if !tribute_icicle && hasWorkingAbility(:IMMUNITY) && !self.moldbroken
         @battle.pbDisplay(_INTL("{1}'s {2} prevents paralysis!",pbThis,PBAbilities.getName(self.ability))) if showMessages
         return false
     end
@@ -450,11 +410,7 @@ class PokeBattle_Battler
     if pbHasType?(:ELECTRIC)
       return false
     end
-    if (hasWorkingAbility(:IMMUNITY) && !(self.moldbroken)) ||
-     (hasWorkingAbility(:LEAFGUARD) &&
-     ((@battle.pbWeather==PBWeather::SUNNYDAY && !hasWorkingItem(:UTILITYUMBRELLA)) ||
-     $fefieldeffect == 15 || ($fefieldeffect == 33 &&
-     $fecounter>0)))
+    if hasWorkingAbility(:IMMUNITY)
       @battle.pbDisplay(_INTL("{1}'s {2} prevents {3}'s {4} from working!",
       pbThis,PBAbilities.getName(self.ability),
       opponent.pbThis(true),PBAbilities.getName(opponent.ability)))
@@ -541,8 +497,7 @@ end
       return false
     end
     if !tribute_icicle && ((@battle.pbWeather==PBWeather::SUNNYDAY && !hasWorkingItem(:UTILITYUMBRELLA)) || self.status!=0 || (isConst?(ability,PBAbilities,:COMATOSE) && $fefieldeffect!=1) ||
-      (hasWorkingAbility(:LEAFGUARD) && $fefieldeffect == 15 || 
-      ($fefieldeffect == 33 && $fecounter>0)) ||
+      ($fefieldeffect == 33 && $fecounter>0) ||
        hasWorkingItem(:THERMOSUIT) ||
        (pbOwnSide.effects[PBEffects::Safeguard]>0 && !(@battle.battlers[@battle.lastMoveUser]).hasWorkingAbility(:INFILTRATOR) && !(PBMoveData.new(@battle.lastMoveUsed).function==0x21B && @battle.battlers[@battle.lastMoveUser].hp < (0.5 * @battle.battlers[@battle.lastMoveUser].totalhp).floor)) ||
        damagestate.substitute || (effects[PBEffects::Substitute]>0 && !PBMoveData.new(@battle.lastMoveUsed).isSoundBased?) || $fefieldeffect == 7 ||
@@ -860,13 +815,10 @@ end
     return true
   end
 
-  def pbIncreaseStatBasic(stat,increment)
+  def pbIncreaseStatBasic(stat,increment,triggerBigPecks=true)
     stat_source=pbStatChangeSourceKey
     cn=@battle.pbCheckGlobalAbility(:CLOUDNINE)
     return false if cn
-
-    # Store original increment for cap calculation
-    original_increment = increment
 
     # Cap increment at +3
     increment = [increment, 3].min
@@ -909,12 +861,26 @@ end
 
     # Now attempt to change the stat within caps (max +3)
     cap = [@effects[PBEffects::StatCapPositive][stat] || 0, 3].min
+    oldStage=@stages[stat]
     if @effects[PBEffects::MultiTurnAttack] == PBMoves::BINDINGWORD # Stats suppressed by binding word
       @effects[PBEffects::StatChangeHolder][stat]+=increment
       @effects[PBEffects::StatChangeHolder][stat]=cap if @effects[PBEffects::StatChangeHolder][stat]>cap
     else
       @stages[stat]+=increment
       @stages[stat]=cap if @stages[stat]>cap
+    end
+    if triggerBigPecks && @stages[stat]>oldStage
+      opposingLivingBattlers.each do |foe|
+        next if !foe.hasWorkingAbility(:BIGPECKS)
+        oldDefense=foe.stages[PBStats::DEFENSE]
+        @battle.pbWithStatChangeSource([:ability,foe.ability]) do
+          foe.pbIncreaseStatBasic(PBStats::DEFENSE,1,false)
+        end
+        if foe.stages[PBStats::DEFENSE]>oldDefense
+          @battle.pbCommonAnimation("StatUp",foe,nil)
+          @battle.pbDisplay(_INTL("{1}'s {2} raised its Defense!",foe.pbThis,PBAbilities.getName(foe.ability)))
+        end
+      end
     end
     return true
   end
@@ -980,18 +946,6 @@ end
     end
     if pbCanIncreaseStatStage?(stat,showMessages1)
       pbIncreaseStatBasic(stat,increment)
-      # Big Pecks: foes gain Defense when an enemy raises its stats
-      if attacker && attacker.pbIsOpposing?(self.index)
-        opposingLivingBattlers.each do |foe|
-          next if foe.nil? || foe.isFainted?
-          next if foe.moldbroken
-          if foe.hasWorkingAbility(:BIGPECKS) && !foe.pbTooHigh?(PBStats::DEFENSE)
-            foe.pbIncreaseStatBasic(PBStats::DEFENSE,1)
-            @battle.pbCommonAnimation("StatUp",foe,nil)
-            @battle.pbDisplay(_INTL("{1}'s {2} raised its Defense!",foe.pbThis,PBAbilities.getName(foe.ability)))
-          end
-        end
-      end
       @battle.pbCommonAnimation("StatUp",self,nil) if upanim
       # For message display: if Simple is active, show the doubled increment
       # (The actual stat change with Simple was already handled in pbIncreaseStatBasic)

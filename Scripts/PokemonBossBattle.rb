@@ -526,12 +526,10 @@ class PokeBattle_Battle
         end
         if [PBEffects::Encore,PBEffects::HealBlock,PBEffects::MultiTurn,PBEffects::Taunt,PBEffects::ThroatChop,PBEffects::Confusion].include?(i)
           if battler.effects[i] != 0
-            battler.effects[i] = 0
-            if i == PBEffects::MultiTurn && battler.effects[PBEffects::MultiTurnAttack] == PBMoves::BINDINGWORD
-              for j in [PBStats::ATTACK,PBStats::DEFENSE,PBStats::SPEED,PBStats::SPATK,PBStats::SPDEF,PBStats::ACCURACY,PBStats::EVASION]
-                battler.stages[j] = battler.effects[PBEffects::StatChangeHolder][j]
-                battler.effects[PBEffects::StatChangeHolder][j] = 0
-              end
+            if i == PBEffects::MultiTurn
+              battler.pbClearMultiTurn
+            else
+              battler.effects[i] = 0
             end
             animplay = true
           end
