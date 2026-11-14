@@ -8134,8 +8134,8 @@ def pbStartBattle(canlose=false)
         i.effects[PBEffects::MultiTurn]-=1
         movename=PBMoves.getName(i.effects[PBEffects::MultiTurnAttack])
         if i.effects[PBEffects::MultiTurn]==0
-          i.pbClearMultiTurn
           pbDisplay(_INTL("{1} was freed from {2}!",i.pbThis,movename))
+          i.pbClearMultiTurn
         elsif !i.hasWorkingAbility(:MAGICGUARD)
           pbDisplay(_INTL("{1} is hurt by {2}!",i.pbThis,movename))
           if isConst?(i.effects[PBEffects::MultiTurnAttack],PBMoves,:BIND)

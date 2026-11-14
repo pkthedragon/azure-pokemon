@@ -1006,6 +1006,8 @@ class PokeBattle_Battler
     tatsugiri.vanished=true
     @battle.pbDisplay(_INTL("{1} was swallowed by {2} and became its commander!",
       tatsugiri.pbThis,dondozo.pbThis(true)))
+    choice=@battle.choices[tatsugiri.index]
+    choice[2].zmove=false if choice[0]==1 && choice[2]
     @battle.choices[tatsugiri.index]=[0,0,nil,-1]
     tatsugiri.pbCancelMoves
     # The battler objects follow their Pokemon through lane shifts.

@@ -485,11 +485,16 @@ module AzureAbilityFixture
     @battle.pbOnActiveAll
     hit(:BINDINGWORD,@ally,@foe)
     @foe.effects[PBEffects::MultiTurn]=1
+    messages_before_expiry=@scene.messages.length
     round
     assert(@foe.hasWorkingAbility(:NEUTRALIZINGGAS),"Binding Word expiring should restore Gas")
     assert(@foe.hasWorkingItem(:LEFTOVERS),"Binding Word expiring should restore the holder's item")
     assert(@user.abilitynulled,"Restored Gas should suppress Haste immediately")
     equal(-1,@foe.stages[PBStats::DEFENSE])
+    expiry_messages=@scene.messages.drop(messages_before_expiry)
+    freed=expiry_messages.index { |message| message.include?("was freed from Binding Word!") }
+    gas=expiry_messages.index { |message| message.include?("Neutralizing Gas fills the area") }
+    assert(freed && gas && freed<gas,"Binding Word's release message should come before Gas returns")
 
     battle(:HASTE,:NEUTRALIZINGGAS,ally: :NONE,foe_ally: :NONE)
     @battle.pbOnActiveAll

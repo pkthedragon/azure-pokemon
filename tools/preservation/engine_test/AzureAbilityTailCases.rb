@@ -366,12 +366,14 @@ module AzureAbilityFixture
     entry(@outer_ally)
     assert(!@outer_ally.effects[PBEffects::Commander],"Opposite outer lanes should be out of Commander range")
     assert(@battle.pbRegisterMove(@outer_ally.index,0,false),"Could not queue Tatsugiri's attack")
+    @battle.pbRegisterZMove(@outer_ally.index)
     @battle.pbRegisterTarget(@outer_ally.index,@foe_ally.index)
     assert(@battle.pbRegisterShift(@ally.index,@outer_ally.index),"Could not shift Tatsugiri into the middle lane")
     pp=@outer_ally.moves[0].pp
     @battle.pbAttackPhase
     equal(@user,@outer_ally.effects[PBEffects::Commander])
     equal(pp,@outer_ally.moves[0].pp)
+    assert(!@outer_ally.moves[0].zmove,"Commander should clear the canceled move's Z-Power flag")
     @battle.pbClearChoices(@ally.index)
     assert(!@battle.pbCanShift?(@ally.index,@outer_ally.index,false),"A swallowed Tatsugiri cannot shift lanes")
   end
