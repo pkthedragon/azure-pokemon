@@ -130,21 +130,37 @@ class Weather
     $game_screen = Game_Screen.new if $game_screen == nil
     @type = @max = @ox = @oy = @count = 0
     @current_pose, @info, @countarray = [], [], []
-    make_bitmaps
+    @sprites = []
+    @sprite_viewport = viewport
+    @initial_variation = $game_screen.weather_variation
+    @initial_images = $WEATHER_IMAGES.dup
 
-    (1..500).each {|i|
-      sprite = Sprite.new(viewport)
+    # Keep the encounter and battle RNG in the same order as before. Only the
+    # graphics for these particles are deferred until a weather effect starts.
+    500.times do
+      @current_pose.push(0)
+      @info.push(rand(50))
+      @countarray.push(rand(15))
+    end
+  end
+  
+  def prepare_graphics
+    return unless @sprites.empty?
+    make_bitmaps(@initial_variation, @initial_images)
+    @initial_images = nil
+    500.times do
+      sprite = Sprite.new(@sprite_viewport)
       sprite.z = 1000
       sprite.visible = false
       sprite.opacity = 0
       @sprites.push(sprite)
-      @current_pose.push(0)
-      @info.push(rand(50))
-      @countarray.push(rand(15))
-    }
+    end
   end
-  
+  private :prepare_graphics
+
   def dispose
+    $WEATHER_UPDATE = true
+    return if @sprites.empty?
     
     @sprites.each {|sprite| sprite.dispose}
     
@@ -165,13 +181,17 @@ class Weather
     @bee_bitmaps.each {|image| image.dispose}
     @raven_bitmaps.each {|image| image.dispose}
     @user_bitmaps.each {|image| image.dispose}
-
-    $WEATHER_UPDATE = true
-    
   end
 #-------------------------------------------------------------------------------  
   def type=(type)
     return if @type == type
+    if @type == 0
+      prepare_graphics
+      @sprites.each do |sprite|
+        sprite.ox = @ox
+        sprite.oy = @oy
+      end
+    end
     @type = type
     case @type
     when 1, 5, 9                            # Rain, Thunder, Real Thunder
@@ -291,18 +311,21 @@ class Weather
   def ox=(ox)
     return if @ox == ox;
     @ox = ox
+    return if @type == 0
     @sprites.each {|sprite| sprite.ox = @ox}
   end
   
   def oy=(oy)
     return if @oy == oy;
     @oy = oy
+    return if @type == 0
     @sprites.each {|sprite| sprite.oy = @oy}
   end
   
   def max=(max)
     return if @max == max;
     @max = [[max, 0].max, 500].min
+    return if @sprites.empty?
     (1..500).each {|i|
       sprite = @sprites[i]
       sprite.visible = (i <= @max) if sprite != nil
@@ -846,7 +869,7 @@ class Weather
     }
   end
 #-------------------------------------------------------------------------------  
-  def make_bitmaps
+  def make_bitmaps(variation=$game_screen.weather_variation, images=$WEATHER_IMAGES)
     
     # All the colors for each type are used only for their respective bitmaps 
     # now, therefore the colors can be changed for one type without worrying 
@@ -856,7 +879,7 @@ class Weather
     # Rain Bitmap
     
     @rain_bitmap = Bitmap.new(7, 56)
-    rain_color = case $game_screen.weather_variation
+    rain_color = case variation
     when 1 then Color.new(141, 9, 9)            # Blood Rain
     when 2 then Color.new(15, 15, 15)           # Oil Rain
     when 3 then Color.new(76, 91, 43)           # Acid Rain
@@ -871,7 +894,7 @@ class Weather
     # Storm Bitmap
     
     @storm_bitmap = Bitmap.new(34, 64)
-    case $game_screen.weather_variation
+    case variation
     when 1 # Blood
       storm_color1 = Color.new(141, 9, 9)
       storm_color2 = Color.new(141, 9, 9, 128)
@@ -901,7 +924,7 @@ class Weather
     # Splash Bitmap
 
     @rain_splash = Bitmap.new(8, 5)
-    case $game_screen.weather_variation
+    case variation
     when 1 # Blood splash
       splash_color1 = Color.new(141, 9, 9)
       splash_color2 = Color.new(141, 9, 9, 128)
@@ -928,7 +951,7 @@ class Weather
 #------------------------------------------------------------------------------- 
     # Snow Bitmaps
     
-    case $game_screen.weather_variation
+    case variation
     when 1 # Crimson
       snow_color1 = Color.new(141, 9, 9)
       snow_color2 = Color.new(141, 9, 9, 128)
@@ -947,7 +970,6 @@ class Weather
     @snow_bitmap.fill_rect(2, 1, 2, 4, snow_color1)
     
     # Used for Falling Snow
-    @sprites = []   
     @snow_bitmaps = []
     @snow_bitmaps[0] = Bitmap.new(3, 3)
     @snow_bitmaps[0].fill_rect(0, 0, 3, 3, snow_color2)
@@ -1009,7 +1031,7 @@ class Weather
     # Leaf Bitmaps
     
     @leaf_bitmaps = []
-    case $game_screen.weather_variation
+    case variation
     when 1 # Yellow
       leaf_color1 = Color.new(110, 104, 3)
       leaf_color2 = Color.new(205, 194, 23)
@@ -1272,7 +1294,7 @@ class Weather
     # Petals
 
     @petal_bitmaps = []
-    case $game_screen.weather_variation
+    case variation
     when 1 # Lavender
       petal_color1 = Color.new(213, 80, 254)
       petal_color2 = Color.new(176, 92, 201)
@@ -1349,7 +1371,7 @@ class Weather
     # Sparkle bitmaps
     
     @sparkle_bitmaps = []
-    case $game_screen.weather_variation
+    case variation
     when 1 # Lavender
       sparkle_color1 = Color.new(197, 181, 255)
       sparkle_color2 = Color.new(171, 126, 234)
@@ -1442,7 +1464,7 @@ class Weather
 #-------------------------------------------------------------------------------    
     # Meteor bitmap
     
-    case $game_screen.weather_variation
+    case variation
     when 1 # Flame Meteor
       meteor_color1 = Color.new(248, 88, 0)     
       meteor_color2 = Color.new(205, 194, 23)   
@@ -1637,7 +1659,7 @@ class Weather
 #------------------------------------------------------------------------------- 
     # Bomb bitmap
     
-    case $game_screen.weather_variation
+    case variation
     when 1 # Flare
       bomb_color1 = Color.new(205, 194, 23)
       bomb_color2 = Color.new(248, 88, 0)
@@ -2005,7 +2027,7 @@ class Weather
     # Monochrome starburst bitmaps
     
     @monostarburst_bitmaps = []
-    case $game_screen.weather_variation
+    case variation
     when 1 # Green
       monostarburst_color1 = Color.new(159, 232, 141)
       monostarburst_color2 = Color.new(198, 239, 189)
@@ -2237,7 +2259,7 @@ class Weather
     # Butterflies
     
     @butterfly_bitmaps = []
-    case $game_screen.weather_variation
+    case variation
     when 1 
       # Red butterflies
       butterfly_color1 = Color.new(204, 53, 55)
@@ -4730,12 +4752,12 @@ class Weather
     @raven_bitmaps[15].fill_rect(8, 9, 2, 1, raven_color3)
 #------------------------------------------------------------------------------- 
     @user_bitmaps = []
-    update_user_defined
+    update_user_defined(images)
   end
 #-------------------------------------------------------------------------------  
-  def update_user_defined
+  def update_user_defined(images=$WEATHER_IMAGES)
     @user_bitmaps.each {|image| image.dispose}
-    $WEATHER_IMAGES.each {|name| @user_bitmaps.push(RPG::Cache.picture(name))}
+    images.each {|name| @user_bitmaps.push(RPG::Cache.picture(name))}
     @sprites.each {|sprite| sprite.bitmap = @user_bitmaps[rand(@user_bitmaps.size)]}
   end
   attr_reader :type

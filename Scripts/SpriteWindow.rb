@@ -597,24 +597,29 @@ class GifBitmap
     filestrName=nil
     file="" if !file
     file=canonicalize(file)
+    # Blank character graphics use one transparent frame without opening a file.
+    if file.empty? || file.end_with?("/","\\")
+      @totalframes=1
+      @gifbitmaps=[BitmapWrapper.new(32,32)]
+      @gifdelays=[1]
+      return
+    end
     begin
       bitmap=BitmapCache.load_bitmap(file,hue)
     rescue
       bitmap=nil
     end
     if !bitmap || (bitmap.width==32 && bitmap.height==32)
-      if !file || file.length<1 || file[file.length-1]!=0x2F
-        if (filestring=pbGetFileChar(file))
-          filestrName=file
-        elsif (filestring=pbGetFileChar(file+".gif"))
-          filestrName=file+".gif"
-        elsif (filestring=pbGetFileChar(file+".png"))
-          filestrName=file+".png"
-        elsif (filestring=pbGetFileChar(file+".jpg"))
-          filestrName=file+".jpg"
-        elsif (filestring=pbGetFileChar(file+".bmp"))
-          filestrName=file+".bmp"
-        end
+      if (filestring=pbGetFileChar(file))
+        filestrName=file
+      elsif (filestring=pbGetFileChar(file+".gif"))
+        filestrName=file+".gif"
+      elsif (filestring=pbGetFileChar(file+".png"))
+        filestrName=file+".png"
+      elsif (filestring=pbGetFileChar(file+".jpg"))
+        filestrName=file+".jpg"
+      elsif (filestring=pbGetFileChar(file+".bmp"))
+        filestrName=file+".bmp"
       end
     end
     if bitmap && filestring && filestring[0]==0x47 &&
@@ -2015,7 +2020,7 @@ end
 def pbGetFileChar(file)
   file=canonicalize(file)
   if !(safeExists?("./Game.rgssad") || safeExists?("./Game.rgss2a"))
-    return nil if !safeExists?(file)
+    return nil if !File.file?(file)
     begin
       File.open(file,"rb"){|f|
          return f.read(1) # read one byte
@@ -2041,7 +2046,7 @@ end
 def pbGetFileString(file)
   file=canonicalize(file)
   if !(safeExists?("./Game.rgssad") || safeExists?("./Game.rgss2a"))
-    return nil if !safeExists?(file)
+    return nil if !File.file?(file)
     begin
       File.open(file,"rb"){|f|
          return f.read # read all data

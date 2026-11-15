@@ -20,28 +20,6 @@ TRIBUTE_ITEMS = [
   :DRACOTRIBUTE   # 18
 ]
 
-TRIBUTE_NAMES = [
-  _INTL("Null Tribute"),
-  _INTL("Meadow Tribute"),
-  _INTL("Splash Tribute"),
-  _INTL("Flame Tribute"),
-  _INTL("Blank Tribute"),
-  _INTL("Fist Tribute"),
-  _INTL("Mind Tribute"),
-  _INTL("Zap Tribute"),
-  _INTL("Icicle Tribute"),
-  _INTL("Stone Tribute"),
-  _INTL("Pixie Tribute"),
-  _INTL("Sky Tribute"),
-  _INTL("Spooky Tribute"),
-  _INTL("Dread Tribute"),
-  _INTL("Earth Tribute"),
-  _INTL("Iron Tribute"),
-  _INTL("Toxic Tribute"),
-  _INTL("Insect Tribute"),
-  _INTL("Draco Tribute")
-]
-
 TRIBUTE_UNLOCK_SWITCH = {
   :NULLTRIBUTE   => 1751,
   :MEADOWTRIBUTE => 1752,
@@ -88,23 +66,9 @@ def pbUnlockTributeItem(item_sym)
 end
 
 def pbBuildUnlockedTributeLists(current_item_sym = nil)
-  names = []
-  items = []
-
-  TRIBUTE_ITEMS.each_with_index do |it, i|
-    next unless pbTributeUnlockedItem?(it)
-    names << TRIBUTE_NAMES[i]
-    items << it
-  end
-
-  if current_item_sym && !items.include?(current_item_sym)
-    idx = TRIBUTE_ITEMS.index(current_item_sym)
-    if idx
-      names.unshift(TRIBUTE_NAMES[idx])
-      items.unshift(current_item_sym)
-    end
-  end
-
+  items = TRIBUTE_ITEMS.select { |item| pbTributeUnlockedItem?(item) }
+  items.unshift(current_item_sym) if TRIBUTE_ITEMS.include?(current_item_sym) && !items.include?(current_item_sym)
+  names = items.map { |item| PBItems.getName(getID(PBItems,item)) }
   names << _INTL("Cancel")
   return [names, items]
 end
@@ -112,11 +76,14 @@ end
 def pbChooseTributePokemon(helptext)
   chosen = -1
   pbFadeOutIn(99999) do
-    scene = PokemonParty_Scene.new
-    screen = PokemonPartyScreen.new(scene,$Trainer.party)
+    scene = PokemonScreen_Scene.new
+    screen = PokemonScreen.new(scene,$Trainer.party)
     screen.pbStartScene(helptext,false)
-    chosen = screen.pbChoosePokemon
-    screen.pbEndScene
+    begin
+      chosen = screen.pbChoosePokemon
+    ensure
+      screen.pbEndScene
+    end
   end
   return chosen
 end
@@ -141,7 +108,7 @@ def pbChooseDracoTributeMove(pokemon)
 end
 
 def pbAssignDracoTributeMove(pokemon)
-  return false if !pokemon || pokemon.egg?
+  return false if !pokemon || pokemon.isEgg?
   chosen = pbChooseDracoTributeMove(pokemon)
   return false if chosen.nil?
   if chosen==:clear
@@ -156,38 +123,57 @@ def pbAssignDracoTributeMove(pokemon)
   return true
 end
 
+def pbUseTribute(item, pokemon=nil, held=false)
+  index = pbTributeIndexFromID(item)
+  return false if !index
+  if held
+    return false if !pokemon || pokemon.item!=item
+  else
+    return false if !$PokemonBag.pbHasItem?(item)
+  end
+  current_sym = TRIBUTE_ITEMS[index]
+  if current_sym==:DRACOTRIBUTE
+    choice = Kernel.pbMessage(_INTL("What would you like to do with the Draco Tribute?"),
+      [_INTL("Assign Tribute Move"),_INTL("Change Attunement"),_INTL("Cancel")],-1)
+    if choice==0
+      if !pokemon
+        party_index = pbChooseTributePokemon(_INTL("Choose a Pokémon to inscribe."))
+        return false if party_index<0
+        pokemon = $Trainer.party[party_index]
+      end
+      return pbAssignDracoTributeMove(pokemon)
+    end
+    return false if choice!=1
+  end
+
+  names, items = pbBuildUnlockedTributeLists(current_sym)
+  choice = Kernel.pbMessage(_INTL("Change the Tribute's attunement?"),
+    names,-1,nil,items.index(current_sym))
+  return false if choice<0 || choice>=items.length
+  new_item = getID(PBItems,items[choice])
+  return true if new_item==item
+
+  if held
+    pokemon.setItem(new_item)
+    pokemon.calcStats
+  elsif !$PokemonBag.pbReplaceOneItem(item,new_item)
+    Kernel.pbMessage(_INTL("There is no room for another {1} in the Bag.",PBItems.getName(new_item)))
+    return false
+  end
+  Kernel.pbMessage(_INTL("The Tribute attuned to {1}.",PBItems.getName(new_item)))
+  return true
+end
+
+TRIBUTE_ITEMS.each do |item|
+  ItemHandlers::UseFromBag.add(item,proc { |id| pbUseTribute(id) ? 1 : 0 })
+  ItemHandlers::UseOnPokemon.add(item,proc { |id,pokemon,_scene| pbUseTribute(id,pokemon) })
+end
+
 def pbTributeMoveMatches?(attacker, item_sym, moveid)
   return false if !attacker || !moveid
   return false if !attacker.respond_to?(:hasWorkingItem) || !attacker.hasWorkingItem(item_sym)
   return false if !attacker.moves || !attacker.moves[0]
   return attacker.moves[0].id == moveid
-end
-
-def pbCurrentTributeUser(battle)
-  return nil if !battle
-  return nil if !battle.respond_to?(:lastMoveUser) || battle.lastMoveUser.nil? || battle.lastMoveUser<0
-  return nil if !battle.respond_to?(:battlers)
-  return battle.battlers[battle.lastMoveUser]
-end
-
-def pbCurrentTributeMove(battle)
-  user = pbCurrentTributeUser(battle)
-  return nil if !user || !battle || !battle.respond_to?(:lastMoveUsed)
-  return nil if !user.moves || !user.moves[0]
-  return nil if user.moves[0].id != battle.lastMoveUsed
-  return user.moves[0]
-end
-
-def pbCurrentTributeMoveMatches?(battle, item_sym, require_status = nil)
-  user = pbCurrentTributeUser(battle)
-  move = pbCurrentTributeMove(battle)
-  return false if !user || !move
-  return false if !pbTributeMoveMatches?(user,item_sym,battle.lastMoveUsed)
-  if !require_status.nil?
-    return false if require_status && move.basedamage>0
-    return false if !require_status && move.basedamage<=0
-  end
-  return true
 end
 
 def pbTributeWeatherType(battle)
@@ -214,14 +200,7 @@ HEROIC_POKEMON = {
     :TANGROWTH => {
       :species => :TANGROWTH,
       :form => 1,
-      :heroic_form => 1,
-      :effect => proc { |pokemon, battle|
-        next {} if !battle
-        if battle.pbWeather == PBWeather::SUNNYDAY
-          next { :healing_multiplier => 2.0 }
-        end
-        next {}
-      }
+      :heroic_form => 1
     },
     :SIMISAGE => { :species => :SIMISAGE },
     :BELLOSSOM => { :species => :BELLOSSOM },
@@ -281,7 +260,7 @@ HEROIC_POKEMON = {
     :SUDOWOODO => { :species => :SUDOWOODO },
     :RHYPERIOR => { :species => :RHYPERIOR },
     :RAMPARDOS => { :species => :RAMPARDOS },
-    :GOLEM => { :species => :GOLEM },
+    :GOLEM => { :species => :GOLEM, :form => 0 },
     :GOLEM_ALOLAN => { :species => :GOLEM, :form => 1 }
   },
   :PIXIETRIBUTE => {
@@ -327,7 +306,7 @@ HEROIC_POKEMON = {
     :MEOWSCARADA_MYSTIC => { :species => :MEOWSCARADA, :form => 1 }
   },
   :TOXICTRIBUTE => {
-    :MUK => { :species => :MUK },
+    :MUK => { :species => :MUK, :form => 0 },
     :REVAVROOM => { :species => :REVAVROOM },
     :TENTACRUEL => { :species => :TENTACRUEL },
     :CROBAT => { :species => :CROBAT },
@@ -349,17 +328,15 @@ HEROIC_POKEMON = {
   }
 }
 
-def pbTributeSpeciesSymbol(pokemon)
+def pbHeroicEntries(pokemon)
   return nil if !pokemon
-  species_sym = getConstantName(PBSpecies, pokemon.species) rescue nil
-  return species_sym.to_sym if species_sym
-  return nil
+  tribute_index=pbTributeIndexFromID(pokemon.item)
+  return nil if !tribute_index
+  return HEROIC_POKEMON[TRIBUTE_ITEMS[tribute_index]]
 end
 
 def pbHeroicDataMatches?(pokemon, heroic_data)
-  return false if !pokemon || !heroic_data
-  species_sym = pbTributeSpeciesSymbol(pokemon)
-  return false if !species_sym || heroic_data[:species] != species_sym
+  return false if !isConst?(pokemon.species,PBSpecies,heroic_data[:species])
   if heroic_data.has_key?(:form)
     return false if pokemon.form != heroic_data[:form]
   end
@@ -370,14 +347,10 @@ def pbHeroicDataMatches?(pokemon, heroic_data)
 end
 
 def pbGetHeroicKey(pokemon)
-  return nil if !pokemon
-  tribute_sym = pbGetHeroicTribute(pokemon)
-  return nil if !tribute_sym
-  heroic_list = HEROIC_POKEMON[tribute_sym] || {}
-  heroic_list.each do |heroic_key, heroic_data|
-    return heroic_key if pbHeroicDataMatches?(pokemon, heroic_data)
-  end
-  return nil
+  entries=pbHeroicEntries(pokemon)
+  return nil if !entries
+  eligible=entries.select { |_, data| pbHeroicDataMatches?(pokemon,data) }
+  return eligible.max_by { |_, data| data.keys.count { |key| key==:form || key==:gender } }&.first
 end
 
 def pbHeroicPokemon?(pokemon, heroic_key)
@@ -385,48 +358,13 @@ def pbHeroicPokemon?(pokemon, heroic_key)
   return pbGetHeroicKey(pokemon) == heroic_key
 end
 
-# Check if a Pokemon is currently in a heroic form
-def pbIsHeroicPokemon?(pokemon)
-  return !pbGetHeroicKey(pokemon).nil?
-end
-
-# Get the heroic form number for a Pokemon holding a tribute
-# Returns nil if the combination doesn't create a heroic form
+# The form getter must resolve the held-item transformation before the
+# Heroic battle lookup can match the resulting form.
 def pbGetHeroicForm(pokemon)
-  return nil if !pokemon
-  tribute_sym = pbGetHeroicTribute(pokemon)
-  heroic_key = pbGetHeroicKey(pokemon)
-  return nil if !tribute_sym || !heroic_key
-  heroic_data = HEROIC_POKEMON[tribute_sym][heroic_key]
-  return heroic_data[:heroic_form] if heroic_data && heroic_data[:heroic_form]
-  return nil
-end
-
-# Get which tribute makes this Pokemon heroic (if any)
-def pbGetHeroicTribute(pokemon)
-  return nil if !pokemon
-  species_sym = pbTributeSpeciesSymbol(pokemon)
-  return nil if !species_sym
-  HEROIC_POKEMON.each do |tribute_sym, pokemon_list|
-    next if !isConst?(pokemon.item, PBItems, tribute_sym)
-    pokemon_list.each_value do |heroic_data|
-      if pbHeroicDataMatches?(pokemon, heroic_data)
-        return tribute_sym
-      end
-    end
+  entries=pbHeroicEntries(pokemon)
+  return nil if !entries
+  entry=entries.each_value.find do |data|
+    data[:heroic_form] && isConst?(pokemon.species,PBSpecies,data[:species])
   end
-  return nil
-end
-
-# Get the heroic effect modifiers for a Pokemon
-# Returns a hash with effect modifiers, or empty hash if not heroic
-def pbGetHeroicEffect(pokemon, battle)
-  return {} if !pokemon
-  tribute_sym = pbGetHeroicTribute(pokemon)
-  heroic_key = pbGetHeroicKey(pokemon)
-  return {} if !tribute_sym || !heroic_key
-  heroic_data = HEROIC_POKEMON[tribute_sym][heroic_key]
-  return {} if !heroic_data
-  return heroic_data[:effect].call(pokemon, battle) if heroic_data[:effect]
-  return {}
+  return entry&.[](:heroic_form)
 end

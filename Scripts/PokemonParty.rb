@@ -2224,6 +2224,11 @@ class PokemonScreen
           pouchcmd=item_commands.length
           item_commands.push(_INTL("Manage"))
         end
+        tributecmd = nil
+        if pbTributeIndexFromID(pkmn.item)
+          tributecmd = item_commands.length
+          item_commands.push(_INTL("Attune Tribute"))
+        end
         givecmd=item_commands.length
         item_commands.push(_INTL("Give"))
         takecmd=item_commands.length
@@ -2239,6 +2244,9 @@ class PokemonScreen
             end            
           when pouchcmd
             pbManageHeldPouch(pkmn,pkmnid)
+          when tributecmd
+            pbUseTribute(pkmn.item,pkmn,true)
+            pbRefreshSingle(pkmnid)
           when givecmd
             item=@scene.pbChooseItem($PokemonBag)
             if item>0

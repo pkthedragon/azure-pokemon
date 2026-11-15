@@ -220,6 +220,7 @@ class Spriteset_Map
     end
     @timer_sprite.dispose
     @viewport1.dispose
+    @viewport1a.dispose unless @viewport1a.disposed?
     @viewport2.dispose
     @viewport3.dispose
     @tilemap=nil
@@ -230,6 +231,7 @@ class Spriteset_Map
     @weather=nil
     @picture_sprites.clear
     @viewport1=nil
+    @viewport1a=nil
     @viewport2=nil
     @viewport3=nil
     @timer_sprite=nil

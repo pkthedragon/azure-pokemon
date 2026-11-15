@@ -8,10 +8,11 @@ class PokeBattle_Move_275 < PokeBattle_Move
 end
 
 # Shared canonical critical-hit behavior for moves which always crit. This keeps
-# Azure's Shell Armor and Lucky Chant protections, which are checked before the
-# engine's normal function-code shortcut for Frost Breath-style moves.
+# Azure's protections, which are checked before the engine's normal
+# function-code shortcut for Frost Breath-style moves.
 module AzureAlwaysCriticalMove
   def pbIsCritical?(attacker,opponent)
+    return false if opponent.effects[PBEffects::HardenGuard]==@battle.turncount
     if opponent.hasWorkingAbility(:SHELLARMOR) && !opponent.moldbroken
       return false
     end
@@ -285,7 +286,6 @@ class PokeBattle_Move_232 < PokeBattle_Move
     recipients.each do |target|
       if target.hp<target.totalhp
         hpgain=((target.totalhp+1)/4).floor
-        hpgain=apply_tribute_healing(attacker,hpgain,target) if defined?(apply_tribute_healing)
         pbRecoverMoveHP(attacker,target,hpgain)
         @battle.pbDisplay(_INTL("{1}'s HP was restored.",target.pbThis))
       end
@@ -378,19 +378,20 @@ class PokeBattle_Move_245 < PokeBattle_Move
 
   def pbEffect(attacker,opponent,hitnum=0,alltargets=nil,showanimation=true)
     return super if @id!=PBMoves::COACHING
-    partner=attacker.pbPartner
-    if !partner || partner.isFainted? ||
-       (!partner.pbCanIncreaseStatStage?(PBStats::ATTACK,false) &&
-        !partner.pbCanIncreaseStatStage?(PBStats::DEFENSE,false))
+    stats=[PBStats::ATTACK,PBStats::DEFENSE]
+    allies=attacker.sameSideLivingBattlers(false).select do |ally|
+      stats.any? { |stat| ally.pbCanIncreaseStatStage?(stat,false) }
+    end
+    if allies.empty?
       @battle.pbDisplay(_INTL("But it failed!"))
       return -1
     end
-    pbShowAnimation(@id,attacker,partner,hitnum,alltargets,showanimation)
-    showanim=true
-    for stat in [PBStats::ATTACK,PBStats::DEFENSE]
-      next if !partner.pbCanIncreaseStatStage?(stat,false)
-      partner.pbIncreaseStat(stat,1,false,@id,attacker,showanim)
-      showanim=false
+    pbShowAnimation(@id,attacker,nil,hitnum,alltargets,showanimation)
+    allies.each do |ally|
+      animate=true
+      stats.each do |stat|
+        animate=false if ally.pbIncreaseStat(stat,1,false,@id,attacker,animate)
+      end
     end
     return 0
   end
@@ -803,10 +804,8 @@ end
 class PokeBattle_Move_272 < PokeBattle_Move
   def pbTypeBeforeAbilityConversion(type,attacker,opponent)
     return type if !isConst?(attacker.species,PBSpecies,:OGERPON)
-    return PBTypes::WATER if isConst?(attacker.item,PBItems,:WELLSPRINGMASK) || [1,5].include?(attacker.form)
-    return PBTypes::FIRE  if isConst?(attacker.item,PBItems,:HEARTHFLAMEMASK) || [2,6].include?(attacker.form)
-    return PBTypes::ROCK  if isConst?(attacker.item,PBItems,:CORNERSTONEMASK) || [3,7].include?(attacker.form)
-    return type
+    form=AzureOgerponMasks::ITEMS.fetch(attacker.item,AzureOgerponMasks.base_form(attacker.form))
+    return AzureOgerponMasks::TYPES.fetch(form,type)
   end
 end
 
@@ -1401,7 +1400,6 @@ class PokeBattle_Move_21F < PokeBattle_Move
     ret=super(attacker,opponent,hitnum,alltargets,showanimation)
     if opponent.isFainted? && opponent.damagestate.hplost>0 && !attacker.isFainted?
       hpgain=opponent.damagestate.hplost
-      hpgain=apply_tribute_healing(attacker,hpgain,attacker) if defined?(apply_tribute_healing)
       recovered=pbRecoverMoveHP(attacker,attacker,hpgain)
       @battle.pbDisplay(_INTL("{1}'s gambit restored its HP!",attacker.pbThis)) if recovered>0
     end

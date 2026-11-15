@@ -2765,7 +2765,7 @@ class PokeBattle_Scene
 
   def pbStartBattle(battle)
     # Called whenever the battle begins
-    pbLoadBattleAnimations
+    pbLoadBattleAnimations if battle.battlescene
     @battle=battle
     @lastcmd=Array.new(battle.maxBattlerIndex+1,0)
     @lastmove=Array.new(battle.maxBattlerIndex+1,0)
@@ -3539,6 +3539,7 @@ class PokeBattle_Scene
     pbShowWindow(FIGHTBOX)
     cw = @sprites["fightwindow"]
     battler=@battle.battlers[index]
+    battler.pbDisableTributeDraco if battler.tributeDracoActive
     cw.battler=battler
     lastIndex=@lastmove[index]
     if battler.moves[lastIndex].id!=0
@@ -3648,7 +3649,9 @@ class PokeBattle_Scene
           pbPlayDecisionSE()
         elsif @battle.pbCanDracoTribute?(index)
           if cw.zButton!=2
-            movesarray=@battle.pbRegisterDracoTribute(index,true)
+            draco_moves=@battle.pbRegisterDracoTribute(index,true)
+            next if !draco_moves
+            movesarray=draco_moves
             cw.zButton=2
           else
             for i in 0...4
@@ -3674,7 +3677,6 @@ class PokeBattle_Scene
         end  
         battler.pbDisableTributeDraco if battler.respond_to?(:pbDisableTributeDraco)
         battler.effects[PBEffects::Attacking]=false
-        battler.effects[PBEffects::WillMega]=false
         pbPlayCancelSE()
         return -1
       end
@@ -3687,6 +3689,7 @@ def pbItemMenu(index)
   PBDebug.log("[pbItemMenu called with index=#{index}]")
   ret=0
   retindex=-1
+  move_index=nil
   pkmnid=-1
   belt_items=pbBattleBeltItems
   PBDebug.log("[pbItemMenu initial: ret=#{ret}, retindex=#{retindex}]")
@@ -3770,6 +3773,16 @@ def pbItemMenu(index)
         else
           if activecmd && activecmd>=0 && pkmnid && ItemHandlers.hasBattleUseOnPokemon(item)
             pkmnlist.pbEndScene
+            if ItemHandlers.single_move_pp_item?(item)
+              pokemon=@battle.party1[pkmnid]
+              move_index=pbChooseMove(pokemon,_INTL("Restore which move?"))
+              next if move_index<0
+              move=pokemon.moves[move_index]
+              if !move || move.id==0 || move.pp>=move.totalpp
+                pbDisplayMessage(_INTL("It won't have any effect."))
+                next
+              end
+            end
             ret=item
             retindex=pkmnid
             break
@@ -3790,20 +3803,24 @@ def pbItemMenu(index)
 		retindex = index
         break
       end
-	  if ItemHandlers.hasBattleUseOnBattler(item)
-		PBDebug.log("[Item has BattleUseOnBattler, setting ret=#{item}, retindex=#{index}]")
-		ret = item
-		retindex = index
-		break
-	  end
+      if ItemHandlers.hasBattleUseOnBattler(item)
+        retindex=index
+        if [:RESETURGE,:ABILITYURGE,:ITEMURGE,:ITEMDROP].any? { |name| isConst?(item,PBItems,name) }
+          allies=@battle.battlers[index].sameSideLivingBattlers(true)
+          if allies.length>1
+            choices=allies.map(&:name)
+            choices.push(_INTL("Cancel"))
+            selection=pbShowCommands(_INTL("Use on which Pokémon?"),choices,choices.length-1)
+            next if selection<0 || selection>=allies.length
+            retindex=allies[selection].index
+          end
+        end
+        ret=item
+        break
+      end
     end
   end
   PBDebug.log("[pbItemMenu exited loop, ret=#{ret}, retindex=#{retindex}]")
-  if ret > 0
-    PBDebug.log("[Consuming item #{ret}]")
-    pbConsumeItemInBattle($PokemonBag, ret)
-    pbCleanupItemBelt
-  end
   pbShowWindow(BLANK)
   pbSetMessageMode(false)
   pbShowWindow(BLANK)
@@ -3812,192 +3829,57 @@ def pbItemMenu(index)
   if ret > 0
     PBDebug.log("[Item name: #{PBItems.getName(ret)}, isPokeBall: #{pbIsPokeBall?(ret)}]")
   end
-  return [ret,retindex]
+  return [ret,retindex,move_index]
 end
 
 # Tests whether or not the battle item will have any effect  
-  def pbCanUseBattleItem(pkmnid, item) 
-      pokemon = @battle.party1[pkmnid]
-      #battler = @battle.battlers[pkmnid]
-      battler = false
-      for i in @battle.battlers
-        moncheck = i.pokemon
-        if pokemon == moncheck
-          battler = i
-        end
-      end
-    if battler && (battler.effects[PBEffects::Embargo]>0 || battler.effects[PBEffects::MultiTurnAttack]==PBMoves::BINDINGWORD)
+  def pbCanUseBattleItem(pkmnid,item)
+    return false if !pkmnid || pkmnid<0 || !ItemHandlers.hasBattleUseOnPokemon(item)
+    pokemon=@battle.party1[pkmnid]
+    return false if !pokemon || pokemon.isEgg?
+    battler=@battle.battlers.find do |active|
+      active && active.pokemon.equal?(pokemon)
+    end
+    if battler && (battler.effects[PBEffects::Embargo]>0 ||
+                   battler.effects[PBEffects::MultiTurnAttack]==PBMoves::BINDINGWORD)
       return false
-    end       
-    if  pokemon.hp < pokemon.totalhp && pokemon.hp>0 &&
-        (isConst?(item,PBItems,:POTION)      ||
-         isConst?(item,PBItems,:SUPERPOTION) ||
-         isConst?(item,PBItems,:CHINESEFOOD) ||
-         isConst?(item,PBItems,:ULTRAPOTION) ||
-         isConst?(item,PBItems,:HYPERPOTION) ||
-         isConst?(item,PBItems,:MAXPOTION) ||
-         isConst?(item,PBItems,:FULLRESTORE) ||
-         isConst?(item,PBItems,:BERRYJUICE) ||
-         isConst?(item,PBItems,:RAGECANDYBAR) ||
-         isConst?(item,PBItems,:SWEETHEART) ||
-         isConst?(item,PBItems,:FRESHWATER) ||
-         isConst?(item,PBItems,:SODAPOP) ||
-         isConst?(item,PBItems,:LEMONADE) ||
-         isConst?(item,PBItems,:MOOMOOMILK) ||
-         isConst?(item,PBItems,:ENERGYPOWDER) ||
-         isConst?(item,PBItems,:ENERGYROOT) ||
-         isConst?(item,PBItems,:ORANBERRY) ||
-         isConst?(item,PBItems,:SITRUSBERRY) ||
-         isConst?(item,PBItems,:CHOCOLATEIC) ||
-         isConst?(item,PBItems,:VANILLAIC) ||
-         isConst?(item,PBItems,:STRAWBIC) ||
-         isConst?(item,PBItems,:STRAWCAKE) ||
-         isConst?(item,PBItems,:BLUEMIC))
-           return true
     end
-    if  pokemon.status == PBStatuses::POISON &&
-        (isConst?(item,PBItems,:ANTIDOTE) ||
-         isConst?(item,PBItems,:FULLRESTORE) ||
-         isConst?(item,PBItems,:PECHABERRY) ||
-         isConst?(item,PBItems,:PEPPERMINT) ||
-         isConst?(item,PBItems,:FULLHEAL) ||
-         isConst?(item,PBItems,:LAVACOOKIE) ||
-         isConst?(item,PBItems,:OLDGATEAU) ||
-         isConst?(item,PBItems,:CASTELIACONE) ||
-         isConst?(item,PBItems,:HEALPOWDER) ||
-         isConst?(item,PBItems,:LUMBERRY) ||
-         isConst?(item,PBItems,:LUMIOSEGALETTE) ||
-         isConst?(item,PBItems,:RAZZTART) ||
-         isConst?(item,PBItems,:BIGMALASADA))              
-           return true
+
+    healing=[:POTION,:SUPERPOTION,:CHINESEFOOD,:ULTRAPOTION,:HYPERPOTION,:MAXPOTION,
+             :FULLRESTORE,:BERRYJUICE,:RAGECANDYBAR,:SWEETHEART,:FRESHWATER,:SODAPOP,
+             :LEMONADE,:MOOMOOMILK,:ENERGYPOWDER,:ENERGYROOT,:ORANBERRY,:SITRUSBERRY,
+             :CHOCOLATEIC,:VANILLAIC,:STRAWBIC,:STRAWCAKE,:BLUEMIC,:CHESTNUT]
+    if pokemon.hp>0 && pokemon.hp<pokemon.totalhp && healing.any? { |name| isConst?(item,PBItems,name) }
+      return true
     end
-    if  pokemon.status == PBStatuses::PARALYSIS &&
-        (isConst?(item,PBItems,:PARLYZHEAL) ||
-         isConst?(item,PBItems,:FULLRESTORE) ||
-         isConst?(item,PBItems,:CHERIBERRY) ||
-         isConst?(item,PBItems,:CHEWINGGUM) ||
-         isConst?(item,PBItems,:FULLHEAL) ||
-         isConst?(item,PBItems,:LAVACOOKIE) ||
-         isConst?(item,PBItems,:OLDGATEAU) ||
-         isConst?(item,PBItems,:CASTELIACONE) ||
-         isConst?(item,PBItems,:HEALPOWDER) ||
-         isConst?(item,PBItems,:LUMBERRY) ||
-         isConst?(item,PBItems,:LUMIOSEGALETTE) ||
-         isConst?(item,PBItems,:RAZZTART) ||
-         isConst?(item,PBItems,:BIGMALASADA))
-           return true
+    revives=[:REVIVE,:MAXREVIVE,:FUNNELCAKE,:REVIVALHERB,:COTTONCANDY,:HERBALTEA]
+    if pokemon.hp<=0
+      invalid_form=[PBSpecies::PARAS,PBSpecies::PARASECT].include?(pokemon.species) && pokemon.form==2
+      return !invalid_form && revives.any? { |name| isConst?(item,PBItems,name) }
     end
-    if  pokemon.status == PBStatuses::BURN &&
-        (isConst?(item,PBItems,:BURNHEAL) ||
-         isConst?(item,PBItems,:FULLRESTORE) ||
-         isConst?(item,PBItems,:RAWSTBERRY) ||
-         isConst?(item,PBItems,:SALTWATERTAFFY) ||
-         isConst?(item,PBItems,:FULLHEAL) ||
-         isConst?(item,PBItems,:LAVACOOKIE) ||
-         isConst?(item,PBItems,:OLDGATEAU) ||
-         isConst?(item,PBItems,:CASTELIACONE) ||
-         isConst?(item,PBItems,:HEALPOWDER) ||
-         isConst?(item,PBItems,:LUMBERRY) ||
-         isConst?(item,PBItems,:LUMIOSEGALETTE) ||
-         isConst?(item,PBItems,:RAZZTART) ||
-         isConst?(item,PBItems,:BIGMALASADA))
-           return true
+
+    universal=[:FULLRESTORE,:FULLHEAL,:LAVACOOKIE,:OLDGATEAU,:CASTELIACONE,:HEALPOWDER,
+               :LUMBERRY,:LUMIOSEGALETTE,:RAZZTART,:BIGMALASADA]
+    cures={
+      PBStatuses::POISON=>[:ANTIDOTE,:PECHABERRY,:PEPPERMINT],
+      PBStatuses::PARALYSIS=>[:PARLYZHEAL,:CHERIBERRY,:CHEWINGGUM],
+      PBStatuses::BURN=>[:BURNHEAL,:RAWSTBERRY,:SALTWATERTAFFY],
+      PBStatuses::SLEEP=>[:AWAKENING,:CHESTOBERRY,:POPROCKS,:BLUEFLUTE,:POKEFLUTE],
+      PBStatuses::FROZEN=>[:ICEHEAL,:ASPEARBERRY,:REDHOTS],
+      PBStatuses::CRUSHED=>[:LEVIABERRY]
+    }
+    if pokemon.status!=0 && (universal+cures.fetch(pokemon.status,[])).any? { |name| isConst?(item,PBItems,name) }
+      return true
     end
-    if  pokemon.status == PBStatuses::SLEEP &&
-        (isConst?(item,PBItems,:AWAKENING) ||
-         isConst?(item,PBItems,:FULLRESTORE) ||
-         isConst?(item,PBItems,:CHESTOBERRY) ||
-         isConst?(item,PBItems,:POPROCKS) ||
-         isConst?(item,PBItems,:FULLHEAL) ||
-         isConst?(item,PBItems,:LAVACOOKIE) ||
-         isConst?(item,PBItems,:OLDGATEAU) ||
-         isConst?(item,PBItems,:CASTELIACONE) ||
-         isConst?(item,PBItems,:HEALPOWDER) ||
-         isConst?(item,PBItems,:LUMBERRY) ||
-         isConst?(item,PBItems,:LUMIOSEGALETTE) ||
-         isConst?(item,PBItems,:RAZZTART) ||
-         isConst?(item,PBItems,:BIGMALASADA))
-           return true
+    if battler && battler.effects[PBEffects::Confusion]>0 &&
+       (universal+[:PERSIMBERRY,:YELLOWFLUTE]).any? { |name| isConst?(item,PBItems,name) }
+      return true
     end
-    if  pokemon.status == PBStatuses::FROZEN &&
-        (isConst?(item,PBItems,:ICEHEAL) ||
-         isConst?(item,PBItems,:FULLRESTORE) ||
-         isConst?(item,PBItems,:ASPEARBERRY) ||
-         isConst?(item,PBItems,:REDHOTS) ||
-         isConst?(item,PBItems,:FULLHEAL) ||
-         isConst?(item,PBItems,:LAVACOOKIE) ||
-         isConst?(item,PBItems,:OLDGATEAU) ||
-         isConst?(item,PBItems,:CASTELIACONE) ||
-         isConst?(item,PBItems,:HEALPOWDER) ||
-         isConst?(item,PBItems,:LUMBERRY) ||
-         isConst?(item,PBItems,:LUMIOSEGALETTE) ||
-         isConst?(item,PBItems,:RAZZTART) ||
-         isConst?(item,PBItems,:BIGMALASADA))
-           return true
+    return !!(battler && battler.effects[PBEffects::Attract]>=0) if isConst?(item,PBItems,:REDFLUTE)
+    return !!(battler && battler.pbShieldHP<battler.totalhp) if isConst?(item,PBItems,:COCONBERRY)
+    if ItemHandlers.single_move_pp_item?(item) || [:ELIXIR,:MAXELIXIR,:HOPOBERRY].any? { |name| isConst?(item,PBItems,name) }
+      return pokemon.moves.any? { |move| move && move.id>0 && move.pp<move.totalpp }
     end
-    if  battler &&  battler.effects[PBEffects::Confusion]>0 &&
-        (isConst?(item,PBItems,:FULLRESTORE) ||
-         isConst?(item,PBItems,:PERSIMBERRY) ||
-         isConst?(item,PBItems,:FULLHEAL) ||
-         isConst?(item,PBItems,:LAVACOOKIE) ||
-         isConst?(item,PBItems,:OLDGATEAU) ||
-         isConst?(item,PBItems,:CASTELIACONE) ||
-         isConst?(item,PBItems,:HEALPOWDER) ||
-         isConst?(item,PBItems,:LUMBERRY) ||
-         isConst?(item,PBItems,:LUMIOSEGALETTE) ||
-         isConst?(item,PBItems,:RAZZTART) ||
-         isConst?(item,PBItems,:BIGMALASADA))
-           return true
-    end
-    if  pokemon.hp<=0 && !((pokemon.species==PBSpecies::PARAS && pokemon.form==2) || (pokemon.species==PBSpecies::PARASECT && pokemon.form==2))
-        (isConst?(item,PBItems,:REVIVE) ||
-         isConst?(item,PBItems,:MAXREVIVE) ||
-         isConst?(item,PBItems,:FUNNELCAKE) ||
-         isConst?(item,PBItems,:REVIVALHERB) ||
-         isConst?(item,PBItems,:COTTONCANDY) ||
-         isConst?(item,PBItems,:HERBALTEA))              
-           return true
-    end
-     if (isConst?(item,PBItems,:ETHER) ||
-         isConst?(item,PBItems,:MAXETHER) ||
-         isConst?(item,PBItems,:ELIXIR) ||
-         isConst?(item,PBItems,:MAXELIXIR) ||
-         isConst?(item,PBItems,:LEPPABERRY))
-           ppcheck = false
-           for i in pokemon.moves 
-             if i.pp != i.totalpp  
-              if (isConst?(item,PBItems,:ETHER) ||
-                  isConst?(item,PBItems,:LEPPABERRY)) 
-                  move=pbChooseMove(pokemon,_INTL("Restore which move?"))
-                   if move>=0
-                     if pbBattleRestorePP(pokemon,battler,move,10)==0
-                        ppcheck=false
-                     else
-                        return true #ppcheck=true
-                     end                        
-                   else
-                      ppcheck=false
-                   end                      
-              elsif isConst?(item,PBItems,:MAXETHER)
-                  move=pbChooseMove(pokemon,_INTL("Restore which move?"))
-                   if move>=0
-                     if pbBattleRestorePP(pokemon,battler,move,pokemon.moves[move].totalpp-pokemon.moves[move].pp)==0
-                        ppcheck=false
-                     else
-                        return true #ppcheck=true
-                     end                        
-                   else
-                      ppcheck=false
-                   end 
-              else                      
-               ppcheck = true
-              end             
-             end
-           end  
-           return ppcheck
-     end
-      
-         
     return false
   end
   
@@ -4733,12 +4615,14 @@ end
   def pbThrow(ball,shakes,critical,critsuccess,targetBattler,showplayer=false)
     @briefmessage=false
     burst=-1
-    animations=pbLoadBattleAnimations
-    for i in 0...2
-      t=(i==0) ? ball : 0
-      index=pbFindBattleAnimationByName("Common:BallBurst#{t}",animations)
-      burst=t if index && burst<0
-      break if burst>=0
+    if @battle.battlescene
+      animations=pbLoadBattleAnimations
+      for i in 0...2
+        t=(i==0) ? ball : 0
+        index=pbFindBattleAnimationByName("Common:BallBurst#{t}",animations)
+        burst=t if index && burst<0
+        break if burst>=0
+      end
     end
     pokeballThrow(ball,shakes,critical,critsuccess,targetBattler,self,@battle.battlers[targetBattler],burst,showplayer)
   end

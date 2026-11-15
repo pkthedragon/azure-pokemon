@@ -703,14 +703,15 @@ def pbNewBattleScene
 end
 
 def pbSceneStandby
-  if $scene && $scene.is_a?(Scene_Map)
-    $scene.disposeSpritesets
-  end
-  GC.start
-  Graphics.frame_reset
-  yield
-  if $scene && $scene.is_a?(Scene_Map)
-    $scene.createSpritesets
+  BitmapCache.with_retained_map_bitmaps do
+    if $scene.is_a?(Scene_Map)
+      $scene.disposeSpritesets
+    end
+    Graphics.frame_reset
+    yield
+    if $scene.is_a?(Scene_Map)
+      $scene.createSpritesets
+    end
   end
 end
 
@@ -1574,6 +1575,10 @@ end
 class PokemonTemp
   attr_accessor :encounterType 
   attr_accessor :evolutionLevels
+
+  def playerCharsetCache
+    @playerCharsetCache ||= {}
+  end
 end
 
 
@@ -1929,17 +1934,22 @@ def Kernel.pbOnStepTaken(eventTriggered)
   end
 end
 
-# This method causes a lot of lag when the game is encrypted
 def pbGetPlayerCharset(meta,charset,trainer=nil)
   trainer=$Trainer if !trainer
   outfit=trainer ? trainer.outfit : 0
-  ret=meta[charset]
-  ret=meta[1] if !ret || ret==""
-#  if FileTest.image_exist?("Graphics/Characters/"+ret+"_"+outfit.to_s)
-  if pbResolveBitmap("Graphics/Characters/"+ret+"_"+outfit.to_s)
-    ret=ret+"_"+outfit.to_s
+  base=meta[charset]
+  base=meta[1] if !base || base==""
+  # Resolve outfit assets once during play, including debug playtests.
+  cache=$PokemonTemp.playerCharsetCache if $PokemonTemp && !$INEDITOR
+  if cache
+    key=[base,outfit]
+    cached=cache[key]
+    return cached if cached
   end
-  return ret
+  outfitCharset=base+"_"+outfit.to_s
+  resolved=pbResolveBitmap("Graphics/Characters/#{outfitCharset}") ? outfitCharset : base
+  cache[key]=resolved if cache
+  return resolved
 end
 
 def Kernel.pbUpdateVehicle

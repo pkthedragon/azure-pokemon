@@ -8562,6 +8562,7 @@ Evolutions = CLAYDOL,Level,36
 [CLAYDOL]
 LegacySpeciesID = 344
 Name = Claydol
+LegacyFormNames = Normal,Mystic
 Types = GROUND,PSYCHIC
 BaseStats = 60,70,105,75,70,120
 GenderRatio = Genderless
@@ -9596,10 +9597,11 @@ Habitat = Mountain
 Category = Wish
 Pokedex = Jirachi is said to make wishes come true. While it sleeps, a tough crystalline shell envelops the body to protect it from enemies.
 #-------------------------------
-# Legacy species ID 306
+# Legacy species ID 386
 [DEOXYS]
-LegacySpeciesID = 306
+LegacySpeciesID = 386
 Name = Deoxys
+LegacyFormNames = Normal Forme,Attack Forme,Defense Forme,Speed Forme,Mystic
 Types = PSYCHIC
 BaseStats = 50,150,50,150,150,50
 GenderRatio = Genderless

@@ -9,6 +9,17 @@ param(
   [switch]$CustomMoves,
   [Parameter(Mandatory, ParameterSetName = 'DoubleDose')]
   [switch]$DoubleDose,
+  [Parameter(Mandatory, ParameterSetName = 'AIRegressions')]
+  [switch]$AIRegressions,
+  [Parameter(ParameterSetName = 'AIRegressions')]
+  [string]$AIFilter,
+  [Parameter(Mandatory, ParameterSetName = 'CatalogAudit')]
+  [ValidateSet('all','species','moves','abilities','items','teams','tributes')]
+  [string]$CatalogAudit,
+  [Parameter(Mandatory, ParameterSetName = 'CompileBattleData')]
+  [string]$CompileBattleData,
+  [Parameter(ParameterSetName = 'CompileBattleData')]
+  [string]$ReferenceBattleData,
   [string]$Report,
   [Parameter(ParameterSetName = 'Scenario')]
   [int]$Seed,
@@ -50,7 +61,7 @@ function Write-ScenarioValue([Text.Json.JsonElement]$Value, [IO.TextWriter]$Writ
 }
 
 $scenarioFile = $null
-if (!$MoveRegressions -and !$CustomMoves -and !$DoubleDose) {
+if ($PSCmdlet.ParameterSetName -eq 'Scenario') {
   $scenarioFile = Get-Item -LiteralPath $Scenario
   if ($scenarioFile.PSIsContainer) { throw "Scenario must be a JSON file." }
 }
@@ -71,6 +82,7 @@ $tempRoot = (Resolve-Path ([IO.Path]::GetTempPath())).Path
 $runRoot = (New-Item -ItemType Directory -Path (Join-Path $tempRoot ("azure-battle-" + [guid]::NewGuid().ToString("N")))).FullName
 $runtimeReport = Join-Path $runRoot "battle.txt"
 $runtimeScenario = Join-Path $runRoot "scenario.txt"
+$compiledOutput = if ($CompileBattleData) { $ExecutionContext.SessionState.Path.GetUnresolvedProviderPathFromPSPath($CompileBattleData) } else { $null }
 $assetLinks = @()
 $run = $null
 $result = $null
@@ -90,6 +102,10 @@ try {
   foreach ($dir in @("Data","Scripts")) {
     robocopy (Join-Path $project $dir) (Join-Path $runRoot $dir) /E /XJ /NFL /NDL /NJH /NJS /NP /XF "AzureExternalScripts.cache*" "debuglog.txt" /XD "Mods" | Out-Null
     if ($LASTEXITCODE -ge 8) { throw "Failed to copy $dir into the battle fixture." }
+  }
+  if ($compiledOutput) {
+    robocopy (Join-Path $project 'PBS') (Join-Path $runRoot 'PBS') /E /XJ /NFL /NDL /NJS /NJH /NP /XD 'LegacyBackup' | Out-Null
+    if ($LASTEXITCODE -ge 8) { throw 'Failed to copy PBS into the battle fixture.' }
   }
   foreach ($dir in @("Graphics","Audio","Fonts")) {
     $link = New-Item -ItemType Junction -Path (Join-Path $runRoot $dir) -Target (Join-Path $project $dir)
@@ -112,6 +128,12 @@ try {
     AZURE_BATTLE_MOVE_REGRESSIONS = $(if ($MoveRegressions) { '1' })
     AZURE_BATTLE_CUSTOM_MOVES = $(if ($CustomMoves) { '1' })
     AZURE_BATTLE_DOUBLE_DOSE = $(if ($DoubleDose) { '1' })
+    AZURE_BATTLE_AI_REGRESSIONS = $(if ($AIRegressions) { '1' })
+    AZURE_BATTLE_AI_FILTER = $(if ($AIFilter) { $AIFilter })
+    AZURE_BATTLE_CATALOG_AUDIT = $(if ($CatalogAudit) { $CatalogAudit.ToLowerInvariant() })
+    AZURE_BATTLE_CATALOG_PBS = $(if ($CatalogAudit) { Join-Path $project 'PBS' })
+    AZURE_BATTLE_COMPILE_DATA = $(if ($compiledOutput) { '1' })
+    AZURE_BATTLE_REFERENCE_DATA = $(if ($ReferenceBattleData) { (Resolve-Path -LiteralPath $ReferenceBattleData).Path })
   }
   if ($PSBoundParameters.ContainsKey("Seed")) {
     $childEnvironment.AZURE_BATTLE_SIMULATION_SEED = $Seed.ToString([Globalization.CultureInfo]::InvariantCulture)
@@ -122,6 +144,15 @@ try {
   do {
     if (Test-Path -LiteralPath $runtimeReport -PathType Leaf) {
       $result = Get-Content -LiteralPath $runtimeReport -Encoding UTF8 -Tail 1
+      if ($compiledOutput -and $result -match '^result=PASS\b') {
+        foreach ($directory in @('Data','Scripts')) {
+          $destination = Join-Path $compiledOutput $directory
+          $null = New-Item -ItemType Directory -Path $destination -Force
+          foreach ($filename in (Get-Content -LiteralPath $runtimeReport | Where-Object { $_ -like "OUTPUT $directory/*" })) {
+            Copy-Item -LiteralPath (Join-Path $runRoot $filename.Substring(7)) -Destination $destination
+          }
+        }
+      }
       if ($result -match "^result=(PASS|FAIL)\b") { break }
     }
     if ($run.Process.HasExited) { break }

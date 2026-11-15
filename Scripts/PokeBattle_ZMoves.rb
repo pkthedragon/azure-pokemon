@@ -229,31 +229,9 @@ class PokeBattle_ZMoves < PokeBattle_Move
     end
     if setup==false
       ztargets=[]
-      user=battler.pbFindUser(zchoice,ztargets)
-      if @thismove.target==PBTargets::AllOpposing && crystal==PBItems::KOMMONIUMZ2 && ztargets.length!=0
-        ztargets[0].sameSideLivingBattlers(false).each do |ally|
-          user.pbAddTarget(ztargets,ally)
-        end
-      end
-      if user.hasWorkingAbility(:MOLDBREAKER) || user.hasWorkingAbility(:TERAVOLT) || user.hasWorkingAbility(:TURBOBLAZE)
-        for battlers in ztargets
-          battlers.moldbroken = true
-        end
-      else
-        for battlers in ztargets
-          battlers.moldbroken = false
-        end
-      end
-      ###
-      for target in ztargets
-        target.damagestate.reset
-        if target.hasWorkingItem(:FOCUSBAND) && @battle.pbRandom(10)==0
-          target.damagestate.focusband=true
-        end
-        if target.hasWorkingItem(:RAMPCREST) && target.pokemon.species == PBSpecies::RAMPARDOS
-          target.damagestate.rampcrest=true
-        end
-      end
+      target_choice=zchoice.dup
+      target_choice[2]=self if crystal==PBItems::KOMMONIUMZ2
+      user=battler.pbFindUser(target_choice,ztargets)
       protype=@type
       if isConst?(battler.ability,PBAbilities,:PROTEAN) ||
         isConst?(battler.ability,PBAbilities,:LIBERO)
@@ -305,21 +283,30 @@ class PokeBattle_ZMoves < PokeBattle_Move
           turneffects[PBEffects::SpecialUsage]=false
           turneffects[PBEffects::PassedTrying]=false
           turneffects[PBEffects::TotalDamage]=0
-          #looping through all targets
-          for i in 0...ztargets.length
-            userandtarget=[user,ztargets[i]]
-            if battler.effects[PBEffects::Powder] && (thismove.type == PBTypes::FIRE)
+          affected_indices=ztargets.map(&:index)
+          @thismove.spread_target_count=affected_indices.length
+          actual_targets=[]
+          show_animation=true
+          ztargets.each do |target|
+            userandtarget=[user,target]
+            if battler.effects[PBEffects::Powder] && type==PBTypes::FIRE
               @battle.pbDisplay(_INTL("The powder around {1} exploded!",battler.pbThis))
               @battle.pbCommonAnimation("Powder",battler,nil)
               battler.pbReduceHP((battler.totalhp/4.0).floor)
               battler.pbFaint if battler.hp<1
               return false if battler.hp<1
             end
-            success = battler.pbChangeTarget(@thismove,userandtarget,ztargets)
-            next if !success
-            hitcheck = battler.pbProcessMoveAgainstTarget(@thismove,user,ztargets[0],1,turneffects,false,nil,true)
+            next if !battler.pbChangeTarget(@thismove,userandtarget,ztargets)
+            source,recipient=userandtarget
+            recipient.moldbroken=source.pbBypassesTargetAbility?(@thismove)
+            recipient.pbPrepareMoveDamageState
+            actual_targets.push(recipient)
+            hitcheck=battler.pbProcessMoveAgainstTarget(@thismove,source,recipient,1,turneffects,false,affected_indices,show_animation)
             movesucceeded = true if hitcheck && hitcheck > 0
+            show_animation=false if hitcheck && hitcheck>0
+            break if battler.isFainted?
           end
+          @thismove.spread_target_count=nil
           @thismove.pbConsumeUsedGem(user)
           if movesucceeded
             if @id==PBMoves::THEOLIASTRIKE
@@ -388,18 +375,18 @@ class PokeBattle_ZMoves < PokeBattle_Move
             end
           end
           battler.pbReducePPOther(@oldmove)
-          for i in 0...ztargets.length
-            if ztargets[i].userSwitch == true
-              ztargets[i].userSwitch = false
-              @battle.pbDisplay(_INTL("{1} went back to {2}!",ztargets[i].pbThis,@battle.pbGetOwner(ztargets[0].index).name))
+          actual_targets.uniq.each do |target|
+            if target.userSwitch
+              target.userSwitch = false
+              @battle.pbDisplay(_INTL("{1} went back to {2}!",target.pbThis,@battle.pbGetOwner(target.index).name))
               newpoke=0
-              newpoke=@battle.pbSwitchInBetween(ztargets[i].index,true,false)
-              @battle.pbMessagesOnReplace(ztargets[i].index,newpoke)
-              ztargets[i].vanished=false
-              ztargets[i].pbResetForm
-              @battle.pbReplace(ztargets[i].index,newpoke,false)
-              @battle.pbOnActiveOne(ztargets[i])
-              ztargets[i].pbAbilitiesOnSwitchIn(true)
+              newpoke=@battle.pbSwitchInBetween(target.index,true,false)
+              @battle.pbMessagesOnReplace(target.index,newpoke)
+              target.vanished=false
+              target.pbResetForm
+              @battle.pbReplace(target.index,newpoke,false)
+              @battle.pbOnActiveOne(target)
+              target.pbAbilitiesOnSwitchIn(true)
             end
           end
           # End of move usage
@@ -1231,6 +1218,7 @@ class PokeBattle_ZMoves < PokeBattle_Move
 
 def pbShowAnimation(movename,user,target,hitnum=0,alltargets=nil,showanimation=true)
   if @battle.battlescene
+    movename=@name if movename.is_a?(Integer) && movename==@id
     animname=movename.delete(" ").delete("-").upcase
     animations=pbLoadBattleAnimations
     i = animations.length

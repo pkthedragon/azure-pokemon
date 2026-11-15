@@ -43,10 +43,14 @@ module AzureBattleSimulation
   end
 
   def self.trainer(spec,label,active)
-    object(spec,label,%w[name trainer_type party])
+    object(spec,label,%w[name trainer_type ai_skill party])
     name=spec.fetch("name",label)
     raise ArgumentError,"#{label} name must be a nonempty string" unless name.is_a?(String) && !name.strip.empty?
     trainer=PokeBattle_Trainer.new(name,id(PBTrainers,spec.fetch("trainer_type","CONDUIT"),"trainer type"))
+    if spec.key?("ai_skill")
+      skill=integer(spec["ai_skill"],"#{label} AI skill",0..255)
+      trainer.define_singleton_method(:skill) { skill }
+    end
     party=spec.fetch("party")
     unless party.is_a?(Array) && (active..6).include?(party.length)
       raise ArgumentError,"#{label} needs #{active} to 6 Pokémon"
@@ -206,6 +210,15 @@ module AzureBattleSimulation
       @report.line("TARGET #{label(user.index)} #{PBMoves.getName(move.id)} -> #{label(target.index)}")
     end
 
+    def record_ai_score(index,slot,move,score,target,legal)
+      recipient=target.is_a?(Integer) && target>=0 ? target : "auto"
+      @report.line("AI SCORE #{label(index)} slot=#{slot} move=#{move.name} score=#{score} target=#{recipient} legal=#{legal}")
+    end
+
+    def record_ai_candidate(move,user,target,roughdamage,score)
+      @report.line("AI CANDIDATE #{label(user.index)} move=#{move.name} evaluated_target=#{label(target.index)} rough=#{roughdamage} score=#{score}")
+    end
+
     def pbVanishSprite(battler)
       battler.vanished=true
     end
@@ -253,7 +266,7 @@ module AzureBattleSimulation
   end
 
   class Battle < PokeBattle_Battle
-    attr_accessor :turn_limit
+    attr_accessor :turn_limit, :trace_ai
     attr_reader :limit_reached
 
     def pbCommandPhase
@@ -268,6 +281,36 @@ module AzureBattleSimulation
 
     def pbSwitchPlayer(index,_lax,_cancancel)
       scene.pbChooseNewEnemy(index,pbParty(index))
+    end
+
+    def pbBuildMoveScores(index,doublestargetting=false,shutup=false)
+      return super if !trace_ai || !@trace_ai_command || !@trace_ai_index.nil? || doublestargetting
+      @trace_ai_index=index
+      begin
+        result=super
+        battlers[index].moves.each_with_index do |move,slot|
+          next if move.id<=0
+          scene.record_ai_score(index,slot,move,scores[slot],targets && targets[slot],myChoices.include?(slot))
+        end
+        result
+      ensure
+        @trace_ai_index=nil
+      end
+    end
+
+    def pbGetMoveScore(move,attacker,opponent,skill=100,roughdamage=10,*args)
+      score=super
+      if @trace_ai_index==attacker.index && opponent
+        scene.record_ai_candidate(move,attacker,opponent,roughdamage,score)
+      end
+      return score
+    end
+
+    def pbDefaultChooseEnemyCommand(index)
+      @trace_ai_command=trace_ai
+      super
+    ensure
+      @trace_ai_command=false
     end
   end
 
@@ -305,7 +348,9 @@ module AzureBattleSimulation
       raise ArgumentError,"Unexpected data after scenario" unless file.eof?
       value
     end
-    object(spec,"scenario",%w[title format player opponent seed max_turns field weather actions expect reject])
+    object(spec,"scenario",%w[title format player opponent seed max_turns field weather trace_ai actions expect reject])
+    trace_ai=spec.fetch("trace_ai",false)
+    raise ArgumentError,"trace_ai must be true or false" unless [true,false].include?(trace_ai)
     format=spec.fetch("format","single")
     active=FORMATS.fetch(format) { raise ArgumentError,"format must be single, double or triple" }
     seed_override=ENV["AZURE_BATTLE_SIMULATION_SEED"]
@@ -358,6 +403,7 @@ module AzureBattleSimulation
       battle.internalbattle=false
       battle.battlescene=false
       battle.turn_limit=limit
+      battle.trace_ai=trace_ai
       weather=spec.fetch("weather","NONE")
       battle.weather=weather=="NONE" ? 0 : id(PBWeather,weather,"weather")
       battle.weatherduration=-1 if battle.weather>0

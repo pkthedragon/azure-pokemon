@@ -3,22 +3,22 @@
 ## Result
 
 The Phase 5 audit reviewed 59 warnings in six compatibility categories. The
-current audit retains those categories and accepts 50 warnings. The audit removes a
+current audit accepts 28 warnings across four of those categories. The audit removes a
 warning from the release-blocking set only when its message matches a known
 category, its symbol or ID is explicitly allowlisted, and every category has
 the expected count. A new symbol, changed alias, new warning type, missing
 accepted warning, or count drift produces an audit failure.
 
 `Audit-Azure.ps1 -WarningsAsErrors` therefore means "fail on every unaccepted
-warning." It passes only while all 50 accepted warnings continue to match the
+warning." It passes only while all 28 accepted warnings continue to match the
 reviewed policy and the unaccepted count remains zero.
 
 ## Accepted categories
 
-### Generated constant duplicates: 19
+### Generated constant duplicates
 
-The generated Ruby constant modules contain seven move, one species, three item,
-six ability, and two trainer-type duplicate assignments. Ruby's last
+The generated Ruby constant modules contain one species, six ability, and two
+trainer-type duplicate assignments. Ruby's last
 assignment is Azure's established effective mapping. The compiler's
 `AZURE_LEGACY_DUPLICATE_SYMBOLS` contract independently rejects any new,
 removed, or changed symbolic collision. Renumbering these constants without a
@@ -28,10 +28,10 @@ compatibility.
 Exit criterion: replace this acceptance only as part of an explicit ID
 migration that updates all persisted and event-script consumers.
 
-### PBS duplicate sections: 17
+### PBS duplicate sections
 
 The source PBS files contain the source counterparts of the reviewed constant
-duplicates: seven moves, Iron Moth in both species and metrics, six abilities,
+duplicates. They include Iron Moth in both species and metrics, six abilities,
 and two trainer types. The legacy compiler uses the later section for the
 effective symbolic mapping. Their symbol allowlist and total are fixed by the
 audit, while line numbers may move when unrelated source rows are edited.
@@ -39,29 +39,21 @@ audit, while line numbers may move when unrelated source rows are edited.
 Exit criterion: consolidate a section only after verifying its effective
 record is unchanged and regenerating all dependent data in an isolated compile.
 
-### Shared legacy numeric IDs: 2
+### Resolved move, species, and item IDs
 
-Move ID 680 and species ID 306 are established numeric aliases. The
-compiler's `AZURE_LEGACY_DUPLICATE_IDS` contract locks their exact symbol pairs.
-They are preserved because saves, events, and compiled records can contain
-these numeric values.
+Rift Pulse retains move ID 680 and Rift Zap uses 1075. Move ID 318 stays
+with Spike Cannon, and Bone Club uses 1056. Aggron uses species ID 306
+and Deoxys uses 386. Old save ID 306 migrates to Deoxys based on the former
+compiled species, with an exception for records named Aggron.
 
-Move ID 318 stays with Spike Cannon, which was the compiled move saved at that
-ID. Bone Club now uses ID 1056 and is assigned by name in new learnsets.
+Seven identical move definitions now share one PBS section per move. The older
+numeric IDs resolve to the canonical moves when read from saves and still have
+compiled data for direct numeric consumers.
 
-Exit criterion: remove an alias only through a versioned migration with old
-save and representative event-map coverage.
+The paired Green Keys and TMs have distinct PBS identifiers. Each retains its
+previous numeric item ID.
 
-### Repeated item definitions: 3
-
-`GREENKEY`, `TM115`, and `TM116` each occur twice in the legacy item source.
-The later numeric mapping remains effective, consistent with the generated
-constants and compiler policy.
-
-Exit criterion: consolidate only after proving byte/semantic compiled-data
-equivalence and numeric save compatibility.
-
-### Unresolved optional abilities: 4
+### Unresolved optional abilities
 
 `CUTEINFATUATE`, `PURIFYING`, `SEGUE`, and `FLAMEEATER` are referenced by
 optional form definitions but have no authored
@@ -72,7 +64,7 @@ than preserve Azure functionality.
 Exit criterion: author and test the intended data and battle behavior, then
 remove the corresponding symbol from the acceptance list.
 
-### Shadow-move legacy rows: 5
+### Shadow-move legacy rows
 
 Two source rows reference the unknown spellings `SHADOWSHEAD` and `SHADOWAVE`,
 which the permissive parser drops. Later rows for `VANILLITE`, `ARCHEN`, and
@@ -86,6 +78,6 @@ fixture that confirms the intended effective species-to-move table.
 
 The standard audit summary reports only unaccepted warnings. A separate
 accepted-warning line reports the reviewed total and category count. Release
-validation requires zero failures, zero unaccepted warnings, exactly 50
-accepted warnings across the six categories above, and a successful
+validation requires zero failures, zero unaccepted warnings, exactly 28
+accepted warnings across the four current categories, and a successful
 `-WarningsAsErrors` execution.

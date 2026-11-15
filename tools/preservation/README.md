@@ -77,6 +77,43 @@ The report includes individual items, item suppression, ally and opponent
 interactions, and the second activations of Focus Sash and Power Herb. Repeat
 activations expire when the holder switches out or the side effect ends.
 
+Run the AI score and command regressions with:
+
+```powershell
+pwsh -NoProfile -File tools/preservation/Invoke-BattleSimulation.ps1 -AIRegressions
+```
+
+Set `"trace_ai": true` on a scenario to show the candidate evaluations and
+final slot scores before selection. Compare those records with `CHOOSE` and
+`TARGET` to follow the queued move and each target actually reached.
+Set `ai_skill` on either trainer to exercise a specific skill tier.
+The battle AI can use both active and reserve Pokémon's species, abilities,
+held items, and movesets from turn one. It predicts the opposing turn from
+available moves and the current battle state.
+
+Run the battle catalog audit with a report file for each section.
+
+```powershell
+pwsh -NoProfile -File tools/preservation/Invoke-BattleSimulation.ps1 `
+  -CatalogAudit species -Report "$env:TEMP/azure-species.txt" -TimeoutSeconds 600
+```
+
+Use `moves`, `abilities`, `items`, `teams`, `tributes`, or `all` to choose other sections.
+The catalogs distinguish runtime IDs from source aliases, successful probes
+from uncovered interactions, and battle-capable items from other items. The
+teams section uses the production AI in seeded single, double, and triple
+battles and logs the teams, commands, and battle messages. A report can contain
+coverage gaps even when it has no execution errors or mismatches.
+
+When editing battle PBS, build into an explicit output directory before copying
+reviewed files back into the checkout. This uses the same private engine as
+the battle tester.
+
+```powershell
+pwsh -NoProfile -File tools/preservation/Invoke-BattleSimulation.ps1 `
+  -CompileBattleData "$env:TEMP/azure-compiled-battle" -TimeoutSeconds 180
+```
+
 ## Preservation checks
 
 Run the audit from the project root before and after each modernization task:
@@ -126,9 +163,9 @@ with Rejuvenation. It checks:
 - the presence and script-order registration of Azure-exclusive systems;
 - the presence and freshness of key compiled data outputs.
 
-The 59 reviewed legacy warnings are classified by exact symbol/ID allowlists
-and counts. Use `-WarningsAsErrors` for the release gate; it fails on every
-unaccepted warning while requiring the accepted set to remain exact.
+The current audit accepts 28 legacy warnings in four categories, matched by
+exact symbol and ID. Use `-WarningsAsErrors` to fail on every unaccepted
+warning and verify that the accepted set remains exact.
 
 Phase 5 release gates are reproducible with the package builder and the three
 focused runners:

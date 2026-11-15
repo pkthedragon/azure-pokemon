@@ -379,6 +379,73 @@ class PokemonLoad
     return [trainer,framecount,game_system,pokemonSystem,mapid]
   end
 
+  def pbEachSavedPokemon
+    visited={}.compare_by_identity
+    visit=lambda do |pokemon|
+      next unless pokemon.is_a?(PokeBattle_Pokemon) && !visited[pokemon]
+      visited[pokemon]=true
+      yield pokemon
+      visit.call(pokemon.fused)
+    end
+    $Trainer.party.each(&visit)
+    $PokemonStorage.maxBoxes.times do |box|
+      $PokemonStorage.maxPokemon(box).times { |slot| visit.call($PokemonStorage[box,slot]) }
+    end
+    ($PokemonGlobal.daycare || []).each { |entry| visit.call(entry && entry[0]) }
+    roamers=$PokemonGlobal.roamPokemon
+    roamers=roamers.values if roamers.is_a?(Hash)
+    Array(roamers).each(&visit)
+    $PokemonGlobal.pokemonSelectionOriginalParty&.each(&visit)
+    chamber=$PokemonGlobal.instance_variable_get(:@purifyChamber)
+    if chamber
+      PurifyChamber::NUMSETS.times do |set|
+        chamber.setList(set).each(&visit)
+        visit.call(chamber.getShadow(set))
+      end
+    end
+  end
+
+  def pbMigrateDeoxysSpeciesID
+    return if $game_system.instance_variable_get(:@azure_distinct_deoxys_id)
+    old_id=PBSpecies::AGGRON
+    new_id=PBSpecies::DEOXYS
+    return if old_id==new_id
+    # Before the split, compiled data for 306 was Deoxys. Leave named Aggron
+    # records in place and migrate the old Deoxys records to their own slot.
+    pbEachSavedPokemon do |pokemon|
+      next if pokemon.species!=old_id || pokemon.name.to_s.casecmp?("Aggron")
+      pokemon.species=new_id
+      pokemon.calcStats
+      if !pokemon.isEgg?
+        pbSeenForm(pokemon)
+        $Trainer.setSeen(new_id)
+        $Trainer.setOwned(new_id)
+      end
+    end
+    $game_system.instance_variable_set(:@azure_distinct_deoxys_id,true)
+  end
+
+  def pbMigrateTributeItems
+    return if $game_system.instance_variable_get(:@azure_tribute_item_ids)
+    # The former Tangrowth and Mismagius items are now Tribute attunements.
+    replacements={1036=>:MEADOWTRIBUTE,1037=>:SPOOKYTRIBUTE}
+    migrate=lambda do |item|
+      tribute=replacements[item]
+      next item if !tribute
+      pbUnlockTributeItem(tribute)
+      getID(PBItems,tribute)
+    end
+    $PokemonBag.pbMigrateItemIDs(&migrate)
+    $PokemonGlobal.pcItemStorage&.items&.each { |slot| slot[0]=migrate.call(slot[0]) if slot }
+    $PokemonGlobal.itemBelt&.map! { |item| replacements.key?(item) ? nil : item }
+    pbEachSavedPokemon do |pokemon|
+      next if !replacements.key?(pokemon.item)
+      pokemon.setItem(migrate.call(pokemon.item))
+      pokemon.calcStats
+    end
+    $game_system.instance_variable_set(:@azure_tribute_item_ids,true)
+  end
+
   def pbStartDeleteScreen
     savefile=RTP.getSaveFileName("Game.rxdata")
     @scene.pbStartDeleteScene
@@ -557,6 +624,8 @@ class PokemonLoad
           $PokemonBag          = Marshal.load(f)
           $PokemonStorage      = Marshal.load(f)
           $achievements        = Marshal.load(f)
+          pbMigrateTributeItems
+          pbMigrateDeoxysSpeciesID
           #$initialquestion        = Marshal.load(f)
           $strengthUsed        = false
           Achievements.fixAchievements

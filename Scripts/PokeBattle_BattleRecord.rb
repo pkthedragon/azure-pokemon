@@ -103,9 +103,9 @@ module PokeBattle_RecordedBattleModule
     return false
   end
 
-  def pbRegisterItem(i1,i2)
+  def pbRegisterItem(i1,i2,target=nil,move_index=nil)
     if super
-      @rounds[@roundindex][i1]=[Commands::Item,i2]
+      @rounds[@roundindex][i1]=[Commands::Bag,i2,target,move_index]
       return true
     end
     return false
@@ -240,7 +240,7 @@ module PokeBattle_BattlePlayerModule
         when Commands::Pokemon
           pbRegisterSwitch(i,@rounds[@roundindex][i][1])
         when Commands::Bag
-          pbRegisterItem(i,@rounds[@roundindex][i][1])
+          pbRegisterItem(i,*@rounds[@roundindex][i][1..3])
         when Commands::Run
           @decision=@rounds[@roundindex][i][1]
       end

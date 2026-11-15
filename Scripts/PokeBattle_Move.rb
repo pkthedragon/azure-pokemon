@@ -153,22 +153,90 @@ class PokeBattle_Move
     return pbTributeWeatherType(@battle)
   end
 
-  def tribute_fresh_flame?(attacker)
+  def tribute_fresh_flame?(attacker,preview: false)
     return false if !attacker
-    return true if attacker.turncount<=1
-    return attacker.effects[PBEffects::TributeFlameRefresh]
+    return true if attacker.turncount<=(preview ? 0 : 1)
+    return heroic_tribute?(attacker,:ARCANINE) &&
+      (attacker.effects[PBEffects::TributeFlameRefresh] || @tributeConsumesFlameRefresh)
   end
 
-  def pixie_tribute_power(attacker)
+  def pbBeginTributeAttack(attacker)
+    @tributeConsumesFlameRefresh=false
+    return unless tribute_attack?(attacker,:FLAMETRIBUTE) && heroic_tribute?(attacker,:ARCANINE)
+    @tributeConsumesFlameRefresh=attacker.effects[PBEffects::TributeFlameRefresh]
+    attacker.effects[PBEffects::TributeFlameRefresh]=false
+  end
+
+  def pbEndTributeAttack
+    @tributeConsumesFlameRefresh=false
+  end
+
+  def pixie_tribute_power(attacker,opponent=nil)
     return 0 if !tribute_status?(attacker,:PIXIETRIBUTE)
     return 100 if heroic_tribute?(attacker,:DEDENNE)
     return 80 if heroic_tribute?(attacker,:DACHSBUN)
     return 70 if heroic_tribute?(attacker,:FLORGES) || heroic_tribute?(attacker,:TOGEKISS)
     if heroic_tribute?(attacker,:COMFEY)
-      missing = [attacker.totalhp-attacker.hp,0].max
-      return [[(missing*120.0/[attacker.totalhp,1].max).round,20].max,120].min
+      recipient=[0x0DF,0x162].include?(@function) && opponent ? opponent : attacker
+      healing=pbTributeHealingPreview(attacker,opponent,recipient)
+      healing=(healing*1.1).floor if attacker.hasWorkingAbility(:HEALER)
+      healing=healing*3/2 if recipient.pbOwnSide.effects[PBEffects::EtherealCloak]>0
+      healing/=2 if recipient.effects[PBEffects::Wounded]>0
+      healing=(healing*1.1).floor if recipient.hasWorkingAbility(:GLUTTONY)
+      available=[recipient.totalhp-recipient.hp,healing].min
+      return [[(available*120.0/[attacker.totalhp,1].max).round,20].max,120].min
     end
     return 20
+  end
+
+  def pbTributeHealingPreview(attacker,opponent,recipient)
+    maxhp=recipient.totalhp
+    case @function
+    when 0x0D5,0x0D6 then return (maxhp+1)/2
+    when 0x0D7 then return [9,29,31,34].include?($fefieldeffect) ? (maxhp+1)*3/4 : (maxhp+1)/2
+    when 0x0D8 then return pbWeatherHealingAmount(attacker)
+    when 0x0D9 then return maxhp
+    when 0x0DF then return attacker.hasWorkingAbility(:MEGALAUNCHER) ? (maxhp+1)*3/4 : (maxhp+1)/2
+    when 0x114
+      heal=attacker.effects[PBEffects::Stockpile]>0 ? maxhp*3/4 : maxhp/2
+      heal/=4 if attacker.effects[PBEffects::VoreCopy]
+      return $fefieldeffect==19 ? heal*3/2 : heal
+    when 0x162
+      enhanced=[2,31].include?($fefieldeffect) || ($fefieldeffect==33 && $fecounter>1)
+      return enhanced ? maxhp*2/3 : maxhp/2
+    when 0x169,0x251 then return maxhp/2
+    when 0x16C
+      enhanced=@battle.pbWeather==PBWeather::SANDSTORM || [12,20,46].include?($fefieldeffect)
+      return enhanced ? maxhp*66/100 : maxhp/2
+    when 0x172
+      amount=opponent ? pbRoughStat(opponent,PBStats::ATTACK) : 0
+      return $fefieldeffect==8 ? amount*13/10 : amount
+    when 0x187 then return [9,29].include?($fefieldeffect) ? (maxhp+1)/2 : (maxhp+1)/4
+    when 0x232 then return (maxhp+1)/4
+    when 0x24C
+      energized=[1,18].include?($fefieldeffect) || @battle.field.effects[PBEffects::ElectricTerrain]>0
+      return energized ? maxhp*2/3 : maxhp/2
+    when 0x26E
+      raining=@battle.pbWeather==PBWeather::RAINDANCE && !attacker.hasWorkingItem(:UTILITYUMBRELLA)
+      return raining ? maxhp*2/3 : maxhp/2
+    when 0x298 then return maxhp*2/3
+    end
+    return pbHealingAmount(attacker) if respond_to?(:pbHealingAmount)
+    return 0
+  end
+
+  def pixie_replaces_effect?(attacker)
+    return tribute_status?(attacker,:PIXIETRIBUTE) && heroic_tribute?(attacker,:COMFEY)
+  end
+
+  def pbWeatherHealingAmount(attacker)
+    weather=@battle.pbWeather
+    return attacker.totalhp*2/3 if weather==PBWeather::SUNNYDAY && !attacker.hasWorkingItem(:UTILITYUMBRELLA)
+    return attacker.totalhp/4 if weather!=PBWeather::SUNNYDAY && weather!=0
+    if [4,34,35,42].include?($fefieldeffect)
+      return @id==PBMoves::MOONLIGHT ? attacker.totalhp*3/4 : attacker.totalhp/4
+    end
+    return attacker.totalhp/2
   end
 
   def pixie_tribute_target(attacker)
@@ -196,7 +264,7 @@ class PokeBattle_Move
   end
 
   def spooky_tribute_active?(attacker)
-    return attacker && tribute_has?(attacker, :SPOOKYTRIBUTE) && @basedamage>0
+    return attacker && tribute_has?(attacker,:SPOOKYTRIBUTE)
   end
 
   def spooky_tribute_charging?(attacker)
@@ -205,6 +273,17 @@ class PokeBattle_Move
 
   def spooky_tribute_striking?(attacker)
     return attacker && attacker.effects[PBEffects::SpookyTribute]==3
+  end
+
+  def draco_tribute_stab?(attacker)
+    harsh=@battle.field.effects[PBEffects::HarshSunlight]
+    active=harsh==true || (harsh.is_a?(Numeric) && harsh>0)
+    return active && @battle.pbWeather==PBWeather::SUNNYDAY &&
+      tribute_attack?(attacker,:DRACOTRIBUTE) && heroic_tribute?(attacker,:DRUDDIGON)
+  end
+
+  def draco_tribute_uses_defense?(attacker)
+    return tribute_attack?(attacker,:DRACOTRIBUTE) && heroic_tribute?(attacker,:TURTONATOR)
   end
 
   def tribute_negative_stage_count(battler)
@@ -216,19 +295,6 @@ class PokeBattle_Move
       total += -stage if stage && stage<0
     end
     return total
-  end
-
-  def tribute_inverse_effectiveness(mod)
-    case mod
-    when 0 then return 8
-    when 1 then return 16
-    when 2 then return 8
-    when 4 then return 4
-    when 8 then return 2
-    when 16 then return 1
-    else
-      return mod
-    end
   end
 
   # Shared final-matchup inversion used by the temporary Blue Shift field.
@@ -247,8 +313,9 @@ class PokeBattle_Move
     return mod
   end
 
-  def tribute_force_switch_lowest_hp(target)
+  def tribute_force_switch(target,lowest_hp: false)
     return false if !target || !@battle || target.isFainted?
+    return false if target.effects[PBEffects::Ingrain] || target.hasWorkingAbility(:SUCTIONCUPS)
     party = @battle.pbParty(target.index)
     return false if !party || party.length==0
     choices = []
@@ -257,7 +324,7 @@ class PokeBattle_Move
     end
     return false if choices.length==0
     old_name = target.pbThis
-    newpoke = choices.min_by { |i| [party[i].hp, party[i].level] }
+    newpoke = lowest_hp ? choices.min_by { |i| party[i].hp } : choices[@battle.pbRandom(choices.length)]
     @battle.pbDisplay(_INTL("{1} was forced out!",old_name))
     @battle.pbMessagesOnReplace(target.index,newpoke)
     target.vanished = false
@@ -265,6 +332,7 @@ class PokeBattle_Move
     @battle.pbReplace(target.index,newpoke,false)
     @battle.pbOnActiveOne(target)
     target.pbAbilitiesOnSwitchIn(true)
+    target.forcedSwitchEarlier=true
     return true
   end
 
@@ -364,96 +432,107 @@ class PokeBattle_Move
   def pbApplyTributeSelectionEffect(attacker,targets)
     return false if !attacker || !tribute_inscribed?(attacker)
     applied = false
-    if tribute_attack?(attacker,:SPOOKYTRIBUTE) && spooky_tribute_charging?(attacker)
-      target = targets && targets[0]
-      if heroic_tribute?(attacker,:MISMAGIUS) && target && !target.isFainted?
-        unless target.effects[PBEffects::TributeSpookyPig]
+    if spooky_tribute_active?(attacker) && spooky_tribute_charging?(attacker)
+      foes=targets.select { |target| target && !target.isFainted? && target.pbIsOpposing?(attacker.index) }
+      if heroic_tribute?(attacker,:MISMAGIUS)
+        foes.each do |target|
+          next if target.effects[PBEffects::TributeSpookyPig]
+          new_trap=target.effects[PBEffects::MeanLook]<0
+          gas_ended=target.hasWorkingAbility(:NEUTRALIZINGGAS)
           target.effects[PBEffects::TributeSpookyPig] = true
           target.effects[PBEffects::TributeSpookyPigData] = {
-            :type1   => target.type1,
-            :type2   => target.type2,
             :ability => target.ability,
-            :source  => attacker.index
+            :source  => new_trap ? attacker : nil
           }
-          target.type1 = getConst(PBTypes,:PSYCHIC) || target.type1
-          target.type2 = target.type1
-          target.ability = getConst(PBAbilities,:OWNTEMPO) || target.ability
-          target.effects[PBEffects::MeanLook] = attacker.index
+          target.ability = PBAbilities::OWNTEMPO
+          target.effects[PBEffects::MeanLook] = attacker.index if new_trap
           @battle.pbDisplay(_INTL("{1} was hexed into a pig!",target.pbThis))
+          @battle.pbNeutralizingGasEnded if gas_ended
+          target.pbAbilityCureCheck
+          applied = true
         end
-        applied = true
       end
       if heroic_tribute?(attacker,:SKELEDIRGE)
         hpgain = (attacker.totalhp*0.3).floor
         attacker.pbRecoverHP(hpgain,true)
         applied = true
       end
-      if heroic_tribute?(attacker,:DUSKNOIR) && target
-        lowered = false
-        lowered |= target.pbReduceStat(PBStats::DEFENSE,1,false,@id,attacker,true,false,false)
-        lowered |= target.pbReduceStat(PBStats::SPDEF,1,false,@id,attacker,true,false,false)
-        if lowered
-          attacker.pbIncreaseStat(PBStats::DEFENSE,1,false,@id,attacker,true,false,false)
-          attacker.pbIncreaseStat(PBStats::SPDEF,1,false,@id,attacker,true,false,false)
+      if heroic_tribute?(attacker,:DUSKNOIR)
+        foes.each do |target|
+          [PBStats::DEFENSE,PBStats::SPDEF].each do |stat|
+            previous=target.stages[stat]
+            target.pbReduceStat(stat,1,false,@id,attacker)
+            drained=previous-target.stages[stat]
+            next if drained<=0
+            attacker.pbIncreaseStat(stat,drained,false,@id,attacker)
+            applied = true
+          end
         end
-        applied = applied || lowered
       end
       if heroic_tribute?(attacker,:DRIFBLIM) && attacker.status!=PBStatuses::BURN
         attacker.pbBurn(attacker) if attacker.pbCanBurn?(false)
         applied = true
       end
-      if heroic_tribute?(attacker,:CLAYDOL_MYSTIC) && target && target.lastMoveUsed && target.lastMoveUsed>0
-        target.effects[PBEffects::Disable]=4
-        target.effects[PBEffects::DisableMove]=target.lastMoveUsed
-        @battle.pbDisplay(_INTL("{1}'s last move was disabled!",target.pbThis))
-        applied = true
+      if heroic_tribute?(attacker,:CLAYDOL_MYSTIC)
+        foes.each do |target|
+          next if !target.lastMoveUsed || target.lastMoveUsed<=0
+          next if !target.moves.any? { |move| move && move.id==target.lastMoveUsed }
+          next if target.effects[PBEffects::Disable]>0
+          target.effects[PBEffects::Disable]=4
+          target.effects[PBEffects::DisableMove]=target.lastMoveUsed
+          @battle.pbDisplay(_INTL("{1}'s last move was disabled!",target.pbThis))
+          applied = true
+        end
       end
     end
     if tribute_status?(attacker,:ICICLETRIBUTE) && heroic_tribute?(attacker,:JYNX)
-      target = targets && targets[0]
-      if target && !target.isFainted? && !target.effects[PBEffects::Ingrain]
-        @battle.pbBlink(target)
-        applied = true
+      (targets || []).compact.uniq.each do |target|
+        next if target==attacker
+        applied = true if @battle.pbBlink(target)
       end
     end
     if tribute_has?(attacker,:IRONTRIBUTE)
-      if heroic_tribute?(attacker,:EMPOLEON)
-        attacker.effects[PBEffects::TributeProtection] = 0.5
-        applied = true
-      end
-      if heroic_tribute?(attacker,:PROBOPASS) && attacker.effects[PBEffects::MagnetRise]==0
-        attacker.effects[PBEffects::MagnetRise]=5
-        @battle.pbDisplay(_INTL("{1} levitated with Magnet Rise!",attacker.pbThis))
-        applied = true
-      end
-      if tribute_attack?(attacker,:IRONTRIBUTE) && heroic_tribute?(attacker,:MEOWSCARADA_MYSTIC)
+      if heroic_tribute?(attacker,:MEOWSCARADA_MYSTIC)
         targets.each do |target|
-          applied = true if tribute_force_switch_lowest_hp(target)
+          applied = true if target!=attacker && tribute_force_switch(target,lowest_hp: true)
         end
       end
     end
     if tribute_attack?(attacker,:INSECTTRIBUTE) && heroic_tribute?(attacker,:SPIDOPS)
       targets.each do |target|
-        applied = true if tribute_force_switch_lowest_hp(target)
+        applied = true if target!=attacker && tribute_force_switch(target)
       end
     end
     return applied
   end
 
+  def pbApplyTributeQueuedEffect(attacker)
+    return unless tribute_has?(attacker,:IRONTRIBUTE)
+    if heroic_tribute?(attacker,:EMPOLEON)
+      attacker.effects[PBEffects::TributeProtection]=0.5
+    end
+    if heroic_tribute?(attacker,:PROBOPASS) && attacker.effects[PBEffects::MagnetRise]==0
+      attacker.effects[PBEffects::MagnetRise]=5
+      @battle.pbDisplay(_INTL("{1} levitated with Magnet Rise!",attacker.pbThis))
+    end
+  end
+
   # Apply tribute healing modifiers, including heroic effects.
-  def apply_tribute_healing(attacker, hpgain, recipient=nil)
+  def tribute_overheal?(attacker)
+    return tribute_has?(attacker,:MEADOWTRIBUTE) && heroic_tribute?(attacker,:BELLOSSOM)
+  end
+
+  def apply_tribute_healing(attacker, hpgain)
     return hpgain if !attacker || hpgain <= 0
 
     if tribute_has?(attacker, :MEADOWTRIBUTE)
       mult = 1.3
-      if heroic_tribute?(attacker,:TANGROWTH) &&
-         @battle.pbWeather == PBWeather::SUNNYDAY
+      harsh_sun=@battle.field.effects[PBEffects::HarshSunlight]
+      if heroic_tribute?(attacker,:TANGROWTH) && @battle.pbWeather==PBWeather::SUNNYDAY &&
+         (harsh_sun==true || (harsh_sun.is_a?(Numeric) && harsh_sun>0))
         mult = 2.0
       end
       hpgain = (hpgain * mult).floor
-      if recipient && heroic_tribute?(attacker,:BELLOSSOM)
-        recipient.effects[PBEffects::TributePendingShield] = true
-      end
     end
 
     return hpgain
@@ -469,20 +548,15 @@ class PokeBattle_Move
       boost = 1.5 if heroic_tribute?(attacker,:PASSIMIAN)
       boost = 1.5 if heroic_tribute?(attacker,:UNFEZANT_MYSTIC) && attacker.gender==0
       damagemult = (damagemult*boost).round
-      if heroic_tribute?(attacker,:INFERNAPE)
-        total_positive = [tribute_positive_stage_count(attacker),6].min
-        atkstage = total_positive+3
-      end
     end
     if tribute_attack?(attacker,:MINDTRIBUTE)
       atk      = attacker.spatk
       atkstage = attacker.stages[PBStats::SPATK]+3
       boost = 1.2
       boost = 1.5 if heroic_tribute?(attacker,:ORANGURU)
+      boost = 2.0 if heroic_tribute?(attacker,:HYPNO) && opponent && opponent.status==PBStatuses::SLEEP
+      boost = 1.5 if heroic_tribute?(attacker,:UNOWN) && attacker.form!=0
       damagemult = (damagemult*boost).round
-      damagemult = (damagemult*2.0).round if heroic_tribute?(attacker,:HYPNO) &&
-                                            opponent && opponent.status==PBStatuses::SLEEP
-      damagemult = (damagemult*1.5).round if heroic_tribute?(attacker,:UNOWN) && attacker.form!=0
     end
     if tribute_attack?(attacker,:BLANKTRIBUTE) && heroic_tribute?(attacker,:WYRDEER)
       if attacker.attack >= attacker.spatk
@@ -497,15 +571,32 @@ class PokeBattle_Move
       atk      = attacker.spdef
       atkstage = attacker.stages[PBStats::SPDEF]+3
     end
-    if tribute_attack?(attacker,:DRACOTRIBUTE) && heroic_tribute?(attacker,:TURTONATOR)
+    if draco_tribute_uses_defense?(attacker)
       atk      = attacker.defense
       atkstage = attacker.stages[PBStats::DEFENSE]+3
     end
-    if spooky_tribute_striking?(attacker) && attacker.hasWorkingItem(:SPOOKYTRIBUTE)
+    if spooky_tribute_striking?(attacker) && spooky_tribute_active?(attacker)
       damagemult = (damagemult*1.5).round
     end
 
     return [atk, atkstage, damagemult]
+  end
+
+  def tribute_base_damage(attacker,opponent,base_damage)
+    return base_damage unless tribute_attack?(attacker,:ZAPTRIBUTE) && heroic_tribute?(attacker,:ZEBSTRIKA)
+    ratio=(attacker.pbSpeed/[opponent.pbSpeed,1].max.to_f).floor
+    return [40,60,80,120,150][ratio.clamp(0,4)]
+  end
+
+  def tribute_bypasses_accuracy?(attacker)
+    return tribute_attack?(attacker,:INSECTTRIBUTE) || tribute_status?(attacker,:ICICLETRIBUTE) ||
+      (tribute_attack?(attacker,:FISTTRIBUTE) && heroic_tribute?(attacker,:UNFEZANT_MYSTIC) && attacker.gender==1) ||
+      (tribute_attack?(attacker,:MINDTRIBUTE) && heroic_tribute?(attacker,:VICTINI))
+  end
+
+  def tribute_guaranteed_critical?(attacker)
+    return (tribute_attack?(attacker,:MINDTRIBUTE) && heroic_tribute?(attacker,:VICTINI) && @addlEffect<=0) ||
+      (tribute_attack?(attacker,:INSECTTRIBUTE) && heroic_tribute?(attacker,:ARMALDO))
   end
 
   def apply_tribute_defense_modifiers(attacker, opponent, defense, defstage)
@@ -534,7 +625,7 @@ class PokeBattle_Move
     return [defense, defstage]
   end
 
-  def apply_tribute_damage_modifiers(attacker, opponent, finaldamagemult)
+  def apply_tribute_damage_modifiers(attacker, opponent, finaldamagemult, preview: false)
     return finaldamagemult if !tribute_inscribed?(attacker)
 
     finaldamagemult = (finaldamagemult*1.3).round if tribute_attack?(attacker,:NULLTRIBUTE)
@@ -542,7 +633,7 @@ class PokeBattle_Move
       blank_boost = heroic_tribute?(attacker,:HELIOLISK) ? 1.5 : 1.2
       finaldamagemult = (finaldamagemult*blank_boost).round
     end
-    if tribute_attack?(attacker,:FLAMETRIBUTE) && tribute_fresh_flame?(attacker)
+    if tribute_attack?(attacker,:FLAMETRIBUTE) && tribute_fresh_flame?(attacker,preview: preview)
       finaldamagemult = (finaldamagemult*1.5).round
     end
     if tribute_attack?(attacker,:ZAPTRIBUTE) && heroic_tribute?(attacker,:ELECTIVIRE) && @basedamage<=50
@@ -607,10 +698,14 @@ class PokeBattle_Move
 
     if tribute_attack?(attacker,:SPLASHTRIBUTE) && heroic_tribute?(attacker,:PHIONE)
       if attacker.pbOwnSide.effects[PBEffects::MinusSignal] > 0
-        lowered = false
-        lowered |= opponent.pbReduceStat(PBStats::DEFENSE,1,false,@id,attacker,true,false,false)
-        lowered |= opponent.pbReduceStat(PBStats::SPDEF,1,false,@id,attacker,true,false,false)
-        applied = applied || lowered
+        [PBStats::DEFENSE,PBStats::SPDEF].each do |stat|
+          previous=opponent.stages[stat]
+          opponent.pbReduceStat(stat,1,false,@id,attacker)
+          drained=previous-opponent.stages[stat]
+          next unless drained>0
+          attacker.pbIncreaseStat(stat,drained,false,@id,attacker)
+          applied=true
+        end
       else
         attacker.pbOwnSide.effects[PBEffects::PlusSignal] = 3
         @battle.pbDisplay(_INTL("Plus energy gathered around {1}'s side!",attacker.pbThis(true)))
@@ -629,13 +724,6 @@ class PokeBattle_Move
       end
       tribute_set_scorching_ground(opponent.pbOwnSide,5)
       applied = true
-    end
-
-    if tribute_attack?(attacker,:BLANKTRIBUTE) && heroic_tribute?(attacker,:DUBWOOL)
-      if attacker.pbCanIncreaseStatStage?(PBStats::SPEED,false)
-        attacker.pbIncreaseStat(PBStats::SPEED,1,false,@id,attacker,true,false,false)
-        applied = true
-      end
     end
 
     if tribute_attack?(attacker,:FISTTRIBUTE) && heroic_tribute?(attacker,:HARIYAMA) &&
@@ -682,46 +770,7 @@ class PokeBattle_Move
       end
     end
 
-    if tribute_attack?(attacker,:DREADTRIBUTE)
-      if heroic_tribute?(attacker,:DRAPION)
-        reduced = [PBStats::ATTACK,PBStats::DEFENSE,PBStats::SPEED,PBStats::SPATK,
-                   PBStats::SPDEF,PBStats::ACCURACY,PBStats::EVASION].any? { |stat| opponent.stages[stat] < 0 }
-        if reduced
-          opponent.effects[PBEffects::MeanLook] = attacker.index if opponent.effects[PBEffects::MeanLook] < 0
-          opponent.pbPoison(attacker,true) if opponent.pbCanPoison?(false)
-          applied = true
-        end
-      end
-      if heroic_tribute?(attacker,:THIEVUL)
-        [PBStats::ATTACK,PBStats::DEFENSE,PBStats::SPEED,PBStats::SPATK,
-         PBStats::SPDEF,PBStats::ACCURACY,PBStats::EVASION].each do |stat|
-          next if opponent.stages[stat] >= 0
-          amount = -opponent.stages[stat]
-          opponent.stages[stat] = 0
-          attacker.pbIncreaseStat(stat,amount,false,@id,attacker,true,false,false)
-          applied = true
-        end
-      end
-      if heroic_tribute?(attacker,:SKELEDIRGE_MYSTIC)
-        pairs = {
-          PBStats::ATTACK  => opponent.attack,
-          PBStats::DEFENSE => opponent.defense,
-          PBStats::SPEED   => opponent.speed,
-          PBStats::SPATK   => opponent.spatk,
-          PBStats::SPDEF   => opponent.spdef
-        }
-        stat = pairs.max_by { |_,value| value }[0]
-        if opponent.pbCanReduceStatStage?(stat,false,false)
-          opponent.pbReduceStat(stat,1,false,@id,attacker,true,false,false)
-          applied = true
-        end
-      end
-    end
-
-    if tribute_attack?(attacker,:EARTHTRIBUTE) && heroic_tribute?(attacker,:TORTERRA)
-      attacker.pbRecoverHP((attacker.totalhp/4).floor,true)
-      applied = true
-    end
+    applied = pbApplyDreadHeroicEffect(attacker,opponent) || applied
 
     if tribute_attack?(attacker,:INSECTTRIBUTE) && heroic_tribute?(attacker,:ARIADOS)
       if !attacker.pbOpposingSide.effects[PBEffects::StickyWeb]
@@ -734,44 +783,41 @@ class PokeBattle_Move
     return applied
   end
 
-  def tribute_extend_common_durations(attacker, targets, turns)
-    battlers = ([attacker] + (targets || [])).compact.uniq
-    battler_effects = [
-      PBEffects::Taunt,PBEffects::Disable,PBEffects::Encore,PBEffects::HealBlock,
-      PBEffects::MagnetRise,PBEffects::LockOn,PBEffects::Embargo,PBEffects::Telekinesis,
-      PBEffects::ThroatChop,PBEffects::PerishSong
-    ]
-    battlers.each do |battler|
-      battler_effects.each do |effect|
-        value = battler.effects[effect]
-        next if !value.is_a?(Integer) || value<=0
-        battler.effects[effect] = turns if value < turns
+  def pbApplyDreadHeroicEffect(attacker,opponent)
+    return false if !opponent || attacker==opponent || opponent.isFainted? || !tribute_has?(attacker,:DREADTRIBUTE)
+    case pbGetHeroicKey(attacker)
+    when :DRAPION
+      return false if tribute_negative_stage_count(opponent)==0
+      opponent.effects[PBEffects::MeanLook]=attacker.index if opponent.effects[PBEffects::MeanLook]<0
+      opponent.pbPoison(attacker) if opponent.pbCanPoison?(false)
+      return true
+    when :THIEVUL
+      lowered=[PBStats::ATTACK,PBStats::DEFENSE,PBStats::SPEED,PBStats::SPATK,
+               PBStats::SPDEF,PBStats::ACCURACY,PBStats::EVASION].select { |stat| opponent.stages[stat]<0 }
+      lowered.each do |stat|
+        amount=-opponent.stages[stat]
+        opponent.stages[stat]=0
+        attacker.pbIncreaseStat(stat,amount,false,@id,attacker,true,false,false)
       end
+      return !lowered.empty?
+    when :SKELEDIRGE_MYSTIC
+      stats={PBStats::ATTACK=>opponent.attack,PBStats::DEFENSE=>opponent.defense,
+             PBStats::SPEED=>opponent.speed,PBStats::SPATK=>opponent.spatk,PBStats::SPDEF=>opponent.spdef}
+      stat=stats.max_by { |_,value| value }[0]
+      return opponent.pbReduceStat(stat,1,false,@id,attacker,true,false,false)
     end
-    side_effects = [
-      PBEffects::Reflect,PBEffects::LightScreen,PBEffects::Tailwind,PBEffects::LuckyChant,
-      PBEffects::Safeguard,PBEffects::DuneDefense,PBEffects::Mist
-    ]
-    [attacker.pbOwnSide, attacker.pbOpposingSide].each do |side|
-      side_effects.each do |effect|
-        value = side.effects[effect]
-        next if !value.is_a?(Integer) || value<=0
-        side.effects[effect] = turns if value < turns
-      end
-    end
-    field_effects = [
-      PBEffects::Gravity,PBEffects::MagicRoom,PBEffects::WonderRoom,PBEffects::Terrain,
-      PBEffects::GrassyTerrain,PBEffects::MistyTerrain,PBEffects::ElectricTerrain,
-      PBEffects::PsychicTerrain
-    ]
-    field_effects.each do |effect|
-      value = @battle.field.effects[effect]
-      next if !value.is_a?(Integer) || value<=0
-      @battle.field.effects[effect] = turns if value < turns
-    end
+    return false
   end
 
-  def pbApplyTributeAfterMove(attacker, targets, totaldamage=0, pre_stages=nil)
+  def pbTributeStatusContext(attacker)
+    item=[:ICICLETRIBUTE,:TOXICTRIBUTE].find { |tribute| tribute_status?(attacker,tribute) }
+    return nil if !item
+    heroic=pbGetHeroicKey(attacker)
+    durations=@battle.pbTributeDurationSnapshot if [:ARTICUNO,:CROBAT].include?(heroic)
+    return {item: item,heroic: heroic,durations: durations}
+  end
+
+  def pbApplyTributeAfterMove(attacker, targets, totaldamage=0, pre_stages=nil, status_context=nil, hit_targets: [])
     return false if !attacker || !tribute_inscribed?(attacker)
     applied = false
     targets = (targets || []).compact.uniq
@@ -787,15 +833,18 @@ class PokeBattle_Move
     end
 
     if tribute_attack?(attacker,:FLAMETRIBUTE)
-      attacker.effects[PBEffects::TributeFlameRefresh] = false if attacker.effects[PBEffects::TributeFlameRefresh]
       if heroic_tribute?(attacker,:SIMISEAR)
         tribute_set_weather(PBWeather::SUNNYDAY,2,false,true)
         applied = true
       end
-      if heroic_tribute?(attacker,:MOLTRES) && totaldamage>0
+      if heroic_tribute?(attacker,:MOLTRES)
         attacker.effects[PBEffects::TributeMoltresSwitch] = true
         applied = true
       end
+    end
+
+    if tribute_has?(attacker,:BLANKTRIBUTE) && heroic_tribute?(attacker,:DUBWOOL)
+      applied = attacker.pbIncreaseStat(PBStats::SPEED,1,false,@id,attacker) || applied
     end
 
     if tribute_attack?(attacker,:BLANKTRIBUTE) && heroic_tribute?(attacker,:WIGGLYTUFF)
@@ -827,18 +876,18 @@ class PokeBattle_Move
       applied = true
     end
 
-    if tribute_status?(attacker,:ICICLETRIBUTE)
-      if heroic_tribute?(attacker,:DEWGONG)
+    if status_context && status_context[:item]==:ICICLETRIBUTE
+      heroic=status_context[:heroic]
+      if heroic==:DEWGONG
         attacker.pbRecoverHP((attacker.totalhp/4).floor,true)
         applied = true
       end
-      if heroic_tribute?(attacker,:QUAQUAVAL_MYSTIC)
+      if heroic==:QUAQUAVAL_MYSTIC
         attacker.effects[PBEffects::TributeProtection] = 0.7
         applied = true
       end
-      if heroic_tribute?(attacker,:ARTICUNO)
-        tribute_extend_common_durations(attacker,targets,8)
-        applied = true
+      if heroic==:ARTICUNO
+        applied = true if @battle.pbApplyTributeDurations(attacker,status_context[:durations])
       end
     end
 
@@ -863,7 +912,7 @@ class PokeBattle_Move
 
     if tribute_attack?(attacker,:SKYTRIBUTE)
       if heroic_tribute?(attacker,:DELIBIRD)
-        stacks = self.priority > 0 ? 2 : 1
+        stacks = @battle.pbMovePriority(attacker,self)>0 ? 2 : 1
         attacker.pbOpposingSide.effects[PBEffects::Presents] = [attacker.pbOpposingSide.effects[PBEffects::Presents] + stacks,3].min
         @battle.pbDisplay(_INTL("Presents were scattered onto the opposing side!"))
         applied = true
@@ -880,13 +929,17 @@ class PokeBattle_Move
       end
     end
 
-    if tribute_attack?(attacker,:DREADTRIBUTE) && heroic_tribute?(attacker,:MEOWSCARADA) &&
+    if tribute_has?(attacker,:DREADTRIBUTE) && heroic_tribute?(attacker,:MEOWSCARADA) &&
        @battle.pbCanChooseNonActive?(attacker.index)
       attacker.userSwitch = true
       applied = true
     end
 
     if tribute_attack?(attacker,:EARTHTRIBUTE)
+      if heroic_tribute?(attacker,:TORTERRA) && !hit_targets.empty?
+        attacker.pbRecoverHP((attacker.totalhp/4)*hit_targets.length,true)
+        applied = true
+      end
       if heroic_tribute?(attacker,:STUNFISK) && attacker.pbHasType?(:ELECTRIC)
         original = { :type1 => attacker.type1, :type2 => attacker.type2 }
         attacker.effects[PBEffects::TributeTypeShift] = 2
@@ -910,18 +963,18 @@ class PokeBattle_Move
       end
       if heroic_tribute?(attacker,:ORTHWORM) && attacker.effects[PBEffects::TributeDamageTaken] > 0 &&
          @battle.pbCanChooseNonActive?(attacker.index)
-        @battle.instance_variable_set(:@tributeOrthwormShedHP,{ attacker.index => [attacker.effects[PBEffects::TributeDamageTaken], attacker.totalhp/2].min })
+        attacker.effects[PBEffects::TributeOrthwormShedHP] = attacker.effects[PBEffects::TributeDamageTaken]
         attacker.userSwitch = true
         applied = true
       end
     end
 
-    if tribute_status?(attacker,:TOXICTRIBUTE)
-      if heroic_tribute?(attacker,:CROBAT)
-        tribute_extend_common_durations(attacker,targets,7)
-        applied = true
+    if status_context && status_context[:item]==:TOXICTRIBUTE
+      heroic=status_context[:heroic]
+      if heroic==:CROBAT
+        applied = true if @battle.pbApplyTributeDurations(attacker,status_context[:durations],7)
       end
-      if heroic_tribute?(attacker,:REVAVROOM)
+      if heroic==:REVAVROOM
         drops = tribute_negative_stage_count(attacker)
         attacker.opposingLivingBattlers.each do |foe|
           foe.pbReduceStat(PBStats::ACCURACY,drops,false,@id,attacker,true,false,false) if drops>0
@@ -929,24 +982,25 @@ class PokeBattle_Move
         end
         applied = true
       end
-      if heroic_tribute?(attacker,:TENTACRUEL) && attacker.pbOpposingSide.effects[PBEffects::ToxicSpikes] < 2
+      if heroic==:TENTACRUEL && attacker.pbOpposingSide.effects[PBEffects::ToxicSpikes] < 2
         attacker.pbOpposingSide.effects[PBEffects::ToxicSpikes] += 1
         @battle.pbDisplay(_INTL("Poison barbs were scattered around the opposing team!"))
         applied = true
       end
-      if heroic_tribute?(attacker,:MUK_MYSTIC)
-        target = targets[0]
-        if target
-          target.effects[PBEffects::TributeMukMystic] = { :turns => 3 }
-          target.pbIncreaseStat(PBStats::DEFENSE,1,false,@id,attacker,true,false,false) if target.pbCanIncreaseStatStage?(PBStats::DEFENSE,false)
-          target.pbIncreaseStat(PBStats::SPDEF,1,false,@id,attacker,true,false,false) if target.pbCanIncreaseStatStage?(PBStats::SPDEF,false)
-          applied = true
+      if heroic==:MUK_MYSTIC
+        @battle.pbWithStatChangeSource([:item,PBItems::TOXICTRIBUTE]) do
+          targets.each do |target|
+            next if target.isFainted?
+            turn=@battle.turncount
+            target.effects[PBEffects::TributeMukMystic]={last_turn: turn,expires_turn: turn+3}
+            target.pbIncreaseStat(PBStats::DEFENSE,1,false,@id,attacker,true,false,false)
+            target.pbIncreaseStat(PBStats::SPDEF,1,false,@id,attacker,true,false,false)
+            applied = true
+          end
         end
       end
-      if heroic_tribute?(attacker,:MUK)
-        revivals = @battle.instance_variable_defined?(:@tributeMukRevival) ? @battle.instance_variable_get(:@tributeMukRevival) : []
-        revivals << { :side => attacker.index, :party_index => attacker.pokemonIndex, :turns => 2 }
-        @battle.instance_variable_set(:@tributeMukRevival, revivals)
+      if heroic==:MUK
+        @battle.pbScheduleTributeMukRevival(attacker.pokemon)
       end
       if attacker.hp>0
         attacker.pbReduceHP(attacker.hp,true)
@@ -955,31 +1009,19 @@ class PokeBattle_Move
       end
     end
 
-    if tribute_attack?(attacker,:DRACOTRIBUTE)
-      if heroic_tribute?(attacker,:FLYGON)
-        duration = @battle.weather==PBWeather::SANDSTORM ? (@battle.weatherduration<0 ? -1 : @battle.weatherduration + 2) : 2
-        tribute_set_weather(PBWeather::SANDSTORM,duration,false,false)
+    if tribute_has?(attacker,:DRACOTRIBUTE)
+      if heroic_tribute?(attacker,:FLYGON) && @battle.pbWeather==PBWeather::SANDSTORM && @battle.weatherduration>0
+        @battle.weatherduration+=2
         applied = true
       end
       if heroic_tribute?(attacker,:GOODRA)
-        original = { :type1 => attacker.type1, :type2 => attacker.type2 }
-        move_type = pbType(@type,attacker,targets[0] || attacker)
-        if !attacker.pbHasType?(move_type)
-          attacker.effects[PBEffects::TributeTypeShift] = 2
+        original=attacker.effects[PBEffects::TributeTypeShiftData] || { :type1 => attacker.type1, :type2 => attacker.type2 }
+        move_type=pbType(@type,attacker,hit_targets.first || targets.first || attacker)
+        if move_type>=0 && !original.values.include?(move_type)
+          attacker.effects[PBEffects::TributeTypeShift] = 3
           attacker.effects[PBEffects::TributeTypeShiftData] = original
           attacker.type2 = move_type
           applied = true
-        end
-      end
-      if heroic_tribute?(attacker,:DRAPION_MYSTIC) && pre_stages
-        targets.each do |target|
-          [PBStats::ATTACK,PBStats::DEFENSE,PBStats::SPEED,PBStats::SPATK,
-           PBStats::SPDEF,PBStats::ACCURACY,PBStats::EVASION].each do |stat|
-            delta = pre_stages[stat] - attacker.stages[stat]
-            next if delta <= 0
-            target.pbReduceStat(stat,delta,false,@id,attacker,true,false,false)
-            applied = true
-          end
         end
       end
     end
@@ -993,16 +1035,18 @@ class PokeBattle_Move
     damage = pbCalcDamage(attacker,opponent)
     damage = pbReduceHPDamage(damage,attacker,opponent,hitnum)
     pbEffectMessages(attacker,opponent)
-    secondary_move=PokeBattle_Move.pbFromPBMove(@battle,PBMove.new(@id),attacker)
-    secondary_target=pixie_secondary_target(attacker,opponent)
-    secondary_move.pbEffect(attacker,secondary_target,hitnum,alltargets,false) if secondary_move
+    unless pixie_replaces_effect?(attacker)
+      secondary_move=PokeBattle_Move.pbFromPBMove(@battle,PBMove.new(@id),attacker)
+      secondary_target=pixie_secondary_target(attacker,opponent)
+      secondary_move.pbEffect(attacker,secondary_target,hitnum,alltargets,false) if secondary_move
+    end
     return damage
   end
 
   def pbHandleSpookyTributeCharge(attacker,showanimation=true)
     return false if !spooky_tribute_charging?(attacker)
     @battle.pbCommonAnimation("Shadow Force charging",attacker,nil) if showanimation
-    if @battle.scene && @battle.scene.respond_to?(:pbVanishSprite)
+    if !attacker.vanished && @battle.scene && @battle.scene.respond_to?(:pbVanishSprite)
       @battle.scene.pbVanishSprite(attacker)
     end
     @battle.pbDisplay(_INTL("{1} vanished into the shadows!",attacker.pbThis))
@@ -1032,7 +1076,7 @@ class PokeBattle_Move
       pri += 1
     end
     if tribute_attack?(attacker,:STONETRIBUTE) && heroic_tribute?(attacker,:RAMPARDOS) &&
-       !attacker.effects[PBEffects::TributeRampardosPriority]
+       !@battle.pbTributeOnceUsed?(attacker.pokemon,:stone_priority)
       pri += 1
     end
     if tribute_attack?(attacker,:INSECTTRIBUTE) && heroic_tribute?(attacker,:SPIDOPS) && pri>0
@@ -1067,6 +1111,7 @@ class PokeBattle_Move
   attr_accessor :reverbEcho
   attr_accessor :defense_curl_boost
   attr_accessor :lock_on_boost
+  attr_accessor :azureAbilityCharge
 
   def pbMoveDuration(attacker,turns)
     return attacker.hasWorkingAbility(:PERPETUAL) ? 7 : turns
@@ -1124,7 +1169,7 @@ class PokeBattle_Move
           type = attacker.type1 || type
         end
       end
-      if tribute_attack?(attacker,:SPOOKYTRIBUTE) && heroic_tribute?(attacker,:DRIFBLIM)
+      if spooky_tribute_active?(attacker) && heroic_tribute?(attacker,:DRIFBLIM)
         type = getConst(PBTypes,:FIRE) || type
       end
     end
@@ -1270,7 +1315,10 @@ class PokeBattle_Move
   end
   
   def pbThunderRaidTargetting(attacker)
-    foes = pbSortedOpposingTargets(attacker)
+    foes = pbSortedOpposingTargets(attacker).select do |foe|
+      @battle.pbMoveCanTargetInTriple?(attacker,foe,self) &&
+        !foe.effects[PBEffects::Commander]
+    end
     return [] if foes.length==0
     valid = foes.find_all { |opp| !opp.pbHasType?(:GROUND) }
     valid = foes if valid.length==0
@@ -1291,19 +1339,6 @@ class PokeBattle_Move
   end
 
   def pbTwoTurnAttack(attacker,checking=false)
-    if attacker && attacker.effects[PBEffects::SpookyTribute]!=0 &&
-       attacker.effects[PBEffects::TwoTurnAttack]==0 && !checking
-      attacker.effects[PBEffects::SpookyTribute]=0
-    end
-    if spooky_tribute_active?(attacker)
-      if attacker.effects[PBEffects::SpookyTribute]==0
-        attacker.effects[PBEffects::SpookyTribute]=2 if !checking
-        return true
-      elsif attacker.effects[PBEffects::SpookyTribute]==2
-        attacker.effects[PBEffects::SpookyTribute]=3 if !checking
-        return false
-      end
-    end
     return false
   end
 
@@ -1343,6 +1378,7 @@ class PokeBattle_Move
 
   def isContactMove?
     if @user
+      return false if isPunchingMove? && @user.hasWorkingItem(:PUNCHINGGLOVE)
       return false if tribute_has?(@user,:EARTHTRIBUTE)
       return false if tribute_attack?(@user,:FISTTRIBUTE) && heroic_tribute?(@user,:INFERNAPE)
     end
@@ -1416,15 +1452,19 @@ class PokeBattle_Move
     return attacker.hasWorkingAbility(:TELEPATHY) || opponent.sameSideAbilityHolder(:TELEPATHY)
   end
 
-  def pbRecoverMoveHP(user,target,amount)
+  def pbRecoverMoveHP(user,target,amount,amplified: false)
     healer=user.hasWorkingAbility(:HEALER)
-    recovered=target.pbRecoverHP(healer ? (amount*1.1).floor : amount,true) if amount>0
+    if amount>0
+      amount=apply_tribute_healing(user,amount) unless amplified
+      target.effects[PBEffects::TributePendingShield]=true if tribute_overheal?(user)
+      recovered=target.pbRecoverHP(healer ? (amount*1.1).floor : amount,true)
+    end
     target.pbCureStatus if healer && target.status>0 && target.effects[PBEffects::Spritz]!=1
     return recovered || 0
   end
 
   def pbCanHealMoveTarget?(user,target)
-    return target.hp<target.totalhp ||
+    return target.hp<target.totalhp || tribute_overheal?(user) ||
            (user.hasWorkingAbility(:HEALER) && target.status>0 && target.effects[PBEffects::Spritz]!=1)
   end
 
@@ -1570,12 +1610,12 @@ class PokeBattle_Move
       mod2=2 if isConst?(otype2,PBTypes,:DARK) && isConst?(atype,PBTypes,:PSYCHIC)
     end
     if attacker && tribute_attack?(attacker,:BLANKTRIBUTE) && heroic_tribute?(attacker,:DELCATTY)
-      mod1 = isConst?(otype1,PBTypes,:NORMAL) ? 4 : 8
-      mod2 = isConst?(otype2,PBTypes,:NORMAL) ? 4 : 8 if otype1!=otype2
+      mod1 = isConst?(otype1,PBTypes,:NORMAL) ? 2 : 4
+      mod2 = isConst?(otype2,PBTypes,:NORMAL) || otype2==PBTypes::QMARKS ? 2 : 4 if otype1!=otype2
     end
     if attacker && tribute_attack?(attacker,:INSECTTRIBUTE) && heroic_tribute?(attacker,:LEAVANNY)
-      mod1 = tribute_inverse_effectiveness(mod1)
-      mod2 = tribute_inverse_effectiveness(mod2)
+      mod1 = mod1<=1 ? 4 : (mod1==2 ? 2 : 1)
+      mod2 = mod2<=1 ? 4 : (mod2==2 ? 2 : 1)
     end
     if @battle.pbCheckGlobalAbility(:HEADSTRONG)
       mod1=2 if mod1==0
@@ -1653,12 +1693,12 @@ class PokeBattle_Move
       mod2=gravmod if isConst?(otype2,PBTypes,:FLYING) && isConst?(atype,PBTypes,:GROUND)
     end
     if attacker && tribute_attack?(attacker,:BLANKTRIBUTE) && heroic_tribute?(attacker,:DELCATTY)
-      mod1 = isConst?(otype1,PBTypes,:NORMAL) ? 4 : 8
-      mod2 = isConst?(otype2,PBTypes,:NORMAL) ? 4 : 8 if otype1!=otype2
+      mod1 = isConst?(otype1,PBTypes,:NORMAL) ? 2 : 4
+      mod2 = isConst?(otype2,PBTypes,:NORMAL) || otype2==PBTypes::QMARKS ? 2 : 4 if otype1!=otype2
     end
     if attacker && tribute_attack?(attacker,:INSECTTRIBUTE) && heroic_tribute?(attacker,:LEAVANNY)
-      mod1 = tribute_inverse_effectiveness(mod1)
-      mod2 = tribute_inverse_effectiveness(mod2)
+      mod1 = mod1<=1 ? 4 : (mod1==2 ? 2 : 1)
+      mod2 = mod2<=1 ? 4 : (mod2==2 ? 2 : 1)
     end
     if @battle.pbCheckGlobalAbility(:HEADSTRONG)
       mod1=2 if mod1==0
@@ -1677,7 +1717,10 @@ class PokeBattle_Move
     PBAbilities::LIGHTNINGROD=>[:LIGHTNINGROD,PBTypes::ELECTRIC,:offenses],
     PBAbilities::JUSTIFIED=>[:JUSTIFIED,PBTypes::DARK,:offenses],
     PBAbilities::MAGMAARMOR=>[:MAGMAARMOR,PBTypes::WATER,:defenses],
-    PBAbilities::PITCHBLACK=>[:PITCHBLACK,PBTypes::DARK,:defenses]
+    PBAbilities::PITCHBLACK=>[:PITCHBLACK,PBTypes::DARK,:defenses],
+    PBAbilities::EARTHEATER=>[:EARTHEATER,PBTypes::GROUND,:healing],
+    PBAbilities::WELLBAKEDBODY=>[:WELLBAKEDBODY,PBTypes::FIRE,:sharp_defense],
+    PBAbilities::MOTORDRIVE=>[:MOTORDRIVE,PBTypes::ELECTRIC,:speed]
   }.freeze
 
   # Pure query shared by damage, status moves, and AI prediction.
@@ -1688,6 +1731,7 @@ class PokeBattle_Move
         FieldTypeChange(attacker,opponent,1,true)==PBTypes::FIRE)
       return :immune
     end
+    return :offenses if opponent.hasWorkingAbility(:WINDRIDER) && PBStuff::WINDMOVE.include?(id)
     ability,absorbed_type,stats=TYPE_ABSORB_ABILITIES[opponent.ability]
     return nil if !ability || !opponent.hasWorkingAbility(ability)
     return stats if type==absorbed_type || FieldTypeChange(attacker,opponent,1,true)==absorbed_type
@@ -1698,26 +1742,37 @@ class PokeBattle_Move
     absorption=pbTypeAbsorption(type,attacker,opponent)
     return false if !absorption
     abilityname=PBAbilities.getName(opponent.ability)
+    if absorption==:healing
+      if opponent.effects[PBEffects::HealBlock]==0 && opponent.pbRecoverHP([opponent.totalhp/4,1].max,true)>0
+        @battle.pbDisplay(_INTL("{1}'s {2} restored its HP!",opponent.pbThis,abilityname))
+      else
+        @battle.pbDisplay(_INTL("{1}'s {2} made {3} ineffective!",opponent.pbThis,abilityname,name))
+      end
+      return true
+    end
     stats=case absorption
     when :offenses then [PBStats::ATTACK,PBStats::SPATK]
     when :defenses then [PBStats::DEFENSE,PBStats::SPDEF]
+    when :sharp_defense then [PBStats::DEFENSE]
+    when :speed then [PBStats::SPEED]
     else []
     end
+    amount=absorption==:sharp_defense || (absorption==:speed && $fefieldeffect==17) ? 2 : 1
     raised=false
-    @battle.statChangeSource=[:ability,opponent.ability]
-    begin
+    @battle.pbWithStatChangeSource([:ability,opponent.ability]) do
       stats.each do |stat|
         next if !opponent.pbCanIncreaseStatStage?(stat)
-        opponent.pbIncreaseStatBasic(stat,1)
-        raised=true
+        raised=opponent.pbIncreaseStatBasic(stat,amount) || raised
       end
-    ensure
-      @battle.statChangeSource=nil
     end
     if raised
       @battle.pbCommonAnimation("StatUp",opponent,nil)
       if absorption==:offenses
         @battle.pbDisplay(_INTL("{1}'s {2} raised its offenses!",opponent.pbThis,abilityname))
+      elsif absorption==:speed
+        @battle.pbDisplay(_INTL("{1}'s {2} raised its Speed!",opponent.pbThis,abilityname))
+      elsif absorption==:sharp_defense
+        @battle.pbDisplay(_INTL("{1}'s {2} sharply raised its Defense!",opponent.pbThis,abilityname))
       else
         @battle.pbDisplay(_INTL("{1}'s {2} raised its defenses!",opponent.pbThis,abilityname))
       end
@@ -1767,24 +1822,19 @@ class PokeBattle_Move
       return true
     end
     return true if pbApplyTypeAbsorption(type,attacker,opponent)
-    if ((isConst?(opponent.ability,PBAbilities,:MOTORDRIVE)) || opponent.hasWorkingItem(:SHOCKDRIVE) && (opponent.pokemon.species == PBSpecies::GENESECT) && $fefieldeffect==24) &&
+    if opponent.hasWorkingItem(:SHOCKDRIVE) && opponent.species==PBSpecies::GENESECT && $fefieldeffect==24 &&
       (isConst?(type,PBTypes,:ELECTRIC) || FieldTypeChange(attacker,opponent,1,true)==PBTypes::ELECTRIC) &&
       !(opponent.moldbroken) 
-      if opponent.pbCanIncreaseStatStage?(PBStats::SPEED)
-        if $fefieldeffect == 17
-          opponent.pbIncreaseStatBasic(PBStats::SPEED,2)
-          @battle.pbCommonAnimation("StatUp",opponent,nil)
-          @battle.pbDisplay(_INTL("{1}'s {2} sharply raised its Speed!",
-          opponent.pbThis,PBAbilities.getName(opponent.ability)))
-        else
+      @battle.pbWithStatChangeSource([:item,PBItems::SHOCKDRIVE]) do
+        if opponent.pbCanIncreaseStatStage?(PBStats::SPEED)
           opponent.pbIncreaseStatBasic(PBStats::SPEED,1)
           @battle.pbCommonAnimation("StatUp",opponent,nil)
           @battle.pbDisplay(_INTL("{1}'s {2} raised its Speed!",
-          opponent.pbThis,PBAbilities.getName(opponent.ability)))
+            opponent.pbThis,PBItems.getName(PBItems::SHOCKDRIVE)))
+        else
+          @battle.pbDisplay(_INTL("{1}'s {2} made {3} ineffective!",
+            opponent.pbThis,PBItems.getName(PBItems::SHOCKDRIVE),name))
         end
-      else
-        @battle.pbDisplay(_INTL("{1}'s {2} made {3} ineffective!",
-        opponent.pbThis,PBAbilities.getName(opponent.ability),self.name))
       end
       return true
     end    
@@ -2117,6 +2167,10 @@ class PokeBattle_Move
   end
 
   def pbHorizonFocusTypeModifier(type,attacker,opponent,typemod)
+    if typemod>0 && @basedamage>0 && opponent.hp==opponent.totalhp &&
+       opponent.hasWorkingAbility(:TERASHELL) && !opponent.moldbroken && !attacker.pbBypassesTargetAbility?(self)
+      return [typemod,2].min
+    end
     if id==PBMoves::HORIZONFOCUS && @battle.field.effects[PBEffects::HarshSunlight] &&
        @battle.pbWeather==PBWeather::SUNNYDAY && typemod<=4 && typemod>0 && type==PBTypes::FLYING &&
        pbTypeModifier(PBTypes::FIRE,attacker,opponent)>=8
@@ -2508,12 +2562,7 @@ class PokeBattle_Move
     
     baseaccuracy=@accuracy
     return true if baseaccuracy==0
-    if tribute_attack?(attacker,:INSECTTRIBUTE) ||
-       tribute_status?(attacker,:ICICLETRIBUTE) ||
-       (tribute_attack?(attacker,:FISTTRIBUTE) && heroic_tribute?(attacker,:UNFEZANT_MYSTIC) && attacker.gender==1) ||
-       (tribute_attack?(attacker,:MINDTRIBUTE) && heroic_tribute?(attacker,:VICTINI))
-      return true
-    end
+    return true if tribute_bypasses_accuracy?(attacker)
     if attacker.hasWorkingAbility(:NOGUARD) ||
        opponent.hasWorkingAbility(:NOGUARD)
       return true
@@ -2738,8 +2787,7 @@ class PokeBattle_Move
 ################################################################################
   def pbIsCritical?(attacker,opponent)
     return false if opponent.effects[PBEffects::HardenGuard]==@battle.turncount
-    return true if tribute_attack?(attacker,:MINDTRIBUTE) && heroic_tribute?(attacker,:VICTINI) && @addlEffect<=0
-    return true if tribute_attack?(attacker,:INSECTTRIBUTE) && heroic_tribute?(attacker,:ARMALDO)
+    return true if tribute_guaranteed_critical?(attacker)
     if (opponent.hasWorkingAbility(:SHELLARMOR)) &&
         !(opponent.moldbroken)  
             return false 
@@ -2836,10 +2884,10 @@ class PokeBattle_Move
   end
 
   def pbHigherOffensiveStatWithCategory(attacker)
-    attack=attacker.attack
+    attack=attacker.pbParadoxAdjustedStat(attacker.attack,PBStats::ATTACK)
     attack_stage=attacker.stages[PBStats::ATTACK]
     if attacker.effects[PBEffects::PowerTrick]
-      attack=attacker.defense
+      attack=attacker.pbParadoxAdjustedStat(attacker.defense,PBStats::DEFENSE)
       attack_stage=attacker.stages[PBStats::DEFENSE]
     end
     special_attack=attacker.pbAbilitySpecialAttack
@@ -2926,7 +2974,7 @@ class PokeBattle_Move
     opponent.damagestate.partialhit = false
     # Grazing blow - half damage when accuracy check failed
     opponent.damagestate.partialhit = true if attacker.grazed
-    pixie_power = pixie_tribute_power(attacker)
+    pixie_power = pixie_tribute_power(attacker,opponent)
     return 0 if @basedamage==0 && pixie_power<=0
     if (options&NOCRITICAL)==0
       opponent.damagestate.critical=pbIsCritical?(attacker,opponent)
@@ -2940,14 +2988,7 @@ class PokeBattle_Move
     basedmg=pbBaseDamage(basedmg,attacker,opponent) # Some function codes alter base power
     basedmg*=2 if defense_curl_boost
     unboosted_power=basedmg
-    if tribute_attack?(attacker,:ZAPTRIBUTE) && heroic_tribute?(attacker,:ZEBSTRIKA)
-      speed_ratio = (attacker.pbSpeed/[opponent.pbSpeed,1].max.to_f).floor
-      basedmg = 40
-      basedmg = 60 if speed_ratio>=1
-      basedmg = 80 if speed_ratio>=2
-      basedmg = 120 if speed_ratio>=3
-      basedmg = 150 if speed_ratio>=4
-    end
+    basedmg=tribute_base_damage(attacker,opponent,basedmg)
     damagemult=0x1000
     damagemult=(damagemult*1.2).round if type!=original_type
     if reverbEcho
@@ -3025,6 +3066,9 @@ class PokeBattle_Move
     end
     if attacker.hasWorkingAbility(:IRONFIST) && isPunchingMove?
       damagemult=(damagemult*1.2).round
+    end
+    if attacker.hasWorkingItem(:PUNCHINGGLOVE) && isPunchingMove?
+      damagemult=(damagemult*1.1).round
     end
     if attacker.hasWorkingAbility(:RECKLESS)
       if [0xFA,0xBB9,0xBBA].include?(@function) || # 1/4 recoil
@@ -3208,7 +3252,7 @@ class PokeBattle_Move
     #if move was called using Me First
     #  damagemult=(damagemult*1.5).round
     #end
-    if attacker.effects[PBEffects::Charge] && isConst?(type,PBTypes,:ELECTRIC)
+    if (attacker.effects[PBEffects::Charge] || azureAbilityCharge) && isConst?(type,PBTypes,:ELECTRIC)
       damagemult=(damagemult*2.0).round
     end
     if attacker.effects[PBEffects::HelpingHand] && (options&SELFCONFUSE)==0
@@ -4472,38 +4516,39 @@ class PokeBattle_Move
     #End S.Field Effects
     basedmg=(basedmg*damagemult*1.0/0x1000).round
     ##### Calculate attacker's attack stat #####
-    atk=attacker.attack
+    atk=attacker.pbParadoxAdjustedStat(attacker.attack,PBStats::ATTACK)
     atkstage=attacker.stages[PBStats::ATTACK]+3
     if attacker.effects[PBEffects::PowerTrick]
-      atk=attacker.defense
+      atk=attacker.pbParadoxAdjustedStat(attacker.defense,PBStats::DEFENSE)
       atkstage=attacker.stages[PBStats::DEFENSE]+3
     end
     if @function==0x121 # Foul Play
-      atk=opponent.attack
+      atk=opponent.pbParadoxAdjustedStat(opponent.attack,PBStats::ATTACK)
       atkstage=opponent.stages[PBStats::ATTACK]+3
       if opponent.effects[PBEffects::PowerTrick]
-        atk=opponent.defense
+        atk=opponent.pbParadoxAdjustedStat(opponent.defense,PBStats::DEFENSE)
         atkstage=opponent.stages[PBStats::DEFENSE]+3
       end         
     end
     if @function==0x184 # Body Press
-      atk=attacker.defense 
+      atk=attacker.pbParadoxAdjustedStat(attacker.defense,PBStats::DEFENSE)
       atkstage=attacker.stages[PBStats::DEFENSE]+3
       if attacker.effects[PBEffects::PowerTrick]
-        atk=attacker.attack
+        atk=attacker.pbParadoxAdjustedStat(attacker.attack,PBStats::ATTACK)
         atkstage=attacker.stages[PBStats::ATTACK]+3
       end
       atk*=2 if attacker.effects[PBEffects::Counterpoise]
     end
     if @function==0x209
-      atk=attacker.spdef
+      atk=attacker.pbParadoxAdjustedStat(attacker.spdef,PBStats::SPDEF)
       atkstage=attacker.stages[PBStats::SPDEF]+3
     end
     if @function==0x175 || @function==0x25E || @function==0x0F6 || @function==0x02D # Photon Geyser 
       atk=attacker.pbAbilitySpecialAttack
       atkstage=attacker.stages[PBStats::SPATK]+3  
-      if attacker.attack > attacker.pbAbilitySpecialAttack
-        atk=attacker.attack
+      physical_attack=attacker.pbParadoxAdjustedStat(attacker.attack,PBStats::ATTACK)
+      if physical_attack > atk
+        atk=physical_attack
         atkstage=attacker.stages[PBStats::ATTACK]+3
       end
     end
@@ -4524,7 +4569,7 @@ class PokeBattle_Move
         atkstage = opponent.stages[PBStats::SPATK]+3
 	  end
       if @function==0x27A   # Hallucinate
-        atk      = attacker.spdef
+        atk      = attacker.pbParadoxAdjustedStat(attacker.spdef,PBStats::SPDEF)
         atkstage = attacker.stages[PBStats::SPDEF]+3
       end	  
       if $fefieldeffect == 24
@@ -4583,19 +4628,23 @@ class PokeBattle_Move
       atkstage=attacker.stages[PBStats::ATTACK]+3
     end
     if @function==0x208 # Super UMD  
-      atk=attacker.spdef
+      atk=attacker.pbParadoxAdjustedStat(attacker.spdef,PBStats::SPDEF)
       atkstage=attacker.stages[PBStats::SPDEF]+3
     end
     if attacker.hasWorkingItem(:CLAYCREST) && isConst?(attacker.species,PBSpecies,:CLAYDOL) # Claydol Crest
-        atk=attacker.defense
+        atk=attacker.pbParadoxAdjustedStat(attacker.defense,PBStats::DEFENSE)
     end  
     if attacker.hasWorkingItem(:TYPHCREST) && isConst?(attacker.species,PBSpecies,:TYPHLOSION) # Typhlosion Crest
-        atk=attacker.spatk
+        atk=attacker.pbParadoxAdjustedStat(attacker.spatk,PBStats::SPATK)
         atkstage=attacker.stages[PBStats::SPATK]+3
     end 
     if (!(opponent.hasWorkingAbility(:UNAWARE) || @battle.SilvallyCheck(opponent, PBTypes::FAIRY)) || (options&SELFCONFUSE)!=0 || opponent.moldbroken)
       atkstage=3 if opponent.damagestate.critical && atkstage<3
-      atk=(atk*1.0*stagemul[atkstage]/stagediv[atkstage]).floor
+      if tribute_attack?(attacker,:FISTTRIBUTE) && heroic_tribute?(attacker,:INFERNAPE)
+        atk=(atk*(2+tribute_positive_stage_count(attacker))/2).floor
+      else
+        atk=(atk*1.0*stagemul[atkstage]/stagediv[atkstage]).floor
+      end
       if attacker.hasWorkingAbility(:WARPOET) && isSoundBased?
         warpoetstage=attacker.stages[PBStats::SPATK]+3
         warpoetstage=3 if opponent.damagestate.critical && warpoetstage<3
@@ -4941,6 +4990,7 @@ class PokeBattle_Move
         gl2=(gl2*1.0*avBoost*evioBoost*dssBoost*fgBoost*stagemul[gl3]/stagediv[gl3]).floor
         gl1=(gl1*1.0*specsBoost*dstBoost*lbBoost*fbBoost*minusBoost*plusBoost*solarBoost*hydroBoost*batteryBoost*stagemul[gl4]/stagediv[gl4]).floor
         if gl1 > gl2
+          defense_stat=PBStats::SPATK
           defense=opponent.spatk
           defstage=opponent.stages[PBStats::SPATK]+3
         end
@@ -4958,6 +5008,7 @@ class PokeBattle_Move
        [PBStats::DEFENSE,PBStats::ATTACK].include?(defense_stat)
       defense*=2
     end
+    defense=opponent.pbParadoxAdjustedStat(defense,defense_stat)
     defense, defstage = apply_tribute_defense_modifiers(attacker, opponent, defense, defstage)
     if !(attacker.hasWorkingAbility(:UNAWARE) || @battle.SilvallyCheck(attacker,PBTypes::FAIRY)) || (options&SELFCONFUSE)!=0
     #if !attacker.hasWorkingAbility(:UNAWARE)
@@ -6027,8 +6078,7 @@ class PokeBattle_Move
     # STAB
     tribute_stab = false
     tribute_stab = true if tribute_attack?(attacker,:BLANKTRIBUTE) && heroic_tribute?(attacker,:HELIOLISK)
-    tribute_stab = true if tribute_attack?(attacker,:DRACOTRIBUTE) && heroic_tribute?(attacker,:DRUDDIGON) &&
-                           (@battle.pbWeather==PBWeather::SUNNYDAY || @battle.field.effects[PBEffects::HarshSunlight])
+    tribute_stab = true if draco_tribute_stab?(attacker)
     if (attacker.pbHasType?(type) || tribute_stab ||
         attacker.isShadow? && (type==attacker.pokemon.type1 || type==attacker.pokemon.type2) ||
 		  (attacker.hasWorkingAbility(:STEELWORKER) && type==PBTypes::STEEL) ||
@@ -6420,6 +6470,8 @@ class PokeBattle_Move
           opponent.damagestate.rampcrestused=true
           opponent.effects[PBEffects::RampCrestUsage]=true
           damage=damage-1
+        elsif !opponent.isbossmon && opponent.pbSurvivesStoneTribute?
+          damage-=1
         end
         damage=0 if damage<0
       end
@@ -6491,6 +6543,7 @@ class PokeBattle_Move
   end
 
   def pbEffectFixedDamage(damage,attacker,opponent,hitnum=0,alltargets=nil,showanimation=true)
+    damage=(damage*1.5).round if spooky_tribute_striking?(attacker) && spooky_tribute_active?(attacker)
     type=@type
     type=pbType(type,attacker,opponent)
     typemod=pbTypeModMessages(type,attacker,opponent)
@@ -6515,7 +6568,6 @@ class PokeBattle_Move
   end
 
   def pbEffect(attacker,opponent,hitnum=0,alltargets=nil,showanimation=true)
-    return 0 if attacker && pbHandleSpookyTributeCharge(attacker,showanimation)
     return 0 if !opponent
     type=@type
     type=pbType(type,attacker,opponent)
@@ -6593,52 +6645,15 @@ class PokeBattle_Move
     pbEffectMessages(attacker,opponent)
     pbOnDamageLost(damage,attacker,opponent)
     pbZMoveEffects(attacker,opponent) if (opponent.damagestate.typemod!=0 && id > 10000)
-    if self.function==0x207
-      thunder_index = attacker.effects[PBEffects::ThunderRaidHit]
-      if damage>0
-        if thunder_index == 0
-          if opponent.pbCanReduceStatStage?(PBStats::ATTACK,false)
-            opponent.pbReduceStat(PBStats::ATTACK,1,false,207)
-            attacker.effects[PBEffects::ThunderRaidStat][thunder_index] = 1
-          end
-        elsif thunder_index == 1
-          if opponent.pbCanReduceStatStage?(PBStats::DEFENSE,false)
-            opponent.pbReduceStat(PBStats::DEFENSE,1,false,207)
-            attacker.effects[PBEffects::ThunderRaidStat][thunder_index] = 1
-          end
-        elsif thunder_index == 2
-          if opponent.pbCanReduceStatStage?(PBStats::SPATK,false)
-            opponent.pbReduceStat(PBStats::SPATK,1,false,207)
-            attacker.effects[PBEffects::ThunderRaidStat][thunder_index] = 1
-          end
-        elsif thunder_index == 3
-          if opponent.pbCanReduceStatStage?(PBStats::SPDEF,false)
-            opponent.pbReduceStat(PBStats::SPDEF,1,false,207)
-            attacker.effects[PBEffects::ThunderRaidStat][thunder_index] = 1
-          end
-        elsif thunder_index == 4
-          if opponent.pbCanReduceStatStage?(PBStats::SPEED,false)
-            opponent.pbReduceStat(PBStats::SPEED,1,false,207)
-            attacker.effects[PBEffects::ThunderRaidStat][thunder_index] = 1
-          end
+    if id==PBMoves::THUNDERRAID
+      index=attacker.effects[PBEffects::ThunderRaidHit]
+      stat=[PBStats::ATTACK,PBStats::DEFENSE,PBStats::SPATK,PBStats::SPDEF,PBStats::SPEED][index]
+      if damage>0 && !opponent.damagestate.substitute
+        @battle.pbWithStatChangeSource([:move,@id]) do
+          opponent.pbReduceStat(stat,1,false,@id,attacker)
         end
       end
-      if thunder_index == 4
-        status_strings = ["Atk", "Def", "Sp. Atk", "Sp. Def", "Speed"]
-        stat_string = ""
-        for i in 0..4
-          if attacker.effects[PBEffects::ThunderRaidStat][i]
-            stat_string = stat_string + status_strings[i] + ", "
-          end
-        end
-        if stat_string.length > 0
-          stat_string = stat_string[0...-2]
-          stat_str = stat_string.reverse.sub(", ".reverse, " and ".reverse).reverse
-          @battle.pbCommonAnimation("StatDown",opponent,nil)
-          @battle.pbDisplay(_INTL("{1}'s {2} fell!",opponent.pbThis, stat_str))
-        end
-      end
-      attacker.effects[PBEffects::ThunderRaidHit] = (attacker.effects[PBEffects::ThunderRaidHit]+1)%5
+      attacker.effects[PBEffects::ThunderRaidHit]=(index+1)%5
     end
     return damage   # The HP lost by the opponent due to this attack
   end

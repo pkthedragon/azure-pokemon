@@ -463,6 +463,7 @@ class PokeBattle_Pokemon
     if move.is_a?(String) || move.is_a?(Symbol)
       move=getID(PBMoves,move)
     end
+    move=PBMove.current_id(move)
     return false if !move || move<=0
     for i in 0...4
       return true if @moves[i].id==move
@@ -524,6 +525,7 @@ class PokeBattle_Pokemon
     if move.is_a?(String) || move.is_a?(Symbol)
       move=getID(PBMoves,move)
     end
+    move=PBMove.current_id(move)
     return if move<=0
     for i in 0...4
       if @moves[i].id==move
@@ -554,6 +556,7 @@ class PokeBattle_Pokemon
     if move.is_a?(String) || move.is_a?(Symbol)
       move=getID(PBMoves,move)
     end
+    move=PBMove.current_id(move)
     return if !move || move<=0
     newmoves=[]
     for i in 0...4

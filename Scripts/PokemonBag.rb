@@ -968,7 +968,26 @@ end
     return ret
   end
 
-    
+  def pbReplaceOneItem(old_item,new_item)
+    return false if !pbHasItem?(old_item)
+    return true if old_item==new_item
+    return false if BAGMAXPERSLOT>0 && pbQuantity(new_item)>=BAGMAXPERSLOT
+    return false if !pbStoreItem(new_item)
+    return true if pbDeleteItem(old_item)
+    pbDeleteItem(new_item)
+    return false
+  end
+
+  def pbMigrateItemIDs
+    @pockets.each do |pocket|
+      pocket&.each { |slot| slot[0]=yield(slot[0]) if slot }
+    end
+    if @registeredItem.is_a?(Array)
+      @registeredItem.map! { |item| yield(item) }
+    elsif @registeredItem
+      @registeredItem = yield(@registeredItem)
+    end
+  end
 end
 
 class PokemonBag

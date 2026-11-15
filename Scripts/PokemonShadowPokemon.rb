@@ -254,61 +254,16 @@ ItemHandlers::UseOnPokemon.add(:TIMEFLUTE,proc{|item,pokemon,scene|
 })
 
 ItemHandlers::BattleUseOnBattler.add(:JOYSCENT,proc{|item,battler,scene|
-   if !battler.isShadow?
+   if !battler.isShadow? || !battler.inHyperMode?
      scene.pbDisplay(_INTL("It won't have any effect."))
-     return false
+     next false
    end
-   if battler.inHyperMode?
-     battler.pokemon.hypermode=false
-     battler.pokemon.adjustHeart(-300)
-     scene.pbDisplay(_INTL("{1} came to its senses from the {2}!",battler.pbThis,PBItems.getName(item)))
-#     if battler.happiness!=255 || battler.pokemon.heartgauge!=0
-#       pbRaiseHappinessAndReduceHeart(battler.pokemon,scene,500)
-#     end
-     return true
-   end
-#   return pbRaiseHappinessAndReduceHeart(battler.pokemon,scene,500)
-   scene.pbDisplay(_INTL("It won't have any effect."))
-   return false
+   battler.pokemon.hypermode=false
+   battler.pokemon.adjustHeart(-300)
+   scene.pbDisplay(_INTL("{1} came to its senses from the {2}!",battler.pbThis,PBItems.getName(item)))
+   next true
 })
-
-ItemHandlers::BattleUseOnBattler.add(:EXCITESCENT,proc{|item,battler,scene|
-   if !battler.isShadow?
-     scene.pbDisplay(_INTL("It won't have any effect."))
-     return false
-   end
-   if battler.inHyperMode?
-     battler.pokemon.hypermode=false
-     battler.pokemon.adjustHeart(-300)
-     scene.pbDisplay(_INTL("{1} came to its senses from the {2}!",battler.pbThis,PBItems.getName(item)))
-#     if battler.happiness!=255 || battler.pokemon.heartgauge!=0
-#       pbRaiseHappinessAndReduceHeart(battler.pokemon,scene,1000)
-#     end
-     return true
-   end
-#   return pbRaiseHappinessAndReduceHeart(battler.pokemon,scene,1000)
-   scene.pbDisplay(_INTL("It won't have any effect."))
-   return false
-})
-
-ItemHandlers::BattleUseOnBattler.add(:VIVIDSCENT,proc{|item,battler,scene|
-   if !battler.isShadow?
-     scene.pbDisplay(_INTL("It won't have any effect."))
-     return false
-   end
-   if battler.inHyperMode?
-     battler.pokemon.hypermode=false
-     battler.pokemon.adjustHeart(-300)
-     scene.pbDisplay(_INTL("{1} came to its senses from the {2}!",battler.pbThis,PBItems.getName(item)))
- #    if battler.happiness!=255 || battler.pokemon.heartgauge!=0
-#       pbRaiseHappinessAndReduceHeart(battler.pokemon,scene,2000)
-#     end
-     return true
-   end
-#   return pbRaiseHappinessAndReduceHeart(battler.pokemon,scene,2000)
-   scene.pbDisplay(_INTL("It won't have any effect."))
-   return false
-})
+ItemHandlers::BattleUseOnBattler.copy(:JOYSCENT,:EXCITESCENT,:VIVIDSCENT)
 
 def pbApplyEVGain(pokemon,ev,evgain)
   totalev=0
@@ -702,17 +657,14 @@ end
 ################################################################################
 class PokeBattle_Move_12E < PokeBattle_Move
   def pbEffect(attacker,opponent,hitnum=0,alltargets=nil,showanimation=true)
-    affected=[]
-    for i in 0...4
-      affected.push(i) if @battle.battlers[i].hp>1
-    end
+    affected=@battle.activeBattlerIndices.map { |index| @battle.battlers[index] }.select { |battler| battler.hp>1 }
     if affected.length==0
       @battle.pbDisplay(_INTL("But it failed!"))
       return -1
     end
     pbShowAnimation(@id,attacker,opponent,hitnum,alltargets,showanimation)
-    for i in affected
-      @battle.battlers[i].pbReduceHP((@battle.battlers[i].hp/2).floor)
+    affected.each do |battler|
+      battler.pbReduceHP(battler.hp/2)
     end
     @battle.pbDisplay(_INTL("Each Pokémon's HP was halved!"))
     attacker.effects[PBEffects::HyperBeam]=2

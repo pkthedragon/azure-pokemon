@@ -381,7 +381,6 @@ class PokeBattle_Battle
   attr_accessor(:switchedOut)
 #### KUROTSUNE - 015 - END
   attr_accessor(:previousMove)    # Move used directly previously
-  attr_accessor(:aiMoveMemory)
   attr_accessor(:rules)
   attr_reader(:turncount)
   attr_accessor :controlPlayer
@@ -402,6 +401,7 @@ class PokeBattle_Battle
   attr_accessor(:lastFaintedEnemyAbility) # Last fainted enemy ability for Power of Alchemy
   attr_accessor(:lastFaintedAllyAbility)  # Last fainted ally ability for Receiver
   attr_accessor(:statChangeSource)
+  attr_accessor(:icicleTributeBypass)
 
   include PokeBattle_BattleCommon
 
@@ -430,6 +430,14 @@ class PokeBattle_Battle
     yield
   ensure
     @statChangeSource=previous_source
+  end
+
+  def pbWithIcicleTributeMove(user,move)
+    previous_bypass=@icicleTributeBypass
+    @icicleTributeBypass=move.tribute_status?(user,:ICICLETRIBUTE)
+    yield
+  ensure
+    @icicleTributeBypass=previous_bypass
   end
 
   def pbRecordMirrorHerbBoost(source,stat,amount)
@@ -527,7 +535,6 @@ class PokeBattle_Battle
     @lastFaintedEnemyAbility = [nil, nil] # [player side, opponent side]
     @lastFaintedAllyAbility = [nil, nil]  # [player side, opponent side]
     @partnerswitch   = []
-    @aiMoveMemory    = [[],[],[[],[],[],[],[],[],[],[],[],[],[],[]]]
     @synchronize     = [-1,-1,0]
     @megaEvolution   = []
     if @player.is_a?(Array)
@@ -766,6 +773,7 @@ class PokeBattle_Battle
 
   def pbMoveIgnoresTripleLanes?(move, attacker, target = nil)
     return false if !tripleBattle? || !move || !attacker
+    return true if move.tribute_has?(attacker,:EARTHTRIBUTE)
     return true if move.id==PBMoves::SANDATTACK
     resolved_type = move.type
     if move.respond_to?(:pbType)
@@ -836,8 +844,8 @@ class PokeBattle_Battle
     return true
   end
 
-  def pbCanShift?(idxPokemon, targetBattlerIndex, showMessages)
-    return false if !tripleBattle?
+  def pbCanShift?(idxPokemon, targetBattlerIndex, showMessages, move_swap: false)
+    return false if move_swap ? singleBattle? : !tripleBattle?
     return false if targetBattlerIndex.nil? || targetBattlerIndex < 0 || targetBattlerIndex >= @battlers.length
     targetBattler = @battlers[targetBattlerIndex]
     return false if !targetBattler || targetBattler.isFainted?
@@ -857,6 +865,7 @@ class PokeBattle_Battle
       pbDisplayPaused(_INTL("A Pokémon inside Dondozo can't shift lanes.")) if showMessages
       return false
     end
+    return true if move_swap
     return false if !pbCanSwitch?(idxPokemon, -1, showMessages)
     return false if !pbCanRegisterSwitchAction?(idxPokemon, showMessages)
     if @choices[targetBattlerIndex] && @choices[targetBattlerIndex][0] == 2
@@ -906,6 +915,27 @@ class PokeBattle_Battle
       end
     end
     return @weather
+  end
+
+  def pbClearTeraformWeatherAndTerrain(battler)
+    effects=@field.effects
+    overlays=[PBEffects::ElectricTerrain,PBEffects::GrassyTerrain,PBEffects::MistyTerrain,PBEffects::PsychicTerrain]
+    temporary=effects[PBEffects::Terrain]>0 || effects[PBEffects::Splintered]>0
+    changed=temporary || @weather>0 || overlays.any? { |effect| effects[effect]>0 }
+    return false if !changed
+    @weather=@weatherduration=@weatherbackup=0
+    @weatherbackupanim=nil
+    effects[PBEffects::HarshSunlight]=false
+    effects[PBEffects::HeavyRain]=false
+    overlays.each { |effect| effects[effect]=0 }
+    if temporary
+      effects[PBEffects::Terrain]=0
+      effects[PBEffects::Splintered]=0
+      $fefieldeffect=$febackup
+      pbChangeBGSprite
+    end
+    pbDisplay(_INTL("{1}'s {2} eliminated the weather and terrain!",battler.pbThis,PBAbilities.getName(battler.ability)))
+    return true
   end
 
   def pbCanChangeFieldSeedStat?(battler,stat,increase=true)
@@ -1772,6 +1802,7 @@ class PokeBattle_Battle
       return true
     end
     return false if pkmn.effects[PBEffects::Transform]
+    return true if pkmn.pokemon && AzureMegaForms.stone_for_species?(pkmn.pokemon.species,item)
     if isConst?(pkmn.ability,PBAbilities,:MULTITYPE) &&
        (isConst?(item,PBItems,:FISTPLATE) ||
         isConst?(item,PBItems,:SKYPLATE) ||
@@ -2555,15 +2586,13 @@ class PokeBattle_Battle
        !pbCanChooseMove?(idxPokemon,2,false) &&
        !pbCanChooseMove?(idxPokemon,3,false)
       if pbCanDracoTribute?(idxPokemon)
-        backup=pbRegisterDracoTribute(idxPokemon,true)
-        can_choose_draco=pbCanChooseMove?(idxPokemon,0,false)
-        if backup
-          for i in 0...4
-            @battlers[idxPokemon].moves[i]=backup[i]
-          end
-          @battlers[idxPokemon].pbDisableTributeDraco if @battlers[idxPokemon].respond_to?(:pbDisableTributeDraco)
+        battler=@battlers[idxPokemon]
+        enabled_here=!battler.tributeDracoActive && battler.pbEnableTributeDraco
+        begin
+          return true if pbCanChooseMove?(idxPokemon,0,false)
+        ensure
+          battler.pbDisableTributeDraco if enabled_here
         end
-        return true if can_choose_draco
       end
       return false
     end
@@ -2767,54 +2796,29 @@ class PokeBattle_Battle
   def pbCanDracoTribute?(index)
     battler=@battlers[index]
     return false if !battler || battler.isFainted?
-    return false if !battler.respond_to?(:pbHasDracoTributeMove?) || !battler.pbHasDracoTributeMove?
     return false if !battler.moves || !battler.moves[0] || battler.moves[0].id==0
-    return true
+    inscribed=battler.pbPrepareTributeDraco
+    return false if !inscribed
+    return inscribed.totalpp==0 || inscribed.pp>0
   end
 
   def pbRegisterDracoTribute(index,setup=false)
-    return nil if !pbCanDracoTribute?(index)
     battler=@battlers[index]
     if setup
+      return nil if !pbCanDracoTribute?(index)
       backup=battler.moves.clone
-      battler.pbEnableTributeDraco
-      return backup
+      return backup if battler.pbEnableTributeDraco
+      return nil
     end
     battler.pbDisableTributeDraco
     return battler.moves.clone
   end
 
-  def pbFindTributeChainMoveIndex(battler,move_name)
-    return nil if !battler || !move_name
-    for idx in 0...battler.moves.length
-      move=battler.moves[idx]
-      next if !move || move.id==0
-      next if move.name!=move_name
-      next if !pbCanChooseMove?(battler.index,idx,false)
-      return idx
-    end
-    return nil
-  end
-
   def pbTriggerTributeChain(user,move)
-    return false if !user || !move
-    attacker_side=user.index % 2
-    @battlers.each do |ally|
-      next if !ally || ally.index==user.index
-      next if ally.index % 2 != attacker_side
-      next if ally.isFainted? || ally.hasMovedThisRound?
-      if @choices[ally.index][0]==1 && @choices[ally.index][2] &&
-         @choices[ally.index][2].name==move.name
-        ally.pbProcessTurn(@choices[ally.index])
-        return true
-      end
-      move_index=pbFindTributeChainMoveIndex(ally,move.name)
-      next if move_index.nil?
-      target=@choices[user.index][3]
-      target=-1 if target.nil?
-      followup=[1,move_index,ally.moves[move_index],target]
-      @choices[ally.index]=followup
-      ally.pbProcessTurn(followup)
+    user.sameSideLivingBattlers(false).each do |ally|
+      choice=@choices[ally.index]
+      next if ally.hasMovedThisRound? || choice[0]!=1 || choice[2]&.id!=move.id
+      ally.pbProcessTurn(choice)
       return true
     end
     return false
@@ -2826,7 +2830,9 @@ class PokeBattle_Battle
     return false if @battlers[i].isFainted?
     if @choices[i][0]==1 && @choices[i][1]>=0
       choice=@choices[i][1]
-      return isConst?(@battlers[i].moves[choice].id,PBMoves,move)
+      move_id=PBMove.current_id(getID(PBMoves,move))
+      return false if !move_id || move_id==0
+      return @battlers[i].moves[choice].id==move_id
     end
     return false
   end
@@ -2865,6 +2871,7 @@ class PokeBattle_Battle
 
   def pbMovePriority(user,move,target=nil,first_turn=(user.turncount==1))
     priority=move.zmove ? 0 : move.priority
+    return priority if priority==-99 && move.tribute_has?(user,:IRONTRIBUTE)
     pixie_attack=move.respond_to?(:pixie_tribute_power) && move.pixie_tribute_power(user)>0
     status_move=move.basedamage==0 && !pixie_attack
     priority+=1 if status_move && user.hasWorkingAbility(:PRANKSTER)
@@ -3272,8 +3279,6 @@ class PokeBattle_Battle
   end
 
   def pbSendOut(index,pokemon)
-    @aiMoveMemory[0].clear
-    @aiMoveMemory[1].clear if !pbIsOpposing?(index)
     pbSetSeen(pokemon)
     @peer.pbOnEnteringBattle(self,pokemon)
 
@@ -3814,8 +3819,8 @@ class PokeBattle_Battle
     PBEffects::AftershockUser, PBEffects::SyrupBombUser
   ].freeze
 
-  def pbShiftBattlers(index1,index2)
-    return false if !pbCanShift?(index1,index2,false)
+  def pbShiftBattlers(index1,index2,move_swap: false)
+    return false if !pbCanShift?(index1,index2,false,move_swap: move_swap)
     side=(pbIsOpposing?(index1)) ? 1 : 0
     owner=pbGetOwnerIndex(index1)
     if @megaEvolution[side][owner]==index1
@@ -3859,15 +3864,15 @@ class PokeBattle_Battle
 # Using an item.
 ################################################################################
 # Uses an item on a PokÃ©mon in the player's party.
-  def pbUseItemOnPokemon(item,pkmnIndex,userPkmn,scene)
-    pokemon=@party1[pkmnIndex]
+  def pbUseItemOnPokemon(item,pkmnIndex,userPkmn,scene,move_index=nil)
+    pokemon=pkmnIndex && pkmnIndex>=0 ? @party1[pkmnIndex] : nil
     battler=nil
     name=pbGetOwner(userPkmn.index).fullname
     name=pbGetOwner(userPkmn.index).name if pbBelongsToPlayer?(userPkmn.index)
     pbDisplayBrief(_INTL("{1} used the\r\n{2}.",name,PBItems.getName(item)))
     PBDebug.log("[Player used #{PBItems.getName(item)}]")
     ret=false
-    if pokemon.isEgg?
+    if !pokemon || pokemon.isEgg?
       pbDisplay(_INTL("But it had no effect!"))
     else
       eachActiveBattlerIndex do |i|
@@ -3875,9 +3880,13 @@ class PokeBattle_Battle
           battler=@battlers[i]
         end
       end
-      ret=ItemHandlers.triggerBattleUseOnPokemon(item,pokemon,battler,scene)
+      blocked=battler && (battler.effects[PBEffects::Embargo]>0 ||
+                          battler.effects[PBEffects::MultiTurnAttack]==PBMoves::BINDINGWORD)
+      if !blocked
+        ret=ItemHandlers.triggerBattleUseOnPokemon(item,pokemon,battler,scene,move_index)
+      end
     end
-    if !ret && pbBelongsToPlayer?(userPkmn.index)
+    if !ret && pbBelongsToPlayer?(userPkmn.index) && [1,2].include?($ItemData[item][ITEMBATTLEUSE])
       if $PokemonBag.pbCanStore?(item)
         $PokemonBag.pbStoreItem(item)
       else
@@ -3893,8 +3902,13 @@ class PokeBattle_Battle
 # Uses an item on an active PokÃ©mon.
   def pbUseItemOnBattler(item,index,userPkmn,scene)
     PBDebug.log("[Player used #{PBItems.getName(item)}]")
-    ret=ItemHandlers.triggerBattleUseOnBattler(item,@battlers[index],scene)
-    if !ret && pbBelongsToPlayer?(userPkmn.index)
+    target=index && index>=0 ? @battlers[index] : nil
+    ret=false
+    if target && !target.isFainted? && target.effects[PBEffects::Embargo]<=0 &&
+       target.effects[PBEffects::MultiTurnAttack]!=PBMoves::BINDINGWORD
+      ret=ItemHandlers.triggerBattleUseOnBattler(item,target,scene)
+    end
+    if !ret && pbBelongsToPlayer?(userPkmn.index) && [1,2].include?($ItemData[item][ITEMBATTLEUSE])
       if $PokemonBag.pbCanStore?(item)
         $PokemonBag.pbStoreItem(item)
       else
@@ -3907,10 +3921,11 @@ class PokeBattle_Battle
     return ret
   end
 
-  def pbRegisterItem(idxPokemon,idxItem,idxTarget=nil)
+  def pbRegisterItem(idxPokemon,idxItem,idxTarget=nil,move_index=nil)
     PBDebug.log("[pbRegisterItem called with idxPokemon=#{idxPokemon}, idxItem=#{idxItem}, idxTarget=#{idxTarget}]")
     # Block using items on partner's Pokemon when partner control is enabled
-    if $game_switches[2030] && @player.is_a?(Array) && idxTarget
+    if $game_switches[2030] && @player.is_a?(Array) && idxTarget &&
+       [1,3].include?($ItemData[idxItem][ITEMBATTLEUSE])
       secondPartyStart = pbSecondPartyBegin(idxPokemon)
       if idxTarget >= secondPartyStart
         pbDisplay(_INTL("You can't use items on your partner's PokÃ©mon!"))
@@ -3943,9 +3958,7 @@ class PokeBattle_Battle
       PBDebug.log("[Item does NOT have UseInBattle handler]")
     end
     PBDebug.log("[Registering choice for Pokemon #{idxPokemon}]")
-    @choices[idxPokemon][0]=3         # "Use an item"
-    @choices[idxPokemon][1]=idxItem   # ID of item to be used
-    @choices[idxPokemon][2]=idxTarget # Index of PokÃ©mon to use item on
+    @choices[idxPokemon]=[3,idxItem,idxTarget,-1,move_index]
     side=(pbIsOpposing?(idxPokemon)) ? 1 : 0
     owner=pbGetOwnerIndex(idxPokemon)
     if @megaEvolution[side][owner]==idxPokemon
@@ -4219,6 +4232,7 @@ class PokeBattle_Battle
 ################################################################################
   def pbCanMegaEvolve?(index)
     return false if $game_switches[NO_MEGA_EVOLUTION]
+    return false if !@battlers[index] || @battlers[index].isFainted?
     if !(@battlers[index].isMega?)
       @battlers[index].hasmegad=false
     end
@@ -4238,9 +4252,6 @@ class PokeBattle_Battle
     side=(pbIsOpposing?(index)) ? 1 : 0
     owner=pbGetOwnerIndex(index)
     @megaEvolution[side][owner]=index
-    if !pbIsOpposing?(index)
-      @battlers[index].effects[PBEffects::WillMega]=true
-    end
   end
 
   def pbCanMegaEvolveAI?(i,index)
@@ -4266,6 +4277,7 @@ class PokeBattle_Battle
 
   def pbMegaEvolve(index)
     return if !@battlers[index] || !@battlers[index].pokemon
+    return if @battlers[index].isFainted? || $game_switches[NO_MEGA_EVOLUTION]
     return if !(@battlers[index].hasMega? rescue false)
     return if (@battlers[index].hasmegad)
     return if (@battlers[index].isMega?)
@@ -4309,7 +4321,6 @@ class PokeBattle_Battle
     @megaEvolution[side][owner]=-2
 #### KUROTSUNE - 006 - START
     @battlers[index].pbAbilitiesOnSwitchIn(true,true)
-    @battlers[index].effects[PBEffects::WillMega]=false
     @battlers[index].hasmegad=true
     #@battlers[index].wonderroom=false
 #### KUROTSUNE - 006 - END
@@ -4327,12 +4338,13 @@ end
 ################################################################################
 # Use Z-Move.
 ################################################################################
-  def pbCanZMove?(index)
+  def pbCanZMove?(index,forecast: false)
     return false if $game_switches[NO_Z_MOVE]
     return false if !@battlers[index].hasZMove?
     return false if !pbHasZRing(index)
     side=(pbIsOpposing?(index)) ? 1 : 0
     owner=pbGetOwnerIndex(index)
+    return @zMove[side][owner]!=-2 if forecast
     if @zMove[side][owner]!=-1
       if (@zMove[side][owner]>=0 && @zMove[side][owner]==index)
         return true
@@ -4683,6 +4695,7 @@ end
   def pbLearnMove(pkmnIndex,move)
     pokemon=@party1[pkmnIndex]
     return if !pokemon
+    move=PBMove.current_id(move)
     pkmnname=pokemon.name
     battler=pbFindPlayerBattler(pkmnIndex)
     movename=PBMoves.getName(move)
@@ -5271,10 +5284,12 @@ end
         backdrop="ColosseumFieldPlaceholder"
       elsif $febackgroundstore == 45
         backdrop="InfernalFieldPlaceholder"
+      elsif $febackgroundstore == 46
+        backdrop="Beach"
+      elsif $febackgroundstore == 47
+        backdrop="Library"
       end
-      if backdrop.nil? || backdrop == ""
-        backdrop = $febackup || "IndoorA"
-      end
+      backdrop ||= $febackup.is_a?(String) && !$febackup.empty? ? $febackup : "IndoorA"
       backdrop3 = backdrop
       $febackgroundstore = backdrop3
     else
@@ -5524,6 +5539,11 @@ end
                 pbApplySceneBG("battlebg","Graphics/Battlebacks/battlebgGoldenArena.png")
                 pbApplySceneBG("playerbase","Graphics/Battlebacks/playerbaseGoldenArena.png")
                 pbApplySceneBG("enemybase","Graphics/Battlebacks/enemybaseGoldenArena.png")
+          when 46,47 # Beach and library use the neutral bases.
+                backdrop=$fefieldeffect==46 ? "Beach" : "Library"
+                pbApplySceneBG("battlebg","Graphics/Battlebacks/battlebg#{backdrop}.png")
+                pbApplySceneBG("playerbase","Graphics/Battlebacks/playerbaseIndoorA.png")
+                pbApplySceneBG("enemybase","Graphics/Battlebacks/enemybaseIndoorA.png")
   end
  end
 
@@ -5925,6 +5945,7 @@ def pbStartBattle(canlose=false)
 #### SARDINES - v17 - END
     pbCommandPhaseBattlers.each do |i|   # Reset choices if commands can be shown
       if pbCanShowCommands?(i) || @battlers[i].isFainted?
+        @battlers[i].pbDisableTributeDraco if @battlers[i].tributeDracoActive
         @choices[i][0]=0
         @choices[i][1]=0
         @choices[i][2]=nil
@@ -5964,10 +5985,7 @@ def pbStartBattle(canlose=false)
         end
       end
       if pbCanShowCommands?(i)
-        @battlers[i].effects[PBEffects::SomethingCrazy]=nil
         @battlers[i].effects[PBEffects::Attacking]=false
-        @battlers[i].effects[PBEffects::UsingItem]=[]
-        @battlers[i].effects[PBEffects::Switching]=false
       end
       break if @decision!=0
       next if @choices[i][0]!=0
@@ -6002,7 +6020,6 @@ def pbStartBattle(canlose=false)
                   if @battlers[i].moves[index].basedamage>0
                     @battlers[i].effects[PBEffects::Attacking]=true
                   end
-                  @battlers[i].effects[PBEffects::SomethingCrazy]=@battlers[i].moves[index]
                   next if !pbRegisterMove(i,index)
                   thismove=@battlers[i].moves[index]
                   target=@battlers[i].pbTarget(thismove)
@@ -6054,21 +6071,10 @@ def pbStartBattle(canlose=false)
                 end
               else
                 item=pbItemMenu(i)
-                if item[0]>0
-                  if pbRegisterItem(i,item[0],item[1])
-                    activeTarget = false
-                    eachSameSideBattler(i) do |battler|
-                      next if battler.isFainted?
-                      if battler.pokemonIndex==item[1]
-                        activeTarget = true
-                        break
-                      end
-                    end
-                    if activeTarget
-                      @battlers[i].effects[PBEffects::UsingItem]=[item[0],item[1]]
-                    end
-                    commandDone=true
-                  end
+                if item[0]>0 && pbRegisterItem(i,item[0],item[1],item[2])
+                  pbConsumeItemInBattle($PokemonBag,item[0])
+                  pbCleanupItemBelt
+                  commandDone=true
                 end
               end
             elsif cmd==2 # PokÃ©mon
@@ -6081,8 +6087,6 @@ def pbStartBattle(canlose=false)
               elsif pkmn>=0
                 if pbRegisterSwitch(i,pkmn)
                   commandDone=true
-                  @battlers[i].effects[PBEffects::Switching]=true
-                  @battlers[i].effects[PBEffects::SwitchingTo]=pkmn
                 end
               end
             elsif cmd==3   # Run
@@ -6111,18 +6115,13 @@ def pbStartBattle(canlose=false)
               if @megaEvolution[side][owner]==i
                 @megaEvolution[side][owner]=-1
               end
-              @battlers[i].effects[PBEffects::UsingItem]=[]
               @battlers[i].effects[PBEffects::Attacking]=false
-              @battlers[i].effects[PBEffects::Switching]=false
               if @zMove[side][owner]==i
                 @zMove[side][owner]=-1
               end
               commandDone=true
             elsif cmd==-1   # Go back to first battler's choice
               @battlers[i].effects[PBEffects::Attacking]=false
-              @battlers[i].effects[PBEffects::UsingItem]=[]
-              @battlers[i].effects[PBEffects::Switching]=false
-              @battlers[i].effects[PBEffects::SomethingCrazy]=nil
               @battlers[i].effects[PBEffects::AttackingTarget].clear
               for side in 0...@megaEvolution.length
                 for owner in 0...@megaEvolution[side].length
@@ -6206,6 +6205,8 @@ def pbStartBattle(canlose=false)
     # Prepare for Z Moves
     eachActiveBattlerIndex do |i|
       next if @choices[i][0]!=1
+      move=@choices[i][2]
+      move.pbApplyTributeQueuedEffect(@battlers[i]) if move
       side=(pbIsOpposing?(i)) ? 1 : 0
       owner=pbGetOwnerIndex(i)
       if @zMove[side][owner]==i && @choices[i][0]==1 && @choices[i][2]
@@ -6328,8 +6329,8 @@ def pbStartBattle(canlose=false)
         if item>0
           usetype=$ItemData[item][ITEMBATTLEUSE]
           if usetype==1 || usetype==3
-            if @choices[i.index][2]>=0
-              pbUseItemOnPokemon(item,@choices[i.index][2],i,@scene)
+            if @choices[i.index][2] && @choices[i.index][2]>=0
+              pbUseItemOnPokemon(item,@choices[i.index][2],i,@scene,@choices[i.index][4])
               i.itemUsed = true
               i.itemUsed2 = true
             end
@@ -6424,7 +6425,7 @@ def pbStartBattle(canlose=false)
         move = @choices[i.index][2]
         tribute_chain = (move.respond_to?(:tribute_attack?) && move.tribute_attack?(i,:FISTTRIBUTE) && move.heroic_tribute?(i,:PASSIMIAN)) ||
                         (move.respond_to?(:tribute_attack?) && move.tribute_attack?(i,:MINDTRIBUTE) && move.heroic_tribute?(i,:ORANGURU))
-        if tribute_chain
+        if tribute_chain && i.lastMoveUsed==move.id
           pbTriggerTributeChain(i,move)
           return if @decision>0
         end
@@ -6527,6 +6528,112 @@ def pbStartBattle(canlose=false)
 ################################################################################
 # End of round.
 ################################################################################
+  TRIBUTE_BATTLER_DURATIONS=[
+    PBEffects::Taunt,PBEffects::Disable,PBEffects::Encore,PBEffects::HealBlock,
+    PBEffects::MagnetRise,PBEffects::LockOn,PBEffects::Embargo,PBEffects::Telekinesis,
+    PBEffects::ThroatChop,PBEffects::PerishSong,PBEffects::Confusion,PBEffects::Blinded
+  ].freeze
+  TRIBUTE_SIDE_DURATIONS=[
+    PBEffects::Reflect,PBEffects::LightScreen,PBEffects::AuroraVeil,PBEffects::Tailwind,
+    PBEffects::LuckyChant,PBEffects::Safeguard,PBEffects::DuneDefense,PBEffects::Mist,
+    PBEffects::Bonfire,PBEffects::ScorchingGround,PBEffects::PressurePlate,
+    PBEffects::DoubleDose,PBEffects::EtherealCloak
+  ].freeze
+  TRIBUTE_FIELD_DURATIONS=[
+    PBEffects::Gravity,PBEffects::MagicRoom,PBEffects::WonderRoom,PBEffects::Terrain,
+    PBEffects::GrassyTerrain,PBEffects::MistyTerrain,PBEffects::ElectricTerrain,
+    PBEffects::PsychicTerrain,PBEffects::Splintered,PBEffects::VileMercy,PBEffects::BlueShift,
+    PBEffects::Rainbow,PBEffects::FairyLock
+  ].freeze
+
+  def pbTributeOnceUsed?(pokemon,effect)
+    return @tributeOnceUses && @tributeOnceUses[[pokemon,effect]]
+  end
+
+  def pbMarkTributeOnceUsed(pokemon,effect)
+    @tributeOnceUses ||= {}
+    @tributeOnceUses[[pokemon,effect]]=true
+  end
+
+  def pbTributeDurationSnapshot
+    durations={}
+    eachActiveBattlerIndex do |index|
+      battler=@battlers[index]
+      next if !battler.pokemon || battler.isFainted?
+      TRIBUTE_BATTLER_DURATIONS.each { |effect| durations[[battler,effect,battler.pokemon]]=battler.effects[effect] }
+    end
+    @sides.each do |side|
+      TRIBUTE_SIDE_DURATIONS.each { |effect| durations[[side,effect]]=side.effects[effect] }
+    end
+    TRIBUTE_FIELD_DURATIONS.each { |effect| durations[[@field,effect]]=@field.effects[effect] }
+    durations[[self,:trickroom]]=@trickroom
+    durations[[self,:weather,@weather]]=@weatherduration if @weather!=0
+    return durations
+  end
+
+  def pbSetTributeDuration(key, turns)
+    owner,effect=key
+    case effect
+    when :trickroom then @trickroom=turns
+    when :weather then @weatherduration=turns
+    else owner.effects[effect]=turns
+    end
+  end
+
+  def pbApplyTributeDurations(battler, before, fixed_turns=nil)
+    return false if !before
+    changed=false
+    pbTributeDurationSnapshot.each do |key, turns|
+      next if !turns.is_a?(Integer) || turns<=0 || turns==(before[key] || 0)
+      if fixed_turns
+        @tributeArticunoDurations&.delete(key)
+        pbSetTributeDuration(key,fixed_turns)
+      else
+        @tributeArticunoDurations ||= {}
+        @tributeArticunoDurations[key]=battler.pokemon
+      end
+      changed=true
+    end
+    return changed
+  end
+
+  def pbUpdateTributeDurations
+    return if !@tributeArticunoDurations || @tributeArticunoDurations.empty?
+    durations=pbTributeDurationSnapshot
+    active=activeBattlerIndices.filter_map do |index|
+      battler=@battlers[index]
+      battler.pokemon if !battler.isFainted?
+    end
+    hail=pbWeather==PBWeather::HAIL
+    if hail && @weatherduration==1 && @weatherbackup!=PBWeather::HAIL && !azureJetstreamWeatherExtended?
+      hail=@tributeArticunoDurations.key?([self,:weather,PBWeather::HAIL])
+    end
+    @tributeArticunoDurations.delete_if do |key, pokemon|
+      turns=durations[key]
+      next true if !turns.is_a?(Integer) || turns<=0
+      sustained=active.include?(pokemon) || hail
+      pbSetTributeDuration(key,sustained ? [turns,2].max : 1)
+      !sustained
+    end
+  end
+
+  def pbScheduleTributeMukRevival(pokemon)
+    @tributeMukRevival ||= {}
+    @tributeMukRevival[pokemon]=@turncount+2
+  end
+
+  def pbProcessTributeMukRevival
+    return if !@tributeMukRevival
+    @tributeMukRevival.delete_if do |pokemon, turn|
+      next false if @turncount<turn
+      if pokemon.hp<=0
+        pokemon.hp=[pokemon.totalhp/2,1].max
+        pbDisplay(_INTL("{1} revived in reserve!",pokemon.name))
+      end
+      true
+    end
+  end
+
   def pbEndOfRoundWithStall
     pbEndOfRoundPhase
     return if @decision>0
@@ -6537,6 +6644,7 @@ def pbStartBattle(canlose=false)
   end
 
   def pbEndOfRoundPhase
+    pbUpdateTributeDurations
     eachActiveBattlerIndex do |i|
       @battlers[i].pbExpireCoconBerryShield
       @battlers[i].forcedSwitchEarlier = false
@@ -6590,15 +6698,17 @@ def pbStartBattle(canlose=false)
           battler.effects[PBEffects::TributeTypeShiftData] = nil
         end
       end
-      if battler.effects[PBEffects::TributeMukMystic]
-        battler.effects[PBEffects::TributeMukMystic][:turns] -= 1
-        turns = battler.effects[PBEffects::TributeMukMystic][:turns]
-        if turns >= 1
-          battler.pbRecoverHP((battler.totalhp/8).floor,true)
-        else
-          battler.pbReduceStat(PBStats::DEFENSE,3,false,nil,nil,true,false,false)
-          battler.pbReduceStat(PBStats::SPDEF,3,false,nil,nil,true,false,false)
+      effect=battler.effects[PBEffects::TributeMukMystic]
+      if effect && !battler.isFainted? && @turncount>effect[:last_turn]
+        effect[:last_turn]=@turncount
+        if @turncount>=effect[:expires_turn]
+          pbWithStatChangeSource([:item,PBItems::TOXICTRIBUTE,:muk_rebound]) do
+            battler.pbReduceStat(PBStats::DEFENSE,3,false,nil,nil,true,false,false)
+            battler.pbReduceStat(PBStats::SPDEF,3,false,nil,nil,true,false,false)
+          end
           battler.effects[PBEffects::TributeMukMystic] = nil
+        else
+          battler.pbRecoverHP(battler.totalhp/8,true)
         end
       end
       next if !battler.effects[PBEffects::TributeMoltresSwitch]
@@ -6614,24 +6724,7 @@ def pbStartBattle(canlose=false)
       pbOnActiveOne(battler)
       battler.pbAbilitiesOnSwitchIn(true)
     end
-    if instance_variable_defined?(:@tributeMukRevival)
-      revivals = instance_variable_get(:@tributeMukRevival) || []
-      remaining = []
-      revivals.each do |entry|
-        entry[:turns] -= 1
-        if entry[:turns] <= 0
-          party = pbParty(entry[:side])
-          next if !party || !party[entry[:party_index]]
-          pokemon = party[entry[:party_index]]
-          next if pokemon.hp > 0
-          pokemon.hp = [(pokemon.totalhp/2).floor,1].max
-          pbDisplay(_INTL("{1} revived in reserve!",pokemon.name))
-        else
-          remaining << entry
-        end
-      end
-      instance_variable_set(:@tributeMukRevival, remaining)
-    end
+    pbProcessTributeMukRevival
 #### KUROTSUNE - 013 - START
     @field.effects[PBEffects::IonDeluge]       = false
 #### KUROTSUNE - 013 - END
@@ -7699,6 +7792,8 @@ def pbStartBattle(canlose=false)
       if i.effects[PBEffects::Wish]>0
         i.effects[PBEffects::Wish]-=1
         if i.effects[PBEffects::Wish]==0
+          i.effects[PBEffects::TributePendingShield]=true if i.effects[PBEffects::TributeWishOverheal]
+          i.effects[PBEffects::TributeWishOverheal]=false
           hpgain=i.pbRecoverHP(i.effects[PBEffects::WishAmount],true)
           if i.effects[PBEffects::HealerWish] && i.status>0 && i.effects[PBEffects::Spritz]!=1
             i.pbCureStatus
@@ -8654,7 +8749,7 @@ def pbStartBattle(canlose=false)
     if @trickroom > 0 && $fefieldeffect!=39 && !($game_variables[702]==1 || $game_variables[702]==4)
       @trickroom=@trickroom-1
       if @trickroom == 0
-          Kernel.pbMessage("The twisted dimensions returned to normal!")
+          pbDisplay(_INTL("The twisted dimensions returned to normal!"))
       end
     end
     # Wonder Room
@@ -8667,7 +8762,7 @@ def pbStartBattle(canlose=false)
             i.pbSwapDefenses
           end
         end
-        Kernel.pbMessage("Wonder Room wore off, and the Defense and Sp. Def stats returned to normal!")
+        pbDisplay(_INTL("Wonder Room wore off, and the Defense and Sp. Def stats returned to normal!"))
       end
     end
 #### KUROTSUNE - 014 - END
@@ -9312,9 +9407,9 @@ def pbStartBattle(canlose=false)
         pbDisplay(_INTL("{1} was frozen by its {2}!",i.pbThis,PBItems.getName(i.item)))
       end
       # Drowsy Orb
-      if i.hasWorkingItem(:DROWSYORB) && i.status==0 && i.pbCanSleep?(false,true)
-        i.pbSleep
-        pbDisplay(_INTL("{1} fell asleep because of its {2}!",i.pbThis,PBItems.getName(i.item)))
+      if i.hasWorkingItem(:DROWSYORB) && i.effects[PBEffects::Yawn]==0 && i.pbCanSleep?(false,true)
+        i.effects[PBEffects::Yawn]=2
+        pbDisplay(_INTL("{1} became drowsy because of its {2}!",i.pbThis,PBItems.getName(i.item)))
       end
       # Pressure Orb
       if i.hasWorkingItem(:PRESSUREORB) && i.status==0 && i.pbCanCrush?(false)
@@ -9421,8 +9516,6 @@ def pbStartBattle(canlose=false)
       @battlers[i].effects[PBEffects::HelpingHand]=false
       @battlers[i].effects[PBEffects::MagicCoat]=false
       @battlers[i].effects[PBEffects::Switched]=false
-      @battlers[i].effects[PBEffects::Switching]=false
-      @battlers[i].effects[PBEffects::SwitchingTo]=nil
       @battlers[i].effects[PBEffects::Snatch]=false
 #### KUROTSUNE - 024 - START
       @battlers[i].effects[PBEffects::Electrify]=false
@@ -9431,6 +9524,10 @@ def pbStartBattle(canlose=false)
       @battlers[i].lastAttacker=-1
       @battlers[i].effects[PBEffects::DamagingMoveThisTurn]=false
       @battlers[i].effects[PBEffects::TributeDamageTaken]=0
+      shield=@battlers[i].effects[PBEffects::TributeOverhealShield]
+      if shield && shield[:expires]<=@turncount
+        @battlers[i].effects[PBEffects::TributeOverhealShield]=nil
+      end
       @battlers[i].effects[PBEffects::UsedAttackThisTurn]=false
       @battlers[i].effects[PBEffects::Spritz]=0
       pbResolveRebuild(@battlers[i])
@@ -9463,9 +9560,9 @@ def pbStartBattle(canlose=false)
       stages[stat]=0
     end
     return if boosts==0
-    move=PokeBattle_Move.pbFromPBMove(self,PBMove.new(PBMoves::REBUILD),battler)
-    amount=move.apply_tribute_healing(battler,battler.totalhp*boosts/5,battler)
-    recovered=move.pbRecoverMoveHP(battler,battler,amount)
+    move=battler.moves.find { |candidate| candidate && candidate.id==PBMoves::REBUILD }
+    move||=PokeBattle_Move.pbFromPBMove(self,PBMove.new(PBMoves::REBUILD),battler)
+    recovered=move.pbRecoverMoveHP(battler,battler,battler.totalhp*boosts/5)
     pbDisplay(_INTL("{1} restored its HP by rebuilding!",battler.pbThis)) if recovered>0
   end
 
@@ -9613,6 +9710,7 @@ def pbStartBattle(canlose=false)
       i.pbResetForm
     end
     ([*@party1, *@party2].compact.uniq).each do |pkmn|
+      pkmn.makeUnmega if !pkmn.azureMegaPreviousForm.nil?
       pkmn.clearBeneficialStatus if pkmn.respond_to?(:clearBeneficialStatus)
       pkmn.tributeDracoPP=nil if pkmn.respond_to?(:tributeDracoPP=)
     end

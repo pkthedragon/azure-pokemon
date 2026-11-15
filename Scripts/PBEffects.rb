@@ -123,7 +123,6 @@ begin
     BallFetch         = 138
     IceFace           = 139
     ThunderRaidHit    = 140
-    ThunderRaidStat   = 141
     TarShot           = 142
     TelekinesisBoost  = 143
     SusCrit           = 144
@@ -131,18 +130,13 @@ begin
     Octolock          = 146
     # -1 = no stance, 0 = defense stance, 1 = attack stance
     DesertsMark       = 147
-    WillMega          = 148
     WorldOfNightmares = 149
     Crushing          = 150
     FeverPitch        = 151
     Attacking         = 152
     AttackingTarget   = 153
-    Switching         = 154
-    SwitchingTo       = 155
-    SomethingCrazy    = 156
     Switched          = 157
     CritCount         = 158
-    UsingItem         = 159
     StatChangeHolder  = 160
     JawLockUser       = 161
     JawLock           = 162
@@ -201,14 +195,12 @@ begin
     TributeMoltresSwitch = 242
     TributeRoostBoost = 243
     TributeProtection = 244
-    TributeRampardosPriority = 245
-    TributeGolemSturdy = 246
+    # 245–246 reserved for retired battler-local Tribute usage flags
     TributeMukMystic = 247
     TributeSpookyPig = 248
     TributeSpookyPigData = 249
     TributeTypeShift = 250
     TributeTypeShiftData = 251
-    TributeEmpoleonGuard = 252
     TributeOrthwormShedHP = 253
     SaltCure          = 254
     SyrupBombTurns    = 255
@@ -237,6 +229,11 @@ begin
     RiteOfSpring      = 285
     Inquisition       = 286
     ConsumableItemDose = 287
+    ParadoxStat       = 288
+    ParadoxBooster    = 289
+    AbilityCharge     = 294
+    TributeOverhealShield = 295
+    TributeWishOverheal = 296
     # These effects apply to a side - starts from 300
     LightScreen   = 300
     LuckyChant    = 301

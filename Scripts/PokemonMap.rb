@@ -685,6 +685,7 @@ def pbClearData
     $PokemonTemp.pokemonDexData=nil
     $PokemonTemp.pokemonMetadata=nil
     $PokemonTemp.pokemonPhoneData=nil
+    $PokemonTemp.playerCharsetCache.clear
   end
   MapFactoryHelper.clear
   if $game_map && $PokemonEncounters

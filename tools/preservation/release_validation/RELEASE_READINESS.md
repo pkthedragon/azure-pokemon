@@ -2,9 +2,8 @@
 
 ## Decision
 
-Phase 5's automated release-validation scope is complete and the current tree
-is ready to commit and push. This is a technical release-readiness decision,
-not a claim that every story branch has received a human playthrough.
+At the end of Phase 5, the project passed the automated release gates recorded
+below. The preservation README describes the current audit.
 
 ## Save compatibility
 
@@ -49,7 +48,7 @@ logs are intentionally excluded.
 
 ## Final automated gate
 
-Release readiness requires all of the following at the same revision:
+The Phase 5 release gate required all of the following at the same revision:
 
 - clean isolated PBS compilation with 29 equivalent generated outputs;
 - strict audit with zero failures and zero unaccepted warnings;

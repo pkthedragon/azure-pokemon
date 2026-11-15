@@ -1,5 +1,168 @@
+# Azure's historical Mega profiles were stored as per-species callbacks.
+# Keep their battle profiles together so the current alternate-form rules can coexist.
+module AzureMegaForms
+  DATA=[
+    [:VENUSAUR, :VENUSAURITE, 1, [80, 100, 123, 80, 122, 120], :THICKFAT, nil, nil, 24, 1555],
+    [:CHARIZARD, :CHARIZARDITEX, 1, [78, 130, 111, 100, 130, 85], :TOUGHCLAWS, nil, :DRAGON, nil, 1105],
+    [:CHARIZARD, :CHARIZARDITEY, 2, [78, 104, 78, 100, 159, 115], :DROUGHT, nil, nil, nil, 1005],
+    [:CHARIZARD, :CHARIZARDITEG, 3, [78, 119, 98, 105, 134, 105], :SOLARPOWER, nil, nil, nil, 2216, "Mega Charizard G"],
+    [:BLASTOISE, :BLASTOISINITE, 1, [79, 103, 120, 78, 135, 115], :MEGALAUNCHER, nil, nil, nil, 1011],
+    [:ALAKAZAM, :ALAKAZITE, 2, [55, 50, 65, 150, 175, 105], :TRACE, nil, nil, nil, 480],
+    [:GENGAR, :GENGARITE, 3, [60, 65, 80, 130, 170, 95], :SHADOWTAG, nil, nil, 611, 405],
+    [:GENGAR, :GENGARITEG, 2, [90, 150, 100, 110, 65, 115], :CURSEDBODY, nil, nil, nil, 611, "Mega Gengar G"],
+    [:KANGASKHAN, :KANGASKHANITE, 1, [105, 125, 100, 100, 60, 100], :PARENTALBOND, nil, nil, nil, 1000],
+    [:PINSIR, :PINSIRITE, 1, [65, 155, 120, 105, 65, 90], :AERILATE, nil, :FLYING, nil, 590],
+    [:GYARADOS, :GYARADOSITE, 1, [95, 155, 109, 81, 70, 130], :MOLDBREAKER, nil, :DARK, nil, 3050],
+    [:AERODACTYL, :AERODACTYLITE, 1, [80, 135, 85, 150, 70, 95], :TOUGHCLAWS, nil, nil, nil, 790],
+    [:MEWTWO, :MEWTWONITEX, 1, [106, 190, 100, 130, 154, 100], :STEADFAST, nil, :FIGHTING, nil, 1270],
+    [:MEWTWO, :MEWTWONITEY, 2, [106, 150, 70, 140, 194, 120], :INSOMNIA, nil, nil, nil, 330],
+    [:AMPHAROS, :AMPHAROSITE, 1, [90, 95, 105, 45, 165, 110], :MOLDBREAKER, nil, :DRAGON, nil, 615],
+    [:SCIZOR, :SCIZORITE, 1, [70, 150, 140, 75, 65, 100], :TECHNICIAN, nil, nil, nil, 1250],
+    [:HERACROSS, :HERACRONITE, 1, [80, 185, 115, 75, 40, 105], :SKILLLINK, nil, nil, nil, 625],
+    [:HOUNDOOM, :HOUNDOOMINITE, 1, [75, 90, 90, 115, 140, 90], :SOLARPOWER, nil, nil, nil, 495],
+    [:TYRANITAR, :TYRANITARITE, 2, [100, 164, 150, 71, 95, 120], :SANDSTREAM, nil, nil, nil, 2550],
+    [:BLAZIKEN, :BLAZIKENITE, 2, [80, 160, 80, 100, 130, 80], :SPEEDBOOST, nil, nil, nil, 520],
+    [:GARDEVOIR, :GARDEVOIRITE, 1, [68, 85, 65, 100, 165, 135], :PIXILATE, nil, nil, nil, 484],
+    [:MAWILE, :MAWILITE, 1, [50, 105, 125, 50, 55, 95], :HUGEPOWER, nil, nil, nil, 235],
+    [:AGGRON, :AGGRONITE, 1, [70, 140, 230, 50, 60, 80], :FILTER, :STEEL, :STEEL, nil, 3950],
+    [:MEDICHAM, :MEDICHAMITE, 1, [60, 100, 85, 100, 80, 85], :PUREPOWER, nil, nil, nil, 315],
+    [:MANECTRIC, :MANECTITE, 1, [70, 75, 80, 135, 135, 80], :INTIMIDATE, nil, nil, nil, 440],
+    [:BANETTE, :BANETTITE, 1, [64, 165, 75, 75, 93, 83], :PRANKSTER, nil, nil, nil, 130],
+    [:ABSOL, :ABSOLITE, 1, [65, 150, 60, 115, 115, 60], :MAGICBOUNCE, nil, nil, nil, 490],
+    [:GARCHOMP, :GARCHOMPITE, 2, [108, 170, 115, 92, 120, 95], :SANDFORCE, nil, nil, nil, 950],
+    [:LUCARIO, :LUCARIONITE, 2, [70, 145, 88, 112, 140, 70], :ADAPTABILITY, nil, nil, nil, 575],
+    [:ABOMASNOW, :ABOMASITE, 1, [90, 132, 105, 30, 132, 105], :SNOWWARNING, nil, nil, nil, 1850],
+    [:BEEDRILL, :BEEDRILLITE, 1, [65, 150, 40, 145, 15, 80], :ADAPTABILITY, nil, nil, 14, 405],
+    [:PIDGEOT, :PIDGEOTITE, 1, [83, 80, 80, 121, 135, 80], :NOGUARD, nil, nil, 22, 505],
+    [:SLOWBRO, :SLOWBRONITE, 1, [95, 75, 180, 30, 130, 80], :SHELLARMOR, nil, nil, 20, 1200],
+    [:STEELIX, :STEELIXITE, 1, [75, 125, 230, 30, 55, 95], :SANDFORCE, nil, nil, 105, 7400],
+    [:SCEPTILE, :SCEPTILITE, 2, [70, 110, 75, 145, 145, 85], :LIGHTNINGROD, nil, :DRAGON, 19, 552],
+    [:SWAMPERT, :SWAMPERTITE, 2, [100, 150, 110, 70, 95, 110], :SWIFTSWIM, nil, nil, 19, 1020],
+    [:SABLEYE, :SABLENITE, 1, [50, 85, 125, 20, 85, 115], :MAGICBOUNCE, nil, nil, 5, 1610],
+    [:SHARPEDO, :SHARPEDONITE, 1, [70, 140, 70, 105, 110, 65], :STRONGJAW, nil, nil, 25, 1303],
+    [:CAMERUPT, :CAMERUPTITE, 1, [70, 120, 100, 20, 145, 105], :SHEERFORCE, nil, nil, 25, 3205],
+    [:ALTARIA, :ALTARIANITE, 1, [75, 110, 110, 80, 110, 105], :PIXILATE, nil, :FAIRY, 15, 206],
+    [:GLALIE, :GLALITITE, 1, [80, 120, 80, 100, 120, 80], :REFRIGERATE, nil, nil, 21, 3502],
+    [:SALAMENCE, :SALAMENCITE, 2, [95, 145, 130, 120, 120, 90], :AERILATE, nil, nil, 18, 1126],
+    [:METAGROSS, :METAGROSSITE, 2, [80, 145, 150, 110, 105, 110], :TOUGHCLAWS, nil, nil, 25, 9429],
+    [:LATIAS, :LATIASITE, 1, [80, 100, 120, 110, 140, 150], :LEVITATE, nil, nil, 18, 520],
+    [:LATIOS, :LATIOSITE, 1, [80, 130, 100, 110, 160, 120], :LEVITATE, nil, nil, 23, 700],
+    [:RAYQUAZA, :DRAGONASCENT, 1, [105, 180, 100, 115, 180, 100], :DELTASTREAM, nil, nil, 108, 3920],
+    [:LOPUNNY, :LOPUNNITE, 1, [65, 136, 94, 135, 54, 96], :SCRAPPY, nil, :FIGHTING, 13, 283],
+    [:GALLADE, :GALLADITE, 1, [68, 165, 95, 110, 65, 115], :INNERFOCUS, nil, nil, 16, 564],
+    [:AUDINO, :AUDINITE, 1, [103, 60, 126, 50, 80, 126], :HEALER, nil, :FAIRY, 15, 320],
+    [:DIANCIE, :DIANCITE, 1, [50, 160, 110, 110, 160, 110], :MAGICBOUNCE, nil, nil, 11, 278],
+    [:BUTTERFREE, :BUTTERFREENITE, 1, [60, 45, 50, 120, 140, 80], :TINTEDLENS, nil, nil, 307, 705],
+    [:MACHAMP, :MACHAMPITE, 2, [90, 160, 115, 65, 65, 110], :ANALYTIC, nil, :GROUND, 503, 2866],
+    [:KINGLER, :KINGLERITE, 1, [55, 169, 135, 96, 60, 60], :SHEERFORCE, nil, nil, 403, 1332],
+    [:SNORLAX, :SNORLAXITE, 1, [160, 140, 95, 20, 75, 150], :FURCOAT, nil, nil, 7111, 100141],
+    [:GARBODOR, :GARBODORNITE, 2, [80, 135, 107, 85, 60, 107], :NEUTRALIZINGGAS, nil, nil, 6033, 2366],
+    [:MELMETAL, :MELMETALITE, 1, [135, 183, 163, 45, 85, 85], :IRONFIST, nil, nil, 802, 17637],
+    [:CORVIKNIGHT, :CORVIKNITE, 1, [98, 107, 155, 87, 58, 90], :HEATPROOF, nil, nil, 703, 1653],
+    [:ORBEETLE, :ORBEETLENITE, 2, [60, 45, 120, 85, 165, 130], :ARENATRAP, nil, nil, 1011, 899],
+    [:DREDNAW, :DREDNAWTITE, 1, [90, 155, 110, 94, 48, 88], :STRONGJAW, nil, nil, 303, 2456],
+    [:COALOSSAL, :COALOSSALITE, 1, [110, 135, 150, 35, 80, 100], :STEAMENGINE, nil, nil, 13710, 8845],
+    [:FLAPPLE, :FLAPPLETITE, 1, [70, 130, 105, 90, 110, 80], :OWNTEMPO, nil, nil, 303, 2456],
+    [:APPLETUN, :APPLETUNITE, 1, [110, 95, 110, 20, 140, 110], :THICKFAT, nil, nil, 303, 2456],
+    [:SANDACONDA, :SANDACONDITE, 2, [72, 147, 145, 91, 65, 90], :SANDRUSH, nil, nil, 303, 2456],
+    [:HATTERENE, :HATTERENITE, 1, [57, 90, 110, 50, 150, 153], :CURSEDBODY, nil, nil, 303, 2456],
+    [:GRIMMSNARL, :GRIMMSNARLITE, 1, [95, 130, 100, 120, 75, 90], :FURCOAT, nil, nil, 303, 2456],
+    [:ALCREMIE, :ALCREMITE, 64, [65, 80, 105, 74, 130, 141], :AROMAVEIL, nil, nil, 303, 2456],
+    [:COPPERAJAH, :COPPERAJITE, 2, [122, 155, 84, 40, 94, 105], :SHEERFORCE, nil, nil, 303, 2456],
+    [:DURALUDON, :DURALUDONITE, 1, [70, 95, 130, 110, 150, 80], :LIGHTNINGROD, nil, nil, 303, 2456],
+  ].freeze
+
+  @by_species=DATA.group_by { |record| PBSpecies.const_get(record[0],false) }
+  @by_item=DATA.reject { |record| record[1]==:DRAGONASCENT }.to_h do |record|
+    [PBItems.const_get(record[1],false),record]
+  end
+  # The current Mystic forms keep their IDs. These resources retain their
+  # historical Mega sprite numbers, independent of the runtime form IDs.
+  LEGACY_SPRITE_FORMS={
+    ALAKAZITE: 1,GENGARITE: 1,TYRANITARITE: 1,GARCHOMPITE: 1,LUCARIONITE: 1,
+    SALAMENCITE: 1,METAGROSSITE: 1,MACHAMPITE: 1,ORBEETLENITE: 1,
+    SANDACONDITE: 1,COPPERAJITE: 1,ALCREMITE: 8
+  }.freeze
+
+  def self.stone_for_species?(species,item)
+    record=@by_item[item]
+    return record && PBSpecies.const_get(record[0],false)==species
+  end
+
+  def self.current(pokemon)
+    records=@by_species[pokemon.species]
+    return nil if !records
+    current_form=pokemon.azureRawForm
+    return records.find { |record| record[2]==current_form }
+  end
+
+  def self.sprite_form(species,form)
+    record=@by_species[species]&.find { |entry| entry[2]==form.to_i }
+    return record ? LEGACY_SPRITE_FORMS.fetch(record[1],form) : form
+  end
+
+  def self.name_for(record)
+    return record[9] if record[9]
+    return _INTL("Mega Charizard X") if record[1]==:CHARIZARDITEX
+    return _INTL("Mega Charizard Y") if record[1]==:CHARIZARDITEY
+    return _INTL("Mega Mewtwo X") if record[1]==:MEWTWONITEX
+    return _INTL("Mega Mewtwo Y") if record[1]==:MEWTWONITEY
+    return _INTL("Mega {1}",PBSpecies.getName(PBSpecies.const_get(record[0],false)))
+  end
+
+  def self.form_names(species,names)
+    records=@by_species[species]
+    return names if !records || records.empty?
+    labels=names.to_s.split(",",-1)
+    records.each { |record| labels[record[2]]=name_for(record) }
+    return labels.join(",")
+  end
+
+  def self.eligible(pokemon)
+    active=current(pokemon)
+    return active if active
+    records=@by_species[pokemon.species]
+    return nil if !records || (pokemon.azureRawForm!=0 && pokemon.species!=PBSpecies::ALCREMIE)
+    stone=@by_item[pokemon.item]
+    if stone && stone_for_species?(pokemon.species,pokemon.item)
+      return stone
+    end
+    if pokemon.species==PBSpecies::RAYQUAZA
+      return records.first if pokemon.moves.any? { |move| move && move.id==PBMoves::DRAGONASCENT }
+      return nil
+    end
+    return records.first if pokemon.isPreMega?
+    return nil
+  end
+
+  def self.call(function,pokemon)
+    if function=="getMegaForm"
+      return eligible(pokemon)&.[](2)
+    end
+    record=current(pokemon)
+    return nil if !record
+    case function
+    when "getUnmegaForm" then return pokemon.azureMegaPreviousForm || 0
+    when "getMegaName" then return name_for(record)
+    when "getBaseStats" then return record[3]
+    when "ability" then return PBAbilities.const_get(record[4],false)
+    when "abilityList" then return [PBAbilities.const_get(record[4],false)]
+    when "type1" then return PBTypes.const_get(record[5],false) if record[5]
+    when "type2" then return PBTypes.const_get(record[6],false) if record[6]
+    when "height" then return record[7]
+    when "weight" then return record[8] if record[8].is_a?(Integer)
+    end
+    return nil
+  end
+end
+
 class PokeBattle_Pokemon
+  attr_reader :azureMegaPreviousForm
+  def azureRawForm
+    return @form || 0
+  end
   def form
+    return @form if AzureMegaForms.current(self)
     v=MultipleForms.call("getForm",self)
     if v!=nil
       self.form=v if !@form || v!=@form
@@ -320,12 +483,17 @@ class PokeBattle_Pokemon
   
   def makeMega
     v=MultipleForms.call("getMegaForm",self)
-    self.form=v if v!=nil
+    if v!=nil && v!=form
+      @azureMegaPreviousForm=form
+      self.form=v
+      pbSeenForm(self) if $Trainer
+    end
   end
   
   def makeUnmega
     v=MultipleForms.call("getUnmegaForm",self)
     self.form=v if v!=nil
+    @azureMegaPreviousForm=nil if v!=nil
   end
   
   def megaName
@@ -477,6 +645,8 @@ module MultipleForms
   end
   
   def self.call(func,pokemon,*args)
+    value=AzureMegaForms.call(func,pokemon)
+    return value unless value.nil?
     sp=@@formSpecies[pokemon.species]
     return nil if !sp || !sp[func]
     return sp[func].call(pokemon,*args)
@@ -667,8 +837,12 @@ MultipleForms.register(:DEOXYS,{
       when 1; next [50,180, 20,150,180, 20] # Attack Forme
       when 2; next [50, 70,160, 90, 70,160] # Defense Forme
       when 3; next [50, 95, 90,180, 95, 90] # Speed Forme
+      when 4; next [100,100,100,100,100,100] # Mystic Forme
       end
     },
+    "type1"=>proc{|pokemon| next PBTypes::NORMAL if pokemon.form==4 },
+    "type2"=>proc{|pokemon| next PBTypes::NORMAL if pokemon.form==4 },
+    "ability"=>proc{|pokemon| next PBAbilities::MOODY if pokemon.form==4 && pokemon.abilityIndex==0 },
     "evYield"=>proc{|pokemon|
       next if pokemon.form==0      # Normal Forme
       case pokemon.form
@@ -678,7 +852,7 @@ MultipleForms.register(:DEOXYS,{
       end
     },
     "getMoveList"=>proc{|pokemon|
-      next if pokemon.form==0
+      next if !pokemon.form.between?(1,3)
       movelist=[]
       case pokemon.form
       when 1 ; movelist=[[1,:LEER],[1,:WRAP],[7,:NIGHTSHADE],[13,:TELEPORT],
@@ -883,7 +1057,7 @@ MultipleForms.copy(:SHELLOS,:GASTRODON)
 
 MultipleForms.register(:ROTOM,{
     "getBaseStats"=>proc{|pokemon|
-      next if pokemon.form==0     # Normal Form
+      next if !pokemon.form.between?(1,5)
       next [50,65,107,86,105,107] # All alternate forms
     },
     "type2"=>proc{|pokemon|
@@ -905,12 +1079,11 @@ MultipleForms.register(:ROTOM,{
         :AIRSLASH,  # Fan
         :LEAFSTORM  # Mow, Lawnmower
       ]
+      next if !form.between?(0,moves.length)
       moves.each{|move|
         pbDeleteMoveByID(pokemon,getID(PBMoves,move))
       }
-      if form>0
-        pokemon.pbLearnMove(moves[form-1])
-      end
+      pokemon.pbLearnMove(moves[form-1]) if form.between?(1,moves.length)
       if pokemon.moves.find_all{|i| i.id!=0}.length==0
         pokemon.pbLearnMove(:THUNDERSHOCK)
       end
@@ -1873,12 +2046,67 @@ MultipleForms.register(:EISCUE,{
 ### Heroic Pokemon ###
 MultipleForms.register(:TANGROWTH,{
     "getForm"=>proc{|pokemon|
-      # Heroic Tangrowth - check if holding Meadow Tribute
-      heroic_form = pbGetHeroicForm(pokemon) if defined?(pbGetHeroicForm)
-      next heroic_form if heroic_form
-      next 0
+      next pbGetHeroicForm(pokemon) || 0
     }
   })
+
+module AzureOgerponMasks
+  ITEMS={PBItems::WELLSPRINGMASK=>2,PBItems::HEARTHFLAMEMASK=>3,PBItems::CORNERSTONEMASK=>4}.freeze
+  TYPES={2=>PBTypes::WATER,3=>PBTypes::FIRE,4=>PBTypes::ROCK}.freeze
+
+  def self.base_form(form)
+    return form-4 if form.between?(5,8)
+    return form
+  end
+end
+
+MultipleForms.register(:OGERPON,{
+  "getForm"=>proc { |pokemon|
+    stored=pokemon.instance_variable_get(:@form) || 0
+    mask=AzureOgerponMasks::ITEMS[pokemon.item]
+    next stored if mask && stored==mask+4
+    next mask if mask
+    next stored if [0,1,5,9,10,11].include?(stored)
+    next 0
+  },
+  "type2"=>proc { |pokemon| AzureOgerponMasks::TYPES[AzureOgerponMasks.base_form(pokemon.form)] },
+  "ability"=>proc { |pokemon|
+    case AzureOgerponMasks.base_form(pokemon.form)
+    when 2 then PBAbilities::WATERABSORB
+    when 3 then PBAbilities::MOLDBREAKER
+    when 4 then PBAbilities::STURDY
+    end
+  },
+  "onSetForm"=>proc { |pokemon,_form| pbSeenForm(pokemon) }
+})
+
+MultipleForms.register(:TERAPAGOS,{
+  "getBaseStats"=>proc { |pokemon|
+    case pokemon.form
+    when 1 then [95,95,110,85,105,110]
+    when 2 then [160,105,110,85,130,110]
+    end
+  },
+  "ability"=>proc { |pokemon|
+    case pokemon.form
+    when 1 then PBAbilities::TERASHELL
+    when 2 then PBAbilities::TERAFORMZERO
+    end
+  },
+  "onSetForm"=>proc { |pokemon,_form| pbSeenForm(pokemon) }
+})
+
+MultipleForms.register(:DIALGA,{
+  "getForm"=>proc { |pokemon| isConst?(pokemon.item,PBItems,:ADAMANTCRYSTAL) ? 1 : 0 },
+  "getBaseStats"=>proc { |pokemon| [100,100,120,90,150,120] if pokemon.form==1 },
+  "onSetForm"=>proc { |pokemon,_form| pbSeenForm(pokemon) }
+})
+
+MultipleForms.register(:PALKIA,{
+  "getForm"=>proc { |pokemon| isConst?(pokemon.item,PBItems,:LUSTROUSGLOBE) ? 1 : 0 },
+  "getBaseStats"=>proc { |pokemon| [90,100,100,120,150,120] if pokemon.form==1 },
+  "onSetForm"=>proc { |pokemon,_form| pbSeenForm(pokemon) }
+})
 ### Regional Variants ###
 MultipleForms.register(:RATTATA,{
     "dexEntry"=>proc{|pokemon|
@@ -5087,7 +5315,7 @@ MultipleForms.register(:GRENINJA,{
     movelist=[]
     case pokemon.form            # Mystic
     when 1 ; movelist=[[0,:NATURALORDER],[1,:MEGADRAIN],[1,:PETALDANCE],[1,:SNARL],
-                      [1,:ROLEPLAY],[1,:NOBLEROAR],1,[:SING],[1,:POUND],[1,:GROWL],
+                      [1,:ROLEPLAY],[1,:NOBLEROAR],[1,:SING],[1,:POUND],[1,:GROWL],
                       [1,:HELPINGHAND],[1,:DISARMINGVOICE],[5,:HELPINGHAND],[8,:DISARMINGVOICE],
                       [10,:COTTONSPORE],[14,:SWIFT],[19,:ROUND],[23,:BATTLECRY],
                       [28,:GIGADRAIN],[33,:FRACTURE],[42,:UPROAR],[49,:SONICSCREAM],
@@ -13268,41 +13496,6 @@ MultipleForms.register(:LUGIA,{
   },
   "onSetForm"=>proc{|pokemon,form|
     if form==1
-      pbSeenForm(pokemon)
-    end
-  }
-})
-
-MultipleForms.register(:DEOXYS,{
-  "type1"=>proc{|pokemon|
-    next if pokemon.form!=4
-    next getID(PBTypes,:NORMAL)    # Mystic
-  },
-  "type2"=>proc{|pokemon|
-    next if pokemon.form!=4
-    next getID(PBTypes,:NORMAL)    # Mystic
-  },
-  "getBaseStats"=>proc{|pokemon|
-    next if pokemon.form!=4
-    next [100, 100, 100, 100, 100, 100]   # Mystic
-  },
-  "ability"=>proc{|pokemon|
-    next if pokemon.form!=4 # Only Mystic form
-    if pokemon.abilityIndex==0 || (pokemon.abilityflag && pokemon.abilityflag==0)
-      next getID(PBAbilities,:MOODY)
-    end
-  },
-  "getMoveList"=>proc{|pokemon|
-    next if pokemon.form==0      # Use default moveset for base form
-    movelist=[]
-    # TODO: Fill Mystic Deoxys movelist as [level,:MOVE] entries
-    for i in movelist
-      i[1]=getConst(PBMoves,i[1])
-    end
-    next movelist
-  },
-  "onSetForm"=>proc{|pokemon,form|
-    if form==4
       pbSeenForm(pokemon)
     end
   }

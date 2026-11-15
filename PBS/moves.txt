@@ -6945,7 +6945,7 @@ EffectChance = 0
 Priority = 2
 Description = The user teleports and switches its place with one of its allies.
 LegacyFunctionCode = 288
-LegacyTarget = 16
+LegacyTarget = 256
 #-------------------------------
 [AMNESIA]
 LegacyMoveID = 468
@@ -8302,7 +8302,7 @@ EffectChance = 0
 Priority = 0
 Description = The user raises the Sp. Def stat of ally Pokémon with a mysterious aroma.
 LegacyFunctionCode = 314
-LegacyTarget = 64
+LegacyTarget = 256
 #-------------------------------
 [BABYDOLLEYES]
 LegacyMoveID = 561
@@ -9749,96 +9749,6 @@ LegacyFunctionCode = 520
 LegacyTarget = 0
 LegacyFlags = abef
 #-------------------------------
-[ORIGINPULSE]
-LegacyMoveID = 661
-Name = Origin Pulse
-Type = WATER
-Category = Special
-Power = 110
-Accuracy = 85
-TotalPP = 5
-EffectChance = 0
-Priority = 0
-Description = Spread move. Aura/Pulse. Beam.
-LegacyFunctionCode = 0
-LegacyTarget = 4
-LegacyFlags = bef
-#-------------------------------
-[PRECIPICEBLADES]
-LegacyMoveID = 662
-Name = Precipice Blades
-Type = GROUND
-Category = Physical
-Power = 120
-Accuracy = 85
-TotalPP = 5
-EffectChance = 0
-Priority = 0
-Description = The user attacks opponents by manifesting fearsome blades of stone.
-LegacyFunctionCode = 0
-LegacyTarget = 4
-LegacyFlags = bef
-#-------------------------------
-[DRAGONASCENT]
-LegacyMoveID = 663
-Name = Dragon Ascent
-Type = FLYING
-Category = Physical
-Power = 120
-Accuracy = 100
-TotalPP = 5
-EffectChance = 0
-Priority = 0
-Description = The user soars up, then quickly drops down onto the opponent, lowering its defenses.
-LegacyFunctionCode = 60
-LegacyTarget = 0
-LegacyFlags = abef
-#-------------------------------
-[THOUSANDARROWS]
-LegacyMoveID = 664
-Name = Thousand Arrows
-Type = GROUND
-Category = Physical
-Power = 90
-Accuracy = 100
-TotalPP = 5
-EffectChance = 0
-Priority = 0
-Description = This move hits opposing Pokémon that are in the air, knocking them to the ground.
-LegacyFunctionCode = 342
-LegacyTarget = 4
-LegacyFlags = bef
-#-------------------------------
-[THOUSANDWAVES]
-LegacyMoveID = 665
-Name = Thousand Waves
-Type = GROUND
-Category = Physical
-Power = 90
-Accuracy = 100
-TotalPP = 5
-EffectChance = 0
-Priority = 0
-Description = The user attacks with a wave that crawls along the ground. Those hit can't flee from battle.
-LegacyFunctionCode = 341
-LegacyTarget = 4
-LegacyFlags = bef
-#-------------------------------
-[DIAMONDSTORM]
-LegacyMoveID = 666
-Name = Diamond Storm
-Type = ROCK
-Category = Physical
-Power = 100
-Accuracy = 95
-TotalPP = 5
-EffectChance = 50
-Priority = 0
-Description = Spread move. 50% chance to sharply raise defense. Light.
-LegacyFunctionCode = 47
-LegacyTarget = 4
-LegacyFlags = befm
-#-------------------------------
 [HYPERSPACEHOLE]
 LegacyMoveID = 667
 Name = Hyperspace Hole
@@ -9853,21 +9763,6 @@ Description = Using a hyperspace hole, the user appears and strikes, hitting a t
 LegacyFunctionCode = 343
 LegacyTarget = 0
 LegacyFlags = ef
-#-------------------------------
-[STEAMERUPTION]
-LegacyMoveID = 668
-Name = Steam Eruption
-Type = WATER
-Category = Special
-Power = 110
-Accuracy = 95
-TotalPP = 5
-EffectChance = 30
-Priority = 0
-Description = The user immerses the target in superheated steam. This may also leave the target with a burn.
-LegacyFunctionCode = 10
-LegacyTarget = 0
-LegacyFlags = befg
 #-------------------------------
 [POISONSWEEP]
 LegacyMoveID = 669
@@ -10035,7 +9930,7 @@ LegacyTarget = 0
 LegacyFlags = befg
 #-------------------------------
 [DIMZAP]
-LegacyMoveID = 680
+LegacyMoveID = 1075
 Name = Rift Zap
 Type = ELECTRIC
 Category = Special
@@ -15064,7 +14959,7 @@ TotalPP = 5
 EffectChance = 0
 Priority = 0
 Description = First turn boost Sp.Atk, second turn attack the target. No charge during rain.
-LegacyFunctionCode = 515
+LegacyFunctionCode = 567
 LegacyTarget = 0
 LegacyFlags = bef
 #-------------------------------

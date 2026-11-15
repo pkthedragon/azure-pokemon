@@ -95,6 +95,18 @@ class PBMoveData
 end
 
 class PBMove
+  # Older saves stored either numeric ID of these moves. Use the canonical
+  # ID in battle so move-specific field and ability checks see the same move.
+  LEGACY_DUPLICATE_MOVES={
+    661=>:ORIGINPULSE,
+    662=>:PRECIPICEBLADES,
+    663=>:DRAGONASCENT,
+    664=>:THOUSANDARROWS,
+    665=>:THOUSANDWAVES,
+    666=>:DIAMONDSTORM,
+    668=>:STEAMERUPTION
+  }.freeze
+
   # Migrate retired numeric move IDs when Pokémon from an older save are read.
   RETIRED_MOVE_REPLACEMENTS={
     215=>:SLEEPPOWDER,
@@ -107,7 +119,7 @@ class PBMove
   }.freeze
 
   def self.current_id(moveid)
-    replacement=RETIRED_MOVE_REPLACEMENTS[moveid]
+    replacement=LEGACY_DUPLICATE_MOVES[moveid] || RETIRED_MOVE_REPLACEMENTS[moveid]
     return replacement ? PBMoves.const_get(replacement) : moveid
   end
 

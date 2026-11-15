@@ -314,6 +314,10 @@ module ItemHandlers
     return UseInBattle[item]!=nil
   end
 
+  def self.single_move_pp_item?(item)
+    return [:ETHER,:MAXETHER,:LEPPABERRY,:ROSETEA].any? { |symbol| isConst?(item,PBItems,symbol) }
+  end
+
   def self.triggerUseFromBag(item)
     # Return value:
     # 0 - Item not used
@@ -366,17 +370,19 @@ module ItemHandlers
     end
   end
 
-  def self.triggerBattleUseOnPokemon(item,pokemon,battler,scene)
+  def self.triggerBattleUseOnPokemon(item,pokemon,battler,scene,move_index=nil)
     # Returns whether item was used
     if !BattleUseOnPokemon[item]
       return false
     else
+      args=[pokemon,battler,scene]
+      args.push(move_index) if single_move_pp_item?(item)
       if battler && battler.respond_to?(:battle) && battler.battle
         return battler.battle.pbWithStatChangeSource([:item,item]) do
-          BattleUseOnPokemon.trigger(item,pokemon,battler,scene)
+          BattleUseOnPokemon.trigger(item,*args)
         end
       end
-      return BattleUseOnPokemon.trigger(item,pokemon,battler,scene)
+      return BattleUseOnPokemon.trigger(item,*args)
     end
   end
 
@@ -594,6 +600,7 @@ end
 def pbSpeciesCompatible?(species,move,pokemon)  
   ret=false
   return false if species<=0
+  move=PBMove.current_id(move)
   case species
     when 19 #Rattata
       if pokemon.form==0
@@ -2705,6 +2712,7 @@ end
 
 def pbLearnMove(pokemon,move,ignoreifknown=false,bymachine=false)
   return false if !pokemon
+  move=PBMove.current_id(move)
   movename=PBMoves.getName(move)
   pkmnname=pokemon.name
   if pokemon.isEgg? && !$DEBUG
@@ -2765,7 +2773,7 @@ def pbConsumeItemInBattle(bag,item)
                 $ItemData[item][ITEMBATTLEUSE]!=4 &&
                 $ItemData[item][ITEMBATTLEUSE]!=0
     # Delete the item just used from stock
-    $PokemonBag.pbDeleteItem(item)
+    bag.pbDeleteItem(item)
     
   end
 end
@@ -2801,9 +2809,9 @@ def pbUseItemOnPokemon(item,pokemon,scene)
     ret=ItemHandlers.triggerUseOnPokemon(item,pokemon,scene)
     if ret && $ItemData[item][ITEMUSE]==1 # Usable on Pokémon, consumed
       $PokemonBag.pbDeleteItem(item)
-    end
-    if $PokemonBag.pbQuantity(item)<=0
-      Kernel.pbMessage(_INTL("You used your last {1}.",PBItems.getName(item)))
+      if $PokemonBag.pbQuantity(item)<=0
+        Kernel.pbMessage(_INTL("You used your last {1}.",PBItems.getName(item)))
+      end
     end
     return ret
   end

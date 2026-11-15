@@ -36,7 +36,10 @@ class PBSpeciesData
   def name; return PBSpecies.getName(@id); end
   def kind; return pbGetMessage(MessageTypes::Kinds,@id); end
   def dexentry; return pbGetMessage(MessageTypes::Entries,@id); end
-  def form_names; return pbGetMessage(MessageTypes::FormNames,@id); end
+  def form_names
+    names=pbGetMessage(MessageTypes::FormNames,@id)
+    return defined?(AzureMegaForms) ? AzureMegaForms.form_names(@id,names) : names
+  end
   def hidden_abilities; return @hidden_ability>0 ? [@hidden_ability].freeze : [].freeze; end
 
   def moveset

@@ -892,9 +892,10 @@ PBS field and generated constant before installation: 1,117 numeric records,
 1,114 effective symbols, 10,053 compiled fields, and all machine-move IDs match.
 The three documented aliases (`GREENKEY`, `TM115`, and `TM116`) still use their
 last source definition. Twelve new Tribute records and four authored Tribute
-description changes are now live. Deprecated IDs 1036 (`TANTRIBUTE`) and 1037
-(`MISTRIBUTE`) remain as compatibility rows so old bags and saves never resolve
-those numeric IDs to `nil`; they do not restore any removed battle effect.
+description changes were activated. The former Tangrowth and Mismagius Tribute
+rows at IDs 1036 and 1037 have since been retired. Loading an older save migrates
+those copies in the Bag, PC, or held by Pokémon to Meadow and Spooky Tribute and
+unlocks the corresponding attunement.
 
 `Data/pokmanitems.rxdata`, `Scripts/PBItems.rb`, and the item name/description
 tables in `Data/messages.dat` were installed as one verified set. All non-item

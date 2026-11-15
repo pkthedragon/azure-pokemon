@@ -384,7 +384,7 @@ KYOGRE=382
 GROUDON=383
 RAYQUAZA=384
 JIRACHI=385
-DEOXYS=306
+DEOXYS=386
 TURTWIG=387
 GROTLE=388
 TORTERRA=389
@@ -1038,7 +1038,7 @@ def PBSpecies.getName(id)
 return pbGetMessage(MessageTypes::Species,id)
 end
 def PBSpecies.getCount
-return 1033
+return 1034
 end
 def PBSpecies.maxValue
 return 1034

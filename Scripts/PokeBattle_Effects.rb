@@ -17,8 +17,7 @@ class PokeBattle_Battler
   end
 
   def pbIcicleTributeBypassActive?
-    return false if !defined?(pbCurrentTributeMoveMatches?)
-    return pbCurrentTributeMoveMatches?(@battle,:ICICLETRIBUTE,true)
+    return @battle.icicleTributeBypass==true
   end
   # End of Minior streamlining
 
@@ -264,7 +263,7 @@ class PokeBattle_Battler
     return false if isFainted?
     return false if !tribute_icicle && !pbCanStatus?(showMessages)
 #### KUROTSUNE - 028 - START  #### JERICHO - 002 - START    
-    if !tribute_icicle && isConst?(ability,PBAbilities,:WATERBUBBLE) && !(self.moldbroken)
+    if !tribute_icicle && hasWorkingAbility(:WATERBUBBLE) && !moldbroken
       @battle.pbDisplay(_INTL("{1} is protected by it's Water Bubble!",pbThis)) if showMessages
       return false
     end        
@@ -300,7 +299,7 @@ class PokeBattle_Battler
     return false if isFainted?
     return false if !pbCanStatus?(showMessages)
 #### KUROTSUNE - 028 - START  #### JERICHO - 002 - START    
-    if isConst?(ability,PBAbilities,:WATERBUBBLE) && !(self.moldbroken)
+    if hasWorkingAbility(:WATERBUBBLE) && !moldbroken
       @battle.pbDisplay(_INTL("{1} is protected by it's Water Bubble!",pbThis)) if showMessages
       return false
     end       
@@ -343,7 +342,7 @@ class PokeBattle_Battler
     return false if pbShieldsUp?
     return false if !pbCanStatus?()
 #### KUROTSUNE - 028 - START  #### JERICHO - 002 - START    
-    if isConst?(ability,PBAbilities,:WATERBUBBLE) && !(self.moldbroken)
+    if hasWorkingAbility(:WATERBUBBLE) && !moldbroken
       @battle.pbDisplay(_INTL("{1} is protected by it's Water Bubble!",pbThis)) if showMessages
       return false
     end       
@@ -912,7 +911,7 @@ end
 # Added an extra parameter to determine if this was called from reduce stat
 # changed from: def pbIncreaseStat(stat,increment,showMessages,moveid=nil,attacker=nil,upanim=true)
   def pbIncreaseStat(stat,increment,showMessages1,moveid=nil,attacker=nil,upanim=true, cont_call=false, showMessages2=true)
-    if defined?(pbTributeMoveMatches?) && pbTributeMoveMatches?(attacker,:ZAPTRIBUTE,moveid)
+    if increment>0 && pbTributeMoveMatches?(attacker,:ZAPTRIBUTE,moveid) && attacker.moves[0].basedamage>0
       increment += 1
     end
     stat_source=pbStatChangeSourceKey(moveid)
@@ -1019,6 +1018,10 @@ end
   # show certain messages twice which is undesirable.)
   def pbCanReduceStatStage?(stat,showMessages=false,selfreduce=false)
     return false if isFainted?
+    if !selfreduce && hasWorkingItem(:CLEARAMULET)
+      @battle.pbDisplay(_INTL("{1}'s Clear Amulet prevents stat loss!",pbThis)) if showMessages
+      return false
+    end
     tribute_icicle = pbIcicleTributeBypassActive?
     if !selfreduce && !tribute_icicle
       if damagestate.substitute || (effects[PBEffects::Substitute]>0 && !PBMoveData.new(@battle.lastMoveUsed).isSoundBased?)
@@ -1127,7 +1130,14 @@ end
 # Added another parameter to determine if we called from within increase
 # changed from: def pbReduceStat(stat,increment,showMessages,moveid=nil,attacker=nil,downanim=true,selfreduce=false)
   def pbReduceStat(stat,increment,showMessages1=true,moveid=nil,attacker=nil,downanim=true,selfreduce=false, cont_call=false, showMessages2=true, mirrored=false)
-    if defined?(pbTributeMoveMatches?) && pbTributeMoveMatches?(attacker,:DREADTRIBUTE,moveid)
+    if @tributeDracoSelfDrops && selfreduce && attacker==self && !cont_call && moveid==@tributeDracoSelfDrops[0]
+      @tributeDracoSelfDrops[1][stat]+=increment
+    end
+    if !selfreduce && attacker!=self && hasWorkingItem(:CLEARAMULET)
+      @battle.pbDisplay(_INTL("{1}'s Clear Amulet prevents stat loss!",pbThis)) if showMessages1
+      return false
+    end
+    if increment>0 && pbTributeMoveMatches?(attacker,:DREADTRIBUTE,moveid)
       increment += 1
     end
     stat_source=pbStatChangeSourceKey(moveid)

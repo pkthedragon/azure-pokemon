@@ -180,77 +180,6 @@ ItemHandlers::UseFromBag.add(:EXPALLOFF,proc{|item|
    next 1
 })
 
-ItemHandlers::UseFromBag.add(:NULLTRIBUTE, proc { |item|
-  current_sym = item.is_a?(Symbol) ? item : (getConstantName(PBItems, item) rescue nil)
-  current_sym = current_sym.to_sym if current_sym.is_a?(String)
-  current_sym ||= :NULLTRIBUTE
-  if current_sym==:DRACOTRIBUTE
-    cmd = Kernel.pbMessage(
-      _INTL("What would you like to do with the Draco Tribute?"),
-      [_INTL("Assign Tribute Move"),_INTL("Change Attunement"),_INTL("Cancel")],
-      -1
-    )
-    case cmd
-    when 0
-      pkmnid = pbChooseTributePokemon(_INTL("Choose a Pokémon to inscribe."))
-      if pkmnid<0
-        Kernel.pbMessage(_INTL("You decided not to inscribe the Draco Tribute."))
-        next 0
-      end
-      next pbAssignDracoTributeMove($Trainer.party[pkmnid]) ? 1 : 0
-    when 2, -1
-      Kernel.pbMessage(_INTL("You decided not to change the Tribute."))
-      next 0
-    end
-  end
-  names, items = pbBuildUnlockedTributeLists(current_sym)
-  current_index = items.index(current_sym) || 0
-  cmd = Kernel.pbMessage(
-    _INTL("Change the Tribute's attunement?"),
-    names,
-    -1,
-    nil,
-    current_index
-  )
-  if cmd < 0 || cmd >= items.length
-    Kernel.pbMessage(_INTL("You decided not to change the Tribute."))
-    next 0
-  end
-  new_sym = items[cmd]
-  new_id  = getID(PBItems, new_sym)
-  old_id  = getID(PBItems, current_sym)
-  if new_id == old_id
-    Kernel.pbMessage(_INTL("The Tribute's attunement remains the same."))
-    next 1
-  end
-  $PokemonBag.pbChangeItem(old_id, new_id)
-  Kernel.pbMessage(_INTL("The Tribute's attunement shifted.", PBItems.getName(new_id)))
-
-  next 1
-})
-
-ItemHandlers::UseFromBag.copy(
-  :NULLTRIBUTE,
-  :MEADOWTRIBUTE,
-  :SPLASHTRIBUTE,
-  :FLAMETRIBUTE,
-  :BLANKTRIBUTE,
-  :FISTTRIBUTE,
-  :MINDTRIBUTE,
-  :ZAPTRIBUTE,
-  :ICICLETRIBUTE,
-  :STONETRIBUTE,
-  :PIXIETRIBUTE,
-  :SKYTRIBUTE,
-  :SPOOKYTRIBUTE,
-  :DREADTRIBUTE,
-  :EARTHTRIBUTE,
-  :IRONTRIBUTE,
-  :TOXICTRIBUTE,
-  :INSECTTRIBUTE,
-  :DRACOTRIBUTE
-)
-
 ItemHandlers::UseFromBag.add(:GOLDENWINGS,proc{|item|
   next 0 if !pbCheckHiddenMoveSwitch(SWITCHFORFLY,true)
   next 0 if !$PokemonBag.pbHasItem?(:HM02)
@@ -964,11 +893,9 @@ ItemHandlers::UseOnPokemon.add(:ELIXIR,proc{|item,pokemon,scene|
 })
 
 ItemHandlers::UseOnPokemon.add(:ROSETEA,proc{|item,pokemon,scene|
-   pprestored=0
-   for i in 0...pokemon.moves.length
-     pprestored+=pbRestorePP(pokemon,i,10)
-   end
-   if pprestored==0
+   move=scene.pbChooseMove(pokemon,_INTL("Restore which move?"))
+   next false if move<0
+   if pbRestorePP(pokemon,move,10)==0
      scene.pbDisplay(_INTL("It won't have any effect."))
      next false
    else
@@ -3629,6 +3556,8 @@ ItemHandlers::UseInField.add(:GOLDENWINGS,proc{|item|
 ItemHandlers::BattleUseOnPokemon.add(:POTION,proc{|item,pokemon,battler,scene|
    next pbBattleHPItem(pokemon,battler,20,scene)
 })
+ItemHandlers::BattleUseOnPokemon.copy(:POTION,:CHESTNUT)
+ItemHandlers::UseOnPokemon.copy(:POTION,:CHESTNUT)
 
 ItemHandlers::BattleUseOnPokemon.add(:SUPERPOTION,proc{|item,pokemon,battler,scene|
    next pbBattleHPItem(pokemon,battler,60,scene)
@@ -3853,7 +3782,8 @@ ItemHandlers::BattleUseOnPokemon.add(:FULLHEAL,proc{|item,pokemon,battler,scene|
 })
 
 ItemHandlers::BattleUseOnPokemon.copy(:FULLHEAL,
-   :LAVACOOKIE,:OLDGATEAU,:CASTELIACONE,:BIGMALASADA,:LUMBERRY,:RAZZTART)
+   :LAVACOOKIE,:OLDGATEAU,:CASTELIACONE,:BIGMALASADA,:LUMBERRY,:RAZZTART,:LUMIOSEGALETTE)
+ItemHandlers::UseOnPokemon.copy(:FULLHEAL,:LUMIOSEGALETTE)
 
 ItemHandlers::BattleUseOnPokemon.add(:FULLRESTORE,proc{|item,pokemon,battler,scene|
    if pokemon.hp<=0 || (pokemon.status==0 && pokemon.hp==pokemon.totalhp &&
@@ -4031,35 +3961,19 @@ ItemHandlers::BattleUseOnPokemon.add(:REVIVALHERB,proc{|item,pokemon,battler,sce
    end
 })
 
-ItemHandlers::BattleUseOnPokemon.add(:ETHER,proc{|item,pokemon,battler,scene|
-#   move=scene.pbChooseMove(pokemon,_INTL("Restore which move?"))
-#   if move>=0
-#     if pbBattleRestorePP(pokemon,battler,move,10)==0
-#       scene.pbDisplay(_INTL("It won't have any effect."))
-#       next false
-#     else
-       scene.pbDisplay(_INTL("PP was restored."))
-       next true
-#     end
-#   end
-#   next false
+ItemHandlers::BattleUseOnPokemon.add(:ETHER,proc{|item,pokemon,battler,scene,move_index|
+   move=pokemon.moves[move_index] if move_index.is_a?(Integer) && move_index>=0
+   amount=isConst?(item,PBItems,:MAXETHER) && move ? move.totalpp-move.pp : 10
+   if !move || pbBattleRestorePP(pokemon,battler,move_index,amount)<=0
+     scene.pbDisplay(_INTL("It won't have any effect."))
+     next false
+   end
+   scene.pbDisplay(_INTL("PP was restored."))
+   next true
 })
 
-ItemHandlers::BattleUseOnPokemon.copy(:ETHER,:LEPPABERRY)
+ItemHandlers::BattleUseOnPokemon.copy(:ETHER,:LEPPABERRY,:MAXETHER,:ROSETEA)
 
-ItemHandlers::BattleUseOnPokemon.add(:MAXETHER,proc{|item,pokemon,battler,scene|
-#   move=scene.pbChooseMove(pokemon,_INTL("Restore which move?"))
-#   if move>=0
-#     if pbBattleRestorePP(pokemon,battler,move,pokemon.moves[move].totalpp-pokemon.moves[move].pp)==0
-#       scene.pbDisplay(_INTL("It won't have any effect."))
-#       next false
-#     else
-       scene.pbDisplay(_INTL("PP was restored."))
-       next true
-#     end
-#   end
-#   next false
-})
 ItemHandlers::BattleUseOnPokemon.add(:ELIXIR,proc{|item,pokemon,battler,scene|
    pprestored=0
    for i in 0...pokemon.moves.length
@@ -4115,6 +4029,40 @@ ItemHandlers::BattleUseOnPokemon.copy(:YELLOWFLUTE,:PERSIMBERRY)
 #===============================================================================
 # BattleUseOnBattler handlers
 #===============================================================================
+
+ItemHandlers::BattleUseOnBattler.add(:RESETURGE,proc{|item,battler,scene|
+   stages=battler.effects[PBEffects::MultiTurnAttack]==PBMoves::BINDINGWORD ?
+          battler.effects[PBEffects::StatChangeHolder] : battler.stages
+   next false if !stages.any? { |stage| stage && stage!=0 }
+   stages.fill(0)
+   scene.pbDisplay(_INTL("{1}'s stat changes were removed!",battler.pbThis))
+   next true
+})
+
+ItemHandlers::BattleUseOnBattler.add(:ABILITYURGE,proc{|item,battler,scene|
+   next false if !battler.abilityWorks? || battler.ability==0
+   battler.pbAbilitiesOnSwitchIn(true)
+   next true
+})
+
+ItemHandlers::BattleUseOnBattler.add(:ITEMURGE,proc{|item,battler,scene|
+   next false if !battler.itemWorks? || battler.item==0
+   if pbIsBerry?(battler.item)
+     next battler.pbEatHeldBerry
+   end
+   previous=battler.item
+   battler.pbBerryCureCheck(true)
+   next battler.item!=previous
+})
+
+ItemHandlers::BattleUseOnBattler.add(:ITEMDROP,proc{|item,battler,scene|
+   next false if battler.item==0 || battler.battle.pbIsUnlosableItem(battler,battler.item)
+   held=battler.item
+   battler.item=0
+   battler.pokemon.itemInitial=0 if battler.pokemon.itemInitial==held
+   scene.pbDisplay(_INTL("{1} dropped its {2}!",battler.pbThis,PBItems.getName(held)))
+   next true
+})
 
 ItemHandlers::BattleUseOnBattler.add(:DECOMPRESSOR,proc{|item,battler,scene|
    if !battler || battler.isFainted? || battler.status!=PBStatuses::CRUSHED

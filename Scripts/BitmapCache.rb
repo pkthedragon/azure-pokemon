@@ -128,11 +128,13 @@ end
 
 class BitmapWrapper < Bitmap
   attr_reader :refcount
+  attr_writer :cache_key
 
   def dispose
     return if self.disposed?
     @refcount-=1
     if @refcount<=0
+      @cache_key=nil
       super
     end
   end
@@ -162,6 +164,20 @@ end
 module BitmapCache
   @cache = ObjectSpace::WeakMap.new
 
+  def self.with_retained_map_bitmaps
+    retained=[]
+    @cache.each_pair do |path,bitmap|
+      next unless path.is_a?(String) && path.start_with?("Graphics/Characters/",
+        "Graphics/Tilesets/","Graphics/Autotiles/","Graphics/Panoramas/","Graphics/Fogs/")
+      next if !bitmap || bitmap.disposed?
+      bitmap.addRef
+      retained.push(bitmap)
+    end
+    yield
+  ensure
+    retained.each {|bitmap| bitmap.dispose}
+  end
+
   def self.fromCache(i)
     return nil if !@cache.include?(i)
     obj=@cache[i]
@@ -170,6 +186,11 @@ module BitmapCache
   end
 
   def self.setKey(key,obj)
+    if key.is_a?(String) && obj.is_a?(BitmapWrapper)
+      key=-key
+      # WeakMap otherwise loses file paths during GC while sprites still own the bitmap.
+      obj.cache_key=key
+    end
     @cache[key]=obj
   end
 
@@ -207,7 +228,7 @@ module BitmapCache
         bm = BitmapWrapper.new(32,32)
       end
       objPath=bm
-      @cache[path]=objPath
+      setKey(path,objPath)
       cached=false
     end
     if hue == 0

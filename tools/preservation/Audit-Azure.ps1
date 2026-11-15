@@ -50,23 +50,13 @@ function Resolve-AcceptedWarnings {
   $policies = @(
     [pscustomobject]@{
       Name = "duplicate_generated_constants"
-      Expected = 19
-      Pattern = '^Scripts\\(?:PBMoves\.rb assigns (?:ORIGINPULSE|PRECIPICEBLADES|DRAGONASCENT|THOUSANDARROWS|THOUSANDWAVES|DIAMONDSTORM|STEAMERUPTION)|PBSpecies\.rb assigns IRONMOTH|PBItems\.rb assigns (?:GREENKEY|TM115|TM116)|PBAbilities\.rb assigns (?:TOXICCHAIN|CARETAKER|BLOODTHIRSTY|SCAVENGER|EXECUTIONER|EVENTHORIZON)|PBTrainers\.rb assigns (?:SCHOOLKID_F|HADIEN)) more than once; Ruby keeps the last assignment\.$'
+      Expected = 9
+      Pattern = '^Scripts\\(?:PBSpecies\.rb assigns IRONMOTH|PBAbilities\.rb assigns (?:TOXICCHAIN|CARETAKER|BLOODTHIRSTY|SCAVENGER|EXECUTIONER|EVENTHORIZON)|PBTrainers\.rb assigns (?:SCHOOLKID_F|HADIEN)) more than once; Ruby keeps the last assignment\.$'
     },
     [pscustomobject]@{
       Name = "duplicate_pbs_sections"
-      Expected = 17
-      Pattern = '^PBS\\(?:moves\.txt has duplicate section \[(?:ORIGINPULSE|PRECIPICEBLADES|DRAGONASCENT|THOUSANDARROWS|THOUSANDWAVES|DIAMONDSTORM|STEAMERUPTION)\]|pokemon\.txt has duplicate section \[IRONMOTH\]|abilities\.txt has duplicate section \[(?:TOXICCHAIN|CARETAKER|BLOODTHIRSTY|SCAVENGER|EXECUTIONER|EVENTHORIZON)\]|trainer_types\.txt has duplicate section \[(?:SCHOOLKID_F|HADIEN)\]|pokemon_metrics\.txt has duplicate section \[IRONMOTH\]) at lines \d+ and \d+; the later definition is the effective symbol mapping\.$'
-    },
-    [pscustomobject]@{
-      Name = "shared_legacy_numeric_ids"
-      Expected = 2
-      Pattern = '^(?:Moves legacy ID 680 is shared by (?:\[DIMZAP\] and \[DIMPULSE\]|\[DIMPULSE\] and \[DIMZAP\])|Pokémon legacy ID 306 is shared by (?:\[AGGRON\] and \[DEOXYS\]|\[DEOXYS\] and \[AGGRON\])); preserve this alias until an explicit ID migration exists\.$'
-    },
-    [pscustomobject]@{
-      Name = "repeated_item_definitions"
-      Expected = 3
-      Pattern = '^PBS\\items\.txt defines (?:GREENKEY|TM115|TM116) 2 times; the last numeric mapping is effective\.$'
+      Expected = 10
+      Pattern = '^PBS\\(?:pokemon\.txt has duplicate section \[IRONMOTH\]|abilities\.txt has duplicate section \[(?:TOXICCHAIN|CARETAKER|BLOODTHIRSTY|SCAVENGER|EXECUTIONER|EVENTHORIZON)\]|trainer_types\.txt has duplicate section \[(?:SCHOOLKID_F|HADIEN)\]|pokemon_metrics\.txt has duplicate section \[IRONMOTH\]) at lines \d+ and \d+; the later definition is the effective symbol mapping\.$'
     },
     [pscustomobject]@{
       Name = "unresolved_optional_abilities"
@@ -128,7 +118,7 @@ function Resolve-AcceptedWarnings {
   }
 
   $expectedWarnings = ($policies | Measure-Object -Property Expected -Sum).Sum
-  Add-AuditCheck "Warning acceptance: $expectedWarnings reviewed legacy warnings match six exact categories."
+  Add-AuditCheck "Warning acceptance: $expectedWarnings reviewed legacy warnings match $($policies.Count) exact categories."
 }
 
 function Resolve-ProjectPath([string]$RelativePath) {
@@ -1142,7 +1132,8 @@ function Test-TMReferences(
   } finally {
     $sha.Dispose()
   }
-  $expectedHash = "1546f0b75d61fdb0a9bbb0916b0d3395d843620adfffa04333b083a2968c6a45"
+  # The Deoxys species migration splits its TM compatibility from Aggron's ID.
+  $expectedHash = "513a8c11c842e9878424bc32a41edc67acf065c903cae701e562881d7195c461"
   if ($compatibilityHash -cne $expectedHash) {
     Add-AuditError "PBS\tm.txt effective numeric compatibility map changed (SHA-256 $compatibilityHash; expected $expectedHash)."
   }
@@ -1189,13 +1180,6 @@ function Test-LegacyDuplicatePolicy(
   # These are compatibility aliases already embedded in Azure events, saves,
   # and generated constants. Any membership change must be reviewed explicitly.
   $allowedSymbols = @{
-    "Moves|ORIGINPULSE" = "661,671"
-    "Moves|PRECIPICEBLADES" = "662,672"
-    "Moves|DRAGONASCENT" = "663,673"
-    "Moves|THOUSANDARROWS" = "664,674"
-    "Moves|THOUSANDWAVES" = "665,675"
-    "Moves|DIAMONDSTORM" = "666,676"
-    "Moves|STEAMERUPTION" = "668,678"
     "Pokemon|IRONMOTH" = "994,994"
     "Abilities|TOXICCHAIN" = "371,396"
     "Abilities|CARETAKER" = "326,404"
@@ -1205,13 +1189,8 @@ function Test-LegacyDuplicatePolicy(
     "Abilities|EVENTHORIZON" = "346,408"
     "TrainerTypes|SCHOOLKID_F" = "14,15"
     "TrainerTypes|HADIEN" = "187,221"
-    "Items|GREENKEY" = "606,625"
-    "Items|TM115" = "885,1050"
-    "Items|TM116" = "886,1051"
   }
   $allowedIds = @{
-    "Moves|680" = "DIMPULSE,DIMZAP"
-    "Pokemon|306" = "AGGRON,DEOXYS"
     "Pokemon|994" = "IRONMOTH,IRONMOTH"
   }
 
@@ -2045,7 +2024,7 @@ function Test-FeatureContracts {
     @{ Name = "Turn stat-raise signal reset"; File = "Scripts\PokeBattle_Battle.rb"; Pattern = 'azureStatsRaisedThisRound\s*=\s*false' },
     @{ Name = "Reactive protection interception"; File = "Scripts\PokeBattle_Battler.rb"; Pattern = '(?s)# Silk Trap.*PBEffects::SilkTrap.*PROTECTIVEPADS.*PBStats::SPEED.*# Burning Bulwark.*PBEffects::BurningBulwark.*PROTECTIVEPADS.*pbBurn' },
     @{ Name = "Reactive protection round reset"; File = "Scripts\PokeBattle_Battle.rb"; Pattern = '(?s)PBEffects::SilkTrap\]\s*=\s*false.*PBEffects::BurningBulwark\]\s*=\s*false' },
-    @{ Name = "Shed Tail safe substitute handoff"; File = "Scripts\PokeBattle_Battler.rb"; Pattern = '(?s)@tributeOrthwormShedHP.*shed_data\[i\.index\].*!i\.isFainted\?.*pbSubstituteSprite' },
+    @{ Name = "Shed Tail safe substitute handoff"; File = "Scripts\PokeBattle_Battler.rb"; Pattern = '(?s)shed_hp=i\.effects\[PBEffects::TributeOrthwormShedHP\].*shed_hp>0.*!i\.isFainted\?.*pbSubstituteSprite' },
     @{ Name = "Commander target immunity"; File = "Scripts\PokeBattle_Battler.rb"; Pattern = '(?s)def\s+pbSuccessCheck.*PBEffects::Commander.*avoided the attack' },
     @{ Name = "Commander command and switch locks"; File = "Scripts\PokeBattle_Battle.rb"; Pattern = '(?s)def\s+pbCanShowCommands\?.*PBEffects::Commander.*def\s+pbCanSwitchLax\?.*PBEffects::Commandee' },
     @{ Name = "Aftershock end-round execution"; File = "Scripts\PokeBattle_Battle.rb"; Pattern = '(?s)# Aftershock delayed hits.*PBEffects::AftershockMove.*@azure_aftershock_echo.*move\.pbEffect.*pbWithStatChangeSource.*move\.pbApplyAdditionalEffects' },
@@ -2061,7 +2040,7 @@ function Test-FeatureContracts {
     @{ Name = "Final Azure move-state initialization"; File = "Scripts\PokeBattle_Battler.rb"; Pattern = '(?s)PBEffects::CircadianRhythm\]\s*=\s*false.*PBEffects::Needles\]\s*=\s*0.*PBEffects::MoltenStance\]\s*=\s*false' },
     @{ Name = "Blue Shift field initialization"; File = "Scripts\PokeBattle_ActiveSide.rb"; Pattern = 'PBEffects::BlueShift\]\s*=\s*0' },
     @{ Name = "Blue Shift type inversion"; File = "Scripts\PokeBattle_Move.rb"; Pattern = '(?s)def\s+azure_inverse_type_matchup.*PBEffects::BlueShift.*typemod=azure_inverse_type_matchup.*when 36 # Inverse Field.*PBEffects::BlueShift' },
-    @{ Name = "Blue Shift AI type awareness"; File = "Scripts\PokeBattle_AI.rb"; Pattern = '(?s)def\s+pbTypeModifierAI.*Inverse Field / Blue Shift.*PBEffects::BlueShift.*def\s+pbTypeModNoMessages.*Inverse Field / Blue Shift.*PBEffects::BlueShift' },
+    @{ Name = "Blue Shift AI type awareness"; File = "Scripts\PokeBattle_AI.rb"; Pattern = '(?s)def\s+pbTypeModifierAI.*PBEffects::BlueShift.*def\s+pbTypeModNoMessages.*typemod=move\.pbTypeModifier\(type,attacker,opponent\).*typemod=pbTypeModifierAI\(type,attacker,opponent\)' },
     @{ Name = "Circadian Needle Molten and Blue round processing"; File = "Scripts\PokeBattle_Battle.rb"; Pattern = '(?s)# Circadian Rhythm sleep-turn growth.*PBStats::ATTACK,PBStats::SPATK,PBStats::SPEED.*# Molten Stance.*PBStats::DEFENSE,PBStats::SPDEF.*PBStats::SPEED,2.*# One embedded needle.*azureConsumeNeedle.*# Blue Shift.*PBEffects::BlueShift\]-=1' },
     @{ Name = "Typed cached move data registry"; File = "Scripts\PBMove.rb"; Pattern = '(?s)attr_reader\s+:id.*alias\s+azure_uncached_new\s+new.*def\s+normalize_id.*PBMoves\.const_defined\?.*def\s+new\(moveid\).*@azure_source_id.*@azure_source_row.*def\s+get\(move\).*def\s+try_get\(move\).*def\s+exists\?\(move\).*def\s+each.*def\s+clear_cache' },
     @{ Name = "Typed cached item data registry"; File = "Scripts\PokemonItems.rb"; Pattern = '(?s)class\s+PBItemData.*attr_reader\s+:id,:name,:pocket,:price,:description.*attr_reader\s+:field_use,:battle_use,:item_type,:move.*alias\s+azure_uncached_new\s+new.*def\s+normalize_id.*PBItems\.const_defined\?.*def\s+new\(itemid\).*@azure_source_id.*@azure_source_row.*def\s+get\(item\).*def\s+try_get\(item\).*def\s+exists\?\(item\).*def\s+each.*def\s+clear_cache' },
@@ -2163,16 +2142,16 @@ function Test-FeatureContracts {
     @{ Name = "Allocation-free AI rough-stat scaling"; File = "Scripts\PokeBattle_AI.rb"; Pattern = '(?s)AI_ROUGH_STAT_STAGE_MULTIPLIERS=\[2,2,2,2,2,2,2,3,4,5,6,7,8\]\.freeze.*AI_ROUGH_STAT_STAGE_DIVISORS=\[8,7,6,5,4,3,2,2,2,2,2,2,2\]\.freeze.*def\s+pbRoughStat\(battler,stat,skill\).*return\s+battler\.pbSpeed.*stage=battler\.stages\[stat\]\+6.*AI_ROUGH_STAT_STAGE_MULTIPLIERS\[stage\]/AI_ROUGH_STAT_STAGE_DIVISORS\[stage\]' },
     @{ Name = "Allocation-free AI rough-damage stage scaling"; File = "Scripts\PokeBattle_AI.rb"; Pattern = '(?s)def\s+pbRoughDamage\(move,attacker,opponent,skill,basedamage,hardswitch=false\).*AI_ROUGH_STAT_STAGE_MULTIPLIERS\[gl3\]/AI_ROUGH_STAT_STAGE_DIVISORS\[gl3\].*AI_ROUGH_STAT_STAGE_MULTIPLIERS\[gl4\]/AI_ROUGH_STAT_STAGE_DIVISORS\[gl4\]' },
     @{ Name = "Canonical AI damage-move reuse"; File = "Scripts\PokeBattle_AI.rb"; Pattern = '(?s)AI_CONTEXT_SENSITIVE_DAMAGE_MOVES=\{.*PBMoves::WEATHERBALL=>true.*PBMoves::JUDGMENT=>true.*PBMoves::MULTIATTACK=>true.*PBMoves::TECHNOBLAST=>true.*PBMoves::HIDDENPOWER=>true.*PBMoves::GILDEDARROW=>true.*PBMoves::GILDEDARROWS=>true.*PBMoves::NATUREPOWER=>true.*\}\.freeze.*def\s+pbAIDamageMoveNeedsNormalization\?\(move,attacker\).*move\.battle\.equal\?\(self\).*move\.id==PBMoves::STRUGGLE.*move\.user\.equal\?\(attacker\).*move\.basedamage!=data\[1\].*move\.type!=data\[2\].*move\.flags!=data\[9\].*move\.id==PBMoves::THOUSANDARROWS.*def\s+pbRoughDamage\(move,attacker,opponent,skill,basedamage,hardswitch=false\).*pbAIDamageMoveNeedsNormalization\?\(move,attacker\)\s*move\s*=\s*pbChangeMove\(move,attacker\)' },
-    @{ Name = "Allocation-light AI cache keys and ordered foe iteration"; File = "Scripts\PokeBattle_AI.rb"; Pattern = '(?s)def\s+each_ordered_foe_battler_for_ai\(attacker, preferred_target = nil\).*preferred\.respond_to\?\(:index\).*primary = pbAIPrimaryTarget\(attacker, preferred\).*yield primary if primary && !primary\.isFainted\?.*next if primary && foe\.index == primary\.index.*yield foe.*def\s+pbAIOrderedFoes\(attacker, preferred_target = nil\).*each_ordered_foe_battler_for_ai\(attacker, preferred_target\)\s*\{\s*\|foe\|\s*foes << foe\s*\}.*def\s+pbAIAnyOrderedFoe\?.*return true if yield foe.*def\s+pbAIAnyFoeHasMove\?.*each_ordered_foe_battler_for_ai.*def\s+pbAIAnyFoeHasWorkingAbility\?.*each_ordered_foe_battler_for_ai.*def\s+pbAIAnyFoeMoveMemoryMatches\?.*each_ordered_foe_battler_for_ai.*def\s+checkAIdamage\(memory,attacker,opponent,skill,shutup=false,movename=false,hardswitch=false\).*cacheKey=nil.*cacheKey=\(\(attacker\.index\*@battlers\.length\+opponent\.index\)\*2\)\+\s*\(hardswitch \? 1 : 0\).*@aiDamageCache\.has_key\?\(cacheKey\).*@aiDamageCache\[cacheKey\] = maxdam' },
+    @{ Name = "Allocation-light AI cache keys and ordered foe iteration"; File = "Scripts\PokeBattle_AI.rb"; Pattern = '(?s)def\s+each_ordered_foe_battler_for_ai\(attacker, preferred_target = nil\).*preferred\.respond_to\?\(:index\).*primary = pbAIPrimaryTarget\(attacker, preferred\).*yield primary if primary && !primary\.isFainted\?.*next if primary && foe\.index == primary\.index.*yield foe.*def\s+pbAIOrderedFoes\(attacker, preferred_target = nil\).*each_ordered_foe_battler_for_ai\(attacker, preferred_target\)\s*\{\s*\|foe\|\s*foes << foe\s*\}.*def\s+pbAIAnyOrderedFoe\?.*return true if yield foe.*def\s+pbAIAnyFoeHasMove\?.*each_ordered_foe_battler_for_ai.*def\s+pbAIAnyFoeHasWorkingAbility\?.*each_ordered_foe_battler_for_ai.*def\s+pbAIAnyReadyFoeHasMove\?.*each_ordered_foe_battler_for_ai.*def\s+checkAIdamage\(attacker,opponent,skill,shutup=false,movename=false,hardswitch=false\).*cacheKey=nil.*cacheKey=\(\(attacker\.index\*@battlers\.length\+opponent\.index\)\*2\)\+\s*\(hardswitch \? 1 : 0\).*@aiDamageCache\.has_key\?\(cacheKey\).*@aiDamageCache\[cacheKey\] = maxdam' },
     @{ Name = "Allocation-free AI ally query iteration"; File = "Scripts\PokeBattle_AI.rb"; Pattern = '(?s)def\s+pbAIAllies\(attacker, include_self = false\).*each_same_side_battler_for_ai.*def\s+pbAIAnyAlly\?\(attacker, include_self = false\).*if block_given\?.*return true if yield ally.*each_same_side_battler_for_ai\(attacker, include_self\)\s*\{\s*\|ally\|\s*return true\s*\}.*def\s+pbAIFirstAlly\(attacker, preferred_index = nil, include_self = false\).*first=ally if !first.*return ally if !preferred_index\.nil\? && ally\.index==preferred_index.*def\s+pbAIAnyAllyCanKOAnyFoe\?.*each_same_side_battler_for_ai\(attacker\).*ally_target = pbAIFirstAlly\(attacker,opponent \? opponent\.index : nil\)' },
     @{ Name = "Allocation-free AI same-side membership"; File = "Scripts\PokeBattle_AI.rb"; Pattern = '(?s)def\s+pbAISameSideBattler\?\(attacker, target, include_self = false\).*return false if !attacker \|\| !target.*eachSameSideBattler\(attacker\.index\).*next if !battler.*next if !include_self && battler\.index==attacker\.index.*return true if battler==target.*return false' },
     @{ Name = "Allocation-free AI foe speed maxima"; File = "Scripts\PokeBattle_AI.rb"; Pattern = 'if\s+!foes\.empty\?\s+&&\s+foes\.all\?\s*\{\s*\|foe\|\s*opponent\.pbSpeed\s*>\s*foe\.pbSpeed\s*\}' },
-    @{ Name = "Allocation-free scalar-or-collection AI query arguments"; File = "Scripts\PokeBattle_AI.rb"; Pattern = '(?s)def\s+pbAIAnyFoeHasMove\?\(attacker, preferred_target = nil, move_ids = nil\).*multiple=move_ids\.is_a\?\(Array\).*def\s+pbAIAnyFoeHasWorkingAbility\?\(attacker, preferred_target = nil, abilities = nil\).*multiple=abilities\.is_a\?\(Array\).*def\s+pbAIAnyFoeMoveMemoryMatches\?\(attacker, preferred_target = nil, move_ids = nil\).*multiple=move_ids\.is_a\?\(Array\).*def\s+pbAIAnyAllyHasWorkingAbility\?\(attacker, abilities\).*multiple=abilities\.is_a\?\(Array\).*def\s+pbAIAnyOtherAllyHasWorkingAbility\?\(attacker, abilities\).*multiple=abilities\.is_a\?\(Array\).*def\s+pbAIAnyReadyFoeHasMove\?\(attacker, preferred_target = nil, move_ids = nil\).*multiple=move_ids\.is_a\?\(Array\).*AI_REDIRECTION_MOVES=\[PBMoves::FOLLOWME,PBMoves::RAGEPOWDER\]\.freeze.*AI_SCREEN_BREAK_MEMORY_MOVES=\[PBMoves::BRICKBREAK,PBMoves::PSYCHICFANGS,PBMoves::DEFOG\]\.freeze.*AI_ELECTRIC_IMMUNITY_ABILITIES=.*\.freeze.*AI_ALLY_SPREAD_IMMUNITY_ABILITIES=.*\.freeze' },
+    @{ Name = "Allocation-free scalar-or-collection AI query arguments"; File = "Scripts\PokeBattle_AI.rb"; Pattern = '(?s)def\s+pbAIAnyFoeHasMove\?\(attacker, preferred_target = nil, move_ids = nil\).*multiple=move_ids\.is_a\?\(Array\).*def\s+pbAIAnyFoeHasWorkingAbility\?\(attacker, preferred_target = nil, abilities = nil\).*multiple=abilities\.is_a\?\(Array\).*def\s+pbAIAnyAllyHasWorkingAbility\?\(attacker, abilities\).*multiple=abilities\.is_a\?\(Array\).*def\s+pbAIAnyOtherAllyHasWorkingAbility\?\(attacker, abilities\).*multiple=abilities\.is_a\?\(Array\).*def\s+pbAIAnyReadyFoeHasMove\?\(attacker, preferred_target = nil, move_ids = nil\).*multiple=move_ids\.is_a\?\(Array\).*AI_REDIRECTION_MOVES=\[PBMoves::FOLLOWME,PBMoves::RAGEPOWDER\]\.freeze.*AI_SCREEN_BREAK_MOVES=\[PBMoves::BRICKBREAK,PBMoves::PSYCHICFANGS,PBMoves::DEFOG\]\.freeze.*AI_ELECTRIC_IMMUNITY_ABILITIES=.*\.freeze.*AI_ALLY_SPREAD_IMMUNITY_ABILITIES=.*\.freeze' },
     @{ Name = "Frozen AI move-query groups"; File = "Scripts\PokeBattle_AI.rb"; Pattern = '(?s)AI_SLEEP_TALK_MOVES=\[PBMoves::SLEEPTALK,PBMoves::SNORE\]\.freeze.*AI_STAT_RESET_MOVES=\[PBMoves::CLEARSMOG,PBMoves::HAZE\]\.freeze.*AI_WEIGHT_BASED_MOVES=.*AI_HEAVY_WEIGHT_MOVES=.*AI_HEATED_FIELD_MOVES=.*AI_GROUND_SPREAD_MOVES=.*AI_SOUND_SPREAD_MOVES=.*AI_RAIN_ACCURATE_MOVES=.*AI_SLEEP_PUNISH_MOVES=.*AI_ESCAPE_MOVES=.*AI_HAZARD_CONTROL_MOVES=.*AI_BERRY_DESTROY_MOVES=.*AI_ITEM_STEAL_MOVES=.*AI_COMMON_STATUS_MOVES=.*AI_HAZARD_CLEAR_MOVES=.*AI_SLEEP_TALK_EXTENDED_MOVES=\[PBMoves::SLEEPTALK,PBMoves::SNORE,PBMoves::HOTTEMPO\]\.freeze' },
     @{ Name = "Frozen AI static membership groups"; File = "Scripts\PokeBattle_AI.rb"; Pattern = '(?s)AI_TERRAIN_FIELD_IDS=\[1,2,3,18,21,22,26,37\]\.freeze.*AI_SUCCESSIVE_USE_FUNCTIONS=\[0x91,0x92,0xD3,0x247\]\.freeze.*AI_CRITICAL_ABILITIES=\[PBAbilities::SUPERLUCK,PBAbilities::SNIPER\]\.freeze.*AI_PHYSICAL_STAT_DROP_FUNCTIONS=\[0x43,0x44,0x45,0x46,0x47\]\.freeze.*AI_SPECIAL_STAT_DROP_FUNCTIONS=\[0x48,0x49,0x4A,0x4B,0x4C\]\.freeze.*AI_SEMI_INVULNERABLE_FUNCTIONS=\[0xC9,0xCA,0xCB,0xCC,0xCD,0xCE\]\.freeze' },
-    @{ Name = "Scalar-aware allocation-free AI move-memory predicates"; File = "Scripts\PokeBattle_AI.rb"; Pattern = '(?s)def\s+pbAIEffectiveMemoryMoveID\(move\).*move\.id==PBMoves::NATUREPOWER.*return move\.id.*def\s+checkAImoves\(moveID,memory\).*singleMove=moveID\.is_a\?\(Integer\).*for j in memory.*effective_id=pbAIEffectiveMemoryMoveID\(j\).*if singleMove.*moveID==effective_id.*else.*moveID\.include\?\(effective_id\).*def\s+checkAIaccuracy\(memory\).*j\.id==PBMoves::NATUREPOWER.*pbChangeMove\(j,nil\)\.accuracy==0.*return true if j\.accuracy==0.*def\s+checkAIHas\?\(moveID,attacker\).*singleMove=moveID\.is_a\?\(Integer\).*for j in attacker\.moves.*effective_id=pbAIEffectiveMemoryMoveID\(j\).*if singleMove.*moveID==effective_id.*else.*moveID\.include\?\(effective_id\)' },
+    @{ Name = "Scalar-aware allocation-free AI moveset predicates"; File = "Scripts\PokeBattle_AI.rb"; Pattern = '(?s)def\s+pbAIEffectiveMoveID\(move\).*move\.id==PBMoves::NATUREPOWER.*return move\.id.*def\s+checkAImoves\(moveID,known_moves\).*singleMove=moveID\.is_a\?\(Integer\).*for j in known_moves.*effective_id=pbAIEffectiveMoveID\(j\).*if singleMove.*moveID==effective_id.*else.*moveID\.include\?\(effective_id\).*def\s+checkAIaccuracy\(memory\).*j\.id==PBMoves::NATUREPOWER.*pbChangeMove\(j,nil\)\.accuracy==0.*return true if j\.accuracy==0.*def\s+checkAIHas\?\(moveID,attacker\).*singleMove=moveID\.is_a\?\(Integer\).*for j in attacker\.moves.*effective_id=pbAIEffectiveMoveID\(j\).*if singleMove.*moveID==effective_id.*else.*moveID\.include\?\(effective_id\)' },
     @{ Name = "Move availability opposing-battler binding"; File = "Scripts\PokeBattle_Battle.rb"; Pattern = '(?s)def\s+pbCanChooseMove\?\(idxPokemon,idxMove,showMessages,sleeptalk=false\).*opp1=thispkmn\.pbOpposing1\s*opp2=thispkmn\.pbOpposing2.*opp1\.effects\[PBEffects::Imprison\].*opp2\.effects\[PBEffects::Imprison\]' },
-    @{ Name = "Battler-owned initialized battle moves"; File = "Scripts\PokeBattle_Battler.rb"; Pattern = '(?s)def\s+pbInitPokemon\(pkmn,pkmnIndex,wonderroom=false\).*@moves\s*=\s*\[\s*PokeBattle_Move\.pbFromPBMove\(@battle,pkmn\.moves\[0\],self\),\s*PokeBattle_Move\.pbFromPBMove\(@battle,pkmn\.moves\[1\],self\),\s*PokeBattle_Move\.pbFromPBMove\(@battle,pkmn\.moves\[2\],self\),\s*PokeBattle_Move\.pbFromPBMove\(@battle,pkmn\.moves\[3\],self\)' },
+    @{ Name = "Battler-owned initialized battle moves"; File = "Scripts\PokeBattle_Battler.rb"; Pattern = '(?s)def\s+pbInitPokemon\(pkmn,pkmnIndex,wonderroom=false,initialize_tribute=true\).*@moves\s*=\s*\[\s*PokeBattle_Move\.pbFromPBMove\(@battle,pkmn\.moves\[0\],self\),\s*PokeBattle_Move\.pbFromPBMove\(@battle,pkmn\.moves\[1\],self\),\s*PokeBattle_Move\.pbFromPBMove\(@battle,pkmn\.moves\[2\],self\),\s*PokeBattle_Move\.pbFromPBMove\(@battle,pkmn\.moves\[3\],self\).*pbInitializeTributeDraco if initialize_tribute' },
     @{ Name = "Cold-import-safe field manual mapping"; File = "Scripts\PokemonFieldEffectsManual.rb"; Pattern = '(?s)def\s+pbFieldEffectsSeen.*field_id_to_switch\s*=\s*\{.*field_id_to_switch\.each\s+do' },
     @{ Name = "Cold-import-safe trainer record indices"; File = "Scripts\PokemonTrainerIndex.rb"; Pattern = '(?s)class\s+Scene_TrainerIndex\s+.*TSPECIES\s*=\s*0.*TPBOSS\s*=\s*18.*def\s+pbFormatPokemonInfo\(poke\)' },
     @{ Name = "Outrage AI skill branch structure"; File = "Scripts\PokeBattle_AI.rb"; Pattern = 'if\s+skill>=PBTrainerAI\.highSkill\s*\r?\n\s*if\s+\$fefieldeffect==16\s+# Superheated Field\s*\r?\n\s*score\*=0\.8\s*\r?\n\s*end\s*\r?\n\s*else\s*\r?\n\s*score\s*\*=\s*1\.2' },
@@ -2230,8 +2209,8 @@ function Test-FeatureContracts {
     Add-AuditError "The two AI foe-speed comparisons must use allocation-free all? scans."
   }
   $sameSideTargetScans = [regex]::Matches($aiContent, 'pbAISameSideBattler\?\(attacker,opponent\)')
-  if ($sameSideTargetScans.Count -ne 18 -or $aiContent -match 'attacker\.sameSideBattlers\(false\)\.include\?\(opponent\)') {
-    Add-AuditError "The 18 AI same-side target checks must use allocation-free membership scans."
+  if ($sameSideTargetScans.Count -ne 16 -or $aiContent -match 'attacker\.sameSideBattlers\(false\)\.include\?\(opponent\)') {
+    Add-AuditError "The 16 AI same-side target checks must use allocation-free membership scans."
   }
   $staticMembershipUseCounts = @{
     'AI_TERRAIN_FIELD_IDS\.include\?' = 1
@@ -2338,7 +2317,7 @@ function Test-MoveCompatibilitySemantics {
     @{ Name = "Stone Axe hazard"; Pattern = '(?ms)^class\s+PokeBattle_Move_220\b(?:(?!^class\s).)*?azure_stone_axe_hazard_applied(?:(?!^class\s).)*?PBEffects::StealthRock' },
     @{ Name = "Ceaseless Edge hazard"; Pattern = '(?ms)^class\s+PokeBattle_Move_221\b(?:(?!^class\s).)*?azure_ceaseless_edge_hazard_applied(?:(?!^class\s).)*?PBEffects::Spikes' },
     @{ Name = "Rising Voltage terrain rule"; Pattern = '(?ms)^class\s+PokeBattle_Move_228\b(?:(?!^class\s).)*?ElectricTerrain(?:(?!^class\s).)*?basedmg\*2\s+if\s+electricterrain\s+&&\s+!opponent\.isAirborne\?' },
-    @{ Name = "Expanding Force and Coaching dispatch"; Pattern = '(?ms)^class\s+PokeBattle_Move_245\b(?:(?!^class\s).)*?PBMoves::EXPANDINGFORCE(?:(?!^class\s).)*?PsychicTerrain(?:(?!^class\s).)*?PBMoves::COACHING(?:(?!^class\s).)*?pbPartner(?:(?!^class\s).)*?PBStats::ATTACK,PBStats::DEFENSE' },
+    @{ Name = "Expanding Force and Coaching dispatch"; Pattern = '(?ms)^class\s+PokeBattle_Move_245\b(?:(?!^class\s).)*?PBMoves::EXPANDINGFORCE(?:(?!^class\s).)*?PsychicTerrain(?:(?!^class\s).)*?PBMoves::COACHING(?:(?!^class\s).)*?PBStats::ATTACK,PBStats::DEFENSE(?:(?!^class\s).)*?sameSideLivingBattlers\(false\)(?:(?!^class\s).)*?allies\.each' },
     @{ Name = "Expanding Force dynamic target"; Pattern = '(?ms)^class\s+PokeBattle_Battler\b(?:(?!^class\s).)*?PBMoves::EXPANDINGFORCE(?:(?!^class\s).)*?PBTargets::AllOpposing' },
     @{ Name = "Steel Roller temporary-terrain removal"; Pattern = '(?ms)^class\s+PokeBattle_Move_235\b(?:(?!^class\s).)*?PsychicTerrain(?:(?!^class\s).)*?azure_steel_roller_cleared(?:(?!^class\s).)*?effects\[effect\]=0' },
     @{ Name = "Scale Shot hit and stat rules"; Pattern = '(?ms)^class\s+PokeBattle_Move_236\b(?:(?!^class\s).)*?\[2,2,3,3,4,5\](?:(?!^class\s).)*?azure_scale_shot_changes_applied(?:(?!^class\s).)*?PBStats::SPEED,1(?:(?!^class\s).)*?PBStats::DEFENSE,1' },
@@ -2361,7 +2340,7 @@ function Test-MoveCompatibilitySemantics {
     @{ Name = "Raging Bull type and screen adapter"; Pattern = '(?ms)^class\s+PokeBattle_Move_258\s*<\s*PokeBattle_Move_10A\b(?:(?!^class\s).)*?PBSpecies,:TAUROS(?:(?!^class\s).)*?PBTypes::FIGHTING(?:(?!^class\s).)*?PBTypes::FIRE(?:(?!^class\s).)*?PBTypes::WATER' },
     @{ Name = "Doodle ally Ability copy"; Pattern = '(?ms)^class\s+PokeBattle_Move_263\b(?:(?!^class\s).)*?ABILITYBLACKLIST(?:(?!^class\s).)*?pbPartner(?:(?!^class\s).)*?FIXEDABILITIES(?:(?!^class\s).)*?ABILITYSHIELD(?:(?!^class\s).)*?battler\.ability=copiedability' },
     @{ Name = "Tidy Up complete cleanup and boosts"; Pattern = '(?ms)^class\s+PokeBattle_Move_259\b(?:(?!^class\s).)*?PBEffects::Substitute(?:(?!^class\s).)*?PBEffects::StealthRock(?:(?!^class\s).)*?PBEffects::Caltrops(?:(?!^class\s).)*?PBStats::ATTACK,PBStats::SPEED(?:(?!^class\s).)*?pbUnSubstituteSprite' },
-    @{ Name = "Ivy Cudgel mask typing"; Pattern = '(?ms)^class\s+PokeBattle_Move_272\b(?:(?!^class\s).)*?PBSpecies,:OGERPON(?:(?!^class\s).)*?WELLSPRINGMASK(?:(?!^class\s).)*?HEARTHFLAMEMASK(?:(?!^class\s).)*?CORNERSTONEMASK' },
+    @{ Name = "Ivy Cudgel mask typing"; Pattern = '(?ms)^class\s+PokeBattle_Move_272\b(?:(?!^class\s).)*?PBSpecies,:OGERPON(?:(?!^class\s).)*?AzureOgerponMasks::ITEMS\.fetch\(attacker\.item,AzureOgerponMasks\.base_form\(attacker\.form\)\)(?:(?!^class\s).)*?AzureOgerponMasks::TYPES\.fetch\(form,type\)' },
     @{ Name = "Mortal Spin poison and cleanup"; Pattern = '(?ms)^class\s+PokeBattle_Move_256\b(?:(?!^class\s).)*?azure_mortal_spin_cleanup_applied(?:(?!^class\s).)*?pbPoison(?:(?!^class\s).)*?PBEffects::MultiTurn(?:(?!^class\s).)*?PBEffects::LeechSeed(?:(?!^class\s).)*?PBEffects::Caltrops' },
     @{ Name = "Chilly Reception weather and pivot"; Pattern = '(?ms)^class\s+PokeBattle_Move_261\s*<\s*PokeBattle_Move_102\b(?:(?!^class\s).)*?azureCanStartHail\?(?:(?!^class\s).)*?pbCanChooseNonActive\?(?:(?!^class\s).)*?attacker\.userSwitch=true' },
     @{ Name = "Rage Fist battle-persistent hit tracking"; Pattern = '(?ms)(?=.*^class\s+PokeBattle_Battler\b.*?def\s+azureHitsTaken.*?@pokemon\.object_id)(?=.*^class\s+PokeBattle_Move\b.*?azure_move_compat_pbOnDamageLost.*?counts\.fetch\(key,0\)\+1)' },

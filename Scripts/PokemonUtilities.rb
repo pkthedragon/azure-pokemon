@@ -1159,12 +1159,12 @@ end
 def pbCheckPokemonBitmapFiles(params)
   species=params[0]
   back=params[1]
+  form=AzureMegaForms.sprite_form(species,params[4])
   factors=[]
   factors.push([5,params[5],false]) if params[5] && params[5]!=false     # shadow
   factors.push([2,params[2],false]) if params[2] && params[2]!=false     # gender
   factors.push([3,params[3],false]) if params[3] && params[3]!=false     # shiny
-  factors.push([4,params[4].to_s,""]) if params[4] && params[4].to_s!="" &&
-                                                      params[4].to_s!="0" # form
+  factors.push([4,form.to_s,""]) if form && form.to_s!="" && form.to_s!="0" # form
   tshadow=false
   tgender=false
   tshiny=false
@@ -1213,11 +1213,15 @@ def pbPokemonIconFile(pokemon)
   bitmapFileName=pbCheckPokemonIconFiles([pokemon.species,
                                           (pokemon.isFemale?),
                                           pokemon.isShiny?,
-                                          (pokemon.form rescue 0),
+                                          AzureMegaForms.sprite_form(pokemon.species,(pokemon.form rescue 0)),
                                           (pokemon.isShadow? rescue false)],
                                           pokemon.isEgg?)
   return bitmapFileName
 end
+
+# Furfrou's existing icons use the original trim order. Its gameplay forms
+# use the order in PBS, so resolve the icon without changing stored form IDs.
+FURFROU_ICON_TRIM_ORDER=[0,2,1,9,8,4,5,7,6,3].freeze
 
 def pbCheckPokemonIconFiles(params,egg=false)
   species=params[0]
@@ -1231,12 +1235,15 @@ def pbCheckPokemonIconFiles(params,egg=false)
     end
     return pbResolveBitmap(bitmapFileName)
   else
+    form=params[3] ? params[3].to_s : ""
+    if species==PBSpecies::FURFROU && form.match?(/\A[1-9]\z/)
+      form=FURFROU_ICON_TRIM_ORDER[form.to_i].to_s
+    end
     factors=[]
     factors.push([4,params[4],false]) if params[4] && params[4]!=false     # shadow
     factors.push([1,params[1],false]) if params[1] && params[1]!=false     # gender
     factors.push([2,params[2],false]) if params[2] && params[2]!=false     # shiny
-    factors.push([3,params[3].to_s,""]) if params[3] && params[3].to_s!="" &&
-                                                        params[3].to_s!="0" # form
+    factors.push([3,form,""]) if form!="" && form!="0" # form
     tshadow=false
     tgender=false
     tshiny=false
@@ -2158,7 +2165,7 @@ def pbSeenForm(poke,gender=0,form=0)
   end
   return if !species || species<=0
   gender=0 if gender>1
-  formnames=pbGetMessage(MessageTypes::FormNames,species)
+  formnames=AzureMegaForms.form_names(species,pbGetMessage(MessageTypes::FormNames,species))
   form=0 if !formnames || formnames==""
   $Trainer.formseen[species]=[[],[]] if !$Trainer.formseen[species]
   $Trainer.formseen[species][gender][form]=true
@@ -2431,7 +2438,7 @@ end
 # Returns true if the given Pokémon knows the given move.
 # DEPRECATED - Use pokemon.knowsMove?(move) instead
 def pbHasMove?(pokemon,move)
-  move=getID(PBMoves,move)
+  move=PBMove.current_id(getID(PBMoves,move))
   return false if !pokemon || !move || move<=0
   for i in 0...4
     return true if pokemon.moves[i].id==move
@@ -2443,7 +2450,7 @@ end
 # known move if necessary.
 # DEPRECATED - Use pokemon.pbLearnMove(move) instead
 def pbAutoLearnMove(pokemon,move)
-  move=getID(PBMoves,move)
+  move=PBMove.current_id(getID(PBMoves,move))
   return if move<=0
   for i in 0..3
     if pokemon.moves[i].id==move
@@ -2495,6 +2502,7 @@ end
 # Deletes the given move from the given Pokémon.
 # DEPRECATED - Use pokemon.pbDeleteMove(move) instead
 def pbDeleteMoveByID(pokemon,id)
+  id=PBMove.current_id(id)
   return if !id || id==0 || !pokemon
   newmoves=[]
   for i in 0...4
@@ -2516,6 +2524,7 @@ def pbCheckMove(move)
   if move.is_a?(String) || move.is_a?(Symbol)
     move = getID(PBMoves,move)
   end
+  move=PBMove.current_id(move)
   return nil if !move || move<=0
   for i in $Trainer.party
     next if i.isEgg?

@@ -1358,12 +1358,6 @@ end
 # already baked into saves and events. Their exact memberships are accepted;
 # any additional or changed collision is an authoring error.
 AZURE_LEGACY_DUPLICATE_SYMBOLS={
-  :moves=>{
-    "ORIGINPULSE"=>[661,671],"PRECIPICEBLADES"=>[662,672],
-    "DRAGONASCENT"=>[663,673],"THOUSANDARROWS"=>[664,674],
-    "THOUSANDWAVES"=>[665,675],"DIAMONDSTORM"=>[666,676],
-    "STEAMERUPTION"=>[668,678]
-  },
   :pokemon=>{"IRONMOTH"=>[994,994]},
   :abilities=>{
     "TOXICCHAIN"=>[371,396],"CARETAKER"=>[326,404],
@@ -1375,8 +1369,7 @@ AZURE_LEGACY_DUPLICATE_SYMBOLS={
 } if !defined?(AZURE_LEGACY_DUPLICATE_SYMBOLS)
 
 AZURE_LEGACY_DUPLICATE_IDS={
-  :moves=>{680=>["DIMPULSE","DIMZAP"]},
-  :pokemon=>{306=>["AGGRON","DEOXYS"],994=>["IRONMOTH","IRONMOTH"]}
+  :pokemon=>{994=>["IRONMOTH","IRONMOTH"]}
 } if !defined?(AZURE_LEGACY_DUPLICATE_IDS)
 
 # Compatibility names used by form scripts but intentionally sharing an
@@ -2443,6 +2436,20 @@ def pbCompileMoves(dataOutput="Data/moves.dat",scriptOutput="Scripts/PBMoves.rb"
     }
   end
   pbValidateAzureLegacyDuplicates(:moves,records.map {|record| [record[0],record[1]] })
+  canonical_ids=records.to_h { |record| [record[1].to_sym,record[0]] }
+  PBMove::LEGACY_DUPLICATE_MOVES.each do |legacy_id,symbol|
+    if movedata[legacy_id]
+      raise _INTL("Move ID {1} is reserved for a legacy alias of {2}.",legacy_id,symbol)
+    end
+    canonical_id=canonical_ids[symbol]
+    if !canonical_id
+      raise _INTL("Missing canonical move {1} for legacy ID {2}.",symbol,legacy_id)
+    end
+    movedata[legacy_id]=movedata[canonical_id].dup
+    movenames[legacy_id]=movenames[canonical_id]
+    movedescs[legacy_id]=movedescs[canonical_id]
+    maxValue=[maxValue,legacy_id].max
+  end
   #defaultdata=[0,0,0,0,0,0,0,0,0,0].pack("vCCCCCCvCv")
   $pkmn_move = movedata if installRuntime
   File.open(dataOutput,"wb"){|file|
@@ -2471,7 +2478,7 @@ def pbCompileMoves(dataOutput="Data/moves.dat",scriptOutput="Scripts/PBMoves.rb"
     code+="#{rec[1]}=#{rec[0]}\n"
   end
   code+="\ndef self.getName(id)\nreturn pbGetMessage(MessageTypes::Moves,id)\nend"
-  code+="\ndef self.getCount\nreturn #{records.length}\nend"
+  code+="\ndef self.getCount\nreturn #{movedata.compact.length-1}\nend"
   code+="\ndef self.maxValue\nreturn #{maxValue}\nend\nend"
   eval(code) if installRuntime
   if scriptOutput

@@ -31,6 +31,8 @@ class Game_System
     @message_frame = 0
     @save_count = 0
     @magic_number = 0
+    @azure_distinct_deoxys_id=true
+    @azure_tribute_item_ids=true
     @autoscroll_x_speed = 0
     @autoscroll_y_speed = 0
     @bgm_position=0

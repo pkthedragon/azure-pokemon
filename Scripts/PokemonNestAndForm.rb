@@ -489,7 +489,7 @@ class PokedexFormScene
   def pbGetAvailable
     available=[] # [name, gender, form]
     genderbyte=$pkmn_dex[@species][7]
-    formnames=pbGetMessage(MessageTypes::FormNames,@species)
+    formnames=AzureMegaForms.form_names(@species,pbGetMessage(MessageTypes::FormNames,@species))
     if !formnames || formnames==""
       formnames=[""]
     else
@@ -533,6 +533,7 @@ class PokedexFormScene
       end
     end
     for i in 1...formnames.length
+      next if formnames[i].nil? || formnames[i].empty?
       for j in 0...2
         if $Trainer.formseen[@species][j][i] || ALWAYSSHOWALLFORMS # That gender/form has been seen
           if pbResolveBitmap(sprintf("Graphics/Battlers/%sf_%d",getConstantName(PBSpecies,@species),i)) ||

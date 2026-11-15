@@ -72,50 +72,83 @@ class Sprite_Character < RPG::Sprite
     @bushbitmap=nil
     @charbitmap.dispose if @charbitmap
     @charbitmap=nil
+    disposeAlternateCharset
     super
+  end
+
+  def disposeAlternateCharset
+    @alternateCharset.dispose if @alternateCharset
+    @alternateCharset=nil
+  end
+
+  def loadCharacterCharset(name,hue)
+    retain=$game_player && @character.equal?($game_player) && !$INEDITOR
+    keepCurrent=retain && @charbitmapAnimated && @charbitmap && @charbitmap.length==1
+    return @charbitmap if keepCurrent && @character_name==name && @character_hue==hue
+
+    if retain && @alternateCharset && @alternateCharsetName==name && @alternateCharsetHue==hue
+      bitmap=@alternateCharset
+      @alternateCharset=nil
+    else
+      bitmap=AnimatedBitmap.new("Graphics/Characters/"+name,hue)
+      disposeAlternateCharset
+    end
+    # Keep one static player texture so switching between running and walking stays warm.
+    if keepCurrent
+      @alternateCharset=@charbitmap
+      @alternateCharsetName=@character_name
+      @alternateCharsetHue=@character_hue
+    else
+      @charbitmap.dispose if @charbitmap
+    end
+    return bitmap
   end
 
   def update
     super
-    currentbushdepth = bush_depth
-    if @tile_id != @character.tile_id || @character_name != @character.character_name || @character_hue != @character.character_hue ||  @oldbushdepth != currentbushdepth
-      @tile_id = @character.tile_id
-      @character_name = @character.character_name
-      @character_hue = @character.character_hue
-      if @tile_id >= 384
+    currentbushdepth = @character.bush_depth
+    tileId=@character.tile_id
+    name=@character.character_name
+    hue=@character.character_hue
+    graphic_changed = @tile_id != tileId || @character_name != name || @character_hue != hue
+    if graphic_changed
+      if tileId >= 384
         @charbitmap.dispose if @charbitmap
-        @charbitmap = pbGetTileBitmap(@character.map.tileset_name,
-           @tile_id, @character.character_hue)
+        disposeAlternateCharset
+        @charbitmap = pbGetTileBitmap(@character.map.tileset_name,tileId,hue)
         @charbitmapAnimated=false
-        @bushbitmap.dispose if @bushbitmap
-        @bushbitmap=nil
         @cw = 32  # added
         @ch = 32  # added
         self.src_rect.set(0, 0, 32, 32)
         self.ox = Game_Map::TILEWIDTH/2
         self.oy = Game_Map::TILEHEIGHT
       else
-        @charbitmap.dispose if @charbitmap
-        @charbitmap = AnimatedBitmap.new( "Graphics/Characters/"+@character.character_name, @character.character_hue)
+        @charbitmap = loadCharacterCharset(name,hue)
         @charbitmapAnimated=true
-        @bushbitmap.dispose if @bushbitmap
-        @bushbitmap=nil
         @cw = @charbitmap.width / 4
         @ch = @charbitmap.height / 4
         self.ox = @cw / 2
-        if @character_name[/offset/]
+        if name[/offset/]
           self.oy = @ch - 16
         else
           self.oy = @ch
         end
       end
+      @tile_id = tileId
+      @character_name = name
+      @character_hue = hue
+    end
+    if graphic_changed || @oldbushdepth != currentbushdepth
+      @bushbitmap.dispose if @bushbitmap
+      @bushbitmap=nil
+      @oldbushdepth=currentbushdepth
     end
     @charbitmap.update if @charbitmapAnimated
-    if @character.bush_depth==0
+    if currentbushdepth==0
       self.bitmap=@charbitmapAnimated ? @charbitmap.bitmap : @charbitmap
     else
       if !@bushbitmap
-        @bushbitmap=BushBitmap.new(@charbitmap,@tile_id >= 384,@character.bush_depth)
+        @bushbitmap=BushBitmap.new(@charbitmap,@tile_id >= 384,currentbushdepth)
       end
       self.bitmap=@bushbitmap.bitmap
     end
