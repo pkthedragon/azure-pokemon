@@ -19,7 +19,7 @@ module Graphics
     end
     begin
       transition_KGC_SpecialTransition(duration, filename, vague)
-    rescue Exception
+    rescue StandardError
       if filename!=""
         transition_KGC_SpecialTransition(duration, "", vague)
       end

@@ -209,10 +209,11 @@ module AzureExternalScriptLoader
         # This method is defined inside AzureExternalScriptLoader, but external
         # RPG Maker scripts must retain the original top-level lexical scope.
         eval(script[3],TOPLEVEL_BINDING,script[1])
-      rescue ScriptError
-        pbPrintException($!)
-      rescue Exception
-        pbPrintException($!)
+      rescue Exception => error
+        # Shutdown and reset can arrive from native Graphics or Input calls.
+        # The error dialog repaints the game window, so let the engine unwind.
+        raise if error.is_a?(SystemExit) || (defined?(Reset) && error.is_a?(Reset))
+        pbPrintException(error)
       end
     end
     exit
