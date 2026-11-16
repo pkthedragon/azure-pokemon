@@ -1637,72 +1637,30 @@ class PokemonScreen
         when 7
           cmd=0
           loop do
-            hptypes = ["Normal","Fire","Fighting","Water","Flying","Grass","Poison",
-                       "Electric","Ground","Psychic","Rock","Ice","Bug","Dragon",
-                       "Ghost","Dark","Steel","Fairy"]
-            currenthp = "None"
-            # Check which Hidden Power move the Pokemon knows
-            for i in 0...4
-              move = pkmn.moves[i]
-              next if !move
-              # Check for typed Hidden Power (641-658)
-              if move.id >= PBMoves::HIDDENPOWERNOR && move.id <= PBMoves::HIDDENPOWERFAI
-                hpindex = move.id - PBMoves::HIDDENPOWERNOR
-                currenthp = hptypes[hpindex] if hpindex >= 0 && hpindex < hptypes.length
-                break
-              # Check for base Hidden Power (333)
-              elsif move.id == PBMoves::HIDDENPOWER
-                currenthp = "Base (untyped)"
-                break
-              end
+            choices=pbTypedHiddenPowerChoices
+            known=pkmn.moves.find { |move| move && pbIsHiddenPowerMove?(move.id) }
+            currenthp=if !known
+              _INTL("None")
+            elsif known.id==PBMoves::HIDDENPOWER
+              _INTL("Base (IV-based)")
+            else
+              PBTypes.getName(known.type)
             end
-            msg = _INTL("Current Hidden Power type: {1}",currenthp)
-            commands = []
-            hptypes.each do |type|
-              commands.push(type)
-            end
+            msg=_INTL("Current Hidden Power type: {1}",currenthp)
+            commands=choices.map { |label, _id| label }
             commands.push(_INTL("Remove Hidden Power"))
             cmd=@scene.pbShowCommands(msg,commands,cmd)
-            # Break
-            if cmd==-1
-              break
-            # Set Hidden Power type
-            elsif cmd>=0 && cmd<hptypes.length
-              # Find and replace existing Hidden Power move
-              replaced = false
-              for i in 0...4
-                move = pkmn.moves[i]
-                next if !move
-                # Check for both typed Hidden Power and base Hidden Power
-                if (move.id >= PBMoves::HIDDENPOWERNOR && move.id <= PBMoves::HIDDENPOWERFAI) ||
-                   move.id == PBMoves::HIDDENPOWER
-                  newmoveid = PBMoves::HIDDENPOWERNOR + cmd
-                  pkmn.moves[i] = PBMove.new(newmoveid)
-                  replaced = true
-                  break
-                end
+            break if cmd<0
+            move_index=pkmn.moves.index { |move| move && pbIsHiddenPowerMove?(move.id) }
+            if cmd<choices.length
+              move_id=choices[cmd][1]
+              if move_index || pkmn.moves[0]
+                pkmn.moves[move_index || 0]=PBMove.new(move_id)
+              else
+                pkmn.pbLearnMove(move_id)
               end
-              # If no Hidden Power found, replace first move or add to empty slot
-              if !replaced
-                newmoveid = PBMoves::HIDDENPOWERNOR + cmd
-                if pkmn.moves[0]
-                  pkmn.moves[0] = PBMove.new(newmoveid)
-                else
-                  pkmn.pbLearnMove(newmoveid)
-                end
-              end
-            # Remove Hidden Power
-            elsif cmd==hptypes.length
-              for i in 0...4
-                move = pkmn.moves[i]
-                next if !move
-                # Check for both typed Hidden Power and base Hidden Power
-                if (move.id >= PBMoves::HIDDENPOWERNOR && move.id <= PBMoves::HIDDENPOWERFAI) ||
-                   move.id == PBMoves::HIDDENPOWER
-                  pkmn.pbDeleteMoveAtIndex(i)
-                  break
-                end
-              end
+            elsif cmd==choices.length && move_index
+              pkmn.pbDeleteMoveAtIndex(move_index)
             end
             pbRefreshSingle(pkmnid)
           end
@@ -1800,7 +1758,8 @@ class PokemonScreen
               when 1
                 cmd2=0
                 loop do
-                  hiddenpower=pbHiddenPower(pkmn.iv)
+                  typed=pkmn.moves.find { |move| move && move.id!=PBMoves::HIDDENPOWER && pbIsHiddenPowerMove?(move.id) }
+                  hiddenpower=typed ? [typed.type,typed.basedamage] : pbHiddenPower(pkmn.iv)
                   msg=_INTL("Hidden Power:\n{1}, power {2}.",PBTypes.getName(hiddenpower[0]),hiddenpower[1])
                   ivcommands=[]
                   for i in 0...stats.length
@@ -2369,69 +2328,49 @@ class PokemonScreen
     end
   end
 
-  # ===========================
-  # Change Hidden Power from party
-  # ===========================
+  TYPED_HIDDEN_POWER_MOVES=[
+    :HIDDENPOWERNOR,:HIDDENPOWERFIR,:HIDDENPOWERFIG,:HIDDENPOWERWAT,
+    :HIDDENPOWERFLY,:HIDDENPOWERGRA,:HIDDENPOWERPOI,:HIDDENPOWERELE,
+    :HIDDENPOWERGRO,:HIDDENPOWERPSY,:HIDDENPOWERROC,:HIDDENPOWERICE,
+    :HIDDENPOWERBUG,:HIDDENPOWERDRA,:HIDDENPOWERGHO,:HIDDENPOWERDAR,
+    :HIDDENPOWERSTE,:HIDDENPOWERFAI
+  ].freeze
+
+  def pbTypedHiddenPowerChoices
+    choices=TYPED_HIDDEN_POWER_MOVES.map do |move|
+      data=PBMoveData.get(move)
+      [PBTypes.getName(data.type),data.id]
+    end
+    return choices.sort_by { |label, _id| label.downcase }
+  end
+
   def pbPartyChangeHiddenPower(pkmn,pkmnid)
     return if !pkmn || pkmn.isEgg?
-    hptypes = ["Normal","Fire","Fighting","Water","Flying","Grass","Poison",
-               "Electric","Ground","Psychic","Rock","Ice","Bug","Dragon",
-               "Ghost","Dark","Steel","Fairy"]
-    current_index = -1
-    move_index = -1
-    is_base_hp = false
-    for i in 0...4
-      move = pkmn.moves[i]
-      next if !move
-      # Check for typed Hidden Power moves (641-658)
-      if move.id >= PBMoves::HIDDENPOWERNOR && move.id <= PBMoves::HIDDENPOWERFAI
-        move_index = i
-        current_index = move.id - PBMoves::HIDDENPOWERNOR
-        break
-      # Check for base Hidden Power move (333)
-      elsif move.id == PBMoves::HIDDENPOWER
-        move_index = i
-        is_base_hp = true
-        break
-      end
-    end
-    if move_index < 0
+    move_index=pkmn.moves.index { |move| move && pbIsHiddenPowerMove?(move.id) }
+    if !move_index
       pbDisplay(_INTL("{1} doesn't know Hidden Power.",pkmn.name))
       return
     end
-    # If it's the base Hidden Power, allow changing to any typed version
-    if is_base_hp
+
+    current_move=pkmn.moves[move_index].id
+    choices=pbTypedHiddenPowerChoices
+    current_index=choices.index { |_label, id| id==current_move }
+    if current_move==PBMoves::HIDDENPOWER
       pbDisplay(_INTL("{1} knows the base Hidden Power. Choose a type to change it to.",pkmn.name))
-      commands = hptypes + [_INTL("Cancel")]
-      cmd = @scene.pbShowCommands(
-        _INTL("Choose a Hidden Power type for {1}.",pkmn.name),
-        commands,
-        0
-      )
-      return if cmd < 0 || cmd >= hptypes.length
-      newmoveid = PBMoves::HIDDENPOWERNOR + cmd
-      pkmn.moves[move_index] = PBMove.new(newmoveid)
-      pbDisplay(_INTL("{1}'s Hidden Power became {2}!",pkmn.name,hptypes[cmd]))
-      pbRefreshSingle(pkmnid)
-    else
-      # Already a typed Hidden Power - can change to other types but NOT back to base
-      commands = hptypes + [_INTL("Cancel")]
-      current_index = 0 if current_index < 0 || current_index >= hptypes.length
-      cmd = @scene.pbShowCommands(
-        _INTL("Choose a Hidden Power type for {1}.",pkmn.name),
-        commands,
-        current_index
-      )
-      return if cmd < 0 || cmd >= hptypes.length
-      if cmd == current_index
-        pbDisplay(_INTL("{1}'s Hidden Power is already {2}.",pkmn.name,hptypes[cmd]))
-        return
-      end
-      newmoveid = PBMoves::HIDDENPOWERNOR + cmd
-      pkmn.moves[move_index] = PBMove.new(newmoveid)
-      pbDisplay(_INTL("{1}'s Hidden Power became {2}!",pkmn.name,hptypes[cmd]))
-      pbRefreshSingle(pkmnid)
     end
+    commands=choices.map { |label, _id| label }
+    commands.push(_INTL("Cancel"))
+    cmd=@scene.pbShowCommands(
+      _INTL("Choose a Hidden Power type for {1}.",pkmn.name),commands,current_index || 0)
+    return if cmd<0 || cmd>=choices.length
+    type_name,move_id=choices[cmd]
+    if move_id==current_move
+      pbDisplay(_INTL("{1}'s Hidden Power is already {2}.",pkmn.name,type_name))
+      return
+    end
+    pkmn.moves[move_index]=PBMove.new(move_id)
+    pbDisplay(_INTL("{1}'s Hidden Power became {2}!",pkmn.name,type_name))
+    pbRefreshSingle(pkmnid)
   end
 
 end
