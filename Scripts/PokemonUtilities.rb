@@ -1797,8 +1797,8 @@ def pbCreatePokemon
     species=party[i]
     # Generate Pokémon with species and level 20
     $Trainer.party[i]=PokeBattle_Pokemon.new(species,20,$Trainer)
-    $Trainer.seen[species]=true # Set this species to seen and owned
-    $Trainer.owned[species]=true
+    $Trainer.setSeen(species) # Set this species to seen and owned
+    $Trainer.setOwned(species)
     pbSeenForm($Trainer.party[i])
   end
   $Trainer.party[1].pbLearnMove(:FLY)
@@ -1916,8 +1916,8 @@ def pbNicknameAndStore(pokemon)
     Kernel.pbMessage(_INTL("The Pokémon Boxes are full and can't accept any more!"))
     return
   end
-  $Trainer.seen[pokemon.species]=true
-  $Trainer.owned[pokemon.species]=true
+  $Trainer.setSeen(pokemon.species)
+  $Trainer.setOwned(pokemon.species)
   pbNickname(pokemon)
   #pbEnterPokemonName(helptext,0,12,"",pokemon)
   pbStorePokemon(pokemon)
@@ -1959,8 +1959,8 @@ def pbAddPokemonSilent(pokemon,level=nil,seeform=true)
     pokemon.ot = $Trainer.name 
     pokemon.trainerID = $Trainer.id
   end  
-  $Trainer.seen[pokemon.species]=true
-  $Trainer.owned[pokemon.species]=true
+  $Trainer.setSeen(pokemon.species)
+  $Trainer.setOwned(pokemon.species)
   pbSeenForm(pokemon) if seeform
   pokemon.pbRecordFirstMoves
   if $Trainer.party.length<6
@@ -2081,8 +2081,8 @@ def pbAddToPartySilent(pokemon,level=nil,seeform=true)
   if pokemon.is_a?(Integer) && level.is_a?(Integer)
     pokemon=PokeBattle_Pokemon.new(pokemon,level,$Trainer)
   end
-  $Trainer.seen[pokemon.species]=true
-  $Trainer.owned[pokemon.species]=true
+  $Trainer.setSeen(pokemon.species)
+  $Trainer.setOwned(pokemon.species)
   pbSeenForm(pokemon) if seeform
   pokemon.pbRecordFirstMoves
   $Trainer.party[$Trainer.party.length]=pokemon
@@ -2113,8 +2113,8 @@ pokemon.name=nickname[0,12] if nickname && nickname!=""
     Kernel.pbMessage(_INTL("{1} received a Pokémon.\1",$Trainer.name))
   end
   pbStorePokemon(pokemon)
-  $Trainer.seen[pokemon.species]=true
-  $Trainer.owned[pokemon.species]=true
+  $Trainer.setSeen(pokemon.species)
+  $Trainer.setOwned(pokemon.species)
   pbSeenForm(pokemon) if seeform
   return true
 end
@@ -2580,44 +2580,52 @@ def pbGetCurrentRegion(defaultRegion=-1)
   end
 end
 
-# Decides which Dex lists are able to be viewed (i.e. they are unlocked and have
-# at least 1 seen species in them), and saves all viable dex region numbers
-# (National Dex comes after regional dexes).
-# If the Dex list shown depends on the player's location, this just decides if
-# a species in the current region has been seen - doesn't look at other regions.
-# Here, just used to decide whether to show the Pokédex in the Pause menu.
+# The National Dex is stored after the regional slots in save data.
+def pbEnsureDexSlots
+  global=$PokemonGlobal
+  num_regions=AzureRegionalDexCache.num_regions
+  unlocked=global.pokedexUnlocked || []
+  positions=global.pokedexIndex || []
+  old_regions=unlocked.length-1
+  if old_regions!=num_regions
+    global.pokedexUnlocked=Array.new(num_regions+1,false)
+    global.pokedexIndex=Array.new(num_regions+1,0)
+    for i in 0...[old_regions,num_regions].min
+      global.pokedexUnlocked[i]=unlocked[i]
+      global.pokedexIndex[i]=positions[i] || 0
+    end
+    global.pokedexUnlocked[num_regions]=old_regions<0 || unlocked[old_regions]
+    global.pokedexIndex[num_regions]=positions[old_regions] || 0 if old_regions>=0
+  end
+  if !global.instance_variable_get(:@azure_national_dex_default)
+    # Migrate the old default, which unlocked region 0 under the National name.
+    if old_regions>0 && unlocked[0] && unlocked.count(true)==1
+      global.pokedexUnlocked[0]=false if num_regions>0
+      global.pokedexUnlocked[num_regions]=true
+      global.pokedexDex=-1
+    end
+    global.instance_variable_set(:@azure_national_dex_default,true)
+  end
+end
+
+# Builds the list of Dexes available from CyberNav.
 def pbSetViableDexes
+  pbEnsureDexSlots
   $PokemonGlobal.pokedexViable=[]
   if DEXDEPENDSONLOCATION
     region=pbGetCurrentRegion
     region=-1 if region>=$PokemonGlobal.pokedexUnlocked.length-1
-    if $Trainer.pokedexSeen(region)>0
-      $PokemonGlobal.pokedexViable[0]=region
-    end
+    $PokemonGlobal.pokedexViable.push(region) if $Trainer.pokedexSeen(region)>0
   else
-    numDexes=$PokemonGlobal.pokedexUnlocked.length
-    case numDexes
-      when 1          # National Dex only
-        if $PokemonGlobal.pokedexUnlocked[0]
-          if $Trainer.pokedexSeen>0
-            $PokemonGlobal.pokedexViable.push(0)
-          end
-        end
-      else            # Regional dexes + National Dex
-        for i in 0...numDexes
-          regionToCheck=(i==numDexes-1) ? -1 : i
-          if $PokemonGlobal.pokedexUnlocked[i]
-            if $Trainer.pokedexSeen(regionToCheck)>0
-              $PokemonGlobal.pokedexViable.push(i)
-            end
-          end
-        end
+    $PokemonGlobal.pokedexUnlocked.each_with_index do |unlocked, index|
+      $PokemonGlobal.pokedexViable.push(index) if unlocked
     end
   end
 end
 
 # Unlocks a Dex list.  The National Dex is -1 here (or nil argument).
 def pbUnlockDex(dex=-1)
+  pbEnsureDexSlots
   index=dex
   index=$PokemonGlobal.pokedexUnlocked.length-1 if index<0
   index=$PokemonGlobal.pokedexUnlocked.length-1 if index>$PokemonGlobal.pokedexUnlocked.length-1
@@ -2626,6 +2634,7 @@ end
 
 # Locks a Dex list.  The National Dex is -1 here (or nil argument).
 def pbLockDex(dex=-1)
+  pbEnsureDexSlots
   index=dex
   index=$PokemonGlobal.pokedexUnlocked.length-1 if index<0
   index=$PokemonGlobal.pokedexUnlocked.length-1 if index>$PokemonGlobal.pokedexUnlocked.length-1

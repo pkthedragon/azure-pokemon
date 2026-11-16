@@ -419,8 +419,8 @@ def pbDebugMenu
         pkmn=PokeBattle_Pokemon.new(i,50,$Trainer)
         $PokemonStorage[(i-1)/$PokemonStorage.maxPokemon(0),
                         (i-1)%$PokemonStorage.maxPokemon(0)]=pkmn
-        $Trainer.seen[i]=true
-        $Trainer.owned[i]=true
+        $Trainer.setSeen(i)
+        $Trainer.setOwned(i)
         $Trainer.formlastseen[i]=[] if !$Trainer.formlastseen[i]
         $Trainer.formlastseen[i]=[0,0] if $Trainer.formlastseen[i]==[]
         if !$Trainer.formseen[i]
@@ -514,6 +514,7 @@ def pbDebugMenu
       Kernel.pbMessage(_INTL("Gave Pokédex.")) if $Trainer.pokedex
       Kernel.pbMessage(_INTL("Lost Pokédex.")) if !$Trainer.pokedex
     elsif cmd=="dexlists"
+      pbEnsureDexSlots
       dexescmd=0
       loop do
         dexescmds=[]

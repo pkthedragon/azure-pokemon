@@ -184,8 +184,8 @@ def pbAddSilent(pokemon,level=nil,seeform=true,ivs=[],ability=-1,moves=[],female
   end
   pokemon.calcStats
   
-  $Trainer.seen[pokemon.species]=true
-  $Trainer.owned[pokemon.species]=true
+  $Trainer.setSeen(pokemon.species)
+  $Trainer.setOwned(pokemon.species)
   pbSeenForm(pokemon) if seeform
   pokemon.pbRecordFirstMoves
   $Trainer.party[$Trainer.party.length]=pokemon

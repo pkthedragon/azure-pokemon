@@ -221,8 +221,8 @@ def pbStartTrade(pokemonIndex,newpoke,nickname,trainerName,trainerGender=0,onlin
     # Get egg steps
     yourPokemon.eggsteps=$pkmn_dex[yourPokemon.species][10]
   else
-    $Trainer.seen[yourPokemon.species]=true
-    $Trainer.owned[yourPokemon.species]=true
+    $Trainer.setSeen(yourPokemon.species)
+    $Trainer.setOwned(yourPokemon.species)
     pbSeenForm(yourPokemon)
     yourPokemon.pbRecordFirstMoves
   end

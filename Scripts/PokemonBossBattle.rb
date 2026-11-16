@@ -40,11 +40,8 @@ def bossHandler(decision, pokemon)
   for i in 0...6
     pokemon.ev[i]=0
   end
-  if decision == 4
-      if !$Trainer.pokedex.nil?
-          $Trainer.pokedex.dexList[pokemon.species][:shadowCaught?] = true
-      end
-  end
+  $Trainer.shadowcaught ||= []
+  $Trainer.shadowcaught[pokemon.species]=true
 end
 
 class BossPokemonDataBox < SpriteWrapper

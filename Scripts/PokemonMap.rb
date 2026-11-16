@@ -184,12 +184,13 @@ class PokemonGlobalMetadata
     numRegions = AzureRegionalDexCache.num_regions
     @pokedexUnlocked      = []
     @pokedexViable        = []
-    @pokedexDex           = (numRegions==0) ? -1 : 0
+    @pokedexDex           = -1
+    @azure_national_dex_default = true
     @pokedexIndex         = []
     @pokedexMode          = 0
     for i in 0...numRegions+1     # National Dex isn't a region, but is included
       @pokedexIndex[i]    = 0
-      @pokedexUnlocked[i] = (i==0)
+      @pokedexUnlocked[i] = (i==numRegions)
     end
     @healingSpot          = nil
     @escapePoint          = []

@@ -179,8 +179,8 @@ def pbHatch(pokemon)
   pokemon.timeEggHatched=pbGetTimeNow
   pokemon.obtainMode=1 # hatched from egg
   pokemon.hatchedMap=$game_map.map_id
-  $Trainer.seen[pokemon.species]=true
-  $Trainer.owned[pokemon.species]=true
+  $Trainer.setSeen(pokemon.species)
+  $Trainer.setOwned(pokemon.species)
   pbSeenForm(pokemon)
   pokemon.pbRecordFirstMoves
   if !pbHatchAnimation(pokemon)

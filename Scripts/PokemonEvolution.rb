@@ -697,8 +697,8 @@ class PokemonEvolutionScene
         end
       end
 
-      $Trainer.seen[@newspecies]=true
-      $Trainer.owned[@newspecies]=true
+      $Trainer.setSeen(@newspecies)
+      $Trainer.setOwned(@newspecies)
       pbSeenForm(@pokemon)
       @pokemon.name=newspeciesname if @pokemon.name==oldspeciesname
       @pokemon.calcStats
@@ -726,8 +726,8 @@ class PokemonEvolutionScene
         newpokemon.calcStats
         newpokemon.heal
         $Trainer.party.push(newpokemon)
-        $Trainer.seen[createSpecies]=true
-        $Trainer.owned[createSpecies]=true
+        $Trainer.setSeen(createSpecies)
+        $Trainer.setOwned(createSpecies)
         pbSeenForm(newpokemon)
         $PokemonBag.pbDeleteItem(getConst(PBItems,:POKEBALL))
       end

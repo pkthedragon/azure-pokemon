@@ -66,10 +66,13 @@ end
 
 def pbHiddenMoveAnimation(pokemon)
   return false if !pokemon
-  viewport=Viewport.new(0,0,0,0)
+  strobes=[]
+  viewport=Viewport.new(0,0,Graphics.width,Graphics.height)
+  viewport.visible=false
   viewport.z=99999
   bg=Sprite.new(viewport)
-  bg.bitmap=BitmapCache.load_bitmap("Graphics/Pictures/hiddenMovebg")
+  background=BitmapCache.load_bitmap("Graphics/Pictures/hiddenMovebg")
+  bg.bitmap=background
   sprite=PokemonSprite.new(viewport)
   sprite.setPokemonBitmap(pokemon)
   sprite.z=1
@@ -77,15 +80,14 @@ def pbHiddenMoveAnimation(pokemon)
   sprite.oy=sprite.bitmap.height/2
   sprite.visible=false
   strobebitmap=AnimatedBitmap.new("Graphics/Pictures/hiddenMoveStrobes")
-  strobes=[]
   15.times do |i|
-    strobe=BitmapSprite.new(26*2,8*2,viewport)
-    strobe.bitmap.blt(0,0,strobebitmap.bitmap,Rect.new(0,(i%2)*8*2,26*2,8*2))
+    strobe=Sprite.new(viewport)
+    strobes.push(strobe)
+    strobe.bitmap=strobebitmap.bitmap
+    strobe.src_rect.set(0,(i%2)*16,52,16)
     strobe.z=((i%2)==0 ? 2 : 0)
     strobe.visible=false
-    strobes.push(strobe)
   end
-  strobebitmap.dispose
   interp=RectInterpolator.new(
      Rect.new(0,Graphics.height/2,Graphics.width,0),
      Rect.new(0,(Graphics.height-bg.bitmap.height)/2,Graphics.width,bg.bitmap.height),
@@ -93,6 +95,7 @@ def pbHiddenMoveAnimation(pokemon)
   ptinterp=nil
   phase=1
   frames=0
+  Graphics.frame_reset
   begin
     Graphics.update
     Input.update
@@ -100,6 +103,7 @@ def pbHiddenMoveAnimation(pokemon)
     when 1 # Expand viewport height from zero to full
       interp.update
       interp.set(viewport.rect)
+      viewport.visible=viewport.rect.height>0
       bg.oy=(bg.bitmap.height-viewport.rect.height)/2
       if interp.done?
         phase=2
@@ -143,6 +147,7 @@ def pbHiddenMoveAnimation(pokemon)
     when 5 # Shrink viewport height from full to zero
       interp.update
       interp.set(viewport.rect)
+      viewport.visible=viewport.rect.height>0
       bg.oy=(bg.bitmap.height-viewport.rect.height)/2
       phase=6 if interp.done?    
     end
@@ -164,14 +169,14 @@ def pbHiddenMoveAnimation(pokemon)
     end
     pbUpdateSceneMap
   end while phase!=6
-  sprite.dispose
-  for strobe in strobes
-    strobe.dispose
-  end
-  strobes.clear
-  bg.dispose
-  viewport.dispose
   return true
+ensure
+  sprite.dispose if sprite
+  strobes.each { |strobe| strobe.dispose } if strobes
+  bg.dispose if bg
+  strobebitmap.dispose if strobebitmap
+  background.dispose if background
+  viewport.dispose if viewport
 end
 
 #===============================================================================

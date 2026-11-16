@@ -45,7 +45,7 @@ class Game_Player
     if @defaultCharacterName!=""
       return @defaultCharacterName
     end
-    if !moving? && !@move_route_forcing && $PokemonGlobal
+    if !@move_route_forcing && $PokemonGlobal
       meta=pbGetMetadata(0,MetadataPlayerA+$PokemonGlobal.playerID)
       if $PokemonGlobal.playerID>=0 && meta && 
          !$PokemonGlobal.bicycle && 
@@ -54,7 +54,7 @@ class Game_Player
          !$PokemonGlobal.lavasurfing &&
 		 !($PokemonGlobal.respond_to?(:swimming) && $PokemonGlobal.swimming) &&
          !$PokemonGlobal.rock
-        if meta[4] && meta[4]!="" && Input.dir4!=0 && passable?(@x,@y,Input.dir4) && pbCanRun?
+        if meta[4] && meta[4]!="" && @running_step
           # Display running character sprite
           @character_name=pbGetPlayerCharset(meta,4)
         else
@@ -69,14 +69,24 @@ class Game_Player
   alias update_walkrun_base update if method_defined?(:update)
 
   def update
-     if pbGetTerrainTag==PBTerrain::Ice
+    starting_step=!moving? && !@move_route_forcing
+    if starting_step
+      last_x=@x
+      last_y=@y
+      @running_step=false
+    end
+    terrain=pbGetTerrainTag
+    if terrain==PBTerrain::Ice
       @move_speed = $RPGVX ? 6.5 : 4.8
-    elsif !moving? && !@move_route_forcing && $PokemonGlobal
+    elsif starting_step && $PokemonGlobal
       if $PokemonGlobal.bicycle
         @move_speed = $RPGVX ? 8 : 5.5
       elsif $game_switches[999]
         @move_speed = $RPGVX ? 6.5 : 5.2
-      elsif pbCanRun? || $PokemonGlobal.surfing || $PokemonGlobal.lavasurfing || ($PokemonGlobal.respond_to?(:swimming) && $PokemonGlobal.swimming)
+      elsif $PokemonGlobal.surfing || $PokemonGlobal.lavasurfing || ($PokemonGlobal.respond_to?(:swimming) && $PokemonGlobal.swimming)
+        @move_speed = $RPGVX ? 6.5 : 4.8
+      elsif pbCanRun?
+        running=true
         @move_speed = $RPGVX ? 6.5 : 4.8
       else
         @move_speed = $RPGVX ? 4.5 : 4.0
@@ -87,7 +97,11 @@ class Game_Player
     else
       super
     end
-	if $PokemonGlobal && $PokemonGlobal.respond_to?(:swimming)
+    if starting_step
+      # Rendering the running charset must never probe movement or trigger field actions.
+      @running_step=running && (@x!=last_x || @y!=last_y)
+    end
+    if $PokemonGlobal && $PokemonGlobal.respond_to?(:swimming)
     terrain = pbGetTerrainTag
     on_still_water = pbIsStillWaterTag?(terrain)  # Only still water allows swimming
 

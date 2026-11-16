@@ -264,6 +264,13 @@ class Game_Player < Game_Character
 
     # Still water: freely swimmable (no surfing required)
     if pbIsStillWaterTag?(dest_tag)
+      # Respect both directions of tile collision and blocking events before
+      # changing the player's swimming or surfing state.
+      if !$game_map.valid?(new_x, new_y)
+        return false unless $MapFactory && $MapFactory.isPassableFromEdge?(new_x, new_y)
+      elsif !($DEBUG && Input.press?(Input::CTRL))
+        return false unless super
+      end
       if pbHasDependentEvents?
         if $PokemonGlobal && $PokemonGlobal.surfing
           if $PokemonGlobal.respond_to?(:swimming) && $PokemonGlobal.swimming
@@ -293,11 +300,6 @@ class Game_Player < Game_Character
           Kernel.pbUpdateVehicle
         end
       end
-      if !$game_map.valid?(new_x, new_y)
-        return false if !$MapFactory
-        return $MapFactory.isPassableFromEdge?(new_x, new_y)
-      end
-      return true if $DEBUG and Input.press?(Input::CTRL)
       return true
     end
 

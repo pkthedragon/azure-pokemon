@@ -294,8 +294,10 @@ module PokeBattle_BattleCommon
         BallHandlers.onCatch(ball,self,pokemon)
         pokemon.ballused=pbGetBallType(ball)
         pokemon.pbRecordFirstMoves
+        self.pbPlayer.setSeen(species)
+        pbSeenForm(pokemon) if self.pbPlayer.equal?($Trainer)
         if !self.pbPlayer.owned[species]
-          self.pbPlayer.owned[species]=true
+          self.pbPlayer.setOwned(species)
           if $Trainer.pokedex
             pbDisplayPaused(_INTL("{1}'s data was added to the PokÃ©dex.",pokemon.name))
             @scene.pbShowPokedex(pokemon)
@@ -2221,7 +2223,7 @@ class PokeBattle_Battle
 
   def pbSetSeen(pokemon)
     if pokemon && @internalbattle
-      self.pbPlayer.seen[pokemon.species]=true
+      self.pbPlayer.setSeen(pokemon.species)
       pbSeenForm(pokemon)
     end
   end

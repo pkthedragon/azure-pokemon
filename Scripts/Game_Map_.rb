@@ -259,9 +259,9 @@ class Game_Map
       elsif $PokemonGlobal.surfing &&
          pbIsPassableWaterTag?(@terrain_tags[tile_id])
         return true
-      # Make still water tiles passable if player is swimming
-      elsif $PokemonGlobal.respond_to?(:swimming) && $PokemonGlobal.swimming &&
-         pbIsStillWaterTag?(@terrain_tags[tile_id])
+      # Allow entry into still water before the player's swim state changes.
+      # Higher layers have already been checked for directional collision.
+      elsif pbIsStillWaterTag?(@terrain_tags[tile_id])
         return true
       # Make lava tiles passable if player is lava surfing
       elsif $PokemonGlobal.lavasurfing &&

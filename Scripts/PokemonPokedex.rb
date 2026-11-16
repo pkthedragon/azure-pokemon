@@ -439,50 +439,16 @@ class PokemonPokedexScene
     return ret
   end
 
-  def pbCanAddForModeList?(mode,nationalSpecies)
-    # Show all Pokemon regardless of mode
-    return true
-    # case mode
-    #   when 0
-    #     return true
-    #   when 1
-    #     return $Trainer.seen[nationalSpecies]
-    #   when 2, 3, 4, 5
-    #     return $Trainer.owned[nationalSpecies]
-    # end
-  end
-
-  def pbCanAddForModeSearch?(mode,nationalSpecies)
-    case mode
-     when 0, 1
-       return $Trainer.seen[nationalSpecies]
-     when 2, 3, 4, 5
-       return $Trainer.owned[nationalSpecies]
-    end
-  end
-
-  def pbGetDexList()
-    dexlist=[]
+  def pbGetDexList
     region=pbGetPokedexRegion
-    regionalSpecies=pbAllRegionalSpecies(region)
-    if regionalSpecies.length==1
-      # If no regional species defined, use National Pokédex order
-      for i in 1..PBSpecies.maxValue
-        regionalSpecies.push(i)
-      end
-    end
-    for i in 1...regionalSpecies.length
-      nationalSpecies=regionalSpecies[i]
-      if pbCanAddForModeList?($PokemonGlobal.pokedexMode,nationalSpecies)
-        dex_entry=$pkmn_dex[nationalSpecies]
-        next if !dex_entry
-        height=dex_entry[14]
-        weight=dex_entry[15]
-        # Pushing national species, name, height, weight, index number
-        shift=DEXINDEXOFFSETS.include?(region)
-        dexlist.push([nationalSpecies,
-           PBSpecies.getName(nationalSpecies),height,weight,i,shift])
-      end
+    shift=DEXINDEXOFFSETS.include?(region)
+    species_list=region<0 ? (0..PBSpecies.maxValue) : pbAllRegionalSpecies(region)
+    dexlist=[]
+    species_list.each_with_index do |species, number|
+      next if !species || species==0
+      entry=$pkmn_dex[species]
+      next if !entry
+      dexlist.push([species,PBSpecies.getName(species),entry[14],entry[15],number,shift])
     end
     return dexlist
   end

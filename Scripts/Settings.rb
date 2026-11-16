@@ -164,7 +164,7 @@ STORAGEBOXES = 35
 #      Dex list to view when appropriate (false).
 # * The names of each Dex list in the game, in order and with National Dex at
 #      the end.  This is also the order that $PokemonGlobal.pokedexUnlocked is
-#      in, which records which Dexes have been unlocked (first is unlocked by
+#      in, which records which Dexes have been unlocked (National is unlocked by
 #      default).
 #      You can define which region a particular Dex list is linked to.  This
 #      means the area map shown while viewing that Dex list will ALWAYS be that
@@ -183,9 +183,12 @@ STORAGEBOXES = 35
 #      of 0 (e.g. Victini).
 #===============================================================================
 DEXDEPENDSONLOCATION = false
-def pbDexNames; return [
-   _INTL("National Pokédex")
-]; end
+def pbDexNames
+  regions=AzureRegionalDexCache.num_regions
+  names=Array.new(regions) { |index| _INTL("Regional Pokédex {1}",index+1) }
+  names.push(_INTL("National Pokédex"))
+  return names
+end
 ALWAYSSHOWALLFORMS = false
 DEXINDEXOFFSETS    = []
 #===============================================================================

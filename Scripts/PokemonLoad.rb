@@ -626,6 +626,8 @@ class PokemonLoad
           $achievements        = Marshal.load(f)
           pbMigrateTributeItems
           pbMigrateDeoxysSpeciesID
+          pbEnsureDexSlots
+          Habitats.update
           #$initialquestion        = Marshal.load(f)
           $strengthUsed        = false
           Achievements.fixAchievements

@@ -1477,8 +1477,8 @@ def pbEvolutionCheck(currentlevels)
       if newspecies>0
         if newspecies == PBSpecies::MAUSHOLD
           pokemon.species=newspecies
-          $Trainer.seen[newspecies]=true
-          $Trainer.owned[newspecies]=true
+          $Trainer.setSeen(newspecies)
+          $Trainer.setOwned(newspecies)
           pbSeenForm(pokemon)
           pokemon.name=PBSpecies.getName(newspecies) if pokemon.name==PBSpecies.getName(pokemon.species)
           pokemon.calcStats

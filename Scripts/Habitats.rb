@@ -285,16 +285,26 @@ end
 # Existing Class Extensions
 # ========================================================================
 
-# Adds the necessary save data to $Trainer and piggybacks on the setOwned command
+# Refresh Habitat completion when the active trainer registers a species.
 class PokeBattle_Trainer
   attr_accessor(:habitatData)
   attr_accessor(:habitatPokeIndexes)
   attr_accessor(:habitatMapIndexes)
 
+  alias setSeen_habitat setSeen
+  def setSeen(species)
+    previously_seen=hasSeen?(species)
+    result=setSeen_habitat(species)
+    Habitats.updateHabitatsForSpecies(species) if !previously_seen && equal?($Trainer)
+    return result
+  end
+
   alias setOwned_habitat setOwned
   def setOwned(species)
-    setOwned_habitat(species)
-    Habitats.updateHabitatsForSpecies(species)
+    previously_owned=hasOwned?(species)
+    result=setOwned_habitat(species)
+    Habitats.updateHabitatsForSpecies(species) if !previously_owned && equal?($Trainer)
+    return result
   end
 end
 
@@ -305,16 +315,6 @@ def pbTrainerName(*args)
   Habitats.setup # setup habitat data for a new trainer
 end
   
-# Modifies catch event to update Habitats list
-class PokeBattle_Battle
-  alias pbSetSeen_habitat pbSetSeen
-  def pbSetSeen(pokemon)
-    prevseen = $Trainer.seen[pokemon.species]
-    pbSetSeen_habitat(pokemon)
-    Habitats.updateHabitatsForSpecies(pokemon.species) if !prevseen
-  end
-end
-
 # Allows Habitats code to access encounter types
 class PokemonEncounters
   attr_accessor :enctypes
@@ -323,20 +323,6 @@ end
 # Create a temp store of the Habitats encounters setup
 class PokemonTemp
   attr_accessor :habitatEncounters
-end
-
-# Update habitats after Pokemon added
-alias pbNicknameAndStore_habitat pbNicknameAndStore
-def pbNicknameAndStore(pokemon)
-  pbNicknameAndStore_habitat(pokemon)
-  Habitats.updateHabitatsForSpecies(pokemon.species)
-end
-
-# Update habitats after Pokemon added silently
-alias pbAddPokemonSilent_habitat pbAddPokemonSilent
-def pbAddPokemonSilent(pokemon, level = nil, seeform = true)
-  pbAddPokemonSilent_habitat(pokemon, level, seeform)
-  Habitats.updateHabitatsForSpecies(pokemon.species)
 end
 
 # ========================================================================
@@ -413,39 +399,6 @@ class Habitats
     return newHabitat
   end
   
-  # Updates an existing habitat
-  def self.updateHabitat(habitat, index)
-    existingHabitat = $Trainer.habitatData[index]
-    if existingHabitat == nil
-      print "#{index} failed at Habitat check"
-    end
-    # Add or update indexing for each mapID
-    habitat[0].each do |n|
-      $Trainer.habitatMapIndexes[n] = index
-    end
-    for type in habitat[1]
-      if !existingHabitat[:encounters].key?(type)
-        !existingHabitat[:encounters][type] = {
-          :alert => true,
-          :seen => true,
-          :owned => true,
-          :list => [],
-        }
-      end
-    end
-    for i in 0...habitat[0].length
-      $PokemonTemp.habitatEncounters.setup(habitat[0][i])
-      for type in habitat[1]
-        self.loadEncountersForType(i, existingHabitat[:encounters][type], 
-          $PokemonTemp.habitatEncounters.enctypes, HabitatConfig::Types[type], index)
-        if !existingHabitat[:encounters][type][:owned]
-          existingHabitat[:completed] = false
-        end
-      end
-    end
-  end
-
-  
   # Clears any existing habitats - avoid using as will wipe progress
   def self.clear
     $Trainer.habitatData = []
@@ -463,16 +416,26 @@ class Habitats
     end
   end
   
-  # Updates the Habitats without deleting data
+  # Rebuild encounter lists and indexes from the current data, keeping stamps
+  # and acknowledged alerts when the corresponding encounter status is unchanged.
   def self.update
-    $PokemonTemp.habitatEncounters = PokemonEncounters.new
-    for i in 0...HabitatConfig::Habitats.length
-      if i < $Trainer.habitatData.size
-        updateHabitat(HabitatConfig::Habitats[i], i)
-      else
-        habitat = addHabitat(HabitatConfig::Habitats[i], i)
-        $Trainer.habitatData.push(habitat)
+    previous=($Trainer.habitatData || []).compact
+    setup
+    $Trainer.habitatData.each do |habitat|
+      old=previous.find { |entry| entry[:mapIDs]==habitat[:mapIDs] }
+      next if !old
+      unchanged=habitat[:encounters].keys==old[:encounters].keys
+      habitat[:encounters].each do |type, encounter|
+        old_encounter=old[:encounters][type]
+        if old_encounter && encounter[:list].sort==old_encounter[:list].sort &&
+           encounter[:seen]==old_encounter[:seen] && encounter[:owned]==old_encounter[:owned]
+          encounter[:alert]=old_encounter[:alert]
+        else
+          unchanged=false
+          encounter[:alert]=true
+        end
       end
+      habitat[:completed]=old[:completed] if unchanged
     end
   end
 

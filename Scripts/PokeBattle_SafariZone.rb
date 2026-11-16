@@ -108,7 +108,7 @@ class PokeBattle_SafariZone
   def pbStartBattle
     begin
       wildpoke=@party2[0]
-      self.pbPlayer.seen[wildpoke.species]=true
+      self.pbPlayer.setSeen(wildpoke.species)
       pbSeenForm(wildpoke)
       @scene.pbStartBattle(self)
       pbDisplayPaused(_INTL("Wild {1} appeared!",wildpoke.name))
