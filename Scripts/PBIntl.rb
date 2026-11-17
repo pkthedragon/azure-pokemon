@@ -365,6 +365,16 @@ class Messages
     end
   end
 
+  # Older message tables and script archives can carry UTF-8 bytes tagged as binary.
+  def self.utf8Text(text)
+    return text if !text.respond_to?(:encoding)
+    if text.encoding == Encoding::BINARY
+      return text.dup.force_encoding(Encoding::UTF_8).scrub!
+    end
+    return text if text.encoding == Encoding::UTF_8 && text.valid_encoding?
+    return text.encode(Encoding::UTF_8, invalid: :replace, undef: :replace)
+  end
+
   def self.stringToKey(str)
     if str[/[\r\n\t\1]|^\s+|\s+$|\s{2,}/]
        key=str.clone
@@ -730,9 +740,9 @@ def _INTL(*arg)
   rescue
     string=arg[0]
   end
-  string=string.clone
+  string=Messages.utf8Text(string).dup
   for i in 1...arg.length
-    string.gsub!(/\{#{i}\}/,"#{arg[i]}")
+    string.gsub!(/\{#{i}\}/,Messages.utf8Text(arg[i].to_s))
   end
   return string
 end
@@ -746,10 +756,10 @@ def _ISPRINTF(*arg)
   rescue
     string=arg[0]
   end
-  string=string.clone
+  string=Messages.utf8Text(string).dup
   for i in 1...arg.length
     string.gsub!(/\{#{i}\:([^\}]+?)\}/){|m|
-       next sprintf("%"+$1,arg[i])
+       next Messages.utf8Text(sprintf("%"+$1,arg[i]))
     }
   end
   return string
@@ -761,19 +771,19 @@ end
 
 def _MAPINTL(mapid,*arg)
   string=MessageTypes.getFromMapHash(mapid,arg[0])
-  string=string.clone
+  string=Messages.utf8Text(string).dup
   for i in 1...arg.length
-    string.gsub!(/\{#{i}\}/,"#{arg[i]}")
+    string.gsub!(/\{#{i}\}/,Messages.utf8Text(arg[i].to_s))
   end
   return string
 end
 
 def _MAPISPRINTF(mapid,*arg)
   string=MessageTypes.getFromMapHash(mapid,arg[0])
-  string=string.clone
+  string=Messages.utf8Text(string).dup
   for i in 1...arg.length
     string.gsub!(/\{#{i}\:([^\}]+?)\}/){|m|
-       next sprintf("%"+$1,arg[i])
+       next Messages.utf8Text(sprintf("%"+$1,arg[i]))
     }
   end
   return string
