@@ -246,8 +246,14 @@ def Kernel.pbHeadbuttEffect(event)
   elsif a<b && (a-b).abs>5
     chance=5
   end
+  enctype=chance==1 ? EncounterTypes::HeadbuttLow : EncounterTypes::HeadbuttHigh
+  alternative=enctype==EncounterTypes::HeadbuttLow ? EncounterTypes::HeadbuttHigh : EncounterTypes::HeadbuttLow
+  if !Kernel.pbDisplacementEncounterAvailable?(enctype) &&
+     Kernel.pbDisplacementEncounterAvailable?(alternative)
+    enctype=alternative
+  end
   # Always trigger encounter if available
-  if !pbEncounter(chance==1 ? EncounterTypes::HeadbuttLow : EncounterTypes::HeadbuttHigh)
+  if !pbEncounter(enctype)
     Kernel.pbMessage(_INTL("Nope.  Nothing..."))
   end
 end
@@ -306,6 +312,7 @@ end
 #===============================================================================
 # Checks if player has any displacement move in their party
 def Kernel.pbDisplacementCheck
+  return nil if !$Trainer || !$Trainer.party
   return nil if !defined?(PBStuff::DISPLACEMENTMOVE)
   for move in PBStuff::DISPLACEMENTMOVE
     movefinder = pbCheckMove(move)
@@ -314,39 +321,52 @@ def Kernel.pbDisplacementCheck
   return nil
 end
 
+def Kernel.pbDisplacementEncounterAvailable?(enctype=nil)
+  return false if !$game_map || !$PokemonEncounters
+  data=PBEncounterData.try_get($game_map.map_id)
+  return false if !data
+  types=enctype ? [enctype] : [EncounterTypes::HeadbuttLow,EncounterTypes::HeadbuttHigh]
+  return types.any? do |type|
+    table=data.try_get(type)
+    table && !table.slots.empty?
+  end
+end
+
 # Triggers headbutt encounter using any displacement move (for event scripts)
 def Kernel.pbDisplacementEncounter(event=nil)
-  # Use current player position if no event provided
+  movefinder=Kernel.pbDisplacementCheck
+  return false if !movefinder || !Kernel.pbDisplacementEncounterAvailable?
+
+  # The target cell determines which of the map's two encounter tables is used.
   if !event
-    event = Struct.new(:x, :y).new($game_player.x, $game_player.y)
+    facing=pbFacingTile
+    return false if !facing || facing[0]!=$game_map.map_id
+    event=Struct.new(:x, :y).new(facing[1],facing[2])
   end
 
-  movefinder = Kernel.pbDisplacementCheck
-  if $DEBUG || movefinder
-    if Kernel.pbConfirmMessage(_INTL("You might be able to shake a Pokémon down. Use a displacement move?"))
-      speciesname = !movefinder ? $Trainer.name : movefinder.name
-      # Find which move the Pokemon has
-      movename = "Headbutt"
-      if movefinder
-        for m in movefinder.moves
-          if PBStuff::DISPLACEMENTMOVE.include?(m.id)
-            movename = PBMoves.getName(m.id)
-            break
-          end
-        end
-      end
-      Kernel.pbMessage(_INTL("{1} used {2}!",speciesname,movename))
-      pbHiddenMoveAnimation(movefinder)
+  if Kernel.pbConfirmMessage(_INTL("You might be able to shake a Pokémon down. Use a displacement move?"))
+    move=movefinder.moves.find { |known| PBStuff::DISPLACEMENTMOVE.include?(known.id) }
+    Kernel.pbMessage(_INTL("{1} used {2}!",movefinder.name,PBMoves.getName(move.id)))
+    pbHiddenMoveAnimation(movefinder)
+    backdrop=pbGetMetadata($game_map.map_id,MetadataBattleBack)
+    cave=backdrop.to_s.start_with?("Cave")
+    old_field=$game_variables[708] if cave
+    begin
+      $game_variables[708]=23 if cave
       Kernel.pbHeadbuttEffect(event)
+    ensure
+      $game_variables[708]=old_field if cave
     end
-  else
-    Kernel.pbMessage(_INTL("You might be able to shake a Pokémon down with a displacement move."))
   end
   Input.update
-  return
+  return true
 end
 
 HiddenMoveHandlers::CanUseMove.add(:HEADBUTT,lambda{|move,pkmn,showmsg|
+   if Kernel.pbFacingTerrainTag==PBTerrain::Displacement &&
+      Kernel.pbDisplacementCheck && Kernel.pbDisplacementEncounterAvailable?
+     return true
+   end
    facingEvent=$game_player.pbFacingEvent
    if !facingEvent || (facingEvent.name!="HeadbuttTree" && facingEvent.graphicName!="Object tree 2")
      Kernel.pbMessage(_INTL("Can't use that here.")) if showmsg
@@ -356,6 +376,9 @@ HiddenMoveHandlers::CanUseMove.add(:HEADBUTT,lambda{|move,pkmn,showmsg|
 })
 
 HiddenMoveHandlers::UseMove.add(:HEADBUTT,lambda{|move,pokemon|
+   if Kernel.pbFacingTerrainTag==PBTerrain::Displacement
+     return Kernel.pbDisplacementEncounter
+   end
    if !pbHiddenMoveAnimation(pokemon)
      Kernel.pbMessage(_INTL("{1} used {2}!",pokemon.name,PBMoves.getName(move)))
    end

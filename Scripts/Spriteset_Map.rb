@@ -173,7 +173,13 @@ class Spriteset_Map
     @fog.z = 3000
     @reflectedSprites=[]
     @character_sprites = []
-    for i in @map.events.keys.sort
+    @azure_tile_overlays = []
+    overlays = @map.azure_overlays_by_event_id
+    for i in (@map.events.keys | overlays.keys).sort
+      if overlays[i]
+        @azure_tile_overlays << MakerStudioTileOverlays::Sprite.new(@viewport1, @map, overlays[i])
+      end
+      next unless @map.events[i]
       sprite = Sprite_Character.new(@viewport1, @map.events[i])
       @character_sprites.push(sprite)
 #### Cass speedup ####
@@ -211,6 +217,7 @@ class Spriteset_Map
     for sprite in @character_sprites
       sprite.dispose
     end
+    @azure_tile_overlays.each(&:dispose)
     for sprite in @reflectedSprites
       sprite.dispose
     end
@@ -227,6 +234,7 @@ class Spriteset_Map
     @panorama=nil
     @fog=nil
     @character_sprites.clear
+    @azure_tile_overlays.clear
     @reflectedSprites.clear
     @weather=nil
     @picture_sprites.clear
@@ -304,6 +312,7 @@ class Spriteset_Map
     for sprite in @character_sprites
       sprite.update
     end
+    @azure_tile_overlays.each(&:update)
     for sprite in @reflectedSprites
       sprite.visible=true
       sprite.visible=(@map==$game_map) if sprite.event==$game_player

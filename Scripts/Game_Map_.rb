@@ -172,17 +172,42 @@ class Game_Map
     return (x >=-10 and x <= width+10 and y >=-10 and y <= height+10)
   end
 
+  def event_tile_passage(tile_id, bit, strict)
+    passage = @passages[tile_id]
+    if strict
+      return false if passage & 0x0f != 0
+    else
+      return false if passage & bit != 0 || passage & 0x0f == 0x0f
+    end
+    return true if @priorities[tile_id] == 0
+    return nil
+  end
+  private :event_tile_passage
+
+  def event_tile_passability(x, y, bit, self_event, strict)
+    overlay = azure_overlay_at(x,y)
+    before_id = overlay["azure_event_before_id"] if overlay
+    events.each do |event_id, event|
+      if overlay && event_id == before_id
+        result = event_tile_passage(overlay["tile_id"], bit, strict)
+        return result unless result.nil?
+        overlay = nil
+      end
+      next if event.tile_id < 0 || event == self_event || event.through
+      next if event.x != x || event.y != y
+      result = event_tile_passage(event.tile_id, bit, strict)
+      return result unless result.nil?
+    end
+    return event_tile_passage(overlay["tile_id"], bit, strict) if overlay
+    return nil
+  end
+  private :event_tile_passability
+
   def passable?(x, y, d, self_event = nil)
     return false if !valid?(x, y)
     bit = (1 << (d / 2 - 1)) & 0x0f
-    events.each_value do |event|
-      if event.tile_id >= 0 and event != self_event and
-         event.x == x and event.y == y and not event.through
-        return false if @passages[event.tile_id] & bit != 0
-        return false if @passages[event.tile_id] & 0x0f == 0x0f
-        return true if @priorities[event.tile_id] == 0
-      end
-    end
+    event_result = event_tile_passability(x, y, bit, self_event, false)
+    return event_result unless event_result.nil?
     if self_event==$game_player
       return playerPassable?(x, y, d, self_event)
     else
@@ -209,7 +234,9 @@ class Game_Map
           for j in [2, 1, 0]
             facing_tile_id=data[newx, newy, j]
             return false if facing_tile_id==nil
-            if @terrain_tags[facing_tile_id]!=0
+            # Interaction markers leave the underlying movement terrain in effect.
+            if @terrain_tags[facing_tile_id]!=0 &&
+               @terrain_tags[facing_tile_id]!=PBTerrain::Displacement
               return pbIsJustWaterTag?(@terrain_tags[facing_tile_id])
             end
           end
@@ -222,7 +249,8 @@ class Game_Map
           for j in [2, 1, 0]
             facing_tile_id=data[newx, newy, j]
             return false if facing_tile_id==nil
-            if @terrain_tags[facing_tile_id]!=0
+            if @terrain_tags[facing_tile_id]!=0 &&
+               @terrain_tags[facing_tile_id]!=PBTerrain::Displacement
               return false if @terrain_tags[facing_tile_id]==PBTerrain::Ledge
               break
             end
@@ -302,13 +330,8 @@ class Game_Map
 
   def passableStrict?(x, y, d, self_event = nil)
     return false if !valid?(x, y)
-    events.each_value do |event|
-      if event.tile_id >= 0 and event != self_event and
-         event.x == x and event.y == y and not event.through
-        return false if @passages[event.tile_id] & 0x0f !=0
-        return true if @priorities[event.tile_id] == 0
-      end
-    end
+    event_result = event_tile_passability(x, y, 0, self_event, true)
+    return event_result unless event_result.nil?
     for i in [2, 1, 0]
       tile_id = data[x, y, i]
       return false if tile_id == nil
@@ -346,6 +369,10 @@ class Game_Map
   end
 
   def terrain_tag(x, y, countBridge=false)
+    overlay = azure_overlay_at(x, y)
+    if overlay && @terrain_tags[overlay["tile_id"]] == PBTerrain::Displacement
+      return PBTerrain::Displacement
+    end
 #### Cass speedup ####
 #    if @map_id != 0
       for i in [2, 1, 0]

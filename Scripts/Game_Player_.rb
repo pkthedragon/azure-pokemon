@@ -8,9 +8,6 @@
 class Game_Player < Game_Character
   attr_accessor :bump_se
 
-  # Map IDs where terrain tag 4 (Rock) displacement encounters are enabled
-  ROCK_DISPLACEMENT_ENABLED_MAPS = [94, 142, 44, 18, 9, 55]
-
   def map
     @map=nil
     return $game_map
@@ -394,6 +391,15 @@ class Game_Player < Game_Character
     @opacity = 255
     @blend_type = 0
   end
+
+  # Empty event pages could still count as a trigger, including for encounter checks.
+  def azure_overlay_trigger?(x, y, triggers, over)
+    overlay = $game_map.azure_overlay_at(x, y)
+    return false unless overlay && triggers.include?(overlay["azure_event_trigger"])
+    return $game_map.passable?(x, y, 0) == over
+  end
+  private :azure_overlay_trigger?
+
   #-----------------------------------------------------------------------------
   # * Same Position Starting Determinant
   #-----------------------------------------------------------------------------
@@ -414,7 +420,7 @@ class Game_Player < Game_Character
         end
       end
     end
-    return result
+    return result || azure_overlay_trigger?(@x, @y, triggers, true)
   end
   #-----------------------------------------------------------------------------
   # * Front Event Starting Determinant
@@ -440,6 +446,10 @@ class Game_Player < Game_Character
         end
       end
     end
+    if !result && triggers.include?(0) && Kernel.pbFacingTerrainTag==PBTerrain::Displacement
+      result=Kernel.pbDisplacementEncounter
+    end
+    result ||= azure_overlay_trigger?(new_x, new_y, triggers, false)
     # If fitting event is not found
     if result == false
       # If front tile is a counter
@@ -459,29 +469,7 @@ class Game_Player < Game_Character
             end
           end
         end
-      end
-    end
-    # Check for Rock terrain tag on facing tile (triggers displacement/headbutt)
-    if !result && Kernel.pbFacingTerrainTag == PBTerrain::Rock
-      # Only trigger if this map has rock displacement enabled
-      if ROCK_DISPLACEMENT_ENABLED_MAPS.include?($game_map.map_id)
-        # Check if player has any displacement move
-        movefinder = Kernel.pbDisplacementCheck
-        if movefinder
-          # Check if map has headbutt encounters defined
-          encdata = $PokemonEncounters.pbMapEncounter($game_map.map_id, EncounterTypes::HeadbuttLow) rescue nil
-          encdata2 = $PokemonEncounters.pbMapEncounter($game_map.map_id, EncounterTypes::HeadbuttHigh) rescue nil
-          if encdata || encdata2
-            # Create fake event at facing position for encounter calculation
-            fakeEvent = Struct.new(:x, :y).new(new_x, new_y)
-            # Force Cave field effect (23) for terrain tag 4 displacement encounters
-            old_field = $game_variables[708]
-            $game_variables[708] = 23
-            Kernel.pbDisplacementEncounter(fakeEvent)
-            $game_variables[708] = old_field
-            result = true
-          end
-        end
+        result ||= azure_overlay_trigger?(new_x, new_y, triggers, false)
       end
     end
     return result
@@ -514,7 +502,7 @@ class Game_Player < Game_Character
         end
       end
     end
-    return result
+    return result || azure_overlay_trigger?(x, y, [1,2], false)
   end
   #-----------------------------------------------------------------------------
   # * Frame Update

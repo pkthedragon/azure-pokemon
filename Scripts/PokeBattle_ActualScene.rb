@@ -3956,6 +3956,11 @@ end
     if targets.length == 0
       return -1
     end
+    if !@battle.singleBattle? && !@battle.tripleBattle?
+      user_is_opposing=@battle.pbIsOpposing?(index)
+      opponents,allies=targets.partition { |target| @battle.pbIsOpposing?(target)!=user_is_opposing }
+      targets=opponents.sort_by { |target| pbSceneBattlerPosition(target).first }+allies
+    end
     targetpos = 0
     curwindow = targets[targetpos]
     loop do

@@ -586,6 +586,7 @@ class PBTerrain
   RightConveyor   = 24
   UpConveyor      = 25
   HeadbuttTree    = 26
+  Displacement    = HeadbuttTree
 end
 
 def pbIsBridge?(tag)
