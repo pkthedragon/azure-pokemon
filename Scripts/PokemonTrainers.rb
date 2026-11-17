@@ -668,6 +668,23 @@ def pbTrainerRematchField(rematch)
   return pbGetBossTrainerFields[rematch]
 end
 
+# Keep encounter history with battle state so finishing a fight does not
+# depend on the Trainer Index screen or the age of the save.
+class PokemonGlobalMetadata
+  attr_writer :encounteredTrainers
+
+  def encounteredTrainers
+    @encounteredTrainers = [] unless @encounteredTrainers.is_a?(Array)
+    return @encounteredTrainers
+  end
+
+  def recordTrainerEncounter(trainerid,trainername,partyid)
+    history = encounteredTrainers
+    key = [trainerid,trainername,partyid]
+    history.push(key) unless history.include?(key)
+  end
+end
+
 def pbRegisterTrainerRematch(trainerid, trainername, trainerparty, battlekind,
                              trainerid2=nil, trainername2=nil, trainerparty2=nil)
   return if !$PokemonGlobal
@@ -926,8 +943,8 @@ def pbDoubleTrainerBattle(trainerid1, trainername1, trainerparty1, endspeech1,
         decision=battle.pbStartBattle(canlose)
      }
      # Register trainer encounter for Trainer Index (regardless of win/loss)
-     pbRegisterTrainerEncounter(trainer1[0].trainertype,trainer1[0].name,trainerparty1)
-     pbRegisterTrainerEncounter(trainer2[0].trainertype,trainer2[0].name,trainerparty2)
+     $PokemonGlobal.recordTrainerEncounter(trainer1[0].trainertype,trainer1[0].name,trainerparty1)
+     $PokemonGlobal.recordTrainerEncounter(trainer2[0].trainertype,trainer2[0].name,trainerparty2)
 
      Achievements.incrementProgress("MOVES_USED",$game_variables[530])
      Achievements.incrementProgress("ITEMS_USED",$game_variables[536])
@@ -1133,13 +1150,11 @@ def pbTrainerBattle(trainerid,trainername,endspeech,
     }
     # Register trainer encounter for Trainer Index (regardless of win/loss)
     if $PokemonTemp.waitingTrainer
-      pbRegisterTrainerEncounter($PokemonTemp.waitingTrainer[0][0].trainertype,
-                                 $PokemonTemp.waitingTrainer[0][0].name,
-                                 $PokemonTemp.waitingTrainer[5])
-      pbRegisterTrainerEncounter(trainer[0].trainertype,trainer[0].name,trainerparty)
-    else
-      pbRegisterTrainerEncounter(trainer[0].trainertype,trainer[0].name,trainerparty)
+      waiting_trainer = $PokemonTemp.waitingTrainer[0][0]
+      $PokemonGlobal.recordTrainerEncounter(waiting_trainer.trainertype,waiting_trainer.name,
+                                            $PokemonTemp.waitingTrainer[5])
     end
+    $PokemonGlobal.recordTrainerEncounter(trainer[0].trainertype,trainer[0].name,trainerparty)
 
     Achievements.incrementProgress("MOVES_USED",$game_variables[530])
     Achievements.incrementProgress("ITEMS_USED",$game_variables[536])

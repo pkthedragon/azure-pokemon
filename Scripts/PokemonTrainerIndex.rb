@@ -352,14 +352,3 @@ class Scene_TrainerIndex_Info
     return text
   end
 end
-
-#===============================================================================
-# Helper Functions
-#===============================================================================
-
-# Call this function when a trainer battle starts to register the encounter
-def pbRegisterTrainerEncounter(trainerid, trainername, partyid)
-  encountered_trainers = $PokemonGlobal.encounteredTrainers
-  key = [trainerid, trainername, partyid]
-  encountered_trainers.push(key) unless encountered_trainers.include?(key)
-end

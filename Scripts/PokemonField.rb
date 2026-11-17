@@ -901,9 +901,9 @@ def pbTrainerVsAnimation(viewport,trainerid,trainername)
 end
 
 def pbBattleAnimation(battletype=0,bgm=nil,trainerid=-1,trainername="")
-#### SARDINES - v17 - START
-  $game_temp.in_battle = true
-#### SARDINES - v17 - END
+  battle_temp = $game_temp
+  was_in_battle = battle_temp.in_battle
+  battle_temp.in_battle = true
   handled=false
   viewport=Viewport.new(0,0,Graphics.width,Graphics.height)
   viewport.z=99999
@@ -1031,28 +1031,29 @@ def pbBattleAnimation(battletype=0,bgm=nil,trainerid=-1,trainername="")
   end
 #### SARDINES - v17 - END
   pbPushFade
-  # Yield to the battle scene
-  yield if block_given?
-  # After the battle
-  pbPopFade
-  if $game_system && $game_system.is_a?(Game_System)
-    $game_system.bgm_resume(playingBGM)
-    $game_system.bgs_resume(playingBGS)
+  begin
+    yield if block_given?
+  ensure
+    pbPopFade
+    if $game_system && $game_system.is_a?(Game_System)
+      $game_system.bgm_resume(playingBGM)
+      $game_system.bgs_resume(playingBGS)
+    end
+    $PokemonGlobal.nextBattleBGM=nil
+    $PokemonGlobal.nextBattleME=nil
+    $PokemonGlobal.nextBattleBack=nil
+    $PokemonEncounters.clearStepCount
   end
-  $PokemonGlobal.nextBattleBGM=nil
-  $PokemonGlobal.nextBattleME=nil
-  $PokemonGlobal.nextBattleBack=nil
-  $PokemonEncounters.clearStepCount
   for j in 0..17
     viewport.color=Color.new(0,0,0,(17-j)*15)
     Graphics.update
     Input.update
     pbUpdateSceneMap
   end
-  viewport.dispose
-#### SARDINES - v17 - START
-  $game_temp.in_battle = false
-#### SARDINES - v17 - END
+  return false
+ensure
+  battle_temp.in_battle = was_in_battle if battle_temp
+  viewport.dispose if viewport && !viewport.disposed?
 end
 
 def pbPrepareBattle(battle)
