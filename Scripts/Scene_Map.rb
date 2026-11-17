@@ -275,9 +275,10 @@ class Scene_Map
     end
     $game_player.straighten
     $game_map.update
-    disposeSpritesets
-    #GC.start
-    createSpritesets
+    BitmapCache.with_retained_map_bitmaps do
+      disposeSpritesets
+      createSpritesets
+    end
     if $game_temp.transition_processing
       $game_temp.transition_processing = false
       Graphics.transition(20)

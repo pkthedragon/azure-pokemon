@@ -1011,17 +1011,19 @@ def pbLoadRpgxpScene(scene)
   oldscene = $scene
   $scene = scene
   Graphics.freeze
-  oldscene.disposeSpritesets
-  visibleObjects = pbHideVisibleObjects
-  Graphics.transition(15)
-  Graphics.freeze
-  while $scene && !$scene.is_a?(Scene_Map)
-    $scene.main
+  BitmapCache.with_retained_map_bitmaps do
+    oldscene.disposeSpritesets
+    visibleObjects = pbHideVisibleObjects
+    Graphics.transition(15)
+    Graphics.freeze
+    while $scene && !$scene.is_a?(Scene_Map)
+      $scene.main
+    end
+    Graphics.transition(15)
+    Graphics.freeze
+    oldscene.createSpritesets
+    pbShowObjects(visibleObjects)
   end
-  Graphics.transition(15)
-  Graphics.freeze
-  oldscene.createSpritesets
-  pbShowObjects(visibleObjects)
   Graphics.transition(20)
   $scene = oldscene
 end

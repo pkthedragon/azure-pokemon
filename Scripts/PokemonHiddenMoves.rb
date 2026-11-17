@@ -75,6 +75,7 @@ def pbHiddenMoveAnimation(pokemon)
   bg.bitmap=background
   sprite=PokemonSprite.new(viewport)
   sprite.setPokemonBitmap(pokemon)
+  BitmapCache.retain_hidden_move_bitmap(sprite.bitmap)
   sprite.z=1
   sprite.ox=sprite.bitmap.width/2
   sprite.oy=sprite.bitmap.height/2

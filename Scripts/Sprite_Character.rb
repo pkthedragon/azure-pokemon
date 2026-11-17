@@ -82,7 +82,7 @@ class Sprite_Character < RPG::Sprite
   end
 
   def loadCharacterCharset(name,hue)
-    retain=$game_player && @character.equal?($game_player) && !$INEDITOR
+    retain=!$INEDITOR && (@character.equal?($game_player) || @character.move_route_forcing)
     keepCurrent=retain && @charbitmapAnimated && @charbitmap && @charbitmap.length==1
     return @charbitmap if keepCurrent && @character_name==name && @character_hue==hue
 
@@ -93,7 +93,7 @@ class Sprite_Character < RPG::Sprite
       bitmap=AnimatedBitmap.new("Graphics/Characters/"+name,hue)
       disposeAlternateCharset
     end
-    # Keep one static player texture so switching between running and walking stays warm.
+    # Reuse one static sheet during walking/running and scripted graphic changes.
     if keepCurrent
       @alternateCharset=@charbitmap
       @alternateCharsetName=@character_name
@@ -106,11 +106,16 @@ class Sprite_Character < RPG::Sprite
 
   def update
     super
-    currentbushdepth = @character.bush_depth
     tileId=@character.tile_id
     name=@character.character_name
     hue=@character.character_hue
     graphic_changed = @tile_id != tileId || @character_name != name || @character_hue != hue
+    # A settled invisible trigger still updates its event logic and can show an animation.
+    if !graphic_changed && @character.is_a?(Game_Event) && tileId==0 && name.empty? &&
+       @character.animation_id==0 && @loopAnimations.empty? && @animations.none?(&:active?)
+      return
+    end
+    currentbushdepth = @character.bush_depth
     if graphic_changed
       if tileId >= 384
         @charbitmap.dispose if @charbitmap
@@ -145,14 +150,16 @@ class Sprite_Character < RPG::Sprite
     end
     @charbitmap.update if @charbitmapAnimated
     if currentbushdepth==0
-      self.bitmap=@charbitmapAnimated ? @charbitmap.bitmap : @charbitmap
+      bitmap=@charbitmapAnimated ? @charbitmap.bitmap : @charbitmap
     else
       if !@bushbitmap
         @bushbitmap=BushBitmap.new(@charbitmap,@tile_id >= 384,currentbushdepth)
       end
-      self.bitmap=@bushbitmap.bitmap
+      bitmap=@bushbitmap.bitmap
     end
-    self.visible = !@character.transparent
+    self.bitmap = bitmap if graphic_changed || !self.bitmap.equal?(bitmap)
+    visible = !@character.transparent
+    self.visible = visible if self.visible != visible
     if @tile_id == 0
       if @character==$game_player 
         if $PokemonGlobal.surfing || $PokemonGlobal.diving || $PokemonGlobal.lavasurfing
@@ -162,12 +169,13 @@ class Sprite_Character < RPG::Sprite
       end
       if @character==$game_player && !$PokemonGlobal.fishing && ($PokemonGlobal.surfing || $PokemonGlobal.diving || $PokemonGlobal.lavasurfing)
         sx = bob * @cw
-        sy = (@character.direction - 2) / 2 * @ch
-        self.src_rect.set(sx, sy, @cw, @ch)
       else
         sx = @character.pattern * @cw
-        sy = (@character.direction - 2) / 2 * @ch
-        self.src_rect.set(sx, sy, @cw, @ch)
+      end
+      sy = (@character.direction - 2) / 2 * @ch
+      rect = self.src_rect
+      if rect.x != sx || rect.y != sy || rect.width != @cw || rect.height != @ch
+        rect.set(sx, sy, @cw, @ch)
       end
     end
     if self.visible
@@ -177,13 +185,16 @@ class Sprite_Character < RPG::Sprite
         pbDayNightTint(self)
       end
     end
-    self.x = @character.screen_x
-    self.y = @character.screen_y
-    self.z = @character.screen_z(@ch)
-#    self.zoom_x = Game_Map::TILEWIDTH/32.0
-#    self.zoom_y = Game_Map::TILEHEIGHT/32.0
-    self.opacity = @character.opacity
-    self.blend_type = @character.blend_type
+    x = @character.screen_x
+    y = @character.screen_y
+    z = @character.screen_z(@ch)
+    opacity = @character.opacity
+    blend = @character.blend_type
+    self.x = x if self.x != x
+    self.y = y if self.y != y
+    self.z = z if self.z != z
+    self.opacity = opacity if self.opacity != opacity
+    self.blend_type = blend if self.blend_type != blend
 #    self.bush_depth = @character.bush_depth
     if @character.animation_id != 0
       animation = pbLoadRPGAnimations[@character.animation_id]

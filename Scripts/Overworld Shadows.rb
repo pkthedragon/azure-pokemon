@@ -227,10 +227,9 @@ class Sprite_Character
       @old_page = page
     end
 
-    bushdepth = @character.bush_depth
     if @shadow
       @shadow.opacity = self.opacity
-      @shadow.visible = (bushdepth == 0)
+      @shadow.visible = (@oldbushdepth == 0)
       if !self.visible || ((@character == $game_player) &&
          ($PokemonGlobal.surfing || $PokemonGlobal.diving || $PokemonGlobal.lavasurfing))
         @shadow.visible = false

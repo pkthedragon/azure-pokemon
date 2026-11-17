@@ -128,7 +128,7 @@ end
 
 class BitmapWrapper < Bitmap
   attr_reader :refcount
-  attr_writer :cache_key
+  attr_accessor :cache_key
 
   def dispose
     return if self.disposed?
@@ -176,6 +176,18 @@ module BitmapCache
     yield
   ensure
     retained.each {|bitmap| bitmap.dispose}
+  end
+
+  # Keep the last hidden-move sheet alive between uses. Only retain an actual
+  # cache entry, since some Pokémon graphics are modified copies.
+  def self.retain_hidden_move_bitmap(bitmap)
+    return if $INEDITOR || @hidden_move_bitmap.equal?(bitmap)
+    @hidden_move_bitmap.dispose if @hidden_move_bitmap
+    @hidden_move_bitmap=nil
+    return unless bitmap.is_a?(BitmapWrapper) && bitmap.cache_key &&
+                  fromCache(bitmap.cache_key).equal?(bitmap)
+    bitmap.addRef
+    @hidden_move_bitmap=bitmap
   end
 
   def self.fromCache(i)
@@ -339,6 +351,8 @@ module BitmapCache
   end
 
   def self.clear
+    @hidden_move_bitmap.dispose if @hidden_move_bitmap
+    @hidden_move_bitmap=nil
     @cache = ObjectSpace::WeakMap.new
     GC.start
   end
