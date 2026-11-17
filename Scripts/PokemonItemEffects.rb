@@ -84,7 +84,7 @@ ItemHandlers::UseFromBag.add(:ESCAPEROPE,proc{|item|
 
 ItemHandlers::UseFromBag.add(:SACREDASH,proc{|item|
    if $Trainer.pokemonCount==0
-     Kernel.pbMessage(_INTL("There is no PokÃ©mon."))
+     Kernel.pbMessage(_INTL("There is no Pokémon."))
      next 0
    end
    revived = 0
@@ -1126,7 +1126,7 @@ ItemHandlers::UseOnPokemon.add(:BUGINIUMZ,proc{|item,pokemon,scene|
       scene.pbDisplay(_INTL("{1} is already holding one {2}.\1",pokemon.name,itemname))
       if scene.pbConfirm(_INTL("Would you like to switch the two items?"))
         if !$PokemonBag.pbStoreItem(pokemon.item)
-          scene.pbDisplay(_INTL("The Bag is full. The PokÃ©mon's item could not be removed."))
+          scene.pbDisplay(_INTL("The Bag is full. The Pokémon's item could not be removed."))
         else
           pokemon.setItem(:BUGINIUMZ2)
           scene.pbDisplay(_INTL("The {1} was taken and replaced with the {2}.",itemname,PBItems.getName(item)))
@@ -1158,7 +1158,7 @@ ItemHandlers::UseOnPokemon.add(:DARKINIUMZ,proc{|item,pokemon,scene|
       scene.pbDisplay(_INTL("{1} is already holding one {2}.\1",pokemon.name,itemname))
       if scene.pbConfirm(_INTL("Would you like to switch the two items?"))
         if !$PokemonBag.pbStoreItem(pokemon.item)
-          scene.pbDisplay(_INTL("The Bag is full. The PokÃ©mon's item could not be removed."))
+          scene.pbDisplay(_INTL("The Bag is full. The Pokémon's item could not be removed."))
         else
           pokemon.setItem(:DARKINIUMZ2)
           scene.pbDisplay(_INTL("The {1} was taken and replaced with the {2}.",itemname,PBItems.getName(item)))
@@ -1190,7 +1190,7 @@ ItemHandlers::UseOnPokemon.add(:DRAGONIUMZ,proc{|item,pokemon,scene|
       scene.pbDisplay(_INTL("{1} is already holding one {2}.\1",pokemon.name,itemname))
       if scene.pbConfirm(_INTL("Would you like to switch the two items?"))
         if !$PokemonBag.pbStoreItem(pokemon.item)
-          scene.pbDisplay(_INTL("The Bag is full. The PokÃ©mon's item could not be removed."))
+          scene.pbDisplay(_INTL("The Bag is full. The Pokémon's item could not be removed."))
         else
           pokemon.setItem(:DRAGONIUMZ2)
           scene.pbDisplay(_INTL("The {1} was taken and replaced with the {2}.",itemname,PBItems.getName(item)))
@@ -1222,7 +1222,7 @@ ItemHandlers::UseOnPokemon.add(:ELECTRIUMZ,proc{|item,pokemon,scene|
       scene.pbDisplay(_INTL("{1} is already holding one {2}.\1",pokemon.name,itemname))
       if scene.pbConfirm(_INTL("Would you like to switch the two items?"))
         if !$PokemonBag.pbStoreItem(pokemon.item)
-          scene.pbDisplay(_INTL("The Bag is full. The PokÃ©mon's item could not be removed."))
+          scene.pbDisplay(_INTL("The Bag is full. The Pokémon's item could not be removed."))
         else
           pokemon.setItem(:ELECTRIUMZ2)
           scene.pbDisplay(_INTL("The {1} was taken and replaced with the {2}.",itemname,PBItems.getName(item)))
@@ -1254,7 +1254,7 @@ ItemHandlers::UseOnPokemon.add(:FAIRIUMZ,proc{|item,pokemon,scene|
       scene.pbDisplay(_INTL("{1} is already holding one {2}.\1",pokemon.name,itemname))
       if scene.pbConfirm(_INTL("Would you like to switch the two items?"))
         if !$PokemonBag.pbStoreItem(pokemon.item)
-          scene.pbDisplay(_INTL("The Bag is full. The PokÃ©mon's item could not be removed."))
+          scene.pbDisplay(_INTL("The Bag is full. The Pokémon's item could not be removed."))
         else
           pokemon.setItem(:FAIRIUMZ2)
           scene.pbDisplay(_INTL("The {1} was taken and replaced with the {2}.",itemname,PBItems.getName(item)))
@@ -1286,7 +1286,7 @@ ItemHandlers::UseOnPokemon.add(:FIGHTINIUMZ,proc{|item,pokemon,scene|
       scene.pbDisplay(_INTL("{1} is already holding one {2}.\1",pokemon.name,itemname))
       if scene.pbConfirm(_INTL("Would you like to switch the two items?"))
         if !$PokemonBag.pbStoreItem(pokemon.item)
-          scene.pbDisplay(_INTL("The Bag is full. The PokÃ©mon's item could not be removed."))
+          scene.pbDisplay(_INTL("The Bag is full. The Pokémon's item could not be removed."))
         else
           pokemon.setItem(:FIGHTINIUMZ2)
           scene.pbDisplay(_INTL("The {1} was taken and replaced with the {2}.",itemname,PBItems.getName(item)))
@@ -1318,7 +1318,7 @@ ItemHandlers::UseOnPokemon.add(:FIRIUMZ,proc{|item,pokemon,scene|
       scene.pbDisplay(_INTL("{1} is already holding one {2}.\1",pokemon.name,itemname))
       if scene.pbConfirm(_INTL("Would you like to switch the two items?"))
         if !$PokemonBag.pbStoreItem(pokemon.item)
-          scene.pbDisplay(_INTL("The Bag is full. The PokÃ©mon's item could not be removed."))
+          scene.pbDisplay(_INTL("The Bag is full. The Pokémon's item could not be removed."))
         else
           pokemon.setItem(:FIRIUMZ2)
           scene.pbDisplay(_INTL("The {1} was taken and replaced with the {2}.",itemname,PBItems.getName(item)))
@@ -1350,7 +1350,7 @@ ItemHandlers::UseOnPokemon.add(:FLYINIUMZ,proc{|item,pokemon,scene|
       scene.pbDisplay(_INTL("{1} is already holding one {2}.\1",pokemon.name,itemname))
       if scene.pbConfirm(_INTL("Would you like to switch the two items?"))
         if !$PokemonBag.pbStoreItem(pokemon.item)
-          scene.pbDisplay(_INTL("The Bag is full. The PokÃ©mon's item could not be removed."))
+          scene.pbDisplay(_INTL("The Bag is full. The Pokémon's item could not be removed."))
         else
           pokemon.setItem(:FLYINIUMZ2)
           scene.pbDisplay(_INTL("The {1} was taken and replaced with the {2}.",itemname,PBItems.getName(item)))
@@ -1382,7 +1382,7 @@ ItemHandlers::UseOnPokemon.add(:GHOSTIUMZ,proc{|item,pokemon,scene|
       scene.pbDisplay(_INTL("{1} is already holding one {2}.\1",pokemon.name,itemname))
       if scene.pbConfirm(_INTL("Would you like to switch the two items?"))
         if !$PokemonBag.pbStoreItem(pokemon.item)
-          scene.pbDisplay(_INTL("The Bag is full. The PokÃ©mon's item could not be removed."))
+          scene.pbDisplay(_INTL("The Bag is full. The Pokémon's item could not be removed."))
         else
           pokemon.setItem(:GHOSTIUMZ2)
           scene.pbDisplay(_INTL("The {1} was taken and replaced with the {2}.",itemname,PBItems.getName(item)))
@@ -1409,7 +1409,7 @@ ItemHandlers::UseOnPokemon.add(:INTERCEPTZ,proc{|item,pokemon,scene|
       scene.pbDisplay(_INTL("{1} is already holding one {2}.\1",pokemon.name,itemname))
       if scene.pbConfirm(_INTL("Would you like to switch the two items?"))
         if !$PokemonBag.pbStoreItem(pokemon.item)
-          scene.pbDisplay(_INTL("The Bag is full. The PokÃ©mon's item could not be removed."))
+          scene.pbDisplay(_INTL("The Bag is full. The Pokémon's item could not be removed."))
         else
           pokemon.setItem(:INTERCEPTZ2)
           scene.pbDisplay(_INTL("The {1} was taken and replaced with the {2}.",itemname,PBItems.getName(item)))
@@ -1441,7 +1441,7 @@ ItemHandlers::UseOnPokemon.add(:GRASSIUMZ,proc{|item,pokemon,scene|
       scene.pbDisplay(_INTL("{1} is already holding one {2}.\1",pokemon.name,itemname))
       if scene.pbConfirm(_INTL("Would you like to switch the two items?"))
         if !$PokemonBag.pbStoreItem(pokemon.item)
-          scene.pbDisplay(_INTL("The Bag is full. The PokÃ©mon's item could not be removed."))
+          scene.pbDisplay(_INTL("The Bag is full. The Pokémon's item could not be removed."))
         else
           pokemon.setItem(:GRASSIUMZ2)
           scene.pbDisplay(_INTL("The {1} was taken and replaced with the {2}.",itemname,PBItems.getName(item)))
@@ -1473,7 +1473,7 @@ ItemHandlers::UseOnPokemon.add(:GROUNDIUMZ,proc{|item,pokemon,scene|
       scene.pbDisplay(_INTL("{1} is already holding one {2}.\1",pokemon.name,itemname))
       if scene.pbConfirm(_INTL("Would you like to switch the two items?"))
         if !$PokemonBag.pbStoreItem(pokemon.item)
-          scene.pbDisplay(_INTL("The Bag is full. The PokÃ©mon's item could not be removed."))
+          scene.pbDisplay(_INTL("The Bag is full. The Pokémon's item could not be removed."))
         else
           pokemon.setItem(:GROUNDIUMZ2)
           scene.pbDisplay(_INTL("The {1} was taken and replaced with the {2}.",itemname,PBItems.getName(item)))
@@ -1505,7 +1505,7 @@ ItemHandlers::UseOnPokemon.add(:ICIUMZ,proc{|item,pokemon,scene|
       scene.pbDisplay(_INTL("{1} is already holding one {2}.\1",pokemon.name,itemname))
       if scene.pbConfirm(_INTL("Would you like to switch the two items?"))
         if !$PokemonBag.pbStoreItem(pokemon.item)
-          scene.pbDisplay(_INTL("The Bag is full. The PokÃ©mon's item could not be removed."))
+          scene.pbDisplay(_INTL("The Bag is full. The Pokémon's item could not be removed."))
         else
           pokemon.setItem(:ICIUMZ2)
           scene.pbDisplay(_INTL("The {1} was taken and replaced with the {2}.",itemname,PBItems.getName(item)))
@@ -1537,7 +1537,7 @@ ItemHandlers::UseOnPokemon.add(:NORMALIUMZ,proc{|item,pokemon,scene|
       scene.pbDisplay(_INTL("{1} is already holding one {2}.\1",pokemon.name,itemname))
       if scene.pbConfirm(_INTL("Would you like to switch the two items?"))
         if !$PokemonBag.pbStoreItem(pokemon.item)
-          scene.pbDisplay(_INTL("The Bag is full. The PokÃ©mon's item could not be removed."))
+          scene.pbDisplay(_INTL("The Bag is full. The Pokémon's item could not be removed."))
         else
           pokemon.setItem(:NORMALIUMZ2)
           scene.pbDisplay(_INTL("The {1} was taken and replaced with the {2}.",itemname,PBItems.getName(item)))
@@ -1569,7 +1569,7 @@ ItemHandlers::UseOnPokemon.add(:POISONIUMZ,proc{|item,pokemon,scene|
       scene.pbDisplay(_INTL("{1} is already holding one {2}.\1",pokemon.name,itemname))
       if scene.pbConfirm(_INTL("Would you like to switch the two items?"))
         if !$PokemonBag.pbStoreItem(pokemon.item)
-          scene.pbDisplay(_INTL("The Bag is full. The PokÃ©mon's item could not be removed."))
+          scene.pbDisplay(_INTL("The Bag is full. The Pokémon's item could not be removed."))
         else
           pokemon.setItem(:POISONIUMZ2)
           scene.pbDisplay(_INTL("The {1} was taken and replaced with the {2}.",itemname,PBItems.getName(item)))
@@ -1601,7 +1601,7 @@ ItemHandlers::UseOnPokemon.add(:PSYCHIUMZ,proc{|item,pokemon,scene|
       scene.pbDisplay(_INTL("{1} is already holding one {2}.\1",pokemon.name,itemname))
       if scene.pbConfirm(_INTL("Would you like to switch the two items?"))
         if !$PokemonBag.pbStoreItem(pokemon.item)
-          scene.pbDisplay(_INTL("The Bag is full. The PokÃ©mon's item could not be removed."))
+          scene.pbDisplay(_INTL("The Bag is full. The Pokémon's item could not be removed."))
         else
           pokemon.setItem(:PSYCHIUMZ2)
           scene.pbDisplay(_INTL("The {1} was taken and replaced with the {2}.",itemname,PBItems.getName(item)))
@@ -1633,7 +1633,7 @@ ItemHandlers::UseOnPokemon.add(:ROCKIUMZ,proc{|item,pokemon,scene|
       scene.pbDisplay(_INTL("{1} is already holding one {2}.\1",pokemon.name,itemname))
       if scene.pbConfirm(_INTL("Would you like to switch the two items?"))
         if !$PokemonBag.pbStoreItem(pokemon.item)
-          scene.pbDisplay(_INTL("The Bag is full. The PokÃ©mon's item could not be removed."))
+          scene.pbDisplay(_INTL("The Bag is full. The Pokémon's item could not be removed."))
         else
           pokemon.setItem(:ROCKIUMZ2)
           scene.pbDisplay(_INTL("The {1} was taken and replaced with the {2}.",itemname,PBItems.getName(item)))
@@ -1665,7 +1665,7 @@ ItemHandlers::UseOnPokemon.add(:STEELIUMZ,proc{|item,pokemon,scene|
       scene.pbDisplay(_INTL("{1} is already holding one {2}.\1",pokemon.name,itemname))
       if scene.pbConfirm(_INTL("Would you like to switch the two items?"))
         if !$PokemonBag.pbStoreItem(pokemon.item)
-          scene.pbDisplay(_INTL("The Bag is full. The PokÃ©mon's item could not be removed."))
+          scene.pbDisplay(_INTL("The Bag is full. The Pokémon's item could not be removed."))
         else
           pokemon.setItem(:STEELIUMZ2)
           scene.pbDisplay(_INTL("The {1} was taken and replaced with the {2}.",itemname,PBItems.getName(item)))
@@ -1697,7 +1697,7 @@ ItemHandlers::UseOnPokemon.add(:WATERIUMZ,proc{|item,pokemon,scene|
       scene.pbDisplay(_INTL("{1} is already holding one {2}.\1",pokemon.name,itemname))
       if scene.pbConfirm(_INTL("Would you like to switch the two items?"))
         if !$PokemonBag.pbStoreItem(pokemon.item)
-          scene.pbDisplay(_INTL("The Bag is full. The PokÃ©mon's item could not be removed."))
+          scene.pbDisplay(_INTL("The Bag is full. The Pokémon's item could not be removed."))
         else
           pokemon.setItem(:WATERIUMZ2)
           scene.pbDisplay(_INTL("The {1} was taken and replaced with the {2}.",itemname,PBItems.getName(item)))
@@ -1732,7 +1732,7 @@ ItemHandlers::UseOnPokemon.add(:ALORAICHIUMZ,proc{|item,pokemon,scene|
       scene.pbDisplay(_INTL("{1} is already holding one {2}.\1",pokemon.name,itemname))
       if scene.pbConfirm(_INTL("Would you like to switch the two items?"))
         if !$PokemonBag.pbStoreItem(pokemon.item)
-          scene.pbDisplay(_INTL("The Bag is full. The PokÃ©mon's item could not be removed."))
+          scene.pbDisplay(_INTL("The Bag is full. The Pokémon's item could not be removed."))
         else
           pokemon.setItem(:ALORAICHIUMZ2)
           scene.pbDisplay(_INTL("The {1} was taken and replaced with the {2}.",itemname,PBItems.getName(item)))
@@ -1767,7 +1767,7 @@ ItemHandlers::UseOnPokemon.add(:DECIDIUMZ,proc{|item,pokemon,scene|
       scene.pbDisplay(_INTL("{1} is already holding one {2}.\1",pokemon.name,itemname))
       if scene.pbConfirm(_INTL("Would you like to switch the two items?"))
         if !$PokemonBag.pbStoreItem(pokemon.item)
-          scene.pbDisplay(_INTL("The Bag is full. The PokÃ©mon's item could not be removed."))
+          scene.pbDisplay(_INTL("The Bag is full. The Pokémon's item could not be removed."))
         else
           pokemon.setItem(:DECIDIUMZ2)
           scene.pbDisplay(_INTL("The {1} was taken and replaced with the {2}.",itemname,PBItems.getName(item)))
@@ -1802,7 +1802,7 @@ ItemHandlers::UseOnPokemon.add(:INCINIUMZ,proc{|item,pokemon,scene|
       scene.pbDisplay(_INTL("{1} is already holding one {2}.\1",pokemon.name,itemname))
       if scene.pbConfirm(_INTL("Would you like to switch the two items?"))
         if !$PokemonBag.pbStoreItem(pokemon.item)
-          scene.pbDisplay(_INTL("The Bag is full. The PokÃ©mon's item could not be removed."))
+          scene.pbDisplay(_INTL("The Bag is full. The Pokémon's item could not be removed."))
         else
           pokemon.setItem(:INCINIUMZ2)
           scene.pbDisplay(_INTL("The {1} was taken and replaced with the {2}.",itemname,PBItems.getName(item)))
@@ -1837,7 +1837,7 @@ ItemHandlers::UseOnPokemon.add(:PRIMARIUMZ,proc{|item,pokemon,scene|
       scene.pbDisplay(_INTL("{1} is already holding one {2}.\1",pokemon.name,itemname))
       if scene.pbConfirm(_INTL("Would you like to switch the two items?"))
         if !$PokemonBag.pbStoreItem(pokemon.item)
-          scene.pbDisplay(_INTL("The Bag is full. The PokÃ©mon's item could not be removed."))
+          scene.pbDisplay(_INTL("The Bag is full. The Pokémon's item could not be removed."))
         else
           pokemon.setItem(:PRIMARIUMZ2)
           scene.pbDisplay(_INTL("The {1} was taken and replaced with the {2}.",itemname,PBItems.getName(item)))
@@ -1872,7 +1872,7 @@ ItemHandlers::UseOnPokemon.add(:EEVIUMZ,proc{|item,pokemon,scene|
       scene.pbDisplay(_INTL("{1} is already holding one {2}.\1",pokemon.name,itemname))
       if scene.pbConfirm(_INTL("Would you like to switch the two items?"))
         if !$PokemonBag.pbStoreItem(pokemon.item)
-          scene.pbDisplay(_INTL("The Bag is full. The PokÃ©mon's item could not be removed."))
+          scene.pbDisplay(_INTL("The Bag is full. The Pokémon's item could not be removed."))
         else
           pokemon.setItem(:EEVIUMZ2)
           scene.pbDisplay(_INTL("The {1} was taken and replaced with the {2}.",itemname,PBItems.getName(item)))
@@ -1907,7 +1907,7 @@ ItemHandlers::UseOnPokemon.add(:PIKANIUMZ,proc{|item,pokemon,scene|
       scene.pbDisplay(_INTL("{1} is already holding one {2}.\1",pokemon.name,itemname))
       if scene.pbConfirm(_INTL("Would you like to switch the two items?"))
         if !$PokemonBag.pbStoreItem(pokemon.item)
-          scene.pbDisplay(_INTL("The Bag is full. The PokÃ©mon's item could not be removed."))
+          scene.pbDisplay(_INTL("The Bag is full. The Pokémon's item could not be removed."))
         else
           pokemon.setItem(:PIKANIUMZ2)
           scene.pbDisplay(_INTL("The {1} was taken and replaced with the {2}.",itemname,PBItems.getName(item)))
@@ -1942,7 +1942,7 @@ ItemHandlers::UseOnPokemon.add(:SNORLIUMZ,proc{|item,pokemon,scene|
       scene.pbDisplay(_INTL("{1} is already holding one {2}.\1",pokemon.name,itemname))
       if scene.pbConfirm(_INTL("Would you like to switch the two items?"))
         if !$PokemonBag.pbStoreItem(pokemon.item)
-          scene.pbDisplay(_INTL("The Bag is full. The PokÃ©mon's item could not be removed."))
+          scene.pbDisplay(_INTL("The Bag is full. The Pokémon's item could not be removed."))
         else
           pokemon.setItem(:SNORLIUMZ2)
           scene.pbDisplay(_INTL("The {1} was taken and replaced with the {2}.",itemname,PBItems.getName(item)))
@@ -1977,7 +1977,7 @@ ItemHandlers::UseOnPokemon.add(:MEWNIUMZ,proc{|item,pokemon,scene|
       scene.pbDisplay(_INTL("{1} is already holding one {2}.\1",pokemon.name,itemname))
       if scene.pbConfirm(_INTL("Would you like to switch the two items?"))
         if !$PokemonBag.pbStoreItem(pokemon.item)
-          scene.pbDisplay(_INTL("The Bag is full. The PokÃ©mon's item could not be removed."))
+          scene.pbDisplay(_INTL("The Bag is full. The Pokémon's item could not be removed."))
         else
           pokemon.setItem(:MEWNIUMZ2)
           scene.pbDisplay(_INTL("The {1} was taken and replaced with the {2}.",itemname,PBItems.getName(item)))
@@ -2012,7 +2012,7 @@ ItemHandlers::UseOnPokemon.add(:TAPUNIUMZ,proc{|item,pokemon,scene|
       scene.pbDisplay(_INTL("{1} is already holding one {2}.\1",pokemon.name,itemname))
       if scene.pbConfirm(_INTL("Would you like to switch the two items?"))
         if !$PokemonBag.pbStoreItem(pokemon.item)
-          scene.pbDisplay(_INTL("The Bag is full. The PokÃ©mon's item could not be removed."))
+          scene.pbDisplay(_INTL("The Bag is full. The Pokémon's item could not be removed."))
         else
           pokemon.setItem(:TAPUNIUMZ2)
           scene.pbDisplay(_INTL("The {1} was taken and replaced with the {2}.",itemname,PBItems.getName(item)))
@@ -2047,7 +2047,7 @@ ItemHandlers::UseOnPokemon.add(:MARSHADIUMZ,proc{|item,pokemon,scene|
       scene.pbDisplay(_INTL("{1} is already holding one {2}.\1",pokemon.name,itemname))
       if scene.pbConfirm(_INTL("Would you like to switch the two items?"))
         if !$PokemonBag.pbStoreItem(pokemon.item)
-          scene.pbDisplay(_INTL("The Bag is full. The PokÃ©mon's item could not be removed."))
+          scene.pbDisplay(_INTL("The Bag is full. The Pokémon's item could not be removed."))
         else
           pokemon.setItem(:MARSHADIUMZ2)
           scene.pbDisplay(_INTL("The {1} was taken and replaced with the {2}.",itemname,PBItems.getName(item)))
@@ -2082,7 +2082,7 @@ ItemHandlers::UseOnPokemon.add(:KOMMONIUMZ,proc{|item,pokemon,scene|
       scene.pbDisplay(_INTL("{1} is already holding one {2}.\1",pokemon.name,itemname))
       if scene.pbConfirm(_INTL("Would you like to switch the two items?"))
         if !$PokemonBag.pbStoreItem(pokemon.item)
-          scene.pbDisplay(_INTL("The Bag is full. The PokÃ©mon's item could not be removed."))
+          scene.pbDisplay(_INTL("The Bag is full. The Pokémon's item could not be removed."))
         else
           pokemon.setItem(:KOMMONIUMZ2)
           scene.pbDisplay(_INTL("The {1} was taken and replaced with the {2}.",itemname,PBItems.getName(item)))
@@ -2118,7 +2118,7 @@ ItemHandlers::UseOnPokemon.add(:LYCANIUMZ,proc{|item,pokemon,scene|
       scene.pbDisplay(_INTL("{1} is already holding one {2}.\1",pokemon.name,itemname))
       if scene.pbConfirm(_INTL("Would you like to switch the two items?"))
         if !$PokemonBag.pbStoreItem(pokemon.item)
-          scene.pbDisplay(_INTL("The Bag is full. The PokÃ©mon's item could not be removed."))
+          scene.pbDisplay(_INTL("The Bag is full. The Pokémon's item could not be removed."))
         else
           pokemon.setItem(:LYCANIUMZ2)
           scene.pbDisplay(_INTL("The {1} was taken and replaced with the {2}.",itemname,PBItems.getName(item)))
@@ -2153,7 +2153,7 @@ ItemHandlers::UseOnPokemon.add(:MIMIKIUMZ,proc{|item,pokemon,scene|
       scene.pbDisplay(_INTL("{1} is already holding one {2}.\1",pokemon.name,itemname))
       if scene.pbConfirm(_INTL("Would you like to switch the two items?"))
         if !$PokemonBag.pbStoreItem(pokemon.item)
-          scene.pbDisplay(_INTL("The Bag is full. The PokÃ©mon's item could not be removed."))
+          scene.pbDisplay(_INTL("The Bag is full. The Pokémon's item could not be removed."))
         else
           pokemon.setItem(:MIMIKIUMZ2)
           scene.pbDisplay(_INTL("The {1} was taken and replaced with the {2}.",itemname,PBItems.getName(item)))
@@ -2188,7 +2188,7 @@ ItemHandlers::UseOnPokemon.add(:SOLGANIUMZ,proc{|item,pokemon,scene|
       scene.pbDisplay(_INTL("{1} is already holding one {2}.\1",pokemon.name,itemname))
       if scene.pbConfirm(_INTL("Would you like to switch the two items?"))
         if !$PokemonBag.pbStoreItem(pokemon.item)
-          scene.pbDisplay(_INTL("The Bag is full. The PokÃ©mon's item could not be removed."))
+          scene.pbDisplay(_INTL("The Bag is full. The Pokémon's item could not be removed."))
         else
           pokemon.setItem(:SOLGANIUMZ2)
           scene.pbDisplay(_INTL("The {1} was taken and replaced with the {2}.",itemname,PBItems.getName(item)))
@@ -2223,7 +2223,7 @@ ItemHandlers::UseOnPokemon.add(:LUNALIUMZ,proc{|item,pokemon,scene|
       scene.pbDisplay(_INTL("{1} is already holding one {2}.\1",pokemon.name,itemname))
       if scene.pbConfirm(_INTL("Would you like to switch the two items?"))
         if !$PokemonBag.pbStoreItem(pokemon.item)
-          scene.pbDisplay(_INTL("The Bag is full. The PokÃ©mon's item could not be removed."))
+          scene.pbDisplay(_INTL("The Bag is full. The Pokémon's item could not be removed."))
         else
           pokemon.setItem(:LUNALIUMZ2)
           scene.pbDisplay(_INTL("The {1} was taken and replaced with the {2}.",itemname,PBItems.getName(item)))
@@ -2258,7 +2258,7 @@ ItemHandlers::UseOnPokemon.add(:ULTRANECROZIUMZ,proc{|item,pokemon,scene|
       scene.pbDisplay(_INTL("{1} is already holding one {2}.\1",pokemon.name,itemname))
       if scene.pbConfirm(_INTL("Would you like to switch the two items?"))
         if !$PokemonBag.pbStoreItem(pokemon.item)
-          scene.pbDisplay(_INTL("The Bag is full. The PokÃ©mon's item could not be removed."))
+          scene.pbDisplay(_INTL("The Bag is full. The Pokémon's item could not be removed."))
         else
           pokemon.setItem(:ULTRANECROZIUMZ2)
           scene.pbDisplay(_INTL("The {1} was taken and replaced with the {2}.",itemname,PBItems.getName(item)))
@@ -2384,7 +2384,7 @@ def IncreaseExp(pokemon, exp, scene)
     curlevel=pokemon.level
     if newlevel<curlevel
       debuginfo="#{pokemon.name}: #{pokemon.level}/#{newlevel} | #{pokemon.exp}/#{newexp} | gain: #{exp}"
-      raise RuntimeError.new(_INTL("The new level ({1}) is less than the PokÃ©mon's\r\ncurrent level ({2}), which shouldn't happen.\r\n[Debug: {3}]",
+      raise RuntimeError.new(_INTL("The new level ({1}) is less than the Pokémon's\r\ncurrent level ({2}), which shouldn't happen.\r\n[Debug: {3}]",
                              newlevel,curlevel,debuginfo))
       return
     end
@@ -3112,7 +3112,7 @@ ItemHandlers::UseOnPokemon.add(:DNASPLICERS,proc{|item,pokemon,scene|
          next true
        end
      else
-       chosen=scene.pbChoosePokemon(_INTL("Fuse with which PokÃ©mon?"))
+       chosen=scene.pbChoosePokemon(_INTL("Fuse with which Pokémon?"))
        if chosen>=0
          poke2=$Trainer.party[chosen]
          if (isConst?(poke2.species,PBSpecies,:RESHIRAM) ||
@@ -3155,7 +3155,7 @@ ItemHandlers::UseOnPokemon.add(:PHASEDIAL,proc{|item,pokemon,scene|
          next true
        end
      else
-       chosen=scene.pbChoosePokemon(_INTL("Fuse with which PokÃ©mon?"))
+       chosen=scene.pbChoosePokemon(_INTL("Fuse with which Pokémon?"))
        if chosen>=0
          poke2=$Trainer.party[chosen]
          if (isConst?(poke2.species,PBSpecies,:LUNATONE) ||
@@ -3197,7 +3197,7 @@ ItemHandlers::UseOnPokemon.add(:NSOLARIZER,proc{|item,pokemon,scene|
          next true
        end
      else
-       chosen=scene.pbChoosePokemon(_INTL("Fuse with which PokÃ©mon?"))
+       chosen=scene.pbChoosePokemon(_INTL("Fuse with which Pokémon?"))
        if chosen>=0
          poke2=$Trainer.party[chosen]
          if isConst?(poke2.species,PBSpecies,:SOLGALEO) && poke2.hp>=0
@@ -3239,7 +3239,7 @@ ItemHandlers::UseOnPokemon.add(:NLUNARIZER,proc{|item,pokemon,scene|
          next true
        end
      else
-       chosen=scene.pbChoosePokemon(_INTL("Fuse with which PokÃ©mon?"))
+       chosen=scene.pbChoosePokemon(_INTL("Fuse with which Pokémon?"))
        if chosen>=0
          poke2=$Trainer.party[chosen]
          if isConst?(poke2.species,PBSpecies,:LUNALA) && poke2.hp>=0
@@ -4565,7 +4565,7 @@ ItemHandlers::BattleUseOnBattler.addIf(lambda{|item|
    battle=battler.battle
   if battler.opposingLivingBattlers.length > 1
      if !pbIsSnagBall?(item)
-       scene.pbDisplay(_INTL("It's no good!  It's impossible to aim when there are two PokÃ©mon!"))
+       scene.pbDisplay(_INTL("It's no good!  It's impossible to aim when there are two Pokémon!"))
        return false
      end
    end

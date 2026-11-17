@@ -164,11 +164,11 @@ module PokeBattle_BattleCommon
       if !(no_catch || battler.isbossmon || battler.issossmon)
         pbDisplay(_INTL("The Trainer blocked the Ball!\nDon't be a thief!"))
       else
-        pbDisplay(_INTL("The PokÃ©mon knocked the ball away!"))
+        pbDisplay(_INTL("The Pokémon knocked the ball away!"))
       end
       pbBallFetch(ball)
     elsif @raidbattle && (@shieldCount>0 || aboveLimit)
-      pbDisplay(_INTL("The PokÃ©mon knocked the ball away!"))
+      pbDisplay(_INTL("The Pokémon knocked the ball away!"))
       pbBallFetch(ball)
     else
       if $game_switches[1998]==true
@@ -176,7 +176,7 @@ module PokeBattle_BattleCommon
         return
       end
       if no_catch || battler.issossmon || (battler.isbossmon && (!battler.capturable || battler.shieldCount > 0))
-        pbDisplay(_INTL("The PokÃ©mon knocked the ball away!"))
+        pbDisplay(_INTL("The Pokémon knocked the ball away!"))
         pbBallFetch(ball)
         return
       end
@@ -255,7 +255,7 @@ module PokeBattle_BattleCommon
 
       case shakes
       when 0
-        pbDisplay(_INTL("Oh no! The PokÃ©mon broke free!"))
+        pbDisplay(_INTL("Oh no! The Pokémon broke free!"))
         BallHandlers.onFailCatch(ball,self,pokemon)
         pbBallFetch(ball)
       when 1
@@ -299,7 +299,7 @@ module PokeBattle_BattleCommon
         if !self.pbPlayer.owned[species]
           self.pbPlayer.setOwned(species)
           if $Trainer.pokedex
-            pbDisplayPaused(_INTL("{1}'s data was added to the PokÃ©dex.",pokemon.name))
+            pbDisplayPaused(_INTL("{1}'s data was added to the Pokédex.",pokemon.name))
             @scene.pbShowPokedex(pokemon)
           end
         end
@@ -475,15 +475,15 @@ class PokeBattle_Battle
 ################################################################################
   def initialize(scene,p1,p2,player,opponent)
     if p1.length==0
-      raise ArgumentError.new(_INTL("Party 1 has no PokÃ©mon."))
+      raise ArgumentError.new(_INTL("Party 1 has no Pokémon."))
       return
     end
     if p2.length==0
-      raise ArgumentError.new(_INTL("Party 2 has no PokÃ©mon."))
+      raise ArgumentError.new(_INTL("Party 2 has no Pokémon."))
       return
     end
     if p2.length>2 && !opponent
-      raise ArgumentError.new(_INTL("Wild battles with more than two PokÃ©mon are not allowed."))
+      raise ArgumentError.new(_INTL("Wild battles with more than two Pokémon are not allowed."))
       return
     end
     @scene           = scene
@@ -2408,7 +2408,7 @@ class PokeBattle_Battle
           ownerSent += 1
         end
         ownerName = (owner && owner.respond_to?(:fullname)) ? owner.fullname : _INTL("Trainer")
-        raise _INTL("{1} has no unfainted PokÃ©mon",ownerName) if ownerSent==0
+        raise _INTL("{1} has no unfainted Pokémon",ownerName) if ownerSent==0
       end
     else
       nextSearch = 0
@@ -2420,7 +2420,7 @@ class PokeBattle_Battle
         nextSearch = sendout+1
       end
       if sendouts.length==0
-        raise _INTL(opposing ? "Trainer has no unfainted PokÃ©mon" : "Player has no unfainted PokÃ©mon")
+        raise _INTL(opposing ? "Trainer has no unfainted Pokémon" : "Player has no unfainted Pokémon")
       end
     end
     return sendouts
@@ -3031,7 +3031,7 @@ class PokeBattle_Battle
       end
       if !pbIsOwner?(idxPokemon,pkmnidxTo)
         owner=pbPartyGetOwner(idxPokemon,pkmnidxTo)
-        pbDisplayPaused(_INTL("You can't switch {1}'s PokÃ©mon with one of yours!",owner.name)) if showMessages
+        pbDisplayPaused(_INTL("You can't switch {1}'s Pokémon with one of yours!",owner.name)) if showMessages
         return false
       end
       if party[pkmnidxTo].hp<=0
@@ -3242,7 +3242,7 @@ class PokeBattle_Battle
 #### JERICHO - 001 - START
                 pbDisplayPaused(_INTL("{1} is about to send in {2}.",opponent.fullname,newname)) #ILLUSION
 #### JERICHO - 001 - END
-              if pbDisplayConfirm(_INTL("Will {1} change PokÃ©mon?",self.pbPlayer.name))
+              if pbDisplayConfirm(_INTL("Will {1} change Pokémon?",self.pbPlayer.name))
                 newpoke=pbSwitchPlayer(0,true,true)
                 if newpoke>=0
                   pbDisplayBrief(_INTL("{1}, that's enough!  Come back!",@battlers[0].name))
@@ -3260,7 +3260,7 @@ class PokeBattle_Battle
         end
       else
         switch=false
-        if !pbDisplayConfirm(_INTL("Use next PokÃ©mon?"))
+        if !pbDisplayConfirm(_INTL("Use next Pokémon?"))
           switch=(pbRun(index,true)<=0)
         else
           switch=true
@@ -3930,7 +3930,7 @@ class PokeBattle_Battle
        [1,3].include?($ItemData[idxItem][ITEMBATTLEUSE])
       secondPartyStart = pbSecondPartyBegin(idxPokemon)
       if idxTarget >= secondPartyStart
-        pbDisplay(_INTL("You can't use items on your partner's PokÃ©mon!"))
+        pbDisplay(_INTL("You can't use items on your partner's Pokémon!"))
         return false
       end
     end
@@ -4087,16 +4087,16 @@ class PokeBattle_Battle
       end
     elsif isConst?(item,PBItems,:REVIVE)
 #      battler.hp=(battler.totalhp/2).floor
-      pbDisplay(_INTL("{1} revived a fainted PokÃ©mon!",opponent.fullname))
+      pbDisplay(_INTL("{1} revived a fainted Pokémon!",opponent.fullname))
     elsif isConst?(item,PBItems,:MAXREVIVE) || isConst?(item,PBItems,:REVIVALHERB)
 #      battler.hp=battler.totalhp
-      pbDisplay(_INTL("{1} revived a fainted PokÃ©mon!",opponent.fullname))
+      pbDisplay(_INTL("{1} revived a fainted Pokémon!",opponent.fullname))
     elsif isConst?(item,PBItems,:SACREDASH)
 #      party=pbParty(1)
 #      for j in 0...party.length
 #        party[j].hp=party[j].totalhp if party[j].isFainted?
 #      end
-      pbDisplay(_INTL("{1} revived all fainted PokÃ©mon!",opponent.fullname))
+      pbDisplay(_INTL("{1} revived all fainted Pokémon!",opponent.fullname))
     end
   end
 
@@ -4610,7 +4610,7 @@ end
       curlevel=thispoke.level
       if newlevel<curlevel
         debuginfo="#{thispoke.name}: #{thispoke.level}/#{newlevel} | #{thispoke.exp}/#{newexp} | gain: #{exp}"
-        raise RuntimeError.new(_INTL("The new level ({1}) is less than the PokÃ©mon's\r\ncurrent level ({2}), which shouldn't happen.\r\n[Debug: {3}]",
+        raise RuntimeError.new(_INTL("The new level ({1}) is less than the Pokémon's\r\ncurrent level ({2}), which shouldn't happen.\r\n[Debug: {3}]",
                                newlevel,curlevel,debuginfo))
         return
       end
@@ -5565,10 +5565,10 @@ def pbStartBattle(canlose=false)
 
   def pbStartBattleCore(canlose)
     if !@fullparty1 && @party1.length>MAXPARTYSIZE
-      raise ArgumentError.new(_INTL("Party 1 has more than {1} PokÃ©mon.",MAXPARTYSIZE))
+      raise ArgumentError.new(_INTL("Party 1 has more than {1} Pokémon.",MAXPARTYSIZE))
     end
     if !@fullparty2 && @party2.length>MAXPARTYSIZE+10
-      raise ArgumentError.new(_INTL("Party 2 has more than {1} PokÃ©mon.",MAXPARTYSIZE))
+      raise ArgumentError.new(_INTL("Party 2 has more than {1} Pokémon.",MAXPARTYSIZE))
     end
     if !@opponent
 #========================
@@ -5576,7 +5576,7 @@ def pbStartBattle(canlose=false)
 #========================
       if @party2.length==1
         if pbSideSize(1)>1 && !$game_switches[1998]
-          raise _INTL("Only two wild PokÃ©mon are allowed in double battles")
+          raise _INTL("Only two wild Pokémon are allowed in double battles")
         end
         wildpoke=@party2[0]
         @battlers[1].pbInitialize(wildpoke,0,false)
@@ -5605,7 +5605,7 @@ def pbStartBattle(canlose=false)
         end
       elsif @party2.length==2
         if singleBattle?
-          raise _INTL("Only one wild PokÃ©mon is allowed in single battles")
+          raise _INTL("Only one wild Pokémon is allowed in single battles")
         end
         @battlers[1].pbInitialize(@party2[0],0,false)
         @battlers[3].pbInitialize(@party2[1],0,false)
@@ -5624,7 +5624,7 @@ def pbStartBattle(canlose=false)
           pbShieldEffects(@battlers[3],@battlers[3].onEntryEffects,true)
         end
       else
-        raise _INTL("Only one or two wild PokÃ©mon are allowed")
+        raise _INTL("Only one or two wild Pokémon are allowed")
       end
     elsif @opponent
 #=======================================
@@ -5661,7 +5661,7 @@ def pbStartBattle(canlose=false)
 # Initialize opponent in single battles
 #======================================
       sendout=pbFindNextUnfainted(@party2,0)
-      raise _INTL("Trainer has no unfainted PokÃ©mon") if sendout<0
+      raise _INTL("Trainer has no unfainted Pokémon") if sendout<0
       if @opponent.is_a?(Array)
         raise _INTL("Opponent trainer must be only one person in single battles") if @opponent.length!=1
         @opponent=@opponent[0]
@@ -9650,7 +9650,7 @@ def pbStartBattle(canlose=false)
     ##### LOSE, DRAW #####
     when 2, 5
       if @internalbattle
-        pbDisplayPaused(_INTL("{1} is out of usable PokÃ©mon!",self.pbPlayer.name))
+        pbDisplayPaused(_INTL("{1} is out of usable Pokémon!",self.pbPlayer.name))
         moneylost=pbMaxLevelFromIndex(0)
         $game_switches[:No_Catch]=false
         $febackgroundstore=0

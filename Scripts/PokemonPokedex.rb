@@ -722,7 +722,7 @@ class PokemonPokedexScene
     @viewport=Viewport.new(0,0,Graphics.width,Graphics.height)
     @viewport.z=99999
     @sprites["dexentry"]=IconSprite.new(0,0,@viewport)
-    @sprites["dexentry"].setBitmap(_INTL("Graphics/Pictures/Pokedex/pokedexentry"))
+    @sprites["dexentry"].setBitmap(_INTL("Graphics/Pictures/Pokedex/pokedexEntry"))
     @sprites["dexentry"].visible=false
     @sprites["overlay"]=BitmapSprite.new(Graphics.width,Graphics.height,@viewport)
     pbSetSystemFont(@sprites["overlay"].bitmap)

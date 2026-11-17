@@ -3820,7 +3820,7 @@ class PokeBattle_Battler
       @battle.pbDisplay(_INTL("{1} is radiating a Dark aura!",pbThis))
     end
     if hasWorkingAbility(:AURABREAK) && onactive
-      @battle.pbDisplay(_INTL("{1} reversed all other PokÃ©mon's auras!",pbThis))
+      @battle.pbDisplay(_INTL("{1} reversed all other Pokémon's auras!",pbThis))
     end
     # End of Update
     #### SARDINES - v17 - START
@@ -4894,7 +4894,7 @@ class PokeBattle_Battler
       end
       if target.hasWorkingAbility(:PERISHBODY,true) && !$fefieldeffect==29 &&
         user.effects[PBEffects::PerishSong]==0 && target.effects[PBEffects::PerishSong]==0
-        @battle.pbDisplay(_INTL("Both PokÃ©mon will faint in three turns!"))
+        @battle.pbDisplay(_INTL("Both Pokémon will faint in three turns!"))
         if $fefieldeffect == 45
           user.effects[PBEffects::PerishSong]=2
           target.effects[PBEffects::PerishSong]=2

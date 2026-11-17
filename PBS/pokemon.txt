@@ -24551,7 +24551,7 @@ Height = 3.5
 Weight = 280.0
 Color = Blue
 Category = Paradox
-Pokedex = This Pokémon seems to have a striking resemblance to another Pokèmon called Suicune.
+Pokedex = This Pokémon seems to have a striking resemblance to another Pokémon called Suicune.
 LegacyRegionalNumbers = 1009
 #-------------------------------
 # Legacy species ID 1010

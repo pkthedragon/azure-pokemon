@@ -7424,7 +7424,7 @@ class PokeBattle_Move_0E5 < PokeBattle_Move
       return -1
     end
     pbShowAnimation(@id,attacker,nil,hitnum,alltargets,showanimation)
-    @battle.pbDisplay(_INTL("All PokÃ©mon hearing the song will faint in three turns!"))
+    @battle.pbDisplay(_INTL("All Pokémon hearing the song will faint in three turns!"))
     (listeners-affected).each do |battler|
       @battle.pbDisplay(_INTL("{1}'s {2} blocks {3}!",battler.pbThis,PBAbilities.getName(battler.ability),@name))
     end
@@ -8151,7 +8151,7 @@ class PokeBattle_Move_0F9 < PokeBattle_Move
         rnd=@battle.pbRandom(6)
         @battle.field.effects[PBEffects::MagicRoom]=pbMoveDuration(attacker,3+rnd)
       end
-      @battle.pbDisplay(_INTL("It created a bizarre area in which PokÃ©mon's held items lose their effects!"))
+      @battle.pbDisplay(_INTL("It created a bizarre area in which Pokémon's held items lose their effects!"))
     end
     return 0
   end
@@ -12506,7 +12506,7 @@ class PokeBattle_Move_274 < PokeBattle_Move
       attacker.effects[PBEffects::JawLockUser]=attacker.index
       opponent.effects[PBEffects::JawLock]=true
       attacker.effects[PBEffects::JawLock]=true
-      @battle.pbDisplay(_INTL("Neither PokÃ©mon can run away!"))
+      @battle.pbDisplay(_INTL("Neither Pokémon can run away!"))
     end
     return super(attacker,opponent,hitnum,alltargets,showanimation)
   end
