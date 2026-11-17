@@ -144,20 +144,15 @@ module PokeBattle_BattleCommon
     else
       battler=self.battlers[idxPokemon].pbOppositeOpposing
     end
-    aboveLimit = false
-    if battler.hp > (battler.totalhp * 0.25)
-      aboveLimit = true
-    end
-    if battler.isFainted?
-      battler = battler.firstLivingAlly
-    end
+    battler=battler.firstLivingAlly if battler && battler.isFainted?
     pbDisplayBrief(_INTL("{1} threw one {2}!",self.pbPlayer.name,itemname))
     $game_variables[536] += 1
-    if battler.isFainted?
+    if !battler
       pbDisplay(_INTL("But there was no target..."))
       pbBallFetch(ball)
       return
     end
+    aboveLimit=battler.hp > (battler.totalhp * 0.25)
     no_catch = ($game_switches[290] || $game_switches[:No_Catch])
     if @opponent && ((!pbIsSnagBall?(ball) || !battler.isShadow?) || ((pbIsSnagBall?(ball) || battler.isShadow?) && $game_switches[1235]==true))
       @scene.pbThrowAndDeflect(ball,1)
@@ -2520,15 +2515,11 @@ class PokeBattle_Battle
     side=(pbIsOpposing?(battlerIndex)) ? @opponent : @player
     party[partyIndex]=nil
     if !side || !side.is_a?(Array) # Wild or single opponent
+      remaining_indices=party.each_index.select { |index| party[index] }
       party.compact!
-      for i in battlerIndex...party.length
-        for j in 0...@battlers.length
-          next if !@battlers[j]
-          if pbGetOwner(j)==side && @battlers[j].pokemonIndex==i
-            @battlers[j].pokemonIndex-=1
-            break
-          end
-        end
+      eachSameSideBattler(battlerIndex) do |battler|
+        new_index=remaining_indices.index(battler.pokemonIndex)
+        battler.pokemonIndex=new_index if new_index
       end
     else
       if battlerIndex<pbSecondPartyBegin(battlerIndex)-1
@@ -4196,12 +4187,12 @@ class PokeBattle_Battle
       return 0
     end
     # Note: not pbSpeed, because using unmodified Speed
-    speedPlayer=@battlers[idxPokemon].speed
-    opposing=@battlers[idxPokemon].pbOppositeOpposing
-    if opposing.isFainted?
-      opposing=@battlers[idxPokemon].opposingLivingBattlers[0]
+    speedPlayer=thispkmn.speed
+    opposing=thispkmn.pbOppositeOpposing
+    if !opposing || opposing.isFainted?
+      opposing=thispkmn.opposingLivingBattlers.first
     end
-    if !opposing.isFainted?
+    if opposing
       speedEnemy=opposing.speed
       if speedPlayer>speedEnemy
         rate=256
@@ -5608,7 +5599,7 @@ def pbStartBattle(canlose=false)
           raise _INTL("Only one wild Pokémon is allowed in single battles")
         end
         @battlers[1].pbInitialize(@party2[0],0,false)
-        @battlers[3].pbInitialize(@party2[1],0,false)
+        @battlers[3].pbInitialize(@party2[1],1,false)
         @peer.pbOnEnteringBattle(self,@party2[0])
         @peer.pbOnEnteringBattle(self,@party2[1])
         pbSetSeen(@party2[0])

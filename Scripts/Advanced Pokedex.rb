@@ -601,13 +601,13 @@ class AdvancedPokedexScene
       Graphics.update
       Input.update
       pbUpdate
-      if Input.trigger?(Input::ACTION)
+      if Input.trigger?(Input::A)
         if @page == ADVANCED_PAGE
           @subPage-=1
           @subPage=@totalSubPages if @subPage<1
           displaySubPage
         end
-      elsif Input.trigger?(Input::USE)
+      elsif Input.trigger?(Input::C)
         if @page == ADVANCED_PAGE
           @subPage+=1
           @subPage=1 if @subPage>@totalSubPages
