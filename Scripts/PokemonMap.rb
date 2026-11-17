@@ -603,7 +603,7 @@ class PBMapMetadataData
   def MapSize; return @map_size; end
 
   class << self
-    alias azure_uncached_new new
+    define_method(:azure_uncached_new, Class.instance_method(:new))
 
     def data; return pbLoadMetadata; end
 

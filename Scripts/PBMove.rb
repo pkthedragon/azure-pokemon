@@ -23,7 +23,8 @@ class PBMoveData
   end
 
   class << self
-    alias azure_uncached_new new
+    # Bind the original constructor directly so reloading cannot capture our wrapper.
+    define_method(:azure_uncached_new, Class.instance_method(:new))
 
     # Accept the numeric IDs used by saves/events and the symbolic identifiers
     # used by sectioned PBS files. Numeric behavior remains the default.

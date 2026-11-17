@@ -37,7 +37,7 @@ class PBItemData
   def machine; return @move; end
 
   class << self
-    alias azure_uncached_new new
+    define_method(:azure_uncached_new, Class.instance_method(:new))
 
     def normalize_id(value)
       return value if value.is_a?(Numeric)

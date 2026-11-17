@@ -105,7 +105,7 @@ class PBSpeciesData
   def Weight; return @weight; end
 
   class << self
-    alias azure_uncached_new new
+    define_method(:azure_uncached_new, Class.instance_method(:new))
 
     def data
       $pkmn_dex=pbCachedData("Data/dexdata.dat") if !defined?($pkmn_dex) || !$pkmn_dex

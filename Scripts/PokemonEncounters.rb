@@ -159,7 +159,7 @@ class PBEncounterData
   def WaterNight; return @encounters[EncounterTypes::WaterNight]; end
 
   class << self
-    alias azure_uncached_new new
+    define_method(:azure_uncached_new, Class.instance_method(:new))
 
     def data; return pbCachedData("Data/encounters.dat"); end
 
