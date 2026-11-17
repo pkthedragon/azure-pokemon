@@ -325,7 +325,7 @@ class PokemonSummaryScene
     if @sprites["abilitydesc"]
       @sprites["abilitydesc"].visible = false
     end
-    @sprites["background"].setBitmap("Graphics/Pictures/Summary/summary1")
+    @sprites["background"].setBitmap("Graphics/Pictures/Summary/summary1.png")
     imagepos=[]
     if pbPokerus(pokemon)==1 || pokemon.hp==0 || @pokemon.status>0
       status=6 if pbPokerus(pokemon)==1
@@ -427,7 +427,7 @@ class PokemonSummaryScene
     if @sprites["abilitydesc"]
       @sprites["abilitydesc"].visible = false
     end
-    @sprites["background"].setBitmap("Graphics/Pictures/Summary/summaryEgg")
+    @sprites["background"].setBitmap("Graphics/Pictures/Summary/summaryEgg.PNG")
     imagepos=[]
     ballused=@pokemon.ballused ? @pokemon.ballused : 0
     ballimage=sprintf("Graphics/Pictures/summaryball%02d",@pokemon.ballused)
@@ -475,7 +475,7 @@ class PokemonSummaryScene
     if @sprites["abilitydesc"]
       @sprites["abilitydesc"].visible = false
     end
-    @sprites["background"].setBitmap("Graphics/Pictures/Summary/summary2")
+    @sprites["background"].setBitmap("Graphics/Pictures/Summary/summary2.PNG")
     imagepos=[]
     if pbPokerus(pokemon)==1 || pokemon.hp==0 || @pokemon.status>0
       status=6 if pbPokerus(pokemon)==1
@@ -614,7 +614,7 @@ class PokemonSummaryScene
   def drawPageThree(pokemon)
     overlay=@sprites["overlay"].bitmap
     overlay.clear
-    @sprites["background"].setBitmap("Graphics/Pictures/Summary/summary3")
+    @sprites["background"].setBitmap("Graphics/Pictures/Summary/summary3.PNG")
     imagepos=[]
     if pbPokerus(pokemon)==1 || pokemon.hp==0 || @pokemon.status>0
       status=6 if pbPokerus(pokemon)==1
@@ -713,7 +713,7 @@ class PokemonSummaryScene
     if @sprites["abilitydesc"]
       @sprites["abilitydesc"].visible = false
     end
-    @sprites["background"].setBitmap("Graphics/Pictures/Summary/summary4")
+    @sprites["background"].setBitmap("Graphics/Pictures/Summary/summary4.PNG")
     imagepos=[]
     if pbPokerus(pokemon)==1 || pokemon.hp==0 || @pokemon.status>0
       status=6 if pbPokerus(pokemon)==1
@@ -992,7 +992,7 @@ class PokemonSummaryScene
     if @sprites["abilitydesc"]
       @sprites["abilitydesc"].visible = false
     end
-    @sprites["background"].setBitmap("Graphics/Pictures/Summary/summary5")
+    @sprites["background"].setBitmap("Graphics/Pictures/Summary/summary5.png")
     @sprites["pokemon"].visible=true
     @sprites["pokeicon"].visible=false
     imagepos=[]
@@ -1090,9 +1090,9 @@ class PokemonSummaryScene
     overlay.clear
     base=Color.new(248,248,248)
     shadow=Color.new(104,104,104)
-    @sprites["background"].setBitmap("Graphics/Pictures/Summary/summary5details")
+    @sprites["background"].setBitmap("Graphics/Pictures/Summary/summary5details.PNG")
     if moveToLearn!=0
-      @sprites["background"].setBitmap("Graphics/Pictures/Summary/summary5learning")
+      @sprites["background"].setBitmap("Graphics/Pictures/Summary/summary5learning.PNG")
     end
     pbSetSystemFont(overlay)
     textpos=[

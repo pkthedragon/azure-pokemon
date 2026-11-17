@@ -90,6 +90,34 @@ module OverworldShadows
     end
   end
 
+  # Bitmap#raw_data is RGBA. Check only the alpha byte of each source pixel.
+  VISIBLE_PIXEL = /\A(?:.{3}\x00)*.{3}[^\x00]/mn
+
+  def self.frame_visible?(bitmap, x, y, width, height)
+    frames = bitmap.instance_variable_get(:@overworld_shadow_frames)
+    unless frames
+      frames = {}
+      bitmap.instance_variable_set(:@overworld_shadow_frames, frames)
+    end
+    key = [x, y, width, height]
+    return frames.fetch(key) do
+      left = [x, 0].max
+      top = [y, 0].max
+      right = [x + width, bitmap.width].min
+      bottom = [y + height, bitmap.height].min
+      if left < right && top < bottom
+        pixels = bitmap.raw_data
+        stride = bitmap.width * 4
+        bytes = (right - left) * 4
+        frames[key] = (top...bottom).any? do |row|
+          pixels.byteslice(row * stride + left * 4, bytes).match?(VISIBLE_PIXEL)
+        end
+      else
+        frames[key] = false
+      end
+    end
+  end
+
   # Determines whether or not an event should be given a shadow.
   def self.should_get_shadow?(event)
     return true if event.is_a?(Game_Player) # The player will always have a shadow
@@ -121,9 +149,8 @@ class Sprite_Character
   def initialize(viewport, character = nil)
     @shadow_viewport = viewport
     ow_shadow_init(viewport, character)
-    return unless OverworldShadows.should_get_shadow?(character)
-    return if character.is_a?(Game_Event) && character.character_name.to_s.empty?
-    make_shadow
+    # The initial update already handles event shadows.
+    make_shadow if character.is_a?(Game_Player)
   end
 
   def make_shadow
@@ -135,6 +162,7 @@ class Sprite_Character
     @shadow.oy = @shadow.bitmap.height / 2.0
     @shadow.zoom_x = 1.0
     @shadow.zoom_y = 1.0
+    @shadow.visible = self.visible && @shadow_drawable
     # Positioning the shadow
     position_shadow
   end
@@ -187,7 +215,7 @@ class Sprite_Character
   end
   def visible=(value)
     ow_shadow_visible(value)
-    @shadow.visible = value if @shadow
+    @shadow.visible = value && @shadow_drawable if @shadow
   end
 
   unless method_defined?(:ow_shadow_dispose)
@@ -201,39 +229,46 @@ class Sprite_Character
   unless method_defined?(:ow_shadow_update)
     alias ow_shadow_update update
   end
+  def shadow_frame_visible?
+    graphic = self.bitmap
+    return false if !graphic || graphic.disposed?
+    frame = self.src_rect
+    x, y, width, height = frame.x, frame.y, frame.width, frame.height
+    if !@shadow_graphic.equal?(graphic) || x != @shadow_frame_x || y != @shadow_frame_y ||
+       width != @shadow_frame_width || height != @shadow_frame_height
+      @shadow_graphic = graphic
+      @shadow_frame_x, @shadow_frame_y = x, y
+      @shadow_frame_width, @shadow_frame_height = width, height
+      @shadow_frame_visible = OverworldShadows.frame_visible?(graphic, x, y, width, height)
+    end
+    return @shadow_frame_visible
+  end
+
   def update
     ow_shadow_update
     position_shadow
+    @shadow_drawable = @oldbushdepth == 0 && self.opacity > 0
 
     if @character.is_a?(Game_Event)
       page = OverworldShadows.active_event_page(@character)
-      graphic_empty = @character.character_name.to_s.empty?
-
-      # Dispose shadow if graphic becomes empty (e.g., during move command)
-      if @shadow && graphic_empty
+      if @old_page != page
         dispose_shadow
-      # Check for page changes
-      elsif @old_page != page
-        dispose_shadow
-        if page && !graphic_empty &&
-           OverworldShadows.should_get_shadow?(@character)
-          make_shadow
-        end
-      # Recreate shadow if graphic was restored
-      elsif !@shadow && !graphic_empty && page &&
-            OverworldShadows.should_get_shadow?(@character)
-        make_shadow
+        @shadow_allowed = OverworldShadows.should_get_shadow?(@character)
+        @old_page = page
       end
-      @old_page = page
+      if !@shadow_allowed || @character.character_name.to_s.empty?
+        dispose_shadow
+        return
+      end
+      @shadow_drawable &&= shadow_frame_visible?
+      make_shadow if !@shadow && self.visible && @shadow_drawable
+    elsif @character == $game_player && $PokemonGlobal
+      @shadow_drawable &&= !($PokemonGlobal.surfing || $PokemonGlobal.diving || $PokemonGlobal.lavasurfing)
     end
 
     if @shadow
       @shadow.opacity = self.opacity
-      @shadow.visible = (@oldbushdepth == 0)
-      if !self.visible || ((@character == $game_player) &&
-         ($PokemonGlobal.surfing || $PokemonGlobal.diving || $PokemonGlobal.lavasurfing))
-        @shadow.visible = false
-      end
+      @shadow.visible = self.visible && @shadow_drawable
     end
   end
 end

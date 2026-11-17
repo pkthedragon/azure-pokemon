@@ -220,6 +220,8 @@ def pbManageItemBelt
 end
 
 class Window_PokemonBag < Window_DrawableCommand
+  REGISTRATION_ICONS=["bagReg0.PNG", "bagreg1.png", "bagreg2.png"].freeze
+
   attr_reader :pocket
   attr_reader :sortIndex
 
@@ -227,18 +229,24 @@ class Window_PokemonBag < Window_DrawableCommand
     @bag=bag
     @pocket=pocket
     @sortIndex=-1
+    @registration_icons={}
     @adapter=PokemonMartAdapter.new
     super(x,y,width,height)
+    @selarrow.dispose
     @selarrow=AnimatedBitmap.new("Graphics/Pictures/Bag/bagSel")
     self.windowskin=nil
   end
 
+  def dispose
+    @registration_icons.each_value { |icon| icon.dispose }
+    super
+  end
+
   def pocket=(value)
     @pocket=value
-    thispocket=@bag.pockets[@pocket]
-    @item_max=thispocket.length+1
-    self.index=@bag.getChoice(@pocket)
-    refresh
+    @item_max=itemCount
+    @index=@bag.getChoice(@pocket)
+    priv_update_cursor_rect(true)
   end
 
   def sortIndex=(value)
@@ -299,14 +307,13 @@ class Window_PokemonBag < Window_DrawableCommand
       end
     end
     pbDrawTextPositions(self.contents,textpos)
-    #MULTIPLEREGISTRATION
     if index!=@bag.pockets[self.pocket].length
-i = @bag.registeredItem.index(@bag.pockets[self.pocket][index][0]) 
-if i
-  pbDrawImagePositions(self.contents,[
-     [sprintf("Graphics/Pictures/Bag/bagReg#{i}"),rect.x+rect.width-58,ypos+4,0,0,-1,-1]
-  ])
-end
+      registration=@bag.registeredItem.index(item)
+      if registration
+        icon=@registration_icons[registration] ||=
+           AnimatedBitmap.new("Graphics/Pictures/Bag/#{REGISTRATION_ICONS[registration]}")
+        self.contents.blt(rect.x+rect.width-58,ypos+4,icon.bitmap,Rect.new(0,0,icon.width,icon.height))
+      end
     end
   end
 
@@ -326,6 +333,99 @@ end
 end
 
 
+module BagIconBitmap
+  MAX_PNG_SIZE=128*1024
+  MAX_DIMENSION=128
+
+  # mkxp-z scans the entire Icons directory per open when path caching is off.
+  # Read small RGBA icons directly and let the normal loader handle other assets.
+  def self.with_cached_bitmap(filename)
+    if filename
+      key=-canonicalize(filename)
+      bitmap=decode_rgba(key) unless BitmapCache.fromCache(key)
+      BitmapCache.setKey(key,bitmap) if bitmap
+    end
+    yield
+  ensure
+    bitmap.dispose if bitmap
+  end
+
+  def self.decode_rgba(filename)
+    return unless Bitmap.method_defined?(:raw_data=) && File.extname(filename).downcase==".png"
+    data=File.binread(filename,MAX_PNG_SIZE+1)
+    return unless data.bytesize.between?(33,MAX_PNG_SIZE) && data.start_with?("\x89PNG\r\n\x1a\n\0\0\0\x0dIHDR".b)
+    width,height,depth,type,compression,filter,interlace=data.byteslice(16,13).unpack("NNC5")
+    return unless depth==8 && type==6 && compression==0 && filter==0 && interlace==0
+    return unless width.between?(1,MAX_DIMENSION) && height.between?(1,MAX_DIMENSION)
+
+    compressed="".b
+    offset=8
+    while offset+12<=data.bytesize
+      length,chunk=data.byteslice(offset,8).unpack("Na4")
+      return if offset+12+length>data.bytesize
+      compressed<<data.byteslice(offset+8,length) if chunk=="IDAT"
+      offset+=12+length
+      break if chunk=="IEND"
+    end
+    return unless chunk=="IEND"
+
+    stride=width*4
+    image_size=height*(stride+1)
+    samples="".b
+    inflater=Zlib::Inflate.new
+    begin
+      inflater.inflate(compressed) do |bytes|
+        samples<<bytes
+        return if samples.bytesize>image_size
+      end
+      return unless inflater.finished? && samples.bytesize==image_size
+    ensure
+      inflater.close
+    end
+
+    pixels="".b
+    previous="\0".b*stride
+    height.times do |row|
+      offset=row*(stride+1)
+      filter=samples.getbyte(offset)
+      line=samples.byteslice(offset+1,stride)
+      return if filter>4
+      if filter>0
+        stride.times do |i|
+          left=i>=4 ? line.getbyte(i-4) : 0
+          up=previous.getbyte(i)
+          upper_left=i>=4 ? previous.getbyte(i-4) : 0
+          predictor=case filter
+          when 1 then left
+          when 2 then up
+          when 3 then (left+up)/2
+          when 4 then paeth(left,up,upper_left)
+          end
+          line.setbyte(i,(line.getbyte(i)+predictor)&255)
+        end
+      end
+      pixels<<line
+      previous=line
+    end
+    bitmap=BitmapWrapper.new(width,height)
+    bitmap.raw_data=pixels
+    return bitmap
+  rescue SystemCallError, Zlib::Error
+    return nil
+  end
+
+  def self.paeth(left,up,upper_left)
+    left_distance=(up-upper_left).abs
+    up_distance=(left-upper_left).abs
+    upper_left_distance=(left+up-2*upper_left).abs
+    return left if left_distance<=up_distance && left_distance<=upper_left_distance
+    return up if up_distance<=upper_left_distance
+    return upper_left
+  end
+  private_class_method :decode_rgba, :paeth
+end
+
+
 
 class PokemonBag_Scene
 ## Configuration
@@ -336,6 +436,8 @@ class PokemonBag_Scene
   POCKETNAMEBASECOLOR   = Color.new(88,88,80)
   POCKETNAMESHADOWCOLOR = Color.new(168,184,184)
   ITEMSVISIBLE          = 7
+  TM_PREVIEW_ICONS      = ["Graphics/Pictures/tmnope.png", "Graphics/Pictures/tmcheck.png",
+                           "Graphics/Pictures/tmdash.png"].freeze
 
   def update
     pbUpdateSpriteHash(@sprites)
@@ -346,23 +448,26 @@ class PokemonBag_Scene
     @viewport.z=99999
     @bag=bag
     @sprites={}
+    @pocket_art={}
+    @pocket_item_icons={}
+    @retained_art={}
     lastpocket=@bag.lastpocket
-    lastitem=@bag.getChoice(lastpocket)
     @sprites["background"]=IconSprite.new(0,0,@viewport)
-    @sprites["background"].setBitmap(sprintf("Graphics/Pictures/Bag/bagbg#{lastpocket}"))
     @sprites["leftarrow"]=AnimatedSprite.new("Graphics/Pictures/leftarrow",8,40,28,2,@viewport)
     @sprites["rightarrow"]=AnimatedSprite.new("Graphics/Pictures/rightarrow",8,40,28,2,@viewport)
     @sprites["leftarrow"].play
+    @sprites["leftarrow"].x=-4
+    @sprites["leftarrow"].y=76
     @sprites["rightarrow"].play
+    @sprites["rightarrow"].x=150
+    @sprites["rightarrow"].y=76
     @sprites["bag"]=IconSprite.new(30,20,@viewport)
     @sprites["icon"]=IconSprite.new(24,Graphics.height-72,@viewport)
     @sprites["itemwindow"]=Window_PokemonBag.new(@bag,lastpocket,168,-8,314,40+32+ITEMSVISIBLE*32)
     @sprites["itemwindow"].viewport=@viewport
     @sprites["itemwindow"].pocket=lastpocket
-    @sprites["itemwindow"].index=lastitem
     @sprites["itemwindow"].baseColor=ITEMLISTBASECOLOR
     @sprites["itemwindow"].shadowColor=ITEMLISTSHADOWCOLOR
-    @sprites["itemwindow"].refresh
     @sprites["slider"]=IconSprite.new(Graphics.width-40,60,@viewport)
     @sprites["slider"].setBitmap(sprintf("Graphics/Pictures/Bag/bagSlider"))
     @sprites["pocketwindow"]=BitmapSprite.new(186,228,@viewport)
@@ -389,30 +494,45 @@ class PokemonBag_Scene
     pbTMSprites
     pbBottomLeftLines(@sprites["helpwindow"],1)
     pbDeactivateWindows(@sprites)
-    pbRefresh
-    pbFadeInAndShow(@sprites)
+    pbRefresh(false)
+    pocket_art_to_load=(1..PokemonBag.numPockets).to_a-[lastpocket]
+    pocket_icons_to_load=pocket_art_to_load.dup
+    preview_icons_to_load=TM_PREVIEW_ICONS.dup
+    pbFadeInAndShow(@sprites) do
+      if (pocket=pocket_art_to_load.shift)
+        pbPocketArt(pocket)
+      elsif (pocket=pocket_icons_to_load.shift)
+        slot=@bag.pockets[pocket][@bag.getChoice(pocket)]
+        pbPocketItemIcon(pocket,slot ? slot[0] : 0)
+      elsif (filename=preview_icons_to_load.shift)
+        pbRetainBagBitmap(filename)
+      end
+      update
+    end
   end
 
   def pbEndScene
     pbFadeOutAndHide(@sprites)
     pbDisposeSpriteHash(@sprites)
     @viewport.dispose
+  ensure
+    @retained_art.each_value { |bitmap| bitmap.dispose }
+    @pocket_item_icons.each_value { |entry| entry[2].dispose if entry[2] }
   end
 
   def pbTMSprites
     xvalues=[16,106,16,106,16,106]
     yvalues=[0,16,64,80,128,144]
     for i in 0...$Trainer.party.length
-      if !@sprites["pokemon#{i}"]
-        @sprites["pokemon#{i}"]=IconSprite.new(0,0,@viewport)
-        @sprites["pokemon#{i}"].setBitmap(pbPokemonIconFile($Trainer.party[i]))
-        @sprites["pokemon#{i}"].src_rect=Rect.new(0,0,64,64)
-        @sprites["pokemon#{i}"].x=xvalues[i]
-        @sprites["pokemon#{i}"].y=yvalues[i]
-        @sprites["pokemon#{i}"].visible=false
-      else
-        @sprites["pokemon#{i}"].setBitmap(pbPokemonIconFile($Trainer.party[i]))
-        @sprites["pokemon#{i}"].src_rect=Rect.new(0,0,64,64)
+      icon=@sprites["pokemon#{i}"]
+      if !icon
+        icon=@sprites["pokemon#{i}"]=IconSprite.new(xvalues[i],yvalues[i],@viewport)
+        icon.visible=false
+      end
+      filename=pbPokemonIconFile($Trainer.party[i])
+      if icon.name!=filename
+        BagIconBitmap.with_cached_bitmap(filename) { icon.setBitmap(filename) }
+        icon.src_rect=Rect.new(0,0,64,64)
       end
       unless @sprites["possiblelearn#{i}"]
         @sprites["possiblelearn#{i}"]=IconSprite.new(0,0,@viewport)
@@ -441,46 +561,90 @@ class PokemonBag_Scene
        @sprites["helpwindow"],helptext,commands,defaultIndex) { update }
   end
 
-  def pbRefresh
-    bm=@sprites["pocketwindow"].bitmap
-    bm.clear
-    # Set the background bitmap for the currently selected pocket
-    @sprites["background"].setBitmap(sprintf("Graphics/Pictures/Bag/bagbg#{@bag.lastpocket}"))
-    # Set the bag picture for the currently selected pocket
-    fbagexists=pbResolveBitmap(sprintf("Graphics/Pictures/Bag/bag#{@bag.lastpocket}f"))
-    if $Trainer.isFemale? && fbagexists
-      @sprites["bag"].setBitmap("Graphics/Pictures/Bag/bag#{@bag.lastpocket}f")
-    else
-      @sprites["bag"].setBitmap("Graphics/Pictures/Bag/bag#{@bag.lastpocket}")
+  # Keep these bitmaps alive so switching back to a pocket can reuse them.
+  def pbRetainBagBitmap(filename)
+    @retained_art[filename] ||= AnimatedBitmap.new(filename)
+  end
+
+  def pbPocketArt(pocket)
+    @pocket_art[pocket] ||= begin
+      background="Graphics/Pictures/Bag/bagbg#{pocket}.png"
+      bag="Graphics/Pictures/Bag/bag#{pocket}"
+      female_bag="#{bag}f.PNG"
+      bag=($Trainer.isFemale? && pbGetFileChar(female_bag)) ? female_bag : "#{bag}.PNG"
+      pbRetainBagBitmap(background)
+      pbRetainBagBitmap(bag)
+      [background,bag]
     end
-    # Draw the pocket name
-    name=PokemonBag.pocketNames()[@bag.lastpocket]
-    base=POCKETNAMEBASECOLOR
-    shadow=POCKETNAMESHADOWCOLOR
-    pbDrawTextPositions(bm,[
-       [name,bm.width/2,180,2,base,shadow]
-    ])
-    # Reset positions of left/right arrows around the bag
-    @sprites["leftarrow"].x=-4
-    @sprites["leftarrow"].y=76
-    @sprites["rightarrow"].x=150
-    @sprites["rightarrow"].y=76
+  end
+
+  def pbPocketItemIcon(pocket,item)
+    entry=@pocket_item_icons[pocket]
+    if entry && entry[0]==item
+      return entry[1]
+    end
+    filename=pbItemIconFile(item)
+    filename=pbBitmapName(filename) if filename
+    bitmap=BagIconBitmap.with_cached_bitmap(filename) { AnimatedBitmap.new(filename) } if filename
+    entry[2].dispose if entry && entry[2]
+    @pocket_item_icons[pocket]=[item,filename,bitmap]
+    return filename
+  end
+
+  def pbRefresh(redraw_items=true)
     itemwindow=@sprites["itemwindow"]
-    # Draw the slider
+    pocket=itemwindow.pocket
+    background,bag=pbPocketArt(pocket)
+    if @sprites["background"].name!=background
+      @sprites["background"].setBitmap(background)
+      @sprites["bag"].setBitmap(bag)
+      bm=@sprites["pocketwindow"].bitmap
+      bm.clear
+      name=PokemonBag.pocketNames[pocket]
+      pbDrawTextPositions(bm,[
+         [name,bm.width/2,180,2,POCKETNAMEBASECOLOR,POCKETNAMESHADOWCOLOR]
+      ])
+    end
+    if redraw_items
+      itemwindow.refresh
+      pbTMSprites
+    end
+    pbRefreshItemDetails
+  end
+
+  def pbRefreshItemDetails
+    itemwindow=@sprites["itemwindow"]
+    item=itemwindow.item
     ycoord=60
     if itemwindow.itemCount>1
       ycoord+=116.0 * itemwindow.index/(itemwindow.itemCount-1)
     end
     @sprites["slider"].y=ycoord
-    # Set the icon for the currently selected item
-    filename=pbItemIconFile(itemwindow.item)
-    @sprites["icon"].setBitmap(filename)
-    # Display the item's description
-    @sprites["itemtextwindow"].text=(itemwindow.item==0) ? _INTL("Close bag.") : 
-       pbGetMessage(MessageTypes::ItemDescriptions,itemwindow.item)
-    pbTMSprites
-    # Refresh the item window
-    itemwindow.refresh
+    filename=pbPocketItemIcon(itemwindow.pocket,item)
+    @sprites["icon"].setBitmap(filename) if @sprites["icon"].name!=filename
+    description=(item==0) ? _INTL("Close bag.") :
+       pbGetMessage(MessageTypes::ItemDescriptions,item)
+    itemtext=@sprites["itemtextwindow"]
+    itemtext.text=description if itemtext.text!=description
+    pbRefreshTMPreview(item)
+  end
+
+  def pbRefreshTMPreview(item)
+    data=$ItemData[item]
+    machine=!!data && (data[ITEMUSE]==3 || data[ITEMUSE]==4)
+    @sprites["partybg"].visible=machine
+    canlearnmove=PokemonBag.pbPartyCanLearnThisMove?(data[ITEMMACHINE]) if machine
+    for i in 0...6
+      pokemon=@sprites["pokemon#{i}"]
+      next if !pokemon
+      indicator=@sprites["possiblelearn#{i}"]
+      pokemon.visible=indicator.visible=machine && !$Trainer.party[i].nil?
+      if indicator.visible
+        filename=TM_PREVIEW_ICONS[canlearnmove[i]]
+        pbRetainBagBitmap(filename)
+        indicator.setBitmap(filename) if indicator.name!=filename
+      end
+    end
   end
 
 # Called when the item screen wants an item to be chosen from the screen
@@ -488,148 +652,24 @@ class PokemonBag_Scene
     pbRefresh
     @sprites["helpwindow"].visible=false
     itemwindow=@sprites["itemwindow"]
-    itemwindow.refresh
     sorting=false
     sortindex=-1
-    if $ItemData[itemwindow.item][ITEMUSE]==3 || $ItemData[itemwindow.item][ITEMUSE]==4
-      machine=$ItemData[itemwindow.item][ITEMMACHINE]
-      canlearnmove=PokemonBag.pbPartyCanLearnThisMove?(machine)
-      pbRefresh
-      @sprites["partybg"].visible=true
-      for i in 0...6
-        next if $Trainer.party[i].nil?
-        @sprites["pokemon#{i}"].visible=true
-        @sprites["possiblelearn#{i}"].visible=true
-        case canlearnmove[i]
-          when 0 #unable
-            @sprites["possiblelearn#{i}"].setBitmap(sprintf("Graphics/Pictures/tmnope")) rescue nil
-          when 1 #able
-            @sprites["possiblelearn#{i}"].setBitmap(sprintf("Graphics/Pictures/tmcheck")) rescue nil
-          when 2 #learned
-            @sprites["possiblelearn#{i}"].setBitmap(sprintf("Graphics/Pictures/tmdash")) rescue nil
-        end
-      end
-    else
-      pbRefresh
-      @sprites["partybg"].visible=false 
-      for i in 0...6
-        next if $Trainer.party[i].nil?
-        @sprites["pokemon#{i}"].visible=false
-        @sprites["possiblelearn#{i}"].visible=false
-      end
-    end
     pbActivateWindow(@sprites,"itemwindow"){
        loop do
          Graphics.update
          Input.update
-         olditem=itemwindow.item
          oldindex=itemwindow.index
          self.update
-         if itemwindow.item!=olditem
-           # Update slider position
-           ycoord=60
-           if itemwindow.itemCount>1
-             ycoord+=116.0 * itemwindow.index/(itemwindow.itemCount-1)
-           end
-           @sprites["slider"].y=ycoord
-           # Update item icon and description
-           filename=pbItemIconFile(itemwindow.item)
-           @sprites["icon"].setBitmap(filename)
-           @sprites["itemtextwindow"].text=(itemwindow.item==0) ? _INTL("Close bag.") :
-              pbGetMessage(MessageTypes::ItemDescriptions,itemwindow.item)
-            if $ItemData[itemwindow.item][ITEMUSE]==3 || $ItemData[itemwindow.item][ITEMUSE]==4
-              pbRefresh
-              machine=$ItemData[itemwindow.item][ITEMMACHINE]
-              canlearnmove=PokemonBag.pbPartyCanLearnThisMove?(machine)
-              for i in 0...6
-                next if $Trainer.party[i].nil?
-                @sprites["pokemon#{i}"].visible=true
-                @sprites["possiblelearn#{i}"].visible=true
-                case canlearnmove[i]
-                  when 0 #unable
-                    @sprites["possiblelearn#{i}"].setBitmap(sprintf("Graphics/Pictures/tmnope")) rescue nil
-                  when 1 #able
-                    @sprites["possiblelearn#{i}"].setBitmap(sprintf("Graphics/Pictures/tmcheck")) rescue nil
-                  when 2 #learned
-                    @sprites["possiblelearn#{i}"].setBitmap(sprintf("Graphics/Pictures/tmdash")) rescue nil
-                  end
-              end
-            else
-              for i in 0...6
-                next if $Trainer.party[i].nil?
-                @sprites["possiblelearn#{i}"].visible=false
-              end
-            end
-         end
          if itemwindow.index!=oldindex
-           # Update selected item for current pocket
            @bag.setChoice(itemwindow.pocket,itemwindow.index)
+           pbRefreshItemDetails
          end
-         # Change pockets if Left/Right pressed
-         numpockets=PokemonBag.numPockets
-         if Input.trigger?(Input::LEFT)
-           if !sorting
-             itemwindow.pocket=(itemwindow.pocket==1) ? numpockets : itemwindow.pocket-1
-             @bag.lastpocket=itemwindow.pocket
-             pbRefresh
-             if $ItemData[itemwindow.item][ITEMUSE]==3 || $ItemData[itemwindow.item][ITEMUSE]==4
-              machine=$ItemData[itemwindow.item][ITEMMACHINE]
-              canlearnmove=PokemonBag.pbPartyCanLearnThisMove?(machine)
-              @sprites["partybg"].visible=true
-              for i in 0...6
-                next if $Trainer.party[i].nil?
-                @sprites["pokemon#{i}"].visible=true
-                @sprites["possiblelearn#{i}"].visible=true
-                case canlearnmove[i]
-                  when 0 #unable
-                    @sprites["possiblelearn#{i}"].setBitmap(sprintf("Graphics/Pictures/tmnope")) rescue nil
-                  when 1 #able
-                    @sprites["possiblelearn#{i}"].setBitmap(sprintf("Graphics/Pictures/tmcheck")) rescue nil
-                  when 2 #learned
-                    @sprites["possiblelearn#{i}"].setBitmap(sprintf("Graphics/Pictures/tmdash")) rescue nil
-                end
-              end
-            else
-              @sprites["partybg"].visible=false
-              for i in 0...6
-                next if $Trainer.party[i].nil?
-                @sprites["pokemon#{i}"].visible=false
-                @sprites["possiblelearn#{i}"].visible=false
-              end
-            end
-           end
-         elsif Input.trigger?(Input::RIGHT)
-           if !sorting
-             itemwindow.pocket=(itemwindow.pocket==numpockets) ? 1 : itemwindow.pocket+1
-             @bag.lastpocket=itemwindow.pocket
-             pbRefresh
-             if $ItemData[itemwindow.item][ITEMUSE]==3 || $ItemData[itemwindow.item][ITEMUSE]==4
-              machine=$ItemData[itemwindow.item][ITEMMACHINE]
-              canlearnmove=PokemonBag.pbPartyCanLearnThisMove?(machine)
-              @sprites["partybg"].visible=true
-              for i in 0...6
-                next if $Trainer.party[i].nil?
-                @sprites["pokemon#{i}"].visible=true
-                @sprites["possiblelearn#{i}"].visible=true
-                case canlearnmove[i]
-                  when 0 #unable
-                    @sprites["possiblelearn#{i}"].setBitmap(sprintf("Graphics/Pictures/tmnope")) rescue nil
-                  when 1 #able
-                    @sprites["possiblelearn#{i}"].setBitmap(sprintf("Graphics/Pictures/tmcheck")) rescue nil
-                  when 2 #learned
-                    @sprites["possiblelearn#{i}"].setBitmap(sprintf("Graphics/Pictures/tmdash")) rescue nil
-                end
-              end
-            else
-              pbRefresh
-              @sprites["partybg"].visible=false 
-              for i in 0...6
-                next if $Trainer.party[i].nil?
-                @sprites["pokemon#{i}"].visible=false
-                @sprites["possiblelearn#{i}"].visible=false
-              end
-            end
-           end
+         left=Input.trigger?(Input::LEFT)
+         if !sorting && (left || Input.trigger?(Input::RIGHT))
+           direction=left ? -1 : 1
+           itemwindow.pocket=(itemwindow.pocket-1+direction)%PokemonBag.numPockets+1
+           @bag.lastpocket=itemwindow.pocket
+           pbRefresh(false)
          end
          if Input.trigger?(Input::X)
            pocket  = @bag.pockets[itemwindow.pocket]

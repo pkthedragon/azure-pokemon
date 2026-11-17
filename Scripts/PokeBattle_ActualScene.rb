@@ -3993,69 +3993,40 @@ end
   end
 
 #>>>>DemICE entered the chat    
+  def pbSceneInspectTargets(index)
+    return pbSceneAvailableTargets(index,true,true)+pbSceneAvailableTargets(index)
+  end
+
   def StatInfoTarget(index)
-    targets = pbSceneAvailableTargets(index,true,true)
-    return (targets.length > 0) ? targets[0] : -1
-  end 
-      
-  def pbStatInfo(index)
-    pbShowWindow(COMMANDBOX)
-    targets = pbSceneAvailableTargets(index,true,true)
-    raise RuntimeError.new(_INTL("No targets somehow...")) if targets.length == 0
-    targetpos = 0
-    curwindow = targets[targetpos]
+    return pbSceneInspectTargets(index).first || -1
+  end
+
+  def pbStatInfo(index,window=COMMANDBOX)
+    targets=pbSceneInspectTargets(index)
+    return -1 if targets.empty?
+    pbShowWindow(window)
+    targetpos=0
     loop do
       pbGraphicsUpdate
       pbInputUpdate
+      curwindow=targets[targetpos]
       pbUpdateSelected(curwindow)
       if Input.trigger?(Input::C)
         pbUpdateSelected(-1)
         return @battle.battlers[curwindow]
-      end
-      if Input.trigger?(Input::B)
+      elsif Input.trigger?(Input::B)
         pbUpdateSelected(-1)
         return -1
-      end
-      if curwindow>=0
-        if Input.trigger?(Input::RIGHT) || Input.trigger?(Input::DOWN)
-          targetpos=(targetpos+1)%targets.length
-          curwindow=targets[targetpos]
-        elsif Input.trigger?(Input::LEFT) || Input.trigger?(Input::UP)
-          targetpos=(targetpos-1)%targets.length
-          curwindow=targets[targetpos]
-        end
+      elsif Input.trigger?(Input::RIGHT) || Input.trigger?(Input::DOWN)
+        targetpos=(targetpos+1)%targets.length
+      elsif Input.trigger?(Input::LEFT) || Input.trigger?(Input::UP)
+        targetpos=(targetpos-1)%targets.length
       end
     end
   end
-  
+
   def pbStatInfoF(index)
-    pbShowWindow(FIGHTBOX)
-    targets = pbSceneAvailableTargets(index,true,true)
-    raise RuntimeError.new(_INTL("No targets somehow...")) if targets.length == 0
-    targetpos = 0
-    curwindow = targets[targetpos]
-    loop do
-      pbGraphicsUpdate
-      pbInputUpdate
-      pbUpdateSelected(curwindow)
-      if Input.trigger?(Input::C)
-        pbUpdateSelected(-1)
-        return @battle.battlers[curwindow]
-      end
-      if Input.trigger?(Input::B)
-        pbUpdateSelected(-1)
-        return -1
-      end
-      if curwindow>=0
-        if Input.trigger?(Input::RIGHT) || Input.trigger?(Input::DOWN)
-          targetpos=(targetpos+1)%targets.length
-          curwindow=targets[targetpos]
-        elsif Input.trigger?(Input::LEFT) || Input.trigger?(Input::UP)
-          targetpos=(targetpos-1)%targets.length
-          curwindow=targets[targetpos]
-        end
-      end
-    end
+    return pbStatInfo(index,FIGHTBOX)
   end
 #DemICE left the chat>>>>    
 

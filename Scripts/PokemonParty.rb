@@ -601,7 +601,8 @@ class PokemonScreen_Scene
     @viewport=Viewport.new(0,0,Graphics.width,Graphics.height)
     @viewport.z=99999
     @multiselect=multiselect
-    addBackgroundPlane(@sprites,"partybg","Party/partybg",@viewport)
+    @sprites["partybg"]=AnimatedPlane.new(@viewport)
+    @sprites["partybg"].setBitmap("Graphics/Pictures/Party/partybg.PNG")
     @sprites["messagebox"]=Window_AdvancedTextPokemon.new("")
     @sprites["helpwindow"]=Window_UnformattedTextPokemon.new(starthelptext)
     @sprites["messagebox"].viewport=@viewport
