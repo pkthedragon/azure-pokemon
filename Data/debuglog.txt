@@ -13494,3 +13494,244 @@ Blastoise: final switching score: -158
 [The foe Blastoise: Surf=50, Ice Beam=44, Dark Pulse=21, Protect=30]
 [Prefer Surf]
 [No Z-Move.]
+==============================
+Battle Start!
+5 - Zane
+==============================
+***Round 1***
+Player Pokemon Fuecoco is faster than Yungoos.
+Tackle: initial score: 1
+Tackle: final score: 1
+ 
+Leer: initial score: 10
+Leer: final score: 11
+ 
+Pursuit: initial score: 1
+Pursuit: final score: 1
+ 
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (0)
+Initial switchscore building: Healing (0)
+Initial switchscore building: fsteak (0)
+Initial switchscore building: Specific Switches (0)
+==============================
+Battle Start!
+5 - Zane
+==============================
+***Round 1***
+Player Pokemon Fuecoco is faster than Yungoos.
+Tackle: initial score: 1
+Tackle: final score: 1
+ 
+Leer: initial score: 10
+Leer: final score: 11
+ 
+Pursuit: initial score: 1
+Pursuit: final score: 1
+ 
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (0)
+Initial switchscore building: Healing (0)
+Initial switchscore building: fsteak (0)
+Initial switchscore building: Specific Switches (0)
+Initial switchscore building: Typing (0)
+Yungoos: initial switchscore: 0
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+Yungoos: initial noswitchscore: 66
+ 
+{
+ 
+}
+==============================
+Battle Start!
+t move score: 11
+5 - Zane
+inal switching score: -133
+==============================
+ 
+Round 1***
+Player Pokemon Fuecoco is faster than Yungoos.
+Tackle: initial score: 1
+k.
+ 
+Highest item score: -10000
+Highest move score: 11
+ 
+ using an item.
+ 
+r: initial score: 10
+[The foe Yungoos: Tackle=1, Leer=11, Pursuit=1]
+[Prefer Leer]
+ 
+Pursuit: initial score: 1
+Pursuit: final score: 1
+ 
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (0)
+Initial switchscore building: Healing (0)
+Initial switchscore building: fsteak (0)
+Initial switchscore building: Specific Switches (0)
+Initial switchscore building: Typing (0)
+Yungoos: initial switchscore: 0
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+Yungoos: initial noswitchscore: 66
+ 
+{
+ 
+}
+ 
+Yungoos: highest move score: 11
+Yungoos: final switching score: -133
+11 > -133, will not switch
+ 
+Beginning AI Item use check.
+ 
+Highest item score: -10000
+Highest move score: 11
+Not using an item.
+ 
+[The foe Yungoos: Tackle=1, Leer=11, Pursuit=1]
+[Prefer Leer]
+[The foe Yungoos lost 30 HP, now has 0 HP]
+==============================
+Battle Start!
+5 - Zane
+==============================
+***Round 1***
+Player Pokemon Fuecoco is faster than Yungoos.
+Tackle: initial score: 1
+Tackle: final score: 1
+ 
+Leer: initial score: 10
+Leer: final score: 11
+ 
+Pursuit: initial score: 1
+Pursuit: final score: 1
+ 
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (0)
+Initial switchscore building: Healing (0)
+Initial switchscore building: fsteak (0)
+Initial switchscore building: Specific Switches (0)
+Initial switchscore building: Typing (0)
+Yungoos: initial switchscore: 0
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+Yungoos: initial noswitchscore: 66
+ 
+{
+ 
+}
+ 
+Yungoos: highest move score: 11
+Yungoos: final switching score: -133
+11 > -133, will not switch
+ 
+Beginning AI Item use check.
+ 
+Highest item score: -10000
+Highest move score: 11
+Not using an item.
+ 
+[The foe Yungoos: Tackle=1, Leer=11, Pursuit=1]
+[Prefer Leer]
+[The foe Yungoos lost 30 HP, now has 0 HP]
+***Round 2***
+Player Pokemon Fuecoco is faster than Bidoof.
+Growl: initial score: 10
+Yawn: initial score: 20
+Yawn: final score: 10
+ 
+Defense Curl: initial score: 10
+Defense Curl: final score: 1
+ 
+Rollout: initial score: 1
+Rollout: final score: 1
+ 
+Beginning AI Item use check.
+ 
+Highest item score: -10000
+Highest move score: 15
+Not using an item.
+ 
+[The foe Bidoof: Growl=15.600000000000001, Yawn=10, Defense Curl=1, Rollout=1]
+[Prefer Growl]
+[The foe Bidoof lost 35 HP, now has 0 HP]
+==============================
+Battle Start!
+5 - Zane
+==============================
+***Round 1***
+Player Pokemon Fuecoco is faster than Yungoos.
+Tackle: initial score: 1
+Tackle: final score: 1
+ 
+Leer: initial score: 10
+Leer: final score: 11
+ 
+Pursuit: initial score: 1
+Pursuit: final score: 1
+ 
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (0)
+Initial switchscore building: Healing (0)
+Initial switchscore building: fsteak (0)
+Initial switchscore building: Specific Switches (0)
+Initial switchscore building: Typing (0)
+Yungoos: initial switchscore: 0
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+Yungoos: initial noswitchscore: 66
+ 
+{
+ 
+}
+ 
+Yungoos: highest move score: 11
+Yungoos: final switching score: -133
+11 > -133, will not switch
+ 
+Beginning AI Item use check.
+ 
+Highest item score: -10000
+Highest move score: 11
+Not using an item.
+ 
+[The foe Yungoos: Tackle=1, Leer=11, Pursuit=1]
+[Prefer Leer]
+[The foe Yungoos lost 30 HP, now has 0 HP]
+***Round 2***
+Player Pokemon Fuecoco is faster than Bidoof.
+Growl: initial score: 10
+Yawn: initial score: 20
+Yawn: final score: 10
+ 
+Defense Curl: initial score: 10
+Defense Curl: final score: 0
+ 
+Rollout: initial score: 1
+Rollout: final score: 1
+ 
+Beginning AI Item use check.
+ 
+Highest item score: -10000
+Highest move score: 15
+Not using an item.
+ 
+[The foe Bidoof: Growl=15.600000000000001, Yawn=10, Defense Curl=0, Rollout=1]
+[Prefer Growl]
+[The foe Bidoof lost 35 HP, now has 0 HP]
