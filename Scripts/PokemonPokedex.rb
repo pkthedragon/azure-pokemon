@@ -28,8 +28,9 @@ end
 
 
 class Scene_PokedexMenu
-  def initialize(menu_index = 0)
+  def initialize(menu_index = 0, return_scene = nil)
     @menu_index = menu_index
+    @return_scene = return_scene
   end
 
   def main
@@ -90,14 +91,14 @@ class Scene_PokedexMenu
   def update_command
     if Input.trigger?(Input::B)
       pbPlayCancelSE()
-      $scene = Scene_Map.new
+      $scene = @return_scene || Scene_Map.new
       return
     end
     if Input.trigger?(Input::C)
       case @sprites["commands"].index
         when @sprites["commands"].itemCount-1
           pbPlayDecisionSE()
-          $scene = Scene_Map.new
+          $scene = @return_scene || Scene_Map.new
         else
           pbPlayDecisionSE()
           $PokemonGlobal.pokedexDex=$PokemonGlobal.pokedexViable[@sprites["commands"].index]

@@ -1,57 +1,48 @@
 class PokegearButton < SpriteWrapper
   attr_reader :index
   attr_reader :name
-  attr_accessor :selected
+  attr_reader :selected
 
-  def initialize(x,y,name="",index=0,viewport=nil)
+  def initialize(x,y,name,index,viewport,button_bitmap)
     super(viewport)
     @index=index
     @name=name
-    @selected=false
-    fembutton=pbResolveBitmap(sprintf("Graphics/Pictures/Pokegear/pokegearButtonf"))
-    if $Trainer.isFemale? && fembutton
-      @button=AnimatedBitmap.new("Graphics/Pictures/Pokegear/pokegearButtonf")
-    else
-      @button=AnimatedBitmap.new("Graphics/Pictures/Pokegear/pokegearButton")
-    end
-    @contents=BitmapWrapper.new(@button.width,@button.height)
+    @contents=BitmapWrapper.new(button_bitmap.width,button_bitmap.height)
     self.bitmap=@contents
     self.x=x
     self.y=y
-    refresh
-    update
+    draw_button(button_bitmap)
+    self.selected=false
   end
 
   def dispose
-    @button.dispose
     @contents.dispose
     super
   end
 
-  def refresh
-    self.bitmap.clear
-    self.bitmap.blt(0,0,@button.bitmap,Rect.new(0,0,@button.width,@button.height))
-    pbSetSystemFont(self.bitmap)
-    textpos=[          # Name is written on both unselected and selected buttons
-       [@name,self.bitmap.width/2,10,2,Color.new(248,248,248),Color.new(40,40,40)],
-       [@name,self.bitmap.width/2,62,2,Color.new(248,248,248),Color.new(40,40,40)]
-    ]
-    pbDrawTextPositions(self.bitmap,textpos)
-    icon=sprintf("Graphics/Pictures/pokegear"+@name)
-    imagepos=[         # Icon is put on both unselected and selected buttons
-       [icon,18,10,0,0,-1,-1],
-       [icon,18,62,0,0,-1,-1]
-    ]
-    pbDrawImagePositions(self.bitmap,imagepos)
+  def selected=(value)
+    return if @selected==value
+    @selected=value
+    height=@contents.height/2
+    self.src_rect.set(0,value ? height : 0,@contents.width,height)
   end
 
-  def update
-    if self.selected
-      self.src_rect.set(0,self.bitmap.height/2,self.bitmap.width,self.bitmap.height/2)
-    else
-      self.src_rect.set(0,0,self.bitmap.width,self.bitmap.height/2)
-    end
-    super
+  private
+
+  def draw_button(button_bitmap)
+    @contents.blt(0,0,button_bitmap,button_bitmap.rect)
+    pbSetSystemFont(@contents)
+    textpos=[          # Name is written on both unselected and selected buttons
+       [@name,@contents.width/2,10,2,Color.new(248,248,248),Color.new(40,40,40)],
+       [@name,@contents.width/2,62,2,Color.new(248,248,248),Color.new(40,40,40)]
+    ]
+    pbDrawTextPositions(@contents,textpos)
+    icon_path=pbResolveBitmap("Graphics/Pictures/Pokegear/pokegear#{@name}")
+    return if !icon_path
+    icon=AnimatedBitmap.new(icon_path)
+    @contents.blt(18,10,icon.bitmap,icon.bitmap.rect)
+    @contents.blt(18,62,icon.bitmap,icon.bitmap.rect)
+    icon.dispose
   end
 end
 
@@ -122,55 +113,75 @@ class Scene_Pokegear
     if $game_switches[1296]
       commands[@cmdRecords=commands.length]=_INTL("Records")
     end
-    @viewport=Viewport.new(0,0,Graphics.width,Graphics.height)
-    @viewport.z=99999
-    @button=AnimatedBitmap.new("Graphics/Pictures/Pokegear/pokegearButton")
-    @sprites={}
-    @sprites["background"] = IconSprite.new(0,0)
-    femback=pbResolveBitmap(sprintf("Graphics/Pictures/Pokegear/pokegearbgf"))
-    if $Trainer.isFemale? && femback
-      @sprites["background"].setBitmap("Graphics/Pictures/Pokegear/pokegearbgf")
-    else
-      @sprites["background"].setBitmap("Graphics/Pictures/Pokegear/pokegearbg")
+    run_menu(commands)
+  end
+  def run_menu(commands)
+    @buttons=[]
+    @menu_index=@menu_index.clamp(0,commands.length-1)
+    @button_viewport=Viewport.new(0,0,Graphics.width,Graphics.height)
+    @button_viewport.z=99999
+
+    background_path="Graphics/Pictures/Pokegear/pokegearbg"
+    button_path="Graphics/Pictures/Pokegear/pokegearButton"
+    if $Trainer.isFemale?
+      background_path=pbResolveBitmap("#{background_path}f") || background_path
+      button_path=pbResolveBitmap("#{button_path}f") || button_path
     end
-    @sprites["command_window"] = Window_CommandPokemon.new(commands,160)
-    @sprites["command_window"].index = @menu_index
-    @sprites["command_window"].x = Graphics.width
-    @sprites["command_window"].y = -3000 #0
-    for i in 0...commands.length
-      x=118
-      y=196 - (commands.length*24) + (i*48)
-      @sprites["button#{i}"]=PokegearButton.new(x,y,commands[i],i,@viewport)
-      @sprites["button#{i}"].selected=(i==@sprites["command_window"].index)
-      @sprites["button#{i}"].update
+    background=IconSprite.new(0,0)
+    background.setBitmap(background_path)
+    button_art=AnimatedBitmap.new(button_path)
+    commands.each_with_index do |name,index|
+      y=196-(commands.length*24)+(index*48)
+      @buttons.push(PokegearButton.new(118,y,name,index,@button_viewport,button_art.bitmap))
     end
+    @buttons[@menu_index].selected=true
+    scroll_to_selected_button
     Graphics.transition
     loop do
       Graphics.update
       Input.update
+      background.update
       update
-      if $scene != self
-        break
-      end
+      break if $scene!=self
     end
     Graphics.freeze
-    pbDisposeSpriteHash(@sprites)
+  ensure
+    @buttons.each { |button| button.dispose }
+    button_art.dispose if button_art
+    background.dispose if background
+    @button_viewport.dispose if @button_viewport
   end
-  #-----------------------------------------------------------------------------
-  # update the scene
-  #-----------------------------------------------------------------------------
+
   def update
-    for i in 0...@sprites["command_window"].commands.length
-      sprite=@sprites["button#{i}"]
-      sprite.selected=(i==@sprites["command_window"].index) ? true : false
+    count=@buttons.length
+    if Input.repeat?(Input::DOWN) && (Input.trigger?(Input::DOWN) || @menu_index<count-1)
+      move_menu_cursor((@menu_index+1)%count)
     end
-    pbUpdateSpriteHash(@sprites)
-    #update command window and the info if it's active
-    if @sprites["command_window"].active
-      update_command
-      return
+    if Input.repeat?(Input::UP) && (Input.trigger?(Input::UP) || @menu_index>0)
+      move_menu_cursor((@menu_index-1)%count)
     end
+    # The menu is one page. The shoulder buttons go to either end.
+    move_menu_cursor(count-1) if Input.repeat?(Input::R)
+    move_menu_cursor(0) if Input.repeat?(Input::L)
+    update_command
   end
+
+  def move_menu_cursor(index)
+    return if @menu_index==index
+    @buttons[@menu_index].selected=false
+    @menu_index=index
+    @buttons[@menu_index].selected=true
+    scroll_to_selected_button
+    pbPlayCursorSE()
+  end
+
+  def scroll_to_selected_button
+    button=@buttons[@menu_index]
+    top=@button_viewport.oy
+    next_top=top.clamp(button.y+button.src_rect.height-Graphics.height,button.y)
+    @button_viewport.oy=next_top if next_top!=top
+  end
+
   #-----------------------------------------------------------------------------
   # update the command window
   #-----------------------------------------------------------------------------
@@ -181,25 +192,25 @@ class Scene_Pokegear
       return
     end
     if Input.trigger?(Input::C)
-      if @cmdMap>=0 && @sprites["command_window"].index==@cmdMap
+      if @cmdMap>=0 && @menu_index==@cmdMap
         pbPlayDecisionSE()               
         pbShowMap(-1,false)
       end
-      if @cmdPhone>=0 && @sprites["command_window"].index==@cmdPhone
+      if @cmdPhone>=0 && @menu_index==@cmdPhone
         pbPlayDecisionSE()
         pbFadeOutIn(99999) {
            PokemonPhoneScene.new.start
         }
       end
-      if @cmdJukebox>=0 && @sprites["command_window"].index==@cmdJukebox
+      if @cmdJukebox>=0 && @menu_index==@cmdJukebox
         pbPlayDecisionSE()
         $scene = Scene_Jukebox.new
       end
-      # if @cmdPortablePC>=0 && @sprites["command_window"].index==@cmdPortablePC
+      # if @cmdPortablePC>=0 && @menu_index==@cmdPortablePC
       #   pbPlayDecisionSE()
       #   pbPokeCenterPC
       # end
-#      if @cmdNews>=0 && @sprites["command_window"].index==@cmdNews
+#      if @cmdNews>=0 && @menu_index==@cmdNews
 #        pbPlayDecisionSE()
 #        print "about to play news"
 #        $game_switches[1450] = true
@@ -209,11 +220,11 @@ class Scene_Pokegear
 #        print "done playing news"
 #        return 1
 #      end
-      if @cmdPulse>=0 && @sprites["command_window"].index==@cmdPulse
+      if @cmdPulse>=0 && @menu_index==@cmdPulse
         pbPlayDecisionSE()
         $scene = Scene_PulseDex.new
       end
-    if @cmdTutor>=0 && @sprites["command_window"].index==@cmdTutor
+    if @cmdTutor>=0 && @menu_index==@cmdTutor
  #       move=pbChooseTutorList
  #         if move!=0
  #         pbMoveTutorChoose(move,false,false,true)
@@ -221,27 +232,27 @@ class Scene_Pokegear
     pbTutorNet
     end
       
-    if @cmdRiftNotes>=0 && @sprites["command_window"].index==@cmdRiftNotes
+    if @cmdRiftNotes>=0 && @menu_index==@cmdRiftNotes
         pbPlayDecisionSE()
         $scene = Scene_RiftNotes.new
       end
-      if @cmdNotes>=0 && @sprites["command_window"].index==@cmdNotes
+      if @cmdNotes>=0 && @menu_index==@cmdNotes
         pbPlayDecisionSE()
         $scene = Scene_FieldNotes.new
       end
-      if @cmdFieldManual>=0 && @sprites["command_window"].index==@cmdFieldManual
+      if @cmdFieldManual>=0 && @menu_index==@cmdFieldManual
         pbPlayDecisionSE()
         scene = Scene_FieldEffectsManual.new
         screen = PokemonFieldEffectsManualScreen.new(scene)
         pbFadeOutIn(99999) { screen.pbStartScreen }
       end
-      if @cmdTrainerIndex>=0 && @sprites["command_window"].index==@cmdTrainerIndex
+      if @cmdTrainerIndex>=0 && @menu_index==@cmdTrainerIndex
         pbPlayDecisionSE()
         scene = Scene_TrainerIndex.new
         screen = PokemonTrainerIndexScreen.new(scene)
         pbFadeOutIn(99999) { screen.pbStartScreen }
       end
-      if @cmdRecords>=0 && @sprites["command_window"].index==@cmdRecords
+      if @cmdRecords>=0 && @menu_index==@cmdRecords
         pbPlayDecisionSE()
         pbViewQuests
 #        $scene = Scene_FieldNotes.new
