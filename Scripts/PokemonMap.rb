@@ -152,6 +152,10 @@ class PokemonGlobalMetadata
   attr_accessor :trainerRematches
   attr_accessor :safesave
 
+  def encounteredTrainers
+    @encounteredTrainers ||= []
+  end
+
   def initialize
     @riding = false
     @bicycle              = false

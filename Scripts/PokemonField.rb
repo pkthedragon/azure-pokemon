@@ -715,6 +715,191 @@ def pbSceneStandby
   end
 end
 
+def pbResolveVsGraphic(graphic,trainerid,trainerconstant,suffix="")
+  prefix = "Graphics/Transitions/vs#{graphic}"
+  path = pbResolveBitmap("#{prefix}#{trainerconstant}#{suffix}") if trainerconstant
+  return path || pbResolveBitmap("#{prefix}#{trainerid}#{suffix}")
+end
+
+def pbTrainerVsAnimation(viewport,trainerid,trainername)
+  return false if !$Trainer
+  trainerconstant = getConstantName(PBTrainers,trainerid) rescue nil
+  suffix = $game_variables[646] == 65 ? "_99" : ""
+  opponent_bar = pbResolveVsGraphic("Bar",trainerid,trainerconstant,suffix)
+  opponent_portrait = pbResolveVsGraphic("Trainer",trainerid,trainerconstant,suffix)
+  return false if !opponent_bar || !opponent_portrait
+
+  playerid = $Trainer.trainertype
+  playerconstant = getConstantName(PBTrainers,playerid) rescue nil
+  outfit = "_#{$Trainer.outfit}"
+  player_bar = pbResolveVsGraphic("Bar",playerid,playerconstant,outfit) ||
+               pbResolveVsGraphic("Bar",playerid,playerconstant)
+  player_portrait = pbResolveVsGraphic("Trainer",playerid,playerconstant,outfit) ||
+                    pbResolveVsGraphic("Trainer",playerid,playerconstant)
+  return false if !player_bar || !player_portrait
+
+  bitmaps = []
+  drawables = []
+  load_bitmap = proc do |path|
+    bitmap = BitmapCache.load_bitmap(path)
+    bitmaps.push(bitmap)
+    bitmap
+  end
+  make_sprite = proc do |view,bitmap|
+    sprite = Sprite.new(view)
+    drawables.push(sprite)
+    sprite.bitmap = bitmap
+    sprite
+  end
+
+  begin
+    # Prepare the art and text together so image decoding cannot interrupt the animation.
+    player_bar_bitmap = load_bitmap.call(player_bar)
+    opponent_bar_bitmap = load_bitmap.call(opponent_bar)
+    player_bitmap = load_bitmap.call(player_portrait)
+    trainer_bitmap = load_bitmap.call(opponent_portrait)
+    flash_bitmap = load_bitmap.call("Graphics/Transitions/vsFlash")
+    logo_bitmap = load_bitmap.call("Graphics/Transitions/vs")
+    names_bitmap = Bitmap.new(Graphics.width,Graphics.height)
+    bitmaps.push(names_bitmap)
+    pbSetSystemFont(names_bitmap)
+    textpos = [
+      [_INTL("{1}",$Trainer.name),Graphics.width/4,(Graphics.height/1.5)+10,2,
+        Color.new(248,248,248),Color.new(12*6,12*6,12*6)],
+      [_INTL("{1}",trainername),(Graphics.width/4)+(Graphics.width/2),(Graphics.height/1.5)+10,2,
+        Color.new(248,248,248),Color.new(12*6,12*6,12*6)]
+    ]
+    pbDrawTextPositions(names_bitmap,textpos)
+
+    viewplayer = Viewport.new(0,Graphics.height/3,Graphics.width/2,128)
+    drawables.push(viewplayer)
+    viewopp = Viewport.new(Graphics.width/2,Graphics.height/3,Graphics.width/2,128)
+    drawables.push(viewopp)
+    viewvs = Viewport.new(0,0,Graphics.width,Graphics.height)
+    drawables.push(viewvs)
+    [viewplayer,viewopp,viewvs].each { |view| view.z = viewport.z }
+
+    fade = make_sprite.call(viewport,flash_bitmap)
+    fade.tone = Tone.new(-255,-255,-255)
+    fade.opacity = 100
+    overlay = make_sprite.call(viewport,names_bitmap)
+    overlay.visible = false
+    xoffset = (((Graphics.width/2)/10).round)*10
+    slide1 = make_sprite.call(viewplayer,player_bar_bitmap)
+    slide1.x = -xoffset
+    slide2 = make_sprite.call(viewopp,opponent_bar_bitmap)
+    slide2.x = xoffset
+    vs = make_sprite.call(viewvs,logo_bitmap)
+    vs.ox = logo_bitmap.width/2
+    vs.oy = logo_bitmap.height/2
+    vs.x = Graphics.width/2
+    vs.y = Graphics.height/1.5
+    vs.visible = false
+    flash = make_sprite.call(viewvs,flash_bitmap)
+    flash.opacity = 0
+
+    # Native planes scroll the existing textures. LargePlane would clear and
+    # retile two full-screen bitmaps on every change to ox.
+    bar1 = Plane.new(viewplayer)
+    drawables.push(bar1)
+    bar1.bitmap = player_bar_bitmap
+    bar1.z = -1
+    bar1.visible = false
+    bar2 = Plane.new(viewopp)
+    drawables.push(bar2)
+    bar2.bitmap = opponent_bar_bitmap
+    bar2.z = -1
+    bar2.visible = false
+    player = make_sprite.call(viewplayer,player_bitmap)
+    player.mirror = true if $game_switches[1235]
+    player.x = -xoffset
+    player.visible = false
+    trainer = make_sprite.call(viewopp,trainer_bitmap)
+    trainer.x = xoffset
+    trainer.tone = Tone.new(-255,-255,-255)
+    trainer.visible = false
+
+    Graphics.frame_reset
+    10.times do
+      slide1.x += xoffset/10
+      slide2.x -= xoffset/10
+      pbWait(1)
+    end
+    pbSEPlay("PRSFX- Counter2.wav")
+    pbSEPlay("PRSFX- Flash.wav")
+    flash.opacity = 255
+    slide1.visible = false
+    slide2.visible = false
+    bar1.visible = true
+    bar2.visible = true
+    player.visible = true
+    trainer.visible = true
+    25.times do
+      flash.opacity -= 51 if flash.opacity > 0
+      bar1.ox -= 16
+      bar2.ox += 16
+      pbWait(1)
+    end
+    11.times do
+      bar1.ox -= 16
+      bar2.ox += 16
+      player.x += xoffset/10
+      trainer.x -= xoffset/10
+      pbWait(1)
+    end
+    2.times do
+      bar1.ox -= 16
+      bar2.ox += 16
+      player.x -= xoffset/20
+      trainer.x += xoffset/20
+      pbWait(1)
+    end
+    10.times do
+      bar1.ox -= 16
+      bar2.ox += 16
+      pbWait(1)
+    end
+    val = 2
+    flash.opacity = 255
+    vs.visible = true
+    trainer.tone = Tone.new(0,0,0)
+    overlay.visible = true
+    pbSEPlay("PRSFX- Slash.wav")
+    70.times do
+      bar1.ox -= 16
+      bar2.ox += 16
+      flash.opacity -= 25.5 if flash.opacity > 0
+      vs.x += val
+      vs.y -= val
+      val = 2 if vs.x <= (Graphics.width/2)-2
+      val = -2 if vs.x >= (Graphics.width/2)+2
+      pbWait(1)
+    end
+    30.times do
+      bar1.ox -= 16
+      bar2.ox += 16
+      vs.zoom_x += 0.2
+      vs.zoom_y += 0.2
+      pbWait(1)
+    end
+    flash.tone = Tone.new(-255,-255,-255)
+    10.times do
+      bar1.ox -= 16
+      bar2.ox += 16
+      flash.opacity += 25.5
+      pbWait(1)
+    end
+    viewport.color = Color.new(0,0,0,255)
+    return true
+  rescue StandardError
+    # Unavailable custom artwork falls back to the standard battle intro.
+    return false
+  ensure
+    drawables.reverse_each { |drawable| drawable.dispose }
+    bitmaps.reverse_each { |bitmap| bitmap.dispose }
+  end
+end
+
 def pbBattleAnimation(battletype=0,bgm=nil,trainerid=-1,trainername="")
 #### SARDINES - v17 - START
   $game_temp.in_battle = true
@@ -776,174 +961,10 @@ def pbBattleAnimation(battletype=0,bgm=nil,trainerid=-1,trainername="")
 # end
 #
 
-# Check for custom battle intro animations
-################################################################################
-# VS. animation, by Luka S.J.
-# Tweaked by Maruno.
-################################################################################
-  if trainerid>=0
-    opposite= 99
-    if $game_variables[646]==65 
-      tbargraphic = sprintf("Graphics/Transitions/vsBar%s_%d",getConstantName(PBTrainers,trainerid),opposite) rescue nil
-      tbargraphic = sprintf("Graphics/Transitions/vsBar%d_%d",trainerid,opposite) if !pbResolveBitmap(tbargraphic)
-      tgraphic    = sprintf("Graphics/Transitions/vsTrainer%s_%d",getConstantName(PBTrainers,trainerid),opposite) rescue nil
-      tgraphic    = sprintf("Graphics/Transitions/vsTrainer%d_%d",trainerid,opposite) if !pbResolveBitmap(tgraphic)
-    else
-      tbargraphic = sprintf("Graphics/Transitions/vsBar%s",getConstantName(PBTrainers,trainerid)) rescue nil
-      tbargraphic = sprintf("Graphics/Transitions/vsBar%d",trainerid) if !pbResolveBitmap(tbargraphic)
-      tgraphic    = sprintf("Graphics/Transitions/vsTrainer%s",getConstantName(PBTrainers,trainerid)) rescue nil
-      tgraphic    = sprintf("Graphics/Transitions/vsTrainer%d",trainerid) if !pbResolveBitmap(tgraphic)
-    end
-    begin
-    if pbResolveBitmap(tbargraphic) && pbResolveBitmap(tgraphic) && !$game_switches[145]
-      outfit = ($Trainer) ? $Trainer.outfit : 0
-      # Set up
-      viewplayer = Viewport.new(0,Graphics.height/3,Graphics.width/2,128)
-      viewplayer.z = viewport.z
-      viewopp = Viewport.new(Graphics.width/2,Graphics.height/3,Graphics.width/2,128)
-      viewopp.z = viewport.z
-      viewvs = Viewport.new(0,0,Graphics.width,Graphics.height)
-      viewvs.z = viewport.z
-      fade = Sprite.new(viewport)
-      fade.bitmap  = BitmapCache.load_bitmap("Graphics/Transitions/vsFlash")
-      fade.tone    = Tone.new(-255,-255,-255)
-      fade.opacity = 100
-      overlay = Sprite.new(viewport)
-      overlay.bitmap = Bitmap.new(Graphics.width,Graphics.height)
-      pbSetSystemFont(overlay.bitmap)
-      pbargraphic = sprintf("Graphics/Transitions/vsBar%s_%d",getConstantName(PBTrainers,$Trainer.trainertype),outfit) rescue nil
-      pbargraphic = sprintf("Graphics/Transitions/vsBar%d_%d",$Trainer.trainertype,outfit) if !pbResolveBitmap(pbargraphic)
-      if !pbResolveBitmap(pbargraphic)
-        pbargraphic = sprintf("Graphics/Transitions/vsBar%s",getConstantName(PBTrainers,$Trainer.trainertype)) rescue nil
-      end
-      pbargraphic = sprintf("Graphics/Transitions/vsBar%d",$Trainer.trainertype) if !pbResolveBitmap(pbargraphic)
-      xoffset = (((Graphics.width/2)/10).round)*10
-      bar1 = Sprite.new(viewplayer)
-      bar1.bitmap = BitmapCache.load_bitmap(pbargraphic)
-      bar1.x      = -xoffset
-      bar2 = Sprite.new(viewopp)
-      bar2.bitmap = BitmapCache.load_bitmap(tbargraphic)
-      bar2.x      = xoffset
-      vs = Sprite.new(viewvs)
-      vs.bitmap  = BitmapCache.load_bitmap("Graphics/Transitions/vs")
-      vs.ox      = vs.bitmap.width/2
-      vs.oy      = vs.bitmap.height/2
-      vs.x       = Graphics.width/2
-      vs.y       = Graphics.height/1.5
-      vs.visible = false
-      flash = Sprite.new(viewvs)
-      flash.bitmap = BitmapCache.load_bitmap("Graphics/Transitions/vsFlash")
-      flash.opacity = 0
-      # Animation
-      10.times do
-        bar1.x += xoffset/10
-        bar2.x -= xoffset/10
-        pbWait(1)
-      end
-      pbSEPlay("PRSFX- Counter2")
-      pbSEPlay("PRSFX- Flash")
-      flash.opacity = 255
-      bar1.dispose
-      bar2.dispose
-      bar1 = AnimatedPlane.new(viewplayer)
-      bar1.bitmap = BitmapCache.load_bitmap(pbargraphic)
-      bar2 = AnimatedPlane.new(viewopp)
-      bar2.bitmap = BitmapCache.load_bitmap(tbargraphic)
-      pgraphic = sprintf("Graphics/Transitions/vsTrainer%s_%d",getConstantName(PBTrainers,$Trainer.trainertype),outfit) rescue nil
-      pgraphic = sprintf("Graphics/Transitions/vsTrainer%d_%d",$Trainer.trainertype,outfit) if !pbResolveBitmap(pgraphic)
-      if !pbResolveBitmap(pgraphic)
-        pgraphic = sprintf("Graphics/Transitions/vsTrainer%s",getConstantName(PBTrainers,$Trainer.trainertype)) rescue nil
-      end
-      pgraphic = sprintf("Graphics/Transitions/vsTrainer%d",$Trainer.trainertype) if !pbResolveBitmap(pgraphic)
-      player = Sprite.new(viewplayer)
-      player.bitmap = BitmapCache.load_bitmap(pgraphic)
-      player.mirror = true if $game_switches[1235]
-      player.x      = -xoffset
-      trainer = Sprite.new(viewopp)
-      trainer.bitmap = BitmapCache.load_bitmap(tgraphic)
-      trainer.x      = xoffset
-      trainer.tone   = Tone.new(-255,-255,-255)
-      25.times do
-        flash.opacity -= 51 if flash.opacity>0
-        bar1.ox -= 16
-        bar2.ox += 16
-        pbWait(1)
-      end
-      11.times do
-        bar1.ox -= 16
-        bar2.ox += 16
-        player.x += xoffset/10
-        trainer.x -= xoffset/10
-        pbWait(1)
-      end
-      2.times do
-        bar1.ox -= 16
-        bar2.ox += 16
-        player.x -= xoffset/20
-        trainer.x += xoffset/20
-        pbWait(1)
-      end
-      10.times do
-        bar1.ox -= 16
-        bar2.ox += 16
-        pbWait(1)
-      end
-      val = 2
-      flash.opacity = 255
-      vs.visible = true
-      trainer.tone = Tone.new(0,0,0)
-      textpos=[
-         [_INTL("{1}",$Trainer.name),Graphics.width/4,(Graphics.height/1.5)+10,2,
-            Color.new(248,248,248),Color.new(12*6,12*6,12*6)],
-         [_INTL("{1}",trainername),(Graphics.width/4)+(Graphics.width/2),(Graphics.height/1.5)+10,2,
-            Color.new(248,248,248),Color.new(12*6,12*6,12*6)]
-      ]
-      pbDrawTextPositions(overlay.bitmap,textpos)
-      pbSEPlay("PRSFX- Slash")
-      70.times do
-        bar1.ox -= 16
-        bar2.ox += 16
-        flash.opacity -= 25.5 if flash.opacity>0
-        vs.x += val
-        vs.y -= val
-        val = 2 if vs.x<=(Graphics.width/2)-2
-        val = -2 if vs.x>=(Graphics.width/2)+2
-        pbWait(1)
-      end
-      30.times do
-        bar1.ox -= 16
-        bar2.ox += 16
-        vs.zoom_x += 0.2
-        vs.zoom_y += 0.2
-        pbWait(1)
-      end
-      flash.tone = Tone.new(-255,-255,-255)
-      10.times do
-        bar1.ox -= 16
-        bar2.ox += 16
-        flash.opacity += 25.5
-        pbWait(1)
-      end
-      # End
-      player.dispose
-      trainer.dispose
-      flash.dispose
-      vs.dispose
-      bar1.dispose
-      bar2.dispose
-      overlay.dispose
-      fade.dispose
-      viewvs.dispose
-      viewopp.dispose
-      viewplayer.dispose
-      viewport.color = Color.new(0,0,0,255)
-      handled=true
-    end
-    rescue
-    end
+  if trainerid >= 0 && !$game_switches[145]
+    handled = pbTrainerVsAnimation(viewport,trainerid,trainername)
   end
 
-  # End of VS. sequence script
   # Default battle intro animation
   if !handled
 #### SARDINES - v17 - START

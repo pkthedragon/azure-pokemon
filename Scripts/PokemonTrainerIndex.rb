@@ -95,10 +95,7 @@ class Scene_TrainerIndex
   end
 
   def pbGetEncounteredTrainers
-    # Initialize tracking if not present
-    if !$PokemonGlobal.respond_to?(:encounteredTrainers)
-      $PokemonGlobal.encounteredTrainers = []
-    end
+    encountered_trainers = $PokemonGlobal.encounteredTrainers
 
     # Load trainer data
     $trainerdata = load_data("Data/trainers.dat") if !$trainerdata
@@ -120,7 +117,7 @@ class Scene_TrainerIndex
       trainertype_name = PBTrainers.getName(trainerid) rescue "???"
 
       # Check if this trainer has been encountered
-      if $PokemonGlobal.encounteredTrainers.include?(key)
+      if encountered_trainers.include?(key)
         trainers.push("#{trainertype_name} #{trainername}")
       else
         trainers.push("???")
@@ -362,13 +359,7 @@ end
 
 # Call this function when a trainer battle starts to register the encounter
 def pbRegisterTrainerEncounter(trainerid, trainername, partyid)
-  if !$PokemonGlobal.respond_to?(:encounteredTrainers)
-    $PokemonGlobal.encounteredTrainers = []
-  end
-
+  encountered_trainers = $PokemonGlobal.encounteredTrainers
   key = [trainerid, trainername, partyid]
-
-  if !$PokemonGlobal.encounteredTrainers.include?(key)
-    $PokemonGlobal.encounteredTrainers.push(key)
-  end
+  encountered_trainers.push(key) unless encountered_trainers.include?(key)
 end
