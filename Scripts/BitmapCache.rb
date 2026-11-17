@@ -209,16 +209,29 @@ module BitmapCache
     }
   end
 
+  def self.open_bitmap(path)
+    return BitmapWrapper.new(path)
+  rescue Errno::ENOENT
+    # mkxp-z can stop at an earlier filename with the same prefix. Resolve the
+    # exact character filename before the caller falls back to a blank bitmap.
+    if path.start_with?("Graphics/Characters/") && File.extname(path).empty?
+      resolved=pbResolveBitmap(path)
+      return BitmapWrapper.new(resolved) if resolved
+    end
+    raise
+  end
+  private_class_method :open_bitmap
+
   def self.load_bitmap(path, hue = 0, failsafe = false)
     cached = true
     path = -canonicalize(path)  # This creates a frozen string from the path, to ensure identical paths are treated as identical.
     objPath = fromCache(path)
     if !objPath
       begin
-        bm = BitmapWrapper.new(path)
+        bm = open_bitmap(path)
         rescue Hangup
         begin
-          bm = BitmapWrapper.new(path)
+          bm = open_bitmap(path)
           rescue
           raise _INTL("Failed to load the bitmap located at: {1}",path) if !failsafe
           bm = BitmapWrapper.new(32,32)
