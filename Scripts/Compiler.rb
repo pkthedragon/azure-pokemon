@@ -6295,7 +6295,8 @@ def pbAltPBSBuildLegacyPokemonSections(pokemonFile,metricsFile,regionalDexFile)
     if data["Types"] && data["Types"]!=""
       types=strsplit(data["Types"],/\s*,\s*/)
       legacy["Type1"]=types[0]
-      legacy["Type2"]=(types[1] && types[1]!="") ? types[1] : types[0]
+      # The CSV parser consumes each type string in place.
+      legacy["Type2"]=(types[1] && types[1]!="") ? types[1] : types[0].dup
     else
       legacy["Type1"]=data["Type1"] || data["LegacyType1"]
       legacy["Type2"]=data["Type2"] || data["LegacyType2"]
