@@ -317,7 +317,7 @@ class Bitmap3D
     @layers.times do |i|
       @mdl[i] = Bitmap.new(@width,@height)
       @mdl[i].blt(0,0,@sheet,Rect.new(i*@width,0,@width,@height)) if mode == SpriteSheetModes::Horizontal
-      @mdl[i].blt(0,0,@sheet,Rect.new(0,(@layers-i)*@height,@width,@height)) if mode == SpriteSheetModes::Vertical
+      @mdl[i].blt(0,0,@sheet,Rect.new(0,(@layers-i-1)*@height,@width,@height)) if mode == SpriteSheetModes::Vertical
     end
   end
 end

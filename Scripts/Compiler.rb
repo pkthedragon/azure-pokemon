@@ -5575,6 +5575,7 @@ def pbCompileAnimations
     end
   end
   save_data(pbanims,"Data/PkmnAnimations.rxdata")
+  AzureBattleAnimationPack.write(pbanims)
   # PkmnAnimations is the source for move2anim. Save the derived index last so
   # its timestamp accurately records that it reflects this animation file.
   save_data(move2anim,"Data/move2anim.dat")
@@ -5664,7 +5665,7 @@ AZURE_PBS_COMPILE_STEPS=[
   {:id=>:animations,
    :label=>"animation index",
    :sources=>["Data/PkmnAnimations.rxdata"],
-   :outputs=>["Data/move2anim.dat"],
+   :outputs=>["Data/move2anim.dat","Data/BattleAnimations.dat"],
    :dependencies=>[:moves]}
 ] if !defined?(AZURE_PBS_COMPILE_STEPS)
 

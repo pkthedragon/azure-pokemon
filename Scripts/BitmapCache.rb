@@ -126,6 +126,85 @@ module RPG
   end
 end
 
+# The native loader requires the actual filename case and can stop at another
+# file with the same prefix. Resolve names for every Bitmap constructor, including
+# direct callers outside BitmapCache, without changing who owns the bitmap.
+module AzureBitmapFiles
+  EXTENSIONS=[".png",".gif",".jpg",".jpeg",".bmp"].freeze
+  IMAGE_EXTENSION=/\.(?:png|gif|jpe?g|bmp)\z/i
+
+  def self.clear
+    @directories={}
+  end
+
+  def self.directory_names(directory)
+    key=File.expand_path(directory)
+    stamp=File.mtime(directory)
+    @directories ||= {}
+    entry=@directories[key]
+    if !entry || entry[0]!=stamp
+      names={}
+      Dir.children(directory).each { |name| names[name.downcase] ||= name }
+      entry=[stamp,names]
+      @directories[key]=entry
+    end
+    return entry[1]
+  rescue SystemCallError, IOError
+    return {}
+  end
+
+  def self.resolve(filename)
+    return nil unless filename.is_a?(String) && !filename.empty?
+    return nil if filename.end_with?("/","\\")
+    filename=filename.tr("\\","/")
+    paths=[]
+    if defined?(RTP)
+      RTP.eachPathFor(filename) { |path| paths << path }
+    else
+      paths << filename
+    end
+    paths.each do |path|
+      directory=File.dirname(path)
+      basename=File.basename(path)
+      candidates=[basename]
+      candidates.concat(EXTENSIONS.map { |ext| basename+ext }) unless IMAGE_EXTENSION.match?(basename)
+      names=directory_names(directory)
+      candidates.each do |candidate|
+        actual=names[candidate.downcase]
+        next unless actual
+        resolved=File.join(directory,actual)
+        return resolved if File.file?(resolved)
+      end
+      # Loose directory listings cannot enumerate an encrypted archive. Keep
+      # the existing RGSS/RTP probing available for those installations.
+      if respond_to?(:pbTryString,true) &&
+         (File.file?("Game.rgssad") || File.file?("Game.rgss2a"))
+        candidates.each do |candidate|
+          resolved=File.join(directory,candidate)
+          return resolved if pbTryString(resolved)
+          if IMAGE_EXTENSION.match?(candidate)
+            uppercase=resolved.sub(IMAGE_EXTENSION) { |ext| ext.upcase }
+            return uppercase if uppercase!=resolved && pbTryString(uppercase)
+          end
+        end
+      end
+    end
+    return nil
+  end
+end
+
+module AzureBitmapFileConstructor
+  def new(*args,&block)
+    if args.length==1 && args[0].is_a?(String)
+      resolved=AzureBitmapFiles.resolve(args[0])
+      args[0]=resolved if resolved
+    end
+    return super(*args,&block)
+  end
+end
+Bitmap.singleton_class.prepend(AzureBitmapFileConstructor) unless
+  Bitmap.singleton_class.ancestors.include?(AzureBitmapFileConstructor)
+
 class BitmapWrapper < Bitmap
   attr_reader :refcount
   attr_accessor :cache_key
@@ -163,6 +242,48 @@ end
 
 module BitmapCache
   @cache = ObjectSpace::WeakMap.new
+  BATTLE_BITMAP_LIMIT = 16 * 1024 * 1024
+
+  def self.with_battle_bitmaps
+    previous_depth = @battle_bitmap_depth.to_i
+    @battle_bitmap_depth = previous_depth + 1
+    yield
+  ensure
+    @battle_bitmap_depth = previous_depth
+  end
+
+  def self.retain_battle_bitmap(path, bitmap)
+    return if @battle_bitmap_depth.to_i == 0 || $INEDITOR
+    return unless path.start_with?("Graphics/Pictures/Battle/", "Graphics/Battlebacks/",
+      "Graphics/Battlers/", "Graphics/Windowskins/", "Graphics/Characters/trainer",
+      "Graphics/Characters/trback", "Graphics/Characters/trfront") ||
+      path == "Graphics/Pictures/types" || path.start_with?("Graphics/Pictures/types.")
+    return unless bitmap.is_a?(BitmapWrapper) && bitmap.cache_key &&
+                  fromCache(bitmap.cache_key).equal?(bitmap)
+
+    @battle_bitmaps ||= {}
+    @battle_bitmap_bytes ||= 0
+    entry = @battle_bitmaps.delete(path)
+    if entry && entry[0].equal?(bitmap)
+      @battle_bitmaps[path] = entry
+      return
+    end
+    if entry
+      @battle_bitmap_bytes -= entry[1]
+      entry[0].dispose
+    end
+    size = bitmap.width * bitmap.height * 4
+    return if size > BATTLE_BITMAP_LIMIT
+    while @battle_bitmap_bytes + size > BATTLE_BITMAP_LIMIT
+      _old_path, old_entry = @battle_bitmaps.shift
+      @battle_bitmap_bytes -= old_entry[1]
+      old_entry[0].dispose
+    end
+    bitmap.addRef
+    @battle_bitmaps[path] = [bitmap, size]
+    @battle_bitmap_bytes += size
+  end
+  private_class_method :retain_battle_bitmap
 
   def self.with_retained_map_bitmaps
     retained=[]
@@ -223,14 +344,6 @@ module BitmapCache
 
   def self.open_bitmap(path)
     return BitmapWrapper.new(path)
-  rescue Errno::ENOENT
-    # mkxp-z can stop at an earlier filename with the same prefix. Resolve the
-    # exact character filename before the caller falls back to a blank bitmap.
-    if path.start_with?("Graphics/Characters/") && File.extname(path).empty?
-      resolved=pbResolveBitmap(path)
-      return BitmapWrapper.new(resolved) if resolved
-    end
-    raise
   end
   private_class_method :open_bitmap
 
@@ -256,6 +369,7 @@ module BitmapCache
       setKey(path,objPath)
       cached=false
     end
+    retain_battle_bitmap(path,objPath)
     if hue == 0
       objPath.addRef if cached
       return objPath
@@ -353,7 +467,11 @@ module BitmapCache
   def self.clear
     @hidden_move_bitmap.dispose if @hidden_move_bitmap
     @hidden_move_bitmap=nil
+    @battle_bitmaps.each_value { |entry| entry[0].dispose } if @battle_bitmaps
+    @battle_bitmaps = {}
+    @battle_bitmap_bytes = 0
     @cache = ObjectSpace::WeakMap.new
+    AzureBitmapFiles.clear
     GC.start
   end
 end

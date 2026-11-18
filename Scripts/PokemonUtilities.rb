@@ -1379,7 +1379,7 @@ def pbTrainerSpriteBackFile(type)
   if !pbResolveBitmap(bitmapFileName)
     bitmapFileName=sprintf("Graphics/Characters/trback%03d",type)
   end
-  return bitmapFileName
+  return pbResolveBitmap(bitmapFileName)
 end
 
 def pbPlayerSpriteFile(type)

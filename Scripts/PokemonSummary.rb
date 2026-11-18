@@ -719,10 +719,10 @@ class PokemonSummaryScene
       status=6 if pbPokerus(pokemon)==1
       status=@pokemon.status-1 if @pokemon.status>0
       status=5 if pokemon.hp==0
-      imagepos.push(["Graphics/Pictures/Summary/statuses",124,100,0,16*status,44,16])
+      imagepos.push(["Graphics/Pictures/statuses",124,100,0,16*status,44,16])
     end
     if pokemon.isShiny?
-      imagepos.push([sprintf("Graphics/Pictures/Summary/shiny"),2,134,0,0,-1,-1])
+      imagepos.push(["Graphics/Pictures/shiny",2,134,0,0,-1,-1])
     end
 #    if pokemon.isPULSE3?
 #      imagepos.push([sprintf("Graphics/Pictures/battlePulse3EvoBox"),0,156,0,0,-1,-1])

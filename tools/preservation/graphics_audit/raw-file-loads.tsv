@@ -1,0 +1,15 @@
+source	line	path_or_argument	assessment
+Scripts/Autosave.rb	117	"""Graphics/Icons/saveDisk"""	own icon; supplied
+Scripts/Autosave.rb	122	"""Graphics/Icons/saveArrow"""	own icon; supplied
+Scripts/DrawText.rb	716	graphic	dynamic inline-image measurement; own temporary
+Scripts/DrawText.rb	980	ch[0]	dynamic inline-image glyph; own temporary
+Scripts/PokemonBossBattle.rb	84	"sprintf(""Graphics/Pictures/Battle/%s"",barGraphic)"	fixed bar formatting and one-time source ownership; all owned bitmaps released
+Scripts/PokemonBossBattle.rb	85	"""Graphics/Pictures/Battle/bossbarshield"""	fixed bar formatting and one-time source ownership; all owned bitmaps released
+Scripts/PokemonBossBattle.rb	86	"""Graphics/Pictures/Battle/bossbarshieldcracked"""	fixed bar formatting and one-time source ownership; all owned bitmaps released
+Scripts/Pseudo3D.rb	297	sheet	independent sprite sheet; vertical slicing fixed
+Scripts/Roulette Game.rb	138	"""Graphics/Pictures/Roulette/ball"""	one owned source; resized canvases released on replacement/clear/end
+Plugins/MakerStudio/002_Integration/002_RendererOverride.rb	492	"""Graphics/Autotiles/"" + name"	intentional independent full strip; do not deanimate/cache-share
+Plugins/MakerStudio/002_Integration/002_RendererOverride.rb	1300	base	optional baked PNG; missing falls back to generation
+Plugins/MakerStudio/002_Integration/004_FogOverride.rb	179	path	owned mutable source; hue_change; do not cache-share
+Plugins/MakerStudio/002_Integration/008_FogCommands.rb	302	path	owned mutable replacement; hue_change; do not cache-share
+Plugins/MakerStudio/002_Integration/010_MinimapOverride.rb	437	"sprintf(""Graphics/Shadows/%03d_%d"", map.map_id, shadow_id)"	optional minimap baked PNG; owned temporary; missing skips layer

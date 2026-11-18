@@ -3999,6 +3999,7 @@ def animationEditorMain(animation)
     if Input.trigger?(Input::B)
       if Kernel.pbConfirmMessage(_INTL("Save changes?"))
         save_data(animation,"Data/PkmnAnimations.rxdata")
+        AzureBattleAnimationPack.write(animation)
         $pkmn_animations = animation
         pbInvalidateBattleAnimationIndex
       end
@@ -4183,6 +4184,7 @@ end
 
 def pbAnimationEditor
   pbBGMStop()
+  $pkmn_animations=$pkmn_animations.materialize if $pkmn_animations.is_a?(AzureRuntimeBattleAnimations)
   if !$pkmn_animations
     $pkmn_animations=tryLoadData("Data/PkmnAnimations.rxdata")
   end
@@ -4267,6 +4269,7 @@ def pbAnimationsOrganiser
         if cmd2==0
           # Save animations here
           save_data(list,"Data/PkmnAnimations.rxdata")
+          AzureBattleAnimationPack.write(list)
           $pkmn_animations = list
           pbInvalidateBattleAnimationIndex
           Kernel.pbMessage(_INTL("Data saved."))
@@ -4332,7 +4335,10 @@ def pbConvertAnimsToNewFormat
     ret=pbConvertAnimToNewFormat(animations[k])
     count+=1 if ret
   end
-  save_data(animations,"Data/PkmnAnimations.rxdata") if count>0
+  if count>0
+    save_data(animations,"Data/PkmnAnimations.rxdata")
+    AzureBattleAnimationPack.write(animations)
+  end
   $pkmn_animations = animations if count>0
   pbInvalidateBattleAnimationIndex if count>0
   Kernel.pbMessage(_INTL("{1} animations converted to new format.",count))

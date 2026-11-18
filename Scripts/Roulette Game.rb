@@ -135,6 +135,7 @@ class RouletteScene
     def initialize(roulette)
       @roulette=roulette
       @balls=[]
+      @ballbitmap=Bitmap.new("Graphics/Pictures/Roulette/ball")
     end  
     
     def addBall(sprite)
@@ -148,18 +149,27 @@ class RouletteScene
     def clearBalls
       for ball in @balls
         ball.visible=false
+        bitmap=ball.bitmap
+        ball.bitmap=nil
+        bitmap.dispose if bitmap && !bitmap.disposed?
       end  
       @balls.clear
     end 
+
+    def dispose
+      clearBalls
+      @ballbitmap.dispose if @ballbitmap && !@ballbitmap.disposed?
+    end
     
     # Redraws the bitmap with the height and the changed ox and oy where
     # the ball picture will be at the top to create the illusion that the
     # ball is spinning.
     # The lower the height, the lower the distance to the roulette center.
     def adjustBitmapBall(i,height) # 
-      bitmapBall = Bitmap.new("Graphics/Pictures/Roulette/ball")
+      oldbitmap=@balls[i].bitmap
       @balls[i].bitmap=Bitmap.new(30,height)
-      @balls[i].bitmap.blt(0,0,bitmapBall,bitmapBall.rect)
+      @balls[i].bitmap.blt(0,0,@ballbitmap,@ballbitmap.rect)
+      oldbitmap.dispose if oldbitmap && !oldbitmap.disposed?
       @balls[i].ox=balls[i].bitmap.width/2
       @balls[i].oy=balls[i].bitmap.height
     end  
@@ -462,6 +472,7 @@ class RouletteScene
 
   def pbEndScene
     pbFadeOutAndHide(@sprites) { update }
+    @roulette.dispose
     pbDisposeSpriteHash(@sprites)
     @viewport.dispose
   end

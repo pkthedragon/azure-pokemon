@@ -593,8 +593,6 @@ class GifBitmap
     @currentIndex=0
     @disposed=false
     bitmap=nil
-    filestring=nil
-    filestrName=nil
     file="" if !file
     file=canonicalize(file)
     # Blank character graphics use one transparent frame without opening a file.
@@ -607,27 +605,11 @@ class GifBitmap
     begin
       bitmap=BitmapCache.load_bitmap(file,hue)
     rescue
+      # Do not hide failures decoding an existing image behind a blank frame.
+      # Missing optional images retain their transparent fallback below.
+      raise if AzureBitmapFiles.resolve(file)
       bitmap=nil
     end
-    if !bitmap || (bitmap.width==32 && bitmap.height==32)
-      if (filestring=pbGetFileChar(file))
-        filestrName=file
-      elsif (filestring=pbGetFileChar(file+".gif"))
-        filestrName=file+".gif"
-      elsif (filestring=pbGetFileChar(file+".png"))
-        filestrName=file+".png"
-      elsif (filestring=pbGetFileChar(file+".jpg"))
-        filestrName=file+".jpg"
-      elsif (filestring=pbGetFileChar(file+".bmp"))
-        filestrName=file+".bmp"
-      end
-    end
-    if bitmap && filestring && filestring[0]==0x47 &&
-       bitmap.width==32 && bitmap.height==32
-      #File.open("debug.txt","ab"){|f| f.puts("rejecting bitmap") }
-      bitmap.dispose
-      bitmap=nil
-    end 
     if bitmap
       #File.open("debug.txt","ab"){|f| f.puts("reusing bitmap") }
       # Have a regular non-animated bitmap
@@ -636,15 +618,9 @@ class GifBitmap
       @gifbitmaps=[bitmap]
       @gifdelays=[1]
     else
-      tmpBase=File.basename(file)+"_tmp_"
-      filestring=pbGetFileString(filestrName) if filestring
-      if @gifbitmaps.length==0
-        @gifbitmaps=[BitmapWrapper.new(32,32)]
-        @gifdelays=[1]
-      end
-      if @gifbitmaps.length==1
-        BitmapCache.setKey(file,@gifbitmaps[0])
-      end
+      @totalframes=1
+      @gifbitmaps=[BitmapWrapper.new(32,32)]
+      @gifdelays=[1]
     end
   end
 
@@ -1502,21 +1478,7 @@ end
 # Finds the real path for an image file.  This includes paths in encrypted
 # archives.  Returns nil if the path can't be found.
 def pbResolveBitmap(x)
-  return nil if !x
-  noext=x.gsub(/\.(bmp|png|gif|jpg|jpeg)$/,"")
-  filename=nil
-#  RTP.eachPathFor(x) {|path|
-#     filename=pbTryString(path) if !filename
-#     filename=pbTryString(path+".gif") if !filename
-#  }
-  RTP.eachPathFor(noext) {|path|
-     filename=pbTryString(path+".png") if !filename
-     filename=pbTryString(path+".gif") if !filename
-#     filename=pbTryString(path+".jpg") if !filename
-#     filename=pbTryString(path+".jpeg") if !filename
-#     filename=pbTryString(path+".bmp") if !filename
-  }
-  return filename
+  return AzureBitmapFiles.resolve(x)
 end
 
 # Adds a background to the sprite hash.
@@ -4174,7 +4136,7 @@ class Window_AdvancedTextPokemon < SpriteWindow_Base
 
   def allocPause
     if !@pausesprite
-      @pausesprite=AnimatedSprite.create("Graphics/Pictures/pause",4,3)
+      @pausesprite=AnimatedSprite.create("Graphics/Pictures/Party/pause",4,3)
       @pausesprite.z=100000
       @pausesprite.visible=false
     end

@@ -709,7 +709,7 @@ def pbSceneStandby
       $scene.disposeSpritesets
     end
     Graphics.frame_reset
-    yield
+    BitmapCache.with_battle_bitmaps { yield }
     if $scene.is_a?(Scene_Map)
       $scene.createSpritesets
     end
@@ -1023,12 +1023,6 @@ def pbBattleAnimation(battletype=0,bgm=nil,trainerid=-1,trainername="")
     Graphics.freeze
     Graphics.transition(Graphics.frame_rate*1.25,sprintf("Graphics/Transitions/%s",anim))
     viewport.color = Color.new(0,0,0,255)   # Ensure screen is black
-    # Slight pause after animation before starting up the battle scene
-    5.times do
-      Graphics.update
-      Input.update
-      pbUpdateSceneMap
-    end
   end
 #### SARDINES - v17 - END
   pbPushFade

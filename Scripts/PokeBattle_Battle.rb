@@ -5293,38 +5293,10 @@ end
         return pbChangeBGSprite
       end
     end
-    base=""
-    trialname=""
-    environ=environment
-    if environ==PBEnvironment::Grass || environ==PBEnvironment::TallGrass
-      trialname="Grass"
-    elsif environ==PBEnvironment::Sand
-      trialname="Sand"
-    elsif $PokemonGlobal.surfing
-      trialname="Water"
-    elsif $PokemonGlobal.lavasurfing
-      trialname="Volcano"
-    elsif $PokemonGlobal.swimming
-      trialname="Water"
-    end
-    if pbResolveBitmap(sprintf("Graphics/Battlebacks/playerbase"+backdrop+trialname))
-      base=trialname
-    end
-    # Choose time of day
-    time=""
-    trialname=""
-    timenow=pbGetTimeNow
-    if PBDayNight.isNight?(timenow)
-      trialname="Night"
-    elsif PBDayNight.isEvening?(timenow)
-      trialname="Eve"
-    end
-    if pbResolveBitmap(sprintf("Graphics/Battlebacks/battlebg"+backdrop+trialname))
-      time=trialname
-    end
-    pbApplySceneBG("battlebg","Graphics/Battlebacks/battlebg"+backdrop+time)
-    pbApplySceneBG("enemybase","Graphics/Battlebacks/enemybase"+backdrop+base+time)
-    pbApplySceneBG("playerbase","Graphics/Battlebacks/playerbase"+backdrop+base+time)
+    battlebg,enemybase,playerbase=AzureBattlebackGraphics.paths(backdrop,environment)
+    pbApplySceneBG("battlebg",battlebg)
+    pbApplySceneBG("enemybase",enemybase)
+    pbApplySceneBG("playerbase",playerbase)
   end
 
   def pbChangeBGSprite
@@ -5532,11 +5504,11 @@ end
                 pbApplySceneBG("battlebg","Graphics/Battlebacks/battlebgGoldenArena.png")
                 pbApplySceneBG("playerbase","Graphics/Battlebacks/playerbaseGoldenArena.png")
                 pbApplySceneBG("enemybase","Graphics/Battlebacks/enemybaseGoldenArena.png")
-          when 46,47 # Beach and library use the neutral bases.
+          when 46,47 # These backgrounds include their ground without separate bases.
                 backdrop=$fefieldeffect==46 ? "Beach" : "Library"
                 pbApplySceneBG("battlebg","Graphics/Battlebacks/battlebg#{backdrop}.png")
-                pbApplySceneBG("playerbase","Graphics/Battlebacks/playerbaseIndoorA.png")
-                pbApplySceneBG("enemybase","Graphics/Battlebacks/enemybaseIndoorA.png")
+                pbApplySceneBG("playerbase",nil)
+                pbApplySceneBG("enemybase",nil)
   end
  end
 

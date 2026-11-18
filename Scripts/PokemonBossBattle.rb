@@ -80,10 +80,10 @@ class BossPokemonDataBox < SpriteWrapper
     @shieldBreaking = -1
 
     @statuses = AnimatedBitmap.new("Graphics/Pictures/Battle/bossbattleStatuses")
-    @hpbox = Bitmap.new("Graphics/Pictures/Battle/boss_bar")
-    if battler.barGraphic && battler.barGraphic != ""
-      @hpbox = Bitmap.new("Graphics/Pictures/Battle/%s",battler.barGraphic)
-    end
+    barGraphic = battler.barGraphic && battler.barGraphic != "" ? battler.barGraphic : "boss_bar"
+    @hpbox = Bitmap.new(sprintf("Graphics/Pictures/Battle/%s",barGraphic))
+    @shields = Bitmap.new("Graphics/Pictures/Battle/bossbarshield")
+    @shieldsBroken = Bitmap.new("Graphics/Pictures/Battle/bossbarshieldcracked")
 
     # @hpboxX = 0
     # @hpboxY = 10
@@ -128,9 +128,12 @@ class BossPokemonDataBox < SpriteWrapper
   end
 
   def dispose
+    return if disposed?
     @statuses.dispose
     @hpbox.dispose
     @shields.dispose
+    @shieldsBroken.dispose
+    self.bitmap.dispose if self.bitmap && !self.bitmap.disposed?
     super
   end
 
@@ -204,8 +207,6 @@ class BossPokemonDataBox < SpriteWrapper
     end
     pbDrawTextPositions(self.bitmap, textpos)
     shieldX=[150,166,182,198,214,230,246]
-    @shields = Bitmap.new("Graphics/Pictures/Battle/bossbarshield")
-    @shieldsBroken = Bitmap.new("Graphics/Pictures/Battle/bossbarshieldcracked")
     if @shieldCount > 0
       #for i in 0...@shieldCount
         count=0

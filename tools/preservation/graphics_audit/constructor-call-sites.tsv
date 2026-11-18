@@ -1,0 +1,472 @@
+source	line	constructor	classification	arguments
+Scripts/Advanced Pokedex.rb	128	AnimatedBitmap	animated loader	"_INTL(""Graphics/Pictures/Pokedex/pokedexTypes"")"
+Scripts/AdvancedWeather.rb	881	Bitmap	procedural canvas	7, 56
+Scripts/AdvancedWeather.rb	896	Bitmap	procedural canvas	34, 64
+Scripts/AdvancedWeather.rb	926	Bitmap	procedural canvas	8, 5
+Scripts/AdvancedWeather.rb	966	Bitmap	procedural canvas	6, 6
+Scripts/AdvancedWeather.rb	974	Bitmap	procedural canvas	3, 3
+Scripts/AdvancedWeather.rb	980	Bitmap	procedural canvas	4, 4
+Scripts/AdvancedWeather.rb	985	Bitmap	procedural canvas	5, 5
+Scripts/AdvancedWeather.rb	992	Bitmap	procedural canvas	7, 7
+Scripts/AdvancedWeather.rb	1009	Bitmap	procedural canvas	4, 4
+Scripts/AdvancedWeather.rb	1022	Bitmap	procedural canvas	4, 4
+Scripts/AdvancedWeather.rb	1062	Bitmap	procedural canvas	16, 16
+Scripts/AdvancedWeather.rb	1085	Bitmap	procedural canvas	16, 16
+Scripts/AdvancedWeather.rb	1103	Bitmap	procedural canvas	16, 16
+Scripts/AdvancedWeather.rb	1120	Bitmap	procedural canvas	16, 16
+Scripts/AdvancedWeather.rb	1140	Bitmap	procedural canvas	16, 16
+Scripts/AdvancedWeather.rb	1158	Bitmap	procedural canvas	16, 16
+Scripts/AdvancedWeather.rb	1175	Bitmap	procedural canvas	8, 8
+Scripts/AdvancedWeather.rb	1192	Bitmap	procedural canvas	8, 8
+Scripts/AdvancedWeather.rb	1206	Bitmap	procedural canvas	8, 8
+Scripts/AdvancedWeather.rb	1223	Bitmap	procedural canvas	8, 8
+Scripts/AdvancedWeather.rb	1240	Bitmap	procedural canvas	8, 8
+Scripts/AdvancedWeather.rb	1258	Bitmap	procedural canvas	8, 8
+Scripts/AdvancedWeather.rb	1278	Bitmap	procedural canvas	8, 8
+Scripts/AdvancedWeather.rb	1329	Bitmap	procedural canvas	3, 3
+Scripts/AdvancedWeather.rb	1336	Bitmap	procedural canvas	3, 3
+Scripts/AdvancedWeather.rb	1348	Bitmap	procedural canvas	3, 3
+Scripts/AdvancedWeather.rb	1354	Bitmap	procedural canvas	3, 3
+Scripts/AdvancedWeather.rb	1360	Bitmap	procedural canvas	3, 3
+Scripts/AdvancedWeather.rb	1366	Bitmap	procedural canvas	3, 3
+Scripts/AdvancedWeather.rb	1403	Bitmap	procedural canvas	7, 7
+Scripts/AdvancedWeather.rb	1407	Bitmap	procedural canvas	7, 7
+Scripts/AdvancedWeather.rb	1413	Bitmap	procedural canvas	7, 7
+Scripts/AdvancedWeather.rb	1425	Bitmap	procedural canvas	7, 7
+Scripts/AdvancedWeather.rb	1433	Bitmap	procedural canvas	7, 7
+Scripts/AdvancedWeather.rb	1444	Bitmap	procedural canvas	7, 7
+Scripts/AdvancedWeather.rb	1455	Bitmap	procedural canvas	7, 7
+Scripts/AdvancedWeather.rb	1482	Bitmap	procedural canvas	14, 12
+Scripts/AdvancedWeather.rb	1513	Bitmap	procedural canvas	22, 11
+Scripts/AdvancedWeather.rb	1536	Bitmap	procedural canvas	3, 3
+Scripts/AdvancedWeather.rb	1540	Bitmap	procedural canvas	3, 3
+Scripts/AdvancedWeather.rb	1554	Bitmap	procedural canvas	24, 24
+Scripts/AdvancedWeather.rb	1581	Bitmap	procedural canvas	14, 15
+Scripts/AdvancedWeather.rb	1610	Bitmap	procedural canvas	6, 6
+Scripts/AdvancedWeather.rb	1617	Bitmap	procedural canvas	8, 8
+Scripts/AdvancedWeather.rb	1630	Bitmap	procedural canvas	8, 10
+Scripts/AdvancedWeather.rb	1643	Bitmap	procedural canvas	14, 14
+Scripts/AdvancedWeather.rb	1674	Bitmap	procedural canvas	8, 8
+Scripts/AdvancedWeather.rb	1687	Bitmap	procedural canvas	8, 5
+Scripts/AdvancedWeather.rb	1718	Bitmap	procedural canvas	8, 8
+Scripts/AdvancedWeather.rb	1722	Bitmap	procedural canvas	8, 8
+Scripts/AdvancedWeather.rb	1728	Bitmap	procedural canvas	7, 7
+Scripts/AdvancedWeather.rb	1740	Bitmap	procedural canvas	7, 7
+Scripts/AdvancedWeather.rb	1748	Bitmap	procedural canvas	7, 7
+Scripts/AdvancedWeather.rb	1759	Bitmap	procedural canvas	8, 8
+Scripts/AdvancedWeather.rb	1765	Bitmap	procedural canvas	8, 8
+Scripts/AdvancedWeather.rb	1771	Bitmap	procedural canvas	7, 7
+Scripts/AdvancedWeather.rb	1783	Bitmap	procedural canvas	7, 7
+Scripts/AdvancedWeather.rb	1791	Bitmap	procedural canvas	7, 7
+Scripts/AdvancedWeather.rb	1802	Bitmap	procedural canvas	7, 7
+Scripts/AdvancedWeather.rb	1813	Bitmap	procedural canvas	8, 8
+Scripts/AdvancedWeather.rb	1819	Bitmap	procedural canvas	8, 8
+Scripts/AdvancedWeather.rb	1825	Bitmap	procedural canvas	7, 7
+Scripts/AdvancedWeather.rb	1837	Bitmap	procedural canvas	7, 7
+Scripts/AdvancedWeather.rb	1845	Bitmap	procedural canvas	7, 7
+Scripts/AdvancedWeather.rb	1856	Bitmap	procedural canvas	8, 8
+Scripts/AdvancedWeather.rb	1862	Bitmap	procedural canvas	8, 8
+Scripts/AdvancedWeather.rb	1868	Bitmap	procedural canvas	7, 7
+Scripts/AdvancedWeather.rb	1880	Bitmap	procedural canvas	7, 7
+Scripts/AdvancedWeather.rb	1888	Bitmap	procedural canvas	7, 7
+Scripts/AdvancedWeather.rb	1899	Bitmap	procedural canvas	7, 7
+Scripts/AdvancedWeather.rb	1910	Bitmap	procedural canvas	8, 8
+Scripts/AdvancedWeather.rb	1916	Bitmap	procedural canvas	8, 8
+Scripts/AdvancedWeather.rb	1922	Bitmap	procedural canvas	7, 7
+Scripts/AdvancedWeather.rb	1934	Bitmap	procedural canvas	7, 7
+Scripts/AdvancedWeather.rb	1942	Bitmap	procedural canvas	7, 7
+Scripts/AdvancedWeather.rb	1953	Bitmap	procedural canvas	7, 7
+Scripts/AdvancedWeather.rb	1964	Bitmap	procedural canvas	8, 8
+Scripts/AdvancedWeather.rb	1970	Bitmap	procedural canvas	8, 8
+Scripts/AdvancedWeather.rb	1976	Bitmap	procedural canvas	7, 7
+Scripts/AdvancedWeather.rb	1988	Bitmap	procedural canvas	7, 7
+Scripts/AdvancedWeather.rb	1996	Bitmap	procedural canvas	7, 7
+Scripts/AdvancedWeather.rb	2007	Bitmap	procedural canvas	7, 7
+Scripts/AdvancedWeather.rb	2018	Bitmap	procedural canvas	8, 8
+Scripts/AdvancedWeather.rb	2024	Bitmap	procedural canvas	8, 8
+Scripts/AdvancedWeather.rb	2058	Bitmap	procedural canvas	8, 8
+Scripts/AdvancedWeather.rb	2062	Bitmap	procedural canvas	8, 8
+Scripts/AdvancedWeather.rb	2068	Bitmap	procedural canvas	7, 7
+Scripts/AdvancedWeather.rb	2080	Bitmap	procedural canvas	7, 7
+Scripts/AdvancedWeather.rb	2088	Bitmap	procedural canvas	7, 7
+Scripts/AdvancedWeather.rb	2099	Bitmap	procedural canvas	7, 7
+Scripts/AdvancedWeather.rb	2110	Bitmap	procedural canvas	8, 8
+Scripts/AdvancedWeather.rb	2116	Bitmap	procedural canvas	8, 8
+Scripts/AdvancedWeather.rb	2134	Bitmap	procedural canvas	10, 7
+Scripts/AdvancedWeather.rb	2169	Bitmap	procedural canvas	5, 4
+Scripts/AdvancedWeather.rb	2184	Bitmap	procedural canvas	7, 6
+Scripts/AdvancedWeather.rb	2222	Bitmap	procedural canvas	23, 23
+Scripts/AdvancedWeather.rb	2301	Bitmap	procedural canvas	9, 6
+Scripts/AdvancedWeather.rb	2332	Bitmap	procedural canvas	9, 6
+Scripts/AdvancedWeather.rb	2359	Bitmap	procedural canvas	9, 6
+Scripts/AdvancedWeather.rb	2390	Bitmap	procedural canvas	7, 6
+Scripts/AdvancedWeather.rb	2411	Bitmap	procedural canvas	9, 6
+Scripts/AdvancedWeather.rb	2440	Bitmap	procedural canvas	9, 6
+Scripts/AdvancedWeather.rb	2467	Bitmap	procedural canvas	9, 6
+Scripts/AdvancedWeather.rb	2496	Bitmap	procedural canvas	7, 6
+Scripts/AdvancedWeather.rb	2517	Bitmap	procedural canvas	7, 7
+Scripts/AdvancedWeather.rb	2541	Bitmap	procedural canvas	7, 6
+Scripts/AdvancedWeather.rb	2563	Bitmap	procedural canvas	7, 6
+Scripts/AdvancedWeather.rb	2584	Bitmap	procedural canvas	7, 6
+Scripts/AdvancedWeather.rb	2605	Bitmap	procedural canvas	7, 7
+Scripts/AdvancedWeather.rb	2629	Bitmap	procedural canvas	7, 6
+Scripts/AdvancedWeather.rb	2651	Bitmap	procedural canvas	7, 6
+Scripts/AdvancedWeather.rb	2672	Bitmap	procedural canvas	7, 6
+Scripts/AdvancedWeather.rb	2706	Bitmap	procedural canvas	12, 10
+Scripts/AdvancedWeather.rb	2753	Bitmap	procedural canvas	10, 13
+Scripts/AdvancedWeather.rb	2809	Bitmap	procedural canvas	12, 7
+Scripts/AdvancedWeather.rb	2849	Bitmap	procedural canvas	12, 9
+Scripts/AdvancedWeather.rb	2915	Bitmap	procedural canvas	10, 8
+Scripts/AdvancedWeather.rb	2952	Bitmap	procedural canvas	9, 7
+Scripts/AdvancedWeather.rb	2983	Bitmap	procedural canvas	6, 11
+Scripts/AdvancedWeather.rb	3014	Bitmap	procedural canvas	9, 7
+Scripts/AdvancedWeather.rb	3045	Bitmap	procedural canvas	11, 9
+Scripts/AdvancedWeather.rb	3090	Bitmap	procedural canvas	12, 9
+Scripts/AdvancedWeather.rb	3125	Bitmap	procedural canvas	9, 11
+Scripts/AdvancedWeather.rb	3162	Bitmap	procedural canvas	12, 8
+Scripts/AdvancedWeather.rb	3198	Bitmap	procedural canvas	10, 8
+Scripts/AdvancedWeather.rb	3241	Bitmap	procedural canvas	9, 7
+Scripts/AdvancedWeather.rb	3270	Bitmap	procedural canvas	6, 11
+Scripts/AdvancedWeather.rb	3306	Bitmap	procedural canvas	9, 7
+Scripts/AdvancedWeather.rb	3335	Bitmap	procedural canvas	11, 9
+Scripts/AdvancedWeather.rb	3386	Bitmap	procedural canvas	12, 7
+Scripts/AdvancedWeather.rb	3425	Bitmap	procedural canvas	9, 9
+Scripts/AdvancedWeather.rb	3469	Bitmap	procedural canvas	12, 7
+Scripts/AdvancedWeather.rb	3512	Bitmap	procedural canvas	6, 7
+Scripts/AdvancedWeather.rb	3534	Bitmap	procedural canvas	6, 6
+Scripts/AdvancedWeather.rb	3551	Bitmap	procedural canvas	5, 7
+Scripts/AdvancedWeather.rb	3570	Bitmap	procedural canvas	6, 6
+Scripts/AdvancedWeather.rb	3587	Bitmap	procedural canvas	7, 6
+Scripts/AdvancedWeather.rb	3610	Bitmap	procedural canvas	7, 6
+Scripts/AdvancedWeather.rb	3631	Bitmap	procedural canvas	3, 7
+Scripts/AdvancedWeather.rb	3650	Bitmap	procedural canvas	7, 6
+Scripts/AdvancedWeather.rb	3671	Bitmap	procedural canvas	6, 6
+Scripts/AdvancedWeather.rb	3692	Bitmap	procedural canvas	6, 6
+Scripts/AdvancedWeather.rb	3712	Bitmap	procedural canvas	5, 7
+Scripts/AdvancedWeather.rb	3729	Bitmap	procedural canvas	6, 6
+Scripts/AdvancedWeather.rb	3749	Bitmap	procedural canvas	7, 6
+Scripts/AdvancedWeather.rb	3777	Bitmap	procedural canvas	7, 6
+Scripts/AdvancedWeather.rb	3799	Bitmap	procedural canvas	5, 7
+Scripts/AdvancedWeather.rb	3818	Bitmap	procedural canvas	7, 6
+Scripts/AdvancedWeather.rb	3854	Bitmap	procedural canvas	19, 6
+Scripts/AdvancedWeather.rb	3917	Bitmap	procedural canvas	14, 11
+Scripts/AdvancedWeather.rb	3970	Bitmap	procedural canvas	15, 12
+Scripts/AdvancedWeather.rb	4028	Bitmap	procedural canvas	14, 13
+Scripts/AdvancedWeather.rb	4075	Bitmap	procedural canvas	14, 13
+Scripts/AdvancedWeather.rb	4127	Bitmap	procedural canvas	20, 10
+Scripts/AdvancedWeather.rb	4191	Bitmap	procedural canvas	16, 10
+Scripts/AdvancedWeather.rb	4246	Bitmap	procedural canvas	16, 9
+Scripts/AdvancedWeather.rb	4288	Bitmap	procedural canvas	16, 14
+Scripts/AdvancedWeather.rb	4353	Bitmap	procedural canvas	15, 11
+Scripts/AdvancedWeather.rb	4404	Bitmap	procedural canvas	15, 12
+Scripts/AdvancedWeather.rb	4458	Bitmap	procedural canvas	13, 13
+Scripts/AdvancedWeather.rb	4507	Bitmap	procedural canvas	14, 12
+Scripts/AdvancedWeather.rb	4554	Bitmap	procedural canvas	20, 10
+Scripts/AdvancedWeather.rb	4609	Bitmap	procedural canvas	14, 12
+Scripts/AdvancedWeather.rb	4657	Bitmap	procedural canvas	16, 10
+Scripts/AdvancedWeather.rb	4702	Bitmap	procedural canvas	18, 10
+Scripts/AnimationSprite.rb	11	Bitmap	procedural canvas	1,1
+Scripts/Autosave.rb	117	Bitmap	filename	"""Graphics/Icons/saveDisk"""
+Scripts/Autosave.rb	122	Bitmap	filename	"""Graphics/Icons/saveArrow"""
+Scripts/BitmapCache.rb	346	BitmapWrapper	filename	path
+Scripts/BitmapCache.rb	362	BitmapWrapper	procedural canvas	32,32
+Scripts/BitmapCache.rb	366	BitmapWrapper	procedural canvas	32,32
+Scripts/BitmapCache.rb	447	BitmapWrapper	procedural canvas	32, 32
+Scripts/DrawText.rb	499	Bitmap	procedural canvas	1,1
+Scripts/DrawText.rb	716	Bitmap	filename	graphic
+Scripts/DrawText.rb	973	Bitmap	procedural canvas	width,height
+Scripts/DrawText.rb	980	Bitmap	filename	ch[0]
+Scripts/EventScene.rb	495	Bitmap	procedural canvas	maxwidth,Graphics.height
+Scripts/EventScene.rb	539	AnimatedBitmap	animated loader	@picture_name, @hue
+Scripts/Habitats.rb	630	Bitmap	procedural canvas	32, 32
+Scripts/Habitats.rb	631	Bitmap	procedural canvas	32, 32
+Scripts/Habitats.rb	635	AnimatedBitmap	animated loader	"""Graphics/Pictures/Habitats/cursor_list"""
+Scripts/Habitats.rb	636	AnimatedBitmap	animated loader	"""Graphics/Pictures/Habitats/icon_list_owned"""
+Scripts/Habitats.rb	637	AnimatedBitmap	animated loader	"""Graphics/Pictures/Habitats/icon_list_seen"""
+Scripts/Habitats.rb	638	AnimatedBitmap	animated loader	"""Graphics/Pictures/Habitats/icon_list_alert"""
+Scripts/Habitats.rb	640	Bitmap	procedural canvas	84, height
+Scripts/Particle_Engine.rb	200	AnimatedBitmap	animated loader	"""Graphics/Fogs/""+filename,hue"
+Scripts/PBAnimation.rb	1017	AnimatedBitmap	animated loader	"""Graphics/Animations/""+@animation.graphic, @animation.hue"
+Scripts/PerspectiveTilemap.rb	26	AnimatedBitmap	animated loader	"""Graphics/Pictures/minimap_tiles"""
+Scripts/PerspectiveTilemap.rb	27	Bitmap	procedural canvas	map.width*6,map.height*6
+Scripts/PerspectiveTilemap.rb	102	AnimatedBitmap	animated loader	"""Graphics/Characters/""+bm,0"
+Scripts/PerspectiveTilemap.rb	203	Bitmap	procedural canvas	xsize*32, ysize*32+StripSize
+Scripts/PerspectiveTilemap.rb	204	Bitmap	procedural canvas	xsize*32, ysize*32+StripSize
+Scripts/PerspectiveTilemap.rb	205	Bitmap	procedural canvas	xsize*32, ysize*32+StripSize
+Scripts/PerspectiveTilemap.rb	210	Bitmap	procedural canvas	xsize*32, ysize*32+StripSize
+Scripts/PokeBattle_ActualScene.rb	172	AnimatedBitmap	animated loader	"_INTL(""Graphics/Pictures/Battle/battleCommandButtons"")"
+Scripts/PokeBattle_ActualScene.rb	377	AnimatedBitmap	animated loader	"""Graphics/Pictures/Battle/battleFightButtons"""
+Scripts/PokeBattle_ActualScene.rb	378	AnimatedBitmap	animated loader	"_INTL(""Graphics/Pictures/types"")"
+Scripts/PokeBattle_ActualScene.rb	379	AnimatedBitmap	animated loader	"_INTL(""Graphics/Pictures/Battle/battleMegaEvo"")"
+Scripts/PokeBattle_ActualScene.rb	380	AnimatedBitmap	animated loader	"_INTL(""Graphics/Pictures/Battle/battleZMove"")"
+Scripts/PokeBattle_ActualScene.rb	587	AnimatedBitmap	animated loader	"""Graphics/Pictures/Battle/battlePlayerSafari"""
+Scripts/PokeBattle_ActualScene.rb	591	BitmapWrapper	procedural canvas	@databox.width,@databox.height
+Scripts/PokeBattle_ActualScene.rb	664	AnimatedBitmap	animated loader	"""Graphics/Pictures/Battle/battlePlayerBoxD"""
+Scripts/PokeBattle_ActualScene.rb	666	AnimatedBitmap	animated loader	"""Graphics/Pictures/Battle/battleFoeBoxD"""
+Scripts/PokeBattle_ActualScene.rb	675	AnimatedBitmap	animated loader	"""Graphics/Pictures/Battle/battlePlayerBoxS"""
+Scripts/PokeBattle_ActualScene.rb	684	AnimatedBitmap	animated loader	"""Graphics/Pictures/Battle/battleFoeBoxS"""
+Scripts/PokeBattle_ActualScene.rb	690	AnimatedBitmap	animated loader	"_INTL(""Graphics/Pictures/Battle/battleStatuses"")"
+Scripts/PokeBattle_ActualScene.rb	691	BitmapWrapper	procedural canvas	@databox.width,@databox.height
+Scripts/PokeBattle_ActualScene.rb	790	Bitmap	procedural canvas	83, 50
+Scripts/PokeBattle_ActualScene.rb	826	Bitmap	procedural canvas	@databox.bitmap.width+56-@spritebaseX, @databox.bitmap.height
+Scripts/PokeBattle_ActualScene.rb	836	Bitmap	procedural canvas	@spritebaseX+228+56, self.bitmap.height
+Scripts/PokeBattle_ActualScene.rb	850	Bitmap	procedural canvas	@databox.bitmap.width+56-@spritebaseX, @databox.bitmap.height
+Scripts/PokeBattle_ActualScene.rb	865	AnimatedBitmap	animated loader	"_INTL(""Graphics/Pictures/Battle/ShowStatBoosts"")"
+Scripts/PokeBattle_ActualScene.rb	903	Bitmap	procedural canvas	iWidth_Full, iHeight_Full
+Scripts/PokeBattle_ActualScene.rb	904	Bitmap	procedural canvas	iWidth_Full, iHeight_Full
+Scripts/PokeBattle_ActualScene.rb	905	Bitmap	procedural canvas	iWidth_Full, iHeight_Full
+Scripts/PokeBattle_ActualScene.rb	956	Bitmap	procedural canvas	4, 6
+Scripts/PokeBattle_ActualScene.rb	960	Bitmap	procedural canvas	4, 6
+Scripts/PokeBattle_BattleArena.rb	242	Bitmap	procedural canvas	infowindow.width-infowindow.borderX, infowindow.height-infowindow.borderY
+Scripts/PokeBattle_Scene.rb	318	Bitmap	procedural canvas	self.width-32,self.height-32
+Scripts/PokeBattle_Scene.rb	361	Bitmap	procedural canvas	self.width-32,self.height-32
+Scripts/PokemonAchievements.rb	12	AnimatedBitmap	animated loader	"""Graphics/Pictures/Achievements/achievementsButton"""
+Scripts/PokemonAchievements.rb	13	BitmapWrapper	procedural canvas	@button.width,@button.height
+Scripts/PokemonAchievements.rb	59	AnimatedBitmap	animated loader	"""Graphics/Pictures/Achievements/achievementsText"""
+Scripts/PokemonAchievements.rb	60	BitmapWrapper	procedural canvas	@button.width,@button.height
+Scripts/PokemonAchievements.rb	145	AnimatedBitmap	animated loader	"""Graphics/Pictures/Achievements/achievementsButton"""
+Scripts/PokemonAnimEditor.rb	6	Bitmap	procedural canvas	32,32
+Scripts/PokemonAnimEditor.rb	897	Bitmap	procedural canvas	width-32,height-32
+Scripts/PokemonAnimEditor.rb	1135	AnimatedBitmap	animated loader	"""Graphics/Pictures/arrows"""
+Scripts/PokemonAnimEditor.rb	1140	Bitmap	procedural canvas	width,height
+Scripts/PokemonAnimEditor.rb	1350	Bitmap	procedural canvas	128,128
+Scripts/PokemonAnimEditor.rb	1351	AnimatedBitmap	animated loader	"""Graphics/Pictures/animFrameIcon"""
+Scripts/PokemonAnimEditor.rb	1437	AnimatedBitmap	animated loader	"""Graphics/Pictures/testback"""
+Scripts/PokemonAnimEditor.rb	1438	AnimatedBitmap	animated loader	"""Graphics/Pictures/testfront"""
+Scripts/PokemonAnimEditor.rb	1439	AnimatedBitmap	animated loader	"""Graphics/Pictures/testscreen"""
+Scripts/PokemonAnimEditor.rb	1466	AnimatedBitmap	animated loader	"""Graphics/Animations/""+@animation.graphic, @animation.hue"
+Scripts/PokemonAnimEditor.rb	2984	AnimatedBitmap	animated loader	"""Graphics/Animations/""+cmdwin.commands[cmdwin.index],ctlwin.value(0)"
+Scripts/PokemonAnimEditor.rb	3066	AnimatedBitmap	animated loader	"""Graphics/Animations/""+cmdwin.commands[cmdwin.index],ctlwin.value(0)"
+Scripts/PokemonAnimEditor.rb	3399	Bitmap	procedural canvas	6,6
+Scripts/PokemonAnimEditor.rb	3444	Bitmap	procedural canvas	2,2
+Scripts/PokemonAnimEditor.rb	3880	Bitmap	procedural canvas	width-32,height-32
+Scripts/PokemonAnimEditor.rb	3899	AnimatedBitmap	animated loader	"""Graphics/Animations/""+@bitmapname,@hue"
+Scripts/PokemonBag.rb	236	AnimatedBitmap	animated loader	"""Graphics/Pictures/Bag/bagSel"""
+Scripts/PokemonBag.rb	314	AnimatedBitmap	animated loader	"""Graphics/Pictures/Bag/#{REGISTRATION_ICONS[registration]}"""
+Scripts/PokemonBag.rb	410	BitmapWrapper	procedural canvas	width,height
+Scripts/PokemonBag.rb	566	AnimatedBitmap	animated loader	filename
+Scripts/PokemonBag.rb	588	AnimatedBitmap	animated loader	filename
+Scripts/PokemonBossBattle.rb	82	AnimatedBitmap	animated loader	"""Graphics/Pictures/Battle/bossbattleStatuses"""
+Scripts/PokemonBossBattle.rb	84	Bitmap	filename	"sprintf(""Graphics/Pictures/Battle/%s"",barGraphic)"
+Scripts/PokemonBossBattle.rb	85	Bitmap	filename	"""Graphics/Pictures/Battle/bossbarshield"""
+Scripts/PokemonBossBattle.rb	86	Bitmap	filename	"""Graphics/Pictures/Battle/bossbarshieldcracked"""
+Scripts/PokemonBossBattle.rb	112	BitmapWrapper	procedural canvas	@hpbox.width + 100, @hpbox.height + 100
+Scripts/PokemonEditor.rb	3424	AnimatedBitmap	animated loader	"""Graphics/Pictures/#{@map[1]}"""
+Scripts/PokemonEditor.rb	3425	BitmapWrapper	procedural canvas	bitmap.width/2,bitmap.height/2
+Scripts/PokemonEditor.rb	3451	BitmapWrapper	procedural canvas	32,32
+Scripts/PokemonEditor.rb	3452	BitmapWrapper	procedural canvas	map.width*4,map.height*4
+Scripts/PokemonEditor.rb	3480	BitmapWrapper	procedural canvas	32,32
+Scripts/PokemonEditor.rb	3481	BitmapWrapper	procedural canvas	map.width*4,map.height*4
+Scripts/PokemonEggHatching.rb	28	Bitmap	procedural canvas	Graphics.width,Graphics.height
+Scripts/PokemonEggHatching.rb	45	AnimatedBitmap	animated loader	crackfilename
+Scripts/PokemonField.rb	97	BitmapWrapper	procedural canvas	Graphics.width,Graphics.height
+Scripts/PokemonField.rb	214	AnimatedBitmap	animated loader	"""Graphics/Pictures/LE"""
+Scripts/PokemonField.rb	215	Bitmap	procedural canvas	128,64
+Scripts/PokemonField.rb	764	Bitmap	procedural canvas	Graphics.width,Graphics.height
+Scripts/PokemonFieldWeather.rb	12	Bitmap	procedural canvas	bmwidth,bmheight
+Scripts/PokemonFieldWeather.rb	13	Bitmap	procedural canvas	bmwidth,bmheight
+Scripts/PokemonFieldWeather.rb	36	Bitmap	procedural canvas	bmwidth,bmheight
+Scripts/PokemonFieldWeather.rb	37	Bitmap	procedural canvas	bmwidth,bmheight
+Scripts/PokemonFieldWeather.rb	38	Bitmap	procedural canvas	bmwidth,bmheight
+Scripts/PokemonFieldWeather.rb	60	Bitmap	procedural canvas	bmwidth,bmheight
+Scripts/PokemonFieldWeather.rb	61	Bitmap	procedural canvas	bmwidth,bmheight
+Scripts/PokemonFieldWeather.rb	63	Bitmap	procedural canvas	bmwidth,bmheight
+Scripts/PokemonFieldWeather.rb	64	Bitmap	procedural canvas	bmwidth,bmheight
+Scripts/PokemonFieldWeather.rb	100	Bitmap	procedural canvas	32, 128
+Scripts/PokemonFieldWeather.rb	104	Bitmap	procedural canvas	192, 192
+Scripts/PokemonFieldWeather.rb	108	Bitmap	procedural canvas	192, 192
+Scripts/PokemonHiddenMoves.rb	83	AnimatedBitmap	animated loader	"""Graphics/Pictures/hiddenMoveStrobes"""
+Scripts/PokemonLoad.rb	13	AnimatedBitmap	animated loader	"""Graphics/Pictures/loadPanels"""
+Scripts/PokemonLoad.rb	44	BitmapWrapper	procedural canvas	@bgbitmap.width,111*2
+Scripts/PokemonMart.rb	222	AnimatedBitmap	animated loader	"""Graphics/Pictures/martSel"""
+Scripts/PokemonMessages.rb	1114	AnimatedBitmap	animated loader	facefile
+Scripts/PokemonMessages.rb	1115	BitmapWrapper	procedural canvas	96,96
+Scripts/PokemonMinigameMining.rb	16	AnimatedBitmap	animated loader	"_INTL(""Graphics/Pictures/Mining/cracks"")"
+Scripts/PokemonMinigameMining.rb	46	AnimatedBitmap	animated loader	"_INTL(""Graphics/Pictures/Mining/tiles"")"
+Scripts/PokemonMinigameMining.rb	81	AnimatedBitmap	animated loader	"_INTL(""Graphics/Pictures/Mining/cursor"")"
+Scripts/PokemonMinigameMining.rb	82	AnimatedBitmap	animated loader	"_INTL(""Graphics/Pictures/Mining/tools"")"
+Scripts/PokemonMinigameMining.rb	83	AnimatedBitmap	animated loader	"_INTL(""Graphics/Pictures/Mining/hits"")"
+Scripts/PokemonMinigameMining.rb	221	AnimatedBitmap	animated loader	"_INTL(""Graphics/Pictures/Mining/items"")"
+Scripts/PokemonMinigameMining.rb	222	AnimatedBitmap	animated loader	"_INTL(""Graphics/Pictures/Mining/irons"")"
+Scripts/PokemonMinigameSlotMachine.rb	36	AnimatedBitmap	animated loader	"_INTL(""Graphics/Pictures/Slot Machine/images"")"
+Scripts/PokemonMinigameSlotMachine.rb	37	AnimatedBitmap	animated loader	"_INTL(""Graphics/Pictures/Slot Machine/ReelOverlay"")"
+Scripts/PokemonMinigameSlotMachine.rb	92	AnimatedBitmap	animated loader	"_INTL(""Graphics/Pictures/Slot Machine/numbers"")"
+Scripts/PokemonMinigameTilePuzzles.rb	38	AnimatedBitmap	animated loader	"_INTL(""Graphics/Pictures/Tile Puzzle/cursor"")"
+Scripts/PokemonMinigameTilePuzzles.rb	155	AnimatedBitmap	animated loader	"_INTL(""Graphics/Pictures/Tile Puzzle/tiles#{@board}"")"
+Scripts/PokemonMinigameTilePuzzles.rb	158	AnimatedBitmap	animated loader	"""Graphics/Pictures/Tile Puzzle/tiles#{@board}_1"""
+Scripts/PokemonMinigameTilePuzzles.rb	161	AnimatedBitmap	animated loader	"""Graphics/Pictures/Tile Puzzle/tiles#{@board}_2"""
+Scripts/PokemonMinigameTilePuzzles.rb	164	AnimatedBitmap	animated loader	"""Graphics/Pictures/Tile Puzzle/tiles#{@board}_3"""
+Scripts/PokemonMinigameTripleTriad.rb	63	BitmapWrapper	procedural canvas	84,84
+Scripts/PokemonMinigameTripleTriad.rb	69	AnimatedBitmap	animated loader	"_INTL(""Graphics/Pictures/types"")"
+Scripts/PokemonMinigameTripleTriad.rb	81	BitmapWrapper	procedural canvas	84,84
+Scripts/PokemonMinigameTripleTriad.rb	83	AnimatedBitmap	animated loader	"_INTL(""Graphics/Pictures/types"")"
+Scripts/PokemonMinigameTripleTriad.rb	84	AnimatedBitmap	animated loader	iconfile
+Scripts/PokemonMinigameTripleTriad.rb	191	BitmapWrapper	procedural canvas	Graphics.width,Graphics.height
+Scripts/PokemonMinigameTripleTriad.rb	198	BitmapWrapper	procedural canvas	Graphics.width,Graphics.height
+Scripts/PokemonMoveRelearner.rb	235	AnimatedBitmap	animated loader	"_INTL(""Graphics/Pictures/types"")"
+Scripts/PokemonNestAndForm.rb	54	BitmapWrapper	procedural canvas	PokemonRegionMapScene::SQUAREWIDTH+4, PokemonRegionMapScene::SQUAREHEIGHT+4
+Scripts/PokemonNestAndForm.rb	59	BitmapWrapper	procedural canvas	PokemonRegionMapScene::SQUAREWIDTH+4, PokemonRegionMapScene::SQUAREHEIGHT+4
+Scripts/PokemonNestAndForm.rb	64	BitmapWrapper	procedural canvas	PokemonRegionMapScene::SQUAREWIDTH+4, PokemonRegionMapScene::SQUAREHEIGHT+4
+Scripts/PokemonNestAndForm.rb	69	BitmapWrapper	procedural canvas	PokemonRegionMapScene::SQUAREWIDTH+4, PokemonRegionMapScene::SQUAREHEIGHT+4
+Scripts/PokemonNestAndForm.rb	193	BitmapWrapper	procedural canvas	PokemonRegionMapScene::SQUAREWIDTH+4, PokemonRegionMapScene::SQUAREHEIGHT+4
+Scripts/PokemonNestAndForm.rb	198	BitmapWrapper	procedural canvas	PokemonRegionMapScene::SQUAREWIDTH+4, PokemonRegionMapScene::SQUAREHEIGHT+4
+Scripts/PokemonNestAndForm.rb	203	BitmapWrapper	procedural canvas	PokemonRegionMapScene::SQUAREWIDTH+4, PokemonRegionMapScene::SQUAREHEIGHT+4
+Scripts/PokemonNestAndForm.rb	208	BitmapWrapper	procedural canvas	PokemonRegionMapScene::SQUAREWIDTH+4, PokemonRegionMapScene::SQUAREHEIGHT+4
+Scripts/PokemonNestAndForm.rb	304	BitmapWrapper	procedural canvas	PokemonRegionMapScene::SQUAREWIDTH+4, PokemonRegionMapScene::SQUAREHEIGHT+4
+Scripts/PokemonNestAndForm.rb	309	BitmapWrapper	procedural canvas	PokemonRegionMapScene::SQUAREWIDTH+4, PokemonRegionMapScene::SQUAREHEIGHT+4
+Scripts/PokemonNestAndForm.rb	314	BitmapWrapper	procedural canvas	PokemonRegionMapScene::SQUAREWIDTH+4, PokemonRegionMapScene::SQUAREHEIGHT+4
+Scripts/PokemonNestAndForm.rb	319	BitmapWrapper	procedural canvas	PokemonRegionMapScene::SQUAREWIDTH+4, PokemonRegionMapScene::SQUAREHEIGHT+4
+Scripts/PokemonNestAndForm.rb	474	AnimatedBitmap	animated loader	frontBitmap
+Scripts/PokemonNestAndForm.rb	479	AnimatedBitmap	animated loader	backBitmap
+Scripts/PokemonOrgBattle.rb	760	AnimatedBitmap	animated loader	"""Graphics/Characters/""+filename"
+Scripts/PokemonParty.rb	102	AnimatedBitmap	animated loader	"""Graphics/Pictures/Party/partyPanelBlank"""
+Scripts/PokemonParty.rb	259	AnimatedBitmap	animated loader	path
+Scripts/PokemonParty.rb	297	AnimatedBitmap	animated loader	"""Graphics/Pictures/Party/partyPanelRound"""
+Scripts/PokemonParty.rb	298	AnimatedBitmap	animated loader	"""Graphics/Pictures/Party/partyPanelRoundSel"""
+Scripts/PokemonParty.rb	299	AnimatedBitmap	animated loader	"""Graphics/Pictures/Party/partyPanelRoundFnt"""
+Scripts/PokemonParty.rb	300	AnimatedBitmap	animated loader	"""Graphics/Pictures/Party/partyPanelRoundSelFnt"""
+Scripts/PokemonParty.rb	301	AnimatedBitmap	animated loader	"""Graphics/Pictures/Party/partyPanelRoundSwap"""
+Scripts/PokemonParty.rb	302	AnimatedBitmap	animated loader	"""Graphics/Pictures/Party/partyPanelRoundSelSwap"""
+Scripts/PokemonParty.rb	304	AnimatedBitmap	animated loader	"""Graphics/Pictures/Party/partyPanelRect"""
+Scripts/PokemonParty.rb	305	AnimatedBitmap	animated loader	"""Graphics/Pictures/Party/partyPanelRectSel"""
+Scripts/PokemonParty.rb	306	AnimatedBitmap	animated loader	"""Graphics/Pictures/Party/partyPanelRectFnt"""
+Scripts/PokemonParty.rb	307	AnimatedBitmap	animated loader	"""Graphics/Pictures/Party/partyPanelRectSelFnt"""
+Scripts/PokemonParty.rb	308	AnimatedBitmap	animated loader	"""Graphics/Pictures/Party/partyPanelRectSwap"""
+Scripts/PokemonParty.rb	309	AnimatedBitmap	animated loader	"""Graphics/Pictures/Party/partyPanelRectSelSwap"""
+Scripts/PokemonParty.rb	341	AnimatedBitmap	animated loader	"_INTL(""Graphics/Pictures/statuses"")"
+Scripts/PokemonParty.rb	342	AnimatedBitmap	animated loader	"""Graphics/Pictures/Party/partyHP"""
+Scripts/PokemonParty.rb	343	AnimatedBitmap	animated loader	"""Graphics/Pictures/Party/partyHPfnt"""
+Scripts/PokemonParty.rb	344	AnimatedBitmap	animated loader	"""Graphics/Pictures/Party/partyHPswap"""
+Scripts/PokemonParty.rb	441	BitmapWrapper	procedural canvas	@selbitmap.width,@selbitmap.height
+Scripts/PokemonPhone.rb	303	AnimatedBitmap	animated loader	"""Graphics/Pictures/phoneSel"""
+Scripts/PokemonPokedex.rb	13	AnimatedBitmap	animated loader	"""Graphics/Pictures/selarrowwhite"""
+Scripts/PokemonPokedex.rb	124	AnimatedBitmap	animated loader	"""Graphics/Pictures/selarrowwhite"""
+Scripts/PokemonPokedex.rb	136	AnimatedBitmap	animated loader	"""Graphics/Pictures/Pokedex/pokedexOwned"""
+Scripts/PokemonPokedex.rb	137	AnimatedBitmap	animated loader	"""Graphics/Pictures/Pokedex/pokedexSeen"""
+Scripts/PokemonPokedex.rb	146	AnimatedBitmap	animated loader	"""Graphics/Pictures/Pokedex/pokedexSel"""
+Scripts/PokemonPokedex.rb	202	AnimatedBitmap	animated loader	"""Graphics/Pictures/selarrowwhite"""
+Scripts/PokemonPokedex.rb	694	AnimatedBitmap	animated loader	"_INTL(""Graphics/Pictures/Pokedex/pokedexTypes"")"
+Scripts/PokemonPokedex.rb	711	AnimatedBitmap	animated loader	pbPokemonBitmapFile(species,false)
+Scripts/PokemonPokegear.rb	10	BitmapWrapper	procedural canvas	button_bitmap.width,button_bitmap.height
+Scripts/PokemonPokegear.rb	42	AnimatedBitmap	animated loader	icon_path
+Scripts/PokemonPokegear.rb	132	AnimatedBitmap	animated loader	button_path
+Scripts/PokemonRegionMap.rb	10	BitmapWrapper	procedural canvas	Graphics.width,Graphics.height
+Scripts/PokemonSprite.rb	139	AnimatedBitmap	animated loader	pbPokemonIconFile(value)
+Scripts/PokemonSprite.rb	271	AnimatedBitmap	animated loader	bitmapFileName
+Scripts/PokemonSprite.rb	316	AnimatedBitmap	animated loader	@charset
+Scripts/PokemonSprite.rb	329	AnimatedBitmap	animated loader	@charset
+Scripts/PokemonStorage.rb	1502	AnimatedBitmap	animated loader	"""Graphics/Pictures/Storage/boxfist"""
+Scripts/PokemonStorage.rb	1503	AnimatedBitmap	animated loader	"""Graphics/Pictures/Storage/boxpoint1"""
+Scripts/PokemonStorage.rb	1504	AnimatedBitmap	animated loader	"""Graphics/Pictures/Storage/boxpoint2"""
+Scripts/PokemonStorage.rb	1505	AnimatedBitmap	animated loader	"""Graphics/Pictures/Storage/boxgrab"""
+Scripts/PokemonStorage.rb	1507	AnimatedBitmap	animated loader	"""Graphics/Pictures/Storage/boxfist_q"""
+Scripts/PokemonStorage.rb	1508	AnimatedBitmap	animated loader	"""Graphics/Pictures/Storage/boxpoint1_q"""
+Scripts/PokemonStorage.rb	1509	AnimatedBitmap	animated loader	"""Graphics/Pictures/Storage/boxpoint2_q"""
+Scripts/PokemonStorage.rb	1510	AnimatedBitmap	animated loader	"""Graphics/Pictures/Storage/boxgrab_q"""
+Scripts/PokemonStorage.rb	1750	AnimatedBitmap	animated loader	"""Graphics/Pictures/Storage/boxpartytab"""
+Scripts/PokemonStorage.rb	1760	BitmapWrapper	procedural canvas	172,352
+Scripts/PokemonStorage.rb	1949	AnimatedBitmap	animated loader	"""Graphics/Pictures/Storage/#{@bg}"""
+Scripts/PokemonStorage.rb	1972	BitmapWrapper	procedural canvas	324,296
+Scripts/PokemonStorage.rb	2406	AnimatedBitmap	animated loader	"_INTL(""Graphics/Pictures/types"")"
+Scripts/PokemonSummary.rb	8	AnimatedBitmap	animated loader	"""Graphics/Pictures/EVsel"""
+Scripts/PokemonSummary.rb	68	AnimatedBitmap	animated loader	"""Graphics/Pictures/Summary/summarymovesel"""
+Scripts/PokemonSummary.rb	234	AnimatedBitmap	animated loader	"_INTL(""Graphics/Pictures/types"")"
+Scripts/PokemonSummary.rb	271	AnimatedBitmap	animated loader	"_INTL(""Graphics/Pictures/types"")"
+Scripts/PokemonTextEntry.rb	977	AnimatedBitmap	animated loader	"""Graphics/Pictures/Naming/NamingCursor1"""
+Scripts/PokemonTextEntry.rb	978	AnimatedBitmap	animated loader	"""Graphics/Pictures/Naming/NamingCursor2"""
+Scripts/PokemonTextEntry.rb	979	AnimatedBitmap	animated loader	"""Graphics/Pictures/Naming/NamingCursor3"""
+Scripts/PokemonTextEntry.rb	1073	AnimatedBitmap	animated loader	"""Graphics/Pictures/Naming/namingTab1"""
+Scripts/PokemonTextEntry.rb	1074	AnimatedBitmap	animated loader	"""Graphics/Pictures/Naming/namingTab2"""
+Scripts/PokemonTextEntry.rb	1075	AnimatedBitmap	animated loader	"""Graphics/Pictures/Naming/namingTab3"""
+Scripts/PokemonTextEntry.rb	1093	BitmapWrapper	procedural canvas	24,6
+Scripts/PokemonUtilities.rb	1114	AnimatedBitmap	animated loader	bitmapFileName
+Scripts/PokemonUtilities.rb	1148	AnimatedBitmap	animated loader	bitmapFileName
+Scripts/PokemonUtilities.rb	1156	AnimatedBitmap	animated loader	bitmapFileName
+Scripts/PokemonUtilities.rb	1210	AnimatedBitmap	animated loader	pbPokemonIconFile(pokemon)
+Scripts/Pseudo3D.rb	297	Bitmap	filename	sheet
+Scripts/Pseudo3D.rb	318	Bitmap	procedural canvas	@width,@height
+Scripts/PWT.rb	433	Bitmap	procedural canvas	@viewport.rect.width,@viewport.rect.height
+Scripts/PWT.rb	708	Bitmap	procedural canvas	6*32,3*32
+Scripts/PWT.rb	713	Bitmap	procedural canvas	6*32,3*32
+Scripts/PWT.rb	792	Bitmap	procedural canvas	bmp0.height*TRAINERSPRITESCALE,bmp0.height*TRAINERSPRITESCALE
+Scripts/Roulette Game.rb	138	Bitmap	filename	"""Graphics/Pictures/Roulette/ball"""
+Scripts/Roulette Game.rb	170	Bitmap	procedural canvas	30,height
+Scripts/Roulette Game.rb	215	Bitmap	procedural canvas	Graphics.width,Graphics.height
+Scripts/RPG__Sprite.rb	330	Bitmap	procedural canvas	160, 48
+Scripts/Scene_Credits.rb	97	Bitmap	procedural canvas	Graphics.width,32 * credit_lines.size
+Scripts/Shadow.rb	56	AnimatedBitmap	animated loader	"""Graphics/Characters/""+@character.character_name, @character.character_hue"
+Scripts/SpriteResizer.rb	653	Bitmap	procedural canvas	@defaultwidth,@defaultheight
+Scripts/SpriteWindow.rb	194	PngAnimatedBitmap	internal animated factory	file,hue
+Scripts/SpriteWindow.rb	196	GifBitmap	internal animated factory	file,hue
+Scripts/SpriteWindow.rb	225	AnimatedBitmap	animated loader	"""Graphics/Tilesets/""+filename"
+Scripts/SpriteWindow.rb	232	AnimatedBitmap	animated loader	"""Graphics/Animations/""+name,hue"
+Scripts/SpriteWindow.rb	238	AnimatedBitmap	animated loader	"""Graphics/Tilesets/""+name,hue"
+Scripts/SpriteWindow.rb	244	AnimatedBitmap	animated loader	"""Graphics/Autotiles/""+name,hue"
+Scripts/SpriteWindow.rb	494	BitmapWrapper	procedural canvas	subWidth,panorama.height
+Scripts/SpriteWindow.rb	601	BitmapWrapper	procedural canvas	32,32
+Scripts/SpriteWindow.rb	622	BitmapWrapper	procedural canvas	32,32
+Scripts/SpriteWindow.rb	1197	Bitmap	procedural canvas	[1,dwidth].max,[1,dheight].max
+Scripts/SpriteWindow.rb	1280	AnimatedBitmap	animated loader	pbBitmapName(i[0])
+Scripts/SpriteWindow.rb	2164	Bitmap	procedural canvas	1,1
+Scripts/SpriteWindow.rb	2538	Bitmap	procedural canvas	[1,dwidth].max,[1,dheight].max
+Scripts/SpriteWindow.rb	2931	AnimatedBitmap	animated loader	@curframe
+Scripts/SpriteWindow.rb	2963	AnimatedBitmap	animated loader	resolvedName
+Scripts/SpriteWindow.rb	2997	AnimatedBitmap	animated loader	@curframe
+Scripts/SpriteWindow.rb	3336	BitmapWrapper	procedural canvas	1,1
+Scripts/SpriteWindow.rb	3355	AnimatedBitmap	animated loader	"""Graphics/Pictures/selarrow"""
+Scripts/SpriteWindow.rb	3642	Bitmap	procedural canvas	1,1
+Scripts/SpriteWindow.rb	3897	Bitmap	procedural canvas	1,1
+Scripts/SpriteWindow.rb	4310	AnimatedBitmap	animated loader	animname
+Scripts/SpriteWindow.rb	4312	Bitmap	procedural canvas	framewidth,frameheight
+Scripts/SpriteWindow.rb	4340	AnimatedBitmap	animated loader	animname
+Scripts/SpriteWindow.rb	4342	Bitmap	procedural canvas	framecount*4,32
+Scripts/SpriteWindow.rb	4476	AnimatedBitmap	animated loader	file,hue
+Scripts/SpriteWindow.rb	4503	Bitmap	procedural canvas	width,height
+Scripts/SpriteWindow.rb	4649	Bitmap	procedural canvas	[1,dwidth].max,[1,dheight].max
+Scripts/SpriteWindow.rb	4678	Bitmap	procedural canvas	32,32
+Scripts/SpriteWindow.rb	4726	AnimatedBitmap	animated loader	"""Graphics/Panoramas/""+file,hue"
+Scripts/SpriteWindow.rb	4732	AnimatedBitmap	animated loader	"""Graphics/Fogs/""+file,hue"
+Scripts/SpriteWindow.rb	4738	AnimatedBitmap	animated loader	file,hue
+Scripts/SpriteWindow.rb	4786	AnimatedBitmap	animated loader	file,hue
+Scripts/SpriteWindow.rb	4847	AnimatedBitmap	animated loader	pathOrBitmap,hue
+Scripts/Sprite_Character.rb	47	Bitmap	procedural canvas	bitmap.width,bitmap.height
+Scripts/Sprite_Character.rb	60	Bitmap	procedural canvas	bitmap.width,bitmap.height
+Scripts/Sprite_Character.rb	93	AnimatedBitmap	animated loader	"""Graphics/Characters/""+name,hue"
+Scripts/Sprite_Surfbase.rb	12	AnimatedBitmap	animated loader	"""Graphics/Characters/base_surf"""
+Scripts/Sprite_Surfbase.rb	13	AnimatedBitmap	animated loader	"""Graphics/Characters/base_dive"""
+Scripts/SWM - UnrealTime.rb	3	Bitmap	procedural canvas	Graphics.width, 24
+Scripts/SWM - UnrealTime.rb	10	Bitmap	procedural canvas	Graphics.width, 24
+Scripts/SWM - UnrealTime.rb	15	Bitmap	procedural canvas	Graphics.width, 24
+Scripts/TilemapXP.rb	103	Bitmap	procedural canvas	[graphicsWidth+320,1].max,[graphicsHeight+320,1].max
+Scripts/TilemapXP.rb	359	Bitmap	procedural canvas	@tileWidth,@tileHeight
+Scripts/TilemapXP.rb	378	Bitmap	procedural canvas	@tileWidth,@tileHeight
+Scripts/TilemapXP.rb	467	Bitmap	procedural canvas	[graphicsWidth*2,1].max,[graphicsHeight*2,1].max
+Scripts/TilemapXP.rb	683	Bitmap	procedural canvas	twidth,theight
+Scripts/TilemapXP.rb	736	Bitmap	procedural canvas	twidth,theight
+Scripts/TilemapXP.rb	980	Bitmap	procedural canvas	32,32
+Scripts/TilemapXP.rb	987	Bitmap	procedural canvas	96,128
+Scripts/Transitions.rb	247	Bitmap	procedural canvas	Graphics.width, Graphics.height
+Scripts/Transitions.rb	340	Bitmap	procedural canvas	Graphics.width,Graphics.height
+Scripts/Window.rb	105	Bitmap	procedural canvas	1,1
+Scripts/Window.rb	333	Bitmap	procedural canvas	[1,dwidth].max,[1,dheight].max
+Plugins/MakerStudio/001_Core/003_TileEffects.rb	185	Bitmap	procedural canvas	src.width, src.height
+Plugins/MakerStudio/001_Core/003_TileEffects.rb	277	Bitmap	procedural canvas	TILE_WIDTH, TILE_HEIGHT
+Plugins/MakerStudio/002_Integration/002_RendererOverride.rb	74	Bitmap	procedural canvas	tw, th
+Plugins/MakerStudio/002_Integration/002_RendererOverride.rb	492	Bitmap	filename	"""Graphics/Autotiles/"" + name"
+Plugins/MakerStudio/002_Integration/002_RendererOverride.rb	1300	Bitmap	filename	base
+Plugins/MakerStudio/002_Integration/002_RendererOverride.rb	1496	Bitmap	procedural canvas	src_w * frame_count, src_h
+Plugins/MakerStudio/002_Integration/002_RendererOverride.rb	1538	Bitmap	procedural canvas	out_w * frame_count, out_h
+Plugins/MakerStudio/002_Integration/002_RendererOverride.rb	1671	Bitmap	procedural canvas	src_w * frame_count, flat_h
+Plugins/MakerStudio/002_Integration/002_RendererOverride.rb	1672	Bitmap	procedural canvas	src_w * frame_count, flat_h
+Plugins/MakerStudio/002_Integration/002_RendererOverride.rb	1687	Bitmap	procedural canvas	inner_w * frame_count, flat_h
+Plugins/MakerStudio/002_Integration/002_RendererOverride.rb	1820	Bitmap	procedural canvas	tw, th
+Plugins/MakerStudio/002_Integration/004_FogOverride.rb	179	Bitmap	filename	path
+Plugins/MakerStudio/002_Integration/008_FogCommands.rb	302	Bitmap	filename	path
+Plugins/MakerStudio/002_Integration/010_MinimapOverride.rb	78	Bitmap	procedural canvas	TILE_WIDTH, TILE_HEIGHT
+Plugins/MakerStudio/002_Integration/010_MinimapOverride.rb	208	Bitmap	procedural canvas	tmp.width, tmp.height
+Plugins/MakerStudio/002_Integration/010_MinimapOverride.rb	331	Bitmap	procedural canvas	sw, sh
+Plugins/MakerStudio/002_Integration/010_MinimapOverride.rb	437	Bitmap	filename	"sprintf(""Graphics/Shadows/%03d_%d"", map.map_id, shadow_id)"
+Plugins/MakerStudio/002_Integration/010_MinimapOverride.rb	536	BitmapWrapper	procedural canvas	w, h
+Plugins/MakerStudio/002_Integration/010_MinimapOverride.rb	536	Bitmap	procedural canvas	w, h
+Plugins/MakerStudio/002_Integration/010_MinimapOverride.rb	567	Bitmap	procedural canvas	32, 32
+Plugins/MakerStudio/002_Integration/014_GraphicRegion.rb	96	Bitmap	procedural canvas	w, h

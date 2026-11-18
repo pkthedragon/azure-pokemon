@@ -1,0 +1,7 @@
+CHECK syntax5 PASS
+CHECK boss_custombar_refresh12_samepixels_no_reload_dispose_all5 PASS crc=4172171831
+CHECK roulette_source_once_canvas_replacement_clear_end_pixels PASS
+CHECK pseudo3d_vertical_all3_layers_opaque_correctreverseorder PASS
+CHECK advanced_pokedex3_bars512x32_distinct_loaded PASS
+CHECK dialogue_pause4_frames20x28_all_visible PASS
+result=PASS

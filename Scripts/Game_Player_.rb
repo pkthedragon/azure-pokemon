@@ -21,38 +21,23 @@ class Game_Player < Game_Character
   end
 
   def bush_depth
-    return 0 if @tile_id > 0 or @always_on_top
-    xbehind=(@direction==4) ? @x+1 : (@direction==6) ? @x-1 : @x
-    ybehind=(@direction==8) ? @y+1 : (@direction==2) ? @y-1 : @y
-    if !$game_map.valid?(@x,@y) || !$game_map.valid?(xbehind,ybehind)
-      return 0 if !$MapFactory
-      newhere=$MapFactory.getNewMap(@x,@y)
-      newbehind=$MapFactory.getNewMap(xbehind,ybehind)
-      if $game_map.valid?(@x,@y)
-        heremap=self.map; herex=@x; herey=@y
-      elsif newhere && newhere[0]
-        heremap=newhere[0]; herex=newhere[1]; herey=newhere[2]
-      else
-        return 0
-      end
-      if $game_map.valid?(xbehind,ybehind)
-        behindmap=self.map; behindx=xbehind; behindy=ybehind
-      elsif newbehind && newbehind[0]
-        behindmap=newbehind[0]; behindx=newbehind[1]; behindy=newbehind[2]
-      else
-        return 0
-      end
-      if @jump_count <= 0 and heremap.deepBush?(herex, herey) and
-                              behindmap.deepBush?(behindx, behindy)
-        return 32
-      elsif @jump_count <= 0 and heremap.bush?(herex, herey) and !moving?
-        return 12
-      else
-        return 0
-      end
-    else
-      return super
+    return 0 if @tile_id > 0 || @always_on_top || @jump_count > 0
+    heremap=self.map
+    herex=@x
+    herey=@y
+    unless heremap.valid?(herex,herey)
+      connected=$MapFactory && $MapFactory.getNewMap(herex,herey)
+      return 0 unless connected && connected[0]
+      heremap,herex,herey=connected
     end
+
+    # Encounter grass is not always painted with the separate RMXP bush flag.
+    # Use the occupied tile for both standing and walking, including patch edges.
+    tag=heremap.terrain_tag(herex,herey)
+    return 0 if tag==PBTerrain::Bridge
+    return 32 if tag==PBTerrain::TallGrass || heremap.deepBush?(herex,herey)
+    return 12 if tag==PBTerrain::Grass || tag==PBTerrain::SootGrass || heremap.bush?(herex,herey)
+    return 0
   end
 
   def pbHasDependentEvents?

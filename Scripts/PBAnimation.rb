@@ -424,6 +424,7 @@ module AzureBattleAnimationIndex
   end
 
   def self.index_for(animations,name)
+    return animations.index_for_name(name) if animations.is_a?(AzureRuntimeBattleAnimations)
     if !@animations.equal?(animations) || @length!=animations.length || !@indices
       @animations=animations
       @length=animations.length
@@ -438,18 +439,142 @@ module AzureBattleAnimationIndex
   end
 end
 
+module AzureBattleAnimationPack
+  SOURCE="Data/PkmnAnimations.rxdata"
+  PATH="Data/BattleAnimations.dat"
+  MAGIC="AZBA1\0".b.freeze
+
+  def self.source_signature
+    size=0
+    crc=0
+    File.open(SOURCE,"rb") do |file|
+      while bytes=file.read(1024*1024)
+        size+=bytes.bytesize
+        crc=Zlib.crc32(bytes,crc)
+      end
+    end
+    return [size,crc]
+  end
+
+  def self.load
+    return nil unless File.file?(PATH)
+    File.open(PATH,"rb") do |file|
+      return nil unless file.read(MAGIC.bytesize)==MAGIC
+      length=file.read(4)&.unpack1("N")
+      return nil unless length && length.between?(1,1024*1024)
+      index=Marshal.load(file.read(length))
+      return nil unless index.is_a?(Array) && index.length==4 && index[0]==source_signature
+      records,names=index[2],index[3]
+      return nil unless records.is_a?(Array) && names.is_a?(Hash)
+      offset=file.pos
+      payload_size=file.size-offset
+      return nil unless records.all? { |entry| entry.is_a?(Array) && entry.length==2 &&
+        entry[0].is_a?(Integer) && entry[1].is_a?(Integer) && entry[0]>=0 && entry[1]>0 &&
+        entry[0]+entry[1]<=payload_size }
+      return AzureRuntimeBattleAnimations.new(index[1],records,names,offset)
+    end
+  rescue SystemCallError,ArgumentError,TypeError,EOFError
+    return nil
+  end
+
+  def self.write(animations)
+    signature=source_signature
+    records=[]
+    names={}
+    payload="".b
+    animations.each do |animation|
+      index=records.length
+      name=animation && animation.name
+      names[name]=index if name && !names.has_key?(name)
+      record=Zlib::Deflate.deflate(Marshal.dump(animation))
+      records << [payload.bytesize,record.bytesize]
+      payload << record
+    end
+    index=Marshal.dump([signature,animations.selected,records,names])
+    temporary="#{PATH}.#{Process.pid}.tmp"
+    File.open(temporary,"wb") do |file|
+      file.write(MAGIC)
+      file.write([index.bytesize].pack("N"))
+      file.write(index)
+      file.write(payload)
+      file.flush
+    end
+    raise "Animation source changed while its runtime data was built" unless source_signature==signature
+    File.rename(temporary,PATH)
+  ensure
+    File.delete(temporary) if temporary && File.file?(temporary)
+  end
+end
+
+class AzureRuntimeBattleAnimations < PBAnimations
+  def initialize(selected,records,names,offset)
+    @selected=selected
+    @records=records
+    @names=names
+    @offset=offset
+    @array=Array.new(records.length)
+    @loaded=Array.new(records.length,false)
+  end
+
+  def [](index)
+    return @materialized[index] if @materialized
+    return materialize[index] unless index.is_a?(Integer)
+    index+=@array.length if index<0
+    return nil if index<0 || index>=@array.length
+    unless @loaded[index]
+      offset,length=@records[index]
+      begin
+        bytes=File.binread(AzureBattleAnimationPack::PATH,length,@offset+offset)
+        animation=Marshal.load(Zlib::Inflate.inflate(bytes))
+        raise TypeError,"Invalid runtime battle animation" unless !animation || animation.is_a?(PBAnimation)
+      rescue SystemCallError,Zlib::Error,ArgumentError,TypeError,EOFError
+        @materialized=load_data_anim(AzureBattleAnimationPack::SOURCE)
+        @array=@materialized.array
+        $pkmn_animations=@materialized if defined?($pkmn_animations) && $pkmn_animations.equal?(self)
+        pbInvalidateBattleAnimationIndex
+        return @materialized[index]
+      end
+      @array[index]=animation
+      @loaded[index]=true
+    end
+    return @array[index]
+  end
+
+  def index_for_name(name)
+    return AzureBattleAnimationIndex.index_for(@materialized,name) if @materialized
+    return @names[name]
+  end
+
+  def materialize
+    return @materialized if @materialized
+    @array.each_index { |index| self[index] }
+    result=PBAnimations.allocate
+    result.instance_variable_set(:@array,@array)
+    result.selected=@selected
+    @materialized=result
+    $pkmn_animations=result if defined?($pkmn_animations) && $pkmn_animations.equal?(self)
+    return result
+  end
+
+  def array; return materialize.array; end
+  def each(&block); return materialize.each(&block); end
+  def []=(index,value); materialize[index]=value; end
+  def compact; return materialize.compact; end
+  def resize(length); return materialize.resize(length); end
+  def selected; return @materialized ? @materialized.selected : @selected; end
+  def selected=(value); materialize.selected=value; end
+end
+
 def pbInvalidateBattleAnimationIndex
   AzureBattleAnimationIndex.clear
 end
 
-# Battle animations deliberately stay outside AzureDataCache. Load the original
-# PBAnimations object once at the battle boundary instead of unmarshaling its
-# 10 MB source before the title screen. The animation editor can replace the
-# global and the compiler can set it to nil using their existing contracts.
+# The runtime pack defers animation frames until playback. The original database
+# remains the fallback and the editor's source, with the same global invalidation.
 def pbLoadBattleAnimations
   if !defined?($pkmn_animations) || !$pkmn_animations
     pbInvalidateBattleAnimationIndex
-    $pkmn_animations=load_data_anim("Data/PkmnAnimations.rxdata")
+    $pkmn_animations=AzureBattleAnimationPack.load || load_data_anim("Data/PkmnAnimations.rxdata")
   end
   return $pkmn_animations
 end

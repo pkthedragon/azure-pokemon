@@ -57,9 +57,9 @@ class AdvancedPokedexScene
   def barBitmapPath
     return [
       nil,
-      _INTL("Graphics/Pictures/Pokedex/advancedInfoBar"),
-      _INTL("Graphics/Pictures/Pokedex/advancedAreaBar"),
-      _INTL("Graphics/Pictures/Pokedex/advancedFormsBar")
+      _INTL("Graphics/Pictures/Pokedex/AdvancedPokedexEntryBar"),
+      _INTL("Graphics/Pictures/Pokedex/advancedPokedexNestBar"),
+      _INTL("Graphics/Pictures/Pokedex/AdvancedPokedexFormBar")
     ]
   end
 

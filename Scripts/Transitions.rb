@@ -16,6 +16,8 @@ module Graphics
     if judge_special_transition(duration,filename)
       duration = 0
       filename=""
+    elsif filename && filename!=""
+      filename=AzureBitmapFiles.resolve(filename) || filename
     end
     begin
       transition_KGC_SpecialTransition(duration, filename, vague)

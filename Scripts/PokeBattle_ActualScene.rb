@@ -1519,7 +1519,8 @@ end
 def pokeballThrow(ball,shakes,critical,critsuccess,targetBattler,scene,battler,burst=-1,showplayer=false)
   balltype=pbGetBallType(ball)
   animtrainer=false
-  if showplayer && @sprites["player"].bitmap.width>@sprites["player"].bitmap.height
+  if showplayer && @sprites["player"].bitmap &&
+     @sprites["player"].bitmap.width>@sprites["player"].bitmap.height
     animtrainer=true
   end
   oldvisible=@sprites["shadow#{targetBattler}"].visible
@@ -1688,6 +1689,73 @@ end
 
 ####################################################
 
+module AzureBattlebackGraphics
+  ROOT="Graphics/Battlebacks/"
+  # These older field names do not have a matching background in the shipped art.
+  ALIASES={
+    "Burning"=>"Volcano", "Corrosive"=>"Poison", "Holy"=>"Ruin",
+    "AmethystCave"=>"CrystalCavern",
+    "ColosseumFieldPlaceholder"=>"GoldenArena",
+    "InfernalFieldPlaceholder"=>"GoldenArena"
+  }
+
+  def self.canonical_backdrop(backdrop)
+    return "IndoorA" unless backdrop.is_a?(String) && !backdrop.empty?
+    ALIASES.each_pair { |name,replacement| return replacement if name.casecmp?(backdrop) }
+    return backdrop
+  end
+
+  def self.first_available(paths)
+    paths.uniq.each do |path|
+      resolved=pbResolveBitmap(path)
+      return resolved if resolved
+    end
+    return nil
+  end
+
+  def self.paths(backdrop,environment,timenow=pbGetTimeNow)
+    backdrop=canonical_backdrop(backdrop)
+    time=if PBDayNight.isNight?(timenow)
+      "Night"
+    elsif PBDayNight.isEvening?(timenow)
+      "Eve"
+    else
+      ""
+    end
+    terrain=if environment==PBEnvironment::Grass || environment==PBEnvironment::TallGrass
+      "Grass"
+    elsif environment==PBEnvironment::Sand
+      "Sand"
+    elsif $PokemonGlobal && ($PokemonGlobal.surfing || $PokemonGlobal.swimming)
+      "Water"
+    elsif $PokemonGlobal && $PokemonGlobal.lavasurfing
+      "Volcano"
+    else
+      ""
+    end
+    background=first_available([ROOT+"battlebg"+backdrop+time,ROOT+"battlebg"+backdrop,
+      ROOT+"battlebgIndoorA"])
+    bases=["enemybase","playerbase"].map do |stem|
+      # Bases have their own optional terrain/time variants. Beach, Library and
+      # some other complete backgrounds deliberately have no separate bases.
+      first_available([ROOT+stem+backdrop+terrain+time,ROOT+stem+backdrop+terrain,
+        ROOT+stem+backdrop+time,ROOT+stem+backdrop])
+    end
+    return [background,*bases]
+  end
+
+  def self.resolve_path(path)
+    return path unless path && path.start_with?(ROOT)
+    stem_path=path.sub(AzureBitmapFiles::IMAGE_EXTENSION,"")
+    match=stem_path.match(/\A#{Regexp.escape(ROOT)}(battlebg|enemybase|playerbase)(.+)\z/i)
+    return path unless match
+    stem,backdrop=match.captures
+    stem=stem.downcase
+    resolved=pbResolveBitmap(ROOT+stem+canonical_backdrop(backdrop))
+    return resolved || (stem=="battlebg" ? pbResolveBitmap(ROOT+"battlebgIndoorA") : nil)
+  end
+end
+
 class PokeBattle_Scene
   attr_accessor :abortable
   attr_reader :viewport
@@ -1766,7 +1834,7 @@ class PokeBattle_Scene
   end
 
   def pbApplyBGSprite(sprite,filename)
-    @sprites[sprite].setBitmap(filename)
+    @sprites[sprite].setBitmap(AzureBattlebackGraphics.resolve_path(filename))
   end
   
   def pbShowWindow(windowtype)
@@ -2186,6 +2254,10 @@ class PokeBattle_Scene
         backdrop="GoldenArena"
       elsif $feoverride == 45
         backdrop="GoldenArena"
+      elsif $feoverride == 46
+        backdrop="Beach"
+      elsif $feoverride == 47
+        backdrop="Library"
       else
         $fetempfield = 0
       end
@@ -2194,33 +2266,6 @@ class PokeBattle_Scene
     #End Field Effect stuff  END OF  UPDATE
     if $PokemonGlobal && $PokemonGlobal.nextBattleBack
       backdrop=$PokemonGlobal.nextBattleBack
-    end
-    # Choose bases
-    base=""
-    trialname=""
-    if environ==PBEnvironment::Grass || environ==PBEnvironment::TallGrass
-      trialname="Grass"
-    elsif environ==PBEnvironment::Sand
-      trialname="Sand"
-    elsif $PokemonGlobal.surfing || $PokemonGlobal.swimming
-      trialname="Water"
-    elsif $PokemonGlobal.lavasurfing
-      trialname="Volcano"
-    end
-    if pbResolveBitmap(sprintf("Graphics/Battlebacks/playerbase"+backdrop+trialname))
-      base=trialname
-    end
-    # Choose time of day
-    time=""
-    trialname=""
-    timenow=pbGetTimeNow
-    if PBDayNight.isNight?(timenow)
-      trialname="Night"
-    elsif PBDayNight.isEvening?(timenow)
-      trialname="Eve"
-    end
-    if pbResolveBitmap(sprintf("Graphics/Battlebacks/battlebg"+backdrop+trialname))
-      time=trialname
     end
     # Apply graphics  
     if $feoverride != 0
@@ -2362,7 +2407,7 @@ class PokeBattle_Scene
     elsif backdrop=="Beach"
       fieldbd = 46
     elsif backdrop=="Library"
-      fieldbd = 50
+      fieldbd = 47
     else
       fieldbd = 0
     end
@@ -2483,7 +2528,7 @@ class PokeBattle_Scene
           backdrop="InfernalFieldPlaceholder"
         elsif fieldbd == 46
           backdrop="Beach"
-        elsif fieldbd == 50
+        elsif fieldbd == 47
           backdrop="Library"
         end 
         backdrop3 = backdrop
@@ -2494,11 +2539,9 @@ class PokeBattle_Scene
     $febackup = $fefieldeffect
     $fefieldeffect = $feoverride if $feoverride != 0
     backdrop = backdrop3 if backdrop3
-    $febackgroundstore = backdrop if !defined?($febackgroundstore)
+    $febackgroundstore = AzureBattlebackGraphics.canonical_backdrop(backdrop)
     # END
-    battlebg="Graphics/Battlebacks/battlebg"+backdrop+time
-    enemybase="Graphics/Battlebacks/enemybase"+backdrop+base+time
-    playerbase="Graphics/Battlebacks/playerbase"+backdrop+base+time
+    battlebg,enemybase,playerbase=AzureBattlebackGraphics.paths(backdrop,environ)
     pbAddPlane("battlebg",battlebg,@viewport)
     pbAddSprite("playerbase",
        PokeBattle_SceneConstants::PLAYERBASEX,
@@ -2850,10 +2893,9 @@ class PokeBattle_Scene
            PokeBattle_SceneConstants::FOETRAINER_Y,trainerfile,@viewport)
       end
     else
-      trainerfile="Graphics/Characters/trfront"
       pbAddSprite("trainer",
            PokeBattle_SceneConstants::FOETRAINER_X,
-           PokeBattle_SceneConstants::FOETRAINER_Y,trainerfile,@viewport)
+           PokeBattle_SceneConstants::FOETRAINER_Y,nil,@viewport)
     end
     if @sprites["trainer"].bitmap
       @sprites["trainer"].x-=(@sprites["trainer"].bitmap.width/2)
@@ -4630,7 +4672,7 @@ end
   def pbThrowBait
     ball=sprintf("Graphics/Pictures/Battle/battleBait")
     armanim=false
-    if @sprites["player"].bitmap.width>@sprites["player"].bitmap.height
+    if @sprites["player"].bitmap && @sprites["player"].bitmap.width>@sprites["player"].bitmap.height
       armanim=true
     end
     # sprites
@@ -4708,7 +4750,7 @@ end
     ball=sprintf("Graphics/Pictures/Battle/battleRock")
     anger=sprintf("Graphics/Pictures/Battle/battleAnger")
     armanim=false
-    if @sprites["player"].bitmap.width>@sprites["player"].bitmap.height
+    if @sprites["player"].bitmap && @sprites["player"].bitmap.width>@sprites["player"].bitmap.height
       armanim=true
     end
     # sprites
