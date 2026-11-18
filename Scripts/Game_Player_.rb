@@ -21,8 +21,8 @@ class Game_Player < Game_Character
   end
 
   def bush_depth
-    return 0 if @tile_id > 0 || @always_on_top || @jump_count > 0
     heremap=self.map
+    return 0 unless heremap
     herex=@x
     herey=@y
     unless heremap.valid?(herex,herey)
@@ -31,13 +31,7 @@ class Game_Player < Game_Character
       heremap,herex,herey=connected
     end
 
-    # Encounter grass is not always painted with the separate RMXP bush flag.
-    # Use the occupied tile for both standing and walking, including patch edges.
-    tag=heremap.terrain_tag(herex,herey)
-    return 0 if tag==PBTerrain::Bridge
-    return 32 if tag==PBTerrain::TallGrass || heremap.deepBush?(herex,herey)
-    return 12 if tag==PBTerrain::Grass || tag==PBTerrain::SootGrass || heremap.bush?(herex,herey)
-    return 0
+    return bush_depth_at(heremap,herex,herey)
   end
 
   def pbHasDependentEvents?

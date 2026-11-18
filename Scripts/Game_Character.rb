@@ -217,18 +217,19 @@ class Game_Character
   end
 
   def bush_depth
-    if @tile_id > 0 || @always_on_top
-      return 0
-    end
-    xbehind=(@direction==4) ? @x+1 : (@direction==6) ? @x-1 : @x
-    ybehind=(@direction==8) ? @y+1 : (@direction==2) ? @y-1 : @y
-    if @jump_count <= 0 && self.map.deepBush?(@x, @y) && self.map.deepBush?(xbehind, ybehind)
-      return 32
-    elsif @jump_count <= 0 && self.map.bush?(@x, @y) && !moving?
-      return 12
-    else
-      return 0
-    end
+    return bush_depth_at(self.map,@x,@y)
+  end
+
+  def bush_depth_at(character_map,x,y)
+    return 0 if @tile_id > 0 || @always_on_top || @jump_count > 0
+    return 0 unless character_map && character_map.valid?(x,y)
+    # Encounter grass can have a terrain tag without the separate RMXP bush flag.
+    # Characters use their occupied tile while both standing and moving.
+    tag=character_map.terrain_tag(x,y)
+    return 0 if tag==PBTerrain::Bridge
+    return 32 if tag==PBTerrain::TallGrass || character_map.deepBush?(x,y)
+    return 12 if tag==PBTerrain::Grass || tag==PBTerrain::SootGrass || character_map.bush?(x,y)
+    return 0
   end
 
   def terrain_tag
