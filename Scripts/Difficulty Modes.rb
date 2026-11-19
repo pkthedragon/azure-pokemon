@@ -2,6 +2,9 @@ module DifficultModes
   # Variable number that control the difficult.
   # To use a different variable, change this. 0 deactivates this script
   VARIABLE=200 
+  # A Normal-only party can override a shared base team without changing the
+  # base fallback used by Easy or Intense (for example, Bruce's Act 1 battle).
+  NORMAL_PARTY_OFFSET=50
   
   def self.currentMode
     difficultHash={}
@@ -73,6 +76,9 @@ module DifficultModes
       trainer=pbLoadTrainerDifficult(trainerid,trainername,
         partyid + difficultSelected.idJump) if difficultSelected.idJump>0
       procedure = difficultSelected.levelProcedure
+    elsif DifficultModes::VARIABLE>0 && pbGet(DifficultModes::VARIABLE)==0
+      trainer=pbLoadTrainerDifficult(trainerid,trainername,
+        partyid + NORMAL_PARTY_OFFSET)
     end
     return trainer ? trainer : pbLoadTrainerDifficult(
       trainerid,trainername,partyid,procedure)

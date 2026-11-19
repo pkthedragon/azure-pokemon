@@ -30,6 +30,7 @@ TPDEFOB       = 28
 TPSPEOB       = 29
 TPSPAOB       = 30
 TPSPDOB       = 31
+TPABILITYOVERRIDE = 32
 TPDEFAULTS = [0,10,0,0,0,0,0,nil,nil,0,false,nil,10,70,nil,false,0,17,0,0,0,0,0,0,false,nil,0,0,0,0,0,0]
 
 # Immutable typed view of one legacy trainer-Pokemon row. The full row remains
@@ -37,7 +38,7 @@ TPDEFAULTS = [0,10,0,0,0,0,0,nil,nil,0,false,nil,10,70,nil,false,0,17,0,0,0,0,0,
 class PBTrainerPokemonData
   attr_reader :species,:level,:item,:moves,:ability,:gender,:form,:shiny
   attr_reader :nature,:iv,:happiness,:name,:shadow,:ball,:hidden_power
-  attr_reader :evs,:premega,:boss,:offsets
+  attr_reader :evs,:premega,:boss,:offsets,:ability_override
 
   def initialize(row)
     @species=row[TSPECIES]
@@ -45,6 +46,7 @@ class PBTrainerPokemonData
     @item=row[TPITEM]
     @moves=[row[TPMOVE1],row[TPMOVE2],row[TPMOVE3],row[TPMOVE4]].freeze
     @ability=row[TPABILITY]
+    @ability_override=row[TPABILITYOVERRIDE]
     @gender=row[TPGENDER]
     @form=row[TPFORM]
     @shiny=row[TPSHINY]
@@ -317,6 +319,9 @@ def pbLoadTrainerDifficult(trainerid,trainername,partyid=0,procedure=nil)
         elsif $game_variables[:Difficulty_Mode] == 2
           boss = ((poke[TPBOSS].to_s) +"_INTENSE").intern
           boss = poke[TPBOSS] if !$bosscache[boss]
+        elsif $game_variables[:Difficulty_Mode] == 0
+          boss = ((poke[TPBOSS].to_s) +"_NORMAL").intern
+          boss = poke[TPBOSS] if !$bosscache[boss]
         end
         if $bosscache[boss]
           Events.onBossCreate.trigger(nil,poke[TPBOSS])
@@ -339,6 +344,7 @@ def pbLoadTrainerDifficult(trainerid,trainername,partyid=0,procedure=nil)
         pokemon.moves.compact!
       end
       pokemon.setAbility(poke[TPABILITY])
+      pokemon.abilityoverride=poke[TPABILITYOVERRIDE] if !poke[TPABILITYOVERRIDE].nil?
       pokemon.setGender(poke[TPGENDER])
       if poke[TPSHINY]   # if this is a shiny Pokémon
         pokemon.makeShiny

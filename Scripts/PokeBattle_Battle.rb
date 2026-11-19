@@ -3638,6 +3638,12 @@ class PokeBattle_Battle
      end
     end
 
+    # Bruce's Normal trainer boss uses its sheet entry typing on each sendout.
+    if @opponent && pbIsOpposing?(index) && $game_variables[:Difficulty_Mode]==0 &&
+       pokemon.bossId==:TOXICROAKBOSS_NORMAL
+      boss=$bosscache[pokemon.bossId]
+      pbShieldEffects(@battlers[index],boss.onEntryEffects,true) if boss && boss.onEntryEffects
+    end
     @scene.pbResetMoveIndex(index)
   end
 

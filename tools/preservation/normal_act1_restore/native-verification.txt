@@ -1,0 +1,37 @@
+PASS baseline actual Intense131+fallback31 trainer requests captured
+COMPILING items only
+COMPILING trainers only
+COMPILING bosses only
+PASS all162 old compiled trainer graphs exact; Intense131 unchanged;68 Normal teams added
+ITEM_EXISTING_SOURCE_DRIFT marshal_rows=1115 semantic_rows=505 normalized_value_rows=0; preserving old rows by additive merge
+ITEM_DRIFT 1 old=[1, "Repel", 1, 350, "An item that prevents weak wild Pokémon from appearing for 100 steps after its use.", 2, 0, 0, 0] compiled=[1, "Repel", 1, 350, "An item that prevents weak wild Pok\xC3\xA9mon from appearing for 100 steps after its use.", 2, 0, 0, 0]
+ITEM_DRIFT 2 old=[2, "Super Repel", 1, 500, "An item that prevents weak wild Pokémon from appearing for 200 steps after its use.", 2, 0, 0, 0] compiled=[2, "Super Repel", 1, 500, "An item that prevents weak wild Pok\xC3\xA9mon from appearing for 200 steps after its use.", 2, 0, 0, 0]
+ITEM_DRIFT 3 old=[3, "Max Repel", 1, 700, "An item that prevents weak wild Pokémon from appearing for 250 steps after its use.", 2, 0, 0, 0] compiled=[3, "Max Repel", 1, 700, "An item that prevents weak wild Pok\xC3\xA9mon from appearing for 250 steps after its use.", 2, 0, 0, 0]
+ITEM_DRIFT 4 old=[4, "Black Flute", 1, 400, "A black flute made from blown glass. Its melody makes wild Pokémon less likely to appear.", 0, 0, 0, 0] compiled=[4, "Black Flute", 1, 400, "A black flute made from blown glass. Its melody makes wild Pok\xC3\xA9mon less likely to appear.", 0, 0, 0, 0]
+ITEM_DRIFT 5 old=[5, "White Flute", 1, 500, "A white flute made from blown glass. Its melody makes wild Pokémon more likely to appear.", 0, 0, 0, 0] compiled=[5, "White Flute", 1, 500, "A white flute made from blown glass. Its melody makes wild Pok\xC3\xA9mon more likely to appear.", 0, 0, 0, 0]
+ITEM_DRIFT 6 old=[6, "Honey", 1, 100, "A sweet honey with an aroma that attracts wild Pokémon when used in grass, caves or on special trees.", 2, 0, 0, 0] compiled=[6, "Honey", 1, 100, "A sweet honey with an aroma that attracts wild Pok\xC3\xA9mon when used in grass, caves or on special trees.", 2, 0, 0, 0]
+ITEM_DRIFT 7 old=[7, "Escape Rope", 1, 550, "A long, durable rope. Use it to escape instantly from a cave or a dungeon.", 2, 0, 0, 0] compiled=[7, "Escape Rope", 1, 550, "A long, durable rope. Use it to escape instantly from a cave or a dungeon.", 2, 0, 0, 0]
+ITEM_DRIFT 8 old=[8, "Red Shard", 1, 200, "A small red shard. It appears to be from some sort of implement made long ago.", 0, 0, 0, 0] compiled=[8, "Red Shard", 1, 200, "A small red shard. It appears to be from some sort of implement made long ago.", 0, 0, 0, 0]
+PASS all1159 old item rows exact; FAIRYFEATHER1159 added
+PASS all6 original boss graphs exact;4 Normal-only boss variants added
+PASS trainer types data and PBTrainers script byte-identical
+PASS actual seeded Intense131+fallback31 trainer signatures and3 wildbosses unchanged
+PASS all68 actual Normal rosters species/levels/forms/items/moves/nicknames;3 explicit ability overrides [["Davith", 84, 3], ["Pride", 394, 128], ["Harper", 264, 22]]
+PASS actual abilities all101 Sheet Pokemon across26rosters inclforms/customoverrides
+PASS Normal wildboss resolver selects3 Normal variants {:HEROICTANGROWTH=>[465, 22, 1112, [207, 220, 506, 330]], :MOTHEREXPLOUD=>[689, 22, 427, [508, 12, 250, 234]], :TOTEMLICKITUNG=>[108, 25, 398, [232, 510, 371, 185]]}
+PASS Normal Bruce actual trainer startup entry Psychic/Fighting; zero-shield HP/faint/judge ends trainer battle
+PASS Intense Bruce actual trainer startup remains Poison/Fighting
+PASS Normal Bruce party50 zero-shield boss; actual entry effect Psychic/Fighting; Intense shared0 already preserved
+PASS AbilityOverride legacy-to-sectioned writer and recompile roundtrip all230 teams
+PASS actual Options UI [Easy1,Normal0,Intense2] and stale-cache save remains Intense2 on close
+PASS Fairy Feather actual damage1.2 Fairy-only, nonFairy unchanged, Pixie Plate icon fallback {:fairy_bare=>[34, 4096], :fairy_feather=>[41, 4915], :fairy_pixie=>[41, 4096], :normal_bare=>[45, 4096], :normal_feather=>[45, 4096]}
+PASS only expected message categories changed [7, 8]; original TrainerTypes/PBTrainers untouched
+OUTPUT generated/pokmanitems.rxdata generated/trainers.dat generated/bossdata.dat generated/messages.dat generated/PBItems.rb
+
+FINAL RAW APPEND-ONLY PRESERVATION
+RAW original item entries differing before final append-only merge=0
+PASS RAW Marshal all1159 original item entry graphs exact; ONLY1159 appended UTF8 name/description
+PASS RAW alloriginal message categories/entry graphs exact; ONLYnew1159 itemname/description plus0 newtrainer names
+PASS RAW original162trainer rows and6boss definitions also exact
+PASS actual PBItems.getName/PBItemData.description/pbGetMessage show validUTF8 Fairy Feather/Pokémon text
+result=PASS

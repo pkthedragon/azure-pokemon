@@ -1114,6 +1114,9 @@ def pbGenerateWildPokemon(species,level)
   elsif $game_variables[:Difficulty_Mode] == 2
     bossspecies = ((species.to_s) +"_INTENSE").intern
     bossspecies = species if !bossdata[bossspecies]
+  elsif $game_variables[:Difficulty_Mode] == 0
+    bossspecies = ((species.to_s) +"_NORMAL").intern
+    bossspecies = species if !bossdata[bossspecies]
   end
   if bossdata[bossspecies]
     Events.onBossCreate.trigger(nil,species)

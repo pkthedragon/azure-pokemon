@@ -331,3 +331,74 @@ BOSSINFOHASH = {
         }
     },
 }
+
+# Normal Act One sheet data is isolated from the legacy and Intense definitions.
+BOSSINFOHASH[:HEROICTANGROWTH_NORMAL] = Marshal.load(Marshal.dump(BOSSINFOHASH[:HEROICTANGROWTH])).tap do |boss|
+    boss[:moninfo].merge!(
+        :level => 22,
+        :item => PBItems::MEADOWTRIBUTE,
+        :moves => [PBMoves::MEGADRAIN,PBMoves::STUNSPORE,PBMoves::ANCIENTPOWER,PBMoves::FLAIL],
+        :ability => PBAbilities::ERRATIC,
+        :nature => PBNatures::MODEST
+    )
+    boss[:sosDetails][:moninfos][1].merge!(
+        :species => PBSpecies::TANGELA,
+        :level => 16,
+        :item => PBItems::OCCABERRY,
+        :moves => [PBMoves::STUNSPORE,PBMoves::INFESTATION,PBMoves::ACIDSPRAY],
+        :ability => PBAbilities::LEAFGUARD,
+        :nature => PBNatures::MODEST
+    )
+    # The sheet's first break cures status and applies Ingrain without sunlight.
+    [:weatherChange,:weatherCount,:weatherChangeMessage,:weatherChangeAnimation].each do |key|
+        boss[:onBreakEffects][1].delete(key)
+    end
+end
+
+# The Apolvita Cave event keeps its legacy key; Normal uses Mother Barnacle.
+BOSSINFOHASH[:MOTHEREXPLOUD_NORMAL] = Marshal.load(Marshal.dump(BOSSINFOHASH[:MOTHEREXPLOUD])).tap do |boss|
+    boss[:name] = "Mother Barnacle"
+    boss[:entryText] = "Mother Barnacle attacks!"
+    boss[:moninfo].merge!(
+        :species => PBSpecies::BARBARACLE,
+        :level => 22,
+        :item => PBItems::RINDOBERRY,
+        :moves => [PBMoves::ROCKTOMB,PBMoves::FURYCUTTER,PBMoves::ICYWIND,PBMoves::MUDSLAP],
+        :ability => PBAbilities::PICKPOCKET,
+        :nature => PBNatures::ADAMANT
+    )
+    boss[:sosDetails][:moninfos][1].merge!(
+        :species => PBSpecies::BINACLE,
+        :level => 16,
+        :item => 0,
+        :moves => [PBMoves::ROCKTOMB,PBMoves::CLAMP,PBMoves::TICKLE],
+        :ability => PBAbilities::TOUGHCLAWS,
+        :nature => PBNatures::ADAMANT
+    )
+end
+
+BOSSINFOHASH[:TOTEMLICKITUNG_NORMAL] = Marshal.load(Marshal.dump(BOSSINFOHASH[:TOTEMLICKITUNG])).tap do |boss|
+    boss[:moninfo].merge!(
+        :item => PBItems::SITRUSBERRY,
+        :moves => [PBMoves::SANDTOMB,PBMoves::ROLLOUT,PBMoves::HEALBELL,PBMoves::CURSE]
+    )
+end
+
+# Bruce's Normal team uses the sheet's Psychic/Fighting entry transformation.
+BOSSINFOHASH[:TOXICROAKBOSS_NORMAL] = Marshal.load(Marshal.dump(BOSSINFOHASH[:TOXICROAKBOSS])).tap do |boss|
+    boss[:shieldCount] = 0
+    boss[:moninfo].merge!(
+        :level => 30,
+        :item => PBItems::DAMPROCK,
+        :moves => [PBMoves::PSYCHIC,PBMoves::AURASPHERE,PBMoves::VACUUMWAVE,PBMoves::RAINDANCE],
+        :ability => PBAbilities::DRYSKIN,
+        :nature => PBNatures::ADAMANT,
+        :iv => 31,
+        :ev => [0,160,0,160,0,0]
+    )
+    boss[:onEntryEffects] = {
+        :typeChange => [PBTypes::PSYCHIC,PBTypes::FIGHTING],
+        :message => "{1} focuses its mind! It became Psychic/Fighting-type!"
+    }
+    boss[:onBreakEffects] = {}
+end

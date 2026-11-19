@@ -1309,6 +1309,9 @@ def pbItemIconFile(item)
       if !pbResolveBitmap(bitmapFileName)
         bitmapFileName=sprintf("Graphics/Icons/item%03d",item)
       end
+      if isConst?(item,PBItems,:FAIRYFEATHER) && !pbResolveBitmap(bitmapFileName)
+        bitmapFileName=sprintf("Graphics/Icons/item%03d",PBItems::PIXIEPLATE)
+      end
     end
   end
   return bitmapFileName

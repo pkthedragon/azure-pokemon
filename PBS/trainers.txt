@@ -5813,3 +5813,1655 @@ Pokemon = ROTOM,25
     SpeedEV = 252
     SpecialAttackEV = 252
     SpecialDefenseEV = 0
+#-------------------------------
+# Restored Normal-mode Act One trainer teams.
+# Missing encounters use pre-deletion history; supplied Act One sheets define main and sidequest rosters.
+#-------------------------------
+# Hidden Outpost
+# Act One sheet 1, row 2 (opponent).
+[POKEMONTRAINER_Kara,Kara]
+LegacyTrainerTypeID = 179
+Pokemon = BUNEARY,4
+    AbilityIndex = 2
+    Gender = female
+    Form = 0
+    Shiny = true
+    Nature = ADAMANT
+    Name = Sola
+    Moves = DEFENSECURL,SPLASH,POUND,FORESIGHT
+#-------------------------------
+# Hidden Outpost
+# Restored from 3e68d817d^, legacy trainer line 39.
+[CULTISTM,Haden]
+LegacyTrainerTypeID = 205
+Pokemon = PURRLOIN,4
+#-------------------------------
+# Logium Town A
+# Act One sheet 1, row 14 (opponent).
+[POKEMONTRAINER_Percy,Percy]
+LegacyTrainerTypeID = 180
+Pokemon = GASTLY,7
+    AbilityIndex = 2
+    Form = 0
+    Nature = NAIVE
+    Moves = HYPNOSIS,LICK,SMOG
+Pokemon = SOLOSIS,9
+    Item = CUSTAPBERRY
+    Moves = SPITE,WATERGUN,ASTONISH,THUNDERWAVE
+    AbilityIndex = 1
+    Gender = male
+    Form = 1
+    Nature = MODEST
+    Name = Coral
+#-------------------------------
+# Logium Town A
+# Act One sheet 1, row 24 (opponent).
+[POKEMONTRAINER_Kara,Kara,2]
+LegacyTrainerTypeID = 179
+Pokemon = NOIBAT,7
+    AbilityIndex = 0
+    Form = 0
+    Nature = MODEST
+    Moves = TWISTER,ABSORB,SUPERSONIC,TACKLE
+Pokemon = BURMY,8
+    AbilityIndex = 0
+    Form = 3
+    Nature = ADAMANT
+    Moves = DEFENSECURL,POUND,PESTER,SANDATTACK
+Pokemon = BUNEARY,9
+    AbilityIndex = 2
+    Gender = female
+    Form = 0
+    Shiny = true
+    Nature = ADAMANT
+    Name = Sola
+    Moves = DOUBLEHIT,FAKEOUT,DEFENSECURL,FORESIGHT
+#-------------------------------
+# Logium Town A
+# Act One sheet 2, row 12 (opponent).
+[ELDER,Nick]
+LegacyTrainerTypeID = 59
+Pokemon = VULPIX,14
+    AbilityIndex = 2
+    Form = 0
+    Nature = MODEST
+    Moves = FIRESPIN,HEX,HYPNOSIS
+Pokemon = HELIOPTILE,14
+    AbilityIndex = 2
+    Form = 0
+    Nature = TIMID
+    Moves = THUNDERSHOCK,ROUND,MAGNETRISE
+Pokemon = ROGGENROLA,15
+    AbilityIndex = 1
+    Form = 0
+    Nature = ADAMANT
+    Moves = ROCKBLAST,SANDTOMB,SANDATTACK
+Pokemon = LILLIPUP,16
+    Item = MUSCLEBAND
+    Moves = RETALIATE,AERIALACE,SANDATTACK,WORKUP
+    AbilityIndex = 1
+    Form = 0
+    Nature = JOLLY
+#-------------------------------
+# Logium Town A
+# Act One sheet 2, row 2 (opponent).
+[POKEMONRANGER_M,Pyuku]
+LegacyTrainerTypeID = 124
+Pokemon = DEDENNE,12
+    AbilityIndex = 0
+    Form = 0
+    Nature = MODEST
+    Name = Elektra
+    Moves = NUZZLE,DISARMINGVOICE,TACKLE,CHARGE
+#-------------------------------
+# Connecting Caves
+# Restored from 3e68d817d^, legacy trainer line 184.
+[BEAUTY,Jiara]
+LegacyTrainerTypeID = 62
+Pokemon = TOGEPI,15
+Pokemon = JIGGLYPUFF,16
+Pokemon = DELCATTY,17
+    AbilityIndex = 0
+    Moves = FEINTATTACK,DOUBLESLAP,SING,CHARM
+#-------------------------------
+# Connecting Caves
+# Restored from 3e68d817d^, legacy trainer line 191.
+[HIKER,Chandler]
+LegacyTrainerTypeID = 44
+Pokemon = MIGHTYENA,16
+Pokemon = STARAVIA,17
+Pokemon = GLIGAR,17
+#-------------------------------
+# Connecting Caves
+# Restored from 3e68d817d^, legacy trainer line 198.
+[POKEFAN_M2,Kaius]
+LegacyTrainerTypeID = 135
+Pokemon = PIKACHU,17
+Pokemon = DEDENNE,17
+Pokemon = MORPEKO,17
+#-------------------------------
+# Connecting Caves
+# Restored from 3e68d817d^, legacy trainer line 205.
+[RICHBOY,Chuck]
+LegacyTrainerTypeID = 69
+Pokemon = TRAPINCH,12
+    AbilityIndex = 2
+    Nature = ADAMANT
+    Moves = BITE,POUNCE,SANDTOMB,STEALTHROCK
+Pokemon = LOMBRE,12
+    AbilityIndex = 2
+    Nature = TIMID
+    Moves = MEGADRAIN,CHILLINGWATER,DISARMINGVOICE,THUNDERPUNCH
+Pokemon = CROAGUNK,12
+    AbilityIndex = 2
+    Nature = HASTY
+    Moves = BATTLECRY,POISONSTING,PURSUIT,SWAGGER
+Pokemon = CHATOT,13
+    Item = ORANBERRY
+    Moves = ROUND,AERIALACE,ENCORE,AGILITY
+    AbilityIndex = 0
+    Nature = QUIET
+    Name = Jack
+#-------------------------------
+# Logium Path
+# Act One sheet 2, row 58 (opponent).
+[LISTIS,Listis]
+LegacyTrainerTypeID = 243
+Pokemon = SHINX,14
+    AbilityIndex = 2
+    Form = 0
+    Nature = JOLLY
+    Moves = SPARK,ICEFANG,LEER,BABYDOLLEYES
+Pokemon = FERROSEED,17
+    AbilityIndex = 2
+    Form = 0
+    Nature = ADAMANT
+    Moves = SPIKECANNON,BULLETSEED,LEECHSEED,CURSE
+Pokemon = VULLABY,17
+    AbilityIndex = 0
+    Form = 0
+    Nature = BOLD
+    Moves = FOULPLAY,GUST,SWAGGER,ROOST
+Pokemon = ROCKRUFF,18
+    AbilityIndex = 2
+    Form = 0
+    Nature = JOLLY
+    Moves = ROCKTOMB,FIREFANG,ICEFANG,HOWL
+Pokemon = FROGADIER,18
+    AbilityIndex = 2
+    Form = 0
+    Nature = MODEST
+    Moves = WATERPULSE,GRASSKNOT,ROUND,QUICKATTACK
+Pokemon = HERACROSS,19
+    AbilityIndex = 2
+    Gender = male
+    Form = 0
+    Nature = ADAMANT
+    LegacyIV = 0
+    Name = Clyde
+    Moves = ROCKTOMB,REVENGE,BUGBITE
+#-------------------------------
+# Apolvita Cavern
+# Restored from 3e68d817d^, legacy trainer line 336.
+[CULTISTM,Alex]
+LegacyTrainerTypeID = 205
+Pokemon = ESPURR,11
+    AbilityIndex = 2
+    Moves = DISARMINGVOICE,CONFUSION,FAKEOUT,CHARM
+Pokemon = RATTATA,12
+    AbilityIndex = 1
+    Form = 1
+    Moves = BITE,QUICKATTACK,GRASSKNOT,FOCUSENERGY
+#-------------------------------
+# Apolvita Grove
+# Act One sheet 1, row 44 (opponent).
+[HANDMAIDEN,Rose]
+LegacyTrainerTypeID = 260
+Pokemon = LITTEN,12
+    AbilityIndex = 2
+    Form = 0
+    Nature = ADAMANT
+    Name = Zadkiel
+    Moves = FIREFANG,LICK,WORKUP,FAKEOUT
+Pokemon = DRATINI,12
+    AbilityIndex = 0
+    Form = 0
+    Shiny = true
+    Nature = RASH
+    Name = Uriel
+    Moves = THUNDERWAVE,TWISTER,AQUAJET,HAZE
+Pokemon = SANDILE,12
+    AbilityIndex = 0
+    Form = 0
+    Nature = JOLLY
+    Name = Samael
+    Moves = SANDTOMB,BITE,SWAGGER,SANDATTACK
+Pokemon = ABSOL,13
+    Item = ORANBERRY
+    Moves = SNARL,DRAININGKISS,HEX,WILLOWISP
+    AbilityIndex = 0
+    Gender = male
+    Form = 0
+    Nature = MODEST
+    Name = Netzach
+#-------------------------------
+# Apolvita Grove
+# Act One sheet 2, row 106 (opponent).
+[POKEFAN_M2,Bryant]
+LegacyTrainerTypeID = 135
+Pokemon = SOBBLE,13
+    AbilityIndex = 2
+    Form = 0
+    Nature = RASH
+    Moves = WATERPULSE,MUDSHOT,ICESHARD,WORKUP
+Pokemon = SCORBUNNY,13
+    AbilityIndex = 2
+    Form = 0
+    Nature = RASH
+    Moves = EMBER,QUICKATTACK,DOUBLEKICK,AGILITY
+Pokemon = GROOKEY,13
+    AbilityIndex = 0
+    Form = 0
+    Nature = ADAMANT
+    Moves = FAKEOUT,RAZORLEAF,LEECHSEED,GROWTH
+#-------------------------------
+# Logium Town B
+# Act One sheet 1, row 156 (opponent).
+[POKEMONTRAINER_Kara,Kara,3]
+LegacyTrainerTypeID = 179
+Pokemon = NOIBAT,19
+    AbilityIndex = 2
+    Form = 0
+    Nature = MODEST
+    Moves = DRAGONBREATH,BATTLECRY,DISARMINGVOICE,WINDVORTEX
+Pokemon = FLAAFFY,19
+    AbilityIndex = 2
+    Form = 0
+    Nature = JOLLY
+    Moves = CHARGEBEAM,SWIFT,CHARGE,THUNDERWAVE
+Pokemon = MONFERNO,19
+    AbilityIndex = 0
+    Form = 0
+    Nature = ADAMANT
+    Moves = FLAMEWHEEL,FEINT,ROCKTOMB,MACHPUNCH
+Pokemon = MOTHIM,20
+    AbilityIndex = 2
+    Form = 1
+    Nature = JOLLY
+    Moves = BUGBITE,HEADBUTT,DEFENSECURL,BEAUTIFY
+Pokemon = BUNEARY,20
+    Item = SILKSCARF
+    Moves = DOUBLEHIT,FAKEOUT,ICEPUNCH,WORKUP
+    AbilityIndex = 2
+    Gender = female
+    Form = 0
+    Shiny = true
+    Nature = ADAMANT
+    Name = Sola
+    HPEV = 0
+    AttackEV = 252
+    DefenseEV = 0
+    SpeedEV = 252
+    SpecialAttackEV = 0
+    SpecialDefenseEV = 0
+#-------------------------------
+# Logium Town B
+# Act One sheet 2, row 244 (opponent).
+[POKEMONRANGER_M,Pyuku,2]
+LegacyTrainerTypeID = 124
+Pokemon = TOGEDEMARU,14
+    AbilityIndex = 0
+    Form = 0
+    Nature = ADAMANT
+    Name = Tempest
+    Moves = NUZZLE,FLAIL,DEFENSECURL,CHARGE
+Pokemon = PIKACHU,14
+    AbilityIndex = 0
+    Form = 0
+    Nature = TIMID
+    Name = Rai
+    Moves = ELECTROBALL,DISARMINGVOICE,THUNDERWAVE,AGILITY
+Pokemon = EMOLGA,15
+    AbilityIndex = 0
+    Form = 0
+    Nature = JOLLY
+    Name = Adhira
+    Moves = SPARK,AERIALACE,AGILITY,BATONPASS
+Pokemon = DEDENNE,16
+    Item = ORANBERRY
+    Moves = PARABOLICCHARGE,DISARMINGVOICE,CHARM,CHARGE
+    AbilityIndex = 1
+    Form = 0
+    Nature = MODEST
+    Name = Elektra
+#-------------------------------
+# Logium Town B
+# Restored from 3e68d817d^, legacy trainer line 507.
+[YOUNGSTER,Jacques]
+LegacyTrainerTypeID = 5
+Pokemon = WATCHOG,16
+Pokemon = LINOONE,16
+Pokemon = BIBAREL,17
+    AbilityIndex = 2
+#-------------------------------
+# Logium Library
+# Restored from 3e68d817d^, legacy trainer line 561.
+[PSYCHIC_M,Andrews]
+LegacyTrainerTypeID = 54
+Pokemon = ESPURR,16
+Pokemon = EXEGGCUTE,16
+Pokemon = BRUXISH,17
+#-------------------------------
+# Logium Library
+# Restored from 3e68d817d^, legacy trainer line 568.
+[PSYCHIC_M,Gail]
+LegacyTrainerTypeID = 54
+Pokemon = ELGYEM,17
+Pokemon = SLOWPOKE,17
+#-------------------------------
+# Logium Library
+# Restored from 3e68d817d^, legacy trainer line 574.
+[PSYCHIC_M,Ergo]
+LegacyTrainerTypeID = 54
+Pokemon = WOOBAT,16
+Pokemon = RALTS,16
+Pokemon = GIRAFARIG,17
+#-------------------------------
+# Logium Library
+# Restored from 3e68d817d^, legacy trainer line 581.
+[PSYCHIC_M,Tate]
+LegacyTrainerTypeID = 54
+Pokemon = BRONZOR,17
+Pokemon = INDEEDEE,17
+#-------------------------------
+# Logium Library
+# Restored from 3e68d817d^, legacy trainer line 587.
+[PSYCHIC_M,Sab]
+LegacyTrainerTypeID = 54
+Pokemon = BRAIXEN,17
+Pokemon = MEDITITE,17
+#-------------------------------
+# Logium Library
+# Restored from 3e68d817d^, legacy trainer line 593.
+[PSYCHIC_M,Mob]
+LegacyTrainerTypeID = 54
+Pokemon = SMOOCHUM,16
+Pokemon = WYNAUT,16
+Pokemon = GOTHITA,17
+#-------------------------------
+# Logium Library
+# Restored from 3e68d817d^, legacy trainer line 600.
+[PSYCHIC_M,Dice]
+LegacyTrainerTypeID = 54
+Pokemon = BALTOY,17
+Pokemon = NATU,17
+Pokemon = SOLROCK,18
+#-------------------------------
+# Logium Library
+# Act One sheet 2, row 198 (opponent).
+[TEMPLAR1,Davith]
+LegacyTrainerTypeID = 248
+Pokemon = DODUO,15
+    AbilityIndex = 2
+    Form = 0
+    Nature = ADAMANT
+    AbilityOverride = SPEEDBOOST
+    Moves = DOUBLEHIT,PLUCK,PURSUIT,PROTECT
+Pokemon = GIRAFARIG,17
+    AbilityIndex = 2
+    Form = 0
+    Nature = ADAMANT
+    Moves = HEADBUTT,HEARTSTAMP,ASSURANCE,AGILITY
+Pokemon = MAUSHOLD,20
+    AbilityIndex = 2
+    Gender = male
+    Form = 1
+    Nature = MODEST
+    LegacyIV = 0
+    Moves = CELLSPLITTER,HIDDENPOWERFAI,BABYDOLLEYES,ALLYSWITCH
+#-------------------------------
+# Logium Library
+# Act One sheet 1, row 128 (opponent).
+[MINERVA,Minerva]
+LegacyTrainerTypeID = 181
+Items = POTION,POTION
+Pokemon = FLITTLE,16
+    AbilityIndex = 2
+    Form = 0
+    Nature = MODEST
+    Moves = SCRUTINIZE,MUDSLAP,HYPNOSIS,PROTECT
+Pokemon = MEDITITE,16
+    AbilityIndex = 0
+    Form = 0
+    Nature = JOLLY
+    Moves = HEADBUTT,PSYCHOCUT,LOWSWEEP,MEDITATE
+Pokemon = EXEGGCUTE,17
+    Item = TANGABERRY
+    Moves = BARRAGE,MEGADRAIN,SCRUTINIZE,ANCIENTPOWER
+    AbilityIndex = 2
+    Form = 0
+    Nature = MODEST
+Pokemon = BRAIXEN,17
+    Item = ORANBERRY
+    Moves = FIRESPIN,SCRUTINIZE,MUDSHOT,TELEKINESIS
+    AbilityIndex = 2
+    Form = 0
+    Nature = MODEST
+Pokemon = SLOWPOKE,17
+    Item = ORANBERRY
+    Moves = WHIRLPOOL,ICYWIND,SCRUTINIZE,SLACKOFF
+    AbilityIndex = 1
+    Form = 0
+    Nature = MODEST
+Pokemon = KLEFKI,18
+    Item = BINDINGBAND
+    Moves = BINDINGWORD,SCRUTINIZE,ANCIENTPOWER,SHOCKWAVE
+    AbilityIndex = 2
+    Form = 1
+    Nature = MODEST
+    Name = Lorem Ipsum
+    HPEV = 0
+    AttackEV = 0
+    DefenseEV = 0
+    SpeedEV = 252
+    SpecialAttackEV = 252
+    SpecialDefenseEV = 0
+#-------------------------------
+# Underground Forest
+# Restored from 3e68d817d^, legacy trainer line 730.
+[CULTISTM,Alex,1]
+LegacyTrainerTypeID = 205
+Pokemon = ESPURR,18
+Pokemon = RATTATA,18
+    Form = 1
+#-------------------------------
+# Underground Forest
+# Restored from 3e68d817d^, legacy trainer line 736.
+[CULTISTM,Nikos]
+LegacyTrainerTypeID = 205
+Pokemon = DUSKULL,17
+Pokemon = SHUPPET,18
+#-------------------------------
+# Underground Forest
+# Restored from 3e68d817d^, legacy trainer line 742.
+[CULTISTF,Medea]
+LegacyTrainerTypeID = 206
+Pokemon = ROOKIDEE,18
+Pokemon = MURKROW,18
+#-------------------------------
+# Underground Forest
+# Restored from 3e68d817d^, legacy trainer line 748.
+[CULTISTM,Zahar]
+LegacyTrainerTypeID = 205
+Pokemon = GRIMER,18
+    Form = 1
+Pokemon = FRILLISH,18
+#-------------------------------
+# Underground Forest
+# Restored from 3e68d817d^, legacy trainer line 754.
+[CULTISTM,Nicolas]
+LegacyTrainerTypeID = 205
+Pokemon = PHANTUMP,18
+Pokemon = PUMPKABOO,18
+#-------------------------------
+# Underground Forest
+# Restored from 3e68d817d^, legacy trainer line 760.
+[CULTISTF,Gianna]
+LegacyTrainerTypeID = 206
+Pokemon = AXEW,19
+Pokemon = APPLIN,19
+#-------------------------------
+# Underground Forest
+# Restored from 3e68d817d^, legacy trainer line 772.
+[CULTISTF,Sara]
+LegacyTrainerTypeID = 206
+Pokemon = SANDILE,19
+Pokemon = SCRAGGY,18
+#-------------------------------
+# Underground Forest
+# Restored from 3e68d817d^, legacy trainer line 778.
+[CULTISTM,Michalis]
+LegacyTrainerTypeID = 205
+Pokemon = NOIBAT,19
+Pokemon = GIBLE,18
+#-------------------------------
+# Underground Forest
+# Restored from 3e68d817d^, legacy trainer line 784.
+[CULTISTF,Nerys]
+LegacyTrainerTypeID = 206
+Pokemon = DEINO,19
+Pokemon = HONEDGE,18
+#-------------------------------
+# Underground Forest
+# Restored from 3e68d817d^, legacy trainer line 790.
+[CULTISTF,Theano]
+LegacyTrainerTypeID = 206
+Pokemon = YAMASK,18
+Pokemon = DRIFLOON,19
+#-------------------------------
+# Underground Forest
+# Restored from 3e68d817d^, legacy trainer line 796.
+[CULTISTF,Marika]
+LegacyTrainerTypeID = 206
+Pokemon = NUZLEAF,18
+Pokemon = IMPIDIMP,18
+#-------------------------------
+# Underground Forest
+# Restored from 3e68d817d^, legacy trainer line 802.
+[CULTISTF,Harper]
+LegacyTrainerTypeID = 206
+Pokemon = ESPURR,19
+Pokemon = ZIGZAGOON,19
+    Form = 1
+#-------------------------------
+# Underground Forest
+# Act One sheet 1, row 64 (opponent).
+[LUX,Lux]
+LegacyTrainerTypeID = 249
+Pokemon = YANMA,15
+    AbilityIndex = 1
+    Form = 1
+    Nature = TIMID
+    Name = Vetus
+    Moves = PETRIFY,TWISTER,QUICKATTACK,ROAR
+Pokemon = SABLEYE,15
+    AbilityIndex = 2
+    Form = 0
+    Nature = ADAMANT
+    Name = Lapis
+    Moves = THIEF,FAKEOUT,ASTONISH,WILLOWISP
+Pokemon = BRAIXEN,16
+    AbilityIndex = 2
+    Form = 0
+    Shiny = true
+    Nature = MODEST
+    Name = Medeis
+    Moves = INCINERATE,PSYBEAM,LIGHTSCREEN,REFLECT
+Pokemon = COMBUSKEN,17
+    Item = ORANBERRY
+    Moves = ROCKTOMB,FLAMECHARGE,DOUBLEKICK,PROTECT
+    AbilityIndex = 2
+    Gender = male
+    Form = 0
+    Shiny = true
+    Nature = ADAMANT
+    Name = Caedem
+#-------------------------------
+# Meadow Temple
+# Act One sheet 1, row 82 (partner).
+[POKEMONTRAINER_Percy,Percy,2]
+LegacyTrainerTypeID = 180
+Pokemon = SHIELDON,15
+    AbilityIndex = 2
+    Form = 0
+    Nature = MODEST
+    Moves = ANCIENTPOWER,MIRRORSHOT,METALSOUND,BLOCK
+Pokemon = PORYGON,15
+    AbilityIndex = 1
+    Form = 0
+    Nature = MODEST
+    Moves = ROUND,CONVERSION2,THUNDERSHOCK,AGILITY
+Pokemon = GASTLY,16
+    AbilityIndex = 0
+    Form = 0
+    Nature = TIMID
+    Moves = NIGHTSHADE,WILLOWISP,SMOG,LICK
+Pokemon = SOLOSIS,17
+    Item = SITRUSBERRY
+    Moves = BUBBLEBEAM,ROUND,HEX,THUNDERWAVE
+    AbilityIndex = 0
+    Gender = male
+    Form = 1
+    Nature = MODEST
+    Name = Coral
+#-------------------------------
+# Meadow Temple
+# Act One sheet 1, row 82 (opponent).
+[ELDERCULTIST_Perrin,Pride]
+LegacyTrainerTypeID = 210
+Items = POTION
+Pokemon = LITLEO,15
+    AbilityIndex = 2
+    Form = 0
+    Nature = NAIVE
+    Moves = INCINERATE,WORKUP,HEADBUTT,YAWN
+Pokemon = HONEDGE,15
+    AbilityIndex = 0
+    Form = 0
+    Nature = ADAMANT
+    Moves = METALCLAW,SHADOWSNEAK,FURYCUTTER,AUTOTOMIZE
+Pokemon = SERVINE,16
+    AbilityIndex = 0
+    Form = 0
+    Nature = MODEST
+    Moves = LEAFTORNADO,GROWTH,GLARE,SYNTHESIS
+Pokemon = PRINPLUP,16
+    AbilityIndex = 1
+    Form = 0
+    Nature = NAIVE
+    AbilityOverride = DEFIANT
+    Moves = METALCLAW,PECK,ICYWIND,BUBBLE
+Pokemon = MEOWTH,17
+    Item = NORMALGEM
+    Moves = FAKEOUT,AERIALACE,COVET,WORKUP
+    AbilityIndex = 1
+    Form = 0
+    Nature = ADAMANT
+Pokemon = CORVISQUIRE,18
+    Item = EVIOLITE
+    Moves = HONECLAWS,PLUCK,ROOST,POWERTRIP
+    AbilityIndex = 2
+    Gender = male
+    Form = 0
+    Nature = ADAMANT
+    Name = Edgar
+    HPEV = 252
+    AttackEV = 252
+    DefenseEV = 0
+    SpeedEV = 0
+    SpecialAttackEV = 0
+    SpecialDefenseEV = 0
+#-------------------------------
+# Logium Town C
+# Act One sheet 1, row 184 (double_opponent).
+[CULTISTM,Alex,2]
+LegacyTrainerTypeID = 205
+Items = SODAPOP
+Pokemon = ESPURR,20
+    Item = EVIOLITE
+    Moves = PSYBEAM,THUNDERBOLT,FAKEOUT,LIGHTSCREEN
+    AbilityIndex = 2
+    Gender = female
+    Form = 0
+    Nature = MODEST
+Pokemon = DURANT,19
+    AbilityIndex = 0
+    Form = 0
+    Nature = JOLLY
+    Moves = METALCLAW,STEAMROLLER,HONECLAWS,BITE
+Pokemon = RATICATE,21
+    Item = WIDELENS
+    Moves = CRUNCH,HYPERFANG,REVERSAL,QUICKATTACK
+    AbilityIndex = 1
+    Form = 1
+    Nature = ADAMANT
+    HPEV = 0
+    AttackEV = 252
+    DefenseEV = 0
+    SpeedEV = 252
+    SpecialAttackEV = 0
+    SpecialDefenseEV = 0
+#-------------------------------
+# Logium Town C
+# Act One sheet 1, row 184 (double_opponent).
+[CULTISTF,Harper,2]
+LegacyTrainerTypeID = 206
+Pokemon = ESPURR,20
+    Item = EVIOLITE
+    Moves = PSYBEAM,ENERGYBALL,FAKEOUT,REFLECT
+    AbilityIndex = 2
+    Gender = male
+    Form = 0
+    Nature = MODEST
+Pokemon = HEATMOR,19
+    AbilityIndex = 2
+    Form = 0
+    Nature = JOLLY
+    Moves = INCINERATE,THUNDERPUNCH,STOCKPILE,SWALLOW
+Pokemon = LINOONE,21
+    Item = FLAMETRIBUTE
+    Moves = NIGHTSLASH,RETALIATE,PINMISSILE,PARTINGSHOT
+    AbilityIndex = 2
+    Form = 1
+    Nature = ADAMANT
+    HPEV = 0
+    AttackEV = 252
+    DefenseEV = 0
+    SpeedEV = 252
+    SpecialAttackEV = 0
+    SpecialDefenseEV = 0
+    AbilityOverride = INTIMIDATE
+#-------------------------------
+# Logium Town C
+# Act One sheet 1, row 184 (partner).
+[POKEMONTRAINER_Percy,Percy,3]
+LegacyTrainerTypeID = 180
+Pokemon = SHIELDON,20
+    Item = LEFTOVERS
+    Moves = POWERGEM,MIRRORSHOT,METALSOUND,SWAGGER
+    AbilityIndex = 2
+    Form = 0
+    Nature = MODEST
+Pokemon = PORYGON2,20
+    Item = IRONBALL
+    Moves = ELECTROWEB,ICYWIND,TRICK,TRIATTACK
+    AbilityIndex = 1
+    Form = 0
+    Nature = MODEST
+Pokemon = HAUNTER,21
+    Item = WIDELENS
+    Moves = HEX,CLEARSMOG,SUCKERPUNCH,HYPNOSIS
+    AbilityIndex = 0
+    Form = 0
+    Nature = NAIVE
+Pokemon = SOLOSIS,22
+    Item = COLBURBERRY
+    Moves = HEX,WATERPULSE,PARABOLICCHARGE,THUNDERWAVE
+    AbilityIndex = 1
+    Gender = male
+    Form = 1
+    Nature = MODEST
+    Name = Coral
+    HPEV = 252
+    AttackEV = 0
+    DefenseEV = 0
+    SpeedEV = 0
+    SpecialAttackEV = 252
+    SpecialDefenseEV = 0
+#-------------------------------
+# Logium Town C
+# Act One sheet 1, row 210 (opponent).
+[ZOSSIE,Zossie]
+LegacyTrainerTypeID = 246
+Items = SODAPOP
+Pokemon = ELGYEM,22
+    AbilityIndex = 1
+    Form = 0
+    Nature = MODEST
+    Moves = SIGNALBEAM,PSYBEAM,SHOCKWAVE,CALMMIND
+Pokemon = CLEFAIRY,22
+    AbilityIndex = 2
+    Form = 0
+    Nature = MODEST
+    Moves = WATERPULSE,DRAININGKISS,LIFEDEW,THUNDERWAVE
+Pokemon = FURFROU,22
+    Item = CHOPLEBERRY
+    Moves = HEADBUTT,BITE,BABYDOLLEYES,WORKUP
+    AbilityIndex = 0
+    Form = 0
+    Nature = ADAMANT
+Pokemon = STARYU,22
+    Item = WACANBERRY
+    Moves = WATERPULSE,ICYWIND,LIGHTSCREEN,REFLECT
+    AbilityIndex = 0
+    Form = 0
+    Shiny = true
+    Nature = TIMID
+Pokemon = MINIOR,22
+    Item = SITRUSBERRY
+    Moves = ANCIENTPOWER,CHARGEBEAM,CONFUSERAY,COSMICPOWER
+    AbilityIndex = 0
+    Form = 0
+    Shiny = true
+    Nature = MODEST
+Pokemon = POIPOLE,23
+    Item = WISEGLASSES
+    Moves = SIGNALBEAM,VENOSHOCK,VENOMDRENCH,TOXIC
+    AbilityIndex = 0
+    Gender = female
+    Form = 0
+    Nature = MODEST
+    Name = Poipoi
+    HPEV = 0
+    AttackEV = 0
+    DefenseEV = 0
+    SpeedEV = 252
+    SpecialAttackEV = 252
+    SpecialDefenseEV = 0
+#-------------------------------
+# Logium Town C
+# Restored from 3e68d817d^, legacy trainer line 1026.
+[LISTIS,Listis,1]
+LegacyTrainerTypeID = 243
+Pokemon = COTTONEE,29
+    AbilityIndex = 0
+    Moves = TAILWIND,NATUREPOWER,ENCORE,GIGADRAIN
+Pokemon = CACTURNE,33
+    Item = BRIGHTPOWDER
+    Moves = SPIKYSHIELD,GIGADRAIN,DARKPULSE,NATUREPOWER
+    AbilityIndex = 0
+    Nature = MODEST
+    LegacyIV = 31
+    HPEV = 0
+    AttackEV = 0
+    DefenseEV = 0
+    SpeedEV = 252
+    SpecialAttackEV = 252
+    SpecialDefenseEV = 0
+Pokemon = VULLABY,33
+    Item = EVIOLITE
+    Moves = FOULPLAY,TAILWIND,SWAGGER,ROOST
+    AbilityIndex = 2
+    Nature = BOLD
+    LegacyIV = 31
+    HPEV = 252
+    AttackEV = 0
+    DefenseEV = 252
+    SpeedEV = 0
+    SpecialAttackEV = 0
+    SpecialDefenseEV = 0
+Pokemon = LYCANROC,34
+    Item = EXPERTBELT
+    Moves = PSYCHICFANGS,ROCKSLIDE,BULLDOZE,ACCELEROCK
+    AbilityIndex = 1
+    Nature = ADAMANT
+    LegacyIV = 31
+    HPEV = 0
+    AttackEV = 252
+    DefenseEV = 0
+    SpeedEV = 252
+    SpecialAttackEV = 0
+    SpecialDefenseEV = 0
+Pokemon = GRENINJA,34
+    Item = FOCUSSASH
+    Moves = SCALD,DARKPULSE,ICYWIND,SPIKES
+    AbilityIndex = 1
+    Nature = TIMID
+    LegacyIV = 31
+    HPEV = 0
+    AttackEV = 0
+    DefenseEV = 0
+    SpeedEV = 252
+    SpecialAttackEV = 252
+    SpecialDefenseEV = 0
+Pokemon = HERACROSS,35
+    Item = TELLURICSEED
+    Moves = ROCKSLIDE,BRICKBREAK,XSCISSOR,PINCERGRIP
+    AbilityIndex = 2
+    Gender = male
+    Nature = ADAMANT
+    LegacyIV = 31
+    HPEV = 0
+    AttackEV = 252
+    DefenseEV = 0
+    SpeedEV = 252
+    SpecialAttackEV = 0
+    SpecialDefenseEV = 0
+#-------------------------------
+# Abandoned Church
+# Restored from 3e68d817d^, legacy trainer line 1141.
+[LAITYF,Martha]
+LegacyTrainerTypeID = 226
+Pokemon = DIGGERSBY,32
+    AbilityIndex = 2
+    Nature = ADAMANT
+    LegacyIV = 31
+    Moves = QUICKATTACK,BULLDOZE,HAMMERARM,FLAIL
+Pokemon = DRAGONAIR,32
+    AbilityIndex = 0
+    Nature = ADAMANT
+    LegacyIV = 31
+    Moves = THUNDERWAVE,DRAGONTAIL,SLAM,AGILITY
+Pokemon = TOGETIC,33
+    AbilityIndex = 1
+    Nature = MODEST
+    LegacyIV = 31
+    Moves = ANCIENTPOWER,MAGICALLEAF,METRONOME,WISH
+Pokemon = PORYGON2,34
+    AbilityIndex = 0
+    Nature = MODEST
+    LegacyIV = 31
+    Moves = TRIATTACK,PSYBEAM,DISCHARGE,RECOVER
+#-------------------------------
+# Abandoned Church
+# Restored from 3e68d817d^, legacy trainer line 1149.
+[LAITYM,Judas]
+LegacyTrainerTypeID = 225
+Pokemon = MRMIME,32
+    AbilityIndex = 1
+    Nature = MODEST
+    LegacyIV = 31
+    Moves = MAGICALLEAF,PSYBEAM,DAZZLINGGLEAM,ENCORE
+Pokemon = GOTHORITA,32
+    AbilityIndex = 1
+    Nature = MODEST
+    LegacyIV = 31
+    Moves = PSYSHOCK,HYPNOSIS,PSYCHUP,TICKLE
+Pokemon = SWELLOW,33
+    AbilityIndex = 2
+    Nature = RASH
+    LegacyIV = 31
+    Moves = ECHOEDVOICE,AERIALACE,FOCUSENERGY,QUICKATTACK
+Pokemon = ALCREMIE,34
+    AbilityIndex = 0
+    Nature = MODEST
+    LegacyIV = 31
+    Moves = DRAININGKISS,SWEETKISS,ENCHANT,RECOVER
+#-------------------------------
+# Abandoned Church
+# Restored from 3e68d817d^, legacy trainer line 1157.
+[LAITYF,Priscilla]
+LegacyTrainerTypeID = 226
+Pokemon = MAWILE,32
+    AbilityIndex = 1
+    Nature = ADAMANT
+    LegacyIV = 31
+    Moves = METALCLAW,CONDESCEND,STOCKPILE,BATONPASS
+Pokemon = MILTANK,32
+    AbilityIndex = 0
+    Nature = ADAMANT
+    LegacyIV = 31
+    Moves = ZENHEADBUTT,BODYSLAM,WAKEUPSLAP,MILKDRINK
+Pokemon = TYRUNT,33
+    AbilityIndex = 0
+    Nature = ADAMANT
+    LegacyIV = 31
+    Moves = ROCKSLIDE,DRAGONCLAW,BITE,ROAR
+Pokemon = MEOWSTIC,34
+    AbilityIndex = 2
+    Nature = MODEST
+    LegacyIV = 31
+    Moves = FAKEOUT,PSYSHOCK,CHARM,HELPINGHAND
+#-------------------------------
+# Abandoned Church
+# Restored from 3e68d817d^, legacy trainer line 1165.
+[LAITYM,Luke]
+LegacyTrainerTypeID = 225
+Pokemon = CARBINK,32
+    AbilityIndex = 0
+    Nature = MODEST
+    LegacyIV = 31
+    Moves = ANCIENTPOWER,LIGHTSCREEN,REFLECT,STEALTHROCK
+Pokemon = LOUDRED,32
+    AbilityIndex = 0
+    Nature = MODEST
+    LegacyIV = 31
+    Moves = UPROAR,ROAR,EXTRASENSORY,PROTECT
+Pokemon = SPINDA,33
+    AbilityIndex = 2
+    Nature = ADAMANT
+    LegacyIV = 31
+    Moves = DIZZYPUNCH,PSYCHOCUT,ROCKSLIDE,FAKEOUT
+Pokemon = HATTREM,34
+    AbilityIndex = 2
+    Nature = MODEST
+    LegacyIV = 31
+    Moves = PSYBEAM,DAZZLINGGLEAM,CALMMIND,MAGICALLEAF
+#-------------------------------
+# Abandoned Church
+# Restored from 3e68d817d^, legacy trainer line 1173.
+[LAITYF,Salom]
+LegacyTrainerTypeID = 226
+Pokemon = ORBEETLE,32
+    AbilityIndex = 0
+    Nature = MODEST
+    LegacyIV = 31
+    Moves = REFLECT,LIGHTSCREEN,STRUGGLEBUG,PSYBEAM
+Pokemon = TURTONATOR,32
+    AbilityIndex = 0
+    Nature = MODEST
+    LegacyIV = 31
+    Moves = DRAGONPULSE,FLAMETHROWER,SHELLSMASH,ENDURE
+Pokemon = FURRET,33
+    AbilityIndex = 1
+    Nature = ADAMANT
+    LegacyIV = 31
+    Moves = COIL,QUICKATTACK,BATONPASS,SLAM
+Pokemon = WIGGLYTUFF,34
+    AbilityIndex = 1
+    Nature = MODEST
+    LegacyIV = 31
+    Moves = ECHOEDVOICE,DAZZLINGGLEAM,SING,HEALPULSE
+#-------------------------------
+# Abandoned Church
+# Restored from 3e68d817d^, legacy trainer line 1181.
+[LAITYM,Herod]
+LegacyTrainerTypeID = 225
+Pokemon = SMEARGLE,32
+    Item = FOCUSSASH
+    Moves = NATUREPOWER,QUIVERDANCE,DAZZLINGGLEAM,EXTRASENSORY
+    AbilityIndex = 2
+    Nature = MODEST
+    LegacyIV = 31
+Pokemon = AZUMARILL,32
+    AbilityIndex = 1
+    Nature = ADAMANT
+    LegacyIV = 31
+    Moves = AQUATAIL,PLAYROUGH,DEFENSECURL,ROLLOUT
+Pokemon = ESPEON,33
+    AbilityIndex = 2
+    Nature = MODEST
+    LegacyIV = 31
+    Moves = WISH,FUTURESIGHT,PROTECT,HELPINGHAND
+Pokemon = SYLVEON,34
+    AbilityIndex = 2
+    Nature = MODEST
+    LegacyIV = 31
+    Moves = SWIFT,QUICKATTACK,WISH,YAWN
+#-------------------------------
+# Abandoned Church
+# Restored from 3e68d817d^, legacy trainer line 1189.
+[LAITYF,Anna]
+LegacyTrainerTypeID = 226
+Pokemon = GRUMPIG,32
+    AbilityIndex = 0
+    Nature = MODEST
+    LegacyIV = 31
+    Moves = POWERGEM,PSYBEAM,TEETERDANCE,LUCKYCHANT
+Pokemon = KECLEON,32
+    AbilityIndex = 1
+    Nature = MODEST
+    LegacyIV = 31
+    Moves = ANCIENTPOWER,PSYBEAM,ICYWIND,WATERPULSE
+Pokemon = RIBOMBEE,33
+    AbilityIndex = 1
+    Nature = MODEST
+    LegacyIV = 31
+    Moves = QUIVERDANCE,DAZZLINGGLEAM,POLLENPUFF,STUNSPORE
+Pokemon = DODRIO,34
+    AbilityIndex = 1
+    Nature = JOLLY
+    LegacyIV = 31
+    Moves = SWORDSDANCE,PLUCK,FURYATTACK,QUICKATTACK
+#-------------------------------
+# Abandoned Church
+# Restored from 3e68d817d^, legacy trainer line 1197.
+[LAITYM,Simeon]
+LegacyTrainerTypeID = 225
+Pokemon = FURFROU,32
+    AbilityIndex = 0
+    Nature = ADAMANT
+    LegacyIV = 31
+    Moves = TAKEDOWN,DOUBLETEAM,DIG,WORKUP
+Pokemon = SHELGON,32
+    AbilityIndex = 2
+    Nature = ADAMANT
+    LegacyIV = 31
+    Moves = DRAGONCLAW,ZENHEADBUTT,ROCKSLIDE,DRAGONDANCE
+Pokemon = SWOOBAT,33
+    AbilityIndex = 2
+    Nature = MODEST
+    LegacyIV = 31
+    Moves = CALMMIND,AIRSLASH,STOREDPOWER,HEATWAVE
+Pokemon = FEAROW,34
+    AbilityIndex = 2
+    Nature = ADAMANT
+    LegacyIV = 31
+    Moves = FOCUSENERGY,AERIALACE,FURYATTACK,ROOST
+#-------------------------------
+# Abandoned Church
+# Restored from 3e68d817d^, legacy trainer line 1205.
+[LAITYF,Morgana]
+LegacyTrainerTypeID = 226
+Pokemon = DELCATTY,33
+    AbilityIndex = 2
+    Nature = TIMID
+    LegacyIV = 31
+    HPEV = 0
+    AttackEV = 0
+    DefenseEV = 0
+    SpeedEV = 252
+    SpecialAttackEV = 252
+    SpecialDefenseEV = 0
+    Moves = FAKEOUT,COSMICPOWER,BATONPASS,HYPERVOICE
+Pokemon = GIRAFARIG,33
+    AbilityIndex = 2
+    Nature = ADAMANT
+    LegacyIV = 31
+    HPEV = 0
+    AttackEV = 252
+    DefenseEV = 0
+    SpeedEV = 252
+    SpecialAttackEV = 0
+    SpecialDefenseEV = 0
+    Moves = ZENHEADBUTT,SECRETPOWER,CRUNCH,DOUBLETEAM
+Pokemon = ROSERADE,34
+    AbilityIndex = 2
+    Nature = TIMID
+    LegacyIV = 31
+    HPEV = 0
+    AttackEV = 0
+    DefenseEV = 0
+    SpeedEV = 252
+    SpecialAttackEV = 252
+    SpecialDefenseEV = 0
+    Moves = MAGICALLEAF,VENOSHOCK,TOXIC,DAZZLINGGLEAM
+Pokemon = SLURPUFF,34
+    Item = SITRUSBERRY
+    Moves = BELLYDRUM,PLAYROUGH,DRAINPUNCH,FACADE
+    AbilityIndex = 2
+    Nature = ADAMANT
+    LegacyIV = 31
+    HPEV = 0
+    AttackEV = 252
+    DefenseEV = 0
+    SpeedEV = 252
+    SpecialAttackEV = 0
+    SpecialDefenseEV = 0
+Pokemon = DEDENNE,35
+    Item = CHOICEBAND
+    Moves = SEEDBOMB,WILDCHARGE,PLAYROUGH,VOLTSWITCH
+    AbilityIndex = 2
+    Nature = ADAMANT
+    LegacyIV = 31
+    HPEV = 0
+    AttackEV = 252
+    DefenseEV = 0
+    SpeedEV = 252
+    SpecialAttackEV = 0
+    SpecialDefenseEV = 0
+Pokemon = DRAMPA,35
+    Item = DRACOPLATE
+    Moves = ECHOEDVOICE,DRAGONPULSE,EXTRASENSORY,GLARE
+    AbilityIndex = 0
+    Nature = MODEST
+    LegacyIV = 31
+    HPEV = 252
+    AttackEV = 0
+    DefenseEV = 0
+    SpeedEV = 0
+    SpecialAttackEV = 252
+    SpecialDefenseEV = 0
+#-------------------------------
+# Abandoned Church
+# Restored from 3e68d817d^, legacy trainer line 1215.
+[LAITYM,Percival]
+LegacyTrainerTypeID = 225
+Pokemon = KLEFKI,33
+    AbilityIndex = 0
+    Nature = MODEST
+    LegacyIV = 31
+    HPEV = 252
+    AttackEV = 0
+    DefenseEV = 0
+    SpeedEV = 0
+    SpecialAttackEV = 252
+    SpecialDefenseEV = 0
+    Moves = SAFEGUARD,THUNDERWAVE,DRAININGKISS,MIRRORSHOT
+Pokemon = VIBRAVA,33
+    Nature = MODEST
+    LegacyIV = 31
+    HPEV = 0
+    AttackEV = 0
+    DefenseEV = 0
+    SpeedEV = 252
+    SpecialAttackEV = 252
+    SpecialDefenseEV = 0
+    Moves = DRAGONBREATH,EARTHPOWER,HEATWAVE,BUGBUZZ
+Pokemon = OMASTAR,34
+    AbilityIndex = 2
+    Nature = MODEST
+    LegacyIV = 31
+    HPEV = 0
+    AttackEV = 0
+    DefenseEV = 0
+    SpeedEV = 252
+    SpecialAttackEV = 252
+    SpecialDefenseEV = 0
+    Moves = ANCIENTPOWER,BRINE,ICYWIND,SHELLSMASH
+Pokemon = AROMATISSE,34
+    Item = SITRUSBERRY
+    Moves = HEALPULSE,WISH,PROTECT,DAZZLINGGLEAM
+    AbilityIndex = 0
+    Nature = BOLD
+    LegacyIV = 31
+    HPEV = 252
+    AttackEV = 0
+    DefenseEV = 0
+    SpeedEV = 0
+    SpecialAttackEV = 252
+    SpecialDefenseEV = 0
+Pokemon = HYPNO,35
+    Item = WIDELENS
+    Moves = HYPNOSIS,NASTYPLOT,PSYSHOCK,NIGHTMARE
+    AbilityIndex = 2
+    Nature = TIMID
+    LegacyIV = 31
+    HPEV = 0
+    AttackEV = 0
+    DefenseEV = 0
+    SpeedEV = 252
+    SpecialAttackEV = 252
+    SpecialDefenseEV = 0
+Pokemon = GRANBULL,35
+    Item = PIXIEPLATE
+    Moves = PLAYROUGH,FIREPUNCH,STOMPINGTANTRUM,CRUNCH
+    AbilityIndex = 0
+    Nature = JOLLY
+    LegacyIV = 31
+    HPEV = 0
+    AttackEV = 252
+    DefenseEV = 0
+    SpeedEV = 252
+    SpecialAttackEV = 0
+    SpecialDefenseEV = 0
+#-------------------------------
+# Logium Lighthouse
+# Restored from 3e68d817d^, legacy trainer line 1395.
+[SAILOR,Mars]
+LegacyTrainerTypeID = 140
+Pokemon = MURKROW,32
+    Item = DAMPROCK
+    Moves = RAINDANCE,TAILWIND,MIRRORMOVE,FOULPLAY
+    AbilityIndex = 2
+Pokemon = POLIWRATH,33
+    AbilityIndex = 2
+    Moves = WATERFALL,BRICKBREAK,POISONJAB,BULKUP
+Pokemon = SWANNA,32
+    Item = DAMPROCK
+    Moves = SCALD,HURRICANE,ICYWIND,RAINDANCE
+    AbilityIndex = 2
+Pokemon = STARMIE,34
+    AbilityIndex = 2
+    Moves = THUNDER,SCALD,ICEBEAM,SIGNALBEAM
+#-------------------------------
+# Logium Lighthouse
+# Restored from 3e68d817d^, legacy trainer line 1403.
+[SAILOR,Jupiter]
+LegacyTrainerTypeID = 140
+Pokemon = POLITOED,32
+    Item = DAMPROCK
+    Moves = SCALD,PSYCHIC,ICEBEAM,BULLDOZE
+    AbilityIndex = 2
+Pokemon = MANTINE,32
+    AbilityIndex = 0
+    Moves = HURRICANE,SCALD,TAILWIND,SIGNALBEAM
+Pokemon = BUTTERFREE,33
+    Item = FOCUSSASH
+    Moves = QUIVERDANCE,HURRICANE,BUGBUZZ,ELECTROWEB
+    AbilityIndex = 2
+Pokemon = BEARTIC,34
+    AbilityIndex = 2
+    Moves = AQUAJET,ICICLECRASH,PLAYROUGH,POWERUPPUNCH
+#-------------------------------
+# Logium Lighthouse
+# Restored from 3e68d817d^, legacy trainer line 1411.
+[SAILOR,Neptune]
+LegacyTrainerTypeID = 140
+Pokemon = PELIPPER,32
+    Item = DAMPROCK
+    Moves = HURRICANE,SCALD,KNOCKOFF,UTURN
+    AbilityIndex = 1
+Pokemon = CASTFORM,34
+    AbilityIndex = 0
+    Moves = HURRICANE,WEATHERBALL,THUNDER,TAILWIND
+Pokemon = LUDICOLO,32
+    Item = DAMPROCK
+    Moves = FAKEOUT,SCALD,GIGADRAIN,RAINDANCE
+    AbilityIndex = 0
+Pokemon = JOLTEON,33
+    AbilityIndex = 0
+    Moves = THUNDER,SIGNALBEAM,HELPINGHAND,VOLTSWITCH
+#-------------------------------
+# League Administration
+# Act One sheet 2, row 264 (double_opponent).
+[AURORA,Aurora]
+LegacyTrainerTypeID = 270
+Pokemon = MINCCINO,21
+    AbilityIndex = 1
+    Gender = female
+    Form = 0
+    Shiny = true
+    Nature = TIMID
+    Moves = ENCORE,CHILLINGWATER,DAZZLINGGLEAM,ROUND
+Pokemon = LUMINEON,22
+    AbilityIndex = 2
+    Gender = male
+    Form = 0
+    Shiny = true
+    Nature = TIMID
+    Moves = SWEETKISS,ROUND,DAZZLINGGLEAM,WATERPULSE
+Pokemon = SYLVEON,23
+    Item = PIXIEPLATE
+    Moves = QUICKATTACK,HIDDENPOWERPSY,MAGICALLEAF,ROUND
+    AbilityIndex = 2
+    Gender = female
+    Form = 0
+    Nature = QUIET
+    Name = Love
+    HPEV = 252
+    AttackEV = 0
+    DefenseEV = 0
+    SpeedEV = 0
+    SpecialAttackEV = 252
+    SpecialDefenseEV = 0
+#-------------------------------
+# League Administration
+# Act One sheet 2, row 264 (double_opponent).
+[RYOU,Ryou]
+LegacyTrainerTypeID = 271
+Pokemon = SLUGMA,21
+    AbilityIndex = 0
+    Form = 1
+    Nature = MODEST
+    Moves = INCINERATE,PARABOLICCHARGE,ROUND,TOXIC
+Pokemon = JOLTEON,22
+    AbilityIndex = 0
+    Form = 0
+    Nature = TIMID
+    Moves = ELECTROWEB,ROUND,QUICKATTACK,HIDDENPOWERPSY
+Pokemon = PORYGON2,23
+    Item = EVIOLITE
+    Moves = ROUND,PSYBEAM,ICEBEAM,RECOVER
+    AbilityIndex = 2
+    Form = 0
+    Nature = MODEST
+    Name = Rab
+    HPEV = 252
+    AttackEV = 0
+    DefenseEV = 0
+    SpeedEV = 0
+    SpecialAttackEV = 252
+    SpecialDefenseEV = 0
+#-------------------------------
+# League Administration
+# Act One sheet 2, row 30 (opponent).
+[TRENT,Trent]
+LegacyTrainerTypeID = 272
+Items = POTION,POTION
+Pokemon = MARSHTOMP,22
+    AbilityIndex = 2
+    Form = 0
+    Nature = QUIET
+    Moves = MUDBOMB,ICEBALL,BODYSLAM,TORPEDO
+Pokemon = TINKATUFF,22
+    AbilityIndex = 1
+    Form = 1
+    Nature = MODEST
+    Moves = WATERPULSE,MIRRORSHOT,MUDSHOT,ENCORE
+Pokemon = BRIONNE,22
+    AbilityIndex = 0
+    Form = 0
+    Nature = MODEST
+    Moves = WHIRLPOOL,DRAININGKISS,ICYWIND,BUBBLEBEAM
+Pokemon = GOREBYSS,23
+    Item = FAIRYFEATHER
+    Moves = WATERPULSE,DRAININGKISS,SIGNALBEAM,HIDDENPOWERGRA
+    AbilityIndex = 2
+    Form = 0
+    Nature = TIMID
+Pokemon = DREDNAW,23
+    Item = WATERGEM
+    Moves = ROCKTOMB,RAZORSHELL,BULLDOZE,ICEFANG
+    AbilityIndex = 1
+    Form = 0
+    Nature = ADAMANT
+Pokemon = FROGADIER,24
+    Item = EXPERTBELT
+    Moves = MUDSHOT,AERIALACE,WATERPULSE,ROCKTOMB
+    AbilityIndex = 2
+    Gender = female
+    Form = 0
+    Nature = NAIVE
+    Name = Grenadine
+    HPEV = 0
+    AttackEV = 0
+    DefenseEV = 0
+    SpeedEV = 252
+    SpecialAttackEV = 252
+    SpecialDefenseEV = 0
+#-------------------------------
+# League Administration
+# Act One sheet 2, row 216 (opponent).
+[PAX,Pax]
+LegacyTrainerTypeID = 284
+Items = POTION,POTION
+Pokemon = TORRACAT,22
+    AbilityIndex = 2
+    Form = 0
+    Nature = ADAMANT
+    Moves = FIREFANG,DOUBLEKICK,BITE,FAKEOUT
+Pokemon = CROCALOR,22
+    AbilityIndex = 2
+    Form = 0
+    Nature = QUIET
+    Moves = FIRESPIN,OMINOUSWIND,THUNDERFANG,SLACKOFF
+Pokemon = FLETCHINDER,22
+    AbilityIndex = 0
+    Form = 0
+    Nature = ADAMANT
+    Moves = FLAMECHARGE,AIRCUTTER,STEELWING,QUICKATTACK
+Pokemon = SCOVILLAIN,23
+    Item = GRASSGEM
+    Moves = FIREFANG,RAZORLEAF,BITE,LEER
+    AbilityIndex = 0
+    Form = 0
+    Nature = ADAMANT
+Pokemon = NUMEL,23
+    Item = FLAMEPLATE
+    Moves = FIRESPIN,MUDSHOT,SWALLOW,NATUREPOWER
+    AbilityIndex = 0
+    Gender = male
+    Form = 0
+    Nature = MODEST
+    HPEV = 252
+    AttackEV = 0
+    DefenseEV = 0
+    SpeedEV = 0
+    SpecialAttackEV = 252
+    SpecialDefenseEV = 0
+Pokemon = TORKOAL,24
+    Item = HEATROCK
+    Moves = FIRESPIN,BODYSLAM,HELPINGHAND,YAWN
+    AbilityIndex = 1
+    Form = 0
+    Nature = QUIET
+    Name = Fumo
+#-------------------------------
+# Logium Archives
+# Act One sheet 2, row 150 (opponent).
+[ATEN,Aten]
+LegacyTrainerTypeID = 274
+Items = POTION
+Pokemon = VULPIX,22
+    AbilityIndex = 1
+    Form = 1
+    Nature = TIMID
+    Moves = ICYWIND,DRAININGKISS,ICESHARD,AURORAVEIL
+Pokemon = QUAGSIRE,22
+    AbilityIndex = 2
+    Form = 0
+    Nature = MODEST
+    Moves = WHIRLPOOL,ANCIENTPOWER,MUDSHOT,YAWN
+Pokemon = INDEEDEE,23
+    AbilityIndex = 2
+    Gender = male
+    Form = 0
+    Nature = TIMID
+    Moves = SCRUTINIZE,SWIFT,ICYWIND,ENCORE
+Pokemon = KADABRA,23
+    Item = ZAPPLATE
+    Moves = SCRUTINIZE,CHARGEBEAM,SWIFT,MIRACLEEYE
+    AbilityIndex = 2
+    Form = 0
+    Nature = TIMID
+Pokemon = ARMAROUGE,23
+    Item = MINDPLATE
+    Moves = STOREDPOWER,FLAMECHARGE,TRAILBLAZE,WILLOWISP
+    AbilityIndex = 2
+    Form = 0
+    Nature = NAIVE
+Pokemon = XATU,24
+    Item = SKYPLATE
+    Moves = SCRUTINIZE,AIRCUTTER,TELEPORT,ROOST
+    AbilityIndex = 0
+    Gender = male
+    Form = 0
+    Nature = MODEST
+    Name = Eiusmod
+    HPEV = 252
+    AttackEV = 0
+    DefenseEV = 0
+    SpeedEV = 0
+    SpecialAttackEV = 252
+    SpecialDefenseEV = 0
+#-------------------------------
+# Apolvita Pools
+# Act One sheet 2, row 126 (opponent).
+[BLACKBELT2,Bruce,50]
+LegacyTrainerTypeID = 35
+Pokemon = TOXICROAK,30
+    Item = DAMPROCK
+    Moves = PSYCHIC,AURASPHERE,VACUUMWAVE,RAINDANCE
+    AbilityIndex = 1
+    Form = 0
+    Nature = ADAMANT
+    HPEV = 0
+    AttackEV = 252
+    DefenseEV = 0
+    SpeedEV = 252
+    SpecialAttackEV = 0
+    SpecialDefenseEV = 0
+    Boss = TOXICROAKBOSS_NORMAL
+#-------------------------------
+# Sheet Act One
+# Act One sheet 2, row 178 (opponent).
+[GENTLEMAN,Willberg]
+LegacyTrainerTypeID = 141
+Pokemon = DELIBIRD,16
+    AbilityIndex = 1
+    Form = 0
+    Nature = JOLLY
+    Moves = AERIALACE,ICESHARD,PRESENT,TAILWIND
+Pokemon = PACHIRISU,17
+    AbilityIndex = 2
+    Form = 0
+    Nature = MODEST
+    Moves = ELECTROWEB,SWIFT,CHARM,QUICKATTACK
+Pokemon = GREEDENT,17
+    Item = ORANBERRY
+    Moves = COVET,BITE,STOCKPILE,SWALLOW
+    AbilityIndex = 0
+    Form = 0
+    Nature = ADAMANT
+Pokemon = TREVENANT,18
+    Item = ORANBERRY
+    Moves = MAGICALLEAF,HEX,DISABLE,WILLOWISP
+    AbilityIndex = 1
+    Form = 0
+    Nature = ADAMANT
+#-------------------------------
+# Act One runtime gap (no authored Normal source)
+# No historical Normal roster; copied existing counterpart metadata for the current Act One event.
+[POKEMONTRAINER_Percy,Percy,4]
+LegacyTrainerTypeID = 180
+Pokemon = SHIELDON,23
+    Item = CUSTAPBERRY
+    Moves = ROCKTOMB,CURSE,CRUNCH,STEALTHROCK
+    AbilityIndex = 0
+    Nature = ADAMANT
+    HPEV = 252
+    AttackEV = 252
+    DefenseEV = 0
+    SpeedEV = 0
+    SpecialAttackEV = 0
+    SpecialDefenseEV = 0
+Pokemon = PAWMO,22
+    Item = AIRBALLOON
+    Moves = SPARK,BITE,MACHPUNCH,DIG
+    AbilityIndex = 2
+    Nature = ADAMANT
+    HPEV = 0
+    AttackEV = 252
+    DefenseEV = 0
+    SpeedEV = 252
+    SpecialAttackEV = 0
+    SpecialDefenseEV = 0
+Pokemon = PORYGON2,23
+    Item = IRONBALL
+    Moves = ELECTROWEB,TRICK,ICYWIND,TRIATTACK
+    AbilityIndex = 0
+    Nature = MODEST
+    HPEV = 252
+    AttackEV = 0
+    DefenseEV = 0
+    SpeedEV = 0
+    SpecialAttackEV = 252
+    SpecialDefenseEV = 0
+Pokemon = HAUNTER,23
+    Item = MINDTRIBUTE
+    Moves = SUCKERPUNCH,OMINOUSWIND,CLEARSMOG,ICYWIND
+    AbilityIndex = 0
+    Nature = MODEST
+    HPEV = 0
+    AttackEV = 0
+    DefenseEV = 0
+    SpeedEV = 252
+    SpecialAttackEV = 252
+    SpecialDefenseEV = 0
+Pokemon = DUOSION,24
+    Item = EVIOLITE
+    Moves = OMINOUSWIND,PARABOLICCHARGE,WHIRLPOOL,RECOVER
+    AbilityIndex = 1
+    Gender = male
+    Form = 1
+    Nature = MODEST
+    Name = Coral
+    HPEV = 252
+    AttackEV = 0
+    DefenseEV = 0
+    SpeedEV = 0
+    SpecialAttackEV = 252
+    SpecialDefenseEV = 0
+#-------------------------------
+# Act One runtime gap (no authored Normal source)
+# No historical Normal roster; copied existing counterpart metadata for the current Act One event.
+[SCIENTIST_M2,Corin]
+LegacyTrainerTypeID = 49
+Pokemon = TIRTOUGA,23
+    Item = RINDOBERRY
+    Moves = ROCKSLIDE,AQUATAIL,AQUAJET,ZENHEADBUTT
+    AbilityIndex = 2
+    Nature = ADAMANT
+    HPEV = 0
+    AttackEV = 252
+    DefenseEV = 0
+    SpeedEV = 252
+    SpecialAttackEV = 0
+    SpecialDefenseEV = 0
+Pokemon = GRIMER,23
+    Item = EVIOLITE
+    Moves = POISONJAB,THUNDERPUNCH,CRUNCH,POISONGAS
+    AbilityIndex = 2
+    Form = 1
+    Nature = JOLLY
+    HPEV = 0
+    AttackEV = 252
+    DefenseEV = 0
+    SpeedEV = 252
+    SpecialAttackEV = 0
+    SpecialDefenseEV = 0
+Pokemon = LILEEP,23
+    Item = ELEMENTALSEED
+    Moves = ANCIENTPOWER,GIGADRAIN,BRINE,STRINGSHOT
+    AbilityIndex = 2
+    Nature = BOLD
+    HPEV = 252
+    AttackEV = 0
+    DefenseEV = 252
+    SpeedEV = 0
+    SpecialAttackEV = 0
+    SpecialDefenseEV = 0
+Pokemon = PORYGON,24
+    Item = WISEGLASSES
+    Moves = SWIFT,CHARGEBEAM,PSYBEAM,ELECTROWEB
+    AbilityIndex = 2
+    Nature = MODEST
+    HPEV = 252
+    AttackEV = 0
+    DefenseEV = 0
+    SpeedEV = 0
+    SpecialAttackEV = 252
+    SpecialDefenseEV = 0
+Pokemon = WARTORTLE,24
+    Item = BERRYJUICE
+    Moves = FOLLOWME,LIFEDEW,FAKEOUT,WHIRLPOOL
+    AbilityIndex = 1
+    Nature = BOLD
+    HPEV = 252
+    AttackEV = 0
+    DefenseEV = 252
+    SpeedEV = 0
+    SpecialAttackEV = 0
+    SpecialDefenseEV = 0
+Pokemon = ROTOM,25
+    Item = ELEMENTALSEED
+    Moves = HIDDENPOWERWAT,HEX,ELECTROWEB,WILLOWISP
+    AbilityIndex = 0
+    Nature = MODEST
+    HPEV = 0
+    AttackEV = 0
+    DefenseEV = 0
+    SpeedEV = 252
+    SpecialAttackEV = 252
+    SpecialDefenseEV = 0

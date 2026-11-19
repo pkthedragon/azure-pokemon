@@ -1,0 +1,70 @@
+{
+  "commits_audited": 81,
+  "formats": {
+    "section": 2,
+    "legacy": 79
+  },
+  "matches": [],
+  "variants": [
+    [
+      "POKEMONTRAINER_Percy",
+      "Percy",
+      0
+    ],
+    [
+      "POKEMONTRAINER_Percy",
+      "Percy",
+      1
+    ],
+    [
+      "POKEMONTRAINER_Percy",
+      "Percy",
+      2
+    ],
+    [
+      "POKEMONTRAINER_Percy",
+      "Percy",
+      3
+    ],
+    [
+      "POKEMONTRAINER_Percy",
+      "Percy",
+      102
+    ],
+    [
+      "POKEMONTRAINER_Percy",
+      "Percy",
+      103
+    ],
+    [
+      "POKEMONTRAINER_Percy",
+      "Percy",
+      200
+    ],
+    [
+      "POKEMONTRAINER_Percy",
+      "Percy",
+      202
+    ],
+    [
+      "POKEMONTRAINER_Percy",
+      "Percy",
+      203
+    ],
+    [
+      "POKEMONTRAINER_Percy",
+      "Percy",
+      204
+    ],
+    [
+      "SCIENTISTM",
+      "Corin",
+      200
+    ],
+    [
+      "SCIENTIST_M2",
+      "Corin",
+      200
+    ]
+  ]
+}

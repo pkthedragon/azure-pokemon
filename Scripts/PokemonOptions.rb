@@ -370,10 +370,10 @@ class PokemonSystem
 
   def difficulty
     v = @difficulty
-    if v.nil? && defined?($game_variables) && $game_variables
+    if defined?($game_variables) && $game_variables
       v = $game_variables[200]
     end
-    v = 1 if v.nil?
+    v = 0 if v.nil?
     v = 0 if v < 0
     v = 2 if v > 2
     return v
@@ -483,8 +483,8 @@ class PokemonOptionScene
        # Gameplay / Accessibility
        #---------------------------------------------------------------------------
        EnumOption.new(_INTL("Difficulty"),[_INTL("Easy"),_INTL("Normal"),_INTL("Intense")],
-          proc { $PokemonSystem.difficulty },
-          proc {|value| $PokemonSystem.difficulty = value }
+          proc { [1,0,2][$PokemonSystem.difficulty] },
+          proc {|value| $PokemonSystem.difficulty = [1,0,2][value] }
        ),
        EnumOption.new(_INTL("EXP All"),[_INTL("On"),_INTL("Off")],
           proc { $PokemonSystem.expall ? 0 : 1 },

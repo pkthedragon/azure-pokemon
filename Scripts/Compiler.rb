@@ -2775,6 +2775,11 @@ def pbCompileTrainers(outputFiles=nil,installRuntime=true,messagesOutput=nil)
         poke[TPABILITY]=poke[TPABILITY].to_i
         raise _INTL("Bad abilityflag: {1} (must be 0 or 1 or 2-5)\n{2}",poke[TPABILITY],FileLineData.linereport) if poke[TPABILITY]<0 || poke[TPABILITY]>5
       end
+      # Explicit ability overrides are optional trailing data; keep legacy row lengths.
+      if poke.length>TPABILITYOVERRIDE
+        AzurePBSValidation.required(poke[TPABILITYOVERRIDE],"Trainer Pokemon AbilityOverride")
+        poke[TPABILITYOVERRIDE]=checkEnumField(poke[TPABILITYOVERRIDE],PBAbilities)
+      end
       # Gender
       if !poke[TPGENDER] || poke[TPGENDER]==""
         poke[TPGENDER]=TPDEFAULTS[TPGENDER]
@@ -6387,7 +6392,7 @@ def pbAltPBSTrainerIVToLegacy(value,legacyValue=nil)
 end
 
 def pbAltPBSTrainerPokemonField?(key)
-  return ["Item","Moves","AbilityIndex","Gender","Form","Shiny","Nature","IV",
+  return ["Item","Moves","AbilityIndex","AbilityOverride","Gender","Form","Shiny","Nature","IV",
           "LegacyIV","Happiness","Name","Shadow","Ball","LegacyHiddenPower",
           "HiddenPower","HPEV","AttackEV","DefenseEV","SpeedEV",
           "SpecialAttackEV","SpecialDefenseEV","PreMega","Boss","OverrideHP",
@@ -6407,6 +6412,8 @@ def pbAltPBSApplyTrainerPokemonField(poke,key,value)
       poke[TPMOVE4]=moves[3] || ""
     when "AbilityIndex"
       poke[TPABILITY]=value
+    when "AbilityOverride"
+      poke[TPABILITYOVERRIDE]=value
     when "Gender"
       poke[TPGENDER]=pbAltPBSTrainerGenderToLegacy(value)
     when "Form"
@@ -6539,7 +6546,7 @@ def pbAltPBSBuildLegacyTrainerLines(filename)
     FileLineData.setLine(line,lineno)
     isPokemonSubfield=(currentPokemon && (line[/^\s+/] || pbAltPBSTrainerPokemonField?(key)))
     if isPokemonSubfield
-      AzurePBSValidation.known_property(key,["Item","Moves","AbilityIndex","Gender","Form","Shiny","Nature","IV",
+      AzurePBSValidation.known_property(key,["Item","Moves","AbilityIndex","AbilityOverride","Gender","Form","Shiny","Nature","IV",
         "LegacyIV","Happiness","Name","Shadow","Ball","LegacyHiddenPower","HiddenPower","HPEV","AttackEV",
         "DefenseEV","SpeedEV","SpecialAttackEV","SpecialDefenseEV","PreMega","Boss","OverrideHP",
         "OverrideAttack","OverrideDefense","OverrideSpeed","OverrideSpecialAttack","OverrideSpecialDefense"],
@@ -7034,6 +7041,7 @@ def pbExportAltTrainersPBS(outputDir,sourceDir="PBS")
       lines.push("    Item = #{poke[TPITEM]}") if poke[TPITEM] && poke[TPITEM]!=""
       lines.push("    Moves = #{moveList.join(",")}") if moveList.length>0
       lines.push("    AbilityIndex = #{poke[TPABILITY]}") if poke[TPABILITY] && poke[TPABILITY]!=""
+      lines.push("    AbilityOverride = #{poke[TPABILITYOVERRIDE]}") if poke[TPABILITYOVERRIDE] && poke[TPABILITYOVERRIDE]!=""
       gender=pbAltPBSNormalizeGender(poke[TPGENDER])
       lines.push("    Gender = #{gender}") if gender && gender!=""
       lines.push("    Form = #{poke[TPFORM]}") if poke[TPFORM] && poke[TPFORM]!=""

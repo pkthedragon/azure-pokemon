@@ -1,0 +1,45 @@
+{
+  "generated/pokmanitems.rxdata": {
+    "bytes": 149450,
+    "sha256": "e978a12933423fadacda68480877cf82d2a983766568679300b318cca0087b64"
+  },
+  "generated/trainers.dat": {
+    "bytes": 129257,
+    "sha256": "08dea0eda9e46a3cf1611ebdd101168a28a4d54d7bfe2897e9aca3e09ee3b2f6"
+  },
+  "generated/bossdata.dat": {
+    "bytes": 5247,
+    "sha256": "53a539efed50e08c5629154aa398033a3e8f1107122d6f92b0ac5356efd61262"
+  },
+  "generated/messages.dat": {
+    "bytes": 1618848,
+    "sha256": "b60fbe55f1e63acc5a9c93f20401e1adb9a69a934668a3eb94e1f3fa3b3eff01"
+  },
+  "generated/PBItems.rb": {
+    "bytes": 16974,
+    "sha256": "9818880bc8cae577a57cb70e741ca98d19f4050ff1fed2ef3f6d9a412b1ca069"
+  },
+  "source_matches_workspace": {
+    "PBS/items.txt": true,
+    "PBS/trainers.txt": true,
+    "Scripts/BossInfo.rb": true,
+    "Scripts/Compiler.rb": true,
+    "Scripts/Difficulty Modes.rb": true,
+    "Scripts/PokeBattle_Move.rb": true,
+    "Scripts/PokeBattle_Battle.rb": true,
+    "Scripts/PokemonEditor.rb": true,
+    "Scripts/PokemonField.rb": true,
+    "Scripts/PokemonOptions.rb": true,
+    "Scripts/PokemonTrainers.rb": true,
+    "Scripts/PokemonUtilities.rb": true
+  },
+  "original_data_sha256": {
+    "trainers.dat": "f7274adc9d3780beb99dce61694e40776fcdfcdfd09b1e2aa7253f204684246c",
+    "pokmanitems.rxdata": "5bed00d1b33aa20346e90a31cd94087a0c53a5c4ad45d58aa4967de66150b5dc",
+    "bossdata.dat": "18cfe3da113f9b39c0769ff4e2efbbdaaf63e58de6448739c5562bcec23ac571",
+    "messages.dat": "3905b9b401a13a7d51c9c4fbcdb641311c13312658c17480f29925a6cb50d3f7",
+    "trainertypes.dat": "d4b0e1e95d627c0f6439657f20cb332681ec52b5b1a8da2c1ecc9f8e9e262123"
+  },
+  "report": "native-report-final.txt",
+  "final_preservation_report": "native-final-preservation.txt"
+}

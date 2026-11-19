@@ -604,6 +604,13 @@ def pbSaveTrainerBattles(data=nil)
          towrite[TPNAME]=(poke[TPNAME] ? poke[TPNAME] : "")
          towrite[TPSHADOW]=(poke[TPSHADOW] ? "true" : "")
          towrite[TPBALL]=(poke[TPBALL] && poke[TPBALL]!=TPDEFAULTS[TPBALL] ? poke[TPBALL].to_s : "")
+         if !poke[TPABILITYOVERRIDE].nil?
+           # Preserve the intervening legacy fields when exporting the optional override.
+           for i in TPHIDDENPOWER...TPABILITYOVERRIDE
+             towrite[i]=poke[i].nil? ? "" : poke[i].to_s
+           end
+           towrite[TPABILITYOVERRIDE]=getConstantName(PBAbilities,poke[TPABILITYOVERRIDE])
+         end
          for i in 0...towrite.length
            towrite[i]="" if !towrite[i]
            maxindex=i if towrite[i] && towrite[i]!=""

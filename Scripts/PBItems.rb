@@ -1114,16 +1114,17 @@ VIRUSBALL=1143
 BANDITBALL=1144
 SHARPTALONS=1145
 DURIABERRY=1146
+FAIRYFEATHER=1159
 
 def PBItems.getName(id)
 return pbGetMessage(MessageTypes::Items,id)
 end
 
 def PBItems.getCount
-return 1159
+return 1160
 end
 
 def PBItems.maxValue
-return 1158
+return 1159
 end
 end
