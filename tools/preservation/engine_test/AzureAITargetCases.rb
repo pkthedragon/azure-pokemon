@@ -132,6 +132,68 @@ module AzureAITargetCases
       assert(@foe.effects[PBEffects::Attacking],"The selected Z-Move was not recorded")
     end
 
+    suite.test(:TARGET_Z_MOVE_COMPARES_COMPATIBLE_ATTACKS) do
+      battle(:NONE,:NONE,foe_moves: [:HYPERVOICE,:HEADBUTT],user_species: :CHANSEY)
+      @foe.item=PBItems::NORMALIUMZ2
+      @battle.define_singleton_method(:pbHasZRing) { |_| true }
+      @foe.attack=110
+      @foe.spatk=35
+      @user.defense=50
+      @user.spdef=200
+      choice=ai_command(@foe)
+      equal(PBMoves::HEADBUTT,choice[2].id)
+      equal(1,choice[1])
+      equal(@foe.index,@battle.zMove[1][0])
+      equal(4,@foe.moves.length)
+    end
+
+    suite.test(:AI_WILD_SAMPLES_LEGAL_MOVES) do
+      battle(:NONE,:NONE,foe_moves: [:TACKLE,:QUICKATTACK,:BITE],wild: true)
+      @foe.moves[1].pp=0
+      srand(390)
+      commands=32.times.map { ai_command(@foe)[2].id }
+      equal([PBMoves::TACKLE,PBMoves::BITE].sort,commands.uniq.sort)
+      @foe.moves[0].pp=0
+      @foe.moves[2].pp=0
+      equal(PBMoves::STRUGGLE,ai_command(@foe)[2].id)
+    end
+
+    suite.test(:AI_ITEM_RESERVATIONS_USE_TRAINER_INVENTORY) do
+      battle(:NONE,:NONE,ally: :NONE,foe_ally: :NONE)
+      item=PBItems::POTION
+      @battle.choices[@foe.index]=[3,item,nil,-1]
+      @battle.items=[item]
+      assert(@battle.pbEnemyItemAlreadyUsed?(@foe_ally.index,item,@battle.items),
+        "The second battler must respect the first battler's reservation")
+      @battle.items << item
+      equal(false,@battle.pbEnemyItemAlreadyUsed?(@foe_ally.index,item,@battle.items))
+      other_owner=PokeBattle_Trainer.new("Other trainer",0)
+      @battle.instance_variable_set(:@opponent,[@battle.opponent,other_owner])
+      @battle.items=[[item],[item]]
+      items=@battle.pbGetOwnerItems(@foe_ally.index)
+      equal(false,@battle.pbEnemyItemAlreadyUsed?(@foe_ally.index,item,items))
+    end
+
+    suite.test(:AI_SETUP_FORECAST_RESPECTS_CAP_HEADROOM) do
+      battle(:NONE,:NONE,user_moves: [:SWORDSDANCE,:TACKLE],foe_moves: [:GROWL])
+      stat=PBStats::ATTACK
+      setup=@user.moves[0]
+      @battle.pbWithStatChangeSource([:move,setup.id]) do
+        assert(@user.pbIncreaseStat(stat,2,false),"Could not establish the boost cap")
+      end
+      @battle.lastMoveUsed=PBMoves::GROWL
+      @battle.lastMoveUser=@foe.index
+      assert(@user.pbReduceStat(stat,1,false,PBMoves::GROWL,@foe),"Could not restore headroom")
+      forecast=@user.clone
+      forecast.stages=@user.stages.dup
+      forecast.stages[stat]+=2
+      @battle.pbAIClampSetupForecast(setup,@user,forecast,[stat])
+      equal(2,forecast.stages[stat])
+      equal(1,@user.stages[stat])
+      equal(PBMoves::GROWL,@battle.lastMoveUsed)
+      equal(@foe.index,@battle.lastMoveUser)
+    end
+
     suite.test(:TARGET_Z_SCORE_TIE_CONSERVES_Z) do
       battle(:NONE,:NONE,foe_moves: [:THUNDERBOLT],foe_species: :PIKACHU)
       @foe.item=PBItems::ELECTRIUMZ2
@@ -269,6 +331,136 @@ module AzureAITargetCases
       actual_targets=[]
       @user.pbFindUser(choice,actual_targets)
       equal([@foe_ally.index],actual_targets.map(&:index))
+    end
+
+    suite.test(:AI_COORDINATION_LIVE_COMMANDS_AND_INVALIDATION) do
+      battle(:NONE,:NONE,ally: :NONE,foe_ally: :NONE)
+      ai_prepare
+      [@foe,@foe_ally].each do |user|
+        user.moves=[:TAILWIND,:TACKLE,nil,nil].map {|name| name ? move(name,user) : PokeBattle_Move.pbFromPBMove(@battle,PBMove.new(0),user) }
+      end
+      plans={}
+      [@foe,@foe_ally].each do |user|
+        plans[user.index]={scores: [160,140,-1,-1],targets: [-1,@user.index,-1,-1],choices: [0,1],z_move: nil,z_base_slot: nil}
+      end
+      @battle.define_singleton_method(:pbAIComputeCommandPlan) {|index| plans.fetch(index) }
+      @battle.choices[@user.index]=[1,0,@user.moves[0],@foe.index]
+      human=@battle.choices[@user.index].dup
+      @battle.pbAIPrepareTurnCoordination
+      equal(human,@battle.choices[@user.index])
+      left=@battle.pbAIPlannedCommand(@foe.index)
+      right=@battle.pbAIPlannedCommand(@foe_ally.index)
+      equal([0,1],[left[:preferred_slot],right[:preferred_slot]])
+      @battle.pbDefaultChooseEnemyCommand(@foe.index)
+      equal(PBMoves::TAILWIND,@battle.choices[@foe.index][2].id)
+      @battle.pbDefaultChooseEnemyCommand(@foe_ally.index)
+      equal(PBMoves::TACKLE,@battle.choices[@foe_ally.index][2].id)
+      equal(human,@battle.choices[@user.index])
+      @battle.choices[@foe.index]=[0,0,nil,-1]
+      @battle.choices[@foe_ally.index]=[0,0,nil,-1]
+      @battle.pbAIPrepareTurnCoordination
+      @battle.choices[@foe.index]=[3,PBItems::POTION,nil,-1]
+      equal(nil,@battle.pbAIPlannedCommand(@foe_ally.index))
+    end
+
+    suite.test(:AI_COORDINATION_SUPPORT_AND_TIMING) do
+      battle(:NONE,:NONE,ally: :NONE,foe_ally: :NONE)
+      entry=lambda {|user,name,score,target| {user: user,move: move(name,user),slot: 0,score: score,target: target} }
+      helper=entry.call(@foe,:HELPINGHAND,100,-1)
+      status=entry.call(@foe_ally,:GROWL,100,@user.index)
+      fixed=entry.call(@foe_ally,:DRAGONRAGE,100,@user.index)
+      equal(100.0,@battle.pbAICoordinationPairScore(helper,status))
+      equal(100.0,@battle.pbAICoordinationPairScore(helper,fixed))
+      @foe.speed=400
+      @foe_ally.speed=100
+      screech=entry.call(@foe,:SCREECH,100,@user.index)
+      physical=entry.call(@foe_ally,:TACKLE,100,@user.index)
+      special=entry.call(@foe_ally,:WATERGUN,100,@user.index)
+      good=@battle.pbAICoordinationPairScore(screech,physical)
+      assert(good>@battle.pbAICoordinationPairScore(screech,special),'Screech should complement physical attacks')
+      @foe.speed=20
+      assert(good>@battle.pbAICoordinationPairScore(screech,physical),'A late Screech must not gain immediate partner benefit')
+    end
+
+    suite.test(:AI_COORDINATION_SUBSTITUTE_AND_ALWAYS_HIT_KO) do
+      battle(:NONE,:NONE,ally: :NONE,foe_ally: :NONE)
+      @foe.speed=400
+      @foe_ally.speed=100
+      first={user: @foe,move: move(:AERIALACE,@foe),slot: 0,score: 100,target: @user.index}
+      second={user: @foe_ally,move: move(:TACKLE,@foe_ally),slot: 0,score: 100,target: @user.index}
+      @battle.define_singleton_method(:pbAICoordinationDamage) {|entry,target| 10000 }
+      open=@battle.pbAICoordinationPairScore(first,second)
+      assert(open<200,'Always-hit attacks must receive reliable KO credit')
+      @user.effects[PBEffects::Substitute]=30
+      equal(200.0,@battle.pbAICoordinationPairScore(first,second))
+    end
+
+    suite.test(:AI_COORDINATION_ROOST_GROUND_AND_TELEPATHY) do
+      battle(:NONE,:NONE,ally: :NONE,foe_ally: :NONE)
+      @foe_ally.type1=PBTypes::FLYING
+      @foe_ally.type2=PBTypes::FLYING
+      @foe_ally.speed=400
+      @foe.speed=20
+      quake={user: @foe,move: move(:EARTHQUAKE,@foe),slot: 0,score: 100,target: -1}
+      roost={user: @foe_ally,move: move(:ROOST,@foe_ally),slot: 0,score: 100,target: -1}
+      assert(@battle.pbAICoordinationPairScore(quake,roost)<200,'Roost before Earthquake should expose friendly damage')
+      @foe_ally.ability=PBAbilities::TELEPATHY
+      @battle.instance_variable_set(:@azureAICoordinationRoosters,{})
+      @battle.instance_variable_set(:@azureAICoordinationDamage,{})
+      equal(200.0,@battle.pbAICoordinationPairScore(quake,roost))
+    end
+
+    suite.test(:AI_COORDINATION_REDIRECTION_SETUP_RESPECTS_POWDER_AND_SPREAD) do
+      battle(:NONE,:NONE,user_moves: [:TACKLE],ally: :NONE,foe_ally: :NONE)
+      @ally.hp=0
+      @foe.hp=500
+      @user.speed=200
+      @foe_ally.speed=20
+      redirect={user: @foe,move: move(:RAGEPOWDER,@foe),slot: 0,score: 100,target: -1}
+      setup={user: @foe_ally,move: move(:SWORDSDANCE,@foe_ally),slot: 0,score: 100,target: -1}
+      ally_index=@foe_ally.index
+      @battle.define_singleton_method(:pbAICoordinationDamage) {|entry,target| target.index==ally_index ? 60 : 10 }
+      @foe_ally.hp=100
+      assert(@battle.pbAICoordinationRedirectValue(redirect,setup)>0,'Fast redirection should protect a setup ally')
+      @user.item=PBItems::SAFETYGOGGLES
+      @battle.instance_variable_set(:@azureAICoordinationForecast,{})
+      equal(0,@battle.pbAICoordinationRedirectValue(redirect,setup))
+      @user.item=0
+      @user.moves[0]=move(:SURF,@user)
+      @battle.instance_variable_set(:@azureAICoordinationForecast,{})
+      equal(0,@battle.pbAICoordinationRedirectValue(redirect,setup))
+    end
+
+    suite.test(:AI_COORDINATION_TRIPLES_BYPASS) do
+      battle(:NONE,:NONE,ally: :NONE,foe_ally: :NONE,outer_ally: :NONE,outer_foe: :NONE)
+      @battle.define_singleton_method(:pbAIComputeCommandPlan) {|_| raise 'Triples should retain their existing planner' }
+      @battle.pbAIPrepareTurnCoordination
+      equal(nil,@battle.pbAIPlannedCommand(@foe.index))
+    end
+
+    suite.test(:AI_COORDINATION_SHARED_OWNER_Z_RESERVATION) do
+      battle(:NONE,:NONE,ally: :NONE,foe_ally: :NONE)
+      ai_prepare
+      @battle.define_singleton_method(:pbHasZRing) {|_| true }
+      plans={}
+      [@foe,@foe_ally].each do |user|
+        user.item=PBItems::NORMALIUMZ2
+        zmove=PokeBattle_ZMoves.new(@battle,user,user.moves[0],user.item,false,true,0)
+        plans[user.index]={scores: [90,-1,-1,-1,150],targets: [@user.index,-1,-1,-1,@user.index],
+          choices: [0,4],z_move: zmove,z_base_slot: 0}
+      end
+      @battle.define_singleton_method(:pbAIComputeCommandPlan) {|index| plans.fetch(index) }
+      @battle.define_singleton_method(:pbAICoordinationDamage) {|entry,target| 1 }
+      @battle.pbAIPrepareTurnCoordination
+      chosen=[@foe,@foe_ally].map {|user| @battle.pbAIPlannedCommand(user.index) }
+      equal(1,chosen.count {|plan| plan[:preferred_slot]==4 })
+      reserved=chosen.find {|plan| plan[:preferred_slot]!=4 }
+      assert(!reserved[:choices].include?(4),'Marginal rescoring restored an unavailable shared Z candidate')
+      equal(nil,reserved[:z_move])
+      [@foe,@foe_ally].each {|user| @battle.pbDefaultChooseEnemyCommand(user.index) }
+      registrations=@battle.zMove[1].count {|index| index && index>=0 }
+      equal(1,registrations)
+      equal([4,4],[@foe.moves.length,@foe_ally.moves.length])
     end
   end
 end

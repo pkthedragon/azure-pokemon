@@ -1,7 +1,7 @@
 ﻿# Generated from legacy metadata.txt map sections.
 #-------------------------------
 [001]
-Name = Logium Town A
+Name = Logium Shore
 Outdoor = true
 ShowArea = true
 MapPosition = 0,13,16
@@ -85,12 +85,12 @@ Outdoor = false
 MapPosition = 0,13,16
 #-------------------------------
 [015]
-Name = Logium Town A
+Name = Logium Shore
 Outdoor = false
 MapPosition = 0,13,16
 #-------------------------------
 [016]
-Name = Logium Town A
+Name = Logium Shore
 Outdoor = false
 MapPosition = 0,13,16
 #-------------------------------
@@ -114,7 +114,7 @@ MapPosition = 0,16,5
 BattleBack = Grassy
 #-------------------------------
 [020]
-Name = Logium Town B
+Name = Logium Uptown
 Outdoor = true
 ShowArea = true
 MapPosition = 0,16,2
@@ -128,22 +128,22 @@ MapPosition = 0,16,2
 BattleBack = Library
 #-------------------------------
 [022]
-Name = Logium Town B
+Name = Logium Uptown
 Outdoor = false
 MapPosition = 0,16,2
 #-------------------------------
 [023]
-Name = Logium Town B
+Name = Logium Uptown
 Outdoor = false
 MapPosition = 0,16,2
 #-------------------------------
 [024]
-Name = Logium Town B
+Name = Logium Uptown
 Outdoor = false
 MapPosition = 0,16,2
 #-------------------------------
 [025]
-Name = Logium Town B
+Name = Logium Uptown
 Outdoor = false
 MapPosition = 0,16,2
 #-------------------------------
@@ -301,7 +301,7 @@ DarkMap = false
 BattleBack = Icy2
 #-------------------------------
 [054]
-Name = Logium Town C
+Name = Logium Port
 Outdoor = true
 ShowArea = true
 MapPosition = 0,24,15
@@ -321,7 +321,7 @@ MapPosition = 0,6,16
 BattleBack = Icy2
 #-------------------------------
 [057]
-Name = Logium Town B
+Name = Logium Uptown
 Outdoor = true
 MapPosition = 0,16,2
 #-------------------------------
@@ -360,7 +360,7 @@ Outdoor = false
 MapPosition = 0,24,15
 #-------------------------------
 [064]
-Name = Logium Town C
+Name = Logium Port
 Outdoor = false
 MapPosition = 0,24,15
 #-------------------------------

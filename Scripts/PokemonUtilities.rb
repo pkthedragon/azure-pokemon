@@ -1112,6 +1112,7 @@ def pbLoadPokemonBitmapSpecies(pokemon, species, back=false)
     end    
     bitmapFileName=pbResolveBitmap(bitmapFileName)
     ret=AnimatedBitmap.new(bitmapFileName)
+    yield bitmapFileName if block_given?
     return ret
   end  
   if pokemon.isEgg?
@@ -1155,6 +1156,7 @@ def pbLoadPokemonBitmapSpecies(pokemon, species, back=false)
   elsif bitmapFileName
     ret=AnimatedBitmap.new(bitmapFileName)
   end
+  yield bitmapFileName if block_given?
   return ret
 end
 

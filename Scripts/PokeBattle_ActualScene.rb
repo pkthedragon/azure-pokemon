@@ -480,6 +480,7 @@ end
 
 class PokemonBattlerSprite < RPG::Sprite
   attr_accessor :selected
+  attr_reader :battle_sprite_bitmap_path
 
   def initialize(doublebattle,index,viewport=nil)
     super(viewport)
@@ -495,6 +496,7 @@ class PokemonBattlerSprite < RPG::Sprite
     @spriteYExtra=0
     @spriteVisible=false
     @_iconbitmap=nil
+    @battle_sprite_bitmap_path=nil
     self.visible=false
   end
 
@@ -522,6 +524,7 @@ class PokemonBattlerSprite < RPG::Sprite
   def dispose
     @_iconbitmap.dispose if @_iconbitmap
     @_iconbitmap=nil
+    @battle_sprite_bitmap_path=nil
     self.bitmap=nil if !self.disposed?
     super
   end
@@ -540,14 +543,15 @@ class PokemonBattlerSprite < RPG::Sprite
   end
 
   def setPokemonBitmap(pokemon,back=false)
-    @_iconbitmap.dispose if @_iconbitmap
-    @_iconbitmap=pbLoadPokemonBitmap(pokemon,back)
-    self.bitmap=@_iconbitmap ? @_iconbitmap.bitmap : nil
+    setPokemonBitmapSpecies(pokemon,pokemon ? pokemon.species : nil,back)
   end
 
   def setPokemonBitmapSpecies(pokemon,species,back=false)
     @_iconbitmap.dispose if @_iconbitmap
-    @_iconbitmap=pbLoadPokemonBitmapSpecies(pokemon,species,back)
+    @battle_sprite_bitmap_path=nil
+    @_iconbitmap=pokemon ? pbLoadPokemonBitmapSpecies(pokemon,species,back) {|path|
+      @battle_sprite_bitmap_path=path if pokemon!="substitute"
+    } : nil
     self.bitmap=@_iconbitmap ? @_iconbitmap.bitmap : nil
   end
 
@@ -4407,29 +4411,7 @@ end
     shadow=@sprites["shadow#{attacker.index}"]
     back=!@battle.pbIsOpposing?(attacker.index)
     pkmn.setPokemonBitmapSpecies(attacker.pokemon,species,back)
-    pkmn.x=-pkmn.bitmap.width/2  
-    pkmn.y=adjustBattleSpriteY(pkmn,species,attacker.index)
-    if @battle.doublebattle
-      case attacker.index
-        when 0
-          pkmn.x+=@battle.sosbattle==3 ? PBScene::PLAYERBATTLER_X : PBScene::PLAYERBATTLERD1_X
-          pkmn.y+=PokeBattle_SceneConstants::PLAYERBATTLERD1_Y
-        when 1
-          pkmn.x+=PokeBattle_SceneConstants::FOEBATTLERD1_X
-          pkmn.y+=PokeBattle_SceneConstants::FOEBATTLERD1_Y
-        when 2
-          pkmn.x+=PokeBattle_SceneConstants::PLAYERBATTLERD2_X
-          pkmn.y+=PokeBattle_SceneConstants::PLAYERBATTLERD2_Y
-        when 3
-          pkmn.x+=PokeBattle_SceneConstants::FOEBATTLERD2_X
-          pkmn.y+=PokeBattle_SceneConstants::FOEBATTLERD2_Y
-      end
-    else
-      pkmn.x+=PokeBattle_SceneConstants::PLAYERBATTLER_X if attacker.index==0
-      pkmn.y+=PokeBattle_SceneConstants::PLAYERBATTLER_Y if attacker.index==0
-      pkmn.x+=PokeBattle_SceneConstants::FOEBATTLER_X if attacker.index==1
-      pkmn.y+=PokeBattle_SceneConstants::FOEBATTLER_Y if attacker.index==1
-    end
+    pbReanchorPokemonSprite(pkmn,species,attacker.index)
     if shadow && !back
       shadow.visible=showShadow?(species)
     end
@@ -4440,32 +4422,20 @@ end
     shadow=@sprites["shadow#{attacker.index}"]
     back=!@battle.pbIsOpposing?(attacker.index)
     pkmn.setPokemonBitmap(pokemon,back)
-    pkmn.x=-pkmn.bitmap.width/2  
-    pkmn.y=adjustBattleSpriteY(pkmn,pokemon.species,attacker.index)
-    if @battle.doublebattle
-      case attacker.index
-        when 0
-          pkmn.x+=@battle.sosbattle==3 ? PBScene::PLAYERBATTLER_X : PBScene::PLAYERBATTLERD1_X
-          pkmn.y+=PokeBattle_SceneConstants::PLAYERBATTLERD1_Y
-        when 1
-          pkmn.x+=PokeBattle_SceneConstants::FOEBATTLERD1_X
-          pkmn.y+=PokeBattle_SceneConstants::FOEBATTLERD1_Y
-        when 2
-          pkmn.x+=PokeBattle_SceneConstants::PLAYERBATTLERD2_X
-          pkmn.y+=PokeBattle_SceneConstants::PLAYERBATTLERD2_Y
-        when 3
-          pkmn.x+=PokeBattle_SceneConstants::FOEBATTLERD2_X
-          pkmn.y+=PokeBattle_SceneConstants::FOEBATTLERD2_Y
-      end
-    else
-      pkmn.x+=PokeBattle_SceneConstants::PLAYERBATTLER_X if attacker.index==0
-      pkmn.y+=PokeBattle_SceneConstants::PLAYERBATTLER_Y if attacker.index==0
-      pkmn.x+=PokeBattle_SceneConstants::FOEBATTLER_X if attacker.index==1
-      pkmn.y+=PokeBattle_SceneConstants::FOEBATTLER_Y if attacker.index==1
-    end
+    pbReanchorPokemonSprite(pkmn,pokemon.species,attacker.index)
     if shadow && !back
       shadow.visible=showShadow?(pokemon.species)
     end
+  end
+
+  def pbReanchorPokemonSprite(sprite,species,index)
+    x,y=pbSceneBattlerPosition(index)
+    if @battle.doublebattle && index==0 && @battle.sosbattle==3
+      x=PokeBattle_SceneConstants::PLAYERBATTLER_X
+      y=PokeBattle_SceneConstants::PLAYERBATTLERD1_Y
+    end
+    sprite.x=x-sprite.width/2
+    sprite.y=y+adjustBattleSpriteY(sprite,species,index)
   end
   
   def pbSaveShadows

@@ -1,7 +1,39 @@
+module AzureBattlerSpriteY
+  DATA_FILE="Data/battler_sprite_y.txt"
+
+  def self.filename_key(path)
+    return File.basename(path.to_s.tr("\\","/")).downcase
+  end
+
+  def self.data
+    return AzureDataCache.fetch(DATA_FILE) {|path| parse(path) }
+  end
+
+  def self.parse(path)
+    offsets={}
+    return offsets.freeze if !pbRgssExists?(path)
+    pbRgssOpen(path,"rb") {|file|
+      file.read.each_line.with_index(1) {|line,line_number|
+        line=line.sub(/#.*/,"").strip
+        next if line.empty?
+        match=/\A(\S+)\s+([+-]?\d+)\z/.match(line)
+        raise ArgumentError,"Invalid battler sprite Y at #{path}:#{line_number}" if !match
+        offsets[filename_key(match[1]).freeze]=match[2].to_i
+      }
+    }
+    return offsets.freeze
+  end
+
+  def self.offset(path)
+    return nil if !path
+    return data[filename_key(path)]
+  end
+end
+
 def getBattleSpriteMetricOffset(species,index,metrics=nil)
   metrics=pbCachedData("Data/metrics.dat") if !metrics
   ret=0
-  if index==1 || index==3   # Foe Pokémon
+  if index.odd?             # Foe Pokémon
     ret+=(metrics[1][species] || 0)*2 # enemy Y
     ret-=(metrics[2][species] || 0)*2 # altitude
   else                      # Player's Pokémon
@@ -15,7 +47,11 @@ def adjustBattleSpriteY(sprite,species,index,metrics=nil)
   spriteheight=(sprite.bitmap &&
      !sprite.bitmap.disposed?) ? sprite.bitmap.height : 128
   ret-=spriteheight
-  ret+=getBattleSpriteMetricOffset(species,index,metrics)
+  offset=nil
+  if !metrics && sprite.respond_to?(:battle_sprite_bitmap_path)
+    offset=AzureBattlerSpriteY.offset(sprite.battle_sprite_bitmap_path)
+  end
+  ret+=offset.nil? ? getBattleSpriteMetricOffset(species,index,metrics) : offset
   return ret
 end
 

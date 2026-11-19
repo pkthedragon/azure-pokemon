@@ -1266,24 +1266,24 @@ Pokemon = TREVENANT,20
 #-------------------------------
 [POKEMONTRAINER_Percy,Percy,202]
 LegacyTrainerTypeID = 180
-Pokemon = SHIELDON,17
+Pokemon = SHIELDON,18
     Moves = ANCIENTPOWER,MIRRORSHOT,METALSOUND,BLOCK
     AbilityIndex = 1
     Nature = MODEST
-Pokemon = PORYGON,17
+Pokemon = PORYGON,18
     Moves = ROUND,CONVERSION2,THUNDERSHOCK,AGILITY
     AbilityIndex = 1
     Nature = MODEST
-Pokemon = PAWMI,17
+Pokemon = PAWMI,18
     Moves = NUZZLE,QUICKATTACK,MIRACLE,WISH
     AbilityIndex = 1
     Nature = ADAMANT
-Pokemon = GASTLY,18
+Pokemon = GASTLY,19
     Item = FOCUSSASH
     Moves = NIGHTSHADE,WILLOWISP,SMOG,LICK
     AbilityIndex = 0
     Nature = TIMID
-Pokemon = SOLOSIS,19
+Pokemon = SOLOSIS,20
     Item = EVIOLITE
     Moves = HEX,BUBBLEBEAM,SPITE,THUNDERWAVE
     AbilityIndex = 1
@@ -5836,7 +5836,7 @@ Pokemon = BUNEARY,4
 LegacyTrainerTypeID = 205
 Pokemon = PURRLOIN,4
 #-------------------------------
-# Logium Town A
+# Logium Shore
 # Act One sheet 1, row 14 (opponent).
 [POKEMONTRAINER_Percy,Percy]
 LegacyTrainerTypeID = 180
@@ -5854,7 +5854,7 @@ Pokemon = SOLOSIS,9
     Nature = MODEST
     Name = Coral
 #-------------------------------
-# Logium Town A
+# Logium Shore
 # Act One sheet 1, row 24 (opponent).
 [POKEMONTRAINER_Kara,Kara,2]
 LegacyTrainerTypeID = 179
@@ -5877,7 +5877,7 @@ Pokemon = BUNEARY,9
     Name = Sola
     Moves = DOUBLEHIT,FAKEOUT,DEFENSECURL,FORESIGHT
 #-------------------------------
-# Logium Town A
+# Logium Shore
 # Act One sheet 2, row 12 (opponent).
 [ELDER,Nick]
 LegacyTrainerTypeID = 59
@@ -5903,7 +5903,7 @@ Pokemon = LILLIPUP,16
     Form = 0
     Nature = JOLLY
 #-------------------------------
-# Logium Town A
+# Logium Shore
 # Act One sheet 2, row 2 (opponent).
 [POKEMONRANGER_M,Pyuku]
 LegacyTrainerTypeID = 124
@@ -6065,7 +6065,7 @@ Pokemon = GROOKEY,13
     Nature = ADAMANT
     Moves = FAKEOUT,RAZORLEAF,LEECHSEED,GROWTH
 #-------------------------------
-# Logium Town B
+# Logium Uptown
 # Act One sheet 1, row 156 (opponent).
 [POKEMONTRAINER_Kara,Kara,3]
 LegacyTrainerTypeID = 179
@@ -6105,7 +6105,7 @@ Pokemon = BUNEARY,20
     SpecialAttackEV = 0
     SpecialDefenseEV = 0
 #-------------------------------
-# Logium Town B
+# Logium Uptown
 # Act One sheet 2, row 244 (opponent).
 [POKEMONRANGER_M,Pyuku,2]
 LegacyTrainerTypeID = 124
@@ -6135,7 +6135,7 @@ Pokemon = DEDENNE,16
     Nature = MODEST
     Name = Elektra
 #-------------------------------
-# Logium Town B
+# Logium Uptown
 # Restored from 3e68d817d^, legacy trainer line 507.
 [YOUNGSTER,Jacques]
 LegacyTrainerTypeID = 5
@@ -6391,22 +6391,22 @@ Pokemon = COMBUSKEN,17
 # Act One sheet 1, row 82 (partner).
 [POKEMONTRAINER_Percy,Percy,2]
 LegacyTrainerTypeID = 180
-Pokemon = SHIELDON,15
+Pokemon = SHIELDON,16
     AbilityIndex = 2
     Form = 0
     Nature = MODEST
     Moves = ANCIENTPOWER,MIRRORSHOT,METALSOUND,BLOCK
-Pokemon = PORYGON,15
+Pokemon = PORYGON,16
     AbilityIndex = 1
     Form = 0
     Nature = MODEST
     Moves = ROUND,CONVERSION2,THUNDERSHOCK,AGILITY
-Pokemon = GASTLY,16
+Pokemon = GASTLY,17
     AbilityIndex = 0
     Form = 0
     Nature = TIMID
     Moves = NIGHTSHADE,WILLOWISP,SMOG,LICK
-Pokemon = SOLOSIS,17
+Pokemon = SOLOSIS,18
     Item = SITRUSBERRY
     Moves = BUBBLEBEAM,ROUND,HEX,THUNDERWAVE
     AbilityIndex = 0
@@ -6462,7 +6462,7 @@ Pokemon = CORVISQUIRE,18
     SpecialAttackEV = 0
     SpecialDefenseEV = 0
 #-------------------------------
-# Logium Town C
+# Logium Port
 # Act One sheet 1, row 184 (double_opponent).
 [CULTISTM,Alex,2]
 LegacyTrainerTypeID = 205
@@ -6492,7 +6492,7 @@ Pokemon = RATICATE,21
     SpecialAttackEV = 0
     SpecialDefenseEV = 0
 #-------------------------------
-# Logium Town C
+# Logium Port
 # Act One sheet 1, row 184 (double_opponent).
 [CULTISTF,Harper,2]
 LegacyTrainerTypeID = 206
@@ -6522,7 +6522,7 @@ Pokemon = LINOONE,21
     SpecialDefenseEV = 0
     AbilityOverride = INTIMIDATE
 #-------------------------------
-# Logium Town C
+# Logium Port
 # Act One sheet 1, row 184 (partner).
 [POKEMONTRAINER_Percy,Percy,3]
 LegacyTrainerTypeID = 180
@@ -6559,7 +6559,7 @@ Pokemon = SOLOSIS,22
     SpecialAttackEV = 252
     SpecialDefenseEV = 0
 #-------------------------------
-# Logium Town C
+# Logium Port
 # Act One sheet 1, row 210 (opponent).
 [ZOSSIE,Zossie]
 LegacyTrainerTypeID = 246
@@ -6609,7 +6609,7 @@ Pokemon = POIPOLE,23
     SpecialAttackEV = 252
     SpecialDefenseEV = 0
 #-------------------------------
-# Logium Town C
+# Logium Port
 # Restored from 3e68d817d^, legacy trainer line 1026.
 [LISTIS,Listis,1]
 LegacyTrainerTypeID = 243

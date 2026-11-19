@@ -1,0 +1,529 @@
+[
+  {
+    "path": "Data/Map001.rxdata",
+    "before": "8a54f62b1bc8dd9df07bcd1426aa08aee78064149d6c7c2920a7f55e64507220",
+    "after": "67ca81dce48eb12fb5ad83c3ee8b464ec32e0b27fbc93916d158ea275176c3a0",
+    "namebox_edits": 14,
+    "changed_strings": 23
+  },
+  {
+    "path": "Data/Map002.rxdata",
+    "before": "044095e295d16fec73313ae69868410b1c5f7a8f0f235bcc93bf34efc2841679",
+    "after": "8404489e570e40a35c8202b367d61d6be14aad4ebd43b7e0a55c888c957dc756",
+    "namebox_edits": 10,
+    "changed_strings": 10
+  },
+  {
+    "path": "Data/Map006.rxdata",
+    "before": "06514565fe7cf3f4350f355085640f942ffda4afc5ba0d6e0d63f23f9f0c2306",
+    "after": "be44dadff84caa6951e581bad6e1bc2e7b9b62ef1dc640f75857f9a987bfd85c",
+    "namebox_edits": 17,
+    "changed_strings": 17
+  },
+  {
+    "path": "Data/Map008.rxdata",
+    "before": "c157a1acb6e6df0b1597a214e015e2a60079d5d78f70f011a98d65597c9726d8",
+    "after": "9d4d7f85d3e9f17f35c96b8c52f56ff456d0061b63c7cee2701019d6aeffefbe",
+    "namebox_edits": 2,
+    "changed_strings": 2
+  },
+  {
+    "path": "Data/Map017.rxdata",
+    "before": "6a6c997cd5c51751b42dddd78565b6cb21a66bb18c750900b0a01356e808e762",
+    "after": "715375c28766371f67226d35bcfe38f3f5071d3837d5862e1db2e3c36b9f3d62",
+    "namebox_edits": 23,
+    "changed_strings": 23
+  },
+  {
+    "path": "Data/Map018.rxdata",
+    "before": "cf8c3eac71890a270b1597e24af1de664ad2b57f9eeda6f7f4864e62873059ad",
+    "after": "c09601b1cc48dea1cecfdf3d8397f867567fa1df6fa0d80e268491ddf23aae5a",
+    "namebox_edits": 0,
+    "changed_strings": 1
+  },
+  {
+    "path": "Data/Map020.rxdata",
+    "before": "38622b6c3cc6caeff16f1eb04ff3817aab34d46cc450acca7a4d627509b649e3",
+    "after": "2f1e5ba7006b356b808c57b440820709d0674a9b5fed368fd9bfc0d995c7b3b9",
+    "namebox_edits": 12,
+    "changed_strings": 18
+  },
+  {
+    "path": "Data/Map022.rxdata",
+    "before": "bca0547431c9702a41bc3612b09e365cabee96f1bcaf94845e975816eb617b4d",
+    "after": "26514590643fe2e3cd661f8feaf4e3084bb33f961178442a1aa502e78244b0c5",
+    "namebox_edits": 1,
+    "changed_strings": 1
+  },
+  {
+    "path": "Data/Map026.rxdata",
+    "before": "f10299f6660bfbdb46fa63d2927b8c86a02928d370a1f6e2609be638444b137e",
+    "after": "f725453d377ae914f69a71101b1090a5e794fb4d04a9bdc5c4cef0654b0f051a",
+    "namebox_edits": 48,
+    "changed_strings": 48
+  },
+  {
+    "path": "Data/Map028.rxdata",
+    "before": "94f9e684a554a3e6e6e475a188adc716ed75906928052a8c6b0d4713b982d1ce",
+    "after": "282cee9f65ee15633bd23dd0ded883f601b43afc539b3fc08066e827a6cd13e4",
+    "namebox_edits": 10,
+    "changed_strings": 14
+  },
+  {
+    "path": "Data/Map029.rxdata",
+    "before": "9c828c5fc542a9d3a77a2986623a809477607c2c34b4d7dd0cce7b13b0a7ce67",
+    "after": "0193bf076bf696f57d6c35af6008a7261de6331a99252b14632fdf66113357bc",
+    "namebox_edits": 15,
+    "changed_strings": 17
+  },
+  {
+    "path": "Data/Map031.rxdata",
+    "before": "4ff5a3f0ad7703ec61c97d3e2db278013719c6dd83a914cf7e25a544971a8a25",
+    "after": "6394a270063a27beccfff8645421f5f354b90a5da948864e6d82d7fa9eda16e8",
+    "namebox_edits": 3,
+    "changed_strings": 4
+  },
+  {
+    "path": "Data/Map033.rxdata",
+    "before": "89ba41a92d79b58da988be4b2327a4bb644ccd1f4381ad93207b33315a4a4b17",
+    "after": "7ffd596d446e191feca3c0dd30ef4568c64d3a5f1f8ff9cdc5406b6b6d1d7bd0",
+    "namebox_edits": 37,
+    "changed_strings": 37
+  },
+  {
+    "path": "Data/Map034.rxdata",
+    "before": "32aa085433765fa35f3a48943a4acbe3791e50c26e4612186e7f43a5b54b9bce",
+    "after": "0ee460dfa22e19c37c290f51f52e348c8b679e00522c507308dc631c2f0ef8af",
+    "namebox_edits": 18,
+    "changed_strings": 18
+  },
+  {
+    "path": "Data/Map035.rxdata",
+    "before": "566f34958bb747351450965616c21c94c745b36952d6e28750d88d1797e511ee",
+    "after": "f37188fa723045e33aac6e4db16114dd6c394e92d8ee37421ad459622c3f9782",
+    "namebox_edits": 27,
+    "changed_strings": 27
+  },
+  {
+    "path": "Data/Map046.rxdata",
+    "before": "7dc4e5801962702f2cc123d9547a6b4ec2e09554c1b66f2f6ca62c2e0c0e087a",
+    "after": "b95c37532bbcf7815752d6f884bbed96f3efb299dfcad4baacec14a7bb8d1838",
+    "namebox_edits": 4,
+    "changed_strings": 4
+  },
+  {
+    "path": "Data/Map049.rxdata",
+    "before": "a34c5f9df6998734a3b3362b53b5a785e5621419092b38f5ffdd7a8792b5b8ed",
+    "after": "6f7a09a808dfac3b678794ae0df7748df53afda77cb0b8d93c6cf78dc0e806d1",
+    "namebox_edits": 28,
+    "changed_strings": 28
+  },
+  {
+    "path": "Data/Map052.rxdata",
+    "before": "c31d1aea395b96586cb107089f6ee1153a24888c58bd4b4c53bfa6e562e0cf88",
+    "after": "cc878e465ceac3c2c1228ba69f4f8142ef7ee755c7bc3667babe41a0d323e4b9",
+    "namebox_edits": 142,
+    "changed_strings": 142
+  },
+  {
+    "path": "Data/Map053.rxdata",
+    "before": "f1d6529524a604ae510b8aeb091cfeeb5d386de518119c6739b945099162d335",
+    "after": "dd7d598053406ffd7f9d0752bc952a3fbeadc98c545d9d6e20fa814522145cad",
+    "namebox_edits": 170,
+    "changed_strings": 170
+  },
+  {
+    "path": "Data/Map054.rxdata",
+    "before": "3dcff2eb7cdbf723d78fbb087ef08281b9a2be994b665dcb7e0eb2a920fbcfe5",
+    "after": "736d70f496cb92f2c735fa1f56461578eaf4339dec5030b3c364895d6825913b",
+    "namebox_edits": 192,
+    "changed_strings": 196
+  },
+  {
+    "path": "Data/Map055.rxdata",
+    "before": "4276fe42558046d874343f87dbea7fcf4f5e50c38476500a384422593c0714fe",
+    "after": "798b8a07e1b55be80cfcb8d0bfb76b693aa111c5d3e91afa95d79d791eaad470",
+    "namebox_edits": 19,
+    "changed_strings": 19
+  },
+  {
+    "path": "Data/Map058.rxdata",
+    "before": "da5484e98ee953e576ab93622afe04003a96397724f98c42f9a859b584f312d0",
+    "after": "1d02964fb30c1e6eaf32a8e49b27ff804e7df79ad306ef5a815a0d3ae971b823",
+    "namebox_edits": 0,
+    "changed_strings": 2
+  },
+  {
+    "path": "Data/Map059.rxdata",
+    "before": "3f697888f29534ad39ade5b8d5eba0189560cc800ecd5104fe7a4bc80d30c953",
+    "after": "ee20e55b1c639fdb582bf10fa64f9d3477a81f0cac3fd234c5887b52dd840952",
+    "namebox_edits": 0,
+    "changed_strings": 1
+  },
+  {
+    "path": "Data/Map060.rxdata",
+    "before": "55f5e69fe45e0b92ab04c51a637878fbdfff0df9a7159b286e66ae17abeed7f3",
+    "after": "ddea03c16f6f766a6424643a4dc0b7f89648fba0de92f1df3938e93986f2d3d4",
+    "namebox_edits": 25,
+    "changed_strings": 25
+  },
+  {
+    "path": "Data/Map061.rxdata",
+    "before": "560fd336b0fef8db17b36cfe3df722e91cd6f55fac831b9362f42f5fb807f4f2",
+    "after": "c07e66d93a75ed2dccdb1ef34c7043c9d33269014c4695286251f01a9e272019",
+    "namebox_edits": 3,
+    "changed_strings": 3
+  },
+  {
+    "path": "Data/Map062.rxdata",
+    "before": "8ecaf4fa3a8575e26aa3815660b6929688aeb954adb4cfc1e67a5ca4381f2ce0",
+    "after": "0793739cf1d71c217794de29ca4006145d740df258d7fe5a3890f98d2b2ae42f",
+    "namebox_edits": 7,
+    "changed_strings": 7
+  },
+  {
+    "path": "Data/Map063.rxdata",
+    "before": "a56812a5ba40735bb5468e71103d6e314ca3f1f5447026da1692ffe7e0171891",
+    "after": "339ad6cfa68fbd915841f30148b1fc9cabe09ef6b5b53c8cd6ca61e6789215af",
+    "namebox_edits": 29,
+    "changed_strings": 29
+  },
+  {
+    "path": "Data/Map073.rxdata",
+    "before": "d97be15bec6e3073e22a48d501c7e8d759157fced39c26c21dbb26e7430ffc3b",
+    "after": "b7d241e9ab4d5804a3f88075d72afec138d802699650c4c28c35c3c832351bc1",
+    "namebox_edits": 6,
+    "changed_strings": 6
+  },
+  {
+    "path": "Data/Map079.rxdata",
+    "before": "50be9ecb3dcf2a08d4c86b0d8bb2bff49b03d5cf9d5991300d4e4a7f9ab241dc",
+    "after": "51dc8a63c448250668e1ecf1a859b5c5983f248ddb61bd55fc0536348afd81e9",
+    "namebox_edits": 7,
+    "changed_strings": 7
+  },
+  {
+    "path": "Data/Map082.rxdata",
+    "before": "e5638e1ffdc08173ce65225ecfabf027305a8bdf991eec840c28849e3b5194cf",
+    "after": "13e1d492ee88b230156da5bb6ce74bb19dd747a5664a05889737ad64be397df8",
+    "namebox_edits": 102,
+    "changed_strings": 102
+  },
+  {
+    "path": "Data/Map083.rxdata",
+    "before": "6edf8999680b12297e04b980a3194b84dfcd90c714f85e596f6751bb557eeaca",
+    "after": "eb38eb73a675ba076bac12ca2cf47c71333b287dbcda531a97d45d6b8b059b8e",
+    "namebox_edits": 18,
+    "changed_strings": 18
+  },
+  {
+    "path": "Data/Map084.rxdata",
+    "before": "47c0db542f9c3475033988d28205bbb3d73c405b4f8196a05adb0dc21003bddf",
+    "after": "c04e32c43a5db070d87e20b40bf3c528fce80eb839e65f4bc27cb5a419557284",
+    "namebox_edits": 94,
+    "changed_strings": 94
+  },
+  {
+    "path": "Data/Map085.rxdata",
+    "before": "4eec0aeb45cd3e1cb6f7502f336f8b3593d595187094afff8cbc5ff834d78c74",
+    "after": "08e70ef731d2c3471c234090fbd419c81f106475369ac6b7b4ae8626c6687c8e",
+    "namebox_edits": 149,
+    "changed_strings": 149
+  },
+  {
+    "path": "Data/Map086.rxdata",
+    "before": "bf4dddc0dceb8ee98f84d8812c8ea200da4c58b62b0dc4a618398ed8f8ef0266",
+    "after": "39271fde06451c429159e0c9c93df94d5612f43e82f5949cde0b3bdbed50dbb9",
+    "namebox_edits": 38,
+    "changed_strings": 38
+  },
+  {
+    "path": "Data/Map087.rxdata",
+    "before": "67d51801e0ae1572dd1cc2942704f3f7f22261820fcc75bbafeb6d67b6e80dea",
+    "after": "0623d31c0c5c1fd1907ec3f9c06c7b5ca2483e3e59d7d8ed0f72594320c19492",
+    "namebox_edits": 31,
+    "changed_strings": 31
+  },
+  {
+    "path": "Data/Map088.rxdata",
+    "before": "1201bb3642bc3464dcc5769ea9750b87b491d2d2c32c8ff485889eb7d05802a0",
+    "after": "d0a560b6975c73985b8287bc8e0a39de1c5cb860c5293e89c3ad875fa60c21b9",
+    "namebox_edits": 2,
+    "changed_strings": 2
+  },
+  {
+    "path": "Data/Map089.rxdata",
+    "before": "b6b63bb04ce7a832063f2641bf45ac558300f736836a9df3223885c396673ff7",
+    "after": "e7359dd4e77a22114c3e5482ddd79cbe08150b8304e83f6c5312deed34b0dc77",
+    "namebox_edits": 84,
+    "changed_strings": 84
+  },
+  {
+    "path": "Data/Map090.rxdata",
+    "before": "bbba7eada2ca27bb976a610d93fd285284375c91cdb9f53cba62d2e52a0b8dbf",
+    "after": "30c1e400142ac8e36881b58c98a6a8ba660e115a39b4a735b465bda0a5c4a2e9",
+    "namebox_edits": 6,
+    "changed_strings": 6
+  },
+  {
+    "path": "Data/Map091.rxdata",
+    "before": "e855d15254dd76f43246328692c397f9ab6512a192616d55265169745defc426",
+    "after": "0394a7fd8f4602f341ae6a3197300f1dec43c3ab65586b669ff53eeff0c4c997",
+    "namebox_edits": 5,
+    "changed_strings": 5
+  },
+  {
+    "path": "Data/Map092.rxdata",
+    "before": "4e32fae914bf41734924b5e9bc61ccb715d700d7c581b830e575cc2f1d692b37",
+    "after": "7ce6c042b7a49c2ec327067b358662357130e267876d47a92654eba592f83cea",
+    "namebox_edits": 19,
+    "changed_strings": 19
+  },
+  {
+    "path": "Data/Map093.rxdata",
+    "before": "01d6a33f54bd721eb2961157839db85a7301bd31f8d3795537038d68ef229b54",
+    "after": "a5367676e1ee1a2d3300d6e2d11794e27e5ad790a65c958f39233a348e7ebc13",
+    "namebox_edits": 59,
+    "changed_strings": 59
+  },
+  {
+    "path": "Data/Map097.rxdata",
+    "before": "23c1301d203fc72fbbfc588e666d02e77280f0351aadf0ea0fbc7c12fa1af840",
+    "after": "7ecf7b6cc6b1f64a66aff591084aa4da23e2a8ceaea11855125c4c54608f6e0a",
+    "namebox_edits": 49,
+    "changed_strings": 49
+  },
+  {
+    "path": "Data/Map104.rxdata",
+    "before": "2a4e435f78310b8b6e105cf05fbd9beaebe3059e68714653c246d53f10c40182",
+    "after": "5409dafbcdc5a80c5a9d27f87ff888d30aee98d60a8c9c26945cff220f250ad4",
+    "namebox_edits": 3,
+    "changed_strings": 3
+  },
+  {
+    "path": "Data/Map106.rxdata",
+    "before": "805076499618e8770d913fac622b72d214499970a3b0bca2f7a58a2c7863943f",
+    "after": "061167dbf48a2a64c0cd24f534c9e101b64c1f19ad1228bf1b37be0b72e7835c",
+    "namebox_edits": 157,
+    "changed_strings": 157
+  },
+  {
+    "path": "Data/Map108.rxdata",
+    "before": "589fdcd13a095cb3a1963fd7a9a5e832f81ef152c6a9a672825b836e8aed12ef",
+    "after": "92ef34c810fb4bbb2c390c1680a3501bcbd863984236e25598ef1bb2ef0c4bda",
+    "namebox_edits": 27,
+    "changed_strings": 27
+  },
+  {
+    "path": "Data/Map109.rxdata",
+    "before": "746fd33d04e92427ca9b2dfa01a908e3424775e6df497374d4a7994961e23aba",
+    "after": "6fafeae9e4e71faafe087c31fb5200725fc97ad5e0e78384b34e15c2bdf86996",
+    "namebox_edits": 17,
+    "changed_strings": 17
+  },
+  {
+    "path": "Data/Map111.rxdata",
+    "before": "4862a6161c31c379945bf880c8e3105c8b67497b750ae38e0054bebb8800d6ee",
+    "after": "172b5b0847c3f9666a551f004f3b4ac3c0a03eb24072faf5b12c4b0f8ad4c380",
+    "namebox_edits": 3,
+    "changed_strings": 3
+  },
+  {
+    "path": "Data/Map113.rxdata",
+    "before": "295f817bd6ff370ed14ac8657713a3ae7990b83c3365efa7075cd61e616d4e22",
+    "after": "a0876e93d747889b50f3d907832453b2e228332b1cb04563f0ced6207aec6c1f",
+    "namebox_edits": 182,
+    "changed_strings": 182
+  },
+  {
+    "path": "Data/Map115.rxdata",
+    "before": "6500ef886ea3f4d3a556b5850aa780f6114b50ce6b371552ead4aa1f20bb23a4",
+    "after": "c6dc3754a71e4f7a4ef09aaa64ead09404e55cb43a3f9e397f2ceb41454cc0c7",
+    "namebox_edits": 2,
+    "changed_strings": 2
+  },
+  {
+    "path": "Data/Map116.rxdata",
+    "before": "3462f4d8592a64b94f6cf5e387b6225db749f39a1172b2512c0ec7c148954674",
+    "after": "bcb2ac8a0d65426982d3aeaf76743bc41fb85da6c63cdce839d6b8ae56f23f7d",
+    "namebox_edits": 3,
+    "changed_strings": 3
+  },
+  {
+    "path": "Data/Map117.rxdata",
+    "before": "9684f07245ec86ce36bc357564a6412115e99fa0d3720d20bae007c5633c4574",
+    "after": "e42f191ecf022c998ef2223f41472e9874d03066ac0627b83fd46f7b45ef5e43",
+    "namebox_edits": 43,
+    "changed_strings": 43
+  },
+  {
+    "path": "Data/Map118.rxdata",
+    "before": "ccf8683bb877643d71b27aba733f7a6de3dbbe8f601bc1321ca5ce1573bab68d",
+    "after": "4ed0404d314f7a58cd99573bfc5613776d70e196a07b024db50a635930003dd0",
+    "namebox_edits": 2,
+    "changed_strings": 2
+  },
+  {
+    "path": "Data/Map120.rxdata",
+    "before": "a555f42bde1a26a02aaaadaef7abe969f62c1564052346f1c3c8981d70b98bd0",
+    "after": "f587471a0022c0970dcb9066d926cebc3a2176dd8215362d5a49fb2fe372b191",
+    "namebox_edits": 12,
+    "changed_strings": 12
+  },
+  {
+    "path": "Data/Map122.rxdata",
+    "before": "1cb74778390e94ba809f3f53ab1470df8339f145693ffe083e49040697066e52",
+    "after": "341ecdb68d960a2ed866f1a8a3a45c549dc2a78b046a0c994b2f22d5c49e29f4",
+    "namebox_edits": 82,
+    "changed_strings": 82
+  },
+  {
+    "path": "Data/Map125.rxdata",
+    "before": "fcf600c3204f4eadc609f6759ee50514b61f1f590cd116155aba257d3f32d4c3",
+    "after": "cea30579d022b322cb323fcbda215dc55f965d77abc1bc3c88c2dbebcfec5f36",
+    "namebox_edits": 1,
+    "changed_strings": 1
+  },
+  {
+    "path": "Data/Map126.rxdata",
+    "before": "fda2142a4b3513c739c7e980a2a49634fb543fcab0e84343dcbe4d90a3295c08",
+    "after": "4356a012d51278f90748bb0a4fcaa28a33de58015436fbb6ab55713df17f8760",
+    "namebox_edits": 21,
+    "changed_strings": 21
+  },
+  {
+    "path": "Data/Map127.rxdata",
+    "before": "e11222fdaf9594fcf3802c95d61a792549983972927ead7e8f091ef09d458646",
+    "after": "fd82894bce77659161dd5549f8af4e3e356adf20fe548f49650c97d3e72b1dbb",
+    "namebox_edits": 37,
+    "changed_strings": 37
+  },
+  {
+    "path": "Data/Map130.rxdata",
+    "before": "44ef50a7965c2b799fd25ca153ae19a1d1e827e708d73ebf8a7085bcb60e1775",
+    "after": "2b549f7721ca541d8ebe0c3d09ee44822ba4b056637b702bfa657ff8ff85d54e",
+    "namebox_edits": 5,
+    "changed_strings": 5
+  },
+  {
+    "path": "Data/Map131.rxdata",
+    "before": "c02e8abb38f9ed5dbfa5493afc6f34185d46c46461350c7f9aafaf6d17f02b94",
+    "after": "0cea4aa934853c7d3ed75d55099b941e9c7ea8e71baa0724460f862addbe0d17",
+    "namebox_edits": 65,
+    "changed_strings": 65
+  },
+  {
+    "path": "Data/Map132.rxdata",
+    "before": "06deff60900dce3399090c597c2a525e2cf718c39e35f7f6b05622943c9849a8",
+    "after": "3d6e4e9132e74a4b8a23c2439e3ecd6533e730ef27dcc2b4e4c20df18d40e1d1",
+    "namebox_edits": 88,
+    "changed_strings": 88
+  },
+  {
+    "path": "Data/Map133.rxdata",
+    "before": "03f1db9469aa683606fc51005e514f21c505338061fea9155446787c21c8908b",
+    "after": "2961e1eca2a4159050ce29fda5927804677814620f746772a7f8cc592bdbd4e9",
+    "namebox_edits": 72,
+    "changed_strings": 72
+  },
+  {
+    "path": "Data/Map134.rxdata",
+    "before": "05ec2b2e8b6c0e8e05c7f6f26b3dec152b6982ab2ea6961b258e522e2501a6af",
+    "after": "7a93c2b60f6bde5d42f24d63682957f402e185f9838944356bf5bc332adc2b57",
+    "namebox_edits": 5,
+    "changed_strings": 6
+  },
+  {
+    "path": "Data/Map135.rxdata",
+    "before": "7c2942bf2f400a290e78e3a80a9f8e147b2492b1685f2c703ff4d27d908876c6",
+    "after": "31277a303b32809ade55619c2cfa0b4e8ecbdb6b8f1a778842bb94507deb2d16",
+    "namebox_edits": 16,
+    "changed_strings": 16
+  },
+  {
+    "path": "Data/Map136.rxdata",
+    "before": "19ad0f1823e9fcd315c368558b48e55cce764f7c8e88c63a575d971c966e01be",
+    "after": "025855d82d50a1e157b41966f34806f4c8ef5b062e091b43ce84ad6a5a58ec77",
+    "namebox_edits": 3,
+    "changed_strings": 3
+  },
+  {
+    "path": "Data/Map140.rxdata",
+    "before": "b3dba69498eb007051feba83b506e4a4366843da45af8dd28f29e5666da33733",
+    "after": "71fe8c3e65d8fd67a0aa1ce0ecfa5021dcaaa0ff7c97d753c9fa937fad9cedbd",
+    "namebox_edits": 7,
+    "changed_strings": 7
+  },
+  {
+    "path": "Data/CommonEvents.rxdata",
+    "before": "3e1452a75db8d9c68d83c9e5d2a26c28ec390947454b0f7bb31445117060b9a6",
+    "after": "cdd3eede888c3c66c0adb5cd29f37656e1777f4dc3100c410b93813aea8919c2",
+    "namebox_edits": 462,
+    "changed_strings": 462
+  },
+  {
+    "path": "Data/messages.dat",
+    "before": "b60fbe55f1e63acc5a9c93f20401e1adb9a69a934668a3eb94e1f3fa3b3eff01",
+    "after": "08e90f048dff9d9e5aa7ce0620305061b01df54237b5080571f311e6adff0cd6",
+    "verification": {
+      "arrays": 16,
+      "hashes": 154,
+      "string_refs": 30292,
+      "renamed_string_refs": 49,
+      "scalars": 1
+    }
+  },
+  {
+    "path": "Data/townmap.dat",
+    "before": "393ada7c544a61fc2808dcca9eec1d4de5f024ab30a4c803e1ed5a57c26db3f9",
+    "after": "45f292fe91d629caa6e6164aeb5c62ae05ebb72d391d3ae0b1f6cf735eed5a04",
+    "verification": {
+      "arrays": 22,
+      "scalars": 115,
+      "string_refs": 39,
+      "renamed_string_refs": 3
+    }
+  },
+  {
+    "path": "Data/pokmanitems.rxdata",
+    "before": "e978a12933423fadacda68480877cf82d2a983766568679300b318cca0087b64",
+    "after": "57ce600407b4dbe0baa99dcdb8c235ed5a224cd55df8477d22ac874c4be9847b",
+    "verification": {
+      "arrays": 1118,
+      "scalars": 7855,
+      "string_refs": 2232,
+      "renamed_string_refs": 1
+    }
+  },
+  {
+    "path": "Data/items.dat",
+    "before": "bfdab549b563275719590aa8e3b35fefd4ae02f302f4bcbd371a217bf3837046",
+    "after": "3bdcc0a81fc1be3c156e047b759f460e1d892616e992374593039451ff50f9b2",
+    "verification": {
+      "records": 1091,
+      "unchanged_record_payloads": 1090,
+      "changed_string_fields": 1,
+      "all_other_decoded_fields_identical": true
+    }
+  },
+  {
+    "path": "PBS/items.txt",
+    "before": "a03c454f6fe027ae0f6a05d751fb966482fae005410fd0ad77ce7c2c4773a876",
+    "after": "d583143402ffd1b3e68413bb5a8c521385bd8bc1e9dafe67415509e61f43878e"
+  },
+  {
+    "path": "PBS/map_metadata.txt",
+    "before": "b0f6dc9b63395c9b0ccbc7e2ef43fd3b75ae510ebccb07c26e9ee099439c03f0",
+    "after": "008b3ad5552ce87c6f297d5184a83a56efa96c7e72c31f7a7b6b114d99ee9d70"
+  },
+  {
+    "path": "PBS/townmap.txt",
+    "before": "a6a7094b7079543060c64a4ada85317298c573c221cce9196d5c43c89b0b494e",
+    "after": "ac4fe1a827fc74f52045fc3a3411917932e8b5af91773338a808b8acee642c05"
+  },
+  {
+    "path": "PBS/trainers.txt",
+    "before": "25fa3982abb8a8f9355b419d258fdfc483bc267ffdad1f59d3845443d0f5f775",
+    "after": "c93aa239256577672d9947e7b2536f9e4dbf622fb0a88787d4cb9b794f19b329"
+  }
+]

@@ -98,6 +98,7 @@ PokeBattle_MoveEffects
 PokeBattle_MoveEffectCompatibility
 PokeBattle_Battle
 PokeBattle_AI
+AzureBattleAICoordination
 PokeBattle_SceneConstants
 PokeBattle_ActualScene
 PBAnimation

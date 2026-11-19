@@ -1463,6 +1463,22 @@ class PokeBattle_Move
     return recovered || 0
   end
 
+  def pbPreviewRecoverMoveHP(user,target,amount,amplified: false)
+    return 0 if amount.nil? || amount<=0 || target.hp>=target.totalhp
+    amount=apply_tribute_healing(user,amount) unless amplified
+    amount=(amount*1.1).floor if user.hasWorkingAbility(:HEALER)
+    amount=amount*3/2 if target.pbOwnSide.effects[PBEffects::EtherealCloak]>0
+    amount/=2 if target.effects[PBEffects::Wounded]>0
+    amount=(amount*1.1).floor if target.hasWorkingAbility(:GLUTTONY)
+    return [[amount,1].max,target.totalhp-target.hp].min
+  end
+
+  def pbBlockedBySubstitute?(attacker,opponent)
+    return false if !attacker || attacker.index==opponent.index || opponent.effects[PBEffects::Substitute]<=0
+    return !attacker.hasWorkingAbility(:INFILTRATOR) && !isSoundBased? && @id!=677 && $fefieldeffect!=14 &&
+      !(@function==0x21B && attacker.hp*2<=attacker.totalhp)
+  end
+
   def pbCanHealMoveTarget?(user,target)
     return target.hp<target.totalhp || tribute_overheal?(user) ||
            (user.hasWorkingAbility(:HEALER) && target.status>0 && target.effects[PBEffects::Spritz]!=1)
@@ -2557,11 +2573,11 @@ class PokeBattle_Move
 ################################################################################
 # This move's accuracy check
 ################################################################################
-  def pbAccuracyCheck(attacker,opponent)
-    type=pbType(@type,attacker,opponent)
-    
-    baseaccuracy=@accuracy
-    return true if baseaccuracy==0
+  # Pure portions of the accuracy check are shared with AI previews.  Rolling
+  # accuracy and consuming a Micle Berry remain in pbAccuracyCheck.
+  def pbAccuracyBypass?(attacker,opponent,type=nil)
+    type=pbType(@type,attacker,opponent) if type.nil?
+    return true if @accuracy==0
     return true if tribute_bypasses_accuracy?(attacker)
     if attacker.hasWorkingAbility(:NOGUARD) ||
        opponent.hasWorkingAbility(:NOGUARD)
@@ -2604,7 +2620,12 @@ class PokeBattle_Move
         return true
       end
     end
-# One-hit KO accuracy handled elsewhere
+    return false
+  end
+
+  def pbBaseAccuracy(attacker,opponent)
+    baseaccuracy=@accuracy
+
     # Field Effects
     case $fefieldeffect
     when 2 # Grassy Field
@@ -2687,6 +2708,13 @@ class PokeBattle_Move
     if @function==0x08 || @function==0x15 # Thunder, Hurricane
       baseaccuracy=50 if @battle.pbWeather==PBWeather::SUNNYDAY
     end
+    return baseaccuracy
+  end
+
+  def pbAccuracyCheck(attacker,opponent)
+    type=pbType(@type,attacker,opponent)
+    return true if pbAccuracyBypass?(attacker,opponent,type)
+    baseaccuracy=pbBaseAccuracy(attacker,opponent)
     accstage=attacker.stages[PBStats::ACCURACY]
     accstage=0 if (opponent.hasWorkingAbility(:UNAWARE) || @battle.SilvallyCheck(opponent,PBTypes::FAIRY)) && !(opponent.moldbroken)
     stagemul=[2.0,1.0,2.0,1.0,3.0,2.0,5.0]
@@ -2904,6 +2932,68 @@ class PokeBattle_Move
   end
 
   def pbModifyDamage(damagemult,attacker,opponent)
+    return pbCommonDamageModifier(damagemult,attacker,opponent)
+  end
+
+  # Never call a randomized pbNumHits from a preview.
+  def pbPreviewTwoHitChance(attacker)
+    return 0.0 if !pbIsMultiHit
+    case @function
+    when 0xBD,0xBE,0x300,0x284 then return 1.0
+    when 0x215 then return @id==PBMoves::GILDEDARROWS ? 1.0 : 0.0
+    when 0x247 then return attacker.effects[PBEffects::CellSplitter]==0 ? 1.0 : 0.0
+    when 0x17E then return pbDragonDartTargetting(attacker).length==1 ? 1.0 : 0.0
+    when 0xC0,0x23D
+      return 0.0 if attacker.hasWorkingAbility(:SKILLLINK) || attacker.hasWorkingItem(:LOADEDDICE)
+      return 0.0 if @id==PBMoves::COMETPUNCH && isConst?(attacker.species,PBSpecies,:LEDIAN) &&
+        attacker.hasWorkingItem(:LEDICREST)
+      return 3.0/8
+    when 0x236,0x24D
+      return attacker.hasWorkingAbility(:SKILLLINK) || attacker.hasWorkingItem(:LOADEDDICE) ? 0.0 : 1.0/3
+    when 0xC1
+      # Beat Up consumes the current participant before applying this modifier.
+      # Only the hit leaving two participants receives the bonus; weight that
+      # hit's power without creating or consuming the live participant list.
+      powers=@battle.pbParty(attacker.index).first(6).filter_map do |pokemon|
+        5+pokemon.baseStats[1]/10 if pokemon && !pokemon.isEgg? && pokemon.hp>0 && pokemon.status==0
+      end
+      return powers.length>=3 ? powers[-3].to_f/powers.sum : 0.0
+    when 0x29E then return pbLastRespectsPowers(attacker).length==2 ? 1.0 : 0.0
+    end
+    return 0.0
+  end
+
+  # Subclass overrides replace (rather than add to) the ordinary modifier.
+  # Their pure conditions are mirrored here; no effects, random rolls or hit
+  # counters are advanced by an AI damage calculation.
+  def pbPreviewDamageModifier(attacker,opponent)
+    if method(:pbModifyDamage).owner==PokeBattle_Move
+      return pbCommonDamageModifier(0x1000,attacker,opponent,true)/0x1000.to_f
+    end
+    if defined?(PokeBattle_ZMoves) && is_a?(PokeBattle_ZMoves)
+      protected=!opponent.effects[PBEffects::ProtectNegation] &&
+        (opponent.pbOwnSide.effects[PBEffects::MatBlock] ||
+         [PBEffects::Protect,PBEffects::KingsShield,PBEffects::Obstruct,PBEffects::SpikyShield,
+          PBEffects::BanefulBunker,PBEffects::Stormhold].any? { |effect| opponent.effects[effect] })
+      return protected ? 0.25 : 1.0
+    end
+    case @function
+    when 0x007
+      return opponent.effects[PBEffects::Minimize] && @id==PBMoves::BODYSLAM ? 2.0 : 1.0
+    when 0x010,0x09B,0x137
+      return opponent.effects[PBEffects::Minimize] ? 2.0 : 1.0
+    when 0x0CD
+      return opponent.effects[PBEffects::Minimize] && @id==PBMoves::PHANTOMFORCE ? 2.0 : 1.0
+    when 0x075,0x12D,0x0D0
+      function=PBMoveData.new(opponent.effects[PBEffects::TwoTurnAttack]).function
+      return [0xCB,0x23C].include?(function) ? 2.0 : 1.0
+    when 0x076
+      return PBMoveData.new(opponent.effects[PBEffects::TwoTurnAttack]).function==0xCA ? 2.0 : 1.0
+    end
+    return 1.0
+  end
+
+  def pbCommonDamageModifier(damagemult,attacker,opponent,preview=false)
     if attacker
       if attacker.hasWorkingItem(:HEAVYMACE) && PBStuff::BLUDGEONINGMOVE.include?(self.id)
         mult=(@battle.field.effects[PBEffects::Gravity]>0) ? 1.5 : 1.2
@@ -2937,8 +3027,9 @@ class PokeBattle_Move
          (PBStuff::KICKINGMOVE.include?(self.id) || PBStuff::CLAWMOVE.include?(self.id))
         damagemult=(damagemult*(1.2*0x1000).round/0x1000)
       end
-      if attacker.hasWorkingItem(:GOLDENHELIX) && self.pbIsMultiHit && self.pbNumHits(attacker)==2
-        damagemult=(damagemult*(1.5*0x1000).round/0x1000)
+      if attacker.hasWorkingItem(:GOLDENHELIX) && self.pbIsMultiHit
+        chance=preview ? pbPreviewTwoHitChance(attacker) : (self.pbNumHits(attacker)==2 ? 1.0 : 0.0)
+        damagemult=(damagemult*((1.0+0.5*chance)*0x1000).round/0x1000) if chance>0
       end
       if attacker.hasWorkingItem(:MIXTAPE) && @basedamage>0
         prev_id=attacker.previousMove || -1
@@ -2951,7 +3042,7 @@ class PokeBattle_Move
           end
         end
       end
-      if attacker.hasWorkingItem(:FLOATIES) && isConst?(self.pbType(attacker),PBTypes,:FLYING) &&
+      if attacker.hasWorkingItem(:FLOATIES) && isConst?(self.pbType(@type,attacker,opponent),PBTypes,:FLYING) &&
          isConst?(attacker.species,PBSpecies,:FLOATZEL)
         damagemult=(damagemult*(1.5*0x1000).round/0x1000)
       end

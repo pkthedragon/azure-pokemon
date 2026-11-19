@@ -652,7 +652,7 @@
 659,HERBALTEA,Herbal Tea,2,4700,Tea made from fresh herbs. Fully revives a single Pokemon and increases happiness.,1,1,0,
 660,RAZZTART,Razz Berry Tart,2,1700,A sour pastry made from fresh Razz Berries. Cures status ailments.,1,1,0,
 661,SCEPTILITE,Sceptilite,1,999,"One variety of Mega Stone. Have Sceptile hold it, and this stone will enable it to Mega Evolve in battle.",0,0,0,
-662,LIGHTKEY,Lighthouse Key,8,0,A key to the lighthouse in Logium Town C.,0,0,6,
+662,LIGHTKEY,Lighthouse Key,8,0,A key to the lighthouse in Logium Port.,0,0,6,
 663,SPDEFCARD,SPDefense Card,8,0,A card that allows the owner to participate in the Special Defense EV center service.,0,0,6,
 664,GATEKEY,Gate Key,8,0,A key that opens a door somewhere in the Darchlight Manor.,0,0,6,
 665,STEAMBALL,Steam Ball,3,1200,A Poké Ball for catching Water and Fire-type Pokémon. Also works on trapped Pokémon or those with a status condition.,0,2,4,

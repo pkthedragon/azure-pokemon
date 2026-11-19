@@ -1,3 +1,34 @@
+# Shared descriptions of Azure's Z-Power stat effects. The runtime's existing
+# branch order decides non-stat effects; AI uses the same stat groups to preview caps.
+module AzureZStatusStatBoosts
+  GROUPS={
+    :atk1 => [[PBMoves::BULKUP,PBMoves::HONECLAWS,PBMoves::HOWL,PBMoves::LASERFOCUS,PBMoves::LEER,PBMoves::MEDITATE,PBMoves::ODORSLEUTH,PBMoves::POWERTRICK,PBMoves::ROTOTILLER,PBMoves::SCREECH,PBMoves::SHARPEN,PBMoves::TAILWHIP,PBMoves::TAUNT,PBMoves::TOPSYTURVY,PBMoves::WILLOWISP,PBMoves::WORKUP],PBStats::ATTACK,1],
+    :atk2 => [[PBMoves::MIRRORMOVE,PBMoves::OCTOLOCK],PBStats::ATTACK,2],
+    :atk3 => [[PBMoves::SPLASH],PBStats::ATTACK,3],
+    :def1 => [[PBMoves::AQUARING,PBMoves::BABYDOLLEYES,PBMoves::BANEFULBUNKER,PBMoves::BLOCK,PBMoves::CHARM,PBMoves::DEFENDORDER,PBMoves::FAIRYLOCK,PBMoves::FEATHERDANCE,PBMoves::FLOWERSHIELD,PBMoves::GRASSYTERRAIN,PBMoves::GROWL,PBMoves::HARDEN,PBMoves::MATBLOCK,PBMoves::NOBLEROAR,PBMoves::PAINSPLIT,PBMoves::PLAYNICE,PBMoves::POISONGAS,PBMoves::POISONPOWDER,PBMoves::QUICKGUARD,PBMoves::REFLECT,PBMoves::ROAR,PBMoves::SPIDERWEB,PBMoves::SPIKES,PBMoves::SPIKYSHIELD,PBMoves::STEALTHROCK,PBMoves::STRENGTHSAP,PBMoves::TEARFULLOOK,PBMoves::TICKLE,PBMoves::TORMENT,PBMoves::TOXIC,PBMoves::TOXICSPIKES,PBMoves::VENOMDRENCH,PBMoves::WIDEGUARD,PBMoves::WITHDRAW],PBStats::DEFENSE,1],
+    :spatk1 => [[PBMoves::CONFUSERAY,PBMoves::ELECTRIFY,PBMoves::EMBARGO,PBMoves::FAKETEARS,PBMoves::GEARUP,PBMoves::GRAVITY,PBMoves::GROWTH,PBMoves::INSTRUCT,PBMoves::IONDELUGE,PBMoves::METALSOUND,PBMoves::MINDREADER,PBMoves::MIRACLEEYE,PBMoves::NIGHTMARE,PBMoves::PSYCHICTERRAIN,PBMoves::REFLECTTYPE,PBMoves::SIMPLEBEAM,PBMoves::SOAK,PBMoves::MAGICPOWDER,PBMoves::SWEETKISS,PBMoves::TEETERDANCE,PBMoves::TELEKINESIS],PBStats::SPATK,1],
+    :spatk2 => [[PBMoves::HEALBLOCK,PBMoves::PSYCHOSHIFT,PBMoves::TARSHOT],PBStats::SPATK,2],
+    :spdef1 => [[PBMoves::CHARGE,PBMoves::CONFIDE,PBMoves::COSMICPOWER,PBMoves::CRAFTYSHIELD,PBMoves::EERIEIMPULSE,PBMoves::ENTRAINMENT,PBMoves::FLATTER,PBMoves::GLARE,PBMoves::INGRAIN,PBMoves::LIGHTSCREEN,PBMoves::MAGICROOM,PBMoves::MAGNETICFLUX,PBMoves::MEANLOOK,PBMoves::MISTYTERRAIN,PBMoves::SPOTLIGHT,PBMoves::STUNSPORE,PBMoves::THUNDERWAVE,PBMoves::WHIRLWIND,PBMoves::WISH,PBMoves::WONDERROOM],PBStats::SPDEF,1],
+    :spdef2 => [[PBMoves::AROMATICMIST,PBMoves::CAPTIVATE,PBMoves::IMPRISON,PBMoves::MAGICCOAT,PBMoves::POWDER],PBStats::SPDEF,2],
+    :speed1 => [[PBMoves::AFTERYOU,PBMoves::AURORAVEIL,PBMoves::ELECTRICTERRAIN,PBMoves::ENCORE,PBMoves::GASTROACID,PBMoves::GUARDSPLIT,PBMoves::GUARDSWAP,PBMoves::HAIL,PBMoves::HYPNOSIS,PBMoves::LOCKON,PBMoves::LOVELYKISS,PBMoves::POWERSPLIT,PBMoves::POWERSWAP,PBMoves::QUASH,PBMoves::RAINDANCE,PBMoves::ROLEPLAY,PBMoves::SAFEGUARD,PBMoves::SANDSTORM,PBMoves::SCARYFACE,PBMoves::SING,PBMoves::SKILLSWAP,PBMoves::SLEEPPOWDER,PBMoves::SPEEDSWAP,PBMoves::STICKYWEB,PBMoves::STRINGSHOT,PBMoves::SUNNYDAY,PBMoves::SUPERSONIC,PBMoves::TOXICTHREAD,PBMoves::WORRYSEED,PBMoves::YAWN],PBStats::SPEED,1],
+    :speed2 => [[PBMoves::ALLYSWITCH,PBMoves::BESTOW,PBMoves::MEFIRST,PBMoves::RECYCLE,PBMoves::SNATCH,PBMoves::SWITCHEROO,PBMoves::TRICK],PBStats::SPEED,2],
+    :acc1 => [[PBMoves::COPYCAT,PBMoves::DEFENSECURL,PBMoves::DEFOG,PBMoves::FOCUSENERGY,PBMoves::MIMIC,PBMoves::SWEETSCENT,PBMoves::TRICKROOM],PBStats::ACCURACY,1],
+    :eva1 => [[PBMoves::CAMOUFLAGE,PBMoves::DETECT,PBMoves::FLASH,PBMoves::LUCKYCHANT,PBMoves::MAGNETRISE,PBMoves::SANDATTACK,PBMoves::SMOKESCREEN],PBStats::EVASION,1],
+    :stat1 => [[PBMoves::CONVERSION,PBMoves::FORESTSCURSE,PBMoves::GEOMANCY,PBMoves::PURIFY,PBMoves::SKETCH,PBMoves::TRICKORTREAT,PBMoves::TEATIME,PBMoves::STUFFCHEEKS],nil,1],
+  }.freeze
+  GROUPS.each_value { |entry| entry[0].freeze; entry.freeze }
+  EMPTY=[].freeze
+
+  def self.moves(group)
+    entry=GROUPS[group]
+    return entry ? entry[0] : EMPTY
+  end
+
+  def self.effect(move_id)
+    return GROUPS.values.find { |entry| entry[0].include?(move_id) }
+  end
+end
+
 class PokeBattle_ZMoves < PokeBattle_Move
   attr_accessor(:id)
   attr_reader(:battle)
@@ -260,7 +291,7 @@ class PokeBattle_ZMoves < PokeBattle_Move
           @battle.pbDisplay(_INTL("But there was no target..."))
         else
           #selftarget status moves here
-          pbZStatus(@id,battler)
+          @battle.pbWithStatChangeSource([:move,@id,:z_status]) { pbZStatus(@id,battler) }
           if !(crystal == PBItems::INTERCEPTZ2)
             zchoice[2].name = @name
             battler.pbUseMove(zchoice)
@@ -270,7 +301,7 @@ class PokeBattle_ZMoves < PokeBattle_Move
       else
         if @status
           #targeted status Z's here
-          pbZStatus(@id,battler)
+          @battle.pbWithStatChangeSource([:move,@id,:z_status]) { pbZStatus(@id,battler) }
           if !(crystal == PBItems::INTERCEPTZ2)
             zchoice[2].name = @name
             battler.pbUseMove(zchoice)
@@ -1247,30 +1278,30 @@ end
 ################################################################################
 
 def pbZStatus(move,attacker)
-  atk1 =   [PBMoves::BULKUP,PBMoves::HONECLAWS,PBMoves::HOWL,PBMoves::LASERFOCUS,PBMoves::LEER,PBMoves::MEDITATE,PBMoves::ODORSLEUTH,PBMoves::POWERTRICK,PBMoves::ROTOTILLER,PBMoves::SCREECH,PBMoves::SHARPEN,PBMoves::TAILWHIP,PBMoves::TAUNT,PBMoves::TOPSYTURVY,PBMoves::WILLOWISP,PBMoves::WORKUP]
-  atk2 =   [PBMoves::MIRRORMOVE,PBMoves::OCTOLOCK]
-  atk3 =   [PBMoves::SPLASH]
-  def1 =   [PBMoves::AQUARING,PBMoves::BABYDOLLEYES,PBMoves::BANEFULBUNKER,PBMoves::BLOCK,PBMoves::CHARM,PBMoves::DEFENDORDER,PBMoves::FAIRYLOCK,PBMoves::FEATHERDANCE,PBMoves::FLOWERSHIELD,PBMoves::GRASSYTERRAIN,PBMoves::GROWL,PBMoves::HARDEN,PBMoves::MATBLOCK,PBMoves::NOBLEROAR,PBMoves::PAINSPLIT,PBMoves::PLAYNICE,PBMoves::POISONGAS,PBMoves::POISONPOWDER,PBMoves::QUICKGUARD,PBMoves::REFLECT,PBMoves::ROAR,PBMoves::SPIDERWEB,PBMoves::SPIKES,PBMoves::SPIKYSHIELD,PBMoves::STEALTHROCK,PBMoves::STRENGTHSAP,PBMoves::TEARFULLOOK,PBMoves::TICKLE,PBMoves::TORMENT,PBMoves::TOXIC,PBMoves::TOXICSPIKES,PBMoves::VENOMDRENCH,PBMoves::WIDEGUARD,PBMoves::WITHDRAW]
-  def2 =   []
-  def3 =   []
-  spatk1 = [PBMoves::CONFUSERAY,PBMoves::ELECTRIFY,PBMoves::EMBARGO,PBMoves::FAKETEARS,PBMoves::GEARUP,PBMoves::GRAVITY,PBMoves::GROWTH,PBMoves::INSTRUCT,PBMoves::IONDELUGE,PBMoves::METALSOUND,PBMoves::MINDREADER,PBMoves::MIRACLEEYE,PBMoves::NIGHTMARE,PBMoves::PSYCHICTERRAIN,PBMoves::REFLECTTYPE,PBMoves::SIMPLEBEAM,PBMoves::SOAK,PBMoves::MAGICPOWDER,PBMoves::SWEETKISS,PBMoves::TEETERDANCE,PBMoves::TELEKINESIS]
-  spatk2 = [PBMoves::HEALBLOCK,PBMoves::PSYCHOSHIFT,PBMoves::TARSHOT]
-  spatk3 = []
-  spdef1 = [PBMoves::CHARGE,PBMoves::CONFIDE,PBMoves::COSMICPOWER,PBMoves::CRAFTYSHIELD,PBMoves::EERIEIMPULSE,PBMoves::ENTRAINMENT,PBMoves::FLATTER,PBMoves::GLARE,PBMoves::INGRAIN,PBMoves::LIGHTSCREEN,PBMoves::MAGICROOM,PBMoves::MAGNETICFLUX,PBMoves::MEANLOOK,PBMoves::MISTYTERRAIN,PBMoves::SPOTLIGHT,PBMoves::STUNSPORE,PBMoves::THUNDERWAVE,PBMoves::WHIRLWIND,PBMoves::WISH,PBMoves::WONDERROOM]
-  spdef2 = [PBMoves::AROMATICMIST,PBMoves::CAPTIVATE,PBMoves::IMPRISON,PBMoves::MAGICCOAT,PBMoves::POWDER]
-  spdef3 = []
-  speed1 = [PBMoves::AFTERYOU,PBMoves::AURORAVEIL,PBMoves::ELECTRICTERRAIN,PBMoves::ENCORE,PBMoves::GASTROACID,PBMoves::GUARDSPLIT,PBMoves::GUARDSWAP,PBMoves::HAIL,PBMoves::HYPNOSIS,PBMoves::LOCKON,PBMoves::LOVELYKISS,PBMoves::POWERSPLIT,PBMoves::POWERSWAP,PBMoves::QUASH,PBMoves::RAINDANCE,PBMoves::ROLEPLAY,PBMoves::SAFEGUARD,PBMoves::SANDSTORM,PBMoves::SCARYFACE,PBMoves::SING,PBMoves::SKILLSWAP,PBMoves::SLEEPPOWDER,PBMoves::SPEEDSWAP,PBMoves::STICKYWEB,PBMoves::STRINGSHOT,PBMoves::SUNNYDAY,PBMoves::SUPERSONIC,PBMoves::TOXICTHREAD,PBMoves::WORRYSEED,PBMoves::YAWN]
-  speed2 = [PBMoves::ALLYSWITCH,PBMoves::BESTOW,PBMoves::MEFIRST,PBMoves::RECYCLE,PBMoves::SNATCH,PBMoves::SWITCHEROO,PBMoves::TRICK]
-  speed3 = []
-  acc1   = [PBMoves::COPYCAT,PBMoves::DEFENSECURL,PBMoves::DEFOG,PBMoves::FOCUSENERGY,PBMoves::MIMIC,PBMoves::SWEETSCENT,PBMoves::TRICKROOM]
-  acc2   = []
-  acc3   = []
-  eva1   = [PBMoves::CAMOUFLAGE,PBMoves::DETECT,PBMoves::FLASH,PBMoves::LUCKYCHANT,PBMoves::MAGNETRISE,PBMoves::SANDATTACK,PBMoves::SMOKESCREEN]
-  eva2   = []
-  eva3   = []
-  stat1  = [PBMoves::CONVERSION,PBMoves::FORESTSCURSE,PBMoves::GEOMANCY,PBMoves::PURIFY,PBMoves::SKETCH,PBMoves::TRICKORTREAT,PBMoves::TEATIME,PBMoves::STUFFCHEEKS]
-  stat2  = []
-  stat3  = []
+  atk1 = AzureZStatusStatBoosts.moves(:atk1)
+  atk2 = AzureZStatusStatBoosts.moves(:atk2)
+  atk3 = AzureZStatusStatBoosts.moves(:atk3)
+  def1 = AzureZStatusStatBoosts.moves(:def1)
+  def2 = AzureZStatusStatBoosts.moves(:def2)
+  def3 = AzureZStatusStatBoosts.moves(:def3)
+  spatk1 = AzureZStatusStatBoosts.moves(:spatk1)
+  spatk2 = AzureZStatusStatBoosts.moves(:spatk2)
+  spatk3 = AzureZStatusStatBoosts.moves(:spatk3)
+  spdef1 = AzureZStatusStatBoosts.moves(:spdef1)
+  spdef2 = AzureZStatusStatBoosts.moves(:spdef2)
+  spdef3 = AzureZStatusStatBoosts.moves(:spdef3)
+  speed1 = AzureZStatusStatBoosts.moves(:speed1)
+  speed2 = AzureZStatusStatBoosts.moves(:speed2)
+  speed3 = AzureZStatusStatBoosts.moves(:speed3)
+  acc1 = AzureZStatusStatBoosts.moves(:acc1)
+  acc2 = AzureZStatusStatBoosts.moves(:acc2)
+  acc3 = AzureZStatusStatBoosts.moves(:acc3)
+  eva1 = AzureZStatusStatBoosts.moves(:eva1)
+  eva2 = AzureZStatusStatBoosts.moves(:eva2)
+  eva3 = AzureZStatusStatBoosts.moves(:eva3)
+  stat1 = AzureZStatusStatBoosts.moves(:stat1)
+  stat2 = AzureZStatusStatBoosts.moves(:stat2)
+  stat3 = AzureZStatusStatBoosts.moves(:stat3)
   crit1  = [PBMoves::ACUPRESSURE,PBMoves::FORESIGHT,PBMoves::HEARTSWAP,PBMoves::SLEEPTALK,PBMoves::TAILWIND]
   reset  = [PBMoves::ACIDARMOR,PBMoves::AGILITY,PBMoves::AMNESIA,PBMoves::ENCHANT,PBMoves::AUTOTOMIZE,PBMoves::BARRIER,PBMoves::BATONPASS,PBMoves::CALMMIND,PBMoves::CLANGOROUSSOUL,PBMoves::COIL,PBMoves::COTTONGUARD,PBMoves::COTTONSPORE,PBMoves::COURTCHANGE,PBMoves::DARKVOID,PBMoves::DISABLE,PBMoves::DOUBLETEAM,PBMoves::DRAGONDANCE,PBMoves::ENDURE,PBMoves::FLORALHEALING,PBMoves::FOLLOWME,PBMoves::HEALORDER,PBMoves::HEALPULSE,PBMoves::HELPINGHAND,PBMoves::IRONDEFENSE,PBMoves::KINGSSHIELD,PBMoves::LEECHSEED,PBMoves::MILKDRINK,PBMoves::MINIMIZE,PBMoves::MOONLIGHT,PBMoves::MORNINGSUN,PBMoves::NASTYPLOT,PBMoves::NORETREAT,PBMoves::OBSTRUCT,PBMoves::PERISHSONG,PBMoves::PROTECT,PBMoves::QUIVERDANCE,PBMoves::RAGEPOWDER,PBMoves::RECOVER,PBMoves::REST,PBMoves::ROCKPOLISH,PBMoves::ROOST,PBMoves::SHELLSMASH,PBMoves::SHIFTGEAR,PBMoves::SHOREUP,PBMoves::SLACKOFF,PBMoves::SOFTBOILED,PBMoves::SPORE,PBMoves::SUBSTITUTE,PBMoves::SWAGGER,PBMoves::SWALLOW,PBMoves::SWORDSDANCE,PBMoves::SYNTHESIS,PBMoves::TAILGLOW]
   heal   = [PBMoves::AROMATHERAPY,PBMoves::BELLYDRUM,PBMoves::CONVERSION2,PBMoves::DECORATE,PBMoves::HAZE,PBMoves::HEALBELL,PBMoves::LIFEDEW,PBMoves::MIST,PBMoves::PSYCHUP,PBMoves::REFRESH,PBMoves::SPITE,PBMoves::STOCKPILE,PBMoves::TELEPORT,PBMoves::TRANSFORM]

@@ -16,6 +16,22 @@ end
 
 
 
+
+# These previews reuse the battle's stat eligibility checks only while AI scoring.
+# Actual battle history and target state are restored before evaluating other utility.
+module AzureAIStatQueryContext
+  [:pbTooHigh?,:pbTooLow?,:pbCanIncreaseStatStage?,:pbCanReduceStatStage?].each do |query|
+    define_method(query) do |*args|
+      if @battle && @battle.respond_to?(:pbAIWithStatQueryContext)
+        @battle.pbAIWithStatQueryContext(self) { super(*args) }
+      else
+        super(*args)
+      end
+    end
+  end
+end
+PokeBattle_Battler.prepend(AzureAIStatQueryContext)
+
 class PokeBattle_Battle
   attr_accessor :scores
   attr_accessor :targets
@@ -397,12 +413,186 @@ class PokeBattle_Battle
     return [percent,100].min/100.0
   end
 
+
+  def pbAIWithStatQueryContext(target)
+    context=@aiStatMoveContext
+    return yield if !context || @aiStatQueryActive ||
+      (@statChangeSource && @statChangeSource[0]!=:move)
+    move,user=context
+    previous_move,previous_user=@lastMoveUsed,@lastMoveUser
+    previous_moldbroken=target.moldbroken
+    previous_substitute=target.damagestate.substitute
+    previous_icicle=@icicleTributeBypass
+    previous_active=@aiStatQueryActive
+    begin
+      @aiStatQueryActive=true
+      @lastMoveUsed=move.id
+      @lastMoveUser=user.index
+      # Move execution resets hit state; current Substitute remains in effects.
+      target.damagestate.substitute=false
+      target.moldbroken=target.moldbroken || (target!=user && user.pbBypassesTargetAbility?(move))
+      @icicleTributeBypass=move.tribute_status?(user,:ICICLETRIBUTE)
+      yield
+    ensure
+      @lastMoveUsed,@lastMoveUser=previous_move,previous_user
+      target.moldbroken=previous_moldbroken
+      target.damagestate.substitute=previous_substitute
+      @icicleTributeBypass=previous_icicle
+      @aiStatQueryActive=previous_active
+    end
+  end
+
+  # Predict a direct change without spending cap contributions or changing stages.
+  # A used source may still fill cap headroom after Haze or another source's change.
+  def pbAIStatChangePreview(move,user,target,stat,change,source=nil)
+    previous_context=@aiStatMoveContext
+    return 0 if !target || target.isFainted? || change==0
+    source||=[:move,move.id]
+    @aiStatMoveContext=[move,user]
+    pbWithStatChangeSource(source) do
+      pbAIWithStatQueryContext(target) do
+        z_power=source[2]==:z_status
+        actual=change
+        actual=-actual if !z_power && !target.moldbroken && target.hasWorkingAbility(:CONTRARY)
+        selfreduce=target==user && change<0
+        if actual>0
+          # Basic stat increases retain Cloud Nine's unconditional prohibition.
+          next 0 if pbCheckGlobalAbility(:CLOUDNINE) || !target.pbCanIncreaseStatStage?(stat,false)
+          amount=[actual,3].min
+        else
+          next 0 if !selfreduce && target.hasWorkingAbility(:MIRRORARMOR) && move.id!=660
+          next 0 if !target.pbCanReduceStatStage?(stat,false,selfreduce)
+          amount=-actual
+        end
+        amount*=2 if !target.moldbroken && target.hasWorkingAbility(:SIMPLE)
+        amount=[amount,3].min if actual>0
+        effects=target.effects
+        direction=actual>0 ? PBEffects::StatCapPositive : PBEffects::StatCapNegative
+        cap=effects[direction][stat] || 0
+        contributions=effects[PBEffects::StatCapContributors][source]
+        cap+=[actual.abs,3].min*(target.hasWorkingAbility(:SIMPLE) && !target.moldbroken ? 2 : 1) if
+          actual>0 && (!contributions || !contributions.has_key?(stat))
+        cap+=amount if actual<0 && (!contributions || !contributions.has_key?(stat))
+        cap=[cap,actual>0 ? 3 : 6].min
+        stages=effects[PBEffects::MultiTurnAttack]==PBMoves::BINDINGWORD ? effects[PBEffects::StatChangeHolder] : target.stages
+        before=stages[stat]
+        after=actual>0 ? [before+amount,cap].min : [before-amount,-cap].max
+        after-before
+      end
+    end
+  ensure
+    @aiStatMoveContext=previous_context
+  end
+
+
+  # Only immediate, explicit self boosts with known local runtime effects are
+  # eligible for Z/base overlap accounting. Other effects retain their own utility.
+  def pbAIBaseSelfStatBoost(move,user,stat)
+    return 0 if move.basedamage>0
+    changes=case move.function
+    when 0x1D then [[PBStats::DEFENSE,1]]
+    when 0x21 then [[PBStats::SPDEF,$fefieldeffect==1 ? 2 : 1]]
+    when 0x24 then [[PBStats::ATTACK,1],[PBStats::DEFENSE,1]]
+    when 0x27 then [[PBStats::ATTACK,1],[PBStats::SPATK,1]]
+    when 0x28
+      amount=@weather==PBWeather::SUNNYDAY && !user.hasWorkingItem(:UTILITYUMBRELLA) ? 2 : 1
+      amount=2 if [2,15,33].include?($fefieldeffect)
+      amount=3 if $fefieldeffect==33 && $fecounter>=2
+      [[PBStats::ATTACK,amount],[PBStats::SPATK,amount]]
+    when 0x29 then [[PBStats::ATTACK,1],[PBStats::ACCURACY,1]]
+    when 0x2A
+      boosted=(move.id==PBMoves::COSMICPOWER && [9,29,34,35,37].include?($fefieldeffect)) ||
+        (move.id==PBMoves::DEFENDORDER && $fefieldeffect==15)
+      [[PBStats::DEFENSE,boosted ? 2 : 1],[PBStats::SPDEF,boosted ? 2 : 1]]
+    when 0x29D then [[PBStats::ATTACK,1]]
+    when 0x2A0 then [[PBStats::ATTACK,1],[PBStats::SPDEF,1]]
+    else []
+    end
+    entry=changes.find { |boosted,_amount| boosted==stat }
+    return entry ? entry[1] : 0
+  end
+
+  def pbAIZStatBonus(move,user)
+    return 0 if !move.zmove || move.basedamage>0
+    group=AzureZStatusStatBoosts.effect(move.id)
+    return 0 if !group
+    _moves,stat,amount=group
+    stats=stat ? [stat] : [PBStats::ATTACK,PBStats::DEFENSE,PBStats::SPATK,PBStats::SPDEF,PBStats::SPEED]
+    stats.sum do |boosted|
+      delta=pbAIStatChangePreview(move,user,user,boosted,amount,[:move,move.id,:z_status])
+      base_amount=pbAIBaseSelfStatBoost(move,user,boosted)
+      if delta>0 && base_amount>0
+        base_delta=pbAIStatChangePreview(move,user,user,boosted,base_amount)
+        stages=user.effects[PBEffects::MultiTurnAttack]==PBMoves::BINDINGWORD ?
+          user.effects[PBEffects::StatChangeHolder] : user.stages
+        delta=[delta,[3-stages[boosted]-[base_delta,0].max,0].max].min
+      end
+      weight=1.0
+      weight=0.25 if boosted==PBStats::ATTACK && !user.moves.any? { |known| known.basedamage>0 && known.pbIsPhysical?(known.type) }
+      weight=0.25 if boosted==PBStats::SPATK && !user.moves.any? { |known| known.basedamage>0 && known.pbIsSpecial?(known.type) }
+      18*[delta,0].max*weight
+    end
+  end
+
+  def pbAIHasStagePowerMove?(user)
+    return user.moves.any? { |known| known && known.pp>0 &&
+      [PBMoves::STOREDPOWER,PBMoves::POWERTRIP].include?(known.id) }
+  end
+
+  def pbAIUnawareSetupMultiplier(move,user)
+    return 1 if move.basedamage>0
+    pure_offense=[0x1C,0x20,0x27,0x28,0x2E,0x32,0x39,0x3A]
+    return 1 unless pure_offense.include?(move.function) || (move.zmove && move.id==PBMoves::SPLASH)
+    return 1 if user.moves.any? { |known| known && known.pp>0 &&
+      [PBMoves::STOREDPOWER,PBMoves::POWERTRIP,PBMoves::BATONPASS].include?(known.id) }
+    foes=pbAIOrderedFoes(user)
+    return 1 if foes.empty? || foes.any? { |foe| !foe.hasWorkingAbility(:UNAWARE) && !SilvallyCheck(foe,PBTypes::FAIRY) }
+    return 0.05
+  end
+
+  def pbAIHazeStageValue(battler)
+    stages=battler.effects[PBEffects::MultiTurnAttack]==PBMoves::BINDINGWORD ?
+      battler.effects[PBEffects::StatChangeHolder] : battler.stages
+    moves=pbAISelectableMoves(battler)
+    (1..7).sum do |stat|
+      next 0 if stat==PBStats::ATTACK && !moves.any? { |known| known.basedamage>0 && known.pbIsPhysical?(known.type) }
+      next 0 if stat==PBStats::SPATK && !moves.any? { |known| known.basedamage>0 && known.pbIsSpecial?(known.type) }
+      stages[stat]*(stat==PBStats::SPEED && @trickroom>0 ? -1 : 1)
+    end
+  end
+
+  def pbAIHazeUtility(move,user,foes,allies)
+    value=foes.sum { |foe| pbAIHazeStageValue(foe) }-allies.sum { |ally| pbAIHazeStageValue(ally) }
+    if $fefieldeffect==3
+      value+=allies.sum do |ally|
+        preview=ally.clone
+        preview.instance_variable_set(:@stages,Array.new(ally.stages.length,0))
+        effects=ally.effects.dup
+        effects[PBEffects::StatChangeHolder]=Array.new(8,0)
+        preview.instance_variable_set(:@effects,effects)
+        pbAIStatMoveValue(move,user,preview,[[PBStats::DEFENSE,1],[PBStats::SPDEF,1]])
+      end
+    end
+    return value
+  end
+
+  def pbAIHelpingHandAttacks(ally)
+    return [] if !ally || ally.isFainted? || ally.effects[PBEffects::HyperBeam]>0 ||
+      (ally.hasWorkingAbility(:TRUANT) && ally.effects[PBEffects::Truant])
+    asleep=ally.status==PBStatuses::SLEEP && ally.statusCount>1 &&
+      ally.effects[PBEffects::FocusEnergyGuard]!=@turncount
+    moves=pbAISelectableMoves(ally)
+    attacks=moves.select { |known| known.basedamage>0 || known.pixie_tribute_power(ally)>0 }
+    return attacks if !asleep
+    return attacks if moves.any? { |known| known.function==0xB4 }
+    return attacks.select { |known| known.pbCanUseWhileAsleep? }
+  end
+
   def pbAIStatMoveValue(move,attacker,target,changes)
     return pbWithStatChangeSource([:move,move.id]) do
       changes.sum do |stat,change|
-        actual_change=target.hasWorkingAbility(:CONTRARY) ? -change : change
-        possible=actual_change>0 ? target.pbCanIncreaseStatStage?(stat,false) : target.pbCanReduceStatStage?(stat,false)
-        next 0 if !possible
+        actual_change=pbAIStatChangePreview(move,attacker,target,stat,change)
+        next 0 if actual_change==0
         benefit=target.pbIsOpposing?(attacker.index) ? -actual_change : actual_change
         preferred=stat==PBStats::ATTACK ? target.attack>=target.spatk : target.spatk>=target.attack
         weight=[PBStats::ATTACK,PBStats::SPATK].include?(stat) ? (preferred ? 1.0 : 0.4) : 0.8
@@ -421,21 +611,54 @@ class PokeBattle_Battle
     return 18*[value,0].max
   end
 
-  def pbAIRoughDamagePercentForTarget(move, attacker, target, skill)
-    return pbStatusDamage(move) if move.basedamage==0 && move.pixie_tribute_power(attacker,target)<=0
-    return 0 if !target || target.isFainted? || target.hp <= 0
-    dmgValue = pbRoughDamage(move, attacker, target, skill, move.basedamage)
-    dmgPercent = (dmgValue * 100) / target.hp
-    dmgPercent = 110 if dmgPercent > 110
-    if dmgPercent == 110 &&
-       pbAICanSurviveLethalHit?(target) && !move.pbIsMultiHit
-      dmgPercent = 109
+  def pbAIFasterRecoveryHP(move,attacker,target,skill)
+    return target.hp if skill<PBTrainerAI.highSkill || !target.pbIsOpposing?(attacker.index) ||
+      target.hp*2>target.totalhp || target.effects[PBEffects::HealBlock]>0 ||
+      (target.status==PBStatuses::SLEEP && target.statusCount>1) || target.status==PBStatuses::FROZEN
+    recovery=pbAISelectableMoves(target).map do |heal|
+      # Wish and Rebuild heal later; drains and ally-only heals are not a
+      # reliable immediate self-recovery forecast.
+      next 0 unless [0xD5,0xD6,0xD8,0xD9,0x114,0x16C,0x187,0x232,0x24C,0x251,0x26E,0x298,0xB74].include?(heal.function)
+      next 0 if heal.pixie_tribute_power(target,attacker)>0 ||
+        !pbAIActsBefore?(target,attacker,skill,heal,move)
+      next 0 if heal.function==0x251 && !heal.pbCanFertilize?(target)
+      next 0 if heal.function==0x114 && (target.opposingAbilityHolder(:UNNERVE) || target.effects[PBEffects::LeerBlock]>0)
+      if heal.function==0xD9
+        next 0 if target.status==PBStatuses::SLEEP || !target.pbCanSleep?(false,true,true)
+        amount=heal.tribute_overheal?(target) ? target.totalhp : target.totalhp-target.hp
+      else
+        amount=heal.pbTributeHealingPreview(target,attacker,target)
+        amount=amount*3/2 if heal.function==0xD6 && target.effects[PBEffects::TributeRoostBoost]
+      end
+      heal.pbPreviewRecoverMoveHP(target,target,amount)
+    end.max || 0
+    return [target.hp+recovery,target.totalhp].min
+  end
+
+  def pbAIDamageScoreContext(move,attacker,target,skill)
+    hp=pbAIFasterRecoveryHP(move,attacker,target,skill)
+    substitute=move.pbBlockedBySubstitute?(attacker,target)
+    if substitute
+      # A single hit cannot damage both the substitute and the battler.  A
+      # multi-hit attack must first spend damage breaking the substitute.
+      hp=move.pbIsMultiHit ? hp+target.effects[PBEffects::Substitute] : target.effects[PBEffects::Substitute]
     end
-    if dmgPercent == 110
-      accuracy = pbRoughAccuracy(move, attacker, target, skill)
-      dmgPercent = 109.5 if accuracy < 100
+    return {:hp=>[hp,1].max,:substitute=>substitute}
+  end
+
+  def pbAIRoughDamagePercentForTarget(move,attacker,target,skill)
+    return 0 if !target || target.isFainted? || target.hp<=0
+    return pbStatusDamage(move) if move.basedamage==0 && move.pixie_tribute_power(attacker,target)<=0 && move.id!=PBMoves::NATUREPOWER
+    context=pbAIDamageScoreContext(move,attacker,target,skill)
+    damage=pbRoughDamage(move,attacker,target,skill,move.basedamage)
+    percent=damage*100/context[:hp]
+    cap=context[:substitute] && !move.pbIsMultiHit ? 100 : 110
+    percent=[percent,cap].min
+    if percent==110 && !context[:substitute] && pbAICanSurviveLethalHit?(target) && !move.pbIsMultiHit
+      percent=109
     end
-    return dmgPercent
+    percent=109.5 if percent==110 && pbRoughAccuracy(move,attacker,target,skill)<100
+    return percent
   end
 
   def pbAIBuildDamageArrayForTarget(attacker, target, skill)
@@ -576,6 +799,20 @@ class PokeBattle_Battle
   # Moves with higher scores are more likely to be chosen.
   ################################################################################
   def pbGetMoveScore(move,attacker,opponent,skill=100,roughdamage=10,initialscores=[],scoreindex=-1,shutup=false,naturepri=false,target_option=nil)
+    previous_context=@aiStatMoveContext
+    @aiStatMoveContext=[move,attacker]
+    pbWithStatChangeSource([:move,move.id]) do
+      score=pbGetMoveScoreWithStatSource(move,attacker,opponent,skill,roughdamage,initialscores,scoreindex,shutup,naturepri,target_option)
+      score*=pbAIAccuracyScoreMultiplier(move,attacker,opponent,skill) if score>0
+      score+=pbAIZStatBonus(move,attacker) if move.zmove && move.basedamage==0
+      score*=pbAIUnawareSetupMultiplier(move,attacker)
+      [score.to_i,0].max
+    end
+  ensure
+    @aiStatMoveContext=previous_context
+  end
+
+  def pbGetMoveScoreWithStatSource(move,attacker,opponent,skill=100,roughdamage=10,initialscores=[],scoreindex=-1,shutup=false,naturepri=false,target_option=nil)
     pixie_attack=move.pixie_tribute_power(attacker,opponent)>0
     icicle_status=move.tribute_status?(attacker,:ICICLETRIBUTE)
     return 0 if pixie_attack && roughdamage<=0
@@ -1192,65 +1429,8 @@ class PokeBattle_Battle
           score*=miniscore
         end
       end
-      if (move.zmove)
-        if !move.name == "Z-Splash"
-          miniscore = setupminiscore(attacker,opponent,skill,move,true,31,false,initialscores,scoreindex)
-        else
-          miniscore = setupminiscore(attacker,opponent,skill,move,true,1,true,initialscores,scoreindex)
-        end
-        ministat=0
-        ministat+=opponent.stages[PBStats::ATTACK]
-        ministat+=opponent.stages[PBStats::SPATK]
-        ministat+=opponent.stages[PBStats::SPEED]
-        if ministat>0
-          minimini=(-5)*ministat
-          minimini+=100
-          minimini/=100.0
-          miniscore*=minimini
-        end
-        miniscore/=100.0
-        score*=miniscore
-        miniscore=100
-        miniscore*=1.2 if checkAIhealing(aimem)
-        if (attacker.pbSpeed<=pbRoughStat(opponent,PBStats::SPEED,skill)) ^ (@trickroom!=0)
-          miniscore*=1.3
-        end
-        if roles.include?(PBMonRoles::SWEEPER)
-          miniscore*=1.3
-        end
-        if attacker.status==PBStatuses::PARALYSIS || (attacker.status==PBStatuses::BURN && move.name == "Z-Splash")
-          miniscore*=0.5
-        end
-        if attacker.hp==attacker.totalhp && ((attacker.hasWorkingItem(:FOCUSSASH) || ((!attacker.abilitynulled && attacker.ability == PBAbilities::STURDY) && !attacker.moldbroken) || (isConst?(attacker.real_species,PBSpecies,:RAMPARDOS) && isConst?(attacker.item,PBItems,:RAMPCREST)))  && (pbWeather!=PBWeather::HAIL || attacker.pbHasType?(:ICE)) && (pbWeather!=PBWeather::SANDSTORM || attacker.pbHasType?(:ROCK) || attacker.pbHasType?(:GROUND) || attacker.pbHasType?(:STEEL)))
-          miniscore*=1.4
-        end
-        miniscore*=0.6 if checkAIpriority(aimem)
-        if (!opponent.abilitynulled && opponent.ability == PBAbilities::SPEEDBOOST)
-          miniscore*=0.3
-        end
-        if (!opponent.abilitynulled && opponent.ability == PBAbilities::STEAMENGINE)
-          if $fefieldeffect==7 || $fefieldeffect==16 || $fefieldeffect==21 || $fefieldeffect==22 || $fefieldeffect==45
-            miniscore*=0.7
-          end
-        end
-        if @trickroom!=0
-          miniscore*=0.5
-        else
-          miniscore*=0.5 if checkAImoves(PBMoves::TRICKROOM,aimem)
-        end
-        miniscore+=100
-        miniscore/=100.0
-        score*=miniscore
-        score*=0 if (opponent.moves.any? {|moveloop| (PBStuff::PHASEMOVE).include?(moveloop.id)})
-        score*=0.3 if ((opponent.moves.any? {|moveloop| (PBMoves::CLEARSMOG).include?(moveloop.id)}) || (opponent.moves.any? {|moveloop| (PBMoves::HAZE).include?(moveloop.id)}))
-        if (!opponent.abilitynulled && opponent.ability == PBAbilities::UNAWARE) || SilvallyCheck(opponent, PBTypes::FAIRY)
-          score=0.2
-        end
-        if !move.name == "Z-Splash" && (attacker.pbTooHigh?(PBStats::ATTACK) && attacker.pbTooHigh?(PBStats::SPEED) && attacker.pbTooHigh?(PBStats::SPATK) && attacker.pbTooHigh?(PBStats::SPDEF) && attacker.pbTooHigh?(PBStats::DEFENSE))
-          score*=0
-        else
-          score*=0 if attacker.pbTooHigh?(PBStats::ATTACK)
-        end
+      if move.zmove && move.id==PBMoves::SPLASH
+        score=$fefieldeffect==21 ? 12*[pbAIStatMoveValue(move,attacker,opponent,[[PBStats::ACCURACY,-1]]),0].max : 0
       end
     when 0x02 # Struggle
     when 0x03 # Sleep
@@ -2794,7 +2974,7 @@ class PokeBattle_Battle
       party=pbParty(attacker.index)
       statuses=0
       for i in 0...party.length
-        statuses+=1 if party[i] && party[i].status!=0
+        statuses+=1 if party[i] && party[i].hp>0 && !party[i].isEgg? && party[i].status!=0
       end
       if statuses!=0
         score*=1.2
@@ -2802,7 +2982,7 @@ class PokeBattle_Battle
         count=-1
         for i in 0...party.length
           count+=1
-          next if party[i].nil?
+          next if party[i].nil? || party[i].hp<=0 || party[i].isEgg? || party[i].status==0
           temproles = pbGetMonRole(party[i],opponent,skill,count,party)
           if party[i].status==PBStatuses::POISON && (isConst?(party[i].ability,PBAbilities,:POISONHEAL) || (isConst?(party[i].species,PBSpecies,:ZANGOOSE) && isConst?(party[i].item,PBItems,:ZANGCREST)))
             score*=0.5
@@ -4680,7 +4860,7 @@ class PokeBattle_Battle
           physmove=true
         end
       end
-      miniscore=0 if !physmove
+      miniscore=0 if !physmove && !pbAIHasStagePowerMove?(attacker)
       score*=miniscore
       if (opponent.level-5)>attacker.level
         score*=0.6
@@ -5058,7 +5238,7 @@ class PokeBattle_Battle
           specmove=true
         end
       end
-      miniscore=0 if !specmove
+      miniscore=0 if !specmove && !pbAIHasStagePowerMove?(attacker)
       score*=miniscore
       if (opponent.level-5)>attacker.level
         score*=0.6
@@ -6825,32 +7005,9 @@ class PokeBattle_Battle
         end
       end
     when 0x51 # Haze
-      miniscore = (-10)* statchangecounter(attacker,1,7)
-      minimini = (10)* statchangecounter(opponent,1,7)
-      allies.each do |ally|
-        next if ally.hp<=0
-        miniscore+= (-10)* statchangecounter(ally,1,7)
-      end
-      secondary_opponents.each do |foe|
-        next if foe.hp<=0
-        minimini+= (10)* statchangecounter(foe,1,7)
-      end
-      if miniscore==0 && minimini==0
-        score*=0
-      else
-        miniscore+=minimini
-        miniscore+=100
-        miniscore/=100.0
-        score*=miniscore
-      end
-      if (!opponent.abilitynulled && opponent.ability == PBAbilities::SPEEDBOOST) || checkAImoves(PBStuff::SETUPMOVE,aimem)
-        score*=0.8
-      end
-      if (!opponent.abilitynulled && opponent.ability == PBAbilities::STEAMENGINE)
-        if $fefieldeffect==7 || $fefieldeffect==16 || $fefieldeffect==21 || $fefieldeffect==22 || $fefieldeffect==45
-          miniscore*=0.6
-        end
-      end
+      benefit=pbAIHazeUtility(move,attacker,[opponent]+secondary_opponents,[attacker]+allies)
+      score=benefit>0 ? score*(1+benefit*0.1) : 0
+      score*=0.8 if opponent.hasWorkingAbility(:SPEEDBOOST) || checkAImoves(PBStuff::SETUPMOVE,aimem)
     when 0x52 # Power Swap
       stages=0
       stages+=attacker.stages[PBStats::ATTACK]
@@ -8588,11 +8745,11 @@ class PokeBattle_Battle
     when 0x9C # Helping Hand
       ally_target = pbAIFirstAlly(attacker,opponent ? opponent.index : nil)
       foes = pbAIOrderedFoes(attacker)
-      if ally_target && !ally_target.isFainted?
+      if ally_target && !ally_target.isFainted? && !pbAIHelpingHandAttacks(ally_target).empty?
         effvar = false
-        for i in ally_target.moves
+        for i in pbAISelectableMoves(attacker)
           next if !i || i.id == 0 || i.basedamage <= 0
-          if foes.any? { |foe| pbTypeModNoMessages(i.type,ally_target,foe,i,skill) >= 4 }
+          if foes.any? { |foe| pbTypeModNoMessages(i.type,attacker,foe,i,skill) >= 4 }
             effvar = true
             break
           end
@@ -8664,11 +8821,15 @@ class PokeBattle_Battle
     when 0xA2 # Reflect
       if attacker.pbOwnSide.effects[PBEffects::Reflect]<=0
         score*=1.2
-        if attacker.pbOwnSide.effects[PBEffects::AuroraVeil]>0
+        if attacker.pbOwnSide.effects[PBEffects::AuroraVeil]>3
+          score=0
+        elsif attacker.pbOwnSide.effects[PBEffects::AuroraVeil]>0
           score*=0.5
         end
         if pbRoughStat(opponent,PBStats::ATTACK,skill)>pbRoughStat(opponent,PBStats::SPATK,skill)
           score*=1.3
+        elsif pbAIOrderedFoes(attacker,opponent).all? { |foe| pbAIMaxCategoryDamage(foe,attacker,skill,true)==0 }
+          score*=0.5
         end
         if (attitemworks && attacker.item == PBItems::LIGHTCLAY)
           score*=1.5
@@ -8713,11 +8874,15 @@ class PokeBattle_Battle
     when 0xA3 # Light Screen
       if attacker.pbOwnSide.effects[PBEffects::LightScreen]<=0
         score*=1.2
-        if attacker.pbOwnSide.effects[PBEffects::AuroraVeil]>0
+        if attacker.pbOwnSide.effects[PBEffects::AuroraVeil]>3
+          score=0
+        elsif attacker.pbOwnSide.effects[PBEffects::AuroraVeil]>0
           score*=0.5
         end
         if pbRoughStat(opponent,PBStats::ATTACK,skill)<pbRoughStat(opponent,PBStats::SPATK,skill)
           score*=1.3
+        elsif pbAIOrderedFoes(attacker,opponent).all? { |foe| pbAIMaxCategoryDamage(foe,attacker,skill,false)==0 }
+          score*=0.5
         end
         if (attitemworks && attacker.item == PBItems::LIGHTCLAY)
           score*=1.5
@@ -14632,15 +14797,8 @@ class PokeBattle_Battle
           miniscore*=1.2
         end
         boostedmon=attacker.clone
-        unboosteddef=attacker.stages[PBStats::DEFENSE]
-        boosteddef=false
-        if !attacker.pbTooHigh?(PBStats::DEFENSE)
-          boostedmon.stages[PBStats::DEFENSE]+=1
-          boosteddef=true
-          if boostedmon.stages[PBStats::DEFENSE]>6
-            boostedmon.stages[PBStats::DEFENSE]=6
-          end
-        end
+        boostedmon.stages=attacker.stages.dup
+        boostedmon.stages[PBStats::DEFENSE]+=pbAIStatChangePreview(move,attacker,attacker,PBStats::DEFENSE,1)
         if checkAIdamage(attacker,opponent,skill)<(attacker.hp/2.0)
           miniscore*=1.2
           if pbRoughStat(opponent,PBStats::SPATK,skill)<pbRoughStat(opponent,PBStats::ATTACK,skill)
@@ -14656,9 +14814,6 @@ class PokeBattle_Battle
               miniscore*=1.3
             end
           end
-        end
-        if boosteddef
-          attacker.stages[PBStats::DEFENSE]=unboosteddef
         end
         if attacker.turncount<2
           miniscore*=1.1
@@ -17225,6 +17380,8 @@ class PokeBattle_Battle
       end
     when 0x15A # Future Sight Dummy
     when 0x15B # Aurora Veil
+      overlap=[PBEffects::Reflect,PBEffects::LightScreen].count { |effect| attacker.pbOwnSide.effects[effect]>3 }
+      score*=overlap==2 ? 0.25 : 0.7 if overlap>0
       if attacker.pbOwnSide.effects[PBEffects::AuroraVeil]<=0
         if pbWeather==PBWeather::HAIL || (skill>=PBTrainerAI.highSkill && ($fefieldeffect==28 || $fefieldeffect==30 || $fefieldeffect==34 || $fefieldeffect==39 || $fefieldeffect==4 || $fefieldeffect==9 || $fefieldeffect==13 || $fefieldeffect==25))
           score*=1.5
@@ -20264,10 +20421,6 @@ class PokeBattle_Battle
         end
       end
     end
-    accuracy=pbRoughAccuracy(move,attacker,opponent,skill)
-    if accuracy<70
-      score*=accuracy/100.0
-    end
     #score=0 if score<=10 && skill>=PBTrainerAI.averageSkill
     if move.basedamage==0 && !pixie_attack && !icicle_status && (move.target==PBTargets::SingleNonUser || move.target==PBTargets::RandomOpposing || move.target==PBTargets::AllOpposing || move.target==PBTargets::OpposingSide || move.target==PBTargets::SingleOpposing || move.target==PBTargets::OppositeOpposing) &&
       (((opponent.ability == PBAbilities::MAGICBOUNCE) || SilvallyCheck(opponent,PBTypes::PSYCHIC)) || opponent.effects[PBEffects::MagicCoat]==true)
@@ -20646,12 +20799,8 @@ class PokeBattle_Battle
 
   def pbAICustomHealingScore(move,user,target,amount)
     return 0 if target.effects[PBEffects::HealBlock]>0 || !move.pbCanHealMoveTarget?(user,target)
-    amount=move.apply_tribute_healing(user,amount)
+    recovered=move.pbPreviewRecoverMoveHP(user,target,amount)
     healer=user.hasWorkingAbility(:HEALER)
-    amount=(amount*1.1).floor if healer
-    amount=amount*3/2 if target.pbOwnSide.effects[PBEffects::EtherealCloak]>0
-    amount/=2 if target.effects[PBEffects::Wounded]>0
-    recovered=[amount,target.totalhp-target.hp].min
     cure=healer && target.status>0 && target.effects[PBEffects::Spritz]!=1
     return recovered*100.0/target.totalhp+(cure ? 15 : 0)
   end
@@ -21204,10 +21353,6 @@ class PokeBattle_Battle
         end
       end
       basedamage = maxdam
-    when 0x75, 0x12D # Surf, Shadow Storm
-      basedamage*=2 if $pkmn_move[opponent.effects[PBEffects::TwoTurnAttack]][0] == 0xCB # Dive
-    when 0x76 # Earthquake
-      basedamage*=2 if $pkmn_move[opponent.effects[PBEffects::TwoTurnAttack]][0] == 0xCA # Dig
     when 0x77, 0x78 # Gust, Twister
       basedamage=move.pbBaseDamage(basedamage,attacker,opponent)
     when 0x301 # Bide, Deluge
@@ -21337,10 +21482,6 @@ class PokeBattle_Battle
     when 0xC4 # SolarBeam
       if pbWeather!=0 && pbWeather!=PBWeather::SUNNYDAY
         basedamage=(basedamage*0.5).floor
-      end
-    when 0xD0 # Whirlpool
-      if skill>=PBTrainerAI.mediumSkill
-        basedamage*=2 if PBMoveData.new(opponent.effects[PBEffects::TwoTurnAttack]).function==0xCB # Dive
       end
     when 0xEC,0x113,0x29F # Dragon Tail, Spit Up, Attack Order
       basedamage=move.pbBaseDamage(basedamage,attacker,opponent)
@@ -21784,6 +21925,24 @@ class PokeBattle_Battle
       move = PokeBattle_Move.pbFromPBMove(self,PBMove.new(newmove),attacker)
     end
     return move
+  end
+
+  # Critical and ordinary hits use different defense ranks.  Return an
+  # effective defense whose damage, after the existing expected critical
+  # multiplier below, equals that probability-weighted pair of outcomes.
+  def pbAICriticalDefenseValue(raw,staged,stage,skill,critrate,move,attacker)
+    return staged if skill<PBTrainerAI.mediumSkill || stage<=0 || critrate<=0 || raw<=0 || staged<=0
+    probability=[0.0,0.125,0.5,1.0][critrate.clamp(0,3)]
+    critical=move.pbCriticalDamageMultiplier
+    critical*=1.5 if attacker.hasWorkingAbility(:SNIPER)
+    weighted=1.0+probability*(critical-1.0)
+    return weighted/((1.0-probability)/staged.to_f+probability*critical/raw.to_f)
+  end
+
+  def pbAICriticalDefenseStat(battler,stat,skill,critrate,move,attacker)
+    raw=stat==PBStats::DEFENSE ? battler.defense : battler.spdef
+    staged=pbRoughStat(battler,stat,skill)
+    return pbAICriticalDefenseValue(raw,staged,battler.stages[stat],skill,critrate,move,attacker)
   end
 
   def pbRoughDamage(move,attacker,opponent,skill,basedamage,hardswitch=false)
@@ -23475,43 +23634,25 @@ class PokeBattle_Battle
     # Get base defense stat
     defense_stat=PBStats::DEFENSE
     critrate = pbAICritRate(attacker,opponent,move)
-    if critrate>=2
-      defense=opponent.defense
-    else
-      defense=pbRoughStat(opponent,PBStats::DEFENSE,skill)
-      defstage=opponent.stages[PBStats::DEFENSE]+6
-    end
+    defense=pbAICriticalDefenseStat(opponent,PBStats::DEFENSE,skill,critrate,move,attacker)
     applysandstorm=false
     if opponent.real_species==681 && opponent.form==1
-      originalform = attacker.form
-      dummymon = pbAegislashStats(attacker)
+      originalform = opponent.form
+      dummymon = pbAegislashStats(opponent)
       dummymon.pbUpdate
-      if critrate>=2
-        defense=dummymon.defense
-      else
-        defense=pbRoughStat(dummymon,PBStats::DEFENSE,skill)
-      end
+      defense=pbAICriticalDefenseStat(dummymon,PBStats::DEFENSE,skill,critrate,move,attacker)
       dummymon.form = originalform
       dummymon.pbUpdate
     end
     if type>=0 && (move.pbIsSpecial?(type) || move.function==0x278) # Spirit Fist
       if move.function!=0x122 # Psyshock
         defense_stat=PBStats::SPDEF
-        if critrate>=2
-          defense=opponent.spdef
-        else
-          defense=pbRoughStat(opponent,PBStats::SPDEF,skill)
-          defstage=opponent.stages[PBStats::SPDEF]+6
-        end
+        defense=pbAICriticalDefenseStat(opponent,PBStats::SPDEF,skill,critrate,move,attacker)
         if opponent.real_species==681 && opponent.form==1
-          originalform = attacker.form
-          dummymon = pbAegislashStats(attacker)
+          originalform = opponent.form
+          dummymon = pbAegislashStats(opponent)
           dummymon.pbUpdate
-          if critrate>=2
-            defense=dummymon.spdef
-          else
-            defense=pbRoughStat(dummymon,PBStats::SPDEF,skill)
-          end
+          defense=pbAICriticalDefenseStat(dummymon,PBStats::SPDEF,skill,critrate,move,attacker)
           dummymon.form = originalform
           dummymon.pbUpdate
         end
@@ -23580,11 +23721,9 @@ class PokeBattle_Battle
     defense*=2 if defense_stat==PBStats::DEFENSE && opponent.effects[PBEffects::Counterpoise]
     tribute_defense,tribute_stage=move.apply_tribute_defense_modifiers(attacker,opponent,defense,nil)
     if tribute_stage
-      defense=tribute_defense
-      if critrate<2
-        defstage=tribute_stage+3
-        defense=(defense*AI_ROUGH_STAT_STAGE_MULTIPLIERS[defstage].to_f/AI_ROUGH_STAT_STAGE_DIVISORS[defstage]).floor
-      end
+      defstage=tribute_stage+3
+      staged=(tribute_defense*AI_ROUGH_STAT_STAGE_MULTIPLIERS[defstage].to_f/AI_ROUGH_STAT_STAGE_DIVISORS[defstage]).floor
+      defense=pbAICriticalDefenseValue(tribute_defense,staged,tribute_stage,skill,critrate,move,attacker)
     end
     #defense=(defense*1.0*stagemul[defstage]/stagediv[defstage]).floor
     defense = 1 if (defense == 0 || !defense)
@@ -24547,7 +24686,7 @@ class PokeBattle_Battle
     end
     # Burn
     if skill>=PBTrainerAI.mediumSkill
-      if attacker.status==PBStatuses::BURN && move.pbIsPhysical?(type) && !(!attacker.abilitynulled && attacker.ability == PBAbilities::GUTS)
+      if attacker.status==PBStatuses::BURN && move.pbIsPhysical?(type) && move.id!=PBMoves::FACADE && !(!attacker.abilitynulled && attacker.ability == PBAbilities::GUTS)
         damage=(damage*0.5).round
       end
     end
@@ -24758,7 +24897,7 @@ class PokeBattle_Battle
     end
     damage=(damage*move.pbWideGuardMultiplier(attacker,opponent)*
             move.pbGravityDamageMultiplier(attacker,opponent)).round
-    # pbModifyDamage - TODO
+    damage=(damage*move.pbPreviewDamageModifier(attacker,opponent)).round
     # "AI-specific calculations below"
     # Increased critical hit rates
     if skill>=PBTrainerAI.mediumSkill
@@ -25135,93 +25274,25 @@ class PokeBattle_Battle
     return c
   end
 
+  def pbAIAccuracyScoreMultiplier(move,attacker,opponent,skill)
+    chance=pbRoughAccuracy(move,attacker,opponent,skill).clamp(0,100)/100.0
+    # Damaging misses graze for half damage, except moves that crash on a miss.
+    # Triple Kick already includes its repeated accuracy checks in base power.
+    if move.basedamage>0 && move.function!=0xDC && !move.pbCrashOnAccuracyMiss?
+      return 1.0 if move.function==0xBF && move.id!=PBMoves::THUNDERRAID
+      return 0.5+0.5*chance
+    end
+    # Keep the strong disincentive for extremely unreliable status/crash moves,
+    # continuously joined to ordinary accuracy weighting at fifty percent.
+    return chance<0.5 ? 2*chance*chance : chance
+  end
+
   def pbRoughAccuracy(move,attacker,opponent,skill)
-    return 100 if move.tribute_bypasses_accuracy?(attacker)
     return 100 if attacker.effects[PBEffects::LockOnMove] || move.lock_on_boost ||
-      opponent.effects[PBEffects::Blinded]>0
-    # Get base accuracy
-    baseaccuracy=move.accuracy
-    case $fefieldeffect
-    when 3 # Misty Field
-      if move.id==getID(PBMoves,:SWEETKISS)
-        baseaccuracy=100
-      end
-    when 4 # Dark Crystal Cavern
-      if move.id==getID(PBMoves,:DARKVOID)
-        baseaccuracy=100
-      end
-    when 6 # Big Top
-      if move.id==getID(PBMoves,:SING)
-        baseaccuracy=100
-      end
-    when 7 # Burning Field
-      if move.id==getID(PBMoves,:WILLOWISP)
-        baseaccuracy=100
-      end
-    when 8 # Swamp Field
-      if move.id==getID(PBMoves,:SLEEPPOWDER)
-        baseaccuracy=100
-      end
-    when 10 # Corrosive Field
-      if move.id==getID(PBMoves,:POISONPOWDER) || move.id==getID(PBMoves,:SLEEPPOWDER) ||
-        move.id==getID(PBMoves,:STUNSPORE) || move.id==getID(PBMoves,:TOXIC)
-        baseaccuracy=100
-      end
-    when 11 # Corrosive Mist Field
-      if move.id==getID(PBMoves,:TOXIC)
-        baseaccuracy=100
-      end
-    when 18 # Shortcircuit Field
-      if move.id==getID(PBMoves,:ZAPCANNON)
-        baseaccuracy=80
-      end
-    when 24 # Glitch Field
-      if move.id==getID(PBMoves,:BLIZZARD)
-        baseaccuracy=90
-      end
-    when 32 # Dragon's Den
-      if move.id==getID(PBMoves,:DRAGONRUSH)
-        baseaccuracy=100
-      end
-    when 33 # Flower Garden
-      if $fecounter > 1
-        if move.id==getID(PBMoves,:SLEEPPOWDER) || move.id==getID(PBMoves,:STUNSPORE) ||
-          move.id==getID(PBMoves,:POISONPOWDER)
-          baseaccuracy=100
-        end
-      end
-    when 35 # New World
-      if move.id==getID(PBMoves,:DARKVOID)
-        baseaccuracy=100
-      end
-    when 37 # Psychic Terrain
-      if move.id==getID(PBMoves,:HYPNOSIS)
-        baseaccuracy=90
-      end
-    when 38 # Dimensional Field
-      if move.id==getID(PBMoves,:DARKVOID)
-        baseaccuracy=100
-      end
-    when 39 # Frozen Dimensional Field
-      if move.id==getID(PBMoves,:DARKVOID)
-        baseaccuracy=100
-      end
-    when 40 # Haunted
-      if move.id==getID(PBMoves,:WILLOWISP) || move.id==getID(PBMoves,:HYPNOSIS)
-        baseaccuracy=90
-      end
-    when 42 # Darchlight Field
-      if move.id==getID(PBMoves,:POISONPOWDER) || move.id==getID(PBMoves,:SLEEPPOWDER) ||
-        move.id==getID(PBMoves,:STUNSPORE)
-        baseaccuracy=95
-      end
-    end
-    if skill>=PBTrainerAI.mediumSkill
-      if pbWeather==PBWeather::SUNNYDAY &&
-        (move.function==0x08 || move.function==0x15) # Thunder, Hurricane
-        baseaccuracy=50
-      end
-    end
+      (opponent.effects[PBEffects::LockOn]>0 && opponent.effects[PBEffects::LockOnPos]==attacker.index)
+    return 0 if attacker.effects[PBEffects::Blinded]>0 && move.basedamage>0
+    return 100 if move.pbAccuracyBypass?(attacker,opponent)
+    baseaccuracy=move.pbBaseAccuracy(attacker,opponent)
     # Accuracy stages
     accstage=attacker.stages[PBStats::ACCURACY]
     accstage=0 if (!opponent.abilitynulled && opponent.ability == PBAbilities::UNAWARE) || SilvallyCheck(opponent, PBTypes::FAIRY)
@@ -25255,8 +25326,7 @@ class PokeBattle_Battle
         end
       end
       if skill>=PBTrainerAI.averageSkill
-        partner=attacker.pbPartner
-        accuracy*=1.1 if partner && partner.hasWorkingAbility(:VICTORYSTAR)
+        accuracy*=1.1 if attacker.otherSameSideAbilityHolder(:VICTORYSTAR)
       end
       accuracy*=1.1 if attacker.hasWorkingItem(:WIDELENS)
       accuracy*=1.2 if attacker.hasWorkingItem(:ZOOMLENS) && attacker.pbSpeed<opponent.pbSpeed
@@ -25272,47 +25342,11 @@ class PokeBattle_Battle
         accuracy/=1.1 if opponent.hasWorkingItem(:LAXINCENSE)
       end
     end
-    # Override accuracy
-    accuracy=100 if move.accuracy==0   # Doesn't do accuracy check (always hits)
-    accuracy=100 if move.function==0xA5 # Swift
+    # Move-specific checks implemented outside the shared base check.
+    accuracy=100 if [0xA5,0x157,0x159,0x26D].include?(move.function)
     accuracy=100 if move.function==0x294 && attacker.level-opponent.level>=10
-    if skill>=PBTrainerAI.mediumSkill
-      accuracy=100 if opponent.effects[PBEffects::LockOn]>0 &&
-      opponent.effects[PBEffects::LockOnPos]==attacker.index
-      if skill>=PBTrainerAI.averageSkill
-        accuracy=100 if (!attacker.abilitynulled && attacker.ability == PBAbilities::NOGUARD) ||
-        (!opponent.abilitynulled && opponent.ability == PBAbilities::NOGUARD)
-      end
-      accuracy=100 if opponent.effects[PBEffects::Telekinesis]>0
-      case pbWeather
-      when PBWeather::HAIL
-        accuracy=100 if move.function==0x0D # Blizzard
-      when PBWeather::RAINDANCE
-        accuracy=100 if move.function==0x08 || move.function==0x15 # Thunder, Hurricane
-      end
-      accuracy=100 if move.function==0x08 && # Thunder
-      ($fefieldeffect==16 || $fefieldeffect==27 || $fefieldeffect==28)
-      accuracy=100 if attacker.pbHasType?(:POISON) && move.id==getID(PBMoves,:TOXIC)
-      accuracy=100 if (move.function==0x10 || move.function==0x9B || move.id==getID(PBMoves,:BODYSLAM) || move.id==getID(PBMoves,:FLYINGPRESS)) &&
-      opponent.effects[PBEffects::Minimize] # Flying Press, Stomp, DRush
-      if $fefieldeffect==30
-        if move.id==getID(PBMoves,:AURORABEAM) || move.id==getID(PBMoves,:SIGNALBEAM) ||
-          move.id==getID(PBMoves,:FLASHCANNON) || move.id==getID(PBMoves,:LUSTERPURGE) ||
-          move.id==getID(PBMoves,:DAZZLINGBEAM) || move.id==getID(PBMoves,:TECHNOBLAST) ||
-          move.id==getID(PBMoves,:DOOMDUMMY) || move.id==getID(PBMoves,:MIRRORSHOT) ||
-          move.id==getID(PBMoves,:PRISMATICLASER)
-          accuracy=100
-        end
-      end
-      if $fefieldeffect==38
-        if move.id==getID(PBMoves,:DARKPULSE) || move.id==getID(PBMoves,:DARKVOID) ||
-          move.id==getID(PBMoves,:NIGHTDAZE)
-          accuracy=100
-        end
-      end
-      accuracy=100 if (move.function==0x08 || move.function==0x15) && # Thunder, Hurricane
-      $fefieldeffect==43
-    end
+    accuracy=100 if move.function==0x27B && opponent.hp*2<opponent.totalhp
+    accuracy=100 if move.function==0x22E && pbWeather==PBWeather::SANDSTORM
     accuracy=100 if accuracy>100
     return accuracy
   end
@@ -25681,7 +25715,7 @@ class PokeBattle_Battle
     end
     if (!opponent.abilitynulled && opponent.ability == PBAbilities::ARENATRAP)
       PBDebug.log(sprintf("Arena Trap Disrupt")) if $INTERNAL
-      if attacker.isAirborne?
+      if !attacker.isAirborne?
         abilityscore*=1.5
       end
     end
@@ -25711,15 +25745,12 @@ class PokeBattle_Battle
     end
     if (!opponent.abilitynulled && opponent.ability == PBAbilities::SOUNDPROOF)
       PBDebug.log(sprintf("Soundproof Disrupt")) if $INTERNAL
-      soundvar=false
-      for i in attacker.moves
-        if i.isSoundBased?
-          soundvar=true
-        end
+      soundvar=pbAISelectableMoves(attacker).any? do |known|
+        known.isSoundBased? && [PBTargets::SingleNonUser,PBTargets::RandomOpposing,
+          PBTargets::AllOpposing,PBTargets::AllNonUsers,PBTargets::SingleOpposing,
+          PBTargets::OppositeOpposing].include?(known.target)
       end
-      if !soundvar
-        abilityscore*=3
-      end
+      abilityscore*=3 if soundvar
     end
     if (!opponent.abilitynulled && opponent.ability == PBAbilities::THICKFAT) || SilvallyCheck(opponent, "ice")
       PBDebug.log(sprintf("Thick Fat Disrupt")) if $INTERNAL
@@ -27629,6 +27660,16 @@ class PokeBattle_Battle
     return damagearray
   end
 
+  def pbAIClampSetupForecast(move,user,forecast,stats)
+    stats.each do |stat|
+      requested=forecast.stages[stat]-user.stages[stat]
+      next if requested==0
+      change=pbAIStatChangePreview(move,user,user,stat,requested)
+      change=0 if user.effects[PBEffects::MultiTurnAttack]==PBMoves::BINDINGWORD
+      forecast.stages[stat]=user.stages[stat]+change
+    end
+  end
+
   def setupminiscore(attacker,opponent,skill,move,sweep,code,double,initialscores,scoreindex,sweepcheck=false)
     aimem = pbAIKnownMoves(opponent)
     miniscore=100
@@ -27683,12 +27724,9 @@ class PokeBattle_Battle
     if skill>=PBTrainerAI.minimumSkill
       if (code==10 || code==3 || code==2 || code==12 || code==28 || code==31 ) && (fastermon || (!attacker.abilitynulled && attacker.ability == PBAbilities::PRANKSTER))
          boostedmon=attacker.clone
+         boostedmon.stages=attacker.stages.dup
          maxdam2 = checkAIdamage(attacker,opponent,skill)
          maxdam6=checkAIdamage(opponent,attacker,skill)
-         unboosteddef=attacker.stages[PBStats::DEFENSE]
-         unboostedspdef=attacker.stages[PBStats::SPDEF]
-         boosteddef=false
-         boostedspdef=false
          if !(attacker.pbTooHigh?(PBStats::DEFENSE))
            boostedmon.stages[PBStats::DEFENSE] += 1 if (code==3) || code==31 || (code==10 && !((move.id==(PBMoves::COSMICPOWER)) && ($fefieldeffect==29 || $fefieldeffect==34 || $fefieldeffect==35 || $fefieldeffect==37)) && !((move.id==(PBMoves::EXTREMEEVOBOOST))))
            boostedmon.stages[PBStats::DEFENSE] += 2 if (move.id==(PBMoves::IRONDEFENSE)) || ((move.id==(PBMoves::EXTREMEEVOBOOST))) || (move.id==(PBMoves::COSMICPOWER) && ($fefieldeffect==29 || $fefieldeffect==34 || $fefieldeffect==35 || $fefieldeffect==37))
@@ -27696,7 +27734,6 @@ class PokeBattle_Battle
            if boostedmon.stages[PBStats::DEFENSE]>6
             boostedmon.stages[PBStats::DEFENSE]=6
           end
-           boosteddef=true
          end
          if !(attacker.pbTooHigh?(PBStats::SPDEF))
            boostedmon.stages[PBStats::SPDEF] += 1 if (code==31 || code==12 && !((move.id==(PBMoves::CALMMIND)) && ($fefieldeffect==5 || $fefieldeffect==37))) || (code==28 && !$fefieldeffect==6) || (code==10 && !((move.id==(PBMoves::COSMICPOWER)) && ($fefieldeffect==29 || $fefieldeffect==34 || $fefieldeffect==35 || $fefieldeffect==37)) && !((move.id==(PBMoves::EXTREMEEVOBOOST))))
@@ -27704,24 +27741,15 @@ class PokeBattle_Battle
            if boostedmon.stages[PBStats::SPDEF]>6
             boostedmon.stages[PBStats::SPDEF]=6
           end
-           boostedspdef=true
          end
+         pbAIClampSetupForecast(move,attacker,boostedmon,[PBStats::DEFENSE,PBStats::SPDEF])
          maxdam = checkAIdamage(boostedmon,opponent,skill)
          maxdam5=checkAIdamage(opponent,boostedmon,skill)
-         if boosteddef==true
-          attacker.stages[PBStats::DEFENSE]=unboosteddef
-         end
-         if boostedspdef==true
-          attacker.stages[PBStats::SPDEF]=unboostedspdef
-         end
       elsif (code==10 || code==3 || code==2 || code==12 || code==28) && attacker.effects[PBEffects::Wish]>0
         boostedmon=attacker.clone
+        boostedmon.stages=attacker.stages.dup
         maxdam = checkAIdamage(attacker,opponent,skill)
         maxdam6=checkAIdamage(opponent,attacker,skill)
-        unboosteddef=attacker.stages[PBStats::DEFENSE]
-        unboostedspdef=attacker.stages[PBStats::SPDEF]
-        boosteddef=false
-        boostedspdef=false
         if !(attacker.pbTooHigh?(PBStats::DEFENSE))
           boostedmon.stages[PBStats::DEFENSE] += 1 if (code==3) || (code==10 && !((move.id==(PBMoves::COSMICPOWER)) && ($fefieldeffect==29 || $fefieldeffect==34 || $fefieldeffect==35 || $fefieldeffect==37)))
           boostedmon.stages[PBStats::DEFENSE] += 2 if (move.id==(PBMoves::IRONDEFENSE)) || (move.id==(PBMoves::COSMICPOWER) && ($fefieldeffect==29 || $fefieldeffect==34 || $fefieldeffect==35 || $fefieldeffect==37))
@@ -27729,7 +27757,6 @@ class PokeBattle_Battle
           if boostedmon.stages[PBStats::DEFENSE]>6
             boostedmon.stages[PBStats::DEFENSE]=6
           end
-          boosteddef=true
         end
         if !(attacker.pbTooHigh?(PBStats::SPDEF))
           boostedmon.stages[PBStats::SPDEF] += 1 if (code==12 && !((move.id==(PBMoves::CALMMIND)) && ($fefieldeffect==5 || $fefieldeffect==37))) || (code==28 && !$fefieldeffect==6) || (code==10 && !((move.id==(PBMoves::COSMICPOWER)) && ($fefieldeffect==29 || $fefieldeffect==34 || $fefieldeffect==35 || $fefieldeffect==37)))
@@ -27737,18 +27764,10 @@ class PokeBattle_Battle
           if boostedmon.stages[PBStats::SPDEF]>6
             boostedmon.stages[PBStats::SPDEF]=6
           end
-          boostedspdef=true
         end
+        pbAIClampSetupForecast(move,attacker,boostedmon,[PBStats::DEFENSE,PBStats::SPDEF])
         maxdam2 = checkAIdamage(boostedmon,opponent,skill)
         maxdam5=checkAIdamage(opponent,boostedmon,skill)
-        if code!=31
-          if boosteddef==true
-            attacker.stages[PBStats::DEFENSE]=unboosteddef
-          end
-          if boostedspdef==true
-            attacker.stages[PBStats::SPDEF]=unboostedspdef
-          end
-        end
       else
         maxdam = checkAIdamage(attacker,opponent,skill)
         maxdam2 = checkAIdamage(attacker,opponent,skill)
@@ -27954,11 +27973,6 @@ class PokeBattle_Battle
           end
         end
       end
-      unboostedatk=attacker.stages[PBStats::ATTACK]
-      unboostedspatk=attacker.stages[PBStats::SPATK]
-      unboostedspeed=attacker.stages[PBStats::SPEED]
-      unboosteddef=attacker.stages[PBStats::DEFENSE]
-      unboostedspdef=attacker.stages[PBStats::SPDEF]
       maxdamdealtwithoutboost= checkAIdamage(opponent,attacker,skill)
       setupdam=0
       setupvar=false
@@ -28010,11 +28024,7 @@ class PokeBattle_Battle
       if ((thisdam<attacker.hp) && (thisdam+pridam<attacker.hp) && threatened==false && !(setupvar==true && speedbuff==true && speedsetup==false && setupdam>attacker.hp && attackerprio==false)) && !(attacker.real_species == PBSpecies::AEGISLASH && attacker.form==1)
         if (code == 16 || code == 17 || code == 20 || code==31 || (code==1 && move.id==(PBMoves::SWORDSDANCE)) || (code==4 && move.id==(PBMoves::NASTYPLOT)))
           boostedmon=attacker.clone
-          boostedspeed=false
-          boostedspatk=false
-          boostedattack=false
-          boosteddef=false
-          boostedspdef=false
+          boostedmon.stages=attacker.stages.dup
           if !(attacker.pbTooHigh?(PBStats::SPEED))
             if (code==16 || code==17 || code==20 || code==31)
               if move.id==(PBMoves::ROCKPOLISH) || move.id==(PBMoves::DRAGONDANCE) || move.id==(PBMoves::QUIVERDANCE) || code==31
@@ -28026,7 +28036,6 @@ class PokeBattle_Battle
                 boostedmon.stages[PBStats::SPEED]=6
               end
             end
-            boostedspeed=true
           end
           if !(attacker.pbTooHigh?(PBStats::SPATK))
             if code == 20 || code==31 || (move.id==(PBMoves::ROCKPOLISH) && ($fefieldeffect==25)) || move.id==(PBMoves::NASTYPLOT)
@@ -28039,7 +28048,6 @@ class PokeBattle_Battle
                 boostedmon.stages[PBStats::SPATK]=6
               end
             end
-            boostedspatk=true
           end
           if !(attacker.pbTooHigh?(PBStats::ATTACK))
             if (code == 17 || code==31 || move.id==(PBMoves::SWORDSDANCE) || move.id==(PBMoves::ROCKPOLISH))
@@ -28050,8 +28058,8 @@ class PokeBattle_Battle
                 boostedmon.stages[PBStats::ATTACK]=6
               end
             end
-            boostedattack=true
           end
+          pbAIClampSetupForecast(move,attacker,boostedmon,[PBStats::SPEED,PBStats::SPATK,PBStats::ATTACK])
           if !fastermon && (boostedmon.pbSpeed>pbRoughStat(opponent,PBStats::SPEED,skill)) ^ (@trickroom!=0)
             miniscore*=1.3
           end
@@ -28170,23 +28178,6 @@ class PokeBattle_Battle
             end
           end
         end
-      end
-    end
-    if boostedspeed==true
-      attacker.stages[PBStats::SPEED]=unboostedspeed
-    end
-    if boostedattack==true
-      attacker.stages[PBStats::ATTACK]=unboostedatk
-    end
-    if boostedspatk==true
-      attacker.stages[PBStats::SPATK]=unboostedspatk
-    end
-    if code==31
-      if boosteddef==true
-        attacker.stages[PBStats::DEFENSE]=unboosteddef
-      end
-      if boostedspdef==true
-        attacker.stages[PBStats::SPDEF]=unboostedspdef
       end
     end
     if attacker.effects[PBEffects::Confusion]>0
@@ -28601,7 +28592,7 @@ class PokeBattle_Battle
 
     # Check cache for simple damage queries (movename=false)
     cacheKey=nil
-    if !movename
+    if !movename && @battlers[attacker.index].equal?(attacker) && @battlers[opponent.index].equal?(opponent)
       @aiDamageCache = {} if !@aiDamageCache
       cacheKey=((attacker.index*@battlers.length+opponent.index)*2)+
         (hardswitch ? 1 : 0)
@@ -28677,7 +28668,7 @@ class PokeBattle_Battle
       return [maxdam,moveid,nextdamage,secondmove,movetypemod]
     else
       # Cache the result for future calls with same attacker/opponent pair
-      if @aiDamageCache
+      if cacheKey
         @aiDamageCache[cacheKey] = maxdam
       end
       return maxdam
@@ -28867,7 +28858,7 @@ class PokeBattle_Battle
         otheropp=@battlers[1]
       end
     end
-    @scores=[0,0,0,0,0]
+    @scores=Array.new(attacker.moves.length,0)
     @targets=nil
     @myChoices=[]
     totalscore=0
@@ -28889,16 +28880,10 @@ class PokeBattle_Battle
     else
       fastermonai = @battlers[3]
     end
-    wildbattle=(!@opponent && pbIsOpposing?(index) && !($game_switches[290]))
-    if wildbattle # If wild battle - now uses smart AI instead of random
-      # Wild Pokemon now use the same smart AI as trainers
-      for i in 0...attacker.moves.length
-        if pbCanChooseMove?(index,i,false)
-          @myChoices.push(i)
-        end
-      end
+    if pbAIOrdinaryWild?(attacker) && !doublestargetting
+      @myChoices=attacker.moves.each_index.select { |slot| pbCanChooseMove?(index,slot,false) }
     else
-      if ($game_switches[290])
+      if $game_switches[290] || (!@opponent && pbIsOpposing?(index))
         skill=100
       else
         skill=pbGetOwner(attacker.index).skill || 0
@@ -28932,7 +28917,7 @@ class PokeBattle_Battle
         end
         notopp=attacker.pbPartner ###
         scoresAndTargets=[]
-        @targets=[-1,-1,-1,-1,-1]
+        @targets=Array.new(attacker.moves.length,-1)
         maxscore1=0
         maxscore2=0
         totalscore1=0
@@ -28946,8 +28931,9 @@ class PokeBattle_Battle
         priokill = false
         # Check if damage arrays are already cached for this battler to avoid redundant calculations
         @aiMoveScoreCache = {} if !@aiMoveScoreCache
-        if @aiMoveScoreCache[index]
-          cachedData = @aiMoveScoreCache[index]
+        cachedData = @aiMoveScoreCache[index]
+        use_cached_damage_arrays = cachedData && cachedData[0].length==attacker.moves.length
+        if use_cached_damage_arrays
           baseDamageArray = cachedData[0].clone
           baseDamageArray2 = cachedData[1].clone
           baseDamageArray3 = cachedData[2].clone
@@ -28955,10 +28941,6 @@ class PokeBattle_Battle
           if doublestargetting
             return [baseDamageArray, baseDamageArray2, baseDamageArray3, priokill]
           end
-          # Skip to move score calculation since damage arrays are already cached
-          @useCachedDamageArrays = true
-        else
-          @useCachedDamageArrays = false
         end
         if doublestargetting
           if skill>=PBTrainerAI.averageSkill
@@ -29074,7 +29056,7 @@ class PokeBattle_Battle
 
           @aiPriorityCache[index] = priCache
         end
-        if !@useCachedDamageArrays
+        if !use_cached_damage_arrays
         for j in 0...attacker.moves.length
           next if attacker.isFainted?
           next if !attacker.moves[j].id || attacker.moves[j].id < 1
@@ -29082,22 +29064,7 @@ class PokeBattle_Battle
           changed2=false
           # check attacker.moves[j].basedamage and if this is 0 instead check the status method
           #azedit: removed healing item checks
-          dmgValue = pbRoughDamage(attacker.moves[j],attacker,opponent,skill,attacker.moves[j].basedamage)
-          if attacker.moves[j].basedamage!=0 || attacker.moves[j].id==getID(PBMoves,:NATUREPOWER)
-            if opponent.hp==0
-              dmgPercent = 0
-            else
-              dmgPercent = (dmgValue*100)/(opponent.hp)
-              dmgPercent = 110 if dmgPercent > 110
-              if dmgPercent==110 && pbAICanSurviveLethalHit?(opponent)
-                if !attacker.moves[j].pbIsMultiHit
-                  dmgPercent = 109
-                end
-              end
-            end
-          else
-            dmgPercent = pbStatusDamage(attacker.moves[j])
-          end
+          dmgPercent=pbAIRoughDamagePercentForTarget(attacker.moves[j],attacker,opponent,skill)
           if widecheck && attacker.moves[j].pbSpreadMove?(attacker)
             if !(opponent.statusCount>1 && opponent.status==PBStatuses::SLEEP  && opponent.pbHasMove?(PBMoves::WIDEGUARD))
                dmgPercent*=0.2
@@ -29124,22 +29091,7 @@ class PokeBattle_Battle
           end
           baseDamageArray.push(dmgPercent)
           #Second opponent
-          dmgValue2 = pbRoughDamage(attacker.moves[j],attacker,otheropp,skill,attacker.moves[j].basedamage)
-          if attacker.moves[j].basedamage!=0 || attacker.moves[j].id==getID(PBMoves,:NATUREPOWER)
-            if otheropp.hp==0
-              dmgPercent2=0
-            else
-              dmgPercent2 = (dmgValue2*100)/(otheropp.hp)
-              dmgPercent2 = 110 if dmgPercent2 > 110
-              if dmgPercent2==110 && pbAICanSurviveLethalHit?(otheropp)
-                if !attacker.moves[j].pbIsMultiHit
-                  dmgPercent2 = 109
-                end
-              end
-            end
-          else
-            dmgPercent2 = pbStatusDamage(attacker.moves[j])
-          end
+          dmgPercent2=pbAIRoughDamagePercentForTarget(attacker.moves[j],attacker,otheropp,skill)
           if widecheck && attacker.moves[j].pbSpreadMove?(attacker)
             if !(otheropp.statusCount>1 && otheropp.status==PBStatuses::SLEEP && otheropp.pbHasMove?(PBMoves::WIDEGUARD))
                dmgPercent2*=0.2
@@ -29172,23 +29124,13 @@ class PokeBattle_Battle
           end
           baseDamageArray2.push(dmgPercent2)
           #Partner ###
-          dmgValue3 = pbRoughDamage(attacker.moves[j],attacker,notopp,skill,attacker.moves[j].basedamage)
-          if attacker.moves[j].basedamage!=0
-            if notopp.hp==0
-              dmgPercent3=0
-            else
-              dmgPercent3 = (dmgValue3*100)/(notopp.hp)
-              dmgPercent3 = 110 if dmgPercent3 > 110
-            end
-          else
-            dmgPercent3 = pbStatusDamage(attacker.moves[j])
-          end
+          dmgPercent3=pbAIRoughDamagePercentForTarget(attacker.moves[j],attacker,notopp,skill)
           baseDamageArray3.push(dmgPercent3)
         end
         # Cache the damage arrays for this battler to avoid redundant calculations
         @aiMoveScoreCache = {} if !@aiMoveScoreCache
         @aiMoveScoreCache[index] = [baseDamageArray.clone, baseDamageArray2.clone, baseDamageArray3.clone, priokill]
-        end # end of if !@useCachedDamageArrays
+        end
         if doublestargetting
           return [baseDamageArray,baseDamageArray2,baseDamageArray3,priokill]
         end
@@ -29200,7 +29142,12 @@ class PokeBattle_Battle
           if @aiMoveScoreCache && @aiMoveScoreCache[partnerIndex]
             damagevalues = @aiMoveScoreCache[partnerIndex]
           else
-            damagevalues = pbBuildMoveScores(partnerIndex,true,true)
+            scores,targets,choices=@scores,@targets,@myChoices
+            begin
+              damagevalues = pbBuildMoveScores(partnerIndex,true,true)
+            ensure
+              @scores,@targets,@myChoices=scores,targets,choices
+            end
           end
           adjusted=nil
           priomove=false
@@ -29824,15 +29771,8 @@ class PokeBattle_Battle
           next
         end
         # check attacker.moves[j].basedamage and if this is 0 instead check the status method
-        dmgValue = pbRoughDamage(attacker.moves[j],attacker,opponent,skill,attacker.moves[j].basedamage)
+        dmgPercent=pbAIRoughDamagePercentForTarget(attacker.moves[j],attacker,opponent,skill)
         if attacker.moves[j].basedamage!=0
-          dmgPercent = opponent.hp>0 ? (dmgValue*100)/opponent.hp : 0
-          dmgPercent = 110 if dmgPercent > 110
-          if dmgPercent==110 && pbAICanSurviveLethalHit?(opponent)
-            if !attacker.moves[j].pbIsMultiHit
-              dmgPercent = 109
-            end
-          end
           if attacker.moves[j].function == 0x115 || attacker.moves[j].function == 0xC3 ||
             attacker.moves[j].function == 0xC4 || attacker.moves[j].function == 0xC5 ||
             attacker.moves[j].function == 0xC6 || attacker.moves[j].function == 0xC7 ||
@@ -29842,14 +29782,7 @@ class PokeBattle_Battle
             dmgPercentAdj = dmgPercent
           end
         else
-          dmgPercent = pbStatusDamage(attacker.moves[j])
           dmgPercentAdj = dmgPercent
-        end
-        if dmgPercent==110
-          accuracy=pbRoughAccuracy(attacker.moves[j],attacker,opponent,skill)
-          if (accuracy<100 && attacker.moves[j].basedamage>0)
-            dmgPercent=109.5
-          end
         end
         baseDamageArray.push(dmgPercent)
         baseDamageArrayAdj.push(dmgPercentAdj)
@@ -29924,13 +29857,14 @@ def pbAIDracoCandidate(index)
   end
 end
 
-def pbChooseMoves(index,z_base_slot=nil)
+def pbChooseMoves(index,z_base_slot=nil,preferred_slot=nil)
   attacker=@battlers[index]
   candidates=@myChoices.select do |slot|
     move=attacker.moves[slot]
     next false if !move || !pbCanChooseMove?(index,slot,false)
     if move.zmove
-      next false if slot!=4 || !z_base_slot || !pbCanChooseMove?(index,z_base_slot,false)
+      next false if slot!=4 || !z_base_slot || !pbCanZMove?(index) ||
+        !pbCanChooseMove?(index,z_base_slot,false)
     end
     true
   end
@@ -29958,19 +29892,15 @@ def pbChooseMoves(index,z_base_slot=nil)
     return
   end
 
-  wildbattle=(!@opponent && pbIsOpposing?(index) && !$game_switches[290] &&
-              !attacker.isbossmon && !attacker.issossmon)
-  best_slots=candidates.select { |slot| [@scores[slot],0].max==best_score }
-  if wildbattle
-    score_slot=best_slots.first
+  if pbAIOrdinaryWild?(attacker)
+    preferred=attacker.pokemon.personalID.to_i%4
+    roll=pbAIRandom(candidates.length*20+(candidates.include?(preferred) ? 1 : 0))
+    score_slot=candidates[roll/20] || preferred
   else
-    # Prefer the ordinary base move when it already matches the Z-Move's score.
-    if best_slots.include?(4) && attacker.moves[4].zmove && best_slots.include?(z_base_slot)
-      best_slots.delete(4)
-    end
-    score_slot=best_slots.max_by do |slot|
-      accuracy=attacker.moves[slot].accuracy
-      accuracy==0 ? 100 : accuracy
+    best_slots=candidates.select { |slot| [@scores[slot],0].max==best_score }
+    score_slot=best_slots.include?(preferred_slot) ? preferred_slot : best_slots.max_by do |slot|
+      move=attacker.moves[slot]
+      [move.zmove ? 0 : 1,move.accuracy==0 ? 100 : move.accuracy]
     end
   end
 
@@ -30183,41 +30113,37 @@ end
 ################################################################################
 # Decide whether the opponent should use a Z-Move.
 ################################################################################
-def pbEnemyShouldZMove?(index)
-  return pbCanZMove?(index) #Conditions based on effectiveness and type handled later
+def pbAIOrdinaryWild?(battler)
+  !@opponent && pbIsOpposing?(battler.index) && !$game_switches[290] &&
+    !@raidbattle && !battler.isbossmon && !battler.issossmon
 end
 
 ################################################################################
 # Decide whether the opponent should use an item on the Pokemon.
 ################################################################################
 def pbEnemyShouldUseItem?(index)
-  #### Sash/Sturdy case
-  attacker = @battlers[index]
-  item=pbEnemyItemToUse(index)
   return false if $game_switches[1493]==true
+  #### Sash/Sturdy case
+  item=pbEnemyItemToUse(index)
   if item>0 && @battlers[index].effects[PBEffects::Embargo]==0
-    pbRegisterItem(index,item,nil)
-    return true
+    return pbRegisterItem(index,item,nil)
   end
   return false
 end
 
 def pbEnemyItemAlreadyUsed?(index,item,items)
-  if @choices[1][0]==3 && @choices[1][1]==item
-    qty=0
-    for i in items
-      qty+=1 if i==item
-    end
-    return true if qty<=1
+  reserved=pbActiveBattlerIndicesForSide(pbIsOpposing?(index)).count do |other|
+    other!=index && @choices[other][0]==3 && @choices[other][1]==item &&
+      pbGetOwnerItems(other).equal?(items)
   end
-  return false
+  return reserved>=items.count(item)
 end
 
 def pbEnemyItemToUse(index)
   return 0 if !@opponent
   return 0 if !@internalbattle
   items=pbGetOwnerItems(index)
-  return 0 if !items
+  return 0 if !items || items.empty?
   skill=pbGetOwner(index).skill || 0
   battler=@battlers[index]
   party = pbParty(index)
@@ -30249,11 +30175,9 @@ def pbEnemyItemToUse(index)
   end
   #highest score
   maxpridam=0
-  for i in battler.moves
-    scorearray = 0
-    scorearray = @scores[i] if @scores[i]
-    if scorearray>100 && i.priority>maxplaypri && i.basedamage>0
-      maxplaypri = i.priority
+  battler.moves.each_with_index do |move,slot|
+    if @scores[slot].to_f>100 && move.priority>maxplaypri && move.basedamage>0
+      maxplaypri = move.priority
     end
   end
   highscore = @scores.max
@@ -35604,54 +35528,77 @@ end
 # Choose an action.
 ################################################################################
 def pbDefaultChooseEnemyCommand(index)
+  attacker=@battlers[index]
+  original_length=attacker.moves.length
   if !pbCanShowFightMenu?(index)
+    @scores=Array.new(original_length,0)
+    @targets=nil
+    @myChoices=[]
     return if pbEnemyShouldUseItem?(index)
-    #return if pbEnemyShouldWithdraw?(index) Old Switching Method
     return if pbShouldSwitch?(index)
     pbAutoChooseMove(index)
     return
-  else
-    if pbEnemyShouldZMove?(index)
-      return pbChooseEnemyZMove(index)
-    end
-    pbBuildMoveScores(index) #grab the array of scores/targets before doing anything else
-    return if pbShouldSwitch?(index)
-    #return if pbEnemyShouldWithdraw?(index) Old Switching Method
-    return if pbEnemyShouldUseItem?(index)
-    return if pbAutoFightMenu(index)
-    $shutupmega=false
-    pbRegisterMegaEvolution(index) if pbEnemyShouldMegaEvolve?(index)
-    pbChooseMoves(index)
-    #print 7
-  end
-end
-
-def pbChooseEnemyZMove(index)
-  attacker=@battlers[index]
-  original_length=attacker.moves.length
-  base_slot=(0...4).select do |slot|
-    move=attacker.moves[slot]
-    move && pbCanChooseMove?(index,slot,false) && attacker.pbCompatibleZMoveFromMove?(move)
-  end.max_by do |slot|
-    move=attacker.moves[slot]
-    special_z=(move.id==PBMoves::CONVERSION ||
-               (move.id==PBMoves::LASTRESORT && attacker.item==PBItems::EEVIUMZ2))
-    [special_z ? 1 : 0,move.basedamage]
-  end
-  if base_slot && original_length==4
-    base_move=attacker.moves[base_slot]
-    z_move=PokeBattle_ZMoves.new(self,attacker,base_move,attacker.item,false,true,base_slot)
-    attacker.moves.push(z_move) if z_move.id && z_move.basedamage.is_a?(Numeric)
   end
 
-  pbBuildMoveScores(index)
+  plan=pbAIPlannedCommand(index)
+  plan||=pbAIComputeCommandPlan(index)
+  if plan[:z_move] && !pbCanZMove?(index)
+    plan=pbAIComputeCommandPlan(index)
+  end
+  @scores,@targets,@myChoices=plan.values_at(:scores,:targets,:choices)
+  attacker.moves.push(plan[:z_move]) if plan[:z_move]
   return if pbShouldSwitch?(index)
   return if pbEnemyShouldUseItem?(index)
   return if pbAutoFightMenu(index)
+  $shutupmega=false
   pbRegisterMegaEvolution(index) if pbEnemyShouldMegaEvolve?(index)
-  pbChooseMoves(index,base_slot)
+  pbChooseMoves(index,plan[:z_base_slot],plan[:preferred_slot])
 ensure
   attacker.moves.pop while attacker.moves.length>original_length
+end
+
+def pbAIComputeCommandPlan(index)
+  attacker=@battlers[index]
+  moves=attacker.moves
+  original_length=moves.length
+  z_slots={}
+  if original_length==4 && !pbAIOrdinaryWild?(attacker) && pbCanZMove?(index)
+    moves.first(4).each_with_index do |move,slot|
+      next unless move && pbCanChooseMove?(index,slot,false) &&
+        attacker.pbCompatibleZMoveFromMove?(move)
+      z_move=PokeBattle_ZMoves.new(self,attacker,move,attacker.item,false,true,slot)
+      next unless z_move.id && z_move.basedamage.is_a?(Numeric)
+      z_slots[moves.length]=slot
+      moves.push(z_move)
+    end
+  end
+  if !z_slots.empty?
+    normal_damage=@aiMoveScoreCache&.delete(index)
+    normal_priority=@aiPriorityCache&.delete(index)
+  end
+  pbBuildMoveScores(index)
+  best_z_slot=@myChoices.select { |slot| z_slots.key?(slot) }.max_by do |slot|
+    move=attacker.moves[slot]
+    [@scores[slot],move.accuracy==0 ? 100 : move.accuracy]
+  end
+  plan={scores: @scores.first(original_length),targets: @targets&.first(original_length),
+        choices: @myChoices.select { |slot| slot<original_length },z_move: nil,z_base_slot: nil}
+  if best_z_slot
+    plan[:scores].push(@scores[best_z_slot])
+    plan[:targets].push(@targets[best_z_slot])
+    plan[:choices].push(original_length)
+    plan[:z_move]=moves[best_z_slot]
+    plan[:z_base_slot]=z_slots[best_z_slot]
+  end
+  return plan
+ensure
+  moves.pop while moves.length>original_length
+  if !z_slots.empty?
+    @aiMoveScoreCache&.delete(index)
+    @aiPriorityCache&.delete(index)
+    @aiMoveScoreCache[index]=normal_damage if normal_damage
+    @aiPriorityCache[index]=normal_priority if normal_priority
+  end
 end
 
 #####################################################

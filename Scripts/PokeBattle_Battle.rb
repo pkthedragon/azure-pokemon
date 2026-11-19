@@ -5917,6 +5917,7 @@ def pbStartBattle(canlose=false)
     pbCommandPhaseBattlers.each do |i|   # Reset choices if commands can be shown
       if pbCanShowCommands?(i) || @battlers[i].isFainted?
         @battlers[i].pbDisableTributeDraco if @battlers[i].tributeDracoActive
+        @battlers[i].effects[PBEffects::Attacking]=false
         @choices[i][0]=0
         @choices[i][1]=0
         @choices[i][2]=nil
@@ -5947,17 +5948,11 @@ def pbStartBattle(canlose=false)
     for i in 0...@zMove[1].length
       @zMove[1][i]=-1 if @zMove[1][i]>=0
     end
+    if @field.effects[PBEffects::WonderRoom]>0
+      @battlers.each { |battler| battler.pbSwapDefenses if !battler.wonderroom }
+    end
+    pbAIPrepareTurnCoordination if @decision==0
     pbCommandPhaseBattlers.each do |i|
-      if @field.effects[PBEffects::WonderRoom] > 0
-        for m in @battlers
-          if !m.wonderroom
-            m.pbSwapDefenses
-          end
-        end
-      end
-      if pbCanShowCommands?(i)
-        @battlers[i].effects[PBEffects::Attacking]=false
-      end
       break if @decision!=0
       next if @choices[i][0]!=0
       if !pbOwnedByPlayer?(i) || @controlPlayer
