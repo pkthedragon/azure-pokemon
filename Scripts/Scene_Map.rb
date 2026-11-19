@@ -81,6 +81,7 @@ class Scene_Map
       if $scene != self
         break
       end
+      offer_mystic_gimmighoul_move
     end
     Graphics.freeze
     disposeSpritesets
@@ -89,6 +90,23 @@ class Scene_Map
       Graphics.freeze
     end
   end
+
+  def offer_mystic_gimmighoul_move
+    progress=$game_variables[695].to_i
+    return if progress<5 || !$Trainer || $game_temp.in_battle
+    return if $game_temp.message_window_showing || $game_temp.player_transferring ||
+              $game_temp.transition_processing || pbMapInterpreterRunning? ||
+              $game_player.moving? || $game_player.move_route_forcing
+    return if $game_switches[1235] && !$game_switches[1408]
+
+    $Trainer.party.each do |pokemon|
+      move=pokemon&.takeMysticGimmighoulMoveOffer(progress)
+      next if !move
+      pbLearnMove(pokemon,move,true)
+      break
+    end
+  end
+  private :offer_mystic_gimmighoul_move
 
   def miniupdate
     $PokemonTemp.miniupdate=true if $PokemonTemp

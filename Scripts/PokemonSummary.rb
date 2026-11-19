@@ -753,9 +753,7 @@ class PokemonSummaryScene
       pokename=@pokemon.name[0..-2]
     end
     #>>DemICE    
-    totalevs=80+pokemon.level*8
-    totalevs=(totalevs.div(4))*4      
-    totalevs=512 if totalevs>512        
+    totalevs=pokemon.evPool
     evpool=totalevs-pokemon.ev[0]-pokemon.ev[1]-pokemon.ev[2]-pokemon.ev[3]-pokemon.ev[4]-pokemon.ev[5]
     textpos=[
       [_INTL("EV ALLOCATION"),26,16,0,base,shadow],
@@ -808,21 +806,10 @@ class PokemonSummaryScene
     @sprites["EVsel"].index=0
     selEV=0
     editev=0
-    evpool=80+pokemon.level*8
-    evpool=(evpool.div(4))*4      
-    evpool=512 if evpool>512    
-    evcap=40+pokemon.level*4
-    evcap=(evcap.div(4))*4
-    evcap=252 if evcap>252
-    evsum=pokemon.ev[0]+pokemon.ev[1]+pokemon.ev[2]+pokemon.ev[4]+pokemon.ev[5]+pokemon.ev[3]  
     loop do
-      evpool=80+pokemon.level*8
-      evpool=(evpool.div(4))*4      
-      evpool=512 if evpool>512    
-      evcap=40+pokemon.level*4
-      evcap=(evcap.div(4))*4
-      evcap=252 if evcap>252
-      evsum=pokemon.ev[0]+pokemon.ev[1]+pokemon.ev[2]+pokemon.ev[4]+pokemon.ev[5]+pokemon.ev[3]      
+      evpool=pokemon.evPool
+      evcap=pokemon.evStatCap
+      evsum=pokemon.ev.sum
       Graphics.update
       Input.update
       pbUpdate
@@ -955,22 +942,22 @@ class PokemonSummaryScene
         case selEV
         when 0
           pokemon.ev[0]+=4
-          pokemon.ev[0]=0 if pokemon.ev[0]>evcap || evsum>=evpool
+          pokemon.ev[0]=0 if pokemon.ev[0]>evcap || evsum+4>evpool
         when 1
           pokemon.ev[1]+=4
-          pokemon.ev[1]=0 if pokemon.ev[1]>evcap || evsum>=evpool
+          pokemon.ev[1]=0 if pokemon.ev[1]>evcap || evsum+4>evpool
         when 2
           pokemon.ev[2]+=4
-          pokemon.ev[2]=0 if pokemon.ev[2]>evcap || evsum>=evpool
+          pokemon.ev[2]=0 if pokemon.ev[2]>evcap || evsum+4>evpool
         when 3
           pokemon.ev[4]+=4
-          pokemon.ev[4]=0 if pokemon.ev[4]>evcap || evsum>=evpool
+          pokemon.ev[4]=0 if pokemon.ev[4]>evcap || evsum+4>evpool
         when 4
           pokemon.ev[5]+=4
-          pokemon.ev[5]=0 if pokemon.ev[5]>evcap || evsum>=evpool
+          pokemon.ev[5]=0 if pokemon.ev[5]>evcap || evsum+4>evpool
         when 5
           pokemon.ev[3]+=4
-          pokemon.ev[3]=0 if pokemon.ev[3]>evcap || evsum>=evpool
+          pokemon.ev[3]=0 if pokemon.ev[3]>evcap || evsum+4>evpool
           pokemon.ev[3]=(pokemon.ev[3].div(4))*4
         end  
         pokemon.calcStats

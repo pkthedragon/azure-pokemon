@@ -233,9 +233,10 @@ module AzureBattleAICoordination
     @azureAICoordinationDamage ||= {}
     key=[entry[:user].index,entry[:move].object_id,target.object_id]
     owner=pbGetOwner(entry[:user].index)
-    skill=owner ? owner.skill : PBTrainerAI.bestSkill
+    owner_skill=owner ? (owner.skill || PBTrainerAI.minimumSkill) : PBTrainerAI.bestSkill
+    skill=pbAISkill(entry[:user].index,owner_skill)
     return @azureAICoordinationDamage[key] ||= pbRoughDamage(entry[:move],entry[:user],target,
-      skill || PBTrainerAI.minimumSkill,entry[:move].basedamage)
+      skill,entry[:move].basedamage)
   end
 
   def pbAICoordinationStatusGroup(move,user)

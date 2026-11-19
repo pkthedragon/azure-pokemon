@@ -593,6 +593,7 @@ class PokeBattle_Pokemon
     for i in 0...4
       @firstmoves.push(@moves[i].id) if @moves[i].id>0
     end
+    applyMysticGimmighoulProgress($game_variables[695]) if $game_variables && mysticGimmighoul?
   end
 
   def isCompatibleWithMove?(move)
@@ -937,8 +938,50 @@ class PokeBattle_Pokemon
     return $pkmn_dex[@species][5]
   end
 
+  def evPool(at_level=level)
+    return [80 + 8 * at_level, 512].min
+  end
+
+  def evStatCap(at_level=level)
+    return [40 + 4 * at_level, 252].min
+  end
+
+  def initializeDefaultEVs
+    return if isEgg? || @ev.any?(&:nonzero?)
+    allocateEarnedEVs(evPool)
+    calcStats
+  end
+
+  def gainLevelEVs(previous_level)
+    allocateEarnedEVs(evPool - evPool(previous_level))
+  end
+
+  def allocateEarnedEVs(points)
+    # Use the same four-EV increments as the Summary editor.
+    units = [points, evPool - @ev.sum].min.div(4)
+    return if units <= 0
+    stats = baseStats
+    first, second = (0...6).sort_by { |stat| [-stats[stat], stat] }.first(2)
+    cap = evStatCap
+    first_room = [cap - @ev[first], 0].max.div(4)
+    second_room = [cap - @ev[second], 0].max.div(4)
+    # Split the award evenly and use the other eligible stat if one is capped.
+    first_gain = [[(units + 1).div(2), units - second_room].max, first_room].min
+    second_gain = [units - first_gain, second_room].min
+    @ev[first] += first_gain * 4
+    @ev[second] += second_gain * 4
+  end
+  private :allocateEarnedEVs
+
+  MYSTIC_GIMMIGHOUL_PROGRESS_MOVES = [
+    :HEARTSTAMP, :IRONDEFENSE, :GYROBALL, :GRAVITY, :PURSUIT,
+    :REFLECT, :LIGHTSCREEN, :ZENHEADBUTT, :IRONHEAD, :MIRACLE,
+    :ALLYSWITCH, :HEALINGWISH, :PSYCHIC, :FLASHCANNON, :AGILITY,
+    :SELFDESTRUCT, :THUNDERBOLT, :FLAMETHROWER, :ICEBEAM, :HYPERBEAM
+  ].freeze
+
   def mysticGimmighoul?
-    return isConst?(@species,PBSpecies,:GIMMIGHOUL) && self.form == 1
+    return @species == PBSpecies::GIMMIGHOUL && self.form == 1
   end
 
   def applyMysticGimmighoulProgress(variable_value)
@@ -950,37 +993,31 @@ class PokeBattle_Pokemon
       @mystic_gimmighoul_bonus = desired_bonus
       calcStats
     end
-    desired_move_count = (variable_value / 5).floor
+    desired_move_count = variable_value / 5
     return if desired_move_count <= 0
-    move_symbols = [
-      :HEARTSTAMP,
-      :IRONDEFENSE,
-      :GYROBALL,
-      :GRAVITY,
-      :PURSUIT,
-      :REFLECT,
-      :LIGHTSCREEN,
-      :ZENHEADBUTT,
-      :IRONHEAD,
-      :MIRACLE,
-      :ALLYSWITCH,
-      :HEALINGWISH,
-      :PSYCHIC,
-      :FLASHCANNON,
-      :AGILITY,
-      :SELFDESTRUCT,
-      :THUNDERBOLT,
-      :FLAMETHROWER,
-      :ICEBEAM,
-      :HYPERBEAM
-    ]
     @firstmoves ||= []
-    max_index = [desired_move_count, move_symbols.length].min
-    for i in 0...max_index
-      move_id = getID(PBMoves, move_symbols[i])
+    MYSTIC_GIMMIGHOUL_PROGRESS_MOVES.first(desired_move_count).each do |move|
+      move_id = getID(PBMoves, move)
       next if !move_id || move_id <= 0
       @firstmoves << move_id unless @firstmoves.include?(move_id)
     end
+  end
+
+  def takeMysticGimmighoulMoveOffer(progress)
+    return nil if @species != PBSpecies::GIMMIGHOUL
+    offered = @mystic_gimmighoul_moves_offered || 0
+    count = [progress / 5, MYSTIC_GIMMIGHOUL_PROGRESS_MOVES.length].min
+    return nil if offered >= count || !mysticGimmighoul? || isEgg? || isShadow?
+
+    applyMysticGimmighoulProgress(progress)
+    while offered < count
+      move = getID(PBMoves, MYSTIC_GIMMIGHOUL_PROGRESS_MOVES[offered])
+      offered += 1
+      # A declined offer is still available from the Move Reminder.
+      @mystic_gimmighoul_moves_offered = offered
+      return move if move && move > 0 && !knowsMove?(move)
+    end
+    return nil
   end
 
 # Returns the maximum HP of this Pokémon.

@@ -182,6 +182,7 @@ def pbAddSilent(pokemon,level=nil,seeform=true,ivs=[],ability=-1,moves=[],female
   if happiness!=-1
     pokemon.happiness = happiness
   end
+  pokemon.initializeDefaultEVs if evs.length!=6
   pokemon.calcStats
   
   $Trainer.setSeen(pokemon.species)

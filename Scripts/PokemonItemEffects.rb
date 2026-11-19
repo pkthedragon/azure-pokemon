@@ -2341,6 +2341,7 @@ def pbChangeLevel(pokemon,newlevel,scene)
     pokemon.level=newlevel
     pokemon.poklevel = newlevel
     pokemon.changeHappiness("level up")
+    pokemon.gainLevelEVs(oldlevel)
     pokemon.calcStats
     scene.pbRefresh
     Kernel.pbMessage(_INTL("{1} was elevated to Level {2}!",pokemon.name,pokemon.level))
@@ -2406,8 +2407,9 @@ def IncreaseExp(pokemon, exp, scene)
       spatkdiff=pokemon.spatk
       spdefdiff=pokemon.spdef
       totalhpdiff=pokemon.totalhp
-      pokemon.poklevel = newlevel
+      pokemon.poklevel = curlevel
       pokemon.changeHappiness("level up")
+      pokemon.gainLevelEVs(curlevel-1)
       pokemon.calcStats
       attackdiff=pokemon.attack-attackdiff
       defensediff=pokemon.defense-defensediff
@@ -2423,7 +2425,7 @@ def IncreaseExp(pokemon, exp, scene)
       # Finding all moves learned at this level
       movelist=pokemon.getMoveList
       for i in movelist
-        if i[0]==pokemon.level || i[0]==curlevel          # Learned a new move
+        if i[0]==curlevel          # Learned a new move
           pbLearnMove(pokemon,i[1],true)
         end
       end

@@ -12,6 +12,7 @@ module PBTrainerAI
   def PBTrainerAI.averageSkill; 48; end
   def PBTrainerAI.highSkill; 90; end
   def PBTrainerAI.bestSkill; 100; end
+  def PBTrainerAI.maximumSkill; 255; end
 end
 
 
@@ -36,6 +37,12 @@ class PokeBattle_Battle
   attr_accessor :scores
   attr_accessor :targets
   attr_accessor :myChoices
+
+  # A boss's AI skill belongs to the battler, including when a trainer owns it.
+  def pbAISkill(index,skill_override=nil)
+    return PBTrainerAI.maximumSkill if @battlers[index].isbossmon
+    return skill_override || pbGetOwner(index)&.skill || 0
+  end
 
   def each_foe_battler_for_ai(attacker)
     return if !attacker || !block_given?
@@ -28863,7 +28870,7 @@ class PokeBattle_Battle
     @myChoices=[]
     totalscore=0
     target=-1
-    skill=0
+    skill=pbAISkill(index,0)
     aimem = pbAIKnownMoves(opponent)
     aimem2 = pbAIKnownMoves(otheropp)
     currentroles = pbGetMonRole(attacker,opponent,skill)
@@ -28883,11 +28890,8 @@ class PokeBattle_Battle
     if pbAIOrdinaryWild?(attacker) && !doublestargetting
       @myChoices=attacker.moves.each_index.select { |slot| pbCanChooseMove?(index,slot,false) }
     else
-      if $game_switches[290] || (!@opponent && pbIsOpposing?(index))
-        skill=100
-      else
-        skill=pbGetOwner(attacker.index).skill || 0
-      end
+      forced_skill=PBTrainerAI.bestSkill if $game_switches[290] || (!@opponent && pbIsOpposing?(index))
+      skill=pbAISkill(index,forced_skill)
       fastermon = (attacker.pbSpeed>pbRoughStat(opponent,PBStats::SPEED,skill)) ^ (@trickroom!=0)
       if fastermon && opponent
         PBDebug.log(sprintf("AI Pokemon #{attacker.name} is faster than #{opponent.name}.")) if $INTERNAL && shutup==false
@@ -29943,7 +29947,7 @@ def pbEnemyShouldMegaEvolveInternal?(index)
       opponent2==@battlers[1]
     end
   end
-  skill=100
+  skill=pbAISkill(index,PBTrainerAI.bestSkill)
   megaform = attacker.clone
   nonmegaform = attacker.clone
   prioenabled=false
@@ -30839,6 +30843,7 @@ end
 
 def pbEnemyShouldWithdrawEx?(index,alwaysSwitch)
   return false if !@opponent
+  return false if !alwaysSwitch && @battlers[index].isbossmon
   shouldswitch=alwaysSwitch
   typecheck=false
   batonpass=-1
@@ -31064,7 +31069,7 @@ end
 # Decide whether the opponent should switch Pokemon, and what to switch to. NEW
 ################################################################################
 def pbShouldSwitch?(index,hardswitch=false)
-  return false if !@opponent
+  return false if !@opponent || @battlers[index].isbossmon
   switchscore = 0
   noswitchscore = 0
   monarray = []

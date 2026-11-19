@@ -17,6 +17,11 @@ class PokeBattle_Pokemon
   end
 end
 
+# Battle move scoring expects each unused slot to contain the standard empty move.
+def pbFillBossMoveSlots(pokemon)
+  4.times { |slot| pokemon.moves[slot] ||= PBMove.new(0) }
+end
+
 def bossHandler(decision, pokemon)
   $game_switches[:No_Catch]=false
   return if !pokemon.isbossmon
@@ -32,6 +37,7 @@ def bossHandler(decision, pokemon)
   else
     pokemon.resetMoves
   end
+  pbFillBossMoveSlots(pokemon)
   pokemon.level = poke[:level]
   pokemon.isbossmon = false
   pokemon.shieldCount = nil
@@ -702,7 +708,7 @@ class PokeBattle_Battle
     boostlevel = ["","","sharply  ", "drastically "]
     statupanimplayed=false
     statdownanimplayed=false
-    if battler.randomSetChanges
+    if battler.randomSetChanges && !battler.randomSetChanges.empty?
       items = battler.randomSetChanges.values
       setdetails=items[rand(items.length)]
       if setdetails[:typeChange]
@@ -714,12 +720,13 @@ class PokeBattle_Battle
         for move in setdetails[:movesetUpdate]
           next if move.nil?
           battler.pokemon.moves[k]=PBMove.new(move)
-          if battler.level >=100 && opponent.skill>=PokeBattle_AI::BESTSKILL
+          if battler.level >=100 && pbAISkill(battler.index)>=PBTrainerAI.bestSkill
             battler.pokemon.moves[k].ppup=3
             battler.pokemon.moves[k].pp=battler.pokemon.moves[k].totalpp
           end
           k+=1
         end
+        pbFillBossMoveSlots(battler.pokemon)
         battler.moves = []
         for move in battler.pokemon.moves
           battler.moves.push(PokeBattle_Move.pbFromPBMove(self,move,battler.pokemon)) if move
@@ -757,6 +764,7 @@ class PokeBattle_Battle
           end
           k+=1
         end
+        pbFillBossMoveSlots(battler.pokemon)
         battler.moves = []
         for move in battler.pokemon.moves
           battler.moves.push(PokeBattle_Move.pbFromPBMove(self,move,battler.pokemon)) if move
@@ -1032,6 +1040,7 @@ def pbLoadWildBoss(poke,bossdata=$bosscache)
   else
     pokemon.resetMoves
   end
+  pbFillBossMoveSlots(pokemon)
   pokemon.form = poke[:form] ? poke[:form] : 0
   pokemon.setAbility(0) # doesn't matter as it's getting replaced; same with SOS mons
   pokemon.abilityoverride = poke[:ability]
@@ -1089,6 +1098,7 @@ def pbLoadSOSMon(sosdata,boss)
   else
     pokemon.resetMoves
   end
+  pbFillBossMoveSlots(pokemon)
   pokemon.form = poke[:form] ? poke[:form] : 0
   pokemon.setAbility(0)
   pokemon.abilityoverride = poke[:ability]

@@ -1159,6 +1159,7 @@ def pbGenerateWildPokemon(species,level)
     genwildpoke.givePokerus
   end
   Events.onWildPokemonCreate.trigger(nil,genwildpoke)
+  genwildpoke.initializeDefaultEVs if !genwildpoke.isbossmon
   return genwildpoke
 end
 

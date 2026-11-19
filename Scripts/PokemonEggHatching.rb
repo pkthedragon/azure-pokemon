@@ -182,6 +182,7 @@ def pbHatch(pokemon)
   $Trainer.setSeen(pokemon.species)
   $Trainer.setOwned(pokemon.species)
   pbSeenForm(pokemon)
+  pokemon.initializeDefaultEVs
   pokemon.pbRecordFirstMoves
   if !pbHatchAnimation(pokemon)
     Kernel.pbMessage(_INTL("Huh?\1"))

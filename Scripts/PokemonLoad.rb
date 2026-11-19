@@ -710,17 +710,6 @@ class PokemonLoad
             end
             $game_switches[2001]=true
           end
-          if !$game_switches[2098]
-            for i in $Trainer.party
-             i.ev[0]=0
-             i.ev[1]=0
-             i.ev[2]=0
-             i.ev[3]=0
-             i.ev[4]=0
-             i.ev[5]=0
-            end
-            $game_switches[2098]=true
-          end
           if !$game_switches[1701] && $game_variables[661]>9
             $game_switches[1701]=true
           end
@@ -775,6 +764,8 @@ class PokemonLoad
         $game_map.update
         auto=(auto==nil)?false:auto
         pbStoredLastPlayed($game_variables[542],auto)
+        gimmighoul_progress=$game_variables[695]
+        pbApplyMysticGimmighoulProgress(gimmighoul_progress) if gimmighoul_progress.to_i>=3
         $scene = Scene_Map.new
         return
       elsif cmdNewGame>=0 && command==cmdNewGame

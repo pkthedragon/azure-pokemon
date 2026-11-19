@@ -78,11 +78,14 @@ module AzureMegaForms
   end
   # The current Mystic forms keep their IDs. These resources retain their
   # historical Mega sprite numbers, independent of the runtime form IDs.
-  LEGACY_SPRITE_FORMS={
-    ALAKAZITE: 1,GENGARITE: 1,TYRANITARITE: 1,GARCHOMPITE: 1,LUCARIONITE: 1,
+  LEGACY_BATTLER_FORMS={
+    ALAKAZITE: 1,GENGARITE: 1,GARCHOMPITE: 1,
     SALAMENCITE: 1,METAGROSSITE: 1,MACHAMPITE: 1,ORBEETLENITE: 1,
     SANDACONDITE: 1,COPPERAJITE: 1,ALCREMITE: 8
   }.freeze
+  LEGACY_ICON_FORMS=LEGACY_BATTLER_FORMS.merge(
+    TYRANITARITE: 1,LUCARIONITE: 1,ALCREMITE: 1
+  ).freeze
 
   def self.stone_for_species?(species,item)
     record=@by_item[item]
@@ -96,9 +99,11 @@ module AzureMegaForms
     return records.find { |record| record[2]==current_form }
   end
 
-  def self.sprite_form(species,form)
+  def self.sprite_form(species,form,icon: false)
     record=@by_species[species]&.find { |entry| entry[2]==form.to_i }
-    return record ? LEGACY_SPRITE_FORMS.fetch(record[1],form) : form
+    return form if !record
+    slots=icon ? LEGACY_ICON_FORMS : LEGACY_BATTLER_FORMS
+    return slots.fetch(record[1],form)
   end
 
   def self.name_for(record)

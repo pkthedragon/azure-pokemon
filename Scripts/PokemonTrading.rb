@@ -221,6 +221,7 @@ def pbStartTrade(pokemonIndex,newpoke,nickname,trainerName,trainerGender=0,onlin
     # Get egg steps
     yourPokemon.eggsteps=$pkmn_dex[yourPokemon.species][10]
   else
+    yourPokemon.initializeDefaultEVs if !newpoke.is_a?(PokeBattle_Pokemon)
     $Trainer.setSeen(yourPokemon.species)
     $Trainer.setOwned(yourPokemon.species)
     pbSeenForm(yourPokemon)

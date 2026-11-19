@@ -4,11 +4,13 @@ class Scene_Pokegear
   #-----------------------------------------------------------------------------
   def main
     commands=[]
+    command_icons={}
 # OPTIONS - If you change these, you should also change update_command below.
     @cmdChangeTime=-1
     @cmdMap=-1
     @cmdTutor=-1
     @cmdPokedex=-1
+    @cmdMagnet=-1
     @cmdPhone=-1
     @cmdJukebox=-1
     @cmdOnline=-1
@@ -31,8 +33,15 @@ class Scene_Pokegear
     end
     commands[@cmdTutor=commands.length]=_INTL("Tutor.net") if $game_switches[1492]==true
     # Both Pokédex handoff events in the Pokémon Lab finish by setting LogiumBattle.
-    commands[@cmdPokedex=commands.length]=_INTL("Pokédex") if $Trainer.pokedex && $game_switches[1300]
-    run_menu(commands)
+    if $Trainer.pokedex && $game_switches[1300]
+      commands[@cmdPokedex=commands.length]=_INTL("Pokédex")
+      command_icons[@cmdPokedex]="Graphics/Icons/menuPokedex"
+    end
+    if $game_switches[1437]
+      commands[@cmdMagnet=commands.length]=_INTL("PokéMagnet")
+      command_icons[@cmdMagnet]=pbItemIconFile(PBItems::MAGNET)
+    end
+    run_menu(commands,command_icons)
   end
   #-----------------------------------------------------------------------------
   # update the command window
@@ -115,52 +124,11 @@ class Scene_Pokegear
       
       if @cmdPokedex>=0 && @menu_index==@cmdPokedex
         pbPlayDecisionSE()
-        choice = 1  # Open Atlas directly until PokéMagnet is unlocked.
-        if $game_switches[1437]
-          commands = [_INTL("PokéMagnet"), _INTL("Atlas"), _INTL("Cancel")]
-          choice = Kernel.pbMessage(_INTL("Which would you like to access?"), commands, -1)
-        end
-        if choice == 0  # PokeMagnet
-          if $game_variables[687]<2
-            $game_variables[687]+=1
-          else
-            $game_variables[687]=0
-          end
-          if $game_variables[687]==0
-            $game_switches[74]=false
-            $game_switches[75]=false
-            Kernel.pbMessage(_INTL("Now in neutral mode."))
-          elsif $game_variables[687]==1
-            $game_switches[74]=true
-            $game_switches[75]=false
-            Kernel.pbMessage(_INTL("Now in attract mode."))
-          elsif $game_variables[687]==2
-            $game_switches[74]=false
-            $game_switches[75]=true
-            Kernel.pbMessage(_INTL("Now in repel mode."))
-          end
-        elsif choice == 1  # Atlas (actual Pokedex)
-          pbSetViableDexes
-          if DEXDEPENDSONLOCATION
-            pbFadeOutIn(99999) {
-               scene=PokemonPokedexScene.new
-               screen=PokemonPokedex.new(scene)
-               screen.pbStartScreen
-            }
-          else
-            if $PokemonGlobal.pokedexViable.length==1
-              $PokemonGlobal.pokedexDex=$PokemonGlobal.pokedexViable[0]
-              $PokemonGlobal.pokedexDex=-1 if $PokemonGlobal.pokedexDex==$PokemonGlobal.pokedexUnlocked.length-1
-              pbFadeOutIn(99999) {
-                 scene=PokemonPokedexScene.new
-                 screen=PokemonPokedex.new(scene)
-                 screen.pbStartScreen
-              }
-            else
-              $scene=Scene_PokedexMenu.new(0,self)
-            end
-          end
-        end
+        open_pokedex
+      end
+      if @cmdMagnet>=0 && @menu_index==@cmdMagnet
+        pbPlayDecisionSE()
+        cycle_pokemagnet
       end
 
   if @cmdTutor>=0 && @menu_index==@cmdTutor
@@ -172,5 +140,35 @@ class Scene_Pokegear
   end
   def tryConnect
     $scene=Connect.new
-  end    
+  end
+
+  private
+
+  def open_pokedex
+    pbSetViableDexes
+    unless DEXDEPENDSONLOCATION
+      if $PokemonGlobal.pokedexViable.length!=1
+        $scene=Scene_PokedexMenu.new(0,self)
+        return
+      end
+      $PokemonGlobal.pokedexDex=$PokemonGlobal.pokedexViable[0]
+      $PokemonGlobal.pokedexDex=-1 if $PokemonGlobal.pokedexDex==$PokemonGlobal.pokedexUnlocked.length-1
+    end
+    pbFadeOutIn(99999) {
+      screen=PokemonPokedex.new(PokemonPokedexScene.new)
+      screen.pbStartScreen
+    }
+  end
+
+  def cycle_pokemagnet
+    mode=$game_variables[687]<2 ? $game_variables[687]+1 : 0
+    $game_variables[687]=mode
+    $game_switches[74]=(mode==1)
+    $game_switches[75]=(mode==2)
+    case mode
+    when 0 then Kernel.pbMessage(_INTL("Now in neutral mode."))
+    when 1 then Kernel.pbMessage(_INTL("Now in attract mode."))
+    when 2 then Kernel.pbMessage(_INTL("Now in repel mode."))
+    end
+  end
 end

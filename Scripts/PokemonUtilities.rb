@@ -1160,17 +1160,35 @@ def pbLoadPokemonBitmapSpecies(pokemon, species, back=false)
   return ret
 end
 
+# Furfrou icons use the original trim order instead of Azure's form order.
+FURFROU_ICON_TRIM_ORDER=[0,2,1,9,8,4,5,7,6,3].freeze
+
+def pbPokemonSpriteForm(species,form,icon: false)
+  form=form ? form.to_s : ""
+  return form if form.empty? || form=="0"
+  case species
+  when PBSpecies::DARUMAKA
+    return "1" if form=="2"  # Galarian artwork uses slot 1 in both folders.
+  when PBSpecies::FURFROU
+    return FURFROU_ICON_TRIM_ORDER[form.to_i].to_s if icon && form.match?(/\A[1-9]\z/)
+  when PBSpecies::OGERPON
+    # The icon sheets start with Teal Mask. Battlers start with unmasked.
+    return (form.to_i-1).to_s if icon && form.match?(/\A[1-8]\z/)
+  end
+  return AzureMegaForms.sprite_form(species,form,icon: icon).to_s
+end
+
 def pbCheckPokemonBitmapFiles(params)
   species=params[0]
   back=params[1]
-  form=AzureMegaForms.sprite_form(species,params[4])
+  form=pbPokemonSpriteForm(species,params[4])
   species_name=getConstantName(PBSpecies,species) rescue nil
   directories={}
   factors=[]
   factors.push([5,params[5],false]) if params[5] && params[5]!=false     # shadow
   factors.push([2,params[2],false]) if params[2] && params[2]!=false     # gender
   factors.push([3,params[3],false]) if params[3] && params[3]!=false     # shiny
-  factors.push([4,form.to_s,""]) if form && form.to_s!="" && form.to_s!="0" # form
+  factors.push([4,form,""]) if form!="" && form!="0"                  # form
   tshadow=false
   tgender=false
   tshiny=false
@@ -1217,19 +1235,13 @@ def pbLoadPokemonIcon(pokemon)
 end
 
 def pbPokemonIconFile(pokemon)
-  bitmapFileName=nil
-  bitmapFileName=pbCheckPokemonIconFiles([pokemon.species,
-                                          (pokemon.isFemale?),
-                                          pokemon.isShiny?,
-                                          AzureMegaForms.sprite_form(pokemon.species,(pokemon.form rescue 0)),
-                                          (pokemon.isShadow? rescue false)],
-                                          pokemon.isEgg?)
-  return bitmapFileName
+  return pbCheckPokemonIconFiles([pokemon.species,
+                                  pokemon.isFemale?,
+                                  pokemon.isShiny?,
+                                  (pokemon.form rescue 0),
+                                  (pokemon.isShadow? rescue false)],
+                                  pokemon.isEgg?)
 end
-
-# Furfrou's existing icons use the original trim order. Its gameplay forms
-# use the order in PBS, so resolve the icon without changing stored form IDs.
-FURFROU_ICON_TRIM_ORDER=[0,2,1,9,8,4,5,7,6,3].freeze
 
 def pbCheckPokemonIconFiles(params,egg=false)
   species=params[0]
@@ -1243,10 +1255,7 @@ def pbCheckPokemonIconFiles(params,egg=false)
     end
     return pbResolveBitmap(bitmapFileName)
   else
-    form=params[3] ? params[3].to_s : ""
-    if species==PBSpecies::FURFROU && form.match?(/\A[1-9]\z/)
-      form=FURFROU_ICON_TRIM_ORDER[form.to_i].to_s
-    end
+    form=pbPokemonSpriteForm(species,params[3],icon: true)
     species_name=getConstantName(PBSpecies,species) rescue nil
     directories={}
     factors=[]
@@ -1853,6 +1862,7 @@ def pbStorePokemon(pokemon)
     Kernel.pbMessage(_INTL("The Pokémon Boxes are full and can't accept any more!"))
     return
   end
+  pokemon.initializeDefaultEVs
   pokemon.pbRecordFirstMoves
   if $Trainer.party.length<6
     $Trainer.party[$Trainer.party.length]=pokemon
@@ -1977,6 +1987,7 @@ def pbAddPokemonSilent(pokemon,level=nil,seeform=true)
   $Trainer.setSeen(pokemon.species)
   $Trainer.setOwned(pokemon.species)
   pbSeenForm(pokemon) if seeform
+  pokemon.initializeDefaultEVs
   pokemon.pbRecordFirstMoves
   if $Trainer.party.length<6
     $Trainer.party[$Trainer.party.length]=pokemon
@@ -2064,6 +2075,7 @@ def pbAddRentalPokemonSilent(pokemon,level=nil)
     pokemon.ot = $Trainer.name 
     pokemon.trainerID = $Trainer.id
   end
+  pokemon.initializeDefaultEVs
   pokemon.pbRecordFirstMoves
   if $Trainer.party.length<6
     $Trainer.party[$Trainer.party.length]=pokemon
@@ -2099,6 +2111,7 @@ def pbAddToPartySilent(pokemon,level=nil,seeform=true)
   $Trainer.setSeen(pokemon.species)
   $Trainer.setOwned(pokemon.species)
   pbSeenForm(pokemon) if seeform
+  pokemon.initializeDefaultEVs
   pokemon.pbRecordFirstMoves
   $Trainer.party[$Trainer.party.length]=pokemon
   return true

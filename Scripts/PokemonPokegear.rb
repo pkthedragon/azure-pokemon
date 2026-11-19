@@ -3,7 +3,7 @@ class PokegearButton < SpriteWrapper
   attr_reader :name
   attr_reader :selected
 
-  def initialize(x,y,name,index,viewport,button_bitmap)
+  def initialize(x,y,name,index,viewport,button_bitmap,icon_path=nil)
     super(viewport)
     @index=index
     @name=name
@@ -11,7 +11,7 @@ class PokegearButton < SpriteWrapper
     self.bitmap=@contents
     self.x=x
     self.y=y
-    draw_button(button_bitmap)
+    draw_button(button_bitmap,icon_path)
     self.selected=false
   end
 
@@ -29,7 +29,7 @@ class PokegearButton < SpriteWrapper
 
   private
 
-  def draw_button(button_bitmap)
+  def draw_button(button_bitmap,icon_path)
     @contents.blt(0,0,button_bitmap,button_bitmap.rect)
     pbSetSystemFont(@contents)
     textpos=[          # Name is written on both unselected and selected buttons
@@ -37,11 +37,16 @@ class PokegearButton < SpriteWrapper
        [@name,@contents.width/2,62,2,Color.new(248,248,248),Color.new(40,40,40)]
     ]
     pbDrawTextPositions(@contents,textpos)
-    icon_path=pbResolveBitmap("Graphics/Pictures/Pokegear/pokegear#{@name}")
+    icon_path=pbResolveBitmap(icon_path || "Graphics/Pictures/Pokegear/pokegear#{@name}")
     return if !icon_path
     icon=AnimatedBitmap.new(icon_path)
-    @contents.blt(18,10,icon.bitmap,icon.bitmap.rect)
-    @contents.blt(18,62,icon.bitmap,icon.bitmap.rect)
+    if icon.width<=40 && icon.height<=32
+      @contents.blt(18,10,icon.bitmap,icon.bitmap.rect)
+      @contents.blt(18,62,icon.bitmap,icon.bitmap.rect)
+    else
+      @contents.stretch_blt(Rect.new(18,10,32,32),icon.bitmap,icon.bitmap.rect)
+      @contents.stretch_blt(Rect.new(18,62,32,32),icon.bitmap,icon.bitmap.rect)
+    end
     icon.dispose
   end
 end
@@ -115,7 +120,7 @@ class Scene_Pokegear
     end
     run_menu(commands)
   end
-  def run_menu(commands)
+  def run_menu(commands,command_icons={})
     @buttons=[]
     @menu_index=@menu_index.clamp(0,commands.length-1)
     @button_viewport=Viewport.new(0,0,Graphics.width,Graphics.height)
@@ -132,7 +137,7 @@ class Scene_Pokegear
     button_art=AnimatedBitmap.new(button_path)
     commands.each_with_index do |name,index|
       y=196-(commands.length*24)+(index*48)
-      @buttons.push(PokegearButton.new(118,y,name,index,@button_viewport,button_art.bitmap))
+      @buttons.push(PokegearButton.new(118,y,name,index,@button_viewport,button_art.bitmap,command_icons[index]))
     end
     @buttons[@menu_index].selected=true
     scroll_to_selected_button

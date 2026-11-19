@@ -2076,16 +2076,16 @@ class PokemonScreen
         # Commands for debug mode only
         commands[cmdDebug=commands.length]=_INTL("Debug")
       end
-      cmdMoves=[-1,-1,-1,-1]
-      for i in 0...pkmn.moves.length
-        move=pkmn.moves[i]
-        # Check for hidden moves and add any that were found
-        if !pkmn.isEgg? && (
-           isConst?(move.id,PBMoves,:MILKDRINK) ||
-           isConst?(move.id,PBMoves,:SOFTBOILED) ||
-           HiddenMoveHandlers.hasHandler(move.id)
-           )
-          commands[cmdMoves[i]=commands.length]=PBMoves.getName(move.id)
+      cmdMoves={}
+      if !pkmn.isEgg?
+        known_ids=pkmn.moves.compact.map(&:id)
+        actions=known_ids.select do |move|
+          move==PBMoves::MILKDRINK || move==PBMoves::SOFTBOILED || HiddenMoveHandlers.hasHandler(move)
+        end
+        actions.concat(HiddenMoveHandlers.available_category_actions(pkmn,known_ids))
+        actions.uniq.each do |move|
+          cmdMoves[commands.length]=move
+          commands.push(PBMoves.getName(move))
         end
       end
       commands[cmdSwitch=commands.length]=_INTL("Switch") if @party.length>1
@@ -2105,56 +2105,48 @@ class PokemonScreen
       end
       commands[commands.length]=_INTL("Cancel")
       command=@scene.pbShowCommands(_INTL("Do what with {1}?",pkmn.name),commands)
-      havecommand=false
-      for i in 0...4
-        if cmdMoves[i]>=0 && command==cmdMoves[i]
-          havecommand=true
-          if isConst?(pkmn.moves[i].id,PBMoves,:SOFTBOILED) ||
-             isConst?(pkmn.moves[i].id,PBMoves,:MILKDRINK)
-            if pkmn.hp<=pkmn.totalhp/5
-              pbDisplay(_INTL("Not enough HP..."))
-              break
-            end
-            @scene.pbSetHelpText(_INTL("Use on which Pokémon?"))
-            oldpkmnid=pkmnid
-            loop do
-              @scene.pbPreSelect(oldpkmnid)
-              pkmnid=@scene.pbChoosePokemon(true)
-              break if pkmnid<0
-              newpkmn=@party[pkmnid]
-              if newpkmn.isEgg? || newpkmn.hp==0 || newpkmn.hp==newpkmn.totalhp || pkmnid==oldpkmnid
-                pbDisplay(_INTL("This item can't be used on that Pokémon."))
-              else
-                pkmn.hp-=pkmn.totalhp/5
-                hpgain=pbItemRestoreHP(newpkmn,pkmn.totalhp/5)
-                @scene.pbDisplay(_INTL("{1}'s HP was restored by {2} points.",newpkmn.name,hpgain))
-                pbRefresh
-              end
-            end
-            break
-          elsif Kernel.pbCanUseHiddenMove?(pkmn,pkmn.moves[i].id)
-            @scene.pbEndScene
-            if isConst?(pkmn.moves[i].id,PBMoves,:FLY)
-              scene=PokemonRegionMapScene.new(-1,false)
-              screen=PokemonRegionMap.new(scene)
-              ret=screen.pbStartFlyScreen
-              if ret
-                $PokemonTemp.flydata=ret
-                $game_system.bgs_stop
-                $game_screen.weather(0,0,0)
-                return [pkmn,pkmn.moves[i].id]
-              end
-              @scene.pbStartScene(@party,
-                 @party.length>1 ? _INTL("Choose a Pokémon.") : _INTL("Choose Pokémon or cancel."))
-              break
-            end
-            return [pkmn,pkmn.moves[i].id]
-          else
-            break
+      move=cmdMoves[command]
+      if move
+        if move==PBMoves::SOFTBOILED || move==PBMoves::MILKDRINK
+          if pkmn.hp<=pkmn.totalhp/5
+            pbDisplay(_INTL("Not enough HP..."))
+            next
           end
+          @scene.pbSetHelpText(_INTL("Use on which Pokémon?"))
+          oldpkmnid=pkmnid
+          loop do
+            @scene.pbPreSelect(oldpkmnid)
+            pkmnid=@scene.pbChoosePokemon(true)
+            break if pkmnid<0
+            newpkmn=@party[pkmnid]
+            if newpkmn.isEgg? || newpkmn.hp==0 || newpkmn.hp==newpkmn.totalhp || pkmnid==oldpkmnid
+              pbDisplay(_INTL("This item can't be used on that Pokémon."))
+            else
+              pkmn.hp-=pkmn.totalhp/5
+              hpgain=pbItemRestoreHP(newpkmn,pkmn.totalhp/5)
+              @scene.pbDisplay(_INTL("{1}'s HP was restored by {2} points.",newpkmn.name,hpgain))
+              pbRefresh
+            end
+          end
+          next
         end
+        next if !Kernel.pbCanUseHiddenMove?(pkmn,move)
+        @scene.pbEndScene
+        if move==PBMoves::FLY
+          scene=PokemonRegionMapScene.new(-1,false)
+          screen=PokemonRegionMap.new(scene)
+          ret=screen.pbStartFlyScreen
+          if !ret
+            @scene.pbStartScene(@party,
+               @party.length>1 ? _INTL("Choose a Pokémon.") : _INTL("Choose Pokémon or cancel."))
+            next
+          end
+          $PokemonTemp.flydata=ret
+          $game_system.bgs_stop
+          $game_screen.weather(0,0,0)
+        end
+        return [pkmn,move]
       end
-      next if havecommand
       if cmdSummary>=0 && command==cmdSummary
         @scene.pbSummary(pkmnid)
       elsif cmdSwitch>=0 && command==cmdSwitch
