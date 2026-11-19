@@ -2609,15 +2609,23 @@ function Test-EngineCompatibilityEvidence {
     }
   }
   $productionHashes = @{
-    "Game.exe" = "59A477804595AB188A5B12FD27CB1C522B174F198F306F271B83FC3A179307B4"
-    "x64-msvcrt-ruby300.dll" = "EBF848D9B0F1D00AEED8739B1C0121F5B47AFEB73BDFEC1DC9C223FF4F4E69DF"
+    "Game.exe" = "9DA3796CB850973261CED57B1DC42584F873CB83AEA7A6BEAD09DEBC08C09C69"
+    "x64-msvcrt-ruby310.dll" = "C961D9761E91405C2F57932141561782A4616CF79C3D1EBA62AB319F1B5B181E"
+    "libcrypto-3-x64.dll" = "3DA788F73DC3D629CC40186FA7379A7A57D774DBC48D282F51BE194BF6F6B90F"
+    "libssl-3-x64.dll" = "B79666923318562E29A0BFE560AC9B1F07EF54680DCAA1EAE7BFB9639A3D3E20"
+    "zlib1.dll" = "CB7AB3788D10940DF874ACD97B1821BBB5EE4A91F3EEC11982BB5BF7A3C96443"
     "Game.ini" = "E72B1C095F6FA9B60C6502882EAF3968E76ECA85EADC4410AE8E0A29582E6289"
     "mkxp.json" = "99BBA8268F2399E7768CFA31857A1A32F6A4EB897C38113F233FC6C0BAE8E950"
   }
   foreach ($relative in $productionHashes.Keys) {
-    $actual = (Get-FileHash -LiteralPath (Resolve-ProjectPath $relative) -Algorithm SHA256).Hash
+    $runtimeFile = Resolve-ProjectPath $relative
+    if (!(Test-Path -LiteralPath $runtimeFile -PathType Leaf)) {
+      Add-AuditError "Production runtime file is missing: $relative."
+      continue
+    }
+    $actual = (Get-FileHash -LiteralPath $runtimeFile -Algorithm SHA256).Hash
     if ($actual -ne $productionHashes[$relative]) {
-      Add-AuditError "Production runtime file changed during the reversible engine evaluation: $relative."
+      Add-AuditError "Production runtime file differs from the validated package: $relative."
     }
   }
   Add-AuditCheck "Ruby 3.1 engine package: mkxp-z 2.4.2 passed isolated script, rendering, input, audio, native, network, and 16-object save-load probes."

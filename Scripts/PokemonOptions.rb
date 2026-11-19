@@ -338,6 +338,11 @@ class PokemonSystem
   attr_accessor :backupNames
   attr_accessor :autosave
   attr_accessor :turbospeed
+  attr_writer :field_move_animation
+
+  def field_move_animation
+    return @field_move_animation || 0
+  end
 
   def frameskip
     return @frameskip ? @frameskip : 0
@@ -428,6 +433,7 @@ class PokemonSystem
     @volume      = 100.00 # Volume (0 - 100 )
     @sevolume    = 100.00 # Volume (0 - 100 )
     @battlescene = 0   # Battle scene (animations) (0=on, 1=off)
+    @field_move_animation = 0  # Hidden move cut-in (0=on, 1=off)
     @battlestyle = 1   # Battle style (0=shift, 1=set)
     @expall      = true   # EXP All (default ON)
     @frame       = 0   # Default window frame (see also $TextFrames)
@@ -513,6 +519,10 @@ class PokemonOptionScene
        EnumOption.new(_INTL("Battle Scene"),[_INTL("On"),_INTL("Off")],
           proc { $PokemonSystem.battlescene },
           proc {|value|  $PokemonSystem.battlescene=value }
+       ),
+       EnumOption.new(_INTL("Field Move Animation"),[_INTL("On"),_INTL("Off")],
+          proc { $PokemonSystem.field_move_animation },
+          proc {|value| $PokemonSystem.field_move_animation=value }
        ),
        NumberOption.new(_INTL("Speech Frame"),_INTL("Type %d"),1,$SpeechFrames.length,
           proc { $PokemonSystem.textskin },

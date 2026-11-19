@@ -93,29 +93,69 @@ module OverworldShadows
   # Bitmap#raw_data is RGBA. Check only the alpha byte of each source pixel.
   VISIBLE_PIXEL = /\A(?:.{3}\x00)*.{3}[^\x00]/mn
 
-  def self.frame_visible?(bitmap, x, y, width, height)
-    frames = bitmap.instance_variable_get(:@overworld_shadow_frames)
-    unless frames
-      frames = {}
-      bitmap.instance_variable_set(:@overworld_shadow_frames, frames)
-    end
-    key = [x, y, width, height]
-    return frames.fetch(key) do
-      left = [x, 0].max
-      top = [y, 0].max
-      right = [x + width, bitmap.width].min
-      bottom = [y + height, bitmap.height].min
-      if left < right && top < bottom
-        pixels = bitmap.raw_data
-        stride = bitmap.width * 4
-        bytes = (right - left) * 4
-        frames[key] = (top...bottom).any? do |row|
-          pixels.byteslice(row * stride + left * 4, bytes).match?(VISIBLE_PIXEL)
-        end
-      else
-        frames[key] = false
+  # Only bitmaps used for shadow checks need to track changes to their alpha.
+  module FrameAlphaChanges
+    [:add_frame, :blt, :blur, :clear, :clear_rect, :draw_text, :fill_rect,
+     :gradient_fill_rect, :hires=, :hue_change, :radial_blur, :raw_data=,
+     :remove_frame, :set_pixel, :snap_to_bitmap, :stretch_blt].each do |operation|
+      define_method(operation) do |*args|
+        @overworld_shadow_frames = nil
+        @overworld_shadow_revision = @overworld_shadow_revision.to_i + 1
+        super(*args)
       end
     end
+  end
+  private_constant :FrameAlphaChanges
+
+  def self.visible_pixels?(pixels, stride, x, y, width, height)
+    bytes = width * 4
+    offset = y * stride + x * 4
+    height.times do
+      return true if pixels.byteslice(offset, bytes).match?(VISIBLE_PIXEL)
+      offset += stride
+    end
+    return false
+  end
+  private_class_method :visible_pixels?
+
+  def self.frame_visible?(bitmap, x, y, width, height, charset = false)
+    unless bitmap.is_a?(FrameAlphaChanges)
+      bitmap.extend(FrameAlphaChanges)
+      bitmap.instance_variable_set(:@overworld_shadow_frames, nil)
+    end
+    frames = unless bitmap.animated?
+      bitmap.instance_variable_get(:@overworld_shadow_frames) ||
+        bitmap.instance_variable_set(:@overworld_shadow_frames, {})
+    end
+    bitmap_width = bitmap.width
+    bitmap_height = bitmap.height
+    stride = bitmap_width * 4
+
+    # Read back a standard charset once and retain only the visibility of each cell.
+    if frames && charset && width > 0 && height > 0 &&
+       width == bitmap_width / 4 && height == bitmap_height / 4 &&
+       x >= 0 && x < width * 4 && x % width == 0 &&
+       y >= 0 && y < height * 4 && y % height == 0
+      cells = frames[:charset] ||= begin
+        pixels = bitmap.raw_data
+        Array.new(16) do |index|
+          visible_pixels?(pixels, stride, (index % 4) * width, (index / 4) * height, width, height)
+        end
+      end
+      return cells[y / height * 4 + x / width]
+    end
+
+    # Tiles and custom regions use the actual clipped source rectangle.
+    key = [x, y, width, height] if frames
+    return frames[key] if frames && frames.key?(key)
+    left = [x, 0].max
+    top = [y, 0].max
+    right = [x + width, bitmap_width].min
+    bottom = [y + height, bitmap_height].min
+    visible = left < right && top < bottom &&
+              visible_pixels?(bitmap.raw_data, stride, left, top, right - left, bottom - top)
+    frames[key] = visible if frames
+    return visible
   end
 
   # Determines whether or not an event should be given a shadow.
@@ -169,14 +209,19 @@ class Sprite_Character
 
   def dispose_shadow
     return unless @shadow
+    bitmap = @shadow.bitmap
     @shadow.dispose
     @shadow = nil
+    bitmap.dispose if bitmap
   end
 
   def position_shadow
     return unless @shadow
-    x = @character.screen_x
-    y = @character.screen_y
+    if !@charbitmap || @charbitmap.disposed? ||
+       (@character.is_a?(Game_Event) && @character.instance_variable_get(:@erased))
+      dispose_shadow
+      return
+    end
     if @character.jumping?
       @total_jump = @character.jump_count if !@total_jump
       case @character.jump_count
@@ -199,15 +244,12 @@ class Sprite_Character
         @total_jump = nil
       end
     end
-    @shadow.x = x
-    @shadow.y = y - 6
-    @shadow.z = self.z - 1
-    if @shadow
-      if !@charbitmap || @charbitmap.disposed? ||
-         (@character.is_a?(Game_Event) && @character.instance_eval { @erased })
-        dispose_shadow
-      end
-    end
+    x = @character.screen_x
+    y = @character.screen_y - 6
+    z = self.z - 1
+    @shadow.x = x if @shadow.x != x
+    @shadow.y = y if @shadow.y != y
+    @shadow.z = z if @shadow.z != z
   end
 
   unless method_defined?(:ow_shadow_visible)
@@ -232,14 +274,21 @@ class Sprite_Character
   def shadow_frame_visible?
     graphic = self.bitmap
     return false if !graphic || graphic.disposed?
+    revision = graphic.instance_variable_get(:@overworld_shadow_revision)
+    graphic_changed = !@shadow_graphic.equal?(graphic) || revision != @shadow_graphic_revision
+    @shadow_graphic_animated = graphic.animated? if graphic_changed
+    animation_frame = graphic.current_frame if @shadow_graphic_animated
     frame = self.src_rect
     x, y, width, height = frame.x, frame.y, frame.width, frame.height
-    if !@shadow_graphic.equal?(graphic) || x != @shadow_frame_x || y != @shadow_frame_y ||
+    if graphic_changed || animation_frame != @shadow_animation_frame ||
+       x != @shadow_frame_x || y != @shadow_frame_y ||
        width != @shadow_frame_width || height != @shadow_frame_height
       @shadow_graphic = graphic
+      @shadow_graphic_revision = revision
+      @shadow_animation_frame = animation_frame
       @shadow_frame_x, @shadow_frame_y = x, y
       @shadow_frame_width, @shadow_frame_height = width, height
-      @shadow_frame_visible = OverworldShadows.frame_visible?(graphic, x, y, width, height)
+      @shadow_frame_visible = OverworldShadows.frame_visible?(graphic, x, y, width, height, @charbitmapAnimated)
     end
     return @shadow_frame_visible
   end
@@ -247,7 +296,9 @@ class Sprite_Character
   def update
     ow_shadow_update
     position_shadow
-    @shadow_drawable = @oldbushdepth == 0 && self.opacity > 0
+    visible = self.visible
+    opacity = self.opacity
+    @shadow_drawable = @oldbushdepth == 0 && opacity > 0
 
     if @character.is_a?(Game_Event)
       page = OverworldShadows.active_event_page(@character)
@@ -256,19 +307,20 @@ class Sprite_Character
         @shadow_allowed = OverworldShadows.should_get_shadow?(@character)
         @old_page = page
       end
-      if !@shadow_allowed || @character.character_name.to_s.empty?
+      if !@shadow_allowed || @character_name.to_s.empty?
         dispose_shadow
         return
       end
-      @shadow_drawable &&= shadow_frame_visible?
-      make_shadow if !@shadow && self.visible && @shadow_drawable
+      @shadow_drawable &&= visible && shadow_frame_visible?
+      make_shadow if !@shadow && @shadow_drawable
     elsif @character == $game_player && $PokemonGlobal
       @shadow_drawable &&= !($PokemonGlobal.surfing || $PokemonGlobal.diving || $PokemonGlobal.lavasurfing)
     end
 
     if @shadow
-      @shadow.opacity = self.opacity
-      @shadow.visible = self.visible && @shadow_drawable
+      @shadow.opacity = opacity if @shadow.opacity != opacity
+      shadow_visible = visible && @shadow_drawable
+      @shadow.visible = shadow_visible if @shadow.visible != shadow_visible
     end
   end
 end

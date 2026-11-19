@@ -1,0 +1,36 @@
+{
+  "title": "Tailwind changes pending order under active Trick Room",
+  "format": "double",
+  "seed": 150,
+  "max_turns": 2,
+  "player": {
+    "party": [
+      { "species": "CROBAT", "ability": "PRANKSTER", "moves": ["CELEBRATE", "TAILWIND"] },
+      { "species": "LAPRAS", "ability": "SHELLARMOR", "moves": ["TRICKROOM", "CELEBRATE"] }
+    ]
+  },
+  "opponent": {
+    "party": [
+      { "species": "VENUSAUR", "ability": "OVERGROW", "moves": ["CELEBRATE"] },
+      { "species": "PIKACHU", "ability": "STATIC", "moves": ["CELEBRATE"] }
+    ]
+  },
+  "actions": [
+    { "turn": 1, "slot": 0, "move": "CELEBRATE" },
+    { "turn": 1, "slot": 1, "move": "CELEBRATE" },
+    { "turn": 1, "slot": 2, "move": "TRICKROOM" },
+    { "turn": 1, "slot": 3, "move": "CELEBRATE" },
+    { "turn": 2, "slot": 0, "move": "TAILWIND" },
+    { "turn": 2, "slot": 1, "move": "CELEBRATE" },
+    { "turn": 2, "slot": 2, "move": "CELEBRATE" },
+    { "turn": 2, "slot": 3, "move": "CELEBRATE" }
+  ],
+  "expect": [
+    "Lapras used Trick Room!",
+    "TURN 2",
+    "Crobat used Tailwind!",
+    "Pikachu used Celebrate!",
+    "Venusaur used Celebrate!",
+    "Lapras used Celebrate!"
+  ]
+}

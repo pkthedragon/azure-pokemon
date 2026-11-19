@@ -132,17 +132,22 @@ module MakerStudioTileOverlays
 
     def update
       super
-      self.x = (@real_x - @map.display_x + 3) / 4 + ox
-      self.y = (@real_y - @map.display_y + 3) / 4 + oy
-      self.z = if @on_top
+      draw_x = (@real_x - @map.display_x + 3) / 4 + ox
+      draw_y = (@real_y - @map.display_y + 3) / 4 + oy
+      draw_z = if @on_top
                  999
                else
                  (@real_y - $game_map.display_y + 3) / 4 + 32 + $game_map.priorities[@tile_id].to_i * 32
                end
-      if $PokemonSystem.tilemap == 0
-        tone.set(0, 0, 0, 0)
-      else
-        pbDayNightTint(self)
+      self.x = draw_x if draw_x != @draw_x
+      self.y = draw_y if draw_y != @draw_y
+      self.z = draw_z if draw_z != @draw_z
+      @draw_x, @draw_y, @draw_z = draw_x, draw_y, draw_z
+
+      tint = $PokemonSystem.tilemap == 0 ? PBDayNight::NEUTRAL_TINT : PBDayNight.map_tint
+      if tint && tint != @draw_tint
+        tone.set(*tint)
+        @draw_tint = tint
       end
     end
 

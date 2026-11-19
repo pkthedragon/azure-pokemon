@@ -1164,6 +1164,8 @@ def pbCheckPokemonBitmapFiles(params)
   species=params[0]
   back=params[1]
   form=AzureMegaForms.sprite_form(species,params[4])
+  species_name=getConstantName(PBSpecies,species) rescue nil
+  directories={}
   factors=[]
   factors.push([5,params[5],false]) if params[5] && params[5]!=false     # shadow
   factors.push([2,params[2],false]) if params[2] && params[2]!=false     # gender
@@ -1186,15 +1188,17 @@ def pbCheckPokemonBitmapFiles(params)
           tshadow=((i/(2**j))%2==0) ? factors[j][1] : factors[j][2]
       end
     end
-    bitmapFileName=sprintf("Graphics/Battlers/%s%s%s%s%s%s",
-       getConstantName(PBSpecies,species),
-       tgender ? "f" : "",
-       tshiny ? "s" : "",
-       back ? "b" : "",
-       (tform!="" ? "_"+tform : ""),
-       tshadow ? "_shadow" : "") rescue nil
-    ret=pbResolveBitmap(bitmapFileName)
-    return ret if ret
+    if species_name
+      bitmapFileName=sprintf("Graphics/Battlers/%s%s%s%s%s%s",
+         species_name,
+         tgender ? "f" : "",
+         tshiny ? "s" : "",
+         back ? "b" : "",
+         (tform!="" ? "_"+tform : ""),
+         tshadow ? "_shadow" : "")
+      ret=AzureBitmapFiles.resolve(bitmapFileName,directories)
+      return ret if ret
+    end
     bitmapFileName=sprintf("Graphics/Battlers/%03d%s%s%s%s%s",
        species,
        tgender ? "f" : "",
@@ -1202,7 +1206,7 @@ def pbCheckPokemonBitmapFiles(params)
        back ? "b" : "",
        (tform!="" ? "_"+tform : ""),
        tshadow ? "_shadow" : "")
-    ret=pbResolveBitmap(bitmapFileName)
+    ret=AzureBitmapFiles.resolve(bitmapFileName,directories)
     return ret if ret
   end
   return nil
@@ -1243,6 +1247,8 @@ def pbCheckPokemonIconFiles(params,egg=false)
     if species==PBSpecies::FURFROU && form.match?(/\A[1-9]\z/)
       form=FURFROU_ICON_TRIM_ORDER[form.to_i].to_s
     end
+    species_name=getConstantName(PBSpecies,species) rescue nil
+    directories={}
     factors=[]
     factors.push([4,params[4],false]) if params[4] && params[4]!=false     # shadow
     factors.push([1,params[1],false]) if params[1] && params[1]!=false     # gender
@@ -1265,21 +1271,23 @@ def pbCheckPokemonIconFiles(params,egg=false)
             tshadow=((i/(2**j))%2==0) ? factors[j][1] : factors[j][2]
         end
       end
-      bitmapFileName=sprintf("Graphics/Icons/icon%s%s%s%s%s",
-         getConstantName(PBSpecies,species),
-         tgender ? "f" : "",
-         tshiny ? "s" : "",
-         (tform!="" ? "_"+tform : ""),
-         tshadow ? "_shadow" : "") rescue nil
-      ret=pbResolveBitmap(bitmapFileName)
-      return ret if ret
+      if species_name
+        bitmapFileName=sprintf("Graphics/Icons/icon%s%s%s%s%s",
+           species_name,
+           tgender ? "f" : "",
+           tshiny ? "s" : "",
+           (tform!="" ? "_"+tform : ""),
+           tshadow ? "_shadow" : "")
+        ret=AzureBitmapFiles.resolve(bitmapFileName,directories)
+        return ret if ret
+      end
       bitmapFileName=sprintf("Graphics/Icons/icon%03d%s%s%s%s",
          species,
          tgender ? "f" : "",
          tshiny ? "s" : "",
          (tform!="" ? "_"+tform : ""),
          tshadow ? "_shadow" : "")
-      ret=pbResolveBitmap(bitmapFileName)
+      ret=AzureBitmapFiles.resolve(bitmapFileName,directories)
       return ret if ret
     end
   end

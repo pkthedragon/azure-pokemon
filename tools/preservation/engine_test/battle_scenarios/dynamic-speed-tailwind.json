@@ -1,0 +1,30 @@
+{
+  "title": "Tailwind reorders pending attacks without bypassing priority",
+  "format": "double",
+  "seed": 150,
+  "max_turns": 1,
+  "player": {
+    "party": [
+      { "species": "CROBAT", "ability": "PRANKSTER", "moves": ["TAILWIND"] },
+      { "species": "LAPRAS", "ability": "SHELLARMOR", "moves": ["CELEBRATE"] }
+    ]
+  },
+  "opponent": {
+    "party": [
+      { "species": "VENUSAUR", "ability": "OVERGROW", "moves": ["CELEBRATE"] },
+      { "species": "PIKACHU", "ability": "STATIC", "moves": ["QUICKATTACK"] }
+    ]
+  },
+  "actions": [
+    { "turn": 1, "slot": 0, "move": "TAILWIND" },
+    { "turn": 1, "slot": 1, "move": "CELEBRATE" },
+    { "turn": 1, "slot": 2, "move": "CELEBRATE" },
+    { "turn": 1, "slot": 3, "move": "QUICKATTACK", "target": 0 }
+  ],
+  "expect": [
+    "Crobat used Tailwind!",
+    "Pikachu used Quick Attack!",
+    "Lapras used Celebrate!",
+    "Venusaur used Celebrate!"
+  ]
+}

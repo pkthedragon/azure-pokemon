@@ -2811,8 +2811,7 @@ class PokeBattle_Battle
     user.sameSideLivingBattlers(false).each do |ally|
       choice=@choices[ally.index]
       next if ally.hasMovedThisRound? || choice[0]!=1 || choice[2]&.id!=move.id
-      ally.pbProcessTurn(choice)
-      return true
+      return true if pbProcessQueuedAttackTurn(ally)
     end
     return false
   end
@@ -2905,8 +2904,8 @@ class PokeBattle_Battle
 
 # UPDATE 11/23/2013
   # implementing STALL
-  def pbPriority(ignorequickclaw = false,megacalc = false)
-    return @priority if @usepriority && !megacalc # use stored priority if round isn't over yet (best ged rid of this in gen 8)
+  def pbPriority(ignorequickclaw = false,megacalc = false,move_order_keys: nil)
+    return @priority if @usepriority && !megacalc
     @priority.clear
     priorityarray = []
     # -Move priority take precedence(stored as priorityarray[i][0])
@@ -2936,6 +2935,7 @@ class PokeBattle_Battle
       if @choices[i][0]==1 && @battlers[i].effects[PBEffects::AbsoluteZeroTurn]==@turncount
         priorityarray[-1][1]=-3
       end
+      move_order_keys[@battlers[i]]=priorityarray[-1].first(2) if move_order_keys
       #speed priority
       priorityarray[-1][2]    = @battlers[i].pbSpeed if @trickroom==0
       priorityarray[-1][2]    = -@battlers[i].pbSpeed if @trickroom>0
@@ -2963,6 +2963,14 @@ class PokeBattle_Battle
 ##### KUROTSUNE - 011 - START
  # Makes target pokemon move last
   def pbMoveLast(target)
+    if @attackTurnOrder
+      return false if !pbPendingAttack?(target)
+      @attackTurnOrder[:next].delete(target)
+      @attackTurnOrder[:last].delete(target)
+      @attackTurnOrder[:last].push(target)
+      pbRefreshAttackTurnOrder
+      return true
+    end
     priorityTarget = pbGetPriority(target)
     priority = @priority
     return false if priorityTarget<0 || priorityTarget>=priority.length-1
@@ -2975,6 +2983,14 @@ class PokeBattle_Battle
 
   # Makes the second pokemon move after the first.
   def pbMoveAfter(first, second)
+    if @attackTurnOrder
+      return false if first==second || !pbPendingAttack?(second)
+      @attackTurnOrder[:last].delete(second)
+      @attackTurnOrder[:next].delete(second)
+      @attackTurnOrder[:next].unshift(second)
+      pbRefreshAttackTurnOrder
+      return true
+    end
     priorityFirst = pbGetPriority(first)
     priority = @priority
     prioritySecond = pbGetPriority(second)
@@ -6319,7 +6335,8 @@ def pbStartBattle(canlose=false)
         pbMegaEvolve(i.index)
       end
     end
-    priority=pbPriority(false,true)    #Turn order recalc from Gen VII
+    move_order_keys={}
+    priority=pbPriority(false,true,move_order_keys: move_order_keys)
     pbResolveForebode(priority)
     return if @decision!=0
 #### KUROTSUNE - 014 - START
@@ -6357,10 +6374,55 @@ def pbStartBattle(canlose=false)
         pbDisplay(_INTL("{1} set a shell trap!",i.pbThis))
       end
     end
-    for i in priority
-      # Skip battlers that have already moved this round (e.g., due to Round chaining)
-      next if i.isFainted? || i.hasMovedThisRound?
-      i.pbProcessTurn(@choices[i.index])
+    pbResolveAttackTurns(priority,move_order_keys)
+    pbWait(20) if @decision==0
+  end
+
+  def pbPendingAttack?(battler)
+    return false if !@attackTurnOrder || !battler || battler.isFainted? || battler.hasMovedThisRound?
+    choice=@choices[battler.index]
+    return @attackTurnOrder[:pending].include?(battler) && choice[0]==1 && !choice[2].nil?
+  end
+
+  def pbRefreshAttackTurnOrder
+    order=@attackTurnOrder
+    pending=order[:pending]
+    # Keep the move and item priority brackets and the initial tiebreak.
+    # Only effective Speed and Trick Room change between queued actions.
+    pending.sort_by! do |battler|
+      rank=order[:ranks].fetch(battler)
+      next [3,rank] if battler.isFainted?
+      forced_next=order[:next].index(battler)
+      next [0,forced_next] if forced_next
+      forced_last=order[:last].index(battler)
+      next [2,forced_last] if forced_last
+      move_priority,item_priority=order[:keys].fetch(battler,[0,0])
+      speed=battler.pbSpeed
+      [1,-move_priority,-item_priority,@trickroom>0 ? speed : -speed,rank]
+    end
+    @priority.replace(order[:acted]+pending)
+  end
+
+  def pbProcessQueuedAttackTurn(battler)
+    if @attackTurnOrder
+      order=@attackTurnOrder
+      return false if !order[:pending].delete(battler)
+      order[:acted].push(battler)
+      order[:next].delete(battler)
+      order[:last].delete(battler)
+      @priority.replace(order[:acted]+order[:pending])
+    end
+    return false if battler.isFainted? || battler.hasMovedThisRound?
+    battler.pbProcessTurn(@choices[battler.index])
+    return true
+  end
+
+  def pbResolveAttackTurns(priority,move_order_keys)
+    @attackTurnOrder={pending: priority.dup,acted: [],next: [],last: [],
+                      keys: move_order_keys,ranks: priority.each_with_index.to_h}
+    pbRefreshAttackTurnOrder
+    while (i=@attackTurnOrder[:pending].first)
+      next unless pbProcessQueuedAttackTurn(i)
       # Round chaining: If this battler used Round and any ally selected Round but hasn't moved,
       # make those allies move immediately after (regardless of Speed)
       if i.effects[PBEffects::Round]
@@ -6370,7 +6432,7 @@ def pbStartBattle(canlose=false)
           next if ally.index % 2 != attacker_side
           next if ally.isFainted? || ally.hasMovedThisRound?
           next unless pbChoseMoveFunctionCode?(ally.index, 0x83) # Ally selected Round
-          ally.pbProcessTurn(@choices[ally.index])
+          pbProcessQueuedAttackTurn(ally)
           return if @decision>0
         end
       end
@@ -6383,7 +6445,7 @@ def pbStartBattle(canlose=false)
           next if ally.index % 2 != attacker_side
           next if ally.isFainted? || ally.hasMovedThisRound?
           next unless pbChoseMove?(ally.index, :HOWL)
-          ally.pbProcessTurn(@choices[ally.index])
+          pbProcessQueuedAttackTurn(ally)
           return if @decision>0
         end
       end
@@ -6397,7 +6459,7 @@ def pbStartBattle(canlose=false)
         end
       end
 
-      if (symbiosis=pbSymbiosisCheck(priority))
+      if (symbiosis=pbSymbiosisCheck(@priority))
         for s in symbiosis
           s.sameSideLivingBattlers(false).each do |ally|
             for stat in [PBStats::ATTACK,PBStats::DEFENSE,PBStats::SPEED,PBStats::SPATK,
@@ -6409,8 +6471,10 @@ def pbStartBattle(canlose=false)
         end
       end
       return if @decision>0
+      pbRefreshAttackTurnOrder
     end
-    pbWait(20)
+  ensure
+    @attackTurnOrder=nil
   end
 
   # Checks if anyone can share stat changes through Symbiosis

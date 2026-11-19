@@ -153,7 +153,7 @@ module AzureBitmapFiles
     return {}
   end
 
-  def self.resolve(filename)
+  def self.resolve(filename, directory_snapshot=nil)
     return nil unless filename.is_a?(String) && !filename.empty?
     return nil if filename.end_with?("/","\\")
     filename=filename.tr("\\","/")
@@ -168,7 +168,9 @@ module AzureBitmapFiles
       basename=File.basename(path)
       candidates=[basename]
       candidates.concat(EXTENSIONS.map { |ext| basename+ext }) unless IMAGE_EXTENSION.match?(basename)
-      names=directory_names(directory)
+      # Variant searches share one filesystem check per directory. A new
+      # search still validates the directory and sees newly added artwork.
+      names=directory_snapshot ? (directory_snapshot[directory] ||= directory_names(directory)) : directory_names(directory)
       candidates.each do |candidate|
         actual=names[candidate.downcase]
         next unless actual
@@ -243,6 +245,7 @@ end
 module BitmapCache
   @cache = ObjectSpace::WeakMap.new
   BATTLE_BITMAP_LIMIT = 16 * 1024 * 1024
+  FIELD_STEP_SHEET = "Graphics/Animations/DustandGrass".freeze
 
   def self.with_battle_bitmaps
     previous_depth = @battle_bitmap_depth.to_i
@@ -370,6 +373,12 @@ module BitmapCache
       cached=false
     end
     retain_battle_bitmap(path,objPath)
+    if path == FIELD_STEP_SHEET && !objPath.equal?(@field_step_bitmap) && !$INEDITOR
+      # Grass and dust recur after the previous animation has released its copy.
+      @field_step_bitmap.dispose if @field_step_bitmap
+      objPath.addRef
+      @field_step_bitmap = objPath
+    end
     if hue == 0
       objPath.addRef if cached
       return objPath
@@ -467,6 +476,8 @@ module BitmapCache
   def self.clear
     @hidden_move_bitmap.dispose if @hidden_move_bitmap
     @hidden_move_bitmap=nil
+    @field_step_bitmap.dispose if @field_step_bitmap
+    @field_step_bitmap = nil
     @battle_bitmaps.each_value { |entry| entry[0].dispose } if @battle_bitmaps
     @battle_bitmaps = {}
     @battle_bitmap_bytes = 0

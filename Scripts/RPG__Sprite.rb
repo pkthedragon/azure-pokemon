@@ -1,6 +1,5 @@
 class SpriteAnimation
   @@_animations = []
-  @@_reference_count = {}
 
   def initialize(sprite)
     @sprite=sprite
@@ -35,20 +34,10 @@ class SpriteAnimation
     @_animation_duration = @_animation.frame_max
     animation_name = @_animation.animation_name
     animation_hue = @_animation.animation_hue
-    bitmap = pbGetAnimation(animation_name, animation_hue)
-    if @@_reference_count.include?(bitmap)
-      @@_reference_count[bitmap] += 1
-    else
-      @@_reference_count[bitmap] = 1
-    end
+    @_animation_bitmap = pbGetAnimation(animation_name, animation_hue)
     @_animation_sprites = []
     if @_animation.position != 3 or not @@_animations.include?(animation)
-      for i in 0..15
-        sprite = ::Sprite.new(self.viewport)
-        sprite.bitmap = bitmap
-        sprite.visible = false
-        @_animation_sprites.push(sprite)
-      end
+      @_animation_sprites = build_cells(@_animation, @_animation_bitmap)
       unless @@_animations.include?(animation)
         @@_animations.push(animation)
       end
@@ -64,54 +53,54 @@ class SpriteAnimation
     @_loop_animation_index = 0
     animation_name = @_loop_animation.animation_name
     animation_hue = @_loop_animation.animation_hue
-    bitmap = pbGetAnimation(animation_name, animation_hue)
-    if @@_reference_count.include?(bitmap)
-      @@_reference_count[bitmap] += 1
-    else
-      @@_reference_count[bitmap] = 1
-    end
-    @_loop_animation_sprites = []
-    for i in 0..15
-      sprite = ::Sprite.new(self.viewport)
-      sprite.bitmap = bitmap
-      sprite.visible = false
-      @_loop_animation_sprites.push(sprite)
-    end
+    @_loop_animation_bitmap = pbGetAnimation(animation_name, animation_hue)
+    @_loop_animation_sprites = build_cells(@_loop_animation, @_loop_animation_bitmap)
     update_loop_animation
   end
 
+  def build_cells(animation, bitmap)
+    # Table width covers every authored slot, including slots that appear late.
+    cell_count = 0
+    animation.frames.each do |frame|
+      cell_data = frame&.cell_data
+      next unless cell_data
+      width = cell_data.xsize
+      cell_count = width if width > cell_count
+      break if cell_count >= 16
+    end
+    cell_viewport = viewport
+    return Array.new([cell_count, 16].min) do
+      sprite = ::Sprite.new(cell_viewport)
+      sprite.bitmap = bitmap
+      sprite.visible = false
+      sprite
+    end
+  end
+  private :build_cells
+
   def dispose_animation
     if @_animation_sprites != nil
-      sprite = @_animation_sprites[0]
-      if sprite != nil
-        @@_reference_count[sprite.bitmap] -= 1
-        if @@_reference_count[sprite.bitmap] == 0
-          sprite.bitmap.dispose
-        end
-      end
       for sprite in @_animation_sprites
         sprite.dispose
       end
       @_animation_sprites = nil
       @_animation = nil
     end
+    # pbGetAnimation acquires a reference even if duplicate effects render no cells.
+    @_animation_bitmap.dispose if @_animation_bitmap
+    @_animation_bitmap = nil
   end
 
   def dispose_loop_animation
     if @_loop_animation_sprites != nil
-      sprite = @_loop_animation_sprites[0]
-      if sprite != nil
-        @@_reference_count[sprite.bitmap] -= 1
-        if @@_reference_count[sprite.bitmap] == 0
-          sprite.bitmap.dispose
-        end
-      end
       for sprite in @_loop_animation_sprites
         sprite.dispose
       end
       @_loop_animation_sprites = nil
       @_loop_animation = nil
     end
+    @_loop_animation_bitmap.dispose if @_loop_animation_bitmap
+    @_loop_animation_bitmap = nil
   end
 
   def active?
@@ -164,11 +153,10 @@ class SpriteAnimation
   end
 
   def animation_set_sprites(sprites, cell_data, position)
-    for i in 0..15
-      sprite = sprites[i]
+    sprites.each_with_index do |sprite, i|
       pattern = cell_data[i, 0]
-      if sprite == nil or pattern == nil or pattern == -1
-        sprite.visible = false if sprite != nil
+      if pattern == nil || pattern == -1
+        sprite.visible = false
         next
       end
       sprite.visible = true
@@ -227,13 +215,13 @@ class SpriteAnimation
     sx = x - self.x
     if sx != 0
       if @_animation_sprites != nil
-        for i in 0..15
-          @_animation_sprites[i].x += sx
+        for sprite in @_animation_sprites
+          sprite.x += sx
         end
       end
       if @_loop_animation_sprites != nil
-        for i in 0..15
-          @_loop_animation_sprites[i].x += sx
+        for sprite in @_loop_animation_sprites
+          sprite.x += sx
         end
       end
     end
@@ -243,13 +231,13 @@ class SpriteAnimation
     sy = y - self.y
     if sy != 0
       if @_animation_sprites != nil
-        for i in 0..15
-          @_animation_sprites[i].y += sy
+        for sprite in @_animation_sprites
+          sprite.y += sy
         end
       end
       if @_loop_animation_sprites != nil
-        for i in 0..15
-          @_loop_animation_sprites[i].y += sy
+        for sprite in @_loop_animation_sprites
+          sprite.y += sy
         end
       end
     end

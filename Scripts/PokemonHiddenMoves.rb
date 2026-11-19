@@ -66,33 +66,42 @@ end
 
 def pbHiddenMoveAnimation(pokemon)
   return false if !pokemon
+  return false if $PokemonSystem && $PokemonSystem.field_move_animation==1
   strobes=[]
-  viewport=Viewport.new(0,0,Graphics.width,Graphics.height)
+  screen_width=Graphics.width
+  screen_height=Graphics.height
+  viewport=Viewport.new(0,0,screen_width,screen_height)
+  viewport_rect=viewport.rect
   viewport.visible=false
   viewport.z=99999
   bg=Sprite.new(viewport)
   background=BitmapCache.load_bitmap("Graphics/Pictures/hiddenMovebg")
   bg.bitmap=background
+  background_height=background.height
+  background_top=(screen_height-background_height)/2
   sprite=PokemonSprite.new(viewport)
   sprite.setPokemonBitmap(pokemon)
   BitmapCache.retain_hidden_move_bitmap(sprite.bitmap)
   sprite.z=1
-  sprite.ox=sprite.bitmap.width/2
+  sprite_half_width=sprite.bitmap.width/2
+  sprite.ox=sprite_half_width
   sprite.oy=sprite.bitmap.height/2
   sprite.visible=false
   strobebitmap=AnimatedBitmap.new("Graphics/Pictures/hiddenMoveStrobes")
+  strobe_texture=strobebitmap.bitmap
+  strobe_width=strobe_texture.width
+  strobe_rows=background_height/16-2
   15.times do |i|
     strobe=Sprite.new(viewport)
     strobes.push(strobe)
-    strobe.bitmap=strobebitmap.bitmap
+    strobe.bitmap=strobe_texture
     strobe.src_rect.set(0,(i%2)*16,52,16)
     strobe.z=((i%2)==0 ? 2 : 0)
     strobe.visible=false
   end
-  interp=RectInterpolator.new(
-     Rect.new(0,Graphics.height/2,Graphics.width,0),
-     Rect.new(0,(Graphics.height-bg.bitmap.height)/2,Graphics.width,bg.bitmap.height),
-     10)
+  closed_rect=Rect.new(0,screen_height/2,screen_width,0)
+  open_rect=Rect.new(0,background_top,screen_width,background_height)
+  interp=RectInterpolator.new(closed_rect,open_rect,10)
   ptinterp=nil
   phase=1
   frames=0
@@ -101,17 +110,24 @@ def pbHiddenMoveAnimation(pokemon)
     Graphics.update
     Input.update
     case phase
-    when 1 # Expand viewport height from zero to full
+    when 1, 5 # Open or close the viewport
       interp.update
-      interp.set(viewport.rect)
-      viewport.visible=viewport.rect.height>0
-      bg.oy=(bg.bitmap.height-viewport.rect.height)/2
+      interp.set(viewport_rect)
+      viewport_height=viewport_rect.height
+      viewport.visible=viewport_height>0
+      bg.oy=(background_height-viewport_height)/2
+      strobe_origin_y=viewport_rect.y
+      strobes.each { |strobe| strobe.oy=strobe_origin_y }
       if interp.done?
-        phase=2
-        ptinterp=PointInterpolator.new(
-           Graphics.width+(sprite.bitmap.width/2),bg.bitmap.height/2,
-           Graphics.width/2,bg.bitmap.height/2,
-           16)
+        if phase==1
+          phase=2
+          ptinterp=PointInterpolator.new(
+             screen_width+sprite_half_width,background_height/2,
+             screen_width/2,background_height/2,
+             16)
+        else
+          phase=6
+        end
       end
     when 2 # Slide Pokémon sprite in from right to centre
       ptinterp.update
@@ -128,8 +144,8 @@ def pbHiddenMoveAnimation(pokemon)
       if frames>30
         phase=4
         ptinterp=PointInterpolator.new(
-           Graphics.width/2,bg.bitmap.height/2,
-           -(sprite.bitmap.width/2),bg.bitmap.height/2,
+           screen_width/2,background_height/2,
+           -sprite_half_width,background_height/2,
            16)
         frames=0
       end
@@ -140,32 +156,19 @@ def pbHiddenMoveAnimation(pokemon)
       if ptinterp.done?
         phase=5
         sprite.visible=false
-        interp=RectInterpolator.new(
-           Rect.new(0,(Graphics.height-bg.bitmap.height)/2,Graphics.width,bg.bitmap.height),
-           Rect.new(0,Graphics.height/2,Graphics.width,0),
-           10)
+        interp.restart(open_rect,closed_rect,10)
       end
-    when 5 # Shrink viewport height from full to zero
-      interp.update
-      interp.set(viewport.rect)
-      viewport.visible=viewport.rect.height>0
-      bg.oy=(bg.bitmap.height-viewport.rect.height)/2
-      phase=6 if interp.done?    
     end
     for strobe in strobes
-      strobe.ox=strobe.viewport.rect.x
-      strobe.oy=strobe.viewport.rect.y
       if !strobe.visible
-        randomY=16*(1+rand(bg.bitmap.height/16-2))
-        strobe.y=randomY+(Graphics.height-bg.bitmap.height)/2
-        strobe.x=rand(Graphics.width)
+        strobe.y=16*(1+rand(strobe_rows))+background_top
+        strobe.x=rand(screen_width)
         strobe.visible=true
-      elsif strobe.x<Graphics.width
-        strobe.x+=32
+      elsif (strobe_x=strobe.x)<screen_width
+        strobe.x=strobe_x+32
       else
-        randomY=16*(1+rand(bg.bitmap.height/16-2))
-        strobe.y=randomY+(Graphics.height-bg.bitmap.height)/2
-        strobe.x=-strobe.bitmap.width-rand(Graphics.width/4)
+        strobe.y=16*(1+rand(strobe_rows))+background_top
+        strobe.x=-strobe_width-rand(screen_width/4)
       end
     end
     pbUpdateSceneMap

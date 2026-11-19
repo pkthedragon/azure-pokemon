@@ -296,19 +296,15 @@ class Game_Character
 
   def update_move
     distance = 2 ** @move_speed
-    realResX=Game_Map.realResX
-    realResY=Game_Map.realResY
-    if @y * realResY > @real_y
-      @real_y = [@real_y + distance, @y * realResY].min
+    target_x = @x * Game_Map.realResX
+    target_y = @y * Game_Map.realResY
+    if @real_x != target_x
+      @move_x_progress ||= []
+      @real_x = advance_movement_axis(@real_x, target_x, distance, @move_x_progress)
     end
-    if @x * realResX < @real_x
-      @real_x = [@real_x - distance, @x * realResX].max
-    end
-    if @x * realResX > @real_x
-      @real_x = [@real_x + distance, @x * realResX].min
-    end
-    if @y * realResY < @real_y
-      @real_y = [@real_y - distance, @y * realResY].max
+    if @real_y != target_y
+      @move_y_progress ||= []
+      @real_y = advance_movement_axis(@real_y, target_y, distance, @move_y_progress)
     end
     if !jumping? && !moving?
       Events.onStepTakenFieldMovement.trigger(self,self)
@@ -319,6 +315,31 @@ class Game_Character
       @anime_count += 1
     end
   end
+
+  def advance_movement_axis(position, target, distance, progress)
+    # Keep the original progression for step timing. Spread the displayed move
+    # over its remaining ticks so fractional speeds have no short last stride.
+    nominal = progress[0] == position ? progress[1] : position
+    remaining = target - nominal
+    forward = remaining > 0
+    next_nominal = forward ? nominal + distance : nominal - distance
+    arrived = forward ? next_nominal >= target : next_nominal <= target
+    if arrived
+      progress[0] = progress[1] = target
+      return target
+    end
+
+    ticks = remaining.abs.fdiv(distance).ceil
+    next_position = if position == nominal && remaining.abs == distance * ticks
+                      next_nominal
+                    else
+                      position + (target - position).fdiv(ticks)
+                    end
+    progress[0] = next_position
+    progress[1] = next_nominal
+    return next_position
+  end
+  private :advance_movement_axis
 
   def update_stop
     if @step_anime

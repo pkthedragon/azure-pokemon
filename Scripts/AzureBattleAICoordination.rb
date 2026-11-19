@@ -350,8 +350,8 @@ module AzureBattleAICoordination
     return value
   end
 
-  # These are subsequent-turn forecasts: Azure deliberately keeps the current
-  # turn's already established order. Never read a human's selected action.
+  # Forecast the same turn when speed control can land before both attacks.
+  # The opposing attack is estimated from available moves.
   def pbAICoordinationSpeedValue(entry,partner)
     key=[entry[:user].index,entry[:move].id,partner[:user].index,partner[:move].object_id,partner[:target]]
     @azureAICoordinationForecast ||= {}
@@ -384,6 +384,9 @@ module AzureBattleAICoordination
         next if before==after
         weight=8
         weight+=12 if pbAICoordinationDamage(partner,foe)>=foe.hp || pbAICoordinationDamage(opposing,ally)>=ally.hp
+        if pbAICoordinationBefore?(entry,partner) && pbAICoordinationBefore?(entry,opposing)
+          weight*=1.5
+        end
         value+=after ? weight : -weight
       end
     end

@@ -857,7 +857,7 @@ def pbTrainerVsAnimation(viewport,trainerid,trainername)
     bar2.visible = true
     player.visible = true
     trainer.visible = true
-    25.times do
+    12.times do
       flash.opacity -= 51 if flash.opacity > 0
       scroll_bars.call
       pbWait(1)
@@ -874,7 +874,7 @@ def pbTrainerVsAnimation(viewport,trainerid,trainername)
       trainer.x += xoffset/20
       pbWait(1)
     end
-    10.times do
+    5.times do
       scroll_bars.call
       pbWait(1)
     end
@@ -884,7 +884,7 @@ def pbTrainerVsAnimation(viewport,trainerid,trainername)
     trainer.tone = Tone.new(0,0,0)
     overlay.visible = true
     pbSEPlay("PRSFX- Slash.wav")
-    70.times do
+    44.times do
       scroll_bars.call
       flash.opacity -= 25.5 if flash.opacity > 0
       vs.x += val
@@ -893,10 +893,10 @@ def pbTrainerVsAnimation(viewport,trainerid,trainername)
       val = -2 if vs.x >= (Graphics.width/2)+2
       pbWait(1)
     end
-    30.times do
+    15.times do
       scroll_bars.call
-      vs.zoom_x += 0.2
-      vs.zoom_y += 0.2
+      vs.zoom_x += 0.4
+      vs.zoom_y += 0.4
       pbWait(1)
     end
     flash.tone = Tone.new(-255,-255,-255)
@@ -1019,25 +1019,20 @@ def pbBattleAnimation(battletype=0,bgm=nil,trainerid=-1,trainername="")
         anim = "FourBallBurst"
       end
     end
-    # Initial screen flashing
+    # One brief pulse before the field-specific transition.
     if location==2 || PBDayNight.isNight?
-      viewport.color = Color.new(0,0,0)         # Fade to black a few times
+      viewport.color = Color.new(0,0,0)
     else
-      viewport.color = Color.new(255,255,255)   # Fade to white a few times
+      viewport.color = Color.new(255,255,255)
     end
-    2.times do
-      viewport.color.alpha = 0
-      mult = 1
-      16.times do
-        viewport.color.alpha += 32*mult
-        mult *= -1 if viewport.color.alpha>=255 || viewport.color.alpha<=0
-        Graphics.update
-        pbUpdateSceneMap
-      end
+    8.times do |frame|
+      viewport.color.alpha = 255 * [frame + 1, 7 - frame].min / 4
+      Graphics.update
+      pbUpdateSceneMap
     end
     # Play main animation
     Graphics.freeze
-    Graphics.transition(Graphics.frame_rate*1.25,sprintf("Graphics/Transitions/%s",anim))
+    Graphics.transition(20,sprintf("Graphics/Transitions/%s",anim))
     viewport.color = Color.new(0,0,0,255)   # Ensure screen is black
   end
 #### SARDINES - v17 - END

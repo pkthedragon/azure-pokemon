@@ -8,6 +8,10 @@ end
 
 
 module PBDayNight
+  NO_TIME_TINT_MAPS = [155,357,358,359,360,362,368,408,506].freeze
+  NEUTRAL_TINT = [0,0,0,0].freeze
+  DARK_MAP_TINT = [-30,-30,-30,0].freeze
+
   HourlyTones = [
      Tone.new(-68, -63, -58, 80),   # Midnight
      Tone.new(-68, -63, -58, 80),
@@ -143,6 +147,35 @@ module PBDayNight
     return (now.hour*60)+now.min
   end
 
+  def self.with_map_tint
+    previous_tint = @map_render_tint
+    @map_render_tint = map_tint
+    yield
+  ensure
+    @map_render_tint = previous_tint
+  end
+
+  def self.map_tint
+    return @map_render_tint if @map_render_tint
+    return unless $scene.is_a?(Scene_Map)
+    map_id = $game_map.map_id
+    return NEUTRAL_TINT unless pbGetMetadata(map_id, MetadataOutdoor)
+    if $game_switches[1496]
+      tone = HourlyTones[12]
+    elsif $game_switches[1497]
+      tone = HourlyTones[19]
+    elsif $game_switches[1498]
+      tone = HourlyTones[0]
+    elsif !ENABLESHADING
+      return NEUTRAL_TINT
+    elsif NO_TIME_TINT_MAPS.include?(map_id)
+      return isNight?(pbGetTimeNow) ? DARK_MAP_TINT : NEUTRAL_TINT
+    else
+      tone = getTone
+    end
+    return [tone.red, tone.green, tone.blue, tone.gray]
+  end
+
   private
 
 # Internal function
@@ -166,29 +199,8 @@ end
 
 
 def pbDayNightTint(object)
-  return if !$scene.is_a?(Scene_Map)
-  noTime = [155,357,358,359,360,362,368,408,506]
-  if !pbGetMetadata($game_map.map_id,MetadataOutdoor)
-    object.tone.set(0,0,0,0)
-  else
-    if $game_switches[1496]
-      tone = PBDayNight::HourlyTones[12]
-      object.tone.set(tone.red,tone.green,tone.blue,tone.gray)
-    elsif $game_switches[1497]
-      tone = PBDayNight::HourlyTones[19]
-      object.tone.set(tone.red,tone.green,tone.blue,tone.gray)
-    elsif $game_switches[1498]
-      tone = PBDayNight::HourlyTones[0]
-      object.tone.set(tone.red,tone.green,tone.blue,tone.gray)
-    elsif ENABLESHADING && !noTime.include?($game_map.map_id)
-      tone=PBDayNight.getTone
-      object.tone.set(tone.red,tone.green,tone.blue,tone.gray)
-    elsif ENABLESHADING && noTime.include?($game_map.map_id) && PBDayNight.isNight?(pbGetTimeNow)
-      object.tone.set(-30,-30,-30)
-    else
-      object.tone.set(0,0,0,0)
-    end
-  end
+  tint = PBDayNight.map_tint
+  object.tone.set(*tint) if tint
 end
 
 

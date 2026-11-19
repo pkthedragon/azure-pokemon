@@ -51,13 +51,15 @@ class Scene_Map
 
   def updateSpritesets
     @spritesets={} if !@spritesets
-    @spritesets.delete_if do |map_id,spriteset|
-      if !$MapFactory.hasMap?(map_id)
-        spriteset.dispose if spriteset
-        true
-      else
-        spriteset.update
-        false
+    PBDayNight.with_map_tint do
+      @spritesets.delete_if do |map_id,spriteset|
+        if !$MapFactory.hasMap?(map_id)
+          spriteset.dispose if spriteset
+          true
+        else
+          spriteset.update
+          false
+        end
       end
     end
 #    @spritesetglobal.update
