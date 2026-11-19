@@ -778,12 +778,14 @@ def pbTrainerVsAnimation(viewport,trainerid,trainername)
     drawables.push(viewopp)
     viewvs = Viewport.new(0,0,Graphics.width,Graphics.height)
     drawables.push(viewvs)
-    [viewplayer,viewopp,viewvs].each { |view| view.z = viewport.z }
+    viewplayer.z = viewport.z + 1
+    viewopp.z = viewport.z + 1
+    viewvs.z = viewport.z + 2
 
     fade = make_sprite.call(viewport,flash_bitmap)
     fade.tone = Tone.new(-255,-255,-255)
     fade.opacity = 100
-    overlay = make_sprite.call(viewport,names_bitmap)
+    overlay = make_sprite.call(viewvs,names_bitmap)
     overlay.visible = false
     xoffset = (((Graphics.width/2)/10).round)*10
     slide1 = make_sprite.call(viewplayer,player_bar_bitmap)
@@ -795,31 +797,51 @@ def pbTrainerVsAnimation(viewport,trainerid,trainername)
     vs.oy = logo_bitmap.height/2
     vs.x = Graphics.width/2
     vs.y = Graphics.height/1.5
+    vs.z = 1
     vs.visible = false
     flash = make_sprite.call(viewvs,flash_bitmap)
+    flash.z = 2
     flash.opacity = 0
 
-    # Native planes scroll the existing textures. LargePlane would clear and
-    # retile two full-screen bitmaps on every change to ox.
-    bar1 = Plane.new(viewplayer)
-    drawables.push(bar1)
-    bar1.bitmap = player_bar_bitmap
-    bar1.z = -1
-    bar1.visible = false
-    bar2 = Plane.new(viewopp)
-    drawables.push(bar2)
-    bar2.bitmap = opponent_bar_bitmap
-    bar2.z = -1
-    bar2.visible = false
+    # Tile once, then scroll a cropped sprite. Keeping bars and portraits in
+    # the same sprite compositor makes their draw order explicit on all renderers.
+    make_bar = proc do |view,source|
+      width = view.rect.width
+      height = view.rect.height
+      strip_width = ((width + source.width - 1)/source.width + 1)*source.width
+      strip = Bitmap.new(strip_width,height)
+      bitmaps.push(strip)
+      (0...height).step(source.height) do |y|
+        (0...strip_width).step(source.width) do |x|
+          strip.blt(x,y,source,source.rect)
+        end
+      end
+      bar = make_sprite.call(view,strip)
+      bar.src_rect.set(0,0,width,height)
+      bar.z = 0
+      bar.visible = false
+      bar
+    end
+    bar1 = make_bar.call(viewplayer,player_bar_bitmap)
+    bar2 = make_bar.call(viewopp,opponent_bar_bitmap)
+    scroll_bars = proc do
+      bar1.src_rect.x = (bar1.src_rect.x - 16) % player_bar_bitmap.width
+      bar2.src_rect.x = (bar2.src_rect.x + 16) % opponent_bar_bitmap.width
+    end
     player = make_sprite.call(viewplayer,player_bitmap)
+    player.z = 1
     player.mirror = true if $game_switches[1235]
     player.x = -xoffset
     player.visible = false
     trainer = make_sprite.call(viewopp,trainer_bitmap)
+    trainer.z = 1
     trainer.x = xoffset
     trainer.tone = Tone.new(-255,-255,-255)
     trainer.visible = false
 
+    # Cutscenes can leave Graphics frozen. Snapshots still render in that state,
+    # but update presents no frames until transition releases the frozen screen.
+    Graphics.transition(0)
     Graphics.frame_reset
     10.times do
       slide1.x += xoffset/10
@@ -837,27 +859,23 @@ def pbTrainerVsAnimation(viewport,trainerid,trainername)
     trainer.visible = true
     25.times do
       flash.opacity -= 51 if flash.opacity > 0
-      bar1.ox -= 16
-      bar2.ox += 16
+      scroll_bars.call
       pbWait(1)
     end
     11.times do
-      bar1.ox -= 16
-      bar2.ox += 16
+      scroll_bars.call
       player.x += xoffset/10
       trainer.x -= xoffset/10
       pbWait(1)
     end
     2.times do
-      bar1.ox -= 16
-      bar2.ox += 16
+      scroll_bars.call
       player.x -= xoffset/20
       trainer.x += xoffset/20
       pbWait(1)
     end
     10.times do
-      bar1.ox -= 16
-      bar2.ox += 16
+      scroll_bars.call
       pbWait(1)
     end
     val = 2
@@ -867,8 +885,7 @@ def pbTrainerVsAnimation(viewport,trainerid,trainername)
     overlay.visible = true
     pbSEPlay("PRSFX- Slash.wav")
     70.times do
-      bar1.ox -= 16
-      bar2.ox += 16
+      scroll_bars.call
       flash.opacity -= 25.5 if flash.opacity > 0
       vs.x += val
       vs.y -= val
@@ -877,22 +894,21 @@ def pbTrainerVsAnimation(viewport,trainerid,trainername)
       pbWait(1)
     end
     30.times do
-      bar1.ox -= 16
-      bar2.ox += 16
+      scroll_bars.call
       vs.zoom_x += 0.2
       vs.zoom_y += 0.2
       pbWait(1)
     end
     flash.tone = Tone.new(-255,-255,-255)
     10.times do
-      bar1.ox -= 16
-      bar2.ox += 16
+      scroll_bars.call
       flash.opacity += 25.5
       pbWait(1)
     end
     viewport.color = Color.new(0,0,0,255)
     return true
-  rescue StandardError
+  rescue StandardError => error
+    PBDebug.log("VS transition #{playerid} vs #{trainerid}: #{error.class}: #{error.message}") rescue nil
     # Unavailable custom artwork falls back to the standard battle intro.
     return false
   ensure
