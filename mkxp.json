@@ -124,6 +124,10 @@
     //
     // "solidFonts": false,
 
+    // Match Azure's original pixel-font rendering and text layout.
+    "fontHinting": 2,
+    "fontHeightReporting": 1,
+
 
     // Work around buggy graphics drivers which don't
     // properly synchronize texture access, most
@@ -192,10 +196,8 @@
     // "dataPathApp": "mygame",
 
 
-    // Set the game window icon to 'path/to/icon.png'
-    // (default: none)
-    //
-    // "iconPath": "/path/to/icon.png",
+    // Use the same Azure icon as the Windows launcher.
+    "iconPath": "Graphics/Pictures/WindowIcon.png",
 
 
     // Instead of playing an RPG Maker game,

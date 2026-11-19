@@ -26,6 +26,14 @@ module MessageConfig
      "Power Green Small"=>"Pokemon Emerald Small",
      "Power Clear"=>"Pokemon DP"
   }
+  ModernMkxpFonts = $MKXP && defined?(System) && System.respond_to?(:default_font_family=)
+  # Point sizes calibrated against the bundled fonts in the previous runtime.
+  MkxpFontSizes = {
+    "PokemonEmerald" => 30,
+    "Power Red and Blue" => 38,
+    "Power Red and Green" => 31,
+    "Power Clear" => 38
+  }.freeze
   @@systemFrame     = nil
   @@defaultTextSkin = nil
   @@systemFont      = nil
@@ -1529,7 +1537,10 @@ end
 def pbSetSystemFont(bitmap)
   fontname=MessageConfig.pbGetSystemFontName()
   bitmap.font.name=fontname
-  if fontname=="Pokemon FireLeaf" || fontname=="Power Red and Green"
+  modern_size=MessageConfig::MkxpFontSizes[fontname] if MessageConfig::ModernMkxpFonts
+  if modern_size
+    bitmap.font.size=modern_size
+  elsif fontname=="Pokemon FireLeaf" || fontname=="Power Red and Green"
     bitmap.font.size=29
   elsif fontname=="Pokemon Emerald Small" || fontname=="Power Green Small"
     bitmap.font.size=25
@@ -1562,8 +1573,10 @@ end
 
 # Sets a bitmap's font to the system narrow font.
 def pbSetNarrowFont(bitmap)
-  bitmap.font.name=pbNarrowFontName()
-  bitmap.font.size=31
+  fontname=pbNarrowFontName()
+  bitmap.font.name=fontname
+  size=MessageConfig::ModernMkxpFonts && fontname=="Power Green Narrow" ? 32 : 31
+  bitmap.font.size=size
 end
 
 
