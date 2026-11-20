@@ -2963,6 +2963,7 @@ class PokeBattle_Battle
 ##### KUROTSUNE - 011 - START
  # Makes target pokemon move last
   def pbMoveLast(target)
+    #pk code
     if @attackTurnOrder
       return false if !pbPendingAttack?(target)
       @attackTurnOrder[:next].delete(target)
@@ -2983,6 +2984,7 @@ class PokeBattle_Battle
 
   # Makes the second pokemon move after the first.
   def pbMoveAfter(first, second)
+    #pk code
     if @attackTurnOrder
       return false if first==second || !pbPendingAttack?(second)
       @attackTurnOrder[:last].delete(second)
@@ -6297,6 +6299,7 @@ def pbStartBattle(canlose=false)
     pbWait(20) if @decision==0
   end
 
+  #pk code
   def pbPendingAttack?(battler)
     return false if !@attackTurnOrder || !battler || battler.isFainted? || battler.hasMovedThisRound?
     choice=@choices[battler.index]
@@ -6306,19 +6309,24 @@ def pbStartBattle(canlose=false)
   def pbRefreshAttackTurnOrder
     order=@attackTurnOrder
     pending=order[:pending]
-    # Keep the move and item priority brackets and the initial tiebreak.
-    # Only effective Speed and Trick Room change between queued actions.
-    pending.sort_by! do |battler|
+    priorityarray=[]
+    for i in 0...pending.length
+      battler=pending[i]
       rank=order[:ranks].fetch(battler)
-      next [3,rank] if battler.isFainted?
-      forced_next=order[:next].index(battler)
-      next [0,forced_next] if forced_next
-      forced_last=order[:last].index(battler)
-      next [2,forced_last] if forced_last
-      move_priority,item_priority=order[:keys].fetch(battler,[0,0])
-      speed=battler.pbSpeed
-      [1,-move_priority,-item_priority,@trickroom>0 ? speed : -speed,rank]
+      if battler.isFainted?
+        priorityarray[i]=[0,0,0,0,-rank,i]
+      elsif (nextmove=order[:next].index(battler))
+        priorityarray[i]=[3,0,0,0,-nextmove,i]
+      elsif (lastmove=order[:last].index(battler))
+        priorityarray[i]=[1,0,0,0,-lastmove,i]
+      else
+        movepri,itempri=order[:keys].fetch(battler,[0,0])
+        speed=@trickroom>0 ? -battler.pbSpeed : battler.pbSpeed
+        priorityarray[i]=[2,movepri,itempri,speed,-rank,i]
+      end
     end
+    priorityarray.sort! { |a,b| b <=> a }
+    pending.replace(priorityarray.map { |entry| pending[entry[-1]] })
     @priority.replace(order[:acted]+pending)
   end
 

@@ -169,6 +169,7 @@ class PokeBattle_Battle
     return battler.moves.first(4).select { |move| move && move.id>0 }
   end
 
+  #pk code
   def pbAIHasSkillLinkMove?(battler)
     return pbAIKnownMoves(battler).any? { |move| move.is_a?(PokeBattle_Move_0C0) && move.pp>0 }
   end
@@ -825,13 +826,20 @@ class PokeBattle_Battle
   def pbGetMoveScore(move,attacker,opponent,skill=100,roughdamage=10,initialscores=[],scoreindex=-1,shutup=false,naturepri=false,target_option=nil)
     previous_context=@aiStatMoveContext
     @aiStatMoveContext=[move,attacker]
-    pbWithStatChangeSource([:move,move.id]) do
+    score=pbWithStatChangeSource([:move,move.id]) do
       score=pbGetMoveScoreWithStatSource(move,attacker,opponent,skill,roughdamage,initialscores,scoreindex,shutup,naturepri,target_option)
       score*=pbAIAccuracyScoreMultiplier(move,attacker,opponent,skill) if score>0
       score+=pbAIZStatBonus(move,attacker) if move.zmove && move.basedamage==0
       score*=pbAIUnawareSetupMultiplier(move,attacker)
       [score.to_i,0].max
     end
+    #pk code
+    if @azureAICoordinationRecording && scoreindex.is_a?(Integer) && scoreindex.between?(0,3) &&
+       attacker && opponent && @battlers[attacker.index].equal?(attacker) &&
+       attacker.moves[scoreindex].equal?(move) && target_option.nil?
+      @azureAICoordinationTargetScores[[attacker.index,scoreindex,opponent.index]]=score
+    end
+    return score
   ensure
     @aiStatMoveContext=previous_context
   end
@@ -10066,7 +10074,7 @@ class PokeBattle_Battle
       if attacker.hasWorkingItem(:RAZORFANG)
         score*=1.2
       end
-    when 0xC0,0x23D,0x236,0x24D # Three or five hits
+    when 0xC0,0x23D,0x236,0x24D #pk code
       if move.isContactMove? && !attacker.hasWorkingAbility(:LONGREACH) &&
          !attacker.hasWorkingItem(:PROTECTIVEPADS) && !opponent.hasWorkingItem(:PROTECTIVEPADS) &&
          !attacker.hasWorkingAbility(:MAGICGUARD) && !(attacker.hasWorkingAbility(:WONDERGUARD) && $fefieldeffect==44) &&
@@ -13287,7 +13295,7 @@ class PokeBattle_Battle
               miniscore*=1.5
             when (PBItems::LEFTOVERS),(PBItems::LIFEORB),(PBItems::LUMBERRY),(PBItems::SITRUSBERRY),(PBItems::CHOICESPECS),(PBItems::CHOICEBAND),(PBItems::CUSTAPBERRY)
               miniscore*=1.5
-            when PBItems::LOADEDDICE
+            when PBItems::LOADEDDICE #pk code
               miniscore*=pbAILoadedDiceUseful?(opponent) ? 1.5 : 1.2
             when (PBItems::ASSAULTVEST), (PBItems::ROCKYHELMET), (PBItems::MAGICALSEED), (PBItems::SYNTHETICSEED), (PBItems::TELLURICSEED), (PBItems::ELEMENTALSEED)
               miniscore*=1.4
@@ -13310,7 +13318,7 @@ class PokeBattle_Battle
         case opponent.item
         when (PBItems::LEFTOVERS),(PBItems::LIFEORB), (PBItems::LUMBERRY), (PBItems::SITRUSBERRY)
           miniscore*=1.5
-        when PBItems::LOADEDDICE
+        when PBItems::LOADEDDICE #pk code
           miniscore*=1.3 if oppitemworks && pbAILoadedDiceUseful?(opponent)
           miniscore*=1.3 if attitemworks && pbAILoadedDiceUseful?(attacker)
         when (PBItems::ASSAULTVEST), (PBItems::ROCKYHELMET), (PBItems::MAGICALSEED), (PBItems::SYNTHETICSEED), (PBItems::TELLURICSEED), (PBItems::ELEMENTALSEED)
@@ -13355,7 +13363,7 @@ class PokeBattle_Battle
           case opponent.item
           when (PBItems::LEFTOVERS), (PBItems::LIFEORB), (PBItems::LUMBERRY), (PBItems::SITRUSBERRY)
             miniscore*=1.5
-          when PBItems::LOADEDDICE
+          when PBItems::LOADEDDICE #pk code
             miniscore*=1.3 if oppitemworks && pbAILoadedDiceUseful?(opponent)
             miniscore*=1.3 if attitemworks && pbAILoadedDiceUseful?(attacker)
           when (PBItems::ASSAULTVEST), (PBItems::ROCKYHELMET), (PBItems::MAGICALSEED), (PBItems::SYNTHETICSEED), (PBItems::TELLURICSEED), (PBItems::ELEMENTALSEED)
@@ -13389,7 +13397,7 @@ class PokeBattle_Battle
           case attacker.item
           when (PBItems::LEFTOVERS), (PBItems::LIFEORB), (PBItems::LUMBERRY), (PBItems::SITRUSBERRY)
             minimini*=0.5
-          when PBItems::LOADEDDICE
+          when PBItems::LOADEDDICE #pk code
             minimini*=0.7 if attitemworks && pbAILoadedDiceUseful?(attacker)
             minimini*=0.7 if oppitemworks && pbAILoadedDiceUseful?(opponent)
           when (PBItems::ASSAULTVEST), (PBItems::ROCKYHELMET), (PBItems::MAGICALSEED), (PBItems::SYNTHETICSEED), (PBItems::TELLURICSEED), (PBItems::ELEMENTALSEED)
@@ -13602,7 +13610,7 @@ class PokeBattle_Battle
           score*=0
         when getID(PBItems,:MENTALHERB)
           score*=0
-        when PBItems::LOADEDDICE
+        when PBItems::LOADEDDICE #pk code
           score*=0.5 if attitemworks && pbAILoadedDiceUseful?(attacker)
         when getID(PBItems,:LAXINCENSE), getID(PBItems,:CHOICESCARF), getID(PBItems,:CHOICEBAND), getID(PBItems,:CHOICESPECS), getID(PBItems,:SYNTHETICSEED), getID(PBItems,:TELLURICSEED), getID(PBItems,:ELEMENTALSEED), getID(PBItems,:MAGICALSEED), getID(PBItems,:EXPERTBELT), getID(PBItems,:FOCUSSASH), getID(PBItems,:LEFTOVERS), getID(PBItems,:MUSCLEBAND), getID(PBItems,:WISEGLASSES), getID(PBItems,:LIFEORB), getID(PBItems,:EVIOLITE), getID(PBItems,:ASSAULTVEST), getID(PBItems,:BLACKSLUDGE)
           score*=0
@@ -13638,7 +13646,7 @@ class PokeBattle_Battle
             score*=1.2
           when (PBItems::LEFTOVERS), (PBItems::BLACKSLUDGE)
             score*=1.3
-          when PBItems::LOADEDDICE
+          when PBItems::LOADEDDICE #pk code
             score*=1.3 if oppitemworks && pbAILoadedDiceUseful?(opponent)
           end
           if opponent.hp*2<opponent.totalhp
@@ -13666,7 +13674,7 @@ class PokeBattle_Battle
             score*=1.2
           when (PBItems::LEFTOVERS), (PBItems::BLACKSLUDGE)
             score*=1.3
-          when PBItems::LOADEDDICE
+          when PBItems::LOADEDDICE #pk code
             score*=1.3 if oppitemworks && pbAILoadedDiceUseful?(opponent)
           end
         end
@@ -13681,7 +13689,7 @@ class PokeBattle_Battle
           when (PBItems::LEFTOVERS), (PBItems::BLACKSLUDGE)
             score*=0.4
           end
-          score*=0.6 if attacker.hasWorkingItem(:LOADEDDICE) && pbAILoadedDiceUseful?(attacker)
+          score*=0.6 if attacker.hasWorkingItem(:LOADEDDICE) && pbAILoadedDiceUseful?(attacker) #pk code
         end
       end
     when 0xFA,0xBB9 # Take Down, Submission
@@ -21321,6 +21329,7 @@ class PokeBattle_Battle
 
   def pbBetterBaseDamage(move,attacker,opponent,skill,basedamage)
     # Covers all function codes which have their own def pbBaseDamage
+    #pk code
     if move.is_a?(PokeBattle_Move_0C0)
       return move.pbBaseDamageMultiplier(basedamage,attacker,opponent)*move.pbNumHits(attacker)
     end
@@ -21987,7 +21996,7 @@ class PokeBattle_Battle
     base_power=pixie_power>0 ? pixie_power : move.basedamage
     return 0 if base_power==0
     basedamage=base_power
-    hit_count=move.pbNumHits(attacker) if move.is_a?(PokeBattle_Move_0C0)
+    hit_count=move.pbNumHits(attacker) if move.is_a?(PokeBattle_Move_0C0) #pk code
     oldmold=opponent.moldbroken
     if (!attacker.abilitynulled && (attacker.ability == PBAbilities::MOLDBREAKER || attacker.ability == PBAbilities::TURBOBLAZE || attacker.ability == PBAbilities::TERAVOLT || attacker.ability == PBAbilities::SHADOWTAG && $fefieldeffect==40))
       opponent.moldbroken = true
@@ -24958,8 +24967,7 @@ class PokeBattle_Battle
        (opponent.effects[PBEffects::Substitute]<=0 || move.isSoundBased? || attacker.hasWorkingAbility(:INFILTRATOR))
       damage+=(attacker.totalhp/8).floor
     end
-    # Calculate damage per hit first so the formula's flat damage and rounding apply to each hit.
-    damage*=hit_count if hit_count
+    damage*=hit_count if hit_count #pk code
     opponent.moldbroken=oldmold
     return damage
   end
@@ -25829,7 +25837,7 @@ class PokeBattle_Battle
       PBDebug.log(sprintf("Adaptability Disrupt")) if $INTERNAL
       abilityscore*=1.3
     end
-    if opponent.hasWorkingAbility(:SKILLLINK)
+    if opponent.hasWorkingAbility(:SKILLLINK) #pk code
       PBDebug.log(sprintf("Skill Link Disrupt")) if $INTERNAL
       crest=opponent.real_species==PBSpecies::CINCCINO && opponent.hasWorkingItem(:CINCCREST)
       if crest || (!opponent.hasWorkingItem(:LOADEDDICE) && pbAIHasSkillLinkMove?(opponent))
@@ -28785,7 +28793,7 @@ class PokeBattle_Battle
       biggestpower = 0
       for j in memory
         power=j.basedamage
-        power*=j.pbNumHits(j.user) if j.is_a?(PokeBattle_Move_0C0) && j.user
+        power*=j.pbNumHits(j.user) if j.is_a?(PokeBattle_Move_0C0) && j.user #pk code
         if power>biggestpower
           biggestpower=power
           bestmove=j
@@ -32536,6 +32544,7 @@ def pbShouldSwitch?(index,hardswitch=false)
     switchscore += tempswitchscore
   end
   if skill>=PBTrainerAI.highSkill
+    #pk code
     [opponent1,opponent2].uniq.each do |foe|
       next unless pbAIFiveHitContactMove?(foe)
       maxpain = 0
@@ -33168,7 +33177,7 @@ def pbSwitchTo(currentmon,party,skill,pivoting=false,hardswitch=false,incomingmo
   opp2roles = pbGetMonRole(opponent2,currentmon,skill)
   aimem = pbAIKnownMoves(opponent1)
   aimem2 = pbAIKnownMoves(opponent2)
-  five_hit_contact_threats = [opponent1,opponent2].uniq.count { |foe| pbAIFiveHitContactMove?(foe) }
+  five_hit_contact_threats = [opponent1,opponent2].uniq.count { |foe| pbAIFiveHitContactMove?(foe) } #pk code
   expecting_hit       = false
   expecting_hit_from     = []
   currentfasterthan1 = (currentmon.pbSpeed>pbRoughStat(opponent1,PBStats::SPEED,skill)) ^ (@trickroom!=0)

@@ -11,6 +11,7 @@ module HiddenMoveHandlers
   ConfirmUseMove = MoveHandlerHash.new
   UseMove        = MoveHandlerHash.new
 
+  #pk code
   FIELD_MOVE_CATEGORIES = {
     PBMoves::CUT       => PBStuff::SLASHINGMOVE,
     PBMoves::ROCKSMASH => PBStuff::BLUDGEONINGMOVE | PBStuff::BOMBMOVE,
@@ -24,19 +25,28 @@ module HiddenMoveHandlers
 
   def self.known_move(pokemon, action)
     return nil if !pokemon || pokemon.isEgg?
-    moves = pokemon.moves.compact
-    exact = moves.find { |move| move.id == action }
-    return exact if exact
-    category = FIELD_MOVE_CATEGORIES[action]
-    return category && moves.find { |move| category.include?(move.id) }
+    for move in pokemon.moves
+      return move if move && move.id==action
+    end
+    category=FIELD_MOVE_CATEGORIES[action]
+    return nil if !category
+    for move in pokemon.moves
+      return move if move && category.include?(move.id)
+    end
+    return nil
   end
 
   def self.party_user(action)
-    return $Trainer&.party&.find { |pokemon| known_move(pokemon, action) }
+    return nil if !$Trainer || !$Trainer.party
+    for pokemon in $Trainer.party
+      return pokemon if known_move(pokemon,action)
+    end
+    return nil
   end
 
   def self.move_name(action, pokemon)
-    return PBMoves.getName(known_move(pokemon, action)&.id || action)
+    move=known_move(pokemon,action)
+    return PBMoves.getName(move ? move.id : action)
   end
 
   def self.available_category_actions(pokemon, known_ids)
@@ -359,7 +369,7 @@ end
 #===============================================================================
 # Displacement Move Encounters (any move that can shake trees/objects)
 #===============================================================================
-# Checks if player has any displacement move in their party
+#pk code
 def Kernel.pbDisplacementCheck
   return HiddenMoveHandlers.party_user(PBMoves::HEADBUTT)
 end
@@ -375,13 +385,11 @@ def Kernel.pbDisplacementEncounterAvailable?(enctype=nil)
   end
 end
 
-# Triggers headbutt encounter using any displacement move (for event scripts)
 def Kernel.pbDisplacementEncounter(event=nil, movefinder=nil)
   movefinder ||= Kernel.pbDisplacementCheck
   move=HiddenMoveHandlers.known_move(movefinder,PBMoves::HEADBUTT)
   return false if !move || !Kernel.pbDisplacementEncounterAvailable?
 
-  # The target cell determines which of the map's two encounter tables is used.
   if !event
     facing=pbFacingTile
     return false if !facing || facing[0]!=$game_map.map_id

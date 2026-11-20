@@ -1,3 +1,4 @@
+#pk code
 module AzureFramePacing
   HIGH_RESOLUTION_TIMER = 2
   TIMER_ACCESS = 0x00100002  # SYNCHRONIZE | TIMER_MODIFY_STATE
@@ -66,8 +67,7 @@ module AzureFramePacing
   def self.after_frame(previous_frame, frame_count)
     return if @frozen || !@timer
     if frame_count == previous_frame + 1
-      # The engine sets its origin before swapping buffers. Start just after
-      # that point so its existing limiter has no coarse wait left to perform.
+      # Start the timer just after the engine presents the frame.
       @deadline ||= now + PHASE_MARGIN_NS
     else
       reset
@@ -108,7 +108,6 @@ module AzureFramePacing
       return
     end
     config = defined?(CFG) ? CFG.to_hash : {}
-    # Leave explicit engine timing overrides in control.
     return if config["fixedFramerate"].to_i != 0 || config["syncToRefreshrate"]
     graphics.prepend(GraphicsHooks)
     Kernel.at_exit { release_timer }

@@ -1,6 +1,4 @@
-# Read-only bridge from the in-game debug menu to Azure's preservation audit.
-# It validates source schemas, references, contracts, and compiled-data freshness
-# without compiling or changing PBS/compiled data.
+#pk code
 module AzurePBSValidator
   AUDIT_PATH="tools/preservation/Audit-Azure.ps1"
   LOG_PATH="tools/preservation/pbs_validation.log"

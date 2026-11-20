@@ -1,9 +1,4 @@
-# Lightweight runtime cache for immutable compiled data.
-#
-# Rejuvenation keeps its compiled registries in a Cache_Game object. Azure's
-# data formats and public APIs remain unchanged here; callers opt in through
-# pbCachedData for read-only access. The file signature invalidates entries
-# automatically after a compiler/editor writes a new .dat file.
+#pk code
 module AzureDataCache
   def self.file_key(path)
     return path.to_s.gsub("\\","/").downcase
@@ -19,9 +14,7 @@ module AzureDataCache
     @entries={} if !@entries
     key=file_key(path)
     entry=@entries[key]
-    # Packaged/release data is immutable for the lifetime of the process. Avoid
-    # File.mtime/File.size system calls on every hot cached lookup there. Debug
-    # builds retain signature checks so compiler/editor writes reload at once.
+    # Check for file edits only in debug mode.
     if entry && (!defined?($DEBUG) || !$DEBUG)
       return entry[1]
     end
@@ -37,9 +30,6 @@ module AzureDataCache
     return data
   end
 
-  # Signature-aware cache for immutable non-Marshal formats. The caller owns
-  # parsing, while this module retains the same release/debug invalidation and
-  # statistics behavior as load_data-backed entries.
   def self.fetch(path)
     @entries={} if !@entries
     key=file_key(path)

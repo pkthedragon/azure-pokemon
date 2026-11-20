@@ -1,6 +1,7 @@
 #####MODDED
 def aGetDrawnTextWOutline(outline, sText)
   bitmap = Bitmap.new(Graphics.width, 24)
+  #pk code
   font_style = $VersionStyles[$PokemonSystem.font]
   bitmap.font.name = font_style
   size = MessageConfig::ModernMkxpFonts ? MessageConfig::MkxpClockFontSizes.fetch(font_style.first,24) : 24

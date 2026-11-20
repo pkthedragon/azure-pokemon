@@ -1160,7 +1160,7 @@ def pbLoadPokemonBitmapSpecies(pokemon, species, back=false)
   return ret
 end
 
-# Furfrou icons use the original trim order instead of Azure's form order.
+#pk code
 FURFROU_ICON_TRIM_ORDER=[0,2,1,9,8,4,5,7,6,3].freeze
 
 def pbPokemonSpriteForm(species,form,icon: false)
@@ -1181,6 +1181,7 @@ end
 def pbCheckPokemonBitmapFiles(params)
   species=params[0]
   back=params[1]
+  #pk code
   form=pbPokemonSpriteForm(species,params[4])
   species_name=getConstantName(PBSpecies,species) rescue nil
   directories={}
@@ -1214,7 +1215,7 @@ def pbCheckPokemonBitmapFiles(params)
          back ? "b" : "",
          (tform!="" ? "_"+tform : ""),
          tshadow ? "_shadow" : "")
-      ret=AzureBitmapFiles.resolve(bitmapFileName,directories)
+      ret=pbResolveBitmap(bitmapFileName,directories)
       return ret if ret
     end
     bitmapFileName=sprintf("Graphics/Battlers/%03d%s%s%s%s%s",
@@ -1224,7 +1225,7 @@ def pbCheckPokemonBitmapFiles(params)
        back ? "b" : "",
        (tform!="" ? "_"+tform : ""),
        tshadow ? "_shadow" : "")
-    ret=AzureBitmapFiles.resolve(bitmapFileName,directories)
+    ret=pbResolveBitmap(bitmapFileName,directories)
     return ret if ret
   end
   return nil
@@ -1255,6 +1256,7 @@ def pbCheckPokemonIconFiles(params,egg=false)
     end
     return pbResolveBitmap(bitmapFileName)
   else
+    #pk code
     form=pbPokemonSpriteForm(species,params[3],icon: true)
     species_name=getConstantName(PBSpecies,species) rescue nil
     directories={}
@@ -1287,7 +1289,7 @@ def pbCheckPokemonIconFiles(params,egg=false)
            tshiny ? "s" : "",
            (tform!="" ? "_"+tform : ""),
            tshadow ? "_shadow" : "")
-        ret=AzureBitmapFiles.resolve(bitmapFileName,directories)
+        ret=pbResolveBitmap(bitmapFileName,directories)
         return ret if ret
       end
       bitmapFileName=sprintf("Graphics/Icons/icon%03d%s%s%s%s",
@@ -1296,7 +1298,7 @@ def pbCheckPokemonIconFiles(params,egg=false)
          tshiny ? "s" : "",
          (tform!="" ? "_"+tform : ""),
          tshadow ? "_shadow" : "")
-      ret=AzureBitmapFiles.resolve(bitmapFileName,directories)
+      ret=pbResolveBitmap(bitmapFileName,directories)
       return ret if ret
     end
   end

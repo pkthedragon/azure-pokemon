@@ -17,7 +17,8 @@ module Graphics
       duration = 0
       filename=""
     elsif filename && filename!=""
-      filename=AzureBitmapFiles.resolve(filename) || filename
+      #pk code
+      filename=pbResolveBitmap(filename) || filename
     end
     begin
       transition_KGC_SpecialTransition(duration, filename, vague)
@@ -820,6 +821,7 @@ class RisingSplash
     @blacksprite.bitmap = @blackbitmap
     @bubblesuby = @height*2/@numframes
     @splashsuby = @bubblesuby*2
+    #pk code
     @blacksuby  = @height/[(@numframes*0.1).floor,1].max
     @wave_rate = 50.0/@numframes
   end
@@ -1329,6 +1331,7 @@ class WavyThreeBallUp
       @ballsprites[i].bitmap = @ballbitmap
     end
     @suby = (@height*3.5)/(@numframes*0.6)
+    #pk code
     @angmult = 200.0/@numframes
   end
   def disposed?; @disposed; end
@@ -1428,6 +1431,7 @@ class WavySpinBall
     @blacksprite.oy = @blackbitmap.height/2
     @blacksprite.visible = false
     @blacksprite.bitmap = @blackbitmap
+    #pk code
     @angmult = 200.0/@numframes
   end
   def disposed?; @disposed; end

@@ -938,12 +938,15 @@ class PokeBattle_Pokemon
     return $pkmn_dex[@species][5]
   end
 
+  #pk code
   def evPool(at_level=level)
-    return [80 + 8 * at_level, 512].min
+    evpool=80+at_level*8
+    return [evpool,512].min
   end
 
   def evStatCap(at_level=level)
-    return [40 + 4 * at_level, 252].min
+    evcap=40+at_level*4
+    return [evcap,252].min
   end
 
   def initializeDefaultEVs
@@ -957,22 +960,25 @@ class PokeBattle_Pokemon
   end
 
   def allocateEarnedEVs(points)
-    # Use the same four-EV increments as the Summary editor.
-    units = [points, evPool - @ev.sum].min.div(4)
-    return if units <= 0
-    stats = baseStats
-    first, second = (0...6).sort_by { |stat| [-stats[stat], stat] }.first(2)
-    cap = evStatCap
-    first_room = [cap - @ev[first], 0].max.div(4)
-    second_room = [cap - @ev[second], 0].max.div(4)
-    # Split the award evenly and use the other eligible stat if one is capped.
-    first_gain = [[(units + 1).div(2), units - second_room].max, first_room].min
-    second_gain = [units - first_gain, second_room].min
-    @ev[first] += first_gain * 4
-    @ev[second] += second_gain * 4
+    evpool=evPool
+    evcap=evStatCap
+    evsum=@ev.sum
+    evunits=[points,evpool-evsum].min.div(4)
+    return if evunits<=0
+    stats=baseStats
+    first,second=(0...6).sort_by { |stat| [-stats[stat],stat] }.first(2)
+    first_space=[evcap-@ev[first],0].max.div(4)
+    second_space=[evcap-@ev[second],0].max.div(4)
+    first_gain=(evunits+1)/2
+    first_gain=evunits-second_space if evunits-first_gain>second_space
+    first_gain=first_space if first_gain>first_space
+    second_gain=[evunits-first_gain,second_space].min
+    @ev[first]+=first_gain*4
+    @ev[second]+=second_gain*4
   end
   private :allocateEarnedEVs
 
+  #pk code
   MYSTIC_GIMMIGHOUL_PROGRESS_MOVES = [
     :HEARTSTAMP, :IRONDEFENSE, :GYROBALL, :GRAVITY, :PURSUIT,
     :REFLECT, :LIGHTSCREEN, :ZENHEADBUTT, :IRONHEAD, :MIRACLE,

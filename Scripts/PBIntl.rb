@@ -365,7 +365,8 @@ class Messages
     end
   end
 
-  # Older message tables and script archives can carry UTF-8 bytes tagged as binary.
+  #pk code
+  # Old message tables can tag UTF-8 as binary.
   def self.utf8Text(text)
     return text if !text.respond_to?(:encoding)
     if text.encoding == Encoding::BINARY

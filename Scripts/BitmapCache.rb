@@ -126,9 +126,8 @@ module RPG
   end
 end
 
-# The native loader requires the actual filename case and can stop at another
-# file with the same prefix. Resolve names for every Bitmap constructor, including
-# direct callers outside BitmapCache, without changing who owns the bitmap.
+#pk code
+# Resolve exact filenames before the native loader attempts a prefix match.
 module AzureBitmapFiles
   EXTENSIONS=[".png",".gif",".jpg",".jpeg",".bmp"].freeze
   IMAGE_EXTENSION=/\.(?:png|gif|jpe?g|bmp)\z/i
@@ -168,8 +167,7 @@ module AzureBitmapFiles
       basename=File.basename(path)
       candidates=[basename]
       candidates.concat(EXTENSIONS.map { |ext| basename+ext }) unless IMAGE_EXTENSION.match?(basename)
-      # Variant searches share one filesystem check per directory. A new
-      # search still validates the directory and sees newly added artwork.
+      # Reuse one directory scan per variant search.
       names=directory_snapshot ? (directory_snapshot[directory] ||= directory_names(directory)) : directory_names(directory)
       candidates.each do |candidate|
         actual=names[candidate.downcase]
@@ -177,8 +175,7 @@ module AzureBitmapFiles
         resolved=File.join(directory,actual)
         return resolved if File.file?(resolved)
       end
-      # Loose directory listings cannot enumerate an encrypted archive. Keep
-      # the existing RGSS/RTP probing available for those installations.
+      # Encrypted archives need the RGSS file probe.
       if respond_to?(:pbTryString,true) &&
          (File.file?("Game.rgssad") || File.file?("Game.rgss2a"))
         candidates.each do |candidate|
@@ -244,6 +241,7 @@ end
 
 module BitmapCache
   @cache = ObjectSpace::WeakMap.new
+  #pk code
   BATTLE_BITMAP_LIMIT = 16 * 1024 * 1024
   FIELD_STEP_SHEET = "Graphics/Animations/DustandGrass".freeze
 
@@ -345,56 +343,49 @@ module BitmapCache
     }
   end
 
-  def self.open_bitmap(path)
-    return BitmapWrapper.new(path)
-  end
-  private_class_method :open_bitmap
-
   def self.load_bitmap(path, hue = 0, failsafe = false)
     cached = true
     path = -canonicalize(path)  # This creates a frozen string from the path, to ensure identical paths are treated as identical.
-    objPath = fromCache(path)
-    if !objPath
+    ret = fromCache(path)
+    if !ret
       begin
-        bm = open_bitmap(path)
-        rescue Hangup
+        ret = BitmapWrapper.new(path)
+      rescue Hangup
         begin
-          bm = open_bitmap(path)
-          rescue
-          raise _INTL("Failed to load the bitmap located at: {1}",path) if !failsafe
-          bm = BitmapWrapper.new(32,32)
-        end
+          ret = BitmapWrapper.new(path)
         rescue
+          raise _INTL("Failed to load the bitmap located at: {1}",path) if !failsafe
+          ret = BitmapWrapper.new(32,32)
+        end
+      rescue
         raise _INTL("Failed to load the bitmap located at: {1}",path) if !failsafe
-        bm = BitmapWrapper.new(32,32)
+        ret = BitmapWrapper.new(32,32)
       end
-      objPath=bm
-      setKey(path,objPath)
-      cached=false
+      setKey(path,ret)
+      cached = false
     end
-    retain_battle_bitmap(path,objPath)
-    if path == FIELD_STEP_SHEET && !objPath.equal?(@field_step_bitmap) && !$INEDITOR
+    #pk code
+    retain_battle_bitmap(path,ret)
+    if path == FIELD_STEP_SHEET && !ret.equal?(@field_step_bitmap) && !$INEDITOR
       # Grass and dust recur after the previous animation has released its copy.
       @field_step_bitmap.dispose if @field_step_bitmap
-      objPath.addRef
-      @field_step_bitmap = objPath
+      ret.addRef
+      @field_step_bitmap = ret
     end
     if hue == 0
-      objPath.addRef if cached
-      return objPath
-    else
-      key = [path, hue]
-      objKey=fromCache(key)
-      if !objKey
-        bitmap= objPath.copy
-        bitmap.hue_change(hue) if hue!=0
-        objKey=bitmap
-        @cache[key]=objKey
-      else
-        objKey.addRef
-      end
-      return objKey
+      ret.addRef if cached
+      return ret
     end
+    key = [path, hue]
+    ret2 = fromCache(key)
+    if ret2
+      ret2.addRef
+    else
+      ret2 = ret.copy
+      ret2.hue_change(hue)
+      @cache[key] = ret2
+    end
+    return ret2
   end
 
   def self.animation(filename, hue)

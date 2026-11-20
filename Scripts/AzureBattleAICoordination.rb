@@ -1,7 +1,6 @@
-# Reconcile the existing scorer's two AI allies before either registers an
-# action. This does not inspect player commands or change battle turn order.
-module AzureBattleAICoordination
-  FIELD_MOVES={
+#pk code
+class PokeBattle_Battle
+  AI_COORDINATION_FIELD_MOVES={
     :REFLECT=>:reflect,:LIGHTSCREEN=>:light_screen,:AURORAVEIL=>:aurora_veil,
     :DUNEDEFENSE=>:arenite_wall,:TAILWIND=>:tailwind,:SAFEGUARD=>:safeguard,
     :MIST=>:mist,:LUCKYCHANT=>:lucky_chant,:WIDEGUARD=>:wide_guard,
@@ -14,20 +13,6 @@ module AzureBattleAICoordination
   }.each_with_object({}) {|(name,group),result|
     result[PBMoves.const_get(name)]=group if PBMoves.const_defined?(name)
   }.freeze
-  FIXED_DAMAGE_FUNCTIONS=[0x6A,0x6B,0x6C,0x6D,0x6E,0x6F,0x70,0x73,0xE1].freeze
-
-  # Capture alternate ordinary-move targets while the real scorer is already
-  # visiting them. Z candidates are deliberately left to the command planner.
-  def pbGetMoveScore(move,user,target,*args)
-    score=super
-    slot=args[3]
-    if @azureAICoordinationRecording && slot.is_a?(Integer) && slot.between?(0,3) &&
-       user && target && @battlers[user.index].equal?(user) &&
-       user.moves[slot].equal?(move) && score.is_a?(Numeric) && args[6].nil?
-      @azureAICoordinationTargetScores[[user.index,slot,target.index]]=score
-    end
-    return score
-  end
 
   def pbAIPrepareTurnCoordination
     @azureAICoordinationPlans={}
@@ -95,7 +80,6 @@ module AzureBattleAICoordination
     return false unless user && !user.isFainted? && pbCanShowCommands?(index) && pbCanShowFightMenu?(index)
     return false if pbOwnedByPlayer?(index) && !@controlPlayer
     return false unless @choices[index] && @choices[index][0]==0
-    return false if respond_to?(:pbAIOrdinaryWild?) && pbAIOrdinaryWild?(user)
     return false if !@opponent && pbIsOpposing?(index) && !user.isbossmon && !user.issossmon
     return true
   end
@@ -189,11 +173,7 @@ module AzureBattleAICoordination
   end
 
   def pbAICoordinationDamageMove?(move,user)
-    return move.basedamage>0 || (move.respond_to?(:pixie_tribute_power) && move.pixie_tribute_power(user)>0)
-  end
-
-  def pbAICoordinationFixedDamageMove?(move)
-    return FIXED_DAMAGE_FUNCTIONS.include?(move.function)
+    return move.basedamage>0 || move.pixie_tribute_power(user)>0
   end
 
   def pbAICoordinationDamagingAction?(entry)
@@ -250,8 +230,8 @@ module AzureBattleAICoordination
 
   def pbAICoordinationPairScore(first,second)
     score=first[:score]+second[:score]
-    group=FIELD_MOVES[first[:move].id]
-    if group && group==FIELD_MOVES[second[:move].id] &&
+    group=AI_COORDINATION_FIELD_MOVES[first[:move].id]
+    if group && group==AI_COORDINATION_FIELD_MOVES[second[:move].id] &&
        !pbAICoordinationDamageMove?(first[:move],first[:user]) &&
        !pbAICoordinationDamageMove?(second[:move],second[:user])
       score-=[first[:score],second[:score]].min*0.95
@@ -265,12 +245,12 @@ module AzureBattleAICoordination
       move,user=entry[:move],entry[:user]
       other=partner[:move]
       if move.id==PBMoves::HELPINGHAND && !pbAICoordinationDamageMove?(move,user) &&
-         (!pbAICoordinationDamagingAction?(partner) || pbAICoordinationFixedDamageMove?(other))
+         (!pbAICoordinationDamagingAction?(partner) || other.pbFixedDamageMove?)
         score-=entry[:score]
       end
       if [0x4C,0x4F].include?(move.function) && !pbAICoordinationDamageMove?(move,user)
         same_target=!(pbAICoordinationTargets(entry)&pbAICoordinationTargets(partner)).empty?
-        matching=pbAICoordinationDamagingAction?(partner) && !pbAICoordinationFixedDamageMove?(other)
+        matching=pbAICoordinationDamagingAction?(partner) && !other.pbFixedDamageMove?
         if matching
           target=pbAICoordinationTargets(partner).first || pbAIPrimaryTarget(partner[:user])
           physical=other.pbIsPhysical?(other.pbType(other.type,partner[:user],target))
@@ -367,7 +347,6 @@ module AzureBattleAICoordination
         next if icy && (!pbAICoordinationTargets(entry).include?(foe) || pbAICoordinationDamage(entry,foe)<=0)
         speed=foe.pbSpeed
         if icy
-          next unless respond_to?(:pbAIStatChangePreview)
           delta=pbAIStatChangePreview(move,user,foe,PBStats::SPEED,-1)
           next if delta==0
           clone=foe.clone
@@ -395,5 +374,3 @@ module AzureBattleAICoordination
     return value
   end
 end
-
-PokeBattle_Battle.prepend(AzureBattleAICoordination)

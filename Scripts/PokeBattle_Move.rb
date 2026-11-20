@@ -51,6 +51,8 @@ class PokeBattle_Move
   NOREFLECT       = 0x10
   SELFCONFUSE     = 0x20
 
+  FIXEDDAMAGEFUNCTIONS=[0x6A,0x6B,0x6C,0x6D,0x6E,0x6F,0x70,0x73,0xE1].freeze #pk code
+
 ################################################################################
 # Creating a move
 ################################################################################
@@ -1336,6 +1338,11 @@ class PokeBattle_Move
 
   def pbIsMultiHit   # not the same as pbNumHits>1
     return false
+  end
+
+  #pk code
+  def pbFixedDamageMove?
+    return FIXEDDAMAGEFUNCTIONS.include?(@function)
   end
 
   def pbTwoTurnAttack(attacker,checking=false)

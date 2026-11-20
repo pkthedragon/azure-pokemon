@@ -173,6 +173,7 @@ class Spriteset_Map
     @fog.z = 3000
     @reflectedSprites=[]
     @character_sprites = []
+    #pk code
     @azure_tile_overlays = []
     overlays = @map.azure_overlays_by_event_id
     for i in (@map.events.keys | overlays.keys).sort

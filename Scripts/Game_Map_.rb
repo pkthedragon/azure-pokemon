@@ -172,6 +172,7 @@ class Game_Map
     return (x >=-10 and x <= width+10 and y >=-10 and y <= height+10)
   end
 
+  #pk code
   def event_tile_passage(tile_id, bit, strict)
     passage = @passages[tile_id]
     if strict

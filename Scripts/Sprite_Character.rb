@@ -81,6 +81,7 @@ class Sprite_Character < RPG::Sprite
     @alternateCharset=nil
   end
 
+  #pk code
   def loadCharacterCharset(name,hue)
     retain=!$INEDITOR && (@character.equal?($game_player) || @character.move_route_forcing)
     keepCurrent=retain && @charbitmapAnimated && @charbitmap && @charbitmap.length==1
@@ -110,7 +111,8 @@ class Sprite_Character < RPG::Sprite
     name=@character.character_name
     hue=@character.character_hue
     graphic_changed = @tile_id != tileId || @character_name != name || @character_hue != hue
-    # A settled invisible trigger still updates its event logic and can show an animation.
+    #pk code
+    # Invisible triggers still update event logic and animations.
     if !graphic_changed && @character.is_a?(Game_Event) && tileId==0 && name.empty? &&
        @character.animation_id==0 && @loopAnimations.empty? && @animations.none?(&:active?)
       return

@@ -26,8 +26,8 @@ module MessageConfig
      "Power Green Small"=>"Pokemon Emerald Small",
      "Power Clear"=>"Pokemon DP"
   }
+  #pk code
   ModernMkxpFonts = $MKXP && defined?(System) && System.respond_to?(:default_font_family=)
-  # Point sizes calibrated against the bundled fonts in the previous runtime.
   MkxpFontSizes = {
     "PokemonEmerald" => 30,
     "Power Red and Blue" => 38,
@@ -609,7 +609,7 @@ class GifBitmap
     bitmap=nil
     file="" if !file
     file=canonicalize(file)
-    # Blank character graphics use one transparent frame without opening a file.
+    #pk code
     if file.empty? || file.end_with?("/","\\")
       @totalframes=1
       @gifbitmaps=[BitmapWrapper.new(32,32)]
@@ -619,9 +619,7 @@ class GifBitmap
     begin
       bitmap=BitmapCache.load_bitmap(file,hue)
     rescue
-      # Do not hide failures decoding an existing image behind a blank frame.
-      # Missing optional images retain their transparent fallback below.
-      raise if AzureBitmapFiles.resolve(file)
+      raise if pbResolveBitmap(file)
       bitmap=nil
     end
     if bitmap
@@ -1491,8 +1489,9 @@ end
 
 # Finds the real path for an image file.  This includes paths in encrypted
 # archives.  Returns nil if the path can't be found.
-def pbResolveBitmap(x)
-  return AzureBitmapFiles.resolve(x)
+#pk code
+def pbResolveBitmap(x,directories=nil)
+  return AzureBitmapFiles.resolve(x,directories)
 end
 
 # Adds a background to the sprite hash.
@@ -1540,6 +1539,7 @@ def addBackgroundOrColoredPlane(sprites,planename,background,color,viewport=nil)
 end
 
 # Sets a bitmap's font to the system font.
+#pk code
 def pbSetSystemFont(bitmap)
   fontname=MessageConfig.pbGetSystemFontName()
   bitmap.font.name=fontname
@@ -1578,6 +1578,7 @@ def pbSetSmallFont(bitmap)
 end
 
 # Sets a bitmap's font to the system narrow font.
+#pk code
 def pbSetNarrowFont(bitmap)
   fontname=pbNarrowFontName()
   bitmap.font.name=fontname

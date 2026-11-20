@@ -120,6 +120,7 @@ class Scene_Pokegear
     end
     run_menu(commands)
   end
+  #pk code
   def run_menu(commands,command_icons={})
     @buttons=[]
     @menu_index=@menu_index.clamp(0,commands.length-1)
@@ -135,9 +136,10 @@ class Scene_Pokegear
     background=IconSprite.new(0,0)
     background.setBitmap(background_path)
     button_art=AnimatedBitmap.new(button_path)
-    commands.each_with_index do |name,index|
-      y=196-(commands.length*24)+(index*48)
-      @buttons.push(PokegearButton.new(118,y,name,index,@button_viewport,button_art.bitmap,command_icons[index]))
+    for i in 0...commands.length
+      x=118
+      y=196-(commands.length*24)+(i*48)
+      @buttons[i]=PokegearButton.new(x,y,commands[i],i,@button_viewport,button_art.bitmap,command_icons[i])
     end
     @buttons[@menu_index].selected=true
     scroll_to_selected_button

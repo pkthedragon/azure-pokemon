@@ -1,3 +1,4 @@
+#pk code
 module MakerStudioTileOverlays
   EMPTY_METADATA = {}.freeze
 
@@ -6,7 +7,7 @@ module MakerStudioTileOverlays
     return @original_metadata.fetch(map_id, EMPTY_METADATA)
   end
 
-  # Azure's bundled RGSS runtime does not include Ruby's JSON library.
+  # The bundled runtime omits Ruby's JSON library.
   class JsonReader
     TOKEN = /\G[ \t\r\n]*("(?:[^"\\\x00-\x1f]|\\(?:["\\\/bfnrt]|u[0-9a-fA-F]{4}))*"|-?(?:0|[1-9][0-9]*)(?:\.[0-9]+)?(?:[eE][+-]?[0-9]+)?|true|false|null|[{}\[\],:])/
     ESCAPE = /\\u([dD][89a-bA-B][0-9a-fA-F]{2})\\u([dD][c-fC-F][0-9a-fA-F]{2})|\\u([0-9a-fA-F]{4})|\\(["\\\/bfnrt])/

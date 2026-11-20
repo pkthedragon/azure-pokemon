@@ -2321,6 +2321,7 @@ class PokemonScreen
     end
   end
 
+  #pk code
   TYPED_HIDDEN_POWER_MOVES=[
     :HIDDENPOWERNOR,:HIDDENPOWERFIR,:HIDDENPOWERFIG,:HIDDENPOWERWAT,
     :HIDDENPOWERFLY,:HIDDENPOWERGRA,:HIDDENPOWERPOI,:HIDDENPOWERELE,
@@ -2328,14 +2329,6 @@ class PokemonScreen
     :HIDDENPOWERBUG,:HIDDENPOWERDRA,:HIDDENPOWERGHO,:HIDDENPOWERDAR,
     :HIDDENPOWERSTE,:HIDDENPOWERFAI
   ].freeze
-
-  def pbTypedHiddenPowerChoices
-    choices=TYPED_HIDDEN_POWER_MOVES.map do |move|
-      data=PBMoveData.get(move)
-      [PBTypes.getName(data.type),data.id]
-    end
-    return choices.sort_by { |label, _id| label.downcase }
-  end
 
   def pbPartyChangeHiddenPower(pkmn,pkmnid)
     return if !pkmn || pkmn.isEgg?
@@ -2346,12 +2339,17 @@ class PokemonScreen
     end
 
     current_move=pkmn.moves[move_index].id
-    choices=pbTypedHiddenPowerChoices
+    choices=[]
+    for move in TYPED_HIDDEN_POWER_MOVES
+      data=PBMoveData.get(move)
+      choices.push([PBTypes.getName(data.type),data.id])
+    end
+    choices.sort_by! { |entry| entry[0].downcase }
     current_index=choices.index { |_label, id| id==current_move }
     if current_move==PBMoves::HIDDENPOWER
       pbDisplay(_INTL("{1} knows the base Hidden Power. Choose a type to change it to.",pkmn.name))
     end
-    commands=choices.map { |label, _id| label }
+    commands=choices.map { |entry| entry[0] }
     commands.push(_INTL("Cancel"))
     cmd=@scene.pbShowCommands(
       _INTL("Choose a Hidden Power type for {1}.",pkmn.name),commands,current_index || 0)

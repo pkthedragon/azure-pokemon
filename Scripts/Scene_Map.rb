@@ -4,6 +4,7 @@
 #  
 #===============================================================================
 class Scene_Map
+  #pk code
   def spriteset
     if $game_map && $game_map.respond_to?(:map_id)
       current_spriteset=@spritesets[$game_map.map_id]
@@ -51,6 +52,7 @@ class Scene_Map
 
   def updateSpritesets
     @spritesets={} if !@spritesets
+    #pk code
     PBDayNight.with_map_tint do
       @spritesets.delete_if do |map_id,spriteset|
         if !$MapFactory.hasMap?(map_id)
@@ -91,6 +93,7 @@ class Scene_Map
     end
   end
 
+  #pk code
   def offer_mystic_gimmighoul_move
     progress=$game_variables[695].to_i
     return if progress<5 || !$Trainer || $game_temp.in_battle
@@ -295,6 +298,7 @@ class Scene_Map
     end
     $game_player.straighten
     $game_map.update
+    #pk code
     BitmapCache.with_retained_map_bitmaps do
       disposeSpritesets
       createSpritesets

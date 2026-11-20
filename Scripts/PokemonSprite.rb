@@ -1,3 +1,4 @@
+#pk code
 module AzureBattlerSpriteY
   DATA_FILE="Data/battler_sprite_y.txt"
 
