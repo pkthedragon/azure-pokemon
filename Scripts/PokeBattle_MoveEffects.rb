@@ -6268,7 +6268,7 @@ end
 
 
 ################################################################################
-# Hits 2-5 times.
+# Hits three times, or five with Skill Link or Loaded Dice.
 ################################################################################
 class PokeBattle_Move_0C0 < PokeBattle_Move
   def pbIsMultiHit
@@ -6276,19 +6276,8 @@ class PokeBattle_Move_0C0 < PokeBattle_Move
   end
 
   def pbNumHits(attacker)
-    ret=if attacker.hasWorkingAbility(:SKILLLINK)
-      5
-    elsif attacker.hasWorkingItem(:LOADEDDICE)
-      4+@battle.pbRandom(2)
-    else
-      [2,2,2,3,3,3,4,5][@battle.pbRandom(8)]
-    end
-    # Ledian Crest special case
-    if isConst?(attacker.species,PBSpecies,:LEDIAN) && attacker.hasWorkingItem(:LEDICREST) &&
-     isConst?(@id,PBMoves,:COMETPUNCH)
-      ret=ret*4
-    end
-    return ret
+    return 5 if attacker.hasWorkingAbility(:SKILLLINK) || attacker.hasWorkingItem(:LOADEDDICE)
+    return 3
   end
 end
 
@@ -12183,19 +12172,9 @@ class PokeBattle_Move_23C < PokeBattle_Move
 end
 
 ################################################################################
-# Hits 2-5 times, 1.3x damage to targets beneath half health (Curtain's Call)
+# Multihit and 1.3x damage to targets beneath half health (Curtain's Call).
 ################################################################################
-class PokeBattle_Move_23D < PokeBattle_Move
-  def pbIsMultiHit
-    return true
-  end
-
-  def pbNumHits(attacker)
-    return 5 if attacker.hasWorkingAbility(:SKILLLINK)
-    return 4+@battle.pbRandom(2) if attacker.hasWorkingItem(:LOADEDDICE)
-    return [2,2,2,3,3,3,4,5][@battle.pbRandom(8)]
-  end
-
+class PokeBattle_Move_23D < PokeBattle_Move_0C0
   def pbBaseDamageMultiplier(damagemult,attacker,opponent)
     if opponent.hp*2<opponent.totalhp
       return (damagemult*1.3).round

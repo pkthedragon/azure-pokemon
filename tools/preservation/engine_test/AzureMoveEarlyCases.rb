@@ -29,20 +29,33 @@ module AzureMoveEarlyCases
     end
 
     def multi_hit
-      %i[BARRAGE FURYATTACK SPIKECANNON DOUBLESLAP ARMTHRUST FURYSWIPES ROCKBLAST
-         COMETPUNCH PINMISSILE ICICLESPEAR TAILSLAP BULLETSEED].each do |name|
+      %i[BARRAGE FURYATTACK SPIKECANNON DOUBLESLAP ARMTHRUST FURYSWIPES ROCKBLAST BONERUSH
+         COMETPUNCH PINMISSILE ICICLESPEAR TAILSLAP BULLETSEED WATERSHURIKEN SOULJAVELIN
+         CURTAINSCALL NEEDLEBLAST SCALESHOT].each do |name|
         battle(:NONE)
         attack=move(name)
         assert(attack.pbIsMultiHit,"#{name} should be a multi-hit move")
-        numbers=(0...8).map do |roll|
-          @battle.define_singleton_method(:pbRandom) { |_limit| roll }
-          attack.pbNumHits(@user)
-        end
-        equal([2,3,4,5],numbers.uniq)
+        @battle.define_singleton_method(:pbRandom) { |_limit| raise 'Hit count should not roll RNG' }
+        equal(3,attack.pbNumHits(@user))
+        equal(0.0,attack.pbPreviewTwoHitChance(@user))
+        @user.item=PBItems::LOADEDDICE
+        equal(5,attack.pbNumHits(@user))
+        @battle.field.effects[PBEffects::MagicRoom]=3
+        equal(3,attack.pbNumHits(@user))
+        @user.ability=PBAbilities::SKILLLINK
+        equal(5,attack.pbNumHits(@user))
+        @user.effects[PBEffects::GastroAcid]=true
+        equal(3,attack.pbNumHits(@user))
       end
+      battle(:NONE,:NONE,user_species: :LEDIAN)
+      @user.item=PBItems::LEDICREST
+      equal(3,move(:COMETPUNCH).pbNumHits(@user))
       battle(:NONE)
+      @user.ability=PBAbilities::SKILLLINK
+      @user.item=PBItems::LOADEDDICE
       equal(2,move(:TWINEEDLE).pbNumHits(@user))
       kick=move(:TRIPLEKICK)
+      equal(3,kick.pbNumHits(@user))
       kick.pbOnStartUse(@user)
       equal([20,40,60],3.times.map { kick.pbBaseDamage(kick.basedamage,@user,@foe) })
     end

@@ -120,17 +120,9 @@ module AzureMoveEarlyMatrix
         assert(@foe.hp<@foe.totalhp,"#{name} failed to deal damage")
         assert(@scene.messages.include?("Hit 5 times!"),"#{name} did not strike five times")
         early_setup(name,:NONE)
-        attack=move(name)
-        rolls=(0...8).map do |roll|
-          early_roll(roll)
-          attack.pbNumHits(@user)
-        end
-        equal([2,3,4,5],rolls.uniq)
-        @user.item=PBItems::LOADEDDICE
         early_roll(0)
-        equal(4,attack.pbNumHits(@user))
-        early_roll(1)
-        equal(5,attack.pbNumHits(@user))
+        early_use(name)
+        assert(@scene.messages.include?("Hit 3 times!"),"#{name} did not strike three times")
       end
     end
 

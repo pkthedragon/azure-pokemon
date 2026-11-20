@@ -442,18 +442,8 @@ class PokeBattle_Move_235 < PokeBattle_Move
   end
 end
 
-# Scale Shot: 2-5 hits, followed by one Speed increase and one Defense decrease.
-class PokeBattle_Move_236 < PokeBattle_Move
-  def pbIsMultiHit
-    return true
-  end
-
-  def pbNumHits(attacker)
-    return 5 if attacker.hasWorkingAbility(:SKILLLINK) || attacker.hasWorkingItem(:LOADEDDICE)
-    chances=[2,2,3,3,4,5]
-    return chances[@battle.pbRandom(chances.length)]
-  end
-
+# Scale Shot also raises Speed and lowers Defense once per use.
+class PokeBattle_Move_236 < PokeBattle_Move_0C0
   def pbOnStartUse(attacker)
     @azure_scale_shot_changes_applied=false
     return true
@@ -1764,17 +1754,7 @@ class PokeBattle_Move_24B < PokeBattle_Move
 end
 
 # Needle Blast embeds one needle per hit for the end-of-round processor.
-class PokeBattle_Move_24D < PokeBattle_Move
-  def pbIsMultiHit
-    return true
-  end
-
-  def pbNumHits(attacker)
-    return 5 if attacker.hasWorkingAbility(:SKILLLINK) || attacker.hasWorkingItem(:LOADEDDICE)
-    chances=[2,2,3,3,4,5]
-    return chances[@battle.pbRandom(chances.length)]
-  end
-
+class PokeBattle_Move_24D < PokeBattle_Move_0C0
   def pbEffect(attacker,opponent,hitnum=0,alltargets=nil,showanimation=true)
     ret=super(attacker,opponent,hitnum,alltargets,showanimation)
     if opponent.damagestate.calcdamage>0 && !opponent.damagestate.substitute

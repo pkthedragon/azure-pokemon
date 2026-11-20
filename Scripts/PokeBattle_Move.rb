@@ -2943,13 +2943,6 @@ class PokeBattle_Move
     when 0x215 then return @id==PBMoves::GILDEDARROWS ? 1.0 : 0.0
     when 0x247 then return attacker.effects[PBEffects::CellSplitter]==0 ? 1.0 : 0.0
     when 0x17E then return pbDragonDartTargetting(attacker).length==1 ? 1.0 : 0.0
-    when 0xC0,0x23D
-      return 0.0 if attacker.hasWorkingAbility(:SKILLLINK) || attacker.hasWorkingItem(:LOADEDDICE)
-      return 0.0 if @id==PBMoves::COMETPUNCH && isConst?(attacker.species,PBSpecies,:LEDIAN) &&
-        attacker.hasWorkingItem(:LEDICREST)
-      return 3.0/8
-    when 0x236,0x24D
-      return attacker.hasWorkingAbility(:SKILLLINK) || attacker.hasWorkingItem(:LOADEDDICE) ? 0.0 : 1.0/3
     when 0xC1
       # Beat Up consumes the current participant before applying this modifier.
       # Only the hit leaving two participants receives the bonus; weight that

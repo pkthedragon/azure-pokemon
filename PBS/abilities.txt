@@ -458,7 +458,7 @@ Description = Powers up moves of the same type.
 [SKILLLINK]
 LegacyAbilityID = 92
 Name = Skill Link
-Description = Increases the frequency of multi-strike moves.
+Description = Moves like Bullet Seed hit 5 times.
 #-------------------------------
 [HYDRATION]
 LegacyAbilityID = 93

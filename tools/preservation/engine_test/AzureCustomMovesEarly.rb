@@ -266,11 +266,6 @@ module AzureCustomMovesEarly
     test(suite,:CURTAINSCALL) do
       battle(:NOGUARD,:NONE,user_moves: [:CURTAINSCALL],foe_species: :SNORLAX)
       attack=move(:CURTAINSCALL)
-      results=(0...8).map do |roll|
-        @battle.define_singleton_method(:pbRandom) { |limit| roll % limit }
-        attack.pbNumHits(@user)
-      end
-      equal([2,3,4,5],results.uniq)
       @foe.instance_variable_set(:@totalhp,200)
       @foe.hp=100
       equal(100,attack.pbBaseDamageMultiplier(100,@user,@foe))

@@ -344,13 +344,15 @@ module AzureCatalogItems
         return "weight #{baseline} -> #{baseline/2}; suppressed to baseline"
       when :LOADEDDICE
         battle(:NONE,:NONE)
-        @battle.define_singleton_method(:pbRandom) { |_limit| 0 }
         attack=move(:BULLETSEED)
         baseline=attack.pbNumHits(@user)
         equip(id)
         held=attack.pbNumHits(@user)
-        assert(baseline==2 && held>=4,"Unexpected multistrike counts #{baseline} -> #{held}")
-        return "Bullet Seed rolled #{baseline} hits without the item and #{held} with it"
+        @battle.field.effects[PBEffects::MagicRoom]=3
+        equal(3,baseline)
+        equal(5,held)
+        equal(3,attack.pbNumHits(@user))
+        return "Bullet Seed hits #{baseline} times without the item and #{held} with it"
       when :COVERTCLOAK
         battle(:NOGUARD,:NONE,foe_species: :SNORLAX)
         equip(id,@foe)

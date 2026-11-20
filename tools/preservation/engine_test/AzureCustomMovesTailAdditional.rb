@@ -47,9 +47,9 @@ module AzureCustomMovesTailAdditional
       @user.pbUseMove([1,0,@user.moves[0],@foe.index])
       assert(@scene.messages.any? { |message| message.include?("Hit 5 times!") },"Soul Javelin did not hit five times with Skill Link")
       @user.ability=PBAbilities::BALLFETCH
-      equal(2,javelin.pbNumHits(@user))
+      equal(3,javelin.pbNumHits(@user))
       @user.item=PBItems::LOADEDDICE
-      equal(4,javelin.pbNumHits(@user))
+      equal(5,javelin.pbNumHits(@user))
     end
 
     suite.test(:SOULSIPHON) do

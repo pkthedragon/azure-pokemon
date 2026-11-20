@@ -119,6 +119,62 @@ module AzureAIReworkedMoveCases
       equal(120,@battle.pbBetterBaseDamage(kick,@user,@foe,100,kick.basedamage))
     end
 
+    suite.test(:AI_MULTI_HIT_DAMAGE) do
+      moves=[:COMETPUNCH,:CURTAINSCALL,:SCALESHOT,:NEEDLEBLAST]
+      battle(:NONE,:NONE,user_moves: moves,user_species: :LEDIAN,foe_species: :LAPRAS)
+      moves.each do |name|
+        attack=move(name)
+        [:NONE,:SKILLLINK].each do |ability|
+          @user.ability=ability==:NONE ? PBAbilities::BALLFETCH : PBAbilities::SKILLLINK
+          @user.item=0
+          [PBTrainerAI.minimumSkill,PBTrainerAI.bestSkill].each do |skill|
+            rough_damage=-> { @battle.pbRoughDamage(attack,@user,@foe,skill,attack.basedamage) }
+            base_power=-> { @battle.pbBetterBaseDamage(attack,@user,@foe,skill,attack.basedamage) }
+            @user.effects[PBEffects::GastroAcid]=true
+            normal_damage=rough_damage.call
+            assert(normal_damage>0 && normal_damage%3==0,"Expected three hits of damage for #{name}")
+            equal(3*attack.basedamage,base_power.call)
+            @user.item=PBItems::LEDICREST
+            equal(normal_damage,rough_damage.call)
+            @user.item=PBItems::LOADEDDICE
+            equal(normal_damage/3*5,rough_damage.call)
+            equal(5*attack.basedamage,base_power.call)
+            @user.effects[PBEffects::GastroAcid]=false
+            equal(normal_damage/3*5,rough_damage.call)
+            @user.effects[PBEffects::Embargo]=1
+            equal(ability==:SKILLLINK ? normal_damage/3*5 : normal_damage,rough_damage.call)
+            @user.effects[PBEffects::Embargo]=0
+            @user.item=0
+          end
+        end
+      end
+      curtain=move(:CURTAINSCALL)
+      @user.ability=PBAbilities::BALLFETCH
+      @foe.hp=@foe.totalhp/3
+      equal((curtain.basedamage*1.3).round*3,@battle.pbBetterBaseDamage(curtain,@user,@foe,100,curtain.basedamage))
+    end
+
+    suite.test(:AI_MULTI_HIT_ITEM_AND_ABILITY) do
+      battle(:NONE,:SKILLLINK,user_moves: [:KNOCKOFF,:GASTROACID],foe_moves: [:COMETPUNCH,:FLAMETHROWER])
+      disrupt=move(:GASTROACID)
+      skill_link=@battle.getAbilityDisruptScore(disrupt,@user,@foe,100)
+      assert(@battle.pbAIFiveHitContactMove?(@foe),"Skill Link's five contact hits should invite contact punishment")
+      @foe.item=PBItems::PUNCHINGGLOVE
+      assert(!@battle.pbAIFiveHitContactMove?(@foe),"Punching Glove should prevent contact punishment")
+      @foe.item=PBItems::LOADEDDICE
+      backed_up=@battle.getAbilityDisruptScore(disrupt,@user,@foe,100)
+      assert(skill_link>backed_up,"Loaded Dice should reduce the value of disrupting Skill Link")
+      redundant_dice=ai_score(:KNOCKOFF)
+      @foe.ability=PBAbilities::BALLFETCH
+      assert(ai_score(:KNOCKOFF)>redundant_dice,"Knock Off should value removing useful Loaded Dice")
+      assert(@battle.pbAIFiveHitContactMove?(@foe),"Loaded Dice's five contact hits should invite contact punishment")
+      moves=@battle.pbAIKnownMoves(@foe)
+      assert(@battle.checkAIbest(moves,1,[PBTypes::FLYING]),"Switching AI should see five-hit Comet Punch as strongest")
+      @foe.effects[PBEffects::Embargo]=1
+      assert(!@battle.pbAIFiveHitContactMove?(@foe),"A suppressed item should leave three contact hits")
+      assert(@battle.checkAIbest(moves,1,[PBTypes::FIRE]),"Switching AI should see Flamethrower beat three-hit Comet Punch")
+    end
+
     suite.test(:AI_REWORKED_SWALLOW) do
       battle(:NONE,:NONE,user_moves: [:SWALLOW],foe_species: :LAPRAS)
       equal(0,ai_score(:SWALLOW))

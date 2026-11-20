@@ -837,7 +837,7 @@
 871,TYPHCREST,Typhlosion Crest,6,0,"Atk scales with SpAtk, and contact moves do additional fire damage.",0,0,13,
 872,FERACREST,Feraligatr Crest,6,0,First move has higher priority. Biting moves deal more damage.,0,0,13,
 873,RAMPCREST,Rampardos Crest,6,0,"It helps Rampardos always hang on with 1HP regardless of HP, once per battle.",0,0,13,
-874,LEDICREST,Ledian Crest,6,0,It helps Ledian to punch four times at once. Effects occur on first two hits.,0,0,13,
+874,LEDICREST,Ledian Crest,6,0,Ledian's single-hit punches strike 4 times. Added effects can occur on the first 2 hits.,0,0,13,
 875,ARIACREST,Ariados Crest,6,0,It increases Ariados' Speed by 1.5x and always hit critically if target is slowed/poisoned.,0,0,13,
 876,SPIRITCREST,Spiritomb Crest,6,0,"It makes Spiritomb stronger for each defeated ally, and recovers health based on KO'd enemies.",0,0,13,
 877,WHISCREST,Whiscash Crest,6,0,Nullifies damage and boosts Attack when hit by a Grass-type move.,0,0,13,
@@ -908,7 +908,7 @@
 946,TM124,TM115,4,0,The target is slugged by a punch thrown with muscle-packed power.,3,0,0,MEGAPUNCH
 947,TM125,TM116,4,150000,The target is attacked by a kick launched with muscle-packed power.,3,0,0,MEGAKICK
 948,TM126,TM117,4,0,Numerous coins are hurled at the target to inflict damage. Money is earned after the battle.,3,0,0,PAYDAY
-949,TM127,TM118,4,0,Sharp spikes are shot at the target in rapid succession. They hit two to five times in a row.,3,0,0,PINMISSILE
+949,TM127,TM118,4,0,Hits 3 times (5 with Skill Link or Loaded Dice). Piercing.,3,0,0,PINMISSILE
 950,TM128,TM119,4,0,The user scatters curious leaves that chase the target. This attack never misses.,3,0,0,MAGICALLEAF
 951,TM129,TM120,4,0,"In this two-turn attack the user gathers light, and fills a blade with the light's energy, attacking the target on the next turn.",3,0,0,SOLARBLADE
 952,TM130,TM121,4,0,The target becomes trapped within a fierce vortex of fire that rages for four to five turns.,3,0,0,FIRESPIN
@@ -921,10 +921,10 @@
 959,TM137,TM128,4,0,This attack move varies in power and type depending on the weather.,3,0,0,WEATHERBALL
 960,TM138,TM129,4,0,"The user feigns crying to fluster the target, harshly lowering its Sp. Def stat.",3,0,0,FAKETEARS
 961,TM139,TM130,4,0,The user traps the target inside a harshly raging sandstorm for four to five turns.,3,0,0,SANDTOMB
-962,TM140,TM131,4,0,The user forcefully shoots seeds at the target two to five times in a row.,3,0,0,BULLETSEED
-963,TM141,TM132,4,0,The user launches sharp icicles at the target two to five times in a row,3,0,0,ICICLESPEAR
+962,TM140,TM131,4,0,Hits 3 times (5 with Skill Link or Loaded Dice). Bomb.,3,0,0,BULLETSEED
+963,TM141,TM132,4,0,Hits 3 times (5 with Skill Link or Loaded Dice). Piercing.,3,0,0,ICICLESPEAR
 964,TM142,TM133,4,0,The user attacks by hurling a blob of mud at the target. This also lowers the target's Speed stat.,3,0,0,MUDSHOT
-965,TM143,TM134,4,0,The user hurls hard rocks at the target. Two to five rocks are launched in a row.,3,0,0,ROCKBLAST
+965,TM143,TM134,4,0,Hits 3 times (5 with Skill Link or Loaded Dice). Bomb.,3,0,0,ROCKBLAST
 966,TM144,TM135,4,0,"If the target's HP is half or less, this attack will hit with double the power.",3,0,0,BRINE
 967,TM145,TM136,4,0,"If the target has already taken some damage in the same turn, this attack's power is doubled",3,0,0,ASSURANCE
 968,TM146,TM137,4,0,The user employs its psychic power to switch changes to its Attack and Sp. Atk stats with the target.,3,0,0,POWERSWAP
@@ -937,7 +937,7 @@
 975,TM153,TM144,4,0,A slashing attack with a poisonous blade that may also poison the target. Critical hits land more easily.,3,0,0,CROSSPOISON
 976,TM154,TM145,4,0,This relentless attack does massive damage to a target affected by status conditions.,3,0,0,HEX
 977,TM155,TM146,4,0,The user cuts its target with sharp shells. This may also lower the target's Defense stat.,3,0,0,RAZORSHELL
-978,TM156,TM147,4,0,The user attacks by striking the target with its hard tail. It hits the target two to five times in a row.,3,0,0,TAILSLAP
+978,TM156,TM147,4,0,Hits 3 times (5 with Skill Link or Loaded Dice).,3,0,0,TAILSLAP
 979,TM157,TM148,4,0,"The user vanishes somewhere, then strikes the target on the next turn. This move hits even if the target protects itself.",3,0,0,PHANTOMFORCE
 980,TM158,TM149,4,0,The user steals the target's HP with a kiss. The user's HP is restored by over half of the damage taken by the target.,3,0,0,DRAININGKISS
 981,TM159,TM150,4,100000,The user turns the ground to grass for five turns. This restores the HP of Pokémon on the ground a little every turn and powers up Grass-type moves.,3,0,0,GRASSYTERRAIN
@@ -1031,7 +1031,7 @@
 1073,ABILITYSHIELD,Ability Shield,1,1200,An item to be held by a Pokémon. This rather unique-looking shield protects the holder from having its Ability changed.,0,0,0
 1074,PUNCHINGGLOVE,Punching Glove,1,1200,An item to be held by a Pokémon. This protective glove boosts the power of punching moves and prevents direct contact.,0,0,0
 1075,COVERTCLOAK,Covert Cloak,1,1200,"An item to be held by a Pokémon. This hooded cloak conceals the holder, protecting it from the additional effects of moves.",0,0,0
-1076,LOADEDDICE,Loaded Dice,1,1200,"An item to be held by a Pokémon. This loaded dice always rolls a good number, ensuring that multistrike moves hit more times.",0,0,0
+1076,LOADEDDICE,Loaded Dice,1,1200,A held item that makes moves like Bullet Seed hit 5 times instead of 3.,0,0,0
 1077,MIRRORHERB,Mirror Herb,1,1200,"An item to be held by a Pokémon. This herb allows the holder to mirror an opponent's stat increases, but only once.",0,0,0
 1078,BOOSTERENERGY,Booster Energy,1,100,An item to be held by Pokémon with certain Abilities. The energy that fills this capsule boosts the strength of the Pokémon.,0,0,0
 1079,GIMMIGHOULCOIN,Gimmighoul Coin,1,300,A tiny golden coin. It seems that Gimmighoul treasure and hoard these.,0,0,0
