@@ -34,6 +34,12 @@ module MessageConfig
     "Power Red and Green" => 31,
     "Power Clear" => 38
   }.freeze
+  MkxpClockFontSizes = {
+    "PokemonEmerald" => 20,
+    "Power Red and Blue" => 25,
+    "Power Red and Green" => 25,
+    "Power Clear" => 25
+  }.freeze
   @@systemFrame     = nil
   @@defaultTextSkin = nil
   @@systemFont      = nil

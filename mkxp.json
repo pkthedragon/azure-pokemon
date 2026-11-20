@@ -125,7 +125,7 @@
     // "solidFonts": false,
 
     // Match Azure's original pixel-font rendering and text layout.
-    "fontHinting": 2,
+    "fontHinting": 0,
     "fontHeightReporting": 1,
 
 

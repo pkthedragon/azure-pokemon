@@ -1777,7 +1777,8 @@ class PokeBattle_Battler
 
   #>>>>DemICE entered the chat
   def pbHydroplaneActive?
-    return hasWorkingAbility(:HYDROPLANE) && @battle.pbWeather==PBWeather::RAINDANCE &&
+    return hasWorkingAbility(:HYDROPLANE) &&
+      (@battle.pbWeather==PBWeather::RAINDANCE || $fefieldeffect==21) &&
       !hasWorkingItem(:UTILITYUMBRELLA)
   end
 

@@ -144,6 +144,21 @@ module AzureAbilityFixture
     before=@user.hp
     round
     equal(before-@user.totalhp/8,@user.hp)
+
+    battle(:HYDROPLANE,:NONE)
+    $fefieldeffect=21
+    equal(0,@battle.pbWeather)
+    custom_compare(:TACKLE,@user,:HYDROPLANE,1.5)
+    custom_compare(:GUST,@user,:HYDROPLANE,1.0)
+    before=@user.hp
+    round
+    equal(before-@user.totalhp/8,@user.hp)
+
+    @user.item=PBItems::UTILITYUMBRELLA
+    custom_compare(:TACKLE,@user,:HYDROPLANE,1.0)
+    before=@user.hp
+    round
+    equal(before,@user.hp)
   end
 
   test(:BLOODTHIRSTY) do

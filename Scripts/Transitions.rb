@@ -820,8 +820,8 @@ class RisingSplash
     @blacksprite.bitmap = @blackbitmap
     @bubblesuby = @height*2/@numframes
     @splashsuby = @bubblesuby*2
-    @blacksuby  = @height/(@numframes*0.1).floor
-    @angmult = 2/(@numframes/50)
+    @blacksuby  = @height/[(@numframes*0.1).floor,1].max
+    @wave_rate = 50.0/@numframes
   end
   def disposed?; @disposed; end
   def dispose
@@ -848,13 +848,14 @@ class RisingSplash
     if @duration==0
       dispose
     else
-      angadd = (@numframes-@duration)*@angmult
+      wave_frame = (@numframes-@duration)*@wave_rate
+      angadd = wave_frame*2
       amp = 6*angadd/8; amp = 6 if amp>6
       for i in 0...@bgsprites.length
         @bgsprites[i].x = amp*Math.sin((i+angadd)*Math::PI/10)
       end
       @bubblesprite.x = (@width-@bubblebitmap.width)/2
-      @bubblesprite.x -= 32*Math.sin((@numframes-@duration)/(@numframes/50)*3*Math::PI/60)
+      @bubblesprite.x -= 32*Math.sin(wave_frame*3*Math::PI/60)
       @bubblesprite.y -= @bubblesuby
       if @duration<@numframes*0.5
         @splashsprite.y -= @splashsuby
@@ -1328,7 +1329,7 @@ class WavyThreeBallUp
       @ballsprites[i].bitmap = @ballbitmap
     end
     @suby = (@height*3.5)/(@numframes*0.6)
-    @angmult = 4/(@numframes/50)
+    @angmult = 200.0/@numframes
   end
   def disposed?; @disposed; end
   def dispose
@@ -1427,7 +1428,7 @@ class WavySpinBall
     @blacksprite.oy = @blackbitmap.height/2
     @blacksprite.visible = false
     @blacksprite.bitmap = @blackbitmap
-    @angmult = 4/(@numframes/50)
+    @angmult = 200.0/@numframes
   end
   def disposed?; @disposed; end
   def dispose
