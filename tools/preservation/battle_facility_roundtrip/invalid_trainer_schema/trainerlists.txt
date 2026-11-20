@@ -1,3 +1,0 @@
-[DefaultTrainerList]
-Trainers=bad_trainers.txt
-Pokemon=b.txt

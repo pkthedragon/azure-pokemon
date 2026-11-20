@@ -1,3 +1,0 @@
-[DefaultTrainerList]
-Trainers=../outside.txt
-Pokemon=b.txt

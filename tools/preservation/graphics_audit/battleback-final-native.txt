@@ -1,4 +1,0 @@
-LIBRARY metadata field47, snapshot refresh, absent bases PASS
-UPPERCASE alias+extension 18 PASS
-FINAL artwork/terrain/time paths 72 PASS
-result=PASS
