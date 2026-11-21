@@ -100,14 +100,7 @@ class Scene_Map
     return if $game_temp.message_window_showing || $game_temp.player_transferring ||
               $game_temp.transition_processing || pbMapInterpreterRunning? ||
               $game_player.moving? || $game_player.move_route_forcing
-    return if $game_switches[1235] && !$game_switches[1408]
-
-    $Trainer.party.each do |pokemon|
-      move=pokemon&.takeMysticGimmighoulMoveOffer(progress)
-      next if !move
-      pbLearnMove(pokemon,move,true)
-      break
-    end
+    pbOfferMysticGimmighoulMove(progress) #pk code
   end
   private :offer_mystic_gimmighoul_move
 

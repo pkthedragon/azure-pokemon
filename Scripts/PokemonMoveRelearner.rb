@@ -83,6 +83,9 @@ end
 
 def pbGetRelearnableMoves(pokemon, exclude_level1=false)
   return [] if !pokemon || pokemon.isEgg? || (pokemon.isShadow? rescue false)
+  if $game_variables && pokemon.mysticGimmighoul? #pk code
+    pokemon.applyMysticGimmighoulProgress($game_variables[695])
+  end
   moves=[]
   # Check if Pokemon already knows any form of Hidden Power
   knowsHiddenPower = pbKnowsAnyHiddenPower?(pokemon)
