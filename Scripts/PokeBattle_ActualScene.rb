@@ -4158,7 +4158,7 @@ end
               ret=@battle.pbEncodeShiftSelection(activeBattler.index)
               break
             end
-          elsif @battle.pbCanRegisterSwitchAction?(index,true)
+          else
             canswitch=lax ? @battle.pbCanSwitchLax?(index,pkmnindex,true) :
                @battle.pbCanSwitch?(index,pkmnindex,true)
             if canswitch

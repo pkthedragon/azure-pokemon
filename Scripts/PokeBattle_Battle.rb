@@ -272,15 +272,15 @@ module PokeBattle_BattleCommon
           pbRemoveFromParty(battler.index,battler.pokemonIndex)
           battler.pbReset
           battler.participants=[]
+        elsif !@opponent && !singleBattle?
+          #pk code
+          party_index=@party2.index { |pkmn| pkmn.equal?(pokemon) }
+          pbRemoveFromParty(battler.index,party_index) if party_index
+          battler.pbReset
+          battler.participants=[]
+          @decision=4 if !battler.firstLivingAlly
         else
-          if !@opponent && !singleBattle?
-            pbRemoveFromParty(battler.index,battler.pokemonIndex)
-            battler.pbReset
-            battler.participants=[]
-            @decision=4 if pbAllFainted?(@party2)
-          else
-            @decision=4
-          end
+          @decision=4
         end
         if pbIsSnagBall?(ball)
           pokemon.ot=self.pbPlayer.name
@@ -825,20 +825,11 @@ class PokeBattle_Battle
     return ret
   end
 
-  def pbCanRegisterSwitchAction?(idxPokemon, showMessages)
-    alreadyChosen = false
-    eachSameSideBattler(idxPokemon) do |battler|
-      next if !battler || battler.index == idxPokemon
-      if @choices[battler.index] && @choices[battler.index][0] == 2
-        alreadyChosen = true
-        break
-      end
+  #pk code
+  def pbShiftTargeted?(index, except_index=nil)
+    return @choices.each_with_index.any? do |choice, i|
+      i!=except_index && choice[0]==2 && choice[2]==:shift && choice[3]==index
     end
-    if alreadyChosen
-      pbDisplayPaused(_INTL("Only one switch or shift can be chosen per round!")) if showMessages
-      return false
-    end
-    return true
   end
 
   def pbCanShift?(idxPokemon, targetBattlerIndex, showMessages, move_swap: false)
@@ -864,8 +855,12 @@ class PokeBattle_Battle
     end
     return true if move_swap
     return false if !pbCanSwitch?(idxPokemon, -1, showMessages)
-    return false if !pbCanRegisterSwitchAction?(idxPokemon, showMessages)
-    if @choices[targetBattlerIndex] && @choices[targetBattlerIndex][0] == 2
+    #pk code
+    if pbShiftTargeted?(idxPokemon)
+      pbDisplayPaused(_INTL("{1} is already repositioning this round!", @battlers[idxPokemon].pbThis)) if showMessages
+      return false
+    end
+    if @choices[targetBattlerIndex][0]==2 || pbShiftTargeted?(targetBattlerIndex,idxPokemon)
       pbDisplayPaused(_INTL("{1} is already repositioning this round!", targetBattler.pbThis)) if showMessages
       return false
     end
@@ -2515,10 +2510,11 @@ class PokeBattle_Battle
     side=(pbIsOpposing?(battlerIndex)) ? @opponent : @player
     party[partyIndex]=nil
     if !side || !side.is_a?(Array) # Wild or single opponent
-      remaining_indices=party.each_index.select { |index| party[index] }
+      #pk code
       party.compact!
       eachSameSideBattler(battlerIndex) do |battler|
-        new_index=remaining_indices.index(battler.pokemonIndex)
+        next if !battler.pokemon
+        new_index=party.index { |pkmn| pkmn.equal?(battler.pokemon) }
         battler.pokemonIndex=new_index if new_index
       end
     else
@@ -3065,6 +3061,20 @@ class PokeBattle_Battle
   def pbCanSwitch?(idxPokemon,pkmnidxTo,showMessages)
     thispkmn=@battlers[idxPokemon]
     return false if !pbCanSwitchLax?(idxPokemon,pkmnidxTo,showMessages)
+    #pk code
+    if pkmnidxTo>=0
+      if pbShiftTargeted?(idxPokemon)
+        pbDisplayPaused(_INTL("{1} is already repositioning this round!",thispkmn.pbThis)) if showMessages
+        return false
+      end
+      eachSameSideBattler(idxPokemon) do |battler|
+        next if battler.index==idxPokemon
+        choice=@choices[battler.index]
+        next if choice[0]!=2 || choice[2]==:shift || choice[1]!=pkmnidxTo
+        pbDisplayPaused(_INTL("{1} has already been selected.",pbParty(idxPokemon)[pkmnidxTo].name)) if showMessages
+        return false
+      end
+    end
     # UPDATE 11/16/2013
     # Ghost type can now escape from anything
     shadowTagFoe = false
@@ -3080,15 +3090,6 @@ class PokeBattle_Battle
     end
     if thispkmn.hasWorkingAbility(:RUNAWAY)
       return true
-    end
-    isOpposing=pbIsOpposing?(idxPokemon)
-    party=pbParty(idxPokemon)
-    eachActiveBattlerIndex do |i|
-      next if isOpposing!=pbIsOpposing?(i)
-      if choices[i][0]==2 && choices[i][1]==pkmnidxTo
-        pbDisplayPaused(_INTL("{1} has already been selected.",party[pkmnidxTo].name)) if showMessages
-        return false
-      end
     end
     return true if thispkmn.hasWorkingItem(:SHEDSHELL)
     # Colosseum Field
@@ -3152,7 +3153,6 @@ class PokeBattle_Battle
 
   def pbRegisterSwitch(idxPokemon,idxOther)
     return false if !pbCanSwitch?(idxPokemon,idxOther,false)
-    return false if !pbCanRegisterSwitchAction?(idxPokemon,false)
     @choices[idxPokemon][0]=2          # "Switch PokÃ©mon"
     @choices[idxPokemon][1]=idxOther   # Index of other PokÃ©mon to switch with
     @choices[idxPokemon][2]=nil
