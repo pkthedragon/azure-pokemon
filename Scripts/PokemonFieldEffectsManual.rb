@@ -18,13 +18,14 @@ class PokemonFieldEffectsManualScreen
 end
 
 #===============================================================================
-# Main List Scene - Shows all field effects
+# Field Effect Manual list
 #===============================================================================
 class Scene_FieldEffectsManual
+  FIELD_IDS = [1,2,3,4,8,9,13,15,17,18,20,21,23,29,36,37,40,42,46,47].freeze #pk code
+
   def buildFieldMenu
     menu = []
-    fields = FIELDEFFECTDATA.keys.sort #pk code
-    for field in fields
+    for field in FIELD_IDS
       prefix = field.to_s + ". " #pk code
       item = { label: prefix + pbGetFieldEffectName(field), field: field } #pk code
       menu.push(item)
