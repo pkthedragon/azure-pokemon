@@ -2043,6 +2043,8 @@ class PokeBattle_Scene
 
   def pbDisposeSprites
     pbDisposeSpriteHash(@sprites)
+  ensure #pk code
+    @viewport.dispose if @viewport && !@viewport.disposed?
   end
 
   def pbBeginCommandPhase
@@ -4541,15 +4543,20 @@ end
       pbGraphicsUpdate
       pbInputUpdate
     end
-    usersprite.ox=0 if usersprite
-    usersprite.oy=0 if usersprite
-    usersprite.x=olduserx if usersprite
-    usersprite.y=oldusery if usersprite
-    targetsprite.ox=0 if targetsprite
-    targetsprite.oy=0 if targetsprite
-    targetsprite.x=oldtargetx if targetsprite
-    targetsprite.y=oldtargety if targetsprite
-    animplayer.dispose
+  ensure #pk code
+    animplayer.dispose if animplayer
+    if usersprite && !usersprite.disposed?
+      usersprite.ox=0
+      usersprite.oy=0
+      usersprite.x=olduserx
+      usersprite.y=oldusery
+    end
+    if targetsprite && !targetsprite.disposed?
+      targetsprite.ox=0
+      targetsprite.oy=0
+      targetsprite.x=oldtargetx
+      targetsprite.y=oldtargety
+    end
   end
 
   def pbLevelUp(pokemon,battler,oldtotalhp,oldattack,olddefense,oldspeed,

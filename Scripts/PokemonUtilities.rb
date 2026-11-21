@@ -1441,12 +1441,21 @@ end
 ################################################################################
 # Loads music and sound effects
 ################################################################################
+#pk code
 def pbResolveAudioSE(file)
-  puts file
   return nil if !file
-  if RTP.exists?("Audio/SE/"+file,["",".wav",".mp3",".ogg"])
-    return RTP.getPath("Audio/SE/"+file,["",".wav",".mp3",".ogg"])
+  extensions=["",".wav",".mp3",".ogg"]
+  filename="Audio/SE/"+file
+  RTP.eachPathFor(filename) do |path|
+    directory=File.dirname(path)
+    basename=File.basename(path)
+    names=AzureBitmapFiles.directory_names(directory)
+    for ext in extensions
+      actual=names[(basename+ext).downcase]
+      return File.join(directory,actual) if actual && File.file?(File.join(directory,actual))
+    end
   end
+  return RTP.getPath(filename,extensions) if RTP.exists?(filename,extensions)
   return nil
 end
 
@@ -1587,7 +1596,8 @@ def pbCryFile(pokemon)
   if pokemon.is_a?(Numeric)
     filename=sprintf("%sCry",getConstantName(PBSpecies,pokemon)) rescue nil
     filename=sprintf("%03dCry",pokemon) if !pbResolveAudioSE(filename)
-    return filename if pbResolveAudioSE(filename)
+    path=pbResolveAudioSE(filename) #pk code
+    return File.basename(path,File.extname(path)) if path
   elsif !pokemon.isEgg?
     filename=sprintf("%sCry_%d",getConstantName(PBSpecies,pokemon.species),(pokemon.form rescue 0)) rescue nil
     filename=sprintf("%03dCry_%d",pokemon.species,(pokemon.form rescue 0)) if !pbResolveAudioSE(filename)
@@ -1595,7 +1605,8 @@ def pbCryFile(pokemon)
       filename=sprintf("%sCry",getConstantName(PBSpecies,pokemon.species)) rescue nil
     end
     filename=sprintf("%03dCry",pokemon.species) if !pbResolveAudioSE(filename)
-    return filename if pbResolveAudioSE(filename)
+    path=pbResolveAudioSE(filename) #pk code
+    return File.basename(path,File.extname(path)) if path
   end
   return nil
 end
@@ -2392,6 +2403,19 @@ def pbApplyMysticGimmighoulProgress(variable_value)
     next if !pokemon.respond_to?(:applyMysticGimmighoulProgress)
     pokemon.applyMysticGimmighoulProgress(variable_value)
   }
+end
+
+#pk code
+def pbOfferMysticGimmighoulMove(progress=$game_variables[695])
+  return if !$Trainer || progress.to_i<5
+  return if $game_switches[1235] && !$game_switches[1408]
+
+  $Trainer.party.each do |pokemon|
+    move=pokemon&.takeMysticGimmighoulMoveOffer(progress.to_i)
+    next if !move
+    pbLearnMove(pokemon,move,true)
+    break
+  end
 end
 
 # Choose a Pokémon/egg from the party.
