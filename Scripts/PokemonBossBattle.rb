@@ -936,6 +936,7 @@ class PokeBattle_Battle
       sosmon.status = 0 if sosmon.status != 0
       sosmon.statusCount = 0
       sosmon.pokemon = pbLoadSOSMon(sosData[:moninfos][bossmon.currentSOS],sosmon)
+      pbApplyEasyOpponentStats(sosmon.pokemon) if pbIsOpposing?(sosmon.index) #pk code
       sosmon.species = sosmon.pokemon.species
       sosmon.form = sosmon.pokemon.form
       sosmon.ability = sosmon.pokemon.ability
@@ -971,6 +972,7 @@ class PokeBattle_Battle
         sosmon=items[rand(items.length)]
       end
       genwildpoke = pbLoadSOSMon(sosmon,battler)
+      pbApplyEasyOpponentStats(genwildpoke) if pbIsOpposing?(battler.index) #pk code
       @party2.push(genwildpoke)
       side = pbIsOpposing?(battler.index) ? 1 : 0
       player_side_size = pbSideSize(pbBattlerIndex(0,0))

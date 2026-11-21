@@ -313,13 +313,10 @@ def pbLoadTrainerDifficult(trainerid,trainername,partyid=0,procedure=nil)
     for poke in trainer[3]
       boss = poke[TPBOSS].is_a?(Symbol) ? $bosscache[poke[TPBOSS]] : nil
       if boss
-        if $game_variables[:Difficulty_Mode] == 1
-          boss = ((poke[TPBOSS].to_s) +"_EASY").intern
-          boss = poke[TPBOSS] if !$bosscache[boss]
-        elsif $game_variables[:Difficulty_Mode] == 2
+        if $game_variables[:Difficulty_Mode] == 2 #pk code
           boss = ((poke[TPBOSS].to_s) +"_INTENSE").intern
           boss = poke[TPBOSS] if !$bosscache[boss]
-        elsif $game_variables[:Difficulty_Mode] == 0
+        elsif [0,1].include?($game_variables[:Difficulty_Mode]) #pk code
           boss = ((poke[TPBOSS].to_s) +"_NORMAL").intern
           boss = poke[TPBOSS] if !$bosscache[boss]
         end

@@ -38,6 +38,7 @@ module PokeBattle_RecordedBattleModule
 
   def pbStartBattle(canlose=false)
     @properties={}
+    @properties["easyOpponentStats"]=pbEasyOpponentStats? #pk code
     @properties["internalbattle"]=@internalbattle
     @properties["player"]=pbGetTrainerInfo(@player)
     @properties["opponent"]=pbGetTrainerInfo(@opponent)
@@ -183,6 +184,11 @@ module PokeBattle_BattlePlayerModule
        BattlePlayerHelper.pbCreateTrainerInfo(@properties["player"]),
        BattlePlayerHelper.pbCreateTrainerInfo(@properties["opponent"])
     )
+  end
+
+  #pk code
+  def pbEasyOpponentStats?
+    return @properties["easyOpponentStats"]==true
   end
 
   def pbStartBattle(canlose=false)

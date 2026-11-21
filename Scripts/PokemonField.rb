@@ -1102,13 +1102,10 @@ end
 def pbGenerateWildPokemon(species,level)
   bossdata = $bosscache
   bossspecies = species
-  if $game_variables[:Difficulty_Mode] == 1
-    bossspecies = ((species.to_s) +"_EASY").intern
-    bossspecies = species if !bossdata[bossspecies]
-  elsif $game_variables[:Difficulty_Mode] == 2
+  if $game_variables[:Difficulty_Mode] == 2 #pk code
     bossspecies = ((species.to_s) +"_INTENSE").intern
     bossspecies = species if !bossdata[bossspecies]
-  elsif $game_variables[:Difficulty_Mode] == 0
+  elsif [0,1].include?($game_variables[:Difficulty_Mode]) #pk code
     bossspecies = ((species.to_s) +"_NORMAL").intern
     bossspecies = species if !bossdata[bossspecies]
   end

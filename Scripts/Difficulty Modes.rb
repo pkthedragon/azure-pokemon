@@ -2,47 +2,12 @@ module DifficultModes
   # Variable number that control the difficult.
   # To use a different variable, change this. 0 deactivates this script
   VARIABLE=200 
-  # A Normal-only party can override a shared base team without changing the
-  # base fallback used by Easy or Intense (for example, Bruce's Act 1 battle).
+  # Easy and Normal use the same party overrides. #pk code
   NORMAL_PARTY_OFFSET=50
   
   def self.currentMode
     difficultHash={}
-    
-    
-    easyMode = Difficult.new
-    
-    # partyid (six parameter) number for trainer than can have other party.
-    # Trainers loaded this way ignores the levelProcedure.
-    # IN THIS EXAMPLE: If you start a battle versus YOUNGSTER Ben team 1,
-    # the game searches for the YOUNGSTER Ben team 101 (100+1),
-    # if the game founds it loads instead of the team 1.
-    easyMode.idJump = 100
-    
-    # A formula to change all trainers pokémon level. 
-    # This affects money earned in battle.
-    # IN THIS EXAMPLE: Every opponent pokémon that aren't found by idJump value
-    # have the level*0.8 (round down). A pokémon level 6 will be level 4.
-    easyMode.levelProcedure = proc{|level|
-      next level*0.9
-    }
-    
-    # A formula to change all trainers pokémon money.
-    # This is the last formula to apply.
-    # IN THIS EXAMPLE: Multiplier the money given by the opponent by 1.3 (round
-    # down), so if the final money earned is 99, the money will be 128.
-    easyMode.moneyProcedure = proc{|money|
-      next money*1.3
-    }
-    # You can delete any of these three attributes if you didn't want them.
-    
-    # The Hash index is the value than when are in the VARIABLE number value,
-    # the difficult will be ON.
-    # IN THIS EXAMPLE: Only when variable 90 value is 1 than this changes
-    # will occurs 
-    difficultHash[1] = easyMode
-    
-    
+
     hardMode = Difficult.new
     hardMode.idJump = 200
     hardMode.levelProcedure = proc{|level|
@@ -76,7 +41,7 @@ module DifficultModes
       trainer=pbLoadTrainerDifficult(trainerid,trainername,
         partyid + difficultSelected.idJump) if difficultSelected.idJump>0
       procedure = difficultSelected.levelProcedure
-    elsif DifficultModes::VARIABLE>0 && pbGet(DifficultModes::VARIABLE)==0
+    elsif DifficultModes::VARIABLE>0 && [0,1].include?(pbGet(DifficultModes::VARIABLE)) #pk code
       trainer=pbLoadTrainerDifficult(trainerid,trainername,
         partyid + NORMAL_PARTY_OFFSET)
     end
