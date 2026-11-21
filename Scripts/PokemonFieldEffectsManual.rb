@@ -185,17 +185,7 @@ class Scene_FieldEffectsManual_Info
     info.windowskin=nil
     width=info.width-info.borderX-SpriteWindow_Base::TEXTPADDING
     text=fmtescape(Messages.utf8Text(pbGenerateFieldInfoText).gsub("\t","  "))
-    text.sub!(/\A(#-+[^\n]+)/) do |heading|
-      font=info.contents.font
-      original_size=font.size
-      font.size=20
-      while font.size>14 && heading.each_char.sum { |char| info.contents.text_size(char).width }+2>width
-        font.size-=1
-      end
-      heading="<fs=#{font.size}>#{heading}</fs>"
-      font.size=original_size
-      heading
-    end
+    text.sub!(/\A(\d+\.[^\n]+)/,'<fs=20>\1</fs>')
     text.gsub!(/^(\([^\n]+\): *)$/,'<c3=CFDEF4,000000>\1</c3>')
     text=Messages.utf8Text(shadowc3tag(*Field_Note_Header_Colors)+text)
     chars=getFormattedText(info.contents,0,0,width,-1,text,32)

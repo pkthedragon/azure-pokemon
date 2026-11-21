@@ -10,7 +10,7 @@ FIELDEFFECTDATA = {
     :abbr => "ET",
     :message => "The field is hyper-charged!",
     :manualText => [
-      "#----------------- 1. Electric Terrain [ET] -------------------#",
+      "1. Electric Terrain [ET]",
       "\"The field is hyper-charged!\"",
       "(Passive effects by the field.):",
       "*\tDouble shocked Pokemon regain their type at the end of the turn.",
@@ -57,7 +57,7 @@ FIELDEFFECTDATA = {
     :abbr => "GT",
     :message => "The field is in full bloom.",
     :manualText => [
-      "#------------------ 2. Grassy Terrain [GT] ------------------#",
+      "2. Grassy Terrain [GT]",
       "\"The field is in full bloom.\"",
       "",
       "(Passive effects by the field.):",
@@ -105,7 +105,7 @@ FIELDEFFECTDATA = {
     :abbr => "MT",
     :message => "Mist settles on the field.",
     :manualText => [
-      "#------------------- 3. Misty Terrain [MT] --------------------#",
+      "3. Misty Terrain [MT]",
       "\"Mist settles on the field.\"",
       "",
       "(Passive effects by the field.):",
@@ -158,7 +158,7 @@ FIELDEFFECTDATA = {
     :abbr => "DCC",
     :message => "Darkness is gathering...",
     :manualText => [
-      "#---------------- 4. Dark Crystal Cavern [DCC] -----------------#",
+      "4. Dark Crystal Cavern [DCC]",
       "\"Darkness is gathering...\"",
       "(The following moves are affected by this field.):",
       "*\tThese moves increase in base power x1.5:",
@@ -331,7 +331,7 @@ FIELDEFFECTDATA = {
     :abbr => "SF",
     :message => "The field is swamped.",
     :manualText => [
-      "#---------------- 8. Swamp Field [SF] -------------------#",
+      "8. Swamp Field [SF]",
       "\"The field is swamped.\"",
       "(Passive effects by the field.):",
       "*\tAt the end of each turn the speed of each grounded Pokemon is reduced one stage",
@@ -382,7 +382,7 @@ FIELDEFFECTDATA = {
     :abbr => "RBF",
     :message => "What does it mean?",
     :manualText => [
-      "#---------------- 9. Rainbow Field [RBF] -----------------#",
+      "9. Rainbow Field [RBF]",
       "\"What does it mean?\"",
       "(Passive effects by the field.):",
       "*\tThe secondary effect chance of all moves is doubled",
@@ -616,7 +616,7 @@ FIELDEFFECTDATA = {
     :abbr => "IF",
     :message => "The field is covered in ice.",
     :manualText => [
-      "#---------------- 13. Icy Field  [IF] ----------------#",
+      "13. Icy Field  [IF]",
       "\"The field is covered in ice.\"",
       "(Passive effects by the field.):",
       "*\tPhysical positive priority and momentum moves raise Speed.",
@@ -716,7 +716,7 @@ FIELDEFFECTDATA = {
     :abbr => "FOF",
     :message => "Trees fill the arena!",
     :manualText => [
-      "#---------------- 15. Forest Field [FOF] ------------------#",
+      "15. Forest Field [FOF]",
       "\"The field is abound with trees.\"",
       "(The following moves are affected by this field.):",
       "*\tGrass- and Bug-type Pokémon’s Defense is boosted 1.5x.",
@@ -819,7 +819,7 @@ FIELDEFFECTDATA = {
     :abbr => "FF",
     :message => "Machines whir in the background.",
     :manualText => [
-      "#---------------- 17. Factory Field [FAF] -----------------#",
+      "17. Factory Field [FAF]",
       "\"Machines whir in the background.\"",
       " ",
       "(The following moves are affected by this field.):",
@@ -867,7 +867,7 @@ FIELDEFFECTDATA = {
     :abbr => "SCF",
     :message => "Bzzt!",
     :manualText => [
-      "#---------------- 18. Short-circuit Field [SCF] -----------------#",
+      "18. Short-circuit Field [SCF]",
       "\"Bzzt!\"",
       " ",
       "(The following moves are affected by this field.):",
@@ -956,7 +956,7 @@ FIELDEFFECTDATA = {
     :abbr => "AB",
     :message => "Ash and sand line the field.",
     :manualText => [
-      "#---------------- 20. Ashen Beach [AB] -----------------#",
+      "20. Ashen Beach [AB]",
       "\"Ash and sand line the field.\"",
       " ",
       "(Passive effects by the field.):",
@@ -1017,7 +1017,7 @@ FIELDEFFECTDATA = {
     :abbr => "WS",
     :message => "The water's surface is calm.",
     :manualText => [
-      "#---------------- 21. Water Surface [WS] -----------------#",
+      "21. Water Surface [WS]",
       "\"The water's surface is calm.\"",
       " ",
       "(The following moves are affected by this field.):",
@@ -1118,7 +1118,7 @@ FIELDEFFECTDATA = {
     :abbr => "CV",
     :message => "The cave echoes dully...",
     :manualText => [
-      "#---------------- 23. Cave [CV] -----------------#",
+      "23. Cave [CV]",
       "\"The cave echoes dully...\"",
       " ",
       "(The following moves are affected by this field.):",
@@ -1370,7 +1370,7 @@ FIELDEFFECTDATA = {
     :abbr => "HF",
     :message => "The field is blessed!",
     :manualText => [
-      "#---------------- 29. Blessed Field [HF] -----------------#",
+      "29. Blessed Field [HF]",
       "\"The field is blessed!\"",
       "(Passive effects by the field.):",
       "*\tNormal-type moves affect Ghost-type Pokemon.",
@@ -1712,7 +1712,7 @@ FIELDEFFECTDATA = {
     :abbr => "IF",
     :message => "!trats elttaB",
     :manualText => [
-      "#---------------- 36. Inverse Field [IF] -----------------#",
+      "36. Inverse Field [IF]",
       "\"!trats elttaB\"",
       " ",
       "(Passive effects by the field.):",
@@ -1740,7 +1740,7 @@ FIELDEFFECTDATA = {
     :abbr => "PT",
     :message => "The field became mysterious!",
     :manualText => [
-      "#---------------- 37. Psychic Terrain [PT] -----------------#",
+      "37. Psychic Terrain [PT]",
       " ",
       "(Passive effects by the field.):",
       "*\tGravity and Room moves last 8 turns.",
@@ -1885,7 +1885,7 @@ FIELDEFFECTDATA = {
     :abbr => "CF",
     :message => "The field is cursed!",
     :manualText => [
-      "#---------------- 40. Cursed Field [CF] -----------------#",
+      "40. Cursed Field [CF]",
       "\"The field is cursed!'",
       "(Passive effects by the field.):",
       "*\tGhost-type moves affect Normal-type Pokemon.",
@@ -1994,7 +1994,7 @@ FIELDEFFECTDATA = {
     :abbr => "BW",
     :message => "Double, double toil and trouble...",
     :manualText => [
-      "#---------------- 42. Bewitched Woods [BW] ----------------#",
+      "42. Bewitched Woods [BW]",
       "\"Double, double toil and trouble…\"",
       " ",
       "(Passive effects by the field.):",
@@ -2181,7 +2181,7 @@ FIELDEFFECTDATA = {
     :abbr => "BF",
     :message => "The waves lap at the shore.",
     :manualText => [
-      "#--------------- 45. Beach Field [BF] ---------------#",
+      "45. Beach Field [BF]",
       "“The waves lap at the shore.”",
       "",
       "(Passive effects by the field.):",
@@ -2232,7 +2232,7 @@ FIELDEFFECTDATA = {
     :abbr => "LIB",
     :message => "Pages flutter around!",
     :manualText => [
-      "#------------------- 47. Library [LIB] --------------------#",
+      "47. Library [LIB]",
       "\"Pages flutter around!\"\u000b\u000b(Passive effects by the field.):",
       "*\tSilencing lowers speed by x0.5",
       "*\tConfused Pokemon take x2 damage",
