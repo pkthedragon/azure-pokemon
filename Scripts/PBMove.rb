@@ -22,12 +22,11 @@ class PBMoveData
     return (@flags&0x400)!=0 # Sound Flag ("k") needed checkable for substitute
   end
 
+  #pk code
   class << self
-    # Bind the original constructor directly so reloading cannot capture our wrapper.
+    # Use the original constructor on reload.
     define_method(:azure_uncached_new, Class.instance_method(:new))
 
-    # Accept the numeric IDs used by saves/events and the symbolic identifiers
-    # used by sectioned PBS files. Numeric behavior remains the default.
     def normalize_id(value)
       return value if value.is_a?(Numeric)
       begin
@@ -40,9 +39,6 @@ class PBMoveData
       end
     end
 
-    # PBMoveData is immutable through its public API. Reuse one typed view per
-    # compiled move row instead of allocating it repeatedly in battle and AI
-    # loops. A replaced row or reloaded moves.dat invalidates itself safely.
     def new(moveid)
       id=normalize_id(moveid)
       return azure_uncached_new(moveid) if id.nil?
@@ -95,7 +91,7 @@ class PBMoveData
   end
 end
 
-# Helper function to check if a move is any form of Hidden Power
+#pk code
 def pbIsHiddenPowerMove?(move)
   return false if move.nil?
   return move == PBMoves::HIDDENPOWER ||
@@ -105,8 +101,8 @@ end
 class PBMove
   HIDDEN_POWER_PP=5 #pk code
 
-  # Older saves stored either numeric ID of these moves. Use the canonical
-  # ID in battle so move-specific field and ability checks see the same move.
+  #pk code
+  # Keep the old move IDs readable in saves.
   LEGACY_DUPLICATE_MOVES={
     661=>:ORIGINPULSE,
     662=>:PRECIPICEBLADES,
@@ -117,7 +113,6 @@ class PBMove
     668=>:STEAMERUPTION
   }.freeze
 
-  # Migrate retired numeric move IDs when Pokémon from an older save are read.
   RETIRED_MOVE_REPLACEMENTS={
     215=>:SLEEPPOWDER,
     237=>:MUDSLAP,

@@ -21743,3 +21743,28 @@ Battle Start!
 Wild Battle
 ==============================
 ***Round 1***
+==============================
+Battle Start!
+Wild Battle
+==============================
+***Round 1***
+==============================
+Battle Start!
+Wild Battle
+==============================
+***Round 1***
+[The wild Rattata: Tail Whip=0, Quick Attack=0, Pester=0, Bite=0]
+[Prefer Pester]
+[Wheel lost 8 HP, now has 28 HP]
+[Wheel gained 2 HP, now has 30 HP]
+***Round 2***
+[The wild Rattata: Tail Whip=0, Quick Attack=0, Pester=0, Bite=0]
+[Prefer Bite]
+[Wheel lost 11 HP, now has 19 HP]
+[Wheel gained 2 HP, now has 21 HP]
+***Round 3***
+[The wild Rattata: Tail Whip=0, Quick Attack=0, Pester=0, Bite=0]
+[Prefer Bite]
+[Wheel lost 11 HP, now has 10 HP]
+[Wheel gained 2 HP, now has 12 HP]
+***Round 4***

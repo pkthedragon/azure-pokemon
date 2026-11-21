@@ -127,7 +127,7 @@ module RPG
 end
 
 #pk code
-# Resolve exact filenames before the native loader attempts a prefix match.
+# Resolve exact filenames before native prefix matching.
 module AzureBitmapFiles
   EXTENSIONS=[".png",".gif",".jpg",".jpeg",".bmp"].freeze
   IMAGE_EXTENSION=/\.(?:png|gif|jpe?g|bmp)\z/i
@@ -167,7 +167,6 @@ module AzureBitmapFiles
       basename=File.basename(path)
       candidates=[basename]
       candidates.concat(EXTENSIONS.map { |ext| basename+ext }) unless IMAGE_EXTENSION.match?(basename)
-      # Reuse one directory scan per variant search.
       names=directory_snapshot ? (directory_snapshot[directory] ||= directory_names(directory)) : directory_names(directory)
       candidates.each do |candidate|
         actual=names[candidate.downcase]
@@ -175,7 +174,7 @@ module AzureBitmapFiles
         resolved=File.join(directory,actual)
         return resolved if File.file?(resolved)
       end
-      # Encrypted archives need the RGSS file probe.
+      # Use the RGSS probe for encrypted archives.
       if respond_to?(:pbTryString,true) &&
          (File.file?("Game.rgssad") || File.file?("Game.rgss2a"))
         candidates.each do |candidate|
@@ -300,8 +299,6 @@ module BitmapCache
     retained.each {|bitmap| bitmap.dispose}
   end
 
-  # Keep the last hidden-move sheet alive between uses. Only retain an actual
-  # cache entry, since some Pokémon graphics are modified copies.
   def self.retain_hidden_move_bitmap(bitmap)
     return if $INEDITOR || @hidden_move_bitmap.equal?(bitmap)
     @hidden_move_bitmap.dispose if @hidden_move_bitmap
@@ -322,7 +319,7 @@ module BitmapCache
   def self.setKey(key,obj)
     if key.is_a?(String) && obj.is_a?(BitmapWrapper)
       key=-key
-      # WeakMap otherwise loses file paths during GC while sprites still own the bitmap.
+      # Keep the WeakMap key alive with the bitmap.
       obj.cache_key=key
     end
     @cache[key]=obj
@@ -367,7 +364,6 @@ module BitmapCache
     #pk code
     retain_battle_bitmap(path,ret)
     if path == FIELD_STEP_SHEET && !ret.equal?(@field_step_bitmap) && !$INEDITOR
-      # Grass and dust recur after the previous animation has released its copy.
       @field_step_bitmap.dispose if @field_step_bitmap
       ret.addRef
       @field_step_bitmap = ret

@@ -110,9 +110,7 @@ module FileLineData
   end
 end
 
-# Shared, source-aware validation primitives for PBS adapters. These raise
-# before compiler output is written and keep error messages tied to the active
-# file/line or section tracked by FileLineData.
+#pk code
 module AzurePBSValidation
   def self.error(message)
     raise _INTL("{1}\n{2}",message,FileLineData.linereport)
@@ -241,9 +239,7 @@ module AzurePBSValidation
       error(_INTL("{1} contains duplicate flag {2}.",label,flag)) if seen[flag]
       seen[flag]=true
     end
-    # Azure's original DOUBLEKICK row contains an "s" marker. The legacy
-    # compiler ignored it because runtime move flags occupy a-p. Retain that
-    # source token for lossless round trips, but reject it on every other move.
+    # DOUBLEKICK keeps its ignored legacy flag.
     if flags[/s/] && symbol!="DOUBLEKICK"
       error(_INTL("{1} contains legacy ignored flag s, which is preserved only for DOUBLEKICK.",label))
     end
@@ -692,8 +688,7 @@ module AzurePBSValidation
 
   def self.constant_symbol(value,label)
     symbol=required(value,label).to_s
-    # These two mixed-case constants are historical Essentials spellings used
-    # by Azure scripts and saves. Keep only their exact forms grandfathered.
+    # Keep the original Nidoran constants for saves.
     legacyNidoran=(symbol=="NIDORANfE" || symbol=="NIDORANmA")
     if !legacyNidoran && !symbol[/^[A-Z][A-Z0-9_]*$/]
       error(_INTL("{1} must begin with an uppercase letter and contain only uppercase letters, digits, and underscores; got {2}.",label,symbol))
@@ -727,9 +722,6 @@ module AzurePBSValidation
     source(section,"LegacyTrainerTypeID") if section
     normalized[0]=integer(row[0],_INTL("Legacy trainer type ID for {1}",label),0)
     source(section) if section
-    # Azure historically uses case-significant trainer constants such as
-    # POKEMONTRAINER_Troy. They are valid Ruby constants and are referenced by
-    # events/scripts, so preserve their spelling instead of normalizing it.
     normalized[1]=ruby_constant_symbol(row[1],_INTL("Trainer type symbol for {1}",label))
     source(section,"Name") if section
     normalized[2]=required(row[2],_INTL("Trainer type name for {1}",label)).to_s
@@ -1331,8 +1323,6 @@ def pbCompileShadowMoves(outputFile="Data/shadowmoves.dat",installRuntime=true)
         sections[species]=moves if moves.length>0
       end
     else
-      # Preserve the original parser, including its permissive handling of
-      # unknown legacy move names and its four-move limit.
       pbCompilerEachCommentedLine("PBS/shadowmoves.txt"){|line,lineno|
          if line[ /^([^=]+)=(.*)$/ ]
            key=$1
@@ -1354,9 +1344,8 @@ def pbCompileShadowMoves(outputFile="Data/shadowmoves.dat",installRuntime=true)
   return sections
 end
 
-# Azure contains a small set of historical duplicate symbols/IDs that are
-# already baked into saves and events. Their exact memberships are accepted;
-# any additional or changed collision is an authoring error.
+#pk code
+# Keep these duplicate IDs for saves and events.
 AZURE_LEGACY_DUPLICATE_SYMBOLS={
   :pokemon=>{"IRONMOTH"=>[994,994]},
   :abilities=>{
@@ -1372,8 +1361,7 @@ AZURE_LEGACY_DUPLICATE_IDS={
   :pokemon=>{994=>["IRONMOTH","IRONMOTH"]}
 } if !defined?(AZURE_LEGACY_DUPLICATE_IDS)
 
-# Compatibility names used by form scripts but intentionally sharing an
-# existing numeric ability. They aren't separate localized ability records.
+# Form aliases share existing ability IDs.
 AZURE_LEGACY_ABILITY_ALIASES=[
   ["SPIRITED",72],
   ["SNOWVEIL",81],
@@ -1427,9 +1415,7 @@ def pbBattleFacilityConstantID(mod,value,label,allowBlank=false)
   return mod.const_get(text.to_sym)
 end
 
-# Reads one optional facility-Trainer source into Azure's historical six-field
-# arrays. Missing files intentionally remain empty because Azure ships list
-# declarations for facilities whose generated pools have never been authored.
+#pk code
 def pbReadBTTrainerSource(filename)
   result={:records=>[],:names=>[],:begin_speech=>[],:win_speech=>[],
           :lose_speech=>[],:record_lines=>[]}
@@ -1476,8 +1462,7 @@ def pbReadBTTrainerSource(filename)
   return result
 end
 
-# Validates one optional facility-Pokemon source before converting each row to
-# the PBPokemon object stored in trainerlists.dat.
+#pk code
 def pbReadBTPokemonSource(filename)
   records=[]
   recordLines=[]
@@ -2775,7 +2760,7 @@ def pbCompileTrainers(outputFiles=nil,installRuntime=true,messagesOutput=nil)
         poke[TPABILITY]=poke[TPABILITY].to_i
         raise _INTL("Bad abilityflag: {1} (must be 0 or 1 or 2-5)\n{2}",poke[TPABILITY],FileLineData.linereport) if poke[TPABILITY]<0 || poke[TPABILITY]>5
       end
-      # Explicit ability overrides are optional trailing data; keep legacy row lengths.
+      #pk code
       if poke.length>TPABILITYOVERRIDE
         AzurePBSValidation.required(poke[TPABILITYOVERRIDE],"Trainer Pokemon AbilityOverride")
         poke[TPABILITYOVERRIDE]=checkEnumField(poke[TPABILITYOVERRIDE],PBAbilities)
@@ -3447,8 +3432,6 @@ def pbCompileTrainerLists(dataOutput="Data/trainerlists.dat",installRuntime=true
     winSpeech.concat(list[:trainer_data][:win_speech])
     loseSpeech.concat(list[:trainer_data][:lose_speech])
   end
-  # Validation and reference checks finish before either compiled output is
-  # replaced, so malformed authoring data cannot partially install.
   save_data(sections,dataOutput)
   if installRuntime
     MessageTypes.addMessagesAsHash(MessageTypes::TrainerNames,names)
@@ -3538,8 +3521,7 @@ def pbMergePhoneMessageHash(messages,hash)
   for message in messages
     next if !message
     key=Messages.stringToKey(message)
-    # Avoid replacing equal strings: their encoding metadata is part of the
-    # marshaled message database and must remain byte-stable.
+    # Keep the stored encoding of unchanged strings.
     hash[key]=message if !hash[key] || hash[key]!=message
   end
   return hash
@@ -3561,8 +3543,7 @@ def pbCompilePhoneData(dataOutput="Data/phone.dat",installRuntime=true,
   }
   save_data(database,dataOutput)
   if installRuntime
-    # Phone message hashes can contain legacy/localized keys not referenced by
-    # the current source. Update active keys without discarding those entries.
+    # Keep legacy phone message keys.
     runtimeCurrent=true
     for message in messages
       if pbGetMessageFromHash(MessageTypes::PhoneMessages,message)!=message
@@ -5581,14 +5562,11 @@ def pbCompileAnimations
   end
   save_data(pbanims,"Data/PkmnAnimations.rxdata")
   AzureBattleAnimationPack.write(pbanims)
-  # PkmnAnimations is the source for move2anim. Save the derived index last so
-  # its timestamp accurately records that it reflects this animation file.
+  # Save the derived index last for its timestamp.
   save_data(move2anim,"Data/move2anim.dat")
 end
 
-# Each entry retains Azure's existing compiler and compiled file format. This
-# table only describes freshness and dependency relationships so development
-# builds can avoid recompiling unrelated databases.
+#pk code
 AZURE_PBS_COMPILE_STEPS=[
   {:id=>:types,
    :label=>"type data",
@@ -5724,8 +5702,6 @@ rescue SystemCallError
   return {:changed=>true,:reason=>:unreadable_file,:files=>sources+step[:outputs]}
 end
 
-# Returns the ordered set of directly stale datasets and all dependants which
-# must be rebuilt to keep symbolic IDs and compiled references consistent.
 def pbPBSCompilePlan
   scheduled={}
   statuses={}
@@ -5814,8 +5790,7 @@ def pbRefreshAzureCompiledData(plan)
   end
 end
 
-# Compiles only the supplied/current plan. It deliberately excludes
-# pbCompileTrainerEvents, whose map mutation pass belongs to Compile All Data.
+# Compile Trainer Events still runs only in Compile All Data.
 def pbCompileChangedData(plan=nil)
   plan=pbPBSCompilePlan if !plan
   return [] if plan.length==0
@@ -6301,7 +6276,7 @@ def pbAltPBSBuildLegacyPokemonSections(pokemonFile,metricsFile,regionalDexFile)
     if data["Types"] && data["Types"]!=""
       types=strsplit(data["Types"],/\s*,\s*/)
       legacy["Type1"]=types[0]
-      # The CSV parser consumes each type string in place.
+      # Duplicate Type1 before the parser consumes it.
       legacy["Type2"]=(types[1] && types[1]!="") ? types[1] : types[0].dup
     else
       legacy["Type1"]=data["Type1"] || data["LegacyType1"]
@@ -7162,9 +7137,6 @@ def pbExportAltPBSFiles(outputDir="PBS/AltMigration",sourceDir="PBS")
   pbExportAltTrainersPBS(outputDir,sourceDir)
   pbExportAltShadowMovesPBS(outputDir,sourceDir)
   pbExportAltConnectionsPBS(outputDir,sourceDir)
-  # These formats are already sectioned/keyed, or do not yet have a safe
-  # alternate compiler. Include exact copies so the export is a complete,
-  # self-contained authoring snapshot rather than a partial PBS directory.
   passThrough=["types.txt","tm.txt","townmap.txt",
                "phone.txt","trainerlists.txt"]
   for filename in passThrough
@@ -7218,7 +7190,7 @@ def pbLogPBSTool(message)
 rescue
 end
 
-# Creates a new directory and never overwrites the active PBS sources.
+#pk code
 def pbExportNamedPBSSnapshot(sourceDir="PBS",exportRoot="PBS/NamedExport")
   outputDir=pbUniqueTimestampedPBSDirectory(exportRoot)
   pbExportAltPBSFiles(outputDir,sourceDir)
@@ -7257,9 +7229,8 @@ def pbBackupCurrentPBS(targetDir="PBS",backupRoot="PBS/RestoreBackup")
   return backupDir
 end
 
-# Restores only the known active PBS files. The current set is backed up first,
-# and files absent from the selected snapshot are removed from the restored set
-# so split/legacy formats cannot accidentally coexist.
+#pk code
+# Back up the active PBS before restoring.
 def pbRestorePBSBackup(backupDir,targetDir="PBS",backupRoot="PBS/LegacyBackup")
   root=File.expand_path(backupRoot).gsub("\\","/")
   sourceDir=File.expand_path(backupDir).gsub("\\","/")

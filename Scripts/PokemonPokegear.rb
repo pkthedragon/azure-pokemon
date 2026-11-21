@@ -157,7 +157,6 @@ class Scene_Pokegear
     if Input.repeat?(Input::UP) && (Input.trigger?(Input::UP) || @menu_index>0)
       move_menu_cursor((@menu_index-1)%count)
     end
-    # The shoulder buttons go to either end.
     move_menu_cursor(count-1) if Input.repeat?(Input::R)
     move_menu_cursor(0) if Input.repeat?(Input::L)
     update_command

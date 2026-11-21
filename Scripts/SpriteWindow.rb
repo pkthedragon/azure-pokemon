@@ -1539,10 +1539,10 @@ def addBackgroundOrColoredPlane(sprites,planename,background,color,viewport=nil)
 end
 
 # Sets a bitmap's font to the system font.
-#pk code
 def pbSetSystemFont(bitmap)
   fontname=MessageConfig.pbGetSystemFontName()
   bitmap.font.name=fontname
+  #pk code
   modern_size=MessageConfig::MkxpFontSizes[fontname] if MessageConfig::ModernMkxpFonts
   if modern_size
     bitmap.font.size=modern_size
@@ -1578,11 +1578,10 @@ def pbSetSmallFont(bitmap)
 end
 
 # Sets a bitmap's font to the system narrow font.
-#pk code
 def pbSetNarrowFont(bitmap)
   fontname=pbNarrowFontName()
   bitmap.font.name=fontname
-  size=MessageConfig::ModernMkxpFonts && fontname=="Power Green Narrow" ? 32 : 31
+  size=MessageConfig::ModernMkxpFonts && fontname=="Power Green Narrow" ? 32 : 31 #pk code
   bitmap.font.size=size
 end
 

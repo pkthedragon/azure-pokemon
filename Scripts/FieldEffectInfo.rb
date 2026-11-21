@@ -1,5 +1,3 @@
-# Field Effect Information Database
-# Data structure for all field effects and their mechanics
 # Transforming or destroying any field effect grants a x1.3 power bonus.
 
 #pk code
@@ -2282,7 +2280,6 @@ FIELDEFFECTDATA = {
   },
 }
 
-# Helper method to get field effect data by ID
 def pbGetFieldEffectData(fieldID)
   return FIELDEFFECTDATA[pbFieldEffectID(fieldID)] #pk code
 end
@@ -2292,7 +2289,6 @@ def pbFieldEffectID(fieldID)
   return fieldID==50 ? 47 : fieldID
 end
 
-# Helper method to get field effect name
 def pbGetFieldEffectName(fieldID)
   return _INTL("No Field") if fieldID==0 #pk code
   data = pbGetFieldEffectData(fieldID)

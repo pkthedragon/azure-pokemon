@@ -17,7 +17,7 @@ class PokeBattle_Pokemon
   end
 end
 
-# Battle move scoring expects each unused slot to contain the standard empty move.
+#pk code
 def pbFillBossMoveSlots(pokemon)
   4.times { |slot| pokemon.moves[slot] ||= PBMove.new(0) }
 end

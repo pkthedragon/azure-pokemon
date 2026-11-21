@@ -904,6 +904,23 @@ end
     return true
   end
 
+  #pk code
+  unless method_defined?(:azure_move_compat_pbIncreaseStatBasic)
+    alias azure_move_compat_pbIncreaseStatBasic pbIncreaseStatBasic
+    def pbIncreaseStatBasic(stat,increment,triggerBigPecks=true)
+      beforestage=@stages[stat]
+      holder=@effects[PBEffects::StatChangeHolder]
+      beforestored=holder ? holder[stat] : nil
+      ret=azure_move_compat_pbIncreaseStatBasic(stat,increment,triggerBigPecks)
+      holder=@effects[PBEffects::StatChangeHolder]
+      if @stages[stat]>beforestage ||
+         (holder && !beforestored.nil? && holder[stat]>beforestored)
+        @azureStatsRaisedThisRound=true
+      end
+      return ret
+    end
+  end
+
 # UPDATE 11/29/2013
 # Contrary
 # calls reduce stat from here if we have contrary

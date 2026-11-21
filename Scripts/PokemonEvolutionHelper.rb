@@ -1,3 +1,61 @@
+#pk code
+module AzureEvolutionDataCache
+  EVOTYPEMASK=0x3F
+  EVODATAMASK=0xC0
+  EVONEXTFORM=0x00
+  EVOPREVFORM=0x40
+
+  def self.data
+    return AzureDataCache.fetch("Data/evolutions.dat") {|path| parse(path) }
+  end
+
+  def self.parse(path)
+    records=[]
+    pbRgssOpen(path,"rb") {|file|
+      for species in 1..PBSpecies.maxValue
+        file.pos=(species-1)*8
+        offset=file.fgetdw
+        length=file.fgetdw
+        entries=[]
+        if length>0
+          file.pos=offset
+          consumed=0
+          while consumed<length
+            evo=file.fgetb
+            entries.push([evo&EVOTYPEMASK,file.fgetw,file.fgetw,evo&EVODATAMASK].freeze)
+            consumed+=5
+          end
+        end
+        records[species]=entries.freeze
+      end
+    }
+    return records.freeze
+  end
+
+  def self.records(species)
+    return [].freeze if !species || species<=0
+    return data[species] || [].freeze
+  end
+
+  def self.forward(species)
+    ret=[]
+    for record in records(species)
+      ret.push([record[0],record[1],record[2]].freeze) if record[3]==EVONEXTFORM
+    end
+    return ret.freeze
+  end
+
+  def self.previous_record(species)
+    for record in records(species)
+      return record if record[3]==EVOPREVFORM
+    end
+    return nil
+  end
+
+  def self.clear; AzureDataCache.clear("Data/evolutions.dat"); end
+end
+
+
 def pbGetEvolvedFormData(species,pokemon=nil)
   # Alternate evo methods for forms 
   if pokemon!=nil

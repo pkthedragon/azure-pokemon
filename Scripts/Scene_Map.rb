@@ -4,8 +4,8 @@
 #  
 #===============================================================================
 class Scene_Map
-  #pk code
   def spriteset
+    #pk code
     if $game_map && $game_map.respond_to?(:map_id)
       current_spriteset=@spritesets[$game_map.map_id]
       return current_spriteset if current_spriteset && current_spriteset.map==$game_map

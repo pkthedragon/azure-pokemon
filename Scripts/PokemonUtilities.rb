@@ -2572,6 +2572,53 @@ end
 ################################################################################
 # Regional and National Pokédexes
 ################################################################################
+#pk code
+module AzureRegionalDexCache
+  def self.data
+    return AzureDataCache.fetch("Data/regionals.dat") {|path| parse(path) }
+  end
+
+  def self.parse(path)
+    result={:num_regions=>0,:num_species=>0,:regional=>[],:national=>[]}
+    pbRgssOpen(path,"rb") {|file|
+      result[:num_regions]=file.fgetw
+      result[:num_species]=file.fgetw
+      for region in 0...result[:num_regions]
+        forward=[]
+        reverse=[0]
+        for species in 0...result[:num_species]
+          number=file.fgetw
+          forward[species]=number
+          reverse[number]=species if number!=0 && reverse[number].nil?
+        end
+        for index in 0...reverse.length
+          reverse[index]=0 if reverse[index].nil?
+        end
+        result[:regional][region]=forward.freeze
+        result[:national][region]=reverse.freeze
+      end
+    }
+    result[:regional].freeze
+    result[:national].freeze
+    return result.freeze
+  end
+
+  def self.num_regions; return data[:num_regions]; end
+  def self.regional_number(region,national_species)
+    table=data[:regional][region] if region && region>=0
+    return table ? (table[national_species] || 0) : 0
+  end
+  def self.national_number(region,regional_species)
+    table=data[:national][region] if region && region>=0
+    return table ? (table[regional_species] || 0) : 0
+  end
+  def self.all_species(region)
+    table=data[:national][region] if region && region>=0
+    return table || [0].freeze
+  end
+  def self.clear; AzureDataCache.clear("Data/regionals.dat"); end
+end
+
 # Gets the Regional Pokédex number of the national species for the specified
 # Regional Dex.  The parameter "region" is zero-based.  For example, if two
 # regions are defined, they would each be specified as 0 and 1.

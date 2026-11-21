@@ -33,8 +33,7 @@ TPSPDOB       = 31
 TPABILITYOVERRIDE = 32
 TPDEFAULTS = [0,10,0,0,0,0,0,nil,nil,0,false,nil,10,70,nil,false,0,17,0,0,0,0,0,0,false,nil,0,0,0,0,0,0]
 
-# Immutable typed view of one legacy trainer-Pokemon row. The full row remains
-# available through named fields without changing its compiled array layout.
+#pk code
 class PBTrainerPokemonData
   attr_reader :species,:level,:item,:moves,:ability,:gender,:form,:shiny
   attr_reader :nature,:iv,:happiness,:name,:shadow,:ball,:hidden_power
@@ -65,8 +64,7 @@ class PBTrainerPokemonData
   end
 end
 
-# Rejuvenation-style TeamData adapter over Azure's five-field trainer record.
-# It is deliberately read-only; editors use AzureTrainerTeamEditorData below.
+#pk code
 class PBTrainerTeamData
   attr_reader :index,:name,:trainer_type,:party_id,:items,:party
 
@@ -91,10 +89,7 @@ class PBTrainerTeamData
   def key; return [@trainer_type,@name,@party_id].freeze; end
 end
 
-# Rejuvenation stores trainer teams in a nested keyed registry. Keep Azure's
-# compiled array format (and therefore its editor/save compatibility), but
-# build the equivalent lookup index once instead of scanning every trainer for
-# each battle, rematch, debug check, or Trainer Index page.
+#pk code
 module AzureTrainerDataCache
   def self.normalize_type(value)
     return value.to_i if value.is_a?(Numeric) && value.to_i==value
@@ -125,8 +120,7 @@ module AzureTrainerDataCache
       trainer=records[position]
       next if !trainer
       key=[trainer[0],trainer[1],trainer[4]]
-      # The old linear lookup selected the first duplicate. Preserve that
-      # behavior while the audit reports duplicate authoring mistakes.
+      # Keep the first duplicate.
       if !@index.has_key?(key)
         @index[key]=trainer
         @positions[key]=position
@@ -200,9 +194,7 @@ module AzureTrainerDataCache
   end
 end
 
-# Mutable keyed view used by the in-game trainer editor. It owns an independent
-# load_data array, keeps keys synchronized after every mutation, and commits the
-# exact legacy array back to trainers.dat.
+#pk code
 class AzureTrainerTeamEditorData
   attr_reader :records
 
@@ -597,7 +589,7 @@ def pbTrainerRematchKey(trainerid, trainername, trainerparty, battlekind,
           trainerid2,trainername2,trainerparty2]
 end
 
-# Lazy-loaded boss trainer rematches (initialized on first access after all scripts load)
+#pk code
 def pbGetBossTrainerRematches
   $boss_trainer_rematches ||= [
     # Normal terrain battles
@@ -671,8 +663,7 @@ def pbTrainerRematchField(rematch)
   return pbGetBossTrainerFields[rematch]
 end
 
-# Keep encounter history with battle state so finishing a fight does not
-# depend on the Trainer Index screen or the age of the save.
+#pk code
 class PokemonGlobalMetadata
   attr_writer :encounteredTrainers
 
@@ -1243,4 +1234,454 @@ def pbTrainerBattle(trainerid,trainername,endspeech,
   Achievements.incrementProgress("TRAINER_BATTLES",1)
   pbClearBattleRules
   return (decision==1)
+end
+
+#pk code
+class PokemonTrainerIndexScreen
+  def initialize(scene)
+    @scene = scene
+  end
+
+  def pbStartScreen
+    @scene.pbStartScene
+    @scene.pbScene
+    @scene.pbEndScene
+  end
+end
+
+#pk code
+class Scene_TrainerIndex
+  def pbStartScene
+    @sprites = {}
+    @viewport = Viewport.new(0, 0, Graphics.width, Graphics.height)
+    @viewport.z = 99999
+
+    @sprites["background"] = IconSprite.new(0, 0, @viewport)
+    @sprites["background"].setBitmap("Graphics/Pictures/navbg")
+
+    @sprites["header"] = Window_UnformattedTextPokemon.newWithSize(
+      _INTL("Trainer Index"), 94, 0, Graphics.width - 94, 64, @viewport
+    )
+    @sprites["header"].baseColor = Color.new(248, 248, 248)
+    @sprites["header"].shadowColor = Color.new(0, 0, 0)
+    @sprites["header"].windowskin = nil
+
+    @choices = pbGetEncounteredTrainers
+    @sprites["command_window"] = Window_CommandPokemonWhiteArrow.new(@choices, 324)
+    @sprites["command_window"].viewport = @viewport
+    @sprites["command_window"].windowskin = nil
+    @sprites["command_window"].x = 94
+    @sprites["command_window"].y = 64
+    @sprites["command_window"].height = Graphics.height - 64
+
+    pbFadeInAndShow(@sprites)
+  end
+
+  def pbScene
+    loop do
+      Graphics.update
+      Input.update
+      pbUpdateSpriteHash(@sprites)
+
+      if Input.trigger?(Input::B)
+        pbPlayCancelSE()
+        break
+      elsif Input.trigger?(Input::C)
+        index = @sprites["command_window"].index
+        if index == @choices.length - 1  # "Back" option
+          pbPlayCancelSE()
+          break
+        elsif @choices[index] != "???"
+          pbPlayDecisionSE()
+          trainer_key = pbGetTrainerKeyFromIndex(index)
+          pbShowTrainerDetails(trainer_key)
+        else
+          pbPlayBuzzerSE()
+        end
+      end
+    end
+  end
+
+  def pbShowTrainerDetails(trainer_key)
+    scene = Scene_TrainerIndex_Info.new(trainer_key)
+    scene.main
+  end
+
+  def pbGetEncounteredTrainers
+    encountered_trainers = $PokemonGlobal.encounteredTrainers
+
+    $trainerdata = load_data("Data/trainers.dat") if !$trainerdata
+
+    trainers = []
+    @trainer_key_map = []
+
+    $trainerdata.each do |trainer|
+      trainerid = trainer[0]
+      trainername = trainer[1]
+      partyid = trainer[4]
+
+      key = [trainerid, trainername, partyid]
+      @trainer_key_map.push(key)
+
+      trainertype_name = PBTrainers.getName(trainerid) rescue "???"
+
+      if encountered_trainers.include?(key)
+        trainers.push("#{trainertype_name} #{trainername}")
+      else
+        trainers.push("???")
+      end
+    end
+
+    trainers.push(_INTL("Back"))
+    return trainers
+  end
+
+  def pbGetTrainerKeyFromIndex(index)
+    return @trainer_key_map[index]
+  end
+
+  def pbEndScene
+    pbFadeOutAndHide(@sprites)
+    pbDisposeSpriteHash(@sprites)
+    @viewport.dispose
+  end
+end
+
+#pk code
+class Scene_TrainerIndex_Info
+  def initialize(trainer_key)
+    @trainer_key = trainer_key
+    @trainerid = trainer_key[0]
+    @trainername = trainer_key[1]
+    @partyid = trainer_key[2]
+
+    @trainer_data = AzureTrainerDataCache.record(
+      @trainerid,@trainername,@partyid
+    )
+  end
+
+  def main
+    @sprites = {}
+    @viewport = Viewport.new(0, 0, Graphics.width, Graphics.height)
+    @viewport.z = 99999
+
+    @sprites["background"] = IconSprite.new(0, 0, @viewport)
+    @sprites["background"].setBitmap("Graphics/Pictures/navbg")
+
+    info_text = pbGenerateTrainerInfoText
+
+    @sprites["info"] = Window_AdvancedTextPokemon.newWithSize(
+      info_text, 10, 10, Graphics.width - 20, Graphics.height - 20, @viewport
+    )
+    @sprites["info"].baseColor = Color.new(248, 248, 248)
+    @sprites["info"].shadowColor = Color.new(80, 80, 80)
+
+    @scroll_y = 0
+    @max_scroll = [@sprites["info"].contents.height - @sprites["info"].height + 32, 0].max
+
+    pbFadeInAndShow(@sprites)
+
+    loop do
+      Graphics.update
+      Input.update
+      pbUpdateSpriteHash(@sprites)
+
+      if Input.press?(Input::UP) && @scroll_y > 0
+        @scroll_y -= 4
+        @sprites["info"].oy = @scroll_y
+      elsif Input.press?(Input::DOWN) && @scroll_y < @max_scroll
+        @scroll_y += 4
+        @sprites["info"].oy = @scroll_y
+      end
+
+      if Input.trigger?(Input::B) || Input.trigger?(Input::C)
+        pbPlayCancelSE()
+        break
+      end
+    end
+
+    pbFadeOutAndHide(@sprites)
+    pbDisposeSpriteHash(@sprites)
+    @viewport.dispose
+  end
+
+  def pbGenerateTrainerInfoText
+    return "No data available." if !@trainer_data
+
+    text = ""
+
+    trainertype_name = PBTrainers.getName(@trainerid) rescue "Unknown"
+    text << "<ac><b>#{trainertype_name} #{@trainername}</b></ac>\n"
+    if @partyid > 0
+      text << "<ac>(Team #{@partyid})</ac>\n"
+    end
+    text << "\n"
+
+    items = @trainer_data[2]
+    if items && items.length > 0
+      text << "<c2=5080F0F0>ITEMS:</c2>\n"
+      items.each do |item|
+        item_name = PBItems.getName(item) rescue item.to_s
+        text << "• #{item_name}\n"
+      end
+      text << "\n"
+    end
+
+    party = @trainer_data[3]
+    if party && party.length > 0
+      text << "<c2=50F0A050>═══ POKEMON TEAM ═══</c2>\n"
+      text << "Team Size: #{party.length}\n\n"
+
+      party.each_with_index do |poke, i|
+        text << "<c2=50D0D050>Pokemon #{i + 1}:</c2>\n"
+        text << pbFormatPokemonInfo(poke)
+        text << "\n"
+      end
+    end
+
+    text << "\n<ac>Press B to return</ac>"
+
+    return text
+  end
+
+  def pbFormatPokemonInfo(poke)
+    text = ""
+
+    species = poke[TSPECIES]
+    species_name = PBSpecies.getName(species) rescue species.to_s
+    text << "Species: #{species_name}\n"
+    text << "Level: #{poke[TPLEVEL]}\n" if poke[TPLEVEL]
+
+    if poke[TPFORM] && poke[TPFORM] > 0
+      text << "Form: #{poke[TPFORM]}\n"
+    end
+
+    if poke[TPABILITY]
+      text << _INTL("Ability slot: {1}",poke[TPABILITY]) << "\n"
+    end
+
+    if poke[TPITEM] && poke[TPITEM] > 0
+      item_name = PBItems.getName(poke[TPITEM]) rescue poke[TPITEM].to_s
+      text << "Item: #{item_name}\n"
+    end
+
+    if poke[TPNATURE]
+      nature = poke[TPNATURE]
+      if nature.is_a?(Symbol)
+        nature_name = nature.to_s.capitalize
+      elsif nature.is_a?(Integer) && nature > 0
+        nature_name = PBNatures.getName(nature) rescue nature.to_s
+      else
+        nature_name = nil
+      end
+      text << "Nature: #{nature_name}\n" if nature_name
+    end
+
+    if poke[TPGENDER]
+      gender = case poke[TPGENDER]
+      when 0, "M", "m" then "Male"
+      when 1, "F", "f" then "Female"
+      when 2 then "Genderless"
+      else poke[TPGENDER].to_s
+      end
+      text << "Gender: #{gender}\n"
+    end
+
+    if poke[TPSHINY] && (poke[TPSHINY] == true || poke[TPSHINY] == "shiny")
+      text << "Shiny: Yes\n"
+    end
+
+    if poke[TPNAME] && poke[TPNAME].to_s.length > 0
+      text << "Nickname: #{poke[TPNAME]}\n"
+    end
+
+    if poke[TPIV]
+      text << "IVs: #{poke[TPIV]}\n"
+    end
+
+    #pk code
+    ev_values = [poke[TPHPEV],poke[TPATKEV],poke[TPDEFEV],poke[TPSPAEV],poke[TPSPDEV],poke[TPSPEEV]]
+    ev_names = ["HP", "Atk", "Def", "SpA", "SpD", "Spe"]
+    ev_display = ev_values.each_with_index.filter_map { |val, i| "#{ev_names[i]}:#{val}" if val.to_i > 0 }.join(", ")
+    text << "EVs: #{ev_display}\n" if ev_display.length > 0
+
+    if poke[TPHAPPINESS] && poke[TPHAPPINESS] > 0
+      text << "Happiness: #{poke[TPHAPPINESS]}\n"
+    end
+
+    moves = []
+    moves << poke[TPMOVE1] if poke[TPMOVE1] && poke[TPMOVE1] > 0
+    moves << poke[TPMOVE2] if poke[TPMOVE2] && poke[TPMOVE2] > 0
+    moves << poke[TPMOVE3] if poke[TPMOVE3] && poke[TPMOVE3] > 0
+    moves << poke[TPMOVE4] if poke[TPMOVE4] && poke[TPMOVE4] > 0
+
+    if moves.length > 0
+      text << "Moves:\n"
+      moves.each do |move|
+        move_name = PBMoves.getName(move) rescue move.to_s
+        text << "  • #{move_name}\n"
+      end
+    end
+
+    if poke[TPBOSS]
+      text << "Boss Pokemon: #{poke[TPBOSS]}\n"
+    end
+
+    return text
+  end
+end
+
+#pk code
+def pbTesterTeamMenu
+  unless defined?(PBTrainers) && PBTrainers.const_defined?(:TESTER)
+    Kernel.pbMessage(_INTL("PBTrainers::TESTER isn't defined."))
+    return false
+  end
+
+  trainers_data = nil
+  begin
+    trainers_data = load_data("Data/trainers.dat")
+  rescue
+    Kernel.pbMessage(_INTL("Couldn't load Data/trainers.dat. Compile Trainers first."))
+    return false
+  end
+
+  tester_type = PBTrainers::TESTER
+
+  candidate_names = pbGetTrainerNamesForType_Simple(trainers_data, tester_type)
+
+  names = []
+  candidate_names.each do |nm|
+    next if !nm || nm.to_s.strip.empty?
+    next if nm.to_s == "???"
+    if pbTrainerEntryExists?(tester_type, nm, 0)
+      names << nm.to_s
+    end
+  end
+  names.uniq!
+  names.sort_by! { |n| n.downcase }
+
+  if names.empty?
+    Kernel.pbMessage(_INTL("No TESTER teams found.\nMake sure Trainers are compiled and the PBS has TESTER entries."))
+    return false
+  end
+
+  cmd = names + [_INTL("Cancel")]
+  chosen = Kernel.pbShowCommands(nil, cmd, -1)
+  return false if chosen.nil? || chosen < 0 || chosen >= names.length
+
+  team_name = names[chosen]
+  pbApplyTrainerTeamToPlayer(tester_type, team_name, 0)
+  return true
+end
+
+def pbGetTrainerNamesForType_Simple(trainers_data, trainer_type_id)
+  out = []
+
+  begin
+    if trainers_data.is_a?(Array) && trainers_data[trainer_type_id].is_a?(Hash)
+      out.concat(trainers_data[trainer_type_id].keys)
+    end
+  rescue
+  end
+
+  begin
+    if trainers_data.is_a?(Hash) && trainers_data[trainer_type_id].is_a?(Hash)
+      out.concat(trainers_data[trainer_type_id].keys)
+    end
+  rescue
+  end
+
+  begin
+    if trainers_data.is_a?(Hash)
+      trainers_data.keys.each do |k|
+        next unless k.is_a?(Array)
+        next unless k.length >= 2
+        next unless k[0] == trainer_type_id
+        out << k[1]
+      end
+    end
+  rescue
+  end
+
+  begin
+    if trainers_data.is_a?(Array)
+      trainers_data.each do |entry|
+        next if entry.nil?
+        if entry.respond_to?(:trainertype) && entry.respond_to?(:name)
+          out << entry.name if entry.trainertype == trainer_type_id
+        elsif entry.is_a?(Array) && entry.length >= 2
+          out << entry[1] if entry[0] == trainer_type_id
+        end
+      end
+    end
+  rescue
+  end
+
+  out.compact!
+  out.map! { |x| x.to_s }
+  out.uniq!
+  return out
+end
+
+def pbTrainerEntryExists?(trainer_type_id, trainer_name, version=0)
+  return false if trainer_name.nil? || trainer_name.to_s.strip.empty?
+  begin
+    loaded = pbLoadTrainer(trainer_type_id, trainer_name, version)
+    return false if loaded.nil?
+    if loaded.is_a?(Array)
+      party = nil
+      party = loaded[2] if loaded.length >= 3
+      party = loaded[1] if party.nil? && loaded[1].is_a?(Array)
+      return party.is_a?(Array) && party.length > 0
+    end
+    return true
+  rescue
+    return false
+  end
+end
+
+def pbApplyTrainerTeamToPlayer(trainer_type_id, trainer_name, version=0)
+  loaded = pbLoadTrainer(trainer_type_id, trainer_name, version)
+  party = nil
+
+  if loaded.is_a?(Array)
+    party = loaded[2] if loaded.length >= 3
+    party = loaded[1] if party.nil? && loaded[1].is_a?(Array)
+  end
+
+  if !party.is_a?(Array) || party.empty?
+    Kernel.pbMessage(_INTL("Failed to load party for {1}.", trainer_name))
+    return false
+  end
+
+  new_party = []
+  party.each do |pkmn|
+    break if new_party.length >= 6
+    next if pkmn.nil?
+
+    begin
+      mon = pkmn.clone
+    rescue
+      mon = pkmn
+    end
+
+    begin
+      mon.trainerID = $Trainer.id if mon.respond_to?(:trainerID=)
+      mon.ot = $Trainer.name if mon.respond_to?(:ot=)
+    rescue
+    end
+    begin
+      mon.heal if mon.respond_to?(:heal)
+    rescue
+    end
+
+    new_party << mon
+  end
+
+  $Trainer.party.clear
+  new_party.each { |m| $Trainer.party << m }
+
+  Kernel.pbMessage(_INTL("Loaded TESTER team: {1}", trainer_name))
+  return true
 end

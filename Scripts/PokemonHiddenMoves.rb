@@ -367,7 +367,7 @@ def Kernel.pbHeadbutt2(event)
 end
 
 #===============================================================================
-# Displacement Move Encounters (any move that can shake trees/objects)
+# Displacement encounters
 #===============================================================================
 #pk code
 def Kernel.pbDisplacementCheck
@@ -642,35 +642,30 @@ def pbEndSurf(xOffset,yOffset)
   return false
 end
 
+#pk code
 def pbEndSwim(xOffset,yOffset)
   return false if !$PokemonGlobal.respond_to?(:swimming) || !$PokemonGlobal.swimming
-  return false if $PokemonGlobal.surfing  # Don't interfere with surfing
+  return false if $PokemonGlobal.surfing
   x = $game_player.x
   y = $game_player.y
   currentTag = $game_map.terrain_tag(x,y)
   facingTag = Kernel.pbFacingTerrainTag
-  # Check if we're on still water and facing non-water (land transition)
   if pbIsStillWaterTag?(currentTag) && !pbIsWaterTag?(facingTag)
-    # Calculate destination coordinates
     newX = x + xOffset
     newY = y + yOffset
-    # Check if the destination tile is passable from land (including events)
     if !$game_map.valid?(newX, newY)
       return true if !$MapFactory
       return true if !$MapFactory.isPassableFromEdge?(newX, newY)
       return false
     end
-    # Block landing on non-through character events even if swimming is passable
     for event in $game_map.events.values
       next unless event.x == newX && event.y == newY
       next if event.through
       next if event.tile_id && event.tile_id > 0
       return true if event.character_name.to_s.strip != ""
     end
-    # Check if the destination tile itself is passable (ignoring direction from water)
     passable = $game_map.passableStrict?(newX, newY, 0) rescue true
     return true unless passable
-    # Destination is clear, allow movement to proceed
     return false
   end
   return false
