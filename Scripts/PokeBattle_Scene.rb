@@ -17,6 +17,8 @@ def pbPokemonString(pkmn)
         status=" [PAR]"
       when PBStatuses::POISON
         status=" [PSN]"
+      when PBStatuses::CRUSHED #pk code
+        status=" [CRS]"
     end
   end
   return "#{pkmn.name} (Lv. #{pkmn.level})#{status} HP: #{pkmn.hp}/#{pkmn.totalhp}"
@@ -200,105 +202,20 @@ def pbShowBattleStats(pkmn)
   report.push(_INTL("Presents active")) if pkmn.pbOwnSide.effects[PBEffects::Presents] && pkmn.pbOwnSide.effects[PBEffects::Presents]>0
   report.push(_INTL("Mana Bond active")) if pkmn.pbOwnSide.effects[PBEffects::ManaBond] && pkmn.pbOwnSide.effects[PBEffects::ManaBond]>0
   report.push(_INTL("Wonder Room Stat Swap active")) if pkmn.wonderroom==true
-  fieldnames = ["No Field", "Electric Terrain", "Grassy Terrain", "Misty Terrain", "Dark Crystal Cavern",
-                "Chess Board", "Big Top Arena", "Volcanic Field", "Swamp Field", "Rainbow Field",
-                "Corrosive Field", "Corrosive Mist Field", "Desert Field", "Icy Field", "Rocky Field",
-                "Forest Field", "Volcanic Top Field", "Factory Field", "Short-circuit Field", "Wasteland",
-                "Ashen Beach", "Water Surface", "Underwater", "Cave", "Glitch Field",
-                "Crystal Cavern", "Murkwater Surface", "Mountain", "Snowy Mountain", "Blessed Field",
-                "Mirror Arena", "Fairy Tale Field", "Dragon's Den", "Flower Garden Field", "Starlight Arena",
-                "New World", "Inverse Field", "Psychic Terrain", "Dimensional Field", "Frozen Dimensional Field",
-                "Haunted Field", "Corrupted Cave", "Bewitched Woods", "Sky Field", "Colosseum Field", 
-                "Infernal Field", "Beach Field"]
-  report.push(_INTL("Field effect: {1}", fieldnames[$fefieldeffect]))
+  report.push(_INTL("Field effect: {1}",pbGetFieldEffectName($fefieldeffect || 0))) #pk code
   Kernel.pbMessage((_INTL"Inspecting {1}:",pkmn.name),report, report.length)
 end
 #DemICE left the chat>>>>
 
 # Battle Field Manual - Shows current field effect details
 def pbShowBattleFieldManual
-  field_id = $fefieldeffect
-
-  # If no field effect active
-  if field_id.nil? || field_id == 0
+  #pk code
+  field_id=$fefieldeffect || 0
+  if field_id==0
     Kernel.pbMessage(_INTL("No field effect is currently active."))
     return
   end
-
-  # Get field data
-  data = pbGetFieldEffectData(field_id)
-
-  if data.nil?
-    Kernel.pbMessage(_INTL("Field effect data not available."))
-    return
-  end
-
-  report = []
-
-  # Header
-  report.push(_INTL("{1} ({2})", data[:name], data[:abbr]))
-  report.push(data[:message]) if data[:message]
-  report.push("")
-
-  # Passive effects
-  if data[:passiveEffects] && data[:passiveEffects].length > 0
-    report.push(_INTL("=== PASSIVE EFFECTS ==="))
-    data[:passiveEffects].each do |effect|
-      report.push("• #{effect}")
-    end
-    report.push("")
-  end
-
-  # Overlay effects
-  if data[:overlayEffects] && data[:overlayEffects][:effects] &&
-     data[:overlayEffects][:effects].length > 0
-    report.push(_INTL("=== {1} ===", data[:overlayEffects][:terrain].upcase))
-    data[:overlayEffects][:effects].each do |effect|
-      report.push("• #{effect}")
-    end
-    report.push("")
-  end
-
-  # Field damage
-  if data[:fieldDamage]
-    report.push(_INTL("=== FIELD DAMAGE ==="))
-    fd = data[:fieldDamage]
-    report.push("#{fd[:amount]}") if fd[:amount]
-    report.push("Timing: #{fd[:timing]}") if fd[:timing]
-    report.push("Affects: #{fd[:affects]}") if fd[:affects]
-    if fd[:immuneAbilities] && fd[:immuneAbilities].length > 0
-      report.push("Immune: #{fd[:immuneAbilities].join(', ')}")
-    end
-    report.push("")
-  end
-
-  # Move power boosts
-  if data[:moveEffects] && data[:moveEffects][:powerBoost] &&
-     data[:moveEffects][:powerBoost].keys.length > 0
-    report.push(_INTL("=== POWER BOOSTS ==="))
-    data[:moveEffects][:powerBoost].each do |multiplier, moves|
-      report.push("x#{multiplier}: #{moves.join(', ')}")
-    end
-    report.push("")
-  end
-
-  # Move power decreases
-  if data[:moveEffects] && data[:moveEffects][:powerDecrease] &&
-     data[:moveEffects][:powerDecrease].keys.length > 0
-    report.push(_INTL("=== POWER DECREASES ==="))
-    data[:moveEffects][:powerDecrease].each do |multiplier, moves|
-      report.push("x#{multiplier}: #{moves.join(', ')}")
-    end
-    report.push("")
-  end
-
-  # Additional info available message
-  report.push(_INTL("Press B to close, or check the"))
-  report.push(_INTL("Field Manual in your Pokegear"))
-  report.push(_INTL("for complete details!"))
-
-  # Display the report
-  Kernel.pbMessage(_INTL("Field Manual:"), report, report.length)
+  Scene_FieldEffectsManual_Info.new(field_id).main
 end
 
 class Window_Pokemon < SpriteWindow_Base
@@ -572,6 +489,8 @@ class PokeBattle_DebugScene
           status=" [PAR]"
         when PBStatuses::POISON
           status=" [PSN]"
+        when PBStatuses::CRUSHED #pk code
+          status=" [CRS]"
       end
     end
     return "#{pkmn.name} (Lv. #{pkmn.level})#{status} HP: #{pkmn.hp}/#{pkmn.totalhp}"

@@ -839,9 +839,6 @@ def pbTrainerVsAnimation(viewport,trainerid,trainername)
     trainer.tone = Tone.new(-255,-255,-255)
     trainer.visible = false
 
-    # Cutscenes can leave Graphics frozen. Snapshots still render in that state,
-    # but update presents no frames until transition releases the frozen screen.
-    Graphics.transition(0)
     Graphics.frame_reset
     10.times do
       slide1.x += xoffset/10
@@ -857,7 +854,8 @@ def pbTrainerVsAnimation(viewport,trainerid,trainername)
     bar2.visible = true
     player.visible = true
     trainer.visible = true
-    12.times do
+    #pk code
+    28.times do
       flash.opacity -= 51 if flash.opacity > 0
       scroll_bars.call
       pbWait(1)
@@ -874,7 +872,8 @@ def pbTrainerVsAnimation(viewport,trainerid,trainername)
       trainer.x += xoffset/20
       pbWait(1)
     end
-    5.times do
+    #pk code
+    12.times do
       scroll_bars.call
       pbWait(1)
     end
@@ -884,7 +883,8 @@ def pbTrainerVsAnimation(viewport,trainerid,trainername)
     trainer.tone = Tone.new(0,0,0)
     overlay.visible = true
     pbSEPlay("PRSFX- Slash.wav")
-    44.times do
+    #pk code
+    77.times do
       scroll_bars.call
       flash.opacity -= 25.5 if flash.opacity > 0
       vs.x += val
@@ -893,16 +893,18 @@ def pbTrainerVsAnimation(viewport,trainerid,trainername)
       val = -2 if vs.x >= (Graphics.width/2)+2
       pbWait(1)
     end
-    15.times do
+    #pk code
+    33.times do
       scroll_bars.call
-      vs.zoom_x += 0.4
-      vs.zoom_y += 0.4
+      vs.zoom_x += 6.0/33
+      vs.zoom_y += 6.0/33
       pbWait(1)
     end
     flash.tone = Tone.new(-255,-255,-255)
-    10.times do
+    #pk code
+    11.times do |frame|
       scroll_bars.call
-      flash.opacity += 25.5
+      flash.opacity = 255*(frame+1)/11
       pbWait(1)
     end
     viewport.color = Color.new(0,0,0,255)
@@ -924,6 +926,7 @@ def pbBattleAnimation(battletype=0,bgm=nil,trainerid=-1,trainername="")
   handled=false
   viewport=Viewport.new(0,0,Graphics.width,Graphics.height)
   viewport.z=99999
+  Graphics.transition(0) #pk code
   # Set up audio
   playingBGS=nil
   playingBGM=nil
@@ -934,7 +937,7 @@ def pbBattleAnimation(battletype=0,bgm=nil,trainerid=-1,trainername="")
     $game_system.bgs_pause
   end
   pbMEFade(0.25)
-  pbWait(10)
+  pbWait(11) #pk code
   pbMEStop
   # Play battle music
   bgm = pbGetWildBattleBGM(0) if !bgm
@@ -943,23 +946,14 @@ def pbBattleAnimation(battletype=0,bgm=nil,trainerid=-1,trainername="")
   rescue
     pbBGMPlay(bgm)
   end
-# Fade to gray a few times.
-#  viewport.color=Color.new(17*8,17*8,17*8)
-#  3.times do
-#    viewport.color.alpha=0
-#    6.times do
-#      viewport.color.alpha+=30
-#      Graphics.update
-#      Input.update
-#      pbUpdateSceneMap
-#    end
-#    6.times do
-#      viewport.color.alpha-=30
-#      Graphics.update
-#      Input.update
-#      pbUpdateSceneMap
-#    end
-#  end
+  #pk code
+  if !$PokemonSystem&.photosensitivity
+    viewport.color=Color.new(136,136,136,0)
+    18.times do |frame|
+      viewport.color.alpha=180*[frame+1,17-frame].min/9
+      pbWait(1)
+    end
+  end
 
 # Take screenshot of game, for use in some animations
   #$game_temp.background_bitmap.dispose if $game_temp.background_bitmap
@@ -1019,20 +1013,9 @@ def pbBattleAnimation(battletype=0,bgm=nil,trainerid=-1,trainername="")
         anim = "FourBallBurst"
       end
     end
-    # One brief pulse before the field-specific transition.
-    if location==2 || PBDayNight.isNight?
-      viewport.color = Color.new(0,0,0)
-    else
-      viewport.color = Color.new(255,255,255)
-    end
-    8.times do |frame|
-      viewport.color.alpha = 255 * [frame + 1, 7 - frame].min / 4
-      Graphics.update
-      pbUpdateSceneMap
-    end
     # Play main animation
     Graphics.freeze
-    Graphics.transition(20,sprintf("Graphics/Transitions/%s",anim))
+    Graphics.transition(28,sprintf("Graphics/Transitions/%s",anim)) #pk code
     viewport.color = Color.new(0,0,0,255)   # Ensure screen is black
   end
 #### SARDINES - v17 - END
@@ -2027,7 +2010,7 @@ end
 def Kernel.pbMountBike
   return if $PokemonGlobal.bicycle
   if $game_switches[999]
-       Kernel.pbMessage(_INTL("You can't bike while riding on a Pokemon!"))
+       Kernel.pbMessage(_INTL("You can't bike while riding on a Pokémon!"))
   else
   $PokemonGlobal.bicycle=true
   Kernel.pbUpdateVehicle

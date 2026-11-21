@@ -1466,7 +1466,7 @@ class PokeBattle_Battle
             pbDisplayPaused(_INTL("{1} feels taunted!",battler.pbThis(true)))
           end
           battler.pbUseConsumableHeldItem
-        when 50 # Library Field
+        when 47 # Library Field
           if battler.effects[PBEffects::FocusEnergy] < 3
             battler.effects[PBEffects::FocusEnergy]=3*dose
             pbCommonAnimation("StatUp",battler,nil)
@@ -3520,7 +3520,7 @@ class PokeBattle_Battle
             if $game_variables[226] == 0
               @scene.pbShowOpponent(0)
               pbBGMPlay("Battle! Gym Leader",100,105)
-              pbDisplayPaused(_INTL("Hold your applause, it's not over yet!"))
+              pbDisplayPaused(_INTL("Hold your applause! It's not over yet!"))
               @scene.pbHideOpponent
             end
           elsif isConst?(trainertext.trainertype,PBTrainers,:LEADER_Five)
@@ -3622,7 +3622,7 @@ class PokeBattle_Battle
           elsif isConst?(trainertext.trainertype,PBTrainers,:ALCHEMIST)
             if $game_variables[226] == 0
               @scene.pbShowOpponent(0)
-              pbDisplayPaused(_INTL("Damn, I said no hard feelings didn't I?"))
+              pbDisplayPaused(_INTL("Damn, I said no hard feelings, didn't I?"))
               @scene.pbHideOpponent
             end
           end
@@ -4150,6 +4150,7 @@ class PokeBattle_Battle
       elsif @internalbattle
         if pbDisplayConfirm(_INTL("Would you like to forfeit the battle?"))
           pbDisplay(_INTL("{1} forfeited the match!",self.pbPlayer.name))
+          @forfeited=true #pk code
           @decision=2
           return 1
         end
@@ -4687,7 +4688,7 @@ end
       if !@battlers[i].isFainted?
         if @battlers[i].isShadow? && pbIsOpposing?(i)
           pbCommonAnimation("Shadow",@battlers[i],nil)
-          pbDisplay(_INTL("Oh!\nA Shadow Pokemon!"))
+          pbDisplay(_INTL("Oh!\nA Shadow Pokémon!"))
         end
       end
     end
@@ -4729,7 +4730,7 @@ end
       end
       if pkmn.isShadow? && pbIsOpposing?(pkmn.index)
         pbCommonAnimation("Shadow",pkmn,nil)
-        pbDisplay(_INTL("Oh!\nA Shadow Pokemon!"))
+        pbDisplay(_INTL("Oh!\nA Shadow Pokémon!"))
       end
       # Healing Wish
       if pkmn.effects[PBEffects::HealingWish]
@@ -5682,7 +5683,7 @@ def pbStartBattle(canlose=false)
      when 18
       pbDisplay(_INTL("Bzzt!"))
      when 19
-      pbDisplay(_INTL("The field is poionous!"))
+      pbDisplay(_INTL("The field is poisonous!"))
      when 20
       pbDisplay(_INTL("Ash and sand line the field."))
      when 21
@@ -5704,7 +5705,7 @@ def pbStartBattle(canlose=false)
      when 29
       pbDisplay(_INTL("The field is blessed!"))
      when 30
-      pbDisplay(_INTL("Mirrors are layed around the field!"))
+      pbDisplay(_INTL("Mirrors are laid around the field!"))
      when 31
       pbDisplay(_INTL("Once upon a time..."))
      when 32
@@ -6716,7 +6717,7 @@ def pbStartBattle(canlose=false)
           next if i.hp<=0
           if !i.isAirborne?
             if i.effects[PBEffects::HealBlock]==0 && i.totalhp != i.hp
-              pbDisplay(_INTL("The grassy terrain healed the Pokemon on the field.",i.pbThis)) if endmessage == false
+              pbDisplay(_INTL("The grassy terrain healed the Pokémon on the field.",i.pbThis)) if endmessage == false
               endmessage=true
               hpgain=(i.totalhp/16).floor
               hpgain=(hpgain*1.3).floor if isConst?(i.item,PBItems,:BIGROOT)
@@ -6758,7 +6759,7 @@ def pbStartBattle(canlose=false)
                   isConst?(i.ability,PBAbilities,:FLUFFY)
                   eff = eff*2
                 end
-                pbDisplay(_INTL("The Pokemon were burned by the field!",i.pbThis)) if endmessage == false
+                pbDisplay(_INTL("The Pokémon were burned by the field!",i.pbThis)) if endmessage == false
                 endmessage=true
                 i.pbReduceHP([(i.totalhp*eff/32).floor,1].max)
                 if i.hp<=0
@@ -6782,7 +6783,7 @@ def pbStartBattle(canlose=false)
           end
         when 11 # Corrosive Mist Field
           if i.pbCanPoison?(false) && pbCheckGlobalAbility(:NEUTRALIZINGGAS)==nil
-            pbDisplay(_INTL("The Pokemon were poisoned by the corroded mist!",i.pbThis))   if endmessage == false
+            pbDisplay(_INTL("The Pokémon were poisoned by the corroded mist!",i.pbThis))   if endmessage == false
             endmessage=true
             i.pbPoison(i)
           end
@@ -7027,7 +7028,7 @@ def pbStartBattle(canlose=false)
           next if i.hp<=0
           if !i.isAirborne? && i.pbHasType?(:GRASS)
             if i.effects[PBEffects::HealBlock]==0 && i.totalhp != i.hp
-              pbDisplay(_INTL("The woods healed the grass Pokemon on the field.",i.pbThis)) if endmessage == false
+              pbDisplay(_INTL("The woods healed the grass Pokémon on the field.",i.pbThis)) if endmessage == false
               endmessage=true
               if !(@field.effects[PBEffects::GrassyTerrain]>0)
                 hpgain=(i.totalhp/16).floor
@@ -7072,7 +7073,7 @@ def pbStartBattle(canlose=false)
           next if i.hp<=0
           if !i.isAirborne?
             if i.effects[PBEffects::HealBlock]==0 && i.totalhp != i.hp
-              pbDisplay(_INTL("The grassy terrain healed the Pokemon on the field.",i.pbThis)) if endmessage == false
+              pbDisplay(_INTL("The grassy terrain healed the Pokémon on the field.",i.pbThis)) if endmessage == false
               endmessage=true
               hpgain=(i.totalhp/16).floor
               hpgain=i.pbRecoverHP(hpgain,true)
@@ -7153,7 +7154,7 @@ def pbStartBattle(canlose=false)
           @weather=PBWeather::SANDSTORM
           @weatherduration=8
           pbCommonAnimation("Sandstorm",nil,nil)
-          pbDisplay(_INTL("Storm-9 whipped up a duststorm!"))
+          pbDisplay(_INTL("Storm-9 whipped up a dust storm!"))
        when 3
           @weather=PBWeather::STRONGWINDS
           @weatherduration=8
@@ -7348,7 +7349,7 @@ def pbStartBattle(canlose=false)
                !i.hasWorkingItem(:SAFETYGOGGLES) &&
                !i.hasWorkingAbility(:OVERCOAT) &&
                ![0xCA,0xCB].include?(PBMoveData.new(i.effects[PBEffects::TwoTurnAttack]).function)) || i.effects[PBEffects::DesertsMark]
-                pbDisplay(_INTL("The Pokemon were buffeted by the sandstorm!",i.pbThis)) if endmessage==false
+                pbDisplay(_INTL("The Pokémon were buffeted by the sandstorm!",i.pbThis)) if endmessage==false
                 endmessage=true
                 @scene.pbDamageAnimation(i,0)
                 if i.effects[PBEffects::ShieldLife]>0
@@ -7456,7 +7457,7 @@ def pbStartBattle(canlose=false)
                  !i.hasWorkingAbility(:OVERCOAT) &&
                  !(isConst?(i.species,PBSpecies,:EMPOLEON) && i.hasWorkingItem(:EMPCREST)) &&
                  ![0xCA,0xCB].include?(PBMoveData.new(i.effects[PBEffects::TwoTurnAttack]).function) # Dig, Dive
-                pbDisplay(_INTL("The Pokemon were buffeted by the hail!",i.pbThis)) if endmessage==false
+                pbDisplay(_INTL("The Pokémon were buffeted by the hail!",i.pbThis)) if endmessage==false
                 endmessage=true
                 @scene.pbDamageAnimation(i,0)
                 if i.effects[PBEffects::ShieldLife]>0
@@ -8687,7 +8688,7 @@ def pbStartBattle(canlose=false)
       terrain-=1
       @field.effects[PBEffects::Terrain] = terrain
       if terrain==0
-        if $game_variables[708]==$febackup && $game_variables[298]==40
+        if pbFieldEffectID($game_variables[708])==$febackup && $game_variables[298]==40 #pk code
           $fefieldeffect=$game_variables[298]
         else
           $fefieldeffect = $febackup
@@ -9246,7 +9247,7 @@ def pbStartBattle(canlose=false)
       else
         hploss=i.pbReduceHP((i.totalhp/16).floor,true)
       end
-      pbDisplay(_INTL("{1}'s is seared by the corrosion!",i.pbThis)) if hploss>0
+      pbDisplay(_INTL("{1} is seared by the corrosion!",i.pbThis)) if hploss>0
     end
     if i.hp<=0
       return if !i.pbFaint
@@ -9605,7 +9606,7 @@ def pbStartBattle(canlose=false)
     ##### LOSE, DRAW #####
     when 2, 5
       if @internalbattle
-        pbDisplayPaused(_INTL("{1} is out of usable Pokémon!",self.pbPlayer.name))
+        pbDisplayPaused(_INTL("{1} is out of usable Pokémon!",self.pbPlayer.name)) if !@forfeited #pk code
         moneylost=pbMaxLevelFromIndex(0)
         $game_switches[:No_Catch]=false
         $febackgroundstore=0

@@ -67,13 +67,6 @@ def pbGetBabyCompatibleMoves(pokemon, babyspecies)
 end
 #>>DemICE
 
-# Helper function to check if a move is any form of Hidden Power
-def pbIsHiddenPowerMove?(move)
-  return false if move.nil?
-  return move == PBMoves::HIDDENPOWER ||
-         (move >= PBMoves::HIDDENPOWERNOR && move <= PBMoves::HIDDENPOWERFAI)
-end
-
 # Helper function to check if a Pokemon knows any form of Hidden Power
 def pbKnowsAnyHiddenPower?(pokemon)
   return false if !pokemon

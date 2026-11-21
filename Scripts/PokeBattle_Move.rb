@@ -65,7 +65,7 @@ class PokeBattle_Move
     @basedamage  = $pkmn_move[@id][1]
     @type        = $pkmn_move[@id][2]
     @category    = $pkmn_move[@id][3]
-    @accuracy    = $pkmn_move[@id][4]
+    @accuracy    = @category==2 ? 0 : $pkmn_move[@id][4] #pk code
     @addlEffect  = $pkmn_move[@id][6]
     @target      = $pkmn_move[@id][7]
     @priority    = $pkmn_move[@id][8]
@@ -630,7 +630,7 @@ class PokeBattle_Move
   def apply_tribute_damage_modifiers(attacker, opponent, finaldamagemult, preview: false)
     return finaldamagemult if !tribute_inscribed?(attacker)
 
-    finaldamagemult = (finaldamagemult*1.3).round if tribute_attack?(attacker,:NULLTRIBUTE)
+    finaldamagemult = (finaldamagemult*1.2).round if tribute_attack?(attacker,:NULLTRIBUTE) #pk code
     if tribute_attack?(attacker,:BLANKTRIBUTE)
       blank_boost = heroic_tribute?(attacker,:HELIOLISK) ? 1.5 : 1.2
       finaldamagemult = (finaldamagemult*blank_boost).round
@@ -1206,6 +1206,11 @@ class PokeBattle_Move
         end
     end
     return type
+  end
+
+  #pk code
+  def pbIsStatus?
+    return @category==2
   end
 
   def pbIsPhysical?(type)
@@ -2583,8 +2588,8 @@ class PokeBattle_Move
   # Pure portions of the accuracy check are shared with AI previews.  Rolling
   # accuracy and consuming a Micle Berry remain in pbAccuracyCheck.
   def pbAccuracyBypass?(attacker,opponent,type=nil)
+    return true if pbIsStatus? || @accuracy==0 #pk code
     type=pbType(@type,attacker,opponent) if type.nil?
-    return true if @accuracy==0
     return true if tribute_bypasses_accuracy?(attacker)
     if attacker.hasWorkingAbility(:NOGUARD) ||
        opponent.hasWorkingAbility(:NOGUARD)
@@ -2593,7 +2598,7 @@ class PokeBattle_Move
     # Blinded targets are always hit
     return true if opponent.effects[PBEffects::Blinded]>0
     return true if opponent.effects[PBEffects::Telekinesis]>0
-    return true if $fefieldeffect == 50 && id == PBMoves::FOCUSBLAST
+    return true if $fefieldeffect == 47 && id == PBMoves::FOCUSBLAST
     return true if @function==0x0D && @battle.pbWeather==PBWeather::HAIL # Blizzard
     return true if (@function==0x08 || @function==0x15) && # Thunder, Hurricane
                    @battle.pbWeather==PBWeather::RAINDANCE
@@ -2719,8 +2724,7 @@ class PokeBattle_Move
   end
 
   def pbAccuracyCheck(attacker,opponent)
-    type=pbType(@type,attacker,opponent)
-    return true if pbAccuracyBypass?(attacker,opponent,type)
+    return true if pbAccuracyBypass?(attacker,opponent)
     baseaccuracy=pbBaseAccuracy(attacker,opponent)
     accstage=attacker.stages[PBStats::ACCURACY]
     accstage=0 if (opponent.hasWorkingAbility(:UNAWARE) || @battle.SilvallyCheck(opponent,PBTypes::FAIRY)) && !(opponent.moldbroken)
@@ -3086,7 +3090,7 @@ class PokeBattle_Move
       damagemult=(damagemult*0.25).round
     end
     damagemult=(damagemult*pbGravityPowerMultiplier(attacker,opponent)).round if basedmg>0
-    if $fefieldeffect == 50
+    if $fefieldeffect == 47
       if opponent.effects[PBEffects::Confusion]>0
         damagemult=(damagemult*2.0).round
       end
@@ -3114,7 +3118,7 @@ class PokeBattle_Move
       basedmg=(basedmg*0.3).round
       puts(basedmg)
     end
-    tech_limit = ($fefieldeffect == 50) ? 80 : 60
+    tech_limit = ($fefieldeffect == 47) ? 80 : 60
     if (isConst?(attacker.ability,PBAbilities,:TECHNICIAN) && (basedmg<=tech_limit))
       damagemult=(damagemult*1.5).round
     elsif ($fefieldeffect == 17) && ((isConst?(attacker.ability,PBAbilities,:TECHNICIAN) || isConst?(attacker.species,PBSpecies,:DUSKNOIR) && isConst?(attacker.item,PBItems,:DUSKCREST)) && basedmg<=80) 
@@ -3217,7 +3221,7 @@ class PokeBattle_Move
     end
 #### KUROTSUNE - 003 START
     if attacker.hasWorkingAbility(:ANALYTIC) && opponent.hasMovedThisRound?
-      mult = ($fefieldeffect == 50) ? 1.5 : 1.3
+      mult = ($fefieldeffect == 47) ? 1.5 : 1.3
       damagemult = (damagemult*mult).round
     end
     if attacker.hasWorkingAbility(:ASSASSINATE) && opponent.effects[PBEffects::Assassinate]
@@ -3348,7 +3352,7 @@ class PokeBattle_Move
       damagemult=(damagemult*2.0).round
     end
     if attacker.effects[PBEffects::HelpingHand] && (options&SELFCONFUSE)==0
-      helpmult = ($fefieldeffect == 50) ? 2.0 : 1.5
+      helpmult = ($fefieldeffect == 47) ? 2.0 : 1.5
       damagemult=(damagemult*helpmult).round
     end
     if battle_cry_boost
@@ -4008,7 +4012,7 @@ class PokeBattle_Move
         end
         if (id == PBMoves::LANDSWRATH || id == PBMoves::THOUSANDWAVES)
           damagemult=(damagemult*1.5).round
-          @battle.pbDisplay(_INTL("The sand strengthened the atttack!",opponent.pbThis)) if $feshutup == 0
+          @battle.pbDisplay(_INTL("The sand strengthened the attack!",opponent.pbThis)) if $feshutup == 0
           $feshutup+=1
         end
         if (id == PBMoves::PSYCHIC)
@@ -5871,7 +5875,7 @@ class PokeBattle_Move
           @battle.pbDisplay(_INTL("The saltwater conducted the attack!",opponent.pbThis)) if $feshutup2 == 0
           $feshutup2+=1
         end
-      when 50 # Library Field
+      when 47 # Library Field
         library_boosted = false
         library_boosted ||= opponent.effects[PBEffects::Confusion]>0
         library_boosted ||= isConst?(type,PBTypes,:FIRE)

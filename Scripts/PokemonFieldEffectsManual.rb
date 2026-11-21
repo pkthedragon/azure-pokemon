@@ -1,6 +1,9 @@
 # Field Effects Manual - Interactive encyclopedia of field effects
 # Displays comprehensive information about each field effect
 
+Field_Note_Header_Coords = [2, -18, 300, 64]
+Field_Note_Header_Colors = [Color.new(248, 248, 248), Color.new(0, 0, 0)]
+
 class PokemonFieldEffectsManualScreen
   def initialize(scene)
     @scene = scene
@@ -9,38 +12,53 @@ class PokemonFieldEffectsManualScreen
   def pbStartScreen
     @scene.pbStartScene
     @scene.pbScene
+  ensure #pk code
     @scene.pbEndScene
   end
 end
 
 #===============================================================================
-# Main List Scene - Shows all discovered field effects
+# Main List Scene - Shows all field effects
 #===============================================================================
 class Scene_FieldEffectsManual
+  def buildFieldMenu
+    menu = []
+    fields = FIELDEFFECTDATA.keys.sort #pk code
+    for field in fields
+      prefix = field.to_s + ". " #pk code
+      item = { label: prefix + pbGetFieldEffectName(field), field: field } #pk code
+      menu.push(item)
+    end
+
+    back = { label: _INTL("Back"), back: true } #pk code
+    menu.push(back)
+    return menu
+  end
+
   def pbStartScene
     @sprites = {}
     @viewport = Viewport.new(0, 0, Graphics.width, Graphics.height)
     @viewport.z = 99999
 
     @sprites["background"] = IconSprite.new(0, 0, @viewport)
-    @sprites["background"].setBitmap("Graphics/Pictures/navbg")
+    @sprites["background"].setBitmap("Graphics/Pictures/Pokegear/pokegearbg") #pk code
 
-    @sprites["header"] = Window_UnformattedTextPokemon.newWithSize(
-      _INTL("Field Effects Manual"), 94, 0, Graphics.width - 94, 64, @viewport
-    )
-    @sprites["header"].baseColor = Color.new(248, 248, 248)
-    @sprites["header"].shadowColor = Color.new(0, 0, 0)
-    @sprites["header"].windowskin = nil
-
-    @choices = pbFieldEffectsSeen
-    @sprites["command_window"] = Window_CommandPokemonWhiteArrow.new(@choices, 324)
-    @sprites["command_window"].viewport = @viewport
+    @menu = buildFieldMenu #pk code
+    @choices = @menu.collect { |field| field[:label] }
+    @sprites["command_window"] = Window_CommandPokemonWhiteArrow.newWithSize(@choices, 10, 30, Graphics.width - 20, Graphics.height - 64, @viewport) #pk code
     @sprites["command_window"].windowskin = nil
-    @sprites["command_window"].x = 94
-    @sprites["command_window"].y = 64
-    @sprites["command_window"].height = Graphics.height - 64
+    @sprites["command_window"].baseColor = Color.new(248, 248, 248)
+    @sprites["command_window"].shadowColor = Color.new(0, 0, 0)
+    render_header
 
     pbFadeInAndShow(@sprites)
+  end
+
+  def render_header
+    @sprites["header"] = Window_UnformattedTextPokemon.newWithSize(_INTL("Field Manual"), *Field_Note_Header_Coords, @viewport) #pk code
+    @sprites["header"].baseColor = Field_Note_Header_Colors[0]
+    @sprites["header"].shadowColor = Field_Note_Header_Colors[1]
+    @sprites["header"].windowskin = nil
   end
 
   def pbScene
@@ -53,76 +71,24 @@ class Scene_FieldEffectsManual
         pbPlayCancelSE()
         break
       elsif Input.trigger?(Input::C)
-        index = @sprites["command_window"].index
-        if index == @choices.length - 1  # "Back" option
+        menuindex = @sprites["command_window"].index
+        item = @menu[menuindex]
+        if item[:back]
           pbPlayCancelSE()
           break
-        elsif @choices[index] != "???"
+        elsif item[:field]
           pbPlayDecisionSE()
-          field_id = pbGetFieldIDFromIndex(index)
-          pbShowFieldEffectDetails(field_id)
-        else
-          pbPlayBuzzerSE()
+          #pk code
+          scene = Scene_FieldEffectsManual_Info.new(item[:field], @menu, menuindex)
+          scene.main
+          @sprites["command_window"].index = scene.menu_index
         end
       end
     end
   end
 
-  def pbShowFieldEffectDetails(field_id)
-    scene = Scene_FieldEffectsManual_Info.new(field_id)
-    scene.main
-  end
-
-  def pbFieldEffectsSeen
-    fields = []
-
-    # Map field IDs to their unlock switches
-    # Only includes the 20 field effects in the game
-    field_id_to_switch = {
-      1 => 600,   # Electric Terrain
-      2 => 601,   # Grassy Terrain
-      3 => 602,   # Misty Terrain
-      4 => 603,   # Dark Crystal Cavern
-      8 => 604,   # Swamp Field
-      9 => 605,   # Rainbow Field
-      13 => 606,  # Icy Field
-      15 => 607,  # Forest Field
-      17 => 608,  # Factory Field
-      18 => 609,  # Short-circuit Field
-      20 => 610,  # Ashen Beach
-      21 => 611,  # Water Surface
-      23 => 612,  # Cave
-      29 => 613,  # Blessed Field
-      36 => 614,  # Inverse Field
-      37 => 615,  # Psychic Terrain
-      40 => 616,  # Cursed Field
-      42 => 617,  # Bewitched Woods
-      45 => 618,  # Beach Field
-      47 => 619   # Library Field
-    }
-
-    @field_id_map = []  # Store the mapping for index -> field_id
-
-    field_id_to_switch.each do |field_id, switch_id|
-      if $game_switches[switch_id]
-        name = pbGetFieldEffectName(field_id)
-        fields.push(name)
-        @field_id_map.push(field_id)
-      else
-        fields.push("???")
-        @field_id_map.push(nil)
-      end
-    end
-
-    fields.push(_INTL("Back"))
-    return fields
-  end
-
-  def pbGetFieldIDFromIndex(index)
-    return @field_id_map[index]
-  end
-
   def pbEndScene
+    return if !@viewport #pk code
     pbFadeOutAndHide(@sprites)
     pbDisposeSpriteHash(@sprites)
     @viewport.dispose
@@ -133,9 +99,13 @@ end
 # Detail View Scene - Shows comprehensive field effect information
 #===============================================================================
 class Scene_FieldEffectsManual_Info
-  def initialize(field_id)
+  attr_reader :menu_index #pk code
+
+  def initialize(field_id, menu = nil, menu_index = nil) #pk code
     @field_id = field_id
     @data = pbGetFieldEffectData(field_id)
+    @menu = menu #pk code
+    @menu_index = menu_index #pk code
   end
 
   def main
@@ -145,21 +115,20 @@ class Scene_FieldEffectsManual_Info
 
     # Background
     @sprites["background"] = IconSprite.new(0, 0, @viewport)
-    @sprites["background"].setBitmap("Graphics/Pictures/navbg")
+    @sprites["background"].setBitmap("Graphics/Pictures/Pokegear/pokegearbg") #pk code
 
-    # Generate field info text
-    info_text = pbGenerateFieldInfoText
+    render_header
+    render_page #pk code
 
-    # Info window with scrolling
-    @sprites["info"] = Window_AdvancedTextPokemon.newWithSize(
-      info_text, 10, 10, Graphics.width - 20, Graphics.height - 20, @viewport
-    )
-    @sprites["info"].baseColor = Color.new(248, 248, 248)
-    @sprites["info"].shadowColor = Color.new(80, 80, 80)
-
-    # Scroll position
-    @scroll_y = 0
-    @max_scroll = [@sprites["info"].contents.height - @sprites["info"].height + 32, 0].max
+    #pk code
+    @sprites["footer"]=BitmapSprite.new(Graphics.width-70,24,@viewport)
+    @sprites["footer"].y=Graphics.height-56
+    footer=@sprites["footer"].bitmap
+    pbSetSmallFont(footer)
+    controls=@menu ? _INTL("Up/Down Scroll   L/R Page   Left/Right Field") :
+                    _INTL("Up/Down Scroll   L/R Page   X Back")
+    pbDrawShadowText(footer,16,0,footer.width-16,24,controls,
+       Field_Note_Header_Colors[0],Field_Note_Header_Colors[1])
 
     pbFadeInAndShow(@sprites)
 
@@ -168,14 +137,24 @@ class Scene_FieldEffectsManual_Info
       Input.update
       pbUpdateSpriteHash(@sprites)
 
-      # Scrolling
-      if Input.press?(Input::UP) && @scroll_y > 0
-        @scroll_y -= 4
-        @sprites["info"].oy = @scroll_y
-      elsif Input.press?(Input::DOWN) && @scroll_y < @max_scroll
-        @scroll_y += 4
-        @sprites["info"].oy = @scroll_y
+      if Input.trigger?(Input::RIGHT) || Input.repeat?(Input::RIGHT)
+        changeField(1)
+      elsif Input.trigger?(Input::LEFT) || Input.repeat?(Input::LEFT)
+        changeField(-1)
       end
+
+      #pk code
+      if Input.repeat?(Input::L)
+        @scroll_y-=@visible_height-32
+      elsif Input.repeat?(Input::R)
+        @scroll_y+=@visible_height-32
+      elsif Input.press?(Input::UP)
+        @scroll_y-=6
+      elsif Input.press?(Input::DOWN)
+        @scroll_y+=6
+      end
+      @scroll_y=@scroll_y.clamp(0,@max_scroll)
+      @sprites["info"].oy=@scroll_y
 
       if Input.trigger?(Input::B) || Input.trigger?(Input::C)
         pbPlayCancelSE()
@@ -183,195 +162,174 @@ class Scene_FieldEffectsManual_Info
       end
     end
 
+  ensure #pk code
+    pbEndScene if @viewport
+  end
+
+  def render_header
+    #pk code
+    title=@data ? @data[:name] : _INTL("Field Manual")
+    x,y,_width,height=Field_Note_Header_Coords
+    @sprites["header"] = Window_UnformattedTextPokemon.newWithSize(title, x, y, Graphics.width - 96, height, @viewport)
+    @sprites["header"].baseColor = Field_Note_Header_Colors[0]
+    @sprites["header"].shadowColor = Field_Note_Header_Colors[1]
+    @sprites["header"].windowskin = nil
+  end
+
+  def render_page
+    #pk code
+    info=SpriteWindow_Base.new(0,22,Graphics.width,Graphics.height-64)
+    @sprites["info"]=info
+    info.viewport=@viewport
+    info.windowskin=nil
+    text=Messages.utf8Text(shadowc3tag(*Field_Note_Header_Colors)+pbGenerateFieldInfoText)
+    width=info.width-info.borderX-SpriteWindow_Base::TEXTPADDING
+    chars=getFormattedText(info.contents,0,0,width,-1,text,32)
+    info.contents=drawBitmapBuffer(chars)
+    @visible_height=info.height-info.borderY
+    @scroll_y=0
+    @max_scroll=[info.contents.height-@visible_height,0].max
+  end
+
+  def changeField(increment)
+    return if !@menu #pk code
+    oldindex = @menu_index
+    loop do
+      @menu_index += increment
+      if @menu_index >= @menu.length
+        @menu_index = 0
+      elsif @menu_index < 0
+        @menu_index = @menu.length - 1
+      end
+      break unless @menu[@menu_index][:field].nil?
+    end
+    return if @menu_index == oldindex
+
+    @field_id = @menu[@menu_index][:field] #pk code
+    redraw
+  end
+
+  def redraw
+    pbPlayDecisionSE()
+    #pk code
+    @data=pbGetFieldEffectData(@field_id)
+    @sprites.delete("header").dispose
+    @sprites.delete("info").dispose
+    render_page
+    render_header
+  end
+
+  def pbEndScene
     pbFadeOutAndHide(@sprites)
     pbDisposeSpriteHash(@sprites)
     @viewport.dispose
   end
 
+  #pk code
   def pbGenerateFieldInfoText
     return "No data available." if !@data
 
-    text = ""
+    title="#{pbFieldEffectID(@field_id)}. #{@data[:name]} [#{@data[:abbr]}]"
+    text="<c3=F8F8F8,000000><fs=25>#--- #{title} ---#</fs></c3>\n\n"
+    text << "<c3=FFBD70,000000>\"#{@data[:message]}\"</c3>\n\n"
 
-    # Header
-    text << "<ac><b>#{@data[:name]}</b></ac>\n"
-    text << "<ac>(#{@data[:abbr]})</ac>\n\n"
-    text << "\"<i>#{@data[:message]}</i>\"\n\n"
+    overlay=@data[:overlayEffects]
+    if overlay
+      pbFieldManualSection(text,"(Overlay):",overlay[:effects],"CFDEF4",overlay[:terrain])
+    end
 
-    # Passive Effects
-    if @data[:passiveEffects] && @data[:passiveEffects].length > 0
-      text << "<c2=5080F0F0>PASSIVE EFFECTS</c2>\n"
-      @data[:passiveEffects].each do |effect|
-        text << "• #{effect}\n"
+    pbFieldManualSection(text,"(The following moves are affected by this field.):",
+                         pbFieldManualMoves,"A9E7A1")
+    pbFieldManualSection(text,"(The following abilities are affected by this field):",
+                         @data[:abilityEffects],"C7E6A6")
+    pbFieldManualSection(text,"(The following items are affected by this field):",
+                         @data[:itemEffects],"B6E9D5")
+
+    pbFieldManualSection(text,"(Other effects):",@data[:passiveEffects],"CFDEF4")
+
+    if created=@data[:createdBy]
+      effects=[]
+      effects << "These moves can create or advance this field: #{created[:moves].join(', ')}" if created[:moves]
+      effects << "These abilities can create this field: #{created[:abilities].join(', ')}" if created[:abilities]
+      effects << "The field lasts for #{created[:duration]} turns" if created[:duration]
+      effects << created[:note] if created[:note]
+      pbFieldManualSection(text,"(How this field is created):",effects,"CFDEF4")
+    end
+
+    if damage=@data[:fieldDamage]
+      effects=[]
+      effects << "Damage: #{damage[:amount]}" if damage[:amount]
+      effects << "Timing: #{damage[:timing]}" if damage[:timing]
+      effects << "Affects: #{damage[:affects]}" if damage[:affects]
+      effects << "These abilities give immunity: #{damage[:immuneAbilities].join(', ')}" if damage[:immuneAbilities]
+      effects << "These conditions give immunity: #{damage[:immuneConditions].join(', ')}" if damage[:immuneConditions]
+      effects << "These abilities double the damage: #{damage[:doubledAbilities].join(', ')}" if damage[:doubledAbilities]
+      pbFieldManualSection(text,"(Field damage):",effects,"FFADAD")
+    end
+
+    if changes=@data[:fieldTransformations]
+      effects=[]
+      if changes[:terminates] && !changes[:terminates].empty?
+        effects << "These effects end the field: #{changes[:terminates].join(', ')}"
       end
+      (changes[:transformsTo] || {}).each do |field,causes|
+        effects << "These effects change the field to #{field}: #{causes.join(', ')}"
+      end
+      effects.concat(changes[:disables]) if changes[:disables]
+      effects << changes[:note] if changes[:note]
+      pbFieldManualSection(text,"(Field transformations):",effects,"F6C1AA")
+    end
+
+    return text.rstrip
+  end
+
+  #pk code
+  def pbFieldManualMoves
+    moves=@data[:moveEffects]
+    return [] unless moves
+
+    effects=[]
+    [:powerBoost,:powerDecrease].each do |key|
+      (moves[key] || {}).each do |factor,list|
+        multiplier=factor.to_s.gsub(/\d+(?:\.\d+)?/) { |value| value.sub(/\.0\z/,"")+"x" }
+        effects << "These moves deal #{multiplier} damage: #{list.join(', ')}"
+      end
+    end
+    (moves[:additionalDamageType] || {}).each do |type,list|
+      effects << "These moves gain additional #{type}-type damage: #{list.join(', ')}"
+    end
+    (moves[:accuracyChange] || {}).each do |accuracy,list|
+      explained,affected=list.partition { |move| move.match?(/\bskips? the accuracy check\z/) }
+      effects.concat(explained)
+      effects << "These moves have #{accuracy}% accuracy: #{affected.join(', ')}" unless affected.empty?
+    end
+
+    failed=moves[:fail] || []
+    if failed.length==1
+      effects << "#{failed.first} fails"
+    elsif !failed.empty?
+      effects << "These moves fail: #{failed.join(', ')}"
+    end
+    effects.concat(moves[:statChanges] || [])
+    (moves[:durationChange] || {}).each do |move,duration|
+      duration="#{duration} turns" if duration.is_a?(Numeric)
+      verb=move.include?(" and ") ? "last" : "lasts"
+      effects << "#{move} #{verb} for #{duration}"
+    end
+    effects.concat(moves[:special]) if moves[:special]
+    return effects
+  end
+
+  #pk code
+  def pbFieldManualSection(text,title,effects,color,subheading=nil)
+    return if !effects || effects.empty?
+    text << "<c3=#{color},000000>#{title}</c3>\n\n"
+    text << "#{subheading}:\n\n" if subheading
+    effects.each do |effect|
+      text << "* #{effect}"
+      text << "." unless effect.end_with?(".","!","?")
       text << "\n"
     end
-
-    # How it's created
-    if @data[:createdBy]
-      text << "<c2=5080F0F0>CREATED BY</c2>\n"
-      if @data[:createdBy][:moves]
-        text << "Moves: #{@data[:createdBy][:moves].join(', ')}\n"
-      end
-      if @data[:createdBy][:abilities]
-        text << "Abilities: #{@data[:createdBy][:abilities].join(', ')}\n"
-      end
-      if @data[:createdBy][:duration]
-        text << "Duration: #{@data[:createdBy][:duration]} turns\n"
-      end
-      if @data[:createdBy][:note]
-        text << "Note: #{@data[:createdBy][:note]}\n"
-      end
-      text << "\n"
-    end
-
-    # Overlay Effects
-    if @data[:overlayEffects] && @data[:overlayEffects][:effects] &&
-       @data[:overlayEffects][:effects].length > 0
-      text << "<c2=5080F0F0>#{@data[:overlayEffects][:terrain].upcase} OVERLAY</c2>\n"
-      @data[:overlayEffects][:effects].each do |effect|
-        text << "• #{effect}\n"
-      end
-      text << "\n"
-    end
-
-    # Field Damage
-    if @data[:fieldDamage]
-      text << "<c2=50F08080>FIELD DAMAGE</c2>\n"
-      fd = @data[:fieldDamage]
-      text << "Damage: #{fd[:amount]}\n" if fd[:amount]
-      text << "Timing: #{fd[:timing]}\n" if fd[:timing]
-      text << "Affects: #{fd[:affects]}\n" if fd[:affects]
-      if fd[:immuneAbilities] && fd[:immuneAbilities].length > 0
-        text << "Immune Abilities: #{fd[:immuneAbilities].join(', ')}\n"
-      end
-      if fd[:immuneConditions] && fd[:immuneConditions].length > 0
-        text << "Immune Conditions: #{fd[:immuneConditions].join(', ')}\n"
-      end
-      if fd[:doubledAbilities] && fd[:doubledAbilities].length > 0
-        text << "Doubled Damage: #{fd[:doubledAbilities].join(', ')}\n"
-      end
-      text << "\n"
-    end
-
-    # Move Effects
-    if @data[:moveEffects]
-      me = @data[:moveEffects]
-
-      # Power Boosts
-      if me[:powerBoost] && me[:powerBoost].keys.length > 0
-        text << "<c2=50F0A050>POWER BOOSTS</c2>\n"
-        me[:powerBoost].each do |multiplier, moves|
-          text << "x#{multiplier}: #{moves.join(', ')}\n"
-        end
-        text << "\n"
-      end
-
-      # Power Decreases
-      if me[:powerDecrease] && me[:powerDecrease].keys.length > 0
-        text << "<c2=50F05050>POWER DECREASES</c2>\n"
-        me[:powerDecrease].each do |multiplier, moves|
-          text << "x#{multiplier}: #{moves.join(', ')}\n"
-        end
-        text << "\n"
-      end
-
-      # Additional Damage Types
-      if me[:additionalDamageType] && me[:additionalDamageType].keys.length > 0
-        text << "<c2=50D0D050>ADDITIONAL DAMAGE TYPES</c2>\n"
-        me[:additionalDamageType].each do |type, moves|
-          text << "#{type}: #{moves.join(', ')}\n"
-        end
-        text << "\n"
-      end
-
-      # Accuracy Changes
-      if me[:accuracyChange] && me[:accuracyChange].keys.length > 0
-        text << "<c2=5050D0F0>ACCURACY CHANGES</c2>\n"
-        me[:accuracyChange].each do |acc, moves|
-          text << "#{acc}%: #{moves.join(', ')}\n"
-        end
-        text << "\n"
-      end
-
-      # Stat Effect Amplified
-      if me[:statEffectAmplified] && me[:statEffectAmplified].length > 0
-        text << "<c2=50C050F0>STAT EFFECTS AMPLIFIED</c2>\n"
-        text << "#{me[:statEffectAmplified].join(', ')}\n\n"
-      end
-
-      # Moves that Fail
-      if me[:fail] && me[:fail].length > 0
-        text << "<c2=50F03030>MOVES THAT FAIL</c2>\n"
-        text << "#{me[:fail].join(', ')}\n\n"
-      end
-
-      # Special Move Effects
-      if me[:special] && me[:special].length > 0
-        text << "<c2=50F0F050>SPECIAL MOVE EFFECTS</c2>\n"
-        me[:special].each do |effect|
-          text << "• #{effect}\n"
-        end
-        text << "\n"
-      end
-
-      # Duration Changes
-      if me[:durationChange] && me[:durationChange].keys.length > 0
-        text << "<c2=5090F0D0>DURATION CHANGES</c2>\n"
-        me[:durationChange].each do |move, duration|
-          text << "#{move}: #{duration} turns\n"
-        end
-        text << "\n"
-      end
-    end
-
-    # Ability Effects
-    if @data[:abilityEffects] && @data[:abilityEffects].length > 0
-      text << "<c2=50A0F050>ABILITY EFFECTS</c2>\n"
-      @data[:abilityEffects].each do |effect|
-        text << "• #{effect}\n"
-      end
-      text << "\n"
-    end
-
-    # Field Transformations
-    if @data[:fieldTransformations]
-      ft = @data[:fieldTransformations]
-
-      if (ft[:terminates] && ft[:terminates].length > 0) ||
-         (ft[:transformsTo] && ft[:transformsTo].keys.length > 0) ||
-         (ft[:disables] && ft[:disables].length > 0)
-        text << "<c2=50F0A0A0>FIELD TRANSFORMATIONS</c2>\n"
-
-        if ft[:terminates] && ft[:terminates].length > 0
-          text << "Terminates: #{ft[:terminates].join(', ')}\n"
-        end
-
-        if ft[:transformsTo] && ft[:transformsTo].keys.length > 0
-          ft[:transformsTo].each do |new_field, moves|
-            text << "→ #{new_field}: #{moves.join(', ')}\n"
-          end
-        end
-
-        if ft[:disables] && ft[:disables].length > 0
-          text << "Disables: #{ft[:disables].join(', ')}\n"
-        end
-
-        text << "\n"
-      end
-    end
-
-    # Item Effects
-    if @data[:itemEffects] && @data[:itemEffects].length > 0
-      text << "<c2=50F0D050>ITEM EFFECTS</c2>\n"
-      @data[:itemEffects].each do |effect|
-        text << "• #{effect}\n"
-      end
-      text << "\n"
-    end
-
-    text << "\n<ac>Press B to return</ac>"
-
-    return text
+    text << "\n"
   end
 end

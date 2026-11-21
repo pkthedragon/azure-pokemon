@@ -13735,3 +13735,1765 @@ Not using an item.
 [The foe Bidoof: Growl=15.600000000000001, Yawn=10, Defense Curl=0, Rollout=1]
 [Prefer Growl]
 [The foe Bidoof lost 35 HP, now has 0 HP]
+==============================
+Battle Start!
+179 - Kara
+==============================
+***Round 1***
+AI Pokemon Sola is faster than Fox.
+Defense Curl: initial score: 10
+[Not preferring status move]
+Defense Curl: final score: 2
+ 
+Splash: initial score: 5
+Splash: final score: 0
+ 
+Pound: initial score: 20
+Pound: final score: 20
+ 
+Foresight: initial score: 5
+[Not preferring status move]
+Foresight: final score: 4
+ 
+[The foe Sola: Defense Curl=2, Splash=0, Pound=20, Foresight=4]
+[Prefer Pound]
+[Fox lost 5 HP, now has 19 HP]
+[The foe Sola lost 2 HP, now has 20 HP]
+***Round 2***
+AI Pokemon Sola is faster than Fox.
+Defense Curl: initial score: 10
+[Not preferring status move]
+Defense Curl: final score: 1
+ 
+Splash: initial score: 5
+Splash: final score: 0
+ 
+Pound: initial score: 26
+Pound: final score: 26
+ 
+Foresight: initial score: 5
+[Not preferring status move]
+Foresight: final score: 4
+ 
+[The foe Sola: Defense Curl=1, Splash=0, Pound=26, Foresight=4]
+[Prefer Pound]
+[Fox lost 5 HP, now has 14 HP]
+[The foe Sola lost 8 HP, now has 12 HP]
+***Round 3***
+AI Pokemon Sola is faster than Fox.
+Defense Curl: initial score: 10
+[Not preferring status move]
+Defense Curl: final score: 1
+ 
+Splash: initial score: 5
+Splash: final score: 0
+ 
+Pound: initial score: 35
+Pound: final score: 35
+ 
+Foresight: initial score: 5
+[Not preferring status move]
+Foresight: final score: 4
+ 
+[The foe Sola: Defense Curl=1, Splash=0, Pound=35, Foresight=4]
+[Prefer Pound]
+[Fox lost 5 HP, now has 9 HP]
+[The foe Sola lost 8 HP, now has 4 HP]
+***Round 4***
+AI Pokemon Sola is faster than Fox.
+Defense Curl: initial score: 10
+[Not preferring status move]
+Defense Curl: final score: 0
+ 
+Splash: initial score: 5
+Splash: final score: 0
+ 
+Pound: initial score: 55
+[Preferring damaging move]
+Pound: final score: 60
+ 
+Foresight: initial score: 5
+[Not preferring status move]
+Foresight: final score: 4
+ 
+[The foe Sola: Defense Curl=0, Splash=0, Pound=60, Foresight=4]
+[Prefer Pound]
+[Fox lost 5 HP, now has 4 HP]
+[The foe Sola lost 4 HP, now has 0 HP]
+==============================
+Battle Start!
+205 - Haden
+==============================
+***Round 1***
+AI Pokemon Purrloin is faster than Fox.
+Scratch: initial score: 11
+Scratch: final score: 11
+ 
+Growl: initial score: 10
+[The foe Purrloin: Scratch=11, Growl=15]
+[Prefer Growl]
+[The foe Purrloin lost 5 HP, now has 15 HP]
+***Round 2***
+Player Pokemon Fox is faster than Purrloin.
+Scratch: initial score: 11
+Scratch: final score: 11
+ 
+Growl: initial score: 10
+[The foe Purrloin: Scratch=11, Growl=0]
+[Prefer Scratch]
+[The foe Purrloin lost 5 HP, now has 10 HP]
+[Fox lost 3 HP, now has 23 HP]
+***Round 3***
+Player Pokemon Fox is faster than Purrloin.
+Scratch: initial score: 13
+Scratch: final score: 13
+ 
+Growl: initial score: 10
+[The foe Purrloin: Scratch=13, Growl=0]
+[Prefer Scratch]
+[The foe Purrloin lost 5 HP, now has 5 HP]
+[Fox lost 3 HP, now has 20 HP]
+***Round 4***
+Player Pokemon Fox is faster than Purrloin.
+Scratch: initial score: 15
+Scratch: final score: 15
+ 
+Growl: initial score: 10
+[The foe Purrloin: Scratch=15, Growl=0]
+[Prefer Scratch]
+[The foe Purrloin lost 5 HP, now has 0 HP]
+==============================
+Battle Start!
+Wild Battle
+==============================
+***Round 1***
+[The wild Sandygast: Harden=0, Absorb=0]
+[Prefer Harden]
+[The wild Sandygast lost 19 HP, now has 0 HP]
+==============================
+Battle Start!
+Wild Battle
+==============================
+***Round 1***
+[The wild Buizel: SonicBoom=0, Water Gun=0, Growl=0]
+[Prefer SonicBoom]
+[Fox lost 20 HP, now has 3 HP]
+***Round 2***
+[The wild Buizel: SonicBoom=0, Water Gun=0, Growl=0]
+[Prefer SonicBoom]
+[Fox lost 3 HP, now has 0 HP]
+==============================
+Battle Start!
+Wild Battle
+==============================
+***Round 1***
+[The wild Sandygast: Harden=0, Absorb=0, Essence Feed=0]
+[Prefer Absorb]
+[The wild Sandygast lost 23 HP, now has 0 HP]
+==============================
+Battle Start!
+Wild Battle
+==============================
+***Round 1***
+[The wild Sandygast: Harden=0, Absorb=0, Essence Feed=0]
+[Prefer Harden]
+[The wild Sandygast lost 23 HP, now has 0 HP]
+==============================
+Battle Start!
+Wild Battle
+==============================
+***Round 1***
+==============================
+Battle Start!
+Wild Battle
+==============================
+***Round 1***
+[The wild Nosepass: Tackle=0, Harden=0, Block=0]
+[Prefer Tackle]
+[The wild Nosepass lost 14 HP, now has 10 HP]
+[Fox lost 4 HP, now has 27 HP]
+***Round 2***
+[The wild Nosepass: Tackle=0, Harden=0, Block=0]
+[Prefer Tackle]
+[The wild Nosepass lost 10 HP, now has 0 HP]
+==============================
+Battle Start!
+Wild Battle
+==============================
+***Round 1***
+[The wild Rolycoly: Tackle=0, Smoke Screen=0, Rapid Spin=0]
+[Prefer Rapid Spin]
+[The wild Rolycoly lost 20 HP, now has 4 HP]
+[Fox lost 5 HP, now has 22 HP]
+***Round 2***
+[The wild Rolycoly: Tackle=0, Smoke Screen=0, Rapid Spin=0]
+[Prefer Rapid Spin]
+[Fox lost 5 HP, now has 17 HP]
+[The wild Rolycoly lost 4 HP, now has 0 HP]
+==============================
+Battle Start!
+Wild Battle
+==============================
+***Round 1***
+[The wild Rolycoly: Tackle=0, Smoke Screen=0, Rapid Spin=0]
+[Prefer Tackle]
+[The wild Rolycoly lost 20 HP, now has 0 HP]
+==============================
+Battle Start!
+Wild Battle
+==============================
+***Round 1***
+==============================
+Battle Start!
+9 - Belle
+==============================
+***Round 1***
+Player Pokemon Fox is faster than Lillipup.
+Leer: initial score: 10
+Leer: final score: 11
+ 
+Tackle: initial score: 25
+Tackle: final score: 25
+ 
+Odor Sleuth: initial score: 5
+Odor Sleuth: final score: 5
+ 
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (0)
+Initial switchscore building: Healing (0)
+Initial switchscore building: fsteak (0)
+Initial switchscore building: Specific Switches (0)
+Initial switchscore building: Typing (0)
+Lillipup: initial switchscore: 0
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+Lillipup: initial noswitchscore: 66
+ 
+{
+ 
+}
+ 
+Lillipup: highest move score: 25
+Lillipup: final switching score: -133
+25 > -133, will not switch
+ 
+[The foe Lillipup: Leer=11, Tackle=25, Odor Sleuth=5]
+[Prefer Tackle]
+[The foe Lillipup lost 15 HP, now has 6 HP]
+[Fox lost 5 HP, now has 15 HP]
+***Round 2***
+Player Pokemon Fox is faster than Lillipup.
+Leer: initial score: 10
+Leer: final score: 11
+ 
+Tackle: initial score: 33
+Tackle: final score: 33
+ 
+Odor Sleuth: initial score: 5
+Odor Sleuth: final score: 5
+ 
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (-100)
+Initial switchscore building: Healing (-100)
+Initial switchscore building: fsteak (-100)
+Initial switchscore building: Specific Switches (-50)
+Initial switchscore building: Typing (-50)
+Lillipup: initial switchscore: -50
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+Lillipup: initial noswitchscore: 50
+ 
+{
+ 
+}
+ 
+Lillipup: highest move score: 33
+Lillipup: final switching score: -150
+33 > -150, will not switch
+ 
+[The foe Lillipup: Leer=11, Tackle=33, Odor Sleuth=5]
+[Prefer Tackle]
+[The foe Lillipup lost 6 HP, now has 0 HP]
+***Round 3***
+Player Pokemon Fox is faster than Shinx.
+Tackle: initial score: 20
+Tackle: final score: 20
+ 
+Thunder Shock: initial score: 60
+Thunder Shock: final score: 63
+ 
+Leer: initial score: 10
+Leer: final score: 11
+ 
+[The foe Shinx: Tackle=20, Thunder Shock=63, Leer=11]
+[Prefer Thunder Shock]
+[The foe Shinx lost 16 HP, now has 5 HP]
+[Fox lost 9 HP, now has 6 HP]
+***Round 4***
+Player Pokemon Fox is faster than Shinx.
+Tackle: initial score: 50
+Tackle: final score: 50
+ 
+Thunder Shock: initial score: 110
+Thunder Shock: final score: 110
+ 
+Leer: initial score: 10
+Leer: final score: 2
+ 
+[The foe Shinx: Tackle=50, Thunder Shock=110, Leer=2]
+[Prefer Thunder Shock]
+[The foe Shinx lost 5 HP, now has 0 HP]
+==============================
+Battle Start!
+Wild Battle
+==============================
+***Round 1***
+==============================
+Battle Start!
+Wild Battle
+==============================
+***Round 1***
+==============================
+Battle Start!
+Wild Battle
+==============================
+***Round 1***
+==============================
+Battle Start!
+Wild Battle
+==============================
+***Round 1***
+==============================
+Battle Start!
+Wild Battle
+==============================
+***Round 1***
+==============================
+Battle Start!
+Wild Battle
+==============================
+***Round 1***
+==============================
+Battle Start!
+Wild Battle
+==============================
+***Round 1***
+==============================
+Battle Start!
+Wild Battle
+==============================
+***Round 1***
+==============================
+Battle Start!
+Wild Battle
+==============================
+***Round 1***
+==============================
+Battle Start!
+Wild Battle
+==============================
+***Round 1***
+[The wild Unown: Hidden Power=0]
+[Prefer Hidden Power]
+[The wild Unown lost 13 HP, now has 11 HP]
+[Fox lost 8 HP, now has 27 HP]
+***Round 2***
+[The wild Unown: Hidden Power=0]
+[Prefer Hidden Power]
+[The wild Unown lost 5 HP, now has 6 HP]
+[Fox lost 8 HP, now has 19 HP]
+***Round 3***
+[pbItemMenu called with index=0]
+[pbItemMenu initial: ret=0, retindex=-1]
+[pbItemMenu entering loop]
+[pbItemMenu loop iteration start, ret=0, retindex=-1]
+[Found 1 pokeballs for menu]
+[pbItemMenu showing menu with 0 belt items and 1 balls]
+[pbItemMenu user selected choice=0, total_items=1]
+[User selected item choice=0, item=267 (Poké Ball)]
+[Item usetype=2]
+[Item is pokeball from belt, setting ret=267, retindex=0]
+[pbItemMenu exited loop, ret=267, retindex=0]
+[pbItemMenu returning ret=267, retindex=0]
+[Item name: Poké Ball, isPokeBall: true]
+[pbRegisterItem called with idxPokemon=0, idxItem=267, idxTarget=0]
+[Item has UseInBattle handler]
+[BattleUseOnBattler returned true, calling UseInBattle]
+[UseInBattle handler called for pokeball 267, battler.index=0]
+[pbThrowPokeBall called with idxPokemon=0, ball=267]
+[Registering choice for Pokemon 0]
+==============================
+Battle Start!
+Wild Battle
+==============================
+***Round 1***
+[The wild Unown: Hidden Power=0]
+[Prefer Hidden Power]
+[Fire lost 6 HP, now has 18 HP]
+[The wild Unown lost 12 HP, now has 10 HP]
+***Round 2***
+[The wild Unown: Hidden Power=0]
+[Prefer Hidden Power]
+[Fire lost 3 HP, now has 15 HP]
+[The wild Unown lost 10 HP, now has 0 HP]
+==============================
+Battle Start!
+Wild Battle
+==============================
+***Round 1***
+==============================
+Battle Start!
+Wild Battle
+==============================
+***Round 1***
+[The wild Rolycoly: Tackle=0, Smoke Screen=0, Rapid Spin=0]
+[Prefer Tackle]
+[The wild Rolycoly gained 0 HP, now has 20 HP]
+[Fire lost 3 HP, now has 21 HP]
+***Round 2***
+[The wild Rolycoly: Tackle=0, Smoke Screen=0, Rapid Spin=0]
+[Prefer Rapid Spin]
+[Fox lost 3 HP, now has 32 HP]
+***Round 3***
+[The wild Rolycoly: Tackle=0, Smoke Screen=0, Rapid Spin=0]
+[Prefer Smoke Screen]
+[The wild Rolycoly lost 2 HP, now has 18 HP]
+***Round 4***
+[The wild Rolycoly: Tackle=0, Smoke Screen=0, Rapid Spin=0]
+[Prefer Tackle]
+[The wild Rolycoly lost 2 HP, now has 16 HP]
+[Fox lost 3 HP, now has 29 HP]
+***Round 5***
+[The wild Rolycoly: Tackle=0, Smoke Screen=0, Rapid Spin=0]
+[Prefer Smoke Screen]
+[The wild Rolycoly lost 2 HP, now has 14 HP]
+***Round 6***
+[The wild Rolycoly: Tackle=0, Smoke Screen=0, Rapid Spin=0]
+[Prefer Rapid Spin]
+[The wild Rolycoly lost 2 HP, now has 12 HP]
+[Fox lost 3 HP, now has 26 HP]
+***Round 7***
+[The wild Rolycoly: Tackle=0, Smoke Screen=0, Rapid Spin=0]
+[Prefer Rapid Spin]
+[The wild Rolycoly lost 1 HP, now has 11 HP]
+[Fox lost 3 HP, now has 23 HP]
+***Round 8***
+[The wild Rolycoly: Tackle=0, Smoke Screen=0, Rapid Spin=0]
+[Prefer Tackle]
+[The wild Rolycoly lost 2 HP, now has 9 HP]
+[Fox lost 3 HP, now has 20 HP]
+***Round 9***
+[The wild Rolycoly: Tackle=0, Smoke Screen=0, Rapid Spin=0]
+[Prefer Rapid Spin]
+[The wild Rolycoly lost 1 HP, now has 8 HP]
+[Fox lost 3 HP, now has 17 HP]
+***Round 10***
+[The wild Rolycoly: Tackle=0, Smoke Screen=0, Rapid Spin=0]
+[Prefer Rapid Spin]
+[The wild Rolycoly lost 1 HP, now has 7 HP]
+[Fox lost 3 HP, now has 14 HP]
+***Round 11***
+[The wild Rolycoly: Tackle=0, Smoke Screen=0, Rapid Spin=0]
+[Prefer Rapid Spin]
+[The wild Rolycoly lost 2 HP, now has 5 HP]
+[Fox lost 3 HP, now has 11 HP]
+***Round 12***
+[pbItemMenu called with index=0]
+[pbItemMenu initial: ret=0, retindex=-1]
+[pbItemMenu entering loop]
+[pbItemMenu loop iteration start, ret=0, retindex=-1]
+[Found 1 pokeballs for menu]
+[pbItemMenu showing menu with 0 belt items and 1 balls]
+[pbItemMenu user selected choice=0, total_items=1]
+[User selected item choice=0, item=267 (Poké Ball)]
+[Item usetype=2]
+[Item is pokeball from belt, setting ret=267, retindex=0]
+[pbItemMenu exited loop, ret=267, retindex=0]
+[pbItemMenu returning ret=267, retindex=0]
+[Item name: Poké Ball, isPokeBall: true]
+[pbRegisterItem called with idxPokemon=0, idxItem=267, idxTarget=0]
+[Item has UseInBattle handler]
+[BattleUseOnBattler returned true, calling UseInBattle]
+[UseInBattle handler called for pokeball 267, battler.index=0]
+[pbThrowPokeBall called with idxPokemon=0, ball=267]
+[Registering choice for Pokemon 0]
+==============================
+Battle Start!
+5 - Johnny
+==============================
+***Round 1***
+AI Pokemon Bunnelby is faster than Wheel.
+Mud-Slap: initial score: 33
+Mud-Slap: final score: 33
+ 
+Leer: initial score: 10
+Leer: final score: 11
+ 
+Tackle: initial score: 9
+Tackle: final score: 9
+ 
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (0)
+Initial switchscore building: Healing (0)
+Initial switchscore building: fsteak (0)
+Initial switchscore building: Specific Switches (0)
+Initial switchscore building: Typing (0)
+Bunnelby: initial switchscore: 0
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+Bunnelby: initial noswitchscore: 66
+ 
+{
+ 
+}
+ 
+Bunnelby: highest move score: 33
+Bunnelby: final switching score: -133
+33 > -133, will not switch
+ 
+[The foe Bunnelby: Mud-Slap=33, Leer=11, Tackle=9]
+[Prefer Mud-Slap]
+[Wheel lost 7 HP, now has 14 HP]
+[The foe Bunnelby lost 4 HP, now has 16 HP]
+***Round 2***
+AI Pokemon Bunnelby is faster than Wheel.
+Mud-Slap: initial score: 50
+Mud-Slap: final score: 50
+ 
+Leer: initial score: 10
+Leer: final score: 11
+ 
+Tackle: initial score: 14
+Tackle: final score: 14
+ 
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (0)
+Initial switchscore building: Healing (0)
+Initial switchscore building: fsteak (0)
+Initial switchscore building: Specific Switches (0)
+Initial switchscore building: Typing (0)
+Bunnelby: initial switchscore: 0
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+Bunnelby: initial noswitchscore: 50
+ 
+{
+ 
+}
+ 
+Bunnelby: highest move score: 50
+Bunnelby: final switching score: -125
+50 > -125, will not switch
+ 
+[The foe Bunnelby: Mud-Slap=50, Leer=11, Tackle=14]
+[Prefer Mud-Slap]
+[Fire lost 3 HP, now has 21 HP]
+***Round 3***
+Player Pokemon Fire is faster than Bunnelby.
+Mud-Slap: initial score: 14
+Mud-Slap: final score: 14
+ 
+Leer: initial score: 10
+Leer: final score: 11
+ 
+Tackle: initial score: 23
+Tackle: final score: 23
+ 
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (0)
+Initial switchscore building: Healing (0)
+Initial switchscore building: fsteak (0)
+Initial switchscore building: Specific Switches (0)
+Initial switchscore building: Typing (0)
+Bunnelby: initial switchscore: 0
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+Bunnelby: initial noswitchscore: 33
+ 
+{
+ 
+}
+ 
+Bunnelby: highest move score: 23
+Bunnelby: final switching score: -116
+23 > -116, will not switch
+ 
+[The foe Bunnelby: Mud-Slap=14, Leer=11, Tackle=23]
+[Prefer Tackle]
+[The foe Bunnelby lost 7 HP, now has 9 HP]
+[Fire lost 5 HP, now has 16 HP]
+***Round 4***
+Player Pokemon Fire is faster than Bunnelby.
+Mud-Slap: initial score: 43
+Mud-Slap: final score: 43
+ 
+Leer: initial score: 10
+Leer: final score: 11
+ 
+Tackle: initial score: 31
+Tackle: final score: 31
+ 
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (0)
+Initial switchscore building: Healing (0)
+Initial switchscore building: fsteak (0)
+Initial switchscore building: Specific Switches (0)
+Initial switchscore building: Typing (0)
+Bunnelby: initial switchscore: 0
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+Bunnelby: initial noswitchscore: 16
+ 
+{
+ 
+}
+ 
+Bunnelby: highest move score: 43
+Bunnelby: final switching score: -108
+43 > -108, will not switch
+ 
+[The foe Bunnelby: Mud-Slap=43, Leer=11, Tackle=31]
+[Prefer Mud-Slap]
+[The foe Bunnelby lost 9 HP, now has 0 HP]
+***Round 5***
+Player Pokemon Fire is faster than Skwovet.
+Tackle: initial score: 43
+Tackle: final score: 43
+ 
+Tail Whip: initial score: 10
+Tail Whip: final score: 17
+ 
+Bite: initial score: 37
+Bite: final score: 37
+ 
+[The foe Skwovet: Tackle=43, Tail Whip=17, Bite=37]
+[Prefer Tackle]
+[The foe Skwovet lost 15 HP, now has 11 HP]
+[Fire lost 7 HP, now has 9 HP]
+***Round 6***
+Player Pokemon Fire is faster than Skwovet.
+Tackle: initial score: 77
+Tackle: final score: 77
+ 
+Tail Whip: initial score: 10
+Tail Whip: final score: 17
+ 
+Bite: initial score: 66
+Bite: final score: 66
+ 
+[The foe Skwovet: Tackle=77, Tail Whip=17, Bite=66]
+[Prefer Tackle]
+[The foe Skwovet lost 8 HP, now has 3 HP]
+[Fire lost 7 HP, now has 2 HP]
+***Round 7***
+Player Pokemon Fire is faster than Skwovet.
+Tackle: initial score: 110
+Tackle: final score: 110
+ 
+Tail Whip: initial score: 10
+Tail Whip: final score: 3
+ 
+Bite: initial score: 110
+Bite: final score: 110
+ 
+[The foe Skwovet: Tackle=110, Tail Whip=3, Bite=110]
+[Prefer Tackle]
+[The foe Skwovet lost 3 HP, now has 0 HP]
+==============================
+Battle Start!
+118 - Richard
+==============================
+***Round 1***
+AI Pokemon Chansey is faster than Wheel.
+Charm: initial score: 10
+Charm: final score: 10
+ 
+Metronome: initial score: 20
+Metronome: final score: 24
+ 
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (0)
+Initial switchscore building: Healing (0)
+Initial switchscore building: fsteak (0)
+Initial switchscore building: Specific Switches (0)
+Initial switchscore building: Typing (0)
+Chansey: initial switchscore: 0
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+Chansey: initial noswitchscore: 66
+ 
+{
+ 
+}
+ 
+Chansey: highest move score: 24
+Chansey: final switching score: -133
+24 > -133, will not switch
+ 
+Beginning AI Item use check.
+ 
+This is a HP-healing item.
+Cave Field Disrupt
+Score for Potion: -100
+Highest item score: -100
+Highest move score: 24
+Item use turned off.
+[The foe Chansey: Charm=10, Metronome=24]
+[Prefer Metronome]
+[Wheel lost 2 HP, now has 21 HP]
+[The foe Chansey lost 7 HP, now has 40 HP]
+***Round 2***
+AI Pokemon Chansey is faster than Wheel.
+Charm: initial score: 10
+Charm: final score: 10
+ 
+Metronome: initial score: 20
+Metronome: final score: 24
+ 
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (0)
+Initial switchscore building: Healing (0)
+Initial switchscore building: fsteak (0)
+Initial switchscore building: Specific Switches (0)
+Initial switchscore building: Typing (0)
+Chansey: initial switchscore: 0
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+Chansey: initial noswitchscore: 50
+ 
+{
+ 
+}
+ 
+Chansey: highest move score: 24
+Chansey: final switching score: -125
+24 > -125, will not switch
+ 
+Beginning AI Item use check.
+ 
+This is a HP-healing item.
+Cave Field Disrupt
+Score for Potion: -99
+Highest item score: -99
+Highest move score: 24
+Item use turned off.
+[The foe Chansey: Charm=10, Metronome=24]
+[Prefer Metronome]
+[The foe Chansey lost 9 HP, now has 31 HP]
+***Round 3***
+Player Pokemon Wheel is faster than Chansey.
+Charm: initial score: 10
+Charm: final score: 10
+ 
+Metronome: initial score: 20
+Metronome: final score: 24
+ 
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (0)
+Initial switchscore building: Healing (0)
+Initial switchscore building: fsteak (0)
+Initial switchscore building: Specific Switches (0)
+Initial switchscore building: Typing (0)
+Chansey: initial switchscore: 0
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+Chansey: initial noswitchscore: 33
+ 
+{
+ 
+}
+ 
+Chansey: highest move score: 24
+Chansey: final switching score: -116
+24 > -116, will not switch
+ 
+Beginning AI Item use check.
+ 
+This is a HP-healing item.
+Cave Field Disrupt
+Score for Potion: -99
+Highest item score: -99
+Highest move score: 24
+Item use turned off.
+[The foe Chansey: Charm=10, Metronome=24]
+[Prefer Metronome]
+[The foe Chansey lost 9 HP, now has 22 HP]
+***Round 4***
+Player Pokemon Wheel is faster than Chansey.
+Charm: initial score: 10
+Charm: final score: 10
+ 
+Metronome: initial score: 20
+Metronome: final score: 24
+ 
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (0)
+Initial switchscore building: Healing (30)
+Initial switchscore building: fsteak (30)
+Initial switchscore building: Specific Switches (15)
+Initial switchscore building: Typing (15)
+Chansey: initial switchscore: 15
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (-30)
+Initial noswitchscore building: Better Switching Options (-30)
+Initial noswitchscore building: Second Wind Situations (-30)
+Chansey: initial noswitchscore: -13
+ 
+{
+ 
+}
+ 
+Chansey: highest move score: 24
+Chansey: final switching score: -85
+24 > -85, will not switch
+ 
+Beginning AI Item use check.
+ 
+This is a HP-healing item.
+Cave Field Disrupt
+Score for Potion: -99
+Highest item score: -99
+Highest move score: 24
+Item use turned off.
+[The foe Chansey: Charm=10, Metronome=24]
+[Prefer Metronome]
+[The foe Chansey lost 13 HP, now has 9 HP]
+[Wheel lost 21 HP, now has 0 HP]
+***Round 5***
+Player Pokemon Fire is faster than Chansey.
+Charm: initial score: 10
+Charm: final score: 0
+ 
+Metronome: initial score: 20
+Metronome: final score: 24
+ 
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (-100)
+Initial switchscore building: Healing (-70)
+Initial switchscore building: fsteak (-70)
+Initial switchscore building: Specific Switches (-35)
+Initial switchscore building: Typing (-35)
+Chansey: initial switchscore: -35
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (-30)
+Initial noswitchscore building: Better Switching Options (-30)
+Initial noswitchscore building: Second Wind Situations (-30)
+Chansey: initial noswitchscore: -30
+ 
+{
+ 
+}
+ 
+Chansey: highest move score: 24
+Chansey: final switching score: -102
+24 > -102, will not switch
+ 
+Beginning AI Item use check.
+ 
+This is a HP-healing item.
+Cave Field Disrupt
+Score for Potion: -100
+Highest item score: -100
+Highest move score: 24
+Item use turned off.
+[The foe Chansey: Charm=0, Metronome=24]
+[Prefer Metronome]
+[The foe Chansey lost 9 HP, now has 0 HP]
+***Round 6***
+Player Pokemon Fire is faster than Audino.
+Baby-Doll Eyes: initial score: 15
+Priority Check End
+Baby-Doll Eyes: final score: 0
+ 
+Disarming Voice: initial score: 3
+Disarming Voice: final score: 3
+ 
+Enchant: initial score: 25
+Enchant: final score: 30
+ 
+Beginning AI Item use check.
+ 
+This is a HP-healing item.
+Cave Field Disrupt
+Score for Potion: -100
+Highest item score: -100
+Highest move score: 27
+Item use turned off.
+[The foe Audino: Baby-Doll Eyes=0, Disarming Voice=3, Enchant=27]
+[Prefer Enchant]
+***Round 7***
+Player Pokemon Fox is faster than Audino.
+Baby-Doll Eyes: initial score: 15
+Priority Check End
+Baby-Doll Eyes: final score: 0
+ 
+Disarming Voice: initial score: 7
+Disarming Voice: final score: 7
+ 
+Enchant: initial score: 25
+Enchant: final score: 0
+ 
+Beginning AI Item use check.
+ 
+This is a HP-healing item.
+Cave Field Disrupt
+Score for Potion: -100
+Highest item score: -100
+Highest move score: 7
+Item use turned off.
+[The foe Audino: Baby-Doll Eyes=0, Disarming Voice=7, Enchant=0]
+[Prefer Disarming Voice]
+[The foe Audino lost 12 HP, now has 17 HP]
+[Fox lost 7 HP, now has 31 HP]
+***Round 8***
+Player Pokemon Fox is faster than Audino.
+Baby-Doll Eyes: initial score: 15
+Priority Check End
+Baby-Doll Eyes: final score: 0
+ 
+Disarming Voice: initial score: 9
+Disarming Voice: final score: 9
+ 
+Enchant: initial score: 25
+Enchant: final score: 0
+ 
+Beginning AI Item use check.
+ 
+This is a HP-healing item.
+Cave Field Disrupt
+Score for Potion: -96
+Highest item score: -96
+Highest move score: 9
+Item use turned off.
+[The foe Audino: Baby-Doll Eyes=0, Disarming Voice=9, Enchant=0]
+[Prefer Disarming Voice]
+[The foe Audino lost 12 HP, now has 5 HP]
+[Fox lost 7 HP, now has 24 HP]
+***Round 9***
+Player Pokemon Fox is faster than Audino.
+Baby-Doll Eyes: initial score: 15
+Priority Check End
+Baby-Doll Eyes: final score: 0
+ 
+Disarming Voice: initial score: 12
+Disarming Voice: final score: 12
+ 
+Enchant: initial score: 25
+Enchant: final score: 30
+ 
+Beginning AI Item use check.
+ 
+This is a HP-healing item.
+Cave Field Disrupt
+Score for Potion: -49
+Highest item score: -49
+Highest move score: 27
+Item use turned off.
+[The foe Audino: Baby-Doll Eyes=0, Disarming Voice=12, Enchant=27]
+[Prefer Enchant]
+[The foe Audino lost 5 HP, now has 0 HP]
+==============================
+Battle Start!
+Wild Battle
+==============================
+***Round 1***
+[The wild Nosepass: Tackle=0, Harden=0, Block=0]
+[Prefer Tackle]
+[Wheel lost 2 HP, now has 21 HP]
+***Round 2***
+==============================
+Battle Start!
+32 - Katar
+==============================
+***Round 1***
+AI Pokemon Magikarp is faster than Wheel.
+Splash: initial score: 5
+Splash: final score: 0
+ 
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (0)
+Initial switchscore building: Healing (0)
+Initial switchscore building: fsteak (0)
+Initial switchscore building: Specific Switches (0)
+Initial switchscore building: Typing (0)
+Magikarp: initial switchscore: 0
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+Magikarp: initial noswitchscore: 66
+ 
+{
+ 
+}
+ 
+Magikarp: highest move score: 0
+Magikarp: final switching score: -33
+0 > -33, will not switch
+ 
+[The foe Magikarp: Splash=0]
+[Prefer Splash]
+[The foe Magikarp lost 6 HP, now has 10 HP]
+***Round 2***
+Player Pokemon Wheel is faster than Magikarp.
+Splash: initial score: 5
+Splash: final score: 0
+ 
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (0)
+Initial switchscore building: Healing (0)
+Initial switchscore building: fsteak (0)
+Initial switchscore building: Specific Switches (0)
+Initial switchscore building: Typing (0)
+Magikarp: initial switchscore: 0
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+Magikarp: initial noswitchscore: 50
+ 
+{
+ 
+}
+ 
+Magikarp: highest move score: 0
+Magikarp: final switching score: -25
+0 > -25, will not switch
+ 
+[The foe Magikarp: Splash=0]
+[Prefer Splash]
+[The foe Magikarp lost 6 HP, now has 4 HP]
+***Round 3***
+Player Pokemon Wheel is faster than Magikarp.
+Splash: initial score: 5
+Splash: final score: 0
+ 
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (-100)
+Initial switchscore building: Healing (-100)
+Initial switchscore building: fsteak (-100)
+Initial switchscore building: Specific Switches (-50)
+Initial switchscore building: Typing (-50)
+Magikarp: initial switchscore: -50
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+Magikarp: initial noswitchscore: 33
+ 
+{
+ 
+}
+ 
+Magikarp: highest move score: 0
+Magikarp: final switching score: -41
+0 > -41, will not switch
+ 
+[The foe Magikarp: Splash=0]
+[Prefer Splash]
+[The foe Magikarp lost 4 HP, now has 0 HP]
+Scoring for Magikarp switching to: Magikarp
+Score: -10000000
+Not switching to self.
+Scoring for Magikarp switching to: Magikarp
+Offensive: -280
+Defensive: -130
+Roles: -130
+Weather: -130
+Moves: -130
+Abilities: -130
+Items: -130
+Fields: -130
+Score: -130
+ 
+Scoring for Magikarp switching to: Feebas
+Offensive: -280
+Defensive: -205
+Roles: -205
+Weather: -205
+Moves: -205
+Abilities: -205
+Items: -205
+Fields: -205
+Score: -205
+ 
+Scoring for Magikarp switching to: Feebas
+Offensive: -280
+Defensive: -205
+Roles: -205
+Weather: -205
+Moves: -205
+Abilities: -205
+Items: -205
+Fields: -205
+Score: -205
+ 
+Scoring for Magikarp switching to: Wishiwashi
+Offensive: 86
+Defensive: 236
+Roles: 236
+Weather: 236
+Moves: 236
+Abilities: 236
+Items: 236
+Fields: 236
+Score: 236
+ 
+Scoring for Magikarp switching to: Wishiwashi
+Offensive: 86
+Defensive: 161
+Roles: 161
+Weather: 161
+Moves: 161
+Abilities: 161
+Items: 161
+Fields: 161
+Score: 161
+ 
+***Round 4***
+Player Pokemon Wheel is faster than Wishiwashi.
+Water Gun: initial score: 42
+Water Gun: final score: 42
+ 
+Growl: initial score: 10
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (0)
+Initial switchscore building: Healing (0)
+Initial switchscore building: fsteak (0)
+Initial switchscore building: Specific Switches (0)
+Initial switchscore building: Typing (0)
+Wishiwashi: initial switchscore: 0
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+Wishiwashi: initial noswitchscore: 66
+ 
+{
+ 
+}
+ 
+Wishiwashi: highest move score: 42
+Wishiwashi: final switching score: -33
+42 > -33, will not switch
+ 
+[The foe Wishiwashi: Water Gun=42, Growl=15]
+[Prefer Water Gun]
+[The foe Wishiwashi lost 4 HP, now has 14 HP]
+[Wheel lost 9 HP, now has 12 HP]
+***Round 5***
+Player Pokemon Wheel is faster than Wishiwashi.
+Water Gun: initial score: 75
+Water Gun: final score: 75
+ 
+Growl: initial score: 10
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (0)
+Initial switchscore building: Healing (0)
+Initial switchscore building: fsteak (0)
+Initial switchscore building: Specific Switches (0)
+Initial switchscore building: Typing (0)
+Wishiwashi: initial switchscore: 0
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+Wishiwashi: initial noswitchscore: 50
+ 
+{
+ 
+}
+ 
+Wishiwashi: highest move score: 75
+Wishiwashi: final switching score: -25
+75 > -25, will not switch
+ 
+[The foe Wishiwashi: Water Gun=75, Growl=15]
+[Prefer Water Gun]
+[The foe Wishiwashi lost 8 HP, now has 6 HP]
+[Wheel lost 9 HP, now has 3 HP]
+***Round 6***
+Player Pokemon Wheel is faster than Wishiwashi.
+Water Gun: initial score: 110
+Water Gun: final score: 110
+ 
+Growl: initial score: 10
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (0)
+Initial switchscore building: Healing (0)
+Initial switchscore building: fsteak (0)
+Initial switchscore building: Specific Switches (0)
+Initial switchscore building: Typing (0)
+Wishiwashi: initial switchscore: 0
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+Wishiwashi: initial noswitchscore: 33
+ 
+{
+ 
+}
+ 
+Wishiwashi: highest move score: 110
+Wishiwashi: final switching score: -16
+110 > -16, will not switch
+ 
+[The foe Wishiwashi: Water Gun=110, Growl=15]
+[Prefer Water Gun]
+[The foe Wishiwashi lost 6 HP, now has 0 HP]
+Scoring for Wishiwashi switching to: Magikarp
+Score: -10000000
+ 
+Scoring for Wishiwashi switching to: Magikarp
+Offensive: -80
+Defensive: 70
+Roles: 70
+Weather: 70
+Moves: 70
+Abilities: 70
+Items: 70
+Fields: 70
+Score: 70
+ 
+Scoring for Wishiwashi switching to: Feebas
+Offensive: -80
+Defensive: -5
+Roles: -5
+Weather: -5
+Moves: -5
+Abilities: -5
+Items: -5
+Fields: -5
+Score: -5
+ 
+Scoring for Wishiwashi switching to: Feebas
+Offensive: -80
+Defensive: -5
+Roles: -5
+Weather: -5
+Moves: -5
+Abilities: -5
+Items: -5
+Fields: -5
+Score: -5
+ 
+Scoring for Wishiwashi switching to: Wishiwashi
+Score: -10000000
+Not switching to self.
+Scoring for Wishiwashi switching to: Wishiwashi
+Offensive: 6
+Defensive: 81
+Roles: 81
+Weather: 81
+Moves: 81
+Abilities: 81
+Items: 81
+Fields: 81
+Score: 81
+ 
+***Round 7***
+Player Pokemon Wheel is faster than Wishiwashi.
+Water Gun: initial score: 110
+Water Gun: final score: 110
+ 
+Growl: initial score: 10
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (0)
+Initial switchscore building: Healing (0)
+Initial switchscore building: fsteak (0)
+Initial switchscore building: Specific Switches (0)
+Initial switchscore building: Typing (0)
+Wishiwashi: initial switchscore: 0
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+Wishiwashi: initial noswitchscore: 66
+ 
+{
+ 
+}
+ 
+Wishiwashi: highest move score: 110
+Wishiwashi: final switching score: -33
+110 > -33, will not switch
+ 
+[The foe Wishiwashi: Water Gun=110, Growl=15]
+[Prefer Water Gun]
+[Fox lost 1 HP, now has 40 HP]
+***Round 8***
+Player Pokemon Fox is faster than Wishiwashi.
+Water Gun: initial score: 2
+Water Gun: final score: 2
+ 
+Growl: initial score: 10
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (0)
+Initial switchscore building: Healing (0)
+Initial switchscore building: fsteak (0)
+Initial switchscore building: Specific Switches (0)
+Initial switchscore building: Typing (0)
+Wishiwashi: initial switchscore: -40
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+Wishiwashi: initial noswitchscore: 50
+ 
+{
+ 
+}
+ 
+Wishiwashi: highest move score: 15
+Wishiwashi: final switching score: -45
+15 > -45, will not switch
+ 
+[The foe Wishiwashi: Water Gun=2, Growl=15]
+[Prefer Growl]
+[The foe Wishiwashi lost 11 HP, now has 7 HP]
+***Round 9***
+Player Pokemon Fox is faster than Wishiwashi.
+Water Gun: initial score: 2
+Water Gun: final score: 2
+ 
+Growl: initial score: 10
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (0)
+Initial switchscore building: Healing (0)
+Initial switchscore building: fsteak (0)
+Initial switchscore building: Specific Switches (0)
+Initial switchscore building: Typing (0)
+Wishiwashi: initial switchscore: -40
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+Wishiwashi: initial noswitchscore: 33
+ 
+{
+ 
+}
+ 
+Wishiwashi: highest move score: 2
+Wishiwashi: final switching score: -36
+2 > -36, will not switch
+ 
+[The foe Wishiwashi: Water Gun=2, Growl=0]
+[Prefer Water Gun]
+[The foe Wishiwashi lost 7 HP, now has 0 HP]
+Scoring for Wishiwashi switching to: Magikarp
+Score: -10000000
+ 
+Scoring for Wishiwashi switching to: Magikarp
+Offensive: -80
+Defensive: -5
+Roles: -5
+Weather: -5
+Moves: -5
+Abilities: -5
+Items: -5
+Fields: -5
+Score: -5
+ 
+Scoring for Wishiwashi switching to: Feebas
+Offensive: -80
+Defensive: 70
+Roles: 70
+Weather: 70
+Moves: 70
+Abilities: 70
+Items: 70
+Fields: 70
+Score: 70
+ 
+Scoring for Wishiwashi switching to: Feebas
+Offensive: -80
+Defensive: 70
+Roles: 70
+Weather: 70
+Moves: 70
+Abilities: 70
+Items: 70
+Fields: 70
+Score: 70
+ 
+Scoring for Wishiwashi switching to: Wishiwashi
+Score: -10000000
+ 
+Scoring for Wishiwashi switching to: Wishiwashi
+Score: -10000000
+Not switching to self.
+***Round 10***
+Player Pokemon Fox is faster than Feebas.
+Splash: initial score: 5
+Splash: final score: 0
+ 
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (0)
+Initial switchscore building: Healing (0)
+Initial switchscore building: fsteak (0)
+Initial switchscore building: Specific Switches (0)
+Initial switchscore building: Typing (0)
+Feebas: initial switchscore: -40
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+Feebas: initial noswitchscore: 66
+ 
+{
+ 
+}
+ 
+Feebas: highest move score: 0
+Feebas: final switching score: -53
+0 > -53, will not switch
+ 
+[The foe Feebas: Splash=0]
+[Prefer Splash]
+***Round 11***
+AI Pokemon Feebas is faster than Wheel.
+Splash: initial score: 5
+Splash: final score: 0
+ 
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (0)
+Initial switchscore building: Healing (0)
+Initial switchscore building: fsteak (0)
+Initial switchscore building: Specific Switches (0)
+Initial switchscore building: Typing (0)
+Feebas: initial switchscore: 0
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+Feebas: initial noswitchscore: 50
+ 
+{
+ 
+}
+ 
+Feebas: highest move score: 0
+Feebas: final switching score: -25
+0 > -25, will not switch
+ 
+[The foe Feebas: Splash=0]
+[Prefer Splash]
+[The foe Feebas lost 9 HP, now has 7 HP]
+***Round 12***
+AI Pokemon Feebas is faster than Wheel.
+Splash: initial score: 5
+Splash: final score: 0
+ 
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (0)
+Initial switchscore building: Healing (0)
+Initial switchscore building: fsteak (0)
+Initial switchscore building: Specific Switches (0)
+Initial switchscore building: Typing (0)
+Feebas: initial switchscore: 0
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+Feebas: initial noswitchscore: 33
+ 
+{
+ 
+}
+ 
+Feebas: highest move score: 0
+Feebas: final switching score: -16
+0 > -16, will not switch
+ 
+[The foe Feebas: Splash=0]
+[Prefer Splash]
+[The foe Feebas lost 7 HP, now has 0 HP]
+Scoring for Feebas switching to: Magikarp
+Score: -10000000
+ 
+Scoring for Feebas switching to: Magikarp
+Offensive: -280
+Defensive: -205
+Roles: -205
+Weather: -205
+Moves: -205
+Abilities: -205
+Items: -205
+Fields: -205
+Score: -205
+ 
+Scoring for Feebas switching to: Feebas
+Score: -10000000
+Not switching to self.
+Scoring for Feebas switching to: Feebas
+Offensive: -280
+Defensive: -205
+Roles: -205
+Weather: -205
+Moves: -205
+Abilities: -205
+Items: -205
+Fields: -205
+Score: -205
+ 
+Scoring for Feebas switching to: Wishiwashi
+Score: -10000000
+ 
+Scoring for Feebas switching to: Wishiwashi
+Score: -10000000
+ 
+***Round 13***
+AI Pokemon Magikarp is faster than Wheel.
+Splash: initial score: 5
+Splash: final score: 0
+ 
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (0)
+Initial switchscore building: Healing (0)
+Initial switchscore building: fsteak (0)
+Initial switchscore building: Specific Switches (0)
+Initial switchscore building: Typing (0)
+Magikarp: initial switchscore: 0
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+Magikarp: initial noswitchscore: 66
+ 
+{
+ 
+}
+ 
+Magikarp: highest move score: 0
+Magikarp: final switching score: -33
+0 > -33, will not switch
+ 
+[The foe Magikarp: Splash=0]
+[Prefer Splash]
+[The foe Magikarp lost 3 HP, now has 13 HP]
+***Round 14***
+AI Pokemon Magikarp is faster than Wheel.
+Splash: initial score: 5
+Splash: final score: 0
+ 
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (0)
+Initial switchscore building: Healing (0)
+Initial switchscore building: fsteak (0)
+Initial switchscore building: Specific Switches (0)
+Initial switchscore building: Typing (0)
+Magikarp: initial switchscore: 0
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+Magikarp: initial noswitchscore: 50
+ 
+{
+ 
+}
+ 
+Magikarp: highest move score: 0
+Magikarp: final switching score: -25
+0 > -25, will not switch
+ 
+[The foe Magikarp: Splash=0]
+[Prefer Splash]
+[The foe Magikarp lost 8 HP, now has 5 HP]
+***Round 15***
+Player Pokemon Wheel is faster than Magikarp.
+Splash: initial score: 5
+Splash: final score: 0
+ 
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (0)
+Initial switchscore building: Healing (0)
+Initial switchscore building: fsteak (0)
+Initial switchscore building: Specific Switches (0)
+Initial switchscore building: Typing (0)
+Magikarp: initial switchscore: 0
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+Magikarp: initial noswitchscore: 33
+ 
+{
+ 
+}
+ 
+Magikarp: highest move score: 0
+Magikarp: final switching score: -16
+0 > -16, will not switch
+ 
+[The foe Magikarp: Splash=0]
+[Prefer Splash]
+[The foe Magikarp lost 4 HP, now has 1 HP]
+***Round 16***
+Player Pokemon Wheel is faster than Magikarp.
+Splash: initial score: 5
+Splash: final score: 0
+ 
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (-100)
+Initial switchscore building: Healing (-100)
+Initial switchscore building: fsteak (-100)
+Initial switchscore building: Specific Switches (-50)
+Initial switchscore building: Typing (-50)
+Magikarp: initial switchscore: -50
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+Magikarp: initial noswitchscore: 16
+ 
+{
+ 
+}
+ 
+Magikarp: highest move score: 0
+Magikarp: final switching score: -33
+0 > -33, will not switch
+ 
+[The foe Magikarp: Splash=0]
+[Prefer Splash]
+[The foe Magikarp lost 1 HP, now has 0 HP]
+Scoring for Magikarp switching to: Magikarp
+Score: -10000000
+ 
+Scoring for Magikarp switching to: Magikarp
+Score: -10000000
+Not switching to self.
+Scoring for Magikarp switching to: Feebas
+Score: -10000000
+ 
+Scoring for Magikarp switching to: Feebas
+Offensive: -280
+Defensive: -205
+Roles: -205
+Weather: -205
+Moves: -205
+Abilities: -205
+Items: -205
+Fields: -205
+Score: -205
+ 
+Scoring for Magikarp switching to: Wishiwashi
+Score: -10000000
+ 
+Scoring for Magikarp switching to: Wishiwashi
+Score: -10000000
+ 
+***Round 17***
+Player Pokemon Wheel is faster than Feebas.
+Splash: initial score: 5
+Splash: final score: 0
+ 
+[The foe Feebas: Splash=0]
+[Prefer Splash]
+[The foe Feebas lost 5 HP, now has 11 HP]
+***Round 18***
+Player Pokemon Wheel is faster than Feebas.
+Splash: initial score: 5
+Splash: final score: 0
+ 
+[The foe Feebas: Splash=0]
+[Prefer Splash]
+[The foe Feebas lost 9 HP, now has 2 HP]
+***Round 19***
+Player Pokemon Wheel is faster than Feebas.
+Splash: initial score: 5
+Splash: final score: 0
+ 
+[The foe Feebas: Splash=0]
+[Prefer Splash]
+[The foe Feebas lost 2 HP, now has 0 HP]
+==============================
+Battle Start!
+Wild Battle
+==============================
+***Round 1***
+[The wild Feebas: Splash=0]
+[Prefer Splash]
+[The wild Feebas lost 4 HP, now has 15 HP]
+***Round 2***
+[The wild Feebas: Splash=0]
+[Prefer Splash]
+***Round 3***
+==============================
+Battle Start!
+Wild Battle
+==============================
+***Round 1***
+==============================
+Battle Start!
+Wild Battle
+==============================
+***Round 1***
+[The wild Rolycoly: Tackle=0, Smoke Screen=0, Rapid Spin=0]
+[Prefer Tackle]
+[Wheel lost 2 HP, now has 23 HP]
+***Round 2***
+==============================
+Battle Start!
+Wild Battle
+==============================
+***Round 1***
+==============================
+Battle Start!
+Wild Battle
+==============================
+***Round 1***
+[The wild Wiglett: Water Gun=0, Sand Attack=0]
+[Prefer Sand Attack]
+***Round 2***
+[The wild Wiglett: Water Gun=0, Sand Attack=0]
+[Prefer Sand Attack]
+***Round 3***

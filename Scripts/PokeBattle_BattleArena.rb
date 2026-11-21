@@ -262,15 +262,15 @@ class PokeBattle_Scene
       end
       updateJudgment(infowindow,1,battler1,battler2,ratings1,ratings2)
       Kernel.pbMessageDisplay(msgwindow,
-         _INTL("REFEREE: Judging category 1, Mind!\nThe Pokemon showing the most guts!\\wtnp[40]")) { 
+         _INTL("REFEREE: Judging category 1, Mind!\nThe Pokémon showing the most guts!\\wtnp[40]")) {
          pbUpdate; dimmingvp.update; infowindow.update } 
       updateJudgment(infowindow,2,battler1,battler2,ratings1,ratings2)
       Kernel.pbMessageDisplay(msgwindow,
-         _INTL("REFEREE: Judging category 2, Skill!\nThe Pokemon using moves the best!\\wtnp[40]")) { 
+         _INTL("REFEREE: Judging category 2, Skill!\nThe Pokémon using moves the best!\\wtnp[40]")) {
          pbUpdate; dimmingvp.update; infowindow.update } 
       updateJudgment(infowindow,3,battler1,battler2,ratings1,ratings2)
       Kernel.pbMessageDisplay(msgwindow,
-         _INTL("REFEREE: Judging category 3, Body!\nThe Pokemon with the most vitality!\\wtnp[40]")) { 
+         _INTL("REFEREE: Judging category 3, Body!\nThe Pokémon with the most vitality!\\wtnp[40]")) {
          pbUpdate; dimmingvp.update; infowindow.update }
       total1=0
       total2=0

@@ -31,6 +31,7 @@ class Scene_Pokegear
     if $game_switches[1177]
       commands[@cmdNotes=commands.length]=_INTL("Field Notes")
     end
+    commands[@cmdFieldManual=commands.length]=_INTL("Field Manual") #pk code
     commands[@cmdTutor=commands.length]=_INTL("Tutor.net") if $game_switches[1492]==true
     #pk code
     if $Trainer.pokedex && $game_switches[1300]
@@ -115,6 +116,14 @@ class Scene_Pokegear
       if @cmdNotes>=0 && @menu_index==@cmdNotes
         pbPlayDecisionSE()
         $scene = Scene_FieldNotes.new
+      end
+
+      #pk code
+      if @menu_index==@cmdFieldManual
+        pbPlayDecisionSE()
+        scene=Scene_FieldEffectsManual.new
+        screen=PokemonFieldEffectsManualScreen.new(scene)
+        pbFadeOutIn(99999) { screen.pbStartScreen }
       end
      
       if @cmdRiftNotes>=0 && @menu_index==@cmdRiftNotes

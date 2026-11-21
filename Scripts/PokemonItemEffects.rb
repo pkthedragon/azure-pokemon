@@ -192,7 +192,7 @@ ItemHandlers::UseFromBag.add(:GOLDENWINGS,proc{|item|
     next 0
   end
   if $game_switches[999]
-    Kernel.pbMessage(_INTL("It can't be used while riding a Pokemon."))
+    Kernel.pbMessage(_INTL("It can't be used while riding a Pokémon."))
     next 0
   end
   if !pbGetMetadata($game_map.map_id,MetadataOutdoor)
@@ -935,7 +935,8 @@ ItemHandlers::UseOnPokemon.add(:HOPOBERRY,proc{|item,pokemon,scene|
 ItemHandlers::UseOnPokemon.add(:PPUP,proc{|item,pokemon,scene|
    move=scene.pbChooseMove(pokemon,_INTL("Boost PP of which move?"))
    if move>=0
-     if pokemon.moves[move].totalpp==0 || pokemon.moves[move].ppup>=3
+     if pokemon.moves[move].totalpp==0 || pokemon.moves[move].ppup>=3 ||
+        pbIsHiddenPowerMove?(pokemon.moves[move].id) #pk code
        scene.pbDisplay(_INTL("It won't have any effect."))
        next false
      else
@@ -950,7 +951,8 @@ ItemHandlers::UseOnPokemon.add(:PPUP,proc{|item,pokemon,scene|
 ItemHandlers::UseOnPokemon.add(:PPMAX,proc{|item,pokemon,scene|
    move=scene.pbChooseMove(pokemon,_INTL("Boost PP of which move?"))
    if move>=0
-     if pokemon.moves[move].totalpp==0 || pokemon.moves[move].ppup>=3
+     if pokemon.moves[move].totalpp==0 || pokemon.moves[move].ppup>=3 ||
+        pbIsHiddenPowerMove?(pokemon.moves[move].id) #pk code
        scene.pbDisplay(_INTL("It won't have any effect."))
        next false
      else
@@ -3035,37 +3037,37 @@ ItemHandlers::UseOnPokemon.add(:TAMATOBERRY,proc{|item,pokemon,scene|
 
 ItemHandlers::UseOnPokemon.add(:HPRESETBAG,proc{|item,pokemon,scene|
    next pbResetEVStat(pokemon,scene,0,[
-      _INTL("{1} forgot it's HP training!\nIt's base HP was reset!",pokemon.name),
+      _INTL("{1} forgot its HP training!\nIts base HP was reset!",pokemon.name),
    ])
 })
 
 ItemHandlers::UseOnPokemon.add(:ATKRESETBAG,proc{|item,pokemon,scene|
    next pbResetEVStat(pokemon,scene,1,[
-      _INTL("{1} forgot it's Attack training!\nIt's base Attack was reset!",pokemon.name),
+      _INTL("{1} forgot its Attack training!\nIts base Attack was reset!",pokemon.name),
    ])
 })
 
 ItemHandlers::UseOnPokemon.add(:DEFRESETBAG,proc{|item,pokemon,scene|
    next pbResetEVStat(pokemon,scene,2,[
-      _INTL("{1} forgot it's Defense training!\nIt's base Defense was reset!",pokemon.name),
+      _INTL("{1} forgot its Defense training!\nIts base Defense was reset!",pokemon.name),
    ])
 })
 
 ItemHandlers::UseOnPokemon.add(:SPARESETBAG,proc{|item,pokemon,scene|
    next pbResetEVStat(pokemon,scene,4,[
-      _INTL("{1} forgot it's Sp. Attack training!\nIt's base Sp. Attack was reset!",pokemon.name),
+      _INTL("{1} forgot its Sp. Attack training!\nIts base Sp. Attack was reset!",pokemon.name),
    ])
 })
 
 ItemHandlers::UseOnPokemon.add(:SPDRESETBAG,proc{|item,pokemon,scene|
    next pbResetEVStat(pokemon,scene,5,[
-      _INTL("{1} forgot it's Sp. Defense training!\nIt's base Sp. Defense was reset!",pokemon.name),
+      _INTL("{1} forgot its Sp. Defense training!\nIts base Sp. Defense was reset!",pokemon.name),
    ])
 })
 
 ItemHandlers::UseOnPokemon.add(:SPERESETBAG,proc{|item,pokemon,scene|
    next pbResetEVStat(pokemon,scene,3,[
-      _INTL("{1} forgot it's Speed training!\nIt's base Speed was reset!",pokemon.name),
+      _INTL("{1} forgot its Speed training!\nIts base Speed was reset!",pokemon.name),
    ])
 })
 
@@ -3516,7 +3518,7 @@ ItemHandlers::UseInField.add(:GOLDENWINGS,proc{|item|
     next 0
   end
   if $game_switches[999]
-    Kernel.pbMessage(_INTL("It can't be used while riding a Pokemon."))
+    Kernel.pbMessage(_INTL("It can't be used while riding a Pokémon."))
     next 0
   end
   if !pbGetMetadata($game_map.map_id,MetadataOutdoor)

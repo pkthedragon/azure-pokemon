@@ -315,6 +315,19 @@ class PokemonSummaryScene
     bitmap.font.color=oldfontcolor
   end
 
+  #pk code
+  def addStatusIcon(imagepos,pokemon)
+    status=6 if pbPokerus(pokemon)==1
+    status=pokemon.status-1 if pokemon.status>0
+    status=5 if pokemon.hp==0
+    return if !status
+    graphic="Graphics/Pictures/statuses"
+    if pokemon.hp>0 && pokemon.status==PBStatuses::CRUSHED
+      graphic="Graphics/Pictures/Battle/battleStatuses"
+    end
+    imagepos.push([graphic,124,100,0,16*status,44,16])
+  end
+
   def drawPageOne(pokemon)
     if pokemon.isEgg?
       drawPageOneEgg(pokemon)
@@ -327,12 +340,7 @@ class PokemonSummaryScene
     end
     @sprites["background"].setBitmap("Graphics/Pictures/Summary/summary1.png")
     imagepos=[]
-    if pbPokerus(pokemon)==1 || pokemon.hp==0 || @pokemon.status>0
-      status=6 if pbPokerus(pokemon)==1
-      status=@pokemon.status-1 if @pokemon.status>0
-      status=5 if pokemon.hp==0
-      imagepos.push(["Graphics/Pictures/statuses",124,100,0,16*status,44,16])
-    end
+    addStatusIcon(imagepos,pokemon)
     if pokemon.isShiny?
       imagepos.push([sprintf("Graphics/Pictures/shiny"),2,134,0,0,-1,-1])
     end
@@ -477,12 +485,7 @@ class PokemonSummaryScene
     end
     @sprites["background"].setBitmap("Graphics/Pictures/Summary/summary2.PNG")
     imagepos=[]
-    if pbPokerus(pokemon)==1 || pokemon.hp==0 || @pokemon.status>0
-      status=6 if pbPokerus(pokemon)==1
-      status=@pokemon.status-1 if @pokemon.status>0
-      status=5 if pokemon.hp==0
-      imagepos.push(["Graphics/Pictures/statuses",124,100,0,16*status,44,16])
-    end
+    addStatusIcon(imagepos,pokemon)
     if pokemon.isShiny?
       imagepos.push([sprintf("Graphics/Pictures/shiny"),2,134,0,0,-1,-1])
     end
@@ -599,7 +602,7 @@ class PokemonSummaryScene
                       _INTL("Thoroughly cunning."),
                       _INTL("Often lost in thought."),
                       _INTL("Very finicky."),
-                      _INTL("Strong willed."),
+                      _INTL("Strong-willed."),
                       _INTL("Somewhat vain."),
                       _INTL("Strongly defiant."),
                       _INTL("Hates to lose."),
@@ -616,12 +619,7 @@ class PokemonSummaryScene
     overlay.clear
     @sprites["background"].setBitmap("Graphics/Pictures/Summary/summary3.PNG")
     imagepos=[]
-    if pbPokerus(pokemon)==1 || pokemon.hp==0 || @pokemon.status>0
-      status=6 if pbPokerus(pokemon)==1
-      status=@pokemon.status-1 if @pokemon.status>0
-      status=5 if pokemon.hp==0
-      imagepos.push(["Graphics/Pictures/statuses",124,100,0,16*status,44,16])
-    end
+    addStatusIcon(imagepos,pokemon)
     if pokemon.isShiny?
       imagepos.push([sprintf("Graphics/Pictures/shiny"),2,134,0,0,-1,-1])
     end
@@ -715,12 +713,7 @@ class PokemonSummaryScene
     end
     @sprites["background"].setBitmap("Graphics/Pictures/Summary/summary4.PNG")
     imagepos=[]
-    if pbPokerus(pokemon)==1 || pokemon.hp==0 || @pokemon.status>0
-      status=6 if pbPokerus(pokemon)==1
-      status=@pokemon.status-1 if @pokemon.status>0
-      status=5 if pokemon.hp==0
-      imagepos.push(["Graphics/Pictures/statuses",124,100,0,16*status,44,16])
-    end
+    addStatusIcon(imagepos,pokemon)
     if pokemon.isShiny?
       imagepos.push(["Graphics/Pictures/shiny",2,134,0,0,-1,-1])
     end
@@ -983,12 +976,7 @@ class PokemonSummaryScene
     @sprites["pokemon"].visible=true
     @sprites["pokeicon"].visible=false
     imagepos=[]
-    if pbPokerus(pokemon)==1 || pokemon.hp==0 || @pokemon.status>0
-      status=6 if pbPokerus(pokemon)==1
-      status=@pokemon.status-1 if @pokemon.status>0
-      status=5 if pokemon.hp==0
-      imagepos.push(["Graphics/Pictures/statuses",124,100,0,16*status,44,16])
-    end
+    addStatusIcon(imagepos,pokemon)
     if pokemon.isShiny?
       imagepos.push([sprintf("Graphics/Pictures/shiny"),2,134,0,0,-1,-1])
     end

@@ -1244,7 +1244,7 @@ end
 class PokeBattle_Move_023 < PokeBattle_Move
   def pbEffect(attacker,opponent,hitnum=0,alltargets=nil,showanimation=true)
     return super(attacker,opponent,hitnum,alltargets,showanimation) if @basedamage>0
-    stage=$fefieldeffect==50 ? 3 : 2
+    stage=$fefieldeffect==47 ? 3 : 2
     if attacker.effects[PBEffects::FocusEnergy]>=stage
       @battle.pbDisplay(_INTL("But it failed!"))
       return -1
@@ -1564,7 +1564,7 @@ class PokeBattle_Move_02C < PokeBattle_Move
     end
     pbShowAnimation(@id,attacker,nil,hitnum,alltargets,showanimation)
     showanim=true
-    if $fefieldeffect == 5 || $fefieldeffect == 20 || $fefieldeffect == 37 || $fefieldeffect == 50 # Chess/Ashen/Psychic/Library Field
+    if $fefieldeffect == 5 || $fefieldeffect == 20 || $fefieldeffect == 37 || $fefieldeffect == 47 # Chess/Ashen/Psychic/Library Field
       if attacker.pbCanIncreaseStatStage?(PBStats::SPATK,false)
         attacker.pbIncreaseStat(PBStats::SPATK,2,false,@id,attacker,showanim)
         showanim=false
@@ -1743,14 +1743,14 @@ class PokeBattle_Move_033 < PokeBattle_Move
     return super(attacker,opponent,hitnum,alltargets,showanimation) if @basedamage>0
     return -1 if !attacker.pbCanIncreaseStatStage?(PBStats::SPDEF,true)
     pbShowAnimation(@id,attacker,opponent,hitnum,alltargets,showanimation)
-    stages = ($fefieldeffect == 50) ? 3 : 2
+    stages = ($fefieldeffect == 47) ? 3 : 2
     ret=attacker.pbIncreaseStat(PBStats::SPDEF,stages,false,@id,attacker)
     return ret ? 0 : -1
   end
 
   def pbAdditionalEffect(attacker,opponent)
     if attacker.pbCanIncreaseStatStage?(PBStats::SPDEF,false)
-      stages = ($fefieldeffect == 50) ? 3 : 2
+      stages = ($fefieldeffect == 47) ? 3 : 2
       attacker.pbIncreaseStat(PBStats::SPDEF,stages,false,@id,attacker)
     end
     return true
@@ -3300,7 +3300,7 @@ class PokeBattle_Move_060 < PokeBattle_Move
   CAMOUFLAGE_FIELD_TYPES=[nil,:ELECTRIC,:GRASS,:FAIRY,:DARK,:PSYCHIC,:NORMAL,:FIRE,:WATER,:DRAGON,
     :POISON,:POISON,:GROUND,:ICE,:ROCK,:BUG,:FIRE,:STEEL,:ELECTRIC,:POISON,:GROUND,:WATER,:WATER,
     :ROCK,:FLYING,nil,:POISON,:ROCK,:ICE,:NORMAL,:STEEL,:FAIRY,:DRAGON,:GRASS,:DARK,nil,:NORMAL,
-    :PSYCHIC,:DARK,:ICE,:GHOST,:POISON,:FAIRY,:FLYING,:STEEL,:FIRE].freeze
+    :PSYCHIC,:DARK,:ICE,:GHOST,:POISON,:FAIRY,:FLYING,:STEEL,:FIRE,:GROUND,:NORMAL].freeze #pk code
   CAMOUFLAGE_CHESS_TYPES=[:GRASS,:WATER,:FIRE,:PSYCHIC].freeze
   CAMOUFLAGE_NEW_WORLD_TYPES=[:NORMAL,:WATER,:FIRE,:ELECTRIC,:GRASS,:ICE,:FIGHTING,:POISON,:GROUND,
     :PSYCHIC,:ROCK,:FLYING,:BUG,:GHOST,:DRAGON,:DARK,:STEEL,:FAIRY].freeze
@@ -4999,7 +4999,7 @@ class PokeBattle_Move_0A4 < PokeBattle_Move
         move=getConst(PBMoves,:PUNISHMENT) || 0
       when 46
         move=getConst(PBMoves,:SCORCHINGSANDS) || 0
-      when 50
+      when 47
         move=getConst(PBMoves,:CALMMIND) || 0
       else
         move=getConst(PBMoves,:TRIATTACK) || 0
@@ -5282,8 +5282,9 @@ class PokeBattle_Move_0A4 < PokeBattle_Move
         @battle.pbCommonAnimation("Confusion",opponent,nil)
         @battle.pbDisplay(_INTL("{1} became confused!",opponent.pbThis))
       when 44
-        return false if !attack.pbCanIncreaseStatStage?(PBStats::ATTACK,1,false)
-        attack.pbIncreaseStat(PBStats::ATTACK,1,false,@id,attacker)
+        #pk code
+        return false if !attacker.pbCanIncreaseStatStage?(PBStats::ATTACK,false)
+        attacker.pbIncreaseStat(PBStats::ATTACK,1,false,@id,attacker)
       when 45
         return false if !opponent.pbCanBurn?(false)
         opponent.pbBurn
@@ -5291,7 +5292,7 @@ class PokeBattle_Move_0A4 < PokeBattle_Move
       when 46
         return false if !opponent.pbCanReduceStatStage?(PBStats::ACCURACY,1,false)
         opponent.pbReduceStat(PBStats::ACCURACY,1,false,@id,attacker)
-      when 50
+      when 47
         if opponent.effects[PBEffects::ThroatChop]==0
           opponent.effects[PBEffects::ThroatChop]=pbMoveDuration(attacker,3)
           @battle.pbDisplay(_INTL("{1} was silenced!",opponent.pbThis))
@@ -5758,7 +5759,7 @@ class PokeBattle_Move_0B3 < PokeBattle_Move
         move=getConst(PBMoves,:PUNISHMENT) || 0
       when 46
         move=getConst(PBMoves,:SCORCHINGSANDS) || 0
-      when 50
+      when 47
         move=getConst(PBMoves,:CALMMIND) || 0
       else
         move=getConst(PBMoves,:TRIATTACK) || 0
@@ -7532,7 +7533,7 @@ class PokeBattle_Move_0EB < PokeBattle_Move
     if isConst?(@id,PBMoves,:ROAR) && $fefieldeffect == 8
       @battle.pbDisplay(_INTL("What are ya doin' in my swamp?!"))
     end
-    if $fefieldeffect == 50
+    if $fefieldeffect == 47
       chip = (opponent.totalhp/6).floor
       if opponent.pbReduceHP(chip,true)>0
         @battle.pbDisplay(_INTL("{1} was battered by flying pages!",opponent.pbThis))
@@ -8514,7 +8515,7 @@ class PokeBattle_Move_103 < PokeBattle_Move
       @battle.pbDisplay(_INTL("But it failed!"))
       return -1
     elsif $fefieldeffect == 21 || $fefieldeffect == 26
-      @battle.pbDisplay(_INTL("...The spikes sunk into the water and vanished!"))
+      @battle.pbDisplay(_INTL("...The spikes sank into the water and vanished!"))
       return -1
     end
     pbShowAnimation(@id,attacker,opponent,hitnum,alltargets,showanimation)
@@ -8547,7 +8548,7 @@ class PokeBattle_Move_104 < PokeBattle_Move
       @battle.pbDisplay(_INTL("But it failed!"))
       return -1
     elsif $fefieldeffect == 21 || $fefieldeffect == 26
-      @battle.pbDisplay(_INTL("...The barbs sunk into the water and vanished!"))
+      @battle.pbDisplay(_INTL("...The barbs sank into the water and vanished!"))
       return -1
     end
     pbShowAnimation(@id,attacker,opponent,hitnum,alltargets,showanimation)
@@ -9085,7 +9086,7 @@ class PokeBattle_Move_115 < PokeBattle_Move
         @battle.pbDisplay(_INTL("{1} flinched and couldn't move!",attacker.pbThis))
         return -1
       end
-    elsif $fefieldeffect!=50 && (attacker.lastHPLost>0 || $fefieldeffect==1)
+    elsif $fefieldeffect!=47 && (attacker.lastHPLost>0 || $fefieldeffect==1)
       @battle.pbDisplay(_INTL("{1} lost its focus and couldn't move!",attacker.pbThis))
       return -1
     end
@@ -9207,7 +9208,7 @@ class PokeBattle_Move_11A < PokeBattle_Move
       return -1
     end
     pbShowAnimation(@id,attacker,opponent,hitnum,alltargets,showanimation)
-    if $fefieldeffect == 50
+    if $fefieldeffect == 47
       chip = (opponent.totalhp/6).floor
       if opponent.pbReduceHP(chip,true)>0
         @battle.pbDisplay(_INTL("{1} was battered by flying pages!",opponent.pbThis))

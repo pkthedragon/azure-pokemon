@@ -1,5 +1,5 @@
 [<Generics>]
-How are your Pokemon doing?\mMy \TP's really energetic.  It's a handful!\mOh yeah, I managed to beat a tough \TE.\mI need to make my party stronger.
+How are your Pokémon doing?\mMy \TP's really energetic.  It's a handful!\mOh yeah, I managed to beat a tough \TE.\mI need to make my party stronger.
 My \TP's looking really awesome.\mI wish I could show you.\mHey, listen!  I almost caught a \TE the other day.\mOh, it was sooooooo close, too!
 [<BattleRequests>]
 Want to battle?  It's not going to be a repeat of the last time we met.\mI'll be waiting for you around \TM.
@@ -15,10 +15,10 @@ How are you doing? \PN, howdy!  This is \TN.  Isn't it nice out?
 \PN, good day!  It's me, \TN.  Got a minute?
 Hello, \PN.  This is \TN.  How are things?
 [<Bodies1>]
-How are your Pokemon doing?\mMy \TP's really energetic.  It's a handful!
-How are your Pokemon doing?\mI always keep my \TP in top shape by going to Pokemon Centers.
+How are your Pokémon doing?\mMy \TP's really energetic.  It's a handful!
+How are your Pokémon doing?\mI always keep my \TP in top shape by going to Pokémon Centers.
 My \TP's looking really awesome.  I wish I could show you.
-I dressed my \TP and it looks even cuter than before.
+I dressed my \TP, and it looks even cuter than before.
 [<Bodies2>]
 Oh yeah, I managed to beat a tough \TE.\mI need to make my party stronger.
 You have to hear this!  I battled \TE the other day.\mIt was easy!  I had a type advantage.

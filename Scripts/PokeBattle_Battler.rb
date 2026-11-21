@@ -1598,12 +1598,11 @@ class PokeBattle_Battler
       when 41 then return PBTypes::POISON
       when 42 then return PBTypes::FAIRY
       when 43 then return PBTypes::FLYING
-      when 44 then return PBTypes::FIRE
-      when 45 then return PBTypes::GROUND
-      when 46 then return PBTypes::ELECTRIC
-      when 47 then return PBTypes::BUG
-      when 48 then return PBTypes::FLYING
-      when 50 then return PBTypes::NORMAL
+      #pk code
+      when 44 then return PBTypes::STEEL
+      when 45 then return PBTypes::FIRE
+      when 46 then return PBTypes::GROUND
+      when 47 then return PBTypes::NORMAL
       end
     end
     # Terrain overrides environment
@@ -2267,7 +2266,7 @@ class PokeBattle_Battler
     if self.hasWorkingAbility(:QUICKFEET) && self.status>0
       speed=(speed*1.5).floor
     end
-    if $fefieldeffect == 50 && self.effects[PBEffects::ThroatChop] > 0
+    if $fefieldeffect == 47 && self.effects[PBEffects::ThroatChop] > 0
       speed=(speed*0.5).floor
     end
     if self.hasWorkingAbility(:MAENADSFERVOR) && self.effects[PBEffects::Confusion]>0
@@ -3396,7 +3395,7 @@ class PokeBattle_Battler
       @battle.weather!=PBWeather::STRONGWINDS
       @battle.weather=PBWeather::STRONGWINDS
       @battle.weatherduration=-1
-      @battle.pbDisplay(_INTL("A mysterious air current is protecting Flying-type Pokemon!"))
+      @battle.pbDisplay(_INTL("A mysterious air current is protecting Flying-type Pokémon!"))
     end
 
     # PRIMORDIAL WEATHER DEACTIVATION TESTS
@@ -3637,7 +3636,7 @@ class PokeBattle_Battler
           @battle.weather=PBWeather::SANDSTORM
           @battle.weatherduration=8
           @battle.pbCommonAnimation("Sandstorm",nil,nil)
-          @battle.pbDisplay(_INTL("Storm-9 whipped up a duststorm!"))
+          @battle.pbDisplay(_INTL("Storm-9 whipped up a dust storm!"))
        when 3
           @battle.weather=PBWeather::STRONGWINDS
           @battle.weatherduration=8
@@ -4230,7 +4229,7 @@ class PokeBattle_Battler
         if $fefieldeffect == 18 || $fefieldeffect == 24
           if !pbTooHigh?(PBStats::SPATK)
               pbIncreaseStatBasic(PBStats::SPATK,1)
-              @battle.pbDisplay(_INTL("{1}'s {2} boosted its SpecialAttack!",
+              @battle.pbDisplay(_INTL("{1}'s {2} boosted its Special Attack!",
                   pbThis,PBAbilities.getName(ability)))
           end
         end
@@ -4993,6 +4992,7 @@ class PokeBattle_Battler
         @battle.statChangeSource=nil
       end
       if $fefieldeffect == 44 && user.hp>0 && target.hp<=0
+        increment=1 #pk code
         aBoost = target.attack
         dBoost = target.defense
         saBoost = target.spatk
@@ -5940,7 +5940,7 @@ class PokeBattle_Battler
     33=>[PBMoves::PETALDANCE,PBMoves::COTTONSPORE,PBMoves::SLEEPPOWDER,
          PBMoves::SPORE,PBMoves::STUNSPORE,PBMoves::POISONPOWDER,PBMoves::PETALBLIZZARD,PBMoves::POWDER].freeze,
     40=>[PBMoves::FIRESPIN,PBMoves::MEANLOOK,PBMoves::OMINOUSWIND,PBMoves::INFERNO].freeze,
-    50=>[PBMoves::FIRESPIN,PBMoves::MEANLOOK,PBMoves::OMINOUSWIND,PBMoves::INFERNO,PBMoves::WHIRLPOOL].freeze
+    47=>[PBMoves::FIRESPIN,PBMoves::MEANLOOK,PBMoves::OMINOUSWIND,PBMoves::INFERNO,PBMoves::WHIRLPOOL].freeze
   }.freeze
 
   def pbFieldSpreadsMove?(move)
@@ -6133,7 +6133,7 @@ class PokeBattle_Battler
       target=tmp
     end
     if changeeffect==1
-      @battle.pbDisplay(_INTL("{1}'s Lightningrod took the move!",target.pbThis))
+      @battle.pbDisplay(_INTL("{1}'s Lightning Rod took the move!",target.pbThis))
     elsif changeeffect==2
       @battle.pbDisplay(_INTL("{1}'s Storm Drain took the move!",target.pbThis))
     elsif changeeffect==5
@@ -6333,7 +6333,7 @@ class PokeBattle_Battler
       end
     end
     if $fefieldeffect == 44
-      if thismove.fucnction==0xED || thismove.function==0xBC
+      if thismove.function==0xED || thismove.function==0xBC #pk code
         if @effects[PBEffects::TwoTurnAttack]>0
           @effects[PBEffects::TwoTurnAttack] = 0
         end
@@ -6657,7 +6657,7 @@ class PokeBattle_Battler
         return false
       end
     end
-    if accuracy
+    if accuracy && !thismove.pbIsStatus? #pk code
       if target.effects[PBEffects::LockOn]>0 && target.effects[PBEffects::LockOnPos]==user.index
         self.missed = false
         return true
@@ -6791,7 +6791,7 @@ class PokeBattle_Battler
     end
     if !tribute_icicle_status &&
       thismove.isSoundBased? && self.effects[PBEffects::ThroatChop]>0
-      @battle.pbDisplay(_INTL("{1} can't use sound-based moves because of it's throat damage!",pbThis))
+      @battle.pbDisplay(_INTL("{1} can't use sound-based moves because of its throat damage!",pbThis))
       return false
     end
     if !tribute_icicle_status &&
@@ -7155,7 +7155,7 @@ class PokeBattle_Battler
           thismove.pbEffect(user,target,i,alltargets,showanimation) # Recoil/drain, etc. are applied here
         end
       end
-      if $fefieldeffect == 50 && thismove.isSoundBased? && user.effects[PBEffects::ThroatChop]==0
+      if $fefieldeffect == 47 && thismove.isSoundBased? && user.effects[PBEffects::ThroatChop]==0
         user.effects[PBEffects::ThroatChop]=3
         @battle.pbDisplay(_INTL("{1} was silenced!",user.pbThis))
       end
@@ -8024,7 +8024,7 @@ class PokeBattle_Battler
           $fefieldeffect = 22
           $febackup = 22
           @battle.pbChangeBGSprite
-          @battle.pbDisplay(_INTL("The battle sunk into the depths!"))
+          @battle.pbDisplay(_INTL("The battle sank into the depths!"))
           @battle.seedCheck
         end
       when 29 # Holy
@@ -8274,7 +8274,7 @@ class PokeBattle_Battler
               battler.pbFaint if battler.isFainted?
             end
           else
-            @battle.pbDisplay(_INTL("A Pokemon's Damp ability prevented a complete explosion!"))
+            @battle.pbDisplay(_INTL("A Pokémon's Damp ability prevented a complete explosion!"))
           end
         end
       when 16 # Superheated Steam
@@ -8483,7 +8483,7 @@ class PokeBattle_Battler
               @battle.battlers[i].pbFaint if @battle.battlers[i].isFainted?
             end
           else
-            @battle.pbDisplay(_INTL("A Pokemon's Damp ability prevented a complete explosion!"))
+            @battle.pbDisplay(_INTL("A Pokémon's Damp ability prevented a complete explosion!"))
           end
         end
       end
@@ -8777,7 +8777,7 @@ class PokeBattle_Battler
           $fefieldeffect = 27
           $febackup = 27
           @battle.pbChangeBGSprite
-          @battle.pbDisplay(_INTL("The field was doused of it's fire!"))
+          @battle.pbDisplay(_INTL("The fire on the field was put out!"))
           @battle.seedCheck
         end
         # eruption check
@@ -8892,7 +8892,7 @@ class PokeBattle_Battler
             $febackup = 26
             @battle.pbChangeBGSprite
             @battle.pbDisplay(_INTL("The water was polluted!"))
-            @battle.pbDisplay(_INTL("The grime sunk beneath the battlers!"))
+            @battle.pbDisplay(_INTL("The grime sank beneath the battlers!"))
             $fecounter = 0
             @battle.seedCheck
           end

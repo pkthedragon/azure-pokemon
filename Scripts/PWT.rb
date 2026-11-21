@@ -36,9 +36,9 @@ class AdvancedWorldTournament
     tournament_list = [
       "Kanto Leaders","",
       [:LEADER_Brock,"Brock","Looks like you were the sturdier of us.","My barrier was tough to break. Maybe next time.",1,"You were pretty tough! I can't wait to face off against you again!"],
-      [:LEADER_Misty,"Misty","You are a skilled Trainer, I have to admit that.","Looks like out of the two of us, I was the better Trainer.",1,"I'm going to train even harder, so that I can beat you next time!"],
-      [:LEADER_Surge,"Lt.Surge","You shocked my very core, soldier!","At ease son, not everyone can beat me.",1,"Do you feel this electrifying atmosphere? I'm so pumped!"],
-      [:LEADER_Erika,"Erika","Oh my! \n Looks like I've underestimated you.","Keep practicing hard, and one day you will be the victor.",1,"My Pokemon have bloomed ever since they've battled you."],
+      [:LEADER_Misty,"Misty","I have to admit, you are a skilled Trainer.","Looks like out of the two of us, I was the better Trainer.",1,"I'm going to train even harder, so that I can beat you next time!"],
+      [:LEADER_Surge,"Lt. Surge","You shocked my very core, soldier!","At ease, son. Not everyone can beat me.",1,"Do you feel this electrifying atmosphere? I'm so pumped!"],
+      [:LEADER_Erika,"Erika","Oh my! \n Looks like I've underestimated you.","Keep practicing hard, and one day you will be the victor.",1,"My Pokémon have bloomed ever since they battled you."],
       [:LEADER_Sabrina,"Sabrina","Impossible! I did not predict this!","The outcome was just as I predicted.",1,"The future tells me of our rematch."],
       [:LEADER_Koga,"Koga","You've got a great battle technique!","My technique was the superior one!",1],
       [:LEADER_Blaine,"Blaine","Your flame burnt me up!","My flames are not something everyone can handle.",1,"You really burned me up back there!"],
@@ -89,9 +89,9 @@ class AdvancedWorldTournament
     @modified_party = self.choosePokemon
     # Generates the scoreboard
     if @modified_party == "notEligible"
-      Kernel.pbMessage(_INTL("We're terribly sorry, but your Pokemon are not eligible for the Tournament."))
+      Kernel.pbMessage(_INTL("We're terribly sorry, but your Pokémon are not eligible for the Tournament."))
       Kernel.pbMessage(_INTL(showBanList))
-      Kernel.pbMessage(_INTL("Please come back once your Pokemon Party has been adjusted."))
+      Kernel.pbMessage(_INTL("Please come back once your Pokémon Party has been adjusted."))
     elsif !@modified_party
       cancelEntry
     else
@@ -297,7 +297,7 @@ class AdvancedWorldTournament
     ret = false
     return "notEligible" if !self.partyEligible?
     length = [3,4,6,1][@battle_type]
-    Kernel.pbMessage(_INTL("Please choose the Pokemon you would like to participate."))
+    Kernel.pbMessage(_INTL("Please choose the Pokémon you would like to enter."))
     banlist = BAN_LIST
     banlist = BAN_LIST[@tournament_type] if BAN_LIST.is_a?(Hash)
     ruleset = PokemonRuleSet.new
@@ -518,7 +518,7 @@ class AdvancedWorldTournament
     
   # Creates a small introductory conversation
   def introduction
-    Kernel.pbMessage(_INTL("Hello, and welcome to the Pokemon World Tournament!"))
+    Kernel.pbMessage(_INTL("Hello, and welcome to the Pokémon World Tournament!"))
     Kernel.pbMessage(_INTL("The place where the strongest gather to compete."))
     Kernel.pbMessage(_INTL("Before we go any further, you will need to save your progress."))
   end
@@ -580,8 +580,8 @@ class AdvancedWorldTournament
           @beat.push(trainer)
           Kernel.pbMessage(_INTL("Announcer: What an amazing battle!"))
           Kernel.pbMessage(_INTL("Announcer: Both the trainers put up a great fight, but our very own #{$Trainer.name} was the one to come out on top!"))
-          Kernel.pbMessage(_INTL("Announcer: Congratulations #{$Trainer.name}! You have certainly earned today's title of \"Champion\"!"))
-          Kernel.pbMessage(_INTL("Announcer: That's all we have time for. I hope you enjoyed todays contest. And we hope to see you again soon."))
+          Kernel.pbMessage(_INTL("Announcer: Congratulations, #{$Trainer.name}! You have certainly earned today's title of \"Champion\"!"))
+          Kernel.pbMessage(_INTL("Announcer: That's all we have time for. I hope you enjoyed today's contest. And we hope to see you again soon."))
           return "win"
         end
       end

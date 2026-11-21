@@ -648,10 +648,10 @@ def pbGetBossTrainerFields
     pbTrainerRematchKey(:LISTIS,"Listis",0,"single") => 2,
     pbTrainerRematchKey(:POKEFAN_M2,"Bryant",0,"single") => 2,
     pbTrainerRematchKey(:PAX,"Pax",0,"double") => 2,
-    # Library Field (50)
-    pbTrainerRematchKey(:MINERVA,"Minerva",0,"single") => 50,
-    pbTrainerRematchKey(:ATEN,"Aten",0,"single") => 50,
-    pbTrainerRematchKey(:TEMPLAR1,"Davith",0,"single") => 50,
+    # Library Field (47)
+    pbTrainerRematchKey(:MINERVA,"Minerva",0,"single") => 47, #pk code
+    pbTrainerRematchKey(:ATEN,"Aten",0,"single") => 47,
+    pbTrainerRematchKey(:TEMPLAR1,"Davith",0,"single") => 47,
     # Beach (46)
     pbTrainerRematchKey(:POKEMONTRAINER_Percy,"Percy",1,"single") => 46,
     pbTrainerRematchKey(:ZOSSIE,"Zossie",0,"double") => 46,

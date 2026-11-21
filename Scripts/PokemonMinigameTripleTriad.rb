@@ -319,7 +319,7 @@ class TriadScene
 
   def pbPlayerChooseCard(numCards)
     if @battle.openHand
-      @sprites["helpwindow"].text=_INTL("Choose a card, or check opponent with Z.")
+      @sprites["helpwindow"].text=_INTL("Choose a card or press Z to check your opponent.")
     else
       @sprites["helpwindow"].text=_INTL("Choose a card.")
     end
@@ -354,7 +354,7 @@ class TriadScene
       elsif Input.trigger?(Input::A) && @battle.openHand
         pbPlayDecisionSE()
         pbViewOpponentCards(numCards)
-        @sprites["helpwindow"].text=_INTL("Choose a card, or check opponent with Z.")
+        @sprites["helpwindow"].text=_INTL("Choose a card or press Z to check your opponent.")
         choice=0
         lastChoice=-1
       end
