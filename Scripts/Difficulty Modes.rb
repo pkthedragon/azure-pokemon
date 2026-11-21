@@ -2,8 +2,7 @@ module DifficultModes
   # Variable number that control the difficult.
   # To use a different variable, change this. 0 deactivates this script
   VARIABLE=200 
-  # Easy and Normal use the same party overrides. #pk code
-  NORMAL_PARTY_OFFSET=50
+  NORMAL_PARTY_OFFSET=50 #pk code
   
   def self.currentMode
     difficultHash={}

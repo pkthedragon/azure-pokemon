@@ -3518,7 +3518,7 @@ class PokeBattle_Scene
        _INTL("Fight"),
        _INTL("Bag"),
        _INTL("Pokémon"),
-       shadowTrainer ? _INTL("Call") : _INTL("Run") #pk code
+       shadowTrainer ? _INTL("Call") : _INTL("Run")
     ],(shadowTrainer ? 1 : 0))
     ret=4 if ret==3 && shadowTrainer   # Convert "Run" to "Call"
     return ret

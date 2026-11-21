@@ -240,8 +240,7 @@ class Game_Player < Game_Character
 
     # Still water: freely swimmable (no surfing required)
     if pbIsStillWaterTag?(dest_tag)
-      # Respect both directions of tile collision and blocking events before
-      # changing the player's swimming or surfing state.
+      #pk code
       if !$game_map.valid?(new_x, new_y)
         return false unless $MapFactory && $MapFactory.isPassableFromEdge?(new_x, new_y)
       elsif !($DEBUG && Input.press?(Input::CTRL))
@@ -371,7 +370,7 @@ class Game_Player < Game_Character
     @blend_type = 0
   end
 
-  # Empty event pages could still count as a trigger, including for encounter checks.
+  #pk code
   def azure_overlay_trigger?(x, y, triggers, over)
     overlay = $game_map.azure_overlay_at(x, y)
     return false unless overlay && triggers.include?(overlay["azure_event_trigger"])

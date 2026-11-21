@@ -716,6 +716,7 @@ def pbSceneStandby
   end
 end
 
+#pk code
 def pbResolveVsGraphic(graphic,trainerid,trainerconstant,suffix="")
   prefix = "Graphics/Transitions/vs#{graphic}"
   path = pbResolveBitmap("#{prefix}#{trainerconstant}#{suffix}") if trainerconstant
@@ -754,7 +755,6 @@ def pbTrainerVsAnimation(viewport,trainerid,trainername)
   end
 
   begin
-    # Prepare the art and text together so image decoding cannot interrupt the animation.
     player_bar_bitmap = load_bitmap.call(player_bar)
     opponent_bar_bitmap = load_bitmap.call(opponent_bar)
     player_bitmap = load_bitmap.call(player_portrait)
@@ -803,8 +803,6 @@ def pbTrainerVsAnimation(viewport,trainerid,trainername)
     flash.z = 2
     flash.opacity = 0
 
-    # Tile once, then scroll a cropped sprite. Keeping bars and portraits in
-    # the same sprite compositor makes their draw order explicit on all renderers.
     make_bar = proc do |view,source|
       width = view.rect.width
       height = view.rect.height
@@ -911,7 +909,6 @@ def pbTrainerVsAnimation(viewport,trainerid,trainername)
     return true
   rescue StandardError => error
     PBDebug.log("VS transition #{playerid} vs #{trainerid}: #{error.class}: #{error.message}") rescue nil
-    # Unavailable custom artwork falls back to the standard battle intro.
     return false
   ensure
     drawables.reverse_each { |drawable| drawable.dispose }
@@ -1951,7 +1948,7 @@ def pbGetPlayerCharset(meta,charset,trainer=nil)
   outfit=trainer ? trainer.outfit : 0
   base=meta[charset]
   base=meta[1] if !base || base==""
-  # Resolve outfit assets once during play, including debug playtests.
+  #pk code
   cache=$PokemonTemp.playerCharsetCache if $PokemonTemp && !$INEDITOR
   if cache
     key=[base,outfit]

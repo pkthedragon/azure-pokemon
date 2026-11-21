@@ -1,0 +1,5176 @@
+# Generated from legacy battler metric fields that do not map cleanly to v21 metrics.
+#-------------------------------
+[BULBASAUR]
+LegacyBattlerPlayerY = 31
+LegacyBattlerEnemyY = 26
+LegacyBattlerAltitude = 0
+#-------------------------------
+[IVYSAUR]
+LegacyBattlerPlayerY = 22
+LegacyBattlerEnemyY = 22
+LegacyBattlerAltitude = 0
+#-------------------------------
+[VENUSAUR]
+LegacyBattlerPlayerY = 14
+LegacyBattlerEnemyY = 15
+LegacyBattlerAltitude = 0
+#-------------------------------
+[CHARMANDER]
+LegacyBattlerPlayerY = 23
+LegacyBattlerEnemyY = 21
+LegacyBattlerAltitude = 0
+#-------------------------------
+[CHARMELEON]
+LegacyBattlerPlayerY = 17
+LegacyBattlerEnemyY = 18
+LegacyBattlerAltitude = 0
+#-------------------------------
+[CHARIZARD]
+LegacyBattlerPlayerY = 7
+LegacyBattlerEnemyY = 3
+LegacyBattlerAltitude = 0
+#-------------------------------
+[SQUIRTLE]
+LegacyBattlerPlayerY = 27
+LegacyBattlerEnemyY = 23
+LegacyBattlerAltitude = 0
+#-------------------------------
+[WARTORTLE]
+LegacyBattlerPlayerY = 17
+LegacyBattlerEnemyY = 16
+LegacyBattlerAltitude = 0
+#-------------------------------
+[BLASTOISE]
+LegacyBattlerPlayerY = 15
+LegacyBattlerEnemyY = 13
+LegacyBattlerAltitude = 0
+#-------------------------------
+[CATERPIE]
+LegacyBattlerPlayerY = 27
+LegacyBattlerEnemyY = 25
+LegacyBattlerAltitude = 0
+#-------------------------------
+[METAPOD]
+LegacyBattlerPlayerY = 25
+LegacyBattlerEnemyY = 25
+LegacyBattlerAltitude = 0
+#-------------------------------
+[BUTTERFREE]
+LegacyBattlerPlayerY = 14
+LegacyBattlerEnemyY = 18
+LegacyBattlerAltitude = 15
+#-------------------------------
+[WEEDLE]
+LegacyBattlerPlayerY = 29
+LegacyBattlerEnemyY = 27
+LegacyBattlerAltitude = 0
+#-------------------------------
+[KAKUNA]
+LegacyBattlerPlayerY = 26
+LegacyBattlerEnemyY = 35
+LegacyBattlerAltitude = 11
+#-------------------------------
+[BEEDRILL]
+LegacyBattlerPlayerY = 12
+LegacyBattlerEnemyY = 16
+LegacyBattlerAltitude = 11
+#-------------------------------
+[PIDGEY]
+LegacyBattlerPlayerY = 29
+LegacyBattlerEnemyY = 23
+LegacyBattlerAltitude = 0
+#-------------------------------
+[PIDGEOTTO]
+LegacyBattlerPlayerY = -5
+LegacyBattlerEnemyY = 16
+LegacyBattlerAltitude = 0
+#-------------------------------
+[PIDGEOT]
+LegacyBattlerPlayerY = 17
+LegacyBattlerEnemyY = 4
+LegacyBattlerAltitude = 11
+#-------------------------------
+[RATTATA]
+LegacyBattlerPlayerY = 28
+LegacyBattlerEnemyY = 24
+LegacyBattlerAltitude = 0
+#-------------------------------
+[RATICATE]
+LegacyBattlerPlayerY = 20
+LegacyBattlerEnemyY = 18
+LegacyBattlerAltitude = 0
+#-------------------------------
+[SPEAROW]
+LegacyBattlerPlayerY = 27
+LegacyBattlerEnemyY = 24
+LegacyBattlerAltitude = 0
+#-------------------------------
+[FEAROW]
+LegacyBattlerPlayerY = 1
+LegacyBattlerEnemyY = 3
+LegacyBattlerAltitude = 8
+#-------------------------------
+[EKANS]
+LegacyBattlerPlayerY = 24
+LegacyBattlerEnemyY = 24
+LegacyBattlerAltitude = 0
+#-------------------------------
+[ARBOK]
+LegacyBattlerPlayerY = 15
+LegacyBattlerEnemyY = 12
+LegacyBattlerAltitude = 0
+#-------------------------------
+[PIKACHU]
+LegacyBattlerPlayerY = 25
+LegacyBattlerEnemyY = 16
+LegacyBattlerAltitude = 0
+#-------------------------------
+[RAICHU]
+LegacyBattlerPlayerY = 13
+LegacyBattlerEnemyY = 11
+LegacyBattlerAltitude = 0
+#-------------------------------
+[SANDSHREW]
+LegacyBattlerPlayerY = 28
+LegacyBattlerEnemyY = 23
+LegacyBattlerAltitude = 0
+#-------------------------------
+[SANDSLASH]
+LegacyBattlerPlayerY = 22
+LegacyBattlerEnemyY = 20
+LegacyBattlerAltitude = 0
+#-------------------------------
+[NIDORANfE]
+LegacyBattlerPlayerY = 28
+LegacyBattlerEnemyY = 26
+LegacyBattlerAltitude = 0
+#-------------------------------
+[NIDORINA]
+LegacyBattlerPlayerY = 22
+LegacyBattlerEnemyY = 19
+LegacyBattlerAltitude = 0
+#-------------------------------
+[NIDOQUEEN]
+LegacyBattlerPlayerY = 13
+LegacyBattlerEnemyY = 10
+LegacyBattlerAltitude = 0
+#-------------------------------
+[NIDORANmA]
+LegacyBattlerPlayerY = 26
+LegacyBattlerEnemyY = 23
+LegacyBattlerAltitude = 0
+#-------------------------------
+[NIDORINO]
+LegacyBattlerPlayerY = 19
+LegacyBattlerEnemyY = 22
+LegacyBattlerAltitude = 0
+#-------------------------------
+[NIDOKING]
+LegacyBattlerPlayerY = 15
+LegacyBattlerEnemyY = 12
+LegacyBattlerAltitude = 0
+#-------------------------------
+[CLEFAIRY]
+LegacyBattlerPlayerY = 26
+LegacyBattlerEnemyY = 25
+LegacyBattlerAltitude = 0
+#-------------------------------
+[CLEFABLE]
+LegacyBattlerPlayerY = 17
+LegacyBattlerEnemyY = 19
+LegacyBattlerAltitude = 0
+#-------------------------------
+[VULPIX]
+LegacyBattlerPlayerY = 23
+LegacyBattlerEnemyY = 21
+LegacyBattlerAltitude = 0
+#-------------------------------
+[NINETALES]
+LegacyBattlerPlayerY = 13
+LegacyBattlerEnemyY = 14
+LegacyBattlerAltitude = 0
+#-------------------------------
+[JIGGLYPUFF]
+LegacyBattlerPlayerY = 29
+LegacyBattlerEnemyY = 25
+LegacyBattlerAltitude = 0
+#-------------------------------
+[WIGGLYTUFF]
+LegacyBattlerPlayerY = 19
+LegacyBattlerEnemyY = 14
+LegacyBattlerAltitude = 0
+#-------------------------------
+[ZUBAT]
+LegacyBattlerPlayerY = 22
+LegacyBattlerEnemyY = 22
+LegacyBattlerAltitude = 13
+#-------------------------------
+[GOLBAT]
+LegacyBattlerPlayerY = 10
+LegacyBattlerEnemyY = 14
+LegacyBattlerAltitude = 12
+#-------------------------------
+[ODDISH]
+LegacyBattlerPlayerY = 28
+LegacyBattlerEnemyY = 23
+LegacyBattlerAltitude = 0
+#-------------------------------
+[GLOOM]
+LegacyBattlerPlayerY = 23
+LegacyBattlerEnemyY = 22
+LegacyBattlerAltitude = 0
+#-------------------------------
+[VILEPLUME]
+LegacyBattlerPlayerY = 21
+LegacyBattlerEnemyY = 17
+LegacyBattlerAltitude = 0
+#-------------------------------
+[PARAS]
+LegacyBattlerPlayerY = 30
+LegacyBattlerEnemyY = 31
+LegacyBattlerAltitude = 0
+#-------------------------------
+[PARASECT]
+LegacyBattlerPlayerY = 20
+LegacyBattlerEnemyY = 20
+LegacyBattlerAltitude = 0
+#-------------------------------
+[VENONAT]
+LegacyBattlerPlayerY = 22
+LegacyBattlerEnemyY = 15
+LegacyBattlerAltitude = 0
+#-------------------------------
+[VENOMOTH]
+LegacyBattlerPlayerY = 7
+LegacyBattlerEnemyY = 18
+LegacyBattlerAltitude = 15
+#-------------------------------
+[DIGLETT]
+LegacyBattlerPlayerY = 32
+LegacyBattlerEnemyY = 32
+LegacyBattlerAltitude = 0
+#-------------------------------
+[DUGTRIO]
+LegacyBattlerPlayerY = 25
+LegacyBattlerEnemyY = 24
+LegacyBattlerAltitude = 0
+#-------------------------------
+[MEOWTH]
+LegacyBattlerPlayerY = 23
+LegacyBattlerEnemyY = 19
+LegacyBattlerAltitude = 0
+#-------------------------------
+[PERSIAN]
+LegacyBattlerPlayerY = 13
+LegacyBattlerEnemyY = 16
+LegacyBattlerAltitude = 0
+#-------------------------------
+[PSYDUCK]
+LegacyBattlerPlayerY = 25
+LegacyBattlerEnemyY = 21
+LegacyBattlerAltitude = 0
+#-------------------------------
+[GOLDUCK]
+LegacyBattlerPlayerY = 18
+LegacyBattlerEnemyY = 18
+LegacyBattlerAltitude = 0
+#-------------------------------
+[MANKEY]
+LegacyBattlerPlayerY = 26
+LegacyBattlerEnemyY = 20
+LegacyBattlerAltitude = 0
+#-------------------------------
+[PRIMEAPE]
+LegacyBattlerPlayerY = 19
+LegacyBattlerEnemyY = 16
+LegacyBattlerAltitude = 0
+#-------------------------------
+[GROWLITHE]
+LegacyBattlerPlayerY = 23
+LegacyBattlerEnemyY = 19
+LegacyBattlerAltitude = 0
+#-------------------------------
+[ARCANINE]
+LegacyBattlerPlayerY = 7
+LegacyBattlerEnemyY = 9
+LegacyBattlerAltitude = 0
+#-------------------------------
+[POLIWAG]
+LegacyBattlerPlayerY = 25
+LegacyBattlerEnemyY = 25
+LegacyBattlerAltitude = 0
+#-------------------------------
+[POLIWHIRL]
+LegacyBattlerPlayerY = 22
+LegacyBattlerEnemyY = 21
+LegacyBattlerAltitude = 0
+#-------------------------------
+[POLIWRATH]
+LegacyBattlerPlayerY = 18
+LegacyBattlerEnemyY = 16
+LegacyBattlerAltitude = 0
+#-------------------------------
+[ABRA]
+LegacyBattlerPlayerY = 19
+LegacyBattlerEnemyY = 18
+LegacyBattlerAltitude = 0
+#-------------------------------
+[KADABRA]
+LegacyBattlerPlayerY = 16
+LegacyBattlerEnemyY = 15
+LegacyBattlerAltitude = 0
+#-------------------------------
+[ALAKAZAM]
+LegacyBattlerPlayerY = 14
+LegacyBattlerEnemyY = 13
+LegacyBattlerAltitude = 0
+#-------------------------------
+[MACHOP]
+LegacyBattlerPlayerY = 20
+LegacyBattlerEnemyY = 16
+LegacyBattlerAltitude = 0
+#-------------------------------
+[MACHOKE]
+LegacyBattlerPlayerY = 22
+LegacyBattlerEnemyY = 12
+LegacyBattlerAltitude = 0
+#-------------------------------
+[MACHAMP]
+LegacyBattlerPlayerY = 21
+LegacyBattlerEnemyY = 5
+LegacyBattlerAltitude = 0
+#-------------------------------
+[BELLSPROUT]
+LegacyBattlerPlayerY = 23
+LegacyBattlerEnemyY = 23
+LegacyBattlerAltitude = 0
+#-------------------------------
+[WEEPINBELL]
+LegacyBattlerPlayerY = 24
+LegacyBattlerEnemyY = 29
+LegacyBattlerAltitude = 10
+#-------------------------------
+[VICTREEBEL]
+LegacyBattlerPlayerY = 18
+LegacyBattlerEnemyY = 22
+LegacyBattlerAltitude = 11
+#-------------------------------
+[TENTACOOL]
+LegacyBattlerPlayerY = 21
+LegacyBattlerEnemyY = 16
+LegacyBattlerAltitude = 8
+#-------------------------------
+[TENTACRUEL]
+LegacyBattlerPlayerY = 18
+LegacyBattlerEnemyY = 13
+LegacyBattlerAltitude = 7
+#-------------------------------
+[GEODUDE]
+LegacyBattlerPlayerY = 29
+LegacyBattlerEnemyY = 41
+LegacyBattlerAltitude = 16
+#-------------------------------
+[GRAVELER]
+LegacyBattlerPlayerY = 26
+LegacyBattlerEnemyY = 20
+LegacyBattlerAltitude = 0
+#-------------------------------
+[GOLEM]
+LegacyBattlerPlayerY = 18
+LegacyBattlerEnemyY = 17
+LegacyBattlerAltitude = 0
+#-------------------------------
+[PONYTA]
+LegacyBattlerPlayerY = 17
+LegacyBattlerEnemyY = 17
+LegacyBattlerAltitude = 0
+#-------------------------------
+[RAPIDASH]
+LegacyBattlerPlayerY = 11
+LegacyBattlerEnemyY = 10
+LegacyBattlerAltitude = 0
+#-------------------------------
+[SLOWPOKE]
+LegacyBattlerPlayerY = 24
+LegacyBattlerEnemyY = 31
+LegacyBattlerAltitude = 0
+#-------------------------------
+[SLOWBRO]
+LegacyBattlerPlayerY = 15
+LegacyBattlerEnemyY = 15
+LegacyBattlerAltitude = 0
+#-------------------------------
+[MAGNEMITE]
+LegacyBattlerPlayerY = 27
+LegacyBattlerEnemyY = 17
+LegacyBattlerAltitude = 19
+#-------------------------------
+[MAGNETON]
+LegacyBattlerPlayerY = 21
+LegacyBattlerEnemyY = 11
+LegacyBattlerAltitude = 15
+#-------------------------------
+[FARFETCHD]
+LegacyBattlerPlayerY = 21
+LegacyBattlerEnemyY = 20
+LegacyBattlerAltitude = 0
+#-------------------------------
+[DODUO]
+LegacyBattlerPlayerY = 21
+LegacyBattlerEnemyY = 16
+LegacyBattlerAltitude = 0
+#-------------------------------
+[DODRIO]
+LegacyBattlerPlayerY = 10
+LegacyBattlerEnemyY = 5
+LegacyBattlerAltitude = 0
+#-------------------------------
+[SEEL]
+LegacyBattlerPlayerY = 26
+LegacyBattlerEnemyY = 20
+LegacyBattlerAltitude = 0
+#-------------------------------
+[DEWGONG]
+LegacyBattlerPlayerY = 16
+LegacyBattlerEnemyY = 14
+LegacyBattlerAltitude = 0
+#-------------------------------
+[GRIMER]
+LegacyBattlerPlayerY = 28
+LegacyBattlerEnemyY = 25
+LegacyBattlerAltitude = 0
+#-------------------------------
+[MUK]
+LegacyBattlerPlayerY = 26
+LegacyBattlerEnemyY = 12
+LegacyBattlerAltitude = 0
+#-------------------------------
+[SHELLDER]
+LegacyBattlerPlayerY = 32
+LegacyBattlerEnemyY = 29
+LegacyBattlerAltitude = 0
+#-------------------------------
+[CLOYSTER]
+LegacyBattlerPlayerY = 18
+LegacyBattlerEnemyY = 9
+LegacyBattlerAltitude = 0
+#-------------------------------
+[GASTLY]
+LegacyBattlerPlayerY = 17
+LegacyBattlerEnemyY = 20
+LegacyBattlerAltitude = 13
+#-------------------------------
+[HAUNTER]
+LegacyBattlerPlayerY = 21
+LegacyBattlerEnemyY = 21
+LegacyBattlerAltitude = 14
+#-------------------------------
+[GENGAR]
+LegacyBattlerPlayerY = 19
+LegacyBattlerEnemyY = 16
+LegacyBattlerAltitude = 0
+#-------------------------------
+[ONIX]
+LegacyBattlerPlayerY = 11
+LegacyBattlerEnemyY = 6
+LegacyBattlerAltitude = 0
+#-------------------------------
+[DROWZEE]
+LegacyBattlerPlayerY = 20
+LegacyBattlerEnemyY = 17
+LegacyBattlerAltitude = 0
+#-------------------------------
+[HYPNO]
+LegacyBattlerPlayerY = 16
+LegacyBattlerEnemyY = 11
+LegacyBattlerAltitude = 0
+#-------------------------------
+[KRABBY]
+LegacyBattlerPlayerY = 30
+LegacyBattlerEnemyY = 22
+LegacyBattlerAltitude = 0
+#-------------------------------
+[KINGLER]
+LegacyBattlerPlayerY = 18
+LegacyBattlerEnemyY = 14
+LegacyBattlerAltitude = 0
+#-------------------------------
+[VOLTORB]
+LegacyBattlerPlayerY = 31
+LegacyBattlerEnemyY = 26
+LegacyBattlerAltitude = 0
+#-------------------------------
+[ELECTRODE]
+LegacyBattlerPlayerY = 23
+LegacyBattlerEnemyY = 18
+LegacyBattlerAltitude = 0
+#-------------------------------
+[EXEGGCUTE]
+LegacyBattlerPlayerY = 28
+LegacyBattlerEnemyY = 30
+LegacyBattlerAltitude = 0
+#-------------------------------
+[EXEGGUTOR]
+LegacyBattlerPlayerY = 12
+LegacyBattlerEnemyY = 5
+LegacyBattlerAltitude = 0
+#-------------------------------
+[CUBONE]
+LegacyBattlerPlayerY = 29
+LegacyBattlerEnemyY = 23
+LegacyBattlerAltitude = 0
+#-------------------------------
+[MAROWAK]
+LegacyBattlerPlayerY = 25
+LegacyBattlerEnemyY = 20
+LegacyBattlerAltitude = 0
+#-------------------------------
+[HITMONLEE]
+LegacyBattlerPlayerY = 13
+LegacyBattlerEnemyY = 14
+LegacyBattlerAltitude = 0
+#-------------------------------
+[HITMONCHAN]
+LegacyBattlerPlayerY = 19
+LegacyBattlerEnemyY = 12
+LegacyBattlerAltitude = 0
+#-------------------------------
+[LICKITUNG]
+LegacyBattlerPlayerY = 17
+LegacyBattlerEnemyY = 17
+LegacyBattlerAltitude = 0
+#-------------------------------
+[KOFFING]
+LegacyBattlerPlayerY = 18
+LegacyBattlerEnemyY = 26
+LegacyBattlerAltitude = 16
+#-------------------------------
+[WEEZING]
+LegacyBattlerPlayerY = 13
+LegacyBattlerEnemyY = 11
+LegacyBattlerAltitude = 8
+#-------------------------------
+[RHYHORN]
+LegacyBattlerPlayerY = 17
+LegacyBattlerEnemyY = 19
+LegacyBattlerAltitude = 0
+#-------------------------------
+[RHYDON]
+LegacyBattlerPlayerY = 15
+LegacyBattlerEnemyY = 12
+LegacyBattlerAltitude = 0
+#-------------------------------
+[CHANSEY]
+LegacyBattlerPlayerY = 23
+LegacyBattlerEnemyY = 20
+LegacyBattlerAltitude = 0
+#-------------------------------
+[TANGELA]
+LegacyBattlerPlayerY = 25
+LegacyBattlerEnemyY = 22
+LegacyBattlerAltitude = 0
+#-------------------------------
+[KANGASKHAN]
+LegacyBattlerPlayerY = 11
+LegacyBattlerEnemyY = 10
+LegacyBattlerAltitude = 0
+#-------------------------------
+[HORSEA]
+LegacyBattlerPlayerY = 27
+LegacyBattlerEnemyY = 30
+LegacyBattlerAltitude = 13
+#-------------------------------
+[SEADRA]
+LegacyBattlerPlayerY = 20
+LegacyBattlerEnemyY = 20
+LegacyBattlerAltitude = 11
+#-------------------------------
+[GOLDEEN]
+LegacyBattlerPlayerY = 29
+LegacyBattlerEnemyY = 34
+LegacyBattlerAltitude = 11
+#-------------------------------
+[SEAKING]
+LegacyBattlerPlayerY = 26
+LegacyBattlerEnemyY = 23
+LegacyBattlerAltitude = 10
+#-------------------------------
+[STARYU]
+LegacyBattlerPlayerY = 25
+LegacyBattlerEnemyY = 19
+LegacyBattlerAltitude = 0
+#-------------------------------
+[STARMIE]
+LegacyBattlerPlayerY = 19
+LegacyBattlerEnemyY = 17
+LegacyBattlerAltitude = 0
+#-------------------------------
+[MRMIME]
+LegacyBattlerPlayerY = 20
+LegacyBattlerEnemyY = 14
+LegacyBattlerAltitude = 0
+#-------------------------------
+[SCYTHER]
+LegacyBattlerPlayerY = 15
+LegacyBattlerEnemyY = 10
+LegacyBattlerAltitude = 0
+#-------------------------------
+[JYNX]
+LegacyBattlerPlayerY = 17
+LegacyBattlerEnemyY = 21
+LegacyBattlerAltitude = 0
+#-------------------------------
+[ELECTABUZZ]
+LegacyBattlerPlayerY = 16
+LegacyBattlerEnemyY = 13
+LegacyBattlerAltitude = 0
+#-------------------------------
+[MAGMAR]
+LegacyBattlerPlayerY = 17
+LegacyBattlerEnemyY = 12
+LegacyBattlerAltitude = 0
+#-------------------------------
+[PINSIR]
+LegacyBattlerPlayerY = 17
+LegacyBattlerEnemyY = 11
+LegacyBattlerAltitude = 0
+#-------------------------------
+[TAUROS]
+LegacyBattlerPlayerY = 17
+LegacyBattlerEnemyY = 14
+LegacyBattlerAltitude = 0
+#-------------------------------
+[MAGIKARP]
+LegacyBattlerPlayerY = 23
+LegacyBattlerEnemyY = 19
+LegacyBattlerAltitude = 10
+#-------------------------------
+[GYARADOS]
+LegacyBattlerPlayerY = 10
+LegacyBattlerEnemyY = 4
+LegacyBattlerAltitude = 2
+#-------------------------------
+[LAPRAS]
+LegacyBattlerPlayerY = 18
+LegacyBattlerEnemyY = 14
+LegacyBattlerAltitude = 0
+#-------------------------------
+[DITTO]
+LegacyBattlerPlayerY = 32
+LegacyBattlerEnemyY = 29
+LegacyBattlerAltitude = 0
+#-------------------------------
+[EEVEE]
+LegacyBattlerPlayerY = 22
+LegacyBattlerEnemyY = 21
+LegacyBattlerAltitude = 0
+#-------------------------------
+[VAPOREON]
+LegacyBattlerPlayerY = 20
+LegacyBattlerEnemyY = 16
+LegacyBattlerAltitude = 0
+#-------------------------------
+[JOLTEON]
+LegacyBattlerPlayerY = 23
+LegacyBattlerEnemyY = 19
+LegacyBattlerAltitude = 0
+#-------------------------------
+[FLAREON]
+LegacyBattlerPlayerY = 22
+LegacyBattlerEnemyY = 17
+LegacyBattlerAltitude = 0
+#-------------------------------
+[PORYGON]
+LegacyBattlerPlayerY = 22
+LegacyBattlerEnemyY = 23
+LegacyBattlerAltitude = 8
+#-------------------------------
+[OMANYTE]
+LegacyBattlerPlayerY = 29
+LegacyBattlerEnemyY = 26
+LegacyBattlerAltitude = 0
+#-------------------------------
+[OMASTAR]
+LegacyBattlerPlayerY = 25
+LegacyBattlerEnemyY = 17
+LegacyBattlerAltitude = 0
+#-------------------------------
+[KABUTO]
+LegacyBattlerPlayerY = 29
+LegacyBattlerEnemyY = 28
+LegacyBattlerAltitude = 0
+#-------------------------------
+[KABUTOPS]
+LegacyBattlerPlayerY = 18
+LegacyBattlerEnemyY = 9
+LegacyBattlerAltitude = 0
+#-------------------------------
+[AERODACTYL]
+LegacyBattlerPlayerY = 8
+LegacyBattlerEnemyY = 18
+LegacyBattlerAltitude = 20
+#-------------------------------
+[SNORLAX]
+LegacyBattlerPlayerY = 15
+LegacyBattlerEnemyY = 12
+LegacyBattlerAltitude = 0
+#-------------------------------
+[ARTICUNO]
+LegacyBattlerPlayerY = 7
+LegacyBattlerEnemyY = 8
+LegacyBattlerAltitude = 0
+#-------------------------------
+[ZAPDOS]
+LegacyBattlerPlayerY = 8
+LegacyBattlerEnemyY = 6
+LegacyBattlerAltitude = 8
+#-------------------------------
+[MOLTRES]
+LegacyBattlerPlayerY = 3
+LegacyBattlerEnemyY = 7
+LegacyBattlerAltitude = 0
+#-------------------------------
+[DRATINI]
+LegacyBattlerPlayerY = 25
+LegacyBattlerEnemyY = 19
+LegacyBattlerAltitude = 0
+#-------------------------------
+[DRAGONAIR]
+LegacyBattlerPlayerY = 14
+LegacyBattlerEnemyY = 9
+LegacyBattlerAltitude = 0
+#-------------------------------
+[DRAGONITE]
+LegacyBattlerPlayerY = 10
+LegacyBattlerEnemyY = 6
+LegacyBattlerAltitude = 0
+#-------------------------------
+[MEWTWO]
+LegacyBattlerPlayerY = 13
+LegacyBattlerEnemyY = 11
+LegacyBattlerAltitude = 0
+#-------------------------------
+[MEW]
+LegacyBattlerPlayerY = 16
+LegacyBattlerEnemyY = 18
+LegacyBattlerAltitude = 13
+#-------------------------------
+[CHIKORITA]
+LegacyBattlerPlayerY = 23
+LegacyBattlerEnemyY = 21
+LegacyBattlerAltitude = 0
+#-------------------------------
+[BAYLEEF]
+LegacyBattlerPlayerY = 18
+LegacyBattlerEnemyY = 12
+LegacyBattlerAltitude = 0
+#-------------------------------
+[MEGANIUM]
+LegacyBattlerPlayerY = 9
+LegacyBattlerEnemyY = 5
+LegacyBattlerAltitude = 0
+#-------------------------------
+[CYNDAQUIL]
+LegacyBattlerPlayerY = 29
+LegacyBattlerEnemyY = 20
+LegacyBattlerAltitude = 0
+#-------------------------------
+[QUILAVA]
+LegacyBattlerPlayerY = 23
+LegacyBattlerEnemyY = 24
+LegacyBattlerAltitude = 0
+#-------------------------------
+[TYPHLOSION]
+LegacyBattlerPlayerY = 12
+LegacyBattlerEnemyY = 4
+LegacyBattlerAltitude = 0
+#-------------------------------
+[TOTODILE]
+LegacyBattlerPlayerY = 27
+LegacyBattlerEnemyY = 24
+LegacyBattlerAltitude = 0
+#-------------------------------
+[CROCONAW]
+LegacyBattlerPlayerY = 20
+LegacyBattlerEnemyY = 13
+LegacyBattlerAltitude = 0
+#-------------------------------
+[FERALIGATR]
+LegacyBattlerPlayerY = 11
+LegacyBattlerEnemyY = 9
+LegacyBattlerAltitude = 0
+#-------------------------------
+[SENTRET]
+LegacyBattlerPlayerY = 15
+LegacyBattlerEnemyY = 9
+LegacyBattlerAltitude = 0
+#-------------------------------
+[FURRET]
+LegacyBattlerPlayerY = 17
+LegacyBattlerEnemyY = 14
+LegacyBattlerAltitude = 0
+#-------------------------------
+[HOOTHOOT]
+LegacyBattlerPlayerY = 25
+LegacyBattlerEnemyY = 20
+LegacyBattlerAltitude = 0
+#-------------------------------
+[NOCTOWL]
+LegacyBattlerPlayerY = 18
+LegacyBattlerEnemyY = 11
+LegacyBattlerAltitude = 0
+#-------------------------------
+[LEDYBA]
+LegacyBattlerPlayerY = 22
+LegacyBattlerEnemyY = 17
+LegacyBattlerAltitude = 0
+#-------------------------------
+[LEDIAN]
+LegacyBattlerPlayerY = 21
+LegacyBattlerEnemyY = 14
+LegacyBattlerAltitude = 0
+#-------------------------------
+[SPINARAK]
+LegacyBattlerPlayerY = 32
+LegacyBattlerEnemyY = 33
+LegacyBattlerAltitude = 0
+#-------------------------------
+[ARIADOS]
+LegacyBattlerPlayerY = 26
+LegacyBattlerEnemyY = 22
+LegacyBattlerAltitude = 0
+#-------------------------------
+[CROBAT]
+LegacyBattlerPlayerY = 19
+LegacyBattlerEnemyY = 9
+LegacyBattlerAltitude = 10
+#-------------------------------
+[CHINCHOU]
+LegacyBattlerPlayerY = 26
+LegacyBattlerEnemyY = 22
+LegacyBattlerAltitude = 10
+#-------------------------------
+[LANTURN]
+LegacyBattlerPlayerY = 24
+LegacyBattlerEnemyY = 24
+LegacyBattlerAltitude = 11
+#-------------------------------
+[PICHU]
+LegacyBattlerPlayerY = 27
+LegacyBattlerEnemyY = 23
+LegacyBattlerAltitude = 0
+#-------------------------------
+[CLEFFA]
+LegacyBattlerPlayerY = 32
+LegacyBattlerEnemyY = 28
+LegacyBattlerAltitude = 0
+#-------------------------------
+[IGGLYBUFF]
+LegacyBattlerPlayerY = 33
+LegacyBattlerEnemyY = 25
+LegacyBattlerAltitude = 0
+#-------------------------------
+[TOGEPI]
+LegacyBattlerPlayerY = 30
+LegacyBattlerEnemyY = 27
+LegacyBattlerAltitude = 0
+#-------------------------------
+[TOGETIC]
+LegacyBattlerPlayerY = 10
+LegacyBattlerEnemyY = 21
+LegacyBattlerAltitude = 13
+#-------------------------------
+[NATU]
+LegacyBattlerPlayerY = 31
+LegacyBattlerEnemyY = 28
+LegacyBattlerAltitude = 0
+#-------------------------------
+[XATU]
+LegacyBattlerPlayerY = 23
+LegacyBattlerEnemyY = 15
+LegacyBattlerAltitude = 0
+#-------------------------------
+[MAREEP]
+LegacyBattlerPlayerY = 23
+LegacyBattlerEnemyY = 22
+LegacyBattlerAltitude = 0
+#-------------------------------
+[FLAAFFY]
+LegacyBattlerPlayerY = 21
+LegacyBattlerEnemyY = 17
+LegacyBattlerAltitude = 0
+#-------------------------------
+[AMPHAROS]
+LegacyBattlerPlayerY = 15
+LegacyBattlerEnemyY = 10
+LegacyBattlerAltitude = 0
+#-------------------------------
+[BELLOSSOM]
+LegacyBattlerPlayerY = 28
+LegacyBattlerEnemyY = 25
+LegacyBattlerAltitude = 0
+#-------------------------------
+[MARILL]
+LegacyBattlerPlayerY = 30
+LegacyBattlerEnemyY = 25
+LegacyBattlerAltitude = 0
+#-------------------------------
+[AZUMARILL]
+LegacyBattlerPlayerY = 17
+LegacyBattlerEnemyY = 15
+LegacyBattlerAltitude = 0
+#-------------------------------
+[SUDOWOODO]
+LegacyBattlerPlayerY = 19
+LegacyBattlerEnemyY = 17
+LegacyBattlerAltitude = 0
+#-------------------------------
+[POLITOED]
+LegacyBattlerPlayerY = 20
+LegacyBattlerEnemyY = 22
+LegacyBattlerAltitude = 5
+#-------------------------------
+[HOPPIP]
+LegacyBattlerPlayerY = 22
+LegacyBattlerEnemyY = 19
+LegacyBattlerAltitude = 13
+#-------------------------------
+[SKIPLOOM]
+LegacyBattlerPlayerY = 23
+LegacyBattlerEnemyY = 26
+LegacyBattlerAltitude = 15
+#-------------------------------
+[JUMPLUFF]
+LegacyBattlerPlayerY = 12
+LegacyBattlerEnemyY = 13
+LegacyBattlerAltitude = 15
+#-------------------------------
+[AIPOM]
+LegacyBattlerPlayerY = 21
+LegacyBattlerEnemyY = 14
+LegacyBattlerAltitude = 0
+#-------------------------------
+[SUNKERN]
+LegacyBattlerPlayerY = 31
+LegacyBattlerEnemyY = 32
+LegacyBattlerAltitude = 8
+#-------------------------------
+[SUNFLORA]
+LegacyBattlerPlayerY = 19
+LegacyBattlerEnemyY = 18
+LegacyBattlerAltitude = 0
+#-------------------------------
+[YANMA]
+LegacyBattlerPlayerY = 17
+LegacyBattlerEnemyY = 20
+LegacyBattlerAltitude = 15
+#-------------------------------
+[WOOPER]
+LegacyBattlerPlayerY = 31
+LegacyBattlerEnemyY = 26
+LegacyBattlerAltitude = 0
+#-------------------------------
+[QUAGSIRE]
+LegacyBattlerPlayerY = 19
+LegacyBattlerEnemyY = 16
+LegacyBattlerAltitude = 0
+#-------------------------------
+[ESPEON]
+LegacyBattlerPlayerY = 26
+LegacyBattlerEnemyY = 16
+LegacyBattlerAltitude = 0
+#-------------------------------
+[UMBREON]
+LegacyBattlerPlayerY = 22
+LegacyBattlerEnemyY = 18
+LegacyBattlerAltitude = 0
+#-------------------------------
+[MURKROW]
+LegacyBattlerPlayerY = 24
+LegacyBattlerEnemyY = 26
+LegacyBattlerAltitude = 21
+#-------------------------------
+[SLOWKING]
+LegacyBattlerPlayerY = 15
+LegacyBattlerEnemyY = 9
+LegacyBattlerAltitude = 0
+#-------------------------------
+[MISDREAVUS]
+LegacyBattlerPlayerY = 14
+LegacyBattlerEnemyY = 20
+LegacyBattlerAltitude = 17
+#-------------------------------
+[UNOWN]
+LegacyBattlerPlayerY = 17
+LegacyBattlerEnemyY = 27
+LegacyBattlerAltitude = 19
+#-------------------------------
+[WOBBUFFET]
+LegacyBattlerPlayerY = 21
+LegacyBattlerEnemyY = 17
+LegacyBattlerAltitude = 0
+#-------------------------------
+[GIRAFARIG]
+LegacyBattlerPlayerY = 11
+LegacyBattlerEnemyY = 10
+LegacyBattlerAltitude = 0
+#-------------------------------
+[PINECO]
+LegacyBattlerPlayerY = 25
+LegacyBattlerEnemyY = 31
+LegacyBattlerAltitude = 10
+#-------------------------------
+[FORRETRESS]
+LegacyBattlerPlayerY = 22
+LegacyBattlerEnemyY = 19
+LegacyBattlerAltitude = 0
+#-------------------------------
+[DUNSPARCE]
+LegacyBattlerPlayerY = 32
+LegacyBattlerEnemyY = 27
+LegacyBattlerAltitude = 0
+#-------------------------------
+[GLIGAR]
+LegacyBattlerPlayerY = 22
+LegacyBattlerEnemyY = 9
+LegacyBattlerAltitude = 8
+#-------------------------------
+[STEELIX]
+LegacyBattlerPlayerY = 7
+LegacyBattlerEnemyY = 5
+LegacyBattlerAltitude = 0
+#-------------------------------
+[SNUBBULL]
+LegacyBattlerPlayerY = 27
+LegacyBattlerEnemyY = 23
+LegacyBattlerAltitude = 0
+#-------------------------------
+[GRANBULL]
+LegacyBattlerPlayerY = 19
+LegacyBattlerEnemyY = 16
+LegacyBattlerAltitude = 0
+#-------------------------------
+[QWILFISH]
+LegacyBattlerPlayerY = 33
+LegacyBattlerEnemyY = 40
+LegacyBattlerAltitude = 12
+#-------------------------------
+[SCIZOR]
+LegacyBattlerPlayerY = 13
+LegacyBattlerEnemyY = 13
+LegacyBattlerAltitude = 0
+#-------------------------------
+[SHUCKLE]
+LegacyBattlerPlayerY = 26
+LegacyBattlerEnemyY = 24
+LegacyBattlerAltitude = 0
+#-------------------------------
+[HERACROSS]
+LegacyBattlerPlayerY = 18
+LegacyBattlerEnemyY = 12
+LegacyBattlerAltitude = 0
+#-------------------------------
+[SNEASEL]
+LegacyBattlerPlayerY = 24
+LegacyBattlerEnemyY = 19
+LegacyBattlerAltitude = 0
+#-------------------------------
+[TEDDIURSA]
+LegacyBattlerPlayerY = 29
+LegacyBattlerEnemyY = 23
+LegacyBattlerAltitude = 0
+#-------------------------------
+[URSARING]
+LegacyBattlerPlayerY = 11
+LegacyBattlerEnemyY = 9
+LegacyBattlerAltitude = 0
+#-------------------------------
+[SLUGMA]
+LegacyBattlerPlayerY = 28
+LegacyBattlerEnemyY = 23
+LegacyBattlerAltitude = 0
+#-------------------------------
+[MAGCARGO]
+LegacyBattlerPlayerY = 22
+LegacyBattlerEnemyY = 16
+LegacyBattlerAltitude = 0
+#-------------------------------
+[SWINUB]
+LegacyBattlerPlayerY = 34
+LegacyBattlerEnemyY = 32
+LegacyBattlerAltitude = 0
+#-------------------------------
+[PILOSWINE]
+LegacyBattlerPlayerY = 20
+LegacyBattlerEnemyY = 17
+LegacyBattlerAltitude = 0
+#-------------------------------
+[CORSOLA]
+LegacyBattlerPlayerY = 29
+LegacyBattlerEnemyY = 23
+LegacyBattlerAltitude = 0
+#-------------------------------
+[REMORAID]
+LegacyBattlerPlayerY = 24
+LegacyBattlerEnemyY = 30
+LegacyBattlerAltitude = 11
+#-------------------------------
+[OCTILLERY]
+LegacyBattlerPlayerY = 27
+LegacyBattlerEnemyY = 22
+LegacyBattlerAltitude = 0
+#-------------------------------
+[DELIBIRD]
+LegacyBattlerPlayerY = 22
+LegacyBattlerEnemyY = 17
+LegacyBattlerAltitude = 0
+#-------------------------------
+[MANTINE]
+LegacyBattlerPlayerY = 12
+LegacyBattlerEnemyY = 16
+LegacyBattlerAltitude = 15
+#-------------------------------
+[SKARMORY]
+LegacyBattlerPlayerY = 14
+LegacyBattlerEnemyY = 12
+LegacyBattlerAltitude = 0
+#-------------------------------
+[HOUNDOUR]
+LegacyBattlerPlayerY = 24
+LegacyBattlerEnemyY = 21
+LegacyBattlerAltitude = 0
+#-------------------------------
+[HOUNDOOM]
+LegacyBattlerPlayerY = 16
+LegacyBattlerEnemyY = 12
+LegacyBattlerAltitude = 0
+#-------------------------------
+[KINGDRA]
+LegacyBattlerPlayerY = 8
+LegacyBattlerEnemyY = 15
+LegacyBattlerAltitude = 9
+#-------------------------------
+[PHANPY]
+LegacyBattlerPlayerY = 29
+LegacyBattlerEnemyY = 26
+LegacyBattlerAltitude = 0
+#-------------------------------
+[DONPHAN]
+LegacyBattlerPlayerY = 22
+LegacyBattlerEnemyY = 22
+LegacyBattlerAltitude = 0
+#-------------------------------
+[PORYGON2]
+LegacyBattlerPlayerY = 24
+LegacyBattlerEnemyY = 28
+LegacyBattlerAltitude = 11
+#-------------------------------
+[STANTLER]
+LegacyBattlerPlayerY = 14
+LegacyBattlerEnemyY = 6
+LegacyBattlerAltitude = 0
+#-------------------------------
+[SMEARGLE]
+LegacyBattlerPlayerY = 21
+LegacyBattlerEnemyY = 17
+LegacyBattlerAltitude = 0
+#-------------------------------
+[TYROGUE]
+LegacyBattlerPlayerY = 24
+LegacyBattlerEnemyY = 20
+LegacyBattlerAltitude = 0
+#-------------------------------
+[HITMONTOP]
+LegacyBattlerPlayerY = 22
+LegacyBattlerEnemyY = 16
+LegacyBattlerAltitude = 0
+#-------------------------------
+[SMOOCHUM]
+LegacyBattlerPlayerY = 28
+LegacyBattlerEnemyY = 23
+LegacyBattlerAltitude = 0
+#-------------------------------
+[ELEKID]
+LegacyBattlerPlayerY = 29
+LegacyBattlerEnemyY = 22
+LegacyBattlerAltitude = 0
+#-------------------------------
+[MAGBY]
+LegacyBattlerPlayerY = 27
+LegacyBattlerEnemyY = 22
+LegacyBattlerAltitude = 0
+#-------------------------------
+[MILTANK]
+LegacyBattlerPlayerY = 22
+LegacyBattlerEnemyY = 19
+LegacyBattlerAltitude = 0
+#-------------------------------
+[BLISSEY]
+LegacyBattlerPlayerY = 21
+LegacyBattlerEnemyY = 13
+LegacyBattlerAltitude = 0
+#-------------------------------
+[RAIKOU]
+LegacyBattlerPlayerY = 14
+LegacyBattlerEnemyY = 12
+LegacyBattlerAltitude = 0
+#-------------------------------
+[ENTEI]
+LegacyBattlerPlayerY = 15
+LegacyBattlerEnemyY = 10
+LegacyBattlerAltitude = 0
+#-------------------------------
+[SUICUNE]
+LegacyBattlerPlayerY = 16
+LegacyBattlerEnemyY = 11
+LegacyBattlerAltitude = 0
+#-------------------------------
+[LARVITAR]
+LegacyBattlerPlayerY = 27
+LegacyBattlerEnemyY = 20
+LegacyBattlerAltitude = 0
+#-------------------------------
+[PUPITAR]
+LegacyBattlerPlayerY = 25
+LegacyBattlerEnemyY = 28
+LegacyBattlerAltitude = 8
+#-------------------------------
+[TYRANITAR]
+LegacyBattlerPlayerY = 12
+LegacyBattlerEnemyY = 10
+LegacyBattlerAltitude = 0
+#-------------------------------
+[LUGIA]
+LegacyBattlerPlayerY = 1
+LegacyBattlerEnemyY = 3
+LegacyBattlerAltitude = 6
+#-------------------------------
+[HOOH]
+LegacyBattlerPlayerY = 8
+LegacyBattlerEnemyY = -1
+LegacyBattlerAltitude = 8
+#-------------------------------
+[CELEBI]
+LegacyBattlerPlayerY = 15
+LegacyBattlerEnemyY = 18
+LegacyBattlerAltitude = 13
+#-------------------------------
+[TREECKO]
+LegacyBattlerPlayerY = 25
+LegacyBattlerEnemyY = 17
+LegacyBattlerAltitude = 0
+#-------------------------------
+[GROVYLE]
+LegacyBattlerPlayerY = 21
+LegacyBattlerEnemyY = 13
+LegacyBattlerAltitude = 0
+#-------------------------------
+[SCEPTILE]
+LegacyBattlerPlayerY = 17
+LegacyBattlerEnemyY = 10
+LegacyBattlerAltitude = 0
+#-------------------------------
+[TORCHIC]
+LegacyBattlerPlayerY = 26
+LegacyBattlerEnemyY = 20
+LegacyBattlerAltitude = 0
+#-------------------------------
+[COMBUSKEN]
+LegacyBattlerPlayerY = 15
+LegacyBattlerEnemyY = 13
+LegacyBattlerAltitude = 0
+#-------------------------------
+[BLAZIKEN]
+LegacyBattlerPlayerY = 11
+LegacyBattlerEnemyY = 11
+LegacyBattlerAltitude = 0
+#-------------------------------
+[MUDKIP]
+LegacyBattlerPlayerY = 25
+LegacyBattlerEnemyY = 22
+LegacyBattlerAltitude = 0
+#-------------------------------
+[MARSHTOMP]
+LegacyBattlerPlayerY = 17
+LegacyBattlerEnemyY = 16
+LegacyBattlerAltitude = 0
+#-------------------------------
+[SWAMPERT]
+LegacyBattlerPlayerY = 16
+LegacyBattlerEnemyY = 12
+LegacyBattlerAltitude = 0
+#-------------------------------
+[POOCHYENA]
+LegacyBattlerPlayerY = 25
+LegacyBattlerEnemyY = 23
+LegacyBattlerAltitude = 0
+#-------------------------------
+[MIGHTYENA]
+LegacyBattlerPlayerY = 17
+LegacyBattlerEnemyY = 16
+LegacyBattlerAltitude = 0
+#-------------------------------
+[ZIGZAGOON]
+LegacyBattlerPlayerY = 26
+LegacyBattlerEnemyY = 22
+LegacyBattlerAltitude = 0
+#-------------------------------
+[LINOONE]
+LegacyBattlerPlayerY = 31
+LegacyBattlerEnemyY = 15
+LegacyBattlerAltitude = 0
+#-------------------------------
+[WURMPLE]
+LegacyBattlerPlayerY = 28
+LegacyBattlerEnemyY = 20
+LegacyBattlerAltitude = 0
+#-------------------------------
+[SILCOON]
+LegacyBattlerPlayerY = 34
+LegacyBattlerEnemyY = 29
+LegacyBattlerAltitude = 0
+#-------------------------------
+[BEAUTIFLY]
+LegacyBattlerPlayerY = 8
+LegacyBattlerEnemyY = 20
+LegacyBattlerAltitude = 17
+#-------------------------------
+[CASCOON]
+LegacyBattlerPlayerY = 34
+LegacyBattlerEnemyY = 29
+LegacyBattlerAltitude = 0
+#-------------------------------
+[DUSTOX]
+LegacyBattlerPlayerY = 9
+LegacyBattlerEnemyY = 17
+LegacyBattlerAltitude = 15
+#-------------------------------
+[LOTAD]
+LegacyBattlerPlayerY = 30
+LegacyBattlerEnemyY = 27
+LegacyBattlerAltitude = 0
+#-------------------------------
+[LOMBRE]
+LegacyBattlerPlayerY = 23
+LegacyBattlerEnemyY = 22
+LegacyBattlerAltitude = 0
+#-------------------------------
+[LUDICOLO]
+LegacyBattlerPlayerY = 12
+LegacyBattlerEnemyY = 9
+LegacyBattlerAltitude = 0
+#-------------------------------
+[SEEDOT]
+LegacyBattlerPlayerY = 27
+LegacyBattlerEnemyY = 24
+LegacyBattlerAltitude = 0
+#-------------------------------
+[NUZLEAF]
+LegacyBattlerPlayerY = 20
+LegacyBattlerEnemyY = 19
+LegacyBattlerAltitude = 0
+#-------------------------------
+[SHIFTRY]
+LegacyBattlerPlayerY = 18
+LegacyBattlerEnemyY = 12
+LegacyBattlerAltitude = 0
+#-------------------------------
+[TAILLOW]
+LegacyBattlerPlayerY = 31
+LegacyBattlerEnemyY = 28
+LegacyBattlerAltitude = 20
+#-------------------------------
+[SWELLOW]
+LegacyBattlerPlayerY = 20
+LegacyBattlerEnemyY = 13
+LegacyBattlerAltitude = 10
+#-------------------------------
+[WINGULL]
+LegacyBattlerPlayerY = 22
+LegacyBattlerEnemyY = 31
+LegacyBattlerAltitude = 18
+#-------------------------------
+[PELIPPER]
+LegacyBattlerPlayerY = 6
+LegacyBattlerEnemyY = 10
+LegacyBattlerAltitude = 13
+#-------------------------------
+[RALTS]
+LegacyBattlerPlayerY = 27
+LegacyBattlerEnemyY = 23
+LegacyBattlerAltitude = 0
+#-------------------------------
+[KIRLIA]
+LegacyBattlerPlayerY = 19
+LegacyBattlerEnemyY = 16
+LegacyBattlerAltitude = 0
+#-------------------------------
+[GARDEVOIR]
+LegacyBattlerPlayerY = 11
+LegacyBattlerEnemyY = 9
+LegacyBattlerAltitude = 0
+#-------------------------------
+[SURSKIT]
+LegacyBattlerPlayerY = 34
+LegacyBattlerEnemyY = 28
+LegacyBattlerAltitude = 0
+#-------------------------------
+[MASQUERAIN]
+LegacyBattlerPlayerY = 9
+LegacyBattlerEnemyY = 7
+LegacyBattlerAltitude = 9
+#-------------------------------
+[SHROOMISH]
+LegacyBattlerPlayerY = 30
+LegacyBattlerEnemyY = 26
+LegacyBattlerAltitude = 0
+#-------------------------------
+[BRELOOM]
+LegacyBattlerPlayerY = 14
+LegacyBattlerEnemyY = 13
+LegacyBattlerAltitude = 0
+#-------------------------------
+[SLAKOTH]
+LegacyBattlerPlayerY = 31
+LegacyBattlerEnemyY = 27
+LegacyBattlerAltitude = 0
+#-------------------------------
+[VIGOROTH]
+LegacyBattlerPlayerY = 19
+LegacyBattlerEnemyY = 10
+LegacyBattlerAltitude = 0
+#-------------------------------
+[SLAKING]
+LegacyBattlerPlayerY = 20
+LegacyBattlerEnemyY = 15
+LegacyBattlerAltitude = 0
+#-------------------------------
+[NINCADA]
+LegacyBattlerPlayerY = 32
+LegacyBattlerEnemyY = 32
+LegacyBattlerAltitude = 0
+#-------------------------------
+[NINJASK]
+LegacyBattlerPlayerY = 15
+LegacyBattlerEnemyY = 23
+LegacyBattlerAltitude = 16
+#-------------------------------
+[SHEDINJA]
+LegacyBattlerPlayerY = 14
+LegacyBattlerEnemyY = 20
+LegacyBattlerAltitude = 13
+#-------------------------------
+[WHISMUR]
+LegacyBattlerPlayerY = 28
+LegacyBattlerEnemyY = 23
+LegacyBattlerAltitude = 0
+#-------------------------------
+[LOUDRED]
+LegacyBattlerPlayerY = 15
+LegacyBattlerEnemyY = 13
+LegacyBattlerAltitude = 0
+#-------------------------------
+[EXPLOUD]
+LegacyBattlerPlayerY = 11
+LegacyBattlerEnemyY = 12
+LegacyBattlerAltitude = 0
+#-------------------------------
+[MAKUHITA]
+LegacyBattlerPlayerY = 20
+LegacyBattlerEnemyY = 18
+LegacyBattlerAltitude = 0
+#-------------------------------
+[HARIYAMA]
+LegacyBattlerPlayerY = 11
+LegacyBattlerEnemyY = 13
+LegacyBattlerAltitude = 0
+#-------------------------------
+[AZURILL]
+LegacyBattlerPlayerY = 24
+LegacyBattlerEnemyY = 21
+LegacyBattlerAltitude = 0
+#-------------------------------
+[NOSEPASS]
+LegacyBattlerPlayerY = 22
+LegacyBattlerEnemyY = 19
+LegacyBattlerAltitude = 0
+#-------------------------------
+[SKITTY]
+LegacyBattlerPlayerY = 27
+LegacyBattlerEnemyY = 23
+LegacyBattlerAltitude = 3
+#-------------------------------
+[DELCATTY]
+LegacyBattlerPlayerY = 17
+LegacyBattlerEnemyY = 14
+LegacyBattlerAltitude = 0
+#-------------------------------
+[SABLEYE]
+LegacyBattlerPlayerY = 24
+LegacyBattlerEnemyY = 20
+LegacyBattlerAltitude = 0
+#-------------------------------
+[MAWILE]
+LegacyBattlerPlayerY = 24
+LegacyBattlerEnemyY = 20
+LegacyBattlerAltitude = 0
+#-------------------------------
+[ARON]
+LegacyBattlerPlayerY = 30
+LegacyBattlerEnemyY = 28
+LegacyBattlerAltitude = 0
+#-------------------------------
+[LAIRON]
+LegacyBattlerPlayerY = 22
+LegacyBattlerEnemyY = 24
+LegacyBattlerAltitude = 0
+#-------------------------------
+[AGGRON]
+LegacyBattlerPlayerY = 9
+LegacyBattlerEnemyY = 12
+LegacyBattlerAltitude = 0
+#-------------------------------
+[MEDITITE]
+LegacyBattlerPlayerY = 26
+LegacyBattlerEnemyY = 17
+LegacyBattlerAltitude = 0
+#-------------------------------
+[MEDICHAM]
+LegacyBattlerPlayerY = 13
+LegacyBattlerEnemyY = 10
+LegacyBattlerAltitude = 0
+#-------------------------------
+[ELECTRIKE]
+LegacyBattlerPlayerY = 28
+LegacyBattlerEnemyY = 26
+LegacyBattlerAltitude = 0
+#-------------------------------
+[MANECTRIC]
+LegacyBattlerPlayerY = 12
+LegacyBattlerEnemyY = 13
+LegacyBattlerAltitude = 0
+#-------------------------------
+[PLUSLE]
+LegacyBattlerPlayerY = 25
+LegacyBattlerEnemyY = 21
+LegacyBattlerAltitude = 0
+#-------------------------------
+[MINUN]
+LegacyBattlerPlayerY = 25
+LegacyBattlerEnemyY = 21
+LegacyBattlerAltitude = 0
+#-------------------------------
+[VOLBEAT]
+LegacyBattlerPlayerY = 17
+LegacyBattlerEnemyY = 21
+LegacyBattlerAltitude = 10
+#-------------------------------
+[ILLUMISE]
+LegacyBattlerPlayerY = 16
+LegacyBattlerEnemyY = 20
+LegacyBattlerAltitude = 10
+#-------------------------------
+[ROSELIA]
+LegacyBattlerPlayerY = 23
+LegacyBattlerEnemyY = 20
+LegacyBattlerAltitude = 0
+#-------------------------------
+[GULPIN]
+LegacyBattlerPlayerY = 28
+LegacyBattlerEnemyY = 26
+LegacyBattlerAltitude = 0
+#-------------------------------
+[SWALOT]
+LegacyBattlerPlayerY = 18
+LegacyBattlerEnemyY = 17
+LegacyBattlerAltitude = 0
+#-------------------------------
+[CARVANHA]
+LegacyBattlerPlayerY = 19
+LegacyBattlerEnemyY = 20
+LegacyBattlerAltitude = 10
+#-------------------------------
+[SHARPEDO]
+LegacyBattlerPlayerY = 10
+LegacyBattlerEnemyY = 10
+LegacyBattlerAltitude = 8
+#-------------------------------
+[WAILMER]
+LegacyBattlerPlayerY = 24
+LegacyBattlerEnemyY = 17
+LegacyBattlerAltitude = 0
+#-------------------------------
+[WAILORD]
+LegacyBattlerPlayerY = 9
+LegacyBattlerEnemyY = 5
+LegacyBattlerAltitude = 0
+#-------------------------------
+[NUMEL]
+LegacyBattlerPlayerY = 19
+LegacyBattlerEnemyY = 19
+LegacyBattlerAltitude = 0
+#-------------------------------
+[CAMERUPT]
+LegacyBattlerPlayerY = 15
+LegacyBattlerEnemyY = 16
+LegacyBattlerAltitude = 0
+#-------------------------------
+[TORKOAL]
+LegacyBattlerPlayerY = 14
+LegacyBattlerEnemyY = 14
+LegacyBattlerAltitude = 0
+#-------------------------------
+[SPOINK]
+LegacyBattlerPlayerY = 20
+LegacyBattlerEnemyY = 17
+LegacyBattlerAltitude = 0
+#-------------------------------
+[GRUMPIG]
+LegacyBattlerPlayerY = 14
+LegacyBattlerEnemyY = 13
+LegacyBattlerAltitude = 0
+#-------------------------------
+[SPINDA]
+LegacyBattlerPlayerY = 19
+LegacyBattlerEnemyY = 17
+LegacyBattlerAltitude = 0
+#-------------------------------
+[TRAPINCH]
+LegacyBattlerPlayerY = 23
+LegacyBattlerEnemyY = 26
+LegacyBattlerAltitude = 0
+#-------------------------------
+[VIBRAVA]
+LegacyBattlerPlayerY = 30
+LegacyBattlerEnemyY = 21
+LegacyBattlerAltitude = 17
+#-------------------------------
+[FLYGON]
+LegacyBattlerPlayerY = 10
+LegacyBattlerEnemyY = 10
+LegacyBattlerAltitude = 9
+#-------------------------------
+[CACNEA]
+LegacyBattlerPlayerY = 27
+LegacyBattlerEnemyY = 25
+LegacyBattlerAltitude = 0
+#-------------------------------
+[CACTURNE]
+LegacyBattlerPlayerY = 11
+LegacyBattlerEnemyY = 8
+LegacyBattlerAltitude = 0
+#-------------------------------
+[SWABLU]
+LegacyBattlerPlayerY = 15
+LegacyBattlerEnemyY = 24
+LegacyBattlerAltitude = 17
+#-------------------------------
+[ALTARIA]
+LegacyBattlerPlayerY = 3
+LegacyBattlerEnemyY = 13
+LegacyBattlerAltitude = 15
+#-------------------------------
+[ZANGOOSE]
+LegacyBattlerPlayerY = 18
+LegacyBattlerEnemyY = 12
+LegacyBattlerAltitude = 0
+#-------------------------------
+[SEVIPER]
+LegacyBattlerPlayerY = 17
+LegacyBattlerEnemyY = 12
+LegacyBattlerAltitude = 0
+#-------------------------------
+[LUNATONE]
+LegacyBattlerPlayerY = 16
+LegacyBattlerEnemyY = 16
+LegacyBattlerAltitude = 14
+#-------------------------------
+[SOLROCK]
+LegacyBattlerPlayerY = 10
+LegacyBattlerEnemyY = 11
+LegacyBattlerAltitude = 13
+#-------------------------------
+[BARBOACH]
+LegacyBattlerPlayerY = 30
+LegacyBattlerEnemyY = 38
+LegacyBattlerAltitude = 12
+#-------------------------------
+[WHISCASH]
+LegacyBattlerPlayerY = 23
+LegacyBattlerEnemyY = 20
+LegacyBattlerAltitude = 10
+#-------------------------------
+[CORPHISH]
+LegacyBattlerPlayerY = 24
+LegacyBattlerEnemyY = 22
+LegacyBattlerAltitude = 0
+#-------------------------------
+[CRAWDAUNT]
+LegacyBattlerPlayerY = 18
+LegacyBattlerEnemyY = 14
+LegacyBattlerAltitude = 0
+#-------------------------------
+[BALTOY]
+LegacyBattlerPlayerY = 26
+LegacyBattlerEnemyY = 35
+LegacyBattlerAltitude = 11
+#-------------------------------
+[CLAYDOL]
+LegacyBattlerPlayerY = 6
+LegacyBattlerEnemyY = 10
+LegacyBattlerAltitude = 11
+#-------------------------------
+[LILEEP]
+LegacyBattlerPlayerY = 20
+LegacyBattlerEnemyY = 16
+LegacyBattlerAltitude = 0
+#-------------------------------
+[CRADILY]
+LegacyBattlerPlayerY = 7
+LegacyBattlerEnemyY = 6
+LegacyBattlerAltitude = 0
+#-------------------------------
+[ANORITH]
+LegacyBattlerPlayerY = 35
+LegacyBattlerEnemyY = 28
+LegacyBattlerAltitude = 0
+#-------------------------------
+[ARMALDO]
+LegacyBattlerPlayerY = 12
+LegacyBattlerEnemyY = 12
+LegacyBattlerAltitude = 0
+#-------------------------------
+[FEEBAS]
+LegacyBattlerPlayerY = 26
+LegacyBattlerEnemyY = 33
+LegacyBattlerAltitude = 12
+#-------------------------------
+[MILOTIC]
+LegacyBattlerPlayerY = 8
+LegacyBattlerEnemyY = 13
+LegacyBattlerAltitude = 3
+#-------------------------------
+[CASTFORM]
+LegacyBattlerPlayerY = 16
+LegacyBattlerEnemyY = 28
+LegacyBattlerAltitude = 18
+#-------------------------------
+[KECLEON]
+LegacyBattlerPlayerY = 16
+LegacyBattlerEnemyY = 17
+LegacyBattlerAltitude = 0
+#-------------------------------
+[SHUPPET]
+LegacyBattlerPlayerY = 15
+LegacyBattlerEnemyY = 23
+LegacyBattlerAltitude = 17
+#-------------------------------
+[BANETTE]
+LegacyBattlerPlayerY = 20
+LegacyBattlerEnemyY = 16
+LegacyBattlerAltitude = 0
+#-------------------------------
+[DUSKULL]
+LegacyBattlerPlayerY = 16
+LegacyBattlerEnemyY = 22
+LegacyBattlerAltitude = 11
+#-------------------------------
+[DUSCLOPS]
+LegacyBattlerPlayerY = 14
+LegacyBattlerEnemyY = 9
+LegacyBattlerAltitude = 0
+#-------------------------------
+[TROPIUS]
+LegacyBattlerPlayerY = 6
+LegacyBattlerEnemyY = 4
+LegacyBattlerAltitude = 0
+#-------------------------------
+[CHIMECHO]
+LegacyBattlerPlayerY = 6
+LegacyBattlerEnemyY = 15
+LegacyBattlerAltitude = 10
+#-------------------------------
+[ABSOL]
+LegacyBattlerPlayerY = 16
+LegacyBattlerEnemyY = 16
+LegacyBattlerAltitude = 0
+#-------------------------------
+[WYNAUT]
+LegacyBattlerPlayerY = 26
+LegacyBattlerEnemyY = 23
+LegacyBattlerAltitude = 0
+#-------------------------------
+[SNORUNT]
+LegacyBattlerPlayerY = 27
+LegacyBattlerEnemyY = 21
+LegacyBattlerAltitude = 0
+#-------------------------------
+[GLALIE]
+LegacyBattlerPlayerY = 13
+LegacyBattlerEnemyY = 14
+LegacyBattlerAltitude = 10
+#-------------------------------
+[SPHEAL]
+LegacyBattlerPlayerY = 31
+LegacyBattlerEnemyY = 27
+LegacyBattlerAltitude = 0
+#-------------------------------
+[SEALEO]
+LegacyBattlerPlayerY = 23
+LegacyBattlerEnemyY = 22
+LegacyBattlerAltitude = 0
+#-------------------------------
+[WALREIN]
+LegacyBattlerPlayerY = 14
+LegacyBattlerEnemyY = 17
+LegacyBattlerAltitude = 0
+#-------------------------------
+[CLAMPERL]
+LegacyBattlerPlayerY = 26
+LegacyBattlerEnemyY = 24
+LegacyBattlerAltitude = 0
+#-------------------------------
+[HUNTAIL]
+LegacyBattlerPlayerY = 32
+LegacyBattlerEnemyY = 20
+LegacyBattlerAltitude = 8
+#-------------------------------
+[GOREBYSS]
+LegacyBattlerPlayerY = 24
+LegacyBattlerEnemyY = 18
+LegacyBattlerAltitude = 10
+#-------------------------------
+[RELICANTH]
+LegacyBattlerPlayerY = 27
+LegacyBattlerEnemyY = 20
+LegacyBattlerAltitude = 11
+#-------------------------------
+[LUVDISC]
+LegacyBattlerPlayerY = 22
+LegacyBattlerEnemyY = 30
+LegacyBattlerAltitude = 14
+#-------------------------------
+[BAGON]
+LegacyBattlerPlayerY = 21
+LegacyBattlerEnemyY = 19
+LegacyBattlerAltitude = 0
+#-------------------------------
+[SHELGON]
+LegacyBattlerPlayerY = 21
+LegacyBattlerEnemyY = 20
+LegacyBattlerAltitude = 0
+#-------------------------------
+[SALAMENCE]
+LegacyBattlerPlayerY = 17
+LegacyBattlerEnemyY = 11
+LegacyBattlerAltitude = 0
+#-------------------------------
+[BELDUM]
+LegacyBattlerPlayerY = 17
+LegacyBattlerEnemyY = 21
+LegacyBattlerAltitude = 12
+#-------------------------------
+[METANG]
+LegacyBattlerPlayerY = 22
+LegacyBattlerEnemyY = 14
+LegacyBattlerAltitude = 3
+#-------------------------------
+[METAGROSS]
+LegacyBattlerPlayerY = 26
+LegacyBattlerEnemyY = 22
+LegacyBattlerAltitude = 0
+#-------------------------------
+[REGIROCK]
+LegacyBattlerPlayerY = 12
+LegacyBattlerEnemyY = 10
+LegacyBattlerAltitude = 0
+#-------------------------------
+[REGICE]
+LegacyBattlerPlayerY = 13
+LegacyBattlerEnemyY = 9
+LegacyBattlerAltitude = 0
+#-------------------------------
+[REGISTEEL]
+LegacyBattlerPlayerY = 12
+LegacyBattlerEnemyY = 12
+LegacyBattlerAltitude = 0
+#-------------------------------
+[LATIAS]
+LegacyBattlerPlayerY = 7
+LegacyBattlerEnemyY = 7
+LegacyBattlerAltitude = 11
+#-------------------------------
+[LATIOS]
+LegacyBattlerPlayerY = -2
+LegacyBattlerEnemyY = 4
+LegacyBattlerAltitude = 10
+#-------------------------------
+[KYOGRE]
+LegacyBattlerPlayerY = 30
+LegacyBattlerEnemyY = 12
+LegacyBattlerAltitude = 3
+#-------------------------------
+[GROUDON]
+LegacyBattlerPlayerY = 10
+LegacyBattlerEnemyY = 9
+LegacyBattlerAltitude = 0
+#-------------------------------
+[RAYQUAZA]
+LegacyBattlerPlayerY = 8
+LegacyBattlerEnemyY = -1
+LegacyBattlerAltitude = 5
+#-------------------------------
+[JIRACHI]
+LegacyBattlerPlayerY = 23
+LegacyBattlerEnemyY = 26
+LegacyBattlerAltitude = 14
+#-------------------------------
+[DEOXYS]
+LegacyBattlerPlayerY = 8
+LegacyBattlerEnemyY = 6
+LegacyBattlerAltitude = 0
+#-------------------------------
+[TURTWIG]
+LegacyBattlerPlayerY = 25
+LegacyBattlerEnemyY = 22
+LegacyBattlerAltitude = 0
+#-------------------------------
+[GROTLE]
+LegacyBattlerPlayerY = 17
+LegacyBattlerEnemyY = 16
+LegacyBattlerAltitude = 0
+#-------------------------------
+[TORTERRA]
+LegacyBattlerPlayerY = 8
+LegacyBattlerEnemyY = 7
+LegacyBattlerAltitude = 0
+#-------------------------------
+[CHIMCHAR]
+LegacyBattlerPlayerY = 23
+LegacyBattlerEnemyY = 20
+LegacyBattlerAltitude = 0
+#-------------------------------
+[MONFERNO]
+LegacyBattlerPlayerY = 19
+LegacyBattlerEnemyY = 15
+LegacyBattlerAltitude = 0
+#-------------------------------
+[INFERNAPE]
+LegacyBattlerPlayerY = 12
+LegacyBattlerEnemyY = 16
+LegacyBattlerAltitude = 0
+#-------------------------------
+[PIPLUP]
+LegacyBattlerPlayerY = 29
+LegacyBattlerEnemyY = 25
+LegacyBattlerAltitude = 0
+#-------------------------------
+[PRINPLUP]
+LegacyBattlerPlayerY = 19
+LegacyBattlerEnemyY = 13
+LegacyBattlerAltitude = 0
+#-------------------------------
+[EMPOLEON]
+LegacyBattlerPlayerY = 10
+LegacyBattlerEnemyY = 6
+LegacyBattlerAltitude = 0
+#-------------------------------
+[STARLY]
+LegacyBattlerPlayerY = 26
+LegacyBattlerEnemyY = 23
+LegacyBattlerAltitude = 0
+#-------------------------------
+[STARAVIA]
+LegacyBattlerPlayerY = 21
+LegacyBattlerEnemyY = 17
+LegacyBattlerAltitude = 0
+#-------------------------------
+[STARAPTOR]
+LegacyBattlerPlayerY = 17
+LegacyBattlerEnemyY = 12
+LegacyBattlerAltitude = 0
+#-------------------------------
+[BIDOOF]
+LegacyBattlerPlayerY = 27
+LegacyBattlerEnemyY = 24
+LegacyBattlerAltitude = 0
+#-------------------------------
+[BIBAREL]
+LegacyBattlerPlayerY = 17
+LegacyBattlerEnemyY = 15
+LegacyBattlerAltitude = 0
+#-------------------------------
+[KRICKETOT]
+LegacyBattlerPlayerY = 22
+LegacyBattlerEnemyY = 19
+LegacyBattlerAltitude = 0
+#-------------------------------
+[KRICKETUNE]
+LegacyBattlerPlayerY = 17
+LegacyBattlerEnemyY = 12
+LegacyBattlerAltitude = 0
+#-------------------------------
+[SHINX]
+LegacyBattlerPlayerY = 27
+LegacyBattlerEnemyY = 25
+LegacyBattlerAltitude = 0
+#-------------------------------
+[LUXIO]
+LegacyBattlerPlayerY = 20
+LegacyBattlerEnemyY = 19
+LegacyBattlerAltitude = 0
+#-------------------------------
+[LUXRAY]
+LegacyBattlerPlayerY = 13
+LegacyBattlerEnemyY = 14
+LegacyBattlerAltitude = 0
+#-------------------------------
+[BUDEW]
+LegacyBattlerPlayerY = 26
+LegacyBattlerEnemyY = 19
+LegacyBattlerAltitude = 0
+#-------------------------------
+[ROSERADE]
+LegacyBattlerPlayerY = 17
+LegacyBattlerEnemyY = 12
+LegacyBattlerAltitude = 0
+#-------------------------------
+[CRANIDOS]
+LegacyBattlerPlayerY = 18
+LegacyBattlerEnemyY = 18
+LegacyBattlerAltitude = 0
+#-------------------------------
+[RAMPARDOS]
+LegacyBattlerPlayerY = 6
+LegacyBattlerEnemyY = 4
+LegacyBattlerAltitude = 0
+#-------------------------------
+[SHIELDON]
+LegacyBattlerPlayerY = 26
+LegacyBattlerEnemyY = 24
+LegacyBattlerAltitude = 0
+#-------------------------------
+[BASTIODON]
+LegacyBattlerPlayerY = 15
+LegacyBattlerEnemyY = 15
+LegacyBattlerAltitude = 0
+#-------------------------------
+[BURMY]
+LegacyBattlerPlayerY = 16
+LegacyBattlerEnemyY = 24
+LegacyBattlerAltitude = 15
+#-------------------------------
+[WORMADAM]
+LegacyBattlerPlayerY = 17
+LegacyBattlerEnemyY = 19
+LegacyBattlerAltitude = 12
+#-------------------------------
+[MOTHIM]
+LegacyBattlerPlayerY = 12
+LegacyBattlerEnemyY = 17
+LegacyBattlerAltitude = 14
+#-------------------------------
+[COMBEE]
+LegacyBattlerPlayerY = 17
+LegacyBattlerEnemyY = 21
+LegacyBattlerAltitude = 13
+#-------------------------------
+[VESPIQUEN]
+LegacyBattlerPlayerY = 4
+LegacyBattlerEnemyY = 10
+LegacyBattlerAltitude = 14
+#-------------------------------
+[PACHIRISU]
+LegacyBattlerPlayerY = 26
+LegacyBattlerEnemyY = 17
+LegacyBattlerAltitude = 0
+#-------------------------------
+[BUIZEL]
+LegacyBattlerPlayerY = 22
+LegacyBattlerEnemyY = 17
+LegacyBattlerAltitude = 0
+#-------------------------------
+[FLOATZEL]
+LegacyBattlerPlayerY = 12
+LegacyBattlerEnemyY = 6
+LegacyBattlerAltitude = 0
+#-------------------------------
+[CHERUBI]
+LegacyBattlerPlayerY = 30
+LegacyBattlerEnemyY = 27
+LegacyBattlerAltitude = 0
+#-------------------------------
+[CHERRIM]
+LegacyBattlerPlayerY = 22
+LegacyBattlerEnemyY = 19
+LegacyBattlerAltitude = 0
+#-------------------------------
+[SHELLOS]
+LegacyBattlerPlayerY = 28
+LegacyBattlerEnemyY = 23
+LegacyBattlerAltitude = 0
+#-------------------------------
+[GASTRODON]
+LegacyBattlerPlayerY = 21
+LegacyBattlerEnemyY = 17
+LegacyBattlerAltitude = 0
+#-------------------------------
+[AMBIPOM]
+LegacyBattlerPlayerY = 11
+LegacyBattlerEnemyY = 10
+LegacyBattlerAltitude = 0
+#-------------------------------
+[DRIFLOON]
+LegacyBattlerPlayerY = 7
+LegacyBattlerEnemyY = 12
+LegacyBattlerAltitude = 9
+#-------------------------------
+[DRIFBLIM]
+LegacyBattlerPlayerY = 4
+LegacyBattlerEnemyY = 10
+LegacyBattlerAltitude = 14
+#-------------------------------
+[BUNEARY]
+LegacyBattlerPlayerY = 21
+LegacyBattlerEnemyY = 8
+LegacyBattlerAltitude = 0
+#-------------------------------
+[LOPUNNY]
+LegacyBattlerPlayerY = 15
+LegacyBattlerEnemyY = 11
+LegacyBattlerAltitude = 0
+#-------------------------------
+[MISMAGIUS]
+LegacyBattlerPlayerY = 10
+LegacyBattlerEnemyY = 10
+LegacyBattlerAltitude = 8
+#-------------------------------
+[HONCHKROW]
+LegacyBattlerPlayerY = 19
+LegacyBattlerEnemyY = 16
+LegacyBattlerAltitude = 0
+#-------------------------------
+[GLAMEOW]
+LegacyBattlerPlayerY = 20
+LegacyBattlerEnemyY = 14
+LegacyBattlerAltitude = 0
+#-------------------------------
+[PURUGLY]
+LegacyBattlerPlayerY = 17
+LegacyBattlerEnemyY = 15
+LegacyBattlerAltitude = 0
+#-------------------------------
+[CHINGLING]
+LegacyBattlerPlayerY = 26
+LegacyBattlerEnemyY = 17
+LegacyBattlerAltitude = 12
+#-------------------------------
+[STUNKY]
+LegacyBattlerPlayerY = 25
+LegacyBattlerEnemyY = 22
+LegacyBattlerAltitude = 0
+#-------------------------------
+[SKUNTANK]
+LegacyBattlerPlayerY = 14
+LegacyBattlerEnemyY = 17
+LegacyBattlerAltitude = 0
+#-------------------------------
+[BRONZOR]
+LegacyBattlerPlayerY = 21
+LegacyBattlerEnemyY = 23
+LegacyBattlerAltitude = 13
+#-------------------------------
+[BRONZONG]
+LegacyBattlerPlayerY = 10
+LegacyBattlerEnemyY = 12
+LegacyBattlerAltitude = 13
+#-------------------------------
+[BONSLY]
+LegacyBattlerPlayerY = 21
+LegacyBattlerEnemyY = 19
+LegacyBattlerAltitude = 0
+#-------------------------------
+[MIMEJR]
+LegacyBattlerPlayerY = 16
+LegacyBattlerEnemyY = 15
+LegacyBattlerAltitude = 0
+#-------------------------------
+[HAPPINY]
+LegacyBattlerPlayerY = 25
+LegacyBattlerEnemyY = 22
+LegacyBattlerAltitude = 0
+#-------------------------------
+[CHATOT]
+LegacyBattlerPlayerY = 27
+LegacyBattlerEnemyY = 22
+LegacyBattlerAltitude = 0
+#-------------------------------
+[SPIRITOMB]
+LegacyBattlerPlayerY = 20
+LegacyBattlerEnemyY = 17
+LegacyBattlerAltitude = 0
+#-------------------------------
+[GIBLE]
+LegacyBattlerPlayerY = 22
+LegacyBattlerEnemyY = 19
+LegacyBattlerAltitude = 0
+#-------------------------------
+[GABITE]
+LegacyBattlerPlayerY = 16
+LegacyBattlerEnemyY = 14
+LegacyBattlerAltitude = 0
+#-------------------------------
+[GARCHOMP]
+LegacyBattlerPlayerY = 9
+LegacyBattlerEnemyY = 8
+LegacyBattlerAltitude = 0
+#-------------------------------
+[MUNCHLAX]
+LegacyBattlerPlayerY = 23
+LegacyBattlerEnemyY = 20
+LegacyBattlerAltitude = 0
+#-------------------------------
+[RIOLU]
+LegacyBattlerPlayerY = 25
+LegacyBattlerEnemyY = 20
+LegacyBattlerAltitude = 0
+#-------------------------------
+[LUCARIO]
+LegacyBattlerPlayerY = 13
+LegacyBattlerEnemyY = 11
+LegacyBattlerAltitude = 0
+#-------------------------------
+[HIPPOPOTAS]
+LegacyBattlerPlayerY = 24
+LegacyBattlerEnemyY = 23
+LegacyBattlerAltitude = 0
+#-------------------------------
+[HIPPOWDON]
+LegacyBattlerPlayerY = 14
+LegacyBattlerEnemyY = 21
+LegacyBattlerAltitude = 0
+#-------------------------------
+[SKORUPI]
+LegacyBattlerPlayerY = 24
+LegacyBattlerEnemyY = 18
+LegacyBattlerAltitude = 0
+#-------------------------------
+[DRAPION]
+LegacyBattlerPlayerY = 21
+LegacyBattlerEnemyY = 12
+LegacyBattlerAltitude = 0
+#-------------------------------
+[CROAGUNK]
+LegacyBattlerPlayerY = 24
+LegacyBattlerEnemyY = 22
+LegacyBattlerAltitude = 0
+#-------------------------------
+[TOXICROAK]
+LegacyBattlerPlayerY = 15
+LegacyBattlerEnemyY = 15
+LegacyBattlerAltitude = 0
+#-------------------------------
+[CARNIVINE]
+LegacyBattlerPlayerY = 19
+LegacyBattlerEnemyY = 15
+LegacyBattlerAltitude = 10
+#-------------------------------
+[FINNEON]
+LegacyBattlerPlayerY = 32
+LegacyBattlerEnemyY = 36
+LegacyBattlerAltitude = 18
+#-------------------------------
+[LUMINEON]
+LegacyBattlerPlayerY = 13
+LegacyBattlerEnemyY = 20
+LegacyBattlerAltitude = 12
+#-------------------------------
+[MANTYKE]
+LegacyBattlerPlayerY = 15
+LegacyBattlerEnemyY = 22
+LegacyBattlerAltitude = 18
+#-------------------------------
+[SNOVER]
+LegacyBattlerPlayerY = 22
+LegacyBattlerEnemyY = 16
+LegacyBattlerAltitude = 0
+#-------------------------------
+[ABOMASNOW]
+LegacyBattlerPlayerY = 13
+LegacyBattlerEnemyY = 9
+LegacyBattlerAltitude = 0
+#-------------------------------
+[WEAVILE]
+LegacyBattlerPlayerY = 15
+LegacyBattlerEnemyY = 13
+LegacyBattlerAltitude = 0
+#-------------------------------
+[MAGNEZONE]
+LegacyBattlerPlayerY = 16
+LegacyBattlerEnemyY = 16
+LegacyBattlerAltitude = 11
+#-------------------------------
+[LICKILICKY]
+LegacyBattlerPlayerY = 13
+LegacyBattlerEnemyY = 9
+LegacyBattlerAltitude = 0
+#-------------------------------
+[RHYPERIOR]
+LegacyBattlerPlayerY = 13
+LegacyBattlerEnemyY = 10
+LegacyBattlerAltitude = 0
+#-------------------------------
+[TANGROWTH]
+LegacyBattlerPlayerY = 14
+LegacyBattlerEnemyY = 9
+LegacyBattlerAltitude = 0
+#-------------------------------
+[ELECTIVIRE]
+LegacyBattlerPlayerY = 12
+LegacyBattlerEnemyY = 11
+LegacyBattlerAltitude = 0
+#-------------------------------
+[MAGMORTAR]
+LegacyBattlerPlayerY = 13
+LegacyBattlerEnemyY = 8
+LegacyBattlerAltitude = 0
+#-------------------------------
+[TOGEKISS]
+LegacyBattlerPlayerY = 18
+LegacyBattlerEnemyY = 22
+LegacyBattlerAltitude = 18
+#-------------------------------
+[YANMEGA]
+LegacyBattlerPlayerY = 13
+LegacyBattlerEnemyY = 7
+LegacyBattlerAltitude = 11
+#-------------------------------
+[LEAFEON]
+LegacyBattlerPlayerY = 20
+LegacyBattlerEnemyY = 18
+LegacyBattlerAltitude = 0
+#-------------------------------
+[GLACEON]
+LegacyBattlerPlayerY = 19
+LegacyBattlerEnemyY = 16
+LegacyBattlerAltitude = 0
+#-------------------------------
+[GLISCOR]
+LegacyBattlerPlayerY = 8
+LegacyBattlerEnemyY = 15
+LegacyBattlerAltitude = 10
+#-------------------------------
+[MAMOSWINE]
+LegacyBattlerPlayerY = 12
+LegacyBattlerEnemyY = 11
+LegacyBattlerAltitude = 0
+#-------------------------------
+[PORYGONZ]
+LegacyBattlerPlayerY = 13
+LegacyBattlerEnemyY = 17
+LegacyBattlerAltitude = 8
+#-------------------------------
+[GALLADE]
+LegacyBattlerPlayerY = 12
+LegacyBattlerEnemyY = 9
+LegacyBattlerAltitude = 0
+#-------------------------------
+[PROBOPASS]
+LegacyBattlerPlayerY = 17
+LegacyBattlerEnemyY = 3
+LegacyBattlerAltitude = 0
+#-------------------------------
+[DUSKNOIR]
+LegacyBattlerPlayerY = 6
+LegacyBattlerEnemyY = 8
+LegacyBattlerAltitude = 7
+#-------------------------------
+[FROSLASS]
+LegacyBattlerPlayerY = 13
+LegacyBattlerEnemyY = 12
+LegacyBattlerAltitude = 7
+#-------------------------------
+[ROTOM]
+LegacyBattlerPlayerY = 15
+LegacyBattlerEnemyY = 18
+LegacyBattlerAltitude = 13
+#-------------------------------
+[UXIE]
+LegacyBattlerPlayerY = 14
+LegacyBattlerEnemyY = 27
+LegacyBattlerAltitude = 18
+#-------------------------------
+[MESPRIT]
+LegacyBattlerPlayerY = 19
+LegacyBattlerEnemyY = 25
+LegacyBattlerAltitude = 18
+#-------------------------------
+[AZELF]
+LegacyBattlerPlayerY = 12
+LegacyBattlerEnemyY = 26
+LegacyBattlerAltitude = 20
+#-------------------------------
+[DIALGA]
+LegacyBattlerPlayerY = 3
+LegacyBattlerEnemyY = 6
+LegacyBattlerAltitude = 0
+#-------------------------------
+[PALKIA]
+LegacyBattlerPlayerY = 12
+LegacyBattlerEnemyY = 7
+LegacyBattlerAltitude = 0
+#-------------------------------
+[HEATRAN]
+LegacyBattlerPlayerY = 24
+LegacyBattlerEnemyY = 22
+LegacyBattlerAltitude = 0
+#-------------------------------
+[REGIGIGAS]
+LegacyBattlerPlayerY = 20
+LegacyBattlerEnemyY = 9
+LegacyBattlerAltitude = 0
+#-------------------------------
+[GIRATINA]
+LegacyBattlerPlayerY = 12
+LegacyBattlerEnemyY = 7
+LegacyBattlerAltitude = 0
+#-------------------------------
+[CRESSELIA]
+LegacyBattlerPlayerY = 2
+LegacyBattlerEnemyY = 5
+LegacyBattlerAltitude = 11
+#-------------------------------
+[PHIONE]
+LegacyBattlerPlayerY = 23
+LegacyBattlerEnemyY = 36
+LegacyBattlerAltitude = 17
+#-------------------------------
+[MANAPHY]
+LegacyBattlerPlayerY = 26
+LegacyBattlerEnemyY = 39
+LegacyBattlerAltitude = 17
+#-------------------------------
+[DARKRAI]
+LegacyBattlerPlayerY = 9
+LegacyBattlerEnemyY = 12
+LegacyBattlerAltitude = 9
+#-------------------------------
+[SHAYMIN]
+LegacyBattlerPlayerY = 32
+LegacyBattlerEnemyY = 28
+LegacyBattlerAltitude = 0
+#-------------------------------
+[ARCEUS]
+LegacyBattlerPlayerY = 10
+LegacyBattlerEnemyY = 6
+LegacyBattlerAltitude = 0
+#-------------------------------
+[VICTINI]
+LegacyBattlerPlayerY = 19
+LegacyBattlerEnemyY = 23
+LegacyBattlerAltitude = 0
+#-------------------------------
+[SNIVY]
+LegacyBattlerPlayerY = 27
+LegacyBattlerEnemyY = 31
+LegacyBattlerAltitude = 0
+#-------------------------------
+[SERVINE]
+LegacyBattlerPlayerY = 19
+LegacyBattlerEnemyY = 21
+LegacyBattlerAltitude = 0
+#-------------------------------
+[SERPERIOR]
+LegacyBattlerPlayerY = 10
+LegacyBattlerEnemyY = 19
+LegacyBattlerAltitude = 0
+#-------------------------------
+[TEPIG]
+LegacyBattlerPlayerY = 29
+LegacyBattlerEnemyY = 35
+LegacyBattlerAltitude = 0
+#-------------------------------
+[PIGNITE]
+LegacyBattlerPlayerY = 19
+LegacyBattlerEnemyY = 26
+LegacyBattlerAltitude = 0
+#-------------------------------
+[EMBOAR]
+LegacyBattlerPlayerY = 11
+LegacyBattlerEnemyY = 15
+LegacyBattlerAltitude = 0
+#-------------------------------
+[OSHAWOTT]
+LegacyBattlerPlayerY = 29
+LegacyBattlerEnemyY = 32
+LegacyBattlerAltitude = 0
+#-------------------------------
+[DEWOTT]
+LegacyBattlerPlayerY = 18
+LegacyBattlerEnemyY = 22
+LegacyBattlerAltitude = 0
+#-------------------------------
+[SAMUROTT]
+LegacyBattlerPlayerY = 7
+LegacyBattlerEnemyY = 13
+LegacyBattlerAltitude = 0
+#-------------------------------
+[PATRAT]
+LegacyBattlerPlayerY = 27
+LegacyBattlerEnemyY = 28
+LegacyBattlerAltitude = 0
+#-------------------------------
+[WATCHOG]
+LegacyBattlerPlayerY = 13
+LegacyBattlerEnemyY = 17
+LegacyBattlerAltitude = 0
+#-------------------------------
+[LILLIPUP]
+LegacyBattlerPlayerY = 25
+LegacyBattlerEnemyY = 29
+LegacyBattlerAltitude = 0
+#-------------------------------
+[HERDIER]
+LegacyBattlerPlayerY = 19
+LegacyBattlerEnemyY = 25
+LegacyBattlerAltitude = 0
+#-------------------------------
+[STOUTLAND]
+LegacyBattlerPlayerY = 14
+LegacyBattlerEnemyY = 19
+LegacyBattlerAltitude = 0
+#-------------------------------
+[PURRLOIN]
+LegacyBattlerPlayerY = 22
+LegacyBattlerEnemyY = 26
+LegacyBattlerAltitude = 0
+#-------------------------------
+[LIEPARD]
+LegacyBattlerPlayerY = 15
+LegacyBattlerEnemyY = 19
+LegacyBattlerAltitude = 0
+#-------------------------------
+[PANSAGE]
+LegacyBattlerPlayerY = 24
+LegacyBattlerEnemyY = 28
+LegacyBattlerAltitude = 0
+#-------------------------------
+[SIMISAGE]
+LegacyBattlerPlayerY = 11
+LegacyBattlerEnemyY = 19
+LegacyBattlerAltitude = 0
+#-------------------------------
+[PANSEAR]
+LegacyBattlerPlayerY = 24
+LegacyBattlerEnemyY = 27
+LegacyBattlerAltitude = 0
+#-------------------------------
+[SIMISEAR]
+LegacyBattlerPlayerY = 16
+LegacyBattlerEnemyY = 22
+LegacyBattlerAltitude = 0
+#-------------------------------
+[PANPOUR]
+LegacyBattlerPlayerY = 24
+LegacyBattlerEnemyY = 26
+LegacyBattlerAltitude = 0
+#-------------------------------
+[SIMIPOUR]
+LegacyBattlerPlayerY = 16
+LegacyBattlerEnemyY = 21
+LegacyBattlerAltitude = 0
+#-------------------------------
+[MUNNA]
+LegacyBattlerPlayerY = 24
+LegacyBattlerEnemyY = 28
+LegacyBattlerAltitude = 10
+#-------------------------------
+[MUSHARNA]
+LegacyBattlerPlayerY = 12
+LegacyBattlerEnemyY = 17
+LegacyBattlerAltitude = 10
+#-------------------------------
+[PIDOVE]
+LegacyBattlerPlayerY = 27
+LegacyBattlerEnemyY = 30
+LegacyBattlerAltitude = 0
+#-------------------------------
+[TRANQUILL]
+LegacyBattlerPlayerY = 21
+LegacyBattlerEnemyY = 28
+LegacyBattlerAltitude = 0
+#-------------------------------
+[UNFEZANT]
+LegacyBattlerPlayerY = 26
+LegacyBattlerEnemyY = 18
+LegacyBattlerAltitude = 0
+#-------------------------------
+[BLITZLE]
+LegacyBattlerPlayerY = 16
+LegacyBattlerEnemyY = 21
+LegacyBattlerAltitude = 0
+#-------------------------------
+[ZEBSTRIKA]
+LegacyBattlerPlayerY = 14
+LegacyBattlerEnemyY = 18
+LegacyBattlerAltitude = 0
+#-------------------------------
+[ROGGENROLA]
+LegacyBattlerPlayerY = 29
+LegacyBattlerEnemyY = 32
+LegacyBattlerAltitude = 0
+#-------------------------------
+[BOLDORE]
+LegacyBattlerPlayerY = 25
+LegacyBattlerEnemyY = 30
+LegacyBattlerAltitude = 0
+#-------------------------------
+[GIGALITH]
+LegacyBattlerPlayerY = 13
+LegacyBattlerEnemyY = 21
+LegacyBattlerAltitude = 0
+#-------------------------------
+[WOOBAT]
+LegacyBattlerPlayerY = 17
+LegacyBattlerEnemyY = 22
+LegacyBattlerAltitude = 5
+#-------------------------------
+[SWOOBAT]
+LegacyBattlerPlayerY = 16
+LegacyBattlerEnemyY = 17
+LegacyBattlerAltitude = 5
+#-------------------------------
+[DRILBUR]
+LegacyBattlerPlayerY = 24
+LegacyBattlerEnemyY = 26
+LegacyBattlerAltitude = 0
+#-------------------------------
+[EXCADRILL]
+LegacyBattlerPlayerY = 15
+LegacyBattlerEnemyY = 23
+LegacyBattlerAltitude = 0
+#-------------------------------
+[AUDINO]
+LegacyBattlerPlayerY = 20
+LegacyBattlerEnemyY = 27
+LegacyBattlerAltitude = 0
+#-------------------------------
+[TIMBURR]
+LegacyBattlerPlayerY = 28
+LegacyBattlerEnemyY = 30
+LegacyBattlerAltitude = 0
+#-------------------------------
+[GURDURR]
+LegacyBattlerPlayerY = 22
+LegacyBattlerEnemyY = 26
+LegacyBattlerAltitude = 0
+#-------------------------------
+[CONKELDURR]
+LegacyBattlerPlayerY = 21
+LegacyBattlerEnemyY = 26
+LegacyBattlerAltitude = 0
+#-------------------------------
+[TYMPOLE]
+LegacyBattlerPlayerY = 26
+LegacyBattlerEnemyY = 28
+LegacyBattlerAltitude = 2
+#-------------------------------
+[PALPITOAD]
+LegacyBattlerPlayerY = 24
+LegacyBattlerEnemyY = 26
+LegacyBattlerAltitude = 0
+#-------------------------------
+[SEISMITOAD]
+LegacyBattlerPlayerY = 16
+LegacyBattlerEnemyY = 17
+LegacyBattlerAltitude = 0
+#-------------------------------
+[THROH]
+LegacyBattlerPlayerY = 21
+LegacyBattlerEnemyY = 26
+LegacyBattlerAltitude = 0
+#-------------------------------
+[SAWK]
+LegacyBattlerPlayerY = 18
+LegacyBattlerEnemyY = 22
+LegacyBattlerAltitude = 0
+#-------------------------------
+[SEWADDLE]
+LegacyBattlerPlayerY = 33
+LegacyBattlerEnemyY = 34
+LegacyBattlerAltitude = 0
+#-------------------------------
+[SWADLOON]
+LegacyBattlerPlayerY = 27
+LegacyBattlerEnemyY = 33
+LegacyBattlerAltitude = 0
+#-------------------------------
+[LEAVANNY]
+LegacyBattlerPlayerY = 6
+LegacyBattlerEnemyY = 10
+LegacyBattlerAltitude = 0
+#-------------------------------
+[VENIPEDE]
+LegacyBattlerPlayerY = 31
+LegacyBattlerEnemyY = 36
+LegacyBattlerAltitude = 0
+#-------------------------------
+[WHIRLIPEDE]
+LegacyBattlerPlayerY = 24
+LegacyBattlerEnemyY = 29
+LegacyBattlerAltitude = 0
+#-------------------------------
+[SCOLIPEDE]
+LegacyBattlerPlayerY = 17
+LegacyBattlerEnemyY = 11
+LegacyBattlerAltitude = 0
+#-------------------------------
+[COTTONEE]
+LegacyBattlerPlayerY = 32
+LegacyBattlerEnemyY = 36
+LegacyBattlerAltitude = 0
+#-------------------------------
+[WHIMSICOTT]
+LegacyBattlerPlayerY = 21
+LegacyBattlerEnemyY = 25
+LegacyBattlerAltitude = 0
+#-------------------------------
+[PETILIL]
+LegacyBattlerPlayerY = 24
+LegacyBattlerEnemyY = 29
+LegacyBattlerAltitude = 0
+#-------------------------------
+[LILLIGANT]
+LegacyBattlerPlayerY = 14
+LegacyBattlerEnemyY = 18
+LegacyBattlerAltitude = 0
+#-------------------------------
+[BASCULIN]
+LegacyBattlerPlayerY = 27
+LegacyBattlerEnemyY = 31
+LegacyBattlerAltitude = 1
+#-------------------------------
+[SANDILE]
+LegacyBattlerPlayerY = 33
+LegacyBattlerEnemyY = 38
+LegacyBattlerAltitude = 0
+#-------------------------------
+[KROKOROK]
+LegacyBattlerPlayerY = 13
+LegacyBattlerEnemyY = 21
+LegacyBattlerAltitude = 0
+#-------------------------------
+[KROOKODILE]
+LegacyBattlerPlayerY = 7
+LegacyBattlerEnemyY = 15
+LegacyBattlerAltitude = 0
+#-------------------------------
+[DARUMAKA]
+LegacyBattlerPlayerY = 29
+LegacyBattlerEnemyY = 33
+LegacyBattlerAltitude = 0
+#-------------------------------
+[DARMANITAN]
+LegacyBattlerPlayerY = 21
+LegacyBattlerEnemyY = 26
+LegacyBattlerAltitude = 0
+#-------------------------------
+[MARACTUS]
+LegacyBattlerPlayerY = 14
+LegacyBattlerEnemyY = 15
+LegacyBattlerAltitude = 0
+#-------------------------------
+[DWEBBLE]
+LegacyBattlerPlayerY = 31
+LegacyBattlerEnemyY = 36
+LegacyBattlerAltitude = 0
+#-------------------------------
+[CRUSTLE]
+LegacyBattlerPlayerY = 16
+LegacyBattlerEnemyY = 22
+LegacyBattlerAltitude = 0
+#-------------------------------
+[SCRAGGY]
+LegacyBattlerPlayerY = 26
+LegacyBattlerEnemyY = 29
+LegacyBattlerAltitude = 0
+#-------------------------------
+[SCRAFTY]
+LegacyBattlerPlayerY = 19
+LegacyBattlerEnemyY = 20
+LegacyBattlerAltitude = 0
+#-------------------------------
+[SIGILYPH]
+LegacyBattlerPlayerY = 16
+LegacyBattlerEnemyY = 17
+LegacyBattlerAltitude = 17
+#-------------------------------
+[YAMASK]
+LegacyBattlerPlayerY = 21
+LegacyBattlerEnemyY = 21
+LegacyBattlerAltitude = 2
+#-------------------------------
+[COFAGRIGUS]
+LegacyBattlerPlayerY = 14
+LegacyBattlerEnemyY = 13
+LegacyBattlerAltitude = 0
+#-------------------------------
+[TIRTOUGA]
+LegacyBattlerPlayerY = 26
+LegacyBattlerEnemyY = 31
+LegacyBattlerAltitude = 2
+#-------------------------------
+[CARRACOSTA]
+LegacyBattlerPlayerY = 15
+LegacyBattlerEnemyY = 24
+LegacyBattlerAltitude = 0
+#-------------------------------
+[ARCHEN]
+LegacyBattlerPlayerY = 28
+LegacyBattlerEnemyY = 33
+LegacyBattlerAltitude = 0
+#-------------------------------
+[ARCHEOPS]
+LegacyBattlerPlayerY = -1
+LegacyBattlerEnemyY = 4
+LegacyBattlerAltitude = 1
+#-------------------------------
+[TRUBBISH]
+LegacyBattlerPlayerY = 28
+LegacyBattlerEnemyY = 32
+LegacyBattlerAltitude = 0
+#-------------------------------
+[GARBODOR]
+LegacyBattlerPlayerY = 13
+LegacyBattlerEnemyY = 17
+LegacyBattlerAltitude = 0
+#-------------------------------
+[ZORUA]
+LegacyBattlerPlayerY = 23
+LegacyBattlerEnemyY = 28
+LegacyBattlerAltitude = 0
+#-------------------------------
+[ZOROARK]
+LegacyBattlerPlayerY = 15
+LegacyBattlerEnemyY = 20
+LegacyBattlerAltitude = 0
+#-------------------------------
+[MINCCINO]
+LegacyBattlerPlayerY = 22
+LegacyBattlerEnemyY = 22
+LegacyBattlerAltitude = 0
+#-------------------------------
+[CINCCINO]
+LegacyBattlerPlayerY = 18
+LegacyBattlerEnemyY = 21
+LegacyBattlerAltitude = 0
+#-------------------------------
+[GOTHITA]
+LegacyBattlerPlayerY = 26
+LegacyBattlerEnemyY = 31
+LegacyBattlerAltitude = 0
+#-------------------------------
+[GOTHORITA]
+LegacyBattlerPlayerY = 19
+LegacyBattlerEnemyY = 25
+LegacyBattlerAltitude = 0
+#-------------------------------
+[GOTHITELLE]
+LegacyBattlerPlayerY = 18
+LegacyBattlerEnemyY = 14
+LegacyBattlerAltitude = 0
+#-------------------------------
+[SOLOSIS]
+LegacyBattlerPlayerY = 25
+LegacyBattlerEnemyY = 27
+LegacyBattlerAltitude = 5
+#-------------------------------
+[DUOSION]
+LegacyBattlerPlayerY = 18
+LegacyBattlerEnemyY = 21
+LegacyBattlerAltitude = 5
+#-------------------------------
+[REUNICLUS]
+LegacyBattlerPlayerY = 15
+LegacyBattlerEnemyY = 21
+LegacyBattlerAltitude = 10
+#-------------------------------
+[DUCKLETT]
+LegacyBattlerPlayerY = 26
+LegacyBattlerEnemyY = 29
+LegacyBattlerAltitude = 0
+#-------------------------------
+[SWANNA]
+LegacyBattlerPlayerY = 14
+LegacyBattlerEnemyY = 19
+LegacyBattlerAltitude = 0
+#-------------------------------
+[VANILLITE]
+LegacyBattlerPlayerY = 22
+LegacyBattlerEnemyY = 22
+LegacyBattlerAltitude = 0
+#-------------------------------
+[VANILLISH]
+LegacyBattlerPlayerY = 13
+LegacyBattlerEnemyY = 16
+LegacyBattlerAltitude = 2
+#-------------------------------
+[VANILLUXE]
+LegacyBattlerPlayerY = 9
+LegacyBattlerEnemyY = 17
+LegacyBattlerAltitude = 7
+#-------------------------------
+[DEERLING]
+LegacyBattlerPlayerY = 26
+LegacyBattlerEnemyY = 28
+LegacyBattlerAltitude = 0
+#-------------------------------
+[SAWSBUCK]
+LegacyBattlerPlayerY = 8
+LegacyBattlerEnemyY = 14
+LegacyBattlerAltitude = 0
+#-------------------------------
+[EMOLGA]
+LegacyBattlerPlayerY = 19
+LegacyBattlerEnemyY = 29
+LegacyBattlerAltitude = 10
+#-------------------------------
+[KARRABLAST]
+LegacyBattlerPlayerY = 27
+LegacyBattlerEnemyY = 33
+LegacyBattlerAltitude = 0
+#-------------------------------
+[ESCAVALIER]
+LegacyBattlerPlayerY = 13
+LegacyBattlerEnemyY = 16
+LegacyBattlerAltitude = 5
+#-------------------------------
+[FOONGUS]
+LegacyBattlerPlayerY = 30
+LegacyBattlerEnemyY = 34
+LegacyBattlerAltitude = 0
+#-------------------------------
+[AMOONGUSS]
+LegacyBattlerPlayerY = 18
+LegacyBattlerEnemyY = 18
+LegacyBattlerAltitude = 0
+#-------------------------------
+[FRILLISH]
+LegacyBattlerPlayerY = 13
+LegacyBattlerEnemyY = 19
+LegacyBattlerAltitude = 3
+#-------------------------------
+[JELLICENT]
+LegacyBattlerPlayerY = 9
+LegacyBattlerEnemyY = 16
+LegacyBattlerAltitude = 5
+#-------------------------------
+[ALOMOMOLA]
+LegacyBattlerPlayerY = 5
+LegacyBattlerEnemyY = 6
+LegacyBattlerAltitude = 0
+#-------------------------------
+[JOLTIK]
+LegacyBattlerPlayerY = 31
+LegacyBattlerEnemyY = 37
+LegacyBattlerAltitude = 0
+#-------------------------------
+[GALVANTULA]
+LegacyBattlerPlayerY = 27
+LegacyBattlerEnemyY = 33
+LegacyBattlerAltitude = 0
+#-------------------------------
+[FERROSEED]
+LegacyBattlerPlayerY = 28
+LegacyBattlerEnemyY = 33
+LegacyBattlerAltitude = 0
+#-------------------------------
+[FERROTHORN]
+LegacyBattlerPlayerY = 21
+LegacyBattlerEnemyY = 22
+LegacyBattlerAltitude = 1
+#-------------------------------
+[KLINK]
+LegacyBattlerPlayerY = 20
+LegacyBattlerEnemyY = 28
+LegacyBattlerAltitude = 10
+#-------------------------------
+[KLANG]
+LegacyBattlerPlayerY = 15
+LegacyBattlerEnemyY = 26
+LegacyBattlerAltitude = 10
+#-------------------------------
+[KLINKLANG]
+LegacyBattlerPlayerY = 16
+LegacyBattlerEnemyY = 30
+LegacyBattlerAltitude = 10
+#-------------------------------
+[TYNAMO]
+LegacyBattlerPlayerY = 30
+LegacyBattlerEnemyY = 33
+LegacyBattlerAltitude = 5
+#-------------------------------
+[EELEKTRIK]
+LegacyBattlerPlayerY = 11
+LegacyBattlerEnemyY = 22
+LegacyBattlerAltitude = 5
+#-------------------------------
+[EELEKTROSS]
+LegacyBattlerPlayerY = 15
+LegacyBattlerEnemyY = 22
+LegacyBattlerAltitude = 3
+#-------------------------------
+[ELGYEM]
+LegacyBattlerPlayerY = 16
+LegacyBattlerEnemyY = 20
+LegacyBattlerAltitude = 3
+#-------------------------------
+[BEHEEYEM]
+LegacyBattlerPlayerY = 9
+LegacyBattlerEnemyY = 20
+LegacyBattlerAltitude = 10
+#-------------------------------
+[LITWICK]
+LegacyBattlerPlayerY = 28
+LegacyBattlerEnemyY = 33
+LegacyBattlerAltitude = 0
+#-------------------------------
+[LAMPENT]
+LegacyBattlerPlayerY = 20
+LegacyBattlerEnemyY = 24
+LegacyBattlerAltitude = 5
+#-------------------------------
+[CHANDELURE]
+LegacyBattlerPlayerY = 3
+LegacyBattlerEnemyY = 12
+LegacyBattlerAltitude = 10
+#-------------------------------
+[AXEW]
+LegacyBattlerPlayerY = 27
+LegacyBattlerEnemyY = 30
+LegacyBattlerAltitude = 0
+#-------------------------------
+[FRAXURE]
+LegacyBattlerPlayerY = 18
+LegacyBattlerEnemyY = 23
+LegacyBattlerAltitude = 0
+#-------------------------------
+[HAXORUS]
+LegacyBattlerPlayerY = 5
+LegacyBattlerEnemyY = 10
+LegacyBattlerAltitude = 0
+#-------------------------------
+[CUBCHOO]
+LegacyBattlerPlayerY = 30
+LegacyBattlerEnemyY = 35
+LegacyBattlerAltitude = 0
+#-------------------------------
+[BEARTIC]
+LegacyBattlerPlayerY = 9
+LegacyBattlerEnemyY = 15
+LegacyBattlerAltitude = 0
+#-------------------------------
+[CRYOGONAL]
+LegacyBattlerPlayerY = 6
+LegacyBattlerEnemyY = 13
+LegacyBattlerAltitude = 8
+#-------------------------------
+[SHELMET]
+LegacyBattlerPlayerY = 29
+LegacyBattlerEnemyY = 35
+LegacyBattlerAltitude = 0
+#-------------------------------
+[ACCELGOR]
+LegacyBattlerPlayerY = 17
+LegacyBattlerEnemyY = 25
+LegacyBattlerAltitude = 0
+#-------------------------------
+[STUNFISK]
+LegacyBattlerPlayerY = 33
+LegacyBattlerEnemyY = 31
+LegacyBattlerAltitude = 1
+#-------------------------------
+[MIENFOO]
+LegacyBattlerPlayerY = 24
+LegacyBattlerEnemyY = 27
+LegacyBattlerAltitude = 0
+#-------------------------------
+[MIENSHAO]
+LegacyBattlerPlayerY = 15
+LegacyBattlerEnemyY = 19
+LegacyBattlerAltitude = 0
+#-------------------------------
+[DRUDDIGON]
+LegacyBattlerPlayerY = 15
+LegacyBattlerEnemyY = 19
+LegacyBattlerAltitude = 0
+#-------------------------------
+[GOLETT]
+LegacyBattlerPlayerY = 16
+LegacyBattlerEnemyY = 22
+LegacyBattlerAltitude = 0
+#-------------------------------
+[GOLURK]
+LegacyBattlerPlayerY = 16
+LegacyBattlerEnemyY = 12
+LegacyBattlerAltitude = 0
+#-------------------------------
+[PAWNIARD]
+LegacyBattlerPlayerY = 23
+LegacyBattlerEnemyY = 27
+LegacyBattlerAltitude = 0
+#-------------------------------
+[BISHARP]
+LegacyBattlerPlayerY = 9
+LegacyBattlerEnemyY = 15
+LegacyBattlerAltitude = 0
+#-------------------------------
+[BOUFFALANT]
+LegacyBattlerPlayerY = 21
+LegacyBattlerEnemyY = 24
+LegacyBattlerAltitude = 0
+#-------------------------------
+[RUFFLET]
+LegacyBattlerPlayerY = 23
+LegacyBattlerEnemyY = 27
+LegacyBattlerAltitude = 0
+#-------------------------------
+[BRAVIARY]
+LegacyBattlerPlayerY = -6
+LegacyBattlerEnemyY = 11
+LegacyBattlerAltitude = 10
+#-------------------------------
+[VULLABY]
+LegacyBattlerPlayerY = 21
+LegacyBattlerEnemyY = 27
+LegacyBattlerAltitude = 0
+#-------------------------------
+[MANDIBUZZ]
+LegacyBattlerPlayerY = 14
+LegacyBattlerEnemyY = 19
+LegacyBattlerAltitude = 0
+#-------------------------------
+[HEATMOR]
+LegacyBattlerPlayerY = 18
+LegacyBattlerEnemyY = 22
+LegacyBattlerAltitude = 0
+#-------------------------------
+[DURANT]
+LegacyBattlerPlayerY = 30
+LegacyBattlerEnemyY = 36
+LegacyBattlerAltitude = 0
+#-------------------------------
+[DEINO]
+LegacyBattlerPlayerY = 24
+LegacyBattlerEnemyY = 30
+LegacyBattlerAltitude = 0
+#-------------------------------
+[ZWEILOUS]
+LegacyBattlerPlayerY = 20
+LegacyBattlerEnemyY = 22
+LegacyBattlerAltitude = 0
+#-------------------------------
+[HYDREIGON]
+LegacyBattlerPlayerY = 12
+LegacyBattlerEnemyY = 18
+LegacyBattlerAltitude = 10
+#-------------------------------
+[LARVESTA]
+LegacyBattlerPlayerY = 25
+LegacyBattlerEnemyY = 29
+LegacyBattlerAltitude = 0
+#-------------------------------
+[VOLCARONA]
+LegacyBattlerPlayerY = 13
+LegacyBattlerEnemyY = 13
+LegacyBattlerAltitude = 0
+#-------------------------------
+[COBALION]
+LegacyBattlerPlayerY = 8
+LegacyBattlerEnemyY = 13
+LegacyBattlerAltitude = 0
+#-------------------------------
+[TERRAKION]
+LegacyBattlerPlayerY = 18
+LegacyBattlerEnemyY = 23
+LegacyBattlerAltitude = 0
+#-------------------------------
+[VIRIZION]
+LegacyBattlerPlayerY = 13
+LegacyBattlerEnemyY = 16
+LegacyBattlerAltitude = 0
+#-------------------------------
+[TORNADUS]
+LegacyBattlerPlayerY = 5
+LegacyBattlerEnemyY = 14
+LegacyBattlerAltitude = 10
+#-------------------------------
+[THUNDURUS]
+LegacyBattlerPlayerY = 4
+LegacyBattlerEnemyY = 14
+LegacyBattlerAltitude = 10
+#-------------------------------
+[RESHIRAM]
+LegacyBattlerPlayerY = 11
+LegacyBattlerEnemyY = 12
+LegacyBattlerAltitude = 0
+#-------------------------------
+[ZEKROM]
+LegacyBattlerPlayerY = 3
+LegacyBattlerEnemyY = 8
+LegacyBattlerAltitude = 0
+#-------------------------------
+[LANDORUS]
+LegacyBattlerPlayerY = 5
+LegacyBattlerEnemyY = 14
+LegacyBattlerAltitude = 10
+#-------------------------------
+[KYUREM]
+LegacyBattlerPlayerY = 37
+LegacyBattlerEnemyY = 22
+LegacyBattlerAltitude = 0
+#-------------------------------
+[KELDEO]
+LegacyBattlerPlayerY = 16
+LegacyBattlerEnemyY = 22
+LegacyBattlerAltitude = 0
+#-------------------------------
+[MELOETTA]
+LegacyBattlerPlayerY = 16
+LegacyBattlerEnemyY = 20
+LegacyBattlerAltitude = 0
+#-------------------------------
+[GENESECT]
+LegacyBattlerPlayerY = 13
+LegacyBattlerEnemyY = 19
+LegacyBattlerAltitude = 0
+#-------------------------------
+[CHESPIN]
+LegacyBattlerPlayerY = 18
+LegacyBattlerEnemyY = 18
+LegacyBattlerAltitude = 0
+#-------------------------------
+[QUILLADIN]
+LegacyBattlerPlayerY = 15
+LegacyBattlerEnemyY = 15
+LegacyBattlerAltitude = 0
+#-------------------------------
+[CHESNAUGHT]
+LegacyBattlerPlayerY = 5
+LegacyBattlerEnemyY = 12
+LegacyBattlerAltitude = 0
+#-------------------------------
+[FENNEKIN]
+LegacyBattlerPlayerY = 14
+LegacyBattlerEnemyY = 22
+LegacyBattlerAltitude = 0
+#-------------------------------
+[BRAIXEN]
+LegacyBattlerPlayerY = 1
+LegacyBattlerEnemyY = 9
+LegacyBattlerAltitude = 0
+#-------------------------------
+[DELPHOX]
+LegacyBattlerPlayerY = 19
+LegacyBattlerEnemyY = 9
+LegacyBattlerAltitude = 0
+#-------------------------------
+[FROAKIE]
+LegacyBattlerPlayerY = 19
+LegacyBattlerEnemyY = 24
+LegacyBattlerAltitude = 0
+#-------------------------------
+[FROGADIER]
+LegacyBattlerPlayerY = 22
+LegacyBattlerEnemyY = 29
+LegacyBattlerAltitude = 0
+#-------------------------------
+[GRENINJA]
+LegacyBattlerPlayerY = 12
+LegacyBattlerEnemyY = 8
+LegacyBattlerAltitude = 0
+#-------------------------------
+[BUNNELBY]
+LegacyBattlerPlayerY = 15
+LegacyBattlerEnemyY = 12
+LegacyBattlerAltitude = 0
+#-------------------------------
+[DIGGERSBY]
+LegacyBattlerPlayerY = 4
+LegacyBattlerEnemyY = 13
+LegacyBattlerAltitude = 0
+#-------------------------------
+[FLETCHLING]
+LegacyBattlerPlayerY = 26
+LegacyBattlerEnemyY = 19
+LegacyBattlerAltitude = 0
+#-------------------------------
+[FLETCHINDER]
+LegacyBattlerPlayerY = 20
+LegacyBattlerEnemyY = 23
+LegacyBattlerAltitude = 11
+#-------------------------------
+[TALONFLAME]
+LegacyBattlerPlayerY = 16
+LegacyBattlerEnemyY = 12
+LegacyBattlerAltitude = 10
+#-------------------------------
+[SCATTERBUG]
+LegacyBattlerPlayerY = 19
+LegacyBattlerEnemyY = 26
+LegacyBattlerAltitude = 0
+#-------------------------------
+[SPEWPA]
+LegacyBattlerPlayerY = 25
+LegacyBattlerEnemyY = 22
+LegacyBattlerAltitude = 0
+#-------------------------------
+[VIVILLON]
+LegacyBattlerPlayerY = 11
+LegacyBattlerEnemyY = 9
+LegacyBattlerAltitude = 4
+#-------------------------------
+[LITLEO]
+LegacyBattlerPlayerY = 21
+LegacyBattlerEnemyY = 23
+LegacyBattlerAltitude = 0
+#-------------------------------
+[PYROAR]
+LegacyBattlerPlayerY = 2
+LegacyBattlerEnemyY = 17
+LegacyBattlerAltitude = 0
+#-------------------------------
+[FLABEBE]
+LegacyBattlerPlayerY = 11
+LegacyBattlerEnemyY = 14
+LegacyBattlerAltitude = 0
+#-------------------------------
+[FLOETTE]
+LegacyBattlerPlayerY = 18
+LegacyBattlerEnemyY = 0
+LegacyBattlerAltitude = 2
+#-------------------------------
+[FLORGES]
+LegacyBattlerPlayerY = 11
+LegacyBattlerEnemyY = 17
+LegacyBattlerAltitude = 0
+#-------------------------------
+[SKIDDO]
+LegacyBattlerPlayerY = 19
+LegacyBattlerEnemyY = 26
+LegacyBattlerAltitude = 0
+#-------------------------------
+[GOGOAT]
+LegacyBattlerPlayerY = 9
+LegacyBattlerEnemyY = 20
+LegacyBattlerAltitude = 0
+#-------------------------------
+[PANCHAM]
+LegacyBattlerPlayerY = 22
+LegacyBattlerEnemyY = 19
+LegacyBattlerAltitude = 0
+#-------------------------------
+[PANGORO]
+LegacyBattlerPlayerY = 15
+LegacyBattlerEnemyY = 9
+LegacyBattlerAltitude = 0
+#-------------------------------
+[FURFROU]
+LegacyBattlerPlayerY = 19
+LegacyBattlerEnemyY = 20
+LegacyBattlerAltitude = 0
+#-------------------------------
+[ESPURR]
+LegacyBattlerPlayerY = 26
+LegacyBattlerEnemyY = 27
+LegacyBattlerAltitude = 0
+#-------------------------------
+[MEOWSTIC]
+LegacyBattlerPlayerY = 20
+LegacyBattlerEnemyY = 24
+LegacyBattlerAltitude = 0
+#-------------------------------
+[HONEDGE]
+LegacyBattlerPlayerY = 6
+LegacyBattlerEnemyY = 7
+LegacyBattlerAltitude = 3
+#-------------------------------
+[DOUBLADE]
+LegacyBattlerPlayerY = 16
+LegacyBattlerEnemyY = 14
+LegacyBattlerAltitude = 0
+#-------------------------------
+[AEGISLASH]
+LegacyBattlerPlayerY = -2
+LegacyBattlerEnemyY = 7
+LegacyBattlerAltitude = 1
+#-------------------------------
+[SPRITZEE]
+LegacyBattlerPlayerY = 16
+LegacyBattlerEnemyY = 19
+LegacyBattlerAltitude = 5
+#-------------------------------
+[AROMATISSE]
+LegacyBattlerPlayerY = 9
+LegacyBattlerEnemyY = 23
+LegacyBattlerAltitude = 0
+#-------------------------------
+[SWIRLIX]
+LegacyBattlerPlayerY = 17
+LegacyBattlerEnemyY = 21
+LegacyBattlerAltitude = 0
+#-------------------------------
+[SLURPUFF]
+LegacyBattlerPlayerY = 16
+LegacyBattlerEnemyY = 22
+LegacyBattlerAltitude = 0
+#-------------------------------
+[INKAY]
+LegacyBattlerPlayerY = 16
+LegacyBattlerEnemyY = 14
+LegacyBattlerAltitude = 6
+#-------------------------------
+[MALAMAR]
+LegacyBattlerPlayerY = 2
+LegacyBattlerEnemyY = 8
+LegacyBattlerAltitude = 0
+#-------------------------------
+[BINACLE]
+LegacyBattlerPlayerY = 12
+LegacyBattlerEnemyY = 20
+LegacyBattlerAltitude = 0
+#-------------------------------
+[BARBARACLE]
+LegacyBattlerPlayerY = 7
+LegacyBattlerEnemyY = 13
+LegacyBattlerAltitude = 0
+#-------------------------------
+[SKRELP]
+LegacyBattlerPlayerY = 13
+LegacyBattlerEnemyY = 23
+LegacyBattlerAltitude = 0
+#-------------------------------
+[DRAGALGE]
+LegacyBattlerPlayerY = -1
+LegacyBattlerEnemyY = 4
+LegacyBattlerAltitude = 2
+#-------------------------------
+[CLAUNCHER]
+LegacyBattlerPlayerY = 24
+LegacyBattlerEnemyY = 26
+LegacyBattlerAltitude = 0
+#-------------------------------
+[CLAWITZER]
+LegacyBattlerPlayerY = 5
+LegacyBattlerEnemyY = 7
+LegacyBattlerAltitude = 0
+#-------------------------------
+[HELIOPTILE]
+LegacyBattlerPlayerY = 23
+LegacyBattlerEnemyY = 18
+LegacyBattlerAltitude = 0
+#-------------------------------
+[HELIOLISK]
+LegacyBattlerPlayerY = 22
+LegacyBattlerEnemyY = 17
+LegacyBattlerAltitude = 0
+#-------------------------------
+[TYRUNT]
+LegacyBattlerPlayerY = 18
+LegacyBattlerEnemyY = 30
+LegacyBattlerAltitude = 0
+#-------------------------------
+[TYRANTRUM]
+LegacyBattlerPlayerY = 3
+LegacyBattlerEnemyY = 18
+LegacyBattlerAltitude = 0
+#-------------------------------
+[AMAURA]
+LegacyBattlerPlayerY = 14
+LegacyBattlerEnemyY = 13
+LegacyBattlerAltitude = 0
+#-------------------------------
+[AURORUS]
+LegacyBattlerPlayerY = 2
+LegacyBattlerEnemyY = 4
+LegacyBattlerAltitude = 0
+#-------------------------------
+[SYLVEON]
+LegacyBattlerPlayerY = 10
+LegacyBattlerEnemyY = 21
+LegacyBattlerAltitude = 0
+#-------------------------------
+[HAWLUCHA]
+LegacyBattlerPlayerY = 17
+LegacyBattlerEnemyY = 20
+LegacyBattlerAltitude = 0
+#-------------------------------
+[DEDENNE]
+LegacyBattlerPlayerY = 23
+LegacyBattlerEnemyY = 16
+LegacyBattlerAltitude = 0
+#-------------------------------
+[CARBINK]
+LegacyBattlerPlayerY = 15
+LegacyBattlerEnemyY = 24
+LegacyBattlerAltitude = 11
+#-------------------------------
+[GOOMY]
+LegacyBattlerPlayerY = 21
+LegacyBattlerEnemyY = 21
+LegacyBattlerAltitude = 0
+#-------------------------------
+[SLIGGOO]
+LegacyBattlerPlayerY = 18
+LegacyBattlerEnemyY = 16
+LegacyBattlerAltitude = 0
+#-------------------------------
+[GOODRA]
+LegacyBattlerPlayerY = 10
+LegacyBattlerEnemyY = 2
+LegacyBattlerAltitude = 0
+#-------------------------------
+[KLEFKI]
+LegacyBattlerPlayerY = 16
+LegacyBattlerEnemyY = 14
+LegacyBattlerAltitude = 2
+#-------------------------------
+[PHANTUMP]
+LegacyBattlerPlayerY = 19
+LegacyBattlerEnemyY = 21
+LegacyBattlerAltitude = 3
+#-------------------------------
+[TREVENANT]
+LegacyBattlerPlayerY = 8
+LegacyBattlerEnemyY = 14
+LegacyBattlerAltitude = 0
+#-------------------------------
+[PUMPKABOO]
+LegacyBattlerPlayerY = 19
+LegacyBattlerEnemyY = 21
+LegacyBattlerAltitude = 3
+#-------------------------------
+[GOURGEIST]
+LegacyBattlerPlayerY = 10
+LegacyBattlerEnemyY = 10
+LegacyBattlerAltitude = 0
+#-------------------------------
+[BERGMITE]
+LegacyBattlerPlayerY = 21
+LegacyBattlerEnemyY = 28
+LegacyBattlerAltitude = 0
+#-------------------------------
+[AVALUGG]
+LegacyBattlerPlayerY = 43
+LegacyBattlerEnemyY = 17
+LegacyBattlerAltitude = 0
+#-------------------------------
+[NOIBAT]
+LegacyBattlerPlayerY = 14
+LegacyBattlerEnemyY = 21
+LegacyBattlerAltitude = 12
+#-------------------------------
+[NOIVERN]
+LegacyBattlerPlayerY = 19
+LegacyBattlerEnemyY = 17
+LegacyBattlerAltitude = 0
+#-------------------------------
+[XERNEAS]
+LegacyBattlerPlayerY = 12
+LegacyBattlerEnemyY = 4
+LegacyBattlerAltitude = 0
+#-------------------------------
+[YVELTAL]
+LegacyBattlerPlayerY = 18
+LegacyBattlerEnemyY = 9
+LegacyBattlerAltitude = 5
+#-------------------------------
+[ZYGARDE]
+LegacyBattlerPlayerY = 7
+LegacyBattlerEnemyY = 2
+LegacyBattlerAltitude = 0
+#-------------------------------
+[DIANCIE]
+LegacyBattlerPlayerY = 24
+LegacyBattlerEnemyY = 12
+LegacyBattlerAltitude = 3
+#-------------------------------
+[HOOPA]
+LegacyBattlerPlayerY = 17
+LegacyBattlerEnemyY = 20
+LegacyBattlerAltitude = 2
+#-------------------------------
+[VOLCANION]
+LegacyBattlerPlayerY = 8
+LegacyBattlerEnemyY = 13
+LegacyBattlerAltitude = 0
+#-------------------------------
+[ROWLET]
+LegacyBattlerPlayerY = 21
+LegacyBattlerEnemyY = 24
+LegacyBattlerAltitude = 0
+#-------------------------------
+[DARTRIX]
+LegacyBattlerPlayerY = 19
+LegacyBattlerEnemyY = 21
+LegacyBattlerAltitude = 0
+#-------------------------------
+[DECIDUEYE]
+LegacyBattlerPlayerY = 9
+LegacyBattlerEnemyY = 13
+LegacyBattlerAltitude = 0
+#-------------------------------
+[LITTEN]
+LegacyBattlerPlayerY = 18
+LegacyBattlerEnemyY = 23
+LegacyBattlerAltitude = 0
+#-------------------------------
+[TORRACAT]
+LegacyBattlerPlayerY = 16
+LegacyBattlerEnemyY = 22
+LegacyBattlerAltitude = 0
+#-------------------------------
+[INCINEROAR]
+LegacyBattlerPlayerY = 10
+LegacyBattlerEnemyY = 13
+LegacyBattlerAltitude = 0
+#-------------------------------
+[POPPLIO]
+LegacyBattlerPlayerY = 20
+LegacyBattlerEnemyY = 26
+LegacyBattlerAltitude = 0
+#-------------------------------
+[BRIONNE]
+LegacyBattlerPlayerY = 17
+LegacyBattlerEnemyY = 26
+LegacyBattlerAltitude = 0
+#-------------------------------
+[PRIMARINA]
+LegacyBattlerPlayerY = 11
+LegacyBattlerEnemyY = 15
+LegacyBattlerAltitude = 0
+#-------------------------------
+[PIKIPEK]
+LegacyBattlerPlayerY = 21
+LegacyBattlerEnemyY = 27
+LegacyBattlerAltitude = 0
+#-------------------------------
+[TRUMBEAK]
+LegacyBattlerPlayerY = 19
+LegacyBattlerEnemyY = 23
+LegacyBattlerAltitude = 0
+#-------------------------------
+[TOUCANNON]
+LegacyBattlerPlayerY = 10
+LegacyBattlerEnemyY = 14
+LegacyBattlerAltitude = 0
+#-------------------------------
+[YUNGOOS]
+LegacyBattlerPlayerY = 19
+LegacyBattlerEnemyY = 25
+LegacyBattlerAltitude = 0
+#-------------------------------
+[GUMSHOOS]
+LegacyBattlerPlayerY = 10
+LegacyBattlerEnemyY = 15
+LegacyBattlerAltitude = 0
+#-------------------------------
+[GRUBBIN]
+LegacyBattlerPlayerY = 19
+LegacyBattlerEnemyY = 27
+LegacyBattlerAltitude = 0
+#-------------------------------
+[CHARJABUG]
+LegacyBattlerPlayerY = 18
+LegacyBattlerEnemyY = 24
+LegacyBattlerAltitude = 0
+#-------------------------------
+[VIKAVOLT]
+LegacyBattlerPlayerY = 8
+LegacyBattlerEnemyY = 12
+LegacyBattlerAltitude = 4
+#-------------------------------
+[CRABRAWLER]
+LegacyBattlerPlayerY = 15
+LegacyBattlerEnemyY = 22
+LegacyBattlerAltitude = 0
+#-------------------------------
+[CRABOMINABLE]
+LegacyBattlerPlayerY = 15
+LegacyBattlerEnemyY = 20
+LegacyBattlerAltitude = 0
+#-------------------------------
+[ORICORIO]
+LegacyBattlerPlayerY = 5
+LegacyBattlerEnemyY = 8
+LegacyBattlerAltitude = 0
+#-------------------------------
+[CUTIEFLY]
+LegacyBattlerPlayerY = 19
+LegacyBattlerEnemyY = 20
+LegacyBattlerAltitude = 3
+#-------------------------------
+[RIBOMBEE]
+LegacyBattlerPlayerY = 12
+LegacyBattlerEnemyY = 27
+LegacyBattlerAltitude = 15
+#-------------------------------
+[ROCKRUFF]
+LegacyBattlerPlayerY = 20
+LegacyBattlerEnemyY = 25
+LegacyBattlerAltitude = 0
+#-------------------------------
+[LYCANROC]
+LegacyBattlerPlayerY = 23
+LegacyBattlerEnemyY = 20
+LegacyBattlerAltitude = 0
+#-------------------------------
+[WISHIWASHI]
+LegacyBattlerPlayerY = 27
+LegacyBattlerEnemyY = 19
+LegacyBattlerAltitude = 3
+#-------------------------------
+[MAREANIE]
+LegacyBattlerPlayerY = 23
+LegacyBattlerEnemyY = 26
+LegacyBattlerAltitude = 0
+#-------------------------------
+[TOXAPEX]
+LegacyBattlerPlayerY = 14
+LegacyBattlerEnemyY = 18
+LegacyBattlerAltitude = 0
+#-------------------------------
+[MUDBRAY]
+LegacyBattlerPlayerY = 19
+LegacyBattlerEnemyY = 19
+LegacyBattlerAltitude = 0
+#-------------------------------
+[MUDSDALE]
+LegacyBattlerPlayerY = 11
+LegacyBattlerEnemyY = 17
+LegacyBattlerAltitude = 0
+#-------------------------------
+[DEWPIDER]
+LegacyBattlerPlayerY = 19
+LegacyBattlerEnemyY = 23
+LegacyBattlerAltitude = 0
+#-------------------------------
+[ARAQUANID]
+LegacyBattlerPlayerY = 20
+LegacyBattlerEnemyY = 17
+LegacyBattlerAltitude = 0
+#-------------------------------
+[FOMANTIS]
+LegacyBattlerPlayerY = 18
+LegacyBattlerEnemyY = 23
+LegacyBattlerAltitude = 0
+#-------------------------------
+[LURANTIS]
+LegacyBattlerPlayerY = 17
+LegacyBattlerEnemyY = 9
+LegacyBattlerAltitude = 0
+#-------------------------------
+[MORELULL]
+LegacyBattlerPlayerY = 22
+LegacyBattlerEnemyY = 26
+LegacyBattlerAltitude = 0
+#-------------------------------
+[SHIINOTIC]
+LegacyBattlerPlayerY = 10
+LegacyBattlerEnemyY = 14
+LegacyBattlerAltitude = 0
+#-------------------------------
+[SALANDIT]
+LegacyBattlerPlayerY = 21
+LegacyBattlerEnemyY = 28
+LegacyBattlerAltitude = 0
+#-------------------------------
+[SALAZZLE]
+LegacyBattlerPlayerY = 12
+LegacyBattlerEnemyY = 16
+LegacyBattlerAltitude = 0
+#-------------------------------
+[STUFFUL]
+LegacyBattlerPlayerY = 20
+LegacyBattlerEnemyY = 25
+LegacyBattlerAltitude = 0
+#-------------------------------
+[BEWEAR]
+LegacyBattlerPlayerY = 11
+LegacyBattlerEnemyY = 16
+LegacyBattlerAltitude = 0
+#-------------------------------
+[BOUNSWEET]
+LegacyBattlerPlayerY = 18
+LegacyBattlerEnemyY = 22
+LegacyBattlerAltitude = 0
+#-------------------------------
+[STEENEE]
+LegacyBattlerPlayerY = 16
+LegacyBattlerEnemyY = 15
+LegacyBattlerAltitude = 0
+#-------------------------------
+[TSAREENA]
+LegacyBattlerPlayerY = 6
+LegacyBattlerEnemyY = 12
+LegacyBattlerAltitude = 0
+#-------------------------------
+[COMFEY]
+LegacyBattlerPlayerY = 11
+LegacyBattlerEnemyY = 20
+LegacyBattlerAltitude = 7
+#-------------------------------
+[ORANGURU]
+LegacyBattlerPlayerY = 14
+LegacyBattlerEnemyY = 21
+LegacyBattlerAltitude = 0
+#-------------------------------
+[PASSIMIAN]
+LegacyBattlerPlayerY = 11
+LegacyBattlerEnemyY = 19
+LegacyBattlerAltitude = 0
+#-------------------------------
+[WIMPOD]
+LegacyBattlerPlayerY = 20
+LegacyBattlerEnemyY = 31
+LegacyBattlerAltitude = 0
+#-------------------------------
+[GOLISOPOD]
+LegacyBattlerPlayerY = 16
+LegacyBattlerEnemyY = 13
+LegacyBattlerAltitude = 0
+#-------------------------------
+[SANDYGAST]
+LegacyBattlerPlayerY = 21
+LegacyBattlerEnemyY = 26
+LegacyBattlerAltitude = 0
+#-------------------------------
+[PALOSSAND]
+LegacyBattlerPlayerY = 18
+LegacyBattlerEnemyY = 24
+LegacyBattlerAltitude = 0
+#-------------------------------
+[PYUKUMUKU]
+LegacyBattlerPlayerY = 20
+LegacyBattlerEnemyY = 24
+LegacyBattlerAltitude = 0
+#-------------------------------
+[TYPENULL]
+LegacyBattlerPlayerY = 6
+LegacyBattlerEnemyY = 14
+LegacyBattlerAltitude = 0
+#-------------------------------
+[SILVALLY]
+LegacyBattlerPlayerY = 1
+LegacyBattlerEnemyY = 7
+LegacyBattlerAltitude = 0
+#-------------------------------
+[MINIOR]
+LegacyBattlerPlayerY = 13
+LegacyBattlerEnemyY = 27
+LegacyBattlerAltitude = 15
+#-------------------------------
+[KOMALA]
+LegacyBattlerPlayerY = 18
+LegacyBattlerEnemyY = 24
+LegacyBattlerAltitude = 0
+#-------------------------------
+[TURTONATOR]
+LegacyBattlerPlayerY = 14
+LegacyBattlerEnemyY = 20
+LegacyBattlerAltitude = 0
+#-------------------------------
+[TOGEDEMARU]
+LegacyBattlerPlayerY = 20
+LegacyBattlerEnemyY = 24
+LegacyBattlerAltitude = 0
+#-------------------------------
+[MIMIKYU]
+LegacyBattlerPlayerY = 21
+LegacyBattlerEnemyY = 25
+LegacyBattlerAltitude = 0
+#-------------------------------
+[BRUXISH]
+LegacyBattlerPlayerY = 25
+LegacyBattlerEnemyY = 32
+LegacyBattlerAltitude = 5
+#-------------------------------
+[DRAMPA]
+LegacyBattlerPlayerY = 17
+LegacyBattlerEnemyY = 22
+LegacyBattlerAltitude = 0
+#-------------------------------
+[DHELMISE]
+LegacyBattlerPlayerY = 2
+LegacyBattlerEnemyY = 4
+LegacyBattlerAltitude = 1
+#-------------------------------
+[JANGMOO]
+LegacyBattlerPlayerY = 20
+LegacyBattlerEnemyY = 24
+LegacyBattlerAltitude = 0
+#-------------------------------
+[HAKAMOO]
+LegacyBattlerPlayerY = 17
+LegacyBattlerEnemyY = 22
+LegacyBattlerAltitude = 0
+#-------------------------------
+[KOMMOO]
+LegacyBattlerPlayerY = 7
+LegacyBattlerEnemyY = 12
+LegacyBattlerAltitude = 0
+#-------------------------------
+[TAPUKOKO]
+LegacyBattlerPlayerY = -2
+LegacyBattlerEnemyY = 2
+LegacyBattlerAltitude = 2
+#-------------------------------
+[TAPULELE]
+LegacyBattlerPlayerY = 2
+LegacyBattlerEnemyY = 2
+LegacyBattlerAltitude = 2
+#-------------------------------
+[TAPUBULU]
+LegacyBattlerPlayerY = -2
+LegacyBattlerEnemyY = -1
+LegacyBattlerAltitude = 1
+#-------------------------------
+[TAPUFINI]
+LegacyBattlerPlayerY = 1
+LegacyBattlerEnemyY = 5
+LegacyBattlerAltitude = 3
+#-------------------------------
+[COSMOG]
+LegacyBattlerPlayerY = 18
+LegacyBattlerEnemyY = 25
+LegacyBattlerAltitude = 8
+#-------------------------------
+[COSMOEM]
+LegacyBattlerPlayerY = 10
+LegacyBattlerEnemyY = 22
+LegacyBattlerAltitude = 9
+#-------------------------------
+[SOLGALEO]
+LegacyBattlerPlayerY = 9
+LegacyBattlerEnemyY = 9
+LegacyBattlerAltitude = 0
+#-------------------------------
+[LUNALA]
+LegacyBattlerPlayerY = 0
+LegacyBattlerEnemyY = 1
+LegacyBattlerAltitude = 1
+#-------------------------------
+[NIHILEGO]
+LegacyBattlerPlayerY = 16
+LegacyBattlerEnemyY = 16
+LegacyBattlerAltitude = 4
+#-------------------------------
+[BUZZWOLE]
+LegacyBattlerPlayerY = 1
+LegacyBattlerEnemyY = 8
+LegacyBattlerAltitude = 0
+#-------------------------------
+[PHEROMOSA]
+LegacyBattlerPlayerY = 0
+LegacyBattlerEnemyY = 4
+LegacyBattlerAltitude = 0
+#-------------------------------
+[XURKITREE]
+LegacyBattlerPlayerY = 2
+LegacyBattlerEnemyY = 6
+LegacyBattlerAltitude = 0
+#-------------------------------
+[CELESTEELA]
+LegacyBattlerPlayerY = -2
+LegacyBattlerEnemyY = -1
+LegacyBattlerAltitude = 0
+#-------------------------------
+[KARTANA]
+LegacyBattlerPlayerY = 12
+LegacyBattlerEnemyY = 11
+LegacyBattlerAltitude = 0
+#-------------------------------
+[GUZZLORD]
+LegacyBattlerPlayerY = -3
+LegacyBattlerEnemyY = 7
+LegacyBattlerAltitude = 0
+#-------------------------------
+[NECROZMA]
+LegacyBattlerPlayerY = 7
+LegacyBattlerEnemyY = 6
+LegacyBattlerAltitude = 0
+#-------------------------------
+[MAGEARNA]
+LegacyBattlerPlayerY = 11
+LegacyBattlerEnemyY = 9
+LegacyBattlerAltitude = 0
+#-------------------------------
+[MARSHADOW]
+LegacyBattlerPlayerY = 22
+LegacyBattlerEnemyY = 12
+LegacyBattlerAltitude = 0
+#-------------------------------
+[POIPOLE]
+LegacyBattlerPlayerY = 2
+LegacyBattlerEnemyY = 2
+LegacyBattlerAltitude = 0
+#-------------------------------
+[NAGANADEL]
+LegacyBattlerPlayerY = -1
+LegacyBattlerEnemyY = 2
+LegacyBattlerAltitude = 0
+#-------------------------------
+[STAKATAKA]
+LegacyBattlerPlayerY = 8
+LegacyBattlerEnemyY = 7
+LegacyBattlerAltitude = 0
+#-------------------------------
+[BLACEPHALON]
+LegacyBattlerPlayerY = 20
+LegacyBattlerEnemyY = 14
+LegacyBattlerAltitude = 0
+#-------------------------------
+[ZERAORA]
+LegacyBattlerPlayerY = 6
+LegacyBattlerEnemyY = 10
+LegacyBattlerAltitude = 0
+#-------------------------------
+[MELTAN]
+LegacyBattlerPlayerY = 15
+LegacyBattlerEnemyY = 20
+LegacyBattlerAltitude = 0
+#-------------------------------
+[MELMETAL]
+LegacyBattlerPlayerY = 17
+LegacyBattlerEnemyY = 12
+LegacyBattlerAltitude = 0
+#-------------------------------
+[GROOKEY]
+LegacyBattlerPlayerY = 31
+LegacyBattlerEnemyY = 29
+LegacyBattlerAltitude = 0
+#-------------------------------
+[THWACKEY]
+LegacyBattlerPlayerY = 15
+LegacyBattlerEnemyY = 12
+LegacyBattlerAltitude = 0
+#-------------------------------
+[RILLABOOM]
+LegacyBattlerPlayerY = 18
+LegacyBattlerEnemyY = 7
+LegacyBattlerAltitude = 0
+#-------------------------------
+[SCORBUNNY]
+LegacyBattlerPlayerY = 3
+LegacyBattlerEnemyY = 8
+LegacyBattlerAltitude = 0
+#-------------------------------
+[RABOOT]
+LegacyBattlerPlayerY = 3
+LegacyBattlerEnemyY = 8
+LegacyBattlerAltitude = 0
+#-------------------------------
+[CINDERACE]
+LegacyBattlerPlayerY = 9
+LegacyBattlerEnemyY = 2
+LegacyBattlerAltitude = 0
+#-------------------------------
+[SOBBLE]
+LegacyBattlerPlayerY = 21
+LegacyBattlerEnemyY = 23
+LegacyBattlerAltitude = 0
+#-------------------------------
+[DRIZZILE]
+LegacyBattlerPlayerY = 14
+LegacyBattlerEnemyY = 19
+LegacyBattlerAltitude = 0
+#-------------------------------
+[INTELEON]
+LegacyBattlerPlayerY = -1
+LegacyBattlerEnemyY = 2
+LegacyBattlerAltitude = 0
+#-------------------------------
+[SKWOVET]
+LegacyBattlerPlayerY = 22
+LegacyBattlerEnemyY = 26
+LegacyBattlerAltitude = 0
+#-------------------------------
+[GREEDENT]
+LegacyBattlerPlayerY = 11
+LegacyBattlerEnemyY = 14
+LegacyBattlerAltitude = 0
+#-------------------------------
+[ROOKIDEE]
+LegacyBattlerPlayerY = 29
+LegacyBattlerEnemyY = 33
+LegacyBattlerAltitude = 0
+#-------------------------------
+[CORVISQUIRE]
+LegacyBattlerPlayerY = 11
+LegacyBattlerEnemyY = 7
+LegacyBattlerAltitude = 2
+#-------------------------------
+[CORVIKNIGHT]
+LegacyBattlerPlayerY = 19
+LegacyBattlerEnemyY = 19
+LegacyBattlerAltitude = 0
+#-------------------------------
+[BLIPBUG]
+LegacyBattlerPlayerY = 25
+LegacyBattlerEnemyY = 28
+LegacyBattlerAltitude = 0
+#-------------------------------
+[DOTTLER]
+LegacyBattlerPlayerY = 28
+LegacyBattlerEnemyY = 29
+LegacyBattlerAltitude = 0
+#-------------------------------
+[ORBEETLE]
+LegacyBattlerPlayerY = 10
+LegacyBattlerEnemyY = 11
+LegacyBattlerAltitude = 1
+#-------------------------------
+[NICKIT]
+LegacyBattlerPlayerY = 19
+LegacyBattlerEnemyY = 27
+LegacyBattlerAltitude = 0
+#-------------------------------
+[THIEVUL]
+LegacyBattlerPlayerY = 17
+LegacyBattlerEnemyY = 21
+LegacyBattlerAltitude = 0
+#-------------------------------
+[GOSSIFLEUR]
+LegacyBattlerPlayerY = 23
+LegacyBattlerEnemyY = 29
+LegacyBattlerAltitude = 0
+#-------------------------------
+[ELDEGOSS]
+LegacyBattlerPlayerY = 18
+LegacyBattlerEnemyY = 23
+LegacyBattlerAltitude = 0
+#-------------------------------
+[WOOLOO]
+LegacyBattlerPlayerY = 24
+LegacyBattlerEnemyY = 29
+LegacyBattlerAltitude = 0
+#-------------------------------
+[DUBWOOL]
+LegacyBattlerPlayerY = 10
+LegacyBattlerEnemyY = 15
+LegacyBattlerAltitude = 0
+#-------------------------------
+[CHEWTLE]
+LegacyBattlerPlayerY = 22
+LegacyBattlerEnemyY = 27
+LegacyBattlerAltitude = 0
+#-------------------------------
+[DREDNAW]
+LegacyBattlerPlayerY = 22
+LegacyBattlerEnemyY = 29
+LegacyBattlerAltitude = 0
+#-------------------------------
+[YAMPER]
+LegacyBattlerPlayerY = 25
+LegacyBattlerEnemyY = 29
+LegacyBattlerAltitude = 0
+#-------------------------------
+[BOLTUND]
+LegacyBattlerPlayerY = 14
+LegacyBattlerEnemyY = 17
+LegacyBattlerAltitude = 0
+#-------------------------------
+[ROLYCOLY]
+LegacyBattlerPlayerY = 26
+LegacyBattlerEnemyY = 30
+LegacyBattlerAltitude = 0
+#-------------------------------
+[CARKOL]
+LegacyBattlerPlayerY = 17
+LegacyBattlerEnemyY = 22
+LegacyBattlerAltitude = 0
+#-------------------------------
+[COALOSSAL]
+LegacyBattlerPlayerY = 8
+LegacyBattlerEnemyY = 12
+LegacyBattlerAltitude = 0
+#-------------------------------
+[APPLIN]
+LegacyBattlerPlayerY = 27
+LegacyBattlerEnemyY = 30
+LegacyBattlerAltitude = 0
+#-------------------------------
+[FLAPPLE]
+LegacyBattlerPlayerY = 11
+LegacyBattlerEnemyY = 14
+LegacyBattlerAltitude = 2
+#-------------------------------
+[APPLETUN]
+LegacyBattlerPlayerY = 13
+LegacyBattlerEnemyY = 18
+LegacyBattlerAltitude = 0
+#-------------------------------
+[SILICOBRA]
+LegacyBattlerPlayerY = 28
+LegacyBattlerEnemyY = 30
+LegacyBattlerAltitude = 0
+#-------------------------------
+[SANDACONDA]
+LegacyBattlerPlayerY = 19
+LegacyBattlerEnemyY = 25
+LegacyBattlerAltitude = 0
+#-------------------------------
+[CRAMORANT]
+LegacyBattlerPlayerY = 10
+LegacyBattlerEnemyY = 14
+LegacyBattlerAltitude = 0
+#-------------------------------
+[ARROKUDA]
+LegacyBattlerPlayerY = 25
+LegacyBattlerEnemyY = 31
+LegacyBattlerAltitude = 2
+#-------------------------------
+[BARRASKEWDA]
+LegacyBattlerPlayerY = 25
+LegacyBattlerEnemyY = 31
+LegacyBattlerAltitude = 3
+#-------------------------------
+[TOXEL]
+LegacyBattlerPlayerY = 22
+LegacyBattlerEnemyY = 26
+LegacyBattlerAltitude = 0
+#-------------------------------
+[TOXTRICITY]
+LegacyBattlerPlayerY = 4
+LegacyBattlerEnemyY = 8
+LegacyBattlerAltitude = 0
+#-------------------------------
+[SIZZLIPEDE]
+LegacyBattlerPlayerY = 27
+LegacyBattlerEnemyY = 31
+LegacyBattlerAltitude = 0
+#-------------------------------
+[CENTISKORCH]
+LegacyBattlerPlayerY = 15
+LegacyBattlerEnemyY = 15
+LegacyBattlerAltitude = 0
+#-------------------------------
+[CLOBBOPUS]
+LegacyBattlerPlayerY = 29
+LegacyBattlerEnemyY = 31
+LegacyBattlerAltitude = 0
+#-------------------------------
+[GRAPPLOCT]
+LegacyBattlerPlayerY = 9
+LegacyBattlerEnemyY = 14
+LegacyBattlerAltitude = 0
+#-------------------------------
+[SINISTEA]
+LegacyBattlerPlayerY = 23
+LegacyBattlerEnemyY = 24
+LegacyBattlerAltitude = 4
+#-------------------------------
+[POLTEAGEIST]
+LegacyBattlerPlayerY = 5
+LegacyBattlerEnemyY = 7
+LegacyBattlerAltitude = 1
+#-------------------------------
+[HATENNA]
+LegacyBattlerPlayerY = 25
+LegacyBattlerEnemyY = 28
+LegacyBattlerAltitude = 0
+#-------------------------------
+[HATTREM]
+LegacyBattlerPlayerY = 20
+LegacyBattlerEnemyY = 24
+LegacyBattlerAltitude = 0
+#-------------------------------
+[HATTERENE]
+LegacyBattlerPlayerY = -1
+LegacyBattlerEnemyY = 4
+LegacyBattlerAltitude = 0
+#-------------------------------
+[IMPIDIMP]
+LegacyBattlerPlayerY = 22
+LegacyBattlerEnemyY = 26
+LegacyBattlerAltitude = 0
+#-------------------------------
+[MORGREM]
+LegacyBattlerPlayerY = 10
+LegacyBattlerEnemyY = 12
+LegacyBattlerAltitude = 0
+#-------------------------------
+[GRIMMSNARL]
+LegacyBattlerPlayerY = 7
+LegacyBattlerEnemyY = 10
+LegacyBattlerAltitude = 0
+#-------------------------------
+[OBSTAGOON]
+LegacyBattlerPlayerY = 9
+LegacyBattlerEnemyY = 12
+LegacyBattlerAltitude = 0
+#-------------------------------
+[PERRSERKER]
+LegacyBattlerPlayerY = 19
+LegacyBattlerEnemyY = 22
+LegacyBattlerAltitude = 0
+#-------------------------------
+[CURSOLA]
+LegacyBattlerPlayerY = 6
+LegacyBattlerEnemyY = 8
+LegacyBattlerAltitude = 0
+#-------------------------------
+[SIRFETCHD]
+LegacyBattlerPlayerY = 1
+LegacyBattlerEnemyY = 4
+LegacyBattlerAltitude = 0
+#-------------------------------
+[MRRIME]
+LegacyBattlerPlayerY = 8
+LegacyBattlerEnemyY = 13
+LegacyBattlerAltitude = 0
+#-------------------------------
+[RUNERIGUS]
+LegacyBattlerPlayerY = 2
+LegacyBattlerEnemyY = 20
+LegacyBattlerAltitude = 0
+#-------------------------------
+[MILCERY]
+LegacyBattlerPlayerY = 22
+LegacyBattlerEnemyY = 32
+LegacyBattlerAltitude = 10
+#-------------------------------
+[ALCREMIE]
+LegacyBattlerPlayerY = 19
+LegacyBattlerEnemyY = 25
+LegacyBattlerAltitude = 0
+#-------------------------------
+[FALINKS]
+LegacyBattlerPlayerY = 30
+LegacyBattlerEnemyY = 27
+LegacyBattlerAltitude = 0
+#-------------------------------
+[PINCURCHIN]
+LegacyBattlerPlayerY = 30
+LegacyBattlerEnemyY = 33
+LegacyBattlerAltitude = 0
+#-------------------------------
+[SNOM]
+LegacyBattlerPlayerY = 35
+LegacyBattlerEnemyY = 37
+LegacyBattlerAltitude = 0
+#-------------------------------
+[FROSMOTH]
+LegacyBattlerPlayerY = 13
+LegacyBattlerEnemyY = 12
+LegacyBattlerAltitude = 3
+#-------------------------------
+[STONJOURNER]
+LegacyBattlerPlayerY = 15
+LegacyBattlerEnemyY = 15
+LegacyBattlerAltitude = 0
+#-------------------------------
+[EISCUE]
+LegacyBattlerPlayerY = 7
+LegacyBattlerEnemyY = 10
+LegacyBattlerAltitude = 0
+#-------------------------------
+[INDEEDEE]
+LegacyBattlerPlayerY = 20
+LegacyBattlerEnemyY = 24
+LegacyBattlerAltitude = 0
+#-------------------------------
+[MORPEKO]
+LegacyBattlerPlayerY = 25
+LegacyBattlerEnemyY = 25
+LegacyBattlerAltitude = 0
+#-------------------------------
+[CUFANT]
+LegacyBattlerPlayerY = 20
+LegacyBattlerEnemyY = 26
+LegacyBattlerAltitude = 0
+#-------------------------------
+[COPPERAJAH]
+LegacyBattlerPlayerY = 14
+LegacyBattlerEnemyY = 19
+LegacyBattlerAltitude = 0
+#-------------------------------
+[DRACOZOLT]
+LegacyBattlerPlayerY = 10
+LegacyBattlerEnemyY = 17
+LegacyBattlerAltitude = 0
+#-------------------------------
+[ARCTOZOLT]
+LegacyBattlerPlayerY = 8
+LegacyBattlerEnemyY = 14
+LegacyBattlerAltitude = 0
+#-------------------------------
+[DRACOVISH]
+LegacyBattlerPlayerY = 9
+LegacyBattlerEnemyY = 13
+LegacyBattlerAltitude = 0
+#-------------------------------
+[ARCTOVISH]
+LegacyBattlerPlayerY = 23
+LegacyBattlerEnemyY = 13
+LegacyBattlerAltitude = 0
+#-------------------------------
+[DURALUDON]
+LegacyBattlerPlayerY = 11
+LegacyBattlerEnemyY = 16
+LegacyBattlerAltitude = 0
+#-------------------------------
+[DREEPY]
+LegacyBattlerPlayerY = 20
+LegacyBattlerEnemyY = 19
+LegacyBattlerAltitude = 1
+#-------------------------------
+[DRAKLOAK]
+LegacyBattlerPlayerY = 11
+LegacyBattlerEnemyY = 8
+LegacyBattlerAltitude = 2
+#-------------------------------
+[DRAGAPULT]
+LegacyBattlerPlayerY = 20
+LegacyBattlerEnemyY = 10
+LegacyBattlerAltitude = 4
+#-------------------------------
+[ZACIAN]
+LegacyBattlerPlayerY = 15
+LegacyBattlerEnemyY = 15
+LegacyBattlerAltitude = 0
+#-------------------------------
+[ZAMAZENTA]
+LegacyBattlerPlayerY = 5
+LegacyBattlerEnemyY = 9
+LegacyBattlerAltitude = 0
+#-------------------------------
+[ETERNATUS]
+LegacyBattlerPlayerY = 9
+LegacyBattlerEnemyY = 20
+LegacyBattlerAltitude = 16
+#-------------------------------
+[KUBFU]
+LegacyBattlerPlayerY = 20
+LegacyBattlerEnemyY = 23
+LegacyBattlerAltitude = 0
+#-------------------------------
+[URSHIFU]
+LegacyBattlerPlayerY = 5
+LegacyBattlerEnemyY = 13
+LegacyBattlerAltitude = 0
+#-------------------------------
+[ZARUDE]
+LegacyBattlerPlayerY = 12
+LegacyBattlerEnemyY = 17
+LegacyBattlerAltitude = 0
+#-------------------------------
+[REGIELEKI]
+LegacyBattlerPlayerY = 15
+LegacyBattlerEnemyY = 11
+LegacyBattlerAltitude = 0
+#-------------------------------
+[REGIDRAGO]
+LegacyBattlerPlayerY = 11
+LegacyBattlerEnemyY = 15
+LegacyBattlerAltitude = 0
+#-------------------------------
+[GLASTRIER]
+LegacyBattlerPlayerY = 6
+LegacyBattlerEnemyY = 14
+LegacyBattlerAltitude = 0
+#-------------------------------
+[SPECTRIER]
+LegacyBattlerPlayerY = 3
+LegacyBattlerEnemyY = 13
+LegacyBattlerAltitude = 0
+#-------------------------------
+[CALYREX]
+LegacyBattlerPlayerY = 19
+LegacyBattlerEnemyY = 4
+LegacyBattlerAltitude = 0
+#-------------------------------
+[WYRDEER]
+LegacyBattlerPlayerY = 16
+LegacyBattlerEnemyY = 11
+LegacyBattlerAltitude = 0
+#-------------------------------
+[KLEAVOR]
+LegacyBattlerPlayerY = 17
+LegacyBattlerEnemyY = 15
+LegacyBattlerAltitude = 0
+#-------------------------------
+[URSALUNA]
+LegacyBattlerPlayerY = 13
+LegacyBattlerEnemyY = 21
+LegacyBattlerAltitude = 0
+#-------------------------------
+[BASCULEGION]
+LegacyBattlerPlayerY = 30
+LegacyBattlerEnemyY = 22
+LegacyBattlerAltitude = 3
+#-------------------------------
+[SNEASLER]
+LegacyBattlerPlayerY = 17
+LegacyBattlerEnemyY = 14
+LegacyBattlerAltitude = 0
+#-------------------------------
+[OVERQWIL]
+LegacyBattlerPlayerY = 25
+LegacyBattlerEnemyY = 20
+LegacyBattlerAltitude = 12
+#-------------------------------
+[ENAMORUS]
+LegacyBattlerPlayerY = 14
+LegacyBattlerEnemyY = 18
+LegacyBattlerAltitude = 16
+#-------------------------------
+[IRONMOTH]
+LegacyBattlerPlayerY = 12
+LegacyBattlerEnemyY = 0
+LegacyBattlerAltitude = 1
+#-------------------------------
+[SPRIGATITO]
+LegacyBattlerPlayerY = 6
+LegacyBattlerEnemyY = 12
+LegacyBattlerAltitude = 0
+#-------------------------------
+[FLORAGATO]
+LegacyBattlerPlayerY = 3
+LegacyBattlerEnemyY = 10
+LegacyBattlerAltitude = 0
+#-------------------------------
+[MEOWSCARADA]
+LegacyBattlerPlayerY = 11
+LegacyBattlerEnemyY = 8
+LegacyBattlerAltitude = 0
+#-------------------------------
+[FUECOCO]
+LegacyBattlerPlayerY = 10
+LegacyBattlerEnemyY = 17
+LegacyBattlerAltitude = 0
+#-------------------------------
+[CROCALOR]
+LegacyBattlerPlayerY = 8
+LegacyBattlerEnemyY = 13
+LegacyBattlerAltitude = 0
+#-------------------------------
+[SKELEDIRGE]
+LegacyBattlerPlayerY = 5
+LegacyBattlerEnemyY = 14
+LegacyBattlerAltitude = 0
+#-------------------------------
+[QUAXLY]
+LegacyBattlerPlayerY = 15
+LegacyBattlerEnemyY = 17
+LegacyBattlerAltitude = 0
+#-------------------------------
+[QUAXWELL]
+LegacyBattlerPlayerY = 11
+LegacyBattlerEnemyY = 15
+LegacyBattlerAltitude = 0
+#-------------------------------
+[QUAQUAVAL]
+LegacyBattlerPlayerY = -1
+LegacyBattlerEnemyY = 12
+LegacyBattlerAltitude = 0
+#-------------------------------
+[LECHONK]
+LegacyBattlerPlayerY = 31
+LegacyBattlerEnemyY = 16
+LegacyBattlerAltitude = 0
+#-------------------------------
+[OINKOLOGNE]
+LegacyBattlerPlayerY = 22
+LegacyBattlerEnemyY = 10
+LegacyBattlerAltitude = 0
+#-------------------------------
+[TAROUNTULA]
+LegacyBattlerPlayerY = 11
+LegacyBattlerEnemyY = 15
+LegacyBattlerAltitude = 0
+#-------------------------------
+[SPIDOPS]
+LegacyBattlerPlayerY = 9
+LegacyBattlerEnemyY = 9
+LegacyBattlerAltitude = 0
+#-------------------------------
+[NYMBLE]
+LegacyBattlerPlayerY = 14
+LegacyBattlerEnemyY = 16
+LegacyBattlerAltitude = 0
+#-------------------------------
+[LOKIX]
+LegacyBattlerPlayerY = 8
+LegacyBattlerEnemyY = 16
+LegacyBattlerAltitude = 0
+#-------------------------------
+[PAWMI]
+LegacyBattlerPlayerY = 11
+LegacyBattlerEnemyY = 18
+LegacyBattlerAltitude = 0
+#-------------------------------
+[PAWMO]
+LegacyBattlerPlayerY = 14
+LegacyBattlerEnemyY = 18
+LegacyBattlerAltitude = 0
+#-------------------------------
+[PAWMOT]
+LegacyBattlerPlayerY = 7
+LegacyBattlerEnemyY = 13
+LegacyBattlerAltitude = 0
+#-------------------------------
+[TANDEMAUS]
+LegacyBattlerPlayerY = 25
+LegacyBattlerEnemyY = 18
+LegacyBattlerAltitude = 0
+#-------------------------------
+[MAUSHOLD]
+LegacyBattlerPlayerY = 25
+LegacyBattlerEnemyY = 17
+LegacyBattlerAltitude = 0
+#-------------------------------
+[FIDOUGH]
+LegacyBattlerPlayerY = 10
+LegacyBattlerEnemyY = 15
+LegacyBattlerAltitude = 0
+#-------------------------------
+[DACHSBUN]
+LegacyBattlerPlayerY = 11
+LegacyBattlerEnemyY = 17
+LegacyBattlerAltitude = 0
+#-------------------------------
+[SMOLIV]
+LegacyBattlerPlayerY = 14
+LegacyBattlerEnemyY = 17
+LegacyBattlerAltitude = 0
+#-------------------------------
+[DOLLIV]
+LegacyBattlerPlayerY = 17
+LegacyBattlerEnemyY = 12
+LegacyBattlerAltitude = 0
+#-------------------------------
+[ARBOLIVA]
+LegacyBattlerPlayerY = 20
+LegacyBattlerEnemyY = 7
+LegacyBattlerAltitude = 0
+#-------------------------------
+[SQUAWKABILLY]
+LegacyBattlerPlayerY = 18
+LegacyBattlerEnemyY = 14
+LegacyBattlerAltitude = 0
+#-------------------------------
+[NACLI]
+LegacyBattlerPlayerY = 24
+LegacyBattlerEnemyY = 22
+LegacyBattlerAltitude = 0
+#-------------------------------
+[NACLSTACK]
+LegacyBattlerPlayerY = 19
+LegacyBattlerEnemyY = 22
+LegacyBattlerAltitude = 0
+#-------------------------------
+[GARGANACL]
+LegacyBattlerPlayerY = 21
+LegacyBattlerEnemyY = 10
+LegacyBattlerAltitude = 0
+#-------------------------------
+[CHARCADET]
+LegacyBattlerPlayerY = 14
+LegacyBattlerEnemyY = 16
+LegacyBattlerAltitude = 0
+#-------------------------------
+[ARMAROUGE]
+LegacyBattlerPlayerY = 24
+LegacyBattlerEnemyY = 9
+LegacyBattlerAltitude = 0
+#-------------------------------
+[CERULEDGE]
+LegacyBattlerPlayerY = 15
+LegacyBattlerEnemyY = 6
+LegacyBattlerAltitude = 0
+#-------------------------------
+[TADBULB]
+LegacyBattlerPlayerY = 15
+LegacyBattlerEnemyY = 10
+LegacyBattlerAltitude = 4
+#-------------------------------
+[BELLIBOLT]
+LegacyBattlerPlayerY = 5
+LegacyBattlerEnemyY = 14
+LegacyBattlerAltitude = 0
+#-------------------------------
+[WATTREL]
+LegacyBattlerPlayerY = 10
+LegacyBattlerEnemyY = 14
+LegacyBattlerAltitude = 0
+#-------------------------------
+[KILOWATTREL]
+LegacyBattlerPlayerY = 0
+LegacyBattlerEnemyY = 17
+LegacyBattlerAltitude = 0
+#-------------------------------
+[MASCHIFF]
+LegacyBattlerPlayerY = 16
+LegacyBattlerEnemyY = 26
+LegacyBattlerAltitude = 0
+#-------------------------------
+[MABOSSTIFF]
+LegacyBattlerPlayerY = 7
+LegacyBattlerEnemyY = 15
+LegacyBattlerAltitude = 0
+#-------------------------------
+[SHROODLE]
+LegacyBattlerPlayerY = 31
+LegacyBattlerEnemyY = 20
+LegacyBattlerAltitude = 0
+#-------------------------------
+[GRAFAIAI]
+LegacyBattlerPlayerY = 24
+LegacyBattlerEnemyY = 11
+LegacyBattlerAltitude = 0
+#-------------------------------
+[BRAMBLIN]
+LegacyBattlerPlayerY = 29
+LegacyBattlerEnemyY = 18
+LegacyBattlerAltitude = 0
+#-------------------------------
+[BRAMBLEGHAST]
+LegacyBattlerPlayerY = 26
+LegacyBattlerEnemyY = 14
+LegacyBattlerAltitude = 0
+#-------------------------------
+[TOEDSCOOL]
+LegacyBattlerPlayerY = 4
+LegacyBattlerEnemyY = 8
+LegacyBattlerAltitude = 0
+#-------------------------------
+[TOEDSCRUEL]
+LegacyBattlerPlayerY = 7
+LegacyBattlerEnemyY = 10
+LegacyBattlerAltitude = 0
+#-------------------------------
+[KLAWF]
+LegacyBattlerPlayerY = 25
+LegacyBattlerEnemyY = 16
+LegacyBattlerAltitude = 0
+#-------------------------------
+[CAPSAKID]
+LegacyBattlerPlayerY = 12
+LegacyBattlerEnemyY = 12
+LegacyBattlerAltitude = 0
+#-------------------------------
+[SCOVILLAIN]
+LegacyBattlerPlayerY = 5
+LegacyBattlerEnemyY = 8
+LegacyBattlerAltitude = 0
+#-------------------------------
+[RELLOR]
+LegacyBattlerPlayerY = 30
+LegacyBattlerEnemyY = 16
+LegacyBattlerAltitude = 0
+#-------------------------------
+[RABSCA]
+LegacyBattlerPlayerY = 10
+LegacyBattlerEnemyY = 10
+LegacyBattlerAltitude = 5
+#-------------------------------
+[FLITTLE]
+LegacyBattlerPlayerY = 20
+LegacyBattlerEnemyY = 1
+LegacyBattlerAltitude = 1
+#-------------------------------
+[ESPATHRA]
+LegacyBattlerPlayerY = 11
+LegacyBattlerEnemyY = 5
+LegacyBattlerAltitude = 0
+#-------------------------------
+[TINKATINK]
+LegacyBattlerPlayerY = 29
+LegacyBattlerEnemyY = 21
+LegacyBattlerAltitude = 0
+#-------------------------------
+[TINKATUFF]
+LegacyBattlerPlayerY = 30
+LegacyBattlerEnemyY = 20
+LegacyBattlerAltitude = 0
+#-------------------------------
+[TINKATON]
+LegacyBattlerPlayerY = 18
+LegacyBattlerEnemyY = 14
+LegacyBattlerAltitude = 0
+#-------------------------------
+[WIGLETT]
+LegacyBattlerPlayerY = 10
+LegacyBattlerEnemyY = 15
+LegacyBattlerAltitude = 0
+#-------------------------------
+[WUGTRIO]
+LegacyBattlerPlayerY = 18
+LegacyBattlerEnemyY = 11
+LegacyBattlerAltitude = 0
+#-------------------------------
+[BOMBIRDIER]
+LegacyBattlerPlayerY = 8
+LegacyBattlerEnemyY = 10
+LegacyBattlerAltitude = 7
+#-------------------------------
+[FINIZEN]
+LegacyBattlerPlayerY = 27
+LegacyBattlerEnemyY = 17
+LegacyBattlerAltitude = 0
+#-------------------------------
+[PALAFIN]
+LegacyBattlerPlayerY = 27
+LegacyBattlerEnemyY = 18
+LegacyBattlerAltitude = 0
+#-------------------------------
+[VAROOM]
+LegacyBattlerPlayerY = 12
+LegacyBattlerEnemyY = 11
+LegacyBattlerAltitude = 1
+#-------------------------------
+[REVAVROOM]
+LegacyBattlerPlayerY = 3
+LegacyBattlerEnemyY = 1
+LegacyBattlerAltitude = 0
+#-------------------------------
+[CYCLIZAR]
+LegacyBattlerPlayerY = 14
+LegacyBattlerEnemyY = 11
+LegacyBattlerAltitude = 0
+#-------------------------------
+[ORTHWORM]
+LegacyBattlerPlayerY = 27
+LegacyBattlerEnemyY = 16
+LegacyBattlerAltitude = 0
+#-------------------------------
+[GLIMMET]
+LegacyBattlerPlayerY = 6
+LegacyBattlerEnemyY = 10
+LegacyBattlerAltitude = 2
+#-------------------------------
+[GLIMMORA]
+LegacyBattlerPlayerY = 15
+LegacyBattlerEnemyY = 3
+LegacyBattlerAltitude = 6
+#-------------------------------
+[GREAVARD]
+LegacyBattlerPlayerY = 12
+LegacyBattlerEnemyY = 14
+LegacyBattlerAltitude = 0
+#-------------------------------
+[HOUNDSTONE]
+LegacyBattlerPlayerY = 9
+LegacyBattlerEnemyY = 15
+LegacyBattlerAltitude = 0
+#-------------------------------
+[FLAMIGO]
+LegacyBattlerPlayerY = 10
+LegacyBattlerEnemyY = 5
+LegacyBattlerAltitude = 0
+#-------------------------------
+[CETODDLE]
+LegacyBattlerPlayerY = 14
+LegacyBattlerEnemyY = 19
+LegacyBattlerAltitude = 0
+#-------------------------------
+[CETITAN]
+LegacyBattlerPlayerY = 7
+LegacyBattlerEnemyY = 13
+LegacyBattlerAltitude = 0
+#-------------------------------
+[VELUZA]
+LegacyBattlerPlayerY = 16
+LegacyBattlerEnemyY = 12
+LegacyBattlerAltitude = 3
+#-------------------------------
+[DONDOZO]
+LegacyBattlerPlayerY = 41
+LegacyBattlerEnemyY = 19
+LegacyBattlerAltitude = 10
+#-------------------------------
+[TATSUGIRI]
+LegacyBattlerPlayerY = 12
+LegacyBattlerEnemyY = 16
+LegacyBattlerAltitude = 0
+#-------------------------------
+[ANNIHILAPE]
+LegacyBattlerPlayerY = 23
+LegacyBattlerEnemyY = 13
+LegacyBattlerAltitude = 0
+#-------------------------------
+[CLODSIRE]
+LegacyBattlerPlayerY = 2
+LegacyBattlerEnemyY = 19
+LegacyBattlerAltitude = 0
+#-------------------------------
+[FARIGIRAF]
+LegacyBattlerPlayerY = 10
+LegacyBattlerEnemyY = 12
+LegacyBattlerAltitude = 0
+#-------------------------------
+[DUDUNSPARCE]
+LegacyBattlerPlayerY = 21
+LegacyBattlerEnemyY = 23
+LegacyBattlerAltitude = 0
+#-------------------------------
+[KINGAMBIT]
+LegacyBattlerPlayerY = 5
+LegacyBattlerEnemyY = 8
+LegacyBattlerAltitude = 0
+#-------------------------------
+[GREATTUSK]
+LegacyBattlerPlayerY = 11
+LegacyBattlerEnemyY = 13
+LegacyBattlerAltitude = 0
+#-------------------------------
+[SCREAMTAIL]
+LegacyBattlerPlayerY = 22
+LegacyBattlerEnemyY = 12
+LegacyBattlerAltitude = 0
+#-------------------------------
+[BRUTEBONNET]
+LegacyBattlerPlayerY = 18
+LegacyBattlerEnemyY = 11
+LegacyBattlerAltitude = 0
+#-------------------------------
+[FLUTTERMANE]
+LegacyBattlerPlayerY = 23
+LegacyBattlerEnemyY = 26
+LegacyBattlerAltitude = 17
+#-------------------------------
+[SLITHERWING]
+LegacyBattlerPlayerY = 15
+LegacyBattlerEnemyY = 10
+LegacyBattlerAltitude = 0
+#-------------------------------
+[SANDYSHOCKS]
+LegacyBattlerPlayerY = 17
+LegacyBattlerEnemyY = 24
+LegacyBattlerAltitude = 15
+#-------------------------------
+[IRONTREADS]
+LegacyBattlerPlayerY = 31
+LegacyBattlerEnemyY = 15
+LegacyBattlerAltitude = 0
+#-------------------------------
+[IRONBUNDLE]
+LegacyBattlerPlayerY = 25
+LegacyBattlerEnemyY = 13
+LegacyBattlerAltitude = 0
+#-------------------------------
+[IRONHANDS]
+LegacyBattlerPlayerY = 17
+LegacyBattlerEnemyY = 11
+LegacyBattlerAltitude = 0
+#-------------------------------
+[IRONJUGULIS]
+LegacyBattlerPlayerY = 13
+LegacyBattlerEnemyY = 9
+LegacyBattlerAltitude = 2
+#-------------------------------
+[IRONMOTH]
+LegacyBattlerPlayerY = 12
+LegacyBattlerEnemyY = 0
+LegacyBattlerAltitude = 1
+#-------------------------------
+[IRONTHORNS]
+LegacyBattlerPlayerY = 18
+LegacyBattlerEnemyY = 8
+LegacyBattlerAltitude = 0
+#-------------------------------
+[FRIGIBAX]
+LegacyBattlerPlayerY = 23
+LegacyBattlerEnemyY = 21
+LegacyBattlerAltitude = 0
+#-------------------------------
+[ARCTIBAX]
+LegacyBattlerPlayerY = 21
+LegacyBattlerEnemyY = 16
+LegacyBattlerAltitude = 0
+#-------------------------------
+[BAXCALIBUR]
+LegacyBattlerPlayerY = 14
+LegacyBattlerEnemyY = 6
+LegacyBattlerAltitude = 0
+#-------------------------------
+[GIMMIGHOUL]
+LegacyBattlerPlayerY = 20
+LegacyBattlerEnemyY = 17
+LegacyBattlerAltitude = 0
+#-------------------------------
+[GHOLDENGO]
+LegacyBattlerPlayerY = 18
+LegacyBattlerEnemyY = 2
+LegacyBattlerAltitude = 0
+#-------------------------------
+[WOCHIEN]
+LegacyBattlerPlayerY = 22
+LegacyBattlerEnemyY = 14
+LegacyBattlerAltitude = 0
+#-------------------------------
+[CHIENPAO]
+LegacyBattlerPlayerY = 29
+LegacyBattlerEnemyY = 10
+LegacyBattlerAltitude = 0
+#-------------------------------
+[TINGLU]
+LegacyBattlerPlayerY = 24
+LegacyBattlerEnemyY = 9
+LegacyBattlerAltitude = 0
+#-------------------------------
+[CHIYU]
+LegacyBattlerPlayerY = 27
+LegacyBattlerEnemyY = 13
+LegacyBattlerAltitude = 3
+#-------------------------------
+[ROARINGMOON]
+LegacyBattlerPlayerY = 13
+LegacyBattlerEnemyY = 0
+LegacyBattlerAltitude = 0
+#-------------------------------
+[IRONVALIANT]
+LegacyBattlerPlayerY = 20
+LegacyBattlerEnemyY = 7
+LegacyBattlerAltitude = 0
+#-------------------------------
+[KORAIDON]
+LegacyBattlerPlayerY = 17
+LegacyBattlerEnemyY = 8
+LegacyBattlerAltitude = 0
+#-------------------------------
+[MIRAIDON]
+LegacyBattlerPlayerY = 11
+LegacyBattlerEnemyY = -3
+LegacyBattlerAltitude = 0
+#-------------------------------
+[WALKINGWAKE]
+LegacyBattlerPlayerY = 26
+LegacyBattlerEnemyY = 11
+LegacyBattlerAltitude = 0
+#-------------------------------
+[IRONLEAVES]
+LegacyBattlerPlayerY = 26
+LegacyBattlerEnemyY = 14
+LegacyBattlerAltitude = 0
+#-------------------------------
+[DIPPLIN]
+LegacyBattlerPlayerY = 25
+LegacyBattlerEnemyY = 20
+LegacyBattlerAltitude = 0
+#-------------------------------
+[POLTCHAGEIST]
+LegacyBattlerPlayerY = 25
+LegacyBattlerEnemyY = 6
+LegacyBattlerAltitude = 0
+#-------------------------------
+[SINISTCHA]
+LegacyBattlerPlayerY = 26
+LegacyBattlerEnemyY = 11
+LegacyBattlerAltitude = 0
+#-------------------------------
+[OKIDOGI]
+LegacyBattlerPlayerY = 22
+LegacyBattlerEnemyY = 8
+LegacyBattlerAltitude = 0
+#-------------------------------
+[MUNKIDORI]
+LegacyBattlerPlayerY = 24
+LegacyBattlerEnemyY = 10
+LegacyBattlerAltitude = 0
+#-------------------------------
+[FEZANDIPITI]
+LegacyBattlerPlayerY = 16
+LegacyBattlerEnemyY = 9
+LegacyBattlerAltitude = 0
+#-------------------------------
+[OGERPON]
+LegacyBattlerPlayerY = 16
+LegacyBattlerEnemyY = 10
+LegacyBattlerAltitude = 0
+#-------------------------------
+[ARCHALUDON]
+LegacyBattlerPlayerY = 17
+LegacyBattlerEnemyY = 8
+LegacyBattlerAltitude = 0
+#-------------------------------
+[HYDRAPPLE]
+LegacyBattlerPlayerY = 17
+LegacyBattlerEnemyY = 12
+LegacyBattlerAltitude = 0
+#-------------------------------
+[GOUGINGFIRE]
+LegacyBattlerPlayerY = 3
+LegacyBattlerEnemyY = 9
+LegacyBattlerAltitude = 0
+#-------------------------------
+[RAGINGBOLT]
+LegacyBattlerPlayerY = 2
+LegacyBattlerEnemyY = 9
+LegacyBattlerAltitude = 0
+#-------------------------------
+[IRONBOULDER]
+LegacyBattlerPlayerY = 17
+LegacyBattlerEnemyY = 24
+LegacyBattlerAltitude = 0
+#-------------------------------
+[IRONCROWN]
+LegacyBattlerPlayerY = 7
+LegacyBattlerEnemyY = 11
+LegacyBattlerAltitude = 0
+#-------------------------------
+[TERAPAGOS]
+LegacyBattlerPlayerY = 25
+LegacyBattlerEnemyY = 22
+LegacyBattlerAltitude = 0
+#-------------------------------
+[PECHARUNT]
+LegacyBattlerPlayerY = 12
+LegacyBattlerEnemyY = 11
+LegacyBattlerAltitude = 0
+#-------------------------------
+[JESTERIME]
+LegacyBattlerPlayerY = 8
+LegacyBattlerEnemyY = 4
+LegacyBattlerAltitude = 0
+#-------------------------------
+[MASQUERIME]
+LegacyBattlerPlayerY = 8
+LegacyBattlerEnemyY = 4
+LegacyBattlerAltitude = 0
+#-------------------------------
+[PARAHIDE]
+LegacyBattlerPlayerY = 8
+LegacyBattlerEnemyY = 4
+LegacyBattlerAltitude = 0
+#-------------------------------
+[PARASPAWN]
+LegacyBattlerPlayerY = 8
+LegacyBattlerEnemyY = 4
+LegacyBattlerAltitude = 0
+#-------------------------------
+[VULCLADE]
+LegacyBattlerPlayerY = 8
+LegacyBattlerEnemyY = 4
+LegacyBattlerAltitude = 1
+#-------------------------------
+[EXCALIBURN]
+LegacyBattlerPlayerY = 8
+LegacyBattlerEnemyY = 4
+LegacyBattlerAltitude = 1
+#-------------------------------
+[SCARYPHUS]
+LegacyBattlerPlayerY = 8
+LegacyBattlerEnemyY = 4
+LegacyBattlerAltitude = 0
+#-------------------------------
+[REVENYAN]
+LegacyBattlerPlayerY = 8
+LegacyBattlerEnemyY = 4
+LegacyBattlerAltitude = 0
+#-------------------------------
+[MELLENOHM]
+LegacyBattlerPlayerY = 8
+LegacyBattlerEnemyY = 4
+LegacyBattlerAltitude = 0

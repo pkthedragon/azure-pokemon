@@ -332,7 +332,7 @@ BOSSINFOHASH = {
     },
 }
 
-# Normal Act One sheet data is isolated from the legacy and Intense definitions.
+#pk code
 BOSSINFOHASH[:HEROICTANGROWTH_NORMAL] = Marshal.load(Marshal.dump(BOSSINFOHASH[:HEROICTANGROWTH])).tap do |boss|
     boss[:moninfo].merge!(
         :level => 22,
@@ -349,7 +349,7 @@ BOSSINFOHASH[:HEROICTANGROWTH_NORMAL] = Marshal.load(Marshal.dump(BOSSINFOHASH[:
         :ability => PBAbilities::LEAFGUARD,
         :nature => PBNatures::MODEST
     )
-    # The sheet's first break cures status and applies Ingrain without sunlight.
+    # Keep Ingrain, remove sunlight.
     [:weatherChange,:weatherCount,:weatherChangeMessage,:weatherChangeAnimation].each do |key|
         boss[:onBreakEffects][1].delete(key)
     end
@@ -363,6 +363,7 @@ BOSSINFOHASH[:MOTHEREXPLOUD_NORMAL] = Marshal.load(Marshal.dump(BOSSINFOHASH[:MO
     )
 end
 
+#pk code
 BOSSINFOHASH[:TOTEMLICKITUNG_NORMAL] = Marshal.load(Marshal.dump(BOSSINFOHASH[:TOTEMLICKITUNG])).tap do |boss|
     boss[:moninfo].merge!(
         :item => PBItems::SITRUSBERRY,
@@ -370,7 +371,7 @@ BOSSINFOHASH[:TOTEMLICKITUNG_NORMAL] = Marshal.load(Marshal.dump(BOSSINFOHASH[:T
     )
 end
 
-# Bruce's Normal team uses the sheet's Psychic/Fighting entry transformation.
+#pk code
 BOSSINFOHASH[:TOXICROAKBOSS_NORMAL] = Marshal.load(Marshal.dump(BOSSINFOHASH[:TOXICROAKBOSS])).tap do |boss|
     boss[:shieldCount] = 0
     boss[:moninfo].merge!(

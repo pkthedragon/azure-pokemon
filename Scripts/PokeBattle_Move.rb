@@ -1208,9 +1208,8 @@ class PokeBattle_Move
     return type
   end
 
-  #pk code
   def pbIsStatus?
-    return @category==2
+    return @category==2 #pk code
   end
 
   def pbIsPhysical?(type)
@@ -1345,9 +1344,8 @@ class PokeBattle_Move
     return false
   end
 
-  #pk code
   def pbFixedDamageMove?
-    return FIXEDDAMAGEFUNCTIONS.include?(@function)
+    return FIXEDDAMAGEFUNCTIONS.include?(@function) #pk code
   end
 
   def pbTwoTurnAttack(attacker,checking=false)
@@ -2722,6 +2720,7 @@ class PokeBattle_Move
   end
 
   def pbAccuracyCheck(attacker,opponent)
+    return true if opponent && opponent.azureGlaiveRush #pk code
     return true if pbAccuracyBypass?(attacker,opponent)
     baseaccuracy=pbBaseAccuracy(attacker,opponent)
     accstage=attacker.stages[PBStats::ACCURACY]
@@ -6458,6 +6457,25 @@ class PokeBattle_Move
     return damage
   end
 
+  #pk code
+  unless method_defined?(:azure_move_compat_pbCalcDamage)
+    alias azure_move_compat_pbCalcDamage pbCalcDamage
+    def pbCalcDamage(attacker,opponent,options=0)
+      damage=azure_move_compat_pbCalcDamage(attacker,opponent,options)
+      if damage>0 && opponent && opponent.azureGlaiveRush
+        damage*=2
+      end
+      if damage>0 && @battle.field.effects[PBEffects::VileMercy]>0
+        damage=[(damage*0.8).floor,1].max
+      end
+      if damage>0 && attacker && attacker.pbOwnSide.effects[PBEffects::PressurePlate]>0
+        damage=[(damage*1.2).round,1].max
+      end
+      opponent.damagestate.calcdamage=damage if opponent
+      return damage
+    end
+  end
+
   ELEMENTAL_DAMAGE_ABILITIES={PBTypes::GRASS=>:ASCETIC, PBTypes::WATER=>:WATERLOGGED, PBTypes::FIRE=>:INCENDIARY}.freeze
 
   def pbCustomDamageAbilityMultiplier(attacker,opponent,type,base_power)
@@ -6793,6 +6811,37 @@ class PokeBattle_Move
     opponent.effects[PBEffects::Assassinate]=true
     opponent.lastHPLost=damage # for Revenge/Focus Punch/Metal Burst
     opponent.lastAttacker=attacker.index # for Revenge/Metal Burst
+  end
+
+  #pk code
+  unless method_defined?(:azure_move_compat_pbOnDamageLost)
+    alias azure_move_compat_pbOnDamageLost pbOnDamageLost
+    def pbOnDamageLost(damage,attacker,opponent)
+      azure_move_compat_pbOnDamageLost(damage,attacker,opponent)
+      if damage>0 && opponent && !opponent.damagestate.substitute
+        source=opponent.pbRiteOfSpringSource
+        if source && source.effects[PBEffects::HealBlock]==0
+          pbRecoverMoveHP(source,source,[damage*3/10,1].max)
+        end
+      end
+      if damage>0 && attacker && opponent && attacker.index!=opponent.index && opponent.pokemon
+        opponent.effects[PBEffects::DamagingMoveThisTurn]=true
+        counts=@battle.instance_variable_get(:@azure_hits_taken) || {}
+        key=opponent.pokemon.object_id
+        counts[key]=[counts.fetch(key,0)+1,6].min
+        @battle.instance_variable_set(:@azure_hits_taken,counts)
+      end
+      if damage>0 && attacker && opponent && isContactMove? &&
+         !attacker.hasWorkingAbility(:LONGREACH) &&
+         !attacker.hasWorkingItem(:PROTECTIVEPADS)
+        if !attacker.isFainted? &&
+           (opponent.effects[PBEffects::MoltenStance] || opponent.effects[PBEffects::FlameWreath]>0) &&
+           attacker.pbCanBurn?(false)
+          attacker.pbBurn(opponent)
+          @battle.pbDisplay(_INTL("Contact with {1} burned {2}!",opponent.pbThis,attacker.pbThis(true)))
+        end
+      end
+    end
   end
 
   def pbMoveFailed(attacker,opponent)

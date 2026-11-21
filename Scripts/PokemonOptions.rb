@@ -373,6 +373,7 @@ class PokemonSystem
     @battlestyle = 0
   end
 
+  #pk code
   def difficulty
     v = @difficulty
     if defined?($game_variables) && $game_variables
@@ -413,7 +414,6 @@ class PokemonSystem
     if v.nil? && defined?($game_switches) && $game_switches
       v = $game_switches[1425]
     end
-    # Default OFF if unset (intro prompt may set it)
     return false if v.nil?
     return v ? true : false
   end
@@ -485,10 +485,8 @@ class PokemonOptionScene
           }
        ),
 
-       #---------------------------------------------------------------------------
-       # Gameplay / Accessibility
-       #---------------------------------------------------------------------------
-       EnumOption.new(_INTL("Difficulty"),[_INTL("Casual"),_INTL("Normal"),_INTL("Intense")], #pk code
+       #pk code
+       EnumOption.new(_INTL("Difficulty"),[_INTL("Casual"),_INTL("Normal"),_INTL("Intense")],
           proc { [1,0,2][$PokemonSystem.difficulty] },
           proc {|value| $PokemonSystem.difficulty = [1,0,2][value] }
        ),

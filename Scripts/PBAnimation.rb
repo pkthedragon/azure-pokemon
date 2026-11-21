@@ -412,10 +412,7 @@ end
 
 
 
-# Common-animation playback historically searched the entire animation list by
-# name every time. Keep a small derived index beside the mutable editor-owned
-# collection. The first occurrence is retained to exactly match the old scan
-# when duplicate names exist.
+#pk code
 module AzureBattleAnimationIndex
   def self.clear
     @animations=nil
@@ -432,6 +429,7 @@ module AzureBattleAnimationIndex
       for i in 0...animations.length
         animation=animations[i]
         next if !animation || !animation.name
+        # Keep the first index for duplicate names.
         @indices[animation.name]=i if !@indices.has_key?(animation.name)
       end
     end
@@ -569,8 +567,6 @@ def pbInvalidateBattleAnimationIndex
   AzureBattleAnimationIndex.clear
 end
 
-# The runtime pack defers animation frames until playback. The original database
-# remains the fallback and the editor's source, with the same global invalidation.
 def pbLoadBattleAnimations
   if !defined?($pkmn_animations) || !$pkmn_animations
     pbInvalidateBattleAnimationIndex

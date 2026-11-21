@@ -173,3 +173,127 @@ end
 class StringOutput
   include FileOutputMixin
 end
+
+
+#pk code
+module AzureDataCache
+  def self.file_key(path)
+    return path.to_s.gsub("\\","/").downcase
+  end
+
+  def self.file_signature(path)
+    return [File.mtime(path).to_f,File.size(path)]
+  rescue
+    return nil
+  end
+
+  def self.load(path)
+    @entries={} if !@entries
+    key=file_key(path)
+    entry=@entries[key]
+    if entry && (!defined?($DEBUG) || !$DEBUG)
+      return entry[1]
+    end
+    signature=file_signature(path)
+    if entry && entry[0]==signature
+      record_stat(key,:hits)
+      return entry[1]
+    end
+    record_stat(key,:loads)
+    record_stat(key,:reloads) if entry
+    data=load_data(path)
+    @entries[key]=[signature,data]
+    return data
+  end
+
+  def self.fetch(path)
+    @entries={} if !@entries
+    key=file_key(path)
+    entry=@entries[key]
+    if entry && (!defined?($DEBUG) || !$DEBUG)
+      return entry[1]
+    end
+    signature=file_signature(path)
+    if entry && entry[0]==signature
+      record_stat(key,:hits)
+      return entry[1]
+    end
+    record_stat(key,:loads)
+    record_stat(key,:reloads) if entry
+    data=yield(path)
+    @entries[key]=[signature,data]
+    return data
+  end
+
+  def self.clear(path=nil)
+    @entries={} if !@entries || !path
+    @entries.delete(file_key(path)) if path && @entries
+  end
+
+  def self.record_stat(key,kind)
+    return if !defined?($DEBUG) || !$DEBUG
+    @stats={} if !@stats
+    @stats[key]={:hits=>0,:loads=>0,:reloads=>0} if !@stats[key]
+    @stats[key][kind]+=1
+  end
+
+  def self.stats
+    ret=[]
+    return ret if !@stats
+    for key in @stats.keys.sort
+      row=@stats[key]
+      ret.push([key,row[:hits],row[:loads],row[:reloads]])
+    end
+    return ret
+  end
+
+  def self.reset_stats
+    @stats={}
+  end
+end
+
+def pbCachedData(path)
+  return AzureDataCache.load(path)
+end
+
+def pbLoadTownMapData
+  return pbCachedData("Data/townmap.dat")
+end
+
+def pbLoadConnectionData
+  return pbCachedData("Data/connections.dat")
+end
+
+def pbLoadPhoneDataFile
+  return pbCachedData("Data/phone.dat")
+end
+
+def pbCachedRxData(path)
+  extension=$RPGVX ? ".rvdata" : ".rxdata"
+  return pbCachedData(path+extension)
+end
+
+def pbLoadAzureRuntimeData
+  $data_common_events=pbLoadRxData("Data/CommonEvents") if !$data_common_events
+  $pkmn_dex=pbCachedData("Data/dexdata.dat") if !$pkmn_dex
+  $pkmn_move=pbCachedData("Data/moves.dat") if !$pkmn_move
+  $pkmn_egg=pbCachedData("Data/eggEmerald.dat") if !$pkmn_egg
+  $ItemData=pbCachedData("Data/pokmanitems.rxdata") if !$ItemData
+  $bosscache=pbCachedData("Data/bossdata.dat") if !$bosscache
+  return true
+end
+
+def pbLoadTilesetData
+  $data_tilesets=pbLoadRxData("Data/Tilesets") if !$data_tilesets
+  return $data_tilesets
+end
+
+def pbReloadTilesetData
+  $data_tilesets=pbLoadRxData("Data/Tilesets")
+  return $data_tilesets
+end
+
+def pbLoadRPGAnimations
+  $data_animations=pbLoadRxData("Data/Animations") if !$data_animations
+  return $data_animations
+end

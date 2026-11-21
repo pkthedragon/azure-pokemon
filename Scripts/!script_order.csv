@@ -32,7 +32,6 @@ Sprite_Character
 Overworld Shadows
 Sprite_WaterReflection
 Sprite_Surfbase
-MakerStudioTileOverlays
 Spriteset_Map
 Spriteset_Global
 AnimationSprite
@@ -47,7 +46,6 @@ TileDrawingHelper
 Interpreter
 PBEvent
 PBFile
-AzureDataCache
 PBIntl
 PBDebug
 ================~blank
@@ -67,16 +65,13 @@ Scene_Controls
 Scene_Movie
 Scene_Credits
 Transitions
-AzureFramePacing
 ================~blank
 PBTypes
 PBTrainers
 PBMoves
 PBItems
 PBSpecies
-PBSpeciesData
 PBAbilities
-PBAbility
 PBMove
 PBStatuses
 PBTypesExtra
@@ -96,10 +91,8 @@ PokeBattle_Effects
 PokeBattle_Move
 PokeBattle_ZMoves
 PokeBattle_MoveEffects
-PokeBattle_MoveEffectCompatibility
 PokeBattle_Battle
 PokeBattle_AI
-AzureBattleAICoordination
 PokeBattle_SceneConstants
 PokeBattle_ActualScene
 PBAnimation
@@ -146,8 +139,6 @@ PokemonStorage
 PokemonBossBattle
 BossInfo
 FieldEffectInfo
-PokemonFieldEffectsManual
-PokemonTrainerIndex
 ================~blank
 PokemonPauseMenu
 PokemonPokedex
@@ -220,7 +211,6 @@ SWM - UnrealTime
 Haru - ChangeTime
 Hollows
 Tributes
-TestTeam
 ================~blank
 MKXP Compatbility Fix
 ================~blank

@@ -899,6 +899,69 @@ class PokeBattle_Battle
     @weatherduration=duration
   end
 
+  #pk code
+  def azureInvalidateJetstreamWeather
+    @battlers.each { |battler| battler.azureJetstream&.delete(:weather) }
+  end
+
+  def azureJetstreamWeatherExtended?
+    return @weatherduration>0 && @battlers.any? do |battler|
+      battler && !battler.isFainted? && battler.azureJetstream &&
+        battler.azureJetstream[:weather]==[@weather,@weatherduration]
+    end
+  end
+
+  def azureJetstreamForSide?(side)
+    tailwind=@sides[side].effects[PBEffects::Tailwind]
+    return false if tailwind<=0
+    return @battlers.any? do |battler|
+      battler && !battler.isFainted? && battler.azureJetstream &&
+        battler.index%2==side && battler.azureJetstream[:tailwind]==tailwind
+    end
+  end
+
+  def azureExtendJetstream(battler)
+    state={}
+    state[:weather]=[@weather,@weatherduration] if @weather!=0 && @weatherduration>0
+    tailwind=battler.pbOwnSide.effects[PBEffects::Tailwind]
+    state[:tailwind]=tailwind if tailwind>0
+    return false if state.empty?
+    battler.azureJetstream=state
+    return true
+  end
+
+  def azureReleaseJetstream(battler)
+    state=battler.azureJetstream
+    battler.azureJetstream=nil
+    return if !state
+    side=battler.index%2
+    effects=@sides[side].effects
+    if state[:tailwind] && state[:tailwind]==effects[PBEffects::Tailwind] && !azureJetstreamForSide?(side)
+      effects[PBEffects::Tailwind]=0
+      message=side==0 ? "Your team's tailwind stopped blowing!" : "The opposing team's tailwind stopped blowing!"
+      pbDisplay(_INTL(message))
+    end
+    return if state[:weather]!=[@weather,@weatherduration] || azureJetstreamWeatherExtended?
+    restore_climate=[PBWeather::SUNNYDAY,PBWeather::RAINDANCE,PBWeather::SANDSTORM,PBWeather::HAIL].include?(@weather)
+    @weather=0
+    @weatherduration=0
+    @field.effects[PBEffects::HarshSunlight]=false
+    @field.effects[PBEffects::HeavyRain]=false
+    pbDisplay(_INTL("The weather sustained by Jetstream ended!"))
+    if restore_climate && @weatherbackup!=0
+      @weather=@weatherbackup
+      @weatherduration=-1
+      pbCommonAnimation(@weatherbackupanim,nil,nil)
+      pbDisplay(_INTL("The initial weather took over again!"))
+    end
+    if restore_climate && $febackup==34
+      $fefieldeffect=34
+      pbChangeBGSprite
+      pbDisplay(_INTL("The starry sky shone through!"))
+      seedCheck
+    end
+  end
+
   def pbWeather
     for i in 0..maxBattlerIndex
       if @battlers[i].hasWorkingAbility(:CLOUDNINE) ||

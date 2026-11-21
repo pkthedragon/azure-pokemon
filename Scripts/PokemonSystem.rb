@@ -124,13 +124,6 @@ module AzureDeveloperTools
     return File.expand_path(File.join("Scripts",scriptName),Dir.pwd)
   end
 
-  def self.present?(scriptName)
-    return File.exist?(path(scriptName))
-  end
-
-  # Developer tools are intentionally absent from !script_order.csv. Loading
-  # them on demand keeps release startup free of profiling/validation code and
-  # lets a release package omit the files without changing gameplay scripts.
   def self.load(scriptName,constantName)
     symbol=constantName.to_sym
     return true if Object.const_defined?(symbol)

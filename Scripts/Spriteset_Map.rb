@@ -145,6 +145,50 @@ end
 
 
 
+#pk code
+class MakerStudioTileOverlays::Sprite < ::Sprite
+  def initialize(viewport, map, tile)
+    super(viewport)
+    @map = map
+    @tile_id = tile.fetch("tile_id")
+    @real_x = tile.fetch("x") * Game_Map.realResX
+    @real_y = tile.fetch("y") * Game_Map.realResY
+    @on_top = tile["azure_event_on_top"]
+    self.bitmap = pbGetTileBitmap(map.tileset_name, @tile_id, tile.fetch("hue", 0))
+    self.ox = Game_Map::TILEWIDTH / 2
+    self.oy = Game_Map::TILEHEIGHT
+    self.opacity = tile.fetch("opacity", 255)
+    update
+  end
+
+  def update
+    super
+    draw_x = (@real_x - @map.display_x + 3) / 4 + ox
+    draw_y = (@real_y - @map.display_y + 3) / 4 + oy
+    draw_z = if @on_top
+               999
+             else
+               (@real_y - $game_map.display_y + 3) / 4 + 32 + $game_map.priorities[@tile_id].to_i * 32
+             end
+    self.x = draw_x if draw_x != @draw_x
+    self.y = draw_y if draw_y != @draw_y
+    self.z = draw_z if draw_z != @draw_z
+    @draw_x, @draw_y, @draw_z = draw_x, draw_y, draw_z
+
+    tint = $PokemonSystem.tilemap == 0 ? PBDayNight::NEUTRAL_TINT : PBDayNight.map_tint
+    if tint && tint != @draw_tint
+      tone.set(*tint)
+      @draw_tint = tint
+    end
+  end
+
+  def dispose
+    bitmap.dispose if bitmap
+    super
+  end
+end
+
+
 class Spriteset_Map
   attr_reader :map
   attr_reader :viewport1

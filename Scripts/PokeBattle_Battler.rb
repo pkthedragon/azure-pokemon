@@ -5956,6 +5956,10 @@ class PokeBattle_Battler
   end
 
   def pbTarget(move)
+    if move && move.id==PBMoves::EXPANDINGFORCE && !isAirborne? && #pk code
+       ($fefieldeffect==37 || @battle.field.effects[PBEffects::PsychicTerrain]>0)
+      return PBTargets::AllOpposing
+    end
     target=move.target
     if move.respond_to?(:pixie_tribute_target)
       target=move.pixie_tribute_target(self)
@@ -9601,5 +9605,139 @@ class PokeBattle_Battler
     @capturable = boss.capturable ? boss.capturable : false
     @canrun = boss.canrun ? boss.canrun : false
     @battle.cantescape=true if !@canrun
+  end
+
+  #pk code
+  attr_accessor :azureGlaiveRush
+  attr_accessor :azureStatsRaisedThisRound
+  attr_accessor :azureJetstream
+
+  def azureHitsTaken
+    counts=@battle.instance_variable_get(:@azure_hits_taken) || {}
+    return counts[@pokemon.object_id] || 0
+  end
+
+  unless method_defined?(:azure_move_compat_pbInitialize)
+    alias azure_move_compat_pbInitialize pbInitialize
+    def pbInitialize(pkmn,index,batonpass)
+      azureReleaseCommander
+      @battle.azureReleaseJetstream(self) if @azureJetstream && !@fakebattler
+      azure_move_compat_pbInitialize(pkmn,index,batonpass)
+      @azureGlaiveRush=false
+      @azureStatsRaisedThisRound=false
+      @azureJetstream=nil
+    end
+  end
+
+  def azureReleaseCommander(dondozo=@effects[PBEffects::Commander],tatsugiri=@effects[PBEffects::Commandee])
+    if tatsugiri && tatsugiri.effects[PBEffects::Commander]==self
+      tatsugiri.effects[PBEffects::Commander]=false
+      tatsugiri.vanished=false
+      @battle.scene.pbUnVanishSprite(tatsugiri) if !tatsugiri.isFainted?
+    elsif dondozo && dondozo.effects[PBEffects::Commandee]==self
+      dondozo.effects[PBEffects::Commandee]=false
+    end
+    @effects[PBEffects::Commander]=false
+    @effects[PBEffects::Commandee]=false
+  end
+
+  def azureCommanderCheck
+    return if isFainted? || !@battle.doublebattle
+    return if @effects[PBEffects::Commander] || @effects[PBEffects::Commandee]
+    return if @effects[PBEffects::TwoTurnAttack]>0
+    if isConst?(species,PBSpecies,:TATSUGIRI)
+      return if !hasWorkingAbility(:COMMANDER)
+      partner_species=PBSpecies::DONDOZO
+    elsif isConst?(species,PBSpecies,:DONDOZO)
+      partner_species=PBSpecies::TATSUGIRI
+    else
+      return
+    end
+    partner=@battle.allSameSideBattlers(index).find do |other|
+      other.species==partner_species && !other.isFainted? &&
+        @battle.nearBattlers?(index,other.index) &&
+        @battle.pbGetOwnerIndex(index)==@battle.pbGetOwnerIndex(other.index) &&
+        !other.effects[PBEffects::Commander] && !other.effects[PBEffects::Commandee] &&
+        other.effects[PBEffects::TwoTurnAttack]==0 &&
+        (partner_species==PBSpecies::DONDOZO || other.hasWorkingAbility(:COMMANDER))
+    end
+    return if !partner
+    if partner_species==PBSpecies::DONDOZO
+      tatsugiri=self; dondozo=partner
+    else
+      tatsugiri=partner; dondozo=self
+    end
+    if tatsugiri.effects[PBEffects::Substitute]>0
+      tatsugiri.effects[PBEffects::Substitute]=0
+      @battle.scene.pbUnSubstituteSprite(tatsugiri,tatsugiri.pbIsOpposing?(1))
+    end
+    @battle.scene.pbVanishSprite(tatsugiri)
+    tatsugiri.vanished=true
+    @battle.pbDisplay(_INTL("{1} was swallowed by {2} and became its commander!",
+      tatsugiri.pbThis,dondozo.pbThis(true)))
+    choice=@battle.choices[tatsugiri.index]
+    choice[2].zmove=false if choice[0]==1 && choice[2]
+    @battle.choices[tatsugiri.index]=[0,0,nil,-1]
+    tatsugiri.pbCancelMoves
+    tatsugiri.effects[PBEffects::Commander]=dondozo
+    dondozo.effects[PBEffects::Commandee]=tatsugiri
+    @battle.pbWithStatChangeSource([:ability,PBAbilities::COMMANDER]) do
+      [PBStats::ATTACK,PBStats::DEFENSE,PBStats::SPEED,PBStats::SPATK,PBStats::SPDEF].each do |stat|
+        dondozo.pbIncreaseStat(stat,2,false,:ABILITY,dondozo)
+      end
+    end
+  end
+
+  unless method_defined?(:azure_move_compat_pbAbilitiesOnSwitchIn)
+    alias azure_move_compat_pbAbilitiesOnSwitchIn pbAbilitiesOnSwitchIn
+    def pbAbilitiesOnSwitchIn(onactive,megad=false,gas_ended=false)
+      ret=azure_move_compat_pbAbilitiesOnSwitchIn(onactive,megad,gas_ended)
+      azureCommanderCheck
+      return ret
+    end
+  end
+
+  unless method_defined?(:azure_move_compat_pbFaint)
+    alias azure_move_compat_pbFaint pbFaint
+    def pbFaint(showMessage=true)
+      dondozo=@effects[PBEffects::Commander]
+      tatsugiri=@effects[PBEffects::Commandee]
+      ret=azure_move_compat_pbFaint(showMessage)
+      azureReleaseCommander(dondozo,tatsugiri) if ret && isFainted? && (dondozo || tatsugiri)
+      return ret
+    end
+  end
+
+  unless method_defined?(:azure_move_compat_pbBeginTurn)
+    alias azure_move_compat_pbBeginTurn pbBeginTurn
+    def pbBeginTurn(choice)
+      @azureGlaiveRush=false
+      azure_move_compat_pbBeginTurn(choice)
+    end
+  end
+
+  unless method_defined?(:azure_move_compat_pbReducePP)
+    alias azure_move_compat_pbReducePP pbReducePP
+    def pbReducePP(move)
+      beforepp=move.pp
+      ret=azure_move_compat_pbReducePP(move)
+      if ret && beforepp>0 && move.pp==beforepp-1 && move.pp>0 &&
+         pbOwnSide.effects[PBEffects::PressurePlate]>0
+        pbSetPP(move,move.pp-1)
+      end
+      return ret
+    end
+  end
+
+  def azureConsumeNeedle
+    return false if @effects[PBEffects::Needles]<=0 || isFainted?
+    @effects[PBEffects::Needles]-=1
+    @battle.scene.pbDamageAnimation(self,0)
+    if !hasWorkingAbility(:MAGICGUARD) &&
+       !(hasWorkingAbility(:WONDERGUARD) && $fefieldeffect==44)
+      pbReduceHP([(@totalhp/8).floor,1].max)
+    end
+    @battle.pbDisplay(_INTL("A needle tore into {1}!",pbThis(true)))
+    return true
   end
 end

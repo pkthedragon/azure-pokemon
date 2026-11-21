@@ -217,14 +217,13 @@ class Game_Character
   end
 
   def bush_depth
-    return bush_depth_at(self.map,@x,@y)
+    return bush_depth_at(self.map,@x,@y) #pk code
   end
 
+  #pk code
   def bush_depth_at(character_map,x,y)
     return 0 if @tile_id > 0 || @always_on_top || @jump_count > 0
     return 0 unless character_map && character_map.valid?(x,y)
-    # Encounter grass can have a terrain tag without the separate RMXP bush flag.
-    # Characters use their occupied tile while both standing and moving.
     tag=character_map.terrain_tag(x,y)
     return 0 if tag==PBTerrain::Bridge
     return 32 if tag==PBTerrain::TallGrass || character_map.deepBush?(x,y)
@@ -296,6 +295,7 @@ class Game_Character
 
   def update_move
     distance = 2 ** @move_speed
+    #pk code
     target_x = @x * Game_Map.realResX
     target_y = @y * Game_Map.realResY
     if @real_x != target_x
@@ -316,9 +316,9 @@ class Game_Character
     end
   end
 
+  #pk code
   def advance_movement_axis(position, target, distance, progress)
-    # Keep the original progression for step timing. Spread the displayed move
-    # over its remaining ticks so fractional speeds have no short last stride.
+    # Smooth the stride while preserving step timing.
     nominal = progress[0] == position ? progress[1] : position
     remaining = target - nominal
     forward = remaining > 0

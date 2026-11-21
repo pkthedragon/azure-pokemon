@@ -130,13 +130,13 @@ class Weather
     $game_screen = Game_Screen.new if $game_screen == nil
     @type = @max = @ox = @oy = @count = 0
     @current_pose, @info, @countarray = [], [], []
+    #pk code
     @sprites = []
     @sprite_viewport = viewport
     @initial_variation = $game_screen.weather_variation
     @initial_images = $WEATHER_IMAGES.dup
 
-    # Keep the encounter and battle RNG in the same order as before. Only the
-    # graphics for these particles are deferred until a weather effect starts.
+    # Preserve RNG order while deferring sprites.
     500.times do
       @current_pose.push(0)
       @info.push(rand(50))
@@ -144,6 +144,7 @@ class Weather
     end
   end
   
+  #pk code
   def prepare_graphics
     return unless @sprites.empty?
     make_bitmaps(@initial_variation, @initial_images)
@@ -159,6 +160,7 @@ class Weather
   private :prepare_graphics
 
   def dispose
+    #pk code
     $WEATHER_UPDATE = true
     return if @sprites.empty?
     
@@ -185,6 +187,7 @@ class Weather
 #-------------------------------------------------------------------------------  
   def type=(type)
     return if @type == type
+    #pk code
     if @type == 0
       prepare_graphics
       @sprites.each do |sprite|
@@ -869,7 +872,7 @@ class Weather
     }
   end
 #-------------------------------------------------------------------------------  
-  def make_bitmaps(variation=$game_screen.weather_variation, images=$WEATHER_IMAGES)
+  def make_bitmaps(variation=$game_screen.weather_variation, images=$WEATHER_IMAGES) #pk code
     
     # All the colors for each type are used only for their respective bitmaps 
     # now, therefore the colors can be changed for one type without worrying 
@@ -4755,7 +4758,7 @@ class Weather
     update_user_defined(images)
   end
 #-------------------------------------------------------------------------------  
-  def update_user_defined(images=$WEATHER_IMAGES)
+  def update_user_defined(images=$WEATHER_IMAGES) #pk code
     @user_bitmaps.each {|image| image.dispose}
     images.each {|name| @user_bitmaps.push(RPG::Cache.picture(name))}
     @sprites.each {|sprite| sprite.bitmap = @user_bitmaps[rand(@user_bitmaps.size)]}
