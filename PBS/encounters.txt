@@ -1,5 +1,4 @@
-﻿# Generated from the legacy encounter slot format.
-#-------------------------------
+﻿#-------------------------------
 [001]
 SuperRod
     40,FEEBAS,3,6
@@ -142,6 +141,26 @@ HeadbuttHigh
     4,BURMY,5,8
     1,BURMY,5,8
 #-------------------------------
+[010]
+HeadbuttLow
+    30,NATU,25,30
+    25,NATU,25,30
+    20,NATU,25,30
+    10,NATU,25,30
+    5,NATU,25,30
+    5,NATU,25,30
+    4,NATU,25,30
+    1,NATU,25,30
+HeadbuttHigh
+    30,NATU,25,30
+    25,NATU,25,30
+    20,NATU,25,30
+    10,NATU,25,30
+    5,NATU,25,30
+    5,NATU,25,30
+    4,NATU,25,30
+    1,NATU,25,30
+#-------------------------------
 [018]
 Cave,7
     20,ROLYCOLY,7,12
@@ -151,11 +170,11 @@ Cave,7
     10,NOSEPASS,7,12
     10,NOSEPASS,7,12
     5,NOSEPASS,7,12
-    5,NOIBAT,7,12
+    5,YUNGOOS,7,12
     4,ROLYCOLY,7,12
-    4,NOIBAT,7,12
-    1,NOIBAT,7,12
-    1,NOIBAT,7,12
+    4,YUNGOOS,7,12
+    1,YUNGOOS,7,12
+    1,YUNGOOS,7,12
 Water,4
     60,CHEWTLE,7,12
     30,CHEWTLE,7,12
@@ -169,20 +188,20 @@ SuperRod
     4,CHEWTLE,7,12
     1,CHEWTLE,7,12
 HeadbuttLow
-    30,NOIBAT,7,12
-    25,NOIBAT,7,12
-    20,NOIBAT,7,12
-    10,NOIBAT,7,12
-    5,NOIBAT,7,12
+    30,WOOBAT,7,12
+    25,WOOBAT,7,12
+    20,WOOBAT,7,12
+    10,WOOBAT,7,12
+    5,WOOBAT,7,12
     5,BURMY,7,12
     4,BURMY,7,12
     1,BURMY,7,12
 HeadbuttHigh
-    30,NOIBAT,7,12
-    25,NOIBAT,7,12
-    20,NOIBAT,7,12
-    10,NOIBAT,7,12
-    5,NOIBAT,7,12
+    30,WOOBAT,7,12
+    25,WOOBAT,7,12
+    20,WOOBAT,7,12
+    10,WOOBAT,7,12
+    5,WOOBAT,7,12
     5,BURMY,7,12
     4,BURMY,7,12
     1,BURMY,7,12
@@ -232,6 +251,34 @@ LandNight,8
     4,STUNKY,10,15
     1,STUNKY,10,15
     1,STUNKY,10,15
+#-------------------------------
+[020]
+LandDay,7
+    20,SENTRET,15,20
+    20,SENTRET,15,20
+    10,SENTRET,15,20
+    10,SENTRET,15,20
+    10,PIDGEY,15,20
+    10,PIDGEY,15,20
+    5,PIDGEY,15,20
+    5,PATRAT,15,20
+    4,SENTRET,15,20
+    4,PATRAT,15,20
+    1,PATRAT,15,20
+    1,PATRAT,15,20
+LandNight,7
+    20,STUNKY,15,20
+    20,STUNKY,15,20
+    10,STUNKY,15,20
+    10,STUNKY,15,20
+    10,SPINARAK,15,20
+    10,SPINARAK,15,20
+    5,SPINARAK,15,20
+    5,PATRAT,15,20
+    4,STUNKY,15,20
+    4,PATRAT,15,20
+    1,PATRAT,15,20
+    1,PATRAT,15,20
 #-------------------------------
 [026]
 Water,7
@@ -283,7 +330,7 @@ LandNight,8
     10,RATTATA,10,15
     10,RATTATA,10,15
     10,RATTATA,10,15
-    10,RATTATA,10,15
+    10,SIZZLIPEDE,10,15
     5,RATTATA,10,15
     5,RATTATA,10,15
     4,SIZZLIPEDE,10,15
@@ -498,11 +545,11 @@ Cave,7
     10,NOSEPASS,7,12
     10,NOSEPASS,7,12
     5,NOSEPASS,7,12
-    5,NOIBAT,7,12
+    5,YUNGOOS,7,12
     4,ROLYCOLY,7,12
-    4,NOIBAT,7,12
-    1,NOIBAT,7,12
-    1,NOIBAT,7,12
+    4,YUNGOOS,7,12
+    1,YUNGOOS,7,12
+    1,YUNGOOS,7,12
 Water,4
     60,CHEWTLE,7,12
     30,CHEWTLE,7,12
@@ -516,20 +563,20 @@ SuperRod
     4,CHEWTLE,7,12
     1,CHEWTLE,7,12
 HeadbuttLow
-    30,NOIBAT,7,12
-    25,NOIBAT,7,12
-    20,NOIBAT,7,12
-    10,NOIBAT,7,12
-    5,NOIBAT,7,12
+    30,WOOBAT,7,12
+    25,WOOBAT,7,12
+    20,WOOBAT,7,12
+    10,WOOBAT,7,12
+    5,WOOBAT,7,12
     5,BURMY,7,12
     4,BURMY,7,12
     1,BURMY,7,12
 HeadbuttHigh
-    30,NOIBAT,7,12
-    25,NOIBAT,7,12
-    20,NOIBAT,7,12
-    10,NOIBAT,7,12
-    5,NOIBAT,7,12
+    30,WOOBAT,7,12
+    25,WOOBAT,7,12
+    20,WOOBAT,7,12
+    10,WOOBAT,7,12
+    5,WOOBAT,7,12
     5,BURMY,7,12
     4,BURMY,7,12
     1,BURMY,7,12
@@ -548,6 +595,153 @@ Cave,7
     4,MISDREAVUS,25,30
     1,MISDREAVUS,25,30
     1,MISDREAVUS,25,30
+#-------------------------------
+[055]
+Cave,7
+    20,ROLYCOLY,15,20
+    20,WOOBAT,15,20
+    10,ROLYCOLY,15,20
+    10,WOOBAT,15,20
+    10,NOSEPASS,15,20
+    10,NOSEPASS,15,20
+    5,NOSEPASS,15,20
+    5,NOIBAT,15,20
+    4,ROLYCOLY,15,20
+    4,NOIBAT,15,20
+    1,NOIBAT,15,20
+    1,NOIBAT,15,20
+Water,4
+    60,CHEWTLE,15,20
+    30,CHEWTLE,15,20
+    5,CHEWTLE,15,20
+    4,CHEWTLE,15,20
+    1,CHEWTLE,15,20
+SuperRod
+    40,FEEBAS,15,20
+    40,FEEBAS,15,20
+    15,CHEWTLE,15,20
+    4,CHEWTLE,15,20
+    1,CHEWTLE,15,20
+HeadbuttLow
+    30,NOIBAT,15,20
+    25,NOIBAT,15,20
+    20,NOIBAT,15,20
+    10,NOIBAT,15,20
+    5,NOIBAT,15,20
+    5,BURMY,15,20
+    4,BURMY,15,20
+    1,BURMY,15,20
+HeadbuttHigh
+    30,NOIBAT,15,20
+    25,NOIBAT,15,20
+    20,NOIBAT,15,20
+    10,NOIBAT,15,20
+    5,NOIBAT,15,20
+    5,BURMY,15,20
+    4,BURMY,15,20
+    1,BURMY,15,20
+#-------------------------------
+[083]
+SuperRod
+    40,FEEBAS,20,25
+    40,FEEBAS,20,25
+    15,TYNAMO,20,25
+    4,TYNAMO,20,25
+    1,TYNAMO,20,25
+HeadbuttLow
+    30,COMBEE,20,25
+    25,COMBEE,20,25
+    20,COMBEE,20,25
+    10,COMBEE,20,25
+    5,COMBEE,20,25
+    5,COMBEE,20,25
+    4,COMBEE,20,25
+    1,COMBEE,20,25
+HeadbuttHigh
+    30,COMBEE,20,25
+    25,COMBEE,20,25
+    20,COMBEE,20,25
+    10,COMBEE,20,25
+    5,COMBEE,20,25
+    5,COMBEE,20,25
+    4,COMBEE,20,25
+    1,COMBEE,20,25
+WaterDay,4
+    60,BUIZEL,20,25
+    30,BUIZEL,20,25
+    5,BUIZEL,20,25
+    4,BUIZEL,20,25
+    1,BUIZEL,20,25
+WaterNight,4
+    60,FINNEON,20,25
+    30,FINNEON,20,25
+    5,FINNEON,20,25
+    4,FINNEON,20,25
+    1,FINNEON,20,25
+#-------------------------------
+[084]
+LandDay,7
+    20,FLABEBE,20,25
+    20,FLABEBE,20,25
+    10,ODDISH,20,25
+    10,ODDISH,20,25
+    10,ODDISH,20,25
+    10,SKORUPI,20,25
+    5,SKORUPI,20,25
+    5,SKORUPI,20,25
+    4,GULPIN,20,25
+    4,GULPIN,20,25
+    1,GULPIN,20,25
+    1,GULPIN,20,25
+LandNight,7
+    20,FLABEBE,20,25
+    20,FLABEBE,20,25
+    10,ODDISH,20,25
+    10,ODDISH,20,25
+    10,ODDISH,20,25
+    10,WOOPER,20,25
+    5,WOOPER,20,25
+    5,WOOPER,20,25
+    4,GULPIN,20,25
+    4,GULPIN,20,25
+    1,GULPIN,20,25
+    1,GULPIN,20,25
+WaterDay,4
+    60,WOOPER,20,25
+    30,WOOPER,20,25
+    5,STUNFISK,20,25
+    4,STUNFISK,20,25
+    1,STUNFISK,20,25
+WaterNight,4
+    60,STUNFISK,20,25
+    30,STUNFISK,20,25
+    5,STUNFISK,20,25
+    4,STUNFISK,20,25
+    1,STUNFISK,20,25
+SuperRod
+    40,BARBOACH,20,25
+    40,POLIWAG,20,25
+    15,WOOPER,20,25
+    4,WOOPER,20,25
+    1,WOOPER,20,25
+HeadbuttLow
+    30,COMBEE,20,25
+    25,COMBEE,20,25
+    20,COMBEE,20,25
+    10,COMBEE,20,25
+    5,COMBEE,20,25
+    5,COMBEE,20,25
+    4,COMBEE,20,25
+    1,COMBEE,20,25
+HeadbuttHigh
+    30,COMBEE,20,25
+    25,COMBEE,20,25
+    20,COMBEE,20,25
+    10,COMBEE,20,25
+    5,COMBEE,20,25
+    5,COMBEE,20,25
+    4,COMBEE,20,25
+    1,COMBEE,20,25
 #-------------------------------
 [085]
 SuperRod
@@ -587,6 +781,52 @@ WaterNight,4
     4,FINNEON,20,25
     1,FINNEON,20,25
 #-------------------------------
+[086]
+LandMorning,7
+    20,FLABEBE,25,30
+    20,FLABEBE,25,30
+    10,ODDISH,25,30
+    10,ODDISH,25,30
+    10,ODDISH,25,30
+    10,SKORUPI,25,30
+    5,SKORUPI,25,30
+    5,SKORUPI,25,30
+    4,GULPIN,25,30
+    4,GULPIN,25,30
+    1,GULPIN,25,30
+    1,GULPIN,25,30
+LandNight,7
+    20,FLABEBE,25,30
+    20,FLABEBE,25,30
+    10,ODDISH,25,30
+    10,ODDISH,25,30
+    10,ODDISH,25,30
+    10,WOOPER,25,30
+    5,WOOPER,25,30
+    5,WOOPER,25,30
+    4,GULPIN,25,30
+    4,GULPIN,25,30
+    1,GULPIN,25,30
+    1,GULPIN,25,30
+HeadbuttLow
+    30,COMBEE,25,30
+    25,COMBEE,25,30
+    20,COMBEE,25,30
+    10,COMBEE,25,30
+    5,COMBEE,25,30
+    5,CARNIVINE,25,30
+    4,CARNIVINE,25,30
+    1,CARNIVINE,25,30
+HeadbuttHigh
+    30,COMBEE,25,30
+    25,COMBEE,25,30
+    20,COMBEE,25,30
+    10,COMBEE,25,30
+    5,COMBEE,25,30
+    5,CARNIVINE,25,30
+    4,CARNIVINE,25,30
+    1,CARNIVINE,25,30
+#-------------------------------
 [090]
 Water,4
     60,BINACLE,20,25
@@ -623,27 +863,72 @@ LandDay,8
     20,BUNEARY,20,25
     10,BUNEARY,20,25
     10,BUNEARY,20,25
-    10,BINACLE,20,25
-    10,BINACLE,20,25
-    5,BINACLE,20,25
+    10,TYNAMO,20,25
+    10,TYNAMO,20,25
     5,TYNAMO,20,25
+    5,BINACLE,20,25
     4,BUNEARY,20,25
-    4,TYNAMO,20,25
-    1,TYNAMO,20,25
-    1,TYNAMO,20,25
+    4,BINACLE,20,25
+    1,BINACLE,20,25
+    1,BINACLE,20,25
 LandNight,8
     20,PURRLOIN,20,25
     20,PURRLOIN,20,25
     10,PURRLOIN,20,25
     10,PURRLOIN,20,25
-    10,BINACLE,20,25
-    10,BINACLE,20,25
-    5,BINACLE,20,25
+    10,TYNAMO,20,25
+    10,TYNAMO,20,25
     5,TYNAMO,20,25
+    5,BINACLE,20,25
     4,PURRLOIN,20,25
-    4,TYNAMO,20,25
-    1,TYNAMO,20,25
-    1,TYNAMO,20,25
+    4,BINACLE,20,25
+    1,BINACLE,20,25
+    1,BINACLE,20,25
+#-------------------------------
+[094]
+Cave,7
+    20,ROLYCOLY,7,12
+    20,WOOBAT,7,12
+    10,ROLYCOLY,7,12
+    10,WOOBAT,7,12
+    10,NOSEPASS,7,12
+    10,NOSEPASS,7,12
+    5,NOSEPASS,7,12
+    5,YUNGOOS,7,12
+    4,ROLYCOLY,7,12
+    4,YUNGOOS,7,12
+    1,YUNGOOS,7,12
+    1,YUNGOOS,7,12
+Water,4
+    60,CHEWTLE,7,12
+    30,CHEWTLE,7,12
+    5,CHEWTLE,7,12
+    4,CHEWTLE,7,12
+    1,CHEWTLE,7,12
+SuperRod
+    40,FEEBAS,7,12
+    40,FEEBAS,7,12
+    15,CHEWTLE,7,12
+    4,CHEWTLE,7,12
+    1,CHEWTLE,7,12
+HeadbuttLow
+    30,WOOBAT,7,12
+    25,WOOBAT,7,12
+    20,WOOBAT,7,12
+    10,WOOBAT,7,12
+    5,WOOBAT,7,12
+    5,BURMY,7,12
+    4,BURMY,7,12
+    1,BURMY,7,12
+HeadbuttHigh
+    30,WOOBAT,7,12
+    25,WOOBAT,7,12
+    20,WOOBAT,7,12
+    10,WOOBAT,7,12
+    5,WOOBAT,7,12
+    5,BURMY,7,12
+    4,BURMY,7,12
+    1,BURMY,7,12
 #-------------------------------
 [110]
 Cave,7
@@ -989,6 +1274,12 @@ Cave,7
     4,UNOWN,30,35
     1,UNOWN,30,35
     1,UNOWN,30,35
+Water,4
+    60,FRILLISH,30,35
+    30,FRILLISH,30,35
+    5,FRILLISH,30,35
+    4,FRILLISH,30,35
+    1,FRILLISH,30,35
 SuperRod
     40,CORSOLA,30,35
     40,CORSOLA,30,35
@@ -1010,6 +1301,51 @@ Cave,10
     4,UNOWN,5,7
     1,UNOWN,5,7
     1,UNOWN,5,7
+#-------------------------------
+[142]
+Cave,7
+    20,ROLYCOLY,5,8
+    20,WOOBAT,5,8
+    10,ROLYCOLY,5,8
+    10,WOOBAT,5,8
+    10,NOSEPASS,5,8
+    10,NOSEPASS,5,8
+    5,NOSEPASS,5,8
+    5,YUNGOOS,5,8
+    4,ROLYCOLY,5,8
+    4,YUNGOOS,5,8
+    1,YUNGOOS,5,8
+    1,YUNGOOS,5,8
+Water,4
+    60,CHEWTLE,5,8
+    30,CHEWTLE,5,8
+    5,CHEWTLE,5,8
+    4,CHEWTLE,5,8
+    1,CHEWTLE,5,8
+SuperRod
+    40,FEEBAS,5,8
+    40,FEEBAS,5,8
+    15,CHEWTLE,5,8
+    4,CHEWTLE,5,8
+    1,CHEWTLE,5,8
+HeadbuttLow
+    30,WOOBAT,5,8
+    25,WOOBAT,5,8
+    20,WOOBAT,5,8
+    10,WOOBAT,5,8
+    5,WOOBAT,5,8
+    5,BURMY,5,8
+    4,BURMY,5,8
+    1,BURMY,5,8
+HeadbuttHigh
+    30,WOOBAT,5,8
+    25,WOOBAT,5,8
+    20,WOOBAT,5,8
+    10,WOOBAT,5,8
+    5,WOOBAT,5,8
+    5,BURMY,5,8
+    4,BURMY,5,8
+    1,BURMY,5,8
 #-------------------------------
 [054]
 HeadbuttLow

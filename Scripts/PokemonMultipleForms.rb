@@ -3070,6 +3070,12 @@ MultipleForms.register(:PERSIAN,{
   })
 
 MultipleForms.register(:GEODUDE,{
+    #pk code
+    "getFormOnCreation"=>proc{|pokemon|
+      next if !$game_map || !$PokemonTemp || $PokemonTemp.encounterType!=EncounterTypes::Cave
+      next 1 if [123,124].include?($game_map.map_id)
+      next rand(2) if [53,110].include?($game_map.map_id)
+    },
     "dexEntry"=>proc{|pokemon|
       next if pokemon.form==0      # Normal
       next "If you accidentally step on a Geodude sleeping on the ground, you’ll hear a crunching sound and feel a shock ripple through your entire body."  # Alola
@@ -3965,6 +3971,11 @@ MultipleForms.register(:CORSOLA,{
       next "Sudden climate change wiped out this ancient kind of Corsola. This Pokémon absorbs others' life-force through its branches."     # Galarian
     },
     "getFormOnCreation"=>proc{|pokemon|
+      #pk code
+      if $game_map && [113,130].include?($game_map.map_id) &&
+         $PokemonTemp && $PokemonTemp.encounterType==EncounterTypes::SuperRod
+        next 1
+      end
       maps=[]  
       # Map IDs for Galariann form
       if $game_map && maps.include?($game_map.map_id)
@@ -4318,6 +4329,11 @@ MultipleForms.register(:STUNFISK,{
       next getID(PBAbilities,:MIMICRY)
     },
     "getFormOnCreation"=>proc{|pokemon|
+      #pk code
+      if $game_map && [123,124].include?($game_map.map_id) &&
+         $PokemonTemp && $PokemonTemp.encounterType==EncounterTypes::Cave
+        next 1
+      end
       maps=[221]   # Map IDs for second form
       if $game_map && maps.include?($game_map.map_id)
         next 1
