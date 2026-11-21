@@ -1,6 +1,6 @@
 # Field Effect Information Database
 # Data structure for all field effects and their mechanics
-# NOTE: Transforming or destroying any field effect grants a 1.3x power bonus
+# Transforming or destroying any field effect grants a x1.3 power bonus.
 
 #pk code
 FIELDEFFECTDATA = {
@@ -9,55 +9,46 @@ FIELDEFFECTDATA = {
     :name => "Electric Terrain",
     :abbr => "ET",
     :message => "The field is hyper-charged!",
-
-    # (Overlay):
-    :overlayEffects => {
-      :terrain => "Electric Terrain",
-      :effects => [
-        "Damage from recoil and crashing is halved.",
-        "On other fields, Electric attacks from grounded users are boosted by 1.5x.",
-        "Explosive and Bomb moves deal 1.3x damage.",
-        "Electric Terrain makes boosts roll their maximum on Short-Circuit Field.",
-        "Galvanize's damage multiplier is 1.5x."
-      ]
-    },
-
-    # (The following moves are affected by this field.):
-    :moveEffects => {
-      :powerBoost => {
-        1.5 => ["Electric moves from grounded users without the Electric Terrain overlay", "Explosive moves", "Bomb moves"]
-      },
-      :additionalDamageType => {
-        "Electric" => ["Explosion", "Self-Destruct", "Surf", "Muddy Water", "Hurricane", "Smack Down", "Thousand Arrows", "Hydro Vortex"]
-      },
-      :fail => ["Focus Punch"],
-      :statChanges => [
-        "Charge sharply raises the user's Special Defense.",
-        "Eerie Impulse drastically lowers the target's Special Attack."
-      ],
-      :durationChange => {
-        "Magnet Rise" => 8
-      },
-      :special => [
-        "Damage from recoil and crashing is nullified.",
-        "Nature Power becomes Thunderbolt.",
-        "Camouflage makes the user Electric-type.",
-        "Secret Power may paralyze the target."
-      ]
-    },
-
-    # (The following abilities are affected by this field):
-    :abilityEffects => [
-      "Galvanize raises its damage multiplier from 1.2x to 1.5x.",
-      "Surge Surfer is activated.",
-      "Gulp Missile always picks up Pikachu.",
-      "Mimicry makes the user Electric-type."
-    ],
-
-    # (The following items are affected by this field):
-    :itemEffects => [
-      "Elemental Seed raises Defense and applies Charge to the holder."
-    ]
+    :manualText => [
+      "#----------------- 1. Electric Terrain [ET] -------------------#",
+      "\"The field is hyper-charged!\"",
+      "(Passive effects by the field.):",
+      "*\tDouble shocked Pokemon regain their type at the end of the turn.",
+      "",
+      "(Overlay):",
+      "Electric Terrain:",
+      "*\tDamage from recoil and crashing is reduced 0.5x.",
+      "*\tElectric moves from grounded Pokemon increase in base power x1.3",
+      "*\tExplosive and Bomb moves deal 1.3x damage.",
+      "*\tIf Electric Terrain is active on Short-Circuit, max boost rolls",
+      "*\tGalvanize's damage increase is 1.5.x",
+      "",
+      "(The following moves are affected by this field.):",
+      "*\tDamage from recoil and crashing is nullified.",
+      "*\tElectric moves from grounded Pokemon increase in base power x1.5",
+      "*\tThese moves deal additional Electric type damage and increase in base power x1.5:",
+      "Surf\t\t\tMuddy Water\tHurricane\t\tSmack Down\t\tThousand Arrows     \tHydro Vortex",
+      "*\tFocus Punch will always fail",
+      "*\tThe stat-changing effect of these moves is amplified:",
+      "\t\tCharge\t\t\tEerie Impulse",
+      "*\tPlasma Fists increases in base power x2",
+      "*\tExplosive and Bomb moves deal 1.5x damage.\t",
+      "*\tMagnet Rise lasts for 8 turns",
+      "*\tNature Power becomes Thunderbolt",
+      "*\tCamouflage changes the user's type to Electric",
+      "*\tSecret Power may Paralyze",
+      "",
+      "(The following abilities are affected by this field):",
+      "*\tGalvanize boosts attacks to 1.5 instead of 1.2",
+      "*\tSurge Surfer is activated",
+      "*\tGulp Missile always picks up Pikachu.",
+      "*\tMimicry changes the user's type to Electric",
+      "",
+      "(The following items are affected by this field):",
+      "*\tElemental Seed boosts defense and applies to Charge to the user.",
+      "",
+      ""
+    ].join("\n")
   },
 
   #----------------- 2. Grassy Terrain [GT] -------------------#
@@ -65,54 +56,47 @@ FIELDEFFECTDATA = {
     :name => "Grassy Terrain",
     :abbr => "GT",
     :message => "The field is in full bloom.",
-
-    # (Overlay):
-    :overlayEffects => {
-      :terrain => "Grassy Terrain",
-      :effects => [
-        "On other fields, Grass moves from grounded users normally deal 1.3x damage.",
-        "Muddy Water, Surf, Earthquake, Magnitude, and Bulldoze deal half damage."
-      ]
-    },
-
-    # (The following moves are affected by this field.):
-    :moveEffects => {
-      :powerBoost => {
-        1.5 => ["Grass moves from grounded users without the Grassy Terrain overlay", "Fire moves against grounded targets", "Wind moves"]
-      },
-      :powerDecrease => {
-        0.5 => ["Muddy Water", "Surf", "Earthquake", "Magnitude", "Bulldoze"]
-      },
-      :statChanges => [
-        "Growth sharply raises the user's Attack and Special Attack.",
-        "Coil sharply raises the user's Attack, Defense, and Accuracy."
-      ],
-      :special => [
-        "Floral Healing restores two-thirds of the target's maximum HP.",
-        "Sludge Wave and Acid Downpour deal 1.3x damage.",
-        "Nature Power becomes Energy Ball.",
-        "Snap Trap deals 1/6 Max HP damage per turn (from 1/8).",
-        "Camouflage makes the user Grass-type.",
-        "Secret Power may make the target drowsy.",
-        "Nature's Madness deals 75% HP damage (from 50%)."
-      ]
-    },
-
-    # (The following abilities are affected by this field):
-    :abilityEffects => [
-      "Mimicry makes the user Grass-type.",
-      "Cotton Down sharply lowers Speed."
-    ],
-
-    # (The following items are affected by this field):
-    :itemEffects => [
-      "Elemental Seed raises Defense and applies Ingrain to the holder."
-    ],
-
-    # (Other effects):
-    :passiveEffects => [
-      "Grounded Pokémon restore 1/16 of their maximum HP at the end of the turn."
-    ]
+    :manualText => [
+      "#------------------ 2. Grassy Terrain [GT] ------------------#",
+      "\"The field is in full bloom.\"",
+      "",
+      "(Passive effects by the field.):",
+      "*\tGrounded Pokemon restore 1/16th max hp at the end of the turn",
+      "",
+      "(Overlay):",
+      "Grassy Terrain:",
+      "*\tGrass moves from grounded Pokemon increase in base power x1.3",
+      "*\tThese moves suffer a x0.5 decrease of power:",
+      "\t\tMuddy Water\t\tSurf\tEarthquake\t\tMagnitude",
+      "\t\tBulldoze",
+      "",
+      "(The following moves are affected by this field.):",
+      "*\tGrass moves from grounded Pokemon increase in base power x1.5",
+      "*\tFire moves against grounded Pokemon increase in base power x1.5",
+      "*\tWind moves increase in base power x1.5",
+      "*\tThese moves suffer a x0.5 decrease of power:",
+      "\t\tMuddy Water\t\tSurf\tEarthquake\t\tMagnitude",
+      "\t\tBulldoze",
+      "*\tThese moves gain double their normal stat-changing effects:",
+      "\t\tGrowth\t\t\tCoil",
+      "*\tFloral Healing restores 66% of the user's Max HP",
+      "*\tNature Power becomes Energy Ball",
+      "*\tSnap Trap deals 1/6 Max HP damage per turn (from 1/8)",
+      "*\tCamouflage changes the user's type to Grass",
+      "*\tSecret Power may induce Sleep",
+      "*\tNature's Madness deals 75% HP damage (From 50%)",
+      "",
+      "(The following abilities are affected by this field):",
+      "*\tMimicry changes the user's type to Grass",
+      "*\tCotton Down lowers speed by two stages.",
+      "",
+      "(The following items are affected by this field):",
+      "*\tElemental Seed boosts Defense and applies Ingrain to the user",
+      "",
+      "",
+      "",
+      ""
+    ].join("\n")
   },
 
   #----------------- 3. Misty Terrain [MT] -------------------#
@@ -120,62 +104,52 @@ FIELDEFFECTDATA = {
     :name => "Misty Terrain",
     :abbr => "MT",
     :message => "Mist settles on the field.",
-
-    # (Overlay):
-    :overlayEffects => {
-      :terrain => "Misty Terrain",
-      :effects => [
-        "On other fields, Fairy attacks get a separate boost from the overlay. Grounded users also get a 1.3x power multiplier.",
-        "Aura/Pulse moves deal 1.3x damage."
-      ]
-    },
-
-    # (The following moves are affected by this field.):
-    :moveEffects => {
-      :powerBoost => {
-        1.5 => ["Fairy attacks without the Misty Terrain overlay", "Aura and pulse moves", "Mist Ball", "Steam Eruption", "Strange Steam", "Clear Smog", "Smog"],
-        1.3 => ["Hidden Power (all types)", "Secret Power", "Ancient Power", "Stored Power"]
-      },
-      :powerDecrease => {
-        0.5 => ["Dragon-type moves"]
-      },
-      :special => [
-        "Aromatic Mist raises Defense and Special Defense for the user and its targeted ally. Mist and Haze raise both defenses for the user and its allies. Haze resets stat changes before raising both defenses.",
-        "Sweet Scent sharply lowers Evasion and lowers Defense and Special Defense.",
-        "Aqua Ring restores 1/8 Max HP each turn.",
-        "Aurora Veil can be used on this field.",
-        "Nature Power becomes Mist Ball.",
-        "Camouflage makes the user Fairy-type.",
-        "Secret Power may lower Special Attack."
-      ]
-    },
-
-    # (The following abilities are affected by this field):
-    :abilityEffects => [
-      "Marvel Scale is activated.",
-      "Soul Heart also raises Special Defense when it activates.",
-      "Dry Skin restores 1/16 of the holder's maximum HP each turn.",
-      "Pixilate's base power multiplier becomes 1.5x.",
-      "Refrigerate's base power multiplier becomes 1.5x.",
-      "Pastel Veil halves damage taken from Poison-type attacks for user and allies.",
-      "Mimicry makes the user Fairy-type."
-    ],
-
-    # (The following items are affected by this field):
-    :itemEffects => [
-      "Elemental Seed raises Special Defense, fully heals the holder, and cures its status."
-    ],
-
-    # (Other effects):
-    :passiveEffects => [
-      "Misty Terrain protects grounded Pokémon from new major status conditions.",
-      "Hail and Rain last for 8 turns."
-    ],
-
-    # (Field transformations):
-    :fieldTransformations => {
-      :terminates => ["Whirlwind", "Gust", "Razor Wind", "Hurricane", "Defog", "Twister", "Tailwind"]
-    }
+    :manualText => [
+      "#------------------- 3. Misty Terrain [MT] --------------------#",
+      "\"Mist settles on the field.\"",
+      "",
+      "(Passive effects by the field.):",
+      "*\tAll Pokemon are immune to status conditions",
+      "*\tHail and Rain last for 8 turns",
+      "",
+      "(Overlay):",
+      "Misty Terrain:",
+      "*\tFairy-type attacks from grounded Pokemon deal 1.3x damage.",
+      "*\tAura/Pulse moves deal 1.3x damage.",
+      "",
+      "(The following moves are affected by this field.):",
+      "*\tFairy-type attacks from grounded Pokemon deal 1.5x damage.",
+      "*\tDragon-type moves decrease in base power x0.5",
+      "*\tPulse moves deal 1.5x damage.",
+      "*\tThese moves increase in base power x1.5:",
+      "Mist Ball\t\tSteam Eruption",
+      "Strange Steam\tClear Smog\t\tSmog",
+      "*\tThese moves increase in base power x1.3",
+      "\t\tHidden Power\t\tSecret Power\t\tAncient Power",
+      "\t\tStored Power\t\t",
+      "*\tAromatic Mist, Mist, and Haze increase Defense and Special Defense of the user and allies",
+      "* \tSweet Scent lowers Defense and Special Defense",
+      "* \tAqua Ring restores 1/8 Max HP each turn",
+      "*\tEnables Aurora Veil",
+      "*\tNature Power becomes Mist Ball",
+      "*\tCamouflage changes the user's type to Fairy",
+      "*\tSecret Power may lower Special Attack",
+      "",
+      "(The following abilities are affected by this field):",
+      "*\tThe ability Marvel Scale is activated",
+      "*\tThe ability Water Compaction is activated",
+      "*\tSoul Heart additionally boosts Special Defense on use",
+      "*\tPokemon with the ability Dry Skin recover 1/16 Max HP each turn",
+      "*\tPower Spot's power boost becomes x1.5",
+      "*\tPixilate's base power boost becomes x1.5",
+      "*\tRefrigerate's base power boost becomes x1.5",
+      "*\tPastel Veil halves the damage taken from Poison Type attacks for user and allies",
+      "*\tMimicry changes the user's type to Fairy",
+      "",
+      "(The following items are affected by this field):",
+      "*\tElemental Seed boosts Special Defense and applies Healing Wish to the user",
+      ""
+    ].join("\n")
   },
 
   #----------------- 4. Dark Crystal Cavern [DCC] -------------------#
@@ -183,46 +157,41 @@ FIELDEFFECTDATA = {
     :name => "Dark Crystal Cavern",
     :abbr => "DCC",
     :message => "Darkness is gathering...",
-
-    # (The following moves are affected by this field.):
-    :moveEffects => {
-      :powerBoost => {
-        1.5 => ["Dark Pulse", "Night Daze", "Night Slash", "Shadow Ball", "Shadow Claw",
-                "Shadow Force", "Shadow Sneak", "Shadow Punch", "Aurora Beam", "Signal Beam",
-                "Flash Cannon", "Luster Purge", "Dazzling Gleam", "Mirror Shot", "Doom Desire",
-                "Techno Blast", "Power Gem", "Moongeist Beam", "Shadow Bone",
-                "Black Hole Eclipse", "Menacing Moonraze Maelstrom"],
-        2.0 => ["Prismatic Laser"]
-      },
-      :fail => ["Solar Beam", "Solar Blade"],
-      :special => [
-        "Aurora Veil can be used on this field.",
-        "Earthquake, Bulldoze, Magnitude, and Tectonic Rage deal 1.3x damage.",
-        "Moonlight restores 75% of Max HP.",
-        "Synthesis and Morning Sun restore 25% of Max HP.",
-        "Nature Power becomes Dark Pulse.",
-        "Camouflage makes the user Dark-type.",
-        "Secret Power may lower Accuracy."
-      ]
-    },
-
-    # (The following abilities are affected by this field):
-    :abilityEffects => [
-      "Mimicry makes the user Dark-type."
-    ],
-
-    # (The following items are affected by this field):
-    :itemEffects => [
-      "Magical Seed raises Special Defense and applies Magic Coat to the holder."
-    ],
-
-    # (Field transformations):
-    :fieldTransformations => {
-      :transformsTo => {
-        "Crystal Cavern" => ["Sunny weather (temporary)"],
-        "Cave" => ["Earthquake (2 uses)", "Bulldoze (2 uses)", "Magnitude (2 uses)", "Tectonic Rage (2 uses)"]
-      }
-    }
+    :manualText => [
+      "#---------------- 4. Dark Crystal Cavern [DCC] -----------------#",
+      "\"Darkness is gathering...\"",
+      "(The following moves are affected by this field.):",
+      "*\tThese moves increase in base power x1.5:",
+      "\t\tDark Pulse\t\tNight Daze\t\tNight Slash\t\tShadow Ball\t\tShadow Claw",
+      "\t\tShadow Force\t\tShadow Sneak\t\tShadow Punch\t\tAurora Beam\t\tSignal Beam",
+      "\t\tFlash Cannon\t\tLuster Purge\t\tDazzling Gleam\t\tMirror Shot\t\tDoom Desire",
+      "\t\tTechnoblast \t\tPower Gem               Moongeist Beam          Shadow Bone",
+      "\t\tBlack Hole Eclipse  Menacing Moonraze Maelstrom",
+      "*\tThese moves increase in base power x2:",
+      "        Prismatic Laser         ",
+      "*\tThese moves gain double their normal stat-changing effects:",
+      "\t\tFlash",
+      "*\tThe base accuracy of these moves becomes 100:",
+      "\t\tDark Void",
+      "*\tSolar Beam and Solar Blade always fail.",
+      "*\tEnables Aurora Veil",
+      "*\tMoonlight restores 75% of the user's Max HP",
+      "* \tNature Power becomes Dark Pulse",
+      "*\tCamouflage changes the user's type to Dark",
+      "*\tSecret Power may lower Accuracy",
+      "*\tSynthesis and Morning Sun restores 25% of the user's Max HP",
+      "(The following abilities are affected by this field):",
+      "*   Prism Armor and Shadow Shield Pokemon take x0.5 decreased damage",
+      "(The following moves change this field):",
+      "* \tTemporarily transformed by sunny weather into Crystal Cavern",
+      "*\tTwo uses of these moves will transform this field into a Cave:\t",
+      "\t\tEarthquake\t\tBulldoze\t\tMagnitude\t\tTectonic Rage",
+      "(The following items are affected by this field):",
+      "*\tMagical Seed boosts Sp.Def and applies Magic Coat to the user",
+      "",
+      "",
+      ""
+    ].join("\n")
   },
 
   #----------------- 5. Chess Board [CB] -------------------#
@@ -361,54 +330,50 @@ FIELDEFFECTDATA = {
     :name => "Swamp Field",
     :abbr => "SF",
     :message => "The field is swamped.",
-
-    # (The following moves are affected by this field.):
-    :moveEffects => {
-      :powerBoost => {
-        1.5 => ["Poison moves (against grounded)", "Mud Bomb", "Mud Shot", "Mud-Slap",
-                "Muddy Water", "Surf", "Sludge Wave", "Gunk Shot", "Brine",
-                "Smack Down", "Thousand Arrows", "Hydro Vortex"]
-      },
-      :additionalDamageType => {
-        "Water" => ["Smack Down", "Thousand Arrows"]
-      },
-      :fail => ["Self Destruct", "Explosion"],
-      :special => [
-        "Aqua Ring restores 1/8 Max HP each turn (from 1/16).",
-        "Strength Sap heals 30% more HP.",
-        "Ingrain damages the user instead of healing it, unless the user is Poison- or Steel-type.",
-        "Nature Power becomes Muddy Water.",
-        "Camouflage makes the user Water-type.",
-        "Secret Power may lower Speed."
-      ]
-    },
-
-    # (The following abilities are affected by this field):
-    :abilityEffects => [
-      "Clear Body, Quick Feet, Swift Swim, Temporal Shift, White Smoke, and Propeller Tail prevent the field's Speed drop.",
-      "Gooey sharply lowers the Speed of attackers that make contact.",
-      "Water Compaction sharply raises Defense each turn.",
-      "Dry Skin restores 1/16 of the holder's maximum HP each turn.",
-      "Gulp Missile always picks up Arrokuda.",
-      "Mimicry makes the user Water-type."
-    ],
-
-    # (The following items are affected by this field):
-    :itemEffects => [
-      "Telluric Seed raises Defense and Special Defense and applies Ingrain to the holder."
-    ],
-
-    # (Other effects):
-    :passiveEffects => [
-      "At the end of the turn, the field lowers the Speed of grounded Pokémon that have acted. It sharply lowers their Speed if they are trapped. Contrary reverses the effect.",
-      "Sleeping Pokémon suffer 1/16 Max HP damage each turn.",
-      "Sleeping Pokémon under the effect of trapping moves take double damage."
-    ],
-
-    # (How this field is created):
-    :createdBy => {
-      :moves => ["Water Pledge + Grass Pledge"]
-    }
+    :manualText => [
+      "#---------------- 8. Swamp Field [SF] -------------------#",
+      "\"The field is swamped.\"",
+      "(Passive effects by the field.):",
+      "*\tAt the end of each turn the speed of each grounded Pokemon is reduced one stage",
+      "*\tSleeping Pokemon suffer 1/16 Max HP damage each turn",
+      "*   Pokemon under the effects of Trapping moves lose double speed at the end of the turn.",
+      "*   Sleeping Pokemon under the effect of Trapping moves take double damage.",
+      "(The field can be created by):",
+      "*\tCreated by Water Pledge + Grass Pledge",
+      "*\tPoison moves against grounded Pokemon increase in base power x1.5",
+      "(The following moves are affected by this field.):",
+      "*\tThese moves increase in base power x1.5:",
+      "\t\tMud Bomb \t\tMud Shot\t\tMud Slap \t\tMuddy Water \t\tSurf\t\t\t",
+      "\t\tSludge Wave \t\tGunk Shot \t\tBrine \t\t\tSmack Down\t\tThousand Arrows",
+      "\t\tHydro Vortex",
+      "*   These moves deal part Water Type damage:",
+      "        Smack Down      Thousand Arrows",
+      "* \tPrevents use of Selfdestruct and Explosion",
+      "*\tNature Power becomes Muddy Water",
+      "*\tCamouflage changes the user's type to Water",
+      "*\tSecret Power may lower Speed",
+      "* \tAqua Ring restores 1/8 Max HP each turn (from 1/16)",
+      "*\tStrength Sap heals 30% more HP\t",
+      "*\tThe base accuracy of these moves becomes 100:",
+      "\t\tSleep Powder\t",
+      "*\tIngrain damages its user instead of heals, unless the user is Poison or Steel type.",
+      "(The following abilities are affected by this field):",
+      "*\tPokemon with the following abilities are immune to the field slow:",
+      "\t\tClear Body\t\tQuick Feet\t\tSwift Swim\t\tWhite Smoke",
+      "\t\tPropellor Tail",
+      "*\tThe effect of Gooey is doubled.",
+      "*   Activates Water Compaction each turn",
+      "*\tPokemon with the ability Dry Skin recover 1/16 Max HP each turn",
+      "*   Gulp Missile always picks up Arrokuda",
+      "*   Mimicry changes the user's type to Water.",
+      "(The following items are affected by this field):",
+      "*       Telluric Seed boosts Defense and Sp. Def and applies Ingrain to the user",
+      "",
+      "",
+      "",
+      "",
+      ""
+    ].join("\n")
   },
 
   #----------------- 9. Rainbow Field [RBF] -------------------#
@@ -416,64 +381,49 @@ FIELDEFFECTDATA = {
     :name => "Rainbow Field",
     :abbr => "RBF",
     :message => "What does it mean?",
-
-    # (The following moves are affected by this field.):
-    :moveEffects => {
-      :powerBoost => {
-        1.5 => ["Special Normal moves (apply random type damage)", "Silver Wind", "Mystical Fire",
-                "Dragon Pulse", "Tri Attack", "Sacred Fire", "Fire Pledge", "Water Pledge",
-                "Grass Pledge", "Aurora Beam", "Judgment", "Relic Song", "Hidden Power",
-                "Secret Power", "Weather Ball", "Mist Ball", "Heart Stamp", "Moon Blast",
-                "Zen Headbutt", "Sparkling Aria", "Fleur Cannon", "Prismatic Laser", "Twinkle Tackle"]
-      },
-      :powerDecrease => {
-        0.5 => ["Dark Pulse", "Night Daze", "Shadow Ball", "Never-ending Nightmare"]
-      },
-      :statChanges => [
-        "Cosmic Power sharply raises the user's Defense and Special Defense."
-      ],
-      :special => [
-        "Sonicboom deals 140 flat HP damage.",
-        "Life Dew restores 50% of Max HP.",
-        "Wish restores 75% of Max HP (from 50%).",
-        "Aurora Veil can be used on this field.",
-        "Nightmare and Bad Dreams have no effect.",
-        "Nature Power becomes Aurora Beam.",
-        "Camouflage makes the user Dragon-type.",
-        "Secret Power can randomly burn, freeze, paralyze, poison, or put the target to sleep."
-      ]
-    },
-
-    # (The following abilities are affected by this field):
-    :abilityEffects => [
-      "Pokémon with Prism Armor take half damage.",
-      "Soul Heart also raises Special Defense when it activates.",
-      "Pastel Veil halves damage from Poison-type attacks.",
-      "Marvel Scale is activated.",
-      "Mimicry makes the user Dragon-type."
-    ],
-
-    # (The following items are affected by this field):
-    :itemEffects => [
-      "Magical Seed raises Special Attack, fully heals the holder, and cures its status."
-    ],
-
-    # (Other effects):
-    :passiveEffects => [
-      "Secondary effect chance of all moves is doubled.",
-      "Sleeping Pokémon recover 1/16 Max HP each turn."
-    ],
-
-    # (How this field is created):
-    :createdBy => {
-      :moves => ["Fire Pledge + Water Pledge"],
-      :note => "Also created by cancelling Rainy or Sunny weather with its opposite."
-    },
-
-    # (Field transformations):
-    :fieldTransformations => {
-      :terminates => ["Sand weather", "Hail weather"]
-    }
+    :manualText => [
+      "#---------------- 9. Rainbow Field [RBF] -----------------#",
+      "\"What does it mean?\"",
+      "(Passive effects by the field.):",
+      "*\tThe secondary effect chance of all moves is doubled",
+      "* \tSleep Pokemon recover 1/16 Max HP each turn",
+      "(The field can be created by):",
+      "*\tCreated by Fire Pledge + Water Pledge, or by cancelling Rainy or Sunny weather with its opposite",
+      "(The following moves are affected by this field.):",
+      "*\tSpecial Normal moves increase in base power x1.5 and apply damage of a random type",
+      "*\tThese moves increase in base power x1.5:",
+      "\t\tSilver Wind\t\tMystical Fire \t\tDragon Pulse \t\tTri Attack \t\tSacred Fire ",
+      "\t\tFire Pledge\t\tWater Pledge\t\tGrass Pledge\t\tAurora Beam \t\tJudgment ",
+      "\t\tRelic Song\t\tHidden Power \t\tSecret Power \t\tWeather Ball \t\tMist Ball ",
+      "\t\tHeart Stamp \t\tMoon Blast\t\tZen Headbutt            Sparkling Aria      Fleur Cannon",
+      "\t\tPrismatic Laser         Twinkle Tackle",
+      "*\tThese moves suffer a x0.5 decrease of power:",
+      "\t\tDark Pulse\t\tNight Daze\t\tShadow Ball\t\tNever-ending Nightmare",
+      "*\tThe following moves' stat-boosting effect is amplified:",
+      "\t\tMeditate\t\t\tCosmic Power",
+      "*\tSonicboom deals 140 flat HP damage",
+      "*   Life Dew restores 50% of the user's Max HP",
+      "*\tWish restores 75% of the user's Max HP (from 50%)",
+      "*       Enables Aurora Veil",
+      "*\tNightmare and Bad Dreams have no effect.",
+      "*\tNature Power becomes Aurora Beam",
+      "*\tCamouflage changes the user's type to Dragon",
+      "*\tSecret Power may inflict any status randomly",
+      "(The following abilities are affected by this field):",
+      "*\tPrism Armor Pokemon take x0.5 decreased damage",
+      "*   Soul Heart additionally boosts Sp. Def on use",
+      "*   Pastel Veil halves damage from Poison type attacks.",
+      "*\tCloud Nine will randomly boost one stat at the end of each turn",
+      "* \tThe ability Marvel Scale is activated",
+      "*   Mimicry changes the user's type to Dragon.",
+      "*\tWonderskin will evade all status moves (from 50%)",
+      "(The following moves change this field):",
+      "*\tTerminated by Sand and Hail",
+      "",
+      "(The following items are affected by this field):",
+      "*       Magical Seed boosts Sp.Atk and applies Healing Wish to the user",
+      ""
+    ].join("\n")
   },
 
   #----------------- 10. Corrosive Field [CF] -------------------#
@@ -665,58 +615,45 @@ FIELDEFFECTDATA = {
     :name => "Icy Field",
     :abbr => "IF",
     :message => "The field is covered in ice.",
-
-    # (The following moves are affected by this field.):
-    :moveEffects => {
-      :powerBoost => {
-        1.5 => ["Ice moves"]
-      },
-      :powerDecrease => {
-        0.5 => ["Fire moves", "Scald", "Steam Eruption"]
-      },
-      :durationChange => {
-        "Hail" => 8
-      },
-      :special => [
-        "Ice-type attacks have a double chance to freeze.",
-        "Burn damage is halved.",
-        "Rock-type attacks gain Ice-type effectiveness.",
-        "Aurora Veil can be used on this field.",
-        "Nature Power becomes Ice Beam.",
-        "Camouflage makes the user Ice-type.",
-        "Secret Power may lower Speed."
-      ]
-    },
-
-    # (The following abilities are affected by this field):
-    :abilityEffects => [
-      "Ice Body is activated.",
-      "Snow Cloak is activated.",
-      "Ice Scales also halves physical damage.",
-      "Refrigerate's base power multiplier becomes 1.5x (from 1.2x).",
-      "Liquid Voice makes attacks Ice-type instead of Water-type.",
-      "Slush Rush is activated.",
-      "Mimicry makes the user Ice-type."
-    ],
-
-    # (The following items are affected by this field):
-    :itemEffects => [
-      "Elemental Seed sharply raises Speed."
-    ],
-
-    # (Other effects):
-    :passiveEffects => [
-      "Damaging priority contact moves and certain momentum moves can raise a grounded user's Speed.",
-      "Beam moves deal 1.3x damage."
-    ],
-
-    # (Field transformations):
-    :fieldTransformations => {
-      :transformsTo => {
-        "Water Surface" => ["Heat Wave", "Flame Burst", "Lava Plume", "Eruption", "Searing Shot",
-                            "Fire Pledge", "Incinerate", "Lava Surf"]
-      }
-    }
+    :manualText => [
+      "#---------------- 13. Icy Field  [IF] ----------------#",
+      "\"The field is covered in ice.\"",
+      "(Passive effects by the field.):",
+      "*\tPhysical positive priority and momentum moves raise Speed.",
+      "*\tBeam moves deal 1.3x damage.",
+      "",
+      "(The following moves are affected by this field.):",
+      "*\tHail lasts for 8 turns\t",
+      "*\tIce type attacks have a double chance to freeze",
+      "*\tIce moves increase in base power x1.5",
+      "*\tFire moves decrease in base power x0.5",
+      "*\tThese moves suffer a x0.5 decrease of power:",
+      "\t\tScald\t\t\tSteam Eruption",
+      "*\tRock-type attacks become Ice-type attacks.",
+      "*\tBurn damage is halved",
+      "*\tNature Power becomes Ice Beam",
+      "*\tCamouflage changes the user's type to Ice",
+      "*\tSecret Power may Freeze",
+      "*\tEnables Aurora Veil",
+      "",
+      "(The following abilities are affected by this field):",
+      "*\tActivates Ice Body and Snow Cloak",
+      "*\tIce Scales also halves physical damage",
+      "*\tRefrigerate's base power boost becomes x1.5 (from x1.2)",
+      "*\tLiquid Voice's makes attacks Ice type instead of Water.",
+      "*\tActivates Slush Rush",
+      "*\tMimicry changes the user's type to Ice",
+      "",
+      "(The following moves change this field):",
+      "*\tThese moves will transform this field into the Water Surface.",
+      "\t\tHeat Wave\t\tFlame Burst\t\tLava Plume\t\tEruption\t\t\tSearing Shot\t\tFire Pledge\t\tInferno Overdrive       Magma Drift  ",
+      "\t\tEarthquake\t\tMagnitude\t\tBulldoze\t\tTectonic Rage",
+      "        \t\tDive",
+      "",
+      "(The following items are affected by this field):",
+      "*\tElemental Seed boosts Speed and lowers Accuracy",
+      ""
+    ].join("\n")
   },
 
   #----------------- 14. Rocky Field [ROF] -------------------#
@@ -778,54 +715,39 @@ FIELDEFFECTDATA = {
     :name => "Forest Field",
     :abbr => "FOF",
     :message => "Trees fill the arena!",
-
-    # (The following moves are affected by this field.):
-    :moveEffects => {
-      :powerBoost => {
-        1.5 => ["Grass moves", "Special Bug moves", "Attack Order", "Slashing moves", "Special Fire moves"]
-      },
-      :powerDecrease => {
-        0.5 => ["Surf", "Muddy Water"]
-      },
-      :additionalDamageType => {
-        "Grass" => ["Slashing moves", "Special Fire-type moves"]
-      },
-      :statChanges => [
-        "Growth sharply raises the user's Attack and Special Attack.",
-        "Defend Order sharply raises the user's Defense and Special Defense."
-      ],
-      :special => [
-        "Strength Sap heals 30% more HP.",
-        "Grav Apple has 120 base power.",
-        "Infestation deals 1/6 Max HP damage per turn (from 1/8).",
-        "Nature's Madness deals 75% HP damage (from 50%).",
-        "Forest's Curse additionally Curses the target.",
-        "Heal Order restores 66% of Max HP (from 50%).",
-        "Nature Power becomes Wood Hammer.",
-        "Camouflage makes the user Bug-type.",
-        "Secret Power may put the target to sleep."
-      ]
-    },
-
-    # (The following abilities are affected by this field):
-    :abilityEffects => [
-      "Overgrow is activated.",
-      "Swarm is activated.",
-      "Leaf Guard is activated.",
-      "Sap Sipper restores 1/16 of maximum HP per turn.",
-      "Effect Spore puts the target to sleep for two turns instead.",
-      "Mimicry makes the user Bug-type."
-    ],
-
-    # (The following items are affected by this field):
-    :itemEffects => [
-      "Telluric Seed raises Attack and applies Spiky Shield to the holder."
-    ],
-
-    # (Other effects):
-    :passiveEffects => [
-      "Grass- and Bug-type Pokémon have a 1.5x Defense multiplier."
-    ]
+    :manualText => [
+      "#---------------- 15. Forest Field [FOF] ------------------#",
+      "\"The field is abound with trees.\"",
+      "(The following moves are affected by this field.):",
+      "*\tGrass- and Bug-type Pokémon’s Defense is boosted 1.5x.",
+      "*\tGrass and special Bug moves increase in base power x1.5",
+      "*\tStrength Sap heals 30% more HP",
+      "*\tInfestation deals 1/6 Max HP damage per turn (from 1/8)",
+      "*\tAttack Order and Grav Apple deal 1.5x damage.",
+      "*\tSlashing and special Fire-type moves deal 1.5x damage and gain the Grass-type.",
+      "*\tThese moves suffer a x0.5 decrease of power:",
+      "\t\tSurf\t\t\tMuddy Water",
+      "*\tNature's Madness deals 75% HP damage (from 50%)",
+      "*\tForest's Curse additionally Curses the target",
+      "*\tHeal Order restores 66% of the user's Max HP (from 50%)",
+      "*\tNature Power becomes Wood Hammer",
+      "*\tCamouflage changes the user's type to Bug",
+      "*\tSecret Power may raise Attack",
+      "",
+      "(The stat changing effect of these moves is affected by this field):",
+      "*\tThe stat changing effect of these moves is amplified:",
+      "\t\tGrowth\t\t\tDefend Order",
+      "",
+      "(The following abilities are affected by this field):",
+      "*\tActivates Overgrow, Swarm, and Leaf Guard",
+      "*\tSap Sipper gradually restores HP",
+      "*\tEffect Spore puts the target to sleep for two turns instead.",
+      "*\tMimicry changes the users type to Bug",
+      "",
+      "(The following items are affected by this field)",
+      "*\tTelluric Seed boosts Attack and applies Spiky Shield to the user",
+      ""
+    ].join("\n")
   },
 
   #----------------- 16. Volcanic Top Field [VTF] -------------------#
@@ -896,88 +818,102 @@ FIELDEFFECTDATA = {
     :name => "Factory Field",
     :abbr => "FF",
     :message => "Machines whir in the background.",
-
-    # (The following moves are affected by this field.):
-    :moveEffects => {
-      :powerBoost => {
-        1.2 => ["Electric attacks when the Electric Terrain overlay is absent"],
-        1.3 => ["Discharge", "Gigavolt Havoc", "Corkscrew Crash", "Overdrive", "Aura Wheel", "Explosion", "Self-Destruct", "Magnitude", "Earthquake", "Bulldoze", "Tectonic Rage"],
-        1.5 => ["Steamroller", "Techno Blast"],
-        2.0 => ["Flash Cannon", "Gyro Ball", "Magnet Bomb", "Gear Grind", "Double Iron Bash"]
-      },
-      :statChanges => [
-        "Autotomize drastically raises the user's Speed.",
-        "Shift Gear sharply raises the user's Attack and Speed.",
-        "Gear Up sharply raises Attack and Special Attack for Pokémon on the user's side that have Plus or Minus.",
-        "Metal Sound drastically lowers the target's Special Defense.",
-        "Iron Defense drastically raises the user's Defense."
-      ],
-      :special => [
-        "Steel Beam normally costs one quarter of the user's max HP on this field.",
-        "Electric Terrain lasts eight turns when applied as an overlay. Nature Power calls Gear Grind. Secret Power can lower Attack."
-      ]
-    },
-
-    # (The following abilities are affected by this field):
-    :abilityEffects => ["Galvanize boosts converted attacks by 50% before the field's Electric-type bonus."],
-
-    # (The following items are affected by this field):
-    :itemEffects => ["Synthetic Seed raises Special Attack and grants Laser Focus."],
-
-    # (Field transformations):
-    :fieldTransformations => {
-      :transformsTo => {
-        "Short-circuit Field" => ["Discharge", "Gigavolt Havoc", "Corkscrew Crash", "Overdrive", "Aura Wheel", "Explosion", "Self-Destruct", "Magnitude", "Earthquake", "Fissure", "Bulldoze", "Tectonic Rage"]
-      }
-    }
+    :manualText => [
+      "#---------------- 17. Factory Field [FAF] -----------------#",
+      "\"Machines whir in the background.\"",
+      " ",
+      "(The following moves are affected by this field.):",
+      "*\tElectric moves increase in base power x1.2",
+      "*\tGear Up's effect is doubled, and additionally boosts its user",
+      "*\tThese moves increase in base power x1.5:",
+      "\t\tSteam Roller\t\tTechno Blast",
+      "*\tThese moves increase in base power x2:",
+      "\t\tFlash Cannon \t\tGyro Ball \t\tGear Grind \t\tMagnet Bomb",
+      "\t\tDouble Iron Bash",
+      "*   Steel Beam's recoil is set to 25%",
+      "*\tThe stat changing effect of these moves is amplified:",
+      "\t\tMetal Sound \t\tIron Defense \t\tShift Gear \t\tAutotomize",
+      "*\tMagnet Rise lasts for 8 turns",
+      "*\tNature Power becomes Gear Grind",
+      "*\tCamouflage changes the user's type to Steel",
+      "*\tSecret Power may reduce Attack",
+      " ",
+      "(The following moves change this field):",
+      "*\tThese moves will transform this field into a Short-circuit Field:\t\t",
+      "\t\tDischarge\t\tExplosion \t\tSelfdestruct \t\tMagnitude \t\tFissure",
+      " \t\tEarthquake \t\tIon Deluge\t\tBulldoze\t\t\tTectonic Rage   Gigavolt Havoc",
+      "\t\tOverdrive       Aura Wheel",
+      "\t\tDischarge additionally can potentially alternate between the Short-circuit Field and the Factory Field for each instance of damage per attack in double battles",
+      " ",
+      "(The following abilities are affected by this field):",
+      "*   Galvanize's boost becomes x1.5 (from x1.2)",
+      "*\tSteelworker's damage boost becomes x2 (from x1.5)",
+      "*   Download's boost is doubled.",
+      "*   Motor Drive's speed boosting effect is doubled.",
+      "*   Technician activates with moves of Base Power of 80 or below.",
+      "*   Gulp Missile always grabs Pikachu.",
+      "*\tMimicry changes the user's type to Steel",
+      " ",
+      "(The following items are affected by this field):",
+      "*       Synthetic Seed boosts Sp. Atk and applies Laser Focus to the user",
+      "",
+      "",
+      ""
+    ].join("\n")
   },
   #----------------- 18. Short-circuit Field [SCF] -------------------#
   18 => {
     :name => "Short-circuit Field",
     :abbr => "SCF",
     :message => "Bzzt!",
-
-    # (The following moves are affected by this field.):
-    :moveEffects => {
-      :powerBoost => {
-        1.3 => ["Dark Pulse", "Phantom Force", "Night Daze", "Night Slash", "Shadow Ball", "Shadow Punch", "Shadow Claw", "Shadow Sneak", "Shadow Force", "Shadow Bone"],
-        1.5 => ["Dazzling Gleam", "Flash Cannon", "Surf", "Muddy Water", "Magnet Bomb", "Gyro Ball", "Gear Grind"],
-        1.667 => ["Steel Beam"]
-      },
-      :additionalDamageType => {
-        "Electric" => ["Surf", "Muddy Water", "Magnet Bomb", "Gyro Ball", "Gear Grind", "Hydro Vortex", "Steel Beam"]
-      },
-      :accuracyChange => {80 => ["Zap Cannon"]},
-      :durationChange => {"Magnet Rise" => 8},
-      :statChanges => [
-        "Metal Sound drastically lowers the target's Special Defense."
-      ],
-      :special => [
-        "Steel Beam normally costs all of the user's remaining HP.",
-        "Nature Power calls Discharge. Secret Power can paralyze."
-      ]
-    },
-
-    # (The following abilities are affected by this field):
-    :abilityEffects => [
-      "Volt Absorb restores 1/16 max HP at the end of a turn when healing is allowed. Surge Surfer doubles Speed.",
-      "Galvanize doubles converted moves before the field multiplier if the Electric Terrain overlay is absent."
-    ],
-
-    # (The following items are affected by this field):
-    :itemEffects => ["Synthetic Seed raises Special Defense and grants Magnet Rise."],
-
-    # (Other effects):
-    :passiveEffects => [
-      "Electric attacks randomly use a damage multiplier of 0.5, 0.8, 1.2, 1.5, or 2.0. The Electric Terrain overlay guarantees 2.0."
-    ],
-
-    # (Field transformations):
-    :fieldTransformations => {
-      :transformsTo => {
-        "Factory Field" => ["Discharge", "Gigavolt Havoc", "Ion Deluge", "Overdrive", "Aura Wheel", "Parabolic Charge", "Wild Charge", "Charge Beam"]
-      }
-    }
+    :manualText => [
+      "#---------------- 18. Short-circuit Field [SCF] -----------------#",
+      "\"Bzzt!\"",
+      " ",
+      "(The following moves are affected by this field.):",
+      "*\tElectric attacks amplify a random increment of base power between x0.5 and x2",
+      "*\tThese moves increase in base power x1.5:",
+      "\t\tDazzling Gleam      Flash Cannon",
+      "*   Steel Beam increases in BP by 1.667x and instantly KO's the user. Deals Steel & Electric type damage.",
+      "*\tThese moves increase in base power x1.3:",
+      "\t\tDark Pulse\t\tNight Daze\t\tNight Slash\t\tShadow Ball\t\tShadow Claw",
+      "\t\tShadow Force\t\tShadow Sneak\t\tShadow Punch\t\tShadow Bone",
+      "\t\tPhantom Force",
+      "*\tThese moves deal additional Electric type damage and increase power x1.5:\t",
+      "\t\tSurf \t\t\tMuddy Water\t\tGyro Ball \t\tMagnet Bomb \t",
+      " \t\tGear Grind\t\tHydro Vortex",
+      "*\tThe stat changing effect of these moves is amplified:",
+      "\t\tMetal Sound\t\tFlash",
+      "*\tThe base accuracy of these moves becomes 80:",
+      "\t\tZap Cannon",
+      "*\tMagnet Rise lasts for 8 turns",
+      "*\tNature Power becomes Discharge",
+      "*\tCamouflage changes the user's type to Electric",
+      "*\tSecret Power may Paralyze",
+      " ",
+      "(The following moves change this field):",
+      "*\tThese moves will transform this field into a Factory Field:\t\t",
+      "\t\tCharge Beam\t\tDischarge\t\tWild Charge\t\tParabolic Charge\t\tIon Deluge",
+      "\t\tGigavolt Havoc  Overdrive       Aura Wheel",
+      "\tDischarge additionally can potentially alternate between the Short-circuit Field and the Factory Field for each instance of damage per attack",
+      " ",
+      "(The following abilities are affected by this field):",
+      "*\tStatic's activation chance is doubled to 60%",
+      "*\tVolt Absorb gradually restores HP",
+      "*\tActivates Plus and Minus",
+      "*\tActivates Surge Surfer",
+      "*   Download boosts both attacking stats.",
+      "*   Gulp Missile always grabs Pikachu.",
+      "*\tMimicry changes the user's type to Electric",
+      "*   Galvanize's boost becomes x2 (from x1.2)",
+      "*\tSteelworker additionally makes all Steel type attacks gain Electric typing",
+      " ",
+      "(The following items are affected by this field):",
+      "*   Synthetic Seed boosts Sp. Def and applies Magnet Rise to the user",
+      "",
+      "",
+      ""
+    ].join("\n")
   },
   #----------------- 19. Wasteland [WL] -------------------#
   19 => {
@@ -1019,85 +955,105 @@ FIELDEFFECTDATA = {
     :name => "Ashen Beach",
     :abbr => "AB",
     :message => "Ash and sand line the field.",
-
-    # (The following moves are affected by this field.):
-    :moveEffects => {
-      :powerBoost => {
-        1.2 => ["Psychic"],
-        1.3 => ["Stored Power", "Zen Headbutt", "Focus Blast", "Aura Sphere"],
-        1.5 => ["Hidden Power", "Strength", "Land's Wrath", "Thousand Waves", "Surf", "Muddy Water"],
-        2.0 => ["Mud-Slap", "Mud Shot", "Mud Bomb", "Sand Tomb"]
-      },
-      :additionalDamageType => {"Psychic" => ["Strength, which becomes Fighting-type on this field"]},
-      :statChanges => [
-        "Calm Mind sharply raises the user's Special Attack and Special Defense.",
-        "Sand Attack sharply lowers the target's Accuracy."
-      ],
-      :durationChange => {"Arenite Wall" => 8, "Sandstorm" => 8},
-      :special => [
-        "Focus Energy sharply raises the user's critical-hit ratio.",
-        "Shore Up heals 66% of max HP, as in sandstorm.",
-        "Special Flying attacks, Leaf Tornado, Fire Spin, Twister, Razor Wind, and Whirlpool stir up ash and can lower Accuracy.",
-        "Nature Power calls Meditate. Secret Power can lower Accuracy."
-      ]
-    },
-
-    # (The following abilities are affected by this field):
-    :abilityEffects => ["Mimicry makes the user Ground-type. Zen Mode activates without needing low HP."],
-
-    # (The following items are affected by this field):
-    :itemEffects => ["Telluric Seed drastically raises the holder's critical-hit ratio."],
-
-    # (Other effects):
-    :passiveEffects => ["Fighting types resist attempts to confuse them on this field."]
+    :manualText => [
+      "#---------------- 20. Ashen Beach [AB] -----------------#",
+      "\"Ash and sand line the field.\"",
+      " ",
+      "(Passive effects by the field.):",
+      "*\tFighting types are immune to confusion",
+      "*\tPokemon with the following abilities ignore accuracy and evasion changes when attacking, unless an opponent has Unnerve:",
+      "\t\tOwn Tempo\t\tInner Focus\t\tPure Power",
+      "Steadfast",
+      " ",
+      "(The following moves are affected by this field.):",
+      "*\tThese moves stir up ash, lowering all active Pokemons' accuracy:",
+      "\t\tSpecial Flying attacks",
+      "\t\tTwister\t\t\tFire Spin\t\tLeaf Tornado",
+      "Razor Wind\t\tWhirlpool",
+      "*\tThe following moves' stat-boosting effect is amplified:",
+      "\t\tCalm Mind\t\tSand Attack\t\tKinesis\t\t",
+      "Meditate",
+      "*\tSandstorm and Sand Stream last for 8 turns",
+      "*\tPsych-up cures the user's status\t\t",
+      "* \tFocus Energy boosts Critical Hit rate by three stages\t\t",
+      "*\tThese moves increase in base power x2:",
+      "\t\tMud Slap\t\tMud Shot\t\tMud Bomb",
+      "\t    \tSand Tomb",
+      "*\tThese moves increase in base power x1.5 and apply Fighting/Psychic type damage",
+      "\t\tStrength",
+      "*\tThese moves increase in base power x1.5:",
+      "\t\tHidden Power\t\tLand's Wrath\t\tSurf",
+      "Muddy Water\t\tThousand Waves",
+      "*\tThese moves increase in base power x1.3:",
+      "\t\tZen Headbutt\t\tStored Power\t\tAura Sphere",
+      "Focus Blast",
+      "*\tThese moves increase in base power x1.2:",
+      "\t\tPsychic\t\t",
+      "*\tPokemon trapped in Sand Tomb suffer an accuracy drop each turn.",
+      "*\tArenite Wall lasts 8 turns",
+      "*\tArenite Wall works without the need for a Sandstorm",
+      "*\tNature Power becomes Meditate",
+      "*\tCamouflage changes user's type to Ground",
+      "*\tSecret Power may lower accuracy",
+      "*\tShore Up restores 75% HP (from 50%)",
+      " ",
+      "(The following abilities are affected by this field):",
+      "*\tActivates Sand Veil, Sand Rush and Sand Force",
+      "*\tWater Compaction additionally boosts Sp. Def on use",
+      "*\tSand Spit lowers accuracy of foes upon activation.",
+      "*\tZen Mode is active.",
+      "*\tMimicry changes the user's type to Ground",
+      " ",
+      "(The following items are affected by this field):",
+      "*       Telluric Seed applies Focus Energy.",
+      "",
+      "",
+      ""
+    ].join("\n")
   },
   #----------------- 21. Water Surface [WS] -------------------#
   21 => {
     :name => "Water Surface",
     :abbr => "WS",
     :message => "The water's surface is calm.",
-
-    # (The following moves are affected by this field.):
-    :moveEffects => {
-      :powerBoost => {
-        1.3 => ["Dive", "Anchor Shot", "Blizzard", "Glaciate", "Subzero Slammer", "Sludge Wave", "Acid Downpour"],
-        1.5 => ["Water attacks", "Electric attacks without the Electric Terrain overlay", "Surf", "Muddy Water", "Origin Pulse", "Whirlpool", "Dive", "Hydro Vortex"]
-      },
-      :powerDecrease => {0.5 => ["Fire attacks against targets with no Ground immunity"]},
-      :special => [
-        "The listed Water moves receive their move-specific boosts in addition to the Water-type boost.",
-        "Dive executes in one turn. Life Dew gives its user Aqua Ring. Aqua Ring restores 1/8 max HP.",
-        "Nature Power calls Whirlpool. Secret Power can lower Speed."
-      ]
-    },
-
-    # (The following abilities are affected by this field):
-    :abilityEffects => [
-      "Hydroplane raises Attack by 50% on Water Surface unless the holder has a working Utility Umbrella, and costs 1/8 max HP each turn.",
-      "Torrent powers up Water moves even at full HP.",
-      "Propeller Tail increases the damage of the user's damaging moves with positive base priority by 50%.",
-      "Grounded Pokémon with Water Absorb can recover 1/16 max HP per turn.",
-      "Swift Swim and Surge Surfer double Speed. Steam Engine raises Speed at the end of each turn.",
-      "Mimicry makes the user Water-type. Wishiwashi with Schooling can form a school regardless of level or HP."
-    ],
-
-    # (The following items are affected by this field):
-    :itemEffects => ["Elemental Seed raises Special Defense and grants Aqua Ring."],
-
-    # (Other effects):
-    :passiveEffects => ["Ground attacks are stopped by the water. Spikes and Toxic Spikes sink."],
-
-    # (How this field is created):
-    :createdBy => { :note => "Can occur while surfing, swimming, or fishing, or when a battle resurfaces from Underwater." },
-
-    # (Field transformations):
-    :fieldTransformations => {
-      :transformsTo => {
-        "Underwater" => ["Dive", "Gravity", "Anchor Shot", "Grav Apple"],
-        "Murkwater Surface" => ["Sludge Wave twice", "Acid Downpour"],
-        "Icy Field" => ["Blizzard", "Glaciate", "Subzero Slammer"]
-      }
-    }
+    :manualText => [
+      "#---------------- 21. Water Surface [WS] -----------------#",
+      "\"The water's surface is calm.\"",
+      " ",
+      "(The following moves are affected by this field.):",
+      "*\tWater and Electric moves increase in base power x1.5",
+      "*\tFire moves against grounded Pokemon decrease base power x0.5",
+      "*\tGround attacks always fail",
+      "*\tSpikes and Toxic Spikes sink into the water, vanishing",
+      "*\tDive lasts only one turn",
+      "*   Tar Shot washes off at the end of the turn.",
+      "*   Life Dew grants the user Aqua Ring.",
+      "*\tThese moves increase in base power x1.5:",
+      "\t\tWhirlpool\t\t\tDive\t\t\tSurf\t\t\tMuddy Water",
+      "\t\tSludge Wave         Hydro Vortex    Origin Pulse",
+      "*\tNature Power becomes Whirlpool",
+      "*\tCamouflage changes user's type to Water",
+      "*\tSecret Power may lower speed",
+      "*\tSplash lowers the opponent's accuracy",
+      "* \tAqua Ring restores 1/8 Max HP each turn (from 1/16)\t",
+      " ",
+      "(The following abilities are affected by this field):",
+      "*\tWater Veil cures all status conditions",
+      "*\tActivates Swift Swim, Hydration, Torrent\t",
+      "*\tGrounded Pokemon with Dry Skin and Water Absorb gradually restore HP",
+      "*\tShore Up activates Water Compaction",
+      "*\tSchooling is active at all times",
+      "*\tActivates Surge Surfer",
+      "*   Activates Water Compaction each turn",
+      "*   Steam Engine raises speed at the end of every turn.",
+      "*   Mimicry changes the users type to Water.",
+      "*   Propeller Tail increases the power of the user's priority moves by 1.5x",
+      "*   Gulp Missile always picks up Arrokuda.",
+      " ",
+      "(The following items are affected by this field):",
+      "*\tElemental Seed boosts Sp. Def and applies Aqua Ring to the user",
+      ""
+    ].join("\n")
   },
   #----------------- 22. Underwater [UW] -------------------#
   22 => {
@@ -1161,34 +1117,40 @@ FIELDEFFECTDATA = {
     :name => "Cave",
     :abbr => "CV",
     :message => "The cave echoes dully...",
-
-    # (The following moves are affected by this field.):
-    :moveEffects => {
-      :powerBoost => {
-        1.3 => ["Power Gem", "Diamond Storm", "Hot Tempo", "Lava Surf", "Lava Plume", "Eruption", "Heat Wave", "Inferno", "Overheat", "Fire Lash", "Fusion Flare", "Inferno Overdrive", "Draco Meteor", "Devastating Drake", "Sludge Wave", "Blizzard", "Subzero Slammer", "Acid Downpour"],
-        1.5 => ["Rock attacks", "Sound-based attacks", "Rock Tomb"]
-      },
-      :powerDecrease => {0.5 => ["Non-contact Flying attacks"]},
-      :fail => ["Sky Drop"],
-      :special => [
-        "Fly and Bounce execute in one turn. Terrain Pulse becomes Rock type.",
-        "Nature Power calls Rock Tomb. Secret Power can inflict Crushed.",
-        "The cave stays in place after the ceiling collapses. Shelter halves incoming Rock damage."
-      ]
-    },
-
-    # (The following abilities are affected by this field):
-    :abilityEffects => ["Amplify boosts sound moves by 50%. Mimicry makes the user Rock-type."],
-
-    # (The following items are affected by this field):
-    :itemEffects => ["Telluric Seed sharply raises Defense and attempts to inflict Crushed on the holder."],
-
-    # (Other effects):
-    :passiveEffects => [
-      "Ground attacks can hit airborne Pokémon. Stealth Rock damage is doubled.",
-      "Two uses of Earthquake, Magnitude, Bulldoze, Tectonic Rage, or Continental Crush collapse the ceiling. The cave-in places Stealth Rock on both sides, triggers it immediately, and attempts to inflict Crushed.",
-      "Semi-invulnerable Pokémon, bosses, and Pokémon protected by shields, certain abilities, or Rock Silvally's protection avoid Crushed from the collapse. After the Stealth Rock damage, Endure, Sturdy, and Miracle can leave survivors at 1 HP in place of inflicting Crushed."
-    ]
+    :manualText => [
+      "#---------------- 23. Cave [CV] -----------------#",
+      "\"The cave echoes dully...\"",
+      " ",
+      "(The following moves are affected by this field.):",
+      "*\tGround type attacks can hit airborne Pokemon",
+      "* \tFly and Bounce each last only one turn",
+      "*\tSky Drop always fails",
+      "*\tStealth Rock damage is doubled",
+      "*\tRock moves increase in base power x1.5",
+      "*\tNon-contact Flying moves decrease in base power x0.5",
+      "* \tSound-based attacks receive a x1.5 increase in power",
+      "*\tThese moves gain an additional x1.5 increase in power:",
+      "\t\tRock Tomb",
+      "*\tNature Power becomes Rock Tomb",
+      "*\tCamouflage changes user's type to Rock",
+      "*\tSecret Power may crush.",
+      "*\tShelter halves damage from Rock-type moves.",
+      "*\tTerrain Pulse becomes Rock-type.",
+      " ",
+      "(The following moves cause the field to react):\t",
+      "*\tEarthquake, Bulldoze, Tectonic Rage, Continental Crush and Magnitude collapse the cave, setting and activating Stealth Rocks and crushing all Pokemon",
+      "*\tPokemon with these abilities are immune to cave-ins: Battle Armor, Shell Armor, Solid Rock, Prism Armor, Bulletproof, Rock Head, Stalwart",
+      "*\tProtection moves, Wide Guard, and Arenite Wall prevent cave-in damage and effects.",
+      "*\tPokemon using Endure or Miracle, or having Sturdy survive cave-ins at 1 HP.",
+      "",
+      "(The following abilities are affected by this field):",
+      "*   Punk Rock increases sound moves by 1.5x",
+      "*   Mimicry changes the users type to Rock.",
+      " ",
+      "(The following items are affected by this field):",
+      "*\tTelluric Seed sharply boosts Defense but crushes the holder.",
+      ""
+    ].join("\n")
   },
   #----------------- 24. Glitch Field [GF] -------------------#
   24 => {
@@ -1407,40 +1369,67 @@ FIELDEFFECTDATA = {
     :name => "Blessed Field",
     :abbr => "HF",
     :message => "The field is blessed!",
-
-    # (The following moves are affected by this field.):
-    :moveEffects => {
-      :powerBoost => {
-        1.2 => ["Dragon attacks", "Psychic attacks without the Psychic Terrain overlay"],
-        1.3 => ["Light moves", "Psystrike", "Aeroblast", "Origin Pulse", "Precipice Blades", "Dragon Ascent", "Doom Desire", "Mist Ball", "Luster Purge", "Psycho Boost", "Spacial Rend", "Roar of Time", "Crush Grip", "Secret Sword", "Relic Song", "Hyperspace Hole", "Land's Wrath", "Moongeist Beam", "Sunsteel Strike", "Prismatic Laser", "Fleur Cannon", "Non-Normal Multipulse", "Behemoth Blade", "Behemoth Bash", "Dynamax Cannon", "Eternabeam", "Genesis Supernova"],
-        1.5 => ["Fairy attacks without the Misty Terrain overlay", "Special Normal attacks", "Mystical Fire", "Magical Leaf", "Ancient Power", "Judgment", "Sacred Fire"]
-      },
-      :powerDecrease => {0.5 => ["Ghost attacks", "Special Dark attacks"]},
-      :statChanges => [
-        "Cosmic Power sharply raises the user's Defense and Special Defense."
-      ],
-      :special => [
-        "Life Dew heals half of max HP. Wish restores three quarters of the user's max HP.",
-        "Miracle Eye also sharply raises the user's Special Attack.",
-        "Nature Power calls Judgment. Secret Power can lower Special Attack."
-      ]
-    },
-
-    # (The following abilities are affected by this field):
-    :abilityEffects => ["Power Spot increases the partner's attack power by 50%. Mimicry makes the user Normal-type."],
-
-    # (The following items are affected by this field):
-    :itemEffects => ["Magical Seed raises Special Attack and grants Magic Coat."],
-
-    # (Other effects):
-    :passiveEffects => ["Normal attacks are super effective against Ghost and Dark types here."],
-
-    # (Field transformations):
-    :fieldTransformations => {
-      :transformsTo => {
-        "Cursed Field" => ["Ghost-type Curse", "Trick-or-Treat", "Phantom Force", "Shadow Force", "Ominous Wind twice"]
-      }
-    }
+    :manualText => [
+      "#---------------- 29. Blessed Field [HF] -----------------#",
+      "\"The field is blessed!\"",
+      "(Passive effects by the field.):",
+      "*\tNormal-type moves affect Ghost-type Pokemon.",
+      "",
+      "(Overlay):",
+      "Blessed Terrain:",
+      "*\tSpecial Normal-type attacks deal 1.3x damage.",
+      "*\tLight moves deal 1.3x damage.",
+      " ",
+      "(The following moves are affected by this field.):",
+      "*\tGhost and special Dark moves decrease in base power x0.5",
+      "*\tFairy and special Normal moves increase in base power x1.5",
+      "*\tDragon and Psychic moves increase in base power x1.2",
+      "*\tLight moves deal 1.3x damage.\t",
+      "*\tThese moves increase in base power x1.3:",
+      "\t\tPsystrike \t\tAeroblast \t\tOrigin Pulse",
+      "Precipice Blades\t\tDragon Ascent",
+      " \t\tDoom Desire\t \tMist Ball\t\tLuster Purge \t\tPsycho Boost \t\t    \tSpacial Rend",
+      "Roar of Time    Crush Grip \t\tSecret Sword\t\tRelic Song \t\t Hyperspace Hole\t\t",
+      "\t\tLand's Wrath\tMoongeist Beam  Sunsteel Strike\t\tPrismatic Laser\t\t    \tFleur Cannon",
+      "\t\tGenesis Supernova ",
+      "\t    \tBehemoth Blade  Behemoth Bash",
+      "\t\tEternabeam      Dynamax Cannon",
+      "\t\tRetribution",
+      "*\tThese moves increase in base power x1.5:",
+      "\t\tMystical Fire\t\tMagical Leaf\t\tJudgment\t\tSacred Fire",
+      "\t\tAncient Power",
+      "*   These moves deal super effective damage to Ghost types:",
+      "        Spirit Break",
+      "*   Life Dew's healing increases to 50%",
+      "*\tWish restores 75% of the user's Max HP (from 50%)",
+      "*\tMiracle Eye additionally boosts SpAtk",
+      "*\tThe stat changing effect of these moves is amplified:",
+      "\t\tCosmic Power",
+      "*\t(Ghost-type) Curses are lifted after each turn",
+      "* \tNature Power becomes Judgment",
+      "*\tCamouflage changes the user's type to Normal",
+      "*\tSecret Power may lower SpAtk",
+      "*\tNature's Madness deals 75% HP damage (from 50%)",
+      " ",
+      "(The following abilities are affected by this field):",
+      "*\tJustified's effect is doubled",
+      "*\tCursed Body has no effect",
+      "*\tPerish Body has no effect.",
+      "*\tPower Spot increases partner's damage output by 1.5x",
+      "*\tMimicry changes the users type to Normal.",
+      "*\tRKS System's type becomes Dark at all times",
+      " ",
+      "(The following moves change this field):",
+      "*\tTwo uses of these moves transform the field into Cursed Field:",
+      "\t\tCurse \t\tOminous Wind",
+      "",
+      "*\tThese moves transform the field into Cursed Field:",
+      "\t\tPhantom Force \tShadow Force",
+      " ",
+      "(The following items are affected by this field):",
+      "*\tMagical Seed boosts Sp.Atk and applies Magic Coat to the user",
+      ""
+    ].join("\n")
   },
   #----------------- 30. Mirror Arena [MA] -------------------#
   30 => {
@@ -1722,80 +1711,76 @@ FIELDEFFECTDATA = {
     :name => "Inverse Field",
     :abbr => "IF",
     :message => "!trats elttaB",
-
-    # (The following moves are affected by this field.):
-    :moveEffects => {
-      :special => ["Nature Power calls Trick Room. Camouflage makes the user Normal-type. Secret Power may confuse the target."]
-    },
-
-    # (The following abilities are affected by this field):
-    :abilityEffects => ["Mimicry makes the user Normal-type."],
-
-    # (The following items are affected by this field):
-    :itemEffects => ["Magical Seed grants Normalize and changes a non-Normal holder to Normal."],
-
-    # (Other effects):
-    :passiveEffects => ["The type chart is inverted. This also changes the type effectiveness applied to entry hazards."],
-
-    # (How this field is created):
-    :createdBy => {
-      :moves => ["Topsy-Turvy"],
-      :note => "On an empty field, Topsy-Turvy creates Inverse Field for 3 turns, or 6 with Amplifield Rock."
-    }
+    :manualText => [
+      "#---------------- 36. Inverse Field [IF] -----------------#",
+      "\"!trats elttaB\"",
+      " ",
+      "(Passive effects by the field.):",
+      "*\tThe type chart is inverted",
+      " ",
+      "(The field can be created by):",
+      "*\tCreated for 3 turns by Topsy Turvy unless the user is holding an Everstone",
+      " ",
+      "(The following moves are affected by this field.):",
+      "* \tNature Power becomes Trick Room",
+      "*\tCamouflage changes the user's type to Normal",
+      "*\tSecret Power may inflict confusion",
+      " ",
+      "(The following abilities are affected by this field.):",
+      "*\tMimicry changes the user's type to a random type",
+      " ",
+      "(The following items are affected by this field):",
+      "*\tMagical Seed changes the user's type to Normal and gives them Normalize.",
+      ""
+    ].join("\n")
   },
   #----------------- 37. Psychic Terrain [PT] -------------------#
   37 => {
     :name => "Psychic Terrain",
     :abbr => "PT",
     :message => "The field became mysterious!",
-
-    # (Overlay):
-    :overlayEffects => {
-      :terrain => "Psychic Terrain",
-      :effects => ["The overlay boosts eligible Psychic attacks and the same six selected moves by 1.3x. Anticipation raises Special Attack on entry."]
-    },
-
-    # (The following moves are affected by this field.):
-    :moveEffects => {
-      :powerBoost => {
-        1.5 => ["Psychic attacks from users vulnerable to Ground", "Hex", "Magical Leaf", "Mystical Fire", "Moonblast", "Aura Sphere", "Mind Blown"]
-      },
-      :additionalDamageType => {
-        "Psychic" => ["Strength", "Ancient Power", "Dragon Pulse", "Water Pulse"]
-      },
-      :statChanges => [
-        "Nasty Plot drastically raises the user's Special Attack.",
-        "Calm Mind sharply raises the user's Special Attack and Special Defense.",
-        "Cosmic Power sharply raises the user's Defense and Special Defense."
-      ],
-      :durationChange => {
-        "Gravity, Trick Room, Magic Room, and Wonder Room" => 8
-      },
-      :special => [
-        "Expanding Force gets its Psychic Terrain enhancement when its user is grounded. Terrain Pulse becomes Psychic-type.",
-        "Psych Up, Mind Reader, and Miracle Eye can sharply raise the user's Special Attack. Telekinesis also sharply lowers the target's Defense and Special Defense.",
-        "Nature Power calls Psychic. Camouflage makes the user Psychic-type. Secret Power and Shattered Psyche can confuse their target."
-      ]
-    },
-
-    # (The following abilities are affected by this field):
-    :abilityEffects => [
-      "Pure Power doubles Special Attack instead of Attack. Anticipation and Forewarn sharply raise Special Attack on entry.",
-      "Telepathy doubles Speed. Zen Mode can activate. Mimicry makes the user Psychic-type."
-    ],
-
-    # (The following items are affected by this field):
-    :itemEffects => ["Magical Seed raises Special Attack and Special Defense, and can confuse the holder."],
-
-    # (Other effects):
-    :passiveEffects => ["Priority attacks are blocked against opponents even if the target is airborne. Headstrong can bypass the block."],
-
-    # (How this field is created):
-    :createdBy => {
-      :moves => ["Psychic Terrain", "Genesis Supernova"],
-      :abilities => ["Psychic Surge"],
-      :note => "A Psychic Terrain effect over another field uses the overlay rules."
-    }
+    :manualText => [
+      "#---------------- 37. Psychic Terrain [PT] -----------------#",
+      " ",
+      "(Passive effects by the field.):",
+      "*\tGravity and Room moves last 8 turns.",
+      "*\tUnwound Pokemon regain their type at the end of the turn.",
+      " ",
+      "(Overlay):",
+      "Psychic Terrain:",
+      "*\tPositive priority attacks deal 0.5x damage.",
+      "*\tPsychic moves increase in base power x1.3",
+      " ",
+      "(The following moves are affected by this field.):",
+      "*\tPositive priority moves fail.",
+      "*\tPsychic attacks deal x1.5 increased damage",
+      "*\tThe effect of the following stat-altering moves is increased:",
+      "\t\tNasty Plot\tCalm Mind\tCosmic Power\t\tMeditate",
+      "*\tThese moves increase in base power x1.5:",
+      "\t\tMystical Fire\tMagical Leaf   Aura Sphere",
+      "\t\tHex             Moonblast      Mind Blown",
+      "*\tThe following moves deal additional Psychic-type damage:",
+      "\t\tStrength\t\tAncient Power\t\tDragon Pulse\t\tWater Pulse",
+      "*\tSecret Power may confuse its target",
+      "*\tNature Power becomes Psychic",
+      "*\tCamouflage becomes Psychic",
+      "*\tPsych Up, Meditate, Mind Reader and Miracle Eye additionally boost Sp.Atk two stages on use",
+      "*\tHypnosis puts the target to sleep for two turns",
+      "*\tKinesis additionally lowers its target's Attack and Sp.Atk two stages",
+      "*\tTelekinesis additional lowers its target's Defense and Sp.Def two stages",
+      "*\tShattered Psyche additionally confuses its target",
+      "",
+      " ",
+      "(The following abilities are affected by this field):",
+      "*\tAnticipation and Forewarn boost Sp.Atk on switch in",
+      "*\tZen Mode is activated.",
+      "*\tPower Spot increases partner's damage output by 1.5x(from 1.3x)",
+      "*\tTelepathy Pokemon's Speed doubles",
+      " ",
+      "(The following items are affected by this field):",
+      "*\tMagical Seed boosts Sp.Def and Sp.Atk and confuses the user",
+      ""
+    ].join("\n")
   },
   #----------------- 38. Dimensional Field [DF] -------------------#
   38 => {
@@ -1899,51 +1884,65 @@ FIELDEFFECTDATA = {
     :name => "Cursed Field",
     :abbr => "CF",
     :message => "The field is cursed!",
-
-    # (The following moves are affected by this field.):
-    :moveEffects => {
-      :powerBoost => {
-        1.3 => ["Dark attacks", "Wind moves", "Flame Burst", "Inferno", "Flame Charge", "Fire Spin"],
-        1.5 => ["Ghost attacks", "Spirit Break", "Night Shade's fixed damage"]
-      },
-      :powerDecrease => {0.7 => ["Fairy attacks"]},
-      :additionalDamageType => {
-        "Ghost" => ["Flame Burst", "Inferno", "Flame Charge", "Fire Spin"]
-      },
-      :accuracyChange => {90 => ["Inferno"]},
-      :special => [
-        "Ghost attacks hit Normal. Ghost and Dark attacks hit each other neutrally. Spirit Break is super effective against Ghost.",
-        "Phantom Force and Shadow Force attack immediately. Fire Spin, Mean Look, Ominous Wind, and Inferno may target both opponents.",
-        "Spite removes 6 PP. Scary Face drastically lowers Speed by four stages. Ghost-type Curse costs a quarter of maximum HP.",
-        "Magic Powder can put the target to sleep. Destiny Bond may be used consecutively. Fire Spin deals 1/6 of a trapped, unshielded target's maximum HP each round.",
-        "Nature Power calls Phantom Force. Camouflage makes the user Ghost-type. Secret Power may apply Curse."
-      ]
-    },
-
-    # (The following abilities are affected by this field):
-    :abilityEffects => [
-      "Mummy traps its bearer. Shadow Tag can ignore a target's protective abilities.",
-      "Cursed Body can activate when the bearer faints. Wandering Spirit lowers Speed each round. Rattled raises Speed on entry. Mimicry makes the user Ghost-type."
-    ],
-
-    # (The following items are affected by this field):
-    :itemEffects => ["Magical Seed raises Defense and Special Defense, and can burn the holder."],
-
-    # (Other effects):
-    :passiveEffects => [
-      "Sleeping non-Ghost Pokémon lose 1/16 of maximum HP each round. An opposing Shadow Tag user increases this to 1/8 for unshielded targets."
-    ],
-
-    # (How this field is created):
-    :createdBy => {
-      :moves => ["Curse used by a Ghost type on Blessed Field", "Trick-or-Treat on Blessed Field"]
-    },
-
-    # (Field transformations):
-    :fieldTransformations => {
-      :transformsTo => {"Blessed Field" => ["Judgment", "Sacred Fire", "Origin Pulse"]},
-      :disables => ["Flash, Dazzling Gleam, and Purify can suppress it for three rounds outside protected story battles."]
-    }
+    :manualText => [
+      "#---------------- 40. Cursed Field [CF] -----------------#",
+      "\"The field is cursed!'",
+      "(Passive effects by the field.):",
+      "*\tGhost-type moves affect Normal-type Pokemon.",
+      "",
+      "(Overlay):",
+      "Cursed Terrain:",
+      "*\tGhost-type attacks against grounded Pokemon deal 1.3x damage.",
+      "*\tWind moves deal 1.3x damage.",
+      " ",
+      "(The following moves are affected by this field.):",
+      "*\tGhost-type moves gain a 1.5x boost in power",
+      "*\tDark-type moves gain a 1.3x boost in power",
+      "*\tGhost and Dark-types deal neutral damage to each other",
+      "*\tWind moves deal 1.3x damage.",
+      "*\tInferno has 90 accuracy",
+      "*\tHypnosis puts the target to sleep for two turns.",
+      "*\tNightmare inflicts more damage. ",
+      "*\tCursed Body always activates upon fainting.",
+      "*\tThe following move(s) gets a 1.3x increase in power and gain the Ghost type",
+      "\t\tFlame Burst\t\tInferno",
+      "Flame Charge\t\tFire Spin",
+      "*\tSpite depletes two more PP than usual.",
+      "*\tOminous wind has a 20% chance of raising all stats",
+      "*\tCurse, when used by a Ghost-type, uses only 25% of the user's HP",
+      "*\tThe following moves become single turn moves:",
+      "\t\tPhantom Force\tShadow Force",
+      "*  \tThe following moves target both opponents",
+      "\t\tMean Look\tFire Spin\tOminous Wind\tInferno",
+      "*\tFire Spin deals 1/6 Max HP damage per turn (from 1/8)",
+      "*\tSpirit Break deals super effective damage to Ghost types.",
+      "*\tNight Shade deals 1.5x more damage",
+      "*\tMagic Powder puts the target to Sleep.",
+      "*\tScary Face has its effect doubled",
+      "*\tDestiny Bond can no longer fail when used consecutively",
+      "*\tNature Power becomes Phantom Force",
+      "*\tCamouflage changes the user's type to Ghost",
+      "*\tSecret Power inflicts Curse",
+      " ",
+      "(The following abilities are affected by this field): ",
+      "*\tPerish Body traps the opponent upon triggering",
+      "*\tCursed Body always activates upon fainting",
+      "*\tMimicry changes the user's type to Ghost.",
+      "*\tPokemon that gain Wandering Spirit lose speed every turn",
+      "*\tPower Spot damage increase is 1.5x.",
+      "*\tRattled boosts the user's Speed upon switch-in",
+      " ",
+      "(The following moves change this field): ",
+      "*\tThe following moves can turn this field into a Blessed Field:",
+      "\t\tJudgement\tSacred Fire\tPurify",
+      "Origin Pulse\tRetribution",
+      "*\tThese moves temporarily nullify this field:",
+      "     \t\tFlash       Dazzling Gleam",
+      " ",
+      "(The following items are affected by this field):",
+      "*\tMagical Seed raises Defense and Special Defense and burns the user",
+      ""
+    ].join("\n")
   },
   #----------------- 41. Corrupted Cave [CC] -------------------#
   41 => {
@@ -1994,42 +1993,64 @@ FIELDEFFECTDATA = {
     :name => "Bewitched Woods",
     :abbr => "BW",
     :message => "Double, double toil and trouble...",
-
-    # (The following moves are affected by this field.):
-    :moveEffects => {
-      :powerBoost => {
-        1.3 => ["Dark attacks", "Fairy attacks without a Misty Terrain overlay", "Magical Leaf", "Dream Eater", "Dark Pulse", "Night Daze", "Moonblast", "Night Slash"],
-        1.5 => ["Grass attacks without a Grassy Terrain overlay", "Hex", "Mystical Fire", "Spirit Break"]
-      },
-      :durationChange => {
-        "Grassy Terrain overlay" => 8
-      },
-      :special => [
-        "Grass attacks are super effective against Steel. Poison and Fairy attacks hit each other neutrally, as do Dark and Fairy attacks.",
-        "Magic Powder may also put its target to sleep. Forest's Curse also applies Curse.",
-        "Nature Power calls Dazzling Gleam. Camouflage makes the user Fairy-type. Secret Power may cause sleep, poison, or paralysis."
-      ]
-    },
-
-    # (The following abilities are affected by this field):
-    :abilityEffects => [
-      "Prankster can affect Dark Pokémon. Natural Cure can heal major status at the end of the round.",
-      "Pastel Veil and Aroma Veil halve the effectiveness of Steel attacks against the holder. Mimicry makes the user Fairy-type."
-    ],
-
-    # (The following items are affected by this field):
-    :itemEffects => ["Magical Seed raises Special Defense and applies Ingrain."],
-
-    # (Other effects):
-    :passiveEffects => [
-      "Sleeping Pokémon lose 1/8 of maximum HP per round, or 1/16 if shielded.",
-      "Grounded Grass Pokémon heal 1/16 of maximum HP per round, or 1/8 with a Grassy Terrain overlay. Big Root improves the healing."
-    ],
-
-    # (Field transformations):
-    :fieldTransformations => {
-      :transformsTo => {"Forest Field" => ["Purify"]}
-    }
+    :manualText => [
+      "#---------------- 42. Bewitched Woods [BW] ----------------#",
+      "\"Double, double toil and trouble…\"",
+      " ",
+      "(Passive effects by the field.):",
+      "*\tPokemon sleeping in the fairy rings take damage equal to 1/16th of max HP.",
+      "*\tGrounded Grass Pokemon restore 1/16th Max HP each turn ",
+      "",
+      "(The following moves are affected by this field.):",
+      "*\tGrass-type moves increase in base power x1.5",
+      "*\tFairy-type moves increase in base power x1.3",
+      "*\tDark-type moves increase in base power x1.3",
+      "*\tGrass-type attacks now hit Steel-type Pokemon super effectively",
+      "*\tPoison-, Fairy-, and Dark-types now hit each other neutrally",
+      "*\tThe following moves gain a 1.3x boost in power:",
+      "\t\tMagical Leaf\t\tDark Pulse",
+      "\t\tNight Daze\t\tMoonblast",
+      "\t\tDream Eater\t\tNight Slash",
+      "*\tThe following moves gain a 1.5x boost in power:",
+      "\t\tHex             Mystical Fire\tSpirit Break",
+      "*\tThe following moves’ accuracy has been increased to 80:",
+      "\t\tSleep Powder\t\tGrass Whistle",
+      "\t\tHypnosis",
+      "*\tThe following moves’ accuracy has been increased to 90:",
+      "\t\tPoison Powder\tStun Spore",
+      "\t\tWill-O-Wisp",
+      "*\tMagic Powder puts the target to sleep",
+      "*\tTorment lasts for 8 turns and traps the target",
+      "*\tDamage taken from Nightmare is doubled",
+      "*\tFairy-types cannot get badly poisoned by Toxic Spikes",
+      "*\tMoonlight restores 75% of the user's Max HP",
+      "*\tForest's Curse additionally curses the target",
+      "*\tNature Power becomes Dazzling Gleam",
+      "*\tCamouflage changes the user's type to Fairy",
+      "*\tSecret Power may randomly inflict Sleep, Poison, or Paralysis.",
+      " ",
+      "(The following abilities are affected by this field):",
+      "*\tPrankster affects Dark-type Pokémon",
+      "*\tEffect Spore has a doubled activation rate",
+      "*\tNatural Cure heals status at the end of the turn",
+      "*\tPastel Veil and Aroma Veil remove the user's Fairy-type weaknesses",
+      "*\tPower Spot damage increase is 1.5x here.",
+      "*\tMimicry changes the user's type to Fairy",
+      " ",
+      "",
+      "(The following moves change this field):",
+      "*\tThe following moves will transform this field into a Forest Field:",
+      "\t\tPurify\t\tGeomancy\t\t",
+      " ",
+      "(The following items are affected by this field):",
+      "*\tMagical Seed raises Special Defense and applies ingrain to the user",
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
+    ].join("\n")
   },
   #----------------- 43. Sky Field [SF] -------------------#
   43 => {
@@ -2159,75 +2180,105 @@ FIELDEFFECTDATA = {
     :name => "Beach Field",
     :abbr => "BF",
     :message => "The waves lap at the shore.",
-
-    # (The following moves are affected by this field.):
-    :moveEffects => {
-      :powerBoost => {
-        1.3 => ["Water and Ground attacks", "Surf", "Muddy Water", "Scald", "Steam Eruption", "Wind moves"],
-        1.5 => ["Electric attacks", "Sand Tomb", "Thousand Waves", "Scorching Sands", "Burn Up", "Razor Shell", "Whirlpool"]
-      },
-      :additionalDamageType => {"Ground" => ["Wind moves"]},
-      :statChanges => [
-        "Sand Attack sharply lowers the target's Accuracy."
-      ],
-      :durationChange => {"Sun, Sand Tomb, Whirlpool, and Dune Defense" => 8},
-      :special => [
-        "Shore Up heals 66% of maximum HP. It also sharply raises the Defense of users with Water Compaction.",
-        "The Sand Tomb effect from Dust Bowl lasts eight turns.",
-        "Nature Power calls Scorching Sands. Camouflage makes the user Ground-type. Secret Power may lower Accuracy."
-      ]
-    },
-
-    # (The following abilities are affected by this field):
-    :abilityEffects => [
-      "Sand Rush and Swift Swim double Speed without their usual weather. Sand Spit can lower the attacker's Accuracy.",
-      "Without sun or rain, Dry Skin loses 1/8 of maximum HP each round. Shell Armor raises Defense and Special Defense on entry. Mimicry makes the user Ground-type."
-    ],
-
-    # (The following items are affected by this field):
-    :itemEffects => ["Telluric Seed raises Speed and Accuracy and traps the holder in Sand Tomb for four rounds."],
-
-    # (Field transformations):
-    :fieldTransformations => {
-      :transformsTo => {"Ashen Beach" => ["Lava Plume", "Eruption"], "Water Surface" => ["Origin Pulse", "Hydro Vortex"]}
-    }
+    :manualText => [
+      "#--------------- 45. Beach Field [BF] ---------------#",
+      "“The waves lap at the shore.”",
+      "",
+      "(Passive effects by the field.):",
+      "*\tSun lasts for 8 turns",
+      "",
+      "(The following moves are affected by this field.):",
+      "*\tWater- and Ground-type moves increase in base power x1.3",
+      "*\tElectric-type moves increase in base power x1.5",
+      "*\tThese moves are boosted in power x1.5:",
+      "Sand Tomb\t\tWhirlpool\t\tBurn Up",
+      "Thousand Waves\tScorching Sands\tRazor Shell",
+      "*\tThese moves are boosted in power x1.3:",
+      "Scald\t\t\tSurf\t\t\tMuddy Water",
+      "Steam Eruption\tBrine",
+      "*\tWind moves are boosted 1.3x and deal additional Ground-type damage:",
+      "Ominous Wind\tRazor Wind\t\tSilver Wind",
+      "Icy Wind\t\tFairy Wind\t\tTwister",
+      "Gust",
+      "*\tBrine’s power is always doubled.",
+      "*\tSand Tomb and Whirlpool duration is increased to 8 turns",
+      "*\tSand Attack is amplified",
+      "*\tArenite Wall lasts 8 turns and can be set up without sandstorm",
+      "*\tShore Up restores 75% of the user's Max HP",
+      "*\tNature Power becomes Scorching Sands",
+      "*\tCamouflage changes the user's type to Ground",
+      "*\tSecret Power may lower Accuracy",
+      "",
+      "(The following abilities are affected by this field):",
+      "*\tThese abilities are activated:",
+      "Sand Force\t\tSand Veil\t\tSand Rush",
+      "Swift Swim\t\tHydration",
+      "*\tSand Spit additionally lowers the opposing Pokemon's Accuracy",
+      "*\tWater Compaction sharply raises Special Defense upon activation",
+      "*\tDry Skin Pokemon lose 1/16th Max HP at the end of each turn",
+      "*\tShell Armor boosts Defense and Special Defense on entry",
+      "*\tMimicry changes the user's type to Ground",
+      "",
+      "",
+      "",
+      "(The following items are affected by this field):",
+      "*\tTelluric Seed boosts Speed and Accuracy and applies Sand Tomb to the user",
+      ""
+    ].join("\n")
   },
   #----------------- 47. Library Field [LIB] -------------------#
   47 => {
     :name => "Library Field",
     :abbr => "LIB",
     :message => "Pages flutter around!",
-
-    # (The following moves are affected by this field.):
-    :moveEffects => {
-      :powerBoost => {
-        1.3 => ["Fire attacks", "Special Psychic attacks", "Slashing and wind moves", "Focus Punch", "Focus Blast", "Return", "Frustration", "Perforate"],
-        1.5 => ["Smart Strike", "Ancient Power", "Barrage", "Headbutt", "Zen Headbutt", "Iron Head", "Head Smash", "Head Charge", "Skull Bash", "Mind Blown"],
-        2.25 => ["Fire Spin and Whirlpool, before other applicable bonuses and damage rounding"]
-      },
-      :accuracyChange => {100 => ["Focus Blast skips the accuracy check"]},
-      :special => [
-        "Calm Mind sharply raises Special Attack and Special Defense. Amnesia drastically raises Special Defense. Focus Energy drastically raises the user's critical-hit ratio.",
-        "Taking damage no longer interrupts Focus Punch. Helping Hand multiplies damage by two.",
-        "Roar, Whirlwind, and Telekinesis deal 1/6 of maximum HP in addition to their ordinary effects.",
-        "Fire Spin, Whirlpool, Mean Look, Ominous Wind, and Inferno can target both opponents.",
-        "Nature Power calls Calm Mind. Camouflage makes the user Normal-type. Secret Power may silence."
-      ]
-    },
-
-    # (The following abilities are affected by this field):
-    :abilityEffects => [
-      "Analytic's multiplier increases to 1.5x. Technician can boost moves of up to 80 base power."
-    ],
-
-    # (The following items are affected by this field):
-    :itemEffects => ["Synthetic Seed drastically raises the holder's critical-hit ratio."],
-
-    # (Other effects):
-    :passiveEffects => [
-      "Silenced Pokémon have half Speed. Pokémon hit while confused take double damage.",
-      "Sound moves can silence their user for three rounds. A silenced user cannot use sound moves."
-    ]
+    :manualText => [
+      "#------------------- 47. Library [LIB] --------------------#",
+      "\"Pages flutter around!\"\u000b\u000b(Passive effects by the field.):",
+      "*\tSilencing lowers speed by x0.5",
+      "*\tConfused Pokemon take x2 damage",
+      "",
+      "(The following moves are affected by this field.):",
+      "*\tFire-type moves increase in base power x1.3",
+      "*\tSpecial Psychic-type moves increase in base power x1.3",
+      "*\tSlashing and Wind moves increase in base power x1.3",
+      "*\tSound-based moves silence the user",
+      "*\tThese moves are boosted in power x1.3:",
+      "\t\tFocus Punch\t\tFocus Blast\t\tReturn",
+      "\t\tFrustration\t\tPerforate",
+      "*\tThe following moves are boosted in po wer x1.5:",
+      "\t\tSmart Strike\t\tAncient Power\t\tBarrage",
+      "\t\tHeadbutt\t\tZen Headbutt\t\tIron Head",
+      "\t\tHead Smash\t\tHead Charge\t\tSkull Bash",
+      "\t\tMind Blown",
+      "*\tThe following moves are boosted in power x1.5 and become spread moves:",
+      "\t\tFire Spin\t\tWhirlpool",
+      "*\tThe stat-changing effect of these moves is amplified:",
+      "\t\tCalm Mind\t\tAmnesia",
+      "*\tWhirlwind and Telekinesis damage the target for 1/6th max HP",
+      "*\tFocus Blast cannot miss",
+      "*\tFocus Punch cannot be interrupted",
+      "*\tFocus Energy increases critical hit rate by three stages",
+      "*\tHelping Hand boost is increased to x2",
+      "*\tDoodle copies positive stat stages",
+      "*\tNature Power becomes Calm Mind",
+      "*\tCamouflage changes the user's type to Normal",
+      "*\tSecret Power may silence",
+      "",
+      "(The following abilities are affected by this field):",
+      "*\tThe following abilities prevent the lowering of stats and redirection of moves:",
+      "\t\tSoundproof\t\tUnaware\t\tInner Focus",
+      "\t\tOblivious",
+      "*\tPokemon with the following abilities become confused on entry:",
+      "\t\tDefeatist\t\tSimple\t\t\tKlutz\t",
+      "*\tKeen Eye raises Accuracy",
+      "*\tSchooling raises all stats",
+      "*\tAnalytic base power boost becomes x1.5",
+      "*\tTechnician boosts moves 80 power or below",
+      "",
+      "(The following items are affected by this field):",
+      "*\tSynthetic Seed applies Focus Energy to the holder",
+      ""
+    ].join("\n")
   },
 }
 
