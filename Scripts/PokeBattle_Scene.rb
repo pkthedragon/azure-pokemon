@@ -210,9 +210,13 @@ end
 # Battle Field Manual - Shows current field effect details
 def pbShowBattleFieldManual
   #pk code
-  field_id=$fefieldeffect || 0
+  field_id=pbFieldEffectID($fefieldeffect || 0)
   if field_id==0
     Kernel.pbMessage(_INTL("No field effect is currently active."))
+    return
+  end
+  if !Scene_FieldEffectsManual::FIELD_IDS.include?(field_id)
+    Kernel.pbMessage(_INTL("Field Manual entry unavailable."))
     return
   end
   Scene_FieldEffectsManual_Info.new(field_id).main
