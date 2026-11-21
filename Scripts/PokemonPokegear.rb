@@ -3,7 +3,7 @@ class PokegearButton < SpriteWrapper
   attr_reader :name
   attr_reader :selected
 
-  def initialize(x,y,name,index,viewport,button_bitmap,icon_path=nil)
+  def initialize(x,y,name,index,viewport,button_bitmap) #pk code
     super(viewport)
     @index=index
     @name=name
@@ -11,7 +11,7 @@ class PokegearButton < SpriteWrapper
     self.bitmap=@contents
     self.x=x
     self.y=y
-    draw_button(button_bitmap,icon_path)
+    draw_button(button_bitmap) #pk code
     self.selected=false
   end
 
@@ -29,25 +29,14 @@ class PokegearButton < SpriteWrapper
 
   private
 
-  def draw_button(button_bitmap,icon_path)
+  def draw_button(button_bitmap) #pk code
     @contents.blt(0,0,button_bitmap,button_bitmap.rect)
     pbSetSystemFont(@contents)
     textpos=[          # Name is written on both unselected and selected buttons
        [@name,@contents.width/2,10,2,Color.new(248,248,248),Color.new(40,40,40)],
-       [@name,@contents.width/2,62,2,Color.new(248,248,248),Color.new(40,40,40)]
+       [@name,@contents.width/2,(@contents.height/2)+10,2,Color.new(248,248,248),Color.new(40,40,40)] #pk code
     ]
     pbDrawTextPositions(@contents,textpos)
-    icon_path=pbResolveBitmap(icon_path || "Graphics/Pictures/Pokegear/pokegear#{@name}")
-    return if !icon_path
-    icon=AnimatedBitmap.new(icon_path)
-    if icon.width<=40 && icon.height<=32
-      @contents.blt(18,10,icon.bitmap,icon.bitmap.rect)
-      @contents.blt(18,62,icon.bitmap,icon.bitmap.rect)
-    else
-      @contents.stretch_blt(Rect.new(18,10,32,32),icon.bitmap,icon.bitmap.rect)
-      @contents.stretch_blt(Rect.new(18,62,32,32),icon.bitmap,icon.bitmap.rect)
-    end
-    icon.dispose
   end
 end
 
@@ -88,11 +77,13 @@ class Scene_Pokegear
     @cmdRecords=-1
 #    @cmdNews=-1
     commands[@cmdMap=commands.length]=_INTL("Map")
+    commands[@cmdMagnet=commands.length]=_INTL("PokéMagnet") if $game_switches[1437]==true #pk code
+    commands[@cmdEncyclopedia=commands.length]=_INTL("Encyclopedia") #pk code
+    commands[@cmdTutor=commands.length]=_INTL("Tutor.net") if $game_switches[1492]==true #pk code
+    commands[@cmdFieldManual=commands.length]=_INTL("Field Manual") #pk code
+    commands[@cmdJukebox=commands.length]=_INTL("Jukebox")
     commands[@cmdPhone=commands.length]=_INTL("Phone") if $PokemonGlobal.phoneNumbers &&
                                                           $PokemonGlobal.phoneNumbers.length>0
-    commands[@cmdJukebox=commands.length]=_INTL("Jukebox")
-    commands[@cmdTutor=commands.length]=_INTL("Tutor.net") if $game_switches[1492]==true
-    commands[@cmdMagnet=commands.length]=_INTL("PokéMagnet") if $game_switches[1437]==true
 #    commands[@cmdNews=commands.length]=_INTL("Gearen News")
     if $game_switches[1176]
       commands[@cmdPulse=commands.length]=_INTL("Rift Dex")
@@ -103,7 +94,6 @@ class Scene_Pokegear
     if $game_switches[1177]
       commands[@cmdNotes=commands.length]=_INTL("Field Notes")
     end
-    commands[@cmdFieldManual=commands.length]=_INTL("Field Manual") #pk code
     if $game_switches[1179]
       commands[@cmdTrainerIndex=commands.length]=_INTL("Trainer Index")
     end
@@ -118,11 +108,9 @@ class Scene_Pokegear
     run_menu(commands)
   end
   #pk code
-  def run_menu(commands,command_icons={})
+  def run_menu(commands)
     @buttons=[]
     @menu_index=@menu_index.clamp(0,commands.length-1)
-    @button_viewport=Viewport.new(0,0,Graphics.width,Graphics.height)
-    @button_viewport.z=99999
 
     background_path="Graphics/Pictures/Pokegear/pokegearbg"
     button_path="Graphics/Pictures/Pokegear/pokegearButton"
@@ -133,10 +121,15 @@ class Scene_Pokegear
     background=IconSprite.new(0,0)
     background.setBitmap(background_path)
     button_art=AnimatedBitmap.new(button_path)
+    #pk code
+    button_height=button_art.bitmap.height/2
+    visible_buttons=[commands.length,[(Graphics.height-124)/button_height,1].max].min
+    menu_height=visible_buttons*button_height
+    @button_viewport=Viewport.new(0,(Graphics.height-menu_height)/2,Graphics.width,menu_height)
+    @button_viewport.z=99999
+    x=(Graphics.width-button_art.bitmap.width)/2
     for i in 0...commands.length
-      x=118
-      y=196-(commands.length*24)+(i*48)
-      @buttons[i]=PokegearButton.new(x,y,commands[i],i,@button_viewport,button_art.bitmap,command_icons[i])
+      @buttons[i]=PokegearButton.new(x,i*button_height,commands[i],i,@button_viewport,button_art.bitmap)
     end
     @buttons[@menu_index].selected=true
     scroll_to_selected_button
@@ -164,7 +157,7 @@ class Scene_Pokegear
     if Input.repeat?(Input::UP) && (Input.trigger?(Input::UP) || @menu_index>0)
       move_menu_cursor((@menu_index-1)%count)
     end
-    # The menu is one page. The shoulder buttons go to either end.
+    # The shoulder buttons go to either end.
     move_menu_cursor(count-1) if Input.repeat?(Input::R)
     move_menu_cursor(0) if Input.repeat?(Input::L)
     update_command
@@ -182,7 +175,7 @@ class Scene_Pokegear
   def scroll_to_selected_button
     button=@buttons[@menu_index]
     top=@button_viewport.oy
-    next_top=top.clamp(button.y+button.src_rect.height-Graphics.height,button.y)
+    next_top=top.clamp(button.y+button.src_rect.height-@button_viewport.rect.height,button.y) #pk code
     @button_viewport.oy=next_top if next_top!=top
   end
 
@@ -249,6 +242,11 @@ class Scene_Pokegear
         scene = Scene_FieldEffectsManual.new
         screen = PokemonFieldEffectsManualScreen.new(scene)
         pbFadeOutIn(99999) { screen.pbStartScreen }
+      end
+      #pk code
+      if @menu_index==@cmdEncyclopedia
+        pbPlayDecisionSE()
+        pbFadeOutIn(99999) { pbEncyclopedia }
       end
       if @cmdTrainerIndex>=0 && @menu_index==@cmdTrainerIndex
         pbPlayDecisionSE()

@@ -23,6 +23,12 @@ end
 class Scene_FieldEffectsManual
   FIELD_IDS = [1,2,3,4,8,9,13,15,17,18,20,21,23,29,36,37,40,42,46,47].freeze #pk code
 
+  #pk code
+  def initialize(title=_INTL("Field Manual"), entries=nil)
+    @title=title
+    @entries=entries
+  end
+
   def buildFieldMenu
     menu = []
     for field in FIELD_IDS
@@ -31,8 +37,6 @@ class Scene_FieldEffectsManual
       menu.push(item)
     end
 
-    back = { label: _INTL("Back"), back: true } #pk code
-    menu.push(back)
     return menu
   end
 
@@ -44,7 +48,7 @@ class Scene_FieldEffectsManual
     @sprites["background"] = IconSprite.new(0, 0, @viewport)
     @sprites["background"].setBitmap("Graphics/Pictures/Pokegear/pokegearbg") #pk code
 
-    @menu = buildFieldMenu #pk code
+    @menu = (@entries || buildFieldMenu) + [{ label: _INTL("Back"), back: true }] #pk code
     @choices = @menu.collect { |field| field[:label] }
     @sprites["command_window"] = Window_CommandPokemonWhiteArrow.newWithSize(@choices, 10, 30, Graphics.width - 20, Graphics.height - 64, @viewport) #pk code
     @sprites["command_window"].windowskin = nil
@@ -56,7 +60,7 @@ class Scene_FieldEffectsManual
   end
 
   def render_header
-    @sprites["header"] = Window_UnformattedTextPokemon.newWithSize(_INTL("Field Manual"), *Field_Note_Header_Coords, @viewport) #pk code
+    @sprites["header"] = Window_UnformattedTextPokemon.newWithSize(@title, *Field_Note_Header_Coords, @viewport) #pk code
     @sprites["header"].baseColor = Field_Note_Header_Colors[0]
     @sprites["header"].shadowColor = Field_Note_Header_Colors[1]
     @sprites["header"].windowskin = nil
@@ -77,7 +81,7 @@ class Scene_FieldEffectsManual
         if item[:back]
           pbPlayCancelSE()
           break
-        elsif item[:field]
+        else #pk code
           pbPlayDecisionSE()
           #pk code
           scene = Scene_FieldEffectsManual_Info.new(item[:field], @menu, menuindex)
@@ -104,9 +108,9 @@ class Scene_FieldEffectsManual_Info
 
   def initialize(field_id, menu = nil, menu_index = nil) #pk code
     @field_id = field_id
-    @data = pbGetFieldEffectData(field_id)
     @menu = menu #pk code
     @menu_index = menu_index #pk code
+    @data = pageData #pk code
   end
 
   def main
@@ -126,8 +130,14 @@ class Scene_FieldEffectsManual_Info
     @sprites["footer"].y=Graphics.height-56
     footer=@sprites["footer"].bitmap
     pbSetSmallFont(footer)
-    controls=@menu ? _INTL("Up/Down Scroll   L/R Page   Left/Right Field") :
-                    _INTL("Up/Down Scroll   L/R Page   X Back")
+    #pk code
+    controls=if @data && @data[:sections]
+      _INTL("Up/Down Scroll   L/R Page   Left/Right Category")
+    elsif @menu
+      _INTL("Up/Down Scroll   L/R Page   Left/Right Field")
+    else
+      _INTL("Up/Down Scroll   L/R Page   X Back")
+    end
     pbDrawShadowText(footer,16,0,footer.width-16,24,controls,
        Field_Note_Header_Colors[0],Field_Note_Header_Colors[1])
 
@@ -184,9 +194,16 @@ class Scene_FieldEffectsManual_Info
     info.viewport=@viewport
     info.windowskin=nil
     width=info.width-info.borderX-SpriteWindow_Base::TEXTPADDING
-    text=fmtescape(Messages.utf8Text(pbGenerateFieldInfoText).gsub("\t","  "))
-    text.sub!(/\A(\d+\.[^\n]+)/,'<fs=20>\1</fs>')
-    text.gsub!(/^(\([^\n]+\): *)$/,'<c3=CFDEF4,000000>\1</c3>')
+    text=if @data && @data[:sections]
+      @data[:sections].map { |title,body|
+        "<c3=CFDEF4,000000>#{fmtescape(title)}</c3>\n#{fmtescape(body)}"
+      }.join("\n\n")
+    else
+      field_text=fmtescape(Messages.utf8Text(pbGenerateFieldInfoText).gsub("\t","  "))
+      field_text.sub!(/\A(\d+\.[^\n]+)/,'<fs=20>\1</fs>')
+      field_text.gsub!(/^(\([^\n]+\): *)$/,'<c3=CFDEF4,000000>\1</c3>')
+      field_text
+    end
     text=Messages.utf8Text(shadowc3tag(*Field_Note_Header_Colors)+text)
     chars=getFormattedText(info.contents,0,0,width,-1,text,32)
     info.contents=drawBitmapBuffer(chars)
@@ -205,7 +222,7 @@ class Scene_FieldEffectsManual_Info
       elsif @menu_index < 0
         @menu_index = @menu.length - 1
       end
-      break unless @menu[@menu_index][:field].nil?
+      break unless @menu[@menu_index][:back] #pk code
     end
     return if @menu_index == oldindex
 
@@ -216,7 +233,7 @@ class Scene_FieldEffectsManual_Info
   def redraw
     pbPlayDecisionSE()
     #pk code
-    @data=pbGetFieldEffectData(@field_id)
+    @data=pageData
     @sprites.delete("header").dispose
     @sprites.delete("info").dispose
     render_page
@@ -234,4 +251,39 @@ class Scene_FieldEffectsManual_Info
     return @data[:manualText] if @data && @data[:manualText]
     return _INTL("No data available.")
   end
+
+  #pk code
+  def pageData
+    entry=@menu && @menu[@menu_index][:entry]
+    return entry || pbGetFieldEffectData(@field_id)
+  end
+end
+
+#pk code
+def pbEncyclopedia
+  categories=[
+    [_INTL("True Status Conditions"),[
+      [_INTL("Poisoned"),_INTL("The affected Pokémon loses 1/8 of its max HP each turn.")],
+      [_INTL("Burned"),_INTL("The affected Pokémon loses 1/16 of its max HP each turn and has its Attack halved.")],
+      [_INTL("Frozen"),_INTL("The affected Pokémon loses 1/16 of its max HP each turn and has its Special Attack halved.")],
+      [_INTL("Paralyzed"),_INTL("The affected Pokémon loses 1/16 of its max HP each turn and has its Speed halved.")],
+      [_INTL("Crushed"),_INTL("The affected Pokémon takes 1.5x damage, or 2x damage if the hit is critical.")],
+      [_INTL("Sleep"),_INTL("The affected Pokémon cannot act for one turn.")]
+    ]],
+    [_INTL("Volatile Status Conditions"),[
+      [_INTL("Confused"),_INTL("For three turns, the affected Pokémon's moves also damage the user.")],
+      [_INTL("Enchanted"),_INTL("For three turns, the affected Pokémon is always critically hit and takes 1/6 of its max HP as damage when switching out.")],
+      [_INTL("Wounded"),_INTL("For three turns, the affected Pokémon loses 1/12 of its max HP each turn and has its healing halved.")],
+      [_INTL("Drowsy"),_INTL("The affected Pokémon falls asleep at the end of the next turn.")],
+      [_INTL("Blind"),_INTL("On the next turn, the affected Pokémon's attacking moves graze, and it is always critically hit.")]
+    ]],
+    [_INTL("Miscellaneous"),[
+      [_INTL("Stat stage cap"),_INTL("Effects that raise stats can only do so once per Pokémon affected. This resets when that Pokémon switches out.")],
+      [_INTL("Critical Hits"),_INTL("The base critical hit rate is 0%.")],
+      [_INTL("Grazing"),_INTL("Missing an attacking move causes it to graze, dealing half damage with no additional effects.")]
+    ]]
+  ]
+  entries=categories.map { |title,sections| { label: title, entry: { name: title, sections: sections } } }
+  scene=Scene_FieldEffectsManual.new(_INTL("Encyclopedia"),entries)
+  PokemonFieldEffectsManualScreen.new(scene).pbStartScreen
 end

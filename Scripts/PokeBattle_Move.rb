@@ -2595,8 +2595,6 @@ class PokeBattle_Move
        opponent.hasWorkingAbility(:NOGUARD)
       return true
     end
-    # Blinded targets are always hit
-    return true if opponent.effects[PBEffects::Blinded]>0
     return true if opponent.effects[PBEffects::Telekinesis]>0
     return true if $fefieldeffect == 47 && id == PBMoves::FOCUSBLAST
     return true if @function==0x0D && @battle.pbWeather==PBWeather::HAIL # Blizzard
@@ -2839,8 +2837,7 @@ class PokeBattle_Move
       attacker.effects[PBEffects::LaserFocus]-=1
       return true
     end
-    # Infatuated Pokemon are always critically hit
-    return true if opponent.effects[PBEffects::Attract]>=0
+    return true if opponent.effects[PBEffects::Attract]>=0 || opponent.effects[PBEffects::Blinded]>0 #pk code
     return true if @function==0xA0 # Frost Breath
     return true if @function==0x26D # Lucky Star
     return true if @function==0x202 && attacker.hp<=((attacker.totalhp)*0.5).floor
@@ -6218,6 +6215,10 @@ class PokeBattle_Move
     end    
     # Burn
     if attacker.status==PBStatuses::BURN && pbIsPhysical?(type) && !attacker.hasWorkingAbility(:GUTS) && !(id==PBMoves::FACADE)
+      damage=(damage*0.5).round
+    end
+    #pk code
+    if attacker.status==PBStatuses::FROZEN && pbIsSpecial?(type)
       damage=(damage*0.5).round
     end
   # Crush

@@ -355,25 +355,11 @@ BOSSINFOHASH[:HEROICTANGROWTH_NORMAL] = Marshal.load(Marshal.dump(BOSSINFOHASH[:
     end
 end
 
-# The Apolvita Cave event keeps its legacy key; Normal uses Mother Barnacle.
+#pk code
 BOSSINFOHASH[:MOTHEREXPLOUD_NORMAL] = Marshal.load(Marshal.dump(BOSSINFOHASH[:MOTHEREXPLOUD])).tap do |boss|
-    boss[:name] = "Mother Barnacle"
-    boss[:entryText] = "Mother Barnacle attacks!"
     boss[:moninfo].merge!(
-        :species => PBSpecies::BARBARACLE,
-        :level => 22,
-        :item => PBItems::RINDOBERRY,
-        :moves => [PBMoves::ROCKTOMB,PBMoves::FURYCUTTER,PBMoves::ICYWIND,PBMoves::MUDSLAP],
-        :ability => PBAbilities::PICKPOCKET,
-        :nature => PBNatures::ADAMANT
-    )
-    boss[:sosDetails][:moninfos][1].merge!(
-        :species => PBSpecies::BINACLE,
-        :level => 16,
-        :item => 0,
-        :moves => [PBMoves::ROCKTOMB,PBMoves::CLAMP,PBMoves::TICKLE],
-        :ability => PBAbilities::TOUGHCLAWS,
-        :nature => PBNatures::ADAMANT
+        :level => 18,
+        :item => 0
     )
 end
 

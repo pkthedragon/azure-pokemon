@@ -58,7 +58,7 @@ Description = Restores HP if hit by a Water-type move.
 [OBLIVIOUS]
 LegacyAbilityID = 12
 Name = Oblivious
-Description = Immune to confusion, infatuation, taunt, torment, and move redirection.
+Description = Immune to confusion, enchantment, taunt, torment, and move redirection.
 #-------------------------------
 [CLOUDNINE]
 LegacyAbilityID = 13
@@ -278,7 +278,7 @@ Description = User has 1.5x attack but 0.5x defenses.
 [CUTECHARM]
 LegacyAbilityID = 56
 Name = Cute Charm
-Description = Enemies damaging the user become infatuated.
+Description = An opposing Pokémon that damages the user becomes enchanted.
 #-------------------------------
 [PLUS]
 LegacyAbilityID = 57
@@ -1858,7 +1858,7 @@ Description = The user takes 0.7x damage from moves with less than 100 power.
 [HYPNOTIC]
 LegacyAbilityID = 414
 Name = Hypnotic
-Description = Confuses and infatuates enemies on entry.
+Description = Confuses and enchants opposing Pokémon on entry.
 #-------------------------------
 [STONYSPIRIT]
 LegacyAbilityID = 415

@@ -3568,6 +3568,9 @@ class PokeBattle_Scene
       elsif Input.trigger?(Input::B) && @battle.pbSidePosition(index)>0 && !goodbyeb
         pbPlayDecisionSE()
         return -1
+      elsif Input.triggerex?(:E) && Input.dir4==0 #pk code
+        pbEncyclopedia
+        pbSelectBattler(index)
       end
     end 
   end
@@ -3717,6 +3720,9 @@ class PokeBattle_Scene
         battler.effects[PBEffects::Attacking]=false
         pbPlayCancelSE()
         return -1
+      elsif Input.triggerex?(:E) && Input.dir4==0 #pk code
+        pbEncyclopedia
+        pbSelectBattler(index)
       end
     end
   end

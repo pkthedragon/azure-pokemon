@@ -1915,6 +1915,7 @@ class PokeBattle_Battler
     if self.hasWorkingItem(:CHOICEBAND)
       atkmult=(atkmult*1.5).round
     end
+    atkmult=(atkmult*0.5).round if self.status==PBStatuses::BURN && !self.hasWorkingAbility(:GUTS) #pk code
     if self.hasWorkingAbility(:LONGREACH) &&
       ($fefieldeffect==27 || $fefieldeffect==28)
       atkmult=(atkmult*1.5).round
@@ -1966,6 +1967,7 @@ class PokeBattle_Battler
     if self.hasWorkingItem(:CHOICESPECS)
       atkmult=(atkmult*1.5).round
     end
+    atkmult=(atkmult*0.5).round if self.status==PBStatuses::FROZEN #pk code
     if $fefieldeffect == 34 || $fefieldeffect == 35
       if self.hasWorkingAbility(:VICTORYSTAR)
         atkmult=(atkmult*1.5).round
@@ -2562,7 +2564,7 @@ class PokeBattle_Battler
           end
         elsif attacker.pbCanParalyze?(false)
           attacker.pbParalyze(self)
-          @battle.pbDisplay(_INTL("{1}'s {2} paralyzed {3}!  It may be unable to move!",pbThis,PBAbilities.getName(self.ability),attacker.pbThis(true)))
+          @battle.pbDisplay(_INTL("{1}'s {2} paralyzed {3}!",pbThis,PBAbilities.getName(self.ability),attacker.pbThis(true))) #pk code
         end
       end
     end
@@ -4146,14 +4148,15 @@ class PokeBattle_Battler
       opposingBattlers.each do |opponent|
         next if !opponent || opponent.isFainted?
         if opponent.pbCanConfuse?(false)
-          opponent.effects[PBEffects::Confusion]=2+@battle.pbRandom(4)
+          opponent.effects[PBEffects::Confusion]=3 #pk code
           @battle.pbCommonAnimation("Confusion",opponent,nil)
           @battle.pbDisplay(_INTL("{1}'s {2} confused {3}!",pbThis,PBAbilities.getName(ability),opponent.pbThis(true)))
         end
         if opponent.pbCanAttract?(self,false) && @battle.pbCheckSideAbility(:AROMAVEIL,opponent)==nil
           opponent.effects[PBEffects::Attract]=self.index
+          opponent.effects[PBEffects::AttractTurns]=3 #pk code
           @battle.pbCommonAnimation("Attract",opponent,nil)
-          @battle.pbDisplay(_INTL("{1}'s {2} infatuated {3}!",pbThis,PBAbilities.getName(ability),opponent.pbThis(true)))
+          @battle.pbDisplay(_INTL("{1}'s {2} enchanted {3}!",pbThis,PBAbilities.getName(ability),opponent.pbThis(true))) #pk code
         end
       end
     end
@@ -4700,11 +4703,13 @@ class PokeBattle_Battler
        target.hasWorkingAbility(:CUTECHARM) && !target.moldbroken &&
        user.pbCanAttract?(target,false)
       user.effects[PBEffects::Attract]=target.index
-      @battle.pbDisplay(_INTL("{1}'s {2} infatuated {3}!",target.pbThis,
+      user.effects[PBEffects::AttractTurns]=3 #pk code
+      @battle.pbDisplay(_INTL("{1}'s {2} enchanted {3}!",target.pbThis, #pk code
           PBAbilities.getName(target.ability),user.pbThis(true)))
       if user.hasWorkingItem(:DESTINYKNOT) && target.pbCanAttract?(user,false)
         target.effects[PBEffects::Attract]=user.index
-        @battle.pbDisplay(_INTL("{1}'s {2} infatuated {3}!",user.pbThis,
+        target.effects[PBEffects::AttractTurns]=3 #pk code
+        @battle.pbDisplay(_INTL("{1}'s {2} enchanted {3}!",user.pbThis, #pk code
             PBItems.getName(user.item),target.pbThis(true)))
       end
     end
@@ -4911,7 +4916,7 @@ class PokeBattle_Battler
     if damage>0
       if !target.damagestate.substitute && user.hasWorkingAbility(:ERRATIC,true) &&
          target.pbCanConfuse?(false)
-        target.effects[PBEffects::Confusion]=2+@battle.pbRandom(4)
+        target.effects[PBEffects::Confusion]=3 #pk code
         @battle.pbCommonAnimation("Confusion",target,nil)
         @battle.pbDisplay(_INTL("{1}'s {2} confused {3}!",user.pbThis,
             PBAbilities.getName(user.ability),target.pbThis(true)))
@@ -5050,7 +5055,7 @@ class PokeBattle_Battler
           elsif target.form==2 # Gorging Form
             if user.pbCanParalyze?(false)
               user.pbParalyze(target)
-              @battle.pbDisplay(_INTL("{1}'s {2} paralyzed {3}! It may be unable to move!",
+              @battle.pbDisplay(_INTL("{1}'s {2} paralyzed {3}!", #pk code
                   target.pbThis,PBAbilities.getName(target.ability),user.pbThis(true)))
             end
           end
@@ -5301,7 +5306,7 @@ class PokeBattle_Battler
       elsif @battle.synchronize[2]==PBStatuses::PARALYSIS &&
         tbattler.pbCanParalyzeSynchronize?(sbattler)
         tbattler.pbParalyze(sbattler)
-        @battle.pbDisplay(_INTL("{1}'s {2} paralyzed {3}!  It may be unable to move!",
+        @battle.pbDisplay(_INTL("{1}'s {2} paralyzed {3}!", #pk code
             sbattler.pbThis,PBAbilities.getName(sbattler.ability),tbattler.pbThis(true)))
       end
     end
@@ -5336,7 +5341,7 @@ class PokeBattle_Battler
   def pbAbilityCureCheck
     return if self.isFainted?
     if self.hasWorkingAbility(:OBLIVIOUS) && @effects[PBEffects::Attract]>=0
-      @battle.pbDisplay(_INTL("{1}'s Oblivious cured its love problem!",pbThis))
+      @battle.pbDisplay(_INTL("{1}'s Oblivious broke the enchantment!",pbThis)) #pk code
       pbCureAttract
     end
     if self.hasWorkingAbility(:INSOMNIA) && self.status==PBStatuses::SLEEP
@@ -5445,7 +5450,7 @@ class PokeBattle_Battler
       if (self.nature%5) == flavor && (self.nature/5).floor != (self.nature%5)
         @battle.pbDisplay(message2)
         if @effects[PBEffects::Confusion]==0
-          @effects[PBEffects::Confusion]=2+@battle.pbRandom(4)
+          @effects[PBEffects::Confusion]=3 #pk code
           @battle.pbCommonAnimation("Confusion",self,nil)
           @battle.pbDisplay(_INTL("{1} became confused!",pbThis))
         end
@@ -5635,7 +5640,7 @@ class PokeBattle_Battler
         @effects[PBEffects::Encore]>0 ||
         @effects[PBEffects::Torment] ||
         @effects[PBEffects::Disable]>0)
-      @battle.pbDisplay(_INTL("{1}'s {2} cured its love problem!",pbThis,itemname)) if @effects[PBEffects::Attract]>=0
+      @battle.pbDisplay(_INTL("{1}'s {2} broke the enchantment!",pbThis,itemname)) if @effects[PBEffects::Attract]>=0 #pk code
       @battle.pbDisplay(_INTL("{1} is taunted no more!",pbThis)) if @effects[PBEffects::Taunt]>0
       @battle.pbDisplay(_INTL("{1}'s encore ended!",pbThis)) if @effects[PBEffects::Encore]>0
       @battle.pbDisplay(_INTL("{1} is tormented no more!",pbThis)) if @effects[PBEffects::Torment]
@@ -6260,7 +6265,7 @@ class PokeBattle_Battler
           r-=c
           if r<c
             @battle.pbDisplay(_INTL("{1} won't obey!",pbThis))
-            @battle.pbDisplay(_INTL("It hurt itself from its confusion!"))
+            @battle.pbDisplay(_INTL("{1} hurt itself!",pbThis)) #pk code
             pbConfusionDamage
           else
             message=@battle.pbRandom(4)
@@ -6529,9 +6534,11 @@ class PokeBattle_Battler
       @battle.pbDisplay(_INTL("But it failed!"))
       return false
     end
+    blinded=user.effects[PBEffects::Blinded]>0 && thismove.basedamage>0 #pk code
     if accuracy
-      if thismove.lock_on_boost ||
-         (target.effects[PBEffects::LockOn]>0 && target.effects[PBEffects::LockOnPos]==user.index)
+      #pk code
+      if !blinded && (thismove.lock_on_boost ||
+         (target.effects[PBEffects::LockOn]>0 && target.effects[PBEffects::LockOnPos]==user.index))
         self.missed = false
         return true
       end
@@ -6658,17 +6665,18 @@ class PokeBattle_Battler
       end
     end
     if accuracy && !thismove.pbIsStatus? #pk code
-      if target.effects[PBEffects::LockOn]>0 && target.effects[PBEffects::LockOnPos]==user.index
-        self.missed = false
-        return true
-      end
       # Blinded attackers always miss (grazing blow) with damaging moves
-      if user.effects[PBEffects::Blinded]>0 && thismove.basedamage > 0
+      if blinded #pk code
         @battle.pbDisplay(_INTL("{1} can't see through its blindness!",user.pbThis))
         user.missAcc = true
         return false if thismove.pbCrashOnAccuracyMiss?
         @battle.pbDisplay(_INTL("{1}'s attack grazed!",user.pbThis))
         user.grazed = true
+        self.missed = false
+        return true
+      end
+      #pk code
+      if target.effects[PBEffects::LockOn]>0 && target.effects[PBEffects::LockOnPos]==user.index
         self.missed = false
         return true
       end
@@ -6902,17 +6910,14 @@ class PokeBattle_Battler
       end
     end
     #### AME - 004 - END
+    #pk code
     if @effects[PBEffects::Confusion]>0 && !@simplemove && thismove.id!=PBMoves::CALMINGWAKE
+      pbContinueConfusion
+      @battle.pbDisplay(_INTL("It hurt itself in its confusion!"))
+      pbConfusionDamage
+      return false if self.isFainted?
       @effects[PBEffects::Confusion]-=1
-      if @effects[PBEffects::Confusion]<=0
-        pbCureConfusion
-      else
-        pbContinueConfusion
-        # Confusion always causes self-hit but does not prevent the move from executing
-        @battle.pbDisplay(_INTL("It hurt itself from its confusion!"))
-        pbConfusionDamage
-        return false if self.isFainted?
-      end
+      pbCureConfusion if @effects[PBEffects::Confusion]==0
     end
     if @effects[PBEffects::Attract]>=0 && !@simplemove
       pbAnnounceAttract(@battle.battlers[@effects[PBEffects::Attract]])
@@ -7403,7 +7408,7 @@ class PokeBattle_Battler
       if target.damagestate.calcdamage>0 && !target.damagestate.substitute && !target.hasWorkingItem(:COVERTCLOAK)
         if !isConst?(target.ability,PBAbilities,:SHIELDDUST) || target.moldbroken || thismove.hasFlags?("m")
           if user.hasWorkingItem(:RAZORFANG) &&
-            thismove.canKingsRock? && target.status!=PBStatuses::SLEEP && target.status!=PBStatuses::FROZEN
+            thismove.canKingsRock? && target.status!=PBStatuses::SLEEP #pk code
             if @battle.pbRandom(10)==0
               target.effects[PBEffects::Flinch]=true
             end
@@ -9379,8 +9384,6 @@ class PokeBattle_Battler
         end
       end
     end
-    # A standard blind lasts one move attempt. Perpetual can extend the counter.
-    @effects[PBEffects::Blinded] -= 1 if @effects[PBEffects::Blinded]>0
     # End of move usage
     thismove.azureAbilityCharge=false
     pbEndTurn(choice)
@@ -9436,6 +9439,7 @@ class PokeBattle_Battler
   end
 
   def pbEndTurn(choice)
+    @effects[PBEffects::Blinded]-=1 if @effects[PBEffects::Blinded]>0 #pk code
     @battle.pbResolveMirrorHerbs
     @effects[PBEffects::LiminalAttackThisMove]=false
     if @liminal_status_this_move
@@ -9503,7 +9507,7 @@ class PokeBattle_Battler
       return
     end
     # Use the move
-    if choice[2].zmove && !@effects[PBEffects::Flinch] && @status!=PBStatuses::SLEEP && @status!=PBStatuses::FROZEN
+    if choice[2].zmove && !@effects[PBEffects::Flinch] && @status!=PBStatuses::SLEEP #pk code
       choice[2].zmove=false
       @battle.pbUseZMove(self.index,choice[2],self.item,choice[1])
     else

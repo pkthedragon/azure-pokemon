@@ -206,24 +206,22 @@ class PokeBattle_Move_003 < PokeBattle_Move
         attacker.sameSideLivingBattlers(false).each do |ally|
           next if !ally.pbCanSleep?(true)
           pbShowAnimation(@id,opponent,ally,hitnum,alltargets,showanimation)
-          ally.pbSleep
+          ally.pbSleep(2) #pk code
           @battle.pbDisplay(_INTL("{1} went to sleep!",ally.pbThis))
         end
         @battle.pbDisplay(_INTL("{1} bounced the {2} back!",attacker.pbThis,PBMoves.getName(@id)))
         attacker.effects[PBEffects::MagicBounced]=false
       end
       pbShowAnimation(@id,attacker,opponent,hitnum,alltargets,showanimation)
-      opponent.pbSleep
-      # Hypnosis on Psychic Field and Haunted Field causes 2-turn sleep
-      if isConst?(@id,PBMoves,:HYPNOSIS) && ($fefieldeffect == 37 || $fefieldeffect == 40)
-        opponent.pbSleepSelf(2)
-      end
+      #pk code
+      longer_sleep=@id==PBMoves::DARKVOID || (@id==PBMoves::HYPNOSIS && [37,40].include?($fefieldeffect))
+      opponent.pbSleep(longer_sleep ? 2 : 1)
       @battle.pbDisplay(_INTL("{1} went to sleep!",opponent.pbThis))
       if isConst?(@id,PBMoves,:DARKVOID) && attacker.effects[PBEffects::MagicBounced] && (attacker.index == 2 || attacker.index == 3)
         attacker.effects[PBEffects::MagicBounced]=false
         opponent.sameSideLivingBattlers(false).each do |ally|
           next if !ally.pbCanSleep?(true)
-          ally.pbSleep
+          ally.pbSleep(2) #pk code
           @battle.pbDisplay(_INTL("{1} went to sleep!",ally.pbThis))
         end
       end
@@ -293,7 +291,7 @@ class PokeBattle_Move_004 < PokeBattle_Move
 
   def make_drowsy(battler)
     if battler.opposingLivingBattlers.any? { |foe| foe.effects[PBEffects::NightmareAura] }
-      battler.pbSleepSelf(2)
+      battler.pbSleepSelf(3) #pk code
       @battle.pbDisplay(_INTL("{1} went to sleep!",battler.pbThis))
     else
       battler.effects[PBEffects::Yawn]=2
@@ -385,7 +383,7 @@ class PokeBattle_Move_005 < PokeBattle_Move
         when 2
           return false if !opponent.pbCanParalyze?(false)
           opponent.pbParalyze(attacker)
-          @battle.pbDisplay(_INTL("{1} is paralyzed!  It may be unable to move!",opponent.pbThis))
+          @battle.pbDisplay(_INTL("{1} was paralyzed!",opponent.pbThis)) #pk code
         when 3
           return false if !opponent.pbCanPoison?(false)
           opponent.pbPoison(attacker)
@@ -470,7 +468,7 @@ class PokeBattle_Move_007 < PokeBattle_Move
     end
     pbShowAnimation(@id,attacker,opponent,hitnum,alltargets,showanimation)
     opponent.pbParalyze(attacker)
-    @battle.pbDisplay(_INTL("{1} is paralyzed! It may be unable to move!",opponent.pbThis))
+    @battle.pbDisplay(_INTL("{1} was paralyzed!",opponent.pbThis)) #pk code
     return 0
   end
 
@@ -484,7 +482,7 @@ class PokeBattle_Move_007 < PokeBattle_Move
   def pbAdditionalEffect(attacker,opponent)
     return false if !opponent.pbCanParalyze?(false)
     opponent.pbParalyze(attacker)
-    @battle.pbDisplay(_INTL("{1} was paralyzed!  It may be unable to move!",opponent.pbThis))
+    @battle.pbDisplay(_INTL("{1} was paralyzed!",opponent.pbThis)) #pk code
     return true
   end
 end
@@ -499,7 +497,7 @@ class PokeBattle_Move_008 < PokeBattle_Move
   def pbAdditionalEffect(attacker,opponent)
     return false if !opponent.pbCanParalyze?(false)
     opponent.pbParalyze(attacker)
-    @battle.pbDisplay(_INTL("{1} was paralyzed!  It may be unable to move!",opponent.pbThis))
+    @battle.pbDisplay(_INTL("{1} was paralyzed!",opponent.pbThis)) #pk code
     return true
   end
 end
@@ -525,7 +523,7 @@ class PokeBattle_Move_009 < PokeBattle_Move
   def pbAdditionalEffect(attacker,opponent)
     return false unless opponent.pbCanParalyze?(false)
     opponent.pbParalyze(attacker)
-    @battle.pbDisplay(_INTL("{1} was paralyzed!  It may be unable to move!",opponent.pbThis))
+    @battle.pbDisplay(_INTL("{1} was paralyzed!",opponent.pbThis)) #pk code
     return true
   end
 end
@@ -660,7 +658,7 @@ class PokeBattle_Move_010 < PokeBattle_Move
   def pbAdditionalEffect(attacker,opponent)
     if !opponent.hasWorkingAbility(:INNERFOCUS) &&
        opponent.effects[PBEffects::Substitute]==0 &&
-       opponent.status!=PBStatuses::SLEEP && opponent.status!=PBStatuses::FROZEN
+       opponent.status!=PBStatuses::SLEEP #pk code
       opponent.effects[PBEffects::Flinch]=true
       return true
     end
@@ -702,7 +700,7 @@ class PokeBattle_Move_012 < PokeBattle_Move
   def pbAdditionalEffect(attacker,opponent)
     if !opponent.hasWorkingAbility(:INNERFOCUS) &&
        opponent.effects[PBEffects::Substitute]==0 &&
-       opponent.status!=PBStatuses::SLEEP && opponent.status!=PBStatuses::FROZEN
+       opponent.status!=PBStatuses::SLEEP #pk code
       opponent.effects[PBEffects::Flinch]=true
       return true
     end
@@ -814,7 +812,7 @@ class PokeBattle_Move_016 < PokeBattle_Move
       return -1
     end
     if @battle.pbCheckSideAbility(:AROMAVEIL,opponent)!=nil && !(opponent.moldbroken)
-      @battle.pbDisplay(_INTL("The Aroma Veil prevents #{opponent.pbThis} from infatuation!"))
+      @battle.pbDisplay(_INTL("Aroma Veil protected {1} from enchantment!",opponent.pbThis(true))) #pk code
       return -1
     end
     pbShowAnimation(@id,attacker,opponent,hitnum,alltargets,showanimation)
@@ -827,7 +825,7 @@ class PokeBattle_Move_016 < PokeBattle_Move
       return false
     end
     if @battle.pbCheckSideAbility(:AROMAVEIL,opponent)!=nil && !(opponent.moldbroken)
-      @battle.pbDisplay(_INTL("The Aroma Veil prevents #{opponent.pbThis} from infatuation!"))
+      @battle.pbDisplay(_INTL("Aroma Veil protected {1} from enchantment!",opponent.pbThis(true))) #pk code
       return false
     end
     opponent.pbApplyTimedAttract(attacker)
@@ -853,7 +851,7 @@ class PokeBattle_Move_017 < PokeBattle_Move
       when 2
         return false if !opponent.pbCanParalyze?(false)
         opponent.pbParalyze(attacker)
-        @battle.pbDisplay(_INTL("{1} is paralyzed!  It may be unable to move!",opponent.pbThis))
+        @battle.pbDisplay(_INTL("{1} was paralyzed!",opponent.pbThis)) #pk code
     end
     return true
   end
@@ -996,13 +994,13 @@ class PokeBattle_Move_01B < PokeBattle_Move
     case attacker.status
       when PBStatuses::PARALYSIS
         opponent.pbParalyze(attacker)
-        @battle.pbDisplay(_INTL("{1} is paralyzed!",opponent.pbThis))
+        @battle.pbDisplay(_INTL("{1} was paralyzed!",opponent.pbThis)) #pk code
         opponent.pbAbilityCureCheck
         @battle.synchronize=[-1,-1,0] if opponent.status!=PBStatuses::PARALYSIS
         attacker.status=0
         @battle.pbDisplay(_INTL("{1} was cured.",attacker.pbThis))
       when PBStatuses::SLEEP
-        opponent.pbSleep(attacker)
+        opponent.pbSleep #pk code
         @battle.pbDisplay(_INTL("{1} went to sleep!",opponent.pbThis))
         opponent.pbAbilityCureCheck
         @battle.synchronize=[-1,-1,0] if opponent.status!=PBStatuses::SLEEP
@@ -2330,7 +2328,7 @@ class PokeBattle_Move_047 < PokeBattle_Move
       when 2
         return false if !opponent.pbCanParalyze?(false)
         opponent.pbParalyze(attacker)
-        @battle.pbDisplay(_INTL("{1} is paralyzed!  It may be unable to move!",opponent.pbThis))
+        @battle.pbDisplay(_INTL("{1} was paralyzed!",opponent.pbThis)) #pk code
       when 3
         return false if !opponent.pbCanPoison?(false)
         opponent.pbPoison(attacker)
@@ -5021,7 +5019,7 @@ class PokeBattle_Move_0A4 < PokeBattle_Move
       when 1
         return false if !opponent.pbCanParalyze?(false)
         opponent.pbParalyze(attacker)
-        @battle.pbDisplay(_INTL("{1} is paralyzed!  It may be unable to move!",opponent.pbThis))
+        @battle.pbDisplay(_INTL("{1} was paralyzed!",opponent.pbThis)) #pk code
       when 2
         return false if !opponent.pbCanSleep?(false)
         return false if opponent.effects[PBEffects::Yawn]>0
@@ -5060,14 +5058,14 @@ class PokeBattle_Move_0A4 < PokeBattle_Move
           when 2
             return false if !opponent.pbCanParalyze?(false)
             opponent.pbParalyze(attacker)
-            @battle.pbDisplay(_INTL("{1} is paralyzed!  It may be unable to move!",opponent.pbThis))
+            @battle.pbDisplay(_INTL("{1} was paralyzed!",opponent.pbThis)) #pk code
           when 3
             return false if !opponent.pbCanPoison?(false)
             opponent.pbPoison(attacker)
             @battle.pbDisplay(_INTL("{1} was poisoned!",opponent.pbThis))
           when 4
             return false if !opponent.pbCanSleep?(false)
-            opponent.pbSleep(attacker)
+            opponent.pbSleep #pk code
             @battle.pbDisplay(_INTL("{1} fell asleep!",opponent.pbThis))
         end
       when 10
@@ -5103,7 +5101,7 @@ class PokeBattle_Move_0A4 < PokeBattle_Move
       when 18
         return false if !opponent.pbCanParalyze?(false)
         opponent.pbParalyze(attacker)
-        @battle.pbDisplay(_INTL("{1} is paralyzed!  It may be unable to move!",opponent.pbThis))
+        @battle.pbDisplay(_INTL("{1} was paralyzed!",opponent.pbThis)) #pk code
       when 19
         rnd=@battle.pbRandom(4)
         case rnd
@@ -5118,7 +5116,7 @@ class PokeBattle_Move_0A4 < PokeBattle_Move
           when 2
             return false if !opponent.pbCanParalyze?(false)
             opponent.pbParalyze(attacker)
-            @battle.pbDisplay(_INTL("{1} is paralyzed!  It may be unable to move!",opponent.pbThis))
+            @battle.pbDisplay(_INTL("{1} was paralyzed!",opponent.pbThis)) #pk code
           when 3
             return false if !opponent.pbCanPoison?(false)
             opponent.pbPoison(attacker)
@@ -5170,7 +5168,7 @@ class PokeBattle_Move_0A4 < PokeBattle_Move
             @battle.pbDisplay(_INTL("{1} became confused!",opponent.pbThis))
           when 3
             return false if !opponent.pbCanSleep?(false)
-            opponent.pbSleep(attacker)
+            opponent.pbSleep #pk code
             @battle.pbDisplay(_INTL("{1} fell asleep!",opponent.pbThis))
         end
       when 26
@@ -5274,7 +5272,7 @@ class PokeBattle_Move_0A4 < PokeBattle_Move
           when 2
             return false if !opponent.pbCanParalyze?(false)
             opponent.pbParalyze(attacker)
-            @battle.pbDisplay(_INTL("{1} is paralyzed!  It may be unable to move!",opponent.pbThis))
+            @battle.pbDisplay(_INTL("{1} was paralyzed!",opponent.pbThis)) #pk code
         end
       when 43
         return false if !opponent.pbCanConfuse?(false)
@@ -5302,7 +5300,7 @@ class PokeBattle_Move_0A4 < PokeBattle_Move
       else
         return false if !opponent.pbCanParalyze?(false)
         opponent.pbParalyze(attacker)
-        @battle.pbDisplay(_INTL("{1} is paralyzed!  It may be unable to move!",opponent.pbThis))
+        @battle.pbDisplay(_INTL("{1} was paralyzed!",opponent.pbThis)) #pk code
       end
     return true
   end
@@ -6447,7 +6445,7 @@ class PokeBattle_Move_0C5 < PokeBattle_Move
   def pbAdditionalEffect(attacker,opponent)
     return false if !opponent.pbCanParalyze?(false)
     opponent.pbParalyze(attacker)
-    @battle.pbDisplay(_INTL("{1} was paralyzed!  It may be unable to move!",opponent.pbThis))
+    @battle.pbDisplay(_INTL("{1} was paralyzed!",opponent.pbThis)) #pk code
     return true
   end
 end
@@ -6705,7 +6703,7 @@ class PokeBattle_Move_0CC < PokeBattle_Move
   def pbAdditionalEffect(attacker,opponent)
     return false if !opponent.pbCanParalyze?(false)
     opponent.pbParalyze(attacker)
-    @battle.pbDisplay(_INTL("{1} was paralyzed!  It may be unable to move!",opponent.pbThis))
+    @battle.pbDisplay(_INTL("{1} was paralyzed!",opponent.pbThis)) #pk code
     return true
   end
 end
@@ -8045,18 +8043,18 @@ class PokeBattle_Move_0F7 < PokeBattle_Move
       elsif attacker.hasWorkingItem(:RAZORFANG)
         if !opponent.hasWorkingAbility(:INNERFOCUS) &&
            opponent.effects[PBEffects::Substitute]==0 &&
-           opponent.status!=PBStatuses::SLEEP && opponent.status!=PBStatuses::FROZEN
+           opponent.status!=PBStatuses::SLEEP #pk code
           opponent.effects[PBEffects::Flinch]=true
         end
       elsif attacker.hasWorkingItem(:LIGHTBALL)
         if opponent.pbCanParalyze?(false)
           opponent.pbParalyze(attacker)
-          @battle.pbDisplay(_INTL("{1} was paralyzed! It may be unable to move!",opponent.pbThis))
+          @battle.pbDisplay(_INTL("{1} was paralyzed!",opponent.pbThis)) #pk code
         end
       elsif attacker.hasWorkingItem(:MENTALHERB)
         if opponent.effects[PBEffects::Attract]>=0
           opponent.pbCureAttract
-          @battle.pbDisplay(_INTL("{1}'s {2} cured {3}'s love problem!",
+          @battle.pbDisplay(_INTL("{1}'s {2} broke the enchantment on {3}!", #pk code
              attacker.pbThis,PBItems.getName(attacker.item),opponent.pbThis(true)))
         end
       elsif attacker.hasWorkingItem(:POISONBARB)
@@ -8238,7 +8236,7 @@ class PokeBattle_Move_0FD < PokeBattle_Move
   def pbAdditionalEffect(attacker,opponent)
     return false if !opponent.pbCanParalyze?(false)
     opponent.pbParalyze(attacker)
-    @battle.pbDisplay(_INTL("{1} was paralyzed! It may be unable to move!",opponent.pbThis))
+    @battle.pbDisplay(_INTL("{1} was paralyzed!",opponent.pbThis)) #pk code
     return true
   end
 end
@@ -8292,7 +8290,7 @@ class PokeBattle_Move_BBA < PokeBattle_Move_0FA
   def pbAdditionalEffect(attacker,opponent)
     return false if !opponent.pbCanParalyze?(false)
     opponent.pbParalyze(attacker)
-    @battle.pbDisplay(_INTL("{1} was paralyzed! It may be unable to move!",opponent.pbThis))
+    @battle.pbDisplay(_INTL("{1} was paralyzed!",opponent.pbThis)) #pk code
     return true
   end
 end
@@ -12305,7 +12303,7 @@ class PokeBattle_Move_25A < PokeBattle_Move
     if party.count { |pokemon| pokemon && !pokemon.isEgg? && pokemon.hp>0 }==1
       if opponent.pbCanParalyze?(false)
         opponent.pbParalyze(attacker)
-        @battle.pbDisplay(_INTL("{1} was paralyzed! It may be unable to move!",opponent.pbThis))
+        @battle.pbDisplay(_INTL("{1} was paralyzed!",opponent.pbThis)) #pk code
       end
     elsif !opponent.effects[PBEffects::Ingrain] &&
           (!opponent.hasWorkingAbility(:SUCTIONCUPS) || opponent.moldbroken)
@@ -13281,7 +13279,7 @@ class PokeBattle_Move_28A < PokeBattle_Move
       when 2
         return false if !opponent.pbCanParalyze?(false)
         opponent.pbParalyze(attacker)
-        @battle.pbDisplay(_INTL("{1} is paralyzed!  It may be unable to move!",opponent.pbThis))
+        @battle.pbDisplay(_INTL("{1} was paralyzed!",opponent.pbThis)) #pk code
     end
     return true
   end
@@ -13488,7 +13486,7 @@ class PokeBattle_Move_223 < PokeBattle_Move
     when 1
       return false if !opponent.pbCanParalyze?(false)
       opponent.pbParalyze(attacker)
-      @battle.pbDisplay(_INTL("{1} is paralyzed! It may be unable to move!",opponent.pbThis))
+      @battle.pbDisplay(_INTL("{1} was paralyzed!",opponent.pbThis)) #pk code
     when 2
       return false if !opponent.pbCanBurn?(false)
       opponent.pbBurn(attacker)
@@ -13685,7 +13683,7 @@ class PokeBattle_Move_2AC < PokeBattle_Move
       return false
     end
     if @battle.pbCheckSideAbility(:AROMAVEIL,opponent)!=nil && !(opponent.moldbroken)
-      @battle.pbDisplay(_INTL("The Aroma Veil prevents #{opponent.pbThis} from infatuation!"))
+      @battle.pbDisplay(_INTL("Aroma Veil protected {1} from enchantment!",opponent.pbThis(true))) #pk code
       return false
     end
     opponent.pbApplyTimedAttract(attacker)
