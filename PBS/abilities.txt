@@ -3,7 +3,7 @@
 [STENCH]
 LegacyAbilityID = 1
 Name = Stench
-Description = The user's first contact move against a target flinches.
+Description = The user's first contact move against each target makes that target flinch.
 #-------------------------------
 [DRIZZLE]
 LegacyAbilityID = 2
@@ -253,7 +253,7 @@ Description = Immune to Pursuit and trapping moves and abilities, can always fle
 [KEENEYE]
 LegacyAbilityID = 51
 Name = Keen Eye
-Description = Uses Lock-On and Laser Focus on entry, the user's accuracy can't be lowered.
+Description = Uses Lock-On and Laser Focus on entry. The user's accuracy can't be lowered.
 #-------------------------------
 [HYPERCUTTER]
 LegacyAbilityID = 52
@@ -268,7 +268,7 @@ Description = Picks up the enemy's item upon fainting, can find items outside of
 [TRUANT]
 LegacyAbilityID = 54
 Name = Truant
-Description = Skips every other turn to heal 1/3rd max HP.
+Description = Skips every other turn to heal 1/3 of max HP.
 #-------------------------------
 [HUSTLE]
 LegacyAbilityID = 55
@@ -408,12 +408,12 @@ Description = User has 1.5x special defense during Hail.
 [GLUTTONY]
 LegacyAbilityID = 82
 Name = Gluttony
-Description = Encourages early use of berries, effects that heal the user restore 10% more HP.
+Description = Encourages early use of berries. Effects that heal the user restore 10% more HP.
 #-------------------------------
 [ANGERPOINT]
 LegacyAbilityID = 83
 Name = Anger Point
-Description = User's moves deal 1.3x damage but the user cannot use status moves.
+Description = The user's moves deal 1.3x damage, but the user cannot use status moves.
 #-------------------------------
 [UNBURDEN]
 LegacyAbilityID = 84
@@ -468,7 +468,7 @@ Description = During Rain, clears the user's status conditions and negative stat
 [SOLARPOWER]
 LegacyAbilityID = 94
 Name = Solar Power
-Description = In sunshine, Sp. Atk is boosted but HP decreases.
+Description = In sunshine, Sp. Atk is boosted, but HP decreases.
 #-------------------------------
 [QUICKFEET]
 LegacyAbilityID = 95
@@ -588,7 +588,7 @@ Description = The Pokémon summons a hailstorm in battle.
 [HONEYGATHER]
 LegacyAbilityID = 118
 Name = Honey Gather
-Description = Restores 1/8th max HP each turn the user doesn't attack, finds honey outside of battle.
+Description = Restores 1/8 of max HP each turn the user doesn't attack. Finds honey outside battle.
 #-------------------------------
 [FRISK]
 LegacyAbilityID = 119
@@ -663,7 +663,7 @@ Description = Reduces damage done to allies.
 [WEAKARMOR]
 LegacyAbilityID = 133
 Name = Weak Armor
-Description = Physical attacks lower Def. and sharply raise Spd.
+Description = Physical attacks lower Defense and sharply raise Speed.
 #-------------------------------
 [HEAVYMETAL]
 LegacyAbilityID = 134
@@ -963,7 +963,7 @@ Description = Powers up ally Pokémon's special moves.
 [BEASTBOOST]
 LegacyAbilityID = 193
 Name = Beast Boost
-Description = Boosts highest stat after KO'ing a Pokémon.
+Description = Boosts highest stat after KOing a Pokémon.
 #-------------------------------
 [BERSERK]
 LegacyAbilityID = 194
@@ -997,7 +997,7 @@ Description = Electrifies the terrain on entry.
 #-------------------------------
 [EMERGENCYEXIT]
 LegacyAbilityID = 200
-Name = EmergencyExit
+Name = Emergency Exit
 Description = It retreats when its HP becomes half or less.
 #-------------------------------
 [FLUFFY]
@@ -1098,7 +1098,7 @@ Description = Boosts the Defense stat when hit by an attack.
 [STEELWORKER]
 LegacyAbilityID = 220
 Name = Steelworker
-Description = Steel-type moves deal 1.5x damage, takes 0.5x damage from Steel-type moves.
+Description = The user deals 1.5x damage with Steel-type moves and takes 0.5x damage from them.
 #-------------------------------
 [SURGESURFER]
 LegacyAbilityID = 221
@@ -1158,7 +1158,7 @@ Description = Enters Complete Form when HP is half or less.
 [BALLFETCH]
 LegacyAbilityID = 232
 Name = Ball Fetch
-Description = Fetches the first failed Pokéball if no held item.
+Description = Fetches the first failed Poké Ball if the Pokémon has no held item.
 #-------------------------------
 [COTTONDOWN]
 LegacyAbilityID = 233
@@ -1183,7 +1183,7 @@ Description = Catches Pokémon with Surf and Dive, spits out when hit.
 [HUNGERSWITCH]
 LegacyAbilityID = 237
 Name = Hunger Switch
-Description = Heals 1/8th max HP at the end of turn or has 1.5x speed based on form.
+Description = Heals 1/8 of max HP at the end of each turn or has 1.5x Speed, depending on form.
 #-------------------------------
 [ICEFACE]
 LegacyAbilityID = 238
@@ -1268,7 +1268,7 @@ Description = Each time a move is used in succession against the user, the damag
 [STEAMENGINE]
 LegacyAbilityID = 254
 Name = Steam Engine
-Description = Fire- and Water-type moves boost Speed drastcally.
+Description = Fire- and Water-type moves boost Speed drastically.
 #-------------------------------
 [STEELYSPIRIT]
 LegacyAbilityID = 255
@@ -1298,7 +1298,7 @@ Description = Adjusts the body to adapt to environments.
 [SAVAGERY]
 LegacyAbilityID = 302
 Name = Savagery
-Description = Raises this Pokemon's attack stats depending on HP.
+Description = Raises this Pokémon's Attack and Special Attack depending on HP.
 #-------------------------------
 [ACCUMULATION]
 LegacyAbilityID = 303
@@ -1333,7 +1333,7 @@ Description = STAB Fire moves. 50% ATK boost in Sun. Levitates.
 [LUNARIDOL]
 LegacyAbilityID = 309
 Name = Lunar Idol
-Description = STAB on Ice moves. 50% SPATK boost in Hail. Levitates.
+Description = STAB on Ice moves. 50% Sp. Atk boost in Hail. Levitates.
 #-------------------------------
 [WORLDOFNIGHTMARES]
 LegacyAbilityID = 310
@@ -1343,17 +1343,17 @@ Description = End of turn damage on all foes. Changes field to New World over ti
 [MAENADSFERVOR]
 LegacyAbilityID = 311
 Name = Maenad's Fervor
-Description = This Pokemon's Defenses and Speed are raised when confused.
+Description = This Pokémon's Defenses and Speed are raised when confused.
 #-------------------------------
 [ILLUSORYSHROUD]
 LegacyAbilityID = 312
 Name = Illusory Shroud
-Description = This Pokemon is immune to contact moves, but its Defenses are swapped.
+Description = This Pokémon is immune to contact moves, but its Defenses are swapped.
 #-------------------------------
 [COTTONMOLT]
 LegacyAbilityID = 313
 Name = Cotton Molt
-Description = This Pokemon scatters cotton around when it attacks, lowering all other Pokemon's speed.
+Description = This Pokémon scatters cotton around when it attacks, lowering all other Pokémon's speed.
 #-------------------------------
 [AMBIDEXTROUS]
 LegacyAbilityID = 314
@@ -1368,7 +1368,7 @@ Description = This Pokémon deals more damage to Pokémon that haven't attacked 
 [HEADSTRONG]
 LegacyAbilityID = 316
 Name = Headstrong
-Description = All Pokemon ignore immunities.
+Description = All Pokémon ignore immunities.
 #-------------------------------
 [ERRATIC]
 LegacyAbilityID = 317
@@ -1378,7 +1378,7 @@ Description = The user's attacks confuse the target.
 [ELDRITCH]
 LegacyAbilityID = 318
 Name = Eldritch
-Description = Blinds all other Pokemon on entry.
+Description = Blinds all other Pokémon on entry.
 #-------------------------------
 [STALKER]
 LegacyAbilityID = 319
@@ -1418,7 +1418,7 @@ Description = Becomes stronger for each fainted ally.
 [CARETAKER]
 LegacyAbilityID = 326
 Name = Caretaker
-Description = Heals allies for 1/8th max HP each turn.
+Description = Heals allies for 1/8 of max HP each turn.
 #-------------------------------
 [IMPOSING]
 LegacyAbilityID = 327
@@ -1433,7 +1433,7 @@ Description = Enemies take more damage outside of attacks.
 [SUNBATHE]
 LegacyAbilityID = 329
 Name = Sunbathe
-Description = Restores 1/8th max HP each turn in Sun.
+Description = Restores 1/8 of max HP each turn in Sun.
 #-------------------------------
 [ICEBREAKER]
 LegacyAbilityID = 330
@@ -1443,7 +1443,7 @@ Description = Raises the power of Ice-type moves and Fighting-type moves by 1.3x
 [HYDROPLANE]
 LegacyAbilityID = 331
 Name = Hydroplane
-Description = Boosts attack 1.5x and loses 1/8th max HP each turn during Rain.
+Description = Boosts attack 1.5x and loses 1/8 of max HP each turn during Rain.
 #-------------------------------
 [BLOODTHIRSTY]
 LegacyAbilityID = 332
@@ -1538,7 +1538,7 @@ Description = User is immune to priority and two-turn moves.
 [BEADSOFRUIN]
 LegacyAbilityID = 350
 Name = Beads of Ruin
-Description = Lowers Sp.Def of all Pokemon but itself.
+Description = Lowers the Sp. Def of all other Pokémon.
 #-------------------------------
 [COMMANDER]
 LegacyAbilityID = 351
@@ -1563,12 +1563,12 @@ Description = Restores HP if hit by a Ground-type move.
 [ELECTROMORPHOSIS]
 LegacyAbilityID = 355
 Name = Electromorphosis
-Description = The Pokemon becomes charged when it takes damage.
+Description = The Pokémon becomes charged when it takes damage.
 #-------------------------------
 [GOODASGOLD]
 LegacyAbilityID = 356
 Name = Good as Gold
-Description = The Pokemon has full immunity to Status moves.
+Description = The Pokémon has full immunity to Status moves.
 #-------------------------------
 [GUARDDOG]
 LegacyAbilityID = 357
@@ -1578,7 +1578,7 @@ Description = Raises Attack when intimidated, prevents phasing.
 [HADRONENGINE]
 LegacyAbilityID = 358
 Name = Hadron Engine
-Description = Creates Electric Terrain and boosts Sp.Atk on it.
+Description = Creates Electric Terrain and boosts Sp. Atk while it is active.
 #-------------------------------
 [LINGERINGAROMA]
 LegacyAbilityID = 359
@@ -1588,7 +1588,7 @@ Description = Contact with this Pokémon spreads this Ability.
 [MYCELIUMMIGHT]
 LegacyAbilityID = 360
 Name = Mycelium Might
-Description = Status moves ignore abilities and immunities, but go last.
+Description = Status moves ignore abilities and immunities but go last.
 #-------------------------------
 [OPPORTUNIST]
 LegacyAbilityID = 361
@@ -1628,12 +1628,12 @@ Description = Raises Attack for each fallen team member.
 [SWORDOFRUIN]
 LegacyAbilityID = 368
 Name = Sword of Ruin
-Description = Lowers Defense of all Pokemon but itself.
+Description = Lowers the Defense of all other Pokémon.
 #-------------------------------
 [TABLETSOFRUIN]
 LegacyAbilityID = 369
 Name = Tablets of Ruin
-Description = Lowers Attack of all Pokemon but itself.
+Description = Lowers the Attack of all other Pokémon.
 #-------------------------------
 [THERMALEXCHANGE]
 LegacyAbilityID = 370
@@ -1653,7 +1653,7 @@ Description = Lays poison barbs when damaged.
 [VESSELOFRUIN]
 LegacyAbilityID = 373
 Name = Vessel of Ruin
-Description = Lowers Sp. Atk of all Pokemon but itself.
+Description = Lowers the Sp. Atk of all other Pokémon.
 #-------------------------------
 [WELLBAKEDBODY]
 LegacyAbilityID = 374
@@ -1708,7 +1708,7 @@ Description = The user takes halved damage from Electric- and Ice-type moves.
 [PITCHBLACK]
 LegacyAbilityID = 384
 Name = Pitch Black
-Description = Absorbs Dark-type moves, which raises this Pokemon's defenses.
+Description = Absorbs Dark-type moves, which raises this Pokémon's defenses.
 #-------------------------------
 [UNSEENFIST]
 LegacyAbilityID = 385
@@ -1808,7 +1808,7 @@ Description = The user cannot be crushed. The user's attacks crush during intens
 [CARETAKER]
 LegacyAbilityID = 404
 Name = Caretaker
-Description = Heals allies for 1/8th max HP each turn.
+Description = Heals allies for 1/8 of max HP each turn.
 #-------------------------------
 [BLOODTHIRSTY]
 LegacyAbilityID = 405

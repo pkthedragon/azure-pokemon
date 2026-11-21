@@ -1172,14 +1172,14 @@ class Scene_FieldNotes_Info
                 when 3
                   Kernel.pbMessage(_INTL("...when attacker is grounded."))
                 when 4
-                  Kernel.pbMessage(_INTL("Explosion, Hurricane, Hydro Vortex, Muddy Water, Selfdestruct, Smack Down, Surf, Thousand Arrows"))
+                  Kernel.pbMessage(_INTL("Explosion, Hurricane, Hydro Vortex, Muddy Water, Self Destruct, Smack Down, Surf, Thousand Arrows"))
                 when 6
                   Kernel.pbMessage(_INTL("Charge, Eerie Impulse"))
               end
             when 1
               case @sprites["command_window"].index #Which line was selected
                 when 0
-                  Kernel.pbMessage(_INTL("Explosion, Hurricane, Muddy Water, Selfdestruct, Smack Down, Surf, Thousand Arrows"))
+                  Kernel.pbMessage(_INTL("Explosion, Hurricane, Muddy Water, Self Destruct, Smack Down, Surf, Thousand Arrows"))
                 when 1
                   Kernel.pbMessage(_INTL("Magnet Bomb"))
                 when 5
@@ -1246,9 +1246,9 @@ class Scene_FieldNotes_Info
                 when 0
                   Kernel.pbMessage(_INTL("...when Acid Downpour is used, or when one of these moves is used twice: Clear Smog, Poison Gas, Smog"))
                 when 1
-                  Kernel.pbMessage(_INTL("Explosion, Selfdestruct"))
+                  Kernel.pbMessage(_INTL("Explosion, Self Destruct"))
                 when 3
-                  Kernel.pbMessage(_INTL("...when Pokemon is sent out."))
+                  Kernel.pbMessage(_INTL("...when a Pokémon is sent out."))
                 when 7
                   Kernel.pbMessage(_INTL("Boosts Sp.Def and applies Healing Wish to the user."))
               end
@@ -1258,7 +1258,7 @@ class Scene_FieldNotes_Info
             when 0
               case @sprites["command_window"].index #Which line was selected
                 when 1
-                  Kernel.pbMessage(_INTL("Aurora Beam, Dark Pulse, Dazzling Gream, Doom Desire, Flash Cannon, Luster Purge, Mirror Shot,  Moongeist Beam, Night Daze, Night Slash, Power Gem, Shadow Ball, Shadow Bone, Shadow Claw, Shadow Force, Shadow Punch, Shadow Sneak, Signal Beam, Technoblast"))
+                  Kernel.pbMessage(_INTL("Aurora Beam, Dark Pulse, Dazzling Gleam, Doom Desire, Flash Cannon, Luster Purge, Mirror Shot,  Moongeist Beam, Night Daze, Night Slash, Power Gem, Shadow Ball, Shadow Bone, Shadow Claw, Shadow Force, Shadow Punch, Shadow Sneak, Signal Beam, Techno Blast"))
                 when 2
                   Kernel.pbMessage(_INTL("Flash"))
                 when 6
@@ -1350,7 +1350,7 @@ class Scene_FieldNotes_Info
             when 1
               case @sprites["command_window"].index #Which line was selected
                 when 0
-                  Kernel.pbMessage(_INTL("Continental Crush, Defog, Fust, Hurricane, Hydro Vortex, Muddy Water, Oceanic Operetta, Razor Wind, Sand Tomb, Sludge Wave, Sparkling Aria, Surf, Tailwind, Water Pledge, Water Spout, Whirlwind"))
+                  Kernel.pbMessage(_INTL("Continental Crush, Defog, Gust, Hurricane, Hydro Vortex, Muddy Water, Oceanic Operetta, Razor Wind, Sand Tomb, Sludge Wave, Sparkling Aria, Surf, Tailwind, Water Pledge, Water Spout, Whirlwind"))
                 when 2
                   Kernel.pbMessage(_INTL("Blaze, Flare Boost, Flash Fire"))
                 when 6
@@ -1380,9 +1380,9 @@ class Scene_FieldNotes_Info
             when 1
               case @sprites["command_window"].index #Which line was selected
                 when 0
-                  Kernel.pbMessage(_INTL("Brine, Gunk Shot, Hydro Vortex, Mud Bomb, Mud Shot, Mud Slap, Muddy Water, Sludge Wave, Smack Down, Surf, Thousand Arrows"))
+                  Kernel.pbMessage(_INTL("Brine, Gunk Shot, Hydro Vortex, Mud Bomb, Mud Shot, Mud-Slap, Muddy Water, Sludge Wave, Smack Down, Surf, Thousand Arrows"))
                 when 1
-                  Kernel.pbMessage(_INTL("Explosion, Selfdestruct"))
+                  Kernel.pbMessage(_INTL("Explosion, Self Destruct"))
                 when 5
                   Kernel.pbMessage(_INTL("...each turn."))
               end
@@ -1408,7 +1408,7 @@ class Scene_FieldNotes_Info
             when 2
               case @sprites["command_window"].index #Which line was selected
                 when 7
-                  Kernel.pbMessage(_INTL("Boosts Sp.Atka and applies Healing Wish to the user."))
+                  Kernel.pbMessage(_INTL("Boosts Special Attack and applies Healing Wish to the user."))
         end
           end
         when 9 # Corrosive Field
@@ -1426,12 +1426,12 @@ class Scene_FieldNotes_Info
                 when 5
                   Kernel.pbMessage(_INTL("...when grounded, activates Poison Heal and Toxic Boost."))
                 when 7
-                  Kernel.pbMessage(_INTL("Mud Bomb, Mud Shot, Mud Slap, Muddy Water, Smack Down, Thousand Arrows, Whirlpool"))
+                  Kernel.pbMessage(_INTL("Mud Bomb, Mud Shot, Mud-Slap, Muddy Water, Smack Down, Thousand Arrows, Whirlpool"))
               end
             when 1
               case @sprites["command_window"].index #Which line was selected
                 when 0
-                  Kernel.pbMessage(_INTL("Mud Bomb, Mud Shot, Mud Slap, Muddy Water, Smack Down, Thousand Arrows, Whirlpool"))
+                  Kernel.pbMessage(_INTL("Mud Bomb, Mud Shot, Mud-Slap, Muddy Water, Smack Down, Thousand Arrows, Whirlpool"))
                 when 1
                   Kernel.pbMessage(_INTL("Acid, Acid Spray, Grass Knot"))
                 when 2
@@ -1458,9 +1458,9 @@ class Scene_FieldNotes_Info
                 when 3
                   Kernel.pbMessage(_INTL("...unless Poison or Steel type."))
                 when 4
-                  Kernel.pbMessage(_INTL("All special flying attacks, Bubble, Bubblebeam, Energy Ball"))
+                  Kernel.pbMessage(_INTL("All special flying attacks, Bubble, Bubble Beam, Energy Ball"))
                 when 5
-                  Kernel.pbMessage(_INTL("Acid Spray, Bubble, Bubblebeam, Clear Smog, Smog, Sparkling Aria"))
+                  Kernel.pbMessage(_INTL("Acid Spray, Bubble, Bubble Beam, Clear Smog, Smog, Sparkling Aria"))
                 when 6
                   Kernel.pbMessage(_INTL("Acid Armor"))
               end
@@ -1472,11 +1472,11 @@ class Scene_FieldNotes_Info
             when 2
               case @sprites["command_window"].index #Which line was selected
                 when 0
-                  Kernel.pbMessage(_INTL("Defog, Eruption, Explosion, Fire Pledge, Flame Burst, Gust, Heat Wave, Hurricane, Lava Plume, Razor Wind, Searing Shot, Selfdestruct, Supersonic Skystrike, Tailwind, Twister, Whirlwind"))
+                  Kernel.pbMessage(_INTL("Defog, Eruption, Explosion, Fire Pledge, Flame Burst, Gust, Heat Wave, Hurricane, Lava Plume, Razor Wind, Searing Shot, Self Destruct, Supersonic Skystrike, Tailwind, Twister, Whirlwind"))
                 when 1
-                  Kernel.pbMessage(_INTL("...when one of these moves is used: Eruption, Explosion, Fire Pledge, Flame Burst, Heat Wave, Inferno Overdrive, Lava Plume, Searing Shot, Selfdestruct."))
-                  Kernel.pbMessage(_INTL("Pokemon may survive from full health with 1 HP if Endure or Sturdy is active."))
-                  Kernel.pbMessage(_INTL("Pokemon with Flash Fire, or that are behind Protect moves including Wide Guard will not take damage."))
+                  Kernel.pbMessage(_INTL("...when one of these moves is used: Eruption, Explosion, Fire Pledge, Flame Burst, Heat Wave, Inferno Overdrive, Lava Plume, Searing Shot, Self Destruct."))
+                  Kernel.pbMessage(_INTL("Pokémon at full HP may survive with 1 HP if Endure or Sturdy is active."))
+                  Kernel.pbMessage(_INTL("Pokémon with Flash Fire or protected by moves such as Wide Guard will not take damage."))
                 when 2
                   Kernel.pbMessage(_INTL("...when Gravity is used."))
                 when 6
@@ -1544,7 +1544,7 @@ class Scene_FieldNotes_Info
             when 1
               case @sprites["command_window"].index #Which line was selected
                 when 6
-                  Kernel.pbMessage(_INTL("Boosts Defense and Sp.Def, but damages the user with Stealth Rocks."))
+                  Kernel.pbMessage(_INTL("Boosts Defense and Sp.Def, but damages the user with Stealth Rock."))
         end
           end
         when 14 # Forest
@@ -1578,7 +1578,7 @@ class Scene_FieldNotes_Info
                 when 4
                   Kernel.pbMessage(_INTL("Muddy Water, Surf, Water Pledge, Water Spout"))
                 when 5
-                  Kernel.pbMessage(_INTL("Hydro Vortex, Muddy Water, Oceanic Operetta, Sparkling Aria, Surf, Water Pledge, and Water Spout generate steam, lowering all active Pokemon's Accuracy."))
+                  Kernel.pbMessage(_INTL("Hydro Vortex, Muddy Water, Oceanic Operetta, Sparkling Aria, Surf, Water Pledge, and Water Spout generate steam, lowering all active Pokémon's Accuracy."))
                 when 6
                   Kernel.pbMessage(_INTL("Scald, Steam Eruption"))
                 when 7
@@ -1599,7 +1599,7 @@ class Scene_FieldNotes_Info
             when 0
               case @sprites["command_window"].index #Which line was selected
                 when 5
-                  Kernel.pbMessage(_INTL("Steamroller, Technoblast"))
+                  Kernel.pbMessage(_INTL("Steamroller, Techno Blast"))
                 when 6
                   Kernel.pbMessage(_INTL("Flash Cannon, Gear Grind, Gyro Ball, Magnet Bomb"))
                 when 7
@@ -1608,7 +1608,7 @@ class Scene_FieldNotes_Info
             when 1
               case @sprites["command_window"].index #Which line was selected
                 when 1
-                  Kernel.pbMessage(_INTL("...when Bulldoze, Discharge, Earthquake, Explosion, Fissure, Gigavolt Havoc, Ion Deluge, Magnitude, Selfdestruct or Tectonic Rage is used."))
+                  Kernel.pbMessage(_INTL("...when Bulldoze, Discharge, Earthquake, Explosion, Fissure, Gigavolt Havoc, Ion Deluge, Magnitude, Self Destruct or Tectonic Rage is used."))
                   Kernel.pbMessage(_INTL("Discharge additionally can alternate between the Short-circuit and Factory Fields for each instance of damage in double battles."))
               end
             when 2
@@ -1649,10 +1649,10 @@ class Scene_FieldNotes_Info
               case @sprites["command_window"].index #Which line was selected
                 when 1
                   Kernel.pbMessage(_INTL("Consumed hazards return at the end of the turn, returning a special effect to the side they were on:"))
-                  Kernel.pbMessage(_INTL("Stealth Rocks deal type-scaling Rock damage double the normal effect to Pokemon."))
-                  Kernel.pbMessage(_INTL("Spikes deal 33% max HP to grounded Pokemon."))
+                  Kernel.pbMessage(_INTL("Stealth Rock deals double its usual damage, scaled by the Pokémon's weakness or resistance to Rock."))
+                  Kernel.pbMessage(_INTL("Spikes deal 33% max HP to grounded Pokémon."))
                   Kernel.pbMessage(_INTL("Poison Barbs deal 12.5% max HP to grounded non-Poison/Steel types, and inflicts poison."))
-                  Kernel.pbMessage(_INTL("Sticky Web severely lowers Pokemon's speed."))
+                  Kernel.pbMessage(_INTL("Sticky Web severely lowers Pokémon's speed."))
                 when 2
                   Kernel.pbMessage(_INTL("Gunk Shot, Sludge, Sludge Bomb, Sludge Wave"))
                 when 3
@@ -1663,9 +1663,9 @@ class Scene_FieldNotes_Info
             when 1
               case @sprites["command_window"].index #Which line was selected
                 when 5
-                  Kernel.pbMessage(_INTL("Mud Bomb, Mud Shot, Mud Slap, Power Whip, Vine Whip"))
+                  Kernel.pbMessage(_INTL("Mud Bomb, Mud Shot, Mud-Slap, Power Whip, Vine Whip"))
                 when 6
-                  Kernel.pbMessage(_INTL("Mud Bomb, Mud Slap, Mud Shot"))
+                  Kernel.pbMessage(_INTL("Mud Bomb, Mud-Slap, Mud Shot"))
                 when 7
                   Kernel.pbMessage(_INTL("Bulldoze, Earthquake, Magnitude"))
               end
@@ -1680,7 +1680,7 @@ class Scene_FieldNotes_Info
             when 0
               case @sprites["command_window"].index #Which line was selected
                 when 1
-                  Kernel.pbMessage(_INTL("All Special Flying attacks, Fire Spin, Leaf Tornado, Razor Wind, Twister, and Whirlpool stir up ash, lowering all active Pokemon's Accuracy."))
+                  Kernel.pbMessage(_INTL("All Special Flying attacks, Fire Spin, Leaf Tornado, Razor Wind, Twister, and Whirlpool stir up ash, lowering all active Pokémon's Accuracy."))
                 when 3
                   Kernel.pbMessage(_INTL("...when the target does not have Unnerve, and one of these abilities is active: Pure Power, Sand Veil, Steadfast"))
                 when 4
@@ -1691,7 +1691,7 @@ class Scene_FieldNotes_Info
             when 1
               case @sprites["command_window"].index #Which line was selected
                 when 1
-                  Kernel.pbMessage(_INTL("Mud Bomb, Mud Shot, Mud Slap"))
+                  Kernel.pbMessage(_INTL("Mud Bomb, Mud Shot, Mud-Slap"))
                 when 2
                   Kernel.pbMessage(_INTL("Hidden Power, Land's Wrath, Muddy Water, Sand Tomb, Strength, Surf, Thousand Waves"))
                 when 3
@@ -1710,7 +1710,7 @@ class Scene_FieldNotes_Info
                 when 1
                   Kernel.pbMessage(_INTL("...unless Water type, airborne, or the ability Swift Swim is active."))
                 when 6
-                  Kernel.pbMessage(_INTL("Hydration, Schooling, Surge Sufer, Swift Swim, Torrent, and Water Compaction each turn."))
+                  Kernel.pbMessage(_INTL("Hydration, Schooling, Surge Surfer, Swift Swim, Torrent, and Water Compaction each turn."))
               end
             when 1
               case @sprites["command_window"].index #Which line was selected
@@ -1742,7 +1742,7 @@ class Scene_FieldNotes_Info
                 when 5
                   Kernel.pbMessage(_INTL("...unless attack is Water type."))
                 when 6
-                  Kernel.pbMessage(_INTL("...when Pokemon is weak to Water."))
+                  Kernel.pbMessage(_INTL("...when a Pokémon is weak to Water."))
                 when 7
                   Kernel.pbMessage(_INTL("...when the abilities Magic Guard or Swift Swim are active."))
               end
@@ -1774,10 +1774,10 @@ class Scene_FieldNotes_Info
               case @sprites["command_window"].index #Which line was selected
                 when 2
                   Kernel.pbMessage(_INTL("...when Continental Crush, Bulldoze, Earthquake, Magnitude or Tectonic Rage are used twice. "))
-                  Kernel.pbMessage(_INTL("Pokemon using Endure, or having Sturdy may survive with 1 HP from full health."))
-                  Kernel.pbMessage(_INTL("Pokemon with Battle Armor and Shell Armor take 50% damage."))
-                  Kernel.pbMessage(_INTL("Pokemon with Prism Armor or Solid Rock take 33% damage."))
-                  Kernel.pbMessage(_INTL("Pokemon behind protect moves including Wide Guard, or having Bulletproof or Rock Head are immune to the damage."))
+                  Kernel.pbMessage(_INTL("Pokémon at full HP using Endure or with Sturdy may survive with 1 HP."))
+                  Kernel.pbMessage(_INTL("Pokémon with Battle Armor and Shell Armor take 50% damage."))
+                  Kernel.pbMessage(_INTL("Pokémon with Prism Armor or Solid Rock take 33% damage."))
+                  Kernel.pbMessage(_INTL("Pokémon protected by moves such as Wide Guard or with Bulletproof or Rock Head are immune to the damage."))
                 when 7
                   Kernel.pbMessage(_INTL("...when non-contact."))
               end
@@ -1786,7 +1786,7 @@ class Scene_FieldNotes_Info
                 when 2
                   Kernel.pbMessage(_INTL("...when Diamond Storm or Power Gem is used."))
                 when 6
-                  Kernel.pbMessage(_INTL("Boosts Defense and damages the user with Stealth Rocks."))
+                  Kernel.pbMessage(_INTL("Boosts Defense and damages the user with Stealth Rock."))
               end
           end
         when 23 # Glitch Field
@@ -1794,7 +1794,7 @@ class Scene_FieldNotes_Info
             when 0
               case @sprites["command_window"].index #Which line was selected
                 when 1
-                  Kernel.pbMessage(_INTL("Attacks base their physical-status on the pre-4th generation type determination."))
+                  Kernel.pbMessage(_INTL("Move types determine whether attacks are physical or special, as before Generation IV."))
                 when 2
                   Kernel.pbMessage(_INTL("Special Attacks, for both the attacker and defender, calculate off of the higher stat between SpAtk and SpDef."))
                 when 4
@@ -1826,20 +1826,20 @@ class Scene_FieldNotes_Info
                 when 0
                   Kernel.pbMessage(_INTL("The cave is littered with crystals."))
                 when 2
-                  Kernel.pbMessage(_INTL("Ancient Power, Diamond Storm, Judgment, Multi Attack, Power Gem, Prismatic Laser, Rock Climb, Rock Smash, Rock Tomb, Strength"))
+                  Kernel.pbMessage(_INTL("Ancient Power, Diamond Storm, Judgment, Multi-Attack, Power Gem, Prismatic Laser, Rock Climb, Rock Smash, Rock Tomb, Strength"))
                 when 3
                   Kernel.pbMessage(_INTL("Rock type attacks, as well as Judgment, Rock Climb, and Strength gain a random typing between Fire, Water, Grass and Psychic."))
                 when 5
-                  Kernel.pbMessage(_INTL("Aurora Beam, Dazzling Gleam, Doom Desire, Flash Cannon, Luster Purge, Mirror Shot, Moongeist Beam, Multi Attack, Prismatic Laser, Signal Beam, Technoblast"))
+                  Kernel.pbMessage(_INTL("Aurora Beam, Dazzling Gleam, Doom Desire, Flash Cannon, Luster Purge, Mirror Shot, Moongeist Beam, Multi-Attack, Prismatic Laser, Signal Beam, Techno Blast"))
                 when 6
                   Kernel.pbMessage(_INTL("...when Dark Void, Dark Pulse, or Night Daze is used."))
                 when 7
-                  Kernel.pbMessage(_INTL("...when Bulldoze, Earthquakeor Magnitude or Tectonic Rage is used."))
+                  Kernel.pbMessage(_INTL("...when Bulldoze, Earthquake, Magnitude, or Tectonic Rage is used."))
               end
             when 1
               case @sprites["command_window"].index #Which line was selected
                 when 1
-                  Kernel.pbMessage(_INTL("Stealth Rocks randomly applies either Fire, Water, Grass or Psychic type damage."))
+                  Kernel.pbMessage(_INTL("Stealth Rock randomly deals Fire-, Water-, Grass-, or Psychic-type damage."))
                 when 5
                   Kernel.pbMessage(_INTL("Camouflage may choose one of Fire, Water, Grass or Psychic typings."))
                 when 6
@@ -1859,7 +1859,7 @@ class Scene_FieldNotes_Info
                 when 3
                   Kernel.pbMessage(_INTL("...when one of the following abilities is active: Immunity, Magic Guard, Poison Heal, Toxic Boost, Wonder Guard"))
                 when 4
-                  Kernel.pbMessage(_INTL("...when Pokemon is underwater (x4) or has one of the following abilities (x2): Dry Skin, Flame Body, Magma Armor, Water Absorb"))
+                  Kernel.pbMessage(_INTL("...when a Pokémon is underwater (x4) or has one of the following abilities (x2): Dry Skin, Flame Body, Magma Armor, Water Absorb"))
                 when 5
                   Kernel.pbMessage(_INTL("...when grounded and Poison type."))
                 when 6
@@ -1872,11 +1872,11 @@ class Scene_FieldNotes_Info
             when 2
               case @sprites["command_window"].index #Which line was selected
                 when 0
-                  Kernel.pbMessage(_INTL("Mud Bomb, Mud Shot, Mud Slap, Thousand Waves"))
+                  Kernel.pbMessage(_INTL("Mud Bomb, Mud Shot, Mud-Slap, Thousand Waves"))
                 when 1
                   Kernel.pbMessage(_INTL("Smack Down"))
                 when 2
-                  Kernel.pbMessage(_INTL("Acid, Acid Spray, Brine, Mud Bomb, Mud Shot, Mud Slap, Smack Down, Thousand Waves"))
+                  Kernel.pbMessage(_INTL("Acid, Acid Spray, Brine, Mud Bomb, Mud Shot, Mud-Slap, Smack Down, Thousand Waves"))
               end
             when 3
               case @sprites["command_window"].index #Which line was selected
@@ -1936,7 +1936,7 @@ class Scene_FieldNotes_Info
             when 0
               case @sprites["command_window"].index #Which line was selected
                 when 1
-                  Kernel.pbMessage(_INTL("Normal type attacks hit Ghost and Dark type Pokemon for super-effective damage."))
+                  Kernel.pbMessage(_INTL("Normal-type attacks hit Ghost- and Dark-type Pokémon for super-effective damage."))
                 when 3
                   Kernel.pbMessage(_INTL("All Special Dark attacks"))
                 when 5
@@ -1945,7 +1945,7 @@ class Scene_FieldNotes_Info
             when 1
               case @sprites["command_window"].index #Which line was selected
                 when 0
-                  Kernel.pbMessage(_INTL("Aeroblast, Crush Grip, Doom Desire, Dragon Ascent, Fleur Canon, Genesis Supernova, Hyperspace Hole, Land's Wrath, Luster Purge, Mist Ball, Moongeist Beam, Origin Pulse, Precipice Blades, Prismatiic Laser, Psycho Boost, Psystrike, Relic Song, Roar of Time, Secret Sword, Sunsteel Strike, Spacial Rend"))
+                  Kernel.pbMessage(_INTL("Aeroblast, Crush Grip, Doom Desire, Dragon Ascent, Fleur Cannon, Genesis Supernova, Hyperspace Hole, Land's Wrath, Luster Purge, Mist Ball, Moongeist Beam, Origin Pulse, Precipice Blades, Prismatic Laser, Psycho Boost, Psystrike, Relic Song, Roar of Time, Secret Sword, Sunsteel Strike, Spacial Rend"))
               end
             when 2
               case @sprites["command_window"].index #Which line was selected
@@ -1958,13 +1958,13 @@ class Scene_FieldNotes_Info
             when 0
               case @sprites["command_window"].index #Which line was selected
                 when 0
-                  Kernel.pbMessage(_INTL("Mirror, Mirror, on the field, who shalt this fractured power wield?"))
+                  Kernel.pbMessage(_INTL("Mirror, mirror, on the field, who shall this fractured power wield?"))
                 when 1
                   Kernel.pbMessage(_INTL("The critical hit rate is increased by one stage for each of the attacker's Evasion/Accuracy buffs, and the target's Evasion/Accuracy de-buffs."))
                 when 3
                   Kernel.pbMessage(_INTL("Single-targeted, special, non-contact attacks that would miss will sometimes be reflected, hitting the target anyway."))
                 when 4
-                  Kernel.pbMessage(_INTL("Bubblebeam, Charge Beam, Fleur Cannon, Hyper Beam, Ice Beam, Origin Pulse, Moongeist Beam, Psybeam, Solar Beam, Tri-Attack"))
+                  Kernel.pbMessage(_INTL("Bubble Beam, Charge Beam, Fleur Cannon, Hyper Beam, Ice Beam, Origin Pulse, Moongeist Beam, Psybeam, Solar Beam, Tri Attack"))
                 when 5
                   Kernel.pbMessage(_INTL("Missing a physical contact attack causes 1/4 Max HP recoil damage."))
                 when 6
@@ -1986,12 +1986,12 @@ class Scene_FieldNotes_Info
             when 2
               case @sprites["command_window"].index #Which line was selected
                 when 1
-                  Kernel.pbMessage(_INTL("...and never miss: Aurora Beam, Dazzling Gleam, Doom Desire, Flash Cannon, Luster Purge, Prismatic Laser, Signal Beam, Technoblast"))
+                  Kernel.pbMessage(_INTL("...and never miss: Aurora Beam, Dazzling Gleam, Doom Desire, Flash Cannon, Luster Purge, Prismatic Laser, Signal Beam, Techno Blast"))
                 when 2
                   Kernel.pbMessage(_INTL("Double Team, Flash"))
                 when 3
-                  Kernel.pbMessage(_INTL("...and damages all active Pokemon for 1/2 their max HP: Boomburst, Bulldoze, Earthquake, Hyper Voice, Magnitude, Tectonic Rage."))
-                  Kernel.pbMessage(_INTL("Pokemon behind protect moves including Wide Guard, or having Shell Armor or Battle Armor are immune to the shatter damage."))
+                  Kernel.pbMessage(_INTL("...and damages all active Pokémon for 1/2 their max HP: Boomburst, Bulldoze, Earthquake, Hyper Voice, Magnitude, Tectonic Rage."))
+                  Kernel.pbMessage(_INTL("Pokémon protected by moves such as Wide Guard or with Shell Armor or Battle Armor are immune to the shatter damage."))
                 when 7
                   Kernel.pbMessage(_INTL("Boosts Evasion two stages."))
               end
@@ -2012,7 +2012,7 @@ class Scene_FieldNotes_Info
                 when 2
                   Kernel.pbMessage(_INTL("Cut, Sacred Sword, Secret Sword, Slash"))
                 when 3
-                  Kernel.pbMessage(_INTL("Pokemon with Stance Change boost and lower Attack and Defense one stage when switching between respective forms."))
+                  Kernel.pbMessage(_INTL("Pokémon with Stance Change boost and lower Attack and Defense one stage when switching between respective forms."))
                 when 4
                   Kernel.pbMessage(_INTL("Ancient Power, Fleur Cannon, Leaf Blade, Psycho Cut, Magical Leaf, Moongeist Beam, Mystical Fire, Nigh Slash, Relic Song, Smart Strike, Sparkling Aria, Solar Blade"))
                 when 6
@@ -2041,7 +2041,7 @@ class Scene_FieldNotes_Info
             when 0
               case @sprites["command_window"].index #Which line was selected
                 when 6
-                  Kernel.pbMessage(_INTL("Multiscale additionally annulls user's Dragon type's weaknesses at all times"))
+                  Kernel.pbMessage(_INTL("Multiscale also negates the user's Dragon-type weaknesses at all times."))
                 when 7
                   Kernel.pbMessage(_INTL("Continental Crush, Smack Down, Tectonic Rage, Thousand Arrows"))
               end
@@ -2096,7 +2096,7 @@ class Scene_FieldNotes_Info
                 when 4
                   Kernel.pbMessage(_INTL("Grass type attacks increase in base power (x1.2,x1.5,x2,x3) at Stages (2,3,4,5)."))
                 when 5
-                  Kernel.pbMessage(_INTL("Grass type Pokemon take damage reduced to (x0.75,x0.67,x0.5) at Stages (3,4,5)."))
+                  Kernel.pbMessage(_INTL("Grass-type Pokémon take 0.75×, 0.67×, or 0.5× damage at stages 3, 4, or 5, respectively."))
                 when 6
                   Kernel.pbMessage(_INTL("Bug type attacks increase in base power (x1.5,x2) at Stages (2,4)."))
                 when 7
@@ -2136,7 +2136,7 @@ class Scene_FieldNotes_Info
                 when 0
                   Kernel.pbMessage(_INTL("Illuminate boosts Sp. Atk upon switching in."))
                 when 1
-                  Kernel.pbMessage(_INTL("Aurora Beam, Dazzling Gleam, Flash Cannon, Luster Pure, Mirror Shot, Moonblast, Signal Beam, Solar Beam, Technoblast"))
+                  Kernel.pbMessage(_INTL("Aurora Beam, Dazzling Gleam, Flash Cannon, Luster Purge, Mirror Shot, Moonblast, Signal Beam, Solar Beam, Techno Blast"))
                 when 2
                   Kernel.pbMessage(_INTL("Black Hole Eclipse, Comet Punch, Draco Meteor, Hyperspace Fury, Hyperspace Hole, Meteor Mash, Moongeist Beam, Spacial Rend, Sunsteel Strike, Swift"))
                 when 4
@@ -2163,7 +2163,7 @@ class Scene_FieldNotes_Info
                 when 2
                   Kernel.pbMessage(_INTL("...when grounded."))
                 when 6
-                  Kernel.pbMessage(_INTL("Aeroblast, Aurora Beam, Blue Flare, Bolt Strike, Crush Grip, Continental Crush, Core Enforcer, Dazzling Gleam, Diamond Storm, Dragon Ascent, Earth Power, Eruption, Flash Cannon, Fleur Cannon, Freeze Shock, Fusion Bolt, Fusion Flare, Genesis Supernova, Glaciate, Ice Burn, Judgment, Land's Wrath, Luster Purge, Magma Storm, Mirror Shot, Moongeist Beam, Multi Attack, Oblivion Wing, Origin Pulse, Power Gem, Precipice Blades, Prismatic Laser, Psycho Boost, Psystrike, Relic Song, Roar of Time, Sacred Fire, Sacred Sword, Searing Shot, Secret Sword, Seed Flare, Shadow Force, Signal Beam, Soul-Stealing 7-Star Strike, Spectral Thief, Steam Eruption, Sunsteel Strike, Technoblast, Thousand Arrows, Thousand Waves, V-Create"))
+                  Kernel.pbMessage(_INTL("Aeroblast, Aurora Beam, Blue Flare, Bolt Strike, Crush Grip, Continental Crush, Core Enforcer, Dazzling Gleam, Diamond Storm, Dragon Ascent, Earth Power, Eruption, Flash Cannon, Fleur Cannon, Freeze Shock, Fusion Bolt, Fusion Flare, Genesis Supernova, Glaciate, Ice Burn, Judgment, Land's Wrath, Luster Purge, Magma Storm, Mirror Shot, Moongeist Beam, Multi-Attack, Oblivion Wing, Origin Pulse, Power Gem, Precipice Blades, Prismatic Laser, Psycho Boost, Psystrike, Relic Song, Roar of Time, Sacred Fire, Sacred Sword, Searing Shot, Secret Sword, Seed Flare, Shadow Force, Signal Beam, Soul-Stealing 7-Star Strike, Spectral Thief, Steam Eruption, Sunsteel Strike, Techno Blast, Thousand Arrows, Thousand Waves, V-Create"))
                 when 7
                   Kernel.pbMessage(_INTL("Ancient Power, Comet Punch, Draco Meteor, Future Sight, Hyperspace Fury, Hyperspace Hole, Meteor Mash, Moonblast, Spacial Rend, Swift, Vacuum Wave"))
               end
@@ -2203,14 +2203,14 @@ class Scene_FieldNotes_Info
                 when 3
                   Kernel.pbMessage(_INTL("...when attacker is grounded."))
                 when 4
-                  Kernel.pbMessage(_INTL("Aura Sphere, Hex, Magical Leaf, Moonblast, Mystic Fire"))
+                  Kernel.pbMessage(_INTL("Aura Sphere, Hex, Magical Leaf, Moonblast, Mystical Fire"))
               end
             when 1
               case @sprites["command_window"].index #Which line was selected
                 when 5
                   Kernel.pbMessage(_INTL("Calm Mind, Cosmic Power, Meditate, Nasty Plot"))
                 when 6
-                  Kernel.pbMessage(_INTL("Mind Reader, Miracle Eye, Psych Up boost Sp.Atk two stages"))
+                  Kernel.pbMessage(_INTL("Mind Reader, Miracle Eye, and Psych Up boost Special Attack by two stages."))
                 when 5
                   Kernel.pbMessage(_INTL("Gravity, Magic Room, Trick Room, Wonder Room"))
               end

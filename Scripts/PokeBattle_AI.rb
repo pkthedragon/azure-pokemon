@@ -38,9 +38,10 @@ class PokeBattle_Battle
   attr_accessor :targets
   attr_accessor :myChoices
 
-  # A boss's AI skill belongs to the battler, including when a trainer owns it.
   def pbAISkill(index,skill_override=nil)
-    return PBTrainerAI.maximumSkill if @battlers[index].isbossmon
+    #pk code
+    battler=@battlers[index]
+    return PBTrainerAI.maximumSkill if battler.isbossmon || battler.issossmon
     return skill_override || pbGetOwner(index)&.skill || 0
   end
 
@@ -3708,7 +3709,7 @@ class PokeBattle_Battle
         end
       end
     when 0x23 # Focus Energy - also grants anti-flinch and anti-immobilize next turn
-      stage=$fefieldeffect==50 ? 3 : 2
+      stage=$fefieldeffect==47 ? 3 : 2
       if attacker.effects[PBEffects::FocusEnergy]<stage
         if (attacker.hp.to_f)/attacker.totalhp>0.75
           score*=1.2
@@ -9626,7 +9627,14 @@ class PokeBattle_Battle
         newmove=getConst(PBMoves,:DAZZLINGGLEAM) || 0
       when 43
         newmove=getConst(PBMoves,:SKYATTACK) || 0
-      when 50
+      #pk code
+      when 44
+        newmove=getConst(PBMoves,:BEATUP) || 0
+      when 45
+        newmove=getConst(PBMoves,:PUNISHMENT) || 0
+      when 46
+        newmove=getConst(PBMoves,:SCORCHINGSANDS) || 0
+      when 47
         newmove=getConst(PBMoves,:CALMMIND) || 0
       else
         newmove=getConst(PBMoves,:TRIATTACK) || 0
@@ -15361,7 +15369,7 @@ class PokeBattle_Battle
         score*=0
       else
         for i in attacker.moves
-          if i.accuracy<=70
+          if i.accuracy.between?(1,70) #pk code
             score*=1.5
             break
           end
@@ -20319,7 +20327,13 @@ class PokeBattle_Battle
     # Don't prefer attacking the opponent if they'd be semi-invulnerable
     if opponent.effects[PBEffects::TwoTurnAttack]>0 && skill>=PBTrainerAI.averageSkill
       invulmove=$pkmn_move[opponent.effects[PBEffects::TwoTurnAttack]][0]
-      if move.accuracy>0 && (AI_SEMI_INVULNERABLE_FUNCTIONS.include?(invulmove) || opponent.effects[PBEffects::SkyDrop]) && ((attacker.pbSpeed>opponent.pbSpeed) ^ (@trickroom!=0)) # Checks accuracy, i.e. targets opponent
+      #pk code
+      targets_foe=target_option!=:self && attacker.pbIsOpposing?(opponent.index) &&
+        [PBTargets::SingleNonUser,PBTargets::SingleOpposing,PBTargets::RandomOpposing,
+         PBTargets::OppositeOpposing,PBTargets::AllOpposing,PBTargets::AllNonUsers,
+         PBTargets::DragonDarts,PBTargets::ThunderRaid].include?(pbAIScoreTargetMode(attacker,move))
+      if targets_foe && (AI_SEMI_INVULNERABLE_FUNCTIONS.include?(invulmove) || opponent.effects[PBEffects::SkyDrop]) &&
+         ((attacker.pbSpeed>opponent.pbSpeed) ^ (@trickroom!=0))
         if skill>=PBTrainerAI.highSkill   # Can get past semi-invulnerability
           miss=false
           case invulmove
@@ -20382,7 +20396,7 @@ class PokeBattle_Battle
       end
     end
     # Prefer moves that miss if you have Blunder Policy.
-    if move.accuracy<100 && attacker.item == PBItems::BLUNDERPOLICY
+    if move.accuracy.between?(1,99) && attacker.item == PBItems::BLUNDERPOLICY #pk code
       score*=1.2
     end
     #If user is frozen, prefer a move that can thaw the user
@@ -21442,9 +21456,10 @@ class PokeBattle_Battle
     when 0x89,0x8A,0x8B,0x8C,0x8D,0x8E,0x8F,0x98,0x99,0x9A,0x9B,0x29F
       basedamage=move.pbBaseDamage(basedamage,attacker,opponent)
     when 0x91 # Fury Cutter
-      basedamage=basedamage<<(attacker.effects[PBEffects::FuryCutter]-1)
+      streak=[attacker.effects[PBEffects::FuryCutter]+1,3].min #pk code
+      basedamage=basedamage<<(streak-1)
     when 0x92 # Echoed Voice
-      basedamage*=attacker.effects[PBEffects::EchoedVoice]
+      basedamage*=[attacker.effects[PBEffects::EchoedVoice]+1,5].min #pk code
     when 0x247 # Cell Splitter
       # Hits = 2 + counter (counter increases by 2 each consecutive turn: 2, 4, 6, 8...)
       hits = 2 + attacker.effects[PBEffects::CellSplitter]
@@ -31822,7 +31837,7 @@ def pbShouldSwitch?(index,hardswitch=false)
                     end
                   end
                 elsif (PBStuff::SLEEPMOVE).include?(highmove&.id) # check if we have a sleeping move and can cripple a slower attacker first
-                  if highmove.accuracy>=75 || (highmove.id==PBMoves::HYPNOSIS && ($fefieldeffect==37 || $fefieldeffect==40))
+                  if pbRoughAccuracy(highmove,currentmon,opponent1,skill)>=75 #pk code
                     if !(opponent1.pbHasMove?(PBMoves::SLEEPTALK)) && opponent1.pbCanSleep?(false) && !(opponent1.hasWorkingItem(:LUMBERRY) || opponent1.hasWorkingItem(:CHESTOBERRY))
                       if ((currentmon.pbHasMove?(getID(PBMoves,:HEX))) && (normaldam>opponent1.hp)) || (normaldam*2>opponent1.hp)
                         threatenedbyslowermon=false

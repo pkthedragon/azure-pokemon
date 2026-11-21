@@ -413,7 +413,7 @@ class PurifyChamberScreen
         PurifyChamberHelper.pbSetPokemon(@chamber,position,pkmn)
         @scene.pbRefresh()
       else
-        @scene.pbDisplay(_INTL("Can't place a Shadow Pokemon there."))
+        @scene.pbDisplay(_INTL("Can't place a Shadow Pokémon there."))
         return false
       end
     end
@@ -559,7 +559,7 @@ class PurifyChamberScreen
       end
     end
     if pbCheckPurify()
-      @scene.pbDisplay(_INTL("There is a Pokemon that is ready to open its heart!\1"))
+      @scene.pbDisplay(_INTL("There is a Pokémon that is ready to open its heart!\1"))
       @scene.pbCloseSetDetail()
       pbDoPurify()
       return false
@@ -607,7 +607,7 @@ class PurifyChamberScreen
       pbStorePokemon(@chamber[set].shadow)
       @chamber.setShadow(set,nil) # Remove shadow Pokemon from set
       if (i+1)!=purifiables.length
-        @scene.pbDisplay(_INTL("There is another Pokemon that is ready to open its heart!"))  
+        @scene.pbDisplay(_INTL("There is another Pokémon that is ready to open its heart!"))
         if !@scene.pbConfirm("Would you like to switch sets?")
           @scene.pbCloseSet()
           break

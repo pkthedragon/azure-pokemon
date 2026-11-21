@@ -2125,7 +2125,7 @@ class PokeBattle_Scene
     end       
     # Field Effect override from variable    
     if $game_variables[298] != 0
-      $feoverride = $game_variables[298]
+      $feoverride = pbFieldEffectID($game_variables[298]) #pk code
     end          
     # Field Effect - in battle
     if $fetempfield != 0
@@ -2432,7 +2432,7 @@ class PokeBattle_Scene
     end
     #>>DemICE
     if $game_variables[708] != 0
-      fieldbd = $game_variables[708]
+      fieldbd = pbFieldEffectID($game_variables[708]) #pk code
       # Apply override
       if $feoverride == 0
         #    $fefieldeffect = $feoverride
@@ -3513,19 +3513,18 @@ class PokeBattle_Scene
         break
       end
     end
-    inspectTrainer=@battle.opponent && !shadowTrainer
     ret=pbCommandMenuEx(index,[
        _INTL("What will\n{1} do?",@battle.battlers[index].name),
        _INTL("Fight"),
        _INTL("Bag"),
        _INTL("Pokémon"),
-       shadowTrainer ? _INTL("Call") : (inspectTrainer ? _INTL("Inspect") : _INTL("Run"))
-    ],(shadowTrainer ? 1 : 0),inspectTrainer)
+       shadowTrainer ? _INTL("Call") : _INTL("Run") #pk code
+    ],(shadowTrainer ? 1 : 0))
     ret=4 if ret==3 && shadowTrainer   # Convert "Run" to "Call"
     return ret
   end
 
-  def pbCommandMenuEx(index,texts,mode=0,inspectCommand=false)      # Mode: 0 - regular battle
+  def pbCommandMenuEx(index,texts,mode=0)     # Mode: 0 - regular battle
     pbShowWindow(COMMANDBOX)                   #       1 - Shadow Pokémon battle
     cw=@sprites["commandwindow"]               #       2 - Safari Zone
     cw.setTexts(texts)                         #       3 - Bug Catching Contest
@@ -3551,26 +3550,19 @@ class PokeBattle_Scene
       elsif Input.trigger?(Input::DOWN) &&  (cw.index&2)==0
         pbPlayCursorSE()
         cw.index+=2
-      elsif Input.trigger?(Input::Y) && !@battle.opponent  #Show Battle Stats feature made by DemICE
+      elsif Input.trigger?(Input::Y)  #Show Battle Stats feature made by DemICE
         statstarget=pbStatInfo(index)
-        goodbyeb=true
         pbShowBattleStats(statstarget) if statstarget!=-1
         pbSelectBattler(index)
-      elsif Input.trigger?(Input::M)  # Show Field Manual
-        goodbyeb=true
+        next #pk code
+      elsif Input.triggerex?(:M) #pk code
         pbShowBattleFieldManual
         pbSelectBattler(index)
+        next
       end
       if Input.trigger?(Input::C)   # Confirm choice
         pbPlayDecisionSE()
         ret=cw.index
-        if inspectCommand && ret==3
-          statstarget=pbStatInfo(index)
-          goodbyeb=true
-          pbShowBattleStats(statstarget) if statstarget!=-1
-          pbSelectBattler(index)
-          next
-        end
         @lastcmd[index]=ret
         return ret
       elsif Input.trigger?(Input::B) && @battle.pbSidePosition(index)>0 && !goodbyeb
@@ -3626,15 +3618,15 @@ class PokeBattle_Scene
         pbPlayCursorSE() if cw.setIndex(cw.index-2)
       elsif Input.trigger?(Input::DOWN) &&  (cw.index&2)==0
         pbPlayCursorSE() if cw.setIndex(cw.index+2)
-      elsif Input.trigger?(Input::Y) && !@battle.opponent  #Show Battle Stats feature made by DemICE
+      elsif Input.trigger?(Input::Y)  #Show Battle Stats feature made by DemICE
         statstarget=pbStatInfoF(index)
-        goodbyeb=true
         pbShowBattleStats(statstarget) if statstarget!=-1
         pbSelectBattler(index)
-      elsif Input.trigger?(Input::M)  # Show Field Manual
-        goodbyeb=true
+        next #pk code
+      elsif Input.triggerex?(:M) #pk code
         pbShowBattleFieldManual
         pbSelectBattler(index)
+        next
       end
       if Input.trigger?(Input::C)   # Confirm choice
         ret=cw.index

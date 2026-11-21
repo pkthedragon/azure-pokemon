@@ -95,7 +95,7 @@ Outdoor = false
 MapPosition = 0,13,16
 #-------------------------------
 [017]
-Name = Pokemon Lab
+Name = Pokémon Lab
 Outdoor = false
 MapPosition = 0,13,16
 #-------------------------------
@@ -326,12 +326,12 @@ Outdoor = true
 MapPosition = 0,16,2
 #-------------------------------
 [058]
-Name = Pokemon Center
+Name = Pokémon Center
 Outdoor = false
 MapPosition = 0,16,2
 #-------------------------------
 [059]
-Name = Pokemon Center
+Name = Pokémon Center
 Outdoor = false
 MapPosition = 0,24,15
 #-------------------------------

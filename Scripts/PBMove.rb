@@ -11,7 +11,7 @@ class PBMoveData
     @basedamage  = $pkmn_move[moveid][1]
     @type        = $pkmn_move[moveid][2]
     @category    = $pkmn_move[moveid][3]
-    @accuracy    = $pkmn_move[moveid][4]
+    @accuracy    = @category==2 ? 0 : $pkmn_move[moveid][4] #pk code
     @totalpp     = $pkmn_move[moveid][5]
     @addlEffect  = $pkmn_move[moveid][6]
     @target      = $pkmn_move[moveid][7]
@@ -95,7 +95,16 @@ class PBMoveData
   end
 end
 
+# Helper function to check if a move is any form of Hidden Power
+def pbIsHiddenPowerMove?(move)
+  return false if move.nil?
+  return move == PBMoves::HIDDENPOWER ||
+         (move >= PBMoves::HIDDENPOWERNOR && move <= PBMoves::HIDDENPOWERFAI)
+end
+
 class PBMove
+  HIDDEN_POWER_PP=5 #pk code
+
   # Older saves stored either numeric ID of these moves. Use the canonical
   # ID in battle so move-specific field and ability checks see the same move.
   LEGACY_DUPLICATE_MOVES={
@@ -128,7 +137,7 @@ class PBMove
     @id=PBMove.current_id(@id)
   end
 
-  attr_accessor(:pp)     # Gets the number of PP remaining for this move.
+  attr_writer(:pp)
   attr_accessor(:ppup)   # Gets the number of PP Ups used for this move.
   attr_accessor(:totalpp)# Gets the total number of PP this move can have.
 
@@ -137,8 +146,15 @@ class PBMove
     return $pkmn_move[id][2]
   end
 
+  #pk code
+  def pp
+    @pp=HIDDEN_POWER_PP if @pp && @pp>HIDDEN_POWER_PP && pbIsHiddenPowerMove?(@id)
+    return @pp
+  end
+
 # Gets the maximum PP for this move.
   def totalpp
+    return HIDDEN_POWER_PP if pbIsHiddenPowerMove?(id) #pk code
     return @totalpp if defined?(@totalpp)
     moveid=id
     return 0 if moveid==0 || !$pkmn_move[moveid]

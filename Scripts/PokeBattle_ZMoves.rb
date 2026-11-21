@@ -985,7 +985,7 @@ class PokeBattle_ZMoves < PokeBattle_Move
             @battle.battlers[i].pbFaint if @battle.battlers[i].isFainted?
           end
         else
-          @battle.pbDisplay(_INTL("A Pokemon's Damp ability prevented a complete explosion!"))
+          @battle.pbDisplay(_INTL("A Pokémon's Damp ability prevented a complete explosion!"))
         end
         if $fefieldeffect == $febackup
           $fefieldeffect = 0

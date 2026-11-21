@@ -84,7 +84,6 @@ class Scene_Pokegear
     @cmdPulse=-1
     @cmdRiftNotes=-1
     @cmdNotes=-1
-    @cmdFieldManual=-1
     @cmdTrainerIndex=-1
     @cmdRecords=-1
 #    @cmdNews=-1
@@ -93,7 +92,7 @@ class Scene_Pokegear
                                                           $PokemonGlobal.phoneNumbers.length>0
     commands[@cmdJukebox=commands.length]=_INTL("Jukebox")
     commands[@cmdTutor=commands.length]=_INTL("Tutor.net") if $game_switches[1492]==true
-    commands[@cmdMagnet=commands.length]=_INTL("PokeMagnet") if $game_switches[1437]==true
+    commands[@cmdMagnet=commands.length]=_INTL("PokéMagnet") if $game_switches[1437]==true
 #    commands[@cmdNews=commands.length]=_INTL("Gearen News")
     if $game_switches[1176]
       commands[@cmdPulse=commands.length]=_INTL("Rift Dex")
@@ -104,9 +103,7 @@ class Scene_Pokegear
     if $game_switches[1177]
       commands[@cmdNotes=commands.length]=_INTL("Field Notes")
     end
-    if $game_switches[1178]
-      commands[@cmdFieldManual=commands.length]=_INTL("Field Manual")
-    end
+    commands[@cmdFieldManual=commands.length]=_INTL("Field Manual") #pk code
     if $game_switches[1179]
       commands[@cmdTrainerIndex=commands.length]=_INTL("Trainer Index")
     end
@@ -247,7 +244,7 @@ class Scene_Pokegear
         pbPlayDecisionSE()
         $scene = Scene_FieldNotes.new
       end
-      if @cmdFieldManual>=0 && @menu_index==@cmdFieldManual
+      if @menu_index==@cmdFieldManual #pk code
         pbPlayDecisionSE()
         scene = Scene_FieldEffectsManual.new
         screen = PokemonFieldEffectsManualScreen.new(scene)

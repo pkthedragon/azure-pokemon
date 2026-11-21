@@ -1174,6 +1174,8 @@ def pbPokemonSpriteForm(species,form,icon: false)
   when PBSpecies::OGERPON
     # The icon sheets start with Teal Mask. Battlers start with unmasked.
     return (form.to_i-1).to_s if icon && form.match?(/\A[1-8]\z/)
+  when PBSpecies::MAUSHOLD #pk code
+    return "2" if icon && form=="1"
   end
   return AzureMegaForms.sprite_form(species,form,icon: icon).to_s
 end

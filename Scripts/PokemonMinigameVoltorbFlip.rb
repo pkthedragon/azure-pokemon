@@ -417,7 +417,7 @@ class VoltorbFlip
          pbShowAndDispose
           @quit=true
         end
-      elsif Kernel.pbConfirmMessage(_INTL("If you quit now, you will recieve {1} Coin(s). Will you quit?",pbCommaNumber(@points)))
+      elsif Kernel.pbConfirmMessage(_INTL("If you quit now, you will receive {1} Coin(s). Will you quit?",pbCommaNumber(@points)))
         Kernel.pbMessage(_INTL("{1} received {2} Coin(s)!",$Trainer.name,pbCommaNumber(@points)))
         $PokemonGlobal.coins+=@points
         @points=0

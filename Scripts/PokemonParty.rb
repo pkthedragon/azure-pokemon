@@ -511,7 +511,10 @@ class PokeSelectionSprite < SpriteWrapper
           self.bitmap.fill_rect(@gaugeX,@gaugeY,hpgauge,2,hpcolors[hpzone*2])
           self.bitmap.fill_rect(@gaugeX,@gaugeY+2,hpgauge,4,hpcolors[hpzone*2+1])
           self.bitmap.fill_rect(@gaugeX,@gaugeY+6,hpgauge,2,hpcolors[hpzone*2])
-          if @pokemon.hp==0 || @pokemon.status>0
+          #pk code
+          if @pokemon.hp>0 && @pokemon.status==PBStatuses::CRUSHED
+            pbDrawImagePositions(self.bitmap,[["Graphics/Pictures/Battle/battleStatuses",@statusX,@statusY,0,16*(@pokemon.status-1),44,16]])
+          elsif @pokemon.hp==0 || @pokemon.status>0
             status=(@pokemon.hp==0) ? 5 : @pokemon.status-1
             statusrect=Rect.new(0,16*status,44,16)
             self.bitmap.blt(@statusX,@statusY,@statuses.bitmap,statusrect)
@@ -554,15 +557,17 @@ class PokemonScreen_Scene
   def pbShowCommands(helptext,commands,index=0)
     ret=-1
     helpwindow=@sprites["helpwindow"]
-    helpwindow.visible=true
+    helpwindow.visible=!helptext.nil? #pk code
     using(cmdwindow=Window_CommandPokemon.new(commands)) {
        cmdwindow.z=@viewport.z+1
        cmdwindow.index=index
        pbBottomRight(cmdwindow)
-       helpwindow.text=""
-       helpwindow.resizeHeightToFit(helptext,Graphics.width-cmdwindow.width)
-       helpwindow.text=helptext
-       pbBottomLeft(helpwindow)
+       if helptext #pk code
+         helpwindow.text=""
+         helpwindow.resizeHeightToFit(helptext,Graphics.width-cmdwindow.width)
+         helpwindow.text=helptext
+         pbBottomLeft(helpwindow)
+       end
        loop do
          Graphics.update
          Input.update
@@ -2346,21 +2351,15 @@ class PokemonScreen
     end
     choices.sort_by! { |entry| entry[0].downcase }
     current_index=choices.index { |_label, id| id==current_move }
-    if current_move==PBMoves::HIDDENPOWER
-      pbDisplay(_INTL("{1} knows the base Hidden Power. Choose a type to change it to.",pkmn.name))
-    end
     commands=choices.map { |entry| entry[0] }
     commands.push(_INTL("Cancel"))
-    cmd=@scene.pbShowCommands(
-      _INTL("Choose a Hidden Power type for {1}.",pkmn.name),commands,current_index || 0)
+    cmd=@scene.pbShowCommands(nil,commands,current_index || 0)
     return if cmd<0 || cmd>=choices.length
-    type_name,move_id=choices[cmd]
-    if move_id==current_move
-      pbDisplay(_INTL("{1}'s Hidden Power is already {2}.",pkmn.name,type_name))
-      return
-    end
-    pkmn.moves[move_index]=PBMove.new(move_id)
-    pbDisplay(_INTL("{1}'s Hidden Power became {2}!",pkmn.name,type_name))
+    move_id=choices[cmd][1]
+    return if move_id==current_move
+    move=PBMove.new(move_id)
+    move.pp=pkmn.moves[move_index].pp
+    pkmn.moves[move_index]=move
     pbRefreshSingle(pkmnid)
   end
 

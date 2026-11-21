@@ -1,7 +1,7 @@
 [0]
 Filename=mapRegion0.png
 Name=Zakos
-Point=13,16,"Logium Shore","Pokemon Laboratory",1,33,29,
+Point=13,16,"Logium Shore","Pokémon Laboratory",1,33,29,
 Point=13,14,"Connecting Caves",,,,,
 Point=14,7,"Connecting Caves",,,,,
 Point=22,15,"Connecting Caves",,,,,

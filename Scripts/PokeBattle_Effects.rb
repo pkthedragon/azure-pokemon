@@ -264,7 +264,7 @@ class PokeBattle_Battler
     return false if !tribute_icicle && !pbCanStatus?(showMessages)
 #### KUROTSUNE - 028 - START  #### JERICHO - 002 - START    
     if !tribute_icicle && hasWorkingAbility(:WATERBUBBLE) && !moldbroken
-      @battle.pbDisplay(_INTL("{1} is protected by it's Water Bubble!",pbThis)) if showMessages
+      @battle.pbDisplay(_INTL("{1} is protected by its Water Bubble!",pbThis)) if showMessages
       return false
     end        
 #### KUROTSUNE - 028 - END  #### JERICHO - 002 - END
@@ -300,7 +300,7 @@ class PokeBattle_Battler
     return false if !pbCanStatus?(showMessages)
 #### KUROTSUNE - 028 - START  #### JERICHO - 002 - START    
     if hasWorkingAbility(:WATERBUBBLE) && !moldbroken
-      @battle.pbDisplay(_INTL("{1} is protected by it's Water Bubble!",pbThis)) if showMessages
+      @battle.pbDisplay(_INTL("{1} is protected by its Water Bubble!",pbThis)) if showMessages
       return false
     end       
 #### KUROTSUNE - 028 - END  #### JERICHO - 002 - END  
@@ -343,7 +343,7 @@ class PokeBattle_Battler
     return false if !pbCanStatus?()
 #### KUROTSUNE - 028 - START  #### JERICHO - 002 - START    
     if hasWorkingAbility(:WATERBUBBLE) && !moldbroken
-      @battle.pbDisplay(_INTL("{1} is protected by it's Water Bubble!",pbThis)) if showMessages
+      @battle.pbDisplay(_INTL("{1} is protected by its Water Bubble!",pbThis)) if showMessages
       return false
     end       
 #### KUROTSUNE - 028 - END  #### JERICHO - 002 - END  

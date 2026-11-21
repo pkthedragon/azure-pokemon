@@ -545,12 +545,12 @@ end
 
 Events.onAction+=lambda{|sender,e|
   facingEvent = $game_player.pbFacingEvent
-  if facingEvent and facingEvent.name.length>=7
-    # so we can have "boulder" with extra stuff in name
-    eventName = (facingEvent.name[0,7]).downcase
-    if eventName=="boulder"
-      Kernel.pbStrength
-    end
+  next if !facingEvent
+  #pk code
+  if facingEvent.name[0,7].downcase=="boulder" || facingEvent.character_name.casecmp?("Object Boulder")
+    Kernel.pbStrength
+  elsif facingEvent.character_name.casecmp?("Object Rock") && facingEvent.list&.size==1
+    Kernel.pbMessage(_INTL("It's a rugged rock, but a Pokémon may be able to smash it."))
   end
 }
 
@@ -1150,7 +1150,7 @@ HiddenMoveHandlers::CanUseMove.add(:FLY,lambda{|move,pkmn,showmsg|
     return false
   end
   if $game_switches[999]
-    Kernel.pbMessage(_INTL("It can't be used while riding a Pokemon.")) if showmsg
+    Kernel.pbMessage(_INTL("It can't be used while riding a Pokémon.")) if showmsg
     return false
   end
   if !pbGetMetadata($game_map.map_id,MetadataOutdoor)

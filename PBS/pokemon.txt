@@ -49,7 +49,7 @@ Weight = 13.0
 Color = Green
 Habitat = Grassland
 Category = Seed
-Pokedex = To support its bulb,Ivysaur's legs grow sturdy. If it spends more time lying in the sunlight, the bud will soon bloom into a large flower.
+Pokedex = To support its bulb, Ivysaur's legs grow sturdy. If it spends more time lying in the sunlight, the bud will soon bloom into a large flower.
 Evolutions = VENUSAUR,Level,32
 #-------------------------------
 # Legacy species ID 3
@@ -522,7 +522,7 @@ Weight = 2.0
 Color = Brown
 Habitat = RoughTerrain
 Category = Tiny Bird
-Pokedex = Its loud cry can be heard over half a mile away. If its high, keening cry is heard echoing all around, it is a sign that they are warning of danger.
+Pokedex = Its loud cry can be heard over half a mile away. If its high, keening cry is heard echoing all around, it is a sign that the Spearow is warning of danger.
 Evolutions = FEAROW,Level,20
 #-------------------------------
 # Legacy species ID 22
@@ -920,7 +920,7 @@ Weight = 9.9
 Color = Brown
 Habitat = Grassland
 Category = Fox
-Pokedex = At the time of its birth,Vulpix has one white tail. It separates into six if this Pokémon receives plenty of love. The six tails become magnificently curled.
+Pokedex = At the time of its birth, Vulpix has one white tail. It separates into six if this Pokémon receives plenty of love. The six tails become magnificently curled.
 Evolutions = NINETALES,Item,FIRESTONE
 #-------------------------------
 # Legacy species ID 38
@@ -2196,7 +2196,7 @@ Weight = 30.0
 Color = Purple
 Habitat = Urban
 Category = Sludge
-Pokedex = Born from polluted sludge in the sea,Grimer's favorite food is anything filthy. They feed on wastewater pumped out from factories.
+Pokedex = Grimer are born from polluted sludge in the sea. Their favorite food is anything filthy. They feed on wastewater pumped out from factories.
 Evolutions = MUK,Level,38
 #-------------------------------
 # Legacy species ID 89
@@ -2571,7 +2571,7 @@ Weight = 120.0
 Color = Yellow
 Habitat = Forest
 Category = Coconut
-Pokedex = Originally from the tropics,Exeggutor's heads grow larger from exposure to strong sunlight. When the heads fall, they group to form an Exeggcute.
+Pokedex = Originally from the tropics, Exeggutor's heads grow larger from exposure to strong sunlight. When the heads fall, they group to form an Exeggcute.
 #-------------------------------
 # Legacy species ID 104
 [CUBONE]
@@ -2974,7 +2974,7 @@ Weight = 39.0
 Color = Red
 Habitat = WatersEdge
 Category = Goldfish
-Pokedex = It punches holes in boulders on stream- beds. This is a clever innovation that prevents its eggs from being attacked or washed away by the current.
+Pokedex = It punches holes in streambed boulders to keep its eggs safe from predators and strong currents.
 #-------------------------------
 # Legacy species ID 120
 [STARYU]
@@ -3173,7 +3173,7 @@ Weight = 55.0
 Color = Brown
 Habitat = Forest
 Category = Stag Beetle
-Pokedex = Their pincers are strong enough to shatter thick logs. Because they dislike cold,Pinsir burrow and sleep under the ground on chilly nights.
+Pokedex = Their pincers are strong enough to shatter thick logs. Because they dislike cold, Pinsir burrow and sleep under the ground on chilly nights.
 #-------------------------------
 # Legacy species ID 128
 [TAUROS]
@@ -3271,7 +3271,7 @@ Weight = 220.0
 Color = Blue
 Habitat = Sea
 Category = Transport
-Pokedex = People have driven Lapras almost to the point of extinction. In the evenings, it is said to sing plaintively as it seeks what few others of its Kind still remain.
+Pokedex = People have driven Lapras almost to the point of extinction. In the evenings, it is said to sing plaintively as it seeks what few others of its kind still remain.
 #-------------------------------
 # Legacy species ID 132
 [DITTO]
@@ -3417,7 +3417,7 @@ Weight = 36.5
 Color = Pink
 Habitat = Urban
 Category = Virtual
-Pokedex = It is capable of reverting itself entirely back to program data in order to enter cyberspace. A Porygon is copy- protected so it cannot be duplicated.
+Pokedex = It is capable of reverting itself entirely back to program data in order to enter cyberspace. A Porygon is copy-protected so it cannot be duplicated.
 Evolutions = PORYGON2,TradeItem,UPGRADE
 #-------------------------------
 # Legacy species ID 138
@@ -3913,7 +3913,7 @@ Weight = 79.5
 Color = Yellow
 Habitat = Grassland
 Category = Volcano
-Pokedex = It can hide behind a heat haze that it creates using its flames. Typhlosion create blazing explosive blasts that burn everything to cinders.
+Pokedex = It can hide behind a heat haze that it creates using its flames. A Typhlosion creates blazing explosive blasts that burn everything to cinders.
 #-------------------------------
 # Legacy species ID 158
 [TOTODILE]
@@ -3938,7 +3938,7 @@ Weight = 9.5
 Color = Blue
 Habitat = WatersEdge
 Category = Big Jaw
-Pokedex = Despite its small body,Totodile's jaws are very powerful. While it may think it is just playfully nipping, its bite can cause serious injury.
+Pokedex = Totodile has powerful jaws for its small size. While it may think it is just playfully nipping, its bite can cause serious injury.
 Evolutions = CROCONAW,Level,18
 #-------------------------------
 # Legacy species ID 159
@@ -4138,7 +4138,7 @@ Weight = 35.6
 Color = Red
 Habitat = Forest
 Category = Five Star
-Pokedex = It is said that in lands with clean air, where the stars fill the sky,Ledian thrive. For good reason, they use the light of the stars as energy.
+Pokedex = It is said that in lands with clean air, where the stars fill the sky, Ledian thrive. For good reason, they use the light of the stars as energy.
 #-------------------------------
 # Legacy species ID 167
 [SPINARAK]
@@ -4313,7 +4313,7 @@ Weight = 3.0
 Color = Pink
 Habitat = Mountain
 Category = Star Shape
-Pokedex = On nights with many shooting stars,Cleffa can be seen dancing in a ring. They dance until daybreak, when they quench their thirst with the morning dew.
+Pokedex = On nights with many shooting stars, Cleffa can be seen dancing in a ring. They dance until daybreak, when they quench their thirst with the morning dew.
 Evolutions = CLEFAIRY,Level,15
 #-------------------------------
 # Legacy species ID 174
@@ -4739,7 +4739,7 @@ Weight = 11.5
 Color = Purple
 Habitat = Forest
 Category = Long Tail
-Pokedex = Its tail ends with a dexterous, handlike appendage. However, because it uses the tail so much,Aipom's real hands have become rather clumsy.
+Pokedex = Its tail ends with a dexterous, handlike appendage. However, because it uses the tail so much, Aipom's real hands have become rather clumsy.
 Evolutions = AMBIPOM,HasMove,DOUBLEHIT
 #-------------------------------
 # Legacy species ID 191
@@ -5063,7 +5063,7 @@ Weight = 41.5
 Color = Yellow
 Habitat = Grassland
 Category = Long Neck
-Pokedex = A Girafarig is a herbivore-- it eats grass and tree shoots. While it is eating, its tail makes chewing and swallowing motions as if it were also eating.
+Pokedex = A Girafarig is an herbivore that eats grass and tree shoots. While it is eating, its tail makes chewing and swallowing motions as if it were also eating.
 Evolutions = FARIGIRAF,HasMove,TWINBEAM
 #-------------------------------
 # Legacy species ID 204
@@ -5591,7 +5591,7 @@ Weight = 28.5
 Color = Red
 Habitat = Sea
 Category = Jet
-Pokedex = It ensnares its foe with its suction- cupped tentacles before delivering the final blow. If the foe turns out to be too strong, it spews ink to escape.
+Pokedex = It ensnares its foe with its suction-cupped tentacles before delivering the final blow. If the foe turns out to be too strong, it spews ink to escape.
 #-------------------------------
 # Legacy species ID 225
 [DELIBIRD]
@@ -6536,7 +6536,7 @@ Weight = 37.0
 Color = Gray
 Habitat = Grassland
 Category = Bite
-Pokedex = In the wild,Mightyena live in a pack. They never defy their leader's orders. They defeat foes with perfectly coordinated teamwork.
+Pokedex = In the wild, Mightyena live in a pack. They never defy their leader's orders. They defeat foes with perfectly coordinated teamwork.
 #-------------------------------
 # Legacy species ID 263
 [ZIGZAGOON]
@@ -7183,7 +7183,7 @@ Weight = 46.5
 Color = White
 Habitat = Forest
 Category = Wild Monkey
-Pokedex = It can't keep still because its filled with energy. It runs through fields and mountains all day to calm itself. If it doesn't, it can't sleep at night.
+Pokedex = It can't keep still because it’s filled with energy. It runs through fields and mountains all day to calm itself. If it doesn't, it can't sleep at night.
 Evolutions = SLAKING,Level,36
 #-------------------------------
 # Legacy species ID 289
@@ -7682,7 +7682,7 @@ Weight = 31.5
 Color = Red
 Habitat = Mountain
 Category = Meditate
-Pokedex = Through crushingly harsh yoga training, it gained the power to foretell its foe's actions. It battles with elegant, dance- like movement.
+Pokedex = Through crushingly harsh yoga training, it gained the power to foretell its foe's actions. It battles with elegant, dance-like movement.
 #-------------------------------
 # Legacy species ID 309
 [ELECTRIKE]
@@ -7732,7 +7732,7 @@ Weight = 40.2
 Color = Yellow
 Habitat = Grassland
 Category = Discharge
-Pokedex = Because lightning falls in their vicinities,Manectric were thought to have been born from lightning. In battle, they create thunderclouds.
+Pokedex = Because lightning falls in their vicinities, Manectric were thought to have been born from lightning. In battle, they create thunderclouds.
 #-------------------------------
 # Legacy species ID 311
 [PLUSLE]
@@ -7807,7 +7807,7 @@ Weight = 17.7
 Color = Gray
 Habitat = Forest
 Category = Firefly
-Pokedex = With their taillights lit,Volbeat fly in a swarm, drawing geometric designs in the night sky. They move their nests if their pond water becomes dirty.
+Pokedex = With their taillights lit, Volbeat fly in a swarm, drawing geometric designs in the night sky. They move their nests if their pond water becomes dirty.
 #-------------------------------
 # Legacy species ID 314
 [ILLUMISE]
@@ -8308,7 +8308,7 @@ Weight = 1.2
 Color = Blue
 Habitat = Forest
 Category = Cotton Bird
-Pokedex = A Pokémon that has wings like cottony clouds. After enduring winter, in which little food is available,Swablu flocks move closer to towns in the spring.
+Pokedex = A Pokémon that has wings like cottony clouds. After enduring winter, in which little food is available, Swablu flocks move closer to towns in the spring.
 Evolutions = ALTARIA,Level,35
 #-------------------------------
 # Legacy species ID 334
@@ -9403,7 +9403,7 @@ Weight = 230.0
 Color = Brown
 Habitat = Cave
 Category = Rock Peak
-Pokedex = A Pokémon that is made entirely of rocks and boulders. If parts of its body chip off in battle,Regirock repairs itself by adding new rocks.
+Pokedex = A Pokémon that is made entirely of rocks and boulders. If parts of its body chip off in battle, Regirock repairs itself by adding new rocks.
 #-------------------------------
 # Legacy species ID 378
 [REGICE]
@@ -10574,7 +10574,7 @@ Height = 1.2
 Weight = 15.0
 Color = Purple
 Category = Blimp
-Pokedex = It is drowzy in daytime, but flies off in the evening in big groups. No one knows where they go.
+Pokedex = It is drowsy in daytime, but flies off in the evening in big groups. No one knows where they go.
 #-------------------------------
 # Legacy species ID 427
 [BUNEARY]
@@ -13347,7 +13347,7 @@ Height = 0.4
 Weight = 5.3
 Color = Red
 Category = Centipede
-Pokedex = It discovers what is going on around it by using the feelers on its head and tail. It is brutally aggresive.
+Pokedex = It discovers what is going on around it by using the feelers on its head and tail. It is brutally aggressive.
 Evolutions = WHIRLIPEDE,Level,22
 #-------------------------------
 # Legacy species ID 544
@@ -17667,7 +17667,7 @@ Height = 1.6
 Weight = 36.6
 Color = Brown
 Category = Arrow Quill
-Pokedex = Although basically cool and cautious, when it is caught by surprise, it iss seized by panic.
+Pokedex = Although basically cool and cautious, when it is caught by surprise, it is seized by panic.
 #-------------------------------
 # Legacy species ID 725
 [LITTEN]
@@ -18219,7 +18219,7 @@ Height = 0.4
 Weight = 8.0
 Color = Blue
 Category = Brutal Star
-Pokedex = It plunges the poison spike on its head into its prey. When the prey has weakened,Mareanie deals the finishing blow with its 10 tentacles.
+Pokedex = It plunges the poison spike on its head into its prey. When the prey has weakened, Mareanie deals the finishing blow with its 10 tentacles.
 Evolutions = TOXAPEX,Level,38
 #-------------------------------
 # Legacy species ID 748
@@ -18603,7 +18603,7 @@ Height = 1.2
 Weight = 21.4
 Color = Purple
 Category = Fruit
-Pokedex = Its long, striking legs aren't just for show, but to be used to kick with skill. In victory, it shows off by kicking the defeated, laughing boisterously.
+Pokedex = Its long, striking legs aren't just for show. It uses them to kick with skill. In victory, it shows off by kicking the defeated, laughing boisterously.
 #-------------------------------
 # Legacy species ID 764
 [COMFEY]
@@ -20087,7 +20087,7 @@ Height = 0.4
 Weight = 40.8
 Color = Red
 Category = Seven Spot
-Pokedex = It emits psychic energy to observe and study what's around itéand what's around it can include things over six miles away.
+Pokedex = It emits psychic energy to observe and study what's around it—and what's around it can include things over six miles away.
 #-------------------------------
 # Legacy species ID 827
 [NICKIT]
@@ -20207,7 +20207,7 @@ Height = 0.6
 Weight = 6.0
 Color = White
 Category = Sheep
-Pokedex = If its fleece grows too long,Wooloo won't be able to move. Cloth made with the wool of this Pokémon is surprisingly strong.
+Pokedex = If its fleece grows too long, Wooloo won't be able to move. Cloth made with the wool of this Pokémon is surprisingly strong.
 Evolutions = DUBWOOL,Level,24
 #-------------------------------
 # Legacy species ID 832
@@ -21930,7 +21930,7 @@ Height = 0.5
 Weight = 3.9
 Color = Gray
 Category = Balloon
-Pokedex = Its lancelike spikes and savage temperament have earned it the nickName 'sea fiend'. It slurps up poison to nourish itself.
+Pokedex = Its lancelike spikes and savage temperament have earned it the nickname 'sea fiend'. It slurps up poison to nourish itself.
 #-------------------------------
 # Legacy species ID 905
 [ENAMORUS]

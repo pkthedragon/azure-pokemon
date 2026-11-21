@@ -525,15 +525,15 @@
 525,SHINYCHARM,Shiny Charm,8,0,A shiny charm said to increase the chance of finding a Shiny Pokémon.,0,0,6,
 526,REVERSECANDY,Reverse Candy,2,50,A candy that does the reverse role that of a Rare Candy.,1,0,0,
 527,MYSTERYGOOD,Mystery Good,8,0,An item that you can't quite make out. What is it?,0,0,6,
-528,TM90_1,TM 90,4,0,pOISON,0,0,0,
-529,ITEM529,TM96,4,300,The user smashes the opponent with  powerful tail covered in poison.,3,0,0,POISONTAIL
-530,LOVELETTER,Love Letter,8,0,A mystery love letter that is meant for Cameron,0,0,6,
-531,DEMONSTONE,Rift Matter,1,0,A mysterious stone,0,0,0,
+528,TM90_1,TM 90,4,0,Poison,0,0,0,
+529,ITEM529,TM96,4,300,The user smashes the opponent with a powerful tail covered in poison.,3,0,0,POISONTAIL
+530,LOVELETTER,Love Letter,8,0,A mystery love letter that is meant for Cameron.,0,0,6,
+531,DEMONSTONE,Rift Matter,1,0,A mysterious stone.,0,0,0,
 532,CHINESEFOOD,Mystery Bowl,2,100,Weird concoction of ingredients. It smells good-ish?,1,1,0,
 533,SOULSTONE,Soul Stone,8,0,A mysterious stone with a mystical presence inside.,0,0,6,
 534,WEIRDLETTER,Weird Letter,8,0,A suspicious letter given to you by a scientist.,0,0,6,
-535,LINKHEART,Link Heart,1,10000,A stone that fills the Pokemon's heart with a feeling similar to that of being traded.,1,0,0
-536,GOURMETTREAT,GourmetTreat,1,1500,A treat that attracts rogue wild Pokemon.,1,0,0
+535,LINKHEART,Link Heart,1,10000,A stone that fills the Pokémon's heart with a feeling similar to that of being traded.,1,0,0
+536,GOURMETTREAT,GourmetTreat,1,1500,A treat that attracts rogue wild Pokémon.,1,0,0
 537,ABOMASITE,Abomasite,6,999,"One variety of Mega Stone. Have Abomasnow hold it, and this stone will enable it to Mega Evolve in battle.",0,0,0,
 538,ABSOLITE,Absolite,6,999,"One variety of Mega Stone. Have Absol hold it, and this stone will enable it to Mega Evolve in battle.",0,0,0,
 539,AERODACTYLITE,Aerodactylite,6,999,"One variety of Mega Stone. Have Aerodactyl hold it, and this stone will enable it to Mega Evolve in battle.",0,0,0,
@@ -542,14 +542,14 @@
 542,AMPHAROSITE,Ampharosite,6,999,"One variety of Mega Stone. Have Ampharos hold it, and this stone will enable it to Mega Evolve in battle.",0,0,0,
 543,ASSAULTVEST,Assault Vest,1,999,An item to be held by a Pokémon. This offensive vest raises Sp. Def but prevents the use of status moves.,0,0,0,
 544,BANETTITE,Banettite,6,999,A stone that enables Banette to Mega Evolve in Battle.,0,0,0,
-545,BLASTOISINITE,Blastoisinite,6,999,"One  variety of Mega Stones. Have Blastoise hold it, and this stone will enable it to Mega Evolve in battle.",0,0,0,
+545,BLASTOISINITE,Blastoisinite,6,999,"One variety of Mega Stones. Have Blastoise hold it, and this stone will enable it to Mega Evolve in battle.",0,0,0,
 546,BLAZIKENITE,Blazikenite,6,999,"One variety of Mega Stone. Have Blaziken hold it, and this stone will enable it to Mega Evolve in battle.",0,0,0,
 547,CHARIZARDITEX,Charizardite X,6,999,"One variety of Mega Stone. Have Charizard hold it, and this stone will enable it to Mega Evolve in battle.",0,0,0,
 548,CHARIZARDITEY,Charizardite Y,6,999,"One variety of Mega Stone. Have Charizard hold it, and this stone will enable it to Mega Evolve in battle.",0,0,0,
 549,GARCHOMPITE,Garchompite,6,999,"One variety of Mega Stone. Have Garchomp hold it, and this stone will enable it to Mega Evolve in battle.",0,0,0,
 550,GARDEVOIRITE,Gardevoirite,6,999,"One variety of Mega Stone. Have Gardevoir hold it, and this stone will enable it to Mega Evolve in battle.",0,0,0,
 551,GENGARITE,Gengarite,6,999,"One variety of Mega Stone. Have Gengar hold it, and this stone will enable it to Mega Evolve in battle.",0,0,0,
-552,GYARADOSITE,Gyaradosite,6,999,"One variety of Mega Stone. Have Gyarados hold it, and this stone will enable it to Mega Evolve in battle.,",0,0,0,
+552,GYARADOSITE,Gyaradosite,6,999,"One variety of Mega Stone. Have Gyarados hold it, and this stone will enable it to Mega Evolve in battle.",0,0,0,
 553,HERACRONITE,Heracronite,6,999,A stone that enables Heracross to Mega Evolve in Battle.,0,0,0,
 554,HOUNDOOMINITE,Houndoominite,6,999,"One variety of Mega Stone. Have Houndoom hold it, and this stone will enable it to Mega Evolve in battle.",0,0,0,
 555,INTRIGUINGSTONE,Intriguing Stone,8,999,A rather curious stone that might appear to be valuable to some. It's all in the eye of the beholder.,0,0,6,
@@ -564,14 +564,14 @@
 564,MAWILITE,Mawilite,6,999,"One variety of Mega Stone. Have Mawile hold it, and this stone will enable it to Mega Evolve in battle.",0,0,0,
 565,MEDICHAMITE,Medichamite,6,999,"One variety of Mega Stone. Have Medicham hold it, and this stone will enable it to Mega Evolve in battle.",0,0,0,
 566,MEGARING,Mega-Z Ring,8,999,This ring contains an untold power that somehow enables Pokémon carrying stone enhancements to use them in battle!,0,0,0,
-567,MEWTWONITEX,Mewtwonite X,6,999,"One of Mega Stones. Have Mewtwo hold it, and this stone will enable it to Mega Evolve in battle",0,0,0,
-568,MEWTWONITEY,Mewtwonite Y,6,999,"One of Mega Stones. Have Mewtwo hold it, and this stone will enable it to Mega Evolve in battle",0,0,0,
+567,MEWTWONITEX,Mewtwonite X,6,999,"A Mega Stone. Have Mewtwo hold it, and this stone will enable it to Mega Evolve in battle.",0,0,0,
+568,MEWTWONITEY,Mewtwonite Y,6,999,"A Mega Stone. Have Mewtwo hold it, and this stone will enable it to Mega Evolve in battle.",0,0,0,
 569,PINSIRITE,Pinsirite,6,999,"One variety of Mega Stone. Have Pinsir hold it, and this stone will enable it to Mega Evolve in battle.",0,0,0,
 570,PIXIEPLATE,Pixie Plate,1,999,An item to be held by a Pokémon. It is a stone tablet that boosts the power of Fairy-type moves.,0,0,0,
 571,ROSELIBERRY,Roseli Berry,5,750,"If held by a Pokémon, this Berry will lessen the damage taken from one supereffective Fairy-type attack.",0,0,5,
 572,SACHET,Sachet,1,1000,A sachet filled with fragrant perfumes that are just slightly too overwhelming. Yet it's loved by a certain Pokémon.,0,0,0,
 573,SAFETYGOGGLES,Safety Goggles,1,999,An item to be held by a Pokémon. These goggles protect the holder from both weather-related damage and powder.,0,0,0,
-574,SAILFOSSIL,Sail Fossil,1,999,A fossil of an ancient Pokémon that lived in the sea in ancient times. It appears to be part of its sail,0,0,0,
+574,SAILFOSSIL,Sail Fossil,1,999,A fossil of an ancient Pokémon that lived in the sea in ancient times. It appears to be part of its sail.,0,0,0,
 575,SCIZORITE,Scizorite,6,999,"One variety of Mega Stone. Have Scizor hold it, and this stone will enable it to Mega Evolve in battle.",0,0,0,
 576,SNOWBALL,Snowball,1,200,An item to be held by a Pokémon. It boosts Attack if hit with an Ice-type attack. It can only be used once.,0,0,0,
 577,TYRANITARITE,Tyranitarite,6,999,"One variety of Mega Stone. Have Tyranitar hold it, and this stone will enable it to Mega Evolve in battle.",0,0,0,
@@ -584,13 +584,13 @@
 584,TM98,TM98,4,3000,Striking opponents over and over makes the user's fists harder. Hitting a target raises the Attack stat.,3,0,0,POWERUPPUNCH
 585,TM99,TM99,4,1000,The user damages opposing Pokémon by emitting a powerful flash.,3,0,0,DAZZLINGGLEAM
 586,TM100,TM100,4,3000,"The user tells the target a secret, and the target loses its ability to concentrate. This lowers the target's Sp. Atk stat.",3,0,0,CONFIDE
-587,SPICEPOWDER,Spice Powder,1,850,Tropical spices grounded up into one. Great for getting pesky Pokemon to move from their location.,0,0,0,
-588,ANCIENTWING,Ancient Wing,8,0,A mysterious stone wing. It looks like it was attatched to something.,0,0,6,
-589,ROOMIDCARD,Room ID Card,8,0,A card key that was found in Melia's lab coat.It seems a little damaged...,0,0,6,
+587,SPICEPOWDER,Spice Powder,1,850,Tropical spices ground into a powder. Great for getting pesky Pokémon to move from their location.,0,0,0,
+588,ANCIENTWING,Ancient Wing,8,0,A mysterious stone wing. It looks like it was attached to something.,0,0,6,
+589,ROOMIDCARD,Room ID Card,8,0,A card key that was found in Melia's lab coat. It seems a little damaged...,0,0,6,
 590,EMOTIONPOWDER,Emotion Powder,8,0,A mysterious substance that is used to travel in Valor Mountain.,0,0,6,
 591,DULLKEY,Dull Key,8,0,A peculiar key. It seems to be falling apart.,0,0,6,
 592,SECRETPOTION,Secret Potion,8,0,An extremely powerful medicine that originated from Olivine City in the Johto region.,0,0,6,
-593,EXCLUSIVEPASS,Exclusive Pass,8,0,A pass that allows the lucky weilder to enter Grand Dream City during their celebrity event.,0,0,6,
+593,EXCLUSIVEPASS,Exclusive Pass,8,0,A pass that allows the lucky wielder to enter Grand Dream City during their celebrity event.,0,0,6,
 601,JOYSCENT,Joy Scent,1,300,This scent massage opens the hearts of Pokémon a little.,1,2,0,
 602,EXCITESCENT,Excite Scent,1,500,This scent massage opens the hearts of Pokémon.,1,2,0,
 603,VIVIDSCENT,Vivid Scent,1,800,This scent massage opens the hearts of Pokémon a lot.,1,2,0,
@@ -598,7 +598,7 @@
 605,WHITEKEY,White Key,8,0,A mysterious key that opens a door somewhere nearby.,2,0,6,
 606,GREENKEYLEGACY,Green Key,8,0,A mysterious key that opens a door somewhere nearby.,2,0,6,
 607,MININGKIT,Mining Kit,8,0,A kit that contains tools for mining.,0,0,6,
-608,LADDER,Ladder,8,0,A sturdy ladder,0,0,6,
+608,LADDER,Ladder,8,0,A sturdy ladder.,0,0,6,
 609,ODDKEY,Odd Key,8,0,A key to some house in Goldenleaf.,0,0,6,
 610,BRASSKEY,Brass Key,8,0,A key that can be used to open up the way to the Lost Camp.,0,0,6,
 611,BLACKSHARD,Black Shard,8,0,An extremely rare shard that can only be found in certain places.,0,0,6,
@@ -609,10 +609,10 @@
 616,METAGROSSITE,Metagrossite,6,999,"One variety of Mega Stone. Have Metagross hold it, and this stone will enable it to Mega Evolve in battle.",0,0,0,
 617,DEFIBRILLATOR,Defibrillator,8,0,A machine that can conduct electricity into a person.,0,0,6,
 618,YACHTKEYS,Yacht Keys,8,0,Keys to Tesla's Yacht on Teila Town's shore.,0,0,6,
-619,MOONDIAL,Moon Dial,8,0,A pendant that's oddly shaped like a Pokemon...,0,0,6,
+619,MOONDIAL,Moon Dial,8,0,A pendant that's oddly shaped like a Pokémon...,0,0,6,
 620,PHASEDIAL,Phase Dial,8,0,A pendant that's simultaneously shaped like the sun and the moon.,5,0,6,
 621,CENTERKEYS,Center Keys,8,0,Keys to another Help Center somewhere on Terajuma Island.,0,0,6,
-622,FUNNELCAKE,Funnel Cake,2,7000,A delicious pastry that has the ability to revive fainted Pokemon.,1,1,0
+622,FUNNELCAKE,Funnel Cake,2,7000,A delicious pastry that has the ability to revive fainted Pokémon.,1,1,0
 623,TM102,TM102,4,2000,The user engulfs their foot with poison and proceeds to knock over their opponent. It may lower Speed.,3,0,0,POISONSWEEP
 624,TM103,TM103,4,2000,The user proceeds to attack the opponent with quick jabs. The more it's used the more powerful it is.,3,0,0,STACKINGSHOT
 625,GREENKEY,Green Key,8,0,A key to Madelis' throne room.,0,0,6,
@@ -628,7 +628,7 @@
 635,BIKEV,Bike Voucher,8,0,Redeem this at Gearen City's bike shop for a free bike!,0,0,6,
 636,BRKA,Broken Antenna,8,0,A broken interfering signal antenna. The guard named it Philip. RIP Guard.,0,0,6,
 637,BRKAR,Refurbished Laser,8,0,A broken antenna that was turned into a small laser.,0,0,6,
-638,MAGSTONE,Magma Stone,8,0,A stone that was said to control Heatran. It also has the power to melt nevermeltice.,0,0,6,
+638,MAGSTONE,Magma Stone,8,0,A stone said to control Heatran and melt NeverMeltIce.,0,0,6,
 639,TM110,TM110,4,0,It engulfs the opponent with a giant wave of magma. It can also be used for crossing lava or magma.,3,0,0,LAVASURF
 640,TM104,TM104,4,0,The user soaks the opponent with a strong blast of water.,3,0,0,DOUSE
 641,STOREKEY1,Storage Key1,8,0,A key that can be used to open up a Storage Unit.,0,0,6,
@@ -645,11 +645,11 @@
 652,ATKCARD,Attack Card,8,0,A card that allows the owner to participate in the Attack EV center service.,0,0,6,
 653,SPATKCARD,SPAttack Card,8,0,A card that allows the owner to participate in the Special Attack EV center service.,0,0,6,
 654,DEFCARD,Defense Card,8,0,A card that allows the owner to participate in the Defense EV center service.,0,0,6,
-655,DATAD,Data Drive,1,0,A usb filled with mysterious data.,0,0,0,
+655,DATAD,Data Drive,1,0,A USB drive filled with mysterious data.,0,0,0,
 656,TM107,TM107,4,0,The user slashes the target with a massive vine-whip. It may burn the target.,3,0,0,SLASHANDBURN
 657,STRAWCAKE,Strawberry Cake,2,3700,A delicious cake made from strawberries! Restores 150 HP.,1,1,0,
 658,ROSETEA,Rose Tea,2,4700,Delicious tea made from dried rose petals. Restores PP on a single move.,1,1,0,
-659,HERBALTEA,Herbal Tea,2,4700,Tea made from fresh herbs. Fully revives a single Pokemon and increases happiness.,1,1,0,
+659,HERBALTEA,Herbal Tea,2,4700,Tea made from fresh herbs. Fully revives a single Pokémon and increases happiness.,1,1,0,
 660,RAZZTART,Razz Berry Tart,2,1700,A sour pastry made from fresh Razz Berries. Cures status ailments.,1,1,0,
 661,SCEPTILITE,Sceptilite,1,999,"One variety of Mega Stone. Have Sceptile hold it, and this stone will enable it to Mega Evolve in battle.",0,0,0,
 662,LIGHTKEY,Lighthouse Key,8,0,A key to the lighthouse in Logium Port.,0,0,6,
@@ -659,17 +659,17 @@
 666,MINERALBALL,Mineral Ball,3,1200,A Poké Ball for catching Rock/Ground/Steel-type Pokémon. Also works on trapped Pokémon or those with a status condition.,0,2,4,
 667,GATHERCUBE,Gather Cube,8,0,A Mysterious Cube that has the power to gather various types of cells.,2,0,6,
 668,ANJUPENDANT,Anju's Pendant,8,0,A pendant that belongs to a mysterious woman named Anju. It apparently means a lot to her.,0,0,6,
-669,SNAGMACHINE,Snag Machine,8,0,A machine that allows the user to snag Shadow Pokemon.,0,0,6,
-670,SNAGMACHINE1,Snag Machine,8,0,Once was a machine that was capable of capturing Shadow Pokemon. Madelis interfered with the device and destroyed it.,0,0,6,
+669,SNAGMACHINE,Snag Machine,8,0,A machine that allows the user to snag Shadow Pokémon.,0,0,6,
+670,SNAGMACHINE1,Snag Machine,8,0,This machine once captured Shadow Pokémon. Madelis interfered with the device and destroyed it.,0,0,6,
 671,APOPHYLLPAN,Apophyll Pancakes,1,3000,Delicious pancakes imported in from Apophyll Academy. They're magically delicious!,1,0,0,
-672,NIGHTMED,Nightmare Medallion,8,4800,A cursed medal that will guarentee the user to experience nightmares while they sleep.,1,0,0,
+672,NIGHTMED,Nightmare Medallion,8,4800,A cursed medal that will guarantee that the user experiences nightmares while they sleep.,1,0,0,
 673,LABKEY,Lab Key,8,0,A key that Professor Matthew found in the Forsaken Laboratory.,0,0,6,
 674,STARSHARD1,Crystal Shard,8,0,A piece of a bigger whole.,0,0,6,
 675,STARSHARD2,Crystal Shard,8,0,A piece of a bigger whole.,0,0,6,
 676,STARSHARD3,Crystal Shard,8,0,A piece of a bigger whole.,0,0,6,
 677,STARSHARD4,Crystal Shard,8,0,A piece of a bigger whole.,0,0,6,
 678,INVITATION,Secret Invitation,8,0,An invitation to a secret event! Take it to the Gearen Laboratory!,0,0,6,
-679,FAMILYPORTRAIT,Family Portrait,8,0,A portait of a family that once lived in Aevium. Their history is unknown.,0,0,6,
+679,FAMILYPORTRAIT,Family Portrait,8,0,A portrait of a family that once lived in Aevium. Their history is unknown.,0,0,6,
 680,ULTRAPOTION,Ultra Potion,2,2200,A spray-type medicine for wounds. It restores the HP of one Pokémon by 200 points.,1,1,0,
 690,ADRENALINEORB,Adrenaline Orb,1,300,"If held by a Pokémon, it boosts Speed when intimidated. It can be used only once.",0,0,0
 691,BIGMALASADA,Big Malasada,2,200,The Alola region’s local specialty—fried bread. It can be used once to heal all the status conditions of a Pokémon.,1,1,0
@@ -765,15 +765,15 @@
 785,TM114,TM114,4,0,The user drains the target's blood. The user's HP is restored by half the damage taken by the target.,3,0,0,LEECHLIFE
 786,MYSTEMBLEM,Mysterious Emblem,8,0,A mysterious emblem that depicts an odd shape.,0,0,6,
 793,ACHIEVEMENTCARD,Achievement Card,8,0,A card that displays the amount of AP on hand.,2,0,6
-794,GOLDENGAUNTLET,Golden Gauntlet,8,0,A golden item that allows for the use of Strength without the use of TM's.,2,0,6
-795,GOLDENAXE,Golden Axe,8,0,A golden item that allows for the use of Cut without the use of TM's.,2,0,6
-796,GOLDENHAMMER,Golden Hammer,8,0,A golden item that allows for the use of Rock Smash without the use of TM's.,2,0,6
-797,GOLDENSURFBOARD,Golden Surfboard,8,0,A golden item that allows for the use of Surf without the use of TM's.,2,0,6
-798,GOLDENSCUBAGEAR,Golden Scuba Gear,8,0,A golden item that allows for the use of Dive without the use of TM's.,2,0,6
-799,GOLDENWINGS,Golden Wings,8,0,A golden item that allows for the use of Fly without the use of TM's.,2,0,6
-800,GOLDENJETPACK,Golden Jetpack,8,0,A golden item that allows for the use of Waterfall without the use of TM's.,2,0,6
-801,GOLDENDRIFTBOARD,Golden Drift Board,8,0,A golden item that allows for the use of Magma Drift without the use of TM's.,2,0,6
-802,GOLDENCLAWS,Golden Claws,8,0,A golden item that allows for the use of Rock Climb without the use of TM's.,2,0,6
+794,GOLDENGAUNTLET,Golden Gauntlet,8,0,A golden item that allows for the use of Strength without the use of TMs.,2,0,6
+795,GOLDENAXE,Golden Axe,8,0,A golden item that allows for the use of Cut without the use of TMs.,2,0,6
+796,GOLDENHAMMER,Golden Hammer,8,0,A golden item that allows for the use of Rock Smash without the use of TMs.,2,0,6
+797,GOLDENSURFBOARD,Golden Surfboard,8,0,A golden item that allows for the use of Surf without the use of TMs.,2,0,6
+798,GOLDENSCUBAGEAR,Golden Scuba Gear,8,0,A golden item that allows for the use of Dive without the use of TMs.,2,0,6
+799,GOLDENWINGS,Golden Wings,8,0,A golden item that allows for the use of Fly without the use of TMs.,2,0,6
+800,GOLDENJETPACK,Golden Jetpack,8,0,A golden item that allows for the use of Waterfall without the use of TMs.,2,0,6
+801,GOLDENDRIFTBOARD,Golden Drift Board,8,0,A golden item that allows for the use of Magma Drift without the use of TMs.,2,0,6
+802,GOLDENCLAWS,Golden Claws,8,0,A golden item that allows for the use of Rock Climb without the use of TMs.,2,0,6
 803,EXPALL,Exp. All (On),8,0,Turning off this special device will stop all the Pokémon on your team from receiving Exp. Points from battles.,2,0,6
 804,EXPALLOFF,Exp. All (Off),8,0,Turning on this special device will allow all the Pokémon on your team to receive Exp. Points from battles.,2,0,6
 805,BEEDRILLITE,Beedrillite,6,999,"One variety of Mega Stone. Have Beedrill hold it, and this stone will enable it to Mega Evolve in battle.",0,0,0,
@@ -792,7 +792,7 @@
 818,AUDINITE,Audinite,6,999,"One variety of Mega Stone. Have Audino hold it, and this stone will enable it to Mega Evolve in battle.",0,0,0,
 819,DIANCITE,Diancite,6,999,"One variety of Mega Stone. Have Diancie hold it, and this stone will enable it to Mega Evolve in battle.",0,0,0,
 820,BLACKSHARD2,Black Shard,1,999,A mysterious shard that was created by smelting Black Ore.,0,0,0,
-821,SCENTEDLURE,Scented Lure,8,0,A lure that brings Pokemon out at certain spots.,0,0,6
+821,SCENTEDLURE,Scented Lure,8,0,A lure that brings Pokémon out at certain spots.,0,0,6
 823,MAGCREST,Magcargo Crest,6,0,It swaps Magcargo's Defense and Speed and increases Sp. Atk by 10.,0,0,13,
 825,FEARCREST,Fearow Crest,6,0,"Sniper is always active. If opponent is below 50% HP, Fearow always crits.",0,0,13,
 826,STANTCREST,Stantler Crest,6,0,It increases Stantler's Attack and Accuracy by 50%.,0,0,13,
@@ -819,7 +819,7 @@
 849,SOLGANIUMZ2,Solganium-Z,1,0,This is a crystallized form of Z-Power. It upgrades Solgaleo's Sunsteel Strike to a Z-Move.,0,0,7
 850,LUNALIUMZ,Lunalium-Z,6,0,It converts Z-Power into crystals that upgrade Lunala's Moongeist Beam to an exclusive Z-Move.,5,0,8
 851,LUNALIUMZ2,Lunalium-Z,1,0,This is a crystallized form of Z-Power. It upgrades Lunala's Moongeist Beam to a Z-Move.,0,0,7
-852,ULTRANECROZIUMZ,Ultranecrozium-Z,6,0,It's a crystal that allows Necrozma fused with another pokemon to change forme.,5,0,8
+852,ULTRANECROZIUMZ,Ultranecrozium-Z,6,0,It's a crystal that allows Necrozma fused with another Pokémon to change forme.,5,0,8
 853,ULTRANECROZIUMZ2,Ultranecrozium-Z,1,0,This is a crystallized form of Z-Power. It upgrades Ultra Necrozma's Photon Geyser to a Z-Move.,0,0,7
 854,BLASTPOWDER,Blast Powder,1,2500,A powder made from Electrode. Explodes to break up certain rock formations.,0,0,0
 855,AMPLIFIELDROCK,Amplifield Rock,1,3000,A Pokémon held item that extends the duration of the area-altering moves used by the holder.,0,0,0
@@ -831,10 +831,10 @@
 865,CHERCREST,Cherrim Crest,6,0,It forces Cherrim into Sunshine Form regardless of weather.,0,0,13,
 866,CLAYCREST,Claydol Crest,6,0,Special attacks use its Defense stat. Beam moves are boosted.,0,0,13,
 867,DEDECREST,Dedenne Crest,6,0,Physical attacks use its Speed stat rather than its Attack stat.,0,0,13,
-868,ZANGCREST,Zangoose Crest,6,0,Poisons the user and restores HP if the Pokemon is poisoned.,0,0,13,
+868,ZANGCREST,Zangoose Crest,6,0,Poisons the user and restores HP if the Pokémon is poisoned.,0,0,13,
 869,BASTCREST,Bastiodon Crest,6,0,Deals 50% damage taken as recoil and recovers that amount.,0,0,13,
 870,MEGCREST,Meganium Crest,6,0,Meganium and allies take reduced damage and recover every turn.,0,0,13,
-871,TYPHCREST,Typhlosion Crest,6,0,"Atk scales with SpAtk, and contact moves do additional fire damage.",0,0,13,
+871,TYPHCREST,Typhlosion Crest,6,0,"Atk scales with Sp. Atk, and contact moves deal additional Fire-type damage.",0,0,13,
 872,FERACREST,Feraligatr Crest,6,0,First move has higher priority. Biting moves deal more damage.,0,0,13,
 873,RAMPCREST,Rampardos Crest,6,0,"It helps Rampardos always hang on with 1HP regardless of HP, once per battle.",0,0,13,
 874,LEDICREST,Ledian Crest,6,0,Ledian's single-hit punches strike 4 times. Added effects can occur on the first 2 hits.,0,0,13,
@@ -867,7 +867,7 @@
 903,FOSSILIZEDDINO,Fossilized Dino,1,2500,The fossil of an ancient Pokémon that once lived in the sea. What it looked like is a mystery.,0,0,0,
 904,FOSSILIZEDDRAKE,Fossilized Drake,1,2500,The fossil of an ancient Pokémon that once roamed the land. What it looked like is a mystery.,0,0,0,
 905,FOSSILIZEDFISH,Fossilized Fish,1,2500,The fossil of an ancient Pokémon that once lived in the sea. What it looked like is a mystery.,0,0,0,
-906,THROATSPRAY,Throat Spray,1,2000,"This item, when held, causes a Pokémon's Special Attack stat to be raised by one stage when it uses a Sound based move",0,0,0,
+906,THROATSPRAY,Throat Spray,1,2000,"Raises the holder's Special Attack by one stage when it uses a sound-based move.",0,0,0,
 907,EJECTPACK,Eject Pack,1,2000,"An item to be held by a Pokémon. When the holder's stats are lowered, it will be switched out of battle.",0,0,0,
 908,HEAVYDUTYBOOTS,Heavy-Duty Boots,1,2000,These boots prevent the effects of traps set on the battlefield.,0,0,0,
 909,BLUNDERPOLICY,Blunder Policy,1,2000,Raises Speed sharply when a Pokémon misses with a move because of accuracy.,0,0,0,
@@ -883,7 +883,7 @@
 919,NAUGHTYMINT,Naughty Mint,2,10,"When a Pokémon smells this mint, its Attack will grow more easily, but its Sp. Def will grow more slowly.",1,0,0
 920,BRAVEMINT,Brave Mint,2,10,"When a Pokémon smells this mint, its Attack will grow more easily, but its Speed will grow more slowly.",1,0,0
 921,BOLDMINT,Bold Mint,2,10,"When a Pokémon smells this mint, its Defense will grow more easily, but its Attack will grow more slowly.",1,0,0
-922,IMPISHMINT,Impish Mint,2,10,"When a Pokémon smells this mint, its Defense will grow more easily, but its Sp. Att will grow more slowly.",1,0,0
+922,IMPISHMINT,Impish Mint,2,10,"When a Pokémon smells this mint, its Defense will grow more easily, but its Sp. Atk will grow more slowly.",1,0,0
 923,LAXMINT,Lax Mint,2,10,"When a Pokémon smells this mint, its Defense will grow more easily, but its Sp. Def will grow more slowly.",1,0,0
 924,RELAXEDMINT,Relaxed Mint,2,10,"When a Pokémon smells this mint, its Defense will grow more easily, but its Speed will grow more slowly.",1,0,0
 925,MODESTMINT,Modest Mint,2,10,"When a Pokémon smells this mint, its Sp. Attack will grow more easily, but its Attack will grow more slowly.",1,0,0
@@ -901,7 +901,7 @@
 937,SERIOUSMINT,Serious Mint,2,10,"When a Pokémon smells this mint, all of its stats will grow at an equal rate.",1,0,0
 938,RIFTFRAGMENT,Rift Fragment,1,0,Throw one into a Pokémon Den to attract a wild Rift Pokémon.,0,0,0
 939,CATCHINGCHARM,Catching Charm,8,0,"Holding it is said to increase the chance of getting a critical catch. Curiously, the charm doesn't shake much.",0,0,0,
-940,DUNGEONKEY,Dungeon Key,8,0,A key to open doors in various dungeons,0,0,6,
+940,DUNGEONKEY,Dungeon Key,8,0,A key to open doors in various dungeons.,0,0,6,
 941,DREAMBALL,Dream Ball,3,200,A somewhat different Poké Ball that works especially well on sleeping Pokémon.,0,2,4,
 942,PECHABERRY2,Pecha Berry?,8,0,A special Pecha Berry given to you by the employee at The Berry Emporium.,0,0,6,
 943,ROTOMPHONE,Rotom Phone,8,0,A smartphone that was enhanced with a Rotom!,0,0,6,
@@ -926,10 +926,10 @@
 964,TM142,TM133,4,0,The user attacks by hurling a blob of mud at the target. This also lowers the target's Speed stat.,3,0,0,MUDSHOT
 965,TM143,TM134,4,0,Hits 3 times (5 with Skill Link or Loaded Dice). Bomb.,3,0,0,ROCKBLAST
 966,TM144,TM135,4,0,"If the target's HP is half or less, this attack will hit with double the power.",3,0,0,BRINE
-967,TM145,TM136,4,0,"If the target has already taken some damage in the same turn, this attack's power is doubled",3,0,0,ASSURANCE
+967,TM145,TM136,4,0,"If the target has already taken some damage in the same turn, this attack's power is doubled.",3,0,0,ASSURANCE
 968,TM146,TM137,4,0,The user employs its psychic power to switch changes to its Attack and Sp. Atk stats with the target.,3,0,0,POWERSWAP
 969,TM147,TM138,4,0,The user employs its psychic power to switch changes to its Defense and Sp. Def stats with the target.,3,0,0,GUARDSWAP
-970,TM148,TM139,4,0,The user employs its psychic power to switch changes to its Speed stat with the target,3,0,0,SPEEDSWAP
+970,TM148,TM139,4,0,The user employs its psychic power to switch changes to its Speed stat with the target.,3,0,0,SPEEDSWAP
 971,TM149,TM140,4,20000,The user bites with cold-infused fangs. This may also make the target flinch or leave it frozen.,3,0,0,ICEFANG
 972,TM150,TM141,4,20000,The user bites with flame-cloaked fangs. This may also make the target flinch or leave it with a burn.,3,0,0,FIREFANG
 973,TM151,TM142,4,20000,The user bites with electrified fangs. This may also make the target flinch or leave it with paralysis.,3,0,0,THUNDERFANG
@@ -979,15 +979,15 @@
 1017,RILLABOOMITE,Rillaboomite,6,999,A reserved Mega Stone for Rillaboom. It has no battle effect.,0,0,0,
 1018,CINDERACITE,Cinderacite,6,999,A reserved Mega Stone for Cinderace. It has no battle effect.,0,0,0,
 1019,INTELEONITE,Inteleonite,6,999,A reserved Mega Stone for Inteleon. It has no battle effect.,0,0,0,
-1020,PHANTOMCANDYS,Phantom Candy S,2,0,Candy that was made by The Puppet Master. It will level up your Pokemon a small amount.,1,0,0
-1021,PHANTOMCANDYM,Phantom Candy M,2,0,Candy that was made by The Puppet Master. It will level up your Pokemon an average amount.,1,0,0
+1020,PHANTOMCANDYS,Phantom Candy S,2,0,Candy that was made by The Puppet Master. It will level up your Pokémon a small amount.,1,0,0
+1021,PHANTOMCANDYM,Phantom Candy M,2,0,Candy that was made by The Puppet Master. It will level up your Pokémon an average amount.,1,0,0
 1022,MYSTBLACKBOX2,Mysterious Black Box,8,0,A mysterious black box. It does nothing.,0,0,6,
 1023,HPCARD,HP Card,8,0,A card that allows the owner to participate in the HP EV center service.,0,0,6,
 1024,SPEEDCARD,Speed Card,8,0,A card that allows the owner to participate in the Speed EV center service.,0,0,6,
 1025,THIEVCREST,Thievul Crest,6,0,Adds half of the opponent's Attack stat to Thievul's own.,0,0,13,
 1026,PROBOCREST,Probopass Crest,6,0,Levitates. Mini-noses do 20% type-based damage after a damaging move.,0,0,13,
 1027,DRUDDICREST,Druddigon Crest,6,0,Heals in the sun and from Fire moves. Fire and Dragon moves get boosted by 30%.,0,0,13,
-1028,CINCCREST,Cincinno Crest,6,0,All moves turn into multi-hit moves. 2-5 hits of 35% the BP.,0,0,13,
+1028,CINCCREST,Cinccino Crest,6,0,All moves turn into multi-hit moves. 2-5 hits of 35% the BP.,0,0,13,
 1029,NOCCREST,Noctowl Crest,6,0,STAB on Psychic moves and gains Psychic-type resistances.,0,0,13,
 1030,LUXCREST,Luxray Crest,6,0,STAB on Dark moves and gains Dark-type resistances.,0,0,13,
 1031,BOLTCREST,Boltund Crest,6,0,1.5x boost to biting moves if Boltund moves before target.,0,0,13,
@@ -996,11 +996,11 @@
 1034,DELCREST,Delcatty Crest,6,0,The power of its friends increases Delcatty's stats by 10% each.,0,0,13,
 1035,SWACREST,Swalot Crest,6,0,Stockpiles gained after an attack. Belch always usable and followed by Spit Up.,0,0,13,
 # IDs 1036 and 1037 are reserved for save migration.
-1039,MASTERKEY,Master Key,8,0,A key to open boss doors in various dungeons,0,0,6,
+1039,MASTERKEY,Master Key,8,0,A key to open boss doors in various dungeons.,0,0,6,
 1040,FAIRYGEM,Fairy Gem,1,200,"A gem with a mystical essence. When held, it strengthens the power of a Fairy-type move only once.",0,0,0,
 1041,MYRONNOTEFOUR,Access Code Foxtrot,8,0,Maybe someone can decipher this?,0,0,6,
-1044,IVIOLITE,Iviolite,1,200,"A mysterious evolutionary lump. When held, it raises the Attack and Sp. Attack of a Pokemon that can still evolve.",0,0,0,
-1045,FULLPLATE,Full Plate,6,999,An item to be held by a Pokemon. This offensive vest raises Def but prevents healing.,0,0,0,
+1044,IVIOLITE,Iviolite,1,200,"A mysterious evolutionary lump. When held, it raises the Attack and Sp. Attack of a Pokémon that can still evolve.",0,0,0,
+1045,FULLPLATE,Full Plate,6,999,An item to be held by a Pokémon. This offensive vest raises Def but prevents healing.,0,0,0,
 1046,SKARMORITE,Skarmorite,6,999,A reserved Mega Stone for Skarmory. It has no battle effect.,0,0,0,
 1047,URSARINGITE,Ursaringite,6,999,A reserved Mega Stone for Ursaring. It has no battle effect.,0,0,0,
 1048,VIKAVOLTITE,Vikavoltite,6,999,A reserved Mega Stone for Vikavolt. It has no battle effect.,0,0,0,
@@ -1049,24 +1049,24 @@
 1091,WATERGUN,Water Gun,1,200,"An item to be held by a Pokémon. If the holder's move had no effect, switches them out.",0,0,0,
 1092,GOLDENHELIX,Golden Helix,1,200,An item to be held by a Pokémon. It boosts the power of moves that hit twice.,0,0,0,
 1093,MIXTAPE,Mixtape,1,200,"An item to be held by a Pokémon. When the holder uses a physical attack, boost the next special attack 1.5x and vice versa.",0,0,0,
-1094,CLOUDROBE,Cloud Robe,1,999,An item to be held by a Pokemon. This robe makes the holder 1.2x stronger to neutral attacks.,0,0,0,
+1094,CLOUDROBE,Cloud Robe,1,999,An item to be held by a Pokémon. The holder is 1.2x stronger against neutral attacks.,0,0,0,
 1095,SHRAPNEL,Shrapnel,1,1200,"An item to be held by a Pokémon. Once per battle, it boosts the holder's ball, bomb, or explosion move 1.3x and spreads spikes.",0,0,0
 1096,WHETSTONE,Whetstone,1,1200,An item to be held by a Pokémon. Boosts the power of slashing and piercing moves 1.2x.,0,0,0
 1097,BLACKPRISM,Black Prism,1,1200,An item to be held by a Pokémon. Light and beam moves are boosted 1.1x and use the higher of the holder's offenses.,0,0,0
-1098,ANTIGRAVITYCORE,Antigravity Core,1,999,"An item to be held by a Pokemon. During intense gravity, the holder levitates.",0,0,0,
+1098,ANTIGRAVITYCORE,Antigravity Core,1,999,"An item to be held by a Pokémon. During intense gravity, the holder levitates.",0,0,0,
 1099,COUNTERWEIGHT,Counterweight,1,200,An item to be held by a Pokémon. Momentum moves raise the holder's speed each turn.,0,0,0,
-1100,COCOON,Cocoon,1,999,An item to be held by cocoon Pokemon. It doubles the holder's defenses.,0,0,0,
+1100,COCOON,Cocoon,1,999,An item to be held by cocoon Pokémon. It doubles the holder's defenses.,0,0,0,
 1101,QUICKNEEDLE,Quick Needle,1,200,An item to be held by a Pokémon. The holder's first move below 30 power always goes first.,0,0,0,
-1102,AURAGUARD,Aura Guard,1,999,An item to be held by a Pokemon. The holder takes 0.2x less damage from attacks that match its hidden power.,0,0,0,
-1103,RAINSTICK,Rain Stick,1,999,"An item to be held by a Pokemon. During heavy rain, the holder's stats cannot be lowered.",0,0,0,
-1104,SUNDIAL,Sundial,1,999,"An item to be held by a Pokemon. During harsh sunlight, the holder's moves cannot be redirected and ignore Substitute.",0,0,0,
-1105,SANDSTONE,Sand Stone,1,999,"An item to be held by a Pokemon. During a sandstorm, the holder's moves do not use PP.",0,0,0,
-1106,SNOWGLOBE,Snow Globe,1,999,"An item to be held by a Pokemon. During hail, the holder is immune to the effects of Taunt, Encore, Torment, or Disable.",0,0,0,
-1107,SERRATEDTIP,Serrated Tip,1,999,"An item to be held by a Pokemon. Whenever the holder's moves lower a stat, that stat is lowered an additional stage.",0,0,0,
+1102,AURAGUARD,Aura Guard,1,999,An item to be held by a Pokémon. The holder takes 0.2x less damage from attacks that match its hidden power.,0,0,0,
+1103,RAINSTICK,Rain Stick,1,999,"An item to be held by a Pokémon. During heavy rain, the holder's stats cannot be lowered.",0,0,0,
+1104,SUNDIAL,Sundial,1,999,"An item to be held by a Pokémon. During harsh sunlight, the holder's moves cannot be redirected and ignore Substitute.",0,0,0,
+1105,SANDSTONE,Sand Stone,1,999,"An item to be held by a Pokémon. During a sandstorm, the holder's moves do not use PP.",0,0,0,
+1106,SNOWGLOBE,Snow Globe,1,999,"An item to be held by a Pokémon. During hail, the holder is immune to the effects of Taunt, Encore, Torment, or Disable.",0,0,0,
+1107,SERRATEDTIP,Serrated Tip,1,999,"An item to be held by a Pokémon. Whenever the holder's moves lower a stat, that stat is lowered an additional stage.",0,0,0,
 1108,SLINGSHOT,Slingshot,1,200,"An item to be held by a Pokémon. The first move the holder uses is doubled in power, the rest are halved.",0,0,0,
-1109,JETPACK,Jetpack,1,200,An item to be held by a Pokémon. Raises the holder's speed but they use double PP.,0,0,0,
+1109,JETPACK,Jetpack,1,200,"Boosts the holder's Speed, but its moves use double PP.",0,0,0,
 1110,TOTEMMASK,Totem Mask,1,200,"An item to be held by a Pokémon. When taking special damage, drains the attacker's special defense.",0,0,0,
-1111,NULLTRIBUTE,Null Tribute,6,999,An attack in slot 1 deals 1.3x damage.,2,0,0,
+1111,NULLTRIBUTE,Null Tribute,6,999,An attack in slot 1 deals 1.2x damage.,2,0,0,
 1112,MEADOWTRIBUTE,Meadow Tribute,6,999,Healing from the move in slot 1 is multiplied by 1.3.,2,0,0,
 1113,FLAMETRIBUTE,Flame Tribute,6,999,An attack in slot 1 deals 1.5x damage if the holder just entered battle.,2,0,0,
 1114,SPLASHTRIBUTE,Splash Tribute,6,999,An attack in slot 1 restores HP equal to 25% of the damage dealt.,2,0,0,
@@ -1096,7 +1096,7 @@
 1126,VENGEANTDIADEM,Vengeant Diadem,1,200,An item to be held by a Pokémon. The wearer raises a stat on entry based on how many allies remain.,0,0,0,
 1127,THORNMAIL,Thornmail,1,200,An item to be held by a Pokémon. Its offenses grow stronger with each defensive boost.,0,0,0,
 1128,CRACKEDMIRROR,Cracked Mirror,1,200,An item to be held by a Pokémon. It warps space for a turn upon entering battle.,0,0,0,
-1129,NOXIOUSDRAUGHT,Noxious Draught,1,200,An item to be held by a Pokémon. On entry it harms all other Pokémon.,0,0,0,
+1129,NOXIOUSDRAUGHT,Noxious Draught,1,200,"An item to be held by a Pokémon. On entry, it harms all other Pokémon.",0,0,0,
 1130,IGNITIONKEY,Ignition Key,1,200,An item to be held by a Pokémon. Stat-boosting attacks pack extra power.,0,0,0,
 1131,PRESSURESUIT,Pressure Suit,1,200,An item to be held by a Pokémon. It prevents crushing and resists the Pressure ability.,0,0,0,
 1132,FAERIERING,Faerie Ring,1,200,"An item to be held by a Pokémon. If it stays idle, it blinks off and back on.",0,0,0,
@@ -1105,7 +1105,7 @@
 1135,HEXBALL,Hex Ball,3,1000,A Poké Ball for catching Ghost and Poison-type Pokémon. Also works on trapped Pokémon or those with a status condition.,0,2,4,
 1136,TERRABALL,Terra Ball,3,1000,A Poké Ball for catching Grass and Ground-type Pokémon. Also works on trapped Pokémon or those with a status condition.,0,2,4,
 1137,ENIGMABALL,Enigma Ball,3,1000,A Poké Ball for catching Dragon and Psychic-type Pokémon. Also works on trapped Pokémon or those with a status condition.,0,2,4,
-1138,BRAWLBALL,Brawl Ball,3,1000,A Poké Ball for catching Normal and Fighting-type Pokémon. Also works on trapped Pokémon or those with a status condition.,0,2,4,
+1138,BRAWLBALL,Brawl Ball,3,1000,A Poké Ball for catching Normal- and Fighting-type Pokémon. Also works on trapped Pokémon or those with a status condition.,0,2,4,
 1139,MIRRORBALL,Mirror Ball,3,1000,A Poké Ball for catching Steel and Ice-type Pokémon. Also works on trapped Pokémon or those with a status condition.,0,2,4,
 1140,FEATHERBALL,Feather Ball,3,300,A Poké Ball for catching Pokémon weighing 500 or less. Also works on trapped Pokémon or those with a status condition.,0,2,4,
 1141,APEXBALL,Apex Ball,3,300,A Poké Ball for catching Pokémon with height 200 or more. Also works on trapped Pokémon or those with a status condition.,0,2,4,
