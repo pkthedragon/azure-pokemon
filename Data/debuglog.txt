@@ -21768,3 +21768,956 @@ Wild Battle
 [Wheel lost 11 HP, now has 10 HP]
 [Wheel gained 2 HP, now has 12 HP]
 ***Round 4***
+==============================
+Battle Start!
+Wild Battle
+==============================
+***Round 1***
+[The wild Rattata: Tail Whip=0, Quick Attack=0, Pester=0, Bite=0]
+[Prefer Tail Whip]
+[The wild Rattata lost 21 HP, now has 10 HP]
+[The wild Rattata gained 1 HP, now has 11 HP]
+***Round 2***
+[The wild Rattata: Tail Whip=0, Quick Attack=0, Pester=0, Bite=0]
+[Prefer Pester]
+[Wheel lost 8 HP, now has 28 HP]
+[The wild Rattata lost 11 HP, now has 0 HP]
+==============================
+Battle Start!
+Wild Battle
+==============================
+***Round 1***
+[The wild Rattata: Pester=0, Bite=0, Lock-On=0, Pursuit=0]
+[Prefer Bite]
+[Wheel lost 11 HP, now has 25 HP]
+[Wheel gained 2 HP, now has 27 HP]
+***Round 2***
+==============================
+Battle Start!
+260 - Rose
+==============================
+***Round 1***
+AI Pokemon Zadkiel is faster than Wheel.
+Fire Fang: initial score: 16
+Fire Fang: final score: 16
+ 
+Lick: initial score: 13
+Lick: final score: 15
+ 
+Work Up: initial score: 20
+Work Up: final score: 22
+ 
+Fake Out: initial score: 8
+Priority Check Begin
+AI Pokemon is faster.
+Expected damage taken: 25
+Priority Check End
+Smack Down: final score: 4
+ 
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (0)
+Initial switchscore building: Healing (0)
+Initial switchscore building: fsteak (0)
+Initial switchscore building: Specific Switches (0)
+Initial switchscore building: worthsaving not activated
+Initial switchscore building: Typing (0)
+Litten: initial switchscore: 40
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+Litten: initial noswitchscore: 66
+ 
+{
+ 
+}
+ 
+Litten: highest move score: 22
+Litten: final switching score: -26
+22 > -26, will not switch
+ 
+[The foe Zadkiel: Fire Fang=16, Lick=15, Work Up=22, Fake Out=4]
+[Prefer Work Up]
+[The foe Zadkiel lost 8 HP, now has 29 HP]
+[The foe Zadkiel gained 2 HP, now has 31 HP]
+***Round 2***
+Player Pokemon Wheel is faster than Zadkiel.
+Fire Fang: initial score: 25
+Fire Fang: final score: 26
+ 
+Lick: initial score: 22
+Lick: final score: 31
+ 
+Work Up: initial score: 20
+Work Up: final score: 0
+ 
+Fake Out: initial score: 11
+Move only works on first turn, but turncount = 1. Score set to 0.
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (0)
+Initial switchscore building: Healing (0)
+Initial switchscore building: fsteak (0)
+Initial switchscore building: Specific Switches (0)
+Initial switchscore building: AI Safe Switches (80)
+Initial switchscore building: worthsaving activated
+Litten: initial switchscore: 80
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (15)
+Initial noswitchscore building: Better Switching Options (15)
+Initial noswitchscore building: Second Wind Situations (15)
+Litten: initial noswitchscore: 65
+ 
+{
+ 
+}
+ 
+Litten: highest move score: 31
+Litten: final switching score: 15
+Current Pokemon is worth saving for later, will switch
+ 
+Scoring for Litten switching to: Litten
+Offensive: 9
+Defensive: -191
+Roles: -161
+Weather: -161
+Moves: -136
+Abilities: -136
+Items: -136
+Fields: -111
+Score: -111
+ 
+Scoring for Litten switching to: Sandile
+Offensive: 16
+Defensive: 166
+Roles: 166
+Weather: 166
+Moves: 166
+Abilities: 166
+Items: 166
+Fields: 166
+Score: 166
+ 
+Scoring for Litten switching to: Dratini
+Offensive: 23
+Defensive: 48
+Roles: 48
+Weather: 48
+Moves: 108
+Abilities: 108
+Items: 108
+Fields: 108
+Score: 108
+ 
+Scoring for Litten switching to: Swablu
+Offensive: 5
+Defensive: -395
+Roles: -395
+Weather: -395
+Moves: -365
+Abilities: -365
+Items: -365
+Fields: -365
+Score: -365
+ 
+Scoring for Litten switching to: Absol
+Offensive: 27
+Defensive: 102
+Roles: 102
+Weather: 102
+Moves: 122
+Abilities: 122
+Items: 122
+Fields: 122
+Score: 85
+ 
+Switching to Sandile
+***Round 3***
+AI Pokemon Samael is faster than Centipede.
+Fire Fang: initial score: 37
+Fire Fang: final score: 29
+ 
+Bite: initial score: 34
+Bite: final score: 25
+ 
+Sand Tomb: initial score: 23
+Sand Tomb: final score: 49
+ 
+Sand Attack: initial score: 5
+Sand Attack: final score: 0
+ 
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (0)
+Initial switchscore building: Healing (0)
+Initial switchscore building: fsteak (0)
+Initial switchscore building: Specific Switches (0)
+Initial switchscore building: worthsaving not activated
+Initial switchscore building: Typing (0)
+Sandile: initial switchscore: 20
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+Sandile: initial noswitchscore: 66
+ 
+{
+ 
+}
+ 
+Sandile: highest move score: 47
+Sandile: final switching score: -46
+47 > -46, will not switch
+ 
+[The foe Samael: Fire Fang=29, Bite=25, Sand Tomb=47, Sand Attack=0]
+[Prefer Sand Tomb]
+[Centipede lost 10 HP, now has 33 HP]
+[The foe Samael lost 16 HP, now has 22 HP]
+[The foe Samael gained 2 HP, now has 24 HP]
+[Centipede gained 2 HP, now has 35 HP]
+[The foe Samael lost 2 HP, now has 22 HP]
+[Centipede lost 5 HP, now has 30 HP]
+***Round 4***
+AI Pokemon Samael is faster than Centipede.
+Fire Fang: initial score: 26
+Fire Fang: final score: 27
+ 
+Bite: initial score: 26
+Bite: final score: 26
+ 
+Sand Tomb: initial score: 16
+Sand Tomb: final score: 16
+ 
+Sand Attack: initial score: 5
+Sand Attack: final score: 0
+ 
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (0)
+Initial switchscore building: Healing (0)
+Initial switchscore building: fsteak (0)
+Initial switchscore building: Specific Switches (0)
+Initial switchscore building: worthsaving not activated
+Initial switchscore building: Typing (0)
+Sandile: initial switchscore: 20
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+Sandile: initial noswitchscore: 180
+ 
+{
+ 
+}
+ 
+Sandile: highest move score: 27
+Sandile: final switching score: -160
+27 > -160, will not switch
+ 
+[The foe Samael: Fire Fang=27, Bite=26, Sand Tomb=15, Sand Attack=0]
+[Prefer Fire Fang]
+[Centipede lost 8 HP, now has 22 HP]
+[The foe Samael lost 16 HP, now has 6 HP]
+[The foe Samael gained 2 HP, now has 8 HP]
+[Centipede gained 2 HP, now has 24 HP]
+[The foe Samael lost 2 HP, now has 6 HP]
+[Centipede lost 5 HP, now has 19 HP]
+***Round 5***
+AI Pokemon Samael is faster than Centipede.
+Fire Fang: initial score: 42
+Fire Fang: final score: 44
+ 
+Bite: initial score: 42
+Bite: final score: 42
+ 
+Sand Tomb: initial score: 26
+Sand Tomb: final score: 26
+ 
+Sand Attack: initial score: 5
+Sand Attack: final score: 0
+ 
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (-100)
+Initial switchscore building: Healing (-100)
+Initial switchscore building: fsteak (-100)
+Initial switchscore building: Specific Switches (-100)
+Initial switchscore building: AI Safe Switches (80)
+Initial switchscore building: worthsaving not activated
+Initial switchscore building: Typing (-100)
+Sandile: initial switchscore: -80
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+Sandile: initial noswitchscore: 163
+ 
+{
+ 
+}
+ 
+Sandile: highest move score: 44
+Sandile: final switching score: -243
+44 > -243, will not switch
+ 
+[The foe Samael: Fire Fang=44, Bite=42, Sand Tomb=25, Sand Attack=0]
+[Prefer Fire Fang]
+[Centipede lost 8 HP, now has 11 HP]
+[The foe Samael lost 6 HP, now has 0 HP]
+[Centipede gained 2 HP, now has 13 HP]
+Scoring for Sandile switching to: Litten
+Offensive: 36
+Defensive: 186
+Roles: 276
+Weather: 276
+Moves: 301
+Abilities: 301
+Items: 301
+Fields: 326
+Score: 326
+ 
+Scoring for Sandile switching to: Sandile
+Score: -10000000
+Not switching to self.
+Scoring for Sandile switching to: Dratini
+Offensive: 41
+Defensive: 191
+Roles: 251
+Weather: 251
+Moves: 251
+Abilities: 251
+Items: 251
+Fields: 251
+Score: 251
+ 
+Scoring for Sandile switching to: Swablu
+Offensive: 33
+Defensive: 183
+Roles: 243
+Weather: 243
+Moves: 243
+Abilities: 243
+Items: 243
+Fields: 243
+Score: 243
+ 
+Scoring for Sandile switching to: Absol
+Offensive: 43
+Defensive: 193
+Roles: 253
+Weather: 253
+Moves: 273
+Abilities: 273
+Items: 273
+Fields: 273
+Score: 109
+ 
+***Round 6***
+AI Pokemon Zadkiel is faster than Centipede.
+Fire Fang: initial score: 110
+Fire Fang: final score: 115
+ 
+Lick: initial score: 46
+Lick: final score: 46
+ 
+Work Up: initial score: 20
+Work Up: final score: 10
+ 
+Fake Out: initial score: 53
+Priority Check Begin
+AI Pokemon is faster.
+Expected damage taken: 9
+Priority Check End
+Bite: final score: 53
+ 
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (0)
+Initial switchscore building: Healing (0)
+Initial switchscore building: fsteak (0)
+Initial switchscore building: Specific Switches (0)
+Initial switchscore building: worthsaving not activated
+Initial switchscore building: Typing (0)
+Litten: initial switchscore: -40
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+Litten: initial noswitchscore: 66
+ 
+{
+ 
+}
+ 
+Litten: highest move score: 115
+Litten: final switching score: -106
+115 > -106, will not switch
+ 
+[The foe Zadkiel: Fire Fang=115, Lick=46, Work Up=10, Fake Out=53]
+[Prefer Fire Fang]
+[Wheel lost 6 HP, now has 30 HP]
+[The foe Zadkiel gained 2 HP, now has 33 HP]
+[Wheel gained 2 HP, now has 32 HP]
+***Round 7***
+AI Pokemon Zadkiel is faster than Wheel.
+Fire Fang: initial score: 18
+Fire Fang: final score: 18
+ 
+Lick: initial score: 15
+Lick: final score: 15
+ 
+Work Up: initial score: 20
+Work Up: final score: 0
+ 
+Fake Out: initial score: 9
+Move only works on first turn, but turncount = 1. Score set to 0.
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (0)
+Initial switchscore building: Healing (0)
+Initial switchscore building: fsteak (0)
+Initial switchscore building: Specific Switches (0)
+Initial switchscore building: AI Safe Switches (80)
+Initial switchscore building: worthsaving activated
+Litten: initial switchscore: 80
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+Litten: initial noswitchscore: 50
+ 
+{
+ 
+}
+ 
+Litten: highest move score: 18
+Litten: final switching score: 30
+Current Pokemon is worth saving for later, will switch
+ 
+Scoring for Litten switching to: Litten
+Offensive: 6
+Defensive: -194
+Roles: -164
+Weather: -164
+Moves: -139
+Abilities: -139
+Items: -139
+Fields: -114
+Score: -114
+ 
+Scoring for Litten switching to: Sandile
+Score: -10000000
+ 
+Scoring for Litten switching to: Dratini
+Offensive: 23
+Defensive: 48
+Roles: 48
+Weather: 48
+Moves: 48
+Abilities: 48
+Items: 48
+Fields: 48
+Score: 48
+ 
+Scoring for Litten switching to: Swablu
+Offensive: 5
+Defensive: -245
+Roles: -245
+Weather: -245
+Moves: -215
+Abilities: -215
+Items: -215
+Fields: -215
+Score: -215
+ 
+Scoring for Litten switching to: Absol
+Offensive: 27
+Defensive: 52
+Roles: 52
+Weather: 52
+Moves: 72
+Abilities: 72
+Items: 72
+Fields: 72
+Score: 50
+ 
+Backing out of switching.
+[The foe Zadkiel: Fire Fang=18, Lick=15, Work Up=0, Fake Out=0]
+[Prefer Fire Fang]
+[Wheel lost 6 HP, now has 26 HP]
+[The foe Zadkiel lost 11 HP, now has 22 HP]
+[Wheel gained 2 HP, now has 28 HP]
+[The foe Zadkiel gained 2 HP, now has 24 HP]
+***Round 8***
+Player Pokemon Wheel is faster than Zadkiel.
+Fire Fang: initial score: 21
+Fire Fang: final score: 22
+ 
+Lick: initial score: 17
+Lick: final score: 21
+ 
+Work Up: initial score: 20
+Work Up: final score: 0
+ 
+Fake Out: initial score: 10
+Move only works on first turn, but turncount = 2. Score set to 0.
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (0)
+Initial switchscore building: Healing (0)
+Initial switchscore building: fsteak (0)
+Initial switchscore building: Specific Switches (0)
+Initial switchscore building: AI Safe Switches (80)
+Initial switchscore building: worthsaving activated
+Litten: initial switchscore: 80
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+Litten: initial noswitchscore: 33
+ 
+{
+ 
+}
+ 
+Litten: highest move score: 22
+Litten: final switching score: 46
+Current Pokemon is worth saving for later, will switch
+ 
+Scoring for Litten switching to: Litten
+Offensive: 6
+Defensive: -544
+Roles: -514
+Weather: -514
+Moves: -489
+Abilities: -489
+Items: -489
+Fields: -464
+Score: -464
+ 
+Scoring for Litten switching to: Sandile
+Score: -10000000
+ 
+Scoring for Litten switching to: Dratini
+Offensive: 23
+Defensive: 48
+Roles: 48
+Weather: 48
+Moves: 108
+Abilities: 108
+Items: 108
+Fields: 108
+Score: 108
+ 
+Scoring for Litten switching to: Swablu
+Offensive: 5
+Defensive: -520
+Roles: -520
+Weather: -520
+Moves: -490
+Abilities: -490
+Items: -490
+Fields: -490
+Score: -490
+ 
+Scoring for Litten switching to: Absol
+Offensive: 27
+Defensive: 52
+Roles: 52
+Weather: 52
+Moves: 72
+Abilities: 72
+Items: 72
+Fields: 72
+Score: 50
+ 
+Backing out of switching.
+[The foe Zadkiel: Fire Fang=22, Lick=21, Work Up=0, Fake Out=0]
+[Prefer Fire Fang]
+[The foe Zadkiel lost 24 HP, now has 0 HP]
+[Wheel gained 2 HP, now has 30 HP]
+Scoring for Litten switching to: Litten
+Score: -10000000
+Not switching to self.
+Scoring for Litten switching to: Sandile
+Score: -10000000
+ 
+Scoring for Litten switching to: Dratini
+Offensive: 17
+Defensive: 167
+Roles: 167
+Weather: 167
+Moves: 227
+Abilities: 227
+Items: 227
+Fields: 227
+Score: 227
+ 
+Scoring for Litten switching to: Swablu
+Offensive: 3
+Defensive: 3
+Roles: 3
+Weather: 3
+Moves: 33
+Abilities: 33
+Items: 33
+Fields: 33
+Score: 33
+ 
+Scoring for Litten switching to: Absol
+Offensive: 27
+Defensive: 177
+Roles: 177
+Weather: 177
+Moves: 197
+Abilities: 197
+Items: 197
+Fields: 197
+Score: 197
+ 
+***Round 9***
+Player Pokemon Wheel is faster than Uriel.
+Thunder Wave: initial score: 30
+Thunder Wave: final score: 47
+ 
+Dragon Breath: initial score: 76
+Dragon Breath: final score: 76
+ 
+Aqua Jet: initial score: 46
+Priority Check Begin
+Player Pokemon is faster.
+Expected damage taken: 15
+Priority Check End
+Smack Down: final score: 27
+ 
+Haze: initial score: 20
+Haze: final score: 22
+ 
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (0)
+Initial switchscore building: Healing (0)
+Initial switchscore building: fsteak (0)
+Initial switchscore building: Specific Switches (0)
+Initial switchscore building: worthsaving not activated
+Initial switchscore building: Typing (0)
+Dratini: initial switchscore: 0
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+Dratini: initial noswitchscore: 166
+ 
+{
+ 
+}
+ 
+Dratini: highest move score: 75
+Dratini: final switching score: -166
+75 > -166, will not switch
+ 
+[The foe Uriel: Thunder Wave=47, Dragon Breath=75, Aqua Jet=27, Haze=22]
+[Prefer Dragon Breath]
+[The foe Uriel lost 15 HP, now has 23 HP]
+[Wheel lost 23 HP, now has 7 HP]
+[Wheel gained 2 HP, now has 9 HP]
+[The foe Uriel gained 2 HP, now has 25 HP]
+***Round 10***
+Player Pokemon Wheel is faster than Uriel.
+Thunder Wave: initial score: 30
+Thunder Wave: final score: 9
+ 
+Dragon Breath: initial score: 109
+Dragon Breath: final score: 109
+ 
+Aqua Jet: initial score: 110
+Priority Check Begin
+Player Pokemon is faster.
+Expected damage taken: 15
+Priority Check End
+Smack Down: final score: 132
+ 
+Haze: initial score: 20
+Haze: final score: 4
+ 
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (0)
+Initial switchscore building: Healing (0)
+Initial switchscore building: fsteak (0)
+Initial switchscore building: Specific Switches (0)
+Initial switchscore building: worthsaving not activated
+Initial switchscore building: Typing (0)
+Dratini: initial switchscore: 0
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+Dratini: initial noswitchscore: 150
+ 
+{
+ 
+}
+ 
+Dratini: highest move score: 132
+Dratini: final switching score: -150
+132 > -150, will not switch
+ 
+[The foe Uriel: Thunder Wave=9, Dragon Breath=108, Aqua Jet=132, Haze=4]
+[Prefer Aqua Jet]
+[Wheel lost 9 HP, now has 0 HP]
+[The foe Uriel gained 2 HP, now has 27 HP]
+***Round 11***
+Player Pokemon Lion is faster than Uriel.
+Thunder Wave: initial score: 30
+Thunder Wave: final score: 59
+ 
+Dragon Breath: initial score: 43
+Dragon Breath: final score: 43
+ 
+Aqua Jet: initial score: 26
+Priority Check Begin
+Player Pokemon is faster.
+Expected damage taken: 13
+Priority Check End
+Headbutt: final score: 26
+ 
+Haze: initial score: 20
+Haze: final score: 0
+ 
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (0)
+Initial switchscore building: Healing (0)
+Initial switchscore building: fsteak (0)
+Initial switchscore building: Specific Switches (0)
+Initial switchscore building: worthsaving not activated
+Initial switchscore building: Typing (0)
+Dratini: initial switchscore: -20
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+Dratini: initial noswitchscore: 133
+ 
+{
+ 
+}
+ 
+Dratini: highest move score: 59
+Dratini: final switching score: -153
+59 > -153, will not switch
+ 
+[The foe Uriel: Thunder Wave=59, Dragon Breath=42, Aqua Jet=26, Haze=0]
+[Prefer Thunder Wave]
+[The foe Uriel lost 13 HP, now has 14 HP]
+[The foe Uriel gained 2 HP, now has 16 HP]
+[Lion lost 2 HP, now has 39 HP]
+***Round 12***
+AI Pokemon Uriel is faster than Lion.
+Thunder Wave: initial score: 30
+Thunder Wave: final score: 0
+ 
+Dragon Breath: initial score: 46
+Dragon Breath: final score: 50
+ 
+Aqua Jet: initial score: 20
+Priority Check Begin
+AI Pokemon is faster.
+Expected damage taken: 13
+Priority Check End
+Headbutt: final score: 20
+ 
+Haze: initial score: 20
+Haze: final score: 22
+ 
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (0)
+Initial switchscore building: Healing (0)
+Initial switchscore building: fsteak (0)
+Initial switchscore building: Specific Switches (0)
+Initial switchscore building: worthsaving not activated
+Initial switchscore building: Typing (0)
+Dratini: initial switchscore: -20
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+Dratini: initial noswitchscore: 116
+ 
+{
+ 
+}
+ 
+Dratini: highest move score: 49
+Dratini: final switching score: -136
+49 > -136, will not switch
+ 
+[The foe Uriel: Thunder Wave=0, Dragon Breath=49, Aqua Jet=20, Haze=22]
+[Prefer Dragon Breath]
+[Lion lost 18 HP, now has 21 HP]
+[The foe Uriel lost 13 HP, now has 3 HP]
+[The foe Uriel gained 2 HP, now has 5 HP]
+[Lion gained 2 HP, now has 23 HP]
+[Lion lost 2 HP, now has 21 HP]
+***Round 13***
+AI Pokemon Uriel is faster than Lion.
+Thunder Wave: initial score: 30
+Thunder Wave: final score: 0
+ 
+Dragon Breath: initial score: 85
+Dragon Breath: final score: 93
+ 
+Aqua Jet: initial score: 38
+Priority Check Begin
+AI Pokemon is faster.
+Expected damage taken: 13
+Priority Check End
+Headbutt: final score: 58
+ 
+Haze: initial score: 20
+Haze: final score: 22
+ 
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (-100)
+Initial switchscore building: Healing (-100)
+Initial switchscore building: fsteak (-100)
+Initial switchscore building: Specific Switches (-100)
+Initial switchscore building: AI Safe Switches (80)
+Initial switchscore building: worthsaving not activated
+Initial switchscore building: Typing (-100)
+Dratini: initial switchscore: -120
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+Dratini: initial noswitchscore: 230
+ 
+{
+ 
+}
+ 
+Dratini: highest move score: 92
+Dratini: final switching score: -350
+92 > -350, will not switch
+ 
+[The foe Uriel: Thunder Wave=0, Dragon Breath=92, Aqua Jet=58, Haze=22]
+[Prefer Dragon Breath]
+[Lion lost 18 HP, now has 3 HP]
+[The foe Uriel lost 5 HP, now has 0 HP]
+[Lion gained 2 HP, now has 7 HP]
+[Lion lost 2 HP, now has 5 HP]
+Scoring for Dratini switching to: Litten
+Score: -10000000
+ 
+Scoring for Dratini switching to: Sandile
+Score: -10000000
+ 
+Scoring for Dratini switching to: Dratini
+Score: -10000000
+Not switching to self.
+Scoring for Dratini switching to: Swablu
+Offensive: 36
+Defensive: 111
+Roles: 191
+Weather: 191
+Moves: 191
+Abilities: 191
+Items: 191
+Fields: 191
+Score: 191
+ 
+Scoring for Dratini switching to: Absol
+Offensive: 40
+Defensive: 190
+Roles: 250
+Weather: 250
+Moves: 270
+Abilities: 270
+Items: 270
+Fields: 270
+Score: 270
+ 
+***Round 14***
+AI Pokemon Netzach is faster than Lion.
+Snarl: initial score: 110
+Snarl: final score: 110
+ 
+Icy Wind: initial score: 110
+Icy Wind: final score: 110
+ 
+Water Pulse: initial score: 110
+Water Pulse: final score: 110
+ 
+Draining Kiss: initial score: 110
+Draining Kiss: final score: 121
+ 
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (0)
+Initial switchscore building: Healing (0)
+Initial switchscore building: fsteak (0)
+Initial switchscore building: Specific Switches (0)
+Initial switchscore building: worthsaving not activated
+Initial switchscore building: Typing (0)
+Absol: initial switchscore: 0
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+Absol: initial noswitchscore: 196
+ 
+{
+ 
+}
+ 
+Absol: highest move score: 121
+Absol: final switching score: -196
+121 > -196, will not switch
+ 
+[The foe Netzach: Snarl=110, Icy Wind=110, Water Pulse=110, Draining Kiss=121]
+[Prefer Draining Kiss]
+[Lion lost 5 HP, now has 0 HP]
+***Round 15***
+AI Pokemon Netzach is faster than Fire.
+Snarl: initial score: 102
+Snarl: final score: 102
+ 
+Icy Wind: initial score: 46
+Icy Wind: final score: 46
+ 
+Water Pulse: initial score: 34
+Water Pulse: final score: 35
+ 
+Draining Kiss: initial score: 29
+Draining Kiss: final score: 29
+ 
+Initial switchscore building: Statuses (0)
+Initial switchscore building: Stat Stages (0)
+Initial switchscore building: Healing (0)
+Initial switchscore building: fsteak (0)
+Initial switchscore building: Specific Switches (0)
+Initial switchscore building: worthsaving not activated
+Initial switchscore building: Typing (0)
+Absol: initial switchscore: -40
+ 
+Initial noswitchscore building: Stat Stages (0)
+Initial noswitchscore building: Entry Hazards (0)
+Initial noswitchscore building: Better Switching Options (0)
+Initial noswitchscore building: Second Wind Situations (0)
+Absol: initial noswitchscore: 50
+ 
+{
+ 
+}
+ 
+Absol: highest move score: 102
+Absol: final switching score: -90
+102 > -90, will not switch
+ 
+[The foe Netzach: Snarl=102, Icy Wind=46, Water Pulse=35, Draining Kiss=29]
+[Prefer Snarl]
+[Fire lost 41 HP, now has 0 HP]

@@ -446,6 +446,33 @@ class PokemonLoad
     $game_system.instance_variable_set(:@azure_tribute_item_ids,true)
   end
 
+  #pk code
+  def pbMigratePartnerEVs
+    partner=$PokemonGlobal.partner
+    return if !partner
+    trainerid,name,_,party=partner
+    return if !party || party.empty?
+    candidates=AzureTrainerDataCache.data.filter_map do |trainer|
+      next if trainer[0]!=trainerid || trainer[3].length!=party.length
+      next if pbGetMessageFromHash(MessageTypes::TrainerNames,trainer[1])!=name
+      records=trainer[3].zip(party)
+      next if records.any? { |poke,pokemon|
+        poke.values_at(TSPECIES,TPLEVEL,TPFORM)!=[pokemon.species,pokemon.level,pokemon.form]
+      }
+      spreads=records.map { |poke,pokemon| pbTrainerEVSpread(poke,pokemon) }
+      matches=spreads.zip(party).all? do |evs,pokemon|
+        pokemon.ev==evs || pokemon.ev==[evs[0],[evs[1],evs[4]].max,*evs.drop(2)]
+      end
+      spreads if matches
+    end.uniq
+    return if candidates.length!=1
+    candidates.first.zip(party).each do |evs,pokemon|
+      next if pokemon.ev==evs
+      pokemon.ev=evs
+      pokemon.calcStats
+    end
+  end
+
   def pbStartDeleteScreen
     savefile=RTP.getSaveFileName("Game.rxdata")
     @scene.pbStartDeleteScene
@@ -626,6 +653,7 @@ class PokemonLoad
           $achievements        = Marshal.load(f)
           pbMigrateTributeItems
           pbMigrateDeoxysSpeciesID
+          pbMigratePartnerEVs #pk code
           pbEnsureDexSlots
           Habitats.update
           #$initialquestion        = Marshal.load(f)
