@@ -355,6 +355,14 @@ BOSSINFOHASH[:HEROICTANGROWTH_NORMAL] = Marshal.load(Marshal.dump(BOSSINFOHASH[:
     end
 end
 
+#pk code
+BOSSINFOHASH[:MOTHEREXPLOUD_NORMAL] = Marshal.load(Marshal.dump(BOSSINFOHASH[:MOTHEREXPLOUD])).tap do |boss|
+    boss[:moninfo].merge!(
+        :level => 18,
+        :item => 0
+    )
+end
+
 BOSSINFOHASH[:TOTEMLICKITUNG_NORMAL] = Marshal.load(Marshal.dump(BOSSINFOHASH[:TOTEMLICKITUNG])).tap do |boss|
     boss[:moninfo].merge!(
         :item => PBItems::SITRUSBERRY,

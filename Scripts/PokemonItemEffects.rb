@@ -4009,7 +4009,7 @@ ItemHandlers::BattleUseOnPokemon.add(:MAXELIXIR,proc{|item,pokemon,battler,scene
 ItemHandlers::BattleUseOnPokemon.add(:REDFLUTE,proc{|item,pokemon,battler,scene|
    if battler && battler.effects[PBEffects::Attract]>=0
      battler.pbCureAttract
-     scene.pbDisplay(_INTL("{1} got over its infatuation.",pokemon.name))
+     scene.pbDisplay(_INTL("{1} is no longer enchanted!",pokemon.name)) #pk code
      next true # :consumed:
    else
      scene.pbDisplay(_INTL("It won't have any effect."))

@@ -133,9 +133,9 @@ class PokeBattle_Battler
     return true
   end
 
-  def pbSleep
+  def pbSleep(turns=1) #pk code
     self.status=PBStatuses::SLEEP
-    self.statusCount=3
+    self.statusCount=turns+1 #pk code
     if $fefieldeffect==40
       if opposingAbilityHolder(:SHADOWTAG)
         self.statusCount=4
@@ -151,7 +151,7 @@ class PokeBattle_Battler
     if duration>0
       self.statusCount=duration
     else
-      self.statusCount=3
+      self.statusCount=2 #pk code
     end
     pbCancelMoves
     @battle.pbCommonAnimation("Sleep",self,nil)
@@ -509,7 +509,6 @@ end
   def pbFreeze
     self.status=PBStatuses::FROZEN
     self.statusCount=0
-    pbCancelMoves
     @battle.pbCommonAnimation("Frozen",self,nil)
   end
 
@@ -529,10 +528,10 @@ end
         @battle.pbDisplay(_INTL("{1} is hurt by its burn!",pbThis))
       when PBStatuses::PARALYSIS
         @battle.pbCommonAnimation("Paralysis",self,nil)
-        @battle.pbDisplay(_INTL("{1} is paralyzed!",pbThis)) 
+        @battle.pbDisplay(_INTL("{1} is hurt by its paralysis!",pbThis)) #pk code
       when PBStatuses::FROZEN
         @battle.pbCommonAnimation("Frozen",self,nil)
-        @battle.pbDisplay(_INTL("{1} is frozen solid!",pbThis))
+        @battle.pbDisplay(_INTL("{1} is hurt by the cold!",pbThis)) #pk code
     end
   end
 
@@ -602,7 +601,7 @@ end
 
   def pbConfuseSelf
     if @effects[PBEffects::Confusion]==0
-      @effects[PBEffects::Confusion]=2+@battle.pbRandom(4)
+      @effects[PBEffects::Confusion]=3 #pk code
       @battle.pbCommonAnimation("Confusion",self,nil)
       @battle.pbDisplay(_INTL("{1} became confused!",pbThis))
     end
@@ -629,7 +628,7 @@ end
       return false
     end
     if hasWorkingAbility(:OBLIVIOUS) && !(self.moldbroken) 
-      @battle.pbDisplay(_INTL("{1}'s {2} prevents obsession!",pbThis,
+      @battle.pbDisplay(_INTL("{1}'s {2} prevents enchantment!",pbThis, #pk code
          PBAbilities.getName(self.ability))) if showMessages
       return false
     end
@@ -647,7 +646,7 @@ end
     @effects[PBEffects::AttractTurns]=3
     @battle.pbCommonAnimation("Attract",self,nil)
     if reflected
-      @battle.pbDisplay(_INTL("{1}'s {2} infatuated {3}!",attacker.pbThis,
+      @battle.pbDisplay(_INTL("{1}'s {2} enchanted {3}!",attacker.pbThis, #pk code
         PBItems.getName(attacker.item),pbThis(true)))
       return
     end
@@ -664,7 +663,7 @@ end
   end
 
   def pbContinueAttract
-    @battle.pbDisplay(_INTL("{1} is immobilized by love!",pbThis)) 
+    @battle.pbDisplay(_INTL("{1} is enchanted!",pbThis)) #pk code
   end
 
 #===============================================================================

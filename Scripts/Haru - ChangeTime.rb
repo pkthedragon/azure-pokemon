@@ -4,7 +4,6 @@ class Scene_Pokegear
   #-----------------------------------------------------------------------------
   def main
     commands=[]
-    command_icons={}
 # OPTIONS - If you change these, you should also change update_command below.
     @cmdChangeTime=-1
     @cmdMap=-1
@@ -19,9 +18,19 @@ class Scene_Pokegear
     @cmdNotes=-1
     commands[@cmdChangeTime=commands.length]=_INTL("Change Time") if defined?($game_screen.aGetTime)
     commands[@cmdMap=commands.length]=_INTL("Map")
+    #pk code
+    if $Trainer.pokedex && $game_switches[1300]
+      commands[@cmdPokedex=commands.length]=_INTL("Pokédex")
+    end
+    if $game_switches[1437]
+      commands[@cmdMagnet=commands.length]=_INTL("PokéMagnet")
+    end
+    commands[@cmdEncyclopedia=commands.length]=_INTL("Encyclopedia") #pk code
+    commands[@cmdTutor=commands.length]=_INTL("Tutor.net") if $game_switches[1492]==true #pk code
+    commands[@cmdFieldManual=commands.length]=_INTL("Field Manual") #pk code
+    commands[@cmdJukebox=commands.length]=_INTL("Jukebox")
     commands[@cmdPhone=commands.length]=_INTL("Phone") if $PokemonGlobal.phoneNumbers &&
                                                           $PokemonGlobal.phoneNumbers.length>0
-    commands[@cmdJukebox=commands.length]=_INTL("Jukebox")
     if $game_switches[1176]
       commands[@cmdPulse=commands.length]=_INTL("Rift Dex")
     end
@@ -31,18 +40,7 @@ class Scene_Pokegear
     if $game_switches[1177]
       commands[@cmdNotes=commands.length]=_INTL("Field Notes")
     end
-    commands[@cmdFieldManual=commands.length]=_INTL("Field Manual") #pk code
-    commands[@cmdTutor=commands.length]=_INTL("Tutor.net") if $game_switches[1492]==true
-    #pk code
-    if $Trainer.pokedex && $game_switches[1300]
-      commands[@cmdPokedex=commands.length]=_INTL("Pokédex")
-      command_icons[@cmdPokedex]="Graphics/Icons/menuPokedex"
-    end
-    if $game_switches[1437]
-      commands[@cmdMagnet=commands.length]=_INTL("PokéMagnet")
-      command_icons[@cmdMagnet]=pbItemIconFile(PBItems::MAGNET)
-    end
-    run_menu(commands,command_icons)
+    run_menu(commands) #pk code
   end
   #-----------------------------------------------------------------------------
   # update the command window
@@ -124,6 +122,11 @@ class Scene_Pokegear
         scene=Scene_FieldEffectsManual.new
         screen=PokemonFieldEffectsManualScreen.new(scene)
         pbFadeOutIn(99999) { screen.pbStartScreen }
+      end
+      #pk code
+      if @menu_index==@cmdEncyclopedia
+        pbPlayDecisionSE()
+        pbFadeOutIn(99999) { pbEncyclopedia }
       end
      
       if @cmdRiftNotes>=0 && @menu_index==@cmdRiftNotes

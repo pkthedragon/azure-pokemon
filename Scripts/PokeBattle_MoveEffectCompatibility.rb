@@ -1602,7 +1602,7 @@ class PokeBattle_Move_27D < PokeBattle_Move
   def pbAdditionalEffect(attacker,opponent)
     return false if !opponent.pbCanParalyze?(false)
     opponent.pbParalyze(attacker)
-    @battle.pbDisplay(_INTL("{1} is paralyzed! It may be unable to move!",opponent.pbThis))
+    @battle.pbDisplay(_INTL("{1} was paralyzed!",opponent.pbThis)) #pk code
     return true
   end
 end

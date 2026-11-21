@@ -43,9 +43,9 @@ def pbShowBattleStats(pkmn)
   evasbl= " " if pkmn.stages[PBStats::EVASION]<0
   c=pkmn.pbCalcCrit()
   if c==0
-    crit=4
+    crit=0 #pk code
   elsif c==1
-    crit=25
+    crit=12.5 #pk code
   elsif c==2
     crit=50
   else 
@@ -164,7 +164,7 @@ def pbShowBattleStats(pkmn)
   report.push(_INTL("Disable: {1} turns",pkmn.effects[PBEffects::Disable])) if pkmn.effects[PBEffects::Disable]!=0
   report.push(_INTL("Encore: {1} turns",pkmn.effects[PBEffects::Encore])) if pkmn.effects[PBEffects::Encore]!=0
   report.push(_INTL("Taunt: {1} turns",pkmn.effects[PBEffects::Taunt])) if pkmn.effects[PBEffects::Taunt]!=0
-  report.push(_INTL("Infatuated with {1}",@battle.battlers[pkmn.effects[PBEffects::Attract]].name)) if pkmn.effects[PBEffects::Attract]>=0
+  report.push(_INTL("Enchanted by {1}",@battle.battlers[pkmn.effects[PBEffects::Attract]].name)) if pkmn.effects[PBEffects::Attract]>=0 #pk code
   report.push(_INTL("Trick Room: {1} turns",@battle.trickroom)) if @battle.trickroom!=0
   report.push(_INTL("Gravity: {1} turns",@battle.field.effects[PBEffects::Gravity])) if @battle.field.effects[PBEffects::Gravity]>0  
   report.push(_INTL("Tailwind: {1} turns",pkmn.pbOwnSide.effects[PBEffects::Tailwind])) if pkmn.pbOwnSide.effects[PBEffects::Tailwind]>0   

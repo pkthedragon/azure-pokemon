@@ -21733,3 +21733,13 @@ Absol: final switching score: -115
 [Prefer Draining Kiss]
 [Fox lost 4 HP, now has 0 HP]
 [The foe Netzach gained 3 HP, now has 19 HP]
+==============================
+Battle Start!
+Wild Battle
+==============================
+***Round 1***
+==============================
+Battle Start!
+Wild Battle
+==============================
+***Round 1***

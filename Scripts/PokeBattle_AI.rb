@@ -24745,6 +24745,8 @@ class PokeBattle_Battle
     if skill>=PBTrainerAI.mediumSkill
       if attacker.status==PBStatuses::BURN && move.pbIsPhysical?(type) && move.id!=PBMoves::FACADE && !(!attacker.abilitynulled && attacker.ability == PBAbilities::GUTS)
         damage=(damage*0.5).round
+      elsif attacker.status==PBStatuses::FROZEN && move.pbIsSpecial?(type) #pk code
+        damage=(damage*0.5).round
       end
     end
     # Make sure damage is at least 1

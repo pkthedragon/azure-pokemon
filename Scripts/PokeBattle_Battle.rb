@@ -1610,7 +1610,7 @@ class PokeBattle_Battle
           when 2
             if battler.pbCanParalyze?(false)
               battler.pbParalyze(battler)
-              pbDisplay(_INTL("{1} is paralyzed! It may be unable to move!",battler.pbThis))
+              pbDisplay(_INTL("{1} was paralyzed!",battler.pbThis)) #pk code
             end
           when 3
             if battler.pbCanPoison?(false)
@@ -3699,7 +3699,7 @@ class PokeBattle_Battle
   def pbRecallAndReplace(index,newpoke,batonpass=false)
     # Infatuated Pokemon take 1/6 HP damage when switching out
     if @battlers[index].effects[PBEffects::Attract]>=0 && !@battlers[index].isFainted?
-      pbDisplay(_INTL("{1} is hurt by leaving its love behind!",@battlers[index].pbThis))
+      pbDisplay(_INTL("{1} was hurt by the enchantment!",@battlers[index].pbThis)) #pk code
       @battlers[index].pbReduceHP((@battlers[index].totalhp/6).floor)
       if @battlers[index].isFainted?
         @battlers[index].pbFaint
@@ -6176,8 +6176,7 @@ def pbStartBattle(canlose=false)
           if !i.hasWorkingAbility(:RUNAWAY) && pbChoseMoveFunctionCode?(j.index,0x88) &&
              !j.effects[PBEffects::Pursuit] &&
              (@choices[j.index][3]==-1 || @choices[j.index][3]==i.index)
-            if j.status!=PBStatuses::SLEEP &&
-               j.status!=PBStatuses::FROZEN &&
+            if j.status!=PBStatuses::SLEEP && #pk code
                (!j.hasWorkingAbility(:TRUANT) || !j.effects[PBEffects::Truant])
               pursuit_choice=@choices[j.index].dup
               pursuit_choice[3]=i.index
@@ -8102,13 +8101,16 @@ def pbStartBattle(canlose=false)
         end
       end
       # Wounds - saps 1/12 HP each turn
-      if i.effects[PBEffects::Wounded]>0 && !i.hasWorkingAbility(:MAGICGUARD) && !(i.hasWorkingAbility(:WONDERGUARD) && $fefieldeffect == 44)
-        pbDisplay(_INTL("{1} is hurt by its wounds!",i.pbThis))
-        if i.effects[PBEffects::ShieldLife]>0
-          wounddamage=i.totalhp/12
-          pbShieldDamage(i,wounddamage)
-        else
-          i.pbReduceHP((i.totalhp/12).floor)
+      #pk code
+      if i.effects[PBEffects::Wounded]>0
+        if !i.hasWorkingAbility(:MAGICGUARD) && !(i.hasWorkingAbility(:WONDERGUARD) && $fefieldeffect == 44)
+          pbDisplay(_INTL("{1} is hurt by its wounds!",i.pbThis))
+          if i.effects[PBEffects::ShieldLife]>0
+            wounddamage=i.totalhp/12
+            pbShieldDamage(i,wounddamage)
+          else
+            i.pbReduceHP((i.totalhp/12).floor)
+          end
         end
         i.effects[PBEffects::Wounded]-=1
         pbDisplay(_INTL("{1}'s wounds healed!",i.pbThis)) if i.effects[PBEffects::Wounded]<=0
@@ -8322,7 +8324,7 @@ def pbStartBattle(canlose=false)
       i.effects[PBEffects::AttractTurns]-=1
       if i.effects[PBEffects::Attract]>=0 && i.effects[PBEffects::AttractTurns]==0
         i.pbCureAttract
-        pbDisplay(_INTL("{1}'s infatuation wore off!",i.pbThis))
+        pbDisplay(_INTL("{1} is no longer enchanted!",i.pbThis)) #pk code
       end
     end
     # Taunt
@@ -9366,7 +9368,7 @@ def pbStartBattle(canlose=false)
       end
       # Drowsy Orb
       if i.hasWorkingItem(:DROWSYORB) && i.effects[PBEffects::Yawn]==0 && i.pbCanSleep?(false,true)
-        i.effects[PBEffects::Yawn]=2
+        i.effects[PBEffects::Yawn]=1 #pk code
         pbDisplay(_INTL("{1} became drowsy because of its {2}!",i.pbThis,PBItems.getName(i.item)))
       end
       # Pressure Orb

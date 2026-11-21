@@ -664,7 +664,7 @@ class PokeBattle_ZMoves < PokeBattle_Move
     if @id == PBMoves::STOKEDSPARKSURFER
       if opponent.pbCanParalyze?(false)
         opponent.pbParalyze(attacker)
-        @battle.pbDisplay(_INTL("{1} is paralyzed! It may be unable to move!",opponent.pbThis))
+        @battle.pbDisplay(_INTL("{1} was paralyzed!",opponent.pbThis)) #pk code
       end
       if $fefieldeffect!=1 && $fefieldeffect!=35
         if $febackup>0 && $febackup<51 && @battle.field.effects[PBEffects::Splintered]==0
@@ -913,7 +913,7 @@ class PokeBattle_ZMoves < PokeBattle_Move
           when 2
             if opponent.pbCanParalyze?(false)
               opponent.pbParalyze(attacker)
-              @battle.pbDisplay(_INTL("{1} is paralyzed! It may be unable to move!",opponent.pbThis))
+              @battle.pbDisplay(_INTL("{1} was paralyzed!",opponent.pbThis)) #pk code
             end
           when 3
             if opponent.pbCanPoison?(false)
@@ -1227,7 +1227,7 @@ class PokeBattle_ZMoves < PokeBattle_Move
       end
     elsif @id == PBMoves::SHATTEREDPSYCHE && $fefieldeffect==37
       if opponent.pbCanConfuse?(false)
-        opponent.effects[PBEffects::Confusion]=2+@battle.pbRandom(4)
+        opponent.effects[PBEffects::Confusion]=3 #pk code
         @battle.pbCommonAnimation("Confusion",opponent,nil)
         @battle.pbDisplay(_INTL("The field got too weird for {1}!",opponent.pbThis(true)))
       end
