@@ -286,6 +286,7 @@ module PokeBattle_BattleCommon
           pokemon.ot=self.pbPlayer.name
           pokemon.trainerID=self.pbPlayer.id
         end
+        pbRestoreEasyOpponentStats(pokemon) if @easyOpponentStats #pk code
         BallHandlers.onCatch(ball,self,pokemon)
         pokemon.ballused=pbGetBallType(ball)
         pokemon.pbRecordFirstMoves
@@ -3657,7 +3658,7 @@ class PokeBattle_Battle
     end
 
     # Bruce's Normal trainer boss uses its sheet entry typing on each sendout.
-    if @opponent && pbIsOpposing?(index) && $game_variables[:Difficulty_Mode]==0 &&
+    if @opponent && pbIsOpposing?(index) && #pk code
        pokemon.bossId==:TOXICROAKBOSS_NORMAL
       boss=$bosscache[pokemon.bossId]
       pbShieldEffects(@battlers[index],boss.onEntryEffects,true) if boss && boss.onEntryEffects
@@ -5460,7 +5461,29 @@ end
 # Battle core.
 ################################################################################
 
-def pbStartBattle(canlose=false)
+  #pk code
+  def pbApplyEasyOpponentStats(pokemon)
+    return if !@easyOpponentStats || @easyOpponentStats.key?(pokemon)
+    @easyOpponentStats[pokemon]=[pokemon.iv,pokemon.ev]
+    pokemon.iv=Array.new(6,0)
+    pokemon.ev=Array.new(6,0)
+    pokemon.calcStats
+  end
+
+  #pk code
+  def pbRestoreEasyOpponentStats(pokemon)
+    values=@easyOpponentStats.delete(pokemon)
+    return if !values
+    pokemon.iv,pokemon.ev=values
+    pokemon.calcStats
+  end
+
+  def pbStartBattle(canlose=false)
+    #pk code
+    if pbEasyOpponentStats?
+      @easyOpponentStats={}.compare_by_identity
+      @party2.each { |pokemon| pbApplyEasyOpponentStats(pokemon) if pokemon }
+    end
     begin
       pbStartBattleCore(canlose)
     rescue BattleAbortedException
@@ -5468,6 +5491,16 @@ def pbStartBattle(canlose=false)
       @scene.pbEndBattle(@decision)
     end
     return @decision
+  ensure #pk code
+    if @easyOpponentStats
+      @easyOpponentStats.keys.each { |pokemon| pbRestoreEasyOpponentStats(pokemon) }
+      @easyOpponentStats=nil
+    end
+  end
+
+  #pk code
+  def pbEasyOpponentStats?
+    return $game_variables[:Difficulty_Mode]==1 && !isOnline?
   end
 
   def pbStartBattleCore(canlose)
@@ -5969,7 +6002,7 @@ def pbStartBattle(canlose=false)
                 commandDone=true
               end
             elsif cmd==1 # Bag
-              if (!@internalbattle || $game_variables[646]==65 && $game_variables[200]!=1)
+              if !@internalbattle || $game_variables[646]==65 #pk code
                 if pbOwnedByPlayer?(i)
                   pbDisplay(_INTL("Items can't be used here."))
                 end

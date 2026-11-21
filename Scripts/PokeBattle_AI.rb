@@ -33,6 +33,121 @@ module AzureAIStatQueryContext
 end
 PokeBattle_Battler.prepend(AzureAIStatQueryContext)
 
+#pk code
+module AzureEasyAIKnowledge
+  def pbAIUsesObservedKnowledge?
+    return $game_variables && $game_variables[:Difficulty_Mode]==1 && !isOnline?
+  end
+
+  def pbAIRememberOpponent(battler)
+    return if !pbAIUsesObservedKnowledge? || !battler.pokemon || pbIsOpposing?(battler.index)
+    @aiObservedMoves ||= {}
+    known=@aiObservedMoves[battler.pokemon] ||= []
+    known.concat(battler.movesUsed || []).uniq!
+  end
+
+  def pbAIWithObservedOpponents(index)
+    return yield if @aiObservedOpponents || !pbAIUsesObservedKnowledge? || !pbIsOpposing?(index)
+    @aiObservedMoves ||= {}
+    @battlers.each { |battler| pbAIRememberOpponent(battler) }
+    @aiObservedOpponents={moves: {}, parties: {}}
+    begin
+      return yield
+    ensure
+      @aiObservedOpponents=nil
+    end
+  end
+
+  def pbAIHideOpponent?(index)
+    return @aiObservedOpponents && !pbIsOpposing?(index)
+  end
+
+  def pbAIObservedMoves(battler,moves)
+    return moves if !pbAIHideOpponent?(battler.index) || !battler.pokemon
+    return @aiObservedOpponents[:moves][battler] ||= begin
+      known=@aiObservedMoves.fetch(battler.pokemon,[])
+      blank=PokeBattle_Move.pbFromPBMove(self,PBMove.new(0),battler)
+      moves.map { |move| move && known.include?(move.id) ? move : blank }
+    end
+  end
+
+  def pbParty(index)
+    party=super
+    return party if !pbAIHideOpponent?(index)
+    return @aiObservedOpponents[:parties][party.object_id] ||= party.map do |pokemon|
+      next if !pokemon || !@aiObservedMoves.has_key?(pokemon)
+      known=@aiObservedMoves[pokemon]
+      view=pokemon.clone
+      view.item=0
+      view.moves=pokemon.moves.map { |move| move && known.include?(move.id) ? move : PBMove.new(0) }
+      view
+    end
+  end
+
+  def pbCanChooseMove?(index,*args)
+    return super if !@aiObservedOpponents || !pbIsOpposing?(index)
+    observation=@aiObservedOpponents
+    @aiObservedOpponents=nil
+    begin
+      return super
+    ensure
+      @aiObservedOpponents=observation
+    end
+  end
+
+  def pbDefaultChooseEnemyCommand(index)
+    pbAIWithObservedOpponents(index) { super }
+  end
+
+  def pbAIComputeCommandPlan(index)
+    pbAIWithObservedOpponents(index) { super }
+  end
+
+  def pbAICoordinatePair(left,right)
+    pbAIWithObservedOpponents(left) { super }
+  end
+
+  def pbEnemyShouldWithdrawEx?(index,alwaysSwitch)
+    pbAIWithObservedOpponents(index) { super }
+  end
+end
+PokeBattle_Battle.prepend(AzureEasyAIKnowledge)
+
+#pk code
+module AzureEasyAIBattlerKnowledge
+  def pbInitPokemon(*args)
+    @battle.pbAIRememberOpponent(self) if @battle.battlers && @battle.battlers[@index].equal?(self)
+    super
+  end
+
+  def moves
+    return @battle.pbAIObservedMoves(self,super)
+  end
+
+  def pbHasMove?(id)
+    return super if !@battle.pbAIHideOpponent?(@index)
+    id=getID(PBMoves,id) if id.is_a?(String) || id.is_a?(Symbol)
+    id=PBMove.current_id(id)
+    return !!id && id>0 && moves.any? { |move| move && move.id==id }
+  end
+
+  def pbHasMoveFunction?(code)
+    return super if !@battle.pbAIHideOpponent?(@index)
+    return !!code && moves.any? { |move| move && move.id>0 && move.function==code }
+  end
+
+  def item
+    return 0 if @battle.pbAIHideOpponent?(@index)
+    return super
+  end
+
+  def hasWorkingItem(*args)
+    return false if @battle.pbAIHideOpponent?(@index)
+    return super
+  end
+end
+PokeBattle_Battler.prepend(AzureEasyAIBattlerKnowledge)
+
 class PokeBattle_Battle
   attr_accessor :scores
   attr_accessor :targets
@@ -31431,7 +31546,7 @@ def pbShouldSwitch?(index,hardswitch=false)
       end
     end
   end
-  if skill>=PBTrainerAI.bestSkill && ($game_variables[200]!=1)
+  if skill>=PBTrainerAI.bestSkill #pk code
     if !@doublebattle
       # oh hello there
       # if you're seeing this, then you're probably looking to understand what all this does.

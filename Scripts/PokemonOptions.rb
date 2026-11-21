@@ -488,7 +488,7 @@ class PokemonOptionScene
        #---------------------------------------------------------------------------
        # Gameplay / Accessibility
        #---------------------------------------------------------------------------
-       EnumOption.new(_INTL("Difficulty"),[_INTL("Easy"),_INTL("Normal"),_INTL("Intense")],
+       EnumOption.new(_INTL("Difficulty"),[_INTL("Casual"),_INTL("Normal"),_INTL("Intense")], #pk code
           proc { [1,0,2][$PokemonSystem.difficulty] },
           proc {|value| $PokemonSystem.difficulty = [1,0,2][value] }
        ),

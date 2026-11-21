@@ -135,12 +135,9 @@ Events.onWildPokemonCreate+=proc {|sender,e|
         $game_switches[:No_Catch]=true
         $game_switches[:Boss_Battle]=true
         pokemon.isbossmon=true
-        if $game_variables[:Difficulty_Mode] == 0
+        if [0,1].include?($game_variables[:Difficulty_Mode]) #pk code
           pokemon.level=35
           $game_variables[704]=3
-        elsif $game_variables[:Difficulty_Mode] == 1
-          pokemon.level=32
-          $game_variables[704]=2
         elsif $game_variables[:Difficulty_Mode] == 2
           pokemon.level=38 
           $game_variables[704]=3
