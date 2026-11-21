@@ -183,8 +183,11 @@ class Scene_FieldEffectsManual_Info
     @sprites["info"]=info
     info.viewport=@viewport
     info.windowskin=nil
-    text=Messages.utf8Text(shadowc3tag(*Field_Note_Header_Colors)+pbGenerateFieldInfoText)
     width=info.width-info.borderX-SpriteWindow_Base::TEXTPADDING
+    text=fmtescape(Messages.utf8Text(pbGenerateFieldInfoText).gsub("\t","  "))
+    text.sub!(/\A(\d+\.[^\n]+)/,'<fs=20>\1</fs>')
+    text.gsub!(/^(\([^\n]+\): *)$/,'<c3=CFDEF4,000000>\1</c3>')
+    text=Messages.utf8Text(shadowc3tag(*Field_Note_Header_Colors)+text)
     chars=getFormattedText(info.contents,0,0,width,-1,text,32)
     info.contents=drawBitmapBuffer(chars)
     @visible_height=info.height-info.borderY
@@ -228,109 +231,7 @@ class Scene_FieldEffectsManual_Info
 
   #pk code
   def pbGenerateFieldInfoText
-    return "No data available." if !@data
-
-    title="#{pbFieldEffectID(@field_id)}. #{@data[:name]} [#{@data[:abbr]}]"
-    text="<c3=F8F8F8,000000><fs=25>#--- #{title} ---#</fs></c3>\n\n"
-    text << "<c3=FFBD70,000000>\"#{@data[:message]}\"</c3>\n\n"
-
-    overlay=@data[:overlayEffects]
-    if overlay
-      pbFieldManualSection(text,"(Overlay):",overlay[:effects],"CFDEF4",overlay[:terrain])
-    end
-
-    pbFieldManualSection(text,"(The following moves are affected by this field.):",
-                         pbFieldManualMoves,"A9E7A1")
-    pbFieldManualSection(text,"(The following abilities are affected by this field):",
-                         @data[:abilityEffects],"C7E6A6")
-    pbFieldManualSection(text,"(The following items are affected by this field):",
-                         @data[:itemEffects],"B6E9D5")
-
-    pbFieldManualSection(text,"(Other effects):",@data[:passiveEffects],"CFDEF4")
-
-    if created=@data[:createdBy]
-      effects=[]
-      effects << "These moves can create or advance this field: #{created[:moves].join(', ')}" if created[:moves]
-      effects << "These abilities can create this field: #{created[:abilities].join(', ')}" if created[:abilities]
-      effects << "The field lasts for #{created[:duration]} turns" if created[:duration]
-      effects << created[:note] if created[:note]
-      pbFieldManualSection(text,"(How this field is created):",effects,"CFDEF4")
-    end
-
-    if damage=@data[:fieldDamage]
-      effects=[]
-      effects << "Damage: #{damage[:amount]}" if damage[:amount]
-      effects << "Timing: #{damage[:timing]}" if damage[:timing]
-      effects << "Affects: #{damage[:affects]}" if damage[:affects]
-      effects << "These abilities give immunity: #{damage[:immuneAbilities].join(', ')}" if damage[:immuneAbilities]
-      effects << "These conditions give immunity: #{damage[:immuneConditions].join(', ')}" if damage[:immuneConditions]
-      effects << "These abilities double the damage: #{damage[:doubledAbilities].join(', ')}" if damage[:doubledAbilities]
-      pbFieldManualSection(text,"(Field damage):",effects,"FFADAD")
-    end
-
-    if changes=@data[:fieldTransformations]
-      effects=[]
-      if changes[:terminates] && !changes[:terminates].empty?
-        effects << "These effects end the field: #{changes[:terminates].join(', ')}"
-      end
-      (changes[:transformsTo] || {}).each do |field,causes|
-        effects << "These effects change the field to #{field}: #{causes.join(', ')}"
-      end
-      effects.concat(changes[:disables]) if changes[:disables]
-      effects << changes[:note] if changes[:note]
-      pbFieldManualSection(text,"(Field transformations):",effects,"F6C1AA")
-    end
-
-    return text.rstrip
-  end
-
-  #pk code
-  def pbFieldManualMoves
-    moves=@data[:moveEffects]
-    return [] unless moves
-
-    effects=[]
-    [:powerBoost,:powerDecrease].each do |key|
-      (moves[key] || {}).each do |factor,list|
-        multiplier=factor.to_s.gsub(/\d+(?:\.\d+)?/) { |value| value.sub(/\.0\z/,"")+"x" }
-        effects << "These moves deal #{multiplier} damage: #{list.join(', ')}"
-      end
-    end
-    (moves[:additionalDamageType] || {}).each do |type,list|
-      effects << "These moves gain additional #{type}-type damage: #{list.join(', ')}"
-    end
-    (moves[:accuracyChange] || {}).each do |accuracy,list|
-      explained,affected=list.partition { |move| move.match?(/\bskips? the accuracy check\z/) }
-      effects.concat(explained)
-      effects << "These moves have #{accuracy}% accuracy: #{affected.join(', ')}" unless affected.empty?
-    end
-
-    failed=moves[:fail] || []
-    if failed.length==1
-      effects << "#{failed.first} fails"
-    elsif !failed.empty?
-      effects << "These moves fail: #{failed.join(', ')}"
-    end
-    effects.concat(moves[:statChanges] || [])
-    (moves[:durationChange] || {}).each do |move,duration|
-      duration="#{duration} turns" if duration.is_a?(Numeric)
-      verb=move.include?(" and ") ? "last" : "lasts"
-      effects << "#{move} #{verb} for #{duration}"
-    end
-    effects.concat(moves[:special]) if moves[:special]
-    return effects
-  end
-
-  #pk code
-  def pbFieldManualSection(text,title,effects,color,subheading=nil)
-    return if !effects || effects.empty?
-    text << "<c3=#{color},000000>#{title}</c3>\n\n"
-    text << "#{subheading}:\n\n" if subheading
-    effects.each do |effect|
-      text << "* #{effect}"
-      text << "." unless effect.end_with?(".","!","?")
-      text << "\n"
-    end
-    text << "\n"
+    return @data[:manualText] if @data && @data[:manualText]
+    return _INTL("No data available.")
   end
 end
