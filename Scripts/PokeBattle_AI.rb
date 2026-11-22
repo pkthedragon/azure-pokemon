@@ -3298,7 +3298,7 @@ class PokeBattle_Battle
         end
         score*=miniscore
       end
-      if (opponent.level-5)>attacker.level
+      if move.basedamage==0 && (opponent.level-5)>attacker.level #pk code
         score*=0.6
         if (opponent.level-10)>attacker.level
           score*=0.2
@@ -3390,7 +3390,7 @@ class PokeBattle_Battle
         end
         score+=12*threats
       end
-      if (opponent.level-5)>attacker.level
+      if move.basedamage==0 && (opponent.level-5)>attacker.level #pk code
         score*=0.6
         if (opponent.level-10)>attacker.level
           score*=0.2
@@ -3530,6 +3530,7 @@ class PokeBattle_Battle
         end
         miniscore+=100
         miniscore/=100.0
+        miniscore=[miniscore,1.0].max #pk code
         if attacker.pbTooHigh?(PBStats::SPEED)
           miniscore=1
         end
@@ -3558,11 +3559,11 @@ class PokeBattle_Battle
           miniscore=1
         end
         score*=miniscore if !(!attacker.abilitynulled && attacker.ability == PBAbilities::SHEERFORCE) && !hasgreatmoves(initialscores,scoreindex,skill,true)
-      end
-      if (opponent.level-5)>attacker.level
-        score*=0.6
-        if (opponent.level-10)>attacker.level
-          score*=0.2
+        if (opponent.level-5)>attacker.level #pk code
+          score*=0.6
+          if (opponent.level-10)>attacker.level
+            score*=0.2
+          end
         end
       end
     when 0x20 # Charge Beam
@@ -3647,7 +3648,7 @@ class PokeBattle_Battle
         end
         score*=miniscore
       end
-      if (opponent.level-5)>attacker.level
+      if move.basedamage==0 && (opponent.level-5)>attacker.level #pk code
         score*=0.6
         if (opponent.level-10)>attacker.level
           score*=0.2
@@ -4915,7 +4916,7 @@ class PokeBattle_Battle
       if attacker.pbTooHigh?(PBStats::ATTACK) && attacker.pbTooHigh?(PBStats::DEFENSE) && attacker.pbTooHigh?(PBStats::SPATK) && attacker.pbTooHigh?(PBStats::SPDEF) && attacker.pbTooHigh?(PBStats::SPEED)
         miniscore=0
       end
-      if (opponent.level-5)>attacker.level
+      if move.basedamage==0 && (opponent.level-5)>attacker.level #pk code
         score*=0.6
         if (opponent.level-10)>attacker.level
           score*=0.2
@@ -5130,7 +5131,7 @@ class PokeBattle_Battle
         end
         score*=miniscore
       end
-      if (opponent.level-5)>attacker.level
+      if move.basedamage==0 && (opponent.level-5)>attacker.level #pk code
         score*=0.6
         if (opponent.level-10)>attacker.level
           score*=0.2
@@ -6530,7 +6531,11 @@ class PokeBattle_Battle
         score=0
       end
     when 0x44 # Rock Tomb / Bulldoze / Glaciate
-      if ((pbRoughStat(opponent,PBStats::SPEED,skill)<attacker.pbSpeed) ^ (@trickroom!=0)) || opponent.stages[PBStats::SPEED]>0 || !opponent.pbCanReduceStatStage?(PBStats::SPEED)
+      #pk code
+      target_faints=move.basedamage>0 && roughdamage>=100 &&
+        !move.pbBlockedBySubstitute?(attacker,opponent) && !pbAICanSurviveLethalHit?(opponent) &&
+        !opponent.effects[PBEffects::Disguise] && !opponent.effects[PBEffects::IceFace]
+      if target_faints || ((pbRoughStat(opponent,PBStats::SPEED,skill)<attacker.pbSpeed) ^ (@trickroom!=0)) || opponent.stages[PBStats::SPEED]>0 || !opponent.pbCanReduceStatStage?(PBStats::SPEED)
         if move.basedamage==0
           score=0
         end
@@ -19556,7 +19561,7 @@ class PokeBattle_Battle
         end
         score*=miniscore
       end
-      if (opponent.level-5)>attacker.level
+      if move.basedamage==0 && (opponent.level-5)>attacker.level #pk code
         score*=0.6
         if (opponent.level-10)>attacker.level
           score*=0.2
@@ -22113,7 +22118,7 @@ class PokeBattle_Battle
     return pbAICriticalDefenseValue(raw,staged,battler.stages[stat],skill,critrate,move,attacker)
   end
 
-  def pbRoughDamage(move,attacker,opponent,skill,basedamage,hardswitch=false)
+  def pbRoughDamage(move,attacker,opponent,skill,basedamage,hardswitch=false,reliable: false) #pk code
     if (opponent.real_species==0 || attacker.real_species==0)
       return 0
     end
@@ -23397,6 +23402,7 @@ class PokeBattle_Battle
     end
     # Setting up stat stuff.
     critrate = pbAICritRate(attacker,opponent,move)
+    critrate=0 if reliable && critrate<3 #pk code
     # Get base attack stat
     atk=pbRoughStat(attacker,PBStats::ATTACK,skill)
     atkstage=attacker.stages[PBStats::ATTACK]+6
@@ -23804,7 +23810,6 @@ class PokeBattle_Battle
     end
     # Get base defense stat
     defense_stat=PBStats::DEFENSE
-    critrate = pbAICritRate(attacker,opponent,move)
     defense=pbAICriticalDefenseStat(opponent,PBStats::DEFENSE,skill,critrate,move,attacker)
     applysandstorm=false
     if opponent.real_species==681 && opponent.form==1
@@ -25074,7 +25079,6 @@ class PokeBattle_Battle
     # "AI-specific calculations below"
     # Increased critical hit rates
     if skill>=PBTrainerAI.mediumSkill
-      critrate = pbAICritRate(attacker,opponent,move)
       if critrate>0
         probability=[0,0.125,0.5,1.0][critrate]
         multiplier=move.pbCriticalDamageMultiplier
@@ -28204,7 +28208,9 @@ class PokeBattle_Battle
         if (code == 16 || code == 17 || code == 20 || code==31 || (code==1 && move.id==(PBMoves::SWORDSDANCE)) || (code==4 && move.id==(PBMoves::NASTYPLOT)))
           boostedmon=attacker.clone
           boostedmon.stages=attacker.stages.dup
-          if !(attacker.pbTooHigh?(PBStats::SPEED))
+          if move.function==0x1F && move.basedamage>0 #pk code
+            boostedmon.stages[PBStats::SPEED] += 1
+          elsif !(attacker.pbTooHigh?(PBStats::SPEED))
             if (code==16 || code==17 || code==20 || code==31)
               if move.id==(PBMoves::ROCKPOLISH) || move.id==(PBMoves::DRAGONDANCE) || move.id==(PBMoves::QUIVERDANCE) || code==31
                 boostedmon.stages[PBStats::SPEED] += 1 if !($fefieldeffect==6 || ($fefieldeffect==32 && code==17)) && !(move.id==(PBMoves::ROCKPOLISH))
@@ -30035,6 +30041,46 @@ def pbAIDracoCandidate(index)
   end
 end
 
+#pk code
+def pbAIAttacksThisTurn?(move,user)
+  return move.basedamage>0 && move.function!=0x111 &&
+    !move.clone.pbTwoTurnAttack(user,true)
+end
+
+def pbAIReliableKnockoutSlots(attacker,slots)
+  return [] if !singleBattle? || pbAIOrdinaryWild?(attacker) || slots.empty?
+  skill=pbAISkill(attacker.index,$game_switches[290] ? PBTrainerAI.bestSkill : nil)
+  return [] if skill<PBTrainerAI.highSkill
+  opponent=pbAIPrimaryTarget(attacker)
+  return [] if !opponent || opponent.isFainted? || opponent.vanished ||
+    opponent.effects[PBEffects::ShieldLife]>0 || (opponent.isbossmon && opponent.shieldCount.to_i>0)
+  return [] if [PBEffects::Endure,PBEffects::MiracleGuard,PBEffects::DestinyBond,
+    PBEffects::Disguise,PBEffects::IceFace,PBEffects::Protect,PBEffects::KingsShield,
+    PBEffects::SpikyShield,PBEffects::BanefulBunker,PBEffects::Stormhold,
+    PBEffects::Obstruct,PBEffects::SilkTrap,PBEffects::BurningBulwark].any? { |effect| opponent.effects[effect] }
+  lethal_replies=nil
+  return slots.select do |slot|
+    move=attacker.moves[slot]
+    next false if @scores[slot]<=0 || !pbAIAttacksThisTurn?(move,attacker)
+    next false unless @targets[slot]==opponent.index ||
+      (@targets[slot]==-1 && [PBTargets::AllOpposing,PBTargets::AllNonUsers,PBTargets::RandomOpposing,
+        PBTargets::OppositeOpposing].include?(pbAIScoreTargetMode(attacker,move)))
+    next false if [0xE9,0xE1,0x115].include?(move.function) || PBStuff::BOOMMOVE.include?(move.id) ||
+      [PBMoves::SUCKERPUNCH,PBMoves::THUNDERCLAP,PBMoves::UPPERHAND].include?(move.id)
+    next false if pbAICanSurviveLethalHit?(opponent) && !move.pbIsMultiHit
+    next false if move.pbBlockedBySubstitute?(attacker,opponent) || pbRoughAccuracy(move,attacker,opponent,skill)<100
+    next false if pbRoughDamage(move,attacker,opponent,skill,move.basedamage,reliable: true)<
+      pbAIFasterRecoveryHP(move,attacker,opponent,skill)
+    lethal_replies ||= pbAISelectableMoves(opponent).select do |reply|
+      next false unless pbAIAttacksThisTurn?(reply,opponent)
+      next false if opponent.status==PBStatuses::SLEEP && opponent.statusCount>1 && !reply.pbCanUseWhileAsleep?
+      next false if !reply.pbIsMultiHit && pbAICanSurviveLethalHit?(attacker)
+      pbRoughDamage(reply,opponent,attacker,skill,reply.basedamage)>=attacker.hp
+    end
+    lethal_replies.all? { |reply| pbAIActsBefore?(attacker,opponent,skill,move,reply) }
+  end
+end
+
 def pbChooseMoves(index,z_base_slot=nil,preferred_slot=nil)
   attacker=@battlers[index]
   candidates=@myChoices.select do |slot|
@@ -30051,7 +30097,10 @@ def pbChooseMoves(index,z_base_slot=nil,preferred_slot=nil)
     PBDebug.log("[#{attacker.pbThis}: #{details.join(', ')}]")
   end
 
-  draco=pbAIDracoCandidate(index) unless z_base_slot
+  #pk code
+  knockout_slots=pbAIReliableKnockoutSlots(attacker,candidates)
+  candidates=knockout_slots unless knockout_slots.empty?
+  draco=pbAIDracoCandidate(index) if !z_base_slot && knockout_slots.empty?
   best_score=candidates.map { |slot| [@scores[slot],0].max }.max
   if draco && (candidates.empty? || draco[0]>best_score) && attacker.pbEnableTributeDraco
     if pbRegisterMove(index,0,false)

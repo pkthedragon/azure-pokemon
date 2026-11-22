@@ -1102,7 +1102,7 @@ def pbLoadPokemonBitmap(pokemon, back=false)
 end
 
 # Note: Returns an AnimatedBitmap, not a Bitmap
-def pbLoadPokemonBitmapSpecies(pokemon, species, back=false)
+def pbLoadPokemonBitmapSpecies(pokemon, species, back=false, form: nil) #pk code
   ret=nil
   if pokemon=="substitute"
     if !back
@@ -1116,7 +1116,7 @@ def pbLoadPokemonBitmapSpecies(pokemon, species, back=false)
     return ret
   end  
   if pokemon.isEgg?
-    formnumber = pokemon.form rescue 0
+    formnumber = form || (pokemon.form rescue 0) #pk code
     if formnumber!=0
       formmodifier = "_"+formnumber.to_s
     else
@@ -1140,7 +1140,7 @@ def pbLoadPokemonBitmapSpecies(pokemon, species, back=false)
     bitmapFileName=pbCheckPokemonBitmapFiles([species,back,
                                               (pokemon.isFemale?),
                                               pokemon.isShiny?,
-                                              (pokemon.form rescue 0),
+                                              (form || (pokemon.form rescue 0)), #pk code
                                               (pokemon.isShadow? rescue false)])
     # Alter bitmap if supported
     alterBitmap=(MultipleForms.getFunction(species,"alterBitmap") rescue nil)

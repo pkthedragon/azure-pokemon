@@ -135,9 +135,9 @@ class PokemonSprite < SpriteWrapper
     self.color=Color.new(0,0,0,0)
   end
 
-  def setPokemonBitmapSpecies(pokemon,species,back=false)
+  def setPokemonBitmapSpecies(pokemon,species,back=false,form: nil) #pk code
     @_iconbitmap.dispose if @_iconbitmap
-    @_iconbitmap=pokemon ? pbLoadPokemonBitmapSpecies(pokemon,species,back) : nil
+    @_iconbitmap=pokemon ? pbLoadPokemonBitmapSpecies(pokemon,species,back,form: form) : nil #pk code
     self.bitmap=@_iconbitmap ? @_iconbitmap.bitmap : nil
   end
 end

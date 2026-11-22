@@ -428,6 +428,22 @@ end
 class PokemonEvolutionScene
   private
 
+  #pk code
+  def pbEvolutionForm(pokemon,newspecies)
+    case pokemon.species
+    when PBSpecies::SCATTERBUG
+      return 1 if pokemon.form==1 && newspecies==PBSpecies::SPEWPA
+    when PBSpecies::SPEWPA
+      return 10 if pokemon.form==1 && newspecies==PBSpecies::VIVILLON
+    when PBSpecies::BURMY
+      if pokemon.form==3
+        return 1 if newspecies==PBSpecies::MOTHIM
+        return 3 if newspecies==PBSpecies::WORMADAM
+      end
+    end
+    return nil
+  end
+
   def pbGenerateMetafiles(s1x,s1y,s2x,s2y)
     sprite=SpriteMetafile.new
     sprite2=SpriteMetafile.new
@@ -569,12 +585,13 @@ class PokemonEvolutionScene
     if @pokemon.species==180 && @pokemon.form==1
       @pokemon.form=2
     end
+    @newform=pbEvolutionForm(@pokemon,@newspecies) #pk code
     addBackgroundOrColoredPlane(@sprites,"background","evolutionbg",
        Color.new(248,248,248),@bgviewport)
     rsprite1=PokemonSprite.new(@viewport)
     rsprite2=PokemonSprite.new(@viewport)
     rsprite1.setPokemonBitmap(@pokemon,false)
-    rsprite2.setPokemonBitmapSpecies(@pokemon,@newspecies,false)
+    rsprite2.setPokemonBitmapSpecies(@pokemon,@newspecies,false,form: @newform) #pk code
     rsprite1.ox=rsprite1.bitmap.width/2
     rsprite1.oy=rsprite1.bitmap.height/2
     rsprite2.ox=rsprite2.bitmap.width/2
@@ -677,25 +694,8 @@ class PokemonEvolutionScene
         end
       }
       @pokemon.item=0 if removeItem
-      oldform = @pokemon.form
-      oldspecies = @pokemon.species
       @pokemon.species=@newspecies
-
-      # Handle Mystic form evolution
-      if isConst?(oldspecies,PBSpecies,:SCATTERBUG) && oldform == 1
-        # Mystic Scatterbug (form 1) → Mystic Spewpa (form 1)
-        @pokemon.form = 1 if isConst?(@newspecies,PBSpecies,:SPEWPA)
-      elsif isConst?(oldspecies,PBSpecies,:SPEWPA) && oldform == 1
-        # Mystic Spewpa (form 1) → Mystic Vivillon (form 9)
-        @pokemon.form = 10 if isConst?(@newspecies,PBSpecies,:VIVILLON)
-      elsif isConst?(oldspecies,PBSpecies,:BURMY) && oldform == 3
-        # Mystic Burmy (form 3) → Mystic Mothim/Wormadam
-        if isConst?(@newspecies,PBSpecies,:MOTHIM)
-          @pokemon.form = 1  # Mystic Mothim is form 1
-        elsif isConst?(@newspecies,PBSpecies,:WORMADAM)
-          @pokemon.form = 3  # Mystic Wormadam is form 3
-        end
-      end
+      @pokemon.form=@newform if @newform #pk code
 
       $Trainer.setSeen(@newspecies)
       $Trainer.setOwned(@newspecies)

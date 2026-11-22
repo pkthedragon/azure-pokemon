@@ -1254,10 +1254,13 @@ class PokemonBagScreen
       cmdRead=-1
       cmdMysteryGift=-1
       commands=[]
+      on_belt=$PokemonGlobal && pbEnsureItemBelt.include?(item) #pk code
       # Generate command list
       commands[cmdRead=commands.length]=_INTL("Read") if pbIsMail?(item)
       commands[cmdUse=commands.length]=_INTL("Use") if ItemHandlers.hasOutHandler(item) || (pbIsMachine?(item) && $Trainer.party.length>0)
-      commands[cmdBelt=commands.length]=_INTL("Assign to Belt") if pbBeltAssignableItem?(item)
+      if on_belt || pbBeltAssignableItem?(item) #pk code
+        commands[cmdBelt=commands.length]=on_belt ? _INTL("Remove from Belt") : _INTL("Assign to Belt")
+      end
       commands[cmdGive=commands.length]=_INTL("Give") if $Trainer.party.length>0 && !pbIsImportantItem?(item)
       commands[cmdToss=commands.length]=_INTL("Toss") if (!pbIsImportantItem?(item) && !pbIsCrest?(item)) || $DEBUG
       commands[cmdRegister=commands.length]=_INTL("Register") if pbIsKeyItem?(item) && ItemHandlers.hasKeyItemHandler(item)
@@ -1273,7 +1276,12 @@ class PokemonBagScreen
         @scene.pbRefresh
         next
       elsif cmdBelt>=0 && command==cmdBelt
-        pbAssignItemToBeltFromBag(item,@scene)
+        if on_belt #pk code
+          pbEnsureItemBelt.map! { |belt_item| belt_item==item ? nil : belt_item }
+          @scene.pbDisplay(_INTL("{1} was removed from the belt.",itemname))
+        else
+          pbAssignItemToBeltFromBag(item,@scene)
+        end
         @scene.pbRefresh
         next
       elsif cmdRead>=0 && command==cmdRead # Read mail

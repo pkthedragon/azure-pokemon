@@ -1814,7 +1814,7 @@ SkillLevel = 255
 #-------------------------------
 [PAX]
 LegacyTrainerTypeID = 284
-Name = Pax
+Name = Steam Queen
 BaseMoney = 100
 BattleBGM = Battle! Faux
 Gender = Mixed

@@ -1031,7 +1031,7 @@
 1073,ABILITYSHIELD,Ability Shield,1,1200,An item to be held by a Pokémon. This rather unique-looking shield protects the holder from having its Ability changed.,0,0,0
 1074,PUNCHINGGLOVE,Punching Glove,1,1200,An item to be held by a Pokémon. This protective glove boosts the power of punching moves and prevents direct contact.,0,0,0
 1075,COVERTCLOAK,Covert Cloak,1,1200,"An item to be held by a Pokémon. This hooded cloak conceals the holder, protecting it from the additional effects of moves.",0,0,0
-1076,LOADEDDICE,Loaded Dice,1,1200,A held item that makes moves like Bullet Seed hit 5 times instead of 3.,0,0,0
+1076,LOADEDDICE,Loaded Dice,1,1200,The holder's three-hit moves hit five times.,0,0,0
 1077,MIRRORHERB,Mirror Herb,1,1200,"An item to be held by a Pokémon. This herb allows the holder to mirror an opponent's stat increases, but only once.",0,0,0
 1078,BOOSTERENERGY,Booster Energy,1,100,An item to be held by Pokémon with certain Abilities. The energy that fills this capsule boosts the strength of the Pokémon.,0,0,0
 1079,GIMMIGHOULCOIN,Gimmighoul Coin,1,300,A tiny golden coin. It seems that Gimmighoul treasure and hoard these.,0,0,0
@@ -1066,7 +1066,7 @@
 1108,SLINGSHOT,Slingshot,1,200,"An item to be held by a Pokémon. The first move the holder uses is doubled in power, the rest are halved.",0,0,0,
 1109,JETPACK,Jetpack,1,200,"Boosts the holder's Speed, but its moves use double PP.",0,0,0,
 1110,TOTEMMASK,Totem Mask,1,200,"An item to be held by a Pokémon. When taking special damage, drains the attacker's special defense.",0,0,0,
-1111,NULLTRIBUTE,Null Tribute,6,999,An attack in slot 1 deals 1.2x damage.,2,0,0,
+1111,NULLTRIBUTE,Null Tribute,6,999,An attack in slot 1 deals 1.3x damage.,2,0,0,
 1112,MEADOWTRIBUTE,Meadow Tribute,6,999,Healing from the move in slot 1 is multiplied by 1.3.,2,0,0,
 1113,FLAMETRIBUTE,Flame Tribute,6,999,An attack in slot 1 deals 1.5x damage if the holder just entered battle.,2,0,0,
 1114,SPLASHTRIBUTE,Splash Tribute,6,999,An attack in slot 1 restores HP equal to 25% of the damage dealt.,2,0,0,
