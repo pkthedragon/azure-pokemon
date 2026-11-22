@@ -1345,6 +1345,9 @@ def pbItemIconFile(item)
       bitmapFileName=sprintf("Graphics/Icons/item%s",getConstantName(PBItems,item)) rescue nil
       if !pbResolveBitmap(bitmapFileName)
         bitmapFileName=sprintf("Graphics/Icons/item%03d",item)
+        if pbTributeItemIDs.include?(item) && !pbResolveBitmap(bitmapFileName) #pk code
+          bitmapFileName="Graphics/Icons/itemTribute"
+        end
       end
       if isConst?(item,PBItems,:FAIRYFEATHER) && !pbResolveBitmap(bitmapFileName)
         bitmapFileName=sprintf("Graphics/Icons/item%03d",PBItems::PIXIEPLATE)
