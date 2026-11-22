@@ -1388,6 +1388,7 @@ class PokemonScreen
   end
 
   def pbPokemonDebug(pkmn,pkmnid)
+    return if !$DEBUG #pk code
     command=0
     loop do
       command=@scene.pbShowCommands(_INTL("Do what with {1}?",pkmn.name),[
@@ -2077,7 +2078,7 @@ class PokemonScreen
       cmdRemind=-1
       # Build the commands
       commands[cmdSummary=commands.length]=_INTL("Summary")
-      if $DEBUG || $game_switches[1495] == true
+      if $DEBUG #pk code
         # Commands for debug mode only
         commands[cmdDebug=commands.length]=_INTL("Debug")
       end

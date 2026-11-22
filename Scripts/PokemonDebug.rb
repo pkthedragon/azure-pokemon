@@ -231,6 +231,7 @@ def pbWarpToMap()
 end
 
 def pbDebugMenu
+  return if !$DEBUG #pk code
   viewport=Viewport.new(0,0,Graphics.width,Graphics.height)
   viewport.z=99999
   sprites={}
