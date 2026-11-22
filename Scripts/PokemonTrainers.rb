@@ -544,6 +544,9 @@ def pbTrainerRematchKey(trainerid, trainername, trainerparty, battlekind,
   if trainerid2 && (trainerid2.is_a?(String) || trainerid2.is_a?(Symbol))
     trainerid2=getID(PBTrainers,trainerid2)
   end
+  if trainerid==PBTrainers::PAX && trainername=="Pax" && trainerparty==0 && !trainerid2 && battlekind=="single" #pk code
+    battlekind="double"
+  end
   return [trainerid,trainername,trainerparty,battlekind,
           trainerid2,trainername2,trainerparty2]
 end
@@ -579,9 +582,10 @@ def pbGetBossTrainerRematches
     # Forest Field battles
     pbTrainerRematchKey(:GENTLEMAN,"Willberg",0,"single"),
     pbTrainerRematchKey(:POKEMONRANGER_M,"Pyuku",2,"single"),
-    # Double battle (no specific field)
+    # Double battles (no specific field)
     pbTrainerRematchKey(:CULTISTM,"Alex",0,"double",
-                        :CULTISTF,"Harper",0)
+                        :CULTISTF,"Harper",0),
+    pbTrainerRematchKey(:AURORA,"Aurora",0,"double",:RYOU,"Ryou",0) #pk code
   ]
 end
 
@@ -710,6 +714,7 @@ def pbTrainerRematchMenu
     Kernel.pbMessage(_INTL("You can't seem to recall."))
     return
   end
+  rematches=rematches.map { |rematch| pbTrainerRematchKey(*rematch) }.uniq #pk code
   boss_rematches = []
   standard_rematches = []
   for rematch in rematches

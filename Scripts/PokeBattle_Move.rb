@@ -630,7 +630,7 @@ class PokeBattle_Move
   def apply_tribute_damage_modifiers(attacker, opponent, finaldamagemult, preview: false)
     return finaldamagemult if !tribute_inscribed?(attacker)
 
-    finaldamagemult = (finaldamagemult*1.2).round if tribute_attack?(attacker,:NULLTRIBUTE) #pk code
+    finaldamagemult = (finaldamagemult*1.3).round if tribute_attack?(attacker,:NULLTRIBUTE) #pk code
     if tribute_attack?(attacker,:BLANKTRIBUTE)
       blank_boost = heroic_tribute?(attacker,:HELIOLISK) ? 1.5 : 1.2
       finaldamagemult = (finaldamagemult*blank_boost).round
