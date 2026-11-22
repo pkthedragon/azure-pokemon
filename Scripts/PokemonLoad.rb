@@ -741,9 +741,6 @@ class PokemonLoad
           if !$game_switches[1701] && $game_variables[661]>9
             $game_switches[1701]=true
           end
-          if !$game_switches[1495]
-            $game_switches[1495]=true
-          end
           magicNumberMatches=false
           if $data_system.respond_to?("magic_number")
             magicNumberMatches=($game_system.magic_number==$data_system.magic_number)

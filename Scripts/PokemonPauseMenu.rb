@@ -99,8 +99,8 @@ class PokemonMenu
     cmdPokemon=-1
     cmdBag=-1
     cmdTrainer=-1
-    cmdControls=-1 #pk code
     cmdSave=-1
+    cmdControls=-1 #pk code
     cmdOption=-1
     cmdPokegear=-1
     cmdAchievements=-1
@@ -121,7 +121,6 @@ class PokemonMenu
     commands[cmdPokegear=commands.length]=_INTL("CyberNav") if $Trainer.pokegear
     commands[cmdAchievements=commands.length]=_INTL("Achievements")
     commands[cmdTrainer=commands.length]=$Trainer.name
-    commands[cmdControls=commands.length]=_INTL("Controls") #pk code
     if pbInSafari?
       if SAFARISTEPS<=0
         @scene.pbShowInfo(_INTL("Balls: {1}",pbSafariState.ballcount))
@@ -142,8 +141,9 @@ class PokemonMenu
     else
       commands[cmdSave=commands.length]=_INTL("Save") if !$game_system || !$game_system.save_disabled
     end
+    commands[cmdControls=commands.length]=_INTL("Controls") #pk code
     commands[cmdOption=commands.length]=_INTL("Options")
-    commands[cmdDebug=commands.length]=_INTL("Debug") if ($DEBUG || $game_switches[1495] == true)
+    commands[cmdDebug=commands.length]=_INTL("Debug") if $DEBUG #pk code
     commands[cmdEndGame=commands.length]=_INTL("Quit Game")
     loop do
       command=@scene.pbShowCommands(commands)
@@ -247,10 +247,6 @@ class PokemonMenu
             pbShowMenu
           end
         end
-      elsif cmdControls>=0 && command==cmdControls #pk code
-        @scene.pbHideMenu
-        pbEventScreen(ButtonEventScene)
-        pbShowMenu
       elsif cmdSave>=0 && command==cmdSave
         @scene.pbHideMenu
         scene=PokemonSaveScene.new
@@ -262,6 +258,10 @@ class PokemonMenu
         else
           pbShowMenu
         end
+      elsif cmdControls>=0 && command==cmdControls #pk code
+        @scene.pbHideMenu
+        pbEventScreen(ButtonEventScene)
+        pbShowMenu
       elsif cmdDebug>=0 && command==cmdDebug
         pbFadeOutIn(99999) { 
            pbDebugMenu

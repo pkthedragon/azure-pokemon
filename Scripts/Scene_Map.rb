@@ -240,6 +240,7 @@ class Scene_Map
 
   def call_debug
     $game_temp.debug_calling = false
+    return if !$DEBUG #pk code
     pbPlayDecisionSE()
     $game_player.straighten
     $scene = Scene_Debug.new
