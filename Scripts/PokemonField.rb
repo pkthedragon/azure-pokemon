@@ -2037,14 +2037,14 @@ end
 def pbFishingBegin
   $PokemonGlobal.fishing=true
   if !pbCommonEvent(FISHINGBEGINCOMMONEVENT)
-    patternb = 2*$game_player.direction - 1
+    patternb = 2*($game_player.direction - 2) #pk code
     playertrainer = pbGetPlayerTrainerType
     meta = pbGetMetadata(0,MetadataPlayerA+$PokemonGlobal.playerID)
     num = ($PokemonGlobal.surfing) ? 7 : ($PokemonGlobal.lavasurfing)? 9 : 6
     if meta && meta[num] && meta[num]!=""
       charset = pbGetPlayerCharset(meta,num)
       4.times do |pattern|
-        $game_player.setDefaultCharName(charset,patternb-pattern)
+        $game_player.setDefaultCharName(charset,patternb+pattern) #pk code
         2.times do
           Graphics.update
           Input.update
@@ -2057,14 +2057,14 @@ end
 
 def pbFishingEnd
   if !pbCommonEvent(FISHINGENDCOMMONEVENT)
-    patternb = 2*($game_player.direction - 2)
+    patternb = 2*$game_player.direction - 1 #pk code
     playertrainer = pbGetPlayerTrainerType
     meta = pbGetMetadata(0,MetadataPlayerA+$PokemonGlobal.playerID)
     num = ($PokemonGlobal.surfing) ? 7 : ($PokemonGlobal.lavasurfing)? 9 : 6
     if meta && meta[num] && meta[num]!=""
       charset = pbGetPlayerCharset(meta,num)
       4.times do |pattern|
-        $game_player.setDefaultCharName(charset,patternb+pattern)
+        $game_player.setDefaultCharName(charset,patternb-pattern) #pk code
         2.times do
           Graphics.update
           Input.update

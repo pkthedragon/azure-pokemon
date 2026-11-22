@@ -21,6 +21,11 @@ class Game_Player
     @defaultCharacterName=chname
     @direction=[2,4,6,8][pattern/4]
     @pattern=pattern%4
+    @defaultCharacterPattern=chname ? @pattern : nil #pk code
+  end
+
+  def pattern #pk code
+    return @defaultCharacterPattern || super
   end
 
   def pbCanRun?

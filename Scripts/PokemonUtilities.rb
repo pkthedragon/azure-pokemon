@@ -1246,6 +1246,16 @@ def pbPokemonIconFile(pokemon)
                                   pokemon.isEgg?)
 end
 
+#pk code
+MYSTIC_QUESTION_ICONS={
+  PBSpecies::MOTHIM=>"1",
+  PBSpecies::WORMADAM=>"3",
+  PBSpecies::GIMMIGHOUL=>"1",
+  PBSpecies::SCATTERBUG=>"1",
+  PBSpecies::SPEWPA=>"1",
+  PBSpecies::VIVILLON=>"10"
+}.freeze
+
 def pbCheckPokemonIconFiles(params,egg=false)
   species=params[0]
   if egg
@@ -1259,6 +1269,10 @@ def pbCheckPokemonIconFiles(params,egg=false)
     return pbResolveBitmap(bitmapFileName)
   else
     #pk code
+    if MYSTIC_QUESTION_ICONS[species]==params[3].to_s
+      ret=pbResolveBitmap("Graphics/Icons/icon000")
+      return ret if ret
+    end
     form=pbPokemonSpriteForm(species,params[3],icon: true)
     species_name=getConstantName(PBSpecies,species) rescue nil
     directories={}
