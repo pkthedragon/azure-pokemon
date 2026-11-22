@@ -99,6 +99,7 @@ class PokemonMenu
     cmdPokemon=-1
     cmdBag=-1
     cmdTrainer=-1
+    cmdControls=-1 #pk code
     cmdSave=-1
     cmdOption=-1
     cmdPokegear=-1
@@ -120,6 +121,7 @@ class PokemonMenu
     commands[cmdPokegear=commands.length]=_INTL("CyberNav") if $Trainer.pokegear
     commands[cmdAchievements=commands.length]=_INTL("Achievements")
     commands[cmdTrainer=commands.length]=$Trainer.name
+    commands[cmdControls=commands.length]=_INTL("Controls") #pk code
     if pbInSafari?
       if SAFARISTEPS<=0
         @scene.pbShowInfo(_INTL("Balls: {1}",pbSafariState.ballcount))
@@ -245,6 +247,10 @@ class PokemonMenu
             pbShowMenu
           end
         end
+      elsif cmdControls>=0 && command==cmdControls #pk code
+        @scene.pbHideMenu
+        pbEventScreen(ButtonEventScene)
+        pbShowMenu
       elsif cmdSave>=0 && command==cmdSave
         @scene.pbHideMenu
         scene=PokemonSaveScene.new

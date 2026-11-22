@@ -6,42 +6,37 @@
 #      pbEventScreen(ButtonEventScene)
 #==============================================================================
 class ButtonEventScene < EventScene
+  #pk code
   def initialize(viewport=nil)
     super
-    Graphics.freeze
-    addImage(0,0,"Graphics/Pictures/helpbg")
-    @labels=[
-       addLabel(52*2,13*2,Graphics.width*3/4,_INTL("Moves the main character.  Also used to scroll through list entries.")),
-       addLabel(52*2,53*2,Graphics.width*3/4,_INTL("Used to confirm a choice, check things, and talk to people.")),
-       addLabel(52*2,93*2,Graphics.width*3/4,_INTL("Used to exit, cancel a choice or mode, and open the pause menu.")),
-       addLabel(52*2,133*2,Graphics.width*3/4,_INTL("Hold down while walking to run.")),
-       addLabel(52*2,157*2,Graphics.width*3/4,_INTL("Press to use a registered Key Item."))
+    lines=[
+      _INTL("Arrow Keys: Move"),
+      _INTL("C: Talk/Select"),
+      _INTL("X: Open Menu/Skip Text/Exit"),
+      _INTL("A: Quicksave"),
+      _INTL("S: Sprint"),
+      _INTL("F: Turbo"),
+      _INTL("M: Open Field Manual in-battle"),
+      _INTL("E: Open Encyclopedia in-battle")
     ]
-    @keys=[
-       addImage(26*2,18*2,"Graphics/Pictures/helpArrowKeys"),
-       addImage(26*2,59*2,"Graphics/Pictures/helpCkey"),
-       addImage(26*2,99*2,"Graphics/Pictures/helpXkey"),
-       addImage(26*2,130*2,"Graphics/Pictures/helpZkey"),
-       addImage(26*2,154*2,"Graphics/Pictures/helpF5key")
-    ]
-    for key in @keys
-      key.origin=PictureOrigin::Top
+    screen=BitmapSprite.new(Graphics.width,Graphics.height,viewport)
+    addUserSprite(screen)
+    bitmap=screen.bitmap
+    bitmap.fill_rect(0,0,bitmap.width,bitmap.height,Color.new(0,0,0))
+    pbSetSystemFont(bitmap)
+    bitmap.font.color=Color.new(248,248,248)
+    lineHeight=36
+    y=(bitmap.height-lines.length*lineHeight)/2
+    lines.each do |line|
+      bitmap.draw_text(32,y,bitmap.width-64,lineHeight,line)
+      y+=lineHeight
     end
-    for i in 0...5 # Make everything show (almost) immediately
-      @labels[i].moveOpacity(1,0,255)
-      @keys[i].moveOpacity(1,0,255)
-    end
-    pictureWait # Update event scene with the changes
-    Graphics.transition(20)
-    # Go to next screen when user presses C
     onCTrigger.set(method(:pbOnScreen1))
+    onBTrigger.set(method(:pbOnScreen1))
   end
 
   def pbOnScreen1(scene,args)
-    # End scene
-    Graphics.freeze
     scene.dispose
-    Graphics.transition(20)
-  end 
+  end
 end
 
